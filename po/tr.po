@@ -1,0 +1,1546 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ukui-control-center\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-05-24 16:35+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Cihan Alkan <cihanalk@gmail.com>\n"
+"Language-Team: Turkish <LL@li.org>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+
+msgid "           Text Editor:"
+msgstr "         Metin Düzenleyici："
+
+msgid "          Mail Reader:"
+msgstr "         Posta Okuyucu:"
+
+msgid "        Audio Player:"
+msgstr "         Ses Oynatıcı："
+
+msgid "        Video Player:"
+msgstr "         Video Oynatıcı："
+
+msgid "        Web Browser:"
+msgstr "         Web Tarayıcı："
+
+msgid "       File Manager:"
+msgstr "        Dosya Yöneticisi："
+
+msgid "       Image Viewer:"
+msgstr "         Resim Görüntüleyici："
+
+msgid "    Apr"
+msgstr "    Nis"
+
+msgid "    Aug"
+msgstr "    Ağu"
+
+msgid "    Dec"
+msgstr "    Ara"
+
+msgid "    Jan"
+msgstr "    Oca"
+
+msgid "    Jul"
+msgstr "    Tem"
+
+msgid "    Jun"
+msgstr "    Haz"
+
+msgid "    Mar"
+msgstr "    Mar"
+
+msgid "    May"
+msgstr "    May"
+
+msgid "    Nov"
+msgstr "    Kas"
+
+msgid "    Oct"
+msgstr "    Eki"
+
+msgid "    Sep"
+msgstr "    Eyl"
+
+msgid "   Feb"
+msgstr "    Şub"
+
+msgid " Change the Monitor settings on this computer "
+msgstr " Bu bilgisayardaki Monitör ayarlarını değiştir"
+
+msgid " Change the autostart program on this computer "
+msgstr " Bu bilgisayarda otomatik başlayantma programları değiştirin"
+
+msgid ""
+" Change the computer desktop background \n"
+" and related theme"
+msgstr ""
+" Bilgisayarın masaüstü arka planını \n"
+"ve ilgili temayı değiştirin."
+
+msgid ""
+" Change the computer user account \n"
+" settings and password"
+msgstr ""
+" Bilgisayar kullanıcı hesabı ayarlarını\n"
+"ve parolasını değiştirme."
+
+msgid " Change the default application on this computer "
+msgstr " Bu bilgisayardaki varsayılan uygulamayı değiştir "
+
+msgid " Change the keyboard settings on this computer "
+msgstr " Bu bilgisayardaki klavye ayarlarını değiştir "
+
+msgid " Change the mouse settings on this computer  "
+msgstr " Bu bilgisayardaki fare ayarlarını değiştir "
+
+msgid " Change the network  on this computer "
+msgstr " Bu bilgisayardaki ağı değiştir"
+
+msgid " Change the network agent on this computer "
+msgstr " Bu bilgisayarda ağ aracısını değiştir "
+
+msgid " Change the power management settings on this computer "
+msgstr " Bu bilgisayardaki güç yönetimi ayarlarını değiştir "
+
+msgid " Change the sound settings on this computer "
+msgstr " Bu bilgisayardaki ses ayarlarını değiştir  "
+
+msgid " Change the time and date of this computer "
+msgstr " Bu bilgisayarın saat ve tarihini değiştir "
+
+msgid " Configure the connection to the computer printer "
+msgstr " Bilgisayara olan yazıcıyla bağlantıyı yapılandırın "
+
+msgid ""
+"\"To edit a shortcut key, click on the corresponding row and type a new key "
+"\"\n"
+"\"combination, or press backspace to clear.\""
+msgstr ""
+"\"bir kısayol tuşunu düzenlemek için, ilgili satırı tıklayın ve yeni bir tuş kombinasyonu yazın\"\n"
+"\".veya temizlemek için geri tuşuna basın.\""
+
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d dakika"
+msgstr[1] "%d dakika"
+
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d　saniye"
+msgstr[1] "%d saniye"
+
+msgid "%d/%d/%d/  %d:%d:%d"
+msgstr "%d/%d/%d/  %d:%d:%d"
+
+msgid "%dByte"
+msgstr "%dBayt"
+
+msgid "%i hours"
+msgid_plural "%i hours"
+msgstr[0] "%i saat"
+
+msgid "%i minutes"
+msgid_plural "%i minutes"
+msgstr[0] "%i dakika"
+
+msgid "%s %s remaining (%.1f%%)"
+msgstr "%s %s kalan (%.1f%%)"
+
+msgid "%s %s until charged (%.1f%%)"
+msgstr "%s %s şarj olana kadar(%.1f%%)"
+
+msgid ""
+"%s %s until charged (%.1f%%)\n"
+"Provides %s battery runtime"
+msgstr ""
+"%s %s şarj olana kadar (%.1f%%)\n"
+"%s batarya çalışma zamanı sağlar"
+
+msgid "%s charging (%.1f%%)"
+msgstr "%s doluyor (%.1f%%)"
+
+msgid "%s discharging (%.1f%%)"
+msgstr "%s boşalıyor (%.1f%%)"
+
+msgid "%s is fully charged"
+msgstr "%s tam dolu"
+
+msgid "%s must be a directory\n"
+msgstr "%s bir dizin olmalı\n"
+
+msgid "%s must be owned by you\n"
+msgstr "%s sana ait olmalı\n"
+
+msgid "%s must not have any directory components\n"
+msgstr "%s herhangi bir dizin bileşeni olmamalıdır\n"
+
+msgid "%s waiting to charge (%.1f%%)"
+msgstr "%s şarjı bekliyor (%.1f%%)"
+
+msgid "%s waiting to discharge (%.1f%%)"
+msgstr "%s deşarjı bekliyor (%.1f%%)"
+
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u Girişi"
+
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u Çıkışı"
+
+msgid "-Kylin Control Center"
+msgstr "-UKUI Denetim Merkezi"
+
+msgid ""
+"<b>%s</b>\n"
+"%s\n"
+"File Path: %s\n"
+"Artist: %s"
+msgstr ""
+"<b>%s</b>\n"
+"%s\n"
+"Dosya Yolu: %s\n"
+"Artist: %s"
+
+msgid ""
+"<b>%s</b>\n"
+"%s, %s\n"
+"File Path: %s\n"
+"Artist: %s"
+msgstr ""
+"<b>%s</b>\n"
+"%s, %s\n"
+"Dosya Yolu: %s\n"
+"Artist: %s"
+
+msgid "<b>Di_rect internet connection</b>"
+msgstr "<b>Doğrudan internet bağlantısı</b>"
+
+msgid "<b>User authentication</b>"
+msgstr "<b>Kullanıcı doğrulama</b>"
+
+msgid "<b>_Automatic proxy configuration</b>"
+msgstr "<b>Otomatik proxy yapılandırması</b>"
+
+msgid "<b>_Manual proxy configuration</b>"
+msgstr "<b>El ile proxy yapılandırması</b>"
+
+msgid ""
+"<span weight='bold' font_desc='11'>do you confirm to delete all the files of "
+"%s?</span>"
+msgstr ""
+"<span weight='bold' font_desc='11'>%s dosyaların tümünü silmeyi onaylıyor musunuz?</span>"
+
+msgid "AC adapter"
+msgid_plural "AC adapters"
+msgstr[0] "AC adaptör"
+
+msgid "ALL File"
+msgstr "Tüm Dosyalar"
+
+msgid "Access Time:"
+msgstr "Erişim Süresi："
+
+msgid "Actions"
+msgstr "Haraket"
+
+msgid "Add"
+msgstr "Ekle"
+
+msgid "Add Shortcuts"
+msgstr "Kısayol Ekle"
+
+msgid "Add Wallpaper"
+msgstr "Duvar Kağıdı Ekle"
+
+msgid "Add programs"
+msgstr "Program Ekle"
+
+msgid "Additional startup _programs:"
+msgstr "Ekli başlangıç programları:"
+
+msgid ""
+"Administrator can make any changes needed on the system, including　\n"
+"installing and upgrading software."
+msgstr ""
+"Yönetici, yazılım yüklemek ve güncellemek de dahil olmak üzere sistem "
+"üzerinde gerekli değişiklikleri yapabilir."
+
+msgid "Administrators"
+msgstr "Yönetici"
+
+msgid "Application"
+msgstr "Uygulama"
+
+msgid "Applications"
+msgstr "Uygulamalar"
+
+msgid "Ask"
+msgstr "Sor"
+
+msgid "Authentication failure!"
+msgstr "Kimlik doğrulama hatası!"
+
+msgid "Autoconfiguration _URL:"
+msgstr "Otomatik Yapılandırma URL'si"
+
+msgid "Automatic Logon"
+msgstr "Otomatik Giriş"
+
+msgid "Autostart"
+msgstr "Otomatik başlatma"
+
+msgid "Autostart_"
+msgstr "Otomatik Başlat_"
+
+msgid ""
+"Battery is fully charged.\n"
+"Provides %s laptop runtime"
+msgstr ""
+"Pil tamamen dolu.\n"
+"%s dizüstü bilgisayar çalışma zamanı sağlar "
+
+msgid "Blank screen"
+msgstr "Siyah ekran"
+
+msgid "Boot program property details"
+msgstr "Önyükleme programı özellik ayrıntıları"
+
+msgid "Browse more pictures"
+msgstr "Daha fazla resim araştır"
+
+msgid "Browse more pictures..."
+msgstr "Daha fazla resim araştır..."
+
+msgid "Built-in"
+msgstr "Built-in"
+
+msgid "By _country"
+msgstr "Ülkeye göre"
+
+msgid "By _language"
+msgstr "Dile göre"
+
+msgid "C_hoose a device for sound input:"
+msgstr "Ses girişi için bir cihaz seçin:"
+
+msgid "C_hoose a device for sound output:"
+msgstr "Ses çıkışı için bir cihaz seçin:"
+
+msgid "C_hoose a device to configure:"
+msgstr "Yapılandırılacak bir cihaz seçin:"
+
+msgid "C_hoose an alert sound:"
+msgstr "Bir uyarı sesi seçin"
+
+msgid "Cancel"
+msgstr "İptal"
+
+msgid "Capacity:"
+msgstr "Kapasite："
+
+msgid "Cell phone"
+msgid_plural "Cell phones"
+msgstr[0] "Mobil telefon"
+
+msgid "Center"
+msgstr "Ortala"
+
+msgid "Change Face"
+msgstr "Kullanıcı Resmi Değiştir"
+
+msgid "Change Name"
+msgstr "İsim Değiştir"
+
+msgid "Change PWD"
+msgstr "PWD Değiştir"
+
+msgid "Change Password"
+msgstr "Parola Değiştir"
+
+msgid "Change Type"
+msgstr "Türü Değiştir"
+
+msgid "Change Usertype"
+msgstr "Kullanıcı Tipi Değiştir"
+
+msgid "Change display appearance"
+msgstr "Ekran görünümünü değiştir"
+
+msgid "Changge Face"
+msgstr "Yüz değiştir"
+
+msgid "Charge rate:"
+msgstr "Şarj hızı："
+
+msgid "Charge time:"
+msgstr "Şarj zamanı："
+
+msgid "Charged"
+msgstr "Şarj oldu"
+
+msgid "Charging"
+msgstr "Şarj oluyor"
+
+msgid "Close Monitor"
+msgstr "Monitörü Kapat"
+
+msgid "Co_nnector"
+msgstr "Bağlantı"
+
+msgid "Co_nnector:"
+msgstr "Bağlantı:"
+
+msgid "Command"
+msgstr "Komut:"
+
+msgid "Computer"
+msgid_plural "Computers"
+msgstr[0] "Bilgisayar"
+
+msgid "Control Center"
+msgstr "Kontrol Merkezi"
+
+msgid "Could not detect displays"
+msgstr "Görüntü algılayamadı"
+
+msgid "Could not get information for %s: %s\n"
+msgstr "%s için bilgi alamadı: %s \n"
+
+msgid "Could not get session bus while applying display configuration"
+msgstr "Could not get session bus while applying display configuration"
+
+msgid "Could not open %s /%s: %s\n"
+msgstr "%s açılamadı/%s: %s\n"
+
+msgid "Could not open %s: %s\n"
+msgstr "%s açılamadı: %s\n"
+
+msgid "Could not rename %s to %s: %s\n"
+msgstr "%s dosyasını %s olarak yeniden adlandıramadı: %s\n"
+
+msgid "Could not save the monitor configuration"
+msgstr "Monitör yapılandırması kaydedilemedi"
+
+msgid "Could not set the default configuration for monitors"
+msgstr "Monitörler için varsayılan yapılandırma ayarlanamadı."
+
+msgid "Create Account"
+msgstr "Hesap Oluştur"
+
+msgid "Create a new account"
+msgstr "Yeni bir hesap oluştur"
+
+msgid "Current charge:"
+msgstr "Şarj Durumu："
+
+msgid "Cursor Blinking"
+msgstr "İmleç Yanıp Sönüyor"
+
+msgid "Cursor _blinks in text fields"
+msgstr "İmleç metin alanlarında yanıp söner"
+
+msgid "Cursor blinks speed"
+msgstr "İmleç Yanma Hızı"
+
+msgid "Custom"
+msgstr "Özelleştir"
+
+msgid "Custom Shortcut"
+msgstr "Kısayol Özelleştir"
+
+msgid "Custom Shortcuts"
+msgstr "Kısayolları Özelleştir"
+
+msgid "Default"
+msgstr "Varsayılan"
+
+msgid ""
+"Default \n"
+"Aplication"
+msgstr "Varsayılan Uygulama"
+
+msgid "Default APP"
+msgstr "Varsayılan Uyg"
+
+msgid "Default Aplication"
+msgstr "Varsayılan Uygulama"
+
+msgid "Delete"
+msgstr "Sil"
+
+msgid "Delete File"
+msgstr "Dosya Sil"
+
+msgid "Delete User"
+msgstr "Kullanıcı Sil"
+
+msgid "Desktop file(*.desktop)"
+msgstr "Desktop Dosyası(*.desktop)"
+
+msgid "Device"
+msgstr "Aygıt"
+
+msgid "Di_m display when idle"
+msgstr "Dim ekran boştayken"
+
+msgid "Direction:"
+msgstr "Yön:"
+
+msgid "Disable _touchpad while typing"
+msgstr "Yazarken dokunmatik paneli devre dışı bırak"
+
+msgid "Disabled"
+msgstr "Kapalı"
+
+msgid "Discharge time:"
+msgstr "Deşarj süresi："
+
+msgid "Discharging"
+msgstr "Deşarj oluyor"
+
+msgid "Display"
+msgstr "Görünüm"
+
+msgid "Double-Click Speed"
+msgstr "Çift Tıklama Hızı"
+
+msgid "Double-click the right bulb to test your settings"
+msgstr "Ayarlarınızı test etmek için sağ ampulü çift tıklayın"
+
+msgid "Empty"
+msgstr "Boş"
+
+msgid "Enable _mouse clicks with touchpad"
+msgstr "Dokunmatik panelde fare tıklamalarını etkinleştir"
+
+msgid "Enable _window and button sounds"
+msgstr "Pencere ve düğme seslerini etkinleştir"
+
+msgid "Enable h_orizontal scrolling"
+msgstr "Yatay kaydırmayı etkinleştir"
+
+msgid "Excellent"
+msgstr "Mükemmel"
+
+msgid "Fair"
+msgstr "Normal"
+
+msgid "Fast"
+msgstr "Hızlı"
+
+msgid "File Description:"
+msgstr "Dosya Açıklaması："
+
+msgid "File Type:"
+msgstr "Dosya Türü："
+
+msgid "Font"
+msgstr "Yazı Tipi"
+
+msgid "Font Rendering Details"
+msgstr "Yazı Tipi İşleme Ayrıntıları"
+
+msgid "Font choice:"
+msgstr "Yazı tipi seçimi:"
+
+msgid "Font size :"
+msgstr "Yazı tipi boyutu:："
+
+msgid "From theme"
+msgstr "Temadan"
+
+msgid "Front"
+msgstr "Ön"
+
+msgid "Function description"
+msgstr "Fonksiyon açıklaması"
+
+msgid "General"
+msgstr "Genel"
+
+msgid "Good"
+msgstr "İyi"
+
+msgid "Gra_yscale"
+msgstr "Gri tonlama"
+
+msgid "H_TTP proxy:"
+msgstr "H_TTP proxy:"
+
+msgid "Hang"
+msgstr "Hang"
+
+msgid "Hardware"
+msgstr "Donanım"
+
+msgid "Hardware Configure"
+msgstr "Donanım Yapılandırması"
+
+msgid "High"
+msgstr "Yüksek"
+
+msgid "Home"
+msgstr "Ev"
+
+msgid "Hotkey"
+msgstr "Kısayol"
+
+msgid "Ignore Host List"
+msgstr "Host Listesini Yoksay"
+
+msgid "Ignored Hosts"
+msgstr "Yoksayılan Hostlar"
+
+msgid "Image"
+msgstr "Resim"
+
+msgid "Input"
+msgstr "Giriş"
+
+msgid "Input level:"
+msgstr "Giriş Seviyesi:"
+
+msgid "Internet"
+msgstr "İnternet"
+
+msgid "Keep File"
+msgstr "Dosyayı Tut"
+
+msgid "Key presses _repeat when key is held down"
+msgstr "Tuşa basılı tutulduğunda tuşa tekrar basın"
+
+msgid "Keyboard"
+msgid_plural "Keyboards"
+msgstr[0] "Klavye"
+
+msgid "Keyboard_"
+msgstr "Klavye_"
+
+msgid "Laptop battery"
+msgid_plural "Laptop batteries"
+msgstr[0] "Dizüstü bilgisayar bataryası"
+
+msgid "Last full charge:"
+msgstr "Son tam şarj："
+
+msgid "Layouts"
+msgstr "Düzenler"
+
+msgid "Lead acid"
+msgstr "Kurşun asit"
+
+msgid "Left"
+msgstr "Sol"
+
+msgid "List of keyboard layouts selected for usage"
+msgstr "Kullanım için seçilen klavye düzenleri listesi"
+
+msgid "Lithium Ion"
+msgstr "Lityum İyon"
+
+msgid "Lithium Iron Phosphate"
+msgstr "Lityum Demir Fosfat "
+
+msgid "Lithium Polymer"
+msgstr "Lityum Polimer"
+
+msgid "Locate Pointer"
+msgstr "İşaretçiyi Bulun"
+
+msgid "Logged(Current User)"
+msgstr "Kayıtlı (Geçerli Kullanıcı)"
+
+msgid "Logged(Other Users)"
+msgstr "Kayıtlı (Diğer Kullanıcı)"
+
+msgid "Long"
+msgstr "Uzun"
+
+msgid "Low"
+msgstr "Düşük"
+
+msgid "Make Default"
+msgstr "Varsayılan Yap"
+
+msgid "Maximum"
+msgstr "Maksimum"
+
+msgid "Media player"
+msgid_plural "Media players"
+msgstr[0] "Medya Oynatıcı"
+
+msgid "Minimum"
+msgstr "Minimum"
+
+msgid "Mirror Screens"
+msgstr "Ayna Ekranlar"
+
+msgid "Missing"
+msgstr "Kayıp"
+
+msgid "Model:"
+msgstr "Model："
+
+msgid "Modify username failed!"
+msgstr "이Kullanıcı adını değiştirme başarısız oldu!"
+
+msgid "Monitor"
+msgid_plural "Monitors"
+msgstr[0] "Ekran"
+
+msgid "Monitor:"
+msgstr "Ekran:"
+
+msgid "Monitor: %s"
+msgstr "Ekran: %s"
+
+msgid "Monitor_"
+msgstr "Ekran_"
+
+msgid "Mouse"
+msgid_plural "Mice"
+msgstr[0] "Fare"
+
+msgid "Mouse Keys"
+msgstr "Fare Tuşları"
+
+msgid "Mouse_"
+msgstr "Fare_"
+
+msgid "Multimedia"
+msgstr "Multimedya"
+
+msgid "Mute"
+msgstr "Sessiz"
+
+msgid "My Account"
+msgstr "Hesabım"
+
+msgid "N_one"
+msgstr "_Hiçbiri"
+
+msgid "Name"
+msgstr "İsim"
+
+msgid "Name:"
+msgstr "İsim:"
+
+msgid ""
+"Network \n"
+"Agent"
+msgstr "Ağ Aracı"
+
+msgid ""
+"Network \n"
+"Connections"
+msgstr "Ağ Bağlantıları"
+
+msgid "Network Agent"
+msgstr "Ağ Aracı"
+
+msgid "Network Agent_"
+msgstr "Ağ Aracı_"
+
+msgid "Network Connections"
+msgstr "Ağ Bağlantıları"
+
+msgid "Network Proxy Details"
+msgstr "Ağ Proxy Ayrıntıları"
+
+msgid "Never"
+msgstr "Asla"
+
+msgid "New password length is too short!"
+msgstr "Yeni parola uzunluğu çok kısa!"
+
+msgid "New windows u_se active window's layout"
+msgstr "Yeni pencere kullanıcıları aktif pencere düzeni"
+
+msgid "Nickel Cadmium"
+msgstr "Nikel Kadmiyum"
+
+msgid "Nickel metal hydride"
+msgstr "Nikel metal hidrit"
+
+msgid "No Desktop Background"
+msgstr "Arkaplan Resmi Yok"
+
+msgid "No application is currently playing or recording audio."
+msgstr "Şu anda herhangi bir uygulama çalınmıyor veya ses kaydı yapılmıyor."
+
+msgid "No sounds"
+msgstr "Ses Yok"
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Notification Area"
+msgstr "Bildirim Alanı"
+
+msgid "Ok"
+msgstr "Tamam"
+
+msgid "On AC Power"
+msgstr "Prizde"
+
+msgid "On Battery Power"
+msgstr "Pil Gücü Açık"
+
+msgid "Only display an icon when a battery is p_resent"
+msgstr "Yalnızca bir pil varsa bir simge gösterin"
+
+msgid "Only display an icon when charging or _discharging"
+msgstr "Şarj ederken veya boşaltırken yalnızca bir simge gösterin"
+
+msgid "Open Monitor"
+msgstr "Monitörü Aç"
+
+msgid "Other accounts"
+msgstr "Diğer Hesaplar"
+
+msgid "Output"
+msgstr "Çıkış"
+
+msgid "PDA"
+msgid_plural "PDAs"
+msgstr[0] "PDA"
+msgstr[1] "PDA"
+
+msgid "PKEXEC_UID must be set to an integer value"
+msgstr "PKEXEC_UID bir tamsayı değerine ayarlanmalıdır"
+
+msgid "Password can not be modified."
+msgstr "Şifre değiştirilemez."
+
+msgid "Password error"
+msgstr "Parola hatası"
+
+msgid "Password input error, please re-enter!"
+msgstr "Parola girişi hatası, lütfen tekrar girin!"
+
+msgid "Password length is too short!"
+msgstr "Şifre uzunluğu çok kısa!"
+
+msgid "Password length needs to more than 5 digits!"
+msgstr "Parola uzunluğu 5 haneden fazla olmalıdır!"
+
+msgid ""
+"Password length needs to more than 5 digits, and composed of letters, \n"
+" numbers or special characters."
+msgstr "Şifre uzunluğu 5 basamağı aşmamalı ve harf, rakam veya özel karakterlerden oluşmalıdır."
+
+msgid "Password:"
+msgstr "Parola:"
+
+msgid "Peak detect"
+msgstr "Tepe algılama"
+
+msgid "Percentage charge:"
+msgstr "Yüzde şarj："
+
+msgid "Personalization"
+msgstr "Kişiselleştirme"
+
+msgid "Personalization_"
+msgstr "Kişiselleştir_"
+
+msgid ""
+"Please add the language you will use to the list. And the first one in the "
+"list is the most\n"
+"commonly used language."
+msgstr ""
+"Lütfen kullanacağınız dili listeye ekleyin. \n"
+"Listedeki ilk dil \n"
+"en sık kullanılan dildir."
+
+msgid "Please choose a color that you like as the theme colors."
+msgstr "Lütfen tema renkleri gibi bir renk seçin."
+
+msgid "Please choose another password."
+msgstr "Lütfen başka bir parolayı seçin."
+
+msgid "Please confirm the new password"
+msgstr "Lütfen yeni parolayı onaylayın"
+
+msgid "Please enter new password"
+msgstr "Lütfen yeni parolayı girin"
+
+msgid "Please enter the current password"
+msgstr "Lütfen geçerli parolayı giriniz"
+
+msgid "Please enter the new password"
+msgstr "Lütfen yeni parolayı giriniz"
+
+msgid "Please enter the new username"
+msgstr "Lütfen yeni kullanıcı adını giriniz"
+
+msgid "Please enter the password"
+msgstr "Lütfen parolayı giriniz"
+
+msgid "Please enter the password "
+msgstr "Lütfen parolayı giriniz"
+
+msgid "Please enter the username"
+msgstr "Lütfen kullanıcı adını giriniz"
+
+msgid ""
+"Please make sure that the computer has at least one user is the administrator"
+msgstr ""
+"Lütfen bilgisayarın en az bir kullanıcısının yönetici olduğundan emin olun."
+
+msgid "Please make sure you enter the password two times."
+msgstr "Lütfen şifreyi iki kez girdiğinizden emin olun."
+
+msgid "Please reenter the current password."
+msgstr "Lütfen geçerli parolayı tekrar giriniz."
+
+msgid "Please select the clearest sample text"
+msgstr "Lütfen en net örnek metni seçin"
+
+msgid "Pointer moving speed"
+msgstr "İşaretçi hareket hızı"
+
+msgid "Poor"
+msgstr "Poor"
+
+msgid "Port:"
+msgstr "Port:"
+
+msgid ""
+"Power \n"
+"Management"
+msgstr "Güç Yönetimi"
+
+msgid "Power Manage"
+msgstr "Güç Yönetimi"
+
+msgid "Power Management"
+msgstr "Güç Yönetimi"
+
+msgid "Power Manager"
+msgstr "Güç Yönetimi"
+
+msgid "Power Manager for the MATE desktop"
+msgstr "UKUI masaüstü için güç yönetimi"
+
+msgid "Preview:"
+msgstr "Önizleme:"
+
+msgid "Printer"
+msgstr "Yazıcı"
+
+msgid "Product:"
+msgstr "Ürün："
+
+msgid "Program Location:"
+msgstr "Program Yeri："
+
+msgid "Program Size:"
+msgstr "Program Boyutu："
+
+msgid "Proxy Configuration"
+msgstr "Proxy Yapılandırması"
+
+msgid "Put _display to sleep when inactive:"
+msgstr "Hareketsizken ekranı uyku moduna geçir："
+
+msgid "Put computer to _sleep when inactive:"
+msgstr "Bilgisayar hareketsizken uyku moduna geçirin:："
+
+msgid "R_esolution:"
+msgstr "Çözünürlük:"
+
+msgid "Rear"
+msgstr "Arka"
+
+msgid "Regard the computer as _idle after:"
+msgstr "Bilgisayarı sonra boşta tutun:"
+
+msgid "Rename"
+msgstr "Yeniden Adlandır"
+
+msgid "Repeat Keys"
+msgstr "Tuşları Tekrarla"
+
+msgid "Repeat keys speed"
+msgstr "Tuşları tekrarlama hızı"
+
+msgid "Reset to De_faults"
+msgstr "Varsayılanlara Dön"
+
+msgid "Resolution:"
+msgstr "Çözünürlük:"
+
+msgid "Restore Defaults"
+msgstr "Varsayılanları Geri Yükle"
+
+msgid "Right"
+msgstr "Sağ"
+
+msgid "S_ocks host:"
+msgstr "S_ocks host:"
+
+msgid "S_peed:"
+msgstr "H_ız："
+
+msgid "Same image in all monitors"
+msgstr "Tüm monitörlerde aynı resim"
+
+msgid "Save"
+msgstr "Kaydet"
+
+msgid "Scale"
+msgstr "Ölçülü"
+
+msgid "Scan"
+msgstr "Tara"
+
+msgid "Screensaver"
+msgstr "Ekran Koruyucu"
+
+msgid "Scrolling"
+msgstr "Kaydırma"
+
+msgid ""
+"Select a monitor to change its properties; drag it to rearrange its "
+"placement."
+msgstr "Özelliklerini değiştirmek için bir monitör seçmelidir; "
+"yerleşimini yeniden düzenlemek için sürükleyin."
+
+msgid "Select command"
+msgstr "Komut seç"
+
+msgid "Select the keyboard layout"
+msgstr "Klavye düzenini seçin"
+
+msgid "Select the one you love color as the theme color"
+msgstr "Tema rengi olarak sevdiğiniz birini seçin"
+
+msgid "Selection Program"
+msgstr "Seçim Programı"
+
+msgid "Serial number:"
+msgstr "Seri numarası："
+
+msgid "Set as primary"
+msgstr "Birincil olarak ayarla"
+
+msgid "Set display _brightness to:"
+msgstr "Ekran parlaklığını ayarla："
+
+msgid ""
+"Set up disable. Please wait at least 5 seconds that system subject will "
+"restart"
+msgstr ""
+"Devre dışı bırak'ı ayarla. Lütfen sistem konusunun yeniden başlatılması için "
+"en az 5 saniye bekleyin"
+
+msgid "Settings for the selected device:"
+msgstr "Seçilen cihazın ayarları:"
+
+msgid "Sh_ow position of pointer when the Control key is pressed"
+msgstr "Kontrol tuşu basılı olduğunda işaretçiyi konumunu göster"
+
+msgid "Short"
+msgstr "Kısa"
+
+msgid "Shortcut"
+msgstr "Kısayol"
+
+msgid "Shutdown"
+msgstr "Bilgisayarı Kapat"
+
+msgid "Sleep"
+msgstr "Uyku"
+
+msgid "Slow"
+msgstr "Yavaş"
+
+msgid "Smoothing"
+msgstr "Yumuşatma"
+
+msgid "Sound"
+msgstr "Ses"
+
+msgid "Sound Effects"
+msgstr "Ses Efektleri"
+
+msgid "Sound Output Volume"
+msgstr "Ses Çıkışı Hacmi"
+
+msgid "Sound Preferences"
+msgstr "Ses Tercihleri"
+
+msgid "Sound _theme:"
+msgstr "Ses teması:"
+
+msgid "Sound_"
+msgstr "Ses_"
+
+msgid "Sp_in down hard disks when possible"
+msgstr "Mümkünse sabit diskleri çevirin"
+
+msgid "Span"
+msgstr "Span"
+
+msgid "Speaker Testing for %s"
+msgstr "%s için Hoparlör Testi"
+
+msgid "Standard User"
+msgstr "Standart Kullanıcı"
+
+msgid "Standard user"
+msgstr "Normal Kullanıcı"
+
+msgid ""
+"Standard users can use most software, but you can not install software\n"
+"and change settings that affect all users."
+msgstr ""
+"Standart kullanıcılar çoğu yazılımı kullanabilir ancak yazılımı yükleyemez.\n"
+"Ayrıca tüm kullanıcıları etkileyen ayarları değiştiremezsiniz."
+
+msgid ""
+"Standard users can use most software, but you can not install software and \n"
+"change settings that affect all users."
+msgstr ""
+"Standart kullanıcılar çoğu yazılımı kullanabilir ancak yazılımı yükleyemez "
+"ve tüm kullanıcıları etkileyen ayarları değiştiremez."
+
+msgid "Startup Programs"
+msgstr "Başlangıç Programları"
+
+msgid "Status:"
+msgstr "Durum："
+
+msgid "Stop"
+msgstr "Dur"
+
+msgid "Stretch"
+msgstr "Uzat"
+
+msgid "Style:"
+msgstr "stil："
+
+msgid "Sub_pixel (LCDs)"
+msgstr "Sub_pixel (LCDs)"
+
+msgid "Subpixel Order"
+msgstr "Altpiksel Sırası"
+
+msgid "Subwoofer"
+msgstr "Subwoofer"
+
+msgid "System"
+msgstr "Sistem"
+
+msgid "System Check"
+msgstr "Sistem Kontrolü"
+
+msgid "System Configuration"
+msgstr "Sistem Yapılandırması"
+
+msgid "Tablet"
+msgid_plural "Tablets"
+msgstr[0] "Tablet"
+
+msgid "Technology:"
+msgstr "Teknoloji："
+
+msgid "Test"
+msgstr "Test"
+
+msgid "Test Speakers"
+msgstr "Sesi Kontrol Et"
+
+msgid "Testing event sound"
+msgstr "Etkinlik sesini test et"
+
+msgid "The first character cannot be numeric!"
+msgstr "İlk karakter sayısal olamaz!"
+
+msgid "The first character cannot be underlined!"
+msgstr "İlk karakterlerin altı çizilemez!"
+
+msgid "The monitor configuration has been saved"
+msgstr "Monitör yapılandırması kaydedildi"
+
+msgid "The new password has been used recently!"
+msgstr "Yeni parola önceden kullanıldı!"
+
+msgid "The new password is the same as the old one!"
+msgstr "Yeni parola eski parola ile aynı!"
+
+msgid "The new password is too similar to the old one!"
+msgstr "Yeni parola eskisiyle çok benzer!"
+
+msgid "The new password is too simple!"
+msgstr "Yeni parola çok basit!"
+
+msgid "The new password must contain numbers or special characters!"
+msgstr "Yeni parolanın sayıları veya özel karakterleri içermesi gerekir!"
+
+msgid ""
+"The shortcut \"%s\" is already used for\n"
+"\"%s\",please reset!!!"
+msgstr ""
+"\"%s\" kısayolu zaten kullanılıyor\n"
+"\"%s\" lütfen sıfırlayın !!!"
+
+msgid "The source filename must be absolute"
+msgstr "Kaynak dosya adı mutlaka olmalıdır"
+
+msgid "The startup command cannot be empty"
+msgstr "Başlangıç komutu boş olamaz"
+
+msgid "The startup command is not valid"
+msgstr "Başlangıç komutu geçerli değil"
+
+msgid "The user can not be deleted!"
+msgstr "Kullanıcı silinemez!"
+
+msgid ""
+"The user has logged in, please perform the delete operation after logging "
+"out!"
+msgstr "Kullanıcı giriş yaptı, lütfen çıkış yaptıktan sonra silme işlemini gerçekleştir!"
+
+msgid "The user name can only be composed of letters, numbers and underline!"
+msgstr "Kullanıcı adı yalnızca harfler, rakamlar ve alt çizgiden oluşabilir!"
+
+msgid ""
+"The user name corresponds to the group already exists,please use a different "
+"user name"
+msgstr "Kullanıcı adı, zaten var olan gruba karşılık geliyor, lütfen farklı bir kullanıcı adı kullanın"
+
+msgid "The user name has been used, please replace with another one!"
+msgstr "Kullanıcı adı kullanılıyor, lütfen başka bir isimle değiştirin!"
+
+msgid "The user name is already in use, please use a different one."
+msgstr "Kullanıcı adı zaten kullanılıyor, lütfen farklı bir tane kullanınız."
+
+msgid "Theme color"
+msgstr "Tema rengi"
+
+msgid "This configuration will be used the next time someone logs in."
+msgstr "Bu yapılandırma bir dahaki kullanıcı oturum açtığında kullanılacaktır."
+
+msgid "This program can only be used by the root user"
+msgstr "Program yalnızca root kullanıcısı tarafından kullanılabilir"
+
+msgid "This program must only be run through pkexec(1)"
+msgstr "Bu program yalnızca pkexec(1) üzerinden çalıştırılmalıdır."
+
+msgid "Tile"
+msgstr "Döşe"
+
+msgid "Time Dates"
+msgstr "Saat ve Tarih"
+
+msgid "Time Dates_"
+msgstr "Saat ve Tarihi"
+
+msgid "Time and Dates"
+msgstr "Saat ve Tarih"
+
+msgid "Timeout"
+msgstr "Zamanaşımı"
+
+msgid "To test the repetition rate of the input character:"
+msgstr "Girilen karakterin yineleme oranını test etmek için:"
+
+msgid "Touchpad"
+msgstr "Dokunmatik Panel"
+
+msgid "Two-_finger scrolling"
+msgstr "İki parmakla kaydırma"
+
+msgid "Type"
+msgstr "Tür"
+
+msgid "Tzone:"
+msgstr "Z. Dilimi："
+
+msgid "UPS"
+msgid_plural "UPSs"
+msgstr[0] "UPS"
+
+msgid "Un-login(Other Users)"
+msgstr "Giriş Yapmayın (Diğer Kullanıcılar)"
+
+msgid "Unamplified"
+msgstr "Yükseltilmemiş"
+
+msgid "Unknown technology"
+msgstr "Bilinmeyen teknoloji"
+
+msgid "Unknown time"
+msgstr "Bilinmeyen zaman"
+
+msgid "Upside-down"
+msgstr "Başaşağı"
+
+msgid ""
+"Usage: %s SOURCE_FILE DEST_NAME\n"
+"\n"
+"This program installs a RANDR profile for multi-monitor setups into\n"
+"a systemwide location.  The resulting profile will get used when\n"
+"the RANDR plug-in gets run in mate-settings-daemon.\n"
+"\n"
+"SOURCE_FILE - a full pathname, typically /home/username/.config/monitors."
+"xml\n"
+"\n"
+"DEST_NAME - relative name for the installed file.  This will get put in\n"
+"            the systemwide directory for RANDR configurations,\n"
+"            so the result will typically be %s/DEST_NAME\n"
+msgstr ""
+"Kullanımı: %s SOURCE_FILE DEST_NAME\n"
+"\n"
+"Bu program, çoklu monitör kurulumları için sistem genelinde bir konuma \n"
+"bir RANDR profili yüklemektedir. Ortaya çıkan profil, RANDR eklentisi\n"
+"ukui-settings-daemon'da çalışmaya başladığında kullanılacaktır.\n"
+"\n"
+"SOURCE_FILE - a full pathname, typically /home/username/.config/monitors."
+"xml\n"
+"\n"
+"DEST_NAME - relative name for the installed file.  This will get put in\n"
+"            the systemwide directory for RANDR configurations,\n"
+"            so the result will typically be %s/DEST_NAME\n"
+
+msgid "User Account"
+msgstr "Kullanıcı Hesabı"
+
+msgid "User Account_"
+msgstr "Kullanıcı Hesabı"
+
+msgid "User name can not contain capital letters!"
+msgstr "Kullanıcı adı büyük harf içermemelidir!"
+
+msgid "User name cannot be empty!"
+msgstr "Kullanıcı adı boş olamaz!"
+
+msgid "User name cannot start with number!"
+msgstr "Kullanıcı adı sayı ile başlayamaz!"
+
+msgid "Username:"
+msgstr "Kullanıcı Adı:"
+
+msgid "Vendor:"
+msgstr "Üretici："
+
+msgid "Waiting to charge"
+msgstr "Şarj için bekliyor"
+
+msgid "Waiting to discharge"
+msgstr "Deşarj için bekliyor"
+
+msgid "When battery po_wer is critically low:"
+msgstr "Pil gücü kritik derecede düşük olduğunda:"
+
+msgid "When laptop lid is cl_osed:"
+msgstr "Dizüstü bilgisayar kapağı kapalı olduğunda："
+
+msgid "When the _suspend button is pressed:"
+msgstr "Askıya alma düğmesine basıldığında:"
+
+msgid "When the power _button is pressed:"
+msgstr "Güç düğmesine basıldığında:"
+
+msgid "With the network time synchronization"
+msgstr "Şebeke zaman senkronizasyonu ile"
+
+msgid "Your password has been changed after you verify!"
+msgstr "Doğrulamanızdan sonra parolanız değiştirildi!"
+
+msgid "Zoom"
+msgstr "Yakınlaştr"
+
+msgid "_Activate screensaver when computer is idle"
+msgstr "Bilgisayar boştayken ekran koruyucuyu etkinleştirin"
+
+msgid "_Alert volume: "
+msgstr "_Uyarı sesi:: "
+
+msgid "_Always display an icon"
+msgstr "Daima bir simge gösterin"
+
+msgid "_BGR"
+msgstr "_BGR"
+
+msgid "_Balance(_B):"
+msgstr "Balans(_B):"
+
+msgid "_Country:"
+msgstr "Ülke:"
+
+msgid "_Delay:"
+msgstr "_Gecikme："
+
+msgid "_Details"
+msgstr "Ayrıntılar"
+
+msgid "_Disabled"
+msgstr "Kapalı"
+
+msgid "_Edge scrolling"
+msgstr "Kenar kaydırma"
+
+msgid "_FTP proxy:"
+msgstr "_FTP proxy:"
+
+msgid "_Fade(_F):"
+msgstr "Soldurma(_F):"
+
+msgid "_Full"
+msgstr "Tam"
+
+msgid "_Input volume: "
+msgstr "_Giriş Sesi: "
+
+msgid "_Language:"
+msgstr "Dil:"
+
+msgid "_Left-handed"
+msgstr "Solak"
+
+msgid "_Lock screen when screensaver is active"
+msgstr "Ekran koruyucu aktifken ekranı kilitle"
+
+msgid "_Medium"
+msgstr "Orta"
+
+msgid "_Never display an icon"
+msgstr "Asla bir simge gösterme"
+
+msgid "_None"
+msgstr "_Yok"
+
+msgid "_Only display an icon when battery power is low"
+msgstr "Pil gücü düşük olduğunda yalnızca bir simge gösterin"
+
+msgid "_Profile(_P):"
+msgstr "_Profil:"
+
+msgid "_Profiles:"
+msgstr "Profil:"
+
+msgid "_RGB"
+msgstr "_RGB"
+
+msgid "_Reduce backlight brightness"
+msgstr "Arka ışık parlaklığını azaltın"
+
+msgid "_Right-handed"
+msgstr "Sağlak"
+
+msgid "_Secure HTTP proxy:"
+msgstr "Güvenli HTTP proxy:"
+
+msgid "_Sensitivity:"
+msgstr "_Duyarlılık："
+
+msgid "_Separate layout for each window"
+msgstr "Her pencere için ayrı düzen"
+
+msgid "_Show..."
+msgstr "_Göster"
+
+msgid "_Slight"
+msgstr "_Hafif"
+
+msgid "_Speed:"
+msgstr "_Hız："
+
+msgid "_Subwoofer(_S):"
+msgstr "_Subwoofer(_S):"
+
+msgid "_Variants:"
+msgstr "_Hafif:"
+
+msgid "automatic logon"
+msgstr "Otomatik oturum aç"
+
+msgid "check the system detection information on this computer "
+msgstr "Bu bilgisayarda sistem algılama bilgilerini kontrol et"
+
+msgid "command:"
+msgstr "Komut:"
+
+msgid "date:"
+msgstr "Saat："
+
+msgid "delete"
+msgstr "Sil"
+
+msgid "dots per inch"
+msgstr "inç başına nokta sayısı(DPI)"
+
+msgid "enter the password twice inconsistencies!"
+msgstr "İki kez tutarsızlık şifresini girin!"
+
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "saat"
+
+msgid ""
+"if you want to delete the %s user, belonging to the user's desktop, "
+"documents, favorites, music, pictures and video folder will be deleted!"
+msgstr ""
+"Kullanıcının masaüstüne ait olan %s kullanıcısını silmek isterseniz, "
+"belgeler, sık kullanılanlar, müzik, resim ve video klasörü silinecektir!"
+
+msgid "large (L) --150%"
+msgstr "Büyük --150%"
+
+msgid "medium(M)--125%"
+msgstr "Orta --125%"
+
+msgid "min"
+msgstr "dk"
+
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "dakika"
+
+msgid "modification time:"
+msgstr "Değiştirilme Zamanı："
+
+msgid "pixel"
+msgid_plural "pixels"
+msgstr[0] "piksel"
+msgstr[1] "piksel"
+
+msgid "program name"
+msgstr "Program adı"
+
+msgid "property"
+msgstr "Özellik"
+
+msgid "scan…"
+msgstr "Tara…"
+
+msgid "sec"
+msgstr "sn"
+
+msgid "select picture"
+msgstr "Resim seç"
+
+msgid "small(S) --100%(default)"
+msgstr "Küçük --100%(varsayılan)"
+
+msgid "the user has logged in, please log out and modify!"
+msgstr ""
+"Kullanıcı girişi yapmıştır, lütfen çıkış yapın ve sonra değişiklik yapın!"
+
+msgid "time:"
+msgstr "zaman："
+
+msgid "username length should not long than 32!"
+msgstr "Kullanıcı adı 32 karakterden fazla olmamalıdır!"
+
+msgid "wallpaper"
+msgstr "Duvarkağıdı"
