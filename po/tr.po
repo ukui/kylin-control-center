@@ -1,0 +1,2374 @@
+# Turkish translations for ukui-control-center package
+# ukui-control-center paketi için Türkçe çeviriler.
+# Copyright (C) 2017 Canonical Ltd.
+# This file is distributed under the same license as the ukui-control-center package.
+# Cihan Alkan <cihanalk@gmail.com>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ukui-control-center\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-04 11:42+0800\n"
+"PO-Revision-Date: 2017-11-28 22:17+0300\n"
+"Last-Translator: Cihan Alkan <cihanalk@gmail.com>\n"
+"Language-Team: Turkish\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: panels/appearance/appearance-desktop.c:561
+msgid "Add Wallpaper"
+msgstr "Arkaplan Ekle"
+
+#: panels/appearance/appearance-desktop.c:594
+msgid "Image"
+msgstr "Resim"
+
+#: panels/appearance/appearance-desktop.c:598
+msgid "ALL File"
+msgstr "Tüm Dosyalar"
+
+#: panels/appearance/appearance-theme.c:46
+msgid "Please choose a color that you like as the theme colors."
+msgstr "Lütfen tema renkleri gibi bir renk seçin."
+
+#: panels/appearance/appearance-theme.c:62
+msgid ""
+"Set up disable. Please wait at least 5 seconds that system subject will "
+"restart"
+msgstr ""
+"Devre dışı bırak'ı ayarla. Lütfen sistem konusunun yeniden başlatılması için "
+"en az 5 saniye bekleyin"
+
+#: panels/appearance/font_render.ui.h:1
+msgid "Font Rendering Details"
+msgstr "Yazı Tipi İşleme Ayrıntıları"
+
+#: panels/appearance/font_render.ui.h:2
+msgid "R_esolution:"
+msgstr "Çözünürlük"
+
+#: panels/appearance/font_render.ui.h:3
+msgid "dots per inch"
+msgstr "inç başına nokta sayısı"
+
+#: panels/appearance/font_render.ui.h:4
+msgid "Smoothing"
+msgstr "Yumuşatma"
+
+#: panels/appearance/font_render.ui.h:5
+msgid "_None"
+msgstr "_Yok"
+
+#: panels/appearance/font_render.ui.h:6
+msgid "Gra_yscale"
+msgstr "Gri tonlama"
+
+#: panels/appearance/font_render.ui.h:7
+msgid "Sub_pixel (LCDs)"
+msgstr ""
+
+#: panels/appearance/font_render.ui.h:9
+msgid "_Slight"
+msgstr "_Hafif"
+
+#: panels/appearance/font_render.ui.h:10
+msgid "N_one"
+msgstr "Yok"
+
+#: panels/appearance/font_render.ui.h:11
+msgid "_Medium"
+msgstr "_Orta"
+
+#: panels/appearance/font_render.ui.h:12
+msgid "_Full"
+msgstr "Tam"
+
+#: panels/appearance/font_render.ui.h:13
+msgid "Subpixel Order"
+msgstr "Altpiksel Sırası"
+
+#: panels/appearance/font_render.ui.h:15
+msgid "_RGB"
+msgstr ""
+
+#: panels/appearance/font_render.ui.h:17
+msgid "_BGR"
+msgstr ""
+
+#: panels/appearance/font_render.ui.h:19
+msgid "_VRGB"
+msgstr ""
+
+#: panels/appearance/font_render.ui.h:21
+msgid "VB_GR"
+msgstr ""
+
+#: panels/appearance/mate-wp-info.c:47
+msgid "No Desktop Background"
+msgstr "Arkaplan Resmi Yok"
+
+#: panels/appearance/mate-wp-item.c:315 panels/appearance/mate-wp-item.c:317
+msgid "pixel"
+msgid_plural "pixels"
+msgstr[0] "piksel"
+msgstr[1] "piksel"
+
+#: panels/appearance/mate-wp-item.c:327
+#, c-format
+msgid ""
+"<b>%s</b>\n"
+"%s, %s\n"
+"File Path: %s\n"
+"Artist: %s"
+msgstr ""
+"<b>%s</b>\n"
+"%s\n"
+"Dosya Yolu: %s\n"
+"Artist: %s"
+
+#: panels/appearance/mate-wp-item.c:344
+#, c-format
+msgid ""
+"<b>%s</b>\n"
+"%s\n"
+"File Path: %s\n"
+"Artist: %s"
+msgstr ""
+"<b>%s</b>\n"
+"%s\n"
+"Dosya Yolu: %s\n"
+"Artist: %s"
+
+#: panels/display/mate-display-properties-install-systemwide.c:45
+#, c-format
+msgid ""
+"Usage: %s SOURCE_FILE DEST_NAME\n"
+"\n"
+"This program installs a RANDR profile for multi-monitor setups into\n"
+"a systemwide location.  The resulting profile will get used when\n"
+"the RANDR plug-in gets run in mate-settings-daemon.\n"
+"\n"
+"SOURCE_FILE - a full pathname, typically /home/username/.config/monitors."
+"xml\n"
+"\n"
+"DEST_NAME - relative name for the installed file.  This will get put in\n"
+"            the systemwide directory for RANDR configurations,\n"
+"            so the result will typically be %s/DEST_NAME\n"
+msgstr ""
+"Kullanımı: %s SOURCE_FILE DEST_NAME\n"
+"\n"
+"Bu program, çoklu monitör kurulumları için sistem genelinde bir konuma \n"
+"bir RANDR profili yüklemektedir. Ortaya çıkan profil, RANDR eklentisi\n"
+"ukui-settings-daemon'da çalışmaya başladığında kullanılacaktır.\n"
+"\n"
+"SOURCE_FILE - a full pathname, typically /home/username/.config/monitors."
+"xml\n"
+"\n"
+"DEST_NAME - relative name for the installed file.  This will get put in\n"
+"            the systemwide directory for RANDR configurations,\n"
+"            so the result will typically be %s/DEST_NAME\n"
+
+#: panels/display/mate-display-properties-install-systemwide.c:152
+msgid "This program can only be used by the root user"
+msgstr "Program yalnızca root kullanıcısı tarafından kullanılabilir"
+
+#: panels/display/mate-display-properties-install-systemwide.c:169
+msgid "The source filename must be absolute"
+msgstr "Kaynak dosya adı mutlaka olmalıdır"
+
+#: panels/display/mate-display-properties-install-systemwide.c:180
+#, c-format
+msgid "Could not open %s: %s\n"
+msgstr "%s açılamadı: %s\n"
+
+#: panels/display/mate-display-properties-install-systemwide.c:189
+#, c-format
+msgid "Could not get information for %s: %s\n"
+msgstr "%s için bilgi alamadı: %s \n"
+
+#: panels/display/mate-display-properties-install-systemwide.c:196
+#, c-format
+msgid "%s must be a regular file\n"
+msgstr "%s düzenli bir dosya olmalı\n"
+
+#: panels/display/mate-display-properties-install-systemwide.c:205
+msgid "This program must only be run through pkexec(1)"
+msgstr "Bu program yalnızca pkexec(1) üzerinden çalıştırılmalıdır."
+
+#: panels/display/mate-display-properties-install-systemwide.c:210
+msgid "PKEXEC_UID must be set to an integer value"
+msgstr "PKEXEC_UID bir tamsayı değerine ayarlanmalıdır"
+
+#: panels/display/mate-display-properties-install-systemwide.c:216
+#, c-format
+msgid "%s must be owned by you\n"
+msgstr "%s sana ait olmalı\n"
+
+#: panels/display/mate-display-properties-install-systemwide.c:224
+#, c-format
+msgid "%s must not have any directory components\n"
+msgstr ""
+
+#: panels/display/mate-display-properties-install-systemwide.c:232
+#, c-format
+msgid "%s must be a directory\n"
+msgstr "%s herhangi bir dizin bileşeni olmamalıdır\n"
+
+#: panels/display/mate-display-properties-install-systemwide.c:243
+#, c-format
+msgid "Could not open %s/%s: %s\n"
+msgstr "%s/%s açılamadı: %s\n"
+
+#: panels/display/mate-display-properties-install-systemwide.c:263
+#, c-format
+msgid "Could not rename %s to %s: %s\n"
+msgstr "%s dosyasını %s olarak yeniden adlandıramadı: %s\n"
+
+#: panels/display/xrandr-capplet.c:315 panels/display/xrandr-capplet.c:354
+#: shell/shell.ui.h:1
+msgid "Normal"
+msgstr "Normal"
+
+#: panels/display/xrandr-capplet.c:316
+#: panels/volume-control/gvc-balance-bar.c:112 shell/shell.ui.h:2
+msgid "Left"
+msgstr "Sol"
+
+#: panels/display/xrandr-capplet.c:317
+#: panels/volume-control/gvc-balance-bar.c:113 shell/shell.ui.h:3
+msgid "Right"
+msgstr "Sağ"
+
+#: panels/display/xrandr-capplet.c:318 shell/shell.ui.h:4
+msgid "Upside-down"
+msgstr "Başaşağı"
+
+#: panels/display/xrandr-capplet.c:360
+#, c-format
+msgid "%d Hz"
+msgstr "%d Hz"
+
+#: panels/display/xrandr-capplet.c:497 panels/display/xrandr-capplet.c:1744
+msgid "Mirror Screens"
+msgstr "Ayna Ekranlar"
+
+#: panels/display/xrandr-capplet.c:499
+#, c-format
+msgid "Monitor: %s"
+msgstr "Ekran: %s"
+
+#. TRANSLATORS: a monitor is a device to measure voltage and current
+#: panels/display/xrandr-capplet.c:515 panels/power/kpm-upower.c:573
+#: shell/mainwindow.c:511 shell/shell.ui.h:27
+msgid "Monitor"
+msgid_plural "Monitors"
+msgstr[0] "Ekran"
+msgstr[1] "Ekran"
+
+#: panels/display/xrandr-capplet.c:632
+#, c-format
+msgid "%d x %d"
+msgstr "%d x %d"
+
+#: panels/display/xrandr-capplet.c:1600
+msgid ""
+"Select a monitor to change its properties; drag it to rearrange its "
+"placement."
+msgstr "Özelliklerini değiştirmek için bir monitör seçmelidir; "
+"yerleşimini yeniden düzenlemek için sürükleyin."
+
+#: panels/display/xrandr-capplet.c:2204
+msgid "Could not save the monitor configuration"
+msgstr "Ekran yapılandırması kaydedilemedi"
+
+#: panels/display/xrandr-capplet.c:2226
+msgid "Could not get session bus while applying display configuration"
+msgstr "Ekran yapılandırmasını uygularken oturum veriyolu alınamadı"
+
+#: panels/display/xrandr-capplet.c:2245
+msgid "Could not detect displays"
+msgstr "Görüntü algılanamadı"
+
+#: panels/display/xrandr-capplet.c:2477
+msgid "The monitor configuration has been saved"
+msgstr "Monitör yapılandırması kaydedildi"
+
+#: panels/display/xrandr-capplet.c:2479
+msgid "This configuration will be used the next time someone logs in."
+msgstr "Bu yapılandırma bir dahaki kullanıcı oturum açtığında kullanılacaktır."
+
+#: panels/display/xrandr-capplet.c:2488
+msgid "Could not set the default configuration for monitors"
+msgstr "Monitörler için varsayılan yapılandırma ayarlanamadı."
+
+#: panels/display/xrandr-capplet.c:2557
+msgid "Could not get screen information"
+msgstr "Ekran bilgisi alınamadı"
+
+#: panels/keyboard/mate-keybinding-properties.c:1070
+#: panels/keyboard/mate-keybinding-properties.c:1693
+msgid "Custom Shortcuts"
+msgstr "Kısayolları Özelleştir"
+
+#: panels/keyboard/mate-keybinding-properties.c:1379
+#, c-format
+msgid ""
+"The shortcut \"%s\" is already used for\n"
+"\"%s\",please reset!!!"
+msgstr ""
+"\"%s\" kısayolu zaten kullanılıyor\n"
+"\"%s\" lütfen sıfırlayın !!!"
+
+#: panels/keyboard/mate-keybinding-properties.c:1523
+msgid "Add Shortcuts"
+msgstr "Kısayol Ekle"
+
+#: panels/keyboard/mate-keybinding-properties.c:1915
+msgid "Selection Program"
+msgstr "Program Seçimi"
+
+#: panels/keyboard/mate-keybinding-properties.c:1956
+msgid "Function description"
+msgstr "Fonksiyon açıklaması"
+
+#: panels/keyboard/mate-keybinding-properties.c:1974
+msgid "Hotkey"
+msgstr "Kısayol"
+
+#: panels/keyboard/mate-keyboard-properties-layout-chooser.ui.h:1
+msgid "Select the keyboard layout"
+msgstr "Klavye düzenini seçin"
+
+#: panels/keyboard/mate-keyboard-properties-layout-chooser.ui.h:2
+msgid "_Variants:"
+msgstr "_Hafif:"
+
+#: panels/keyboard/mate-keyboard-properties-layout-chooser.ui.h:3
+msgid "_Country:"
+msgstr "Ülke:"
+
+#: panels/keyboard/mate-keyboard-properties-layout-chooser.ui.h:4
+msgid "By _country"
+msgstr "Ülkeye göre"
+
+#: panels/keyboard/mate-keyboard-properties-layout-chooser.ui.h:5
+msgid "_Language:"
+msgstr "Dil"
+
+#: panels/keyboard/mate-keyboard-properties-layout-chooser.ui.h:6
+msgid "By _language"
+msgstr "Dile göre"
+
+#: panels/keyboard/mate-keyboard-properties-layout-chooser.ui.h:7
+msgid "Preview:"
+msgstr "Önizleme"
+
+#: panels/keyboard/shortcut_dialog.ui.h:1
+msgid "Custom Shortcut"
+msgstr "Kısayolları Özelleştir"
+
+#: panels/keyboard/shortcut_dialog.ui.h:2
+#: panels/session-properties/main-table.ui.h:1
+msgid "Name:"
+msgstr "İsim"
+
+#: panels/keyboard/shortcut_dialog.ui.h:3
+msgid "Command"
+msgstr "Komut"
+
+#: panels/keyboard/shortcut_dialog.ui.h:4
+msgid "Scan"
+msgstr "Tara"
+
+#: panels/network-proxy/network.ui.h:1
+msgid "Network Proxy Details"
+msgstr "Ağ Proxy Ayrıntıları"
+
+#: panels/network-proxy/network.ui.h:2
+msgid "<b>User authentication</b>"
+msgstr "<b>Kullanıcı doğrulama</b>"
+
+#: panels/network-proxy/network.ui.h:3
+msgid "Username:"
+msgstr "Kullanıcı Adı:"
+
+#: panels/network-proxy/network.ui.h:4
+msgid "Password:"
+msgstr "Parola:"
+
+#: panels/power/copy-theme-dialog.c:215
+msgid "Copying files"
+msgstr "Dosyalar kopyalanıyor"
+
+#: panels/power/copy-theme-dialog.c:234
+msgid "From:"
+msgstr "-den:"
+
+#: panels/power/copy-theme-dialog.c:238
+msgid "To:"
+msgstr "e:"
+
+#: panels/power/copy-theme-dialog.c:259
+msgid "Copying themes"
+msgstr "Temalar kopyalanıyor"
+
+#: panels/power/copy-theme-dialog.c:302
+msgid "Invalid screensaver theme"
+msgstr "Geçersiz ekran koruyucu teması"
+
+#: panels/power/copy-theme-dialog.c:305
+#, c-format
+msgid "%s does not appear to be a valid screensaver theme."
+msgstr "%s geçerli bir ekran koruyucu teması olarak görünmüyor."
+
+#: panels/power/copy-theme-dialog.c:485
+#, c-format
+msgid "Copying file: %u of %u"
+msgstr "Dosya kopyalanıyor: %u / %u"
+
+#: panels/power/kpm-common.c:52
+msgid "Unknown time"
+msgstr "Bilinmeyen zaman"
+
+#: panels/power/kpm-common.c:57
+#, c-format
+msgid "%i minutes"
+msgid_plural "%i minutes"
+msgstr[0] "%i dakika"
+msgstr[1] "%i dakika"
+
+#: panels/power/kpm-common.c:68
+#, c-format
+msgid "%i hours"
+msgid_plural "%i hours"
+msgstr[0] "%i saat"
+msgstr[1] "%i saat"
+
+#: panels/power/kpm-common.c:74
+#, c-format
+msgid "%i %s %i %s"
+msgstr ""
+
+#: panels/power/kpm-common.c:75 shell/shell.ui.h:62
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "saat"
+msgstr[1] "saat"
+
+#: panels/power/kpm-common.c:76
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "dakika"
+msgstr[1] "dakika"
+
+#: panels/power/kpm-common.h:41
+msgid "Power Manager"
+msgstr "Güç Yönetimi"
+
+#: panels/power/kpm-common.h:42
+msgid "Power Manager for the MATE desktop"
+msgstr "UKUI masaüstü için güç yönetimi"
+
+#: panels/power/kpm-prefs-core.c:168 panels/power/kpm-prefs-core.c:170
+msgid "Never"
+msgstr "Asla"
+
+#: panels/power/kpm-prefs-core.c:248 panels/power/kpm-prefs-core.c:253
+#: panels/power/kpm-prefs-core.c:256
+msgid "Shutdown"
+msgstr "Kapat"
+
+#: panels/power/kpm-prefs-core.c:260 panels/power/kpm-prefs-core.c:269
+#: panels/power/kpm-prefs-core.c:272
+msgid "Hang"
+msgstr ""
+
+#: panels/power/kpm-prefs-core.c:264 panels/power/kpm-prefs-core.c:277
+#: panels/power/kpm-prefs-core.c:280
+msgid "Sleep"
+msgstr "Uyut"
+
+#: panels/power/kpm-prefs-core.c:285 panels/power/kpm-prefs-core.c:288
+#: panels/power/ukui-screensaver-preferences.c:462
+#: panels/power/ukui-screensaver-preferences.c:614
+#: panels/power/ukui-screensaver-preferences.c:853
+msgid "Blank screen"
+msgstr "Siyah Ekran"
+
+#: panels/power/kpm-prefs-core.c:293 panels/power/kpm-prefs-core.c:296
+msgid "Ask"
+msgstr "Sor"
+
+#: panels/power/kpm-prefs-core.c:301 panels/power/kpm-prefs-core.c:304
+msgid "Do not perform operations"
+msgstr "Işlemleri gerçekleştirmeyin"
+
+#. TRANSLATORS: a phone is charging
+#. TRANSLATORS: device is charging, but we only have a percentage
+#: panels/power/kpm-upower.c:259 panels/power/kpm-upower.c:333
+#, c-format
+msgid "%s charging (%.1f%%)"
+msgstr "%s şarj oluyor (%.1f%%)"
+
+#. TRANSLATORS: The laptop battery is fully charged, and we know a time
+#: panels/power/kpm-upower.c:275
+#, c-format
+msgid ""
+"Battery is fully charged.\n"
+"Provides %s laptop runtime"
+msgstr ""
+"Pil tamamen dolu.\n"
+"%s laptop çalışma zamanı sağlar "
+
+#. TRANSLATORS: the device is fully charged
+#: panels/power/kpm-upower.c:282
+#, c-format
+msgid "%s is fully charged"
+msgstr "%s tam dolu"
+
+#. TRANSLATORS: the device is discharging, and we have a time remaining
+#: panels/power/kpm-upower.c:292
+#, c-format
+msgid "%s %s remaining (%.1f%%)"
+msgstr "%s %s kalan (%.1f%%)"
+
+#. TRANSLATORS: the device is discharging, but we only have a percentage
+#: panels/power/kpm-upower.c:299
+#, c-format
+msgid "%s discharging (%.1f%%)"
+msgstr "%s boşalıyor (%.1f%%)"
+
+#. TRANSLATORS: the device is charging, and we have a time to full and empty
+#: panels/power/kpm-upower.c:315
+#, c-format
+msgid ""
+"%s %s until charged (%.1f%%)\n"
+"Provides %s battery runtime"
+msgstr ""
+"%s %s şarj olana kadar (%.1f%%)\n"
+"%s batarya çalışma zamanı sağlar"
+
+#. TRANSLATORS: device is charging, and we have a time to full and a percentage
+#: panels/power/kpm-upower.c:326
+#, c-format
+msgid "%s %s until charged (%.1f%%)"
+msgstr "%s %s şarj olana kadar(%.1f%%)"
+
+#. TRANSLATORS: this is only shown for laptops with multiple batteries
+#: panels/power/kpm-upower.c:341
+#, c-format
+msgid "%s waiting to discharge (%.1f%%)"
+msgstr "%s deşarjı bekliyor (%.1f%%)"
+
+#. TRANSLATORS: this is only shown for laptops with multiple batteries
+#: panels/power/kpm-upower.c:349
+#, c-format
+msgid "%s waiting to charge (%.1f%%)"
+msgstr "%s şarjı bekliyor (%.1f%%)"
+
+#. TRANSLATORS: the type of data, e.g. Laptop battery
+#: panels/power/kpm-upower.c:410
+msgid "Product:"
+msgstr "Ürün："
+
+#. TRANSLATORS: device is missing
+#. TRANSLATORS: device is charged
+#. TRANSLATORS: device is charging
+#. TRANSLATORS: device is discharging
+#: panels/power/kpm-upower.c:415 panels/power/kpm-upower.c:420
+#: panels/power/kpm-upower.c:425 panels/power/kpm-upower.c:430
+msgid "Status:"
+msgstr "Durum:"
+
+#: panels/power/kpm-upower.c:415
+msgid "Missing"
+msgstr "Kayıp"
+
+#. TRANSLATORS: battery state
+#: panels/power/kpm-upower.c:420 panels/power/kpm-upower.c:730
+msgid "Charged"
+msgstr "Şarjlı"
+
+#. TRANSLATORS: battery state
+#: panels/power/kpm-upower.c:425 panels/power/kpm-upower.c:718
+msgid "Charging"
+msgstr "Şarj Oluyor"
+
+#. TRANSLATORS: battery state
+#: panels/power/kpm-upower.c:430 panels/power/kpm-upower.c:722
+msgid "Discharging"
+msgstr "Boşalıyor"
+
+#. TRANSLATORS: percentage
+#: panels/power/kpm-upower.c:436
+msgid "Percentage charge:"
+msgstr "Yüzde şarj："
+
+#. TRANSLATORS: manufacturer
+#: panels/power/kpm-upower.c:441
+msgid "Vendor:"
+msgstr "Üretici:"
+
+#. TRANSLATORS: how the battery is made, e.g. Lithium Ion
+#: panels/power/kpm-upower.c:447
+msgid "Technology:"
+msgstr "Teknoloji"
+
+#. TRANSLATORS: serial number of the battery
+#: panels/power/kpm-upower.c:452
+msgid "Serial number:"
+msgstr "Seri Numarası"
+
+#. TRANSLATORS: model number of the battery
+#: panels/power/kpm-upower.c:457
+msgid "Model:"
+msgstr "Model"
+
+#. TRANSLATORS: time to fully charged
+#: panels/power/kpm-upower.c:463
+msgid "Charge time:"
+msgstr "Şarj Süresi"
+
+#. TRANSLATORS: time to empty
+#: panels/power/kpm-upower.c:470
+msgid "Discharge time:"
+msgstr "Deşarj Süresi"
+
+#. TRANSLATORS: Excellent, Good, Fair and Poor are all related to battery Capacity
+#: panels/power/kpm-upower.c:479
+msgid "Excellent"
+msgstr "Mükemmel"
+
+#: panels/power/kpm-upower.c:483
+msgid "Good"
+msgstr "İyi"
+
+#: panels/power/kpm-upower.c:487
+msgid "Fair"
+msgstr "Normal"
+
+#: panels/power/kpm-upower.c:491
+msgid "Poor"
+msgstr "Kötü"
+
+#: panels/power/kpm-upower.c:495
+msgid "Capacity:"
+msgstr "Kapasite"
+
+#: panels/power/kpm-upower.c:503 panels/power/kpm-upower.c:533
+msgid "Current charge:"
+msgstr "Şarj Durumu"
+
+#: panels/power/kpm-upower.c:510
+msgid "Last full charge:"
+msgstr "Son tam şarj："
+
+#: panels/power/kpm-upower.c:517 panels/power/kpm-upower.c:539
+msgid "Design charge:"
+msgstr "Şarj Tasarımı"
+
+#: panels/power/kpm-upower.c:523
+msgid "Charge rate:"
+msgstr "Şarj Oranı"
+
+#. TRANSLATORS: system power cord
+#: panels/power/kpm-upower.c:561
+msgid "AC adapter"
+msgid_plural "AC adapters"
+msgstr[0] "AC Adaptörü"
+msgstr[1] "AC Adaptörü"
+
+#. TRANSLATORS: laptop primary battery
+#: panels/power/kpm-upower.c:565
+msgid "Laptop battery"
+msgid_plural "Laptop batteries"
+msgstr[0] "Laptop Pili"
+msgstr[1] "Laptop Pili"
+
+#. TRANSLATORS: battery-backed AC power source
+#: panels/power/kpm-upower.c:569
+msgid "UPS"
+msgid_plural "UPSs"
+msgstr[0] "UPS"
+msgstr[1] "UPS"
+
+#. TRANSLATORS: wireless mice with internal batteries
+#: panels/power/kpm-upower.c:577 shell/mainwindow.c:451 shell/shell.ui.h:22
+msgid "Mouse"
+msgid_plural "Mice"
+msgstr[0] "Fare ve Dokunmatik Panel"
+msgstr[1] "Fare ve Dokunmatik Panel"
+
+#. TRANSLATORS: wireless keyboard with internal battery
+#: panels/power/kpm-upower.c:581 shell/mainwindow.c:440 shell/shell.ui.h:21
+msgid "Keyboard"
+msgid_plural "Keyboards"
+msgstr[0] "Klavye"
+msgstr[1] "Klavye"
+
+#. TRANSLATORS: portable device
+#: panels/power/kpm-upower.c:585
+msgid "PDA"
+msgid_plural "PDAs"
+msgstr[0] "PDA"
+msgstr[1] "PDA"
+
+#. TRANSLATORS: cell phone (mobile...)
+#: panels/power/kpm-upower.c:589
+msgid "Cell phone"
+msgid_plural "Cell phones"
+msgstr[0] "Mobil Telefon"
+msgstr[1] "Mobil Telefon"
+
+#. TRANSLATORS: media player, mp3 etc
+#: panels/power/kpm-upower.c:594
+msgid "Media player"
+msgid_plural "Media players"
+msgstr[0] "Medya Player"
+msgstr[1] "Medya Player"
+
+#. TRANSLATORS: tablet device
+#: panels/power/kpm-upower.c:598
+msgid "Tablet"
+msgid_plural "Tablets"
+msgstr[0] "Tablet"
+msgstr[1] "Tablet"
+
+#. TRANSLATORS: tablet device
+#: panels/power/kpm-upower.c:602
+msgid "Computer"
+msgid_plural "Computers"
+msgstr[0] "Bilgisayar"
+msgstr[1] "Bilgisayar"
+
+#. TRANSLATORS: battery technology
+#: panels/power/kpm-upower.c:673
+msgid "Lithium Ion"
+msgstr "Lityum İyon"
+
+#. TRANSLATORS: battery technology
+#: panels/power/kpm-upower.c:677
+msgid "Lithium Polymer"
+msgstr "Lityum Polimer"
+
+#. TRANSLATORS: battery technology
+#: panels/power/kpm-upower.c:681
+msgid "Lithium Iron Phosphate"
+msgstr "Lityum Demir Fosfat"
+
+#. TRANSLATORS: battery technology
+#: panels/power/kpm-upower.c:685
+msgid "Lead acid"
+msgstr "Kurşun Asit"
+
+#. TRANSLATORS: battery technology
+#: panels/power/kpm-upower.c:689
+msgid "Nickel Cadmium"
+msgstr "Nikel Kadmiyum"
+
+#. TRANSLATORS: battery technology
+#: panels/power/kpm-upower.c:693
+msgid "Nickel metal hydride"
+msgstr "Nikel Metal Hidrit"
+
+#. TRANSLATORS: battery technology
+#: panels/power/kpm-upower.c:697
+msgid "Unknown technology"
+msgstr "Bilinmeyen Teknoloji"
+
+#. TRANSLATORS: battery state
+#: panels/power/kpm-upower.c:726
+msgid "Empty"
+msgstr "Boş"
+
+#. TRANSLATORS: battery state
+#: panels/power/kpm-upower.c:734
+msgid "Waiting to charge"
+msgstr "Şarj için bekliyor"
+
+#. TRANSLATORS: battery state
+#: panels/power/kpm-upower.c:738
+msgid "Waiting to discharge"
+msgstr "Deşarj için bekliyor"
+
+#: panels/power/ukui-fullscreen-preview.ui.h:1
+msgid "Screensaver Preview"
+msgstr "Ekrankoruyucu Önizleme"
+
+#: panels/power/ukui-fullscreen-preview.ui.h:2
+msgid "Screensaver preview"
+msgstr "Ekrankoruyucu önizleme"
+
+#: panels/power/ukui-screensaver-preferences.c:463
+#: panels/power/ukui-screensaver-preferences.c:609
+#: panels/power/ukui-screensaver-preferences.c:851
+msgid "Random"
+msgstr "Rasgele"
+
+#: panels/power/ukui-screensaver-preferences.c:659
+#: panels/power/ukui-screensaver-preferences.c:1618
+#, c-format
+msgid "%d min"
+msgstr "%d dk"
+
+#: panels/power/ukui-screensaver-preferences.c:661
+#: panels/power/ukui-screensaver-preferences.c:1620
+#, c-format
+msgid "%d hour %d min"
+msgstr "%d saat %d dk"
+
+#: panels/power/ukui-screensaver-preferences.c:1676
+msgid "Could not load the main interface"
+msgstr "Ana arayüz yüklenemedi"
+
+#: panels/power/ukui-screensaver-preferences.c:1678
+msgid "Please make sure that the screensaver is properly installed"
+msgstr "Lütfen ekran koruyucunun düzgün bir şekilde yüklendiğinden emin olun"
+
+#: panels/session-properties/gsm-app-dialog.c:145
+msgid "Desktop file(*.desktop)"
+msgstr "Desktop Dosyası(*.desktop)"
+
+#: panels/session-properties/gsm-app-dialog.c:152
+msgid "Select command"
+msgstr "Komut seç"
+
+#: panels/session-properties/gsm-app-dialog.c:257
+msgid "Add programs"
+msgstr "Program Ekle"
+
+#: panels/session-properties/gsm-app-dialog.c:261
+msgid "Boot program property details"
+msgstr "Başlangıç programı özellik ayrıntıları"
+
+#: panels/session-properties/gsm-app-dialog.c:526
+msgid "The startup command cannot be empty"
+msgstr "Başlangıç komutu boş olamaz"
+
+#: panels/session-properties/gsm-app-dialog.c:532
+msgid "The startup command is not valid"
+msgstr "Başlangıç komutu geçerli değil"
+
+#: panels/session-properties/gsm-properties-dialog.c:117
+msgid "enabled"
+msgstr "Aktif edildi"
+
+#: panels/session-properties/gsm-properties-dialog.c:119
+msgid "disabled"
+msgstr "Pasif edildi"
+
+#: panels/session-properties/gsm-properties-dialog.c:445
+#, c-format
+msgid "%d/%d/%d/  %d:%d:%d"
+msgstr "%d/%d/%d/  %d:%d:%d"
+
+#: panels/session-properties/gsm-properties-dialog.c:526
+msgid "property"
+msgstr "özellik"
+
+#: panels/session-properties/gsm-properties-dialog.c:553
+#, c-format
+msgid "%dByte"
+msgstr "%d Bayt"
+
+#: panels/session-properties/main-table.ui.h:2
+msgid "Command:"
+msgstr "Komut"
+
+#: panels/session-properties/main-table.ui.h:3
+msgid "Annotation:"
+msgstr "Not"
+
+#: panels/session-properties/main-table.ui.h:4
+msgid "scan…"
+msgstr "tara..."
+
+#: panels/session-properties/program_properties.ui.h:1
+msgid "program name"
+msgstr "program adı"
+
+#: panels/session-properties/program_properties.ui.h:2
+msgid "File Type:"
+msgstr "Dosya Türü"
+
+#: panels/session-properties/program_properties.ui.h:3
+msgid "File Description:"
+msgstr "Dosya Açıklaması："
+
+#: panels/session-properties/program_properties.ui.h:4
+msgid "Application"
+msgstr "Uygulama"
+
+#: panels/session-properties/program_properties.ui.h:5
+msgid "Program Location:"
+msgstr "Program Yeri:"
+
+#: panels/session-properties/program_properties.ui.h:6
+msgid "Program Size:"
+msgstr "Program Boyutu:"
+
+#: panels/session-properties/program_properties.ui.h:7
+msgid "Access Time:"
+msgstr "Erişim Zamanı："
+
+#: panels/session-properties/program_properties.ui.h:8
+msgid "modification time:"
+msgstr "Değiştirilme Zamanı："
+
+#: panels/user-accounts/change-face.ui.h:1
+msgid "Changge Face"
+msgstr "Kullanıcı Simgesi Değiştir"
+
+#: panels/user-accounts/change-face.ui.h:2
+#: panels/user-accounts/change-name.ui.h:2
+#: panels/user-accounts/change-pwd.ui.h:2
+#: panels/user-accounts/change-type.ui.h:2
+#: panels/user-accounts/delete-user.ui.h:2
+#: panels/user-accounts/user-accounts.c:2023
+#: panels/user-accounts/user-create.ui.h:2
+msgid "Cancel"
+msgstr "İptal"
+
+#: panels/user-accounts/change-face.ui.h:3
+#: panels/user-accounts/change-name.ui.h:3
+#: panels/user-accounts/change-pwd.ui.h:3
+#: panels/user-accounts/change-type.ui.h:3
+#: panels/user-accounts/user-accounts.c:2024
+msgid "Ok"
+msgstr "Tamam"
+
+#: panels/user-accounts/change-face.ui.h:4
+#: panels/user-accounts/change-name.ui.h:4
+#: panels/user-accounts/change-pwd.ui.h:4
+#: panels/user-accounts/change-type.ui.h:5
+#: panels/user-accounts/delete-user.ui.h:5 shell/shell.ui.h:190
+msgid "label"
+msgstr "etiket"
+
+#: panels/user-accounts/change-face.ui.h:5
+#: panels/user-accounts/user-accounts.c:2020
+msgid "Browse more pictures"
+msgstr "Daha fazla resim araştır"
+
+#: panels/user-accounts/change-name.ui.h:1
+msgid "Change Name"
+msgstr "İsmi Değiştir"
+
+#: panels/user-accounts/change-pwd.ui.h:1
+msgid "Change Password"
+msgstr "Parolayı Değiştir"
+
+#: panels/user-accounts/change-type.ui.h:1
+msgid "Change Usertype"
+msgstr "Kullanıcı Türünü Değiştir"
+
+#: panels/user-accounts/change-type.ui.h:4
+msgid "automatic login"
+msgstr "Otomatik Giriş"
+
+#: panels/user-accounts/change-type.ui.h:6
+msgid ""
+"Please make sure that the computer has at least one user is the administrator"
+msgstr ""
+"Lütfen bilgisayarın en az bir kullanıcısının yönetici olduğundan emin olun."
+
+#: panels/user-accounts/change-type.ui.h:7
+#: panels/user-accounts/user-create.ui.h:5
+msgid "Standard User"
+msgstr "Normal Kullanıcı"
+
+#: panels/user-accounts/change-type.ui.h:8
+msgid ""
+"Standard users can use most software, but you can not install software and \n"
+"change settings that affect all users."
+msgstr ""
+"Normal kullanıcılar çoğu yazılımı kullanabilir ancak yazılımı yükleyemez.\n"
+"Ayrıca tüm kullanıcıları etkileyen ayarları değiştiremez."
+
+#: panels/user-accounts/change-type.ui.h:10
+#: panels/user-accounts/user-accounts.c:663
+#: panels/user-accounts/user-accounts.c:909
+#: panels/user-accounts/user-accounts.c:1090
+#: panels/user-accounts/user-accounts.c:1199
+#: panels/user-accounts/user-accounts.c:1200
+#: panels/user-accounts/user-accounts.c:1314
+#: panels/user-accounts/user-accounts.c:1535
+#: panels/user-accounts/user-accounts.c:1646
+#: panels/user-accounts/user-create.ui.h:8
+msgid "Administrators"
+msgstr "Yönetici"
+
+#: panels/user-accounts/change-type.ui.h:11
+#: panels/user-accounts/user-create.ui.h:9
+msgid ""
+"Administrator can make any changes needed on the system, including　\n"
+"installing and upgrading software."
+msgstr ""
+"Yönetici, yazılım yüklemek ve güncellemek de dahil olmak üzere sistem "
+"üzerinde gerekli değişiklikleri yapabilir."
+
+#: panels/user-accounts/delete-user.ui.h:1
+msgid "Delete User"
+msgstr "Kullanıcı Sil"
+
+#: panels/user-accounts/delete-user.ui.h:3
+msgid "Keep File"
+msgstr "Dosyayı Tut"
+
+#: panels/user-accounts/delete-user.ui.h:4
+msgid "Delete File"
+msgstr "Dosyayı Sil"
+
+#: panels/user-accounts/run-passwd.c:221
+msgid "Authentication failure!"
+msgstr "Kimlik doğrulama hatası!"
+
+#: panels/user-accounts/run-passwd.c:298
+msgid "New password length is too short!"
+msgstr "Yeni parola uzunluğu çok kısa!"
+
+#: panels/user-accounts/run-passwd.c:304
+msgid "The new password is too simple!"
+msgstr "Yeni parola çok basit!"
+
+#: panels/user-accounts/run-passwd.c:310
+msgid "The new password is too similar to the old one!"
+msgstr "Yeni parola eskisiyle çok benzer!"
+
+#: panels/user-accounts/run-passwd.c:313
+msgid "The new password must contain numbers or special characters!"
+msgstr "Yeni parolanın sayıları veya özel karakterleri içermesi gerekir!"
+
+#: panels/user-accounts/run-passwd.c:317
+msgid "The new password is the same as the old one!"
+msgstr "Yeni parola eski parola ile aynı!"
+
+#: panels/user-accounts/run-passwd.c:320
+msgid "The new password has been used recently!"
+msgstr "Yeni parola önceden kullanıldı!"
+
+#: panels/user-accounts/run-passwd.c:324
+msgid "Your password has been changed after you verify!"
+msgstr "Doğrulamanızdan sonra parolanız değiştirildi!"
+
+#: panels/user-accounts/user-accounts.c:171
+msgid "User name cannot be empty!"
+msgstr "Kullanıcı adı boş olamaz!"
+
+#: panels/user-accounts/user-accounts.c:187
+msgid "Password length needs to more than 5 digits!"
+msgstr "Parola uzunluğu 5 haneden fazla olmalıdır!"
+
+#: panels/user-accounts/user-accounts.c:194
+#: panels/user-accounts/user-accounts.c:382
+msgid "Password length needs to less than 64 digits!"
+msgstr "Şifre uzunluğu 64 haneden daha az olmalı!"
+
+#: panels/user-accounts/user-accounts.c:200
+#: panels/user-accounts/user-accounts.c:331
+#: panels/user-accounts/user-accounts.c:365
+#: panels/user-accounts/user-accounts.c:375
+#: panels/user-accounts/user-accounts.c:389
+#: panels/user-accounts/user-accounts.c:619
+#: panels/user-accounts/user-accounts.c:704
+#: panels/user-accounts/user-accounts.c:2476
+msgid "Please confirm the new password"
+msgstr "Lütfen yeni parolayı onaylayın"
+
+#: panels/user-accounts/user-accounts.c:202
+#: panels/user-accounts/user-accounts.c:219
+#: panels/user-accounts/user-accounts.c:392
+msgid "enter the password twice inconsistencies!"
+msgstr "İki kez tutarsızlık şifresini girin!"
+
+#: panels/user-accounts/user-accounts.c:234
+#: panels/user-accounts/user-accounts.c:738
+msgid "The first character cannot be underlined!"
+msgstr "İlk karakterlerin altı çizilemez!"
+
+#: panels/user-accounts/user-accounts.c:240
+#: panels/user-accounts/user-accounts.c:744
+msgid "User name can not contain capital letters!"
+msgstr "Kullanıcı adı büyük harf içermemelidir!"
+
+#: panels/user-accounts/user-accounts.c:248
+#: panels/user-accounts/user-accounts.c:752
+msgid "The user name can only be composed of letters, numbers and underline!"
+msgstr "Kullanıcı adı yalnızca harfler, rakamlar ve alt çizgiden oluşabilir!"
+
+#: panels/user-accounts/user-accounts.c:255
+msgid "The first character cannot be numeric!"
+msgstr "İlk karakter sayısal olamaz!"
+
+#: panels/user-accounts/user-accounts.c:271
+#: panels/user-accounts/user-accounts.c:328
+#: panels/user-accounts/user-accounts.c:2468
+msgid "Please enter the username"
+msgstr "Lütfen kullanıcı adını giriniz"
+
+#: panels/user-accounts/user-accounts.c:272
+msgid "Please enter the password "
+msgstr "Lütfen parolayı giriniz"
+
+#: panels/user-accounts/user-accounts.c:283
+msgid "The user name is already in use, please use a different one."
+msgstr "Kullanıcı adı zaten kullanılıyor, lütfen farklı bir tane kullanınız."
+
+#: panels/user-accounts/user-accounts.c:303
+msgid ""
+"The user name corresponds to the group already exists,please use a different "
+"user name"
+msgstr ""
+"Kullanıcı adı, zaten var olan gruba karşılık geliyor, lütfen farklı bir "
+"kullanıcı adı kullanın"
+
+#: panels/user-accounts/user-accounts.c:316
+msgid "username length should not long than 32!"
+msgstr "Kullanıcı adı 32 karakterden fazla olmamalıdır!"
+
+#: panels/user-accounts/user-accounts.c:328
+#: panels/user-accounts/user-accounts.c:924
+msgid "Please enter the new username"
+msgstr "ütfen yeni kullanıcı adını giriniz"
+
+#: panels/user-accounts/user-accounts.c:330
+#: panels/user-accounts/user-accounts.c:2472
+msgid "Please enter the password"
+msgstr "Lütfen parolayı giriniz"
+
+#: panels/user-accounts/user-accounts.c:330
+#: panels/user-accounts/user-accounts.c:611
+#: panels/user-accounts/user-accounts.c:698
+msgid "Please enter new password"
+msgstr "Lütfen yeni parolayı girin"
+
+#: panels/user-accounts/user-accounts.c:331
+#: panels/user-accounts/user-accounts.c:363
+#: panels/user-accounts/user-accounts.c:601
+#: panels/user-accounts/user-accounts.c:687
+msgid "Please enter the current password"
+msgstr "Lütfen geçerli parolayı giriniz"
+
+#: panels/user-accounts/user-accounts.c:331
+#: panels/user-accounts/user-accounts.c:364
+#: panels/user-accounts/user-accounts.c:374
+#: panels/user-accounts/user-accounts.c:388
+msgid "Please enter the new password"
+msgstr "Lütfen yeni parolayı giriniz"
+
+#: panels/user-accounts/user-accounts.c:433
+msgid "Please choose another password."
+msgstr "Lütfen başka bir parola seçin."
+
+#: panels/user-accounts/user-accounts.c:447
+msgid "Please reenter the current password."
+msgstr "Lütfen geçerli parolayı tekrar giriniz."
+
+#: panels/user-accounts/user-accounts.c:454
+msgid "Password can not be modified."
+msgstr "Şifre değiştirilemez."
+
+#: panels/user-accounts/user-accounts.c:494
+msgid "Password length is too short!"
+msgstr "Şifre uzunluğu çok kısa!"
+
+#: panels/user-accounts/user-accounts.c:495
+msgid ""
+"Password length needs to more than 5 digits, and composed of letters, \n"
+" numbers or special characters."
+msgstr ""
+"Şifre uzunluğu 5 basamağı aşmamalı ve harf, rakam veya"
+"özel karakterlerden oluşmalıdır."
+
+#: panels/user-accounts/user-accounts.c:497
+msgid "Password length is too long!"
+msgstr "Şifre uzunluğu çok uzun!"
+
+#: panels/user-accounts/user-accounts.c:498
+msgid ""
+"Password length needs to less than 64 digits, and composed of letters, \n"
+" numbers or special characters."
+msgstr "Şifre uzunluğu 64 haneden az olmalı ve harfler, sayılar veya özel karakterlerden oluşmalıdır."
+
+#: panels/user-accounts/user-accounts.c:500
+msgid "Password error"
+msgstr "Parola hatası"
+
+#: panels/user-accounts/user-accounts.c:501
+msgid "Please make sure you enter the password two times."
+msgstr "Lütfen şifreyi iki kez girdiğinizden emin olun."
+
+#: panels/user-accounts/user-accounts.c:577
+msgid "Password input error, please re-enter!"
+msgstr "Parola girişi hatası, lütfen tekrar girin!"
+
+#: panels/user-accounts/user-accounts.c:665
+#: panels/user-accounts/user-accounts.c:911
+#: panels/user-accounts/user-accounts.c:1092
+#: panels/user-accounts/user-accounts.c:1204
+#: panels/user-accounts/user-accounts.c:1205
+#: panels/user-accounts/user-accounts.c:1319
+#: panels/user-accounts/user-accounts.c:1537
+#: panels/user-accounts/user-accounts.c:1648
+msgid "Standard user"
+msgstr "Normal kullanıcı"
+
+#: panels/user-accounts/user-accounts.c:671
+#: panels/user-accounts/user-accounts.c:917
+#: panels/user-accounts/user-accounts.c:1097
+#: panels/user-accounts/user-accounts.c:1333
+#: panels/user-accounts/user-accounts.c:1568
+#: panels/user-accounts/user-accounts.c:1653
+msgid "Logged(Current User)"
+msgstr "Kayıtlı (Geçerli Kullanıcı)"
+
+#: panels/user-accounts/user-accounts.c:676
+#: panels/user-accounts/user-accounts.c:919
+#: panels/user-accounts/user-accounts.c:1099
+#: panels/user-accounts/user-accounts.c:1335
+#: panels/user-accounts/user-accounts.c:1572
+#: panels/user-accounts/user-accounts.c:1657
+msgid "Logged(Other Users)"
+msgstr "Kayıtlı (Diğer Kullanıcı)"
+
+#: panels/user-accounts/user-accounts.c:680
+#: panels/user-accounts/user-accounts.c:921
+#: panels/user-accounts/user-accounts.c:1101
+#: panels/user-accounts/user-accounts.c:1337
+#: panels/user-accounts/user-accounts.c:1576
+#: panels/user-accounts/user-accounts.c:1661
+msgid "Un-login(Other Users)"
+msgstr "Giriş Yapmamış (Diğer Kullanıcılar)"
+
+#: panels/user-accounts/user-accounts.c:759
+msgid "User name cannot start with number!"
+msgstr "Kullanıcı adı sayı ile başlayamaz!"
+
+#: panels/user-accounts/user-accounts.c:765
+msgid "Username length need to less than 32!"
+msgstr "Kullanıcı adı uzunluğu 32'den az olmalı!"
+
+#: panels/user-accounts/user-accounts.c:777
+msgid "The user name has been used, please replace with another one!"
+msgstr "Kullanıcı adı kullanılıyor, lütfen başka bir isimle değiştirin!"
+
+#: panels/user-accounts/user-accounts.c:808
+#: panels/user-accounts/user-accounts.c:845
+msgid "Modify username failed!"
+msgstr "Kullanıcı adını değiştirme başarısız oldu!"
+
+#: panels/user-accounts/user-accounts.c:853
+msgid "the user has logged in, please log out and modify!"
+msgstr "Kullanıcı giriş yapmış, lütfen çıkış yapın ve sonra değişiklik yapın!"
+
+#: panels/user-accounts/user-accounts.c:1033
+msgid "auto login"
+msgstr "Oto Giriş"
+
+#: panels/user-accounts/user-accounts.c:1036
+msgid "_Cancel"
+msgstr "_İptal"
+
+#: panels/user-accounts/user-accounts.c:1038
+msgid "_OK"
+msgstr "_Tamam"
+
+#: panels/user-accounts/user-accounts.c:1041
+msgid ""
+"Already have other users set to automatically log in,\n"
+" click OK will overwrite the existing settings!"
+msgstr ""
+"Zaten diğer kullanıcılar otomatik olarak oturum açmak için ayarlanmış,"
+" Tamam'ı tıklattığınızda mevcut ayarların üzerine yazılır!"
+
+#: panels/user-accounts/user-accounts.c:1448
+msgid "The user can not be deleted!"
+msgstr "Kullanıcı silinemez!"
+
+#: panels/user-accounts/user-accounts.c:1456
+msgid ""
+"The user has logged in, please perform the delete operation after logging "
+"out!"
+msgstr "Kullanıcı giriş yaptı, lütfen çıkış yaptıktan sonra silme işlemini gerçekleştir!"
+
+#: panels/user-accounts/user-accounts.c:1481
+#, c-format
+msgid ""
+"<span weight='bold' font_desc='11'>do you confirm to delete all the files of "
+"%s?</span>"
+msgstr "<span weight='bold' font_desc='11'> %s dosyaların tümünü silmeyi onaylıyor mu sunuz?</span>"
+
+#: panels/user-accounts/user-accounts.c:1487
+#, c-format
+msgid ""
+"if you want to delete the %s user, belonging to the user's \n"
+"desktop, documents, favorites, music, pictures and video \n"
+"folder will be deleted!"
+msgstr "Kullanıcının masaüstüne ait olan %s kullanıcısını silmek isterseniz, belgeler, sık kullanılanlar, müzik, resim ve video klasörü silinir!"
+
+#: panels/user-accounts/user-accounts.c:1540
+msgid "Rename"
+msgstr "Yeniden Adlandır"
+
+#: panels/user-accounts/user-accounts.c:1546
+msgid "Change PWD"
+msgstr "Şifre Değiştir"
+
+#: panels/user-accounts/user-accounts.c:1551
+msgid "Change Face"
+msgstr "Kullanıcı Simgesi Değiştir"
+
+#: panels/user-accounts/user-accounts.c:1556
+msgid "Change Type"
+msgstr "Tür Değiştir"
+
+#: panels/user-accounts/user-accounts.c:1561
+msgid "Delete"
+msgstr "Sil"
+
+#: panels/user-accounts/user-accounts.c:2165
+msgid "Browse more pictures..."
+msgstr "Daha fazla resim"
+
+#: panels/user-accounts/user-create.ui.h:1
+msgid "Create Account"
+msgstr "Hesap Oluştur"
+
+#: panels/user-accounts/user-create.ui.h:3
+msgid "Automatic Logon"
+msgstr "Otomatik Giriş"
+
+#: panels/user-accounts/user-create.ui.h:4
+msgid "select picture"
+msgstr "Resim Seçin"
+
+#: panels/user-accounts/user-create.ui.h:6
+msgid ""
+"Standard users can use most software, but you can not install software\n"
+"and change settings that affect all users."
+msgstr ""
+"Standart kullanıcılar çoğu yazılımı kullanabilir ancak yazılımı yükleyemez.\n"
+"Ayrıca tüm kullanıcıları etkileyen ayarları değiştiremezsiniz."
+
+#: panels/volume-control/gvc-balance-bar.c:116
+msgid "Rear"
+msgstr "Arka"
+
+#: panels/volume-control/gvc-balance-bar.c:117
+msgid "Front"
+msgstr "Ön"
+
+#: panels/volume-control/gvc-balance-bar.c:120
+msgid "Minimum"
+msgstr "En az"
+
+#: panels/volume-control/gvc-balance-bar.c:121
+msgid "Maximum"
+msgstr "En fazla"
+
+#: panels/volume-control/gvc-balance-bar.c:299
+msgid "_Balance(_B):"
+msgstr "_Balans"
+
+#: panels/volume-control/gvc-balance-bar.c:302
+msgid "_Fade(_F):"
+msgstr "_Soldurma"
+
+#: panels/volume-control/gvc-balance-bar.c:305
+msgid "_Subwoofer(_S):"
+msgstr ""
+
+#: panels/volume-control/gvc-channel-bar.c:608
+msgid "Unamplified"
+msgstr "Yükseltilmemiş"
+
+#: panels/volume-control/gvc-channel-bar.c:870
+msgid "Mute"
+msgstr "Sessiz"
+
+#: panels/volume-control/gvc-combo-box.c:169
+msgid "_Profile(_P):"
+msgstr "_Profil"
+
+#: panels/volume-control/gvc-mixer-control.c:1004
+msgid "Disabled"
+msgstr "Kapalı"
+
+#: panels/volume-control/gvc-mixer-control.c:1011
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u Çıkış"
+msgstr[1] "%u Çıkış"
+
+#: panels/volume-control/gvc-mixer-control.c:1021
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u Giriş"
+msgstr[1] "%u Giriş"
+
+#: panels/volume-control/gvc-mixer-dialog.c:314
+msgid "Co_nnector"
+msgstr "Bağlantı"
+
+#: panels/volume-control/gvc-mixer-dialog.c:522
+msgid "Peak detect"
+msgstr "Tepe algılama"
+
+#: panels/volume-control/gvc-mixer-dialog.c:609
+msgid "Co_nnector:"
+msgstr "Bağlayıcı"
+
+#: panels/volume-control/gvc-mixer-dialog.c:1502
+msgid "Device"
+msgstr "Aygıt"
+
+#: panels/volume-control/gvc-mixer-dialog.c:1550
+#, c-format
+msgid "Speaker Testing for %s"
+msgstr "%s için Hoparlör Testi"
+
+#: panels/volume-control/gvc-mixer-dialog.c:1610
+msgid "_Profiles:"
+msgstr "_Profil:"
+
+#: panels/volume-control/gvc-mixer-dialog.c:1611
+msgid "Test Speakers"
+msgstr "Sesi Kontrol Et"
+
+#: panels/volume-control/gvc-mixer-dialog.c:1710
+#: panels/volume-control/gvc-sound-theme-chooser.c:890
+msgid "Name"
+msgstr "İsim"
+
+#: panels/volume-control/gvc-mixer-dialog.c:1837
+msgid "Sound Output Volume"
+msgstr "Ses Çıkış Hacmi"
+
+#: panels/volume-control/gvc-mixer-dialog.c:1868
+msgid "Applications"
+msgstr "Uygulamalar"
+
+#: panels/volume-control/gvc-mixer-dialog.c:1874
+msgid "No application is currently playing or recording audio."
+msgstr "Şu anda herhangi bir uygulama çalınmıyor veya ses kaydı yapılmıyor."
+
+#: panels/volume-control/gvc-mixer-dialog.c:1882
+msgid "Sound Effects"
+msgstr "Ses Efektleri"
+
+#: panels/volume-control/gvc-mixer-dialog.c:1890
+msgid "_Alert volume: "
+msgstr "_Uyarı sesi:"
+
+#: panels/volume-control/gvc-mixer-dialog.c:1911
+msgid "Input"
+msgstr "Giriş"
+
+#: panels/volume-control/gvc-mixer-dialog.c:1919
+msgid "_Input volume: "
+msgstr "_Giriş Sesi:"
+
+#: panels/volume-control/gvc-mixer-dialog.c:1942
+msgid "Input level:"
+msgstr "_Giriş Seviyesi:"
+
+#: panels/volume-control/gvc-mixer-dialog.c:1971
+msgid "C_hoose a device for sound input:"
+msgstr "Ses girişi için bir cihaz seçin:"
+
+#: panels/volume-control/gvc-mixer-dialog.c:2001
+msgid "Output"
+msgstr "Çıkış"
+
+#: panels/volume-control/gvc-mixer-dialog.c:2007
+msgid "C_hoose a device for sound output:"
+msgstr "Ses çıkışı için bir cihaz seçin:"
+
+#: panels/volume-control/gvc-mixer-dialog.c:2034
+#: panels/volume-control/gvc-mixer-dialog.c:2078
+msgid "Settings for the selected device:"
+msgstr "Seçilen cihazın ayarları:"
+
+#: panels/volume-control/gvc-mixer-dialog.c:2045
+msgid "Hardware"
+msgstr "Donanım"
+
+#: panels/volume-control/gvc-mixer-dialog.c:2051
+msgid "C_hoose a device to configure:"
+msgstr "Yapılandırılacak bir cihaz seçin:"
+
+#: panels/volume-control/gvc-mixer-dialog.c:2212
+#: panels/volume-control/gvc-sound-theme-chooser.c:755
+#: panels/volume-control/gvc-sound-theme-chooser.c:767
+#: panels/volume-control/gvc-sound-theme-chooser.c:779
+msgid "Sound Preferences"
+msgstr "Ses Tercihleri"
+
+#: panels/volume-control/gvc-sound-theme-chooser.c:226
+#: panels/volume-control/gvc-sound-theme-chooser.c:866
+msgid "Default"
+msgstr "Varsayılan"
+
+#: panels/volume-control/gvc-sound-theme-chooser.c:338
+msgid "No sounds"
+msgstr "Ses Yok"
+
+#: panels/volume-control/gvc-sound-theme-chooser.c:460
+msgid "Built-in"
+msgstr "Built-in"
+
+#: panels/volume-control/gvc-sound-theme-chooser.c:645
+#: panels/volume-control/sound-theme-file-utils.c:291
+msgid "Custom"
+msgstr "Özel"
+
+#: panels/volume-control/gvc-sound-theme-chooser.c:758
+#: panels/volume-control/gvc-sound-theme-chooser.c:769
+#: panels/volume-control/gvc-sound-theme-chooser.c:781
+msgid "Testing event sound"
+msgstr "Etkinlik sesini test et"
+
+#: panels/volume-control/gvc-sound-theme-chooser.c:867
+msgid "From theme"
+msgstr "Temadan al"
+
+#: panels/volume-control/gvc-sound-theme-chooser.c:897
+msgid "Type"
+msgstr "Tür"
+
+#: panels/volume-control/gvc-sound-theme-chooser.c:1091
+msgid "Sound _theme:"
+msgstr "Ses Teması"
+
+#: panels/volume-control/gvc-sound-theme-chooser.c:1104
+msgid "C_hoose an alert sound:"
+msgstr "Bir uyarı sesi seçin"
+
+#: panels/volume-control/gvc-sound-theme-chooser.c:1138
+msgid "Enable _window and button sounds"
+msgstr "Pencere ve düğme seslerini etkinleştir"
+
+#: panels/volume-control/gvc-speaker-test.c:219
+msgid "Stop"
+msgstr "Dur"
+
+#: panels/volume-control/gvc-speaker-test.c:219
+#: panels/volume-control/gvc-speaker-test.c:331
+msgid "Test"
+msgstr "Test"
+
+#: panels/volume-control/gvc-speaker-test.c:227
+msgid "Subwoofer"
+msgstr ""
+
+#: shell/mainwindow.c:112
+msgid "-Kylin Control Center"
+msgstr "-Ukui Denetim Merkezi"
+
+#: shell/mainwindow.c:218 shell/shell.ui.h:11
+msgid "Control Center"
+msgstr "Denetim Merkezi"
+
+#: shell/mainwindow.c:381
+msgid "Time and Dates"
+msgstr "Tarih ve Zaman"
+
+#: shell/mainwindow.c:384
+msgid " Change the time and date of this computer "
+msgstr "Bu bilgisayarın saat ve tarihini değiştir"
+
+#: shell/mainwindow.c:392 shell/shell.ui.h:13
+msgid "User Account"
+msgstr "Kullanıcı Hesabı"
+
+#: shell/mainwindow.c:395
+msgid ""
+" Change the computer user account \n"
+" settings and password"
+msgstr ""
+" Bilgisayar kullanıcı hesabı ayarlarını\n"
+"ve parolasını değiştir."
+
+#: shell/mainwindow.c:403 shell/shell.ui.h:14
+msgid "Personalization"
+msgstr "Kişiselleştirme"
+
+#: shell/mainwindow.c:406
+msgid ""
+" Change the computer desktop background \n"
+" and related theme"
+msgstr ""
+" Bilgisayarın masaüstü arka planını \n"
+"ve ilgili temayı değiştirin."
+
+#: shell/mainwindow.c:414
+msgid "Default Aplication"
+msgstr "Geçerli Uygulamalar"
+
+#: shell/mainwindow.c:417
+msgid " Change the default application on this computer "
+msgstr "u bilgisayardaki varsayılan uygulamayı değiştir"
+
+#: shell/mainwindow.c:432
+msgid " Change the network  on this computer "
+msgstr "Bu bilgisayardaki ağı değiştir"
+
+#: shell/mainwindow.c:443
+msgid " Change the keyboard settings on this computer "
+msgstr "Bu bilgisayardaki klavye ayarlarını değiştir "
+
+#: shell/mainwindow.c:454
+msgid " Change the mouse settings on this computer  "
+msgstr "Bu bilgisayardaki fare ayarlarını değiştir"
+
+#: shell/mainwindow.c:468
+msgid " Configure the connection to the computer printer "
+msgstr "Bilgisayara olan yazıcıyla bağlantıyı yapılandırın"
+
+#: shell/mainwindow.c:477 shell/shell.ui.h:24
+msgid "Sound"
+msgstr "Ses"
+
+#: shell/mainwindow.c:480
+msgid " Change the sound settings on this computer "
+msgstr "Bu bilgisayardaki ses ayarlarını değiştir"
+
+#: shell/mainwindow.c:489
+msgid "Network Agent"
+msgstr "Ağ Aracı"
+
+#: shell/mainwindow.c:492
+msgid " Change the network agent on this computer "
+msgstr "Bu bilgisayardaki ağı aracını değiştir"
+
+#: shell/mainwindow.c:500 shell/shell.ui.h:17
+msgid "Autostart"
+msgstr "Otomatik Başlat"
+
+#: shell/mainwindow.c:503
+msgid " Change the autostart program on this computer "
+msgstr "Bu bilgisayarda otomatik başlayan programları değiştirin"
+
+#: shell/mainwindow.c:513
+msgid " Change the Monitor settings on this computer "
+msgstr "Bu bilgisayardaki Monitör ayarlarını değiştir"
+
+#: shell/mainwindow.c:524
+msgid "Power Management"
+msgstr "Güç Yönetimi"
+
+#: shell/mainwindow.c:527
+msgid " Change the power management settings on this computer "
+msgstr "Bu bilgisayardaki güç yönetimi ayarlarını değiştir"
+
+#: shell/mainwindow.c:535
+msgid "System Check"
+msgstr "Sistemi Kontrol Et"
+
+#: shell/mainwindow.c:539
+msgid "check the system detection information on this computer "
+msgstr "Bu bilgisayarda sistem algılama bilgilerini kontrol et"
+
+#: shell/shell.ui.h:5
+msgid "Tile"
+msgstr "Döşeli"
+
+#: shell/shell.ui.h:6
+msgid "Zoom"
+msgstr "Yakınlaştır"
+
+#: shell/shell.ui.h:7
+msgid "Center"
+msgstr "Ortalanmış"
+
+#: shell/shell.ui.h:8
+msgid "Scale"
+msgstr "Ölçekli"
+
+#: shell/shell.ui.h:9
+msgid "Stretch"
+msgstr "Uzatılmış"
+
+#: shell/shell.ui.h:10
+msgid "Span"
+msgstr "Yayılmış"
+
+#: shell/shell.ui.h:12
+msgid "Time Dates"
+msgstr "Tarih ve Zaman"
+
+#: shell/shell.ui.h:15
+msgid ""
+"Default \n"
+"Aplication"
+msgstr ""
+"Varsayılan \n"
+"Uygulamalar"
+
+#: shell/shell.ui.h:18
+msgid "System Configuration"
+msgstr "Sistem Ayarları"
+
+#: shell/shell.ui.h:19
+msgid ""
+"Network \n"
+"Connections"
+msgstr "Ağ Bağlantıları"
+
+#: shell/shell.ui.h:23
+msgid "Printer"
+msgstr "Yazıcı"
+
+#: shell/shell.ui.h:25
+msgid ""
+"Network \n"
+"Agent"
+msgstr "Ağ Ayarları"
+
+#: shell/shell.ui.h:28
+msgid ""
+"Power \n"
+"Management"
+msgstr "Güç Yönetimi"
+
+#: shell/shell.ui.h:30
+msgid "Hardware Configure"
+msgstr "Donanım Ayarları"
+
+#: shell/shell.ui.h:31
+msgid "Home"
+msgstr "Giriş"
+
+#: shell/shell.ui.h:32
+msgid "Personalization_"
+msgstr "Görünüm"
+
+#: shell/shell.ui.h:33
+msgid "Autostart_"
+msgstr "Otomatik Başlat"
+
+#: shell/shell.ui.h:34
+msgid "Default APP"
+msgstr ""
+"Tercih Edilen \n"
+"Uygulamalar"
+
+#: shell/shell.ui.h:35
+msgid "Time Dates_"
+msgstr "Tarih ve Saat"
+
+#: shell/shell.ui.h:36
+msgid "User Account_"
+msgstr "Kullanıcı Hesapları"
+
+#: shell/shell.ui.h:38
+msgid "Network Connection_"
+msgstr "Ağ Bağlantıları"
+
+#: shell/shell.ui.h:39
+msgid "Keyboard_"
+msgstr "Klavye"
+
+#: shell/shell.ui.h:40
+msgid "Mouse_"
+msgstr ""
+"Fare ve \n"
+"Dokunmatik Panel"
+
+#: shell/shell.ui.h:42
+msgid "Printer_"
+msgstr "Yazıcı"
+
+#: shell/shell.ui.h:43
+msgid "Sound_"
+msgstr "Ses"
+
+#: shell/shell.ui.h:44
+msgid "Network Agent_"
+msgstr "Ağ Ayarları"
+
+#: shell/shell.ui.h:45
+msgid "Monitor_"
+msgstr "Ekran"
+
+#: shell/shell.ui.h:46
+msgid "Power Manage"
+msgstr "Güç Yönetimi"
+
+#: shell/shell.ui.h:47
+msgid "Tzone:"
+msgstr "Tzone"
+
+#: shell/shell.ui.h:48
+msgid "date:"
+msgstr "Tarih"
+
+#: shell/shell.ui.h:49
+msgid "time:"
+msgstr "Saat"
+
+#: shell/shell.ui.h:50
+msgid "    Jan"
+msgstr "    Oca"
+
+#: shell/shell.ui.h:51
+msgid "   Feb"
+msgstr "   Şub"
+
+#: shell/shell.ui.h:52
+msgid "    Mar"
+msgstr "    Mar"
+
+#: shell/shell.ui.h:53
+msgid "    Apr"
+msgstr "    Nis"
+
+#: shell/shell.ui.h:54
+msgid "    May"
+msgstr "    May"
+
+#: shell/shell.ui.h:55
+msgid "    Jun"
+msgstr "    Haz"
+
+#: shell/shell.ui.h:56
+msgid "    Jul"
+msgstr "    Tem"
+
+#: shell/shell.ui.h:57
+msgid "    Aug"
+msgstr "    Ağu"
+
+#: shell/shell.ui.h:58
+msgid "    Sep"
+msgstr "    Eyl"
+
+#: shell/shell.ui.h:59
+msgid "    Oct"
+msgstr "    Eki"
+
+#: shell/shell.ui.h:60
+msgid "    Nov"
+msgstr "    Kas"
+
+#: shell/shell.ui.h:61
+msgid "    Dec"
+msgstr "    Ara"
+
+#: shell/shell.ui.h:63
+msgid "min"
+msgstr "dk"
+
+#: shell/shell.ui.h:64
+msgid "sec"
+msgstr "sn"
+
+#: shell/shell.ui.h:65
+msgid "With the network time synchronization"
+msgstr "Zaman bilgisini ağ üzerinden al"
+
+#: shell/shell.ui.h:66
+msgid "because the ntp is installed,please use ntpdate."
+msgstr "ntp kurulduğundan, lütfen ntpdate'i kullanın."
+
+#: shell/shell.ui.h:67
+msgid "Current Account"
+msgstr "Geçerli Hesap"
+
+#: shell/shell.ui.h:68
+msgid "Other Accounts"
+msgstr "Diğer Hesaplar"
+
+#: shell/shell.ui.h:69
+msgid "Create a new account"
+msgstr "Yeni Hesap Oluştur"
+
+#: shell/shell.ui.h:70
+msgid "Add"
+msgstr "Ekle"
+
+#: shell/shell.ui.h:71
+msgid "delete"
+msgstr "Sil"
+
+#: shell/shell.ui.h:72
+msgid "Style:"
+msgstr "Stil"
+
+#: shell/shell.ui.h:73
+msgid "wallpaper"
+msgstr "Arkaplan"
+
+#: shell/shell.ui.h:74
+msgid "Select the one you love color as the theme color"
+msgstr "Tema rengi olarak sevdiğiniz birini seçin"
+
+#: shell/shell.ui.h:75
+msgid "Theme color"
+msgstr "Tema Rengi"
+
+#: shell/shell.ui.h:76
+msgid "Font choice:"
+msgstr "Font Seçiniz:"
+
+#: shell/shell.ui.h:77
+msgid "Font size :"
+msgstr "Font Boyutu:"
+
+#: shell/shell.ui.h:79
+#, no-c-format
+msgid "small(S) --100%(default)"
+msgstr "Küçük --100%(varsayılan)"
+
+#: shell/shell.ui.h:81
+#, no-c-format
+msgid "medium(M)--125%"
+msgstr "Orta --125%"
+
+#: shell/shell.ui.h:83
+#, no-c-format
+msgid "large (L) --150%"
+msgstr "Büyük --150%"
+
+#: shell/shell.ui.h:84
+msgid "Please select the clearest sample text"
+msgstr "Lütfen en net örnek metni seçin"
+
+#: shell/shell.ui.h:85
+msgid "Restore Defaults"
+msgstr "Varsayılanları Geri Yükle"
+
+#: shell/shell.ui.h:86
+msgid "Font"
+msgstr "Font"
+
+#: shell/shell.ui.h:87
+msgid "Internet"
+msgstr "İnternet"
+
+#: shell/shell.ui.h:88
+msgid "        Web Browser:"
+msgstr "        Web Tarayıcı:"
+
+#: shell/shell.ui.h:89
+msgid "          Mail Reader:"
+msgstr "          E-Posta Okuyucu:"
+
+#: shell/shell.ui.h:90
+msgid "Multimedia"
+msgstr "Multimedya"
+
+#: shell/shell.ui.h:91
+msgid "       Image Viewer:"
+msgstr "       Resim Görüntüleyici:"
+
+#: shell/shell.ui.h:92
+msgid "        Audio Player:"
+msgstr "        Ses Oynatıcı:"
+
+#: shell/shell.ui.h:93
+msgid "        Video Player:"
+msgstr "        Video Oynatıcı:"
+
+#: shell/shell.ui.h:94
+msgid "System"
+msgstr "Sistem"
+
+#: shell/shell.ui.h:95
+msgid "           Text Editor:"
+msgstr "           Metin Düzenleyici:"
+
+#: shell/shell.ui.h:96
+msgid "       File Manager:"
+msgstr "       Dosya Yöneticisi:"
+
+#: shell/shell.ui.h:97
+msgid "Network Connections"
+msgstr "Ağ Bağlantıları"
+
+#: shell/shell.ui.h:98
+msgid "Repeat Keys"
+msgstr "Tuşları Tekrarla"
+
+#: shell/shell.ui.h:99
+msgid "Key presses _repeat when key is held down"
+msgstr "Tuşa basılı tutulduğunda tuşa tekrar basın"
+
+#: shell/shell.ui.h:100
+msgid "_Delay:"
+msgstr "_Gecikme"
+
+#: shell/shell.ui.h:101
+msgid "_Speed:"
+msgstr "_Hız"
+
+#: shell/shell.ui.h:102
+msgid "Short"
+msgstr "Kısa"
+
+#: shell/shell.ui.h:103
+msgid "Slow"
+msgstr "Yavaş"
+
+#: shell/shell.ui.h:104
+msgid "Repeat keys speed"
+msgstr "Tuşları tekrarlama hızı"
+
+#: shell/shell.ui.h:105
+msgid "Long"
+msgstr "Uzun"
+
+#: shell/shell.ui.h:106
+msgid "Fast"
+msgstr "Hızlı"
+
+#: shell/shell.ui.h:107
+msgid "To test the repetition rate of the input character:"
+msgstr "Girilen karakterin yineleme oranını test etmek için"
+
+#: shell/shell.ui.h:108
+msgid "Cursor Blinking"
+msgstr "İmleç Yanıp Sönmesi"
+
+#: shell/shell.ui.h:109
+msgid "Cursor _blinks in text fields"
+msgstr "İmleç metin alanlarında yanıp söner"
+
+#: shell/shell.ui.h:110
+msgid "S_peed:"
+msgstr "Hız:"
+
+#: shell/shell.ui.h:111
+msgid "Cursor blinks speed"
+msgstr "İmleç Yanma Hızı"
+
+#: shell/shell.ui.h:112
+msgid "General"
+msgstr "Genel"
+
+#: shell/shell.ui.h:113
+msgid ""
+"Please add the language you will use to the list. And the first one in the "
+"list is the most\n"
+"commonly used language."
+msgstr ""
+"Lütfen kullanacağınız dili listeye ekleyin. \n"
+"Listedeki ilk dil en sık kullanılan dildir."
+
+#: shell/shell.ui.h:115
+msgid "_Show..."
+msgstr "_Göster..."
+
+#: shell/shell.ui.h:116
+msgid "List of keyboard layouts selected for usage"
+msgstr "Kullanım için seçilen klavye düzenleri listesi"
+
+#: shell/shell.ui.h:117
+msgid "_Separate layout for each window"
+msgstr "Her pencere için ayrı düzen"
+
+#: shell/shell.ui.h:118
+msgid "New windows u_se active window's layout"
+msgstr "Yeni pencere kullanıcıları aktif pencere düzeni"
+
+#: shell/shell.ui.h:119
+msgid "Reset to De_faults"
+msgstr "Varsayılanlara Dön"
+
+#: shell/shell.ui.h:120
+msgid "Layouts"
+msgstr "Düzenler"
+
+#: shell/shell.ui.h:121
+msgid ""
+"\"To edit a shortcut key, click on the corresponding row and type a new key "
+"\"\n"
+"\"combination, or press backspace to clear.\""
+msgstr ""
+"\"Bir kısayol tuşunu düzenlemek için, ilgili satırı tıklayın ve yeni bir tuş kombinasyonu yazın\"\n"
+"\".veya temizlemek için geri tuşuna basın.\""
+
+#: shell/shell.ui.h:123
+msgid "Shortcut"
+msgstr "Kısayol"
+
+#: shell/shell.ui.h:124
+msgid "_Right-handed"
+msgstr "Sağ eli kullan"
+
+#: shell/shell.ui.h:125
+msgid "_Left-handed"
+msgstr "Sol eli kullan"
+
+#: shell/shell.ui.h:126
+msgid "Sh_ow position of pointer when the Control key is pressed"
+msgstr "Kontrol tuşu basılı olduğunda işaretçiyi konumunu göster"
+
+#: shell/shell.ui.h:127
+msgid "_Sensitivity:"
+msgstr "_Duyarlılık"
+
+#: shell/shell.ui.h:128
+msgid "Low"
+msgstr "Düşük"
+
+#: shell/shell.ui.h:129
+msgid "High"
+msgstr "Yüksek"
+
+#: shell/shell.ui.h:130
+msgid "Double-click the right bulb to test your settings"
+msgstr "Ayarlarınızı test etmek için sağdaki resmi çift tıklayın"
+
+#: shell/shell.ui.h:131
+msgid "Timeout"
+msgstr "Zaman Aşımı"
+
+#: shell/shell.ui.h:132
+msgid "Pointer moving speed"
+msgstr "İşaretçi Hareket Hızı"
+
+#: shell/shell.ui.h:133
+msgid "Locate Pointer"
+msgstr "İşaretçiyi Bulun"
+
+#: shell/shell.ui.h:134
+msgid "Mouse Keys"
+msgstr "Fare Tuşları"
+
+#: shell/shell.ui.h:135
+msgid "Double-Click Speed"
+msgstr "Çift Tıklama Hızı"
+
+#: shell/shell.ui.h:136
+msgid "Disable _touchpad while typing"
+msgstr "Yazarken dokunmatik paneli devre dışı bırak"
+
+#: shell/shell.ui.h:137
+msgid "Enable _mouse clicks with touchpad"
+msgstr "Dokunmatik panelde fare tıklamalarını etkinleştir"
+
+#: shell/shell.ui.h:138
+msgid "Scrolling"
+msgstr "Kaydırma"
+
+#: shell/shell.ui.h:139
+msgid "_Disabled"
+msgstr "_Kapalı"
+
+#: shell/shell.ui.h:140
+msgid "Vertical _edge scrolling"
+msgstr "Dikey kenar kaydırma"
+
+#: shell/shell.ui.h:141
+msgid "_Horizontal edge scrolling"
+msgstr "Yatay kenar kaydırma"
+
+#: shell/shell.ui.h:142
+msgid "_Vertical two-finger scrolling"
+msgstr "Dikey iki parmak kaydırma"
+
+#: shell/shell.ui.h:143
+msgid "Horizontal two-_finger scrolling"
+msgstr "Yatay iki parmak kaydırma"
+
+#: shell/shell.ui.h:144
+msgid "Enabled touchpad"
+msgstr "Dokunmatik Panel Etkin"
+
+#: shell/shell.ui.h:145
+msgid "Touchpad"
+msgstr "Dokunmatik Panel"
+
+#: shell/shell.ui.h:146
+msgid "<b>Di_rect internet connection</b>"
+msgstr "<b>Doğrudan internet bağlantısı</b>"
+
+#: shell/shell.ui.h:147
+msgid "<b>_Manual proxy configuration</b>"
+msgstr "<b>El ile proxy yapılandırması</b>"
+
+#: shell/shell.ui.h:148
+msgid "H_TTP proxy:"
+msgstr "H_TTP proxy:"
+
+#: shell/shell.ui.h:149
+msgid "_Secure HTTP proxy:"
+msgstr "Güvenli HTTP proxy:"
+
+#: shell/shell.ui.h:150
+msgid "_FTP proxy:"
+msgstr "_FTP proxy:"
+
+#: shell/shell.ui.h:151
+msgid "S_ocks host:"
+msgstr "S_ocks host:"
+
+#: shell/shell.ui.h:152
+msgid "Port:"
+msgstr "Port:"
+
+#: shell/shell.ui.h:153
+msgid "_Details"
+msgstr "_Ayrıntılar"
+
+#: shell/shell.ui.h:154
+msgid "<b>_Automatic proxy configuration</b>"
+msgstr "<b>Otomatik proxy yapılandırması</b>"
+
+#: shell/shell.ui.h:155
+msgid "Autoconfiguration _URL:"
+msgstr "Otomatik Yapılandırma URL'si"
+
+#: shell/shell.ui.h:156
+msgid "Proxy Configuration"
+msgstr "Proxy Yapılandırması"
+
+#: shell/shell.ui.h:157
+msgid "Ignore Host List"
+msgstr "Host Listesini Yoksay"
+
+#: shell/shell.ui.h:158
+msgid "Ignored Hosts"
+msgstr "Yoksayılan Hostlar"
+
+#: shell/shell.ui.h:159
+msgid "Additional startup _programs:"
+msgstr "Ekli başlangıç programları:"
+
+#: shell/shell.ui.h:160
+msgid "name"
+msgstr "İsim"
+
+#: shell/shell.ui.h:161
+msgid "status"
+msgstr "Durum"
+
+#: shell/shell.ui.h:162
+msgid "Startup Programs"
+msgstr "Başlangıç Programları"
+
+#: shell/shell.ui.h:163
+msgid "Change display appearance"
+msgstr "Ekran görünümünü değiştir"
+
+#: shell/shell.ui.h:164
+msgid "Monitor:"
+msgstr "Ekran"
+
+#: shell/shell.ui.h:165
+msgid "Resolution:"
+msgstr "Çözünürlük"
+
+#: shell/shell.ui.h:166
+msgid "Direction:"
+msgstr "Yön:"
+
+#: shell/shell.ui.h:167
+msgid "Save"
+msgstr "Kaydet"
+
+#: shell/shell.ui.h:168
+msgid "Same image in all monitors"
+msgstr "Tüm ekranlarda aynı resim"
+
+#: shell/shell.ui.h:169
+msgid "Set as primary"
+msgstr "Birincil olarak ayarla"
+
+#: shell/shell.ui.h:170
+msgid "Open Monitor"
+msgstr "Ekranı Aç"
+
+#: shell/shell.ui.h:171
+msgid "Close Monitor"
+msgstr "Ekranı Kapat"
+
+#: shell/shell.ui.h:172
+msgid "Computer status"
+msgstr "Bilgisayar Durumu"
+
+#: shell/shell.ui.h:173
+msgid "AC Power"
+msgstr "AC Gücü"
+
+#: shell/shell.ui.h:174
+msgid "Battery Power"
+msgstr "Pil Gücü"
+
+#: shell/shell.ui.h:175
+msgid "Put _computer to sleep when inactive:"
+msgstr "Bilgisayarı uyku moduna al:"
+
+#: shell/shell.ui.h:176
+msgid "Put _monitor to sleep when inactive:"
+msgstr "Eekranı uyku moduna al："
+
+#: shell/shell.ui.h:177
+msgid "When laptop lid is cl_osed:"
+msgstr "Dizüstü bilgisayar kapağı kapalı olduğunda："
+
+#: shell/shell.ui.h:178
+msgid "Actions"
+msgstr "Haraket"
+
+#: shell/shell.ui.h:179
+msgid "When the power _button is pressed:"
+msgstr "Güç düğmesine basıldığında:"
+
+#: shell/shell.ui.h:180
+msgid "When the sus_pend button is pressed:"
+msgstr "Askıya al düğmesine basıldığında:"
+
+#: shell/shell.ui.h:181
+msgid "Icon display"
+msgstr "Simge Göster"
+
+#: shell/shell.ui.h:182
+msgid "Only display an icon when a battery is p_resent"
+msgstr "Yalnızca bir pil varsa simge gösterin"
+
+#: shell/shell.ui.h:183
+msgid "_Always display an icon"
+msgstr "_Her zaman bir simge gösterin"
+
+#: shell/shell.ui.h:184
+msgid "Power Configure"
+msgstr "Güç Ayarları"
+
+#: shell/shell.ui.h:185
+msgid "Regard the computer as _idle after:"
+msgstr "Bilgisayarı sonra boşta tutun:"
+
+#: shell/shell.ui.h:186
+msgid "_Activate screensaver when computer is idle"
+msgstr "_Bilgisayar boştayken ekran koruyucuyu etkinleştirin"
+
+#: shell/shell.ui.h:187
+msgid "_Lock screen when screensaver is active"
+msgstr "_Ekran koruyucu aktifken ekranı kilitle"
+
+#: shell/shell.ui.h:188
+msgid "preview"
+msgstr "Önizleme"
+
+#: shell/shell.ui.h:189
+msgid "Screensavers:"
+msgstr "Ekrankoruyucu"
+
+#: shell/shell.ui.h:191
+msgid "Screensaver"
+msgstr "Ekran Koruyucu"
+
+#: shell/ukui-control-center.c:59
+msgid "window1"
+msgstr "window1"
+
+#: shell/ukui-control-center.c:60
+msgid "ukuicc"
+msgstr "ukuicc"
