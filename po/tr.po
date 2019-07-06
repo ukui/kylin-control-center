@@ -46,13 +46,13 @@ msgstr ""
 #: panels/appearance/appearance-windows.c:109
 #: panels/appearance/appearance-windows.c:113
 msgid "none"
-msgstr ""
+msgstr "yok"
 
 #: panels/appearance/appearance-windows.c:106
 #: panels/appearance/appearance-windows.c:110
 #: panels/appearance/appearance-windows.c:114
 msgid "toggle-maximize"
-msgstr ""
+msgstr "geçiş-maksimize"
 
 #: panels/appearance/appearance-windows.c:107
 #: panels/appearance/appearance-windows.c:111
@@ -228,7 +228,7 @@ msgstr "%s sana ait olmalı\n"
 #: panels/display/ukui-display-properties-install-systemwide.c:224
 #, c-format
 msgid "%s must not have any directory components\n"
-msgstr ""
+msgstr "%s hiçbir dizin bileşenine sahip olmamalıdır\n"
 
 #: panels/display/ukui-display-properties-install-systemwide.c:232
 #, c-format
@@ -484,7 +484,7 @@ msgstr[1] "%i saat"
 #: panels/power/kpm-common.c:74
 #, c-format
 msgid "%i %s %i %s"
-msgstr ""
+msgstr "%i %s %i %s"
 
 #: panels/power/kpm-common.c:75 shell/shell.ui.h:60
 msgid "hour"
@@ -517,11 +517,11 @@ msgstr "Kapat"
 
 #: panels/power/kpm-prefs-core.c:265 panels/power/kpm-prefs-core.c:268
 msgid "Hang"
-msgstr ""
+msgstr "Askıya Al"
 
 #: panels/power/kpm-prefs-core.c:273 panels/power/kpm-prefs-core.c:276
 msgid "Sleep"
-msgstr "Uyut"
+msgstr "Uyku Modu"
 
 #: panels/power/kpm-prefs-core.c:281 panels/power/kpm-prefs-core.c:284
 #: panels/power/ukui-screensaver-preferences.c:477
@@ -604,7 +604,7 @@ msgstr "%s şarjı bekliyor (%.1f%%)"
 #. TRANSLATORS: the type of data, e.g. Laptop battery
 #: panels/power/kpm-upower.c:410
 msgid "Product:"
-msgstr "Ürün："
+msgstr "Ürün"
 
 #. TRANSLATORS: device is missing
 #. TRANSLATORS: device is charged
@@ -637,7 +637,7 @@ msgstr "Boşalıyor"
 #. TRANSLATORS: percentage
 #: panels/power/kpm-upower.c:436
 msgid "Percentage charge:"
-msgstr "Yüzde şarj："
+msgstr "Pil Doluluk Yüzdesi"
 
 #. TRANSLATORS: manufacturer
 #: panels/power/kpm-upower.c:441
@@ -948,7 +948,7 @@ msgstr "Erişim Zamanı："
 
 #: panels/session-properties/program_properties.ui.h:8
 msgid "modification time:"
-msgstr "Değiştirilme Zamanı："
+msgstr "Değiştirilme Zamanı"
 
 #: panels/user-accounts/change-face.ui.h:1
 msgid "Changge Face"
@@ -1945,7 +1945,7 @@ msgstr "24-saat"
 
 #: shell/shell.ui.h:68
 msgid "lang settings"
-msgstr ""
+msgstr "Dil Ayarları"
 
 #: shell/shell.ui.h:69
 msgid "Current Account"
@@ -2020,43 +2020,43 @@ msgstr "Font"
 
 #: shell/shell.ui.h:89
 msgid "mouse double click action"
-msgstr ""
+msgstr "fare çift tıklama eylemi"
 
 #: shell/shell.ui.h:90
 msgid "mouse middle click action"
-msgstr ""
+msgstr "fare orta tıklama eylemi"
 
 #: shell/shell.ui.h:91
 msgid "mouse right click action"
-msgstr ""
+msgstr "fare sağ tıklama eylemi"
 
 #: shell/shell.ui.h:92
 msgid "windows"
-msgstr ""
+msgstr "pencereler"
 
 #: shell/shell.ui.h:93
 msgid "show computer icon on desktop"
-msgstr ""
+msgstr "masaüstünde bilgisayar simgesini göster"
 
 #: shell/shell.ui.h:94
 msgid "show home floder on desktop"
-msgstr ""
+msgstr "masaüstünde ev klasörünü göster"
 
 #: shell/shell.ui.h:95
 msgid "show network icon on desktop"
-msgstr ""
+msgstr "masaüstünde ağ simgesini göster"
 
 #: shell/shell.ui.h:96
 msgid "show trash on desktop"
-msgstr ""
+msgstr "masaüstünde çöpü göster"
 
 #: shell/shell.ui.h:97
 msgid "show volumes on desktop"
-msgstr ""
+msgstr "masaüstünde aygıtları göster"
 
 #: shell/shell.ui.h:98
 msgid "Desktop"
-msgstr ""
+msgstr "Masaüstü"
 
 #: shell/shell.ui.h:99
 msgid "Internet"
