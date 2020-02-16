@@ -89,7 +89,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Sound Setings</string>
+            <string>Sound Settings</string>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -135,7 +135,7 @@
               </size>
              </property>
              <property name="text">
-              <string>Sound setings</string>
+              <string>Sound settings</string>
              </property>
              <property name="flat">
               <bool>false</bool>
