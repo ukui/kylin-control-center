@@ -156,6 +156,12 @@ MainWindow::MainWindow(QWidget *parent) :
     //加载功能页Widget
     modulepageWidget = new ModulePageWidget(this);
     ui->stackedWidget->addWidget(modulepageWidget);
+
+    //top left return button
+    connect(ui->backBtn, &QPushButton::clicked, this, [=]{
+        if(ui->stackedWidget != nullptr)
+            ui->stackedWidget->setCurrentIndex(0);
+    });
 }
 
 MainWindow::~MainWindow()
