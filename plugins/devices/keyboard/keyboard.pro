@@ -20,7 +20,7 @@ INCLUDEPATH   +=  \
                  $$PROJECT_ROOTDIR \
                  /usr/include/ukuisdk \
 
-LIBS          +=  -L/usr/lib/ -lkeyboardclient -linterfaceclient -lgsettings-qt
+LIBS          +=  -L/usr/lib/ -lukui-keyboardclient -lukui-interfaceclient -lgsettings-qt
 
 CONFIG        += link_pkgconfig \
                  C++11
