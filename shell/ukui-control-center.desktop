@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=UKUI Control Center
+Name[zh_CN]=控制面板
+Name[zh_HK]=控制面板
+Name[zh_TW]=控制面板
+Comment=麒麟控制面板
+Icon=ukui-control-center
+Exec=ukui-control-center
+Terminal=false
+Type=Application
+StartupNotify=true
+NoDisplay=true
+Categories=Qt;Settings;
+Keywords=UKUI;control;center;configuration;tool;destop;preferences;
