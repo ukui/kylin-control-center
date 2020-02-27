@@ -296,6 +296,9 @@ void UserInfo::initComponent(){
     //修改当前用户类型的回调
     connect(ui->changeTypeBtn, &QPushButton::clicked, this, [=](bool checked){
         Q_UNUSED(checked)
+        UserInfomation user = allUserInfoMap.value(g_get_user_name());
+
+        showChangeTypeDialog(user.username);
     });
 
     //成功删除用户的回调
@@ -451,6 +454,10 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     typeBtn->setFixedSize(88, 36);
     typeBtn->setText(tr("Change type"));
     typeBtn->setStyleSheet(btnQss);
+    connect(typeBtn, &QPushButton::clicked, this, [=](bool checked){
+        Q_UNUSED(checked)
+        showChangeTypeDialog(user.username);
+    });
     typeBtn->hide();
 
     QPushButton * pwdBtn = new QPushButton(widget);
