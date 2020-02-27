@@ -136,77 +136,77 @@
         <translation>语言和地区</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="83"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="80"/>
         <source>current area</source>
         <translation>当前区域</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="85"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="82"/>
         <source>display format area</source>
         <translation>显示日期、时间、货币格式的区域</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="89"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="86"/>
         <source>US</source>
         <translation>美国</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="92"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="89"/>
         <source>format of area</source>
         <translation>区域格式数据</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="93"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="90"/>
         <source>calendar</source>
         <translation>日历</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="94"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="91"/>
         <source>first day of week</source>
         <translation>一周的第一天</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="95"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="92"/>
         <source>date</source>
         <translation>日期</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="96"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="93"/>
         <source>time</source>
         <translation>时间</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="101"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="98"/>
         <source>change format of data</source>
         <translation>更改数据格式</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="105"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="102"/>
         <source>first language</source>
         <translation>首选语言</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="107"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="104"/>
         <source>system language</source>
         <translation>系统，菜单的显示语言</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="90"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="87"/>
         <source>CN</source>
         <translation>中国</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="112"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="109"/>
         <source>English</source>
         <translation>英语</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="113"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="110"/>
         <source>Chinese</source>
         <translation>简体中文</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="116"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="113"/>
         <source>add main language</source>
         <translation>添加首语言</translation>
     </message>
@@ -436,28 +436,28 @@ the integrity of your system.</source>
 <context>
     <name>ChangtimeDialog</name>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="100"/>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="108"/>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="114"/>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="117"/>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="152"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="102"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="110"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="116"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="119"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="157"/>
         <source>day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="143"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="148"/>
         <source>time</source>
         <translation type="unfinished">时间</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="146"/>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="177"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="151"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="182"/>
         <source>year</source>
         <translation type="unfinished">年份</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="149"/>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="180"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="154"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="185"/>
         <source>month</source>
         <translation type="unfinished">月份</translation>
     </message>
@@ -640,19 +640,19 @@ change system settings</source>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="172"/>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="107"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="118"/>
         <source>Sync system time</source>
         <translation>同步系统时间</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="191"/>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="112"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="123"/>
         <source>Change time</source>
         <translation>手动更改时间</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="210"/>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="116"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="127"/>
         <source>Change time zone</source>
         <translation>更改时区</translation>
     </message>
@@ -662,17 +662,17 @@ change system settings</source>
         <translation>同步完成</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="36"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="38"/>
         <source>datetime</source>
         <translation>时间和日期</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="47"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="51"/>
         <source>24-hour clock</source>
         <translation>24小时制</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="210"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="225"/>
         <source>change time</source>
         <translation>更改时间</translation>
     </message>
@@ -1033,6 +1033,130 @@ folder will be deleted!</source>
     </message>
 </context>
 <context>
+    <name>MouseControl</name>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="53"/>
+        <source>Mouse Key Settings</source>
+        <translation>鼠标键设置</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="129"/>
+        <source>Hand habit</source>
+        <translation>惯用手</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="179"/>
+        <source>Pointer Settings</source>
+        <translation>指针设置</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="242"/>
+        <source>Speed</source>
+        <translation>速度</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="267"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="902"/>
+        <source>Slow</source>
+        <translation>慢</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="314"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="934"/>
+        <source>Fast</source>
+        <translation>快</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="382"/>
+        <source>Sensitivity</source>
+        <translation>敏感度</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="407"/>
+        <source>Low</source>
+        <translation>低</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="454"/>
+        <source>High</source>
+        <translation>高</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="519"/>
+        <source>Visibility</source>
+        <translation>可见性</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="594"/>
+        <source>Pointer size</source>
+        <translation>指针大小</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="644"/>
+        <source>Cursor Settings</source>
+        <translation>光标设置</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="720"/>
+        <source>Cursor weight</source>
+        <translation>光标粗细</translation>
+    </message>
+    <message>
+        <source> Cursor weight</source>
+        <translation type="obsolete">光标粗细</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="745"/>
+        <source>Thin</source>
+        <translation>细</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="777"/>
+        <source>Coarse</source>
+        <translation>粗</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="877"/>
+        <source>Cursor speed</source>
+        <translation>光标速度</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="990"/>
+        <source>Enable flashing on text area</source>
+        <translation>启用文本区域的光标闪烁</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="43"/>
+        <source>mouse</source>
+        <translation>鼠标</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="91"/>
+        <source>Lefthand</source>
+        <translation>左手</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="92"/>
+        <source>Righthand</source>
+        <translation>右手</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="99"/>
+        <source>Default(Recommended)</source>
+        <translation>默认（推荐）</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="100"/>
+        <source>Medium</source>
+        <translation>中等</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="101"/>
+        <source>Large</source>
+        <translation>较大</translation>
+    </message>
+</context>
+<context>
     <name>NetConnect</name>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.ui" line="53"/>
@@ -1305,103 +1429,112 @@ folder will be deleted!</source>
         <translation>打印机</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="76"/>
         <source>mousecontrol</source>
+        <translation type="vanished">鼠标</translation>
+    </message>
+    <message>
+        <location filename="../../utils/functionselect.cpp" line="76"/>
+        <source>mouse</source>
         <translation>鼠标</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="83"/>
+        <source>touchpad</source>
+        <translation>触摸板</translation>
+    </message>
+    <message>
+        <location filename="../../utils/functionselect.cpp" line="90"/>
         <source>keyboard</source>
         <translation>键盘</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="90"/>
+        <location filename="../../utils/functionselect.cpp" line="97"/>
         <source>audio</source>
         <translation>声音</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="98"/>
+        <location filename="../../utils/functionselect.cpp" line="105"/>
         <source>background</source>
         <translation>背景</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="106"/>
+        <location filename="../../utils/functionselect.cpp" line="113"/>
         <source>screenlock</source>
         <translation>锁屏</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="110"/>
+        <location filename="../../utils/functionselect.cpp" line="117"/>
         <source>fonts</source>
         <translation>字体</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="114"/>
+        <location filename="../../utils/functionselect.cpp" line="121"/>
         <source>screensaver</source>
         <translation>屏保</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="118"/>
+        <location filename="../../utils/functionselect.cpp" line="125"/>
         <source>desktop</source>
         <translation>桌面</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="126"/>
+        <location filename="../../utils/functionselect.cpp" line="133"/>
         <source>netconnect</source>
         <translation>网络连接</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="130"/>
+        <location filename="../../utils/functionselect.cpp" line="137"/>
         <source>vpn</source>
         <translation>VPN</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="134"/>
+        <location filename="../../utils/functionselect.cpp" line="141"/>
         <source>proxy</source>
         <translation>代理</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="142"/>
+        <location filename="../../utils/functionselect.cpp" line="149"/>
         <source>userinfo</source>
         <translation>账户信息</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="150"/>
+        <location filename="../../utils/functionselect.cpp" line="157"/>
         <source>datetime</source>
         <translation>时间和日期</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="154"/>
+        <location filename="../../utils/functionselect.cpp" line="161"/>
         <source>area</source>
         <translation>语言和地区</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="162"/>
+        <location filename="../../utils/functionselect.cpp" line="169"/>
         <source>update</source>
         <translation>更新和备份</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="166"/>
+        <location filename="../../utils/functionselect.cpp" line="173"/>
         <source>backup</source>
         <translation>备份</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="174"/>
+        <location filename="../../utils/functionselect.cpp" line="181"/>
         <source>about</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="171"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="158"/>
         <source>hicolor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="171"/>
-        <location filename="../../utils/functionselect.cpp" line="102"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="158"/>
+        <location filename="../../utils/functionselect.cpp" line="109"/>
         <source>theme</source>
         <translation type="unfinished">主题</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="171"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="158"/>
         <source>theme-one</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1517,25 +1650,106 @@ folder will be deleted!</source>
         <translation>恢复默认设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="60"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="52"/>
         <source>theme</source>
         <translation>主题</translation>
     </message>
 </context>
 <context>
+    <name>TimeZoneChooser</name>
+    <message>
+        <location filename="../../../plugins/time-language/datetime/worldMap/timezonechooser.cpp" line="20"/>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/time-language/datetime/worldMap/timezonechooser.cpp" line="21"/>
+        <source>Confirm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/time-language/datetime/worldMap/timezonechooser.cpp" line="32"/>
+        <source>change zonne</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/time-language/datetime/worldMap/timezonechooser.cpp" line="115"/>
+        <source>Change Timezone</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Touchpad</name>
+    <message>
+        <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="41"/>
+        <source>Touchpad Settings</source>
+        <translation>触摸板设置</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="105"/>
+        <source>Enabled touchpad</source>
+        <translation>启用触摸板</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="171"/>
+        <source>Disable touchpad while typing</source>
+        <translation>打字时禁用触摸板</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="237"/>
+        <source>Enable mouse clicks with touchpad</source>
+        <translation>启用触摸板的鼠标点击</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="312"/>
+        <source>Scrolling</source>
+        <translation>滚动</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="59"/>
+        <source>touchpad</source>
+        <translation>触摸板</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="116"/>
+        <source>Disable rolling</source>
+        <translation>禁用滚动</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="117"/>
+        <source>Vertical edge scrolling</source>
+        <translation>垂直边界滚动</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="118"/>
+        <source>Horizontal edge scrolling</source>
+        <translation>水平边界滚动</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="119"/>
+        <source>Vertical two-finger scrolling</source>
+        <translation>垂直双指滚动</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="120"/>
+        <source>Horizontal two-finger scrolling</source>
+        <translation>水平双指滚动</translation>
+    </message>
+</context>
+<context>
     <name>UserInfo</name>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="530"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="529"/>
         <source>change pwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="531"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="530"/>
         <source>change face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="532"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="531"/>
         <source>change accounttype</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1573,17 +1787,17 @@ folder will be deleted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="477"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="476"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="533"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="532"/>
         <source>delete user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="573"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="572"/>
         <source>add new user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1594,13 +1808,13 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="234"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="459"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="458"/>
         <source>Change pwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="270"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="453"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="452"/>
         <source>Change type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1696,13 +1910,13 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="103"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="263"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="267"/>
         <source>picture</source>
         <translation>图片</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="103"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="263"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="267"/>
         <source>color</source>
         <translation>颜色</translation>
     </message>
@@ -1713,68 +1927,68 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="159"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="308"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="312"/>
         <source>wallpaper</source>
         <translation>平铺</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="159"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="308"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="312"/>
         <source>centered</source>
         <translation>居中</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="159"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="308"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="312"/>
         <source>scaled</source>
         <translation>比例放大</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="159"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="308"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="312"/>
         <source>stretched</source>
         <translation>伸展</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="159"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="308"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="312"/>
         <source>zoom</source>
         <translation>缩放</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="159"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="308"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="312"/>
         <source>spanned</source>
         <translation>适合宽度</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="526"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="522"/>
         <source>selsect custom wallpaper file</source>
         <translation>选择自定义壁纸文件</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="527"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="523"/>
         <source>Select</source>
         <translation>选择</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="528"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="524"/>
         <source>Position: </source>
         <translation>位置： </translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="529"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="525"/>
         <source>FileName: </source>
         <translation>文件名： </translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="530"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="526"/>
         <source>FileType: </source>
         <translation>文件类型： </translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="509"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="531"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="527"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
