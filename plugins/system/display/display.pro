@@ -3,7 +3,7 @@
 # Project created by QtCreator 2019-02-20T15:36:43
 #
 #-------------------------------------------------
-QT            += widgets core gui quickwidgets quick xml KScreen KI18n KConfigCore KConfigWidgets KWidgetsAddons
+QT            += widgets core gui quickwidgets quick xml #KScreen KI18n KConfigCore KConfigWidgets KWidgetsAddons
 TEMPLATE = lib
 CONFIG        += plugin
 
@@ -17,6 +17,11 @@ include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 INCLUDEPATH   +=  \
                  $$PROJECT_COMPONENTSOURCE \
                  $$PROJECT_ROOTDIR \
+
+INCLUDEPATH   +=  \
+                /usr/include/KF5/ \
+                /usr/include/KF5/KWidgetsAddons \
+                /usr/include/KF5/KCoreAddons \
 
 LIBS          += -L/usr/lib/ -lgsettings-qt
 
