@@ -151,6 +151,7 @@ class Widget : public QWidget
     void initGSettings();
     bool getNightModeGSetting(const QString &key);
     void setNightModebyPanel(bool judge);
+    void setSessionScale(int scale);
 
 
   private:
@@ -188,6 +189,7 @@ class Widget : public QWidget
 
     Slider *slider;
     QGSettings *m_gsettings = nullptr;
+    QGSettings *scaleGSettings = nullptr;
 
     int screenScale = 1;
 

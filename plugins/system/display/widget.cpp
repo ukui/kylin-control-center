@@ -43,6 +43,12 @@
 #define UKUI_CONTORLCENTER_PANEL_SCHEMAS "org.ukui.control-center.panel.plugins"
 
 #define NIGHT_MODE_KEY "nightmode"
+#define SCRENN_SCALE_SCHMES "org.ukui.session.required-components"
+#define GDK_SCALE_KEY "gdk-scale"
+#define QT_SCALE_KEY "qt-scale-factor"
+#define USER_SACLE_KEY "hidpi"
+
+
 
 Q_DECLARE_METATYPE(KScreen::OutputPtr)
 
@@ -551,6 +557,7 @@ void Widget::writeScale(float scale) {
         this->proRes.append(strAutoQT);
     }
     writeFile(filepath, this->proRes);
+    setSessionScale(static_cast<int>(scale));
 }
 
 
@@ -570,6 +577,15 @@ void Widget::initGSettings() {
 //            setNightModebyPanel(value);
 //        }
 //    });
+
+    QByteArray scaleId(SCRENN_SCALE_SCHMES);
+    if(QGSettings::isSchemaInstalled(scaleId)) {
+//        qDebug()<<"initGSettings-------------------->"<<endl;
+        scaleGSettings = new QGSettings(scaleId)        ;
+    } else {
+        qDebug()<<"org.ukui.session.required-components not installed"<<endl;
+        return ;
+    }
 }
 
 bool Widget::getNightModeGSetting(const QString &key) {
@@ -591,6 +607,17 @@ void Widget::setNightModebyPanel(bool judge) {
 //    }  else {
 //        QProcess::execute("killall redshift");
 //    }
+}
+
+void Widget::setSessionScale(int scale) {
+
+    if (!scaleGSettings) {
+        return;
+    }
+    qDebug()<<"setSessionScale---------->"<<endl;
+    scaleGSettings->set(USER_SACLE_KEY, true);
+    scaleGSettings->set(GDK_SCALE_KEY, scale);
+    scaleGSettings->set(QT_SCALE_KEY, scale);
 }
 
 void Widget::clearOutputIdentifiers()

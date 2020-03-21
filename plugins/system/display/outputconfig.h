@@ -7,6 +7,8 @@
 
 #include <KF5/KScreen/kscreen/output.h>
 
+#include <QGSettings/QGSettings>
+
 class QCheckBox;
 class ResolutionSlider;
 class QLabel;
@@ -57,6 +59,7 @@ public:
   protected:
     virtual void initUi();
     int getMaxReslotion();
+    int getScreenScale();
 
   protected:
     QLabel *mTitle = nullptr;
@@ -74,6 +77,8 @@ public:
     KScreen::ConfigPtr mConfig = nullptr;
     QString qss;
     QStringList proRes;        //profile文件内容
+
+    QGSettings *m_gsettings;
 
 };
 
