@@ -1,6 +1,7 @@
 #ifndef ZONEINFO_H
 #define ZONEINFO_H
 
+#include <QFile>
 #include <QString>
 #include <QList>
 
