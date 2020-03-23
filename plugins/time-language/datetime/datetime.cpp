@@ -23,6 +23,7 @@
 #include <QDebug>
 #include <QMovie>
 #include <QDir>
+#include <QDesktopWidget>
 
 
 #define FORMAT_SCHEMA "org.ukui.control-center.panel.plugins"
@@ -84,7 +85,6 @@ DateTime::DateTime()
         ui->timezoneLabel->setText(timezone);
     });
     connect(ui->synsystimeBtn,SIGNAL(clicked()),this,SLOT(rsync_with_network_slot()));
-
 }
 
 DateTime::~DateTime()
@@ -185,7 +185,7 @@ void DateTime::status_init(){
     //时区
     QDBusReply<QVariant> tz = m_datetimeiface->call("Get", "org.freedesktop.timedate1", "Timezone");
     QMap<QString, int>::iterator it = tzindexMapEn.find(tz.value().toString());
-    qDebug()<<"TODO-------》"<<tz.value().toString()<<endl;
+//    qDebug()<<"TODO-------》"<<tz.value().toString()<<endl;
     if(it != tzindexMapEn.end()){
         for(QMap<QString,int>::iterator itc = tzindexMapCN.begin();itc!=tzindexMapCN.end();itc++)
         {
@@ -213,12 +213,13 @@ bool DateTime::fileIsExits(const QString &filepath) {
 }
 
 void DateTime::datetime_update_slot(){
-    QFont ft;
-    ft.setPointSize(15);
-    ft.setBold(true);
+//    QFont ft;
+//    ft.setPointSize(15);
+//    ft.setBold(true);
     //当前时间
 
-    QDateTime current = QDateTime::currentDateTime();
+    current = QDateTime::currentDateTime();
+//    qDebug()<<"current time is-------->"<<current<<endl;
 
     QString currentsecStr ;
     if(m_formTimeBtn->isChecked()){
@@ -226,9 +227,11 @@ void DateTime::datetime_update_slot(){
     }else{
         currentsecStr = current.toString("AP hh: mm : ss");
     }
-
+    QString timeAndWeek = current.toString("yyyy/MM/dd ddd");
+//    qDebug()<<"year is----------->"<<timeAndWeek<<endl;
+    ui->dateLabel->setText(timeAndWeek);
     ui->timeLable->setText(currentsecStr);
-    ui->timeLable->setFont(ft);
+//    ui->timeLable->setFont(ft);
 
 }
 
@@ -236,13 +239,25 @@ void DateTime::changetime_slot(){
     ChangtimeDialog *dialog = new ChangtimeDialog(m_formTimeBtn->isChecked());
     dialog->setWindowTitle(tr("change time"));
     dialog->setAttribute(Qt::WA_DeleteOnClose);
+    m_itimer->stop();
+    m_itimer->start();
     dialog->exec();
 }
 
 
 void DateTime::changezone_slot(){
 //    qDebug()<<"changezone_slot------->"<<endl;
+
+    QDesktopWidget* m = QApplication::desktop();
+    QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
+    int desk_x = desk_rect.width();
+    int desk_y = desk_rect.height();
+    int x = m_timezone->width();
+    int y = m_timezone->height();
+    m_timezone->move(desk_x / 2 - x / 2 + desk_rect.left(), desk_y / 2 - y / 2 + desk_rect.top());
+
     m_timezone->show();
+
     m_timezone->setMarkedTimeZoneSlot(m_zoneinfo->getCurrentTimzone());
 }
 
@@ -251,7 +266,10 @@ void DateTime::changezone_slot(QString zone){
 }
 
 void DateTime::time_format_clicked_slot(bool flag){    
-
+    if (!m_formatsettings){
+        qDebug()<<"org.ukui.control-center.panel.plugins not installed"<<endl;
+        return;
+    }
     if(flag == true) {
         m_formatsettings->set(TIME_FORMAT_KEY, "24");
     } else {
@@ -277,9 +295,9 @@ void DateTime::hidendLabel(){
 }
 
 void DateTime::rsync_with_network_slot(){
-    qDebug()<<"TODO------> sleep waies?"<<endl;
-    m_datetimeiface->call("SetNTP", true, true);
+//    qDebug()<<"TODO------> sleep waies?"<<endl;
 
+    m_datetimeiface->call("SetNTP", true, true);
 
 //    QMovie *loadgif = new QMovie(":/sys.gif");
 //    loadgif->start();
@@ -292,6 +310,10 @@ void DateTime::rsync_with_network_slot(){
 }
 
 void DateTime::loadHour() {
+    if (!m_formatsettings) {
+        qDebug()<<"org.ukui.control-center.panel.plugins not installed"<<endl;
+        return;
+    }
     QString format =m_formatsettings->get(TIME_FORMAT_KEY).toString();
     if (format == "24") {
         m_formTimeBtn->setChecked(true);

@@ -42,10 +42,6 @@ ChangtimeDialog::ChangtimeDialog(bool hour,QWidget *parent) :m_isEFHour(hour),
                                 "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}");
 
-//    const QByteArray id(FORMAT_SCHEMA);
-//    m_formatsettings = new QGSettings(id);
-
-
     m_datetimeInterface = new QDBusInterface("org.freedesktop.timedate1",
                                        "/org/freedesktop/timedate1",
                                        "org.freedesktop.timedate1",
@@ -72,6 +68,7 @@ ChangtimeDialog::ChangtimeDialog(bool hour,QWidget *parent) :m_isEFHour(hour),
 
 ChangtimeDialog::~ChangtimeDialog()
 {
+    m_chtimer->stop();
     delete ui;
     delete m_datetimeInterface;
 }
@@ -84,10 +81,12 @@ void ChangtimeDialog::datetimeUpdateSlot(){
     QString currentsecStr = current.toString("ss");
 
     ui->seccomboBox->setCurrentIndex(currentsecStr.toInt());
-    if (currentsecStr.toInt() == 0)
+    if (currentsecStr.toInt() == 0) {
        ui->mincomboBox->setCurrentIndex(currentminStr.toInt());
-    if (currentsecStr.toInt() == 0 && currentminStr.toInt() == 0)
-    ui->hourcomboBox->setCurrentIndex(currenthourStr.toInt());
+    }
+    if (currentsecStr.toInt() == 0 && currentminStr.toInt() == 0) {
+        ui->hourcomboBox->setCurrentIndex(currenthourStr.toInt());
+    }
 }
 
 void ChangtimeDialog::dayUpdateSlot(){
@@ -109,10 +108,11 @@ void ChangtimeDialog::dayUpdateSlot(){
     case 3:
     case 5:
     case 7:
+    case 8:
     case 10:
     case 12:
         for(int i = 1; i <= 31; i++){
-            ui->daycomboBox->addItem(QString::number(i) +tr("day"));
+            ui->daycomboBox->addItem(QString::number(i));
         }
         break;
     case 4:
@@ -120,39 +120,45 @@ void ChangtimeDialog::dayUpdateSlot(){
     case 9:
     case 11:
         for(int i = 1; i <= 30; i++){
-            ui->daycomboBox->addItem(QString::number(i) +tr("day"));
+            ui->daycomboBox->addItem(QString::number(i));
         }
         break;
     case 2:
         if(f_year){
             for(int i = 1; i <= 29; i++)
-                ui->daycomboBox->addItem(QString::number(i) +tr("day"));
+                ui->daycomboBox->addItem(QString::number(i));
         } else {
             for(int i = 1; i <= 28; i++)
-                ui->daycomboBox->addItem(QString::number(i) +tr("day"));
+                ui->daycomboBox->addItem(QString::number(i));
         }
         break;
     }
 }
 
 void ChangtimeDialog::changtimeApplySlot(){
-    qDebug()<<"时间应用------------》"<<endl;
+//    qDebug()<<"时间应用------------》"<<endl;
     int year = ui->yearcomboBox->currentIndex() + BEGINYEAR;
     int month = ui->monthcomboBox->currentIndex() + BEGINMD;
     int day = ui->daycomboBox->currentIndex() + BEGINMD;
 
     QDate tmpdate(year,month,day);
 
+    int hour;
+    if (this->m_isEFHour) {
+        hour = ui->hourcomboBox->currentIndex();
+    } else {
+        hour = ui->hourcomboBox->currentIndex();
+    }
 
-    QTime tmptime(ui->hourcomboBox->currentIndex(),ui->mincomboBox->currentIndex(),ui->seccomboBox->currentIndex());
+    QTime tmptime(hour, ui->mincomboBox->currentIndex(),ui->seccomboBox->currentIndex());
 
     QDateTime setdt(tmpdate,tmptime);
-    qDebug()<<"tmp time-->"<<setdt<<endl;
+//    qDebug()<<"tmp time and hour is-->"<<setdt<<" "<<hour<<endl;
 
-
-    m_datetimeInterface->call("SetNTP", false, true);//先关闭网络同步
-
-    m_datetimeInterface->call("SetTime", QVariant::fromValue(setdt.toSecsSinceEpoch() * G_TIME_SPAN_SECOND), false, true);
+    for(int i=0; i < 2; i++){
+        m_datetimeInterface->call("SetNTP", false, true);//先关闭网络同步
+        m_datetimeInterface->call("SetTime", QVariant::fromValue(setdt.toSecsSinceEpoch() * G_TIME_SPAN_SECOND), false, true);
+    }
     this->close();
 }
 
@@ -204,13 +210,17 @@ void ChangtimeDialog::hourComboxSetup(){
     ui->hourcomboBox->clear();
 
     //获取时间制式，设置时间combobox
-    if (this->m_isEFHour){
-        for (int h = 0; h < 24; h++)
-            ui->hourcomboBox->addItem(QString::number(h));
-    } else {
-        for (int h = 0; h < 12; h++)
-            ui->hourcomboBox->addItem(QString::number(h));
+    for (int h = 0; h < 24; h++){
+        ui->hourcomboBox->addItem(QString::number(h));
     }
+
+//    if (this->m_isEFHour){
+//        for (int h = 0; h < 24; h++)
+//            ui->hourcomboBox->addItem(QString::number(h));
+//    } else {
+//        for (int h = 1; h <= 12; h++)
+//            ui->hourcomboBox->addItem(QString::number(h));
+//    }
 }
 
 
@@ -234,13 +244,18 @@ void ChangtimeDialog::initStatus(){
     QDateTime current = QDateTime::currentDateTime();
     QString currenthourStr = current.toString("hh");
     QString currentminStr = current.toString("mm");
+
+    //if date formate is 24 hour
     if(this->m_isEFHour) {
+//        ui->hourcomboBox->setItemText(currenthourStr.toInt());
         ui->hourcomboBox->setCurrentIndex(currenthourStr.toInt());
     } else {
-        ui->hourcomboBox->setCurrentIndex(currenthourStr.toInt() - 12);
+//        qDebug()<<"currenthourStr.toInt() is------------->"<<currenthourStr.toInt()<<endl;
+        if (currenthourStr.toInt() > 12) {
+            ui->hourcomboBox->setCurrentIndex(currenthourStr.toInt() - 12);
+        } else {
+            ui->hourcomboBox->setCurrentIndex((currenthourStr.toInt()));
+        }
     }
     ui->mincomboBox->setCurrentIndex(currentminStr.toInt());
-
-
-
 }
