@@ -593,7 +593,7 @@ AutoApp AutoBoot::_app_new(const char *path){
         app.pixmap = currenticon.pixmap(QSize(32, 32));
     }
     else{
-        app.pixmap = QPixmap(QString(":/autoboot/default.png"));
+        app.pixmap = QPixmap(QString(":/img/plugins/autoboot/desktop.png"));
     }
 
     g_free(bname);
