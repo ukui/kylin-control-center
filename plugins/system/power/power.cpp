@@ -73,9 +73,14 @@ Power::Power()
     ui->acBtn->setStyleSheet("QPushButton#acBtn:checked{background: #3D6BE5; border-radius: 4px; color: #ffffff;}");
     ui->batteryBtn->setStyleSheet("QPushButton#batteryBtn:checked{background: #3D6BE5; border-radius: 4px; color: #ffffff;}");
 
+    ui->iconWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+
+
+
     setupComponent();
     setupConnect();
     initModeStatus();
+    initIconPolicyStatus();
 }
 
 Power::~Power()
@@ -137,6 +142,14 @@ void Power::setupComponent(){
 
     //默认电源
     ui->acBtn->setChecked(true);
+
+    //电源图标
+    iconShowList << tr("always") << tr("present");
+    ui->iconComboBox->setItemDelegate(itemDelege);
+    ui->iconComboBox->setMaxVisibleItems(6);
+    ui->iconComboBox->insertItem(0, iconShowList.at(0), "always");
+    ui->iconComboBox->insertItem(1, iconShowList.at(1), "present");
+
 
     //lid
 //    lidStringList << tr("nothing") << tr("blank") << tr("suspend") << tr("shutdown");
@@ -208,6 +221,12 @@ void Power::setupConnect(){
             settings->set(SLEEP_DISPLAY_BATT_KEY, QVariant(value));
         }
     });
+
+    connect(ui->iconComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+        Q_UNUSED(index)
+        QString value = ui->iconComboBox->currentData(Qt::UserRole).toString();
+        settings->set(ICONPOLICY, value);
+    });
 }
 
 void Power::initModeStatus(){
@@ -228,6 +247,13 @@ void Power::initModeStatus(){
         ui->custdomRadioBtn->setChecked(true);
     }
     refreshUI();
+}
+
+void Power::initIconPolicyStatus(){
+    QString value = settings->get(ICONPOLICY).toString();
+    ui->iconComboBox->blockSignals(true);
+    ui->iconComboBox->setCurrentIndex(ui->iconComboBox->findData(value));
+    ui->iconComboBox->blockSignals(false);
 }
 
 void Power::resetCustomPlanUI(){

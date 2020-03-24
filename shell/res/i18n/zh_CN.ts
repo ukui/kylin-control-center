@@ -1528,22 +1528,22 @@ folder will be deleted!</source>
 <context>
     <name>Power</name>
     <message>
-        <location filename="../../../plugins/system/power/power.ui" line="53"/>
+        <location filename="../../../plugins/system/power/power.ui" line="91"/>
         <source>select power plan</source>
         <translation>选择电源计划</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.ui" line="126"/>
+        <location filename="../../../plugins/system/power/power.ui" line="164"/>
         <source>Balance (suggest)</source>
         <translation>平衡（推荐）</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.ui" line="249"/>
+        <location filename="../../../plugins/system/power/power.ui" line="271"/>
         <source>Saving</source>
         <translation>节能</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.ui" line="265"/>
+        <location filename="../../../plugins/system/power/power.ui" line="287"/>
         <source>Minimize performance</source>
         <translation>尽可能降低计算机性能</translation>
     </message>
@@ -1553,39 +1553,49 @@ folder will be deleted!</source>
 </translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.ui" line="142"/>
+        <location filename="../../../plugins/system/power/power.ui" line="180"/>
         <source>Autobalance energy and performance with available hardware</source>
         <translation>利用可用的硬件自动平衡消耗与性能</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.ui" line="372"/>
+        <location filename="../../../plugins/system/power/power.ui" line="383"/>
         <source>Custom</source>
         <translation>自定义</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.ui" line="388"/>
+        <location filename="../../../plugins/system/power/power.ui" line="399"/>
         <source>Users develop personalized power plans</source>
         <translation>用户制定个性化电源计划</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.ui" line="491"/>
+        <location filename="../../../plugins/system/power/power.ui" line="502"/>
         <source>Power supply</source>
         <translation>电源供给</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.ui" line="525"/>
+        <location filename="../../../plugins/system/power/power.ui" line="536"/>
         <source>Battery powered</source>
         <translation>电池供给</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.ui" line="585"/>
+        <location filename="../../../plugins/system/power/power.ui" line="596"/>
         <source>Change pc sleep time:</source>
         <translation>在此之后电脑进入睡眠状态：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.ui" line="715"/>
+        <location filename="../../../plugins/system/power/power.ui" line="726"/>
         <source>Change dp close time:</source>
         <translation>在此之后关闭显示器：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.ui" line="821"/>
+        <source>Power Icon Settings</source>
+        <translation>电源图标设置</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.ui" line="887"/>
+        <source>Power icon:</source>
+        <translation>电源图标：</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="58"/>
@@ -1593,55 +1603,65 @@ folder will be deleted!</source>
         <translation>电源</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="110"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="124"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="115"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="129"/>
         <source>never</source>
         <translation>从不</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="110"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="124"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="115"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="129"/>
         <source>10 min</source>
         <translation>10分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="110"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="124"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="115"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="129"/>
         <source>30 min</source>
         <translation>30分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="110"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="124"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="115"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="129"/>
         <source>60 min</source>
         <translation>60分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="110"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="124"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="115"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="129"/>
         <source>120 min</source>
         <translation>120分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="110"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="115"/>
         <source>300 min</source>
         <translation>300分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="110"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="124"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="115"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="129"/>
         <source>20 min</source>
-        <translation type="unfinished">5分钟 {20 ?}</translation>
+        <translation>20分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="124"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="129"/>
         <source>1 min</source>
         <translation>1分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="124"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="129"/>
         <source>5 min</source>
         <translation>5分钟</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="147"/>
+        <source>always</source>
+        <translation>总是显示</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="147"/>
+        <source>present</source>
+        <translation>近当存在电池时显示</translation>
     </message>
 </context>
 <context>

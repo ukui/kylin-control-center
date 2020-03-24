@@ -1,4 +1,4 @@
-ukui-control-center (2.0.0-1) unstable; urgency=medium
+ukui-control-center (2.0.1.1-1) unstable; urgency=medium
 
   [ He Bing ]
   * New upstream release.
@@ -11,7 +11,7 @@ ukui-control-center (2.0.0-1) unstable; urgency=medium
     - Set Rules-Requires-Root to no.
     - Refresh the depends and suggests.
 
- -- handsome_feng <jianfengli@ubuntukylin.com>  Mon, 17 Feb 2020 09:35:41 +0800
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Sat, 21 Mar 2020 17:43:39 +0800
 
 ukui-control-center (1.1.6-2) unstable; urgency=medium
 

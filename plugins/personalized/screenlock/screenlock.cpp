@@ -111,12 +111,12 @@ void Screenlock::setupConnect(){
 }
 
 void Screenlock::initScreenlockStatus(){
-    ///设置预览背景
+    //获取当前锁屏壁纸
     QString bgStr = lSetting->get(SCREENLOCK_BG_KEY).toString();
-    if (bgStr.isEmpty())
+//    if (bgStr.isEmpty())
         ui->previewLabel->setPixmap(QPixmap("://img/plugins/screenlock/none.png"));
-    else
-        ui->previewLabel->setPixmap(QPixmap(bgStr));
+//    else
+//        ui->previewLabel->setPixmap(QPixmap(bgStr).scaled(ui->previewLabel->size()));
     //遮罩
     MaskWidget * maskWidget = new MaskWidget(ui->previewLabel);
     maskWidget->setGeometry(0, 0, ui->previewLabel->width(), ui->previewLabel->height());
@@ -125,6 +125,11 @@ void Screenlock::initScreenlockStatus(){
     pThread = new QThread;
     pWorker = new BuildPicUnitsWorker;
     connect(pWorker, &BuildPicUnitsWorker::pixmapGeneral, this, [=](QPixmap pixmap, BgInfo bgInfo){
+        //设置当前锁屏壁纸的预览
+        if (bgInfo.filename == bgStr){
+            ui->previewLabel->setPixmap(pixmap);
+        }
+
         //线程中构建控件传递会报告event无法install 的警告
         PictureUnit * picUnit = new PictureUnit;
         picUnit->setPixmap(pixmap);

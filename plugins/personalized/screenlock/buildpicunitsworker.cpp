@@ -36,6 +36,6 @@ void BuildPicUnitsWorker::run(){
     QMap<QString, BgInfo> wholeBgInfo = BgFileParse::bgFileReader();
     for (BgInfo sinBfInfo : wholeBgInfo){
 
-        emit pixmapGeneral(QPixmap(sinBfInfo.filename), sinBfInfo);
+        emit pixmapGeneral(QPixmap(sinBfInfo.filename).scaled(QSize(166, 110)), sinBfInfo);
     }
 }

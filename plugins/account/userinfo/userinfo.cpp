@@ -250,7 +250,7 @@ void UserInfo::initComponent(){
                                                               QDBusConnection::systemBus());
 
         if (!tmpSysinterface->isValid()){
-            qCritical() << "Create Client Interface Failed When excute gpasswd: " << QDBusConnection::systemBus().lastError();
+            qCritical() << "Create Client Interface Failed When execute gpasswd: " << QDBusConnection::systemBus().lastError();
             return;
         }
         tmpSysinterface->call("setNoPwdLoginStatus", checked, user.username);

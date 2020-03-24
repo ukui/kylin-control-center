@@ -20,7 +20,7 @@
 #include "netconnect.h"
 #include "ui_netconnect.h"
 
-#include "kylin_network_interface.h"'
+#include "kylin_network_interface.h"
 
 
 #include <QGSettings/QGSettings>

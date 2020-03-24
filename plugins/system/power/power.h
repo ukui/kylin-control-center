@@ -53,6 +53,7 @@ public:
     void setupConnect();
     void initModeStatus();
     void initCustomPlanStatus();
+    void initIconPolicyStatus();
     void resetCustomPlanUI();
 
 
@@ -74,6 +75,7 @@ private:
     QStringList closeStringList;
     QStringList lidStringList;
     QStringList buttonStringList;
+    QStringList iconShowList;
 
     QStyledItemDelegate *itemDelege;
 
