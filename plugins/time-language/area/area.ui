@@ -306,7 +306,7 @@ QComboBox QListView::item:selected{
         <item>
          <widget class="QLabel" name="firstDayLabel">
           <property name="text">
-           <string>day</string>
+           <string>monday</string>
           </property>
          </widget>
         </item>

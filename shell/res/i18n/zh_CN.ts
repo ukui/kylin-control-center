@@ -262,7 +262,7 @@
     <message>
         <location filename="../../../plugins/time-language/area/area.cpp" line="194"/>
         <source>solar calendar</source>
-        <translation>西历</translation>
+        <translation>公历</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.cpp" line="199"/>
@@ -525,30 +525,26 @@ the integrity of your system.</source>
 <context>
     <name>ChangtimeDialog</name>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="115"/>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="123"/>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="129"/>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="132"/>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="171"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="177"/>
         <source>day</source>
-        <translation type="unfinished">号</translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="162"/>
-        <source>time</source>
-        <translation type="unfinished">时间</translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="165"/>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="195"/>
-        <source>year</source>
-        <translation type="unfinished">年份</translation>
+        <translation>日期</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="168"/>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="198"/>
+        <source>time</source>
+        <translation>时间</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="171"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="201"/>
+        <source>year</source>
+        <translation>年份</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="174"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="204"/>
         <source>month</source>
-        <translation type="unfinished">月份</translation>
+        <translation>月份</translation>
     </message>
 </context>
 <context>
@@ -730,7 +726,7 @@ change system settings</source>
     <message>
         <location filename="../../../plugins/time-language/area/dataformat.cpp" line="76"/>
         <source>solar calendar</source>
-        <translation>西历</translation>
+        <translation>公历</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/dataformat.cpp" line="78"/>
@@ -791,17 +787,17 @@ change system settings</source>
         <translation>同步完成</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="39"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="40"/>
         <source>datetime</source>
         <translation>时间和日期</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="52"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="53"/>
         <source>24-hour clock</source>
         <translation>24小时制</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="237"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="240"/>
         <source>change time</source>
         <translation>更改时间</translation>
     </message>
@@ -1463,68 +1459,68 @@ folder will be deleted!</source>
 <context>
     <name>OutputConfig</name>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="128"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="141"/>
         <source>resolution</source>
         <translation>分辨率</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="167"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="180"/>
         <source>orientation</source>
         <translation>方向</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="189"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="202"/>
         <source>arrow-up</source>
         <translation>不旋转</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="190"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="203"/>
         <source>90° arrow-right</source>
         <translation>90° 顺时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="191"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="204"/>
         <source>arrow-down</source>
         <translation>上下颠倒</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="192"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="205"/>
         <source>90° arrow-left</source>
         <translation>90° 逆时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="224"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="237"/>
         <source>refresh rate</source>
         <translation>刷新率</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="243"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="256"/>
         <source>auto</source>
         <translation>自动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="259"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="272"/>
         <source>100%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="262"/>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="264"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="275"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="277"/>
         <source>200%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="265"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="278"/>
         <source>300%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="269"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="282"/>
         <source>screen zoom</source>
         <translation>缩放屏幕</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="344"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="374"/>
         <source>%1 Hz</source>
         <translation></translation>
     </message>
@@ -1884,7 +1880,7 @@ folder will be deleted!</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location filename="../../main.cpp" line="41"/>
+        <location filename="../../main.cpp" line="55"/>
         <source>ukui-control-center had already running!</source>
         <translation>控制面板已经在运行！</translation>
     </message>
@@ -2498,28 +2494,28 @@ folder will be deleted!</source>
         <translation type="vanished">屏幕缩放 </translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="90"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="96"/>
         <source>night mode</source>
         <translation>夜间模式</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="805"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="832"/>
         <source>please insure at least one output!</source>
         <translation>请确保至少开启一个屏幕!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="806"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="833"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="817"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="844"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation>抱歉，配置不能应用.</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="818"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="845"/>
         <source>@title:window</source>
         <comment>Unsupported Configuration</comment>
         <translation>窗口</translation>
