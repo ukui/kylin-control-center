@@ -78,7 +78,7 @@ public:
     QString qss;
     QStringList proRes;        //profile文件内容
 
-    QGSettings *m_gsettings;
+    QGSettings *m_gsettings = nullptr;
 
 };
 

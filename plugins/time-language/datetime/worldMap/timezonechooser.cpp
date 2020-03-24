@@ -166,8 +166,11 @@ QSize TimeZoneChooser::getFitSize(){
     const QDesktopWidget *desktop = QApplication::desktop();
     const QRect primaryRect = desktop->availableGeometry(desktop->primaryScreen());
 
-    double width =1440;
-    double height =860;
+    double width = primaryRect.width() - 360/* dcc */ - 20 * 2;
+    double height = primaryRect.height() - 70/* dock */ - 20 * 2;
+
+//    double width =1440;
+//    double height =860;
 
     return QSize(width,height);
 }

@@ -22,7 +22,7 @@
 #include "ComboBox/combobox.h"
 
 
-#define SCRENN_SCALE_SCHMES "org.ukui.session.required-components"
+#define SCRENN_SCALE_SCHMES "org.ukui.session"
 
 #define GDK_SCALE_KEY "gdk-scale"
 
@@ -33,12 +33,11 @@ OutputConfig::OutputConfig(QWidget *parent)
 {
     //加载qss样式文件
     QByteArray idScale(SCRENN_SCALE_SCHMES);
-    if(QGSettings::isSchemaInstalled(idScale)) {
+    if (QGSettings::isSchemaInstalled(idScale)) {
 //        qDebug()<<"initGSettings-------------------->"<<endl;
         m_gsettings = new QGSettings(idScale);
     } else {
-        qDebug()<<"org.ukui.session.required-components not installed"<<endl;
-        return ;
+        qDebug()<<"org.ukui.session.required-components not installed"<<endl;        
     }
 
     QFile QssFile("://combox.qss");

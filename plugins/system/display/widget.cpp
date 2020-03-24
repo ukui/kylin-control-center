@@ -43,7 +43,7 @@
 #define UKUI_CONTORLCENTER_PANEL_SCHEMAS "org.ukui.control-center.panel.plugins"
 
 #define NIGHT_MODE_KEY "nightmode"
-#define SCRENN_SCALE_SCHMES "org.ukui.session.required-components"
+#define SCRENN_SCALE_SCHMES "org.ukui.session"
 #define GDK_SCALE_KEY "gdk-scale"
 #define QT_SCALE_KEY "qt-scale-factor"
 #define USER_SACLE_KEY "hidpi"
@@ -583,7 +583,7 @@ void Widget::initGSettings() {
 //        qDebug()<<"initGSettings-------------------->"<<endl;
         scaleGSettings = new QGSettings(scaleId)        ;
     } else {
-        qDebug()<<"org.ukui.session.required-components not installed"<<endl;
+        qDebug()<<"org.ukui.session schemas not installed"<<endl;
         return ;
     }
 }
