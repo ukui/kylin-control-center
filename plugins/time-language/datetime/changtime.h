@@ -28,6 +28,9 @@
 #include <QDBusInterface>
 #include <QDBusConnection>
 #include <QDBusReply>
+#include <QStyledItemDelegate>
+#include <QFile>
+#include <QListView>
 
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
@@ -69,6 +72,8 @@ private:
     QGSettings * m_formatsettings = nullptr;
     QDBusInterface *m_datetimeInterface = nullptr;
     bool m_isEFHour; //24小时制
+    QString qss;        
+
 
 private slots:
     void datetimeUpdateSlot();

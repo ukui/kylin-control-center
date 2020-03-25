@@ -28,6 +28,7 @@
 #include <KPluginFactory>
 #include <KAboutData>
 #include <KMessageBox>
+#include <QStyledItemDelegate>
 //#include <KLocalizedString>
 #include <KF5/KScreen/kscreen/output.h>
 #include <KF5/KScreen/kscreen/edid.h>
@@ -81,8 +82,9 @@ Widget::Widget(QWidget *parent)
 
 
     ui->applyButton->setStyleSheet("QPushButton{background-color:#F4F4F4;border-radius:6px}"
-                                   "QPushButton:hover{background-color: #3D6BE5;};border-radius:6px");
+                                   "QPushButton:hover{background-color: #3D6BE5;color:white};border-radius:6px");
     ui->primaryCombo->setContentsMargins(8,0,0,0);
+    ui->primaryCombo->setItemDelegate(new QStyledItemDelegate());
 
     closeScreenButton = new SwitchButton;
     ui->showScreenLayout->addWidget(closeScreenButton);

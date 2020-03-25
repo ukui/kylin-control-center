@@ -32,6 +32,7 @@
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QGSettings/QGSettings>
+#include <QListView>
 
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
@@ -83,7 +84,7 @@ private:
     QGSettings *m_gsettings = nullptr;
     QTimer *m_itimer = nullptr;
     QString hourformat;
-
+    QString qss;
 
 private:
     void initUI();

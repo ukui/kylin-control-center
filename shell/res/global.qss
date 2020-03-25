@@ -13,6 +13,11 @@ QLabel#titleLabel, #title2Label, #title3Label{
     font-size: 18px; color: #BF000000;
 }
 
+/*时钟label*/
+QLabel#timeClockLable{
+    font-size: 24px; QFont::Bold;
+}
+
 QPushButton{
     font-size:14px;
 }

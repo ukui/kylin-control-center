@@ -26,44 +26,27 @@
    <string>Area</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <property name="topMargin">
+    <number>0</number>
+   </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_9">
-     <property name="leftMargin">
-      <number>0</number>
+    <widget class="QLabel" name="titleLabel">
+     <property name="minimumSize">
+      <size>
+       <width>150</width>
+       <height>18</height>
+      </size>
      </property>
-     <item>
-      <widget class="QLabel" name="arealabel">
-       <property name="minimumSize">
-        <size>
-         <width>150</width>
-         <height>18</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>150</width>
-         <height>18</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>current area</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
+     <property name="maximumSize">
+      <size>
+       <width>150</width>
+       <height>18</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>current area</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QWidget" name="showformwidget" native="true">
@@ -85,106 +68,50 @@
        <height>50</height>
       </size>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
-        <property name="leftMargin">
-         <number>20</number>
+       <widget class="QLabel" name="countrylabel">
+        <property name="minimumSize">
+         <size>
+          <width>209</width>
+          <height>15</height>
+         </size>
         </property>
-        <property name="rightMargin">
-         <number>16</number>
+        <property name="maximumSize">
+         <size>
+          <width>209</width>
+          <height>15</height>
+         </size>
         </property>
-        <item>
-         <widget class="QLabel" name="countrylabel">
-          <property name="minimumSize">
-           <size>
-            <width>209</width>
-            <height>15</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>209</width>
-            <height>15</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Area showing time currency format</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="countrycomboBox">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>291</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QComboBox{
-    background: rgba(255, 255, 255);
-    border-radius: 6px;
-    font-size:14px;
-    color: black;
-    min-height: 30px;
-    combobox-popup: 0;  /* 配合setMaxVisibleItems设置下拉框显示的条数，超过的滚动显示 */
-}
-
-QComboBox QAbstractItemView::item {
-    min-height: 30px;
-    border-radius: 2px ;
-    color:black;
-    background-color: rgba(255, 255, 255);
-}
-
-QComboBox::down-arrow{
-    image:url(://img/dropArrow/downpx.png);
-}
-
-QComboBox::drop-down{
-    width: 30px;
-    border: none;
-}
-
-QComboBox QListView::item:selected{
-    background: #3D6BE5;
-}
-
-
-
-</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+        <property name="text">
+         <string>Area showing time currency format</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="countrycomboBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>291</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -201,7 +128,7 @@ QComboBox QListView::item:selected{
       <number>16</number>
      </property>
      <item>
-      <widget class="QLabel" name="areaformlabel">
+      <widget class="QLabel" name="title2Label">
        <property name="minimumSize">
         <size>
          <width>108</width>
@@ -423,7 +350,7 @@ QComboBox QListView::item:selected{
       <number>6</number>
      </property>
      <item>
-      <widget class="QLabel" name="mainLagLabel">
+      <widget class="QLabel" name="title3Label">
        <property name="minimumSize">
         <size>
          <width>71</width>
@@ -532,6 +459,7 @@ QComboBox QListView::item:selected{
     background: rgba(255, 255, 255);
     border-radius: 6px;
     font-size:14px;
+    padding-left: 8px;
     color: black;
     min-height: 30px;
     combobox-popup: 0;  /* 配合setMaxVisibleItems设置下拉框显示的条数，超过的滚动显示 */
@@ -542,6 +470,8 @@ QComboBox QAbstractItemView::item {
     border-radius: 2px ;
     color:black;
     background-color: rgba(255, 255, 255);
+    font-size:14px;
+    padding-left: 5px;
 }
 
 QComboBox::down-arrow{
@@ -556,8 +486,6 @@ QComboBox::drop-down{
 QComboBox QListView::item:selected{
     background: #3D6BE5;
 }
-
-
 
 </string>
           </property>

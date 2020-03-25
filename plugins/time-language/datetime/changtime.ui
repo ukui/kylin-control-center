@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>401</width>
     <height>440</height>
    </rect>
   </property>
@@ -18,13 +18,13 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
+    <width>401</width>
     <height>440</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>400</width>
+    <width>420</width>
     <height>440</height>
    </size>
   </property>
@@ -32,6 +32,21 @@
    <string>Dialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_4">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QFrame" name="frame">
      <property name="frameShape">
@@ -41,6 +56,9 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
@@ -79,8 +97,11 @@
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="titleLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
             <horstretch>0</horstretch>
@@ -124,6 +145,12 @@
         <property name="spacing">
          <number>1</number>
         </property>
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
+        <property name="rightMargin">
+         <number>31</number>
+        </property>
         <item>
          <widget class="QWidget" name="timewidget" native="true">
           <property name="minimumSize">
@@ -139,6 +166,9 @@
            </size>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <property name="spacing">
+            <number>0</number>
+           </property>
            <item>
             <widget class="QLabel" name="timelabel">
              <property name="sizePolicy">
@@ -149,14 +179,14 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>64</width>
-               <height>32</height>
+               <width>34</width>
+               <height>14</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>64</width>
-               <height>32</height>
+               <width>34</width>
+               <height>14</height>
               </size>
              </property>
              <property name="text">
@@ -174,9 +204,18 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>85</width>
-               <height>32</height>
+               <width>83</width>
+               <height>0</height>
               </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>83</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
              </property>
             </widget>
            </item>
@@ -190,13 +229,13 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>85</width>
-               <height>32</height>
+               <width>80</width>
+               <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>85</width>
+               <width>80</width>
                <height>32</height>
               </size>
              </property>
@@ -212,13 +251,13 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>85</width>
+               <width>80</width>
                <height>32</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>85</width>
+               <width>80</width>
                <height>32</height>
               </size>
              </property>
@@ -258,14 +297,14 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>64</width>
-               <height>32</height>
+               <width>27</width>
+               <height>14</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>64</width>
-               <height>16777215</height>
+               <width>27</width>
+               <height>14</height>
               </size>
              </property>
              <property name="text">
@@ -283,15 +322,18 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>256</width>
-               <height>32</height>
+               <width>258</width>
+               <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>256</width>
+               <width>257</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
              </property>
             </widget>
            </item>
@@ -329,14 +371,14 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>64</width>
-               <height>32</height>
+               <width>27</width>
+               <height>14</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>64</width>
-               <height>16777215</height>
+               <width>27</width>
+               <height>14</height>
               </size>
              </property>
              <property name="text">
@@ -354,13 +396,13 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>256</width>
+               <width>258</width>
                <height>32</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>256</width>
+               <width>258</width>
                <height>16777215</height>
               </size>
              </property>
@@ -400,13 +442,13 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>64</width>
-               <height>32</height>
+               <width>27</width>
+               <height>14</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>64</width>
+               <width>27</width>
                <height>16777215</height>
               </size>
              </property>
@@ -425,13 +467,13 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>256</width>
+               <width>258</width>
                <height>32</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>256</width>
+               <width>258</width>
                <height>16777215</height>
               </size>
              </property>

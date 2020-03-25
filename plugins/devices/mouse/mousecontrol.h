@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QtPlugin>
+#include <QListView>
 
 #include <QX11Info>
 #include <QGSettings/QGSettings>

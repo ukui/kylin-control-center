@@ -112,21 +112,21 @@ void DateTime::plugin_delay_control(){
 }
 
 void DateTime::component_init(){
-    ui->tilteLable->setContentsMargins(0,0,0,16);
-    ui->timeLable->setContentsMargins(0,0,0,16);
+    ui->titleLabel->setContentsMargins(0,0,0,16);
+    ui->timeClockLable->setContentsMargins(0,0,0,16);
 
     ui->synsystimeBtn->setStyleSheet("QPushButton{background-color:#E9E9E9;border-radius:4px}"
-                                   "QPushButton:hover{background-color: #3D6BE5;};border-radius:4px");
+                                   "QPushButton:hover{background-color: #3D6BE5;color:white;};border-radius:4px");
 
     ui->synsystimeBtn->setText(tr("Sync system time"));
 
     ui->chgtimebtn->setStyleSheet("QPushButton{background-color:#E5E7E9;border-radius:4px}"
-                                   "QPushButton:hover{background-color: #3D6BE5;};border-radius:4px");
+                                   "QPushButton:hover{background-color: #3D6BE5;color:white;};border-radius:4px");
 
     ui->chgtimebtn->setText(tr("Change time"));
 
     ui->chgzonebtn->setStyleSheet("QPushButton{background-color:#E5E7E9;border-radius:4px}"
-                                   "QPushButton:hover{background-color: #3D6BE5;};border-radius:4px");
+                                   "QPushButton:hover{background-color: #3D6BE5;color:white;};border-radius:4px");
     ui->chgzonebtn->setText(tr("Change time zone"));
 
 
@@ -213,9 +213,6 @@ bool DateTime::fileIsExits(const QString &filepath) {
 }
 
 void DateTime::datetime_update_slot(){
-//    QFont ft;
-//    ft.setPointSize(15);
-//    ft.setBold(true);
     //当前时间
 
     current = QDateTime::currentDateTime();
@@ -230,8 +227,7 @@ void DateTime::datetime_update_slot(){
     QString timeAndWeek = current.toString("yyyy/MM/dd ddd");
 //    qDebug()<<"year is----------->"<<timeAndWeek<<endl;
     ui->dateLabel->setText(timeAndWeek);
-    ui->timeLable->setText(currentsecStr);
-//    ui->timeLable->setFont(ft);
+    ui->timeClockLable->setText(currentsecStr);
 
 }
 

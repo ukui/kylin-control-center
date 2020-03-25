@@ -4,6 +4,8 @@
 #include <QTimer>
 #include <QDialog>
 #include <QGSettings/QGSettings>
+#include <QListView>
+#include <QFile>
 
 namespace Ui {
 class DataFormat;
@@ -20,6 +22,7 @@ public:
 private:
     QTimer *m_itimer;
     QGSettings *m_gsettings = nullptr;
+    QString qss;
 
 private:
     Ui::DataFormat *ui;

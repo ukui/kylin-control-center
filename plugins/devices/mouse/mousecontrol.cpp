@@ -70,7 +70,9 @@ MouseControl::MouseControl()
     ui->pointerSizeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
 
     //全局未生效，再次设置
+    ui->pointerSizeComBox->setView(new QListView());
     ui->pointerSizeComBox->setStyleSheet(qss);
+    ui->handHabitComBox->setView(new QListView());
     ui->handHabitComBox->setStyleSheet(qss);
 
 
