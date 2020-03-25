@@ -323,7 +323,7 @@ int OutputConfig::getScreenScale() {
         return 1;
     }
     const QStringList list = m_gsettings->keys();
-    if (!list.contains(GDK_SCALE_KEY)) {
+    if (!list.contains("gdk-scale")) {
         return 1;
     }
     int scale  = m_gsettings->get(GDK_SCALE_KEY).toBool();

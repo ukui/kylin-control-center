@@ -266,10 +266,14 @@ void DateTime::time_format_clicked_slot(bool flag){
         qDebug()<<"org.ukui.control-center.panel.plugins not installed"<<endl;
         return;
     }
-    if(flag == true) {
-        m_formatsettings->set(TIME_FORMAT_KEY, "24");
-    } else {
-        m_formatsettings->set(TIME_FORMAT_KEY, "12");
+
+    QStringList keys = m_formatsettings->keys();
+    if (keys.contains("hour-system")) {
+        if(flag == true) {
+            m_formatsettings->set(TIME_FORMAT_KEY, "24");
+        } else {
+            m_formatsettings->set(TIME_FORMAT_KEY, "12");
+        }
     }
     //重置时间格式
     m_itimer->stop();

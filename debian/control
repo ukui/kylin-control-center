@@ -19,6 +19,8 @@ Build-Depends: debhelper-compat (= 12),
                libkf5screen-bin,
                qtdeclarative5-dev,
                libdconf-dev,
+               edid-decode,
+               redshift,
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Homepage: https://github.com/ukui/ukui-control-center
@@ -35,8 +37,6 @@ Suggests: gsettings-desktop-schemas,
           ukui-session-manager,
           ukui-screensaver,
           ukui-settings-daemon,
-          edid-decode,
-          redshift,
           qml-module-qtgraphicaleffects,
 Description: utilities to configure the UKUI desktop
  The UKUI control center contains configuration applets for the UKUI desktop,

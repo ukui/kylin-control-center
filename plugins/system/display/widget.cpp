@@ -188,7 +188,7 @@ Widget::Widget(QWidget *parent)
     loadQml();
     setBrigthnessFile();
     //亮度调节UI
-//    initBrightnessUI();    
+//    initBrightnessUI();
 
 }
 
@@ -563,7 +563,7 @@ void Widget::writeScale(float scale) {
 }
 
 
-void Widget::initGSettings() {   
+void Widget::initGSettings() {
     QByteArray id(UKUI_CONTORLCENTER_PANEL_SCHEMAS);
     if(QGSettings::isSchemaInstalled(id)) {
 //        qDebug()<<"initGSettings-------------------->"<<endl;
@@ -615,11 +615,17 @@ void Widget::setSessionScale(int scale) {
 
     if (!scaleGSettings) {
         return;
+    }    
+    QStringList keys = scaleGSettings->keys();
+    if (keys.contains("hidpi")){
+        scaleGSettings->set(USER_SACLE_KEY, true);
     }
-    qDebug()<<"setSessionScale---------->"<<endl;
-    scaleGSettings->set(USER_SACLE_KEY, true);
-    scaleGSettings->set(GDK_SCALE_KEY, scale);
-    scaleGSettings->set(QT_SCALE_KEY, scale);
+    if (keys.contains("gdk-scale")){
+        scaleGSettings->set(GDK_SCALE_KEY, scale);
+    }
+    if (keys.contains("qt-scale-factor")) {
+        scaleGSettings->set(QT_SCALE_KEY, scale);
+    }
 }
 
 void Widget::clearOutputIdentifiers()
@@ -773,10 +779,13 @@ void Widget::save()
 
     bool atLeastOneEnabledOutput = false;
     int i = 0;
-    Q_FOREACH(const KScreen::OutputPtr &output, config->outputs()) {
+    int connectedScreen = 0;
+    Q_FOREACH(const KScreen::OutputPtr &output, config->outputs()) {        
         KScreen::ModePtr mode = output->currentMode();
         if (output->isEnabled()) {
+//            qDebug()<<"atLeastOneEnabledOutput------------>"<<endl;
             atLeastOneEnabledOutput = true;
+            connectedScreen++;
         }
         if (!output->isConnected())
             continue;
@@ -798,7 +807,7 @@ void Widget::save()
                 return;
             }
         }
-        qDebug()<<" clone mode--------->"<<endl;
+//        qDebug()<<" clone mode--------->"<<endl;
         inputXml[i].isClone = base->isCloneMode() == true?"true":"false";
         inputXml[i].outputName = output->name();
 
@@ -827,12 +836,10 @@ void Widget::save()
         getEdidInfo(output->name(),&inputXml[i]);
         i++;
     }
-
-    if (!atLeastOneEnabledOutput) {
-        qDebug()<<"atLeastOneEnabledOutput------>"<<endl;
-
+    if (!atLeastOneEnabledOutput || (1 == connectedScreen && !closeScreenButton->isChecked())) {
         KMessageBox::error(this,tr("please insure at least one output!"),
                            tr("Warning"),KMessageBox::Notify);
+        closeScreenButton->setChecked(true);
         return ;
     }
 
