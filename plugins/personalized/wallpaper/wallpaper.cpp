@@ -61,6 +61,7 @@ Wallpaper::Wallpaper()
     const QByteArray id(BACKGROUND);
     if (QGSettings::isSchemaInstalled(id)){
         settingsCreate = true;
+
         bgsettings = new QGSettings(id);
         setupConnect();
         initBgFormStatus();

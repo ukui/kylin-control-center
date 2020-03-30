@@ -59,7 +59,7 @@ void WorkerObject::run(){
             continue;
 
         QString filename = QString(iters.key());
-        QPixmap pixmap = QPixmap(filename).scaled(IMAGE_SIZE);
+        QPixmap pixmap = QPixmap(filename)/*.scaled(IMAGE_SIZE)*/;
 
         emit pixmapGenerate(pixmap, filename);
     }
