@@ -138,7 +138,7 @@ void CreateUserDialog::setupConnect(){
     });
 
     connect(ui->pwdsureLineEdit, &QLineEdit::textChanged, [=](QString text){
-        if (text != ui->pwdLineEdit->text()){
+        if (!text.isEmpty() && text != ui->pwdLineEdit->text()){
             pwdSureTip = tr("Inconsistency with pwd");
         } else {
             pwdSureTip = "";
@@ -232,10 +232,12 @@ void CreateUserDialog::pwdLegalityCheck(QString pwd){
     }
 
     //防止先输入确认密码，再输入密码后pwdsuretipLabel无法刷新
-    if (ui->pwdLineEdit->text() == ui->pwdsureLineEdit->text()) {
-        pwdSureTip = "";
-    } else {
-        pwdSureTip = tr("Inconsistency with pwd");
+    if (!ui->pwdsureLineEdit->text().isEmpty()){
+        if (ui->pwdLineEdit->text() == ui->pwdsureLineEdit->text()) {
+            pwdSureTip = "";
+        } else {
+            pwdSureTip = tr("Inconsistency with pwd");
+        }
     }
 
     ui->tipLabel->setText(pwdTip);
