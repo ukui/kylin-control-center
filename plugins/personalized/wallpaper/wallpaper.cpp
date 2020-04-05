@@ -113,12 +113,12 @@ void Wallpaper::setupQStylesheet(){
     ui->browserLocalwpBtn->setStyleSheet(btnQss);
     ui->browserOnlinewpBtn->setStyleSheet(btnQss);
 
-    ui->resetBtn->setStyleSheet("QPushButton{border: none;}");
+    ui->resetBtn->setStyleSheet(btnQss);
 }
 
 void Wallpaper::setupComponent(){
 
-    ui->browserLocalwpBtn->hide();
+//    ui->browserLocalwpBtn->hide();
     ui->browserOnlinewpBtn->hide();
     //背景形式
     QStringList formList;
@@ -153,6 +153,14 @@ void Wallpaper::setupComponent(){
     ui->picOptionsComBox->addItem(tr("stretched"), "stretched");
     ui->picOptionsComBox->addItem(tr("zoom"), "zoom");
     ui->picOptionsComBox->addItem(tr("spanned"), "spanned");
+
+    //屏蔽背景放置方式无效
+    ui->picOptionsComBox->hide();
+    ui->picOptionsLabel->hide();
+
+    //屏蔽纯色背景的确定按钮
+    ui->cancelBtn->hide();
+    ui->certainBtn->hide();
 }
 
 void Wallpaper::setupConnect(){
@@ -164,7 +172,7 @@ void Wallpaper::setupConnect(){
         picUnit->setPixmap(pixmap);
         picUnit->setFilenameText(filename);
         connect(picUnit, &PictureUnit::clicked, [=](QString fn){
-            ui->previewLabel->setPixmap(pixmap.scaled(ui->previewLabel->size()));
+//            ui->previewLabel->setPixmap(pixmap.scaled(ui->previewLabel->size()));
             bgsettings->set(FILENAME, fn);
             ui->previewStackedWidget->setCurrentIndex(PICTURE);
         });
@@ -199,6 +207,10 @@ void Wallpaper::setupConnect(){
     pThread->start();
 
     connect(ui->picOptionsComBox, SIGNAL(currentTextChanged(QString)), this, SLOT(wpOptionsChangedSlot(QString)));
+
+    connect(ui->browserLocalwpBtn, &QPushButton::clicked, [=]{
+        showLocalWpDialog();
+    });
     connect(ui->resetBtn, SIGNAL(clicked(bool)), this, SLOT(resetDefaultWallpaperSlot()));
 
     ///纯色背景
@@ -242,6 +254,7 @@ void Wallpaper::setupConnect(){
     //壁纸变动后改变用户属性
     connect(bgsettings, &QGSettings::changed, [=](QString key){
 
+        initBgFormStatus();
 
         //GSettings key picture-filename 这里收到 pictureFilename的返回值
         if (!QString::compare(key, "pictureFilename")){
@@ -312,14 +325,6 @@ void Wallpaper::initBgFormStatus(){
     ui->substackedWidget->setCurrentIndex(currentIndex);
     ui->previewStackedWidget->setCurrentIndex(currentIndex);
 
-    //屏蔽背景放置方式无效
-    ui->picOptionsComBox->hide();
-    ui->picOptionsLabel->hide();
-
-    //屏蔽纯色背景的确定按钮
-    ui->cancelBtn->hide();
-    ui->certainBtn->hide();
-
     //根据背景形式选择显示组件
     showComponent(currentIndex);
 }
@@ -339,6 +344,7 @@ void Wallpaper::showComponent(int index){
 void Wallpaper::initPreviewStatus(){
     //设置图片背景的预览效果
     QString filename = bgsettings->get(FILENAME).toString();
+
     QByteArray ba = filename.toLatin1();
     if (g_file_test(ba.data(), G_FILE_TEST_EXISTS)){
         ui->previewLabel->setPixmap(QPixmap(filename).scaled(ui->previewLabel->size()));
@@ -408,8 +414,34 @@ void Wallpaper::resetDefaultWallpaperSlot(){
     g_object_unref(wpgsettings);
 
     bgsettings->set(FILENAME, QVariant(QString(dwp)));
+}
 
-    initPreviewStatus();
+void Wallpaper::showLocalWpDialog(){
+    QString filters = "Wallpaper files(*.png *.jpg)";
+    QFileDialog fd;
+    fd.setDirectory(QString(const_cast<char *>(g_get_user_special_dir(G_USER_DIRECTORY_PICTURES))));
+    fd.setAcceptMode(QFileDialog::AcceptOpen);
+    fd.setViewMode(QFileDialog::List);
+    fd.setNameFilter(filters);
+    fd.setFileMode(QFileDialog::ExistingFile);
+    fd.setWindowTitle(tr("selsect custom wallpaper file"));
+    fd.setLabelText(QFileDialog::Accept, tr("Select"));
+    fd.setLabelText(QFileDialog::LookIn, tr("Position: "));
+    fd.setLabelText(QFileDialog::FileName, tr("FileName: "));
+    fd.setLabelText(QFileDialog::FileType, tr("FileType: "));
+    fd.setLabelText(QFileDialog::Reject, tr("Cancel"));
+
+    if (fd.exec() != QDialog::Accepted)
+        return;
+    QString selectedfile;
+    selectedfile = fd.selectedFiles().first();
+
+    ///TODO: chinese and space support
+
+    if (g_file_test(selectedfile.toLatin1().data(), G_FILE_TEST_EXISTS))
+        bgsettings->set(FILENAME, QVariant(selectedfile));
+    else
+        bgsettings->reset(FILENAME);
 }
 
 void Wallpaper::add_custom_wallpaper(){

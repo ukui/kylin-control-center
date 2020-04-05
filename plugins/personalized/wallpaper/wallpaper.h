@@ -91,6 +91,8 @@ public:
     int _getCurrentBgForm();
     void initPreviewStatus();
 
+    void showLocalWpDialog();
+
     void showComponent(int index);
 
 private:
