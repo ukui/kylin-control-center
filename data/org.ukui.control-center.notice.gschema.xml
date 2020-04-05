@@ -27,41 +27,6 @@
       <summary>messages notice</summary>
       <description>.</description>
     </key>
-    <key name="voice" type="b">
-      <default>true</default>
-      <summary>voice notice</summary>
-      <description>.</description>
-    </key>
-    <key name="kylin-video" type="b">
-      <default>true</default>
-      <summary>kylin-video notice</summary>
-      <description>.</description>
-    </key>
-    <key name="kylin-videonumber" type="s">
-      <default>"1"</default>
-      <summary>kylin-video notice</summary>
-      <description>.</description>
-    </key>
-    <key name="kylin-assistant" type="b">
-      <default>true</default>
-      <summary>kylin-assistant notice</summary>
-      <description>.</description>
-    </key>
-    <key name="kylin-assistantnumber" type="s">
-      <default>"1"</default>
-      <summary>kylin-assistant notice</summary>
-      <description>.</description>
-    </key>
-    <key name="ubuntu-kylin-software-center" type="b">
-      <default>true</default>
-      <summary>ubuntu-kylin-software-center notice</summary>
-      <description>.</description>
-    </key>
-    <key name="ubuntu-kylin-software-centernumber" type="s">
-      <default>'1'</default>
-      <summary>ubuntu-kylin-software-center notice</summary>
-      <description>.</description>
-    </key>
     <key name="maximize" type='i'>
       <default>3</default>
       <summary>maximize num of messages</summary>
