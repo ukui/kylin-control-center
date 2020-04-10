@@ -22,6 +22,11 @@
 
 #include <QObject>
 #include <QtPlugin>
+#include <tuple>
+#include <QIcon>
+#include <QVector>
+#include <QPushButton>
+#include <QMap>
 
 #include "shell/interface.h"
 
@@ -49,10 +54,15 @@ public:
     void plugin_delay_control() Q_DECL_OVERRIDE;
 
 public:
+    void initTranslation();
     void setupComponent();
     void setupConnect();
     void initVisibleStatus();
     void initLockingStatus();
+    void initTrayStatus(QString name, QIcon icon, QGSettings *gsettings);
+    void initTraySettings();
+
+
 
 private:
     SwitchButton * deskComputerSwitchBtn;
@@ -71,10 +81,21 @@ private:
 private:
     Ui::Desktop *ui;
 
-    QString pluginName;
     int pluginType;
+    QString pluginName;
     QWidget * pluginWidget;
+    QVector<QGSettings*> *vecGsettings;
+    QMap<QString, QString> transMap; // transaltion Map
 
 };
+
+class UKUIpushButton:public QPushButton
+{
+public:
+    UKUIpushButton(int winID);
+    ~UKUIpushButton();
+
+};
+
 
 #endif // DESKTOP_H

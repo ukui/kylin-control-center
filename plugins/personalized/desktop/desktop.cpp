@@ -21,10 +21,11 @@
 #include "ui_desktop.h"
 
 #include <QGSettings/QGSettings>
-
 #include "SwitchButton/switchbutton.h"
+#include "realizedesktop.h"
 
 #include <QDebug>
+#include <QPushButton>
 
 //#define DESKTOP_SCHEMA "org.ukui.peony.desktop"
 #define DESKTOP_SCHEMA "org.ukui.control-center.desktop"
@@ -63,14 +64,35 @@ Desktop::Desktop()
     ui->menuFilesystemWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
     ui->menuSettingWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
+    ui->trayListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->trayListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    ui->titleLabel->setVisible(false);
+    ui->title2Label->setVisible(false);
+
+    ui->deskComputerWidget->setVisible(false);
+    ui->deskTrashWidget->setVisible(false);
+    ui->deskHomeWidget->setVisible(false);
+    ui->deskVolumeWidget->setVisible(false);
+    ui->deskNetworkWidget->setVisible(false);
+
+    ui->menuComputerWidget->setVisible(false);
+    ui->menuTrashWidget->setVisible(false);
+    ui->menuFilesystemWidget->setVisible(false);
+    ui->menuSettingWidget->setVisible(false);
+
+    ui->trayListWidget->setStyleSheet("QListWidget#trayListWidget{border: none;}");
+
+    vecGsettings = new QVector<QGSettings*>();
     const QByteArray id(DESKTOP_SCHEMA);
     dSettings = new QGSettings(id);
 
+    initTranslation();
     setupComponent();
     setupConnect();
     initVisibleStatus();
     initLockingStatus();
+    initTraySettings();
 }
 
 Desktop::~Desktop()
@@ -78,6 +100,7 @@ Desktop::~Desktop()
     delete ui;
 
     delete dSettings;
+    delete vecGsettings;
 }
 
 QString Desktop::get_plugin_name(){
@@ -94,6 +117,17 @@ QWidget *Desktop::get_plugin_ui(){
 
 void Desktop::plugin_delay_control(){
 
+}
+
+void Desktop::initTranslation() {
+    transMap.insert("blueman", "蓝牙");
+    transMap.insert("sogou-qimpanel", "输入法");
+    transMap.insert("indicator-china-weather", "麒麟天气");
+    transMap.insert("explorer.exe", "微信");
+    transMap.insert("ukui-flash-disk", "U盘管理工具");
+    transMap.insert("kylin-nm", "网络工具");
+    transMap.insert("ukui-volume-control-applet-qt", "音量控制");
+    transMap.insert("ukui-sidebar", "侧边栏");
 }
 
 void Desktop::setupComponent(){
@@ -197,3 +231,123 @@ void Desktop::initLockingStatus(){
     menuSettingSwitchBtn->blockSignals(false);
     menuTrashSwitchBtn->blockSignals(false);
 }
+
+void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
+    const QString locale = QLocale::system().name();
+
+    //构建Widget
+    QWidget * baseWidget = new QWidget();
+    baseWidget->setAttribute(Qt::WA_DeleteOnClose);
+
+    QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);
+    baseVerLayout->setSpacing(0);
+    baseVerLayout->setContentsMargins(0, 0, 0, 2);
+
+    QWidget * devWidget = new QWidget();
+    devWidget->setMinimumWidth(550);
+    devWidget->setMaximumWidth(960);
+    devWidget->setMinimumHeight(50);
+    devWidget->setMaximumHeight(50);
+    devWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+
+    QHBoxLayout * devHorLayout = new QHBoxLayout();
+    devHorLayout->setSpacing(8);
+    devHorLayout->setContentsMargins(16, 0, 16, 0);
+
+    QPushButton * iconBtn = new QPushButton();
+    QSizePolicy iconSizePolicy = iconBtn->sizePolicy();
+    iconSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
+    iconSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
+    iconBtn->setSizePolicy(iconSizePolicy);
+//    iconBtn->setIcon(QIcon::fromTheme(appsName.at(i)));
+
+
+    QLabel * nameLabel = new QLabel();
+    QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
+    nameSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
+    nameSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
+    nameLabel->setSizePolicy(nameSizePolicy);
+    nameLabel->setScaledContents(true);
+    if ("zh_CN" == locale && transMap.contains(name)) {
+        nameLabel->setText(transMap.value(name));
+    } else {
+        nameLabel->setText(name);
+    }
+
+
+    SwitchButton *appSwitch = new SwitchButton();
+
+//    devHorLayout->addWidget(iconBtn);
+    devHorLayout->addWidget(nameLabel);
+    devHorLayout->addStretch();
+
+    devHorLayout->addWidget(appSwitch);
+
+    devWidget->setLayout(devHorLayout);
+
+    baseVerLayout->addWidget(devWidget);
+    baseVerLayout->addStretch();
+
+    baseWidget->setLayout(baseVerLayout);
+
+    QListWidgetItem * item = new QListWidgetItem(ui->trayListWidget);
+    item->setSizeHint(QSize(502, 52));
+
+    ui->trayListWidget->setItemWidget(item, baseWidget);
+
+    QString status = gsettings->get(TRAY_ACTION_KEY).toString();
+    if ("tray" == status) {
+        appSwitch->setChecked(true);
+    } else {
+        appSwitch->setChecked(false);
+    }
+
+    connect(appSwitch, &SwitchButton::checkedChanged, [=](bool checked) {
+        if (checked) {
+            gsettings->set(TRAY_ACTION_KEY, "tray");
+            gsettings->set(TRAY_RECORD_KEY, "tray");
+        } else {
+            gsettings->set(TRAY_ACTION_KEY, "storage");
+            gsettings->set(TRAY_RECORD_KEY, "storage");
+        }
+    });
+}
+
+
+void Desktop::initTraySettings() {
+    QString action;
+    QString name;
+    int winID;
+    QIcon icon;
+
+    QList<char *> trayList = listExistsCustomDesktopPath();
+//    qDebug()<<"path is------------->"<<trayList.length()<<endl;
+    for (int i = 0; i < trayList.length(); i++) {
+        const QByteArray id(TRAY_SCHEMA);
+        QGSettings * traySettings = nullptr;
+        QString path = QString("%1%2").arg(TRAY_SCHEMA_PATH).arg(QString(trayList.at(i)));;
+
+
+        if (QGSettings::isSchemaInstalled(id)) {
+            traySettings = new QGSettings(id, path.toLatin1().data());
+            vecGsettings->append(traySettings);
+            QStringList keys = traySettings->keys();
+
+            if (keys.contains(static_cast<QString>(TRAY_NAME_KEY)) &&
+                    keys.contains(static_cast<QString>(TRAY_ACTION_KEY))) {
+                name = traySettings->get(TRAY_NAME_KEY).toString();
+                action = traySettings->get(TRAY_ACTION_KEY).toString();
+                winID = traySettings->get(TRAY_BINDING_KEY).toInt();
+//                show(winID);
+            }
+//            qDebug()<<"action is-------------->"<<action<<" "<<name<<endl;
+
+            if (!("" == name || "fcitx" == name ||
+                  "freeze" == action)){
+                initTrayStatus(name, icon, traySettings);
+            }
+
+        }
+    }
+}
+

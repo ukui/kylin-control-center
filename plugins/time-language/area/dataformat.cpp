@@ -16,7 +16,7 @@ DataFormat::DataFormat(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-    setAttribute(Qt::WA_TranslucentBackground);
+//    setAttribute(Qt::WA_TranslucentBackground);
 
     QByteArray id(PANEL_GSCHEMAL);
     if(QGSettings::isSchemaInstalled(id)) {
@@ -30,6 +30,8 @@ DataFormat::DataFormat(QWidget *parent) :
         qss = QLatin1String(QssFile.readAll());
         QssFile.close();
     }
+
+    locale = QLocale::system().name();
 
 
     initUi();
@@ -64,7 +66,7 @@ void DataFormat::initUi() {
     ui->timeBox->setMaxVisibleItems(5);
 
 
-    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
+//    ui->frame->setStyleSheet("QFrame{background: #ffffff;}");
     //关闭按钮在右上角，窗体radius 6px，所以按钮只得6px
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
     ui->closeBtn->setStyleSheet("QPushButton#closeBtn{background: #ffffff; border: none; border-radius: 6px;}"
@@ -93,8 +95,11 @@ void DataFormat::initUi() {
     ui->dateLabel->setText(tr("date"));
     ui->timeLabel->setText(tr("time"));
 
-    ui->calendarBox->addItem(tr("lunar"));
     ui->calendarBox->addItem(tr("solar calendar"));
+
+    if ("zh_CN" == locale){
+        ui->calendarBox->addItem(tr("lunar"));
+    }
 
     ui->dayBox->addItem(tr("monday"));
     ui->dayBox->addItem(tr("sunday"));        
@@ -143,7 +148,7 @@ void DataFormat::initComponent() {
     }
 
     QString clac = m_gsettings->get(CALENDAR_KEY).toString();
-    if ("lunar" == clac) {
+    if ("solarlunar" == clac) {
         ui->calendarBox->setCurrentIndex(0);
     } else {
         ui->calendarBox->setCurrentIndex(1);
@@ -204,9 +209,9 @@ void DataFormat::confirm_btn_slot() {
     QString timeValue;
 
     if ( 0 == ui->calendarBox->currentIndex()) {
-        calendarValue = "lunar";
-    } else {
         calendarValue = "solarlunar";
+    } else {
+        calendarValue = "lunar";
     }
 
     if ( 0 == ui->dayBox->currentIndex()) {
@@ -234,4 +239,42 @@ void DataFormat::confirm_btn_slot() {
 
     emit dataChangedSignal();
     this->close();
+}
+
+void DataFormat::paintEvent(QPaintEvent *event) {
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+    QPainterPath rectPath;
+    rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 5, 5);
+    // 画一个黑底
+    QPixmap pixmap(this->rect().size());
+    pixmap.fill(Qt::transparent);
+    QPainter pixmapPainter(&pixmap);
+    pixmapPainter.setRenderHint(QPainter::Antialiasing);
+    pixmapPainter.setPen(Qt::transparent);
+    pixmapPainter.setBrush(Qt::green);
+    pixmapPainter.drawPath(rectPath);
+    pixmapPainter.end();
+
+    // 模糊这个黑底
+    QImage img = pixmap.toImage();
+//    qt_blurImage(img, 10, false, false);
+
+    // 挖掉中心
+    pixmap = QPixmap::fromImage(img);
+    QPainter pixmapPainter2(&pixmap);
+    pixmapPainter2.setRenderHint(QPainter::Antialiasing);
+    pixmapPainter2.setCompositionMode(QPainter::CompositionMode_Clear);
+    pixmapPainter2.setPen(Qt::transparent);
+    pixmapPainter2.setBrush(Qt::transparent);
+    pixmapPainter2.drawPath(rectPath);
+
+    // 绘制阴影
+    p.drawPixmap(this->rect(), pixmap, pixmap.rect());
+
+    // 绘制背景
+    p.save();
+    p.fillPath(rectPath, QColor(255, 255, 255));
+    p.restore();
+
 }

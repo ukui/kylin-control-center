@@ -1,4 +1,3 @@
-
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  *
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
@@ -18,22 +17,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef CHANGTIME_H
-#define CHANGTIME_H
+#ifndef REALIZENOTICE_H
+#define REALIZENOTICE_H
 
-#include <QDialog>
-#include <QWidget>
-#include <QTimer>
-#include <QDateTime>
+
 #include <QGSettings/QGSettings>
-#include <QDBusInterface>
-#include <QDBusConnection>
-#include <QDBusReply>
-#include <QStyledItemDelegate>
-#include <QFile>
-#include <QListView>
-#include <QPainter>
-
+#include <QList>
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -45,44 +34,23 @@
 extern "C" {
 #include <glib.h>
 #include <gio/gio.h>
+#include <dconf/dconf.h>
 }
 
-namespace Ui {
-class changtimedialog;
-}
+#define TRAY_SCHEMA "org.ukui.panel.tray"
+#define TRAY_SCHEMA_PATH "/org/ukui/tray/keybindings/"
 
-class ChangtimeDialog : public QDialog
-{
-    Q_OBJECT
+#define TRAY_ACTION_KEY "action"
+#define TRAY_RECORD_KEY "record"
+#define TRAY_NAME_KEY   "name"
+#define TRAY_BINDING_KEY "binding"
 
-public:
-    explicit ChangtimeDialog(bool hour, QWidget *parent = nullptr);
-    ~ChangtimeDialog();
-
-    void initUi();
-    void initStatus();
-    void hourComboxSetup();
-    void ymdComboxSetup();
-
-protected:
-    void paintEvent(QPaintEvent *);
-
-private:
-    QTimer *m_chtimer = nullptr;
-    Ui::changtimedialog *ui;
-
-    QGSettings * m_formatsettings = nullptr;
-    QDBusInterface *m_datetimeInterface = nullptr;
-    bool m_isEFHour; //24小时制
-    QString qss;        
+#define MAX_TRAY 1000
 
 
-private slots:
-    void datetimeUpdateSlot();
-    void dayUpdateSlot();
-    void changtimeApplySlot();
+QList<char *> listExistsCustomDesktopPath();
+
+QString findFreePath();
 
 
-};
-
-#endif // CHANGTIME_H
+#endif // REALIZENOTICE_H

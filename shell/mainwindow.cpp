@@ -218,6 +218,12 @@ void MainWindow::bootOptionsFilter(QString opt){
     } else if (opt == "-p"){
         //电源
         bootOptionsSwitch(SYSTEM, POWER);
+    } else if (opt == "-t") {
+        // Datetime moudle
+        bootOptionsSwitch(DATETIME, AREA);
+    } else if (opt == "-s") {
+        // Audio module
+        bootOptionsSwitch(DEVICES, AUDIO);
     }
 }
 
@@ -273,8 +279,8 @@ void MainWindow::loadPlugins(){
 
 
     foreach (QString fileName, pluginsDir.entryList(QDir::Files)){
-        if (fileName == "libdesktop.so")
-            continue;
+//        if (fileName == "libdesktop.so")
+//            continue;
 //        if (fileName == "libnotice.so")
 //            continue;
         if (fileName == "libexperienceplan.so")

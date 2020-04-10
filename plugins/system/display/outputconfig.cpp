@@ -310,11 +310,11 @@ void OutputConfig::initUi()
     }
     slotScaleChanged(scale - 1);
 
-//    int gScale = getScreenScale();
+    int gScale = getScreenScale();
 //    qDebug()<<"scale is----->test--------->"<<gScale<<endl;
-//    if (gScale <= scaleCombox->count() && gScale > 0) {
-//        scaleCombox->setCurrentIndex(gScale - 1);
-//    }
+    if (gScale <= scaleCombox->count() && gScale > 0) {
+        scaleCombox->setCurrentIndex(gScale - 1);
+    }
 }
 
 int OutputConfig::getMaxReslotion() {

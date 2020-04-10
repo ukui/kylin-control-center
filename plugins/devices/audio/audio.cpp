@@ -30,7 +30,7 @@ Audio::Audio()
     pluginWidget->setStyleSheet("background: #ffffff;");
     ui->setupUi(pluginWidget);
 
-    pluginName = tr("声音");
+    pluginName = tr("Audio");
     pluginType = DEVICES;
 }
 

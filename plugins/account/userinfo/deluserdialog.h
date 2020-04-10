@@ -23,6 +23,7 @@
 #include <QDialog>
 #include <QSignalMapper>
 #include <QAbstractButton>
+#include <QPainter>
 
 namespace Ui {
 class DelUserDialog;
@@ -42,6 +43,9 @@ public:
 
     void setFace(QString file);
     void setUsername(QString name);
+
+protected:
+    void paintEvent(QPaintEvent *);
 
 private:
     Ui::DelUserDialog *ui;

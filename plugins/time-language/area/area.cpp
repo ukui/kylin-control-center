@@ -189,6 +189,7 @@ void Area::initComponent() {
 void Area::initFormatData() {
 //    qDebug()<<"initFormatData------>"<<endl;
 
+    QString locale = QLocale::system().name();
     if (!m_gsettings) {
         return ;
     }
@@ -198,6 +199,9 @@ void Area::initFormatData() {
         return ;
     }
 
+    if ( "zh_CN" != locale) {
+        m_gsettings->set(CALENDAR_KEY, "solarlunar");
+    }
     QString clac = m_gsettings->get(CALENDAR_KEY).toString();
     if ("lunar" == clac) {
         ui->Lunarcalendar->setText(tr("lunar"));

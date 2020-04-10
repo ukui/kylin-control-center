@@ -82,7 +82,7 @@ Item {
         }
 
 //对识别按钮注释
-        Controls.ToolButton {
+//        Controls.ToolButton {
 
 //            id: identifyButton
 //            objectName: "identifyButton";
@@ -98,6 +98,6 @@ Item {
 //            iconName: "kdocumentinfo"
 
 //            tooltip: i18nd("kcm_displayconfiguration", "Identify outputs");
-        }
+//        }
     }
 }

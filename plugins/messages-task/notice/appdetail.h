@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QGSettings/QGSettings>
+#include <QPainter>
 
 #include "SwitchButton/switchbutton.h"
 
@@ -35,6 +36,10 @@ private:
     void initComponent();
     void initConnect();
 //    void initGSettings();
+
+protected:
+    void paintEvent(QPaintEvent *);
+
 
 private slots:
     void confirmbtnSlot();

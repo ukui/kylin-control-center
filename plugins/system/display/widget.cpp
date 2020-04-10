@@ -130,7 +130,7 @@ Widget::Widget(QWidget *parent)
 
 
     connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(save()));
-//    connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(saveBrigthnessConfig()));
+    connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(saveBrigthnessConfig()));
 
 
 
@@ -657,7 +657,7 @@ void Widget::writeConfigFile() {
 
     m_qsettings->setValue("dawn-time", cltime);
     m_qsettings->setValue("dusk-time", optime);
-    m_qsettings->setValue("temp-day", value);
+    m_qsettings->setValue("temp-day", tempDayBrig);
     m_qsettings->setValue("temp-night", value);
 
     m_qsettings->endGroup();

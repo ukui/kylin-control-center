@@ -25,6 +25,7 @@
 #include <QDir>
 #include <QListWidgetItem>
 #include <QFileDialog>
+#include <QPainter>
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -59,6 +60,9 @@ public:
     void showLocalFaceDialog();
 
     QMap<QString, QListWidgetItem *> delitemMap;
+
+protected:
+    void paintEvent(QPaintEvent *);
 
 private:
     Ui::ChangeFaceDialog *ui;

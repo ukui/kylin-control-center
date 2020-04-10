@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>882</width>
     <height>710</height>
    </rect>
   </property>
@@ -66,8 +66,8 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Back up your files to other drives, and when the original files are lost, damaged, or deleted, you can restore them to ensure 
-the integrity of your system.</string>
+      <string>Back up your files to other drives, and when the original files are lost, damaged, or deleted, 
+you can restore them to ensure the integrity of your system.</string>
      </property>
      <property name="scaledContents">
       <bool>true</bool>

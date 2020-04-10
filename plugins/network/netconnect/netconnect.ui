@@ -177,7 +177,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Change net settings</string>
+        <string>Network settings</string>
        </property>
       </widget>
      </item>

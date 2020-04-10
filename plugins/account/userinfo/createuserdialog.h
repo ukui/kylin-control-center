@@ -22,6 +22,7 @@
 
 #include <QDialog>
 #include <QProcess>
+#include <QPainter>
 
 #include <QFile>
 #include <QStyledItemDelegate>
@@ -46,6 +47,10 @@ public:
 
     void nameLegalityCheck(QString username);
     void pwdLegalityCheck(QString pwd);
+
+protected:
+    void paintEvent(QPaintEvent *);
+
 
 private:
     Ui::CreateUserDialog *ui;

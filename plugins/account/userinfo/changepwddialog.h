@@ -21,6 +21,7 @@
 #define CHANGEPWDDIALOG_H
 
 #include <QDialog>
+#include <QPainter>
 
 namespace Ui {
 class ChangePwdDialog;
@@ -44,6 +45,10 @@ public:
     void setUsername(QString username);
     void setPwdType(QString type);
     void setAccountType(QString text);
+
+protected:
+    void paintEvent(QPaintEvent *);
+
 
 private:
     Ui::ChangePwdDialog *ui;

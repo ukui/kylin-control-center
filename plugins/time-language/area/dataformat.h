@@ -6,6 +6,7 @@
 #include <QGSettings/QGSettings>
 #include <QListView>
 #include <QFile>
+#include <QPainter>
 
 namespace Ui {
 class DataFormat;
@@ -19,10 +20,14 @@ public:
     explicit DataFormat(QWidget *parent = nullptr);
     ~DataFormat();
 
+protected:
+    void paintEvent(QPaintEvent *);
+
 private:
     QTimer *m_itimer;
     QGSettings *m_gsettings = nullptr;
     QString qss;
+    QString locale;
 
 private:
     Ui::DataFormat *ui;

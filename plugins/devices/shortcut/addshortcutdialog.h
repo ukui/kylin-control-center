@@ -22,6 +22,7 @@
 
 #include <QDialog>
 #include <QFileDialog>
+#include <QPainter>
 
 namespace Ui {
 class addShortcutDialog;
@@ -40,6 +41,10 @@ public:
     void openProgramFileDialog();
 
     void setUpdateEnv(QString path, QString name, QString exec);
+
+protected:
+    void paintEvent(QPaintEvent *);
+
 
 private:
     Ui::addShortcutDialog *ui;

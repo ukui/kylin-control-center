@@ -39,6 +39,8 @@ NetConnect::NetConnect():m_wifiList(new Wifi)
     pluginName = tr("Netconnect");
     pluginType = NETWORK;
 
+    ui->detailBtn->setText(tr("Network settings"));
+
     wifiBtn = new SwitchButton();
 
     pluginWidget->setStyleSheet("background: #ffffff;");

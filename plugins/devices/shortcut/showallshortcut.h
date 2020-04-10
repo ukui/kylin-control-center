@@ -21,6 +21,7 @@
 #define SHOWALLSHORTCUT_H
 
 #include <QDialog>
+#include <QPainter>
 
 namespace Ui {
 class ShowAllShortcut;
@@ -62,6 +63,10 @@ public:
 
     QWidget * buildTitleWidget(QString tName);
     QWidget * buildGeneralWidget(QMap<QString, QString> subShortcutsMap);
+
+protected:
+    void paintEvent(QPaintEvent *);
+
 
 private:
     Ui::ShowAllShortcut *ui;

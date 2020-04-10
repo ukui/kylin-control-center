@@ -21,6 +21,7 @@
 #define CHANGETYPEDIALOG_H
 
 #include <QDialog>
+#include <QPainter>
 
 namespace Ui {
 class ChangeTypeDialog;
@@ -41,6 +42,9 @@ public:
     void setUsername(QString name);
     void setCurrentAccountTypeLabel(QString aType);
     void setCurrentAccountTypeBtn(int id);
+
+protected:
+    void paintEvent(QPaintEvent *);
 
 private:
     Ui::ChangeTypeDialog *ui;

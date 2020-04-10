@@ -519,7 +519,7 @@ QComboBox QListView::item:selected{
                     </size>
                    </property>
                    <property name="text">
-                    <string>Restore default wp</string>
+                    <string>Reset to default</string>
                    </property>
                   </widget>
                  </item>
