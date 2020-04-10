@@ -1449,7 +1449,7 @@ void UkmediaMainWidget::playAlretSoundFromPath (QString path)
    player->setMedia(QUrl::fromLocalFile(path));
    player->play();
    qDebug() << path << player->state() << player->mediaStatus();
-   player->deleteLater();
+//   player->deleteLater();
    connect(player,&QMediaPlayer::stateChanged,[=](QMediaPlayer::State state){
         switch (state) {
         case QMediaPlayer::StoppedState:

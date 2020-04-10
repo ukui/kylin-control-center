@@ -154,9 +154,7 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
                                        "line-height:40px;}");
     m_pIpVolumeLabel->setStyleSheet("QLabel{font-size:14px;"
                                     "font-family:Noto Sans S Chinese;"
-                                    "font-weight:400;"
-                                    "color:rgba(67,67,69,1);"
-                                    "line-height:40px;}");
+                                    "color:rgba(67,67,69,1);}");
     m_pIpVolumePercentLabel->setStyleSheet("QLabel{font-size:14px;"
                                            "font-family:Noto Sans S Chinese;"
                                            "font-weight:400;"

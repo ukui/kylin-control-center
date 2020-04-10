@@ -124,7 +124,7 @@ public:
     void ukuiInputLevelSetScale (UkmediaMainWidget *w, LevelScale scale);
     static void ukuiUpdatePeakValue (UkmediaMainWidget *w);
 
-    static gdouble ukuiFractionFromAdjustment(UkmediaMainWidget   *w);
+    static gdouble ukuiFractionFromAdjustment(UkmediaMainWidget  *w);
 
     static void onInputStreamControlAdded (MateMixerStream *stream,const gchar *name,UkmediaMainWidget *w);
     static void onInputStreamControlRemoved (MateMixerStream *stream,const gchar *name,UkmediaMainWidget *w);

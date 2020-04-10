@@ -33,18 +33,15 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pShutDownWidget = new QWidget(this);
     m_pLagoutWidget = new QWidget(this);
 
-
     m_pSoundEffectLabel = new QLabel(tr("System sound"),this);
     m_pSoundThemeLabel = new QLabel(tr("System sound theme"),m_pThemeWidget);
     m_pSoundThemeCombobox = new QComboBox(m_pThemeWidget);
-    m_pShutdownlabel = new QLabel(tr("Shutdown"),m_pShutDownWidget);
+    m_pShutdownlabel = new QLabel(tr("prompt voice"),m_pShutDownWidget);
     m_pShutdownCombobox = new QComboBox(m_pShutDownWidget);
     m_pLagoutLabel = new QLabel(tr("Lagout"),m_pLagoutWidget);
     m_pLagoutCombobox = new QComboBox(m_pLagoutWidget);
 
     QFile QssFile("://combox.qss");
-//    QFile QssFile("://combox.qss");
-//    QssFile.open(QFile::ReadOnly)
     if (QssFile.isOpen()){
         qss = QLatin1String(QssFile.readAll());
         QssFile.close();
@@ -52,12 +49,7 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
         qDebug()<<"combox.qss can not found"<<endl;
     }
     itemDelegate = new QStyledItemDelegate();
-//    bool ok = qss.open(QFile::ReadOnly);
-//    if (!ok)
-//        qDebug() << "加载失败";
 
-//    qApp->setStyleSheet(qss.readAll());
-//    qss.close();
     //设置大小
     m_pThemeWidget->setMinimumSize(550,50);
     m_pThemeWidget->setMaximumSize(960,50);
@@ -109,7 +101,7 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     lagoutLayout->setSpacing(0);
     m_pLagoutWidget->setLayout(lagoutLayout);
     m_pLagoutWidget->layout()->setContentsMargins(0,0,0,0);
-
+    m_pLagoutWidget->setVisible(false);
     //进行整体布局
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     vLayout->addWidget(m_pSoundEffectLabel);
@@ -117,7 +109,7 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     vLayout->addWidget(m_pThemeWidget);
     vLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     vLayout->addWidget(m_pShutDownWidget);
-    vLayout->addWidget(m_pLagoutWidget);
+//    vLayout->addWidget(m_pLagoutWidget);
     this->setLayout(vLayout);
     vLayout->setSpacing(0);
     this->layout()->setContentsMargins(0,0,0,0);
