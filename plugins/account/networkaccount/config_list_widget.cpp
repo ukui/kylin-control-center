@@ -89,7 +89,6 @@ void config_list_widget::init_gui() {
     setContentsMargins(0,0,0,0);
     setMinimumSize(550,850);
     setMaximumSize(960,1140);
-    adjustSize();
     exit_page->setMinimumSize(120,36);
     exit_page->setMaximumSize(120,36);
     exit_page->resize(120,36);
@@ -194,7 +193,7 @@ void config_list_widget::init_gui() {
     container->adjustSize();
     list->adjustSize();
 
-
+    this->setStyleSheet("QWidget{background-color:#ffffff;}");
     exit_page->setFocusPolicy(Qt::NoFocus);
 
     //connect(auto_syn->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_auto_syn(int,int)));
@@ -202,6 +201,7 @@ void config_list_widget::init_gui() {
     //Connect
     QWidget::connect(edit,SIGNAL(clicked()),this,SLOT(neweditdialog()));
     QWidget::connect(exit_page,SIGNAL(clicked()),this,SLOT(on_login_out()));
+    adjustSize();
     for(int btncnt = 0;btncnt < list->get_list().size();btncnt ++) {
         connect(list->get_item(btncnt)->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_switch_button(int,int)));
     }
@@ -226,6 +226,8 @@ void config_list_widget::set_login_process() {
     if(login->property("is_on") == false) {
         gif_step->show();
         login->setProperty("is_on",true);
+        login->style()->unpolish(login);
+        login->style()->polish(login);
         pm_step->start();
         gif_step->setMovie(pm_step);
         login->update();
