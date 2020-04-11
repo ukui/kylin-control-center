@@ -72,6 +72,7 @@ enum NetworkIndex{
 
 enum AccountIndex{
     USERINFO,
+    NETWORKACCOUNT,
     TOTALACCOUNTFUNC,
 };
 

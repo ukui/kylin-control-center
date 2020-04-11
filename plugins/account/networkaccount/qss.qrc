@@ -1,0 +1,4 @@
+<RCC>
+    <qresource prefix="/qss"/>
+    <qresource prefix="/qsss"/>
+</RCC>
