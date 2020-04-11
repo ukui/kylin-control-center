@@ -17,7 +17,7 @@ item_list::item_list(QListWidget *parent,int itemssize) : QListWidget(parent) {
     }
     setFrameShape(QListWidget::NoFrame);
     //customize the script on/off area
-
+    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //decorate the widget
     this->setSpacing(1);
 }
