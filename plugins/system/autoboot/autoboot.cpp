@@ -78,18 +78,20 @@ AutoBoot::AutoBoot(){
 
     localconfigdir = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
     //初始化添加界面
-    dialog = new AddAutoBoot();
+//    dialog = new AddAutoBoot();
 
     initUI();
 
-    connect(ui->addBtn, &QPushButton::clicked, this, [=]{dialog->exec();});
+    connect(ui->addBtn, &QPushButton::clicked, this, [=]{
+        AddAutoBoot * mdialog = new AddAutoBoot();
+        mdialog->exec();});
     connect(dialog, SIGNAL(autoboot_adding_signals(QString, QString,QString,QString)), this, SLOT(add_autoboot_realize_slot(QString ,QString,QString,QString)));
 }
 
 AutoBoot::~AutoBoot()
 {
     delete ui;
-    delete dialog;
+//    delete dialog;
     g_free(localconfigdir);
 }
 
