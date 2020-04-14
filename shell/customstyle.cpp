@@ -4,6 +4,8 @@
 #include <QPainter>
 #include <QStyleOption>
 
+#include <QLineEdit>
+
 #include <QApplication>
 
 InternalStyle::InternalStyle(const QString &styleName, QObject *parent) : QProxyStyle(styleName)
@@ -18,11 +20,11 @@ void InternalStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyle
     case QStyle::PE_Frame: {
 
         return;
-        break;
     }
+    case PE_IndicatorViewItemCheck:
+    case PE_PanelItemViewRow:
     case PE_PanelItemViewItem: {
         return;
-        break;
     }
     default:
         break;
@@ -38,6 +40,11 @@ void InternalStyle::drawControl(QStyle::ControlElement element, const QStyleOpti
     case CE_ShapedFrame:
 
         break;
+    case CE_ItemViewItem: {
+        QStyleOptionViewItem item = *qstyleoption_cast<const QStyleOptionViewItem *>(option);
+        item.palette.setColor(QPalette::Highlight, item.palette.base().color());
+        return QProxyStyle::drawControl(element, &item, painter, widget);
+    }
     default:
         break;
     }
@@ -48,4 +55,16 @@ void InternalStyle::polish(QPalette &pal)
 {
     QProxyStyle::polish(pal);
     pal.setColor(QPalette::Window, pal.base().color());
+    pal.setColor(QPalette::Inactive, QPalette::Base, pal.base().color());
+//    pal.setColor(QPalette::Button, pal.alternateBase().color());
+}
+
+void InternalStyle::polish(QWidget *widget)
+{
+    QProxyStyle::polish(widget);
+    if (qobject_cast<QLineEdit *>(widget)) {
+        auto pal = qApp->palette();
+        pal.setColor(QPalette::Base, pal.alternateBase().color());
+        widget->setPalette(pal);
+    }
 }

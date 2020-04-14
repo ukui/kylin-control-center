@@ -31,6 +31,7 @@ public:
                      const QWidget *widget = nullptr) const;
 
     void polish(QPalette &pal);
+    void polish(QWidget *widget);
 
 signals:
 
