@@ -28,6 +28,8 @@
 #include "widgetgroup.h"
 #include "cursor/xcursortheme.h"
 
+#include "../../../shell/customstyle.h"
+
 #include <QDebug>
 
 /**
@@ -245,6 +247,7 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
 void Theme::initThemeMode(){
     //获取当前主题
     QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
+    qApp->setStyle(new InternalStyle(currentThemeMode));
     //设置界面
     for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
         QVariant valueVariant = button->property("value");
@@ -260,6 +263,7 @@ void Theme::initThemeMode(){
         QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
         if (QString::compare(currentThemeMode, themeMode)){
             qtSettings->set(MODE_QT_KEY, themeMode);
+            qApp->setStyle(new InternalStyle(themeMode));
             gtkSettings->set(MODE_GTK_KEY, themeMode);
         }
     });

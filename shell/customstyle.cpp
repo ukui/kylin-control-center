@@ -4,12 +4,14 @@
 #include <QPainter>
 #include <QStyleOption>
 
-CustomStyle::CustomStyle(QObject *parent) : QProxyStyle("ukui")
+#include <QApplication>
+
+InternalStyle::InternalStyle(const QString &styleName, QObject *parent) : QProxyStyle(styleName)
 {
 
 }
 
-void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+void InternalStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     //qDebug()<<element;
     switch (element) {
@@ -28,7 +30,7 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
     return QProxyStyle::drawPrimitive(element, option, painter, widget);
 }
 
-void CustomStyle::drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+void InternalStyle::drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
 //    qDebug()<<element;
     switch(element)
@@ -42,7 +44,7 @@ void CustomStyle::drawControl(QStyle::ControlElement element, const QStyleOption
     return QProxyStyle::drawControl(element, option, painter, widget);
 }
 
-void CustomStyle::polish(QPalette &pal)
+void InternalStyle::polish(QPalette &pal)
 {
     QProxyStyle::polish(pal);
     pal.setColor(QPalette::Window, pal.base().color());

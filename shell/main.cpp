@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
         FramelessHandle * pHandle = new FramelessHandle(w);
         pHandle->activateOn(w);
 
-        auto style = new CustomStyle();
+        auto style = new InternalStyle(nullptr);
         a.setStyle(style);
 
         return a.exec();
