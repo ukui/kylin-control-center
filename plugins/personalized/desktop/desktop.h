@@ -71,6 +71,7 @@ private:
     SwitchButton * deskVolumeSwitchBtn;
     SwitchButton * deskNetworkSwitchBtn;
 
+    SwitchButton * fullMenuSwitchBtn;
     SwitchButton * menuComputerSwitchBtn;
     SwitchButton * menuTrashSwitchBtn;
     SwitchButton * menuFilesystemSwitchBtn;

@@ -36,8 +36,9 @@
 #define TRASH_VISIBLE_KEY "trash-icon-visible"
 #define VOLUMES_VISIBLE_KEY "volumes-visible"
 
+#define MENU_FULL_SCREEN_KEY "menufull-screen"
 #define COMPUTER_LOCK_KEY "computer-icon-locking"
-#define FILESYSTEM_LOCK_KEY "filesystem-icon-locking"
+#define PERSONAL_LOCK_KEY "personal-icon-locking"
 #define SETTINGS_LOCK_KEY "settings-icon-locking"
 #define TRASH_LOCK_KEY "trash-icon-locking"
 
@@ -59,16 +60,15 @@ Desktop::Desktop()
     ui->deskVolumeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
     ui->deskNetworkWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
+    ui->fullScreenMenuWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
     ui->menuComputerWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
     ui->menuTrashWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
     ui->menuFilesystemWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
     ui->menuSettingWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
-    ui->trayListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->trayListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     ui->titleLabel->setVisible(false);
-    ui->title2Label->setVisible(false);
+//    ui->title2Label->setVisible(false);
 
     ui->deskComputerWidget->setVisible(false);
     ui->deskTrashWidget->setVisible(false);
@@ -76,12 +76,11 @@ Desktop::Desktop()
     ui->deskVolumeWidget->setVisible(false);
     ui->deskNetworkWidget->setVisible(false);
 
-    ui->menuComputerWidget->setVisible(false);
-    ui->menuTrashWidget->setVisible(false);
-    ui->menuFilesystemWidget->setVisible(false);
-    ui->menuSettingWidget->setVisible(false);
+//    ui->menuComputerWidget->setVisible(false);
+//    ui->menuTrashWidget->setVisible(false);
+//    ui->menuFilesystemWidget->setVisible(false);
+//    ui->menuSettingWidget->setVisible(false);
 
-    ui->trayListWidget->setStyleSheet("QListWidget#trayListWidget{border: none;}");
 
     vecGsettings = new QVector<QGSettings*>();
     const QByteArray id(DESKTOP_SCHEMA);
@@ -160,6 +159,9 @@ void Desktop::setupComponent(){
     ui->menuSettingsLabel->setPixmap(QPixmap("://img/plugins/desktop/default.png"));
     ui->menuTrashLabel->setPixmap(QPixmap("://img/plugins/desktop/trash.png"));
 
+    fullMenuSwitchBtn = new SwitchButton(pluginWidget);
+    ui->fullScreenMenuLayout->addWidget(fullMenuSwitchBtn);
+
     menuComputerSwitchBtn = new SwitchButton(pluginWidget);
     ui->menuComputerHorLayout->addWidget(menuComputerSwitchBtn);
 
@@ -175,17 +177,26 @@ void Desktop::setupComponent(){
 }
 
 void Desktop::setupConnect(){
+    QStringList keys = dSettings->keys();
     connect(deskComputerSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(COMPUTER_VISIBLE_KEY, checked);});
     connect(deskTrashSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(TRASH_VISIBLE_KEY, checked);});
     connect(deskHomeSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(HOME_VISIBLE_KEY, checked);});
     connect(deskVolumeSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(VOLUMES_VISIBLE_KEY, checked);});
     connect(deskNetworkSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(NETWORK_VISIBLE_KEY, checked);});
 
+    connect(fullMenuSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+        if (keys.contains("menufullScreen")) {
+            dSettings->set(MENU_FULL_SCREEN_KEY, checked);
+        }
+
+    });
     connect(menuComputerSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
         dSettings->set(COMPUTER_LOCK_KEY, checked);
     });
     connect(menuFilesystemSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
-        dSettings->set(FILESYSTEM_LOCK_KEY, checked);
+        if (keys.contains("personalIconLocking")) {
+            dSettings->set(PERSONAL_LOCK_KEY, checked);
+        }
     });
     connect(menuSettingSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
         dSettings->set(SETTINGS_LOCK_KEY, checked);
@@ -221,8 +232,17 @@ void Desktop::initLockingStatus(){
     menuSettingSwitchBtn->blockSignals(true);
     menuTrashSwitchBtn->blockSignals(true);
 
-    menuComputerSwitchBtn->setChecked(dSettings->get(COMPUTER_LOCK_KEY).toBool());
-    menuFilesystemSwitchBtn->setChecked(dSettings->get(FILESYSTEM_LOCK_KEY).toBool());
+
+    QStringList keys = dSettings->keys();
+    if (keys.contains("menufullScreen")) {
+        fullMenuSwitchBtn->setChecked(dSettings->get(MENU_FULL_SCREEN_KEY).toBool());
+    }
+
+    if (keys.contains("personalIconLocking")) {
+        menuFilesystemSwitchBtn->setChecked(dSettings->get(PERSONAL_LOCK_KEY).toBool());
+    }
+
+    menuComputerSwitchBtn->setChecked(dSettings->get(PERSONAL_LOCK_KEY).toBool());
     menuSettingSwitchBtn->setChecked(dSettings->get(SETTINGS_LOCK_KEY).toBool());
     menuTrashSwitchBtn->setChecked(dSettings->get(TRASH_LOCK_KEY).toBool());
 
@@ -290,10 +310,11 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
 
     baseWidget->setLayout(baseVerLayout);
 
-    QListWidgetItem * item = new QListWidgetItem(ui->trayListWidget);
-    item->setSizeHint(QSize(502, 52));
+//    QListWidgetItem * item = new QListWidgetItem(ui->trayListWidget);
+//    item->setSizeHint(QSize(502, 52));
 
-    ui->trayListWidget->setItemWidget(item, baseWidget);
+//    ui->trayListWidget->setItemWidget(item, baseWidget);
+    ui->trayVBoxLayout->addWidget(baseWidget);
 
     QString status = gsettings->get(TRAY_ACTION_KEY).toString();
     if ("tray" == status) {

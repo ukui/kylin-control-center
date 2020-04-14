@@ -21,10 +21,10 @@ Build-Depends: debhelper-compat (= 12),
                libdconf-dev,
                edid-decode,
                redshift,
-	       libmatemixer-dev,
-	       libqt5xdg-dev,
-	       qtmultimedia5-dev,
-	       libxml2-dev
+               libmatemixer-dev,
+               libqt5xdg-dev,
+               qtmultimedia5-dev,
+               libxml2-dev
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Homepage: https://github.com/ukui/ukui-control-center

@@ -353,12 +353,12 @@
         <translation>开机启动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="152"/>
+        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="154"/>
         <source>Name</source>
         <translation>程序名称</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="160"/>
+        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="162"/>
         <source>Status</source>
         <translation>当前状态</translation>
     </message>
@@ -585,24 +585,24 @@ you can restore them to ensure the integrity of your system.</source>
 <context>
     <name>ChangtimeDialog</name>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="210"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="212"/>
         <source>day</source>
         <translation>日期</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="201"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="203"/>
         <source>time</source>
         <translation>时间</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="204"/>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="234"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="206"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="236"/>
         <source>year</source>
         <translation>年份</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="207"/>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="237"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="209"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="239"/>
         <source>month</source>
         <translation>月份</translation>
     </message>
@@ -952,7 +952,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/personalized/desktop/desktop.ui" line="124"/>
         <source>Computerdesktop</source>
-        <translation>我的电脑</translation>
+        <translation>计算机</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/desktop/desktop.ui" line="212"/>
@@ -975,27 +975,37 @@ folder will be deleted!</source>
         <translation>网络</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="507"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="506"/>
+        <source>Set Start Menu</source>
+        <translation>设置开始菜单</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="562"/>
+        <source>Always use the start menu in full screen</source>
+        <translation>一直使用全屏&quot;开始&quot;菜单</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="593"/>
         <source>Icon Lock on Menu</source>
         <translation>锁定在开始菜单的图标</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="577"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="663"/>
         <source>Computermenu</source>
-        <translation>我的电脑</translation>
+        <translation>计算机</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="665"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="751"/>
         <source>Trashmenu</source>
-        <translation>垃圾箱</translation>
+        <translation>回收站</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="753"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="839"/>
         <source>Filesystemmenu</source>
-        <translation>文件系统</translation>
+        <translation>个人</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="871"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="957"/>
         <source>Tray icon</source>
         <translation>显示在托盘上的图标</translation>
     </message>
@@ -1004,7 +1014,7 @@ folder will be deleted!</source>
         <translation type="vanished">家目录</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="841"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="927"/>
         <source>Settingmenu</source>
         <translation>设置</translation>
     </message>
@@ -1017,7 +1027,7 @@ folder will be deleted!</source>
         <translation type="vanished">桌面</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.cpp" line="51"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.cpp" line="52"/>
         <source>Desktop</source>
         <translation>桌面</translation>
     </message>
@@ -1415,7 +1425,7 @@ folder will be deleted!</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="72"/>
+        <location filename="../../mainwindow.cpp" line="73"/>
         <source>ukcc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2976,40 +2986,40 @@ folder will be deleted!</source>
         <translation type="vanished">屏幕缩放 </translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="77"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="80"/>
         <source>night mode</source>
         <translation>夜间模式</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="915"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="944"/>
         <source>please insure at least one output!</source>
         <translation>请确保至少开启一个屏幕!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="916"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="924"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="945"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="953"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="923"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="952"/>
         <source>Morning time should be earlier than evening time!</source>
         <translation>早晨时刻应早于晚上的时刻!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="938"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="967"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation>抱歉，配置不能应用.</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="939"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="968"/>
         <source>@title:window</source>
         <comment>Unsupported Configuration</comment>
         <translation>窗口</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="943"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="972"/>
         <source>Some applications need to be restarted to take effect</source>
         <translation>缩放配置需要重启后生效</translation>
     </message>
