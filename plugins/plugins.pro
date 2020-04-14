@@ -17,7 +17,7 @@ SUBDIRS = \
           personalized/screenlock \
           personalized/fonts \
           personalized/screensaver \
-          personalized/desktop \
+#          personalized/desktop \
           network/netconnect \
           network/vpn \
           network/proxy \

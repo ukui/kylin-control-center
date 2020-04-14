@@ -81,6 +81,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->backBtn->setProperty("useIconHighlightEffect", true);
     ui->backBtn->setProperty("iconHighlightEffectMode", 1);
     ui->backBtn->setFlat(true);
+
 //    ui->backBtn->setStyleSheet("QPushButton#backBtn{background: #ffffff; border: none;}");
 //    //顶部搜索框
 //    ui->searchLineEdit->setStyleSheet("QLineEdit#searchLineEdit{background: #FFEDEDED; border: none; border-radius: 6px;}");
@@ -94,6 +95,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->closeBtn->setProperty("useIconHighlightEffect", true);
     ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
     ui->closeBtn->setFlat(true);
+
 //    ui->minBtn->setStyleSheet("QPushButton#minBtn{background: #ffffff; border: none;}"
 //                              "QPushButton:hover:!pressed#minBtn{background: #FF3D6BE5; border-radius: 2px;}"
 //                              "QPushButton:hover:pressed#minBtn{background: #415FC4; border-radius: 2px;}");
