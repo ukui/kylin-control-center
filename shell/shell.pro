@@ -25,7 +25,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../env.pri)
 
-LIBS += -L/usr/lib/ -lX11
+INCLUDEPATH   +=  \
+                 /usr/include/KF5/KWindowSystem/ \
+
+LIBS += -L/usr/lib/ -lX11 -lKF5WindowSystem
 
 ##加载gio库和gio-unix库，用于处理desktop文件
 CONFIG        += link_pkgconfig \
