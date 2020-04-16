@@ -51,6 +51,8 @@ Wallpaper::Wallpaper()
     pluginName = tr("Background");
     pluginType = PERSONALIZED;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
     settingsCreate = false;
 
     //设置样式

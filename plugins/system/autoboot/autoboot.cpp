@@ -27,6 +27,7 @@
 #include "autobootworker.h"
 
 #include <QDebug>
+#include <QFont>
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -59,6 +60,9 @@ AutoBoot::AutoBoot(){
 
     pluginName = tr("Autoboot");
     pluginType = SYSTEM;
+
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
 
 
 //    pluginWidget->setStyleSheet("background: #ffffff;");
@@ -121,10 +125,13 @@ void AutoBoot::initUI(){
 
 
     //构建行头基础Widget
-    QWidget * headbaseWidget = new QWidget;
-    headbaseWidget->setAttribute(Qt::WA_DeleteOnClose);
+    QFrame * headbaseFrame = new QFrame;
+    headbaseFrame->setMinimumWidth(550);
+    headbaseFrame->setMaximumWidth(960);
+    headbaseFrame->setFrameShape(QFrame::Shape::Box);
+    headbaseFrame->setAttribute(Qt::WA_DeleteOnClose);
 
-    QVBoxLayout * headbaseVerLayout = new QVBoxLayout(headbaseWidget);
+    QVBoxLayout * headbaseVerLayout = new QVBoxLayout(headbaseFrame);
     headbaseVerLayout->setSpacing(0);
     headbaseVerLayout->setContentsMargins(0, 0, 0, 2);
 
@@ -170,11 +177,11 @@ void AutoBoot::initUI(){
     headbaseVerLayout->addWidget(headWidget);
     headbaseVerLayout->addStretch();
 
-    headbaseWidget->setLayout(headbaseVerLayout);
+    headbaseFrame->setLayout(headbaseVerLayout);
 
     QListWidgetItem * hItem = new QListWidgetItem(ui->listWidget);
     hItem->setSizeHint(QSize(ITEMWIDTH, HEADHEIGHT));
-    ui->listWidget->setItemWidget(hItem, headbaseWidget);
+    ui->listWidget->setItemWidget(hItem, headbaseFrame);
 
     //构建每个启动项
     QSignalMapper * checkSignalMapper = new QSignalMapper(this);
@@ -182,7 +189,10 @@ void AutoBoot::initUI(){
     for (int index = 0; it != statusMaps.end(); it++, index++){
         QString bname = it.value().bname;
 
-        QWidget * baseWidget = new QWidget;
+        QFrame * baseWidget = new QFrame;
+        baseWidget->setMinimumWidth(550);
+        baseWidget->setMaximumWidth(960);
+        baseWidget->setFrameShape(QFrame::Shape::Box);
         baseWidget->setAttribute(Qt::WA_DeleteOnClose);
 
         QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);
@@ -270,6 +280,7 @@ void AutoBoot::initUI(){
         QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
         item->setSizeHint(QSize(ITEMWIDTH, ITEMHEIGHT));
         ui->listWidget->setItemWidget(item, baseWidget);
+        ui->listWidget->setSpacing(1);
     }
     connect(checkSignalMapper, SIGNAL(mapped(QString)), this, SLOT(checkbox_changed_cb(QString)));
 }

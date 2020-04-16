@@ -7,8 +7,8 @@
 ToolPop::ToolPop(QWidget* parent) : QLabel (parent)
 {
     this->setAlignment(Qt::AlignCenter);
-//    this->setStyleSheet("margin: 0 15");
-//    this->setStyleSheet("background-color: #3D6BE5;border-radius:4px;");
+    this->setStyleSheet("margin: 0 15");
+    this->setStyleSheet("background-color: #3D6BE5;border-radius:4px;");
 
 }
 

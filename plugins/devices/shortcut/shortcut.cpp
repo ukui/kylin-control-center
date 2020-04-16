@@ -63,6 +63,9 @@ Shortcut::Shortcut()
     pluginName = tr("Shortcut");
     pluginType = DEVICES;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
 //    pluginWidget->setStyleSheet("background: #ffffff;");
 
 //    ui->generalListWidget->setStyleSheet("QListWidget#generalListWidget{background: #ffffff; border: none;}");
@@ -121,7 +124,7 @@ void Shortcut::setupComponent(){
     ui->generalListWidget->setSelectionMode(QAbstractItemView::NoSelection);
     ui->generalListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->generalListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->generalListWidget->setSpacing(0);
+    ui->generalListWidget->setSpacing(1);
 
     ui->customListWidget->setFocusPolicy(Qt::NoFocus);
     ui->customListWidget->setSelectionMode(QAbstractItemView::NoSelection);
@@ -130,7 +133,7 @@ void Shortcut::setupComponent(){
     ui->customListWidget->setSpacing(0);
 //    ui->customListWidget->setFixedHeight((showList.length() * ITEMHEIGH));
 
-    ui->addWidget->installEventFilter(this);
+    ui->addFrame->installEventFilter(this);
     ui->generalListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 
     ui->resetBtn->hide();
@@ -246,6 +249,7 @@ void Shortcut::appendGeneralItems(){
     for (KeyEntry * gkeyEntry: generalEntries){
         if (showList.contains(gkeyEntry->keyStr)){
             DefineShortcutItem * singleWidget = new DefineShortcutItem(gkeyEntry->keyStr, gkeyEntry->valueStr);
+            singleWidget->setFrameShape(QFrame::Shape::Box);
             singleWidget->setUserData(Qt::UserRole, gkeyEntry);
 
             CustomLineEdit * line = singleWidget->lineeditComponent();
@@ -524,7 +528,7 @@ bool Shortcut::keyIsForbidden(QString key){
 }
 
 bool Shortcut::eventFilter(QObject *watched, QEvent *event){
-    if (watched == ui->addWidget){
+    if (watched == ui->addFrame){
         if (event->type() == QEvent::MouseButtonPress){
             QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
             if (mouseEvent->button() == Qt::LeftButton){

@@ -61,8 +61,6 @@ void UnifiedOutputConfig::setOutput(const KScreen::OutputPtr &output)
 void UnifiedOutputConfig::initUi()
 {
 
-    QFont ft;
-    ft.setPointSize(14);
 
     QVBoxLayout *vbox = new QVBoxLayout(this);
     vbox->setContentsMargins(0,0,0,0);
@@ -82,14 +80,13 @@ void UnifiedOutputConfig::initUi()
 
 
     //统一输出分辨率下拉框
-    mResolution->setFont(ft);
+
     mResolution->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     mResolution->setMinimumSize(402,30);
 //    mResolution->setMaximumSize(402,30);
 
     QLabel *resLabel = new QLabel(this);
     resLabel->setText(tr("resolution"));
-    resLabel->setFont(ft);
     resLabel->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     resLabel->setMinimumSize(118,30);
     resLabel->setMaximumSize(118,30);
@@ -99,17 +96,18 @@ void UnifiedOutputConfig::initUi()
     resLayout->addWidget(mResolution);
 //    resLayout->addStretch();
 
-    QWidget *resWidget = new QWidget(this);
-    resWidget->setLayout(resLayout);
+    QFrame *resFrame = new QFrame(this);
+    resFrame->setFrameShape(QFrame::Shape::Box);
+    resFrame->setLayout(resLayout);
 //    resWidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
 //    mResolution->setStyleSheet("background-color:#F8F9F9");
 
-    resWidget->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
-    resWidget->setMinimumSize(552,50);
-    resWidget->setMaximumSize(960,50);
+    resFrame->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
+    resFrame->setMinimumSize(552,50);
+    resFrame->setMaximumSize(960,50);
 
 
-    vbox->addWidget(resWidget);
+    vbox->addWidget(resFrame);
     connect(mResolution, &ResolutionSlider::resolutionChanged,
             this, &UnifiedOutputConfig::slotResolutionChanged);
 
@@ -121,7 +119,6 @@ void UnifiedOutputConfig::initUi()
     connect(mRotation, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this, &UnifiedOutputConfig::slotRotationChanged);
 
-    mRotation->setFont(ft);
     mRotation->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     mRotation->setMinimumSize(402,30);
     mRotation->setMaximumSize(16777215,30);
@@ -132,7 +129,6 @@ void UnifiedOutputConfig::initUi()
 
     QLabel *rotateLabel = new QLabel(this);
     rotateLabel->setText(tr("orientation"));
-    rotateLabel->setFont(ft);
     rotateLabel->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     rotateLabel->setMinimumSize(118,30);
     rotateLabel->setMaximumSize(118,30);
@@ -151,43 +147,28 @@ void UnifiedOutputConfig::initUi()
     roatateLayout->addWidget(mRotation);
 
 
-    QWidget *rotateWidget = new QWidget(this);
-    rotateWidget->setLayout(roatateLayout);
+    QFrame *rotateFrame = new QFrame(this);
+    rotateFrame->setFrameShape(QFrame::Shape::Box);
+    rotateFrame->setLayout(roatateLayout);
 //    rotateWidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
 //    mRotation->setStyleSheet("background-color:#F8F9F9");
 
-    rotateWidget->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
-    rotateWidget->setMinimumSize(552,50);
-    rotateWidget->setMaximumSize(960,50);
+    rotateFrame->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
+    rotateFrame->setMinimumSize(552,50);
+    rotateFrame->setMaximumSize(960,50);
 
 
-    vbox->addWidget(rotateWidget);
+    vbox->addWidget(rotateFrame);
 
 
     //统一输出刷新率下拉框
     mRefreshRate = new QComboBox(this);
-    mRefreshRate->setFont(ft);
     mRefreshRate->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     mRefreshRate->setMinimumSize(402,30);
     mRefreshRate->setMaximumSize(16777215,30);
-//    QString cqss = "QComboBox{"
-//                  "background: rgba(244,244,244);"
-//                  "border-radius:6px;"
-//                  "font-size:12px;"
-//                  "color: black;"
-//                  "}"
-//                  "QComboBox::down-arrow {"
-//                  "image:url(:/images/downpx.png);"
-//                  "}"
-//                  "QComboBox::drop-down {"
-//                  "width: 30px;"
-//                  "border: none;"
-//                  "}";
-//    mRefreshRate->setStyleSheet(cqss);
 
     QLabel *freshLabel = new QLabel(this);
     freshLabel->setText(tr("refresh rate"));
-    freshLabel->setFont(ft);
     freshLabel->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     freshLabel->setMinimumSize(118,30);
     freshLabel->setMaximumSize(118,30);
@@ -200,15 +181,16 @@ void UnifiedOutputConfig::initUi()
     freshLayout->addWidget(freshLabel);
     freshLayout->addWidget(mRefreshRate);
 
-    QWidget *freshWidget = new QWidget(this);
-    freshWidget->setLayout(freshLayout);
-//    freshWidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
+    QFrame *freshFrame = new QFrame(this);
+    freshFrame->setFrameShape(QFrame::Shape::Box);
+    freshFrame->setLayout(freshLayout);
+//    freshFrame->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
 
-    vbox->addWidget(freshWidget);
+    vbox->addWidget(freshFrame);
 
-    freshWidget->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
-    freshWidget->setMinimumSize(552,50);
-    freshWidget->setMaximumSize(960,50);
+    freshFrame->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
+    freshFrame->setMinimumSize(552,50);
+    freshFrame->setMaximumSize(960,50);
 
     mRefreshRate->setEnabled(false);
 }

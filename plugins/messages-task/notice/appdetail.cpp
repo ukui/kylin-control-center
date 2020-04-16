@@ -7,6 +7,8 @@
 
 #define NOTICE_ORIGIN_SCHEMA "org.ukui.control-center.noticeorigin"
 
+extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
+
 AppDetail::AppDetail(QString Name,QString key, QGSettings *gsettings, QWidget *parent) :
     QDialog(parent),appKey(key),m_gsettings(gsettings), appName(Name),
     ui(new Ui::AppDetail)
@@ -15,6 +17,12 @@ AppDetail::AppDetail(QString Name,QString key, QGSettings *gsettings, QWidget *p
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
+
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->closeBtn->setFlat(true);
+
 
     initUiStatus();
 //    initGSettings();
@@ -80,24 +88,26 @@ void AppDetail::initConnect() {
 
 }
 
-void AppDetail::paintEvent(QPaintEvent *) {
+void AppDetail::paintEvent(QPaintEvent *event) {
+    Q_UNUSED(event);
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
-    rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 5, 5);
+    rectPath.addRoundedRect(this->rect().adjusted(10, 10, -10, -10), 6, 6);
+
     // 画一个黑底
     QPixmap pixmap(this->rect().size());
     pixmap.fill(Qt::transparent);
     QPainter pixmapPainter(&pixmap);
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
-    pixmapPainter.setBrush(Qt::green);
+    pixmapPainter.setBrush(Qt::black);
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 
     // 模糊这个黑底
     QImage img = pixmap.toImage();
-//    qt_blurImage(img, 10, false, false);
+    qt_blurImage(img, 10, false, false);
 
     // 挖掉中心
     pixmap = QPixmap::fromImage(img);
@@ -113,9 +123,8 @@ void AppDetail::paintEvent(QPaintEvent *) {
 
     // 绘制一个背景
     p.save();
-    p.fillPath(rectPath, QColor(255, 255, 255));
+    p.fillPath(rectPath,palette().color(QPalette::Base));
     p.restore();
-
 }
 
 //void AppDetail::initGSettings() {

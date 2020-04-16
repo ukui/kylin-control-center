@@ -43,6 +43,7 @@ DefaultApp::DefaultApp(){
 
     pluginName = tr("Defaultapp");
     pluginType = SYSTEM;
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
 
 //    pluginWidget->setStyleSheet("background: #ffffff;");

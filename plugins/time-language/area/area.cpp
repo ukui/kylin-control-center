@@ -52,13 +52,17 @@ Area::Area()
     pluginName = tr("Area");
     pluginType = DATETIME;
 
-    QFile QssFile("://combox.qss");
-    QssFile.open(QFile::ReadOnly);
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-    if (QssFile.isOpen()){
-        qss = QLatin1String(QssFile.readAll());
-        QssFile.close();
-    }
+//    QFile QssFile("://combox.qss");
+//    QssFile.open(QFile::ReadOnly);
+
+//    if (QssFile.isOpen()){
+//        qss = QLatin1String(QssFile.readAll());
+//        QssFile.close();
+//    }
 
 
     const QByteArray id(PANEL_GSCHEMAL);

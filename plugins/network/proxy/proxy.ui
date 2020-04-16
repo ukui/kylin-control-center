@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>718</height>
+    <height>722</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -74,7 +74,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="autoWidget" native="true">
+    <widget class="QFrame" name="autoFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -86,6 +86,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
@@ -149,7 +152,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="urlWidget" native="true">
+    <widget class="QFrame" name="urlFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -161,6 +164,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <property name="spacing">
@@ -285,7 +291,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="manualWidget" native="true">
+    <widget class="QFrame" name="manualFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -297,6 +303,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_6">
       <property name="spacing">
@@ -360,7 +369,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="httpWidget" native="true">
+    <widget class="QFrame" name="httpFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -372,6 +381,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_8">
       <property name="spacing">
@@ -540,7 +552,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="httpsWidget" native="true">
+    <widget class="QFrame" name="httpsFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -552,6 +564,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_10">
       <property name="spacing">
@@ -685,7 +700,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="ftpWidget" native="true">
+    <widget class="QFrame" name="ftpFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -697,6 +712,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_12">
       <property name="spacing">
@@ -830,7 +848,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="socksWidget" native="true">
+    <widget class="QFrame" name="socksFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -842,6 +860,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_14">
       <property name="spacing">
@@ -975,7 +996,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="ignoreHostsWidget" native="true">
+    <widget class="QFrame" name="ignoreHostsFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -987,6 +1008,9 @@
        <width>960</width>
        <height>180</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="spacing">

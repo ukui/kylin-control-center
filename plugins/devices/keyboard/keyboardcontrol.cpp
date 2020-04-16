@@ -42,6 +42,9 @@ KeyboardControl::KeyboardControl()
     pluginName = tr("Keyboard");
     pluginType = DEVICES;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
     settingsCreate = false;
 
     setupStylesheet();
@@ -121,8 +124,8 @@ void KeyboardControl::setupComponent(){
     itemDelege = new QStyledItemDelegate();
 
     //隐藏未开发功能
-    ui->repeatWidget_4->hide();
-    ui->repeatWidget_5->hide();
+    ui->repeatFrame_4->hide();
+    ui->repeatFrame_5->hide();
 
     //重复输入开关按钮
     keySwitchBtn = new SwitchButton(pluginWidget);

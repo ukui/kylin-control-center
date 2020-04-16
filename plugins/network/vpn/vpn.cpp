@@ -32,6 +32,7 @@ Vpn::Vpn()
     pluginName = tr("Vpn");
     pluginType = NETWORK;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 //    pluginWidget->setStyleSheet("background: #ffffff;");
 
 //    ui->widget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");

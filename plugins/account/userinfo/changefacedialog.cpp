@@ -27,14 +27,21 @@
 
 #define FACEPATH "/usr/share/ukui/faces/"
 
+extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
+
 ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ChangeFaceDialog)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-//    setAttribute(Qt::WA_TranslucentBackground);
+    setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
+
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->closeBtn->setFlat(true);
 
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
 //    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
@@ -142,24 +149,26 @@ void ChangeFaceDialog::showLocalFaceDialog(){
 
 }
 
-void ChangeFaceDialog::paintEvent(QPaintEvent *) {
+void ChangeFaceDialog::paintEvent(QPaintEvent *event) {
+    Q_UNUSED(event);
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
-    rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 5, 5);
+    rectPath.addRoundedRect(this->rect().adjusted(10, 10, -10, -10), 6, 6);
+
     // 画一个黑底
     QPixmap pixmap(this->rect().size());
     pixmap.fill(Qt::transparent);
     QPainter pixmapPainter(&pixmap);
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
-    pixmapPainter.setBrush(Qt::green);
+    pixmapPainter.setBrush(Qt::black);
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 
     // 模糊这个黑底
     QImage img = pixmap.toImage();
-//    qt_blurImage(img, 10, false, false);
+    qt_blurImage(img, 10, false, false);
 
     // 挖掉中心
     pixmap = QPixmap::fromImage(img);
@@ -173,9 +182,9 @@ void ChangeFaceDialog::paintEvent(QPaintEvent *) {
     // 绘制阴影
     p.drawPixmap(this->rect(), pixmap, pixmap.rect());
 
-    // 绘制背景
+    // 绘制一个背景
     p.save();
-    p.fillPath(rectPath, QColor(255, 255, 255));
+    p.fillPath(rectPath,palette().color(QPalette::Base));
     p.restore();
 
 

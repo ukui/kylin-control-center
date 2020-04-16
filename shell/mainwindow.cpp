@@ -107,7 +107,8 @@ MainWindow::MainWindow(QWidget *parent) :
 //                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 2px;}");
 
     //左侧一级菜单
-    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background: #cccccc; border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
+//    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background: #cccccc; border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
+        ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);}");
 
     //设置左上角按钮图标
     ui->backBtn->setIcon(QIcon("://img/titlebar/back.png"));
@@ -382,7 +383,9 @@ void MainWindow::initLeftsideBar(){
     connect(hBtn, &QPushButton::clicked, this, [=]{
         ui->stackedWidget->setCurrentIndex(0);
     });
-    hBtn->setStyleSheet("QPushButton#homepage{background: #cccccc; border: none;}");
+    hBtn->setStyleSheet("QPushButton#homepage{background: palette(button); border: none;}");
+//    hBtn->setStyleSheet("QPushButton#homepage{background: palette(base);}");
+
     ui->leftsidebarVerLayout->addWidget(hBtn);
 
     for(int type = 0; type < TOTALMODULES; type++){
@@ -394,8 +397,10 @@ void MainWindow::initLeftsideBar(){
             button->setCheckable(true);
             leftBtnGroup->addButton(button, type);
             //设置样式
-            button->setStyleSheet("QPushButton::checked{background: #cccccc; border: none; border-image: url('://img/primaryleftmenu/checked.png');}"
-                                  "QPushButton::!checked{background: #cccccc; border: none;}");
+//            button->setStyleSheet("QPushButton::checked{background: palette(button); border: none; border-image: url('://img/primaryleftmenu/checked.png');}"
+//                                  "QPushButton::!checked{background: palette(button);border: none;}");
+            button->setStyleSheet("QPushButton::checked{background: palette(base); border-top-left-radius: 6px;border-bottom-left-radius: 6px;}"
+                                  "QPushButton::!checked{background: palette(button);border: none;}");
 
             connect(button, &QPushButton::clicked, this, [=]{
                 QPushButton * btn = dynamic_cast<QPushButton *>(QObject::sender());
@@ -436,9 +441,9 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname){
     iconBtn->setFocusPolicy(Qt::NoFocus);
 
 
-    QString iconHomePageBtnQss = QString("QPushButton{background: #cccccc; border: none; border-image: url('://img/primaryleftmenu/%1.png');}").arg(iname);
-    QString iconBtnQss = QString("QPushButton:checked{background: #ffffff; border: none; border-image: url('://img/primaryleftmenu/%1Checked.png');}"
-                                 "QPushButton:!checked{background: #cccccc; border: none; border-image: url('://img/primaryleftmenu/%2.png');}").arg(iname).arg(iname);
+    QString iconHomePageBtnQss = QString("QPushButton{background: palette(button); border: none; border-image: url('://img/primaryleftmenu/%1.png');}").arg(iname);
+    QString iconBtnQss = QString("QPushButton:checked{background: palette(base); border: none; border-image: url('://img/primaryleftmenu/%1Checked.png');}"
+                                 "QPushButton:!checked{background: palette(button); border: none; border-image: url('://img/primaryleftmenu/%2.png');}").arg(iname).arg(iname);
     //单独设置HomePage按钮样式
     if (iname == "homepage")
         iconBtn->setStyleSheet(iconHomePageBtnQss);

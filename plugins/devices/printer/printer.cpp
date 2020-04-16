@@ -36,6 +36,8 @@ Printer::Printer(){
     pluginName = tr("Printer");
     pluginType = DEVICES;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
 //    pluginWidget->setStyleSheet("background: #ffffff;");
 //    ui->addWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 

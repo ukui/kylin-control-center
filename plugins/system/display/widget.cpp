@@ -73,7 +73,7 @@ Widget::Widget(QWidget *parent)
     ui->unionLayout->addWidget(m_unifybutton);
 
 
-    QHBoxLayout *nightLayout = new QHBoxLayout(ui->nightwidget);
+    QHBoxLayout *nightLayout = new QHBoxLayout(ui->nightframe);
     nightLabel = new QLabel(tr("night mode"));
     nightButton = new SwitchButton;
     nightLayout->addWidget(nightLabel);
@@ -88,7 +88,7 @@ Widget::Widget(QWidget *parent)
     initNightStatus();
 
 //    nightButton->setVisible(this->m_redshiftIsValid);
-      ui->nightwidget->setVisible(this->m_redshiftIsValid);
+      ui->nightframe->setVisible(this->m_redshiftIsValid);
 
 //    qDebug()<<"set night mode here ---->"<<this->m_isNightMode<<endl;
 //    nightButton->setChecked(this->m_isNightMode);
@@ -675,14 +675,16 @@ void Widget::writeConfigFile() {
 
 void Widget::showNightWidget(bool judge) {
     if (judge) {
-        ui->sunwidget->setVisible(true);
-        ui->customwidget->setVisible(true);
-        ui->temptwidget->setVisible(true);
+        ui->sunframe->setVisible(true);
+        ui->customframe->setVisible(true);
+//        ui->temptwidget->setVisible(true);
+        ui->temptframe->setVisible(true);
     } else {
-        ui->sunwidget->setVisible(false);
-        ui->customwidget->setVisible(false);
+        ui->sunframe->setVisible(false);
+        ui->customframe->setVisible(false);
 
-        ui->temptwidget->setVisible(false);
+//        ui->temptwidget->setVisible(false);
+        ui->temptframe->setVisible(false);
     }
 
    if (judge && ui->customradioBtn->isChecked()) {
@@ -694,11 +696,11 @@ void Widget::showNightWidget(bool judge) {
 
 void Widget::showCustomWiget(int index) {
     if (SUN == index) {
-        ui->opwidget->setVisible(false);
-        ui->clswidget->setVisible(false);
+        ui->opframe->setVisible(false);
+        ui->clsframe->setVisible(false);
     } else if (CUSTOM == index) {
-        ui->opwidget->setVisible(true);;
-        ui->clswidget->setVisible(true);
+        ui->opframe->setVisible(true);;
+        ui->clsframe->setVisible(true);
     }
 }
 

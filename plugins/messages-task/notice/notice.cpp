@@ -45,6 +45,9 @@ Notice::Notice()
     pluginName = tr("Notice");
     pluginType = NOTICEANDTASKS;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
 //    pluginWidget->setStyleSheet("background: #ffffff;");
 
     ui->newfeatureWidget->setVisible(false);
@@ -147,7 +150,8 @@ void Notice::initOriNoticeStatus() {
 //        qDebug()<<"notify appname is------------->"<<appname<<endl;
 
         //构建Widget
-        QWidget * baseWidget = new QWidget();
+        QFrame * baseWidget = new QFrame();
+        baseWidget->setFrameShape(QFrame::Shape::Box);
         baseWidget->setAttribute(Qt::WA_DeleteOnClose);
 
         QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);

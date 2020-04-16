@@ -33,14 +33,14 @@
     <widget class="QLabel" name="titleLabel">
      <property name="minimumSize">
       <size>
-       <width>150</width>
-       <height>18</height>
+       <width>0</width>
+       <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>150</width>
-       <height>18</height>
+       <width>16777215</width>
+       <height>16777215</height>
       </size>
      </property>
      <property name="text">
@@ -49,7 +49,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="showformwidget" native="true">
+    <widget class="QFrame" name="languageframe_2">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -68,19 +68,34 @@
        <height>50</height>
       </size>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_15">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="leftMargin">
+       <number>20</number>
+      </property>
+      <property name="rightMargin">
+       <number>16</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QLabel" name="countrylabel">
         <property name="minimumSize">
          <size>
           <width>209</width>
-          <height>15</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>209</width>
-          <height>15</height>
+          <height>16777215</height>
          </size>
         </property>
         <property name="text">
@@ -131,14 +146,14 @@
       <widget class="QLabel" name="title2Label">
        <property name="minimumSize">
         <size>
-         <width>108</width>
-         <height>18</height>
+         <width>0</width>
+         <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>108</width>
-         <height>18</height>
+         <width>16777215</width>
+         <height>16777215</height>
         </size>
        </property>
        <property name="text">
@@ -162,7 +177,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QWidget" name="formwidget" native="true">
+    <widget class="QFrame" name="formframe">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -175,6 +190,9 @@
        <height>118</height>
       </size>
      </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="leftMargin">
        <number>20</number>
@@ -186,13 +204,13 @@
           <property name="minimumSize">
            <size>
             <width>120</width>
-            <height>15</height>
+            <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>120</width>
-            <height>15</height>
+            <height>16777215</height>
            </size>
           </property>
           <property name="text">
@@ -346,6 +364,9 @@
      <property name="leftMargin">
       <number>0</number>
      </property>
+     <property name="topMargin">
+      <number>9</number>
+     </property>
      <property name="bottomMargin">
       <number>6</number>
      </property>
@@ -353,14 +374,14 @@
       <widget class="QLabel" name="title3Label">
        <property name="minimumSize">
         <size>
-         <width>71</width>
-         <height>20</height>
+         <width>0</width>
+         <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>20</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="text">
@@ -389,7 +410,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QWidget" name="languagewidget" native="true">
+      <widget class="QFrame" name="languageframe">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -407,6 +428,9 @@
          <width>960</width>
          <height>50</height>
         </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_12">
         <property name="spacing">
@@ -426,13 +450,13 @@
           <property name="minimumSize">
            <size>
             <width>209</width>
-            <height>18</height>
+            <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>209</width>
-            <height>18</height>
+            <height>16777215</height>
            </size>
           </property>
           <property name="text">
@@ -454,6 +478,12 @@
             <height>0</height>
            </size>
           </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>32</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true"/>
           </property>
@@ -463,7 +493,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QWidget" name="addlanwidget" native="true">
+      <widget class="QFrame" name="addlanframe">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -481,6 +511,9 @@
          <width>960</width>
          <height>50</height>
         </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_13">
         <property name="leftMargin">

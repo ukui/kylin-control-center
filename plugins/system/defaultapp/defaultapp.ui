@@ -74,7 +74,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="browserWidget" native="true">
+    <widget class="QFrame" name="browserFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -86,6 +86,9 @@
        <width>960</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
@@ -157,7 +160,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="mailWidget" native="true">
+    <widget class="QFrame" name="mailFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -169,6 +172,9 @@
        <width>960</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <property name="spacing">
@@ -237,7 +243,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="imageWidget" native="true">
+    <widget class="QFrame" name="imageFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -249,6 +255,9 @@
        <width>960</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <property name="spacing">
@@ -317,7 +326,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="audioWidget" native="true">
+    <widget class="QFrame" name="audioFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -329,6 +338,9 @@
        <width>960</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <property name="spacing">
@@ -397,7 +409,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="videoWidget" native="true">
+    <widget class="QFrame" name="videoFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -409,6 +421,9 @@
        <width>960</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_6">
       <property name="spacing">
@@ -477,7 +492,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="textWidget" native="true">
+    <widget class="QFrame" name="textFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -489,6 +504,9 @@
        <width>960</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
       <property name="spacing">

@@ -10,12 +10,16 @@ UkuiMessageBox::UkuiMessageBox()
 
 UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(parent)
 {
-    m_pThemeWidget = new QWidget(this);
-    m_pShutDownWidget = new QWidget(this);
-    m_pLagoutWidget = new QWidget(this);
+    m_pThemeWidget = new QFrame(this);
+    m_pShutDownWidget = new QFrame(this);
+    m_pLagoutWidget = new QFrame(this);
 
+    m_pThemeWidget->setFrameShape(QFrame::Shape::Box);
+    m_pShutDownWidget->setFrameShape(QFrame::Shape::Box);
+    m_pLagoutWidget->setFrameShape(QFrame::Shape::Box);
 
     m_pSoundEffectLabel = new QLabel(tr("System sound"),this);
+    m_pSoundEffectLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     m_pSoundThemeLabel = new QLabel(tr("System sound theme"),m_pThemeWidget);
     m_pSoundThemeCombobox = new QComboBox(m_pThemeWidget);
     m_pShutdownlabel = new QLabel(tr("Shutdown"),m_pShutDownWidget);
@@ -23,16 +27,16 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pLagoutLabel = new QLabel(tr("Lagout"),m_pLagoutWidget);
     m_pLagoutCombobox = new QComboBox(m_pLagoutWidget);
 
-    QFile QssFile("://combox.qss");
+//    QFile QssFile("://combox.qss");
 //    QFile QssFile("://combox.qss");
 //    QssFile.open(QFile::ReadOnly)
-    if (QssFile.isOpen()){
-        qss = QLatin1String(QssFile.readAll());
-        QssFile.close();
-    } else {
-        qDebug()<<"combox.qss can not found"<<endl;
-    }
-    itemDelegate = new QStyledItemDelegate();
+//    if (QssFile.isOpen()){
+//        qss = QLatin1String(QssFile.readAll());
+//        QssFile.close();
+//    } else {
+//        qDebug()<<"combox.qss can not found"<<endl;
+//    }
+//    itemDelegate = new QStyledItemDelegate();
 //    bool ok = qss.open(QFile::ReadOnly);
 //    if (!ok)
 //        qDebug() << "加载失败";
@@ -100,7 +104,7 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     vLayout->addWidget(m_pShutDownWidget);
     vLayout->addWidget(m_pLagoutWidget);
     this->setLayout(vLayout);
-    vLayout->setSpacing(0);
+//    vLayout->setSpacing(0);
     this->layout()->setContentsMargins(0,0,0,0);
 
 //    m_pLagoutCombobox->setStyleSheet(qss);

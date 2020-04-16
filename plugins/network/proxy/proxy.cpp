@@ -51,6 +51,9 @@ Proxy::Proxy()
     pluginName = tr("Proxy");
     pluginType = NETWORK;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
     settingsCreate = false;
 
     const QByteArray id(PROXY_SCHEMA);
@@ -146,12 +149,12 @@ void Proxy::setupStylesheet(){
 
 void Proxy::setupComponent(){
     //添加自动配置代理开关按钮
-    autoSwitchBtn = new SwitchButton(ui->autoWidget);
+    autoSwitchBtn = new SwitchButton(ui->autoFrame);
     autoSwitchBtn->setObjectName("auto");
     ui->autoHorLayout->addWidget(autoSwitchBtn);
 
     //添加手动配置代理开关按钮
-    manualSwitchBtn = new SwitchButton(ui->manualWidget);
+    manualSwitchBtn = new SwitchButton(ui->manualFrame);
     manualSwitchBtn->setObjectName("manual");
     ui->manualHorLayout->addWidget(manualSwitchBtn);
 
@@ -324,14 +327,15 @@ int Proxy::_getCurrentProxyMode(){
 void Proxy::_setSensitivity(){
     //自动配置代理界面敏感性
     bool autoChecked = autoSwitchBtn->isChecked();
-    ui->urlWidget->setEnabled(autoChecked);
+    ui->urlFrame->setVisible(autoChecked);
+
 
     //手动配置代理界面敏感性
     bool manualChecked = manualSwitchBtn->isChecked();
-    ui->httpWidget->setEnabled(manualChecked);
-    ui->httpsWidget->setEnabled(manualChecked);
-    ui->ftpWidget->setEnabled(manualChecked);
-    ui->socksWidget->setEnabled(manualChecked);
+    ui->httpFrame->setVisible(manualChecked);
+    ui->httpsFrame->setVisible(manualChecked);
+    ui->ftpFrame->setVisible(manualChecked);
+    ui->socksFrame->setVisible(manualChecked);
 
 }
 

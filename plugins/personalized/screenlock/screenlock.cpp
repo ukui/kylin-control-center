@@ -41,6 +41,10 @@ Screenlock::Screenlock()
     pluginName = tr("Screenlock");
     pluginType = PERSONALIZED;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title1Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
 //    pluginWidget->setStyleSheet("background: #ffffff;");
 
 //    ui->loginWidget->setStyleSheet("QWidget{background: #F4F4F4; border: none; border-top-left-radius: 6px; border-top-right-radius: 6px;}");

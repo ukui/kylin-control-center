@@ -29,9 +29,16 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     }
 
     m_pOutputWidget = new QWidget(this);
-    m_pOutputDeviceWidget = new QWidget(m_pOutputWidget);
-    m_pMasterVolumeWidget = new QWidget(m_pOutputWidget);
-    m_pChannelBalanceWidget = new QWidget(m_pOutputWidget);
+    m_pOutputDeviceWidget = new QFrame(m_pOutputWidget);
+    m_pMasterVolumeWidget = new QFrame(m_pOutputWidget);
+    m_pChannelBalanceWidget = new QFrame(m_pOutputWidget);
+
+    m_pOutputDeviceWidget->setFrameShape(QFrame::Shape::Box);
+    m_pMasterVolumeWidget->setFrameShape(QFrame::Shape::Box);
+    m_pChannelBalanceWidget->setFrameShape(QFrame::Shape::Box);
+
+
+
     //设置大小
     m_pOutputWidget->setMinimumSize(550,150);
     m_pOutputWidget->setMaximumSize(960,150);
@@ -43,6 +50,7 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pChannelBalanceWidget->setMaximumSize(960,50);
 
     m_pOutputLabel = new QLabel(tr("Output"),this);
+    m_pOutputLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     m_pOutputDeviceLabel = new QLabel(tr("Select output device"),m_pOutputWidget);
     m_pOutputDeviceCombobox = new QComboBox(m_pOutputDeviceWidget);
     m_pOpVolumeLabel = new QLabel(tr("Master volume"),m_pMasterVolumeWidget);
@@ -112,10 +120,12 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     //进行整体布局
     QVBoxLayout *vLayout = new QVBoxLayout(m_pOutputWidget);
     vLayout->addWidget(m_pOutputDeviceWidget);
+    vLayout->addSpacing(1);
     vLayout->addWidget(m_pMasterVolumeWidget);
+    vLayout->addSpacing(1);
     vLayout->addWidget(m_pChannelBalanceWidget);
     m_pOutputWidget->setLayout(vLayout);
-    vLayout->setSpacing(0);
+//    vLayout->setSpacing(0);
     m_pOutputWidget->layout()->setContentsMargins(0,0,0,0);
 
     QVBoxLayout *vLayout1 = new QVBoxLayout(this);
@@ -167,38 +177,38 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
 //                                        "color:rgba(67,67,69,1);"
 //                                        "line-height:40px;}");
 
-//    m_pOpVolumeSlider->setStyleSheet("QSlider::groove:horizontal {"
-//                                  "border: 0px solid #bbb; }"
-//                                  "QSlider::sub-page:horizontal {"
-//                                  "background: #3D6BE5;border-radius: 2px;"
-//                                  "margin-top:8px;margin-bottom:9px;}"
-//                                  "QSlider::add-page:horizontal {"
-//                                  "background:  rgba(52,70,80,90%);"
-//                                  "border: 0px solid #777;"
-//                                  "border-radius: 2px;"
-//                                  "margin-top:8px;"
-//                                  "margin-bottom:9px;}"
-//                                  "QSlider::handle:horizontal {"
-//                                  "width: 20px;"
-//                                  "height: 20px;"
-//                                  "background: #3D6BE5;"
-//                                  "border-radius:10px;}");
-//    m_pOpBalanceSlider->setStyleSheet("QSlider::groove:horizontal {"
-//                                   "border: 0px solid #bbb; }"
-//                                   "QSlider::sub-page:horizontal {"
-//                                   "background: #3D6BE5;border-radius: 2px;"
-//                                   "margin-top:8px;margin-bottom:9px;}"
-//                                   "QSlider::add-page:horizontal {"
-//                                   "background:  rgba(52,70,80,90%);"
-//                                   "border: 0px solid #777;"
-//                                   "border-radius: 2px;"
-//                                   "margin-top:8px;"
-//                                   "margin-bottom:9px;}"
-//                                   "QSlider::handle:horizontal {"
-//                                   "width: 20px;"
-//                                   "height: 20px;"
-//                                   "background: rgb(61,107,229);"
-//                                   "border-radius:10px;}");
+    m_pOpVolumeSlider->setStyleSheet("QSlider::groove:horizontal {"
+                                  "border: 0px solid #bbb; }"
+                                  "QSlider::sub-page:horizontal {"
+                                  "background: #3D6BE5;border-radius: 2px;"
+                                  "margin-top:8px;margin-bottom:9px;}"
+                                  "QSlider::add-page:horizontal {"
+                                  "background:  rgba(52,70,80,90%);"
+                                  "border: 0px solid #777;"
+                                  "border-radius: 2px;"
+                                  "margin-top:8px;"
+                                  "margin-bottom:9px;}"
+                                  "QSlider::handle:horizontal {"
+                                  "width: 20px;"
+                                  "height: 20px;"
+                                  "background: #3D6BE5;"
+                                  "border-radius:10px;}");
+    m_pOpBalanceSlider->setStyleSheet("QSlider::groove:horizontal {"
+                                   "border: 0px solid #bbb; }"
+                                   "QSlider::sub-page:horizontal {"
+                                   "background: #3D6BE5;border-radius: 2px;"
+                                   "margin-top:8px;margin-bottom:9px;}"
+                                   "QSlider::add-page:horizontal {"
+                                   "background:  rgba(52,70,80,90%);"
+                                   "border: 0px solid #777;"
+                                   "border-radius: 2px;"
+                                   "margin-top:8px;"
+                                   "margin-bottom:9px;}"
+                                   "QSlider::handle:horizontal {"
+                                   "width: 20px;"
+                                   "height: 20px;"
+                                   "background: rgb(61,107,229);"
+                                   "border-radius:10px;}");
 //    m_pOutputDeviceCombobox->setStyleSheet("QComboBox {width:140px;height:30px;background:rgba(248,248,248,1);"
 //                                        "border:2px solid rgba(218, 227, 250, 1);border-radius:4px;}"
 //                                        "QComboBox QAbstractItemView{"

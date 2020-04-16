@@ -58,6 +58,9 @@ Power::Power()
     pluginName = tr("Power");
     pluginType = SYSTEM;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
     settingsCreate = false;
 
     const QByteArray id(POWERMANAGER_SCHEMA);
@@ -339,16 +342,16 @@ void Power::refreshUI(){
     if (ui->powerModeBtnGroup->checkedId() != CUSTDOM){
 //        ui->custom1Widget->setEnabled(false);
 //        ui->custom2Widget->setEnabled(false);
-        ui->custom1Widget->hide();
-        ui->custom2Widget->hide();
+        ui->custom1Frame->hide();
+        ui->custom2Frame->hide();
 //        ui->customWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
 
     } else {
 //        ui->custom1Widget->setEnabled(true);
 //        ui->custom2Widget->setEnabled(true);
-        ui->custom1Widget->show();
-        ui->custom2Widget->show();
+        ui->custom1Frame->show();
+        ui->custom2Frame->show();
 //        ui->customWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
     }
 }

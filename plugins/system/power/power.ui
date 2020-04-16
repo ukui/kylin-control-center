@@ -112,7 +112,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QWidget" name="balanceWidget" native="true">
+         <widget class="QFrame" name="balanceFrame">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -124,6 +124,9 @@
             <width>16777215</width>
             <height>50</height>
            </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <property name="spacing">
@@ -219,7 +222,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QWidget" name="savingWidget" native="true">
+         <widget class="QFrame" name="savingFrame">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -231,6 +234,9 @@
             <width>16777215</width>
             <height>50</height>
            </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_4">
            <property name="spacing">
@@ -331,7 +337,7 @@
            <number>2</number>
           </property>
           <item>
-           <widget class="QWidget" name="customWidget" native="true">
+           <widget class="QFrame" name="customFrame">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -343,6 +349,9 @@
               <width>16777215</width>
               <height>50</height>
              </size>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_6">
              <property name="spacing">
@@ -438,7 +447,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QWidget" name="custom1Widget" native="true">
+           <widget class="QFrame" name="custom1Frame">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -450,6 +459,9 @@
               <width>16777215</width>
               <height>118</height>
              </size>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_3">
              <property name="spacing">
@@ -631,7 +643,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QWidget" name="custom2Widget" native="true">
+           <widget class="QFrame" name="custom2Frame">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -643,6 +655,9 @@
               <width>16777215</width>
               <height>50</height>
              </size>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_10">
              <property name="spacing">
@@ -761,7 +776,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QWidget" name="iconWidget" native="true">
+         <widget class="QFrame" name="iconFrame">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -773,6 +788,9 @@
             <width>16777215</width>
             <height>50</height>
            </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_13">
            <property name="spacing">
@@ -873,7 +891,7 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="powerModeBtnGroup"/>
   <buttongroup name="powerTypeBtnGroup"/>
+  <buttongroup name="powerModeBtnGroup"/>
  </buttongroups>
 </ui>

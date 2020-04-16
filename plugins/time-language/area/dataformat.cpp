@@ -10,26 +10,33 @@
 #define DATE_FORMATE_KEY "date"
 #define TIME_KEY         "hoursystem"
 
+extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
+
 DataFormat::DataFormat(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DataFormat)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-//    setAttribute(Qt::WA_TranslucentBackground);
+    setAttribute(Qt::WA_TranslucentBackground);
+
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->closeBtn->setFlat(true);
 
     QByteArray id(PANEL_GSCHEMAL);
     if(QGSettings::isSchemaInstalled(id)) {
         m_gsettings = new QGSettings(id)        ;
     }
 
-    QFile QssFile("://combox.qss");
-    QssFile.open(QFile::ReadOnly);
+//    QFile QssFile("://combox.qss");
+//    QssFile.open(QFile::ReadOnly);
 
-    if (QssFile.isOpen()){
-        qss = QLatin1String(QssFile.readAll());
-        QssFile.close();
-    }
+//    if (QssFile.isOpen()){
+//        qss = QLatin1String(QssFile.readAll());
+//        QssFile.close();
+//    }
 
     locale = QLocale::system().name();
 
@@ -245,20 +252,21 @@ void DataFormat::paintEvent(QPaintEvent *event) {
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
-    rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 5, 5);
+    rectPath.addRoundedRect(this->rect().adjusted(10, 10, -10, -10), 6, 6);
+
     // 画一个黑底
     QPixmap pixmap(this->rect().size());
     pixmap.fill(Qt::transparent);
     QPainter pixmapPainter(&pixmap);
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
-    pixmapPainter.setBrush(Qt::green);
+    pixmapPainter.setBrush(Qt::black);
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 
     // 模糊这个黑底
     QImage img = pixmap.toImage();
-//    qt_blurImage(img, 10, false, false);
+    qt_blurImage(img, 10, false, false);
 
     // 挖掉中心
     pixmap = QPixmap::fromImage(img);
@@ -272,9 +280,9 @@ void DataFormat::paintEvent(QPaintEvent *event) {
     // 绘制阴影
     p.drawPixmap(this->rect(), pixmap, pixmap.rect());
 
-    // 绘制背景
+    // 绘制一个背景
     p.save();
-    p.fillPath(rectPath, QColor(255, 255, 255));
+    p.fillPath(rectPath,palette().color(QPalette::Base));
     p.restore();
 
 }

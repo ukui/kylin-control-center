@@ -30,6 +30,8 @@ public:
                      QPainter *painter,
                      const QWidget *widget = nullptr) const;
 
+    void drawComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const;
+
     void polish(QPalette &pal);
     void polish(QWidget *widget);
 

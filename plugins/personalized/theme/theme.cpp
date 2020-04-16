@@ -99,6 +99,8 @@ Theme::Theme()
     pluginName = tr("Theme");
     pluginType = PERSONALIZED;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
     settingsCreate = false;
 
     const QByteArray id(THEME_GTK_SCHEMA);
@@ -303,6 +305,7 @@ void Theme::initIconTheme(){
             }
 
             ThemeWidget * widget = new ThemeWidget(QSize(48, 48), dullTranslation(themedir.section("-", -1, -1, QString::SectionSkipEmpty)), showIconsList);
+//            widget->setFrameShape(QFrame::Shape::Box);
             widget->setValue(themedir);
             //加入Layout
             ui->iconThemeVerLayout->addWidget(widget);
@@ -409,6 +412,7 @@ void Theme::initCursorTheme(){
         }
 
         ThemeWidget * widget  = new ThemeWidget(QSize(24, 24), cursor, cursorVec);
+//        widget->setFrameShape(QFrame::Shape::Box);
         widget->setValue(cursor);
 
         //加入Layout

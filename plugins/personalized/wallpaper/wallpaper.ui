@@ -222,7 +222,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QWidget" name="switchWidget" native="true">
+         <widget class="QFrame" name="switchFrame">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -234,6 +234,9 @@
             <width>16777215</width>
             <height>50</height>
            </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <property name="spacing">

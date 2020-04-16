@@ -56,6 +56,7 @@ UserInfo::UserInfo()
 
     pluginName = tr("Userinfo");
     pluginType = ACCOUNT;
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
     //构建System dbus调度对象
     sysdispatcher = new SystemDbusDispatcher;
@@ -205,10 +206,10 @@ void UserInfo::initComponent(){
 
 //    ui->addUserWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
-    nopwdSwitchBtn = new SwitchButton(ui->nopwdLoginWidget);
+    nopwdSwitchBtn = new SwitchButton(ui->nopwdLoginFrame);
     ui->nopwdHorLayout->addWidget(nopwdSwitchBtn);
 
-    autoLoginSwitchBtn = new SwitchButton(ui->autoLoginWidget);
+    autoLoginSwitchBtn = new SwitchButton(ui->autoLoginFrame);
     ui->autoLoginHorLayout->addWidget(autoLoginSwitchBtn);
 
 
@@ -359,7 +360,6 @@ void UserInfo::_refreshUserInfoUI(){
 
 void UserInfo::_buildWidgetForItem(UserInfomation user){
     HoverWidget * baseWidget = new HoverWidget(user.username);
-//    baseWidget->setStyleSheet("background: #ffffff;");
     baseWidget->setMinimumSize(550,50);
     baseWidget->setMaximumSize(960,50);
     baseWidget->setAttribute(Qt::WA_DeleteOnClose);
@@ -372,9 +372,9 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     baseHorLayout->setSpacing(16);
     baseHorLayout->setMargin(0);
 
-    QWidget * widget = new QWidget(baseWidget);
+    QFrame * widget = new QFrame(baseWidget);
+    widget->setFrameShape(QFrame::Shape::Box);
     widget->setFixedHeight(50);
-//    widget->setStyleSheet("background: #F4F4F4; border-radius: 4px;");
 
     QHBoxLayout * mainHorLayout = new QHBoxLayout(widget);
     mainHorLayout->setSpacing(16);

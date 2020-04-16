@@ -32,7 +32,7 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
 
     m_searchInput->setMinimumSize(560,40);
     m_searchInput->setMaximumSize(560,40);
-//    m_searchInput->setMinimumHeight(40);
+    m_searchInput->setMinimumHeight(40);
 //    m_searchInput->setStyleSheet("background-color: rgb(229, 240, 250 )");
 //    m_cancelBtn->setStyleSheet("background-color: rgb(229, 240, 250 )");
 //    m_confirmBtn->setStyleSheet("background-color: rgb(229, 240, 250 )");
@@ -40,7 +40,7 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
 /*    m_title->setMinimumWidth(179);
     m_title->setMinimumHeight(29);*/;
     m_title->setObjectName("titleLabel");
-//    m_title->setStyleSheet("color: rgb(229, 240, 250 )");
+    m_title->setStyleSheet("color: rgb(229, 240, 250 )");
     m_title->setText(tr("change timezone"));
 
 
@@ -217,6 +217,9 @@ void TimeZoneChooser::initSize(){
     m_map->setFixedSize(MapPictureWidth / scale, MapPictureHeight / scale);
 
 //    m_searchInput->setFixedWidth(250);
+
+    m_cancelBtn->setFixedHeight(36);
+    m_confirmBtn->setFixedHeight(36);
     m_cancelBtn->setFixedWidth(120);
     m_confirmBtn->setFixedWidth(120);
 }

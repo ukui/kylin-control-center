@@ -95,9 +95,9 @@ void LeftWidgetItem::setLabelText(QString text){
 
 void LeftWidgetItem::setLabelTextIsWhite(bool selected) {
     if(selected) {
-        textLabel->setStyleSheet("color: #F7FFFFFF;");
+        textLabel->setStyleSheet("color: palette(highlighted-text);");
     } else {
-        textLabel->setStyleSheet("color: #000000;");
+        textLabel->setStyleSheet("color: palette(windowText);");
     }
 }
 
@@ -105,7 +105,7 @@ void LeftWidgetItem::setSelected(bool selected){
     if (selected) {
         widget->setStyleSheet("QWidget{background: #3D6BE5; border-radius: 4px;}");
     } else {
-        widget->setStyleSheet("QWidget{background: #FFFFFF;}");
+        widget->setStyleSheet("QWidget{background: palette(base);}");
     }
 
 }

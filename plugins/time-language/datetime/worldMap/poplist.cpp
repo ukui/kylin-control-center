@@ -31,7 +31,7 @@ void PopList::initUI() {
     PopListDelegate *listDelegate = new PopListDelegate(this);
     m_listView->setItemDelegate(listDelegate);
     m_listView->setMouseTracking(true);
-//    m_listView->setStyleSheet(m_zoneinfo->readRile(":/list.css"));
+    m_listView->setStyleSheet(m_zoneinfo->readRile(":/list.css"));
 
     setContentsMargins(0, 0, 0, 0);
     // 透明

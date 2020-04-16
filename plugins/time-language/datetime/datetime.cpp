@@ -40,6 +40,8 @@ DateTime::DateTime()
 
     pluginName = tr("Datetime");
     pluginType = DATETIME;
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->timeClockLable->setStyleSheet("QLabel{font-size: 24px;QFont:Bold; color: palette(windowText);}");
 
 //    qDebug()<<"进入时间日期UI------------------》"<<endl;
 
@@ -143,7 +145,7 @@ void DateTime::component_init(){
 
 //    m_formTimeBtn->setChecked(false);
 
-    QHBoxLayout *hourLayout = new QHBoxLayout(ui->hourWidget);
+    QHBoxLayout *hourLayout = new QHBoxLayout(ui->hourFrame);
 
     hourLayout->addWidget(m_formTimeLabel);
     hourLayout->addWidget(m_formTimeBtn);

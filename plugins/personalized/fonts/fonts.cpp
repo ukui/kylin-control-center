@@ -102,6 +102,8 @@ Fonts::Fonts()
     pluginName = tr("Fonts");
     pluginType = PERSONALIZED;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
     settingsCreate = false;
 
     setupStylesheet();
@@ -158,7 +160,7 @@ void Fonts::plugin_delay_control(){
 
 void Fonts::setupStylesheet(){
 //    pluginWidget->setStyleSheet("background: #ffffff;");
-    ui->fontSizeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 4px;}");
+//    ui->fontSizeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 4px;}");
 //    ui->fontSizeLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
 
 //    ui->fontTypeWidget->setStyleSheet("QWidget#fontTypeWidget{background: #F4F4F4; border-radius: 4px;}");
@@ -293,7 +295,7 @@ void Fonts::setupComponent(){
         ui->titleSizeComBox->addItem(QString::number(size));
 
     //设置高级配置是否显示
-    ui->advancedWidget->setVisible(ui->advancedBtn->isChecked());
+    ui->advancedFrame->setVisible(ui->advancedBtn->isChecked());
 
     //init sample button
     FontEffects * example1 = new FontEffects();
@@ -382,7 +384,7 @@ void Fonts::setupConnect(){
 
     //高级字体按钮状态
     connect(ui->advancedBtn, &QPushButton::clicked, this, [=]{
-        ui->advancedWidget->setVisible(ui->advancedBtn->isChecked());
+        ui->advancedFrame->setVisible(ui->advancedBtn->isChecked());
     });
 
     connect(ui->defaultFontComBox, &QComboBox::currentTextChanged, [=](QString text){

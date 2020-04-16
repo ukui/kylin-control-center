@@ -41,8 +41,10 @@ Item {
         anchors.fill: parent;
         focus: true;
 
-        color: "#F4F4F4";
-        radius: 6  //设置矩形圆角弧度
+//        color: "#000000";
+//        color: "transparent";
+        color: palette.button
+//        radius: 6  //设置矩形圆角弧度
 
 
         FocusScope {

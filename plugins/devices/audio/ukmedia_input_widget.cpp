@@ -6,23 +6,28 @@
 UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
 {
     m_pInputWidget = new QWidget(this);
-    m_pInputDeviceWidget = new QWidget(m_pInputWidget);
-    m_pVolumeWidget = new QWidget(m_pInputWidget);
-    m_pInputLevelWidget = new QWidget(m_pInputWidget);
+    m_pInputDeviceWidget = new QFrame(m_pInputWidget);
+    m_pVolumeWidget = new QFrame(m_pInputWidget);
+    m_pInputLevelWidget = new QFrame(m_pInputWidget);
 
-    itemDelege = new QStyledItemDelegate();
 
-    //加载qss样式文件
-    QFile QssFile("://combox.qss");
-    QssFile.open(QFile::ReadOnly);
+    m_pInputDeviceWidget->setFrameShape(QFrame::Shape::Box);
+    m_pVolumeWidget->setFrameShape(QFrame::Shape::Box);
+    m_pInputLevelWidget->setFrameShape(QFrame::Shape::Box);
 
-    if (QssFile.isOpen()){
-        sliderQss = QLatin1String(QssFile.readAll());
-        QssFile.close();
-    } else {
-        qDebug()<<"combox.qss is not found"<<endl;
-    }
-    itemDelege = new QStyledItemDelegate();
+//    itemDelege = new QStyledItemDelegate();
+
+//    //加载qss样式文件
+//    QFile QssFile("://combox.qss");
+//    QssFile.open(QFile::ReadOnly);
+
+//    if (QssFile.isOpen()){
+//        sliderQss = QLatin1String(QssFile.readAll());
+//        QssFile.close();
+//    } else {
+//        qDebug()<<"combox.qss is not found"<<endl;
+//    }
+//    itemDelege = new QStyledItemDelegate();
 
     //设置大小
     m_pInputWidget->setMinimumSize(550,150);
@@ -35,6 +40,7 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pInputLevelWidget->setMaximumSize(960,50);
 
     m_pInputLabel = new QLabel(tr("Input"),this);
+    m_pInputLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     m_pInputDeviceLabel = new QLabel(tr("Select input device"),m_pInputWidget);
     m_pInputDeviceCombobox = new QComboBox(m_pInputDeviceWidget);
 
@@ -104,10 +110,12 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     //进行整体布局
     QVBoxLayout *m_pVlayout = new QVBoxLayout(m_pInputWidget);
     m_pVlayout->addWidget(m_pInputDeviceWidget);
+    m_pVlayout->addSpacing(1);
     m_pVlayout->addWidget(m_pVolumeWidget);
+    m_pVlayout->addSpacing(1);
     m_pVlayout->addWidget(m_pInputLevelWidget);
     m_pInputWidget->setLayout(m_pVlayout);
-    m_pVlayout->setSpacing(0);
+//    m_pVlayout->setSpacing(0);
     m_pInputWidget->layout()->setContentsMargins(0,0,0,0);
 
     QVBoxLayout *m_pVlayout1 = new QVBoxLayout(this);
@@ -160,38 +168,38 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
 //                                     "color:rgba(67,67,69,1);"
 //                                     "line-height:40px;}");
 
-//    m_pIpVolumeSlider->setStyleSheet("QSlider::groove:horizontal {"
-//                                  "border: 0px solid #bbb; }"
-//                                  "QSlider::sub-page:horizontal {"
-//                                  "background: #3D6BE5;border-radius: 2px;"
-//                                  "margin-top:8px;margin-bottom:9px;}"
-//                                  "QSlider::add-page:horizontal {"
-//                                  "background:  rgba(52,70,80,90%);"
-//                                  "border: 0px solid #777;"
-//                                  "border-radius: 2px;"
-//                                  "margin-top:8px;"
-//                                  "margin-bottom:9px;}"
-//                                  "QSlider::handle:horizontal {"
-//                                  "width: 20px;"
-//                                  "height: 20px;"
-//                                  "background: rgb(61,107,229);"
-//                                  "border-radius:10px;}");
-//    m_pInputLevelSlider->setStyleSheet("QSlider::groove:horizontal {"
-//                                   "border: 0px solid #bbb; }"
-//                                   "QSlider::sub-page:horizontal {"
-//                                   "background: #3D6BE5;border-radius: 2px;"
-//                                   "margin-top:8px;margin-bottom:9px;}"
-//                                   "QSlider::add-page:horizontal {"
-//                                   "background:  rgba(52,70,80,90%);"
-//                                   "border: 0px solid #777;"
-//                                   "border-radius: 2px;"
-//                                   "margin-top:8px;"
-//                                   "margin-bottom:9px;}"
-//                                   "QSlider::handle:horizontal {"
-//                                   "width: 20px;"
-//                                   "height: 20px;"
-//                                   "background: rgb(61,107,229);"
-//                                   "border-radius:10px;}");
+    m_pIpVolumeSlider->setStyleSheet("QSlider::groove:horizontal {"
+                                  "border: 0px solid #bbb; }"
+                                  "QSlider::sub-page:horizontal {"
+                                  "background: #3D6BE5;border-radius: 2px;"
+                                  "margin-top:8px;margin-bottom:9px;}"
+                                  "QSlider::add-page:horizontal {"
+                                  "background:  rgba(52,70,80,90%);"
+                                  "border: 0px solid #777;"
+                                  "border-radius: 2px;"
+                                  "margin-top:8px;"
+                                  "margin-bottom:9px;}"
+                                  "QSlider::handle:horizontal {"
+                                  "width: 20px;"
+                                  "height: 20px;"
+                                  "background: rgb(61,107,229);"
+                                  "border-radius:10px;}");
+    m_pInputLevelSlider->setStyleSheet("QSlider::groove:horizontal {"
+                                   "border: 0px solid #bbb; }"
+                                   "QSlider::sub-page:horizontal {"
+                                   "background: #3D6BE5;border-radius: 2px;"
+                                   "margin-top:8px;margin-bottom:9px;}"
+                                   "QSlider::add-page:horizontal {"
+                                   "background:  rgba(52,70,80,90%);"
+                                   "border: 0px solid #777;"
+                                   "border-radius: 2px;"
+                                   "margin-top:8px;"
+                                   "margin-bottom:9px;}"
+                                   "QSlider::handle:horizontal {"
+                                   "width: 20px;"
+                                   "height: 20px;"
+                                   "background: rgb(61,107,229);"
+                                   "border-radius:10px;}");
 
 //    m_pInputDeviceCombobox->setStyleSheet("QComboBox {width:140px;height:30px;background:rgba(248,248,248,1);"
 //                                       "border:2px solid rgba(218, 227, 250, 1);border-radius:4px;}"

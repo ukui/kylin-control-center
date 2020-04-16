@@ -26,21 +26,6 @@
    <string notr="true">UserInfo</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
-   <property name="spacing">
-    <number>2</number>
-   </property>
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>30</number>
-   </property>
-   <property name="bottomMargin">
-    <number>30</number>
-   </property>
    <item>
     <widget class="QLabel" name="titleLabel">
      <property name="sizePolicy">
@@ -74,7 +59,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="currentUserWidget" native="true">
+    <widget class="QFrame" name="currentUserFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -86,6 +71,9 @@
        <width>960</width>
        <height>202</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="spacing">
@@ -238,9 +226,12 @@
            </layout>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_5">
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <property name="spacing">
+             <number>8</number>
+            </property>
             <item>
-             <spacer name="verticalSpacer_4">
+             <spacer name="verticalSpacer_8">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
@@ -251,6 +242,32 @@
                </size>
               </property>
              </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="userNameLabel_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="userTypeLabel_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QPushButton" name="changeTypeBtn">
@@ -289,7 +306,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QWidget" name="nopwdLoginWidget" native="true">
+         <widget class="QFrame" name="nopwdLoginFrame">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -301,6 +318,9 @@
             <width>16777215</width>
             <height>50</height>
            </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_5">
            <property name="spacing">
@@ -363,7 +383,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="autoLoginWidget" native="true">
+    <widget class="QFrame" name="autoLoginFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -375,6 +395,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
       <property name="spacing">
@@ -505,7 +528,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="addUserWidget" native="true">
+    <widget class="QFrame" name="addUserFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -517,6 +540,9 @@
        <width>960</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">

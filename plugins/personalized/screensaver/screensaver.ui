@@ -129,7 +129,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="enableWidget" native="true">
+    <widget class="QFrame" name="enableFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -141,6 +141,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <property name="spacing">
@@ -188,7 +191,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="programWidget" native="true">
+    <widget class="QFrame" name="programFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -200,6 +203,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <property name="spacing">
@@ -291,7 +297,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="idleWidget" native="true">
+    <widget class="QFrame" name="idleFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -303,6 +309,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
       <property name="spacing">
@@ -500,7 +509,7 @@ QSlider::handle:horizontal {
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="lockWidget" native="true">
+    <widget class="QFrame" name="lockFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -512,6 +521,9 @@ QSlider::handle:horizontal {
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_9">
       <property name="spacing">

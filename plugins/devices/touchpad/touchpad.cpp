@@ -60,14 +60,16 @@ Touchpad::Touchpad()
     pluginName = tr("Touchpad");
     pluginType = DEVICES;
 
-    QString qss;
-    QFile QssFile("://combox.qss");
-    QssFile.open(QFile::ReadOnly);
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-    if (QssFile.isOpen()){
-        qss = QLatin1String(QssFile.readAll());
-        QssFile.close();
-    }
+//    QString qss;
+//    QFile QssFile("://combox.qss");
+//    QssFile.open(QFile::ReadOnly);
+
+//    if (QssFile.isOpen()){
+//        qss = QLatin1String(QssFile.readAll());
+//        QssFile.close();
+//    }
 
 //    pluginWidget->setStyleSheet("background: #ffffff;");
 

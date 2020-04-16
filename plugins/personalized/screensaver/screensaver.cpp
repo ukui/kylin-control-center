@@ -67,6 +67,8 @@ Screensaver::Screensaver()
     pluginName = tr("Screensaver");
     pluginType = PERSONALIZED;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
 //    pluginWidget->setStyleSheet("background: #ffffff;");
 
 //    ui->previewWidget->setStyleSheet("#previewWidget{background: black; border-radius: 6px;}");
@@ -128,12 +130,12 @@ void Screensaver::plugin_delay_control(){
 void Screensaver::initComponent(){
 
     //添加开启屏保按钮
-    enableSwitchBtn = new SwitchButton(ui->enableWidget);
+    enableSwitchBtn = new SwitchButton(ui->enableFrame);
     ui->enableHorLayout->addStretch();
     ui->enableHorLayout->addWidget(enableSwitchBtn);
 
     //添加锁定屏幕开关按钮
-    lockSwitchBtn = new SwitchButton(ui->lockWidget);
+    lockSwitchBtn = new SwitchButton(ui->lockFrame);
     ui->lockHorLayout->addStretch();
     ui->lockHorLayout->addWidget(lockSwitchBtn);
 
@@ -161,7 +163,7 @@ void Screensaver::initComponent(){
         g_settings_set_boolean(screensaver_settings, ACTIVE_KEY, checked);
 
         //刷新LockWidget状态
-        ui->lockWidget->setVisible(checked);
+        ui->lockFrame->setVisible(checked);
         g_object_unref(screensaver_settings);
     });
 
@@ -210,7 +212,7 @@ void Screensaver::initEnableBtnStatus(){
     enableSwitchBtn->blockSignals(false);
 
     //初始化LockWidget状态
-    ui->lockWidget->setVisible(active);
+    ui->lockFrame->setVisible(active);
 
     bool locked;
     locked = settings->get(LOCK_KEY).toBool();
