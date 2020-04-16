@@ -27,7 +27,7 @@ Audio::Audio()
     ui = new Ui::Audio;
     pluginWidget = new UkmediaMainWidget;
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    pluginWidget->setStyleSheet("background: #ffffff;");
+//    pluginWidget->setStyleSheet("background: #ffffff;");
     ui->setupUi(pluginWidget);
 
     pluginName = tr("Audio");

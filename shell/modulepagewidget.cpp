@@ -50,13 +50,13 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
 
 
     //
-    ui->mtitleLabel->setStyleSheet("QLabel#mtitleLabel{font-size: 18px; color: #91000000;}");
+    ui->mtitleLabel->setStyleSheet(tr("QLabel{font-size: 18px; color: palette(Shadow);}"));
     //左侧二级菜单样式
     ui->leftStackedWidget->setStyleSheet("border: none;");
     //上侧二级菜单样式
-    ui->topStackedWidget->setStyleSheet("border: none;");
+//    ui->topStackedWidget->setStyleSheet("border: none;");
     //功能区域
-    ui->scrollArea->setStyleSheet("#scrollArea{border: 0px solid;}");
+//    ui->scrollArea->setStyleSheet("#scrollArea{border: 0px solid;}");
     ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 //    ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -92,7 +92,7 @@ void ModulePageWidget::initUI(){
     for (int moduleIndex = 0; moduleIndex < TOTALMODULES; moduleIndex++){
         QListWidget * leftListWidget = new QListWidget;
         leftListWidget->setObjectName("leftWidget");
-        leftListWidget->setStyleSheet("QListWidget#leftWidget{background-color: #FFFFFF}");
+//        leftListWidget->setStyleSheet("QListWidget#leftWidget{background-color: #FFFFFF}");
         leftListWidget->setAttribute(Qt::WA_DeleteOnClose);
         leftListWidget->setResizeMode(QListView::Adjust);
         leftListWidget->setFocusPolicy(Qt::NoFocus);

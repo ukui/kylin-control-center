@@ -58,6 +58,9 @@ Power::Power()
     pluginName = tr("Power");
     pluginType = SYSTEM;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
     settingsCreate = false;
 
     const QByteArray id(POWERMANAGER_SCHEMA);
@@ -101,21 +104,21 @@ void Power::plugin_delay_control(){
 }
 
 void Power::setupStylesheet(){
-    pluginWidget->setStyleSheet("background: #ffffff;");
+//    pluginWidget->setStyleSheet("background: #ffffff;");
 
-    ui->balanceWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->savingWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->customWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-    ui->custom1Widget->setStyleSheet("QWidget{background: #F4F4F4;}");
-    ui->custom2Widget->setStyleSheet("QWidget{background: #F4F4F4;}"
-                                     "QWidget#custom2Widget{border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+//    ui->balanceWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->savingWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->customWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+//    ui->custom1Widget->setStyleSheet("QWidget{background: #F4F4F4;}");
+//    ui->custom2Widget->setStyleSheet("QWidget{background: #F4F4F4;}"
+//                                     "QWidget#custom2Widget{border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
 
-    ui->acBtn->setStyleSheet("QPushButton#acBtn:checked{background: #3D6BE5; border-radius: 4px; color: #ffffff;}"
-                             "QPushButton#acBtn:!checked{background: #ffffff; border-radius: 4px;}");
-    ui->batteryBtn->setStyleSheet("QPushButton#batteryBtn:checked{background: #3D6BE5; border-radius: 4px; color: #ffffff;}"
-                                  "QPushButton#batteryBtn:!checked{background: #ffffff; border-radius: 4px; color: #000000;}");
+//    ui->acBtn->setStyleSheet("QPushButton#acBtn:checked{background: #3D6BE5; border-radius: 4px; color: #ffffff;}"
+//                             "QPushButton#acBtn:!checked{background: #ffffff; border-radius: 4px;}");
+//    ui->batteryBtn->setStyleSheet("QPushButton#batteryBtn:checked{background: #3D6BE5; border-radius: 4px; color: #ffffff;}"
+//                                  "QPushButton#batteryBtn:!checked{background: #ffffff; border-radius: 4px; color: #000000;}");
 
-    ui->iconWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->iconWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
 }
 
@@ -339,16 +342,16 @@ void Power::refreshUI(){
     if (ui->powerModeBtnGroup->checkedId() != CUSTDOM){
 //        ui->custom1Widget->setEnabled(false);
 //        ui->custom2Widget->setEnabled(false);
-        ui->custom1Widget->hide();
-        ui->custom2Widget->hide();
-        ui->customWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+        ui->custom1Frame->hide();
+        ui->custom2Frame->hide();
+//        ui->customWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
 
     } else {
 //        ui->custom1Widget->setEnabled(true);
 //        ui->custom2Widget->setEnabled(true);
-        ui->custom1Widget->show();
-        ui->custom2Widget->show();
-        ui->customWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+        ui->custom1Frame->show();
+        ui->custom2Frame->show();
+//        ui->customWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
     }
 }

@@ -67,9 +67,11 @@ Screensaver::Screensaver()
     pluginName = tr("Screensaver");
     pluginType = PERSONALIZED;
 
-    pluginWidget->setStyleSheet("background: #ffffff;");
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-    ui->previewWidget->setStyleSheet("#previewWidget{background: black; border-radius: 6px;}");
+//    pluginWidget->setStyleSheet("background: #ffffff;");
+
+//    ui->previewWidget->setStyleSheet("#previewWidget{background: black; border-radius: 6px;}");
     ui->previewWidget->setAutoFillBackground(true);
 
     mPreviewWidget = new PreviewWidget;
@@ -78,15 +80,15 @@ Screensaver::Screensaver()
     mPreviewLayout->addWidget(mPreviewWidget);
     ui->previewWidget->setLayout(mPreviewLayout);
 
-    ui->enableWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+//    ui->enableWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
 
-    ui->programWidget->setStyleSheet("QWidget#programWidget{background: #F4F4F4;}");
-    ui->programLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
+//    ui->programWidget->setStyleSheet("QWidget#programWidget{background: #F4F4F4;}");
+//    ui->programLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
 
-    ui->idleWidget->setStyleSheet("QWidget{background: #F4F4F4; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
-    ui->idleLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border-radius: 0px;}");
+//    ui->idleWidget->setStyleSheet("QWidget{background: #F4F4F4; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+//    ui->idleLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border-radius: 0px;}");
 
-    ui->lockWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->lockWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
     process = new QProcess();
 
@@ -128,12 +130,12 @@ void Screensaver::plugin_delay_control(){
 void Screensaver::initComponent(){
 
     //添加开启屏保按钮
-    enableSwitchBtn = new SwitchButton(ui->enableWidget);
+    enableSwitchBtn = new SwitchButton(ui->enableFrame);
     ui->enableHorLayout->addStretch();
     ui->enableHorLayout->addWidget(enableSwitchBtn);
 
     //添加锁定屏幕开关按钮
-    lockSwitchBtn = new SwitchButton(ui->lockWidget);
+    lockSwitchBtn = new SwitchButton(ui->lockFrame);
     ui->lockHorLayout->addStretch();
     ui->lockHorLayout->addWidget(lockSwitchBtn);
 
@@ -161,7 +163,7 @@ void Screensaver::initComponent(){
         g_settings_set_boolean(screensaver_settings, ACTIVE_KEY, checked);
 
         //刷新LockWidget状态
-        ui->lockWidget->setVisible(checked);
+        ui->lockFrame->setVisible(checked);
         g_object_unref(screensaver_settings);
     });
 
@@ -210,7 +212,7 @@ void Screensaver::initEnableBtnStatus(){
     enableSwitchBtn->blockSignals(false);
 
     //初始化LockWidget状态
-    ui->lockWidget->setVisible(active);
+    ui->lockFrame->setVisible(active);
 
     bool locked;
     locked = settings->get(LOCK_KEY).toBool();

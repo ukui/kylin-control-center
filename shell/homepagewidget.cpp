@@ -44,7 +44,7 @@ HomePageWidget::HomePageWidget(QWidget *parent) :
     pmainWindow = (MainWindow *)parentWidget();
 
     //
-    ui->listWidget->setStyleSheet("QListWidget#listWidget{border: none;background:#FFFFFF}");
+//    ui->listWidget->setStyleSheet("QListWidget#listWidget{border: none;background:#FFFFFF}");
 
 
 
@@ -92,7 +92,7 @@ void HomePageWidget::initUI(){
         baseWidget->setObjectName("itemBaseWidget");
 //        baseWidget->setStyleSheet("QWidget#itemBaseWidget{border: 1px solid #3D68E5;}");
         //解决在20.04悬浮颜色问题
-        baseWidget->setStyleSheet("QWidget#itemBaseWidget{background: #FFFFFF;}");
+        baseWidget->setStyleSheet("QWidget#itemBaseWidget{background: palette(base);}");
         //baseWidget 的顶级布局
         QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);
         baseVerLayout->setMargin(0);
@@ -143,7 +143,8 @@ void HomePageWidget::initUI(){
         QLabel * titleLabel = new QLabel(widget);
         titleLabel->setObjectName("mptitleLabel");
         titleLabel->setText(modulenamei18nString);
-        titleLabel->setStyleSheet("font-size: 16px; color: #DE000000;");
+
+        titleLabel->setStyleSheet("QLabel{font-size: 16px; color: palette(windowText);}");
         QHBoxLayout * funcHorLayout = new QHBoxLayout();
 
         //循环填充模块下属功能
@@ -160,7 +161,8 @@ void HomePageWidget::initUI(){
                 continue;
 
             ClickLabel * label = new ClickLabel(single.namei18nString, widget);
-            label->setStyleSheet("font-size: 14px; color: #91434345;");
+            label->setStyleSheet("color: palette(Shadow);}");
+//            palette().color(QPalette::Text)
 
             connect(label, SIGNAL(clicked()), moduleSignalMapper, SLOT(map()));
             moduleSignalMapper->setMapping(label, moduleMap[single.namei18nString]);
@@ -192,11 +194,11 @@ void HomePageWidget::initUI(){
             HoverWidget * w = dynamic_cast<HoverWidget *>(QObject::sender());
             logoLabel->setPixmap(QPixmap(QString(":/img/homepage/%1Hover.png").arg(mname)));
 
-            titleLabel->setStyleSheet("font-size: 16px; color: #F7FFFFFF;");
+//            titleLabel->setStyleSheet("font-size: 16px; color: #F7FFFFFF;");
 
             QList<ClickLabel *> clabelList = w->findChildren<ClickLabel *>();
             for (ClickLabel * tmpLabel : clabelList){
-                tmpLabel->setStyleSheet("font-size: 14px; color: #91FFFFFF;");
+//                tmpLabel->setStyleSheet("font-size: 14px; color: #91FFFFFF;");
             }
         });
         //还原状态
@@ -204,11 +206,11 @@ void HomePageWidget::initUI(){
             HoverWidget * w = dynamic_cast<HoverWidget *>(QObject::sender());
             logoLabel->setPixmap(QPixmap(QString(":/img/homepage/%1.png").arg(mname)));
 
-            titleLabel->setStyleSheet("font-size: 16px; color: #DE000000;");
+//            titleLabel->setStyleSheet("font-size: 16px; color: #DE000000;");
 
             QList<ClickLabel *> clabelList = w->findChildren<ClickLabel *>();
             for (ClickLabel * tmpLabel : clabelList){
-                tmpLabel->setStyleSheet("font-size: 14px; color: #91434345;");
+//                tmpLabel->setStyleSheet("font-size: 14px; color: #91434345;");
             }
         });
 

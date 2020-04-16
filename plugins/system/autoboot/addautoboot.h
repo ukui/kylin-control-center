@@ -22,6 +22,7 @@
 
 #include <QDialog>
 #include <QFileDialog>
+#include <QPainter>
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -48,6 +49,9 @@ class AddAutoBoot : public QDialog
 public:
     explicit AddAutoBoot(QWidget *parent = 0);
     ~AddAutoBoot();
+
+protected:
+    void paintEvent(QPaintEvent *);
 
 private:
     Ui::AddAutoBoot *ui;

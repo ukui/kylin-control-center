@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>562</width>
-    <height>606</height>
+    <width>673</width>
+    <height>613</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -43,6 +43,18 @@
    </property>
    <item>
     <widget class="QWidget" name="widget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>550</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>960</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="spacing">
        <number>0</number>
@@ -136,116 +148,17 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>8</height>
+            <height>13</height>
            </size>
           </property>
          </spacer>
         </item>
         <item>
-         <widget class="QLabel" name="label_3">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
+         <widget class="QLabel" name="title2Label">
           <property name="text">
-           <string>Select screenlock background</string>
+           <string>Screenlock Set</string>
           </property>
          </widget>
-        </item>
-        <item>
-         <widget class="QWidget" name="backgroundsWidget" native="true"/>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>8</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <property name="spacing">
-           <number>16</number>
-          </property>
-          <item>
-           <widget class="QPushButton" name="browserOnlinewpBtn">
-            <property name="minimumSize">
-             <size>
-              <width>132</width>
-              <height>36</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>132</width>
-              <height>36</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Browser online wp</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="browserLocalwpBtn">
-            <property name="minimumSize">
-             <size>
-              <width>132</width>
-              <height>36</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>132</width>
-              <height>36</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Browser local wp</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>32</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -256,7 +169,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="loginWidget" native="true">
+           <widget class="QFrame" name="loginFrame">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -268,6 +181,12 @@
               <width>16777215</width>
               <height>50</height>
              </size>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
              <property name="spacing">
@@ -322,7 +241,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QWidget" name="enableWidget" native="true">
+           <widget class="QFrame" name="enableFrame">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -334,6 +253,9 @@
               <width>16777215</width>
               <height>69</height>
              </size>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_6">
              <property name="spacing">
@@ -419,6 +341,112 @@
            </widget>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="title1Label">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Select screenlock background</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="backgroundsWidget" native="true"/>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>13</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="spacing">
+           <number>16</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="browserOnlinewpBtn">
+            <property name="minimumSize">
+             <size>
+              <width>132</width>
+              <height>36</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>132</width>
+              <height>36</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Browser online wp</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="browserLocalwpBtn">
+            <property name="minimumSize">
+             <size>
+              <width>132</width>
+              <height>36</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>132</width>
+              <height>36</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Browser local wp</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>32</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>

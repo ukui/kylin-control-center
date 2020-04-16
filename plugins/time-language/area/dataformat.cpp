@@ -10,26 +10,33 @@
 #define DATE_FORMATE_KEY "date"
 #define TIME_KEY         "hoursystem"
 
+extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
+
 DataFormat::DataFormat(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DataFormat)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-//    setAttribute(Qt::WA_TranslucentBackground);
+    setAttribute(Qt::WA_TranslucentBackground);
+
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->closeBtn->setFlat(true);
 
     QByteArray id(PANEL_GSCHEMAL);
     if(QGSettings::isSchemaInstalled(id)) {
         m_gsettings = new QGSettings(id)        ;
     }
 
-    QFile QssFile("://combox.qss");
-    QssFile.open(QFile::ReadOnly);
+//    QFile QssFile("://combox.qss");
+//    QssFile.open(QFile::ReadOnly);
 
-    if (QssFile.isOpen()){
-        qss = QLatin1String(QssFile.readAll());
-        QssFile.close();
-    }
+//    if (QssFile.isOpen()){
+//        qss = QLatin1String(QssFile.readAll());
+//        QssFile.close();
+//    }
 
     locale = QLocale::system().name();
 
@@ -49,46 +56,46 @@ DataFormat::~DataFormat()
 void DataFormat::initUi() {    
 //    this->setStyleSheet("background: #ffffff;");
 
-    ui->calendarBox->setStyleSheet(qss);;
-    ui->calendarBox->setView(new QListView());
-    ui->calendarBox->setMaxVisibleItems(5);
+//    ui->calendarBox->setStyleSheet(qss);;
+//    ui->calendarBox->setView(new QListView());
+//    ui->calendarBox->setMaxVisibleItems(5);
 
-    ui->dayBox->setStyleSheet(qss);;
-    ui->dayBox->setView(new QListView());
-    ui->dayBox->setMaxVisibleItems(5);
+//    ui->dayBox->setStyleSheet(qss);;
+//    ui->dayBox->setView(new QListView());
+//    ui->dayBox->setMaxVisibleItems(5);
 
-    ui->dateBox->setStyleSheet(qss);;
-    ui->dateBox->setView(new QListView());
-    ui->dateBox->setMaxVisibleItems(5);
+//    ui->dateBox->setStyleSheet(qss);;
+//    ui->dateBox->setView(new QListView());
+//    ui->dateBox->setMaxVisibleItems(5);
 
-    ui->timeBox->setStyleSheet(qss);;
-    ui->timeBox->setView(new QListView());
-    ui->timeBox->setMaxVisibleItems(5);
+//    ui->timeBox->setStyleSheet(qss);;
+//    ui->timeBox->setView(new QListView());
+//    ui->timeBox->setMaxVisibleItems(5);
 
 
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff;}");
     //关闭按钮在右上角，窗体radius 6px，所以按钮只得6px
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
-    ui->closeBtn->setStyleSheet("QPushButton#closeBtn{background: #ffffff; border: none; border-radius: 6px;}"
-                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}");
+//    ui->closeBtn->setStyleSheet("QPushButton#closeBtn{background: #ffffff; border: none; border-radius: 6px;}"
+//                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}"
+//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}");
 
 
-    ui->calendarLabel->setStyleSheet("QLabel#calendarLabel{background: #F4F4F4;}");
-    ui->dayLabel->setStyleSheet("QLabel#dayLabel{background: #F4F4F4;}");
-    ui->dateLabel->setStyleSheet("QLabel#dateLabel{background: #F4F4F4;}");
-    ui->timeLabel->setStyleSheet("QLabel#timeLabel{background: #F4F4F4;}");
+//    ui->calendarLabel->setStyleSheet("QLabel#calendarLabel{background: #F4F4F4;}");
+//    ui->dayLabel->setStyleSheet("QLabel#dayLabel{background: #F4F4F4;}");
+//    ui->dateLabel->setStyleSheet("QLabel#dateLabel{background: #F4F4F4;}");
+//    ui->timeLabel->setStyleSheet("QLabel#timeLabel{background: #F4F4F4;}");
 
-    ui->calendarwidget->setStyleSheet("QWidget#calendarwidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->daywidget->setStyleSheet("QWidget#daywidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->datewidget->setStyleSheet("QWidget#datewidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->timewidget->setStyleSheet("QWidget#timewidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->calendarwidget->setStyleSheet("QWidget#calendarwidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->daywidget->setStyleSheet("QWidget#daywidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->datewidget->setStyleSheet("QWidget#datewidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->timewidget->setStyleSheet("QWidget#timewidget{background: #F4F4F4; border-radius: 6px;}");
 
 
-    ui->cancelButton->setStyleSheet("QPushButton{background-color:#E5E7E9;border-radius:4px}"
-                                   "QPushButton:hover{background-color: #3D6BE5;color:white;};border-radius:4px");
-    ui->confirmButton->setStyleSheet("QPushButton{background-color:#E5E7E9;border-radius:4px}"
-                                   "QPushButton:hover{background-color: #3D6BE5;color:white;};border-radius:4px");
+//    ui->cancelButton->setStyleSheet("QPushButton{background-color:#E5E7E9;border-radius:4px}"
+//                                   "QPushButton:hover{background-color: #3D6BE5;color:white;};border-radius:4px");
+//    ui->confirmButton->setStyleSheet("QPushButton{background-color:#E5E7E9;border-radius:4px}"
+//                                   "QPushButton:hover{background-color: #3D6BE5;color:white;};border-radius:4px");
 
     ui->calendarLabel->setText(tr("calendar"));
     ui->dayLabel->setText(tr("first day of week"));
@@ -245,20 +252,21 @@ void DataFormat::paintEvent(QPaintEvent *event) {
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
-    rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 5, 5);
+    rectPath.addRoundedRect(this->rect().adjusted(10, 10, -10, -10), 6, 6);
+
     // 画一个黑底
     QPixmap pixmap(this->rect().size());
     pixmap.fill(Qt::transparent);
     QPainter pixmapPainter(&pixmap);
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
-    pixmapPainter.setBrush(Qt::green);
+    pixmapPainter.setBrush(Qt::black);
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 
     // 模糊这个黑底
     QImage img = pixmap.toImage();
-//    qt_blurImage(img, 10, false, false);
+    qt_blurImage(img, 10, false, false);
 
     // 挖掉中心
     pixmap = QPixmap::fromImage(img);
@@ -272,9 +280,9 @@ void DataFormat::paintEvent(QPaintEvent *event) {
     // 绘制阴影
     p.drawPixmap(this->rect(), pixmap, pixmap.rect());
 
-    // 绘制背景
+    // 绘制一个背景
     p.save();
-    p.fillPath(rectPath, QColor(255, 255, 255));
+    p.fillPath(rectPath,palette().color(QPalette::Base));
     p.restore();
 
 }

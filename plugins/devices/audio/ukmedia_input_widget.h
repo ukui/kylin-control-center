@@ -7,6 +7,7 @@
 #include <QPushButton>
 #include "ukmedia_output_widget.h"
 #include <QStyledItemDelegate>
+#include <QFrame>
 
 class UkmediaInputWidget : public QWidget
 {
@@ -21,9 +22,9 @@ public Q_SLOTS:
 
 private:
     QWidget *m_pInputWidget;
-    QWidget *m_pInputDeviceWidget;
-    QWidget *m_pVolumeWidget;
-    QWidget *m_pInputLevelWidget;
+    QFrame *m_pInputDeviceWidget;
+    QFrame *m_pVolumeWidget;
+    QFrame *m_pInputLevelWidget;
     QLabel *m_pInputLabel;
     QLabel *m_pInputDeviceLabel;
     QLabel *m_pIpVolumeLabel;

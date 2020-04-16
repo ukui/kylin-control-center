@@ -31,7 +31,8 @@ SOURCES += \
     cursor/xcursortheme.cpp \
         theme.cpp \
     themewidget.cpp \
-    widgetgroup.cpp
+    widgetgroup.cpp \
+    ../../../shell/customstyle.cpp
 
 HEADERS += \
     cursor/config-X11.h \
@@ -39,7 +40,8 @@ HEADERS += \
     cursor/xcursortheme.h \
         theme.h \
     themewidget.h \
-    widgetgroup.h
+    widgetgroup.h \
+    ../../../shell/customstyle.h
 
 FORMS += \
         theme.ui

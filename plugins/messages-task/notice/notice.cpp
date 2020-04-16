@@ -45,19 +45,22 @@ Notice::Notice()
     pluginName = tr("Notice");
     pluginType = NOTICEANDTASKS;
 
-    pluginWidget->setStyleSheet("background: #ffffff;");
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+//    pluginWidget->setStyleSheet("background: #ffffff;");
 
     ui->newfeatureWidget->setVisible(false);
-    ui->newfeatureWidget->setStyleSheet("QWidget{background: #F4F4F4; border: none; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+//    ui->newfeatureWidget->setStyleSheet("QWidget{background: #F4F4F4; border: none; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
 
 
-    ui->enableWidget->setStyleSheet("QWidget{background: #F4F4F4; border: none;}");
+//    ui->enableWidget->setStyleSheet("QWidget{background: #F4F4F4; border: none;}");
 
     ui->lockscreenWidget->setVisible(false);
-    ui->lockscreenWidget->setStyleSheet("QWidget{background: #F4F4F4; border: none; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+//    ui->lockscreenWidget->setStyleSheet("QWidget{background: #F4F4F4; border: none; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
 
     ui->title2Label->setContentsMargins(0,0,0,16);
-    ui->applistWidget->setStyleSheet("QListWidget#applistWidget{border: none;}");
+//    ui->applistWidget->setStyleSheet("QListWidget#applistWidget{border: none;}");
     ui->applistWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->applistWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -147,7 +150,8 @@ void Notice::initOriNoticeStatus() {
 //        qDebug()<<"notify appname is------------->"<<appname<<endl;
 
         //构建Widget
-        QWidget * baseWidget = new QWidget();
+        QFrame * baseWidget = new QFrame();
+        baseWidget->setFrameShape(QFrame::Shape::Box);
         baseWidget->setAttribute(Qt::WA_DeleteOnClose);
 
         QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);
@@ -159,7 +163,7 @@ void Notice::initOriNoticeStatus() {
         devWidget->setMaximumWidth(960);
         devWidget->setMinimumHeight(50);
         devWidget->setMaximumHeight(50);
-        devWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//        devWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
         QHBoxLayout * devHorLayout = new QHBoxLayout();
         devHorLayout->setSpacing(8);
@@ -227,13 +231,13 @@ void Notice::initOriNoticeStatus() {
 
         connect(devWidget, &HoverWidget::enterWidget, this, [=](QString name){
             Q_UNUSED(name)
-            devWidget->setStyleSheet("background: #CFCFCF;");
+//            devWidget->setStyleSheet("background: #CFCFCF;");
 
         });
 
         connect(devWidget, &HoverWidget::leaveWidget, this, [=](QString name){
             Q_UNUSED(name)
-            devWidget->setStyleSheet("background: #F4F4F4;");
+//            devWidget->setStyleSheet("background: #F4F4F4;");
         });
 
         connect(devWidget, &HoverWidget::widgetClicked, this, [=](QString name){

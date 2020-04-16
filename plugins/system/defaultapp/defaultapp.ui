@@ -74,7 +74,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="browserWidget" native="true">
+    <widget class="QFrame" name="browserFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -86,6 +86,9 @@
        <width>960</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
@@ -136,7 +139,7 @@
         <property name="minimumSize">
          <size>
           <width>400</width>
-          <height>30</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -146,45 +149,10 @@
          </size>
         </property>
         <property name="font">
-         <font>
-          <pointsize>-1</pointsize>
-         </font>
+         <font/>
         </property>
         <property name="styleSheet">
-         <string notr="true">QComboBox{
-    background: rgba(255, 255, 255);
-    border-radius: 6px;
-    font-size:14px;
-	padding-left: 8px;
-    color: black;
-    min-height: 30px;
-    combobox-popup: 0;  /* 配合setMaxVisibleItems设置下拉框显示的条数，超过的滚动显示 */
-}
-
-QComboBox QAbstractItemView::item {
-    min-height: 30px;
-    border-radius: 2px ;
-    color:black;
-    background-color: rgba(255, 255, 255);
-	padding-left: 5px;
-}
-
-QComboBox::down-arrow{
-    image:url(://img/dropArrow/downpx.png);
-}
-
-QComboBox::drop-down{
-    width: 30px;
-    border: none;
-}
-
-QComboBox QListView::item:selected{
-    background: #3D6BE5;
-}
-
-
-
-</string>
+         <string notr="true"/>
         </property>
        </widget>
       </item>
@@ -192,7 +160,7 @@ QComboBox QListView::item:selected{
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="mailWidget" native="true">
+    <widget class="QFrame" name="mailFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -204,6 +172,9 @@ QComboBox QListView::item:selected{
        <width>960</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <property name="spacing">
@@ -254,7 +225,7 @@ QComboBox QListView::item:selected{
         <property name="minimumSize">
          <size>
           <width>400</width>
-          <height>30</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -264,40 +235,7 @@ QComboBox QListView::item:selected{
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">QComboBox{
-    background: rgba(255, 255, 255);
-    border-radius: 6px;
-    font-size:14px;
-	padding-left: 8px;
-    color: black;
-    min-height: 30px;
-    combobox-popup: 0;  /* 配合setMaxVisibleItems设置下拉框显示的条数，超过的滚动显示 */
-}
-
-QComboBox QAbstractItemView::item {
-    min-height: 30px;
-    border-radius: 2px ;
-    color:black;
-    background-color: rgba(255, 255, 255);
-	padding-left: 5px;
-}
-
-QComboBox::down-arrow{
-    image:url(://img/dropArrow/downpx.png);
-}
-
-QComboBox::drop-down{
-    width: 30px;
-    border: none;
-}
-
-QComboBox QListView::item:selected{
-    background: #3D6BE5;
-}
-
-
-
-</string>
+         <string notr="true"/>
         </property>
        </widget>
       </item>
@@ -305,7 +243,7 @@ QComboBox QListView::item:selected{
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="imageWidget" native="true">
+    <widget class="QFrame" name="imageFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -317,6 +255,9 @@ QComboBox QListView::item:selected{
        <width>960</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <property name="spacing">
@@ -367,7 +308,7 @@ QComboBox QListView::item:selected{
         <property name="minimumSize">
          <size>
           <width>400</width>
-          <height>30</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -377,40 +318,7 @@ QComboBox QListView::item:selected{
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">QComboBox{
-    background: rgba(255, 255, 255);
-    border-radius: 6px;
-    font-size:14px;
-	padding-left: 8px;
-    color: black;
-    min-height: 30px;
-    combobox-popup: 0;  /* 配合setMaxVisibleItems设置下拉框显示的条数，超过的滚动显示 */
-}
-
-QComboBox QAbstractItemView::item {
-    min-height: 30px;
-    border-radius: 2px ;
-    color:black;
-    background-color: rgba(255, 255, 255);
-	padding-left: 5px;
-}
-
-QComboBox::down-arrow{
-    image:url(://img/dropArrow/downpx.png);
-}
-
-QComboBox::drop-down{
-    width: 30px;
-    border: none;
-}
-
-QComboBox QListView::item:selected{
-    background: #3D6BE5;
-}
-
-
-
-</string>
+         <string notr="true"/>
         </property>
        </widget>
       </item>
@@ -418,7 +326,7 @@ QComboBox QListView::item:selected{
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="audioWidget" native="true">
+    <widget class="QFrame" name="audioFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -430,6 +338,9 @@ QComboBox QListView::item:selected{
        <width>960</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <property name="spacing">
@@ -480,7 +391,7 @@ QComboBox QListView::item:selected{
         <property name="minimumSize">
          <size>
           <width>400</width>
-          <height>30</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -490,40 +401,7 @@ QComboBox QListView::item:selected{
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">QComboBox{
-    background: rgba(255, 255, 255);
-    border-radius: 6px;
-    font-size:14px;
-	padding-left: 8px;
-    color: black;
-    min-height: 30px;
-    combobox-popup: 0;  /* 配合setMaxVisibleItems设置下拉框显示的条数，超过的滚动显示 */
-}
-
-QComboBox QAbstractItemView::item {
-    min-height: 30px;
-    border-radius: 2px ;
-    color:black;
-    background-color: rgba(255, 255, 255);
-	padding-left: 5px;
-}
-
-QComboBox::down-arrow{
-    image:url(://img/dropArrow/downpx.png);
-}
-
-QComboBox::drop-down{
-    width: 30px;
-    border: none;
-}
-
-QComboBox QListView::item:selected{
-    background: #3D6BE5;
-}
-
-
-
-</string>
+         <string notr="true"/>
         </property>
        </widget>
       </item>
@@ -531,7 +409,7 @@ QComboBox QListView::item:selected{
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="videoWidget" native="true">
+    <widget class="QFrame" name="videoFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -543,6 +421,9 @@ QComboBox QListView::item:selected{
        <width>960</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_6">
       <property name="spacing">
@@ -593,7 +474,7 @@ QComboBox QListView::item:selected{
         <property name="minimumSize">
          <size>
           <width>400</width>
-          <height>30</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -603,40 +484,7 @@ QComboBox QListView::item:selected{
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">QComboBox{
-    background: rgba(255, 255, 255);
-    border-radius: 6px;
-    font-size:14px;
-	padding-left: 8px;
-    color: black;
-    min-height: 30px;
-    combobox-popup: 0;  /* 配合setMaxVisibleItems设置下拉框显示的条数，超过的滚动显示 */
-}
-
-QComboBox QAbstractItemView::item {
-    min-height: 30px;
-    border-radius: 2px ;
-    color:black;
-    background-color: rgba(255, 255, 255);
-	padding-left: 5px;
-}
-
-QComboBox::down-arrow{
-    image:url(://img/dropArrow/downpx.png);
-}
-
-QComboBox::drop-down{
-    width: 30px;
-    border: none;
-}
-
-QComboBox QListView::item:selected{
-    background: #3D6BE5;
-}
-
-
-
-</string>
+         <string notr="true"/>
         </property>
        </widget>
       </item>
@@ -644,7 +492,7 @@ QComboBox QListView::item:selected{
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="textWidget" native="true">
+    <widget class="QFrame" name="textFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -656,6 +504,9 @@ QComboBox QListView::item:selected{
        <width>960</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
       <property name="spacing">
@@ -706,7 +557,7 @@ QComboBox QListView::item:selected{
         <property name="minimumSize">
          <size>
           <width>400</width>
-          <height>30</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -716,40 +567,7 @@ QComboBox QListView::item:selected{
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">QComboBox{
-    background: rgba(255, 255, 255);
-    border-radius: 6px;
-    font-size:14px;
-	padding-left: 8px;
-    color: black;
-    min-height: 30px;
-    combobox-popup: 0;  /* 配合setMaxVisibleItems设置下拉框显示的条数，超过的滚动显示 */
-}
-
-QComboBox QAbstractItemView::item {
-    min-height: 30px;
-    border-radius: 2px ;
-    color:black;
-    background-color: rgba(255, 255, 255);
-	padding-left: 5px;
-}
-
-QComboBox::down-arrow{
-    image:url(://img/dropArrow/downpx.png);
-}
-
-QComboBox::drop-down{
-    width: 30px;
-    border: none;
-}
-
-QComboBox QListView::item:selected{
-    background: #3D6BE5;
-}
-
-
-
-</string>
+         <string notr="true"/>
         </property>
        </widget>
       </item>

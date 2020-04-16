@@ -198,7 +198,7 @@
            <widget class="QListWidget" name="customListWidget"/>
           </item>
           <item>
-           <widget class="QWidget" name="addWidget" native="true">
+           <widget class="QFrame" name="addFrame">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -210,6 +210,9 @@
               <width>16777215</width>
               <height>60</height>
              </size>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
              <property name="spacing">

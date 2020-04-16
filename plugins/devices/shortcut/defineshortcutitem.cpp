@@ -49,7 +49,7 @@ DefineShortcutItem::DefineShortcutItem(QString name, QString binding)
     pLabel->setText(name);
 
     pLineEdit = new CustomLineEdit(binding, pWidget);
-    pLineEdit->setStyleSheet("QLineEdit{border: none;}");
+//    pLineEdit->setStyleSheet("QLineEdit{border: none;}");
     pLineEdit->setAlignment(Qt::AlignRight);
     pLineEdit->setText(binding);
     pLineEdit->setReadOnly(true);

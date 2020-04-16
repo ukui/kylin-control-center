@@ -26,6 +26,8 @@
 
 #define PWD_LOW_LENGTH 6
 
+extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
+
 ChangePwdDialog::ChangePwdDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ChangePwdDialog)
@@ -36,20 +38,25 @@ ChangePwdDialog::ChangePwdDialog(QWidget *parent) :
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->closeBtn->setFlat(true);
+
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
-    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
-    ui->pwdLineEdit->setStyleSheet("QLineEdit{background: #F4F4F4; border: none; border-radius: 4px;}");
-    ui->pwdsureLineEdit->setStyleSheet("QLineEdit{background: #F4F4F4; border: none; border-radius: 4px;}");
+//    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
+//    ui->pwdLineEdit->setStyleSheet("QLineEdit{background: #F4F4F4; border: none; border-radius: 4px;}");
+//    ui->pwdsureLineEdit->setStyleSheet("QLineEdit{background: #F4F4F4; border: none; border-radius: 4px;}");
 
 
     //构建Combox代理，否则样式不全部生效
     QStyledItemDelegate * itemDelege = new QStyledItemDelegate();
-    ui->pwdtypeComboBox->setItemDelegate(itemDelege);
-    ui->pwdtypeComboBox->setMaxVisibleItems(5);
-    ui->pwdtypeComboBox->setStyleSheet("QComboBox{background: #F4F4F4; border-radius: 4px; font-size:14px;padding-left: 8px; color: black; min-height: 30px; combobox-popup: 0;}"
-                                     "QComboBox::down-arrow{image:url(://img/dropArrow/downpx.png)}"
-                                     "QComboBox::drop-down{width: 30px; border: none;}"
-                                     "");
+//    ui->pwdtypeComboBox->setItemDelegate(itemDelege);
+//    ui->pwdtypeComboBox->setMaxVisibleItems(5);
+//    ui->pwdtypeComboBox->setStyleSheet("QComboBox{background: #F4F4F4; border-radius: 4px; font-size:14px;padding-left: 8px; color: black; min-height: 30px; combobox-popup: 0;}"
+//                                     "QComboBox::down-arrow{image:url(://img/dropArrow/downpx.png)}"
+//                                     "QComboBox::drop-down{width: 30px; border: none;}"
+//                                     "");
 
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
@@ -131,24 +138,28 @@ void ChangePwdDialog::setPwdType(QString type){
 void ChangePwdDialog::setAccountType(QString aType){
     ui->aTypeLabel->setText(aType);
 }
-void ChangePwdDialog::paintEvent(QPaintEvent *) {
+
+void ChangePwdDialog::paintEvent(QPaintEvent *event) {
+    Q_UNUSED(event)
+
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
-    rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 5, 5);
+    rectPath.addRoundedRect(this->rect().adjusted(10, 10, -10, -10), 6, 6);
+
     // 画一个黑底
     QPixmap pixmap(this->rect().size());
     pixmap.fill(Qt::transparent);
     QPainter pixmapPainter(&pixmap);
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
-    pixmapPainter.setBrush(Qt::green);
+    pixmapPainter.setBrush(Qt::black);
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 
     // 模糊这个黑底
     QImage img = pixmap.toImage();
-//    qt_blurImage(img, 10, false, false);
+    qt_blurImage(img, 10, false, false);
 
     // 挖掉中心
     pixmap = QPixmap::fromImage(img);
@@ -162,9 +173,9 @@ void ChangePwdDialog::paintEvent(QPaintEvent *) {
     // 绘制阴影
     p.drawPixmap(this->rect(), pixmap, pixmap.rect());
 
-    // 绘制背景
+    // 绘制一个背景
     p.save();
-    p.fillPath(rectPath, QColor(255, 255, 255));
+    p.fillPath(rectPath,palette().color(QPalette::Base));
     p.restore();
 
 }

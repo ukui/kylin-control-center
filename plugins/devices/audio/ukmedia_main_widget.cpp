@@ -48,7 +48,7 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     this->setLayout(m_pvLayout);
     this->setMinimumWidth(582);
     this->setMaximumWidth(910);
-    this->setStyleSheet("QWidget{background: white;}");
+//    this->setStyleSheet("QWidget{background: white;}");
 
     if (mate_mixer_init() == FALSE) {
         qDebug() << "libmatemixer initialization failed, exiting";
@@ -697,7 +697,7 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
     percent.append("%");
     m_pWidget->m_pInputWidget->m_pIpVolumePercentLabel->setText(percent);
     m_pWidget->m_pInputWidget->m_pInputIconBtn->setFocusPolicy(Qt::NoFocus);
-    m_pWidget->m_pInputWidget->m_pInputIconBtn->setStyleSheet("QPushButton{background:transparent;border:0px;padding-left:0px;}");
+//    m_pWidget->m_pInputWidget->m_pInputIconBtn->setStyleSheet("QPushButton{background:transparent;border:0px;padding-left:0px;}");
 
     const QSize icon_size = QSize(24,24);
     m_pWidget->m_pInputWidget->m_pInputIconBtn->setIconSize(icon_size);
@@ -821,7 +821,7 @@ void UkmediaMainWidget::updateIconOutput(UkmediaMainWidget *m_pWidget)
     percent.append("%");
     m_pWidget->m_pOutputWidget->m_pOpVolumePercentLabel->setText(percent);
     m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setFocusPolicy(Qt::NoFocus);
-    m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setStyleSheet("QPushButton{background:transparent;border:0px;padding-left:0px;}");
+//    m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setStyleSheet("QPushButton{background:transparent;border:0px;padding-left:0px;}");
 
     const QSize icon_size = QSize(24,24);
     m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIconSize(icon_size);

@@ -25,9 +25,9 @@ Q_SIGNALS:
 public Q_SLOTS:
 
 private:
-    QWidget *m_pThemeWidget;
-    QWidget *m_pShutDownWidget;
-    QWidget *m_pLagoutWidget;
+    QFrame *m_pThemeWidget;
+    QFrame *m_pShutDownWidget;
+    QFrame *m_pLagoutWidget;
     QString qss;
     QStyledItemDelegate *itemDelegate;
     QLabel *m_pSoundEffectLabel;

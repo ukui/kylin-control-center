@@ -52,33 +52,36 @@ MouseControl::MouseControl()
     pluginName = tr("Mouse");
     pluginType = DEVICES;
 
-    QString qss;
-    QFile QssFile("://combox.qss");
-    QssFile.open(QFile::ReadOnly);
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-    if (QssFile.isOpen()){
-        qss = QLatin1String(QssFile.readAll());
-        QssFile.close();
-    }
+//    QString qss;
+//    QFile QssFile("://combox.qss");
+//    QssFile.open(QFile::ReadOnly);
 
-    pluginWidget->setStyleSheet("background: #ffffff;");
+//    if (QssFile.isOpen()){
+//        qss = QLatin1String(QssFile.readAll());
+//        QssFile.close();
+//    }
 
-    ui->handWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->pointerSpeedWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-    ui->sensitivityWidget->setStyleSheet("QWidget{background: #F4F4F4;}");
-    ui->visibilityWidget->setStyleSheet("QWidget{background: #F4F4F4;}");
-    ui->pointerSizeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+//    pluginWidget->setStyleSheet("background: #ffffff;");
+
+//    ui->handWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->pointerSpeedWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+//    ui->sensitivityWidget->setStyleSheet("QWidget{background: #F4F4F4;}");
+//    ui->visibilityWidget->setStyleSheet("QWidget{background: #F4F4F4;}");
+//    ui->pointerSizeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
 
     //全局未生效，再次设置
-    ui->pointerSizeComBox->setView(new QListView());
-    ui->pointerSizeComBox->setStyleSheet(qss);
-    ui->handHabitComBox->setView(new QListView());
-    ui->handHabitComBox->setStyleSheet(qss);
+//    ui->pointerSizeComBox->setView(new QListView());
+//    ui->pointerSizeComBox->setStyleSheet(qss);
+//    ui->handHabitComBox->setView(new QListView());
+//    ui->handHabitComBox->setStyleSheet(qss);
 
 
-    ui->cursorWeightWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-    ui->cursorSpeedWidget->setStyleSheet("QWidget{background: #F4F4F4;}");
-    ui->flashingWidget->setStyleSheet("QWidget{background: #F4F4F4;  border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+//    ui->cursorWeightWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+//    ui->cursorSpeedWidget->setStyleSheet("QWidget{background: #F4F4F4;}");
+//    ui->flashingWidget->setStyleSheet("QWidget{background: #F4F4F4;  border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
 
     //初始化鼠标设置GSettings
     const QByteArray id(MOUSE_SCHEMA);
@@ -115,8 +118,8 @@ void MouseControl::plugin_delay_control(){
 void MouseControl::setupComponent(){
 
     ui->title3Label->hide();
-    ui->cursorSpeedWidget->hide();
-    ui->cursorWeightWidget->hide();
+    ui->cursorSpeedFrame->hide();
+    ui->cursorWeightFrame->hide();
 
     //设置左手右手鼠标控件
     ui->handHabitComBox->addItem(tr("Lefthand"), true);

@@ -139,15 +139,15 @@ void KbdLayoutManager::rebuild_listwidget(){
         //自定义widget
         QWidget * layoutWidget = new QWidget();
         layoutWidget->setAttribute(Qt::WA_DeleteOnClose);
-        layoutWidget->setStyleSheet("QWidget{border-bottom: 1px solid #f5f6f7}");
+//        layoutWidget->setStyleSheet("QWidget{border-bottom: 1px solid #f5f6f7}");
         QHBoxLayout * mainHLayout = new QHBoxLayout(layoutWidget);
         QLabel * layoutLabel = new QLabel(layoutWidget);
         QPushButton * layoutdelBtn = new QPushButton(layoutWidget);
         layoutdelBtn->setIcon(QIcon("://keyboardcontrol/delete.png"));
         layoutdelBtn->setText(tr("Del"));
-        layoutdelBtn->setStyleSheet(""
-                            "QPushButton{background: #FA6056; border-radius: 2px;}"
-                            "QPushButton:hover:pressed{background: #E54A50; border-radius: 2px;}");
+//        layoutdelBtn->setStyleSheet(""
+//                            "QPushButton{background: #FA6056; border-radius: 2px;}"
+//                            "QPushButton:hover:pressed{background: #E54A50; border-radius: 2px;}");
 
         connect(layoutdelBtn, &QPushButton::clicked, this, [=]{emit del_variant_signals(layout);});
 

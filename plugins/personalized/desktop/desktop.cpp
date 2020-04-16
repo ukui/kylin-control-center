@@ -52,34 +52,39 @@ Desktop::Desktop()
     pluginName = tr("Desktop");
     pluginType = PERSONALIZED;
 
-    pluginWidget->setStyleSheet("background: #ffffff;");
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-    ui->deskComputerWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->deskTrashWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->deskHomeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->deskVolumeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->deskNetworkWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    pluginWidget->setStyleSheet("background: #ffffff;");
 
-    ui->fullScreenMenuWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->menuComputerWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->menuTrashWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->menuFilesystemWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->menuSettingWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+
+//    ui->deskComputerWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->deskTrashWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->deskHomeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->deskVolumeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->deskNetworkWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+
+//    ui->menuComputerWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->menuTrashWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->menuFilesystemWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->menuSettingWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
 
     ui->titleLabel->setVisible(false);
 //    ui->title2Label->setVisible(false);
 
-    ui->deskComputerWidget->setVisible(false);
-    ui->deskTrashWidget->setVisible(false);
-    ui->deskHomeWidget->setVisible(false);
-    ui->deskVolumeWidget->setVisible(false);
-    ui->deskNetworkWidget->setVisible(false);
+    ui->deskComputerFrame->setVisible(false);
+    ui->deskTrashFrame->setVisible(false);
+    ui->deskHomeFrame->setVisible(false);
+    ui->deskVolumeFrame->setVisible(false);
+    ui->deskNetworkFrame->setVisible(false);
 
-//    ui->menuComputerWidget->setVisible(false);
-//    ui->menuTrashWidget->setVisible(false);
-//    ui->menuFilesystemWidget->setVisible(false);
-//    ui->menuSettingWidget->setVisible(false);
+
+    ui->menuComputerFrame->setVisible(false);
+    ui->menuTrashFrame->setVisible(false);
+    ui->menuFilesystemFrame->setVisible(false);
+    ui->menuSettingFrame->setVisible(false);
 
 
     vecGsettings = new QVector<QGSettings*>();
@@ -263,12 +268,13 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     baseVerLayout->setSpacing(0);
     baseVerLayout->setContentsMargins(0, 0, 0, 2);
 
-    QWidget * devWidget = new QWidget();
-    devWidget->setMinimumWidth(550);
-    devWidget->setMaximumWidth(960);
-    devWidget->setMinimumHeight(50);
-    devWidget->setMaximumHeight(50);
-    devWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+    QFrame * devFrame = new QFrame();
+    devFrame->setFrameShape(QFrame::Shape::Box);
+    devFrame->setMinimumWidth(550);
+    devFrame->setMaximumWidth(960);
+    devFrame->setMinimumHeight(50);
+    devFrame->setMaximumHeight(50);
+//    devFrame->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
     QHBoxLayout * devHorLayout = new QHBoxLayout();
     devHorLayout->setSpacing(8);
@@ -303,9 +309,9 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
 
     devHorLayout->addWidget(appSwitch);
 
-    devWidget->setLayout(devHorLayout);
+    devFrame->setLayout(devHorLayout);
 
-    baseVerLayout->addWidget(devWidget);
+    baseVerLayout->addWidget(devFrame);
     baseVerLayout->addStretch();
 
     baseWidget->setLayout(baseVerLayout);

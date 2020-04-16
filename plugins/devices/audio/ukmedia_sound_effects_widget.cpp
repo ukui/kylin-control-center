@@ -10,12 +10,16 @@ UkuiMessageBox::UkuiMessageBox()
 
 UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(parent)
 {
-    m_pThemeWidget = new QWidget(this);
-    m_pShutDownWidget = new QWidget(this);
-    m_pLagoutWidget = new QWidget(this);
+    m_pThemeWidget = new QFrame(this);
+    m_pShutDownWidget = new QFrame(this);
+    m_pLagoutWidget = new QFrame(this);
 
+    m_pThemeWidget->setFrameShape(QFrame::Shape::Box);
+    m_pShutDownWidget->setFrameShape(QFrame::Shape::Box);
+    m_pLagoutWidget->setFrameShape(QFrame::Shape::Box);
 
     m_pSoundEffectLabel = new QLabel(tr("System sound"),this);
+    m_pSoundEffectLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     m_pSoundThemeLabel = new QLabel(tr("System sound theme"),m_pThemeWidget);
     m_pSoundThemeCombobox = new QComboBox(m_pThemeWidget);
     m_pShutdownlabel = new QLabel(tr("Shutdown"),m_pShutDownWidget);
@@ -23,16 +27,16 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pLagoutLabel = new QLabel(tr("Lagout"),m_pLagoutWidget);
     m_pLagoutCombobox = new QComboBox(m_pLagoutWidget);
 
-    QFile QssFile("://combox.qss");
+//    QFile QssFile("://combox.qss");
 //    QFile QssFile("://combox.qss");
 //    QssFile.open(QFile::ReadOnly)
-    if (QssFile.isOpen()){
-        qss = QLatin1String(QssFile.readAll());
-        QssFile.close();
-    } else {
-        qDebug()<<"combox.qss can not found"<<endl;
-    }
-    itemDelegate = new QStyledItemDelegate();
+//    if (QssFile.isOpen()){
+//        qss = QLatin1String(QssFile.readAll());
+//        QssFile.close();
+//    } else {
+//        qDebug()<<"combox.qss can not found"<<endl;
+//    }
+//    itemDelegate = new QStyledItemDelegate();
 //    bool ok = qss.open(QFile::ReadOnly);
 //    if (!ok)
 //        qDebug() << "加载失败";
@@ -100,113 +104,113 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     vLayout->addWidget(m_pShutDownWidget);
     vLayout->addWidget(m_pLagoutWidget);
     this->setLayout(vLayout);
-    vLayout->setSpacing(0);
+//    vLayout->setSpacing(0);
     this->layout()->setContentsMargins(0,0,0,0);
 
-    m_pLagoutCombobox->setStyleSheet(qss);
-    m_pLagoutCombobox->setItemDelegate(itemDelegate);
-    m_pShutDownWidget->setObjectName("shutDownWidget");
-    m_pSoundThemeCombobox->setStyleSheet("QComboBox {width:140px;height:30px;background:rgba(248,248,248,1);"
-                                      "border:2px solid rgba(218, 227, 250, 1);border-radius:4px;}"
-                                      "QComboBox QAbstractItemView{"
-                                      "font-size: 14px;height: 80px;width: 140px;}"
-                                      "QComboBox QAbstractItemView::item {"
-                                      "height: 30px;}"
-                                      "QComboBox QAbstractItemView::item:hover {"
-                                      "background: rgba(218,227,250,0.9);"
-                                      "border-radius: 2px;"
-                                      "font-color: rgb(225, 0, 0);}"
-                                      "QComboBox::drop-down{background-color:rgba(248,248,248,1);}"
-                                      "QComboBox:on{background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(248,248,248,0.9) 100%);"
-                                      "border-radius:4px;}"
-                                      "QComboBox::down-arrow:hover{"
-                                      "width:184px;height:30px;"
-                                      "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
-                                      "border-radius:2px;}"
-                                      "QComboBox::down-arrow {"
-                                      "image: url(/usr/share/ukui-media/img/dowm.png);"
-                                      "height:6px;width:11px;}"
-                                      "QComboBox::down-arrow:hover{"
-                                      "width:184px;height:30px;"
-                                      "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
-                                      "border-radius:2px;}");
-    m_pShutdownCombobox->setStyleSheet("QComboBox {width:140px;height:30px;background:rgba(248,248,248,1);"
-                                    "border:2px solid rgba(218, 227, 250, 1);border-radius:4px;}"
-                                    "QComboBox QAbstractItemView{"
-                                    "font-size: 14px;height: 80px;width: 140px;}"
-                                    "QComboBox QAbstractItemView::item {"
-                                    "height: 30px;}"
-                                    "QComboBox QAbstractItemView::item:hover {"
-                                    "background: rgba(218,227,250,0.9);"
-                                    "border-radius: 2px;"
-                                    "font-color: rgb(225, 0, 0);}"
-                                    "QComboBox::drop-down{background-color:rgba(248,248,248,1);}"
-                                    "QComboBox:on{background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(248,248,248,0.9) 100%);"
-                                    "border-radius:4px;}"
-                                    "QComboBox::down-arrow:hover{"
-                                    "width:184px;height:30px;"
-                                    "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
-                                    "border-radius:2px;}"
-                                    "QComboBox::down-arrow {"
-                                    "image: url(/usr/share/ukui-media/img/dowm.png);"
-                                    "height:6px;width:11px;}"
-                                    "QComboBox::down-arrow:hover{"
-                                    "width:184px;height:30px;"
-                                    "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
-                                    "border-radius:2px;}");
+//    m_pLagoutCombobox->setStyleSheet(qss);
+//    m_pLagoutCombobox->setItemDelegate(itemDelegate);
+//    m_pShutDownWidget->setObjectName("shutDownWidget");
+//    m_pSoundThemeCombobox->setStyleSheet("QComboBox {width:140px;height:30px;background:rgba(248,248,248,1);"
+//                                      "border:2px solid rgba(218, 227, 250, 1);border-radius:4px;}"
+//                                      "QComboBox QAbstractItemView{"
+//                                      "font-size: 14px;height: 80px;width: 140px;}"
+//                                      "QComboBox QAbstractItemView::item {"
+//                                      "height: 30px;}"
+//                                      "QComboBox QAbstractItemView::item:hover {"
+//                                      "background: rgba(218,227,250,0.9);"
+//                                      "border-radius: 2px;"
+//                                      "font-color: rgb(225, 0, 0);}"
+//                                      "QComboBox::drop-down{background-color:rgba(248,248,248,1);}"
+//                                      "QComboBox:on{background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(248,248,248,0.9) 100%);"
+//                                      "border-radius:4px;}"
+//                                      "QComboBox::down-arrow:hover{"
+//                                      "width:184px;height:30px;"
+//                                      "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
+//                                      "border-radius:2px;}"
+//                                      "QComboBox::down-arrow {"
+//                                      "image: url(/usr/share/ukui-media/img/dowm.png);"
+//                                      "height:6px;width:11px;}"
+//                                      "QComboBox::down-arrow:hover{"
+//                                      "width:184px;height:30px;"
+//                                      "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
+//                                      "border-radius:2px;}");
+//    m_pShutdownCombobox->setStyleSheet("QComboBox {width:140px;height:30px;background:rgba(248,248,248,1);"
+//                                    "border:2px solid rgba(218, 227, 250, 1);border-radius:4px;}"
+//                                    "QComboBox QAbstractItemView{"
+//                                    "font-size: 14px;height: 80px;width: 140px;}"
+//                                    "QComboBox QAbstractItemView::item {"
+//                                    "height: 30px;}"
+//                                    "QComboBox QAbstractItemView::item:hover {"
+//                                    "background: rgba(218,227,250,0.9);"
+//                                    "border-radius: 2px;"
+//                                    "font-color: rgb(225, 0, 0);}"
+//                                    "QComboBox::drop-down{background-color:rgba(248,248,248,1);}"
+//                                    "QComboBox:on{background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(248,248,248,0.9) 100%);"
+//                                    "border-radius:4px;}"
+//                                    "QComboBox::down-arrow:hover{"
+//                                    "width:184px;height:30px;"
+//                                    "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
+//                                    "border-radius:2px;}"
+//                                    "QComboBox::down-arrow {"
+//                                    "image: url(/usr/share/ukui-media/img/dowm.png);"
+//                                    "height:6px;width:11px;}"
+//                                    "QComboBox::down-arrow:hover{"
+//                                    "width:184px;height:30px;"
+//                                    "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
+//                                    "border-radius:2px;}");
 
-    m_pLagoutCombobox->setStyleSheet("QComboBox {width:140px;height:30px;background:rgba(248,248,248,1);"
-                                     "border:2px solid rgba(218, 227, 250, 1);border-radius:4px;}"
-                                     "QComboBox QAbstractItemView{"
-                                     "font-size: 14px;height: 80px;width: 140px;}"
-                                     "QComboBox QAbstractItemView::item {"
-                                     "height: 30px;}"
-                                     "QComboBox QAbstractItemView::item:hover {"
-                                     "background: rgba(218,227,250,0.9);"
-                                     "border-radius: 2px;"
-                                     "font-color: rgb(225, 0, 0);}"
-                                     "QComboBox::drop-down{background-color:rgba(248,248,248,1);}"
-                                     "QComboBox:on{background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(248,248,248,0.9) 100%);"
-                                     "border-radius:4px;}"
-                                     "QComboBox::down-arrow:hover{"
-                                     "width:184px;height:30px;"
-                                     "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
-                                     "border-radius:2px;}"
-                                     "QComboBox::down-arrow {"
-                                     "image: url(/usr/share/ukui-media/img/dowm.png);"
-                                     "height:6px;width:11px;}"
-                                     "QComboBox::down-arrow:hover{"
-                                     "width:184px;height:30px;"
-                                     "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
-                                     "border-radius:2px;}");
+//    m_pLagoutCombobox->setStyleSheet("QComboBox {width:140px;height:30px;background:rgba(248,248,248,1);"
+//                                     "border:2px solid rgba(218, 227, 250, 1);border-radius:4px;}"
+//                                     "QComboBox QAbstractItemView{"
+//                                     "font-size: 14px;height: 80px;width: 140px;}"
+//                                     "QComboBox QAbstractItemView::item {"
+//                                     "height: 30px;}"
+//                                     "QComboBox QAbstractItemView::item:hover {"
+//                                     "background: rgba(218,227,250,0.9);"
+//                                     "border-radius: 2px;"
+//                                     "font-color: rgb(225, 0, 0);}"
+//                                     "QComboBox::drop-down{background-color:rgba(248,248,248,1);}"
+//                                     "QComboBox:on{background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(248,248,248,0.9) 100%);"
+//                                     "border-radius:4px;}"
+//                                     "QComboBox::down-arrow:hover{"
+//                                     "width:184px;height:30px;"
+//                                     "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
+//                                     "border-radius:2px;}"
+//                                     "QComboBox::down-arrow {"
+//                                     "image: url(/usr/share/ukui-media/img/dowm.png);"
+//                                     "height:6px;width:11px;}"
+//                                     "QComboBox::down-arrow:hover{"
+//                                     "width:184px;height:30px;"
+//                                     "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
+//                                     "border-radius:2px;}");
 
-    m_pSoundEffectLabel->setStyleSheet("QLabel{font-size:18px;"
-                                     "font-family:Noto Sans S Chinese;"
-                                     "font-weight:500;"
-                                     "color:rgba(0,0,0,1);"
-                                     "background-color: rgba(0,0,0,0);"
-                                     "line-height:40px;}");
-   m_pSoundThemeLabel->setStyleSheet("QLabel{font-size:14px;"
-                                       "font-family:Noto Sans S Chinese;"
-                                       "font-weight:400;"
-                                       "color:rgba(67,67,69,1);"
-                                       "line-height:40px;}");
-    m_pShutdownlabel->setStyleSheet("QLabel{font-size:14px;"
-                                    "font-family:Noto Sans S Chinese;"
-                                    "font-weight:400;"
-                                    "color:rgba(67,67,69,1);"
-                                    "line-height:40px;}");
-    m_pLagoutLabel->setStyleSheet("QLabel{font-size:14px;"
-                                  "font-family:Noto Sans S Chinese;"
-                                  "font-weight:400;"
-                                  "color:rgba(67,67,69,1);"
-                                  "line-height:40px;}");
+//    m_pSoundEffectLabel->setStyleSheet("QLabel{font-size:18px;"
+//                                     "font-family:Noto Sans S Chinese;"
+//                                     "font-weight:500;"
+//                                     "color:rgba(0,0,0,1);"
+//                                     "background-color: rgba(0,0,0,0);"
+//                                     "line-height:40px;}");
+//   m_pSoundThemeLabel->setStyleSheet("QLabel{font-size:14px;"
+//                                       "font-family:Noto Sans S Chinese;"
+//                                       "font-weight:400;"
+//                                       "color:rgba(67,67,69,1);"
+//                                       "line-height:40px;}");
+//    m_pShutdownlabel->setStyleSheet("QLabel{font-size:14px;"
+//                                    "font-family:Noto Sans S Chinese;"
+//                                    "font-weight:400;"
+//                                    "color:rgba(67,67,69,1);"
+//                                    "line-height:40px;}");
+//    m_pLagoutLabel->setStyleSheet("QLabel{font-size:14px;"
+//                                  "font-family:Noto Sans S Chinese;"
+//                                  "font-weight:400;"
+//                                  "color:rgba(67,67,69,1);"
+//                                  "line-height:40px;}");
 
-    this->setStyleSheet("QWidget{width: 552px;height: 150px;"
-                        "background: rgba(244,244,244,1);"
-                        "border-radius: 4px;}");
-    m_pShutDownWidget->setStyleSheet("QWidget#shutDownWidget{border-bottom:1px solid white;"
-                                      "border-radius:0px;}");
+//    this->setStyleSheet("QWidget{width: 552px;height: 150px;"
+//                        "background: rgba(244,244,244,1);"
+//                        "border-radius: 4px;}");
+//    m_pShutDownWidget->setStyleSheet("QWidget#shutDownWidget{border-bottom:1px solid white;"
+//                                      "border-radius:0px;}");
 
 
 }
