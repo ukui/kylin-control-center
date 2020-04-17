@@ -525,7 +525,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QWidget" name="fullScreenMenuWidget" native="true">
+    <widget class="QFrame" name="fullScreenMenuFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -537,6 +537,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_13">
       <property name="spacing">

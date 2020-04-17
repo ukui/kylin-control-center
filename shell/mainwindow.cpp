@@ -57,10 +57,13 @@ MainWindow::MainWindow(QWidget *parent) :
     resize(QSize(820, 600));
     //设置窗体无边框
     setWindowFlags(Qt::FramelessWindowHint | Qt::Widget);
+
     //该设置去掉了窗体透明后的黑色背景
     setAttribute(Qt::WA_TranslucentBackground, true);
     //将最外层窗体设置为透明
-    //setStyleSheet("QMainWindow#MainWindow{background-color: transparent;}");
+
+//    setStyleSheet("QMainWindow#MainWindow{background-color: transparent;}");
+
 
     //设置panel图标
     QIcon panelicon;
@@ -77,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background: palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
 ////    //左上角文字
 ////    ui->mainLabel->setStyleSheet("QLabel#mainLabel{font-size: 18px; color: #40000000;}");
+
     //左上角返回按钮
     ui->backBtn->setProperty("useIconHighlightEffect", true);
     ui->backBtn->setProperty("iconHighlightEffectMode", 1);
@@ -108,7 +112,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //左侧一级菜单
 //    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background: #cccccc; border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
-        ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);}");
+    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
 
     //设置左上角按钮图标
     ui->backBtn->setIcon(QIcon("://img/titlebar/back.png"));
@@ -161,14 +165,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
         if (index){ //首页部分组件样式
             //中部内容区域
-//            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: #ffffff; border-bottom-right-radius: 6px;}");
+            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-right-radius: 6px;}");
             //标题栏widget
-//            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background: #ffffff; border-top-right-radius: 6px;}");
+            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background:  palette(base); border-top-right-radius: 6px;}");
         } else { //次页部分组件样式
             //中部内容区域
-//            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: #ffffff; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background:  palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
             //标题栏widget
-//            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background: #ffffff; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background:  palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
         }
     });
 
@@ -239,6 +243,9 @@ void MainWindow::bootOptionsFilter(QString opt){
     } else if (opt == "-s") {
         // Audio module
         bootOptionsSwitch(DEVICES, AUDIO);
+    } else if (opt == "-n") {
+        // notice module
+        bootOptionsSwitch(NOTICEANDTASKS, NOTICE);
     }
 }
 
@@ -255,6 +262,43 @@ void MainWindow::bootOptionsSwitch(int moduleNum, int funcNum){
         modulepageWidget->switchPage(pluginsObjMap.value(funcStr));
     }
 }
+
+//void MainWindow::paintEvent(QPaintEvent *event) {
+//    QPainter p(this);
+//    p.setRenderHint(QPainter::Antialiasing);
+//    QPainterPath rectPath;
+//    rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 5, 5);
+//    // 画一个黑底
+//    QPixmap pixmap(this->rect().size());
+//    pixmap.fill(Qt::transparent);
+//    QPainter pixmapPainter(&pixmap);
+//    pixmapPainter.setRenderHint(QPainter::Antialiasing);
+//    pixmapPainter.setPen(Qt::transparent);
+//    pixmapPainter.setBrush(Qt::green);
+//    pixmapPainter.drawPath(rectPath);
+//    pixmapPainter.end();
+
+//    // 模糊这个黑底
+//    QImage img = pixmap.toImage();
+////    qt_blurImage(img, 10, false, false);
+
+//    // 挖掉中心
+//    pixmap = QPixmap::fromImage(img);
+//    QPainter pixmapPainter2(&pixmap);
+//    pixmapPainter2.setRenderHint(QPainter::Antialiasing);
+//    pixmapPainter2.setCompositionMode(QPainter::CompositionMode_Clear);
+//    pixmapPainter2.setPen(Qt::transparent);
+//    pixmapPainter2.setBrush(Qt::transparent);
+//    pixmapPainter2.drawPath(rectPath);
+
+//    // 绘制阴影
+//    p.drawPixmap(this->rect(), pixmap, pixmap.rect());
+
+//    // 绘制一个背景
+//    p.save();
+//    p.fillPath(rectPath, QColor(255, 255, 255));
+//    p.restore();
+//}
 
 void MainWindow::setBtnLayout(QPushButton * &pBtn){
     QLabel * imgLabel = new QLabel(pBtn);

@@ -26,6 +26,7 @@
 #include <QShowEvent>
 #include <QMoveEvent>
 #include <QHideEvent>
+#include <QPainter>
 
 #include "interface.h"
 #include "homepagewidget.h"
@@ -53,6 +54,9 @@ public:
 
     void bootOptionsFilter(QString opt);
     void bootOptionsSwitch(int moduleNum, int funcNum);
+
+protected:
+//    void paintEvent(QPaintEvent *);
 
 private:
     Ui::MainWindow *ui;

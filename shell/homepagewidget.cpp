@@ -194,11 +194,12 @@ void HomePageWidget::initUI(){
             HoverWidget * w = dynamic_cast<HoverWidget *>(QObject::sender());
             logoLabel->setPixmap(QPixmap(QString(":/img/homepage/%1Hover.png").arg(mname)));
 
-//            titleLabel->setStyleSheet("font-size: 16px; color: #F7FFFFFF;");
+            titleLabel->setStyleSheet("font-size: 16px; color: palette(base);");
+
 
             QList<ClickLabel *> clabelList = w->findChildren<ClickLabel *>();
             for (ClickLabel * tmpLabel : clabelList){
-//                tmpLabel->setStyleSheet("font-size: 14px; color: #91FFFFFF;");
+                tmpLabel->setStyleSheet("font-size: 14px; color: palette(base);");
             }
         });
         //还原状态
@@ -206,11 +207,11 @@ void HomePageWidget::initUI(){
             HoverWidget * w = dynamic_cast<HoverWidget *>(QObject::sender());
             logoLabel->setPixmap(QPixmap(QString(":/img/homepage/%1.png").arg(mname)));
 
-//            titleLabel->setStyleSheet("font-size: 16px; color: #DE000000;");
+            titleLabel->setStyleSheet("font-size: 16px; color: palette(windowText);");
 
             QList<ClickLabel *> clabelList = w->findChildren<ClickLabel *>();
             for (ClickLabel * tmpLabel : clabelList){
-//                tmpLabel->setStyleSheet("font-size: 14px; color: #91434345;");
+                tmpLabel->setStyleSheet("font-size: 14px; color: palette(Shadow);");
             }
         });
 

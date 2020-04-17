@@ -81,10 +81,10 @@ Desktop::Desktop()
     ui->deskNetworkFrame->setVisible(false);
 
 
-    ui->menuComputerFrame->setVisible(false);
-    ui->menuTrashFrame->setVisible(false);
-    ui->menuFilesystemFrame->setVisible(false);
-    ui->menuSettingFrame->setVisible(false);
+//    ui->menuComputerFrame->setVisible(false);
+//    ui->menuTrashFrame->setVisible(false);
+//    ui->menuFilesystemFrame->setVisible(false);
+//    ui->menuSettingFrame->setVisible(false);
 
 
     vecGsettings = new QVector<QGSettings*>();
@@ -247,7 +247,6 @@ void Desktop::initLockingStatus(){
         menuFilesystemSwitchBtn->setChecked(dSettings->get(PERSONAL_LOCK_KEY).toBool());
     }
 
-    menuComputerSwitchBtn->setChecked(dSettings->get(PERSONAL_LOCK_KEY).toBool());
     menuSettingSwitchBtn->setChecked(dSettings->get(SETTINGS_LOCK_KEY).toBool());
     menuTrashSwitchBtn->setChecked(dSettings->get(TRASH_LOCK_KEY).toBool());
 
