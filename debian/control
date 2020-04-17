@@ -25,7 +25,8 @@ Build-Depends: debhelper-compat (= 12),
 	       libmatemixer-dev,
 	       libqt5xdg-dev,
 	       qtmultimedia5-dev,
-	       libxml2-dev
+	       libxml2-dev,
+               kylin-sso-client
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Homepage: https://github.com/ukui/ukui-control-center
