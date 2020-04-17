@@ -55,7 +55,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="QFrame" name="frame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -67,6 +67,9 @@
        <width>960</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <property name="spacing">

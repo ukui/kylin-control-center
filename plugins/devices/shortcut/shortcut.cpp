@@ -63,21 +63,24 @@ Shortcut::Shortcut()
     pluginName = tr("Shortcut");
     pluginType = DEVICES;
 
-    pluginWidget->setStyleSheet("background: #ffffff;");
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-    ui->generalListWidget->setStyleSheet("QListWidget#generalListWidget{background: #ffffff; border: none;}");
+//    pluginWidget->setStyleSheet("background: #ffffff;");
 
-    ui->showBtn->setStyleSheet("QPushButton{background: #E9E9E9; border-radius: 4px;}"
-                               "QPushButton:hover:!pressed{background: #3d6be5; border-radius: 4px;}"
-                               "QPushButton:hover:pressed{background: #415FC4; border-radius: 4px;}");
+//    ui->generalListWidget->setStyleSheet("QListWidget#generalListWidget{background: #ffffff; border: none;}");
 
-    ui->resetBtn->setStyleSheet("QPushButton{background: #E9E9E9; border-radius: 4px;}"
-                               "QPushButton:hover:!pressed{background: #3d6be5; border-radius: 4px;}"
-                               "QPushButton:hover:pressed{background: #415FC4; border-radius: 4px;}");
+//    ui->showBtn->setStyleSheet("QPushButton{background: #E9E9E9; border-radius: 4px;}"
+//                               "QPushButton:hover:!pressed{background: #3d6be5; border-radius: 4px;}"
+//                               "QPushButton:hover:pressed{background: #415FC4; border-radius: 4px;}");
 
-    ui->customListWidget->setStyleSheet("QListWidget#customListWidget{background: #ffffff; border: none;}");
+//    ui->resetBtn->setStyleSheet("QPushButton{background: #E9E9E9; border-radius: 4px;}"
+//                               "QPushButton:hover:!pressed{background: #3d6be5; border-radius: 4px;}"
+//                               "QPushButton:hover:pressed{background: #415FC4; border-radius: 4px;}");
 
-    ui->addWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->customListWidget->setStyleSheet("QListWidget#customListWidget{background: #ffffff; border: none;}");
+
+//    ui->addWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
     pKeyMap = new KeyMap;
     addDialog = new addShortcutDialog();
@@ -121,7 +124,7 @@ void Shortcut::setupComponent(){
     ui->generalListWidget->setSelectionMode(QAbstractItemView::NoSelection);
     ui->generalListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->generalListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->generalListWidget->setSpacing(0);
+    ui->generalListWidget->setSpacing(1);
 
     ui->customListWidget->setFocusPolicy(Qt::NoFocus);
     ui->customListWidget->setSelectionMode(QAbstractItemView::NoSelection);
@@ -130,7 +133,7 @@ void Shortcut::setupComponent(){
     ui->customListWidget->setSpacing(0);
 //    ui->customListWidget->setFixedHeight((showList.length() * ITEMHEIGH));
 
-    ui->addWidget->installEventFilter(this);
+    ui->addFrame->installEventFilter(this);
     ui->generalListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 
     ui->resetBtn->hide();
@@ -246,6 +249,7 @@ void Shortcut::appendGeneralItems(){
     for (KeyEntry * gkeyEntry: generalEntries){
         if (showList.contains(gkeyEntry->keyStr)){
             DefineShortcutItem * singleWidget = new DefineShortcutItem(gkeyEntry->keyStr, gkeyEntry->valueStr);
+            singleWidget->setFrameShape(QFrame::Shape::Box);
             singleWidget->setUserData(Qt::UserRole, gkeyEntry);
 
             CustomLineEdit * line = singleWidget->lineeditComponent();
@@ -336,8 +340,8 @@ void Shortcut::initItemsStyle(QListWidget *listWidget){
 
         QWidget * widget = listWidget->itemWidget(listWidget->item(row));
         DefineShortcutItem * pShortcutItem = dynamic_cast<DefineShortcutItem *>(widget);
-        pShortcutItem->widgetComponent()->setStyleSheet(style);
-        pShortcutItem->btnComponent()->setStyleSheet(subStyle);
+//        pShortcutItem->widgetComponent()->setStyleSheet(style);
+//        pShortcutItem->btnComponent()->setStyleSheet(subStyle);
     }
 }
 
@@ -524,7 +528,7 @@ bool Shortcut::keyIsForbidden(QString key){
 }
 
 bool Shortcut::eventFilter(QObject *watched, QEvent *event){
-    if (watched == ui->addWidget){
+    if (watched == ui->addFrame){
         if (event->type() == QEvent::MouseButtonPress){
             QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
             if (mouseEvent->button() == Qt::LeftButton){

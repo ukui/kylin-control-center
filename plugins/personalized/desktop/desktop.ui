@@ -56,7 +56,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="deskComputerWidget" native="true">
+    <widget class="QFrame" name="deskComputerFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -68,6 +68,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
@@ -144,7 +147,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="deskTrashWidget" native="true">
+    <widget class="QFrame" name="deskTrashFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -156,6 +159,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <property name="spacing">
@@ -232,7 +238,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="deskHomeWidget" native="true">
+    <widget class="QFrame" name="deskHomeFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -244,6 +250,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_6">
       <property name="spacing">
@@ -320,7 +329,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="deskVolumeWidget" native="true">
+    <widget class="QFrame" name="deskVolumeFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -332,6 +341,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_8">
       <property name="spacing">
@@ -408,7 +420,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="deskNetworkWidget" native="true">
+    <widget class="QFrame" name="deskNetworkFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -420,6 +432,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_10">
       <property name="spacing">
@@ -496,7 +511,96 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="title2Label">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <property name="bottomMargin">
+      <number>9</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="title2Label">
+       <property name="text">
+        <string>Set Start Menu</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="fullScreenMenuFrame">
+     <property name="minimumSize">
+      <size>
+       <width>550</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>960</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_13">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="fullScreenMenuLayout">
+        <property name="spacing">
+         <number>8</number>
+        </property>
+        <property name="leftMargin">
+         <number>16</number>
+        </property>
+        <property name="rightMargin">
+         <number>16</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_21">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Always use the start menu in full screen</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_11">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="menuLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -509,7 +613,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="menuComputerWidget" native="true">
+    <widget class="QFrame" name="menuComputerFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -521,6 +625,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_12">
       <property name="spacing">
@@ -597,7 +704,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="menuTrashWidget" native="true">
+    <widget class="QFrame" name="menuTrashFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -609,6 +716,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_14">
       <property name="spacing">
@@ -627,7 +737,7 @@
        <number>0</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="menuTrashHorLayout">
+       <layout class="QHBoxLayout" name="menuSettingHorLayout">
         <property name="spacing">
          <number>8</number>
         </property>
@@ -638,7 +748,7 @@
          <number>16</number>
         </property>
         <item>
-         <widget class="QLabel" name="menuTrashLabel">
+         <widget class="QLabel" name="menuSettingsLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -654,7 +764,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_17">
+         <widget class="QLabel" name="label_19">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -662,12 +772,12 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Trashmenu</string>
+           <string>Settingmenu</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_7">
+         <spacer name="horizontalSpacer_9">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -685,7 +795,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="menuFilesystemWidget" native="true">
+    <widget class="QFrame" name="menuFilesystemFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -697,6 +807,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_16">
       <property name="spacing">
@@ -773,7 +886,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="menuSettingWidget" native="true">
+    <widget class="QFrame" name="menuSettingFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -785,6 +898,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_18">
       <property name="spacing">
@@ -803,7 +919,7 @@
        <number>0</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="menuSettingHorLayout">
+       <layout class="QHBoxLayout" name="menuTrashHorLayout">
         <property name="spacing">
          <number>8</number>
         </property>
@@ -814,7 +930,7 @@
          <number>16</number>
         </property>
         <item>
-         <widget class="QLabel" name="menuSettingsLabel">
+         <widget class="QLabel" name="menuTrashLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -830,7 +946,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_19">
+         <widget class="QLabel" name="label_17">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -838,12 +954,12 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Settingmenu</string>
+           <string>Trashmenu</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_9">
+         <spacer name="horizontalSpacer_7">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -875,20 +991,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="trayListWidget">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>960</width>
-       <height>16777215</height>
-      </size>
-     </property>
-    </widget>
+    <layout class="QVBoxLayout" name="trayVBoxLayout"/>
    </item>
    <item>
     <spacer name="verticalSpacer_3">

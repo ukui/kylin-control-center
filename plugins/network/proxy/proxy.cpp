@@ -51,6 +51,9 @@ Proxy::Proxy()
     pluginName = tr("Proxy");
     pluginType = NETWORK;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
     settingsCreate = false;
 
     const QByteArray id(PROXY_SCHEMA);
@@ -115,43 +118,43 @@ void Proxy::plugin_delay_control(){
 
 void Proxy::setupStylesheet(){
 
-    pluginWidget->setStyleSheet("background: #ffffff;");
+//    pluginWidget->setStyleSheet("background: #ffffff;");
 
-    ui->autoWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->urlWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->urlLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
+//    ui->autoWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->urlWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->urlLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
 
-    ui->manualWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
-    ui->httpWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
-    ui->httpHostLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
-    ui->httpPortLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
-    ui->cetificationBtn->setStyleSheet("QPushButton{background: #ffffff; border: none; border-radius: 4px;}");
+//    ui->manualWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
+//    ui->httpWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
+//    ui->httpHostLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
+//    ui->httpPortLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
+//    ui->cetificationBtn->setStyleSheet("QPushButton{background: #ffffff; border: none; border-radius: 4px;}");
 
-    ui->httpsWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
-    ui->httpsHostLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
-    ui->httpsPortLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
+//    ui->httpsWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
+//    ui->httpsHostLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
+//    ui->httpsPortLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
 
-    ui->ftpWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
-    ui->ftpHostLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
-    ui->ftpPortLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
+//    ui->ftpWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
+//    ui->ftpHostLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
+//    ui->ftpPortLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
 
-    ui->socksWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
-    ui->socksHostLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
-    ui->socksPortLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
+//    ui->socksWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
+//    ui->socksHostLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
+//    ui->socksPortLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
 
-    ui->ignoreHostsWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
-    ui->ignoreHostTextEdit->setStyleSheet("QTextEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
+//    ui->ignoreHostsWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
+//    ui->ignoreHostTextEdit->setStyleSheet("QTextEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
 
 }
 
 void Proxy::setupComponent(){
     //添加自动配置代理开关按钮
-    autoSwitchBtn = new SwitchButton(ui->autoWidget);
+    autoSwitchBtn = new SwitchButton(ui->autoFrame);
     autoSwitchBtn->setObjectName("auto");
     ui->autoHorLayout->addWidget(autoSwitchBtn);
 
     //添加手动配置代理开关按钮
-    manualSwitchBtn = new SwitchButton(ui->manualWidget);
+    manualSwitchBtn = new SwitchButton(ui->manualFrame);
     manualSwitchBtn->setObjectName("manual");
     ui->manualHorLayout->addWidget(manualSwitchBtn);
 
@@ -324,14 +327,15 @@ int Proxy::_getCurrentProxyMode(){
 void Proxy::_setSensitivity(){
     //自动配置代理界面敏感性
     bool autoChecked = autoSwitchBtn->isChecked();
-    ui->urlWidget->setEnabled(autoChecked);
+    ui->urlFrame->setVisible(autoChecked);
+
 
     //手动配置代理界面敏感性
     bool manualChecked = manualSwitchBtn->isChecked();
-    ui->httpWidget->setEnabled(manualChecked);
-    ui->httpsWidget->setEnabled(manualChecked);
-    ui->ftpWidget->setEnabled(manualChecked);
-    ui->socksWidget->setEnabled(manualChecked);
+    ui->httpFrame->setVisible(manualChecked);
+    ui->httpsFrame->setVisible(manualChecked);
+    ui->ftpFrame->setVisible(manualChecked);
+    ui->socksFrame->setVisible(manualChecked);
 
 }
 

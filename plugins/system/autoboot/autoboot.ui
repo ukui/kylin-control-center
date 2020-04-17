@@ -81,6 +81,11 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="font">
+           <font>
+            <pointsize>18</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>Autoboot Settings</string>
           </property>
@@ -93,7 +98,7 @@
          <widget class="QListWidget" name="listWidget"/>
         </item>
         <item>
-         <widget class="QWidget" name="addWidget" native="true">
+         <widget class="QFrame" name="addFrame">
           <property name="minimumSize">
            <size>
             <width>550</width>
@@ -105,6 +110,9 @@
             <width>960</width>
             <height>60</height>
            </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <property name="spacing">

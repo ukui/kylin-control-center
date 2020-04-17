@@ -21,12 +21,13 @@
 #define DEFINESHORTCUTITEM_H
 
 #include <QWidget>
+#include <QFrame>
 
 class QLabel;
 class QPushButton;
 class CustomLineEdit;
 
-class DefineShortcutItem : public QWidget
+class DefineShortcutItem : public QFrame
 {
     Q_OBJECT
 

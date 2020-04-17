@@ -26,30 +26,36 @@
 const int BEGINYEAR = 1900;
 const int BEGINMD = 1;
 
+extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
 ChangtimeDialog::ChangtimeDialog(bool hour,QWidget *parent) :m_isEFHour(hour),
     QDialog(parent),
     ui(new Ui::changtimedialog)
 {
 
-    QFile QssFile("://combox.qss");
-    QssFile.open(QFile::ReadOnly);
+//    QFile QssFile("://combox.qss");
+//    QssFile.open(QFile::ReadOnly);
 
-    if (QssFile.isOpen()){
-        qss = QLatin1String(QssFile.readAll());
-        QssFile.close();
-    }    
+//    if (QssFile.isOpen()){
+//        qss = QLatin1String(QssFile.readAll());
+//        QssFile.close();
+//    }
 
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
 //    setAttribute(Qt::WA_TranslucentBackground);
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->closeBtn->setFlat(true);
 
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
     //关闭按钮在右上角，窗体radius 6px，所以按钮只得6px
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
-    ui->closeBtn->setStyleSheet("QPushButton#closeBtn{background: #ffffff; border: none; border-radius: 6px;}"
-                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}");
+//    ui->closeBtn->setStyleSheet("QPushButton#closeBtn{background: #ffffff; border: none; border-radius: 6px;}"
+//                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}"
+//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}");
 
     m_datetimeInterface = new QDBusInterface("org.freedesktop.timedate1",
                                        "/org/freedesktop/timedate1",
@@ -173,53 +179,53 @@ void ChangtimeDialog::changtimeApplySlot(){
 
 void ChangtimeDialog::initUi(){
 
-    ui->hourcomboBox->setStyleSheet(qss);
-    ui->hourcomboBox->setView(new QListView());
-    ui->hourcomboBox->setMaxVisibleItems(5);
+//    ui->hourcomboBox->setStyleSheet(qss);
+//    ui->hourcomboBox->setView(new QListView());
+//    ui->hourcomboBox->setMaxVisibleItems(5);
 
-    ui->mincomboBox->setStyleSheet(qss);
-    ui->mincomboBox->setView(new QListView());
-    ui->mincomboBox->setMaxVisibleItems(5);
+//    ui->mincomboBox->setStyleSheet(qss);
+//    ui->mincomboBox->setView(new QListView());
+//    ui->mincomboBox->setMaxVisibleItems(5);
 
-    ui->seccomboBox->setView(new QListView());
-    ui->seccomboBox->setStyleSheet(qss);
-    ui->seccomboBox->setMaxVisibleItems(5);
+//    ui->seccomboBox->setView(new QListView());
+//    ui->seccomboBox->setStyleSheet(qss);
+//    ui->seccomboBox->setMaxVisibleItems(5);
 
-    ui->yearcomboBox->setStyleSheet(qss);
-    ui->yearcomboBox->setView(new QListView());
-    ui->yearcomboBox->setMaxVisibleItems(5);
+//    ui->yearcomboBox->setStyleSheet(qss);
+//    ui->yearcomboBox->setView(new QListView());
+//    ui->yearcomboBox->setMaxVisibleItems(5);
 
-    ui->monthcomboBox->setStyleSheet(qss);
-    ui->monthcomboBox->setView(new QListView());
-    ui->monthcomboBox->setMaxVisibleItems(5);
+//    ui->monthcomboBox->setStyleSheet(qss);
+//    ui->monthcomboBox->setView(new QListView());
+//    ui->monthcomboBox->setMaxVisibleItems(5);
 
-    ui->daycomboBox->setStyleSheet(qss);
-    ui->daycomboBox->setView(new QListView());
-    ui->daycomboBox->setMaxVisibleItems(4);
+//    ui->daycomboBox->setStyleSheet(qss);
+//    ui->daycomboBox->setView(new QListView());
+//    ui->daycomboBox->setMaxVisibleItems(4);
 
-    this->setStyleSheet("background: #ffffff;");
+//    this->setStyleSheet("background: #ffffff;");
     ui->timelabel->setText(tr("time"));
-    ui->timelabel->setStyleSheet("QLabel#timelabel{background: #F4F4F4;}");
+//    ui->timelabel->setStyleSheet("QLabel#timelabel{background: #F4F4F4;}");
 
     ui->yearlabel->setText(tr("year"));
-    ui->yearlabel->setStyleSheet("QLabel#yearlabel{background: #F4F4F4;}");
+//    ui->yearlabel->setStyleSheet("QLabel#yearlabel{background: #F4F4F4;}");
 
     ui->monthlabel->setText(tr("month"));
-    ui->monthlabel->setStyleSheet("QLabel#monthlabel{background: #F4F4F4;}");
+//    ui->monthlabel->setStyleSheet("QLabel#monthlabel{background: #F4F4F4;}");
 
     ui->daylabel->setText(tr("day"));
-    ui->daylabel->setStyleSheet("QLabel#daylabel{background: #F4F4F4;}");
+//    ui->daylabel->setStyleSheet("QLabel#daylabel{background: #F4F4F4;}");
 
-    ui->timewidget->setStyleSheet("QWidget#timewidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->yearwidget->setStyleSheet("QWidget#yearwidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->monthwidget->setStyleSheet("QWidget#monthwidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->daywidget->setStyleSheet("QWidget#daywidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->timewidget->setStyleSheet("QWidget#timewidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->yearwidget->setStyleSheet("QWidget#yearwidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->monthwidget->setStyleSheet("QWidget#monthwidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->daywidget->setStyleSheet("QWidget#daywidget{background: #F4F4F4; border-radius: 6px;}");
 
 
-    ui->cancelButton->setStyleSheet("QPushButton{background-color:#E5E7E9;border-radius:4px}"
-                                   "QPushButton:hover{background-color: #3D6BE5;color:white};border-radius:4px");
-    ui->confirmButton->setStyleSheet("QPushButton{background-color:#E5E7E9;border-radius:4px}"
-                                   "QPushButton:hover{background-color: #3D6BE5;color:white};border-radius:4px");
+//    ui->cancelButton->setStyleSheet("QPushButton{background-color:#E5E7E9;border-radius:4px}"
+//                                   "QPushButton:hover{background-color: #3D6BE5;color:white};border-radius:4px");
+//    ui->confirmButton->setStyleSheet("QPushButton{background-color:#E5E7E9;border-radius:4px}"
+//                                   "QPushButton:hover{background-color: #3D6BE5;color:white};border-radius:4px");
 
     hourComboxSetup();
     for(int m = 0; m < 60; m++){
@@ -295,23 +301,25 @@ void ChangtimeDialog::initStatus(){
 
 
 void ChangtimeDialog::paintEvent(QPaintEvent *event) {
+    Q_UNUSED(event);
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
-    rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 5, 5);
+    rectPath.addRoundedRect(this->rect().adjusted(10, 10, -10, -10), 6, 6);
+
     // 画一个黑底
     QPixmap pixmap(this->rect().size());
     pixmap.fill(Qt::transparent);
     QPainter pixmapPainter(&pixmap);
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
-    pixmapPainter.setBrush(Qt::green);
+    pixmapPainter.setBrush(Qt::black);
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 
     // 模糊这个黑底
     QImage img = pixmap.toImage();
-//    qt_blurImage(img, 10, false, false);
+    qt_blurImage(img, 10, false, false);
 
     // 挖掉中心
     pixmap = QPixmap::fromImage(img);
@@ -327,8 +335,7 @@ void ChangtimeDialog::paintEvent(QPaintEvent *event) {
 
     // 绘制一个背景
     p.save();
-    p.fillPath(rectPath, QColor(255, 255, 255));
+    p.fillPath(rectPath,palette().color(QPalette::Base));
+//    p.fillPath(rectPath,QColor(0,0,0));
     p.restore();
-
-
 }

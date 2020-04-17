@@ -28,6 +28,8 @@
 #include "widgetgroup.h"
 #include "cursor/xcursortheme.h"
 
+#include "../../../shell/customstyle.h"
+
 #include <QDebug>
 
 /**
@@ -97,6 +99,8 @@ Theme::Theme()
     pluginName = tr("Theme");
     pluginType = PERSONALIZED;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
     settingsCreate = false;
 
     const QByteArray id(THEME_GTK_SCHEMA);
@@ -154,23 +158,23 @@ void Theme::plugin_delay_control(){
 }
 
 void Theme::setupStylesheet(){
-    pluginWidget->setStyleSheet("background: #ffffff;");
+//    pluginWidget->setStyleSheet("background: #ffffff;");
 
-    ui->controlWidget->setStyleSheet("QWidget#controlWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->controlWidget->setStyleSheet("QWidget#controlWidget{background: #F4F4F4; border-radius: 6px;}");
 
-    ui->effectWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->line->setStyleSheet("QFrame{border-top: 1px solid #CCCCCC; border-left: none; border-right: none; border-bottom: none;}");
+//    ui->effectWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->line->setStyleSheet("QFrame{border-top: 1px solid #CCCCCC; border-left: none; border-right: none; border-bottom: none;}");
 
-    ui->resetBtn->setStyleSheet("QPushButton#resetBtn{background: #F4F4F4; border: none; border-radius: 4px;}"
-                                "QPushButton:hover:!pressed#resetBtn{border: none; background: #3D6BE5; border-radius: 2px;}"
-                                "QPushButton:hover:pressed#resetBtn{border: none; background: #2C5AD6; border-radius: 2px;}");
+//    ui->resetBtn->setStyleSheet("QPushButton#resetBtn{background: #F4F4F4; border: none; border-radius: 4px;}"
+//                                "QPushButton:hover:!pressed#resetBtn{border: none; background: #3D6BE5; border-radius: 2px;}"
+//                                "QPushButton:hover:pressed#resetBtn{border: none; background: #2C5AD6; border-radius: 2px;}");
 
-    ui->transparencySlider->setStyleSheet("QSlider{height: 20px;}"
-                                          "QSlider::groove:horizontal{border: none;}"
-                                          "QSlider::add-page:horizontal{background: #808080; border-radius: 2px; margin-top: 8px; margin-bottom: 9px;}"
-                                          "QSlider::sub-page:horizontal{background: #3D6BE5; border-radius: 2px; margin-top: 8px; margin-bottom: 9px;}"
-                                          "QSlider::handle:horizontal{width: 20px; height: 20px; border-image: url(:/img/plugins/fonts/bigRoller.png);}"
-                                          "");
+//    ui->transparencySlider->setStyleSheet("QSlider{height: 20px;}"
+//                                          "QSlider::groove:horizontal{border: none;}"
+//                                          "QSlider::add-page:horizontal{background: #808080; border-radius: 2px; margin-top: 8px; margin-bottom: 9px;}"
+//                                          "QSlider::sub-page:horizontal{background: #3D6BE5; border-radius: 2px; margin-top: 8px; margin-bottom: 9px;}"
+//                                          "QSlider::handle:horizontal{width: 20px; height: 20px; border-image: url(:/img/plugins/fonts/bigRoller.png);}"
+//                                          "");
 }
 
 void Theme::setupComponent(){
@@ -201,7 +205,7 @@ void Theme::setupComponent(){
 
 void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
     //设置默认按钮
-    button->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
+//    button->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
 
     QVBoxLayout * baseVerLayout = new QVBoxLayout(button);
     baseVerLayout->setSpacing(8);
@@ -245,6 +249,7 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
 void Theme::initThemeMode(){
     //获取当前主题
     QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
+    qApp->setStyle(new InternalStyle(currentThemeMode));
     //设置界面
     for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
         QVariant valueVariant = button->property("value");
@@ -260,6 +265,7 @@ void Theme::initThemeMode(){
         QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
         if (QString::compare(currentThemeMode, themeMode)){
             qtSettings->set(MODE_QT_KEY, themeMode);
+            qApp->setStyle(new InternalStyle(themeMode));
             gtkSettings->set(MODE_GTK_KEY, themeMode);
         }
     });
@@ -299,6 +305,7 @@ void Theme::initIconTheme(){
             }
 
             ThemeWidget * widget = new ThemeWidget(QSize(48, 48), dullTranslation(themedir.section("-", -1, -1, QString::SectionSkipEmpty)), showIconsList);
+//            widget->setFrameShape(QFrame::Shape::Box);
             widget->setValue(themedir);
             //加入Layout
             ui->iconThemeVerLayout->addWidget(widget);
@@ -335,7 +342,7 @@ void Theme::setupControlTheme(){
         button->setFixedSize(QSize(48, 48));
         button->setCheckable(true);
         QString btnStyle = QString("QPushButton{background: %1; border-radius: 4px;}").arg(color);
-        button->setStyleSheet(btnStyle);
+//        button->setStyleSheet(btnStyle);
         colorBtnGroup->addButton(button, colorStringList.indexOf(color));
 
 
@@ -405,6 +412,7 @@ void Theme::initCursorTheme(){
         }
 
         ThemeWidget * widget  = new ThemeWidget(QSize(24, 24), cursor, cursorVec);
+//        widget->setFrameShape(QFrame::Shape::Box);
         widget->setValue(cursor);
 
         //加入Layout

@@ -30,6 +30,8 @@ INCLUDEPATH   +=  \
 
 LIBS += -L/usr/lib/ -lX11 -lKF5WindowSystem
 
+LIBS += -L$$[QT_INSTALL_LIBS] -lkylinssoclient
+
 ##加载gio库和gio-unix库，用于处理desktop文件
 CONFIG        += link_pkgconfig \
                  C++11
@@ -72,6 +74,7 @@ INCLUDEPATH += qtsingleapplication
 DEPENDPATH += qtsingleapplication
 
 SOURCES += \
+    customstyle.cpp \
         main.cpp \
         mainwindow.cpp \
     framelessExtended/cursorposcalculator.cpp \
@@ -88,6 +91,7 @@ SOURCES += \
     qtsingleapplication/qtlocalpeer.cpp
 
 HEADERS += \
+    customstyle.h \
         mainwindow.h \
         interface.h \
     framelessExtended/cursorposcalculator.h \

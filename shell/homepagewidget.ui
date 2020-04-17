@@ -33,6 +33,9 @@
          <height>450</height>
         </size>
        </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
       </widget>
      </item>
     </layout>

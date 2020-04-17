@@ -24,6 +24,8 @@
 
 #define DEFAULTPATH "/usr/share/applications/"
 
+extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
+
 addShortcutDialog::addShortcutDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::addShortcutDialog)
@@ -32,24 +34,29 @@ addShortcutDialog::addShortcutDialog(QWidget *parent) :
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
 //    setAttribute(Qt::WA_TranslucentBackground);
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->closeBtn->setFlat(true);
+
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
 
     //关闭按钮在右上角，窗体radius 6px，所以按钮只得6px
-    ui->closeBtn->setStyleSheet("QPushButton#closeBtn{background: #ffffff; border: none; border-radius: 6px;}"
-                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}");
+//    ui->closeBtn->setStyleSheet("QPushButton#closeBtn{background: #ffffff; border: none; border-radius: 6px;}"
+//                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}"
+//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}");
 
-    QString lineEditQss = QString("QLineEdit{background: #E9E9E9; border: none; border-radius: 4px;}");
-    ui->nameLineEdit->setStyleSheet(lineEditQss);
-    ui->execLineEdit->setStyleSheet(lineEditQss);
+//    QString lineEditQss = QString("QLineEdit{background: #E9E9E9; border: none; border-radius: 4px;}");
+//    ui->nameLineEdit->setStyleSheet(lineEditQss);
+//    ui->execLineEdit->setStyleSheet(lineEditQss);
 
-    QString btnQss = QString("QPushButton{background: #E9E9E9; border-radius: 4px;}"
-                             "QPushButton:checked{background: #3d6be5; border-radius: 4px;}"
-                             "QPushButton:hover:!pressed{background: #3d6be5; border-radius: 4px;}"
-                             "QPushButton:hover:pressed{background: #415FC4; border-radius: 4px;}");
+//    QString btnQss = QString("QPushButton{background: #E9E9E9; border-radius: 4px;}"
+//                             "QPushButton:checked{background: #3d6be5; border-radius: 4px;}"
+//                             "QPushButton:hover:!pressed{background: #3d6be5; border-radius: 4px;}"
+//                             "QPushButton:hover:pressed{background: #415FC4; border-radius: 4px;}");
 
-    ui->cancelBtn->setStyleSheet(btnQss);
-    ui->certainBtn->setStyleSheet(btnQss);
+//    ui->cancelBtn->setStyleSheet(btnQss);
+//    ui->certainBtn->setStyleSheet(btnQss);
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
     ui->noteLabel->setPixmap(QPixmap("://img/plugins/shortcut/note.png"));
@@ -112,24 +119,28 @@ void addShortcutDialog::setUpdateEnv(QString path, QString name, QString exec){
     ui->execLineEdit->setText(exec);
 }
 
-void addShortcutDialog::paintEvent(QPaintEvent *) {
+void addShortcutDialog::paintEvent(QPaintEvent *event) {
+    Q_UNUSED(event);
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
-    rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 5, 5);
+    rectPath.addRoundedRect(this->rect().adjusted(10, 10, -10, -10), 6, 6);
+
     // 画一个黑底
     QPixmap pixmap(this->rect().size());
     pixmap.fill(Qt::transparent);
     QPainter pixmapPainter(&pixmap);
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
-    pixmapPainter.setBrush(Qt::green);
+    pixmapPainter.setBrush(Qt::black);
+
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 
     // 模糊这个黑底
     QImage img = pixmap.toImage();
-//    qt_blurImage(img, 10, false, false);
+    qt_blurImage(img, 10, false, false);
+
 
     // 挖掉中心
     pixmap = QPixmap::fromImage(img);
@@ -143,13 +154,10 @@ void addShortcutDialog::paintEvent(QPaintEvent *) {
     // 绘制阴影
     p.drawPixmap(this->rect(), pixmap, pixmap.rect());
 
-    // 绘制背景
+    // 绘制一个背景
     p.save();
-    p.fillPath(rectPath, QColor(255, 255, 255));
+    p.fillPath(rectPath,palette().color(QPalette::Base));
     p.restore();
-
-
-
 }
 
 void addShortcutDialog::openProgramFileDialog(){

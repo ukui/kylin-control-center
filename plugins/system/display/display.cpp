@@ -28,7 +28,7 @@
 
 DisplaySet::DisplaySet(){
     pluginWidget = new Widget;
-    pluginWidget->setStyleSheet("background: #ffffff;");
+//    pluginWidget->setStyleSheet("background: #ffffff;");
     pluginName = tr("Display");
     QObject::connect(new KScreen::GetConfigOperation(), &KScreen::GetConfigOperation::finished,
                      [&](KScreen::ConfigOperation *op) {

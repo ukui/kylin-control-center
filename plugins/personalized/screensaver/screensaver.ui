@@ -129,7 +129,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="enableWidget" native="true">
+    <widget class="QFrame" name="enableFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -141,6 +141,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <property name="spacing">
@@ -188,7 +191,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="programWidget" native="true">
+    <widget class="QFrame" name="programFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -200,6 +203,9 @@
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <property name="spacing">
@@ -258,7 +264,7 @@
           <property name="minimumSize">
            <size>
             <width>345</width>
-            <height>30</height>
+            <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -268,38 +274,7 @@
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">QComboBox{
-    background: rgba(255, 255, 255);
-    border-radius: 6px;
-    font-size:14px;
-    color: black;
-    min-height: 30px;
-    combobox-popup: 0;  /* 配合setMaxVisibleItems设置下拉框显示的条数，超过的滚动显示 */
-}
-
-QComboBox QAbstractItemView::item {
-    min-height: 30px;
-    border-radius: 2px ;
-    color:black;
-    background-color: rgba(255, 255, 255);
-}
-
-QComboBox::down-arrow{
-    image:url(://img/dropArrow/downpx.png);
-}
-
-QComboBox::drop-down{
-    width: 30px;
-    border: none;
-}
-
-QComboBox QListView::item:selected{
-    background: #3D6BE5;
-}
-
-
-
-</string>
+           <string notr="true"/>
           </property>
          </widget>
         </item>
@@ -322,7 +297,7 @@ QComboBox QListView::item:selected{
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="idleWidget" native="true">
+    <widget class="QFrame" name="idleFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -334,6 +309,9 @@ QComboBox QListView::item:selected{
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
       <property name="spacing">
@@ -531,7 +509,7 @@ QSlider::handle:horizontal {
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="lockWidget" native="true">
+    <widget class="QFrame" name="lockFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -543,6 +521,9 @@ QSlider::handle:horizontal {
        <width>960</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_9">
       <property name="spacing">

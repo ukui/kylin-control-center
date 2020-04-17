@@ -33,6 +33,10 @@
 
 #include "framelessExtended/framelesshandle.h"
 
+#include "customstyle.h"
+
+#include <QTimer>
+
 #include <QDebug>
 
 
@@ -52,6 +56,11 @@ int main(int argc, char *argv[])
 {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QtSingleApplication a(argc, argv);
+
+    QTimer::singleShot(2000, [&](){
+
+    });
+
     if (a.isRunning()){
         a.sendMessage(QApplication::arguments().length() > 1 ? QApplication::arguments().at(1) : a.applicationFilePath());
         qDebug() << QObject::tr("ukui-control-center had already running!");
@@ -79,6 +88,8 @@ int main(int argc, char *argv[])
         QCommandLineOption datetimeRoleOption("t", "Go to area settings page");
         QCommandLineOption desktopRoleOption("d", "Go to desktop settings page");
         QCommandLineOption audioRoleOption("s", "Go to audio settings page");
+        QCommandLineOption noticeRoleOption("n", "Go to notice settings page");
+
 //        QCommandLineOption powerRoleOption(QStringList() << "aaa" << "bbb", "ccccccccccccccccc");
 
 //        parser.setApplicationDescription("eeeeeeeeeeeee");
@@ -92,19 +103,21 @@ int main(int argc, char *argv[])
         parser.addOption(datetimeRoleOption);
         parser.addOption(desktopRoleOption);
         parser.addOption(audioRoleOption);
+        parser.addOption(noticeRoleOption);
+
 //        parser.addPositionalArgument("ffff", "ggggggggggggggggggg");
         parser.process(a);
 
         //加载qss样式文件
-        QString qss;
-        QFile QssFile("://global.qss");
-        QssFile.open(QFile::ReadOnly);
+//        QString qss;
+//        QFile QssFile("://global.qss");
+//        QssFile.open(QFile::ReadOnly);
 
-        if (QssFile.isOpen()){
-            qss = QLatin1String(QssFile.readAll());
-            qApp->setStyleSheet(qss);
-            QssFile.close();
-        }
+//        if (QssFile.isOpen()){
+//            qss = QLatin1String(QssFile.readAll());
+//            qApp->setStyleSheet(qss);
+//            QssFile.close();
+//        }
 
 
         MainWindow * w = new MainWindow;
@@ -117,6 +130,10 @@ int main(int argc, char *argv[])
 
         FramelessHandle * pHandle = new FramelessHandle(w);
         pHandle->activateOn(w);
+
+        auto style = new InternalStyle(nullptr);
+        a.setStyle(style);
+
         return a.exec();
     }
 }

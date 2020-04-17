@@ -65,9 +65,9 @@ public Q_SLOTS:
 
 private:
     QWidget *m_pOutputWidget;
-    QWidget *m_pOutputDeviceWidget;
-    QWidget *m_pMasterVolumeWidget;
-    QWidget *m_pChannelBalanceWidget;
+    QFrame *m_pOutputDeviceWidget;
+    QFrame *m_pMasterVolumeWidget;
+    QFrame *m_pChannelBalanceWidget;
     QLabel *m_pOutputLabel;
     QLabel *m_pOutputDeviceLabel;
     QComboBox *m_pOutputDeviceCombobox;

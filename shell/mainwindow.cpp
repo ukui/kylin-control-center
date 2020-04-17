@@ -59,10 +59,13 @@ MainWindow::MainWindow(QWidget *parent) :
     resize(QSize(820, 600));
     //设置窗体无边框
     setWindowFlags(Qt::FramelessWindowHint | Qt::Widget);
+
     //该设置去掉了窗体透明后的黑色背景
     setAttribute(Qt::WA_TranslucentBackground, true);
     //将最外层窗体设置为透明
-    setStyleSheet("QMainWindow#MainWindow{background-color: transparent;}");
+
+//    setStyleSheet("QMainWindow#MainWindow{background-color: transparent;}");
+
 
     //设置panel图标
     QIcon panelicon;
@@ -74,28 +77,44 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowTitle(tr("ukcc"));
 
     //中部内容区域
-    ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: #ffffff; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+    ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
     //标题栏widget
-    ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background: #ffffff; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-//    //左上角文字
-//    ui->mainLabel->setStyleSheet("QLabel#mainLabel{font-size: 18px; color: #40000000;}");
+    ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background: palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+////    //左上角文字
+////    ui->mainLabel->setStyleSheet("QLabel#mainLabel{font-size: 18px; color: #40000000;}");
+
     //左上角返回按钮
-    ui->backBtn->setStyleSheet("QPushButton#backBtn{background: #ffffff; border: none;}");
-    //顶部搜索框
-    ui->searchLineEdit->setStyleSheet("QLineEdit#searchLineEdit{background: #FFEDEDED; border: none; border-radius: 6px;}");
+    ui->backBtn->setProperty("useIconHighlightEffect", true);
+    ui->backBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->backBtn->setFlat(true);
+
+//    ui->backBtn->setStyleSheet("QPushButton#backBtn{background: #ffffff; border: none;}");
+//    //顶部搜索框
+//    ui->searchLineEdit->setStyleSheet("QLineEdit#searchLineEdit{background: #FFEDEDED; border: none; border-radius: 6px;}");
     //右上角按钮stylesheet
-    ui->minBtn->setStyleSheet("QPushButton#minBtn{background: #ffffff; border: none;}"
-                              "QPushButton:hover:!pressed#minBtn{background: #FF3D6BE5; border-radius: 2px;}"
-                              "QPushButton:hover:pressed#minBtn{background: #415FC4; border-radius: 2px;}");
-    ui->maxBtn->setStyleSheet("QPushButton#maxBtn{background: #ffffff; border: none;}"
-                              "QPushButton:hover:!pressed#maxBtn{background: #FF3D6BE5; border-radius: 2px;}"
-                              "QPushButton:hover:pressed#maxBtn{background: #415FC4; border-radius: 2px;}");
-    ui->closeBtn->setStyleSheet("QPushButton#closeBtn{background: #ffffff; border: none;}"
-                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 2px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 2px;}");
+    ui->minBtn->setProperty("useIconHighlightEffect", true);
+    ui->minBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->minBtn->setFlat(true);
+    ui->maxBtn->setProperty("useIconHighlightEffect", true);
+    ui->maxBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->maxBtn->setFlat(true);
+    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->closeBtn->setFlat(true);
+
+//    ui->minBtn->setStyleSheet("QPushButton#minBtn{background: #ffffff; border: none;}"
+//                              "QPushButton:hover:!pressed#minBtn{background: #FF3D6BE5; border-radius: 2px;}"
+//                              "QPushButton:hover:pressed#minBtn{background: #415FC4; border-radius: 2px;}");
+//    ui->maxBtn->setStyleSheet("QPushButton#maxBtn{background: #ffffff; border: none;}"
+//                              "QPushButton:hover:!pressed#maxBtn{background: #FF3D6BE5; border-radius: 2px;}"
+//                              "QPushButton:hover:pressed#maxBtn{background: #415FC4; border-radius: 2px;}");
+//    ui->closeBtn->setStyleSheet("QPushButton#closeBtn{background: #ffffff; border: none;}"
+//                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 2px;}"
+//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 2px;}");
 
     //左侧一级菜单
-    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background: #cccccc; border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
+//    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background: #cccccc; border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
+    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
 
     //设置左上角按钮图标
     ui->backBtn->setIcon(QIcon("://img/titlebar/back.png"));
@@ -151,14 +170,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
         if (index){ //首页部分组件样式
             //中部内容区域
-            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: #ffffff; border-bottom-right-radius: 6px;}");
+            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-right-radius: 6px;}");
             //标题栏widget
-            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background: #ffffff; border-top-right-radius: 6px;}");
+            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background:  palette(base); border-top-right-radius: 6px;}");
         } else { //次页部分组件样式
             //中部内容区域
-            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: #ffffff; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background:  palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
             //标题栏widget
-            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background: #ffffff; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background:  palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
         }
     });
 
@@ -229,6 +248,9 @@ void MainWindow::bootOptionsFilter(QString opt){
     } else if (opt == "-s") {
         // Audio module
         bootOptionsSwitch(DEVICES, AUDIO);
+    } else if (opt == "-n") {
+        // notice module
+        bootOptionsSwitch(NOTICEANDTASKS, NOTICE);
     }
 }
 
@@ -245,6 +267,43 @@ void MainWindow::bootOptionsSwitch(int moduleNum, int funcNum){
         modulepageWidget->switchPage(pluginsObjMap.value(funcStr));
     }
 }
+
+//void MainWindow::paintEvent(QPaintEvent *event) {
+//    QPainter p(this);
+//    p.setRenderHint(QPainter::Antialiasing);
+//    QPainterPath rectPath;
+//    rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 5, 5);
+//    // 画一个黑底
+//    QPixmap pixmap(this->rect().size());
+//    pixmap.fill(Qt::transparent);
+//    QPainter pixmapPainter(&pixmap);
+//    pixmapPainter.setRenderHint(QPainter::Antialiasing);
+//    pixmapPainter.setPen(Qt::transparent);
+//    pixmapPainter.setBrush(Qt::green);
+//    pixmapPainter.drawPath(rectPath);
+//    pixmapPainter.end();
+
+//    // 模糊这个黑底
+//    QImage img = pixmap.toImage();
+////    qt_blurImage(img, 10, false, false);
+
+//    // 挖掉中心
+//    pixmap = QPixmap::fromImage(img);
+//    QPainter pixmapPainter2(&pixmap);
+//    pixmapPainter2.setRenderHint(QPainter::Antialiasing);
+//    pixmapPainter2.setCompositionMode(QPainter::CompositionMode_Clear);
+//    pixmapPainter2.setPen(Qt::transparent);
+//    pixmapPainter2.setBrush(Qt::transparent);
+//    pixmapPainter2.drawPath(rectPath);
+
+//    // 绘制阴影
+//    p.drawPixmap(this->rect(), pixmap, pixmap.rect());
+
+//    // 绘制一个背景
+//    p.save();
+//    p.fillPath(rectPath, QColor(255, 255, 255));
+//    p.restore();
+//}
 
 void MainWindow::setBtnLayout(QPushButton * &pBtn){
     QLabel * imgLabel = new QLabel(pBtn);
@@ -373,7 +432,9 @@ void MainWindow::initLeftsideBar(){
     connect(hBtn, &QPushButton::clicked, this, [=]{
         ui->stackedWidget->setCurrentIndex(0);
     });
-    hBtn->setStyleSheet("QPushButton#homepage{background: #cccccc; border: none;}");
+    hBtn->setStyleSheet("QPushButton#homepage{background: palette(button); border: none;}");
+//    hBtn->setStyleSheet("QPushButton#homepage{background: palette(base);}");
+
     ui->leftsidebarVerLayout->addWidget(hBtn);
 
     for(int type = 0; type < TOTALMODULES; type++){
@@ -385,8 +446,10 @@ void MainWindow::initLeftsideBar(){
             button->setCheckable(true);
             leftBtnGroup->addButton(button, type);
             //设置样式
-            button->setStyleSheet("QPushButton::checked{background: #cccccc; border: none; border-image: url('://img/primaryleftmenu/checked.png');}"
-                                  "QPushButton::!checked{background: #cccccc; border: none;}");
+//            button->setStyleSheet("QPushButton::checked{background: palette(button); border: none; border-image: url('://img/primaryleftmenu/checked.png');}"
+//                                  "QPushButton::!checked{background: palette(button);border: none;}");
+            button->setStyleSheet("QPushButton::checked{background: palette(base); border-top-left-radius: 6px;border-bottom-left-radius: 6px;}"
+                                  "QPushButton::!checked{background: palette(button);border: none;}");
 
             connect(button, &QPushButton::clicked, this, [=]{
                 QPushButton * btn = dynamic_cast<QPushButton *>(QObject::sender());
@@ -427,9 +490,9 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname){
     iconBtn->setFocusPolicy(Qt::NoFocus);
 
 
-    QString iconHomePageBtnQss = QString("QPushButton{background: #cccccc; border: none; border-image: url('://img/primaryleftmenu/%1.png');}").arg(iname);
-    QString iconBtnQss = QString("QPushButton:checked{background: #ffffff; border: none; border-image: url('://img/primaryleftmenu/%1Checked.png');}"
-                                 "QPushButton:!checked{background: #cccccc; border: none; border-image: url('://img/primaryleftmenu/%2.png');}").arg(iname).arg(iname);
+    QString iconHomePageBtnQss = QString("QPushButton{background: palette(button); border: none; border-image: url('://img/primaryleftmenu/%1.png');}").arg(iname);
+    QString iconBtnQss = QString("QPushButton:checked{background: palette(base); border: none; border-image: url('://img/primaryleftmenu/%1Checked.png');}"
+                                 "QPushButton:!checked{background: palette(button); border: none; border-image: url('://img/primaryleftmenu/%2.png');}").arg(iname).arg(iname);
     //单独设置HomePage按钮样式
     if (iname == "homepage")
         iconBtn->setStyleSheet(iconHomePageBtnQss);

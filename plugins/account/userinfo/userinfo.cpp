@@ -56,6 +56,7 @@ UserInfo::UserInfo()
 
     pluginName = tr("Userinfo");
     pluginType = ACCOUNT;
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
     //构建System dbus调度对象
     sysdispatcher = new SystemDbusDispatcher;
@@ -194,25 +195,25 @@ UserInfomation UserInfo::_acquireUserInfo(QString objpath){
 
 void UserInfo::initComponent(){
     //样式表
-    pluginWidget->setStyleSheet("background: #ffffff;");
+//    pluginWidget->setStyleSheet("background: #ffffff;");
 
-    ui->currentUserWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-    ui->autoLoginWidget->setStyleSheet("QWidget{background: #F4F4F4; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+//    ui->currentUserWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+//    ui->autoLoginWidget->setStyleSheet("QWidget{background: #F4F4F4; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
 
-    QString btnQss = QString("QPushButton{background: #FFFFFF; border-radius: 4px;}");
-    ui->changePwdBtn->setStyleSheet(btnQss);
-    ui->changeTypeBtn->setStyleSheet(btnQss);
+//    QString btnQss = QString("QPushButton{background: #FFFFFF; border-radius: 4px;}");
+//    ui->changePwdBtn->setStyleSheet(btnQss);
+//    ui->changeTypeBtn->setStyleSheet(btnQss);
 
-    ui->addUserWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+//    ui->addUserWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
-    nopwdSwitchBtn = new SwitchButton(ui->nopwdLoginWidget);
+    nopwdSwitchBtn = new SwitchButton(ui->nopwdLoginFrame);
     ui->nopwdHorLayout->addWidget(nopwdSwitchBtn);
 
-    autoLoginSwitchBtn = new SwitchButton(ui->autoLoginWidget);
+    autoLoginSwitchBtn = new SwitchButton(ui->autoLoginFrame);
     ui->autoLoginHorLayout->addWidget(autoLoginSwitchBtn);
 
 
-    ui->listWidget->setStyleSheet("QListWidget{border: none}");
+//    ui->listWidget->setStyleSheet("QListWidget{border: none}");
     ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setSpacing(0);
@@ -359,7 +360,6 @@ void UserInfo::_refreshUserInfoUI(){
 
 void UserInfo::_buildWidgetForItem(UserInfomation user){
     HoverWidget * baseWidget = new HoverWidget(user.username);
-    baseWidget->setStyleSheet("background: #ffffff;");
     baseWidget->setMinimumSize(550,50);
     baseWidget->setMaximumSize(960,50);
     baseWidget->setAttribute(Qt::WA_DeleteOnClose);
@@ -372,9 +372,9 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     baseHorLayout->setSpacing(16);
     baseHorLayout->setMargin(0);
 
-    QWidget * widget = new QWidget(baseWidget);
+    QFrame * widget = new QFrame(baseWidget);
+    widget->setFrameShape(QFrame::Shape::Box);
     widget->setFixedHeight(50);
-    widget->setStyleSheet("background: #F4F4F4; border-radius: 4px;");
 
     QHBoxLayout * mainHorLayout = new QHBoxLayout(widget);
     mainHorLayout->setSpacing(16);
@@ -402,7 +402,7 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     QPushButton * typeBtn = new QPushButton(widget);
     typeBtn->setFixedSize(88, 36);
     typeBtn->setText(tr("Change type"));
-    typeBtn->setStyleSheet(btnQss);
+//    typeBtn->setStyleSheet(btnQss);
     connect(typeBtn, &QPushButton::clicked, this, [=](bool checked){
         Q_UNUSED(checked)
         showChangeTypeDialog(user.username);
@@ -412,7 +412,7 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     QPushButton * pwdBtn = new QPushButton(widget);
     pwdBtn->setFixedSize(88, 36);
     pwdBtn->setText(tr("Change pwd"));
-    pwdBtn->setStyleSheet(btnQss);
+//    pwdBtn->setStyleSheet(btnQss);
     connect(pwdBtn, &QPushButton::clicked, this, [=](bool checked){
         Q_UNUSED(checked)
         showChangePwdDialog(user.username);
@@ -430,7 +430,7 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     QPushButton * delBtn = new QPushButton(baseWidget);
     delBtn->setFixedSize(60, 36);
     delBtn->setText(tr("Delete"));
-    delBtn->setStyleSheet("QPushButton{background: #FA6056; border-radius: 4px}");
+//    delBtn->setStyleSheet("QPushButton{background: #FA6056; border-radius: 4px}");
     delBtn->hide();
     connect(delBtn, &QPushButton::clicked, this, [=](bool checked){
         Q_UNUSED(checked)
@@ -608,13 +608,8 @@ void UserInfo::changeUserFace(QString facefile, QString username){
     UserInfomation user = (UserInfomation)(allUserInfoMap.find(username).value());
 
     UserDispatcher * userdispatcher  = new UserDispatcher(user.objpath);
-    userdispatcher->change_user_face(facefile);
-
-    //重新获取全部用户QMap
-    _acquireAllUsersInfo();
-
-    //更新界面显示
-    _refreshUserInfoUI();
+//    userdispatcher->change_user_face(facefile);
+    userdispatcher->change_user_face(QString("/home/%1/.face").arg(user.username));
 
     //拷贝设置的头像文件到~/.face
     sysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
@@ -630,6 +625,13 @@ void UserInfo::changeUserFace(QString facefile, QString username){
     QString cmd = QString("cp %1 /home/%2/.face").arg(facefile).arg(user.username);
 
     QDBusReply<QString> reply =  sysinterface->call("systemRun", QVariant(cmd));
+
+
+    //重新获取全部用户QMap
+    _acquireAllUsersInfo();
+
+    //更新界面显示
+    _refreshUserInfoUI();
 
     Q_UNUSED(reply)
 }

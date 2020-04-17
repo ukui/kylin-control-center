@@ -32,13 +32,14 @@ Backup::Backup()
     pluginName = tr("Backup");
     pluginType = UPDATE;
 
-    pluginWidget->setStyleSheet("background: #ffffff;");
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+//    pluginWidget->setStyleSheet("background: #ffffff;");
 
-    ui->backupLabel->setStyleSheet("QLabel{color: #A6000000;}");
-    ui->restoreLabel->setStyleSheet("QLabel{color: #A6000000;}");
+//    ui->backupLabel->setStyleSheet("QLabel{color: #A6000000;}");
+//    ui->restoreLabel->setStyleSheet("QLabel{color: #A6000000;}");
 
-    ui->backBtn->setStyleSheet("QPushButton{background: #E9E9E9; border: none; border-radius: 4px;}");
-    ui->restoreBtn->setStyleSheet("QPushButton{background: #E9E9E9; border: none; border-radius: 4px;}");
+//    ui->backBtn->setStyleSheet("QPushButton{background: #E9E9E9; border: none; border-radius: 4px;}");
+//    ui->restoreBtn->setStyleSheet("QPushButton{background: #E9E9E9; border: none; border-radius: 4px;}");
 
     connect(ui->backBtn, &QPushButton::clicked, this, [=](bool checked){
         Q_UNUSED(checked)

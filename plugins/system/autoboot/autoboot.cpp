@@ -27,6 +27,7 @@
 #include "autobootworker.h"
 
 #include <QDebug>
+#include <QFont>
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -60,12 +61,15 @@ AutoBoot::AutoBoot(){
     pluginName = tr("Autoboot");
     pluginType = SYSTEM;
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-    pluginWidget->setStyleSheet("background: #ffffff;");
-    ui->addWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
-    ui->listWidget->setStyleSheet("QListWidget#listWidget{background: #ffffff; border: none;}"
-                                  "");
+
+//    pluginWidget->setStyleSheet("background: #ffffff;");
+//    ui->addWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+
+//    ui->listWidget->setStyleSheet("QListWidget#listWidget{background: #ffffff; border: none;}"
+//                                  "");
 
     ui->addBtn->setIcon(QIcon("://img/plugins/autoboot/add.png"));
     ui->addBtn->setIconSize(QSize(48, 48));
@@ -78,18 +82,20 @@ AutoBoot::AutoBoot(){
 
     localconfigdir = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
     //初始化添加界面
-    dialog = new AddAutoBoot();
+//    dialog = new AddAutoBoot();
 
     initUI();
 
-    connect(ui->addBtn, &QPushButton::clicked, this, [=]{dialog->exec();});
+    connect(ui->addBtn, &QPushButton::clicked, this, [=]{
+        AddAutoBoot * mdialog = new AddAutoBoot();
+        mdialog->exec();});
     connect(dialog, SIGNAL(autoboot_adding_signals(QString, QString,QString,QString)), this, SLOT(add_autoboot_realize_slot(QString ,QString,QString,QString)));
 }
 
 AutoBoot::~AutoBoot()
 {
     delete ui;
-    delete dialog;
+//    delete dialog;
     g_free(localconfigdir);
 }
 
@@ -121,10 +127,13 @@ void AutoBoot::initUI(){
 
 
     //构建行头基础Widget
-    QWidget * headbaseWidget = new QWidget;
-    headbaseWidget->setAttribute(Qt::WA_DeleteOnClose);
+    QFrame * headbaseFrame = new QFrame;
+    headbaseFrame->setMinimumWidth(550);
+    headbaseFrame->setMaximumWidth(960);
+    headbaseFrame->setFrameShape(QFrame::Shape::Box);
+    headbaseFrame->setAttribute(Qt::WA_DeleteOnClose);
 
-    QVBoxLayout * headbaseVerLayout = new QVBoxLayout(headbaseWidget);
+    QVBoxLayout * headbaseVerLayout = new QVBoxLayout(headbaseFrame);
     headbaseVerLayout->setSpacing(0);
     headbaseVerLayout->setContentsMargins(0, 0, 0, 2);
 
@@ -138,7 +147,7 @@ void AutoBoot::initUI(){
     headWidget->setAttribute(Qt::WA_DeleteOnClose);
     headWidget->setObjectName("headWidget");
 //    headWidget->setFixedHeight(36);
-    headWidget->setStyleSheet("QWidget#headWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+//    headWidget->setStyleSheet("QWidget#headWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
 
     QHBoxLayout * headHorLayout = new QHBoxLayout(headWidget);
     headHorLayout->setSpacing(16);
@@ -150,7 +159,7 @@ void AutoBoot::initUI(){
 //    nameLabel->setSizePolicy(nameSizePolicy);
     nameLabel->setFixedWidth(220);
     nameLabel->setText(tr("Name"));
-    nameLabel->setStyleSheet("background: #F4F4F4;");
+//    nameLabel->setStyleSheet("background: #F4F4F4;");
 
     QLabel * statusLabel = new QLabel(headWidget);
 //    QSizePolicy statusSizePolicy = statusLabel->sizePolicy();
@@ -158,7 +167,7 @@ void AutoBoot::initUI(){
 //    statusLabel->setSizePolicy(statusSizePolicy);
     statusLabel->setFixedWidth(68);
     statusLabel->setText(tr("Status"));
-    statusLabel->setStyleSheet("background: #F4F4F4;");
+//    statusLabel->setStyleSheet("background: #F4F4F4;");
 
     headHorLayout->addWidget(nameLabel);
     headHorLayout->addStretch();
@@ -170,11 +179,11 @@ void AutoBoot::initUI(){
     headbaseVerLayout->addWidget(headWidget);
     headbaseVerLayout->addStretch();
 
-    headbaseWidget->setLayout(headbaseVerLayout);
+    headbaseFrame->setLayout(headbaseVerLayout);
 
     QListWidgetItem * hItem = new QListWidgetItem(ui->listWidget);
     hItem->setSizeHint(QSize(ITEMWIDTH, HEADHEIGHT));
-    ui->listWidget->setItemWidget(hItem, headbaseWidget);
+    ui->listWidget->setItemWidget(hItem, headbaseFrame);
 
     //构建每个启动项
     QSignalMapper * checkSignalMapper = new QSignalMapper(this);
@@ -182,7 +191,10 @@ void AutoBoot::initUI(){
     for (int index = 0; it != statusMaps.end(); it++, index++){
         QString bname = it.value().bname;
 
-        QWidget * baseWidget = new QWidget;
+        QFrame * baseWidget = new QFrame;
+        baseWidget->setMinimumWidth(550);
+        baseWidget->setMaximumWidth(960);
+        baseWidget->setFrameShape(QFrame::Shape::Box);
         baseWidget->setAttribute(Qt::WA_DeleteOnClose);
 
         QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);
@@ -198,7 +210,7 @@ void AutoBoot::initUI(){
         widget->setMaximumHeight(60);
 
         widget->setAttribute(Qt::WA_DeleteOnClose);
-        widget->setStyleSheet("background: #F4F4F4;");
+//        widget->setStyleSheet("background: #F4F4F4;");
 
         QHBoxLayout * mainHLayout = new QHBoxLayout(widget);
         mainHLayout->setContentsMargins(16, 0, 32, 0);
@@ -207,10 +219,10 @@ void AutoBoot::initUI(){
         QLabel * iconLabel = new QLabel(widget);
         iconLabel->setFixedSize(32, 32);
         iconLabel->setPixmap(it.value().pixmap);
-        iconLabel->setStyleSheet("background: #F4F4F4");
+//        iconLabel->setStyleSheet("background: #F4F4F4");
 
         QLabel * textLabel = new QLabel(widget);
-        textLabel->setStyleSheet("background: #F4F4F4");
+//        textLabel->setStyleSheet("background: #F4F4F4");
         textLabel->setFixedWidth(250);
         textLabel->setText(bname);
 
@@ -229,9 +241,9 @@ void AutoBoot::initUI(){
         connect(dBtn, &QPushButton::clicked, this, [=]{
             del_autoboot_realize(bname);
         });
-        dBtn->setStyleSheet(""
-                            "QPushButton{background: #FA6056; border-radius: 2px;}"
-                            "QPushButton:hover:pressed{background: #E54A50; border-radius: 2px;}");
+//        dBtn->setStyleSheet(""
+//                            "QPushButton{background: #FA6056; border-radius: 2px;}"
+//                            "QPushButton:hover:pressed{background: #E54A50; border-radius: 2px;}");
 
         QLabel * pLabel = new QLabel(widget);
         pLabel->setFixedSize(QSize(32, 32));
@@ -270,6 +282,7 @@ void AutoBoot::initUI(){
         QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
         item->setSizeHint(QSize(ITEMWIDTH, ITEMHEIGHT));
         ui->listWidget->setItemWidget(item, baseWidget);
+        ui->listWidget->setSpacing(1);
     }
     connect(checkSignalMapper, SIGNAL(mapped(QString)), this, SLOT(checkbox_changed_cb(QString)));
 }

@@ -78,9 +78,9 @@ void ResolutionSlider::init()
         mComboBox->setMaximumSize(1677215, 30);
 //        mComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
 //        mComboBox->setEditable(false);
-        mComboBox->setStyleSheet(qss);
-        mComboBox->setItemDelegate(itemDelege);
-        mComboBox->setMaxVisibleItems(5);
+//        mComboBox->setStyleSheet(qss);
+//        mComboBox->setItemDelegate(itemDelege);
+//        mComboBox->setMaxVisibleItems(5);
 
         int currentModeIndex = -1;
         int preferredModeIndex = -1;

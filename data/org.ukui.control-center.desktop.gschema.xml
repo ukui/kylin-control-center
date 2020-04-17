@@ -25,15 +25,20 @@
       <summary>Show volumes icon on desktop</summary>
       <description>Whether show volumes icon on desktop or not.</description>
     </key>
+    <key name="menufull-screen" type="b">
+      <default>true</default>
+      <summary>menufull-screen switch button</summary>
+      <description>Whether to always use the start menu in full screen.</description>
+    </key>
     <key name="computer-icon-locking" type="b">
       <default>true</default>
       <summary>Lock computer icon on start menu</summary>
       <description>Whether lock computer icon on start menu or not.</description>
     </key>
-    <key name="filesystem-icon-locking" type="b">
-      <default>true</default>
-      <summary>Lock filesystem icon on start menu</summary>
-      <description>Whether lock system icon on start menu or not.</description>
+    <key name="personal-icon-locking" type="b">
+      <default>false</default>
+      <summary>Lock personal icon on start menu</summary>
+      <description>Whether personal icon on start menu or not.</description>
     </key>
     <key name="settings-icon-locking" type="b">
       <default>true</default>
@@ -41,7 +46,7 @@
       <description>Whether lock settings icon on start menu or not.</description>
     </key>
     <key name="trash-icon-locking" type="b">
-      <default>true</default>
+      <default>false</default>
       <summary>Lock trash icon on start menu</summary>
       <description>Whether lock trash icon on start menu or not.</description>
     </key>
