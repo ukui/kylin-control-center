@@ -24,6 +24,7 @@
 #include "ukmedia_output_widget.h"
 #include "ukmedia_input_widget.h"
 #include "ukmedia_sound_effects_widget.h"
+#include <QMediaPlayer>
 
 #include <gio/gio.h>
 #include <libxml/tree.h>
@@ -32,7 +33,16 @@
 #include <glib.h>
 #include <gobject/gparamspecs.h>
 #include <glib/gi18n.h>
-#include <QMediaPlayer>
+#include <utime.h>
+#include <glib/gstdio.h>
+#include <QDomDocument>
+#include <QGSettings>
+
+#define UKUI_THEME_SETTING "org.ukui.style"
+#define UKUI_THEME_NAME "style-name"
+#define UKUI_THEME_WHITE "ukui-white"
+#define UKUI_THEME_BLACK "ukui-black"
+
 #define KEY_SOUNDS_SCHEMA "org.mate.sound"
 #define EVENT_SOUNDS_KEY "event-sounds"
 #define INPUT_SOUNDS_KEY "input-feedback-sounds"
@@ -54,9 +64,12 @@ class UkmediaMainWidget : public QWidget
 public:
     UkmediaMainWidget(QWidget *parent = nullptr);
     ~UkmediaMainWidget();
+    void inputVolumeDarkThemeImage(int value);
+    void outputVolumeDarkThemeIamge(int value);
+    int getInputVolume();
+    int getOutputVolume();
 
     static void listDevice(UkmediaMainWidget *w,MateMixerContext *context);
-
     static void streamStatusIconSetControl (UkmediaMainWidget *w,MateMixerStreamControl *control);
     static void contextSetProperty(UkmediaMainWidget *object);//guint prop_id,const GValue *value,GParamSpec *pspec);
     static void onContextStateNotify (MateMixerContext *context,GParamSpec *pspec,UkmediaMainWidget	*w);
@@ -125,10 +138,20 @@ public:
     static void ukuiUpdatePeakValue (UkmediaMainWidget *w);
 
     static gdouble ukuiFractionFromAdjustment(UkmediaMainWidget  *w);
-
     static void onInputStreamControlAdded (MateMixerStream *stream,const gchar *name,UkmediaMainWidget *w);
     static void onInputStreamControlRemoved (MateMixerStream *stream,const gchar *name,UkmediaMainWidget *w);
     static gboolean updateDefaultInputStream (UkmediaMainWidget *w);
+
+    static gboolean saveAlertSounds (QComboBox *combox,const char *id);
+    static void delete_old_files (const char **sounds);
+    static void delete_one_file (const char *sound_name, const char *pattern);
+    static void delete_disabled_files (const char **sounds);
+    static void add_custom_file (const char **sounds, const char *filename);
+    static gboolean capplet_file_delete_recursive (GFile *file, GError **error);
+    static gboolean directory_delete_recursive (GFile *directory, GError **error);
+    static void create_custom_theme (const char *parent);
+    static void custom_theme_update_time (void);
+    static gboolean custom_theme_dir_is_empty (void);
 
 Q_SIGNALS:
     void appVolumeChangedSignal(bool is_mute,int volume,const QString app_name);
@@ -141,6 +164,7 @@ private Q_SLOTS:
     void inputLevelValueChangedSlot();
     void outputWidgetSliderChangedSlot(int value);
     void inputWidgetSliderChangedSlot(int value);
+    void ukuiThemeChangedSlot(const QString &);
 private:
 
 private:
@@ -171,6 +195,9 @@ private:
     gdouble peakFraction;
     gdouble maxPeak;
     guint maxPeakId;
+
+    QGSettings *m_pThemeSetting;
+    QString mThemeName;
 };
 
 #endif // WIDGET_H

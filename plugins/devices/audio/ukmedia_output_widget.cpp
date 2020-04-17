@@ -73,7 +73,7 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pOutputDeviceLabel = new QLabel(tr("Select output device"),m_pOutputWidget);
     m_pOutputDeviceCombobox = new QComboBox(m_pOutputDeviceWidget);
     m_pOpVolumeLabel = new QLabel(tr("Master volume"),m_pMasterVolumeWidget);
-    m_pOutputIconBtn = new QPushButton(m_pMasterVolumeWidget);
+    m_pOutputIconBtn = new UkuiButtonDrawSvg(m_pMasterVolumeWidget);
     m_pOpVolumeSlider = new AudioSlider(m_pMasterVolumeWidget);
     m_pOpVolumePercentLabel = new QLabel(m_pMasterVolumeWidget);
     m_pOpBalanceLabel = new QLabel(tr("Channel balance"),m_pChannelBalanceWidget);

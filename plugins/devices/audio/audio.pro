@@ -21,7 +21,8 @@ PKGCONFIG += libmatemixer \
              Qt5Xdg \
              gio-2.0 \
              libxml-2.0 \
-             Qt5Multimedia
+             Qt5Multimedia \
+             gsettings-qt
 
 
 #DEFINES += QT_DEPRECATED_WARNINGS
@@ -34,14 +35,16 @@ SOURCES += \
         ukmedia_input_widget.cpp \
         ukmedia_main_widget.cpp \
         ukmedia_output_widget.cpp \
-        ukmedia_sound_effects_widget.cpp
+        ukmedia_sound_effects_widget.cpp \
+        ukui_custom_style.cpp
 
 HEADERS += \
         audio.h \
         ukmedia_input_widget.h \
         ukmedia_main_widget.h \
         ukmedia_output_widget.h \
-        ukmedia_sound_effects_widget.h
+        ukmedia_sound_effects_widget.h \
+        ukui_custom_style.h
 
 FORMS += \
         audio.ui

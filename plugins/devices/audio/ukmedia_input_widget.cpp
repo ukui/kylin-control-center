@@ -29,24 +29,9 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pVolumeWidget = new QFrame(m_pInputWidget);
     m_pInputLevelWidget = new QFrame(m_pInputWidget);
 
-
     m_pInputDeviceWidget->setFrameShape(QFrame::Shape::Box);
     m_pVolumeWidget->setFrameShape(QFrame::Shape::Box);
     m_pInputLevelWidget->setFrameShape(QFrame::Shape::Box);
-
-//    itemDelege = new QStyledItemDelegate();
-
-//    //加载qss样式文件
-//    QFile QssFile("://combox.qss");
-//    QssFile.open(QFile::ReadOnly);
-
-//    if (QssFile.isOpen()){
-//        sliderQss = QLatin1String(QssFile.readAll());
-//        QssFile.close();
-//    } else {
-//        qDebug()<<"combox.qss is not found"<<endl;
-//    }
-//    itemDelege = new QStyledItemDelegate();
 
     //设置大小
     m_pInputWidget->setMinimumSize(550,150);
@@ -64,7 +49,7 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pInputDeviceCombobox = new QComboBox(m_pInputDeviceWidget);
 
     m_pIpVolumeLabel = new QLabel(tr("volume"),m_pVolumeWidget);
-    m_pInputIconBtn = new QPushButton(m_pVolumeWidget);
+    m_pInputIconBtn = new UkuiButtonDrawSvg(m_pVolumeWidget);
     m_pIpVolumeSlider = new AudioSlider(m_pVolumeWidget);
     m_pIpVolumePercentLabel = new QLabel(m_pVolumeWidget);
     m_pInputLevelLabel = new QLabel(tr("Input level"),m_pInputLevelWidget);
