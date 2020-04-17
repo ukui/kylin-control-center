@@ -536,7 +536,7 @@ float Widget::scaleRet() {
     QString scale;
     filepath += "/.profile";
     QStringList res = this->readFile(filepath);
-    QRegExp re("export( GDK_DPI_SCALE)?=(.*)$");
+    QRegExp re("export( GDK_SCALE)?=(.*)$");
     for(int i = 0; i < res.length(); i++) {
         int pos = 0;
 //        qDebug()<<res.at(i)<<endl;
@@ -571,6 +571,7 @@ void Widget::writeScale(float scale) {
         this->proRes.append(strQT + QString::number(scale));
         this->proRes.append(strAutoQT);
     }
+
     writeFile(filepath, this->proRes);
     setSessionScale(static_cast<int>(scale));
 }
@@ -928,6 +929,7 @@ void Widget::save()
         return ;
     }
 
+    int scale = static_cast<int>(this->scaleRet());
     initScreenXml(countOutput);
     writeScreenXml(countOutput);
     writeScale(static_cast<float>(this->screenScale));
@@ -942,8 +944,11 @@ void Widget::save()
         return;
     }
 
-    KMessageBox::information(this,tr("Some applications need to be restarted to take effect"));
+//    qDebug()<<"scale ann screenScale is -------->"<<this->scaleRet()<<" "<<this->screenScale<<endl;
 
+    if (scale != this->screenScale) {
+        KMessageBox::information(this,tr("Some applications need to be restarted to take effect"));
+    }
 
     m_blockChanges = true;
     /* Store the current config, apply settings */
@@ -1642,6 +1647,7 @@ void Widget::setIsNightMode(bool isNightMode) {
 }
 
 QStringList Widget::readFile(const QString& filepath) {
+    QStringList fileCont;
     QFile file(filepath);
     if(file.exists()) {
         if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -1652,10 +1658,10 @@ QStringList Widget::readFile(const QString& filepath) {
         while(!textStream.atEnd()) {
             QString line= textStream.readLine();
             line.remove('\n');
-            this->proRes<<line;
+            fileCont<<line;
         }
         file.close();
-        return this->proRes;
+        return fileCont;
     } else {
         qWarning() << filepath << " not found"<<endl;
         return QStringList();
@@ -1666,7 +1672,7 @@ void Widget::writeFile(const QString &filepath, const QStringList &content) {
 //    qDebug()<<"witeFile--------->"<<endl;
     QFile file(filepath);
 
-    if(!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
             qWarning() << "writeFile() failed to open" << filepath;
     }
     QTextStream textStream(&file);

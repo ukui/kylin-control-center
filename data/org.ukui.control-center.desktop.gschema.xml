@@ -26,7 +26,7 @@
       <description>Whether show volumes icon on desktop or not.</description>
     </key>
     <key name="menufull-screen" type="b">
-      <default>true</default>
+      <default>false</default>
       <summary>menufull-screen switch button</summary>
       <description>Whether to always use the start menu in full screen.</description>
     </key>

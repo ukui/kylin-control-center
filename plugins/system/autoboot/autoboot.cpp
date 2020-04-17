@@ -82,7 +82,7 @@ AutoBoot::AutoBoot(){
 
     localconfigdir = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
     //初始化添加界面
-//    dialog = new AddAutoBoot();
+    dialog = new AddAutoBoot();
 
     initUI();
 

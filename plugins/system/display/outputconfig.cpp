@@ -40,14 +40,14 @@ OutputConfig::OutputConfig(QWidget *parent)
         qDebug()<<"org.ukui.session.required-components not installed"<<endl;        
     }
 
-    QFile QssFile("://combox.qss");
-    QssFile.open(QFile::ReadOnly);
+//    QFile QssFile("://combox.qss");
+//    QssFile.open(QFile::ReadOnly);
 
-    if (QssFile.isOpen()){
-        qss = QLatin1String(QssFile.readAll());
-        QssFile.close();
-    }
-    itemDelege = new QStyledItemDelegate();
+//    if (QssFile.isOpen()){
+//        qss = QLatin1String(QssFile.readAll());
+//        QssFile.close();
+//    }
+//    itemDelege = new QStyledItemDelegate();
 
 }
 
@@ -335,7 +335,7 @@ int OutputConfig::getScreenScale() {
         return 1;
     }
 
-    int scale  = m_gsettings->get(GDK_SCALE_KEY).toBool();
+    int scale  = m_gsettings->get(GDK_SCALE_KEY).toInt();
     qDebug()<<"key is------->"<<scale<<endl;
     return scale;
 }
