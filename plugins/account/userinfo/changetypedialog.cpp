@@ -44,6 +44,7 @@ ChangeTypeDialog::ChangeTypeDialog(QWidget *parent) :
 //    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
 
 
+
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
 
 
@@ -144,6 +145,5 @@ void ChangeTypeDialog::paintEvent(QPaintEvent *event) {
     p.save();
     p.fillPath(rectPath,palette().color(QPalette::Base));
     p.restore();
-
 }
 

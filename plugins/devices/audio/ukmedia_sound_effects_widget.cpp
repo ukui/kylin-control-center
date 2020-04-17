@@ -1,3 +1,22 @@
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ *
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
 #include "ukmedia_sound_effects_widget.h"
 #include <QHBoxLayout>
 #include <QFile>
@@ -17,12 +36,11 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pThemeWidget->setFrameShape(QFrame::Shape::Box);
     m_pShutDownWidget->setFrameShape(QFrame::Shape::Box);
     m_pLagoutWidget->setFrameShape(QFrame::Shape::Box);
-
     m_pSoundEffectLabel = new QLabel(tr("System sound"),this);
     m_pSoundEffectLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     m_pSoundThemeLabel = new QLabel(tr("System sound theme"),m_pThemeWidget);
     m_pSoundThemeCombobox = new QComboBox(m_pThemeWidget);
-    m_pShutdownlabel = new QLabel(tr("Shutdown"),m_pShutDownWidget);
+    m_pShutdownlabel = new QLabel(tr("prompt voice"),m_pShutDownWidget);
     m_pShutdownCombobox = new QComboBox(m_pShutDownWidget);
     m_pLagoutLabel = new QLabel(tr("Lagout"),m_pLagoutWidget);
     m_pLagoutCombobox = new QComboBox(m_pLagoutWidget);
@@ -41,8 +59,6 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
 //    if (!ok)
 //        qDebug() << "加载失败";
 
-//    qApp->setStyleSheet(qss.readAll());
-//    qss.close();
     //设置大小
     m_pThemeWidget->setMinimumSize(550,50);
     m_pThemeWidget->setMaximumSize(960,50);
@@ -94,7 +110,7 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     lagoutLayout->setSpacing(0);
     m_pLagoutWidget->setLayout(lagoutLayout);
     m_pLagoutWidget->layout()->setContentsMargins(0,0,0,0);
-
+    m_pLagoutWidget->setVisible(false);
     //进行整体布局
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     vLayout->addWidget(m_pSoundEffectLabel);
@@ -102,7 +118,7 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     vLayout->addWidget(m_pThemeWidget);
     vLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     vLayout->addWidget(m_pShutDownWidget);
-    vLayout->addWidget(m_pLagoutWidget);
+//    vLayout->addWidget(m_pLagoutWidget);
     this->setLayout(vLayout);
 //    vLayout->setSpacing(0);
     this->layout()->setContentsMargins(0,0,0,0);

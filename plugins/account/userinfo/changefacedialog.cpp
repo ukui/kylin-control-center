@@ -35,7 +35,7 @@ ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-    setAttribute(Qt::WA_TranslucentBackground);
+//    setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
@@ -45,6 +45,7 @@ ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
 
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
 //    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
+
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
 
@@ -169,7 +170,6 @@ void ChangeFaceDialog::paintEvent(QPaintEvent *event) {
     // 模糊这个黑底
     QImage img = pixmap.toImage();
     qt_blurImage(img, 10, false, false);
-
     // 挖掉中心
     pixmap = QPixmap::fromImage(img);
     QPainter pixmapPainter2(&pixmap);
@@ -181,11 +181,9 @@ void ChangeFaceDialog::paintEvent(QPaintEvent *event) {
 
     // 绘制阴影
     p.drawPixmap(this->rect(), pixmap, pixmap.rect());
-
     // 绘制一个背景
     p.save();
     p.fillPath(rectPath,palette().color(QPalette::Base));
+
     p.restore();
-
-
 }

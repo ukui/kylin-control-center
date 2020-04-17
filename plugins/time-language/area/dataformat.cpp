@@ -18,7 +18,7 @@ DataFormat::DataFormat(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-    setAttribute(Qt::WA_TranslucentBackground);
+//    setAttribute(Qt::WA_TranslucentBackground);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->closeBtn->setProperty("useIconHighlightEffect", true);
@@ -37,6 +37,8 @@ DataFormat::DataFormat(QWidget *parent) :
 //        qss = QLatin1String(QssFile.readAll());
 //        QssFile.close();
 //    }
+
+    locale = QLocale::system().name();
 
     locale = QLocale::system().name();
 
@@ -268,6 +270,7 @@ void DataFormat::paintEvent(QPaintEvent *event) {
     QImage img = pixmap.toImage();
     qt_blurImage(img, 10, false, false);
 
+
     // 挖掉中心
     pixmap = QPixmap::fromImage(img);
     QPainter pixmapPainter2(&pixmap);
@@ -279,7 +282,6 @@ void DataFormat::paintEvent(QPaintEvent *event) {
 
     // 绘制阴影
     p.drawPixmap(this->rect(), pixmap, pixmap.rect());
-
     // 绘制一个背景
     p.save();
     p.fillPath(rectPath,palette().color(QPalette::Base));

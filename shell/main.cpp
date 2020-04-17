@@ -89,6 +89,7 @@ int main(int argc, char *argv[])
         QCommandLineOption desktopRoleOption("d", "Go to desktop settings page");
         QCommandLineOption audioRoleOption("s", "Go to audio settings page");
         QCommandLineOption noticeRoleOption("n", "Go to notice settings page");
+
 //        QCommandLineOption powerRoleOption(QStringList() << "aaa" << "bbb", "ccccccccccccccccc");
 
 //        parser.setApplicationDescription("eeeeeeeeeeeee");
@@ -103,6 +104,7 @@ int main(int argc, char *argv[])
         parser.addOption(desktopRoleOption);
         parser.addOption(audioRoleOption);
         parser.addOption(noticeRoleOption);
+
 //        parser.addPositionalArgument("ffff", "ggggggggggggggggggg");
         parser.process(a);
 

@@ -94,7 +94,6 @@ void AppDetail::paintEvent(QPaintEvent *event) {
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
     rectPath.addRoundedRect(this->rect().adjusted(10, 10, -10, -10), 6, 6);
-
     // 画一个黑底
     QPixmap pixmap(this->rect().size());
     pixmap.fill(Qt::transparent);
@@ -102,12 +101,14 @@ void AppDetail::paintEvent(QPaintEvent *event) {
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
     pixmapPainter.setBrush(Qt::black);
+
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 
     // 模糊这个黑底
     QImage img = pixmap.toImage();
     qt_blurImage(img, 10, false, false);
+
 
     // 挖掉中心
     pixmap = QPixmap::fromImage(img);
@@ -125,6 +126,7 @@ void AppDetail::paintEvent(QPaintEvent *event) {
     p.save();
     p.fillPath(rectPath,palette().color(QPalette::Base));
     p.restore();
+
 }
 
 //void AppDetail::initGSettings() {

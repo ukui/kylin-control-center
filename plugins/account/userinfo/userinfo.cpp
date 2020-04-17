@@ -608,13 +608,8 @@ void UserInfo::changeUserFace(QString facefile, QString username){
     UserInfomation user = (UserInfomation)(allUserInfoMap.find(username).value());
 
     UserDispatcher * userdispatcher  = new UserDispatcher(user.objpath);
-    userdispatcher->change_user_face(facefile);
-
-    //重新获取全部用户QMap
-    _acquireAllUsersInfo();
-
-    //更新界面显示
-    _refreshUserInfoUI();
+//    userdispatcher->change_user_face(facefile);
+    userdispatcher->change_user_face(QString("/home/%1/.face").arg(user.username));
 
     //拷贝设置的头像文件到~/.face
     sysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
@@ -630,6 +625,13 @@ void UserInfo::changeUserFace(QString facefile, QString username){
     QString cmd = QString("cp %1 /home/%2/.face").arg(facefile).arg(user.username);
 
     QDBusReply<QString> reply =  sysinterface->call("systemRun", QVariant(cmd));
+
+
+    //重新获取全部用户QMap
+    _acquireAllUsersInfo();
+
+    //更新界面显示
+    _refreshUserInfoUI();
 
     Q_UNUSED(reply)
 }

@@ -263,7 +263,6 @@ void CreateUserDialog::paintEvent(QPaintEvent *event) {
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
     rectPath.addRoundedRect(this->rect().adjusted(10, 10, -10, -10), 6, 6);
-
     // 画一个黑底
     QPixmap pixmap(this->rect().size());
     pixmap.fill(Qt::transparent);
@@ -296,7 +295,6 @@ void CreateUserDialog::paintEvent(QPaintEvent *event) {
     p.restore();
 
 }
-
 
 void CreateUserDialog::keyPressEvent(QKeyEvent *event)
 {

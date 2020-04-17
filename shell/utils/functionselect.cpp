@@ -138,6 +138,8 @@ void FunctionSelect::initValue(){
 
     accountList[USERINFO].nameString = QString("Userinfo");
     accountList[USERINFO].namei18nString = QObject::tr("Userinfo");
+    accountList[NETWORKACCOUNT].nameString = QString("NetworkAccount");
+    accountList[NETWORKACCOUNT].namei18nString = QObject::tr("NetworkAccount");
 
     funcinfoList.append(accountList);
 

@@ -30,6 +30,8 @@
 #include "utils/keyvalueconverter.h"
 #include "utils/functionselect.h"
 
+#include <KWindowSystem>
+
 #include <QDebug>
 #include <QMessageBox>
 
@@ -133,7 +135,10 @@ MainWindow::MainWindow(QWidget *parent) :
     //加载插件
     loadPlugins();
 
-    connect(ui->minBtn, SIGNAL(clicked()), this, SLOT(showMinimized()));
+//    connect(ui->minBtn, SIGNAL(clicked()), this, SLOT(showMinimized()));
+    connect(ui->minBtn, &QPushButton::clicked, [=]{
+        KWindowSystem::minimizeWindow(this->winId());
+    });
     connect(ui->maxBtn, &QPushButton::clicked, this, [=]{
         if (isMaximized()){
             showNormal();

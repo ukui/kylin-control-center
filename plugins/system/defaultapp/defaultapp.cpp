@@ -117,21 +117,24 @@ void DefaultApp::initUI(){
     QString currentbrowser(getDefaultAppId(BROWSERTYPE)); //获取当前
 
     AppList * list = getAppIdList(BROWSERTYPE); //获取可选列表
-    for (int i = 0; list[i].appid != NULL; i++){
-        QString single(list[i].appid);
-        QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
-        GDesktopAppInfo * browserinfo = g_desktop_app_info_new_from_filename(ba.constData());
-        QString appname = g_app_info_get_name(G_APP_INFO(browserinfo));
-//        qDebug() << appname ;
-        const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(browserinfo)));
-        QIcon appicon;
-        if (QIcon::hasThemeIcon(QString(iconname)))
-            appicon = QIcon::fromTheme(QString(iconname));
+    if (list){
+        for (int i = 0; list[i].appid != NULL; i++){
+            QString single(list[i].appid);
+            QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
+            GDesktopAppInfo * browserinfo = g_desktop_app_info_new_from_filename(ba.constData());
+            QString appname = g_app_info_get_name(G_APP_INFO(browserinfo));
+            //        qDebug() << appname ;
+            const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(browserinfo)));
+            QIcon appicon;
+            if (QIcon::hasThemeIcon(QString(iconname)))
+                appicon = QIcon::fromTheme(QString(iconname));
 
-        ui->browserComBoBox->addItem(appicon, appname, single);
-        if (currentbrowser == single)
-            browserindex = i;
-        free(list[i].appid);
+            ui->browserComBoBox->addItem(appicon, appname, single);
+            if (currentbrowser == single)
+                browserindex = i;
+            free(list[i].appid);
+        }
+        free(list);
     }
 //    ui->browserComBoBox->addItem("add", "add");
     ui->browserComBoBox->setCurrentIndex(browserindex);
@@ -143,20 +146,23 @@ void DefaultApp::initUI(){
     QString currentmail(getDefaultAppId(MAILTYPE));
 
     AppList * maillist = getAppIdList(MAILTYPE);
-    for (int i = 0; maillist[i].appid != NULL; i++){
-        QString single(maillist[i].appid);
-        QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
-        GDesktopAppInfo * mailinfo = g_desktop_app_info_new_from_filename(ba.constData());
-        QString appname = g_app_info_get_name(G_APP_INFO(mailinfo));
-        const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(mailinfo)));
-        QIcon appicon;
-        if (QIcon::hasThemeIcon(QString(iconname)))
-            appicon = QIcon::fromTheme(QString(iconname));
+    if (maillist){
+        for (int i = 0; maillist[i].appid != NULL; i++){
+            QString single(maillist[i].appid);
+            QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
+            GDesktopAppInfo * mailinfo = g_desktop_app_info_new_from_filename(ba.constData());
+            QString appname = g_app_info_get_name(G_APP_INFO(mailinfo));
+            const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(mailinfo)));
+            QIcon appicon;
+            if (QIcon::hasThemeIcon(QString(iconname)))
+                appicon = QIcon::fromTheme(QString(iconname));
 
-        ui->mailComBoBox->addItem(appicon, appname, single);
-        if (currentmail == single)
-            mailindex = i;
-        free(maillist[i].appid);
+            ui->mailComBoBox->addItem(appicon, appname, single);
+            if (currentmail == single)
+                mailindex = i;
+            free(maillist[i].appid);
+        }
+        free(maillist);
     }
     ui->mailComBoBox->setCurrentIndex(mailindex);
 
@@ -167,20 +173,23 @@ void DefaultApp::initUI(){
     QString currentimage(getDefaultAppId(IMAGETYPE));
 
     AppList * imagelist = getAppIdList(IMAGETYPE);
-    for (int i = 0; imagelist[i].appid != NULL; i++){
-        QString single(imagelist[i].appid);
-        QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
-        GDesktopAppInfo * imageinfo = g_desktop_app_info_new_from_filename(ba.constData());
-        QString appname = g_app_info_get_name(G_APP_INFO(imageinfo));
-        const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(imageinfo)));
-        QIcon appicon;
-        if (QIcon::hasThemeIcon(QString(iconname)))
-            appicon = QIcon::fromTheme(QString(iconname));
+    if (imagelist){
+        for (int i = 0; imagelist[i].appid != NULL; i++){
+            QString single(imagelist[i].appid);
+            QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
+            GDesktopAppInfo * imageinfo = g_desktop_app_info_new_from_filename(ba.constData());
+            QString appname = g_app_info_get_name(G_APP_INFO(imageinfo));
+            const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(imageinfo)));
+            QIcon appicon;
+            if (QIcon::hasThemeIcon(QString(iconname)))
+                appicon = QIcon::fromTheme(QString(iconname));
 
-        ui->imageComBoBox->addItem(appicon, appname, single);
-        if (currentimage == single)
-            imageindex = i;
-        free(imagelist[i].appid);
+            ui->imageComBoBox->addItem(appicon, appname, single);
+            if (currentimage == single)
+                imageindex = i;
+            free(imagelist[i].appid);
+        }
+        free(imagelist);
     }
     ui->imageComBoBox->setCurrentIndex(imageindex);
 
@@ -191,20 +200,23 @@ void DefaultApp::initUI(){
     QString currentaudio(getDefaultAppId(AUDIOTYPE));
 
     AppList * audiolist = getAppIdList(AUDIOTYPE);
-    for (int i = 0; audiolist[i].appid != NULL; i++){
-        QString single(audiolist[i].appid);
-        QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
-        GDesktopAppInfo * audioinfo = g_desktop_app_info_new_from_filename(ba.constData());
-        QString appname = g_app_info_get_name(G_APP_INFO(audioinfo));
-        const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(audioinfo)));
-        QIcon appicon;
-        if (QIcon::hasThemeIcon(QString(iconname)))
-            appicon = QIcon::fromTheme(QString(iconname));
+    if (audiolist){
+        for (int i = 0; audiolist[i].appid != NULL; i++){
+            QString single(audiolist[i].appid);
+            QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
+            GDesktopAppInfo * audioinfo = g_desktop_app_info_new_from_filename(ba.constData());
+            QString appname = g_app_info_get_name(G_APP_INFO(audioinfo));
+            const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(audioinfo)));
+            QIcon appicon;
+            if (QIcon::hasThemeIcon(QString(iconname)))
+                appicon = QIcon::fromTheme(QString(iconname));
 
-        ui->audioComBoBox->addItem(appicon, appname, single);
-        if (currentaudio == single)
-            audioindex = i;
-        free(audiolist[i].appid);
+            ui->audioComBoBox->addItem(appicon, appname, single);
+            if (currentaudio == single)
+                audioindex = i;
+            free(audiolist[i].appid);
+        }
+        free(audiolist);
     }
     ui->audioComBoBox->setCurrentIndex(audioindex);
 
@@ -215,20 +227,23 @@ void DefaultApp::initUI(){
     QString currentvideo(getDefaultAppId(VIDEOTYPE));
 
     AppList * videolist = getAppIdList(VIDEOTYPE);
-    for (int i = 0; videolist[i].appid != NULL; i++){
-        QString single(videolist[i].appid);
-        QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
-        GDesktopAppInfo * videoinfo = g_desktop_app_info_new_from_filename(ba.constData());
-        QString appname = g_app_info_get_name(G_APP_INFO(videoinfo));
-        const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(videoinfo)));
-        QIcon appicon;
-        if (QIcon::hasThemeIcon(QString(iconname)))
-            appicon = QIcon::fromTheme(QString(iconname));
+    if (videolist){
+        for (int i = 0; videolist[i].appid != NULL; i++){
+            QString single(videolist[i].appid);
+            QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
+            GDesktopAppInfo * videoinfo = g_desktop_app_info_new_from_filename(ba.constData());
+            QString appname = g_app_info_get_name(G_APP_INFO(videoinfo));
+            const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(videoinfo)));
+            QIcon appicon;
+            if (QIcon::hasThemeIcon(QString(iconname)))
+                appicon = QIcon::fromTheme(QString(iconname));
 
-        ui->videoComBoBox->addItem(appicon, appname, single);
-        if (currentvideo == single)
-            videoindex = i;
-        free(videolist[i].appid);
+            ui->videoComBoBox->addItem(appicon, appname, single);
+            if (currentvideo == single)
+                videoindex = i;
+            free(videolist[i].appid);
+        }
+        free(videolist);
     }
     ui->videoComBoBox->setCurrentIndex(videoindex);
 
@@ -239,26 +254,27 @@ void DefaultApp::initUI(){
     QString currenttext(getDefaultAppId(TEXTTYPE));
 
     AppList * textlist = getAppIdList(TEXTTYPE);
-    for (int i = 0; textlist[i].appid != NULL; i++){
-        QString single(textlist[i].appid);
-        QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
-        GDesktopAppInfo * textinfo = g_desktop_app_info_new_from_filename(ba.constData());
-        QString appname = g_app_info_get_name(G_APP_INFO(textinfo));
-        const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(textinfo)));
-        QIcon appicon;
-        if (QIcon::hasThemeIcon(QString(iconname)))
-            appicon = QIcon::fromTheme(QString(iconname));
+    if (textlist){
+        for (int i = 0; textlist[i].appid != NULL; i++){
+            QString single(textlist[i].appid);
+            QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
+            GDesktopAppInfo * textinfo = g_desktop_app_info_new_from_filename(ba.constData());
+            QString appname = g_app_info_get_name(G_APP_INFO(textinfo));
+            const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(textinfo)));
+            QIcon appicon;
+            if (QIcon::hasThemeIcon(QString(iconname)))
+                appicon = QIcon::fromTheme(QString(iconname));
 
-        ui->textComBoBox->addItem(appicon, appname, single);
-        if (currenttext == single)
-            textindex = i;
-        free(textlist[i].appid);
+            ui->textComBoBox->addItem(appicon, appname, single);
+            if (currenttext == single)
+                textindex = i;
+            free(textlist[i].appid);
+        }
+        free(textlist);
     }
     ui->textComBoBox->setCurrentIndex(textindex);
 
     connect(ui->textComBoBox, SIGNAL(currentIndexChanged(int)), this, SLOT(textComBoBox_changed_cb(int)));
-
-    free(list); free(imagelist); free(maillist); free(videolist); free(audiolist); free(textlist);
 }
 
 void DefaultApp::browserComBoBox_changed_cb(int index){

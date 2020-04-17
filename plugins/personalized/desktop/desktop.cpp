@@ -80,6 +80,22 @@ Desktop::Desktop()
     ui->deskVolumeFrame->setVisible(false);
     ui->deskNetworkFrame->setVisible(false);
 
+//    ui->trayWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    ui->trayWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    ui->titleLabel->setVisible(false);
+//    ui->title2Label->setVisible(false);
+
+    ui->deskComputerFrame->setVisible(false);
+    ui->deskTrashFrame->setVisible(false);
+    ui->deskHomeFrame->setVisible(false);
+    ui->deskVolumeFrame->setVisible(false);
+    ui->deskNetworkFrame->setVisible(false);
+
+//    ui->menuComputerFrame->setVisible(false);
+//    ui->menuTrashFrame->setVisible(false);
+//    ui->menuFilesystemFrame->setVisible(false);
+//    ui->menuSettingFrame->setVisible(false);
 
 //    ui->menuComputerFrame->setVisible(false);
 //    ui->menuTrashFrame->setVisible(false);
@@ -311,6 +327,7 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     devFrame->setLayout(devHorLayout);
 
     baseVerLayout->addWidget(devFrame);
+
     baseVerLayout->addStretch();
 
     baseWidget->setLayout(baseVerLayout);
@@ -320,6 +337,7 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
 
 //    ui->trayListWidget->setItemWidget(item, baseWidget);
     ui->trayVBoxLayout->addWidget(baseWidget);
+
 
     QString status = gsettings->get(TRAY_ACTION_KEY).toString();
     if ("tray" == status) {

@@ -131,6 +131,8 @@
         <file>plugins/netconnect/nonet.png</file>
         <file>secondaryleftmenu/AboutWhite.png</file>
         <file>secondaryleftmenu/About.png</file>
+        <file>secondaryleftmenu/NetworkAccountWhite.png</file>
+        <file>secondaryleftmenu/NetworkAccount.png</file>
     </qresource>
     <qresource prefix="/">
         <file>i18n/zh_CN.qm</file>
