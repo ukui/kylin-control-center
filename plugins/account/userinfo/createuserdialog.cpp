@@ -36,6 +36,7 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
     ui(new Ui::CreateUserDialog),
     usersStringList(userlist)
 {
+//    installEventFilter(this);
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
@@ -295,6 +296,19 @@ void CreateUserDialog::paintEvent(QPaintEvent *event) {
     p.restore();
 
 }
+
+
+void CreateUserDialog::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return ) {
+        if( ui->confirmBtn->isEnabled()) {
+            ui->confirmBtn->click();
+        }
+        return;
+    }
+    QDialog::keyPressEvent(event);
+}
+
 
 void CreateUserDialog::nameLegalityCheck(QString username){
     if (username.isEmpty())

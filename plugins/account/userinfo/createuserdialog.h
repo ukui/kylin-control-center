@@ -24,6 +24,7 @@
 #include <QProcess>
 #include <QPainter>
 
+#include <QKeyEvent>
 #include <QFile>
 #include <QStyledItemDelegate>
 
@@ -50,6 +51,8 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *);
+    void keyPressEvent(QKeyEvent *);
+
 
 
 private:
