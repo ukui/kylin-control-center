@@ -269,10 +269,17 @@ void UserInfo::initComponent(){
     connect(autoLoginSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
         UserInfomation user = allUserInfoMap.value(g_get_user_name());
 
+
         UserDispatcher * userdispatcher  = new UserDispatcher(user.objpath);
 
-        userdispatcher->change_user_autologin(checked);
 
+        bool status = userdispatcher->get_autoLogin_status();
+        qDebug()<<"the status and checked is---->"<<status <<" "<<checked<<endl;
+        if ((checked != status)) {
+            userdispatcher->change_user_autologin(checked);
+        }
+        bool lstStatus = userdispatcher->get_autoLogin_status();
+        autoLoginSwitchBtn->setChecked(lstStatus);
     });
 
     //成功删除用户的回调

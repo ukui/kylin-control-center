@@ -54,9 +54,11 @@ public:
     void change_user_type(int atype);
     void change_user_face(QString facefile);
     void change_user_autologin(bool status);
+    bool get_autoLogin_status();
 
 private:
     QDBusInterface * useriface;
+    QDBusInterface * userPropert;
 
     UserInfo * pUserInfo;
 

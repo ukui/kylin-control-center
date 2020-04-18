@@ -30,6 +30,12 @@ UserDispatcher::UserDispatcher(QString objpath, QObject *parent) :
                                      "org.freedesktop.Accounts.User",
                                      QDBusConnection::systemBus());
     pUserInfo = (UserInfo *)QObject::parent();
+
+
+    userPropert = new QDBusInterface("org.freedesktop.Accounts",
+                                     objpath,
+                                     "org.freedesktop.DBus.Properties",
+                                     QDBusConnection::systemBus());
 }
 
 UserDispatcher::~UserDispatcher()
@@ -90,4 +96,10 @@ void UserDispatcher::change_user_face(QString facefile){
 
 void UserDispatcher::change_user_autologin(bool status){
     useriface->call("SetAutomaticLogin", QVariant(status));
+}
+
+bool UserDispatcher::get_autoLogin_status() {
+    QDBusReply<QVariant> reply = userPropert->call("Get", "org.freedesktop.Accounts.User", "AutomaticLogin");
+//    qDebug()<<"the status is------>"<<reply.value().toBool()<<endl;
+    return reply.value().toBool();
 }
