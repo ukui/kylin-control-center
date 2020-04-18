@@ -68,6 +68,7 @@ private:
     SwitchButton * flashingBtn;
 
     QGSettings * settings;
+    QGSettings * sesstionSetttings;
 
     QString leftStr;
     QString rightStr;
