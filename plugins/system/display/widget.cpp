@@ -1259,7 +1259,7 @@ void Widget::initConfigFile() {
 
     QString optime = m_qsettings->value("dusk-time", "").toString();
     QString cltime = m_qsettings->value("dawn-time", "").toString();
-    QString temptValue = m_qsettings->value("temp-day", "").toString();
+    QString temptValue = m_qsettings->value("temp-night", "").toString();
 
     if ("" != optime){
         QString ophour = optime.split(":").at(0);
