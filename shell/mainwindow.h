@@ -56,7 +56,7 @@ public:
     void bootOptionsSwitch(int moduleNum, int funcNum);
 
 protected:
-//    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent *);
 
 private:
     Ui::MainWindow *ui;

@@ -47,6 +47,7 @@ extern "C" {
 #include <gio/gio.h>
 }
 
+extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -268,42 +269,45 @@ void MainWindow::bootOptionsSwitch(int moduleNum, int funcNum){
     }
 }
 
-//void MainWindow::paintEvent(QPaintEvent *event) {
-//    QPainter p(this);
-//    p.setRenderHint(QPainter::Antialiasing);
-//    QPainterPath rectPath;
-//    rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 5, 5);
-//    // 画一个黑底
-//    QPixmap pixmap(this->rect().size());
-//    pixmap.fill(Qt::transparent);
-//    QPainter pixmapPainter(&pixmap);
-//    pixmapPainter.setRenderHint(QPainter::Antialiasing);
-//    pixmapPainter.setPen(Qt::transparent);
-//    pixmapPainter.setBrush(Qt::green);
-//    pixmapPainter.drawPath(rectPath);
-//    pixmapPainter.end();
+void MainWindow::paintEvent(QPaintEvent *event) {
+    Q_UNUSED(event);
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+    QPainterPath rectPath;
+    rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 6, 6);
 
-//    // 模糊这个黑底
-//    QImage img = pixmap.toImage();
-////    qt_blurImage(img, 10, false, false);
+    // 画一个黑底
+    QPixmap pixmap(this->rect().size());
+    pixmap.fill(Qt::transparent);
+    QPainter pixmapPainter(&pixmap);
+    pixmapPainter.setRenderHint(QPainter::Antialiasing);
+    pixmapPainter.setPen(Qt::transparent);
+    pixmapPainter.setBrush(Qt::black);
+    pixmapPainter.drawPath(rectPath);
+    pixmapPainter.end();
 
-//    // 挖掉中心
-//    pixmap = QPixmap::fromImage(img);
-//    QPainter pixmapPainter2(&pixmap);
-//    pixmapPainter2.setRenderHint(QPainter::Antialiasing);
-//    pixmapPainter2.setCompositionMode(QPainter::CompositionMode_Clear);
-//    pixmapPainter2.setPen(Qt::transparent);
-//    pixmapPainter2.setBrush(Qt::transparent);
-//    pixmapPainter2.drawPath(rectPath);
+    // 模糊这个黑底
+    QImage img = pixmap.toImage();
+    qt_blurImage(img, 5, false, false);
 
-//    // 绘制阴影
-//    p.drawPixmap(this->rect(), pixmap, pixmap.rect());
+    // 挖掉中心
+    pixmap = QPixmap::fromImage(img);
+    QPainter pixmapPainter2(&pixmap);
+    pixmapPainter2.setRenderHint(QPainter::Antialiasing);
+    pixmapPainter2.setCompositionMode(QPainter::CompositionMode_Clear);
+    pixmapPainter2.setPen(Qt::transparent);
+    pixmapPainter2.setBrush(Qt::transparent);
+    pixmapPainter2.drawPath(rectPath);
 
-//    // 绘制一个背景
-//    p.save();
-//    p.fillPath(rectPath, QColor(255, 255, 255));
-//    p.restore();
-//}
+    // 绘制阴影
+    p.drawPixmap(this->rect(), pixmap, pixmap.rect());
+
+    // 绘制一个背景
+    p.save();
+    p.fillPath(rectPath,palette().color(QPalette::Base));
+//    p.fillPath(rectPath,QColor(0,0,0));
+    p.restore();
+}
 
 void MainWindow::setBtnLayout(QPushButton * &pBtn){
     QLabel * imgLabel = new QLabel(pBtn);
