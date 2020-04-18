@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QDebug>
 #include <QLabel>
+#include <QFrame>
 #include <QHBoxLayout>
 #include "ql_swichbutton.h"
 
@@ -23,7 +24,7 @@ public:
 private:
     QLabel          *label_item;
     QHBoxLayout     *layout;
-    QWidget         *widget;
+    QFrame         *widget;
     int             on;
     QL_SwichButton  *switch_btn;
 signals:

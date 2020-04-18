@@ -195,7 +195,7 @@ void config_list_widget::init_gui() {
 
     pm_step = new QMovie(":/new/image/sign-in.gif");
 
-    exit_page->setStyleSheet(qss_btn_str);
+//    exit_page->setStyleSheet(qss_btn_str);
 
     login->setProperty("objectName","login");  //give object a name
     login->setStyleSheet("QPushButton#login[is_on=false]{font-size:14px;background-color: #3D6BE5;border-radius: 4px;color:#FFFFFF;}"
