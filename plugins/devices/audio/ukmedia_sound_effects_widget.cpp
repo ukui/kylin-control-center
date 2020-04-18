@@ -45,20 +45,6 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pLagoutLabel = new QLabel(tr("Lagout"),m_pLagoutWidget);
     m_pLagoutCombobox = new QComboBox(m_pLagoutWidget);
 
-//    QFile QssFile("://combox.qss");
-//    QFile QssFile("://combox.qss");
-//    QssFile.open(QFile::ReadOnly)
-//    if (QssFile.isOpen()){
-//        qss = QLatin1String(QssFile.readAll());
-//        QssFile.close();
-//    } else {
-//        qDebug()<<"combox.qss can not found"<<endl;
-//    }
-//    itemDelegate = new QStyledItemDelegate();
-//    bool ok = qss.open(QFile::ReadOnly);
-//    if (!ok)
-//        qDebug() << "加载失败";
-
     //设置大小
     m_pThemeWidget->setMinimumSize(550,50);
     m_pThemeWidget->setMaximumSize(960,50);

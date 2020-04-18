@@ -29,6 +29,7 @@
 #include <QPushButton>
 #include <QCoreApplication>
 #include <QVBoxLayout>
+#include "ukui_custom_style.h"
 
 class AudioSlider : public QSlider
 {
@@ -72,7 +73,7 @@ private:
     QLabel *m_pOutputDeviceLabel;
     QComboBox *m_pOutputDeviceCombobox;
     QLabel *m_pOpVolumeLabel;
-    QPushButton *m_pOutputIconBtn;
+    UkuiButtonDrawSvg *m_pOutputIconBtn;
     AudioSlider *m_pOpVolumeSlider;
     QLabel *m_pOpVolumePercentLabel;
     QLabel *m_pOpBalanceLabel;

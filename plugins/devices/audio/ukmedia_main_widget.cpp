@@ -28,7 +28,8 @@
 #include <QSpacerItem>
 #include <QListView>
 #include <QScrollBar>
-
+#include <QGSettings>
+#include <qmath.h>
 #define MATE_DESKTOP_USE_UNSTABLE_API
 #define VERSION "1.12.1"
 #define GVC_DIALOG_DBUS_NAME "org.mate.VolumeControl"
@@ -59,6 +60,7 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     m_pInputWidget = new UkmediaInputWidget();
     m_pSoundWidget = new UkmediaSoundEffectsWidget();
 
+    mThemeName = UKUI_THEME_WHITE;
     QVBoxLayout *m_pvLayout = new QVBoxLayout();
     m_pvLayout->addWidget(m_pOutputWidget);
     m_pvLayout->addWidget(m_pInputWidget);
@@ -141,6 +143,15 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     //报警声音,从指定路径获取报警声音文件
     populateModelFromDir(this,SOUND_SET_DIR);
 
+    //检测系统主题
+    if(QGSettings::isSchemaInstalled(UKUI_THEME_SETTING)){
+        m_pThemeSetting = new QGSettings(UKUI_THEME_SETTING);
+    }
+
+    if (m_pThemeSetting->keys().contains("styleName")) {
+        mThemeName = m_pThemeSetting->get(UKUI_THEME_NAME).toString();
+    }
+    connect(m_pThemeSetting, SIGNAL(changed(const QString &)),this,SLOT(ukuiThemeChangedSlot(const QString &)));
     //输出音量控制
     //输出滑动条音量控制
     connect(m_pOutputWidget->m_pOpVolumeSlider,SIGNAL(valueChanged(int)),this,SLOT(outputWidgetSliderChangedSlot(int)));
@@ -154,6 +165,21 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     connect(m_pInputWidget->m_pInputLevelSlider,SIGNAL(valueChanged(int)),this,SLOT(inputLevelValueChangedSlot()));
     //输入等级
     ukuiInputLevelSetProperty(this);
+}
+
+
+/*
+    系统主题更改
+*/
+void UkmediaMainWidget::ukuiThemeChangedSlot(const QString &themeStr)
+{
+    if (m_pThemeSetting->keys().contains("styleName")) {
+        mThemeName = m_pThemeSetting->get(UKUI_THEME_NAME).toString();
+    }
+    int nInputValue = getInputVolume();
+    int nOutputValue = getOutputVolume();
+    inputVolumeDarkThemeImage(nInputValue);
+    outputVolumeDarkThemeIamge(nOutputValue);
 }
 
 /*
@@ -694,6 +720,87 @@ void UkmediaMainWidget::contextSetProperty(UkmediaMainWidget *m_pWidget)//,guint
 }
 
 /*
+    获取输入音量值
+*/
+int UkmediaMainWidget::getInputVolume()
+{
+    return m_pInputWidget->m_pIpVolumeSlider->value();
+}
+
+/*
+    获取输出音量值
+*/
+int UkmediaMainWidget::getOutputVolume()
+{
+    return m_pOutputWidget->m_pOpVolumeSlider->value();
+}
+
+/*
+    深色主题时输出音量图标
+*/
+void UkmediaMainWidget::outputVolumeDarkThemeIamge(int value)
+{
+    QImage image;
+    QColor color = QColor(0,0,0,216);
+    if (mThemeName == UKUI_THEME_WHITE) {
+        color = QColor(0,0,0,216);
+    }
+    else if (mThemeName == UKUI_THEME_BLACK) {
+        color = QColor(255,255,255,216);
+    }
+    m_pOutputWidget->m_pOutputIconBtn->mColor = color;
+    if (value <= 0) {
+       image  = QImage("/usr/share/ukui-media/img/audio-volume-mute.svg");
+        m_pOutputWidget->m_pOutputIconBtn->mImage = image;
+    }
+    else if (value > 0 && value <= 33) {
+       image = QImage("/usr/share/ukui-media/img/audio-volume-low.svg");
+        m_pOutputWidget->m_pOutputIconBtn->mImage = image;
+    }
+    else if (value >33 && value <= 66) {
+        image = QImage("/usr/share/ukui-media/img/audio-volume-medium.svg");
+        m_pOutputWidget->m_pOutputIconBtn->mImage = image;
+    }
+    else {
+        image = QImage("/usr/share/ukui-media/img/audio-volume-high.svg");
+        m_pOutputWidget->m_pOutputIconBtn->mImage = image;
+    }
+
+}
+
+/*
+    输入音量图标
+*/
+void UkmediaMainWidget::inputVolumeDarkThemeImage(int value)
+{
+    QImage image;
+    QColor color = QColor(0,0,0,190);
+    if (mThemeName == UKUI_THEME_WHITE) {
+        color = QColor(0,0,0,190);
+    }
+    else if (mThemeName == UKUI_THEME_BLACK) {
+        color = QColor(255,255,255,190);
+    }
+    m_pInputWidget->m_pInputIconBtn->mColor = color;
+    if (value <= 0) {
+       image  = QImage("/usr/share/ukui-media/img/microphone-mute.svg");
+        m_pInputWidget->m_pInputIconBtn->mImage = image;
+    }
+    else if (value > 0 && value <= 33) {
+       image = QImage("/usr/share/ukui-media/img/microphone-low.svg");
+        m_pInputWidget->m_pInputIconBtn->mImage = image;
+    }
+    else if (value >33 && value <= 66) {
+        image = QImage("/usr/share/ukui-media/img/microphone-medium.svg");
+        m_pInputWidget->m_pInputIconBtn->mImage = image;
+    }
+    else {
+        image = QImage("/usr/share/ukui-media/img/microphone-high.svg");
+        m_pInputWidget->m_pInputIconBtn->mImage = image;
+    }
+}
+
+/*
     更新输入音量及图标
 */
 void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
@@ -720,18 +827,8 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
 
     const QSize icon_size = QSize(24,24);
     m_pWidget->m_pInputWidget->m_pInputIconBtn->setIconSize(icon_size);
-    if (value <= 0) {
-        m_pWidget->m_pInputWidget->m_pInputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/microphone-mute.svg"));
-    }
-    else if (value > 0 && value <= 33) {
-        m_pWidget->m_pInputWidget->m_pInputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/microphone-low.svg"));
-    }
-    else if (value >33 && value <= 66) {
-        m_pWidget->m_pInputWidget->m_pInputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/microphone-medium.svg"));
-    }
-    else {
-        m_pWidget->m_pInputWidget->m_pInputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/microphone-high.svg"));
-    }
+    //修改图标为深色主题图标
+    m_pWidget->inputVolumeDarkThemeImage(value);
 
     while (m_pInputs != nullptr) {
         MateMixerStreamControl *input = MATE_MIXER_STREAM_CONTROL (m_pInputs->data);
@@ -769,33 +866,12 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
         m_pInputs = m_pInputs->next;
     }
 
-    if (show == TRUE)
+    if (show == TRUE) {
         g_debug ("Input icon enabled");
-    else
+    }
+    else {
         g_debug ("There is no recording application, input icon disabled");
-
-//    connect(m_pWidget->m_pInputWidget->m_pIpVolumeSlider,&QSlider::valueChanged,[=](int value){
-//        QString percent;
-//        if (value <= 0) {
-//            mate_mixer_stream_control_set_mute(m_pControl,TRUE);
-//            mate_mixer_stream_control_set_volume(m_pControl,0);
-//            percent = QString::number(0);
-//            m_pWidget->m_pInputWidget->m_pInputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/microphone-mute.svg"));
-//        }
-//        else if (value > 0 && value <= 33) {
-//            m_pWidget->m_pInputWidget->m_pInputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/microphone-low.svg"));
-//        }
-//        else if (value >33 && value <= 66) {
-//            m_pWidget->m_pInputWidget->m_pInputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/microphone-medium.svg"));
-//        }
-//        else {
-//            m_pWidget->m_pInputWidget->m_pInputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/microphone-high.svg"));
-//        }
-//        percent = QString::number(value);
-//        mate_mixer_stream_control_set_mute(m_pControl,FALSE);
-//        percent.append("%");
-//        m_pWidget->m_pInputWidget->m_pIpVolumePercentLabel->setText(percent);
-//    });
+    }
     streamStatusIconSetControl(m_pWidget, m_pControl);
 
     if (m_pControl != nullptr) {
@@ -844,19 +920,7 @@ void UkmediaMainWidget::updateIconOutput(UkmediaMainWidget *m_pWidget)
 
     const QSize icon_size = QSize(24,24);
     m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIconSize(icon_size);
-    if (value <= 0) {
-        m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-muted.svg"));
-    }
-    else if (value > 0 && value <= 33) {
-        m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-low.svg"));
-    }
-    else if (value >33 && value <= 66) {
-
-        m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-medium.svg"));
-    }
-    else {
-        m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-high.svg"));
-    }
+    m_pWidget->outputVolumeDarkThemeIamge(value);
 
     //输出音量控制
     //输出滑动条和音量控制
@@ -870,17 +934,8 @@ void UkmediaMainWidget::updateIconOutput(UkmediaMainWidget *m_pWidget)
             mate_mixer_stream_control_set_mute(m_pControl,TRUE);
             mate_mixer_stream_control_set_volume(m_pControl,0);
             percent = QString::number(0);
-            m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-muted.svg"));
         }
-        else if (value > 0 && value <= 33) {
-            m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-low.svg"));
-        }
-        else if (value > 33 && value <= 66) {
-            m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-medium.svg"));
-        }
-        else {
-            m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-high.svg"));
-        }
+        m_pWidget->outputVolumeDarkThemeIamge(value);
         mate_mixer_stream_control_set_mute(m_pControl,FALSE);
         percent.append("%");
         m_pWidget->m_pOutputWidget->m_pOpVolumePercentLabel->setText(percent);
@@ -1047,20 +1102,22 @@ void UkmediaMainWidget::onKeyChanged (GSettings *settings,gchar *key,UkmediaMain
 void UkmediaMainWidget::updateTheme (UkmediaMainWidget *m_pWidget)
 {
     g_debug("update theme");
-    char *m_pThemeName;
+    char *pThemeName;
     gboolean feedBackEnabled;
     gboolean eventsEnabled;
-    feedBackEnabled = g_settings_get_boolean (m_pWidget->m_pSoundSettings, INPUT_SOUNDS_KEY);
+    feedBackEnabled = g_settings_get_boolean(m_pWidget->m_pSoundSettings, INPUT_SOUNDS_KEY);
     eventsEnabled = g_settings_get_boolean(m_pWidget->m_pSoundSettings,EVENT_SOUNDS_KEY);
 
     if (eventsEnabled) {
-        m_pThemeName = g_settings_get_string (m_pWidget->m_pSoundSettings, SOUND_THEME_KEY);
+        pThemeName = g_settings_get_string (m_pWidget->m_pSoundSettings, SOUND_THEME_KEY);
     } else {
-        m_pThemeName = g_strdup (NO_SOUNDS_THEME_NAME);
+        pThemeName = g_strdup (NO_SOUNDS_THEME_NAME);
     }
     //设置combox的主题
-    setComboxForThemeName (m_pWidget, m_pThemeName);
-    updateAlertsFromThemeName (m_pWidget, m_pThemeName);
+
+    qDebug() << "设置主题名为:" <<pThemeName << 1063;
+    setComboxForThemeName (m_pWidget, pThemeName);
+    updateAlertsFromThemeName (m_pWidget, pThemeName);
 }
 
 /*
@@ -1130,6 +1187,7 @@ void UkmediaMainWidget::soundThemeInDir (UkmediaMainWidget *m_pWidget,GHashTable
             continue;
         }
         //设置主题到combox中
+        qDebug() << "sound theme in dir" << "displayname:" << m_pIndexName << "theme name:" << m_pName;
         m_pWidget->m_pThemeDisplayNameList->append(m_pIndexName);
         m_pWidget->m_pThemeNameList->append(m_pName);
         m_pWidget->m_pSoundWidget->m_pSoundThemeCombobox->addItem(m_pIndexName);
@@ -1171,13 +1229,15 @@ char *UkmediaMainWidget::loadIndexThemeName (const char *index,char **parent)
 void UkmediaMainWidget::setComboxForThemeName (UkmediaMainWidget *m_pWidget,const char *name)
 {
     g_debug("set combox for theme name");
+//    qDebug() << "set combox for theme name" << name;
     gboolean      found;
-    static int count = 0;
+    int count = 0;
     /* If the name is empty, use "freedesktop" */
     if (name == nullptr || *name == '\0') {
         name = "freedesktop";
     }
     QString value;
+    int index = -1;
     while(!found) {
         value = m_pWidget->m_pThemeNameList->at(count);
         found = (value != "" && value == name);
@@ -1187,12 +1247,20 @@ void UkmediaMainWidget::setComboxForThemeName (UkmediaMainWidget *m_pWidget,cons
             break;
         }
     }
+    if (m_pWidget->m_pThemeNameList->contains(name)) {
+        index = m_pWidget->m_pThemeNameList->indexOf(name);
+//        if (index == -1) {
+//            return;
+//        }
+        value = m_pWidget->m_pThemeNameList->at(index);
+        m_pWidget->m_pSoundWidget->m_pSoundThemeCombobox->setCurrentIndex(index);
+    }
     /* When we can't find the theme we need to set, try to set the default
      * one "freedesktop" */
-    if (found) {
-        m_pWidget->m_pSoundWidget->m_pSoundThemeCombobox->setCurrentText(value);
-    } else if (strcmp (name, "freedesktop") != 0) {//设置为默认的主题
+/*    if (found) {
+    }*/ else if (strcmp (name, "freedesktop") != 0) {//设置为默认的主题
         g_debug ("not found, falling back to fdo");
+        qDebug() << "设置主题名为:" << "freedesktop" << 1200;
         setComboxForThemeName (m_pWidget, "freedesktop");
     }
 }
@@ -1221,25 +1289,62 @@ void UkmediaMainWidget::updateAlertsFromThemeName (UkmediaMainWidget *m_pWidget,
 /*
     更新报警声音
 */
-void UkmediaMainWidget::updateAlert (UkmediaMainWidget *m_pWidget,const char *alertId)
+void UkmediaMainWidget::updateAlert (UkmediaMainWidget *pWidget,const char *alertId)
 {
     Q_UNUSED(alertId)
     g_debug("update alert");
-    QString theme;
+    QString themeStr;
+    char *theme;
     char *parent;
-    /*gboolean is_custom;
-    gboolean is_default;*/
-    gboolean add_custom;
-    gboolean remove_custom;
+    gboolean      is_custom;
+    gboolean      is_default;
+    gboolean add_custom = false;
+    gboolean remove_custom = false;
+    QString nameStr;
+    int index = -1;
     /* Get the current theme's name, and set the parent */
-    theme = m_pWidget->m_pSoundWidget->m_pSoundThemeCombobox->currentText();
-    /*is_custom = (theme == CUSTOM_THEME_NAME) ;
-    is_default = strcmp (alert_id, DEFAULT_ALERT_ID) == 0;*/
+    index = pWidget->m_pSoundWidget->m_pSoundThemeCombobox->currentIndex();
+    if (index != -1) {
+        themeStr = pWidget->m_pThemeNameList->at(index);
+        nameStr = pWidget->m_pThemeNameList->at(index);
+    }
+    else {
+        themeStr = "freedesktop";
+        nameStr = "freedesktop";
+    }
+    QByteArray ba = nameStr.toLatin1();
+    parent = ba.data();
+//    strcpy(parent,ba.data());
+
+    ba = themeStr.toLatin1();
+    theme = ba.data();
+
+    is_custom = strcmp (theme, CUSTOM_THEME_NAME) == 0;
+    is_default = strcmp (alertId, DEFAULT_ALERT_ID) == 0;
+
+    qDebug() << "namestr:" << nameStr << "themeStr:" << themeStr << "parent:" << parent << "theme:" << theme;
+    qDebug() << "is_custom:" << is_custom << "is_default:" << is_default  << pWidget->m_pThemeNameList->at(index);
+    if (! is_custom && is_default) {
+        /* remove custom just in case */
+        remove_custom = TRUE;
+    } else if (! is_custom && ! is_default) {
+        create_custom_theme (parent);
+        saveAlertSounds(pWidget->m_pSoundWidget->m_pSoundThemeCombobox, alertId);
+        add_custom = TRUE;
+    } else if (is_custom && is_default) {
+        saveAlertSounds(pWidget->m_pSoundWidget->m_pSoundThemeCombobox, alertId);
+        /* after removing files check if it is empty */
+        if (custom_theme_dir_is_empty ()) {
+            remove_custom = TRUE;
+        }
+    } else if (is_custom && ! is_default) {
+        saveAlertSounds(pWidget->m_pSoundWidget->m_pSoundThemeCombobox, alertId);
+    }
 
     if (add_custom) {
-        setComboxForThemeName (m_pWidget, CUSTOM_THEME_NAME);
+        setComboxForThemeName (pWidget, CUSTOM_THEME_NAME);
     } else if (remove_custom) {
-        setComboxForThemeName (m_pWidget, parent);
+        setComboxForThemeName (pWidget, parent);
     }
 }
 
@@ -1474,6 +1579,7 @@ void UkmediaMainWidget::comboxIndexChangedSlot(int index)
     g_debug("combox index changed slot");
     QString sound_name = m_pSoundList->at(index);
     playAlretSoundFromPath(sound_name);
+
 }
 
 /*
@@ -1483,9 +1589,14 @@ void UkmediaMainWidget::themeComboxIndexChangedSlot(int index)
 {
     Q_UNUSED(index);
     g_debug("theme combox index changed slot");
+    if (index == -1) {
+        return;
+    }
     //设置系统主题
-    QString theme = m_pSoundWidget->m_pSoundThemeCombobox->itemText(index);
-    char *m_pThemeName = theme.toLocal8Bit().data();
+    QString theme = m_pThemeNameList->at(index);
+    QByteArray ba = theme.toLatin1();
+    const char *m_pThemeName = ba.data();
+    qDebug() << "index changed:" << index << m_pThemeNameList->at(index) << m_pThemeName;
     g_settings_set_string (m_pSoundSettings, SOUND_THEME_KEY, m_pThemeName);
 
     /* special case for no sounds */
@@ -1694,20 +1805,14 @@ void UkmediaMainWidget::outputWidgetSliderChangedSlot(int value)
         mate_mixer_stream_control_set_mute(m_pControl,TRUE);
         mate_mixer_stream_control_set_volume(m_pControl,0);
         percent = QString::number(0);
-        m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-muted.svg"));
     }
-    else if (value > 0 && value <= 33) {
-        m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-low.svg"));
-    }
-    else if (value > 33 && value <= 66) {
-        m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-medium.svg"));
-    }
-    else {
-        m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-high.svg"));
-    }
+
+    outputVolumeDarkThemeIamge(value);
     mate_mixer_stream_control_set_mute(m_pControl,FALSE);
     percent.append("%");
     m_pOutputWidget->m_pOpVolumePercentLabel->setText(percent);
+    m_pOutputWidget->m_pOutputIconBtn->repaint();
+
 }
 
 /*
@@ -1723,22 +1828,16 @@ void UkmediaMainWidget::inputWidgetSliderChangedSlot(int value)
         mate_mixer_stream_control_set_mute(m_pControl,TRUE);
         mate_mixer_stream_control_set_volume(m_pControl,0);
         percent = QString::number(0);
-        m_pInputWidget->m_pInputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/microphone-mute.svg"));
     }
-    else if (value > 0 && value <= 33) {
-        m_pInputWidget->m_pInputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/microphone-low.svg"));
-    }
-    else if (value >33 && value <= 66) {
-        m_pInputWidget->m_pInputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/microphone-medium.svg"));
-    }
-    else {
-        m_pInputWidget->m_pInputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/microphone-high.svg"));
-    }
+    //输入图标修改成深色主题
+    inputVolumeDarkThemeImage(value);
+
     percent = QString::number(value);
     value = value * 65536 / 100;
     mate_mixer_stream_control_set_mute(m_pControl,FALSE);
     mate_mixer_stream_control_set_volume(m_pControl,value);
     percent.append("%");
+    m_pInputWidget->m_pInputIconBtn->repaint();
     m_pInputWidget->m_pIpVolumePercentLabel->setText(percent);
 }
 
@@ -1868,6 +1967,237 @@ gboolean UkmediaMainWidget::updateDefaultInputStream (UkmediaMainWidget *m_pWidg
 
     /* Return TRUE if the default input stream has changed */
     return TRUE;
+}
+
+gboolean UkmediaMainWidget::saveAlertSounds (QComboBox *combox,const char *id)
+{
+    const char *sounds[3] = { "bell-terminal", "bell-window-system", NULL };
+    char *path;
+
+    if (strcmp (id, DEFAULT_ALERT_ID) == 0) {
+        delete_old_files (sounds);
+        delete_disabled_files (sounds);
+    } else {
+        delete_old_files (sounds);
+        delete_disabled_files (sounds);
+        add_custom_file (sounds, id);
+    }
+
+    /* And poke the directory so the theme gets updated */
+    path = customThemeDirPath(NULL);
+    if (utime (path, NULL) != 0) {
+        g_warning ("Failed to update mtime for directory '%s': %s",
+                   path, g_strerror (errno));
+    }
+    g_free (path);
+
+    return FALSE;
+}
+
+void UkmediaMainWidget::delete_old_files (const char **sounds)
+{
+    guint i;
+    for (i = 0; sounds[i] != NULL; i++) {
+        delete_one_file (sounds[i], "%s.ogg");
+    }
+}
+
+void UkmediaMainWidget::delete_one_file (const char *sound_name, const char *pattern)
+{
+        GFile *file;
+        char *name, *filename;
+
+        name = g_strdup_printf (pattern, sound_name);
+        filename = customThemeDirPath(name);
+        g_free (name);
+        file = g_file_new_for_path (filename);
+        g_free (filename);
+        capplet_file_delete_recursive (file, NULL);
+        g_object_unref (file);
+}
+
+
+void UkmediaMainWidget::delete_disabled_files (const char **sounds)
+{
+    guint i;
+    for (i = 0; sounds[i] != NULL; i++) {
+        delete_one_file (sounds[i], "%s.disabled");
+    }
+}
+
+void UkmediaMainWidget::add_custom_file (const char **sounds, const char *filename)
+{
+    guint i;
+
+    for (i = 0; sounds[i] != NULL; i++) {
+        GFile *file;
+        char *name, *path;
+
+        /* We use *.ogg because it's the first type of file that
+                 * libcanberra looks at */
+        name = g_strdup_printf ("%s.ogg", sounds[i]);
+        path = customThemeDirPath(name);
+        g_free (name);
+        /* In case there's already a link there, delete it */
+        g_unlink (path);
+        file = g_file_new_for_path (path);
+        g_free (path);
+
+        /* Create the link */
+        g_file_make_symbolic_link (file, filename, NULL, NULL);
+        g_object_unref (file);
+    }
+}
+
+/**
+ * capplet_file_delete_recursive :
+ * @file :
+ * @error  :
+ *
+ * A utility routine to delete files and/or directories,
+ * including non-empty directories.
+ **/
+gboolean UkmediaMainWidget::capplet_file_delete_recursive (GFile *file, GError **error)
+{
+    GFileInfo *info;
+    GFileType type;
+
+    g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+    info = g_file_query_info (file,
+                              G_FILE_ATTRIBUTE_STANDARD_TYPE,
+                              G_FILE_QUERY_INFO_NONE,
+                              NULL, error);
+    if (info == NULL) {
+        return FALSE;
+    }
+
+    type = g_file_info_get_file_type (info);
+    g_object_unref (info);
+
+    if (type == G_FILE_TYPE_DIRECTORY) {
+        return directory_delete_recursive (file, error);
+    }
+    else {
+        return g_file_delete (file, NULL, error);
+    }
+}
+
+gboolean UkmediaMainWidget::directory_delete_recursive (GFile *directory, GError **error)
+{
+    GFileEnumerator *enumerator;
+    GFileInfo *info;
+    gboolean success = TRUE;
+
+    enumerator = g_file_enumerate_children (directory,
+                                            G_FILE_ATTRIBUTE_STANDARD_NAME ","
+                                            G_FILE_ATTRIBUTE_STANDARD_TYPE,
+                                            G_FILE_QUERY_INFO_NONE,
+                                            NULL, error);
+    if (enumerator == NULL)
+        return FALSE;
+
+    while (success &&
+           (info = g_file_enumerator_next_file (enumerator, NULL, NULL))) {
+        GFile *child;
+
+        child = g_file_get_child (directory, g_file_info_get_name (info));
+
+        if (g_file_info_get_file_type (info) == G_FILE_TYPE_DIRECTORY) {
+            success = directory_delete_recursive (child, error);
+        }
+        g_object_unref (info);
+
+        if (success)
+            success = g_file_delete (child, NULL, error);
+    }
+    g_file_enumerator_close (enumerator, NULL, NULL);
+
+    if (success)
+        success = g_file_delete (directory, NULL, error);
+
+    return success;
+}
+
+void UkmediaMainWidget::create_custom_theme (const char *parent)
+{
+    GKeyFile *keyfile;
+    char     *data;
+    char     *path;
+
+    /* Create the custom directory */
+    path = customThemeDirPath(NULL);
+    g_mkdir_with_parents (path, 0755);
+    g_free (path);
+
+    /* Set the data for index.theme */
+    keyfile = g_key_file_new ();
+    g_key_file_set_string (keyfile, "Sound Theme", "Name", _("Custom"));
+    g_key_file_set_string (keyfile, "Sound Theme", "Inherits", parent);
+    g_key_file_set_string (keyfile, "Sound Theme", "Directories", ".");
+    data = g_key_file_to_data (keyfile, NULL, NULL);
+    g_key_file_free (keyfile);
+
+    /* Save the index.theme */
+    path = customThemeDirPath ("index.theme");
+    g_file_set_contents (path, data, -1, NULL);
+    g_free (path);
+    g_free (data);
+
+    custom_theme_update_time ();
+}
+
+/* This function needs to be called after each individual
+ * changeset to the theme */
+void UkmediaMainWidget::custom_theme_update_time (void)
+{
+    char *path;
+    path = customThemeDirPath (NULL);
+    utime (path, NULL);
+    g_free (path);
+}
+
+gboolean UkmediaMainWidget::custom_theme_dir_is_empty (void)
+{
+    char            *dir;
+    GFile           *file;
+    gboolean         is_empty;
+    GFileEnumerator *enumerator;
+    GFileInfo       *info;
+    GError          *error = NULL;
+
+    dir = customThemeDirPath(NULL);
+    file = g_file_new_for_path (dir);
+    g_free (dir);
+
+    is_empty = TRUE;
+
+    enumerator = g_file_enumerate_children (file,
+                                            G_FILE_ATTRIBUTE_STANDARD_NAME ","
+                                            G_FILE_ATTRIBUTE_STANDARD_TYPE,
+                                            G_FILE_QUERY_INFO_NONE,
+                                            NULL, &error);
+    if (enumerator == NULL) {
+        g_warning ("Unable to enumerate files: %s", error->message);
+        g_error_free (error);
+        goto out;
+    }
+
+    while (is_empty &&
+           (info = g_file_enumerator_next_file (enumerator, NULL, NULL))) {
+
+        if (strcmp ("index.theme", g_file_info_get_name (info)) != 0) {
+            is_empty = FALSE;
+        }
+
+        g_object_unref (info);
+    }
+    g_file_enumerator_close (enumerator, NULL, NULL);
+
+out:
+    g_object_unref (file);
+
+    return is_empty;
 }
 
 UkmediaMainWidget::~UkmediaMainWidget()

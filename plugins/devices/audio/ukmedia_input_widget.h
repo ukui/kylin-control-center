@@ -27,6 +27,7 @@
 #include "ukmedia_output_widget.h"
 #include <QStyledItemDelegate>
 #include <QFrame>
+#include "ukui_custom_style.h"
 
 class UkmediaInputWidget : public QWidget
 {
@@ -51,13 +52,14 @@ private:
     QLabel *m_pLowLevelLabel;
     QLabel *m_pHighLevelLabel;
     QLabel *m_pIpVolumePercentLabel;
-    QPushButton *m_pInputIconBtn;
+    UkuiButtonDrawSvg *m_pInputIconBtn;
     AudioSlider *m_pIpVolumeSlider;
     AudioSlider *m_pInputLevelSlider;
     QComboBox *m_pInputDeviceCombobox;
 
     QStyledItemDelegate *itemDelege;
     QString sliderQss;
+
 //    QString
 };
 
