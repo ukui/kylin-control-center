@@ -441,6 +441,9 @@ void Fonts::initGeneralFontStatus(){
 
     //初始化等宽字体ComBox
     QString currentmonofont = monospacefontStrList[0];
+    if ("DejaVu sans Mono" == currentmonofont) {
+        currentmonofont = "DejaVu Sans Mono";
+    }
     ui->monoSelectComBox->blockSignals(true);
     ui->monoSelectComBox->setCurrentText(currentmonofont);
     ui->monoSelectComBox->blockSignals(false);
