@@ -115,6 +115,9 @@ void QL_SwichButton::startAnimation() { //hua dong dong zuo
 }
 
 void QL_SwichButton::mousePressEvent(QMouseEvent *event) {
+    if(active == 0) {
+        return ;
+    }
     Q_UNUSED(event);
     on = !on;
     emit status(on,id);
