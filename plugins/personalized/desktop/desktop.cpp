@@ -148,6 +148,14 @@ void Desktop::initTranslation() {
     transMap.insert("kylin-nm", "网络工具");
     transMap.insert("ukui-volume-control-applet-qt", "音量控制");
     transMap.insert("ukui-sidebar", "侧边栏");
+
+    iconMap.insert("ukui-volume-control-applet-qt", "audio-volume-high");
+    iconMap.insert("kylin-nm", "gpm-battery-change");
+    iconMap.insert("indicator-china-weather", "indicator-china-weather");
+    iconMap.insert("ukui-flash-disk", "usb-management-tool");
+
+    disList<<"ukui-sidebar"<<"sogou-qimpanel";
+
 }
 
 void Desktop::setupComponent(){
@@ -296,11 +304,12 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     devHorLayout->setContentsMargins(16, 0, 16, 0);
 
     QPushButton * iconBtn = new QPushButton();
+    iconBtn->setFlat(true);
     QSizePolicy iconSizePolicy = iconBtn->sizePolicy();
     iconSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
     iconSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
     iconBtn->setSizePolicy(iconSizePolicy);
-//    iconBtn->setIcon(QIcon::fromTheme(appsName.at(i)));
+    iconBtn->setIcon(icon);
 
 
     QLabel * nameLabel = new QLabel();
@@ -317,8 +326,11 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
 
 
     SwitchButton *appSwitch = new SwitchButton();
+    if (disList.contains(name)) {
+        appSwitch->setEnabled(false);
+    }
 
-//    devHorLayout->addWidget(iconBtn);
+    devHorLayout->addWidget(iconBtn);
     devHorLayout->addWidget(nameLabel);
     devHorLayout->addStretch();
 
@@ -384,10 +396,15 @@ void Desktop::initTraySettings() {
                 winID = traySettings->get(TRAY_BINDING_KEY).toInt();
 //                show(winID);
             }
-//            qDebug()<<"action is-------------->"<<action<<" "<<name<<endl;
+//            qDebug()<<"name is-------------->"<<action<<" "<<name<<endl;
 
-            if (!("" == name || "fcitx" == name ||
-                  "freeze" == action)){
+            if (!("" == name || "fcitx" == name || "freeze" == action)){
+                QIcon icon;
+                if (!iconMap[name].isEmpty()) {
+                    icon = QIcon::fromTheme(iconMap[name]);
+                } else {
+                    icon = QIcon::fromTheme("application-x-desktop");
+                }
                 initTrayStatus(name, icon, traySettings);
             }
 
