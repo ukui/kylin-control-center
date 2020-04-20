@@ -5,9 +5,10 @@ network_item::network_item(QWidget *parent)
     this->parent();
     setMaximumSize(1080,50);
     setMinimumSize(0,50);
-    widget = new QWidget;
+    widget = new QFrame;
+    widget->setFrameShape(QFrame::Shape::Box);
     label_item = new QLabel(widget);
-    label_item->setStyleSheet("font-size: 14px;color: rgba(0,0,0,85%)");
+//    label_item->setStyleSheet("font-size: 14px;color: rgba(0,0,0,85%)");
     switch_btn = new QL_SwichButton(widget);
     switch_btn->setStyleSheet("margin-right: 16px");
     layout = new QHBoxLayout;
@@ -18,7 +19,7 @@ network_item::network_item(QWidget *parent)
     layout->addWidget(switch_btn);
     layout->setMargin(16);
     widget->setAttribute(Qt::WA_StyledBackground,true);
-    widget->setStyleSheet("background-color: rgba(244,244,244,85%);border-radius:4px;");
+//    widget->setStyleSheet("background-color: rgba(244,244,244,85%);border-radius:4px;");
     widget->setLayout(layout);
 
 }

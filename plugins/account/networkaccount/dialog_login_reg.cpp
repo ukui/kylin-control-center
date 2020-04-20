@@ -42,7 +42,7 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     //setFocusPolicy(Qt::NoFocus);
     box_login->setContentsMargins(0,0,0,0);
     //title->setGeometry(31 + sizeoff,48 + sizeoff,160,24);
-    title->setStyleSheet("font-size: 24px;color: rgba(0,0,0,0.85);font-weight:500;");
+    title->setStyleSheet("font-size: 24px;color: palette(windowText);font-weight:500;");
 
     login_submit->setMaximumSize(338,36);
     login_submit->setMinimumSize(338,36);
@@ -786,7 +786,7 @@ void Dialog_login_reg::paintEvent(QPaintEvent *event)
     }
 
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setBrush(QBrush(Qt::white));
+    painter.setBrush(QBrush(palette().color(QPalette::Base)));
     painter.setPen(Qt::transparent);
     QRect rect = this->rect();
     rect.setX(10);
