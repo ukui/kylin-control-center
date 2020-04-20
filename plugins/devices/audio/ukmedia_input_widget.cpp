@@ -119,7 +119,6 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pVlayout->addSpacing(1);
     m_pVlayout->addWidget(m_pInputLevelWidget);
     m_pInputWidget->setLayout(m_pVlayout);
-//    m_pVlayout->setSpacing(0);
     m_pInputWidget->layout()->setContentsMargins(0,0,0,0);
 
     QVBoxLayout *m_pVlayout1 = new QVBoxLayout(this);
@@ -129,49 +128,7 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     this->setLayout(m_pVlayout1);
     this->layout()->setContentsMargins(0,0,0,0);
 
-
-//    m_pInputDeviceCombobox->setStyleSheet(qss);
-//    m_pInputDeviceCombobox->setItemDelegate(itemDelege);
-
     //设置样式
-//    m_pInputLabel->setStyleSheet("QLabel{font-size:18px;"
-//                                   "font-family:Noto Sans S Chinese;"
-//                                   "font-weight:500;"
-//                                   "color:rgba(0,0,0,1);"
-//                                   "background-color: rgba(0,0,0,0);"
-//                                   "line-height:40px;}");
-//    m_pInputDeviceLabel->setStyleSheet("QLabel{font-size:14px;"
-//                                       "font-family:Noto Sans S Chinese;"
-//                                       "font-weight:400;"
-//                                       "color:rgba(67,67,69,1);"
-//                                       "line-height:40px;}");
-//    m_pIpVolumeLabel->setStyleSheet("QLabel{font-size:14px;"
-//                                    "font-family:Noto Sans S Chinese;"
-//                                    "font-weight:400;"
-//                                    "color:rgba(67,67,69,1);"
-//                                    "line-height:40px;}");
-//    m_pIpVolumePercentLabel->setStyleSheet("QLabel{font-size:14px;"
-//                                           "font-family:Noto Sans S Chinese;"
-//                                           "font-weight:400;"
-//                                           "color:rgba(67,67,69,1);"
-//                                           "line-height:40px;}");
-//    m_pInputLevelLabel->setStyleSheet("QLabel{font-size:14px;"
-//                                      "font-family:Noto Sans S Chinese;"
-//                                      "font-weight:400;"
-//                                      "color:rgba(67,67,69,1);"
-//                                      "line-height:40px;}");
-
-//    m_pLowLevelLabel->setStyleSheet("QLabel{font-size:14px;"
-//                                    "font-family:Noto Sans S Chinese;"
-//                                    "font-weight:400;"
-//                                    "color:rgba(67,67,69,1);"
-//                                    "line-height:40px;}");
-//    m_pHighLevelLabel->setStyleSheet("QLabel{font-size:14px;"
-//                                     "font-family:Noto Sans S Chinese;"
-//                                     "font-weight:400;"
-//                                     "color:rgba(67,67,69,1);"
-//                                     "line-height:40px;}");
-
     m_pIpVolumeSlider->setStyleSheet("QSlider::groove:horizontal {"
                                   "border: 0px solid #bbb; }"
                                   "QSlider::sub-page:horizontal {"
@@ -205,42 +162,7 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
                                    "background: rgb(61,107,229);"
                                    "border-radius:10px;}");
 
-//    m_pInputDeviceCombobox->setStyleSheet("QComboBox {width:140px;height:30px;background:rgba(248,248,248,1);"
-//                                       "border:2px solid rgba(218, 227, 250, 1);border-radius:4px;}"
-//                                       "QComboBox QAbstractItemView{"
-//                                       "font-size: 14px;height: 80px;width: 140px;}"
-//                                       "QComboBox QAbstractItemView::item {"
-//                                       "height: 30px;}"
-//                                       "QComboBox QAbstractItemView::item:hover {"
-//                                       "background: rgba(218,227,250,0.9);"
-//                                       "border-radius: 2px;"
-//                                       "font-color: rgb(225, 0, 0);}"
-//                                       "QComboBox::drop-down{background-color:rgba(248,248,248,1);}"
-//                                       "QComboBox:on{background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(248,248,248,0.9) 100%);"
-//                                       "border-radius:4px;}"
-//                                       "QComboBox::down-arrow:hover{"
-//                                       "width:184px;height:30px;"
-//                                       "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
-//                                       "border-radius:2px;}"
-//                                       "QComboBox::down-arrow {"
-//                                       "image: url(/usr/share/ukui-media/img/dowm.png);"
-//                                       "height:6px;width:11px;}"
-//                                       "QComboBox::down-arrow:hover{"
-//                                       "width:184px;height:30px;"
-//                                       "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
-//                                       "border-radius:2px;}");
 
-//    m_pInputIconBtn->setStyleSheet("QPushButton{background:transparent;border:0px;padding-left:0px;}");
-
-//    m_pInputWidget->setStyleSheet("QWidget{width: 552px;height: 150px;"
-//                        "background: rgba(244,244,244,1);"
-//                        "border-radius: 4px;}");
-//    m_pInputDeviceWidget->setObjectName("inputDeviceWidget");
-//    m_pVolumeWidget->setObjectName("volumeWidget");
-//    m_pInputDeviceWidget->setStyleSheet("QWidget#inputDeviceWidget{border-bottom:1px solid white;"
-//                                      "border-radius:0px;}");
-//    m_pVolumeWidget->setStyleSheet("QWidget#volumeWidget{border-bottom:1px solid white;"
-//                                      "border-radius:0px;}");
 }
 
 UkmediaInputWidget::~UkmediaInputWidget()

@@ -43,6 +43,10 @@
 #define UKUI_THEME_WHITE "ukui-white"
 #define UKUI_THEME_BLACK "ukui-black"
 
+#define UKUI_INPUT_REAR_MIC "analog-input-rear-mic"  //后置麦克风
+#define UKUI_INPUT_FRONT_MIC "analog-input-front-mic" //前置麦克风
+#define UKUI_OUTPUT_HEADPH "analog-output-headphones" //模拟耳机
+
 #define KEY_SOUNDS_SCHEMA "org.mate.sound"
 #define EVENT_SOUNDS_KEY "event-sounds"
 #define INPUT_SOUNDS_KEY "input-feedback-sounds"
@@ -165,7 +169,6 @@ private Q_SLOTS:
     void outputWidgetSliderChangedSlot(int value);
     void inputWidgetSliderChangedSlot(int value);
     void ukuiThemeChangedSlot(const QString &);
-private:
 
 private:
     UkmediaInputWidget *m_pInputWidget;
@@ -190,6 +193,8 @@ private:
     QStringList *m_pInputStreamList;
     QStringList *m_pAppVolumeList;
     QStringList *m_pStreamControlList;
+    QString m_pDeviceStr;
+
     GSettings *m_pSoundSettings;
     LevelScale scale;
     gdouble peakFraction;

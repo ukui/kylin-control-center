@@ -249,7 +249,6 @@ void UkmediaMainWidget::listDevice(UkmediaMainWidget *m_pWidget,MateMixerContext
         addStream (m_pWidget, MATE_MIXER_STREAM (m_pList->data),m_pContext);
         m_pList = m_pList->next;
     }
-
 }
 
 void UkmediaMainWidget::addStream (UkmediaMainWidget *m_pWidget, MateMixerStream *m_pStream,MateMixerContext *m_pContext)
@@ -261,6 +260,20 @@ void UkmediaMainWidget::addStream (UkmediaMainWidget *m_pWidget, MateMixerStream
     const gchar *m_pName;
     const gchar *m_pLabel;
     MateMixerStreamControl *m_pControl;
+
+    const GList *switchList;
+    MateMixerSwitch *swt;
+    switchList = mate_mixer_stream_list_switches(m_pStream);
+    while (switchList != nullptr) {
+        swt = MATE_MIXER_SWITCH(switchList->data);
+        //            MateMixerSwitchOption *opt = MATE_MIXER_SWITCH_OPTION(optionList->data);
+        MateMixerSwitchOption *opt = mate_mixer_switch_get_active_option(swt);
+        const char *name = mate_mixer_switch_option_get_name(opt);
+        const char *label = mate_mixer_switch_option_get_label(opt);
+        qDebug() << "opt name:" << name << "opt label:" << label;
+        m_pWidget->m_pDeviceStr = name;
+        switchList = switchList->next;
+    }
     if (direction == MATE_MIXER_DIRECTION_INPUT) {
         MateMixerStream *m_pInput;
         m_pInput = mate_mixer_context_get_default_input_stream (m_pContext);
@@ -291,19 +304,6 @@ void UkmediaMainWidget::addStream (UkmediaMainWidget *m_pWidget, MateMixerStream
         if (m_pStream == m_pOutput) {
             updateOutputSettings(m_pWidget,m_pControl);
             ukuiBarSetStream (m_pWidget, m_pStream);
-        }
-
-        const GList *switchList;
-        MateMixerSwitch *swt;
-        switchList = mate_mixer_stream_list_switches(m_pStream);
-        while (switchList != nullptr) {
-            swt = MATE_MIXER_SWITCH(switchList->data);
-            //            MateMixerSwitchOption *opt = MATE_MIXER_SWITCH_OPTION(optionList->data);
-            MateMixerSwitchOption *opt = mate_mixer_switch_get_active_option(swt);
-            const char *name = mate_mixer_switch_option_get_name(opt);
-            const char *label = mate_mixer_switch_option_get_label(opt);
-            qDebug() << "opt name:" << name << "opt label:" << label;
-            switchList = switchList->next;
         }
 
         if (m_pStream == m_pOutput) {
@@ -618,7 +618,7 @@ void UkmediaMainWidget::setInputStream(UkmediaMainWidget *m_pWidget, MateMixerSt
 
     MateMixerStreamControl *m_pControl = mate_mixer_stream_get_default_control(m_pStream);
     if (m_pControl != nullptr) {
-        mate_mixer_stream_control_set_monitor_enabled (m_pControl, FALSE);
+        mate_mixer_stream_control_set_monitor_enabled (m_pControl, false);
     }
     ukuiBarSetStream (m_pWidget, m_pStream);
 
@@ -650,8 +650,11 @@ void UkmediaMainWidget::setInputStream(UkmediaMainWidget *m_pWidget, MateMixerSt
                           m_pWidget);
     }
     m_pControl = mate_mixer_stream_get_default_control(m_pStream);
-    if (G_LIKELY (m_pControl != nullptr))
-        mate_mixer_stream_control_set_monitor_enabled (m_pControl, TRUE);
+    if (G_LIKELY (m_pControl != nullptr)) {
+        //if (m_pWidget->m_pDeviceStr == UKUI_INPUT_REAR_MIC || m_pWidget->m_pDeviceStr == UKUI_INPUT_FRONT_MIC || m_pWidget->m_pDeviceStr == UKUI_OUTPUT_HEADPH) {
+            mate_mixer_stream_control_set_monitor_enabled(m_pControl,true);
+//        }
+    }
 
 //    m_pControl = mate_mixer_stream_get_default_control(m_pStream);
     updateInputSettings (m_pWidget,m_pWidget->m_pInputBarStreamControl);
@@ -666,10 +669,14 @@ void UkmediaMainWidget::onStreamControlMuteNotify (MateMixerStreamControl *m_pCo
     Q_UNUSED(pspec);
     g_debug("on stream control mute notifty");
     /* Stop monitoring the input stream when it gets muted */
-    if (mate_mixer_stream_control_get_mute (m_pControl) == TRUE)
+    if (mate_mixer_stream_control_get_mute (m_pControl) == TRUE) {
         mate_mixer_stream_control_set_monitor_enabled (m_pControl, false);
-    else
-        mate_mixer_stream_control_set_monitor_enabled (m_pControl, true);
+    }
+    else {
+//        if (m_pWidget->m_pDeviceStr == UKUI_INPUT_REAR_MIC || m_pWidget->m_pDeviceStr == UKUI_INPUT_FRONT_MIC || m_pWidget->m_pDeviceStr == UKUI_OUTPUT_HEADPH) {
+            mate_mixer_stream_control_set_monitor_enabled(m_pControl,true);
+//        }
+    }
 }
 
 /*
@@ -881,9 +888,11 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
         g_debug ("There is no output stream/control, output icon disabled");
     }
     //开始监听输入等级
-    if (show == TRUE) {
+    if (show == TRUE ) {
         flags = mate_mixer_stream_control_get_flags(m_pControl);
-        mate_mixer_stream_control_set_monitor_enabled(m_pControl,true);
+        if (m_pWidget->m_pDeviceStr == UKUI_INPUT_REAR_MIC || m_pWidget->m_pDeviceStr == UKUI_INPUT_FRONT_MIC || m_pWidget->m_pDeviceStr == UKUI_OUTPUT_HEADPH) {
+            mate_mixer_stream_control_set_monitor_enabled(m_pControl,true);
+        }
         /* Enable level bar only if supported by the control */
         if (flags & MATE_MIXER_STREAM_CONTROL_HAS_MONITOR) {
         }
@@ -1312,12 +1321,11 @@ void UkmediaMainWidget::updateAlert (UkmediaMainWidget *pWidget,const char *aler
         themeStr = "freedesktop";
         nameStr = "freedesktop";
     }
-    QByteArray ba = nameStr.toLatin1();
-    parent = ba.data();
-//    strcpy(parent,ba.data());
-
-    ba = themeStr.toLatin1();
+    QByteArray ba = themeStr.toLatin1();
     theme = ba.data();
+
+    QByteArray baParent = nameStr.toLatin1();
+    parent = baParent.data();
 
     is_custom = strcmp (theme, CUSTOM_THEME_NAME) == 0;
     is_default = strcmp (alertId, DEFAULT_ALERT_ID) == 0;
