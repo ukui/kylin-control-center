@@ -1,3 +1,22 @@
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ *
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
 #ifndef LOGINDIALOG_H
 #define LOGINDIALOG_H
 
@@ -15,6 +34,7 @@
 #include <QListWidget>
 #include "area_code_lineedit.h"
 #include "mcode_widget.h"
+#include "ql_lineedit_pass.h"
 
 class LoginDialog : public QWidget
 {
@@ -30,7 +50,7 @@ public:
     void            startaction_2();
     QLineEdit*      get_user_edit();
     QPushButton*    get_forget_btn();
-    QLineEdit*      get_login_pass();
+    ql_lineedit_pass*      get_login_pass();
     QLabel*         get_tips_pass();
     QLabel*         get_tips_code();
     QLineEdit*      get_login_code();
@@ -61,11 +81,11 @@ private:
     QPushButton     *account_login_btn;
     QPushButton     *message_login_btn;
     QLineEdit       *account_phone;
-    QLineEdit       *account_pass;
+    ql_lineedit_pass       *account_pass;
     QLineEdit       *reg_phone;
     QPushButton     *phone_number;
     QLineEdit       *reg_name;
-    QLineEdit       *reg_pass;
+    ql_lineedit_pass       *reg_pass;
     QLineEdit       *valid_code;
     QPushButton     *send_msg_submit;
     QPushButton     *register_submit;

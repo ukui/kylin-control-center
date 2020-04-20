@@ -1,3 +1,22 @@
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ *
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
 #include "mcode_widget.h"
 
 mcode_widget::mcode_widget(QWidget *parent): QLabel(parent)
@@ -10,10 +29,10 @@ mcode_widget::mcode_widget(QWidget *parent): QLabel(parent)
     colorArray = new QColor[letter_number];
     verificationCode = new QChar[letter_number];
     noice_point_number = this->width()*4;
-    QFont defaultFont;//默认字体
-    defaultFont.setFamily("宋体");
+    QFont defaultFont;
+    defaultFont.setFamily(tr( "SongTi"));
     defaultFont.setPointSize(20);
-    defaultFont.setBold(true);//设置字体加粗
+    defaultFont.setBold(true);
     this->setFont(defaultFont);
     this->setStyleSheet("background-color:transparent;");
     this->setFocusPolicy(Qt::NoFocus);
@@ -36,25 +55,20 @@ void mcode_widget::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     QPoint p;
-    //背景设为白色
     painter.fillRect(this->rect(), Qt::white);
-    //产生4个不同的字符
     if(ok) {
         produceVerificationCode();
-        //产生4个不同的颜色
         produceRandomColor();
         ok = false;
     }
-    //绘制噪点
     int charWidth = (this->width()- 12 ) / 4;
-    for (int j = 0; j < noice_point_number; ++j) //noice_point_number噪声点数
+    for (int j = 0; j < noice_point_number; ++j)
     {
         p.setX(qrand() % this->width());
         p.setY(qrand() % this->height());
         painter.setPen(colorArray[j % 4]);
         painter.drawPoint(p);
     }
-    //绘制验证码
     for (int i = 0; i < letter_number; ++i)
     {
         painter.setPen(colorArray[i]);
@@ -67,7 +81,6 @@ void mcode_widget::paintEvent(QPaintEvent *event)
             {
                 painter.rotate(qrand()% 20);
             }
-            //随机逆时针旋转随机角度
             else
             {
                 painter.rotate(-qrand()% 20);
@@ -94,7 +107,7 @@ void mcode_widget::paintEvent(QPaintEvent *event)
     QLabel::paintEvent(event);
     return;
 }
-//这是一个用来生成验证码的函数
+
 void mcode_widget::produceVerificationCode() const
 {
     for (int i = 0; i < letter_number; ++i)
@@ -102,14 +115,14 @@ void mcode_widget::produceVerificationCode() const
     verificationCode[letter_number] = '\0';
     return;
 }
-//产生一个随机的字符
+
 QChar mcode_widget::produceRandomLetter() const
 {
     QChar c;
     c='0' + qrand() % 10;
     return c;
 }
-//产生随机的颜色
+
 void mcode_widget::produceRandomColor() const
 {
     for (int i = 0; i < letter_number; ++i)
@@ -125,7 +138,7 @@ void mcode_widget::set_change(int ok_num) {
     }
 }
 
-//刷新验证码，在用户不确定的时候进行相应刷新
+
 void mcode_widget::reflushVerification()
 {
     repaint();

@@ -1,8 +1,27 @@
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ *
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
 #include "area_code_lineedit.h"
 
 
 void area_code_lineedit::InittoCountrycode() {
-    loadfile = new QFile(":/country.json");
+    loadfile = new QFile(":/country.json",this);
     if(!loadfile->open(QIODevice::ReadOnly)) {
         qDebug() <<"Open fail!";
         return ;
@@ -71,13 +90,5 @@ area_code_lineedit::area_code_lineedit(QWidget *parent) : QLineEdit(parent)
     layout->setAlignment(Qt::AlignLeft);
     setLayout(layout);
     setContentsMargins(0,0,0,0);
-    setStyleSheet("QLineEdit{border:none;background-color:#F4F4F4;"
-                            "color:rgba(0,0,0,0.85);font-size:14px;"
-                           "border-radius:4px}"
-                  "QLineEdit:hover{border-right:none;background-color:#F4F4F4;"
-                  "color:rgba(0,0,0,0.85);font-size:14px;"
-                   "border-radius:4px;border-left:2px solid #3D6BE5;"
-                  "border-top:2px solid #3D6BE5;"
-                  "border-bottom:2px solid #3D6BE5;}");
 
 }

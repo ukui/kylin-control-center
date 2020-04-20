@@ -1,3 +1,22 @@
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ *
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
 #include "dialog_login_reg.h"
 #include <QDesktopWidget>
 #include <QApplication>
@@ -8,8 +27,9 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     register_account = new QPushButton(tr("Sign up"),this);
     box_login = new LoginDialog(this);
     box_reg = new RegDialog(this);
+    box_bind = new BindPhoneDialog(this);
     box_pass = new PassDialog(this);
-    log_reg = new QWidget;
+    log_reg = new QWidget(this);
     basewidegt = new QStackedWidget(this);
 
     title = new QLabel(status,this);
@@ -21,16 +41,20 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     timer_reg  = new QTimer(this);
     timer_log = new QTimer(this);
     succ = new SuccessDiaolog(this);
+    gif = new QLabel(login_submit);
+    pm = new QMovie(":/new/image/login.gif");
 
     timer->stop();
     timer_reg->stop();
     timer_log->stop();
+    gif->hide();
 
     this->setFixedSize(418,505);
     log_reg->setFixedSize(418,505);
     stack_box->addWidget(box_login);
     stack_box->addWidget(box_reg);
     stack_box->addWidget(box_pass);
+    stack_box->addWidget(box_bind);
 
     login_submit->setFocusPolicy(Qt::NoFocus);
     title->setFocusPolicy(Qt::NoFocus);
@@ -42,10 +66,9 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     //setFocusPolicy(Qt::NoFocus);
     box_login->setContentsMargins(0,0,0,0);
     //title->setGeometry(31 + sizeoff,48 + sizeoff,160,24);
-    title->setStyleSheet("font-size: 24px;color: palette(windowText);font-weight:500;");
+    title->setStyleSheet("font-size: 24px;font-weight:500;");
 
-    login_submit->setMaximumSize(338,36);
-    login_submit->setMinimumSize(338,36);
+    login_submit->setFixedSize(338,36);
     login_submit->setFocusPolicy(Qt::NoFocus);
     register_account->setMaximumSize(120,36);
     register_account->setMinimumSize(120,36);
@@ -88,7 +111,7 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
 
     stack_box->setCurrentWidget(box_login);
 
-    //tag setStyleSheet("Dialog_login_reg{border-radius:6px;}");
+    //setStyleSheet("Dialog_login_reg{border-radius:6px;}");
     setAttribute(Qt::WA_TranslucentBackground, true);
     setWindowFlag(Qt::FramelessWindowHint);
 
@@ -140,9 +163,11 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     phone_user = box_reg->get_phone_user();     //Reg Phone LineEdit
     valid_code = box_reg->get_valid_code();     //Reg Phone Code LineEdit
     reg_pass = box_reg->get_reg_pass();         //Reg Password LineEdit
+    reg_confirm = box_reg->get_reg_confirm();
 
     pass_user = box_pass->get_reg_phone();
     pass_pwd = box_pass->get_reg_pass();
+    passtips = box_pass->get_passtips();
     pass_confirm = box_pass->get_reg_pass_confirm();
     pass_code = box_pass->get_valid_code();
 
@@ -169,6 +194,7 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     connect(send_btn_log,SIGNAL(clicked()),this,SLOT(on_send_code_log()));
     connect(succ->back_login,SIGNAL(clicked()),this,SLOT(back_normal()));
     connect(pass_pwd,SIGNAL(textChanged(QString)),this,SLOT(cleanconfirm(QString)));
+    connect(reg_pass,SIGNAL(textChanged(QString)),this,SLOT(cleanconfirm(QString)));
 
     login_submit->installEventFilter(this);
 
@@ -186,8 +212,15 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
 
     reg_pass->installEventFilter(this);
     reg_user->installEventFilter(this);
+    reg_confirm->installEventFilter(this);
     phone_user->installEventFilter(this);
     valid_code->installEventFilter(this);
+
+
+    box_bind->get_code_lineedit()->installEventFilter(this);
+    box_bind->get_pass_lineedit()->installEventFilter(this);
+    box_bind->get_phone_lineedit()->installEventFilter(this);
+    box_bind->get_account_lineedit()->installEventFilter(this);
 
     stack_box->installEventFilter(this);
 
@@ -200,7 +233,11 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
 
 void Dialog_login_reg::cleanconfirm(QString str) {
     qDebug()<<str;
-    pass_confirm->setText("");
+    if(stack_box->currentWidget() == box_pass) {
+        pass_confirm->setText("");
+    } else if(stack_box->currentWidget() == box_reg) {
+        reg_confirm->setText("");
+    }
 }
 
 QPushButton * Dialog_login_reg::get_login_submit() {
@@ -215,6 +252,7 @@ void Dialog_login_reg::set_client(libkylinssoclient *c) {
     connect(client,SIGNAL(finished_user_resetpwd(int)),this,SLOT(on_pass_finished(int)));
     connect(client,SIGNAL(finished_mcode_by_username(int)),this,SLOT(on_get_mcode_by_name(int)));
     connect(client,SIGNAL(finished_registered(int)),this,SLOT(on_reg_finished(int)));
+    connect(client,SIGNAL(finished_bindPhone(int)),this,SLOT(on_bind_finished(int)));
 }
 
 void Dialog_login_reg::setshow(QWidget *widget) {
@@ -235,6 +273,7 @@ QString Dialog_login_reg::messagebox(int code) {
     case 105:ret = tr("Failed to get by phone!");break;
     case 106:ret = tr("Failed to get by user!");break;
     case 107:ret = tr("Failed to reset password!");break;
+    case 109:ret = tr("Phone binding falied!");break;
     case 110:ret = tr("Please check your information!");break;
     case 401:ret = tr("Please check your account!");break;
     case 500:ret = tr("Failed due to server error!");break;
@@ -246,6 +285,7 @@ QString Dialog_login_reg::messagebox(int code) {
     case 613:ret = tr("Please check your phone number!");break;
     case 614:ret = tr("Please check your code!");break;
     case 615:ret = tr("Account doesn't exist!");break;
+    case 616:ret = tr("User has bound the phone!");break;
     case 619:ret = tr("Sending code error occurring!");break;
     case -1:ret = tr("Please check your information!");break;
 
@@ -261,7 +301,8 @@ void Dialog_login_reg::on_login_btn() {
         QString(box_login->get_mcode_widget()->get_verificate_code()) != box_login->get_mcode_lineedit()->text()) {
         box_login->set_code(tr("Your code is wrong!"));
         passlabel->show();
-
+        
+        del_btn->hide();
         box_login->get_mcode_widget()->set_change(1);
         box_login->get_mcode_widget()->repaint();
         setshow(stack_box);
@@ -293,6 +334,12 @@ void Dialog_login_reg::on_login_btn() {
                 setshow(stack_box);
             }
             return ;
+        } else {
+
+            login_submit->setText("");
+            gif->setMovie(pm);
+            gif->show();
+            pm->start();
         }
         qDebug()<<"2222222";
 
@@ -343,10 +390,29 @@ void Dialog_login_reg::on_login_btn() {
 
 void Dialog_login_reg::on_login_finished(int ret) {
     qDebug()<< "wb1111" <<ret;
+    pm->stop();
+    gif->hide();
+    if(ret == 119) {
+        title->setText(tr("Binding Phone"));
+        stack_box->setCurrentWidget(box_bind);
+        register_account->setText(tr("Back"));
+        login_submit->setText(tr("Bind now"));
+        box_bind->setclear();
+
+        setshow(stack_box);
+        disconnect(login_submit,SIGNAL(clicked()),this,SLOT(on_login_btn()));
+        connect(login_submit,SIGNAL(clicked()),this,SLOT(on_bind_btn()));
+        disconnect(register_account,SIGNAL(clicked()),this,SLOT(linked_register_btn()));
+        connect(register_account,SIGNAL(clicked()),this,SLOT(back_login_btn()));
+    }
     if(ret == 0) {
+        timerout_num_log = 0;
+        timer_log->stop();
+        login_submit->setText(tr("Sign in"));
         emit on_login_success(); //ka zhu le bu duan fa xin hao ; notice:keyi ding yi yige tag zhi fa yi ci
         on_close();
     } else {
+        login_submit->setText(tr("Sign in"));
         if(box_login->get_stack_widget()->currentIndex() == 0) {
             box_login->set_code(messagebox(ret));
             passlabel->show();
@@ -365,9 +431,32 @@ void Dialog_login_reg::on_login_finished(int ret) {
     }
 }
 
+void Dialog_login_reg::on_bind_finished(int ret) {
+    if(ret == 0) {
+        timerout_num_bind = 0;
+        timer_bind->stop();
+        login_submit->setText(tr("Sign in"));
+        box_bind->setclear();
+        register_account->setText(tr("Sign up"));
+        disconnect(login_submit,SIGNAL(clicked()),this,SLOT(on_bind_btn()));
+        connect(login_submit,SIGNAL(clicked()),this,SLOT(on_login_btn()));
+        disconnect(register_account,SIGNAL(clicked()),this,SLOT(back_login_btn()));
+        connect(register_account,SIGNAL(clicked()),this,SLOT(linked_register_btn()));
+        close();
+    } else {
+        box_bind->set_code(messagebox(ret));
+        reg_tips->show();
+        setshow(stack_box);
+        return ;
+    }
+}
+
 void Dialog_login_reg::on_reg_finished(int ret) {
     qDebug()<<ret;
     if(ret == 0) {
+        timerout_num_reg = 0;
+        timer_reg->stop();
+        login_submit->setText(tr("Sign in"));
         box_reg->get_reg_pass()->clear();
         box_reg->get_reg_user()->clear();
         box_reg->get_phone_user()->clear();
@@ -375,7 +464,6 @@ void Dialog_login_reg::on_reg_finished(int ret) {
         basewidegt->setCurrentWidget(succ);
         succ->set_mode_text(0);
         register_account->setText(tr("Sign up"));
-        login_submit->setText(tr("Sign in"));
         disconnect(login_submit,SIGNAL(clicked()),this,SLOT(on_reg_btn()));
         connect(login_submit,SIGNAL(clicked()),this,SLOT(on_login_btn()));
         disconnect(register_account,SIGNAL(clicked()),this,SLOT(back_login_btn()));
@@ -391,14 +479,17 @@ void Dialog_login_reg::on_reg_finished(int ret) {
 
 void Dialog_login_reg::on_pass_finished(int ret) {
     if(ret == 0) {
+        timerout_num = 0;
+        timer->stop();
+        login_submit->setText(tr("Sign in"));
         box_pass->get_reg_pass()->clear();
         box_pass->get_reg_phone()->clear();
         box_pass->get_reg_pass_confirm()->clear();
         box_pass->get_valid_code()->clear();
         basewidegt->setCurrentWidget(succ);
+        del_btn->hide();
         succ->set_mode_text(1);
         register_account->setText(tr("Sign up"));
-        login_submit->setText(tr("Sign in"));
         disconnect(login_submit,SIGNAL(clicked()),this,SLOT(on_pass_btn()));
         connect(login_submit,SIGNAL(clicked()),this,SLOT(on_login_btn()));
         disconnect(register_account,SIGNAL(clicked()),this,SLOT(back_login_btn()));
@@ -421,6 +512,18 @@ void Dialog_login_reg::on_timer_timeout() {
         send_btn_fgt->setEnabled(true);
         send_btn_fgt->setText(tr("Get phone code"));
         timer->stop();
+    }
+}
+
+void Dialog_login_reg::on_timer_bind_out() {
+    if(timerout_num_bind > 0) {
+        box_bind->get_send_code()->setText(tr("Resend ( %1 )").arg(timerout_num_bind));
+        timerout_num_bind --;
+    }else if(timerout_num_bind == 0) {
+        timerout_num_bind = 60;
+        box_bind->get_send_code()->setEnabled(true);
+        box_bind->get_send_code()->setText(tr("Get phone code"));
+        timer_bind->stop();
     }
 }
 
@@ -556,6 +659,8 @@ void Dialog_login_reg::on_pass_btn() {
             setshow(stack_box);
 
             return ;
+        }else {
+
         }
     }else {
         box_pass->set_clear();
@@ -592,6 +697,37 @@ void Dialog_login_reg::on_send_code_reg() {
     }
 }
 
+void Dialog_login_reg::on_bind_btn() {
+    int ret = -1;
+    bool ok_phone = box_bind->get_phone() == "";
+    bool ok_pass = box_bind->get_pass() == "";
+    bool ok_account = box_bind->get_account() == "";
+    bool ok_code = box_bind->get_code() == "";
+    if(!ok_phone && !ok_pass && !ok_code && !ok_account) {
+        char phone[32],pass[32],account[32],code[5];
+        qstrcpy(phone,box_bind->get_phone().toStdString().c_str());
+        qstrcpy(pass,box_bind->get_pass().toStdString().c_str());
+        qstrcpy(account,box_bind->get_account().toStdString().c_str());
+        qstrcpy(code,box_bind->get_code().toStdString().c_str());
+        ret = client->bindPhone(account,pass,phone,code);
+        if(ret != 0) {
+            box_bind->setclear();
+            box_bind->set_code(messagebox(ret));
+            box_bind->get_tips()->show();
+            setshow(stack_box);
+
+            return ;
+        } else {
+        }
+    }else {
+        box_bind->setclear();
+        box_bind->set_code(messagebox(ret));
+        box_bind->get_tips()->show();
+        setshow(stack_box);
+        return ;
+    }
+}
+
 void Dialog_login_reg::on_send_code_log() {
     char phone[32];
     int ret = -1;
@@ -615,6 +751,30 @@ void Dialog_login_reg::on_send_code_log() {
         codelable->show();
         setshow(stack_box);
 
+        return ;
+    }
+}
+
+void Dialog_login_reg::on_send_code_bind() {
+    char name[32];
+    int ret = -1;
+    if(box_pass->get_user_name() != "") {
+        qstrcpy(name,box_pass->get_user_name().toStdString().c_str());
+        ret = client->get_mcode_by_username(name);
+        if(ret == 0) {
+            //not do
+        } else {
+            box_bind->setclear();
+            box_bind->set_code(messagebox(ret));
+            box_bind->get_tips()->show();
+            setshow(stack_box);
+            return ;
+        }
+    }else {
+        box_bind->setclear();
+        box_bind->set_code(messagebox(ret));
+        box_bind->get_tips()->show();
+        setshow(stack_box);
         return ;
     }
 }
@@ -648,14 +808,22 @@ void Dialog_login_reg::on_reg_btn() {
     bool ok_phone = box_reg->get_user_phone() != "";
     bool ok_account = box_reg->get_user_account() != "";
     bool ok_passwd = box_reg->get_user_passwd() != "";
+    bool ok_confirm = box_reg->get_reg_confirm()->text() != "";
     int ret = -1;
-    if(ok_mcode && ok_phone && ok_account && ok_passwd) {
-        char account[32],passwd[32],phone[32],mcode[32];
+    if(ok_mcode && ok_phone && ok_account && ok_passwd &&ok_confirm) {
+        char account[32],passwd[32],phone[32],mcode[32],confirm[32];
         qstrcpy(account,box_reg->get_user_account().toStdString().c_str());
         qstrcpy(phone,box_reg->get_user_phone().toStdString().c_str());
         qstrcpy(passwd,box_reg->get_user_passwd().toStdString().c_str());
         qstrcpy(mcode,box_reg->get_user_mcode().toStdString().c_str());
+        qstrcpy(confirm,box_reg->get_reg_confirm()->text().toStdString().c_str());
         ret = client->registered(account,passwd,phone,mcode);
+        if(qstrcmp(confirm,passwd) != 0) {
+            box_pass->set_code(tr("Please check your password!"));
+            pass_tips->show();
+            setshow(stack_box);
+            return ;
+        }
         if(ret != 0) {
             box_reg->set_clear();
             box_reg->set_code(messagebox(ret));
@@ -663,7 +831,6 @@ void Dialog_login_reg::on_reg_btn() {
             setshow(stack_box);
             return ;
         } else {
-
         }
     } else {
         box_reg->set_clear();
@@ -676,7 +843,8 @@ void Dialog_login_reg::on_reg_btn() {
 
 void Dialog_login_reg::back_normal() {
     basewidegt->setCurrentWidget(log_reg);
-
+    del_btn->show();
+    del_btn->raise();
     succ->hide();
     setshow(basewidegt);
 
@@ -702,8 +870,15 @@ void Dialog_login_reg::back_login_btn() {
             box_pass->get_valid_code()->clear();
             disconnect(login_submit,SIGNAL(clicked()),this,SLOT(on_pass_btn()));
             connect(login_submit,SIGNAL(clicked()),this,SLOT(on_login_btn()));
+        } else if(stack_box->currentIndex() == 3) {
+            box_bind->setclear();
+            del_btn->show();
+            del_btn->raise();
+            client->logout();
+            disconnect(login_submit,SIGNAL(clicked()),this,SLOT(on_bind_btn()));
+            connect(login_submit,SIGNAL(clicked()),this,SLOT(on_login_btn()));
         }
-
+        box_login->set_clear();
         stack_box->setCurrentWidget(box_login);
         register_account->setText(tr("Sign up"));
         login_submit->setText(tr("Sign in"));
@@ -811,6 +986,32 @@ void Dialog_login_reg::mouseMoveEvent(QMouseEvent *event)
 
 bool Dialog_login_reg::eventFilter(QObject *w, QEvent *e) {
 
+    //Bind 4
+    if(w == box_bind->get_code_lineedit()) {
+        if (e->type() == QEvent::FocusIn && !box_bind->get_tips()->isHidden()) {
+            box_bind->get_tips()->hide();
+            setshow(stack_box);
+        }
+    }
+    if(w == box_bind->get_account_lineedit()) {
+        if (e->type() == QEvent::FocusIn && !box_bind->get_tips()->isHidden()) {
+            box_bind->get_tips()->hide();
+            setshow(stack_box);
+        }
+    }
+    if(w == box_bind->get_pass_lineedit()) {
+        if (e->type() == QEvent::FocusIn && !box_bind->get_tips()->isHidden()) {
+            box_bind->get_tips()->hide();
+            setshow(stack_box);
+        }
+    }
+    if(w == box_bind->get_phone_lineedit()) {
+        if (e->type() == QEvent::FocusIn && !box_bind->get_tips()->isHidden()) {
+            box_bind->get_tips()->hide();
+            setshow(stack_box);
+        }
+    }
+
     //Reg 4
     if(w == reg_user) {
         if (e->type() == QEvent::FocusIn && user_tip->isHidden()) {
@@ -839,6 +1040,12 @@ bool Dialog_login_reg::eventFilter(QObject *w, QEvent *e) {
 
             setshow(stack_box);
         }
+        if (e->type() == QEvent::FocusIn && !reg_tips->isHidden()) {
+            reg_tips->hide();
+            setshow(stack_box);
+        }
+    }
+    if(w == reg_confirm) {
         if (e->type() == QEvent::FocusIn && !reg_tips->isHidden()) {
             reg_tips->hide();
             setshow(stack_box);
@@ -901,6 +1108,16 @@ bool Dialog_login_reg::eventFilter(QObject *w, QEvent *e) {
 
             setshow(stack_box);
 
+        }
+        if (e->type() == QEvent::FocusIn && passtips->isHidden()) {
+            passtips->show();
+
+            setshow(stack_box);
+
+        } else if (e->type() == QEvent::FocusOut && !passtips->isHidden()) {
+            passtips->hide();
+
+            setshow(stack_box);
         }
     }
     if(w == pass_confirm) {
@@ -976,8 +1193,8 @@ void Dialog_login_reg::setclear() {
 }
 
 void Dialog_login_reg::on_close() {
+    stack_box->setCurrentWidget(box_login);
     setclear();
-    emit close_occur();
     close();
 }
 

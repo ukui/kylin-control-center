@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui svg
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,6 +27,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     area_code_lineedit.cpp \
+    bindphonedialog.cpp \
     config_file.cpp \
     config_list_widget.cpp \
     dialog_login_reg.cpp \
@@ -39,6 +40,7 @@ SOURCES += \
     passdialog.cpp \
     ql_box_item.cpp \
     ql_combobobx.cpp \
+    ql_lineedit_pass.cpp \
     ql_popup.cpp \
     ql_pushbutton_edit.cpp \
     ql_swichbutton.cpp \
@@ -48,6 +50,7 @@ SOURCES += \
 
 HEADERS += \
     area_code_lineedit.h \
+    bindphonedialog.h \
     config_file.h \
     config_list_widget.h \
     dialog_login_reg.h \
@@ -60,6 +63,7 @@ HEADERS += \
     passdialog.h \
     ql_box_item.h \
     ql_combobobx.h \
+    ql_lineedit_pass.h \
     ql_popup.h \
     ql_pushbutton_edit.h \
     ql_swichbutton.h \
@@ -68,14 +72,6 @@ HEADERS += \
     successdiaolog.h
 
 FORMS += \
-
-#TRANSLATIONS += \
-#    networkaccount_zh_CN.ts
-
-# Default rules for deployment.
-#qnx: target.path = /tmp/$${TARGET}/bin
-#else: unix:!android: target.path = /opt/$${TARGET}/bin
-#!isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
     image/Delete.qrc \
