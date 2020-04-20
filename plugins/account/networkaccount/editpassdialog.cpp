@@ -427,6 +427,7 @@ void EditPassDialog::set_clear() {
     if(!tips->isHidden()) {
         tips->hide();
     }
+    del_btn->raise();
     account->setText("");
     newpass->setText("");
     valid_code->setText("");

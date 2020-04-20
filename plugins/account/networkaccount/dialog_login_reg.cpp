@@ -1188,6 +1188,7 @@ void Dialog_login_reg::setclear() {
         box_pass->set_clear();
         emit register_account->clicked();
     }
+    del_btn->raise();
     box_login->set_window2();
     setshow(basewidegt);
 }
