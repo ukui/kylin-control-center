@@ -91,7 +91,7 @@ Widget::Widget(QWidget *parent)
       ui->nightframe->setVisible(this->m_redshiftIsValid);
 
 //    qDebug()<<"set night mode here ---->"<<this->m_isNightMode<<endl;
-//    nightButton->setChecked(this->m_isNightMode);
+    nightButton->setChecked(this->m_isNightMode);
 
 
 //    connect(this,&Widget::nightModeChanged,nightButton,&SwitchButton::setChecked);
@@ -586,13 +586,12 @@ void Widget::initGSettings() {
         return ;
     }
 
-//    connect(m_gsettings, &QGSettings::changed, this, [=] (const QString &key) {
-//        if (NIGHT_MODE_KEY == key) {
-////            qDebug()<<"key is changed----------------->"<<key<<endl;
-//            bool value = this->getNightModeGSetting(key);
-//            setNightModebyPanel(value);
-//        }
-//    });
+    connect(m_gsettings, &QGSettings::changed, this, [=] (const QString &key) {
+        if (static_cast<QString>(NIGHT_MODE_KEY) == key) {
+            bool night = m_gsettings->get(NIGHT_MODE_KEY).toBool();
+            nightButton->setChecked(night);
+        }
+    });
 
     QByteArray scaleId(SCRENN_SCALE_SCHMES);
     if(QGSettings::isSchemaInstalled(scaleId)) {
@@ -1767,6 +1766,7 @@ void Widget::initNightStatus(){
 
     QString tmpNight = qbaOutput;
     m_isNightMode = (tmpNight=="active\n" ? true : false);
+//    qDebug()<<"m_isNightMode is------------->"<<m_isNightMode<<endl;
 
 
     if (isRedShiftValid){
