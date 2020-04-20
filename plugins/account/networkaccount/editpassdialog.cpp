@@ -136,6 +136,8 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     vlayout->setContentsMargins(41,55,41,36);
     vlayout->setSpacing(0);
     vlayout->addSpacing(20);
+    vlayout->addWidget(account);
+    vlayout->addSpacing(8);
     vlayout->addWidget(newpass);
     vlayout->addSpacing(8);
     vlayout->addWidget(pass_tips);
