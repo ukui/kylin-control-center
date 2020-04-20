@@ -78,7 +78,7 @@ private:
     QVBoxLayout         *cvlayout;
     QString             code;
     QString             home;
-    QStringList         mapid = {"wallpaper","ukui-menu","ukui-panel","ukui-panel2","ukui-control-center","indicator-china-weather","kylin-video"};
+    QStringList         mapid = {"wallpaper","ukui-menu","ukui-panel","ukui-control-center","indicator-china-weather","kylin-video"};
     Dialog_login_reg*   login_dialog;
     QWidget             *namewidget;
     QHBoxLayout         *hbox;
