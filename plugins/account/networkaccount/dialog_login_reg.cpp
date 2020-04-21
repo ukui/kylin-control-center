@@ -541,7 +541,7 @@ void Dialog_login_reg::on_timer_log_out() {
 }
 
 
-vvoid Dialog_login_reg::on_get_mcode_by_phone(int ret) {
+void Dialog_login_reg::on_get_mcode_by_phone(int ret) {
     qDebug()<<ret;
     if(ret != 0) {
         if(stack_box->currentWidget() == box_login) {
