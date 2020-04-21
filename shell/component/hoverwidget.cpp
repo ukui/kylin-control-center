@@ -24,29 +24,30 @@
 
 #include <QDebug>
 
-HoverWidget::HoverWidget(QString mname, QWidget *parent) :
+ResHoverWidget::ResHoverWidget(QString mname, QWidget *parent) :
     QWidget(parent),
     _name(mname)
 {
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
-HoverWidget::~HoverWidget()
+ResHoverWidget::~ResHoverWidget()
 {
 }
 
-void HoverWidget::enterEvent(QEvent *event){
+void ResHoverWidget::enterEvent(QEvent *event){
     emit enterWidget(_name);
 
     QWidget::enterEvent(event);
 }
 
-void HoverWidget::leaveEvent(QEvent *event){
+void ResHoverWidget::leaveEvent(QEvent *event){
     emit leaveWidget(_name);
 
     QWidget::leaveEvent(event);
 }
 
-void HoverWidget::mousePressEvent(QMouseEvent *event){
+void ResHoverWidget::mousePressEvent(QMouseEvent *event){
 
     if (event->button() == Qt::LeftButton){
         emit widgetClicked(_name);
@@ -57,7 +58,7 @@ void HoverWidget::mousePressEvent(QMouseEvent *event){
 
 //子类化一个QWidget，为了能够使用样式表，则需要提供paintEvent事件。
 //这是因为QWidget的paintEvent()是空的，而样式表要通过paint被绘制到窗口中。
-void HoverWidget::paintEvent(QPaintEvent *event){
+void ResHoverWidget::paintEvent(QPaintEvent *event){
     Q_UNUSED(event)
     QStyleOption opt;
     opt.init(this);

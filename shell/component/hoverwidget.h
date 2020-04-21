@@ -24,13 +24,13 @@
 #include <QEvent>
 #include <QMouseEvent>
 
-class HoverWidget : public QWidget
+class ResHoverWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit HoverWidget(QString mname, QWidget *parent = 0);
-    ~HoverWidget();
+    explicit ResHoverWidget(QString mname, QWidget *parent = 0);
+    ~ResHoverWidget();
 
 public:
     QString _name;

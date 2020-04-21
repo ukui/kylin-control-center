@@ -77,6 +77,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowIcon(panelicon);
     this->setWindowTitle(tr("ukcc"));
 
+    ui->searchLineEdit->setVisible(false);
     //中部内容区域
     ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
     //标题栏widget
