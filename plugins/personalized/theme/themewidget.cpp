@@ -36,7 +36,7 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, QStringList iStringList, QWi
     setMaximumWidth(960);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    setStyleSheet("background: palette(button); border-radius: 6px;");
+//    setStyleSheet("background: palette(button); border-radius: 6px;");
 
     pValue = "";
 
@@ -97,7 +97,7 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, const QList<QPixmap> &listMa
     setMaximumWidth(960);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    setStyleSheet("background: palette(button); border-radius: 6px;");
+//    setStyleSheet("background: palette(button); border-radius: 6px;");
 
     pValue = "";
 
@@ -184,6 +184,12 @@ void ThemeWidget::paintEvent(QPaintEvent *event){
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
+    p.save();
+    p.setBrush(opt.palette.color(QPalette::Button));
+    p.setPen(Qt::transparent);
+    p.setOpacity(0.6);
+    p.drawRoundedRect(this->rect(), 6, 6);
+    p.restore();
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 

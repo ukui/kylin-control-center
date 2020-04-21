@@ -42,7 +42,7 @@ extern "C" {
 #define THRESHOLD_KEY "motion-threshold"
 
 #define SESSION_SCHEMA "org.ukui.session"
-#define SESSION_MOUSE_KEY "mouse-size-changed"
+#define SESSION_MOUSE_KEY "initialize-mouse-size"
 
 
 MouseControl::MouseControl()
@@ -171,7 +171,7 @@ void MouseControl::setupComponent(){
         settings->set(CURSOR_SIZE_KEY, ui->pointerSizeComBox->currentData().toInt());
 
         QStringList keys = sesstionSetttings->keys();
-        if (keys.contains("mouseSizeChanged")) {
+        if (keys.contains("initializeMouseSize")) {
             sesstionSetttings->set(SESSION_MOUSE_KEY, true);
         }
     });
