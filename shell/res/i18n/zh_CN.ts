@@ -1883,7 +1883,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../mainwindow.cpp" line="78"/>
         <source>ukcc</source>
-        <translation type="unfinished"></translation>
+        <translation>控制面板</translation>
     </message>
 </context>
 <context>
@@ -2626,7 +2626,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="535"/>
         <source>Add Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>添加快捷键</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="51"/>
