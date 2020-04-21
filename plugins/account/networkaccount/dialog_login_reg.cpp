@@ -541,7 +541,7 @@ void Dialog_login_reg::on_timer_log_out() {
 }
 
 
-void Dialog_login_reg::on_get_mcode_by_phone(int ret) {
+vvoid Dialog_login_reg::on_get_mcode_by_phone(int ret) {
     qDebug()<<ret;
     if(ret != 0) {
         if(stack_box->currentWidget() == box_login) {
@@ -567,20 +567,17 @@ void Dialog_login_reg::on_get_mcode_by_phone(int ret) {
         return ;
     } else if(ret == 0) {
         if(stack_box->currentWidget() == box_login) {
-            timer_log->start();
-            timer_log->setInterval(1000);
+            timer_log->start(1000);
             send_btn_log->setEnabled(false);
         } else if(stack_box->currentWidget() == box_reg) {
-            timer_reg->start();
-            timer_reg->setInterval(1000);
+            timer_reg->start(1000);
             send_btn_reg->setEnabled(false);
         } else if(stack_box->currentWidget() == box_pass) {
-            timer->start();
-            timer->setInterval(1000);
+            timer->start(1000);
             send_btn_fgt->setEnabled(false);
         } else if(stack_box->currentWidget() == box_bind) {
-            timer_bind->start();
-            timer_bind->setInterval(1000);
+            timer_bind->start(1000);
+            box_bind->get_send_code()->setEnabled(false);
         }
     }
 }
@@ -620,6 +617,7 @@ void Dialog_login_reg::on_get_mcode_by_name(int ret) {
             send_btn_fgt->setEnabled(false);
         } else if(stack_box->currentWidget() == box_bind) {
             timer_bind->start(1000);
+            box_bind->get_send_code()->setEnabled(false);
         }
     }
 }
