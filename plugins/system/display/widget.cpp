@@ -63,6 +63,8 @@ Widget::Widget(QWidget *parent)
 
     ui->setupUi(this);
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
+    ui->quickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
+    ui->quickWidget->setClearColor(Qt::transparent);
     ui->quickWidget->setContentsMargins(0,0,0,9);
 
     closeScreenButton = new SwitchButton;

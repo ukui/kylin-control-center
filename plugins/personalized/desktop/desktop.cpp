@@ -304,10 +304,13 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     devHorLayout->setContentsMargins(16, 0, 16, 0);
 
     QPushButton * iconBtn = new QPushButton();
-    iconBtn->setFlat(true);
+//    iconBtn->setFlat(true);
+    iconBtn->setStyleSheet("QPushButton{background-color:transparent;border-radius:4px}"
+             "QPushButton:hover{background-color: transparent ;color:transparent;}");
     QSizePolicy iconSizePolicy = iconBtn->sizePolicy();
     iconSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
     iconSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
+    iconBtn->setIconSize(QSize(32, 32));
     iconBtn->setSizePolicy(iconSizePolicy);
     iconBtn->setIcon(icon);
 
