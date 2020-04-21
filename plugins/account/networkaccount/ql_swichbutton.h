@@ -34,7 +34,7 @@ public:
     void            set_id(int id);
     int             get_id();
     int             get_active();
-    void            set_active();
+    void            set_active(bool ok);
 private:
     int             active = 1;
     int             on = 1;
