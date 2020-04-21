@@ -276,6 +276,16 @@ void config_list_widget::finished_load(int ret) {
 }
 
 void config_list_widget::handle_conf() {
+    if(Config_File(home).Get("Auto-sync","enable").toString() == "true") {
+        auto_syn->make_itemon();
+    } else {
+        auto_syn->make_itemoff();
+        auto_ok = !auto_ok;
+        for(int i  = 0;i < mapid.size();i ++) {
+            list->get_item(i)->set_active();
+        }
+        update();
+    }
     if(auto_ok == false) {
         return ;
     }
