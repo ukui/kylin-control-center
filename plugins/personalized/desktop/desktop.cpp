@@ -55,6 +55,8 @@ Desktop::Desktop()
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->menuLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
 
 //    pluginWidget->setStyleSheet("background: #ffffff;");
 
@@ -148,13 +150,15 @@ void Desktop::initTranslation() {
     transMap.insert("kylin-nm", "网络工具");
     transMap.insert("ukui-volume-control-applet-qt", "音量控制");
     transMap.insert("ukui-sidebar", "侧边栏");
+    transMap.insert("ukui-power-manager-tray", "电源管理");
 
     iconMap.insert("ukui-volume-control-applet-qt", "audio-volume-high");
     iconMap.insert("kylin-nm", "gpm-battery-change");
     iconMap.insert("indicator-china-weather", "indicator-china-weather");
     iconMap.insert("ukui-flash-disk", "usb-management-tool");
 
-    disList<<"ukui-sidebar"<<"sogou-qimpanel";
+    disList<<"ukui-sidebar"<<"sogou-qimpanel"<<"update-notifier"<<"software-update-available"
+          <<"blueman-tray"<<"ukui-power-manager";
 
 }
 
@@ -304,14 +308,16 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     devHorLayout->setContentsMargins(16, 0, 16, 0);
 
     QPushButton * iconBtn = new QPushButton();
-//    iconBtn->setFlat(true);
+
     iconBtn->setStyleSheet("QPushButton{background-color:transparent;border-radius:4px}"
-             "QPushButton:hover{background-color: transparent ;color:transparent;}");
+                                       "QPushButton:hover{background-color: transparent ;color:transparent;}");
+
+//    iconBtn->setFlat(true);
     QSizePolicy iconSizePolicy = iconBtn->sizePolicy();
     iconSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
     iconSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
-    iconBtn->setIconSize(QSize(32, 32));
     iconBtn->setSizePolicy(iconSizePolicy);
+    iconBtn->setIconSize(QSize(32, 32));
     iconBtn->setIcon(icon);
 
 

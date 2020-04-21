@@ -81,6 +81,9 @@
       <property name="spacing">
        <number>0</number>
       </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
       <item>
        <widget class="QWidget" name="titlebarWidget" native="true">
         <property name="minimumSize">
@@ -192,7 +195,7 @@
           <widget class="QPushButton" name="minBtn">
            <property name="minimumSize">
             <size>
-             <width>48</width>
+             <width>32</width>
              <height>32</height>
             </size>
            </property>
@@ -211,7 +214,7 @@
           <widget class="QPushButton" name="maxBtn">
            <property name="minimumSize">
             <size>
-             <width>48</width>
+             <width>32</width>
              <height>32</height>
             </size>
            </property>
@@ -230,7 +233,7 @@
           <widget class="QPushButton" name="closeBtn">
            <property name="minimumSize">
             <size>
-             <width>48</width>
+             <width>32</width>
              <height>32</height>
             </size>
            </property>

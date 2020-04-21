@@ -22,14 +22,14 @@ ResolutionSlider::ResolutionSlider(const KScreen::OutputPtr &output, QWidget *pa
     : QWidget(parent)
     , mOutput(output)
 {
-    itemDelege = new QStyledItemDelegate();
-    QFile QssFile("://combox.qss");
-    QssFile.open(QFile::ReadOnly);
+//    itemDelege = new QStyledItemDelegate();
+//    QFile QssFile("://combox.qss");
+//    QssFile.open(QFile::ReadOnly);
 
-    if (QssFile.isOpen()){
-        qss = QLatin1String(QssFile.readAll());
-        QssFile.close();
-    }
+//    if (QssFile.isOpen()){
+//        qss = QLatin1String(QssFile.readAll());
+//        QssFile.close();
+//    }
     connect(output.data(), &KScreen::Output::currentModeIdChanged,
             this, &ResolutionSlider::slotOutputModeChanged);
     connect(output.data(), &KScreen::Output::modesChanged,
@@ -85,7 +85,12 @@ void ResolutionSlider::init()
         int currentModeIndex = -1;
         int preferredModeIndex = -1;
         Q_FOREACH (const QSize &size, mModes) {
-            mComboBox->addItem(Utils::sizeToString(size));
+            if (size == mModes[0]) {
+                mComboBox->addItem(Utils::sizeToString(size) + tr("(recommend)"));
+            } else {
+                mComboBox->addItem(Utils::sizeToString(size));
+            }
+
             if (mOutput->currentMode() && (mOutput->currentMode()->size() == size)) {
                 currentModeIndex = mComboBox->count() - 1;
             } else if (mOutput->preferredMode() && (mOutput->preferredMode()->size() == size)) {
