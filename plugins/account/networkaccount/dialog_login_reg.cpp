@@ -40,6 +40,7 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     timer = new QTimer(this);
     timer_reg  = new QTimer(this);
     timer_log = new QTimer(this);
+    timer_bind = new QTimer(this);
     succ = new SuccessDiaolog(this);
     gif = new QLabel(login_submit);
     pm = new QMovie(":/new/image/login.gif");
