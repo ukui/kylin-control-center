@@ -194,6 +194,8 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     connect(succ->back_login,SIGNAL(clicked()),this,SLOT(back_normal()));
     connect(pass_pwd,SIGNAL(textChanged(QString)),this,SLOT(cleanconfirm(QString)));
     connect(reg_pass,SIGNAL(textChanged(QString)),this,SLOT(cleanconfirm(QString)));
+    connect(box_bind->get_send_code(),SIGNAL(clicked()),this,SLOT(on_send_code_bind()));
+    connect(timer_bind,SIGNAL(timeout()),this,SLOT(on_timer_bind_out()));
 
     login_submit->installEventFilter(this);
 
@@ -576,6 +578,9 @@ void Dialog_login_reg::on_get_mcode_by_phone(int ret) {
             timer->start();
             timer->setInterval(1000);
             send_btn_fgt->setEnabled(false);
+        } else if(stack_box->currentWidget() == box_bind) {
+            timer_bind->start();
+            timer_bind->setInterval(1000);
         }
     }
 }
@@ -605,17 +610,16 @@ void Dialog_login_reg::on_get_mcode_by_name(int ret) {
         return ;
     }  else if(ret == 0) {
         if(stack_box->currentWidget() == box_login) {
-            timer_log->start();
-            timer_log->setInterval(1000);
+            timer_log->start(1000);
             send_btn_log->setEnabled(false);
         } else if(stack_box->currentWidget() == box_reg) {
-            timer_reg->start();
-            timer_reg->setInterval(1000);
+            timer_reg->start(1000);
             send_btn_reg->setEnabled(false);
         } else if(stack_box->currentWidget() == box_pass) {
-            timer->start();
-            timer->setInterval(1000);
+            timer->start(1000);
             send_btn_fgt->setEnabled(false);
+        } else if(stack_box->currentWidget() == box_bind) {
+            timer_bind->start(1000);
         }
     }
 }
@@ -757,8 +761,8 @@ void Dialog_login_reg::on_send_code_log() {
 void Dialog_login_reg::on_send_code_bind() {
     char name[32];
     int ret = -1;
-    if(box_pass->get_user_name() != "") {
-        qstrcpy(name,box_pass->get_user_name().toStdString().c_str());
+    if(box_bind->get_account() != "") {
+        qstrcpy(name,box_bind->get_account().toStdString().c_str());
         ret = client->get_mcode_by_username(name);
         if(ret == 0) {
             //not do
@@ -1194,6 +1198,11 @@ void Dialog_login_reg::setclear() {
 
 void Dialog_login_reg::on_close() {
     stack_box->setCurrentWidget(box_login);
+    timer_log = timer_reg = timer_bind = timer = 0;
+    send_btn_fgt->setEnabled(true);
+    send_btn_log->setEnabled(true);
+    send_btn_reg->setEnabled(true);
+    box_bind->get_send_code()->setEnabled(true);
     setclear();
     close();
 }
