@@ -650,18 +650,6 @@ void Dialog_login_reg::on_timer_reg_out() {
     }
 }
 
-void Dialog_login_reg::on_timer_reg_out() {
-    if(timerout_num_reg > 0) {
-        send_btn_reg->setText(tr("Resend ( %1 )").arg(timerout_num_reg));
-        timerout_num_reg --;
-    }else if(timerout_num_reg == 0) {
-        timerout_num_reg = 60;
-        send_btn_reg->setEnabled(true);
-        send_btn_reg->setText(tr("Send"));
-        timer_reg->stop();
-    }
-}
-
 void Dialog_login_reg::on_pass_btn() {
     int ret = -1;
     bool ok_phone = box_pass->get_user_name() == "";
