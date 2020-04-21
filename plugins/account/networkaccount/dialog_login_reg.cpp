@@ -576,15 +576,19 @@ void Dialog_login_reg::on_get_mcode_by_phone(int ret) {
     } else if(ret == 0) {
         if(stack_box->currentWidget() == box_login) {
             timer_log->start(1000);
+            timerout_num_log = 60;
             send_btn_log->setEnabled(false);
         } else if(stack_box->currentWidget() == box_reg) {
             timer_reg->start(1000);
+            timerout_num_reg = 60;
             send_btn_reg->setEnabled(false);
         } else if(stack_box->currentWidget() == box_pass) {
             timer->start(1000);
+            timerout_num = 60;
             send_btn_fgt->setEnabled(false);
         } else if(stack_box->currentWidget() == box_bind) {
             timer_bind->start(1000);
+            timerout_num_bind = 60;
             box_bind->get_send_code()->setEnabled(false);
         }
     }
@@ -616,17 +620,33 @@ void Dialog_login_reg::on_get_mcode_by_name(int ret) {
     }  else if(ret == 0) {
         if(stack_box->currentWidget() == box_login) {
             timer_log->start(1000);
+            timerout_num_log = 60;
             send_btn_log->setEnabled(false);
         } else if(stack_box->currentWidget() == box_reg) {
             timer_reg->start(1000);
+            timerout_num_reg = 60;
             send_btn_reg->setEnabled(false);
         } else if(stack_box->currentWidget() == box_pass) {
             timer->start(1000);
+            timerout_num = 60;
             send_btn_fgt->setEnabled(false);
         } else if(stack_box->currentWidget() == box_bind) {
             timer_bind->start(1000);
+            timerout_num_bind = 60;
             box_bind->get_send_code()->setEnabled(false);
         }
+    }
+}
+
+void Dialog_login_reg::on_timer_reg_out() {
+    if(timerout_num_reg > 0) {
+        send_btn_reg->setText(tr("Resend ( %1 )").arg(timerout_num_reg));
+        timerout_num_reg --;
+    }else if(timerout_num_reg == 0) {
+        timerout_num_reg = 60;
+        send_btn_reg->setEnabled(true);
+        send_btn_reg->setText(tr("Send"));
+        timer_reg->stop();
     }
 }
 
