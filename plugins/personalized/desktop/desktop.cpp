@@ -158,7 +158,8 @@ void Desktop::initTranslation() {
     iconMap.insert("ukui-flash-disk", "usb-management-tool");
 
     disList<<"ukui-sidebar"<<"sogou-qimpanel"<<"update-notifier"<<"software-update-available"
-          <<"blueman-tray"<<"ukui-power-manager";
+          <<"blueman-tray"<<"ukui-power-manager"<<"ukui-settings-daemon"<<"blueman-tray"
+         <<"ErrorApplication"<<"livepatch";
 
 }
 
@@ -407,7 +408,7 @@ void Desktop::initTraySettings() {
             }
 //            qDebug()<<"name is-------------->"<<action<<" "<<name<<endl;
 
-            if (!("" == name || "fcitx" == name || "freeze" == action)){
+            if (!("" == name || "fcitx" == name || "freeze" == action || disList.contains(name))){
                 QIcon icon;
                 if (!iconMap[name].isEmpty()) {
                     icon = QIcon::fromTheme(iconMap[name]);
