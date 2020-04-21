@@ -61,8 +61,7 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     register_account->setFocusPolicy(Qt::NoFocus);
 
     title->setText(status);
-    title->setMinimumSize(200,26);
-    title->setMaximumSize(200,26);
+    title->adjustSize();
     //setFocusPolicy(Qt::NoFocus);
     box_login->setContentsMargins(0,0,0,0);
     //title->setGeometry(31 + sizeoff,48 + sizeoff,160,24);
