@@ -40,6 +40,7 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     timer = new QTimer(this);
     timer_reg  = new QTimer(this);
     timer_log = new QTimer(this);
+    timer_bind = new QTimer(this);
     succ = new SuccessDiaolog(this);
     gif = new QLabel(login_submit);
     pm = new QMovie(":/new/image/login.gif");
@@ -61,8 +62,7 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     register_account->setFocusPolicy(Qt::NoFocus);
 
     title->setText(status);
-    title->setMinimumSize(200,26);
-    title->setMaximumSize(200,26);
+    title->adjustSize();
     //setFocusPolicy(Qt::NoFocus);
     box_login->setContentsMargins(0,0,0,0);
     //title->setGeometry(31 + sizeoff,48 + sizeoff,160,24);
@@ -195,6 +195,8 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     connect(succ->back_login,SIGNAL(clicked()),this,SLOT(back_normal()));
     connect(pass_pwd,SIGNAL(textChanged(QString)),this,SLOT(cleanconfirm(QString)));
     connect(reg_pass,SIGNAL(textChanged(QString)),this,SLOT(cleanconfirm(QString)));
+    connect(box_bind->get_send_code(),SIGNAL(clicked()),this,SLOT(on_send_code_bind()));
+    connect(timer_bind,SIGNAL(timeout()),this,SLOT(on_timer_bind_out()));
 
     login_submit->installEventFilter(this);
 
@@ -301,8 +303,7 @@ void Dialog_login_reg::on_login_btn() {
         QString(box_login->get_mcode_widget()->get_verificate_code()) != box_login->get_mcode_lineedit()->text()) {
         box_login->set_code(tr("Your code is wrong!"));
         passlabel->show();
-        
-        del_btn->hide();
+
         box_login->get_mcode_widget()->set_change(1);
         box_login->get_mcode_widget()->repaint();
         setshow(stack_box);
@@ -398,7 +399,7 @@ void Dialog_login_reg::on_login_finished(int ret) {
         register_account->setText(tr("Back"));
         login_submit->setText(tr("Bind now"));
         box_bind->setclear();
-
+        del_btn->hide();
         setshow(stack_box);
         disconnect(login_submit,SIGNAL(clicked()),this,SLOT(on_login_btn()));
         connect(login_submit,SIGNAL(clicked()),this,SLOT(on_bind_btn()));
@@ -408,6 +409,8 @@ void Dialog_login_reg::on_login_finished(int ret) {
     if(ret == 0) {
         timerout_num_log = 0;
         timer_log->stop();
+        send_btn_log->setEnabled(true);
+        send_btn_log->setText(tr("Send"));
         login_submit->setText(tr("Sign in"));
         emit on_login_success(); //ka zhu le bu duan fa xin hao ; notice:keyi ding yi yige tag zhi fa yi ci
         on_close();
@@ -436,6 +439,8 @@ void Dialog_login_reg::on_bind_finished(int ret) {
         timerout_num_bind = 0;
         timer_bind->stop();
         login_submit->setText(tr("Sign in"));
+        box_bind->get_send_code()->setEnabled(true);
+        box_bind->get_send_code()->setText(tr("Send"));
         box_bind->setclear();
         register_account->setText(tr("Sign up"));
         disconnect(login_submit,SIGNAL(clicked()),this,SLOT(on_bind_btn()));
@@ -456,6 +461,8 @@ void Dialog_login_reg::on_reg_finished(int ret) {
     if(ret == 0) {
         timerout_num_reg = 0;
         timer_reg->stop();
+        send_btn_reg->setEnabled(true);
+        send_btn_reg->setText(tr("Send"));
         login_submit->setText(tr("Sign in"));
         box_reg->get_reg_pass()->clear();
         box_reg->get_reg_user()->clear();
@@ -481,6 +488,8 @@ void Dialog_login_reg::on_pass_finished(int ret) {
     if(ret == 0) {
         timerout_num = 0;
         timer->stop();
+        send_btn_fgt->setEnabled(true);
+        send_btn_fgt->setText(tr("Send"));
         login_submit->setText(tr("Sign in"));
         box_pass->get_reg_pass()->clear();
         box_pass->get_reg_phone()->clear();
@@ -566,17 +575,21 @@ void Dialog_login_reg::on_get_mcode_by_phone(int ret) {
         return ;
     } else if(ret == 0) {
         if(stack_box->currentWidget() == box_login) {
-            timer_log->start();
-            timer_log->setInterval(1000);
+            timer_log->start(1000);
+            timerout_num_log = 60;
             send_btn_log->setEnabled(false);
         } else if(stack_box->currentWidget() == box_reg) {
-            timer_reg->start();
-            timer_reg->setInterval(1000);
+            timer_reg->start(1000);
+            timerout_num_reg = 60;
             send_btn_reg->setEnabled(false);
         } else if(stack_box->currentWidget() == box_pass) {
-            timer->start();
-            timer->setInterval(1000);
+            timer->start(1000);
+            timerout_num = 60;
             send_btn_fgt->setEnabled(false);
+        } else if(stack_box->currentWidget() == box_bind) {
+            timer_bind->start(1000);
+            timerout_num_bind = 60;
+            box_bind->get_send_code()->setEnabled(false);
         }
     }
 }
@@ -606,17 +619,21 @@ void Dialog_login_reg::on_get_mcode_by_name(int ret) {
         return ;
     }  else if(ret == 0) {
         if(stack_box->currentWidget() == box_login) {
-            timer_log->start();
-            timer_log->setInterval(1000);
+            timer_log->start(1000);
+            timerout_num_log = 60;
             send_btn_log->setEnabled(false);
         } else if(stack_box->currentWidget() == box_reg) {
-            timer_reg->start();
-            timer_reg->setInterval(1000);
+            timer_reg->start(1000);
+            timerout_num_reg = 60;
             send_btn_reg->setEnabled(false);
         } else if(stack_box->currentWidget() == box_pass) {
-            timer->start();
-            timer->setInterval(1000);
+            timer->start(1000);
+            timerout_num = 60;
             send_btn_fgt->setEnabled(false);
+        } else if(stack_box->currentWidget() == box_bind) {
+            timer_bind->start(1000);
+            timerout_num_bind = 60;
+            box_bind->get_send_code()->setEnabled(false);
         }
     }
 }
@@ -758,8 +775,8 @@ void Dialog_login_reg::on_send_code_log() {
 void Dialog_login_reg::on_send_code_bind() {
     char name[32];
     int ret = -1;
-    if(box_pass->get_user_name() != "") {
-        qstrcpy(name,box_pass->get_user_name().toStdString().c_str());
+    if(box_bind->get_account() != "") {
+        qstrcpy(name,box_bind->get_account().toStdString().c_str());
         ret = client->get_mcode_by_username(name);
         if(ret == 0) {
             //not do
@@ -872,9 +889,9 @@ void Dialog_login_reg::back_login_btn() {
             connect(login_submit,SIGNAL(clicked()),this,SLOT(on_login_btn()));
         } else if(stack_box->currentIndex() == 3) {
             box_bind->setclear();
+            client->logout();
             del_btn->show();
             del_btn->raise();
-            client->logout();
             disconnect(login_submit,SIGNAL(clicked()),this,SLOT(on_bind_btn()));
             connect(login_submit,SIGNAL(clicked()),this,SLOT(on_login_btn()));
         }
@@ -1188,13 +1205,14 @@ void Dialog_login_reg::setclear() {
         box_pass->set_clear();
         emit register_account->clicked();
     }
-    del_btn->raise();
     box_login->set_window2();
+    del_btn->raise();
     setshow(basewidegt);
 }
 
 void Dialog_login_reg::on_close() {
     stack_box->setCurrentWidget(box_login);
+    box_bind->get_send_code()->setEnabled(true);
     setclear();
     close();
 }
