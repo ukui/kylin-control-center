@@ -81,7 +81,7 @@ void InternalStyle::drawControl(QStyle::ControlElement element, const QStyleOpti
             painter->setRenderHint(QPainter::Antialiasing, true);
             painter->setBrush(option->palette.color(QPalette::Button));
             painter->setPen(Qt::transparent);
-            painter->setOpacity(0.6);
+            painter->setOpacity(0.45);
             painter->drawRoundedRect(widget->rect(), 6, 6);
             painter->restore();
             return;
