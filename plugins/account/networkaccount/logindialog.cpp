@@ -1,3 +1,22 @@
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ *
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
 #include "logindialog.h"
 
 LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
@@ -9,24 +28,24 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
     vlayout_p = new QVBoxLayout;
     waylayout = new QVBoxLayout;
     stack_widget = new QStackedWidget(this);
-    widget_number = new QWidget;
-    widget_phone = new QWidget;
+    widget_number = new QWidget(this);
+    widget_phone = new QWidget(this);
 
     HBox_forget = new QHBoxLayout;
     HBox_forgett = new QHBoxLayout;
 
-    account_phone = new QLineEdit;
+    account_phone = new QLineEdit(this);
 
-    account_pass = new QLineEdit(widget_number);
-    forgot_pass_btn = new QPushButton(tr("Forget"));
+    account_pass = new ql_lineedit_pass(widget_number);
+    forgot_pass_btn = new QPushButton(tr("Forget"),this);
 
     valid_code = new QLineEdit(widget_phone);
     send_msg_submit = new QPushButton(tr("Send"),widget_phone);
-    account_login_btn = new QPushButton(tr("User Sign in"));
-    message_login_btn = new QPushButton(tr("Quick Sign in"));
+    account_login_btn = new QPushButton(tr("User Sign in"),this);
+    message_login_btn = new QPushButton(tr("Quick Sign in"),this);
 
-    error_code = new QLabel;
-    error_pass = new QLabel;
+    error_code = new QLabel(this);
+    error_pass = new QLabel(this);
 
     mcode = new mcode_widget(widget_number);
     mcode_lineedit = new QLineEdit(widget_number);
@@ -48,21 +67,17 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
     //Basic Widget Configuration
 
 
-    this->setMaximumSize(338,220);
-    this->setMinimumSize(338,220);
+
     this->setContentsMargins(0,0,0,0);
-    this->resize(338,220);
 
     stack_widget->addWidget(widget_number);
     stack_widget->addWidget(widget_phone);
     stack_widget->setContentsMargins(0,0,0,0);
 
-    widget_number->setMaximumSize(338,113);
-    widget_number->setMinimumSize(338,113);
+    widget_number->adjustSize();
     widget_number->setContentsMargins(0,0,0,0);
 
-    widget_phone->setMaximumSize(338,80);
-    widget_phone->setMinimumSize(338,80);
+    widget_phone->adjustSize();
     widget_phone->setContentsMargins(0,0,0,0);
 
     account_login_btn->setMaximumSize(90,36);
@@ -87,16 +102,16 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
     account_phone->setFocusPolicy(Qt::StrongFocus);
     account_phone->setPlaceholderText(tr("Your account here"));
 
-//    account_phone->setStyleSheet("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);}"
-//                                 "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
-//                                 "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}");
+    //account_phone->setStyleSheet("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);}"
+    //                             "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
+    //                             "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}");
 
     mcode_lineedit->setMaxLength(4);
     mcode_lineedit->setTextMargins(16,0,0,0);
     mcode_lineedit->setPlaceholderText(tr("Your code here"));
-    mcode_lineedit->setStyleSheet("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);}"
-                                  "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
-                                  "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}");
+    //mcode_lineedit->setStyleSheet("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);}"
+    //                              "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
+    //                              "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}");
     account_phone->setContentsMargins(0,0,0,0);
     QHBoxLayout *HBox_way = new QHBoxLayout;
     HBox_way->setMargin(0);
@@ -114,13 +129,13 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
 
     waylayout->setMargin(0);
     waylayout->setSpacing(0);
-    waylayout->addSpacing(1);
     //waylayout->addSpacing(24);
     waylayout->addLayout(HBox_way);
-    waylayout->addSpacing(13);
+    waylayout->addSpacing(16);
     waylayout->addWidget(account_phone);
-    waylayout->addSpacing(4);
+    waylayout->addSpacing(8);
     waylayout->addWidget(stack_widget);
+    waylayout->setAlignment(Qt::AlignTop);
     setLayout(waylayout);
 
     //Connect
@@ -136,6 +151,7 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
     //Initial configuration
     stack_widget->setCurrentIndex(0);
     //qDebug()<<stack_widget->currentIndex();
+    adjustSize();
 }
 
 void LoginDialog::startaction_1() {
@@ -225,13 +241,11 @@ bool LoginDialog::login_account_thr_number() {
     account_pass->setMinimumSize(338,36);
     account_pass->setTextMargins(16,0,0,0);
     account_pass->setMaxLength(30);
-    account_pass->setStyleSheet("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
-                                "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
-                                "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}");
+    //account_pass->setStyleSheet("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
+    //                            "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
+     //                           "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}");
     //account_phone->setGeometry(31 + sizeoff,148 + sizeoff,338,36);
     //account_pass->setGeometry(31 + sizeoff,192 + sizeoff,338,36);
-
-    account_pass->setEchoMode(QLineEdit::Password);
 
     forgot_pass_btn->setMaximumSize(80,30);
     forgot_pass_btn->setMinimumSize(80,30);
@@ -286,7 +300,7 @@ QPushButton* LoginDialog::get_forget_btn() {
     return this->forgot_pass_btn;
 }
 
-QLineEdit* LoginDialog::get_login_pass() {
+ql_lineedit_pass* LoginDialog::get_login_pass() {
     return account_pass;
 }
 
@@ -357,12 +371,12 @@ bool LoginDialog::login_account_thr_phone() {
     valid_code->setTextMargins(16,0,0,0);
     //valid_code->setGeometry(31 + sizeoff,192 + sizeoff,192,36);
     //send_msg_submit->setGeometry(239 + sizeoff,192 + sizeoff,130,36);
-    valid_code->setStyleSheet("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #F4F4F4;font-size: 14px;color: rgba(0,0,0,0.85);}"
-                              "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
-                              "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}");
-    send_msg_submit->setStyleSheet("QPushButton{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(0,0,0,0.85);} "
-                                   "QPushButton:hover{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}"
-                                   "QPushButton:click{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}");
+    //valid_code->setStyleSheet("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #F4F4F4;font-size: 14px;color: rgba(0,0,0,0.85);}"
+    //                          "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
+    //                          "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}");
+    //send_msg_submit->setStyleSheet("QPushButton{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(0,0,0,0.85);} "
+     //                              "QPushButton:hover{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}"
+      //                             "QPushButton:click{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}");
     send_msg_submit->setFocusPolicy(Qt::NoFocus);
     QWidget::setTabOrder(account_phone, valid_code);
 

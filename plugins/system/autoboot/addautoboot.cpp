@@ -60,6 +60,10 @@ AddAutoBoot::AddAutoBoot(QWidget *parent) :
 //    ui->certainBtn->setStyleSheet(btnQss);
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
+    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->closeBtn->setFlat(true);
+
 
 
     connect(ui->openBtn, SIGNAL(clicked(bool)), this, SLOT(open_desktop_dir_slots()));

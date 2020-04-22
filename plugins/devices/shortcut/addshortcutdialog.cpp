@@ -32,7 +32,7 @@ addShortcutDialog::addShortcutDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-//    setAttribute(Qt::WA_TranslucentBackground);
+    setAttribute(Qt::WA_TranslucentBackground);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->closeBtn->setProperty("useIconHighlightEffect", true);
@@ -60,7 +60,11 @@ addShortcutDialog::addShortcutDialog(QWidget *parent) :
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
     ui->noteLabel->setPixmap(QPixmap("://img/plugins/shortcut/note.png"));
-    ui->noteWidget->hide();
+
+    ui->stackedWidget->setCurrentIndex(1);
+
+
+    refreshCertainChecked();
 
     gsPath = "";
 
@@ -77,13 +81,18 @@ addShortcutDialog::addShortcutDialog(QWidget *parent) :
         if (text.endsWith("desktop") ||
                 (!g_file_test(text.toLatin1().data(), G_FILE_TEST_IS_DIR) && g_file_test(text.toLatin1().data(), G_FILE_TEST_IS_EXECUTABLE))){
             ui->certainBtn->setChecked(true);
-            ui->noteWidget->hide();
-            ui->placeHolderWidget->show();//显示占位Widget防止控件未知变化
+            ui->stackedWidget->setCurrentIndex(1);
+
         } else{
             ui->certainBtn->setChecked(false);
-            ui->noteWidget->show();
-            ui->placeHolderWidget->hide();
+            ui->stackedWidget->setCurrentIndex(0);
         }
+
+        refreshCertainChecked();
+    });
+
+    connect(ui->nameLineEdit, &QLineEdit::textChanged, [=](QString text){
+        refreshCertainChecked();
     });
 
     connect(ui->cancelBtn, &QPushButton::clicked, [=]{
@@ -91,6 +100,7 @@ addShortcutDialog::addShortcutDialog(QWidget *parent) :
     });
     connect(ui->certainBtn, &QPushButton::clicked, [=]{
         emit shortcutInfoSignal(gsPath, ui->nameLineEdit->text(), ui->execLineEdit->text());
+
         close();
     });
 
@@ -98,9 +108,10 @@ addShortcutDialog::addShortcutDialog(QWidget *parent) :
         gsPath = "";
         ui->nameLineEdit->clear();
         ui->execLineEdit->clear();
-        ui->noteWidget->hide();
-        ui->placeHolderWidget->show();
+        ui->stackedWidget->setCurrentIndex(1);
         ui->nameLineEdit->setFocus(Qt::ActiveWindowFocusReason);
+
+        refreshCertainChecked();
     });
 }
 
@@ -180,4 +191,12 @@ void addShortcutDialog::openProgramFileDialog(){
     QString exec = selectedfile.section("/", -1, -1);
 //    exec.replace(".desktop", "");
     ui->execLineEdit->setText(exec);
+}
+
+void addShortcutDialog::refreshCertainChecked(){
+    if (ui->nameLineEdit->text().isEmpty() || ui->execLineEdit->text().isEmpty() || ui->stackedWidget->currentIndex() == 0){
+        ui->certainBtn->setEnabled(false);
+    } else {
+        ui->certainBtn->setEnabled(true);
+    }
 }

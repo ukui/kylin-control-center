@@ -63,6 +63,8 @@ Widget::Widget(QWidget *parent)
 
     ui->setupUi(this);
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
+    ui->quickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
+    ui->quickWidget->setClearColor(Qt::transparent);
     ui->quickWidget->setContentsMargins(0,0,0,9);
 
     closeScreenButton = new SwitchButton;
@@ -91,7 +93,7 @@ Widget::Widget(QWidget *parent)
       ui->nightframe->setVisible(this->m_redshiftIsValid);
 
 //    qDebug()<<"set night mode here ---->"<<this->m_isNightMode<<endl;
-//    nightButton->setChecked(this->m_isNightMode);
+    nightButton->setChecked(this->m_isNightMode);
 
 
 //    connect(this,&Widget::nightModeChanged,nightButton,&SwitchButton::setChecked);
@@ -586,13 +588,12 @@ void Widget::initGSettings() {
         return ;
     }
 
-//    connect(m_gsettings, &QGSettings::changed, this, [=] (const QString &key) {
-//        if (NIGHT_MODE_KEY == key) {
-////            qDebug()<<"key is changed----------------->"<<key<<endl;
-//            bool value = this->getNightModeGSetting(key);
-//            setNightModebyPanel(value);
-//        }
-//    });
+    connect(m_gsettings, &QGSettings::changed, this, [=] (const QString &key) {
+        if (static_cast<QString>(NIGHT_MODE_KEY) == key) {
+            bool night = m_gsettings->get(NIGHT_MODE_KEY).toBool();
+            nightButton->setChecked(night);
+        }
+    });
 
     QByteArray scaleId(SCRENN_SCALE_SCHMES);
     if(QGSettings::isSchemaInstalled(scaleId)) {
@@ -1259,7 +1260,7 @@ void Widget::initConfigFile() {
 
     QString optime = m_qsettings->value("dusk-time", "").toString();
     QString cltime = m_qsettings->value("dawn-time", "").toString();
-    QString temptValue = m_qsettings->value("temp-day", "").toString();
+    QString temptValue = m_qsettings->value("temp-night", "").toString();
 
     if ("" != optime){
         QString ophour = optime.split(":").at(0);
@@ -1767,6 +1768,7 @@ void Widget::initNightStatus(){
 
     QString tmpNight = qbaOutput;
     m_isNightMode = (tmpNight=="active\n" ? true : false);
+//    qDebug()<<"m_isNightMode is------------->"<<m_isNightMode<<endl;
 
 
     if (isRedShiftValid){

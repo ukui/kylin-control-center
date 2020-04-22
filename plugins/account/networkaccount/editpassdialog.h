@@ -1,3 +1,22 @@
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ *
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
 #ifndef EDITPASSDIALOG_H
 #define EDITPASSDIALOG_H
 
@@ -15,6 +34,7 @@
 #include <QStackedWidget>
 #include "successdiaolog.h"
 #include <QRegExpValidator>
+#include "ql_lineedit_pass.h"
 #include <libkylin-sso-client/include/libkylinssoclient.h>
 
 class EditPassDialog : public QWidget
@@ -45,13 +65,14 @@ protected:
 private:
     QLabel          *title;
     QPushButton     *del_btn;
-    QLineEdit       *account;
-    QLineEdit       *newpass;
+    ql_lineedit_pass       *account;
+    ql_lineedit_pass       *newpass;
     QLineEdit       *valid_code;
     QPushButton     *get_code;
     QPushButton     *cancel;
     QPushButton     *confirm;
     QVBoxLayout     *vlayout;
+    ql_lineedit_pass       *confirm_pass;
     QHBoxLayout     *hlayout;
     QHBoxLayout     *btnlayout;
     QPoint          m_startPoint;
@@ -63,8 +84,8 @@ private:
     QWidget         *content;
     SuccessDiaolog  *success;
     QVBoxLayout     *vboxlayout;
+    QLabel          *pass_tips;
 signals:
-    void close_occur();
     void code_changed();
     void account_changed();
 };

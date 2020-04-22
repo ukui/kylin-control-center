@@ -87,16 +87,9 @@ private:
     QWidget * pluginWidget;
     QVector<QGSettings*> *vecGsettings;
     QMap<QString, QString> transMap; // transaltion Map
+    QMap<QString, QString> iconMap;
+    QStringList disList;
 
 };
-
-class UKUIpushButton:public QPushButton
-{
-public:
-    UKUIpushButton(int winID);
-    ~UKUIpushButton();
-
-};
-
 
 #endif // DESKTOP_H

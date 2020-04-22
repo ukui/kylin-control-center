@@ -103,14 +103,14 @@ void HomePageWidget::initUI(){
         majorHorLayout->setSpacing(0);
 
         //内容Widget的构建
-        HoverWidget * widget = new HoverWidget(modulenameString);
+        ResHoverWidget * widget = new ResHoverWidget(modulenameString);
 //        QWidget * widget = new QWidget;
         widget->setFixedSize(QSize(320, 80));
         widget->setAttribute(Qt::WA_DeleteOnClose);
 
         widget->setObjectName("itemWidget");
-        widget->setStyleSheet("HoverWidget:hover:!pressed#itemWidget{background: #3D6BE5; border-radius: 4px;}");
-        connect(widget, &HoverWidget::widgetClicked, [=](QString moduleName){
+        widget->setStyleSheet("ResHoverWidget:hover:!pressed#itemWidget{background: #3D6BE5; border-radius: 4px;}");
+        connect(widget, &ResHoverWidget::widgetClicked, [=](QString moduleName){
             int moduleIndex = kvConverter->keystringTokeycode(moduleName);
 
             //获取模块的第一项跳转
@@ -190,8 +190,8 @@ void HomePageWidget::initUI(){
         baseWidget->setLayout(baseVerLayout);
 
         //悬浮改变Widget状态
-        connect(widget, &HoverWidget::enterWidget, this, [=](QString mname){
-            HoverWidget * w = dynamic_cast<HoverWidget *>(QObject::sender());
+        connect(widget, &ResHoverWidget::enterWidget, this, [=](QString mname){
+            ResHoverWidget * w = dynamic_cast<ResHoverWidget *>(QObject::sender());
             logoLabel->setPixmap(QPixmap(QString(":/img/homepage/%1Hover.png").arg(mname)));
 
             titleLabel->setStyleSheet("font-size: 16px; color: palette(base);");
@@ -203,8 +203,8 @@ void HomePageWidget::initUI(){
             }
         });
         //还原状态
-        connect(widget, &HoverWidget::leaveWidget, this, [=](QString mname){
-            HoverWidget * w = dynamic_cast<HoverWidget *>(QObject::sender());
+        connect(widget, &ResHoverWidget::leaveWidget, this, [=](QString mname){
+            ResHoverWidget * w = dynamic_cast<ResHoverWidget *>(QObject::sender());
             logoLabel->setPixmap(QPixmap(QString(":/img/homepage/%1.png").arg(mname)));
 
             titleLabel->setStyleSheet("font-size: 16px; color: palette(windowText);");
@@ -242,7 +242,7 @@ void HomePageWidget::slotItemPressed(QListWidgetItem *item)
     QWidget *currentWidget = QApplication::widgetAt(QCursor::pos());
     QLabel *label = dynamic_cast<QLabel*>(currentWidget);
 
-    HoverWidget* hoverWidget = dynamic_cast<HoverWidget*>(currentWidget);
+    ResHoverWidget* hoverWidget = dynamic_cast<ResHoverWidget*>(currentWidget);
     if(label != nullptr && hoverWidget != nullptr)
         return;
 

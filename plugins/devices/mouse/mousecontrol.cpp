@@ -41,6 +41,9 @@ extern "C" {
 #define ACCELERATION_KEY "motion-acceleration"
 #define THRESHOLD_KEY "motion-threshold"
 
+#define SESSION_SCHEMA "org.ukui.session"
+#define SESSION_MOUSE_KEY "initialize-mouse-size"
+
 
 MouseControl::MouseControl()
 {
@@ -86,6 +89,13 @@ MouseControl::MouseControl()
     //初始化鼠标设置GSettings
     const QByteArray id(MOUSE_SCHEMA);
     settings = new QGSettings(id);
+
+
+    const QByteArray sessionId(SESSION_SCHEMA);
+    if (QGSettings::isSchemaInstalled(sessionId)) {
+        sesstionSetttings = new QGSettings(sessionId);
+    }
+
 
     setupComponent();
 
@@ -159,6 +169,11 @@ void MouseControl::setupComponent(){
     connect(ui->pointerSizeComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index){
         Q_UNUSED(index)
         settings->set(CURSOR_SIZE_KEY, ui->pointerSizeComBox->currentData().toInt());
+
+        QStringList keys = sesstionSetttings->keys();
+        if (keys.contains("initializeMouseSize")) {
+            sesstionSetttings->set(SESSION_MOUSE_KEY, true);
+        }
     });
 }
 

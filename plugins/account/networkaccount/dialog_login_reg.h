@@ -1,3 +1,22 @@
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ *
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
 #ifndef DIALOG_LOGIN_REG_H
 #define DIALOG_LOGIN_REG_H
 
@@ -19,8 +38,11 @@
 #include "passdialog.h"
 #include <QTimer>
 #include <QSizePolicy>
+#include "ql_lineedit_pass.h"
 #include <libkylin-sso-client/include/libkylinssoclient.h>
 #include <QShortcut>
+#include "bindphonedialog.h"
+#include <QMovie>
 
 class Dialog_login_reg : public QWidget
 {
@@ -31,9 +53,10 @@ public:
     int             timerout_num = 60;
     int             timerout_num_reg = 60;
     int             timerout_num_log = 60;
+    int             timerout_num_bind = 60;
     QString         messagebox(int code);
     void            set_client(libkylinssoclient *c);
-    QPushButton     *get_login_submit();
+    QPushButton    *get_login_submit();
     bool            retok = true;
     void            setclear();
     void            setshow(QWidget *w);
@@ -55,9 +78,13 @@ public slots:
     void on_send_code();
     void on_send_code_reg();
     void on_send_code_log();
+    void on_send_code_bind();
     void on_timer_reg_out();
     void on_timer_log_out();
+    void on_timer_bind_out();
     void on_close();
+    void on_bind_finished(int ret);
+    void on_bind_btn();
     void cleanconfirm(QString str);
 protected:
     void            paintEvent(QPaintEvent *event);
@@ -81,18 +108,20 @@ private:
     QLabel          *pass_tip;
     QLabel          *pass_tips;
     QLabel          *reg_tips;
-    QLineEdit       *reg_pass;
+    ql_lineedit_pass       *reg_pass;
     QLineEdit       *reg_user;
-    QLineEdit       *login_pass;
+    ql_lineedit_pass       *login_pass;
     QLineEdit       *valid_code;
     QLineEdit       *phone_user;
     QLineEdit       *pass_user;
-    QLineEdit       *pass_confirm;
-    QLineEdit       *pass_pwd;
+    ql_lineedit_pass       *pass_confirm;
+    ql_lineedit_pass       *pass_pwd;
     QLineEdit       *pass_code;
     QLineEdit       *login_mcode;
     QLineEdit       *login_user;
+    ql_lineedit_pass       *reg_confirm;
     QLabel          *passlabel;
+    QLabel          *passtips;
     QLineEdit       *login_code;
     QLabel          *codelable;
     QPushButton     *send_btn_reg;
@@ -102,10 +131,14 @@ private:
     QTimer          *timer;
     QTimer          *timer_reg;
     QTimer          *timer_log;
+    QTimer          *timer_bind;
     libkylinssoclient   *client;
     QWidget         *log_reg;
     QStackedWidget  *basewidegt;
     SuccessDiaolog  *succ;
+    BindPhoneDialog *box_bind;
+    QLabel          *gif;
+    QMovie          *pm;
     bool            send_is_ok = false;
     bool            send_is_ok_log = false;
     bool            send_is_ok_reg = false;
@@ -113,7 +146,6 @@ private:
 signals:
     void on_login_success();
     void on_allow_send();
-    void close_occur();
 };
 
 #endif // DIALOG_LOGIN_REG_H

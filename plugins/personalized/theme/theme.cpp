@@ -253,6 +253,16 @@ void Theme::initThemeMode(){
             auto style = qtSettings->get(key).toString();
             qApp->setStyle(new InternalStyle(style));
         }
+
+        //获取当前主题
+        QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
+        qApp->setStyle(new InternalStyle(currentThemeMode));
+
+        for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
+            QVariant valueVariant = button->property("value");
+            if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode)
+                button->click();
+        }
     });
 
     //获取当前主题

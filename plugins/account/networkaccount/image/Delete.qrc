@@ -2,14 +2,18 @@
     <qresource prefix="/new/image">
         <file>delete.png</file>
         <file>delete_click.png</file>
-        <file>gif.gif</file>
         <file>arrow_down.png</file>
         <file>_.png</file>
         <file>edit.png</file>
         <file>edit_hover.png</file>
         <file>success.png</file>
-        <file>step-up.gif</file>
-        <file>sign-in.gif</file>
+        <file>96_color.svg</file>
+        <file>autosync.gif</file>
+        <file>login.gif</file>
     </qresource>
     <qresource prefix="/arrow"/>
+    <qresource prefix="/">
+        <file>invisible.png</file>
+        <file>visible.png</file>
+    </qresource>
 </RCC>

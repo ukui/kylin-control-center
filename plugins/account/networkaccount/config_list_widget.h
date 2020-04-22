@@ -34,6 +34,8 @@
 #include <QMessageBox>
 #include "editpassdialog.h"
 #include "config_file.h"
+#include <QGraphicsSvgItem>
+#include <QSvgWidget>
 #include <libkylin-sso-client/include/libkylinssoclient.h>
 
 class config_list_widget : public QWidget
@@ -52,21 +54,15 @@ public:
 protected:
 private:
     item_list       *list;
-    QString         qss_btn_str = "QPushButton#status[is_on=false]{font-size:14px;background-color:#E7E7E7;border:none;border-radius: 4px;color:rgba(0,0,0,0.85);}"
-                          "QPushButton#status[is_on=true] {border-radius:4px;background-color: #3D6BE5}"
-                          "QPushButton#status[is_on=false]:hover {font-size:14px;background-color:#E7E7E7;border:none;border-radius: 4px;color:rgba(61,107,229,0.85);}"
-                          "QPushButton#status[is_on=false]:click {font-size:14px;background-color:#E7E7E7;border:none;border-radius: 4px;color:rgba(65,95,196,0.85);}";
     network_item    *auto_syn;
     QLabel          *title;
     QLabel          *info;
     QLabel          *gif;
-    QLabel          *gif_step;
+    QMovie          *pm;
     QPushButton     *exit_page;
     LoginDialog     *ld;
     QWidget         *container;
     QWidget         *tab;
-    QMovie          *pm;
-    QMovie          *pm_step;
     QListWidgetItem *items[6];
     QVBoxLayout     *vboxlayout;
     QPushButton     *edit;
@@ -77,36 +73,30 @@ private:
     libkylinssoclient   *client;
     QPushButton         *login;
     QLabel              *logout;
-    QLabel              *title2;
+    QSvgWidget              *title2;
     QVBoxLayout         *vlayout;
-    QHBoxLayout         *hlayout;
     QVBoxLayout         *cvlayout;
     QString             code;
     QString             home;
-    QStringList         mapid = {"wallpaper","ukui-menu","ukui-panel","ukui-panel2","ukui-control-center","indicator-china-weather","kylin-video"};
+    QStringList         mapid = {"wallpaper","ukui-menu","ukui-panel","ukui-control-center","indicator-china-weather","kylin-video"};
     Dialog_login_reg*   login_dialog;
-    bool                is_open = true;
-    bool                is_open_edit = true;
     QWidget             *namewidget;
     QHBoxLayout         *hbox;
     QThread             *thread;
+    bool                auto_ok = true;
 public slots:
     void            neweditdialog();
     void            on_login_out();
-    void            set_login_process();
     void            on_login();
     void            open_cloud();
     void            finished_load(int ret);
     void            on_switch_button(int on,int id);
     void            on_auto_syn(int on,int id);
-    void            edit_lost();
-    void            login_lost();
     void            download_files();
     void            push_files();
     void            download_over();
     void            push_over();
 signals:
-    void on_login_process();
 };
 
 #endif // CONFIG_LIST_WIDGET_H

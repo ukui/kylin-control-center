@@ -19,16 +19,16 @@
      <number>0</number>
     </property>
     <property name="leftMargin">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="topMargin">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="rightMargin">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="bottomMargin">
-     <number>0</number>
+     <number>2</number>
     </property>
     <item>
      <widget class="QWidget" name="leftsidebarWidget" native="true">
@@ -80,6 +80,9 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
        <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
       </property>
       <item>
        <widget class="QWidget" name="titlebarWidget" native="true">
@@ -192,7 +195,7 @@
           <widget class="QPushButton" name="minBtn">
            <property name="minimumSize">
             <size>
-             <width>48</width>
+             <width>32</width>
              <height>32</height>
             </size>
            </property>
@@ -211,7 +214,7 @@
           <widget class="QPushButton" name="maxBtn">
            <property name="minimumSize">
             <size>
-             <width>48</width>
+             <width>32</width>
              <height>32</height>
             </size>
            </property>
@@ -230,7 +233,7 @@
           <widget class="QPushButton" name="closeBtn">
            <property name="minimumSize">
             <size>
-             <width>48</width>
+             <width>32</width>
              <height>32</height>
             </size>
            </property>

@@ -42,6 +42,8 @@ public:
 
     void setUpdateEnv(QString path, QString name, QString exec);
 
+    void refreshCertainChecked();
+
 protected:
     void paintEvent(QPaintEvent *);
 

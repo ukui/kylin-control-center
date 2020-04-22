@@ -346,11 +346,12 @@ void Wallpaper::showComponent(int index){
 void Wallpaper::initPreviewStatus(){
     //设置图片背景的预览效果
     QString filename = bgsettings->get(FILENAME).toString();
+    qDebug()<<"preview pic is---------->"<<filename<<endl;
 
     QByteArray ba = filename.toLatin1();
-    if (g_file_test(ba.data(), G_FILE_TEST_EXISTS)){
+//    if (g_file_test(ba.data(), G_FILE_TEST_EXISTS)){
         ui->previewLabel->setPixmap(QPixmap(filename).scaled(ui->previewLabel->size()));
-    }
+//    }
 
     //设置纯色背景的预览效果
     QString color = bgsettings->get(PRIMARY).toString();
@@ -438,12 +439,13 @@ void Wallpaper::showLocalWpDialog(){
     QString selectedfile;
     selectedfile = fd.selectedFiles().first();
 
-    ///TODO: chinese and space support
 
-    if (g_file_test(selectedfile.toLatin1().data(), G_FILE_TEST_EXISTS))
+    ///TODO: chinese and space support
+//    if (g_file_test(selectedfile.toLatin1().data(), G_FILE_TEST_EXISTS)) {
         bgsettings->set(FILENAME, QVariant(selectedfile));
-    else
-        bgsettings->reset(FILENAME);
+//    } else {
+//        bgsettings->reset(FILENAME);
+//    }
 }
 
 void Wallpaper::add_custom_wallpaper(){

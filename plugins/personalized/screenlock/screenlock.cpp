@@ -66,6 +66,7 @@ Screenlock::Screenlock()
 
 
     setupComponent();
+    setupConnect();
     initScreenlockStatus();
 
     lockbgSize = QSize(400, 240);
@@ -109,9 +110,22 @@ void Screenlock::setupComponent(){
 }
 
 void Screenlock::setupConnect(){
-    connect(ui->delaySlider, &QSlider::valueChanged, [=](int value){
-        lSetting->set(SCREENLOCK_DELAY_KEY, value);
+    ui->delaySlider->setMinimum(1);
+    ui->delaySlider->setMaximum(120);
+    connect(ui->delaySlider, &QSlider::valueChanged, [&](int value){
+
+        QStringList keys = lSetting->keys();
+        if (keys.contains("lockDelay")) {
+            lSetting->set(SCREENLOCK_DELAY_KEY, value);
+            ui->delayLinedit->setText(QString::number(value));
+        }
     });
+
+    QStringList keys = lSetting->keys();
+    if (keys.contains("lockDelay")) {
+        int value = lSetting->get(SCREENLOCK_DELAY_KEY).toInt();
+        ui->delayLinedit->setText(QString::number(value));
+    }
 }
 
 void Screenlock::initScreenlockStatus(){

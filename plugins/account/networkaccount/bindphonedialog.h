@@ -17,48 +17,51 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef QL_COMBOBOBX_H
-#define QL_COMBOBOBX_H
+#ifndef BINDPHONEDIALOG_H
+#define BINDPHONEDIALOG_H
 
 #include <QObject>
 #include <QWidget>
 #include <QLineEdit>
+#include "ql_lineedit_pass.h"
 #include <QPushButton>
-#include <QListWidget>
-#include <QGraphicsDropShadowEffect>
-#include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QtMath>
-#include <QPainter>
+#include <QHBoxLayout>
+#include "area_code_lineedit.h"
 #include <QLabel>
-#include <QDebug>
-#include <QFile>
-#include <QScrollBar>
-#include "ql_box_item.h"
-#include "ql_popup.h"
-#include <QScrollArea>
 
-class ql_combobobx : public QWidget
+class BindPhoneDialog : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ql_combobobx(QWidget *parent = nullptr);
-    void addItem(QString country,QString code);
+    explicit BindPhoneDialog(QWidget *parent = nullptr);
+    void    setclear();
+    void    set_code(QString code);
+    QPushButton *get_send_code();
+    QLabel  *get_tips();
+    QString get_account();
+    QString get_phone();
+    QString get_pass();
+    QString get_code();
+    QLineEdit* get_account_lineedit();
+    area_code_lineedit* get_phone_lineedit();
+    ql_lineedit_pass* get_pass_lineedit();
+    QLineEdit* get_code_lineedit();
 public slots:
-    void showpopup();
-    void closepopup(QListWidgetItem *item);
-protected:
-    int idx;
-private:
-    QLineEdit       *lineedit;
-    QPushButton     *pushbutton;
-    QListWidget     *listwidget;
-    QWidget         *popup;
-    QHBoxLayout     *editcontrol;
-    QVBoxLayout     *popupcontrol;
-    QVBoxLayout     *comboboxcontrol;
+    void setstyleline();
 signals:
-    void currentIndexChanged(int index);
+    void code_changed();
+private:
+    QString             code;
+    area_code_lineedit  *phone;
+    QLineEdit           *account;
+    ql_lineedit_pass    *pass;
+    QLineEdit           *valid_code;
+    QPushButton         *send_code;
+    QVBoxLayout         *layout;
+    QHBoxLayout         *sublayout;
+    QLabel              *tips;
+
 };
 
-#endif // QL_COMBOBOBX_H
+#endif // BINDPHONEDIALOG_H

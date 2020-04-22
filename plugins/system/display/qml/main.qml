@@ -42,8 +42,9 @@ Item {
         focus: true;
 
 //        color: "#000000";
-//        color: "transparent";
-        color: palette.button
+        color: "transparent";
+//        color: palette.button;
+//        opacity: 0.6;
 //        radius: 6  //设置矩形圆角弧度
 
 

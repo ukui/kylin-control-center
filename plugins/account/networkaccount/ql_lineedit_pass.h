@@ -17,48 +17,23 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef QL_COMBOBOBX_H
-#define QL_COMBOBOBX_H
+#ifndef QL_LINEEDIT_PASS_H
+#define QL_LINEEDIT_PASS_H
 
 #include <QObject>
 #include <QWidget>
 #include <QLineEdit>
 #include <QPushButton>
-#include <QListWidget>
-#include <QGraphicsDropShadowEffect>
 #include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QtMath>
-#include <QPainter>
-#include <QLabel>
-#include <QDebug>
-#include <QFile>
-#include <QScrollBar>
-#include "ql_box_item.h"
-#include "ql_popup.h"
-#include <QScrollArea>
 
-class ql_combobobx : public QWidget
+class ql_lineedit_pass : public QLineEdit
 {
     Q_OBJECT
 public:
-    explicit ql_combobobx(QWidget *parent = nullptr);
-    void addItem(QString country,QString code);
-public slots:
-    void showpopup();
-    void closepopup(QListWidgetItem *item);
-protected:
-    int idx;
+    ql_lineedit_pass(QWidget *parent = nullptr);
 private:
-    QLineEdit       *lineedit;
-    QPushButton     *pushbutton;
-    QListWidget     *listwidget;
-    QWidget         *popup;
-    QHBoxLayout     *editcontrol;
-    QVBoxLayout     *popupcontrol;
-    QVBoxLayout     *comboboxcontrol;
-signals:
-    void currentIndexChanged(int index);
+    QPushButton *visble;
+    QHBoxLayout *layout;
 };
 
-#endif // QL_COMBOBOBX_H
+#endif // QL_LINEEDIT_PASS_H
