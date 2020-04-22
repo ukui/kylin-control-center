@@ -87,6 +87,7 @@ void QL_SwichButton::set_id(int id) {
 
 void QL_SwichButton::set_active(bool ok) {
     active = ok;
+    update();
 }
 
 int QL_SwichButton::get_active() {
@@ -137,4 +138,5 @@ void QL_SwichButton::set_swichbutton_val(int on) {
     else {
         cur_val = 4;
     }
+    update();
 }

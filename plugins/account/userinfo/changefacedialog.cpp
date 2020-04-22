@@ -82,7 +82,7 @@ void ChangeFaceDialog::loadSystemFaces(){
         QString fullface = QString("%1%2").arg(FACEPATH).arg(filename);
         if (fullface.endsWith(".svg"))
             continue;
-        if (fullface.endsWith("default.png"))
+        if (fullface.endsWith("3.png"))
             continue;
 
         QPushButton * button = new QPushButton;

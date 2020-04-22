@@ -615,8 +615,8 @@ void UserInfo::changeUserFace(QString facefile, QString username){
     UserInfomation user = (UserInfomation)(allUserInfoMap.find(username).value());
 
     UserDispatcher * userdispatcher  = new UserDispatcher(user.objpath);
-//    userdispatcher->change_user_face(facefile);
-    userdispatcher->change_user_face(QString("/home/%1/.face").arg(user.username));
+    userdispatcher->change_user_face(facefile);
+//    userdispatcher->change_user_face(QString("/home/%1/.face").arg(user.username));
 
     //拷贝设置的头像文件到~/.face
     sysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
