@@ -278,6 +278,7 @@ void Desktop::initLockingStatus(){
 
     menuSettingSwitchBtn->setChecked(dSettings->get(SETTINGS_LOCK_KEY).toBool());
     menuTrashSwitchBtn->setChecked(dSettings->get(TRASH_LOCK_KEY).toBool());
+    menuComputerSwitchBtn->setChecked(dSettings->get(COMPUTER_LOCK_KEY).toBool());
 
     menuComputerSwitchBtn->blockSignals(false);
     menuFilesystemSwitchBtn->blockSignals(false);

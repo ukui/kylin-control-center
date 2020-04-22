@@ -5,6 +5,8 @@
 #include <QStyleOption>
 
 #include <QLineEdit>
+#include <QFileDialog>
+#include <QAbstractItemView>
 
 #include <QApplication>
 
@@ -140,7 +142,10 @@ void InternalStyle::drawControl(QStyle::ControlElement element, const QStyleOpti
         break;
     }
     case CE_ItemViewItem: {
-        if (widget->parent() && widget->parent()->inherits("QComboBoxPrivateContainer")) {
+        if (widget->parent() && ((widget->parent()->inherits("QComboBoxPrivateContainer") ||
+                                  (qobject_cast<const QFileDialog*>(widget->topLevelWidget()) &&
+                                   qobject_cast<const QAbstractItemView*>(widget)))))
+        {
             break;
         }
         QStyleOptionViewItem item = *qstyleoption_cast<const QStyleOptionViewItem *>(option);
