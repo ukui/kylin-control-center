@@ -466,6 +466,9 @@ void Shortcut::newBindingRequest(QList<int> keyCode){
 
     current->setText(shortcutString);
 
+    //已经设置了值，清除焦点不再监听
+    current->clearFocus();
+
     if (nkeyEntry->gsPath.isEmpty()){ //非自定义快捷键的修改
         const QByteArray iid(nkeyEntry->gsSchema.toLatin1().data());
         QGSettings * settings = new QGSettings(iid);

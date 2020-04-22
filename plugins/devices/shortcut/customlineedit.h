@@ -38,10 +38,14 @@ public:
     virtual void focusInEvent(QFocusEvent * evt);
     virtual void keyReleaseEvent(QKeyEvent * evt);
 
+public:
+    void setFlagStatus(bool checked);
+
 private:
     QString _oldshortcut;
     QString _wait;
-    QString _setalready;
+
+    bool flag;
 
 Q_SIGNALS:
     void shortcutCodeSignals(QList<int>);

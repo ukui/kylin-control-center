@@ -26,7 +26,8 @@ CustomLineEdit::CustomLineEdit(QString shortcut, QWidget *parent) :
     _oldshortcut(shortcut)
 {
     _wait = "New Shortcut...";
-    _setalready = "New Shortcut... ";
+
+    flag = true;
     setFocusPolicy(Qt::ClickFocus);
 }
 
@@ -41,13 +42,20 @@ CustomLineEdit::~CustomLineEdit()
 //}
 
 void CustomLineEdit::focusInEvent(QFocusEvent *evt){
-    if (this->text() == _oldshortcut)
-        this->setText(_wait);
+//    if (this->text() == _oldshortcut)
+//        this->setText(_wait);
+    this->setText(_wait);
+    flag = true;
 }
 
 void CustomLineEdit::focusOutEvent(QFocusEvent *evt){
-    if (this->text() == _wait)
-        this->setText(_oldshortcut);
+//    if (this->text() == _wait)
+//        this->setText(_oldshortcut);
+    flag = false;
+}
+
+void CustomLineEdit::setFlagStatus(bool checked){
+    flag = checked;
 }
 
 void CustomLineEdit::keyReleaseEvent(QKeyEvent *evt){
@@ -57,51 +65,53 @@ void CustomLineEdit::keyReleaseEvent(QKeyEvent *evt){
         this->clearFocus();
     }
 
-    if (int(evt->modifiers()) == Qt::NoModifier && evt->key() != 0 && this->text() == _wait){ //判断当前text，屏蔽掉多余的keyRelease事件触发
+    if (int(evt->modifiers()) == Qt::NoModifier && evt->key() != 0 && flag){ //判断当前text，屏蔽掉多余的keyRelease事件触发
         tmpList.append(evt->key());
 //        qDebug() << evt->key() << evt->text();
     }
-    else if (evt->modifiers() == Qt::ControlModifier && evt->key() != 0 && this->text() == _wait){
+    else if (evt->modifiers() == Qt::ControlModifier && evt->key() != 0 && flag){
         tmpList.append(Qt::Key_Control);
         tmpList.append(evt->key());
 //        qDebug() << "Ctr + " << evt->key() << evt->text() << (int)Qt::ControlModifier << (int)Qt::Key_Control;
     }
-    else if (evt->modifiers() == Qt::AltModifier && evt->key() != 0 && this->text() == _wait){
+    else if (evt->modifiers() == Qt::AltModifier && evt->key() != 0 && flag){
         tmpList.append(Qt::Key_Alt);
         tmpList.append(evt->key());
 //        qDebug() << "Alt + " << evt->key() << evt->text();
     }
-    else if (evt->modifiers() == Qt::ShiftModifier && evt->key() != 0 && this->text() == _wait){
+    else if (evt->modifiers() == Qt::ShiftModifier && evt->key() != 0 && flag){
         tmpList.append(Qt::Key_Shift);
         tmpList.append(evt->key());
 //        qDebug() << "Shift + " << evt->key() << evt->text();
     }
-    else if ((evt->modifiers() == (Qt::ControlModifier | Qt::AltModifier)) && evt->key() != 0 && this->text() == _wait){
+    else if ((evt->modifiers() == (Qt::ControlModifier | Qt::AltModifier)) && evt->key() != 0 && flag){
         tmpList.append(Qt::Key_Control);
         tmpList.append(Qt::Key_Alt);
         tmpList.append(evt->key());
 //        qDebug() << "Ctr + Alt" << evt->key() << evt->text();
     }
-    else if ((evt->modifiers() == (Qt::ControlModifier | Qt::ShiftModifier)) && evt->key() != 0 && this->text() == _wait){
+    else if ((evt->modifiers() == (Qt::ControlModifier | Qt::ShiftModifier)) && evt->key() != 0 && flag){
         tmpList.append(Qt::Key_Control);
         tmpList.append(Qt::Key_Shift);
         tmpList.append(evt->key());
 //        qDebug() << "Ctr + shift" << evt->key() << evt->text();
     }
-    else if ((evt->modifiers() == (Qt::AltModifier | Qt::ShiftModifier)) && evt->key() != 0 && this->text() == _wait){
+    else if ((evt->modifiers() == (Qt::AltModifier | Qt::ShiftModifier)) && evt->key() != 0 && flag){
         tmpList.append(Qt::Key_Alt);
         tmpList.append(Qt::Key_Shift);
         tmpList.append(evt->key());
 //        qDebug() << "Alt + shift" << evt->key() << evt->text();
     }
-    else if ((evt->modifiers() == (Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier) && evt->key() != 0 && this->text() == _wait)){
+    else if ((evt->modifiers() == (Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier) && evt->key() != 0 && flag)){
         tmpList.append(Qt::Key_Control);
         tmpList.append(Qt::Key_Alt);
         tmpList.append(Qt::Key_Shift);
         tmpList.append(evt->key());
     }
+
     if (tmpList.length() > 0){
         emit shortcutCodeSignals(tmpList);
-        this->clearFocus();
+//        this->clearFocus();
     }
+
 }

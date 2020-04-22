@@ -56,6 +56,7 @@ DefineShortcutItem::DefineShortcutItem(QString name, QString binding)
     pLineEdit->setFixedWidth(200);
 
     pButton = new QPushButton(this);
+    pButton->setText(tr("Delete"));
     pButton->setFixedWidth(64);
     pButton->hide();
 
