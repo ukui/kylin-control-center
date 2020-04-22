@@ -38,12 +38,13 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pLagoutWidget->setFrameShape(QFrame::Shape::Box);
     m_pSoundEffectLabel = new QLabel(tr("System sound"),this);
     m_pSoundEffectLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    m_pSoundThemeLabel = new QLabel(tr("System sound theme"),m_pThemeWidget);
+    m_pSoundThemeLabel = new QLabel(tr("Sound theme"),m_pThemeWidget);
     m_pSoundThemeCombobox = new QComboBox(m_pThemeWidget);
-    m_pShutdownlabel = new QLabel(tr("prompt voice"),m_pShutDownWidget);
+    m_pShutdownlabel = new QLabel(tr("Prompt voice"),m_pShutDownWidget);
     m_pShutdownCombobox = new QComboBox(m_pShutDownWidget);
-    m_pLagoutLabel = new QLabel(tr("Lagout"),m_pLagoutWidget);
+    m_pLagoutLabel = new QLabel(tr("Boot music"),m_pLagoutWidget);
     m_pLagoutCombobox = new QComboBox(m_pLagoutWidget);
+    m_pBootButton = new SwitchButton(m_pLagoutWidget);
 
     //设置大小
     m_pThemeWidget->setMinimumSize(550,50);
@@ -53,10 +54,10 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pLagoutWidget->setMinimumSize(550,50);
     m_pLagoutWidget->setMaximumSize(960,50);
 
-    m_pSoundEffectLabel->setFixedSize(83,24);
-    m_pSoundThemeLabel->setFixedSize(83,24);
-    m_pShutdownlabel->setFixedSize(83,24);
-    m_pLagoutLabel->setFixedSize(83,24);
+    m_pSoundEffectLabel->setFixedSize(115,24);
+    m_pSoundThemeLabel->setFixedSize(115,24);
+    m_pShutdownlabel->setFixedSize(115,24);
+    m_pLagoutLabel->setFixedSize(115,24);
 
     m_pSoundThemeCombobox->setMinimumSize(50,32);
     m_pSoundThemeCombobox->setMaximumSize(900,32);
@@ -70,7 +71,7 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     QHBoxLayout *themeLayout = new QHBoxLayout(m_pThemeWidget);
     themeLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     themeLayout->addWidget(m_pSoundThemeLabel);
-    themeLayout->addItem(new QSpacerItem(48,20,QSizePolicy::Fixed));
+    themeLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     themeLayout->addWidget(m_pSoundThemeCombobox);
     themeLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     themeLayout->setSpacing(0);
@@ -80,23 +81,26 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     QHBoxLayout *shutdownLayout = new QHBoxLayout(m_pShutDownWidget);
     shutdownLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     shutdownLayout->addWidget(m_pShutdownlabel);
-    shutdownLayout->addItem(new QSpacerItem(48,20,QSizePolicy::Fixed));
+    shutdownLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     shutdownLayout->addWidget(m_pShutdownCombobox);
     shutdownLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     shutdownLayout->setSpacing(0);
     m_pShutDownWidget->setLayout(shutdownLayout);
     m_pShutDownWidget->layout()->setContentsMargins(0,0,0,0);
 
+    //开关机音乐设置开关
     QHBoxLayout *lagoutLayout = new QHBoxLayout(m_pLagoutWidget);
     lagoutLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     lagoutLayout->addWidget(m_pLagoutLabel);
-    lagoutLayout->addItem(new QSpacerItem(48,20,QSizePolicy::Fixed));
-    lagoutLayout->addWidget(m_pLagoutCombobox);
+    lagoutLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Expanding));
+//    lagoutLayout->addWidget(m_pLagoutCombobox);
+    lagoutLayout->addWidget(m_pBootButton);
     lagoutLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     lagoutLayout->setSpacing(0);
     m_pLagoutWidget->setLayout(lagoutLayout);
     m_pLagoutWidget->layout()->setContentsMargins(0,0,0,0);
-    m_pLagoutWidget->setVisible(false);
+//    m_pLagoutWidget->setVisible(false);
+    m_pLagoutCombobox->setVisible(false);
     //进行整体布局
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     vLayout->addWidget(m_pSoundEffectLabel);
@@ -104,7 +108,7 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     vLayout->addWidget(m_pThemeWidget);
     vLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     vLayout->addWidget(m_pShutDownWidget);
-//    vLayout->addWidget(m_pLagoutWidget);
+    vLayout->addWidget(m_pLagoutWidget);
     this->setLayout(vLayout);
 //    vLayout->setSpacing(0);
     this->layout()->setContentsMargins(0,0,0,0);

@@ -8,7 +8,9 @@ QT       += widgets
 
 TEMPLATE = lib
 CONFIG += plugin
-INCLUDEPATH += ../../..
+
+INCLUDEPATH += ../../.. \
+               $$PROJECT_COMPONENTSOURCE \
 
 TARGET = $$qtLibraryTarget(audio)
 DESTDIR = ../../../pluginlibs
@@ -35,7 +37,8 @@ SOURCES += \
         ukmedia_main_widget.cpp \
         ukmedia_output_widget.cpp \
         ukmedia_sound_effects_widget.cpp \
-        ukui_custom_style.cpp
+        ukui_custom_style.cpp \
+        switchbutton.cpp \
 
 HEADERS += \
         audio.h \
@@ -43,7 +46,8 @@ HEADERS += \
         ukmedia_main_widget.h \
         ukmedia_output_widget.h \
         ukmedia_sound_effects_widget.h \
-        ukui_custom_style.h
+        ukui_custom_style.h \
+        switchbutton.h \
 
 FORMS += \
         audio.ui

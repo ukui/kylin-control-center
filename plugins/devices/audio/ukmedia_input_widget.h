@@ -60,7 +60,6 @@ private:
     QStyledItemDelegate *itemDelege;
     QString sliderQss;
 
-//    QString
 };
 
 #endif // UKMEDIAINPUTWIDGET_H
