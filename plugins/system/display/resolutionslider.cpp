@@ -86,7 +86,7 @@ void ResolutionSlider::init()
         int preferredModeIndex = -1;
         Q_FOREACH (const QSize &size, mModes) {
             if (size == mModes[0]) {
-                mComboBox->addItem(Utils::sizeToString(size) + tr("(recommend)"));
+                mComboBox->addItem(Utils::sizeToString(size));
             } else {
                 mComboBox->addItem(Utils::sizeToString(size));
             }

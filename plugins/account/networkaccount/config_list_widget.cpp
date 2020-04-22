@@ -196,7 +196,7 @@ void config_list_widget::init_gui() {
     login->setFixedSize(180,36);
 
     null_widget->resize(550,892);
-    logout->setText(tr("Login Cloud to get a better experience"));
+    logout->setText(tr("Synchronize your personalized settings and data"));
     logout->setStyleSheet("font-size:18px;");
 
     exit_page->setProperty("on",false);
