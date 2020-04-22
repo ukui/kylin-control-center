@@ -262,7 +262,7 @@ void EditPassDialog::on_edit_submit() {
         ok_acc = false;
         qstrcpy(acco,acc.toStdString().c_str());
     }
-    f(!ok_cur && !ok_new && !ok_code && !ok_confirm && !ok_acc) {
+    if(!ok_cur && !ok_new && !ok_code && !ok_confirm && !ok_acc) {
         qstrcpy(cur_acc,account->text().toStdString().c_str());
         qstrcpy(new_pass,newpass->text().toStdString().c_str());
         qstrcpy(mcode,valid_code->text().toStdString().c_str());
