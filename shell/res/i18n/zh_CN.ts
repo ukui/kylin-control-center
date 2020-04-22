@@ -328,7 +328,7 @@
         <location filename="../../../plugins/devices/audio/audio.ui" line="26"/>
         <location filename="../../../plugins/devices/audio/audio.cpp" line="33"/>
         <source>Audio</source>
-        <translation type="unfinished">声音</translation>
+        <translation>声音</translation>
     </message>
 </context>
 <context>
@@ -1642,7 +1642,7 @@ folder will be deleted!</source>
         <translation type="vanished">字体</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="329"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="336"/>
         <source>Thanks For Using The ukcc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3208,8 +3208,12 @@ folder will be deleted!</source>
         <translation>输入</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_input_widget.cpp" line="48"/>
         <source>Select input device</source>
+        <translation type="vanished">选择输入设备</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/audio/ukmedia_input_widget.cpp" line="48"/>
+        <source>Input device</source>
         <translation>选择输入设备</translation>
     </message>
     <message>
@@ -3236,12 +3240,12 @@ folder will be deleted!</source>
 <context>
     <name>UkmediaMainWidget</name>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="200"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="240"/>
         <source>sound error</source>
         <translation>声音错误</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="200"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="240"/>
         <source>load sound failed</source>
         <translation>加载声音失败</translation>
     </message>
@@ -3254,8 +3258,12 @@ folder will be deleted!</source>
         <translation>输出</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_output_widget.cpp" line="70"/>
         <source>Select output device</source>
+        <translation type="vanished">选择输出设备</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/audio/ukmedia_output_widget.cpp" line="70"/>
+        <source>Output device</source>
         <translation>选择输出设备</translation>
     </message>
     <message>
@@ -3288,22 +3296,34 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="41"/>
-        <source>System sound theme</source>
+        <source>Sound theme</source>
         <translation>系统音效主题</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="43"/>
-        <source>prompt voice</source>
+        <source>Prompt voice</source>
         <translation>提示音</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="45"/>
+        <source>Boot music</source>
+        <translation>开关机音乐</translation>
+    </message>
+    <message>
+        <source>System sound theme</source>
+        <translation type="vanished">系统音效主题</translation>
+    </message>
+    <message>
+        <source>prompt voice</source>
+        <translation type="vanished">提示音</translation>
     </message>
     <message>
         <source>Shutdown</source>
         <translation type="obsolete">关机</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="45"/>
         <source>Lagout</source>
-        <translation>注销</translation>
+        <translation type="vanished">注销</translation>
     </message>
 </context>
 <context>
@@ -3645,22 +3665,22 @@ Common reasons are that the overall screen size is too big, or you enabled more 
         <translation>浏览</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="363"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="370"/>
         <source>Invalid executable, please re-enter</source>
         <translation>无效的可执行程序，请重新选择</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="450"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="443"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="469"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="462"/>
         <source>Certain</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.cpp" line="171"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.cpp" line="182"/>
         <source>selsect desktop</source>
         <translation>选择桌面</translation>
     </message>
