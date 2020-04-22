@@ -1,22 +1,3 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
- *
- * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
- *
- */
 #include "ql_lineedit_pass.h"
 
 ql_lineedit_pass::ql_lineedit_pass(QWidget *parent) : QLineEdit(parent)
@@ -45,4 +26,39 @@ ql_lineedit_pass::ql_lineedit_pass(QWidget *parent) : QLineEdit(parent)
     layout->setMargin(0);
     visble->setFocusPolicy(Qt::NoFocus);
     setLayout(layout);
+
+}
+
+QPushButton* ql_lineedit_pass::get_visble() {
+    return visble;
+}
+
+bool ql_lineedit_pass::check() {
+    bool uper = false;
+    bool normal = false;
+    bool number = false;
+    bool line = false;
+    if(this->text() != "") {
+        QString str = this->text();
+        for(QChar c:str) {
+            if(c>='A' && c <= 'Z') {
+                uper = true;
+                continue;
+            }
+            if(c>='a' && c <='z') {
+                normal = true;
+                continue;
+            }
+            if(c>='0' && c<='9') {
+                number = true;
+                continue;
+            }
+        }
+        if(text().length() >= 6) {
+            line = true;
+        }
+    } else {
+        return false;
+    }
+    return uper && normal && number && line;
 }

@@ -196,7 +196,7 @@ void config_list_widget::init_gui() {
     login->setFixedSize(180,36);
 
     null_widget->resize(550,892);
-    logout->setText(tr("Synchronize your personalized settings and data"));
+    logout->setText(tr("Login Cloud to get a better experience"));
     logout->setStyleSheet("font-size:18px;");
 
     exit_page->setProperty("on",false);
@@ -265,6 +265,7 @@ void config_list_widget::open_cloud() {
 void config_list_widget::finished_load(int ret) {
     if (ret == 0) {
         if(client->init_conf() == 0) {
+            login_dialog->on_close();
             QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
             info->setText(tr("Your account：%1").arg(code));
             stacked_widget->setCurrentWidget(container);
@@ -278,22 +279,25 @@ void config_list_widget::finished_load(int ret) {
 void config_list_widget::handle_conf() {
     if(Config_File(home).Get("Auto-sync","enable").toString() == "true") {
         auto_syn->make_itemon();
+        for(int i  = 0;i < mapid.size();i ++) {
+            list->get_item(i)->set_active(true);
+        }
     } else {
         auto_syn->make_itemoff();
         auto_ok = false;
+        QString enable;
+        for(int i  = 0;i < mapid.size();i ++) {
+            judge_item(Config_File(home).Get(mapid[i],"enable").toString(),i);
+        }
         for(int i  = 0;i < mapid.size();i ++) {
             list->get_item(i)->set_active(auto_ok);
         }
-        update();
-    }
-    if(auto_ok == false) {
         return ;
     }
     QString enable;
     for(int i  = 0;i < mapid.size();i ++) {
         judge_item(Config_File(home).Get(mapid[i],"enable").toString(),i);
     }
-    update();
 
 }
 
@@ -306,31 +310,35 @@ bool config_list_widget::judge_item(QString enable,int cur) {
     return true;
 }
 
+void config_list_widget::handle_write(int on, int id) {
+    char name[32];
+    if(id == -1) {
+        qstrcpy(name,"Auto-sync");
+    } else {
+        qstrcpy(name,mapid[id].toStdString().c_str());
+    }
+    client->change_conf_value(name,on);
+}
+
 void config_list_widget::on_switch_button(int on,int id) {
     if(!auto_ok) {
         return ;
     }
-    char name[32];
-    qstrcpy(name,mapid[id].toStdString().c_str());
-    qDebug()<<name<<on;
-    client->change_conf_value(name,on);
+    QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_write,on,id);
 }
 
 void config_list_widget::on_auto_syn(int on,int id) {
-    char name[32];
-    auto_ok = !auto_ok;
+    auto_ok = on;
     for(int i  = 0;i < mapid.size();i ++) {
         list->get_item(i)->set_active(auto_ok);
     }
-    update();
-    client->change_conf_value(name,on);
+    QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_write,on,-1);
 }
 
 void config_list_widget::on_login_out() {
     if(client->logout() == 0) {
         login_dialog->setclear();
         stacked_widget->setCurrentWidget(null_widget);
-        login_dialog->show();
     }
 }
 

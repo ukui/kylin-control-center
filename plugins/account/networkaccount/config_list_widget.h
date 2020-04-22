@@ -51,6 +51,7 @@ public:
     void            init_gui();
     void            handle_conf();
     bool            judge_item(QString enable,int cur);
+    void            handle_write(int on,int id);
 protected:
 private:
     item_list       *list;

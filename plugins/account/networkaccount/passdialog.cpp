@@ -169,6 +169,8 @@ void PassDialog::set_clear() {
     if(!tips->isHidden()) {
         tips->hide();
     }
+    reg_pass->get_visble()->setChecked(false);
+    reg_pass_confirm->get_visble()->setChecked(false);
     reg_pass->setText("");
     reg_phone->setText("");
     reg_pass_confirm->setText("");

@@ -320,7 +320,7 @@ void Dialog_login_reg::on_login_btn() {
         ret = client->login(name,pass);
         qDebug()<<ret;
         if(ret != 0) {
-            box_login->set_clear();
+            box_login->get_mcode_lineedit()->setText("");
             if(box_login->get_stack_widget()->currentIndex() == 0) {
                 box_login->set_code(messagebox(ret));
                 passlabel->show();
@@ -352,7 +352,7 @@ void Dialog_login_reg::on_login_btn() {
         qstrcpy(mcode,box_login->get_login_code()->text().toStdString().c_str());
         ret = client->user_phone_login(phone,mcode);
         if(ret != 0) {
-            box_login->set_clear();
+            box_login->get_mcode_lineedit()->setText("");
             if(box_login->get_stack_widget()->currentIndex() == 0) {
                 box_login->set_code(messagebox(ret));
                 passlabel->show();
@@ -391,9 +391,9 @@ void Dialog_login_reg::on_login_btn() {
 
 void Dialog_login_reg::on_login_finished(int ret) {
     qDebug()<< "wb1111" <<ret;
-    pm->stop();
-    gif->hide();
     if(ret == 119) {
+        pm->stop();
+        gif->hide();
         title->setText(tr("Binding Phone"));
         stack_box->setCurrentWidget(box_bind);
         register_account->setText(tr("Back"));
@@ -413,7 +413,6 @@ void Dialog_login_reg::on_login_finished(int ret) {
         send_btn_log->setText(tr("Send"));
         login_submit->setText(tr("Sign in"));
         emit on_login_success(); //ka zhu le bu duan fa xin hao ; notice:keyi ding yi yige tag zhi fa yi ci
-        on_close();
     } else {
         login_submit->setText(tr("Sign in"));
         if(box_login->get_stack_widget()->currentIndex() == 0) {
@@ -424,13 +423,14 @@ void Dialog_login_reg::on_login_finished(int ret) {
             box_login->get_mcode_widget()->repaint();
             setshow(stack_box);
             return ;
-            box_login->get_mcode_widget()->set_change(0);
         } else if(box_login->get_stack_widget()->currentIndex() == 1) {
             box_login->set_code(messagebox(ret));
             codelable->show();
             setshow(stack_box);
             return ;
         }
+        pm->stop();
+        gif->hide();
     }
 }
 
@@ -553,7 +553,8 @@ void Dialog_login_reg::on_get_mcode_by_phone(int ret) {
     qDebug()<<ret;
     if(ret != 0) {
         if(stack_box->currentWidget() == box_login) {
-            box_login->set_clear();
+            box_login->get_login_pass()->setText("");
+            box_login->get_mcode_lineedit()->setText("");
             box_login->set_code(messagebox(ret));
             if(box_login->get_stack_widget()->currentIndex() == 0){
                 passlabel->show();
@@ -562,12 +563,12 @@ void Dialog_login_reg::on_get_mcode_by_phone(int ret) {
             }
             setshow(stack_box);
         } else if(stack_box->currentWidget() == box_reg) {
-            box_reg->set_clear();
+            box_reg->get_valid_code()->setText("");
             box_reg->set_code(messagebox(ret));
             reg_tips->show();
             setshow(stack_box);
         } else if(stack_box->currentWidget() == box_pass) {
-            box_pass->set_clear();
+            box_pass->get_valid_code()->setText("");
             box_pass->set_code(messagebox(ret));
             pass_tips->show();
             setshow(stack_box);
@@ -597,7 +598,8 @@ void Dialog_login_reg::on_get_mcode_by_phone(int ret) {
 void Dialog_login_reg::on_get_mcode_by_name(int ret) {
     if(ret != 0) {
         if(stack_box->currentWidget() == box_login) {
-            box_login->set_clear();
+            box_login->get_login_pass()->setText("");
+            box_login->get_mcode_lineedit()->setText("");
             box_login->set_code(messagebox(ret));
             if(box_login->get_stack_widget()->currentIndex() == 0){
                 passlabel->show();
@@ -606,12 +608,12 @@ void Dialog_login_reg::on_get_mcode_by_name(int ret) {
             }
             setshow(stack_box);
         } else if(stack_box->currentWidget() == box_reg) {
-            box_reg->set_clear();
+            box_reg->get_valid_code()->setText("");
             box_reg->set_code(messagebox(ret));
             reg_tips->show();
             setshow(stack_box);
         } else if(stack_box->currentWidget() == box_pass) {
-            box_pass->set_clear();
+            box_pass->get_valid_code()->setText("");
             box_pass->set_code(messagebox(ret));
             pass_tips->show();
             setshow(stack_box);
@@ -662,7 +664,13 @@ void Dialog_login_reg::on_pass_btn() {
         qstrcpy(pass,box_pass->get_user_newpass().toStdString().c_str());
         qstrcpy(confirm,box_pass->get_user_confirm().toStdString().c_str());
         qstrcpy(code,box_pass->get_user_mcode().toStdString().c_str());
-        if(qstrcmp(confirm,pass) != 0) {
+        if(box_pass->get_reg_pass()->check() == false) {
+            box_pass->set_code(tr("At least 6 bit, include letters and digt"));
+            pass_tips->show();
+            setshow(stack_box);
+            return ;
+        }
+        if(qstrcmp(confirm,pass) != 0 ) {
             box_pass->set_code(tr("Please check your password!"));
             pass_tips->show();
             setshow(stack_box);
@@ -670,7 +678,7 @@ void Dialog_login_reg::on_pass_btn() {
         }
         ret = client->user_resetpwd(phone,pass,code);
         if(ret != 0) {
-            box_pass->set_clear();
+            box_pass->get_valid_code()->setText("");
             box_pass->set_code(messagebox(ret));
             pass_tips->show();
             setshow(stack_box);
@@ -680,7 +688,7 @@ void Dialog_login_reg::on_pass_btn() {
 
         }
     }else {
-        box_pass->set_clear();
+        box_pass->get_valid_code()->setText("");
         box_pass->set_code(messagebox(ret));
         pass_tips->show();
         setshow(stack_box);
@@ -691,13 +699,27 @@ void Dialog_login_reg::on_pass_btn() {
 void Dialog_login_reg::on_send_code_reg() {
     char phone[32];
     int ret = -1;
+    if( box_reg->get_user_account() == "" || box_reg->get_user_phone() == "") {
+        box_reg->get_valid_code()->setText("");
+        box_reg->set_code(messagebox(ret));
+        reg_tips->show();
+        setshow(stack_box);
+        return ;
+    }
+    if(box_reg->get_reg_pass()->check() == false) {
+        box_reg->get_valid_code()->setText("");
+        box_reg->set_code(tr("At least 6 bit, include letters and digt"));
+            reg_tips->show();
+        setshow(stack_box);
+        return ;
+    }
     if(box_reg->get_user_phone() != "") {
         qstrcpy(phone,box_reg->get_user_phone().toStdString().c_str());
         ret = client->get_mcode_by_phone(phone);
         if(ret == 0) {
             //not do
         } else {
-            box_reg->set_clear();
+            box_reg->get_valid_code()->setText("");
             box_reg->set_code(messagebox(ret));
             reg_tips->show();
             setshow(stack_box);
@@ -705,7 +727,7 @@ void Dialog_login_reg::on_send_code_reg() {
             return ;
         }
     } else {
-        box_reg->set_clear();
+        box_reg->get_valid_code()->setText("");
         box_reg->set_code(messagebox(ret));
         reg_tips->show();
         setshow(stack_box);
@@ -728,7 +750,7 @@ void Dialog_login_reg::on_bind_btn() {
         qstrcpy(code,box_bind->get_code().toStdString().c_str());
         ret = client->bindPhone(account,pass,phone,code);
         if(ret != 0) {
-            box_bind->setclear();
+            box_bind->get_code_lineedit()->setText("");
             box_bind->set_code(messagebox(ret));
             box_bind->get_tips()->show();
             setshow(stack_box);
@@ -737,7 +759,7 @@ void Dialog_login_reg::on_bind_btn() {
         } else {
         }
     }else {
-        box_bind->setclear();
+        box_bind->get_code_lineedit()->setText("");
         box_bind->set_code(messagebox(ret));
         box_bind->get_tips()->show();
         setshow(stack_box);
@@ -755,7 +777,7 @@ void Dialog_login_reg::on_send_code_log() {
         if(ret == 0) {
             //not do
         } else {
-            box_login->set_clear();
+            box_login->get_mcode_lineedit()->setText("");
             box_login->set_code(messagebox(ret));
             codelable->show();
             setshow(stack_box);
@@ -763,7 +785,7 @@ void Dialog_login_reg::on_send_code_log() {
             return ;
         }
     } else {
-        box_login->set_clear();
+        box_login->get_mcode_lineedit()->setText("");
         box_login->set_code(messagebox(ret));
         codelable->show();
         setshow(stack_box);
@@ -775,20 +797,20 @@ void Dialog_login_reg::on_send_code_log() {
 void Dialog_login_reg::on_send_code_bind() {
     char name[32];
     int ret = -1;
-    if(box_bind->get_account() != "") {
+    if(box_bind->get_account() != ""&&box_bind->get_phone() != "" &&box_bind->get_pass()!="") {
         qstrcpy(name,box_bind->get_account().toStdString().c_str());
         ret = client->get_mcode_by_username(name);
         if(ret == 0) {
             //not do
         } else {
-            box_bind->setclear();
+            box_bind->get_code_lineedit()->setText("");
             box_bind->set_code(messagebox(ret));
             box_bind->get_tips()->show();
             setshow(stack_box);
             return ;
         }
     }else {
-        box_bind->setclear();
+        box_bind->get_code_lineedit()->setText("");
         box_bind->set_code(messagebox(ret));
         box_bind->get_tips()->show();
         setshow(stack_box);
@@ -799,20 +821,27 @@ void Dialog_login_reg::on_send_code_bind() {
 void Dialog_login_reg::on_send_code() {
     char name[32];
     int ret = -1;
-    if(box_pass->get_user_name() != "") {
+    if(box_pass->get_reg_pass()->check() == false) {
+        box_pass->get_valid_code()->setText("");
+        box_pass->set_code(tr("At least 6 bit, include letters and digt"));
+            pass_tips->show();
+        setshow(stack_box);
+        return ;
+    }
+    if(box_pass->get_user_name() != "" && box_pass->get_user_confirm() !="" && box_pass->get_user_newpass() != "") {
         qstrcpy(name,box_pass->get_user_name().toStdString().c_str());
         ret = client->get_mcode_by_username(name);
         if(ret == 0) {
             //not do
         } else {
-            box_pass->set_clear();
+            box_pass->get_valid_code()->setText("");
             box_pass->set_code(messagebox(ret));
             pass_tips->show();
             setshow(stack_box);
             return ;
         }
     }else {
-        box_pass->set_clear();
+        box_pass->get_valid_code()->setText("");
         pass_tips->show();
         box_pass->set_code(messagebox(ret));
         setshow(stack_box);
@@ -841,8 +870,14 @@ void Dialog_login_reg::on_reg_btn() {
             setshow(stack_box);
             return ;
         }
+        if(!box_reg->get_reg_pass()->check()) {
+            box_pass->set_code(tr("Please check your password!"));
+            pass_tips->show();
+            setshow(stack_box);
+            return ;
+        }
         if(ret != 0) {
-            box_reg->set_clear();
+            box_reg->get_valid_code()->setText("");
             box_reg->set_code(messagebox(ret));
             reg_tips->show();
             setshow(stack_box);
@@ -850,7 +885,7 @@ void Dialog_login_reg::on_reg_btn() {
         } else {
         }
     } else {
-        box_reg->set_clear();
+        box_reg->get_valid_code()->setText("");
         box_reg->set_code(messagebox(ret));
         reg_tips->show();
         setshow(stack_box);
@@ -1195,7 +1230,7 @@ bool Dialog_login_reg::eventFilter(QObject *w, QEvent *e) {
 }
 
 void Dialog_login_reg::setclear() {
-    basewidegt->setCurrentWidget(log_reg);
+    back_normal();
     if(stack_box->currentWidget() == box_login) {
         box_login->set_clear();
     }else if(stack_box->currentWidget() == box_reg) {
@@ -1211,9 +1246,10 @@ void Dialog_login_reg::setclear() {
 }
 
 void Dialog_login_reg::on_close() {
+    pm->stop();
+    gif->hide();
     box_login->get_mcode_widget()->set_change(1);
-    stack_box->setCurrentWidget(box_login);
-    box_bind->get_send_code()->setEnabled(true);
+    back_login_btn();
     setclear();
     close();
 }
