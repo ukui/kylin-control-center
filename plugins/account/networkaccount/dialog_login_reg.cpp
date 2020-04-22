@@ -432,6 +432,8 @@ void Dialog_login_reg::on_login_finished(int ret) {
         pm->stop();
         gif->hide();
     }
+    pm->stop();
+    gif->hide();
 }
 
 void Dialog_login_reg::on_bind_finished(int ret) {
