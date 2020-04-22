@@ -410,6 +410,7 @@ void LoginDialog::set_clear() {
     if(!error_pass->isHidden()) {
         error_pass->hide();
     }
+    account_pass->get_visble()->setChecked(false);
     account_pass->setText("");
     account_phone->setText("");
     valid_code->setText("");

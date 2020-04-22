@@ -218,32 +218,64 @@ void EditPassDialog::setstyleline() {
 void EditPassDialog::on_send_code() {
     int ret = -1;
     char phone[32];
-    if(!account->text().isNull()) {
-        qstrcpy(phone,account->text().toStdString().c_str());
+    QString acc = client->check_login();
+
+    if(newpass->check() == false){
+        valid_code->setText("");
+        set_code(tr("At least 6 bit, include letters and digt"));
+        tips->show();
+        setshow(content);
+        return ;
+    }
+    if(acc != "" && acc != "201" && acc != "203" &&confirm_pass->text()!="" &&account->text() != "") {
+        qstrcpy(phone,acc.toStdString().c_str());
         ret = client->get_mcode_by_username(phone);
         if(ret != 0) {
-            set_clear();
+            valid_code->setText("");
             set_code(messagebox(ret));
             tips->show();
             setshow(content);
+            return ;
+        } else {
+            timer->start();
+            timer->setInterval(1000);
+            get_code->setEnabled(false);
         }
+    }else {
+        valid_code->setText("");
+        set_code(messagebox(ret));
+        tips->show();
+        return ;
     }
 }
 
 void EditPassDialog::on_edit_submit() {
     int ret = -1;
-    char cur_acc[32],new_pass[32],mcode[5],confirm_password[32];
+    char cur_acc[32],new_pass[32],mcode[5],confirm_password[32],acco[32];
     bool ok_cur = account->text().isNull();
     bool ok_new = newpass->text().isNull();
     bool ok_code = valid_code->text().isNull();
     bool ok_confirm = confirm_pass->text().isNull();
-    if(!ok_cur && !ok_new && !ok_code && !ok_confirm) {
+    bool ok_acc = true;
+    QString acc = client->check_login();
+    if(acc != "" && acc != "201" && acc != "203") {
+        ok_acc = false;
+        qstrcpy(acco,acc.toStdString().c_str());
+    }
+    if(!ok_cur && !ok_new && !ok_code && !ok_confirm && !ok_acc) {
         qstrcpy(cur_acc,account->text().toStdString().c_str());
         qstrcpy(new_pass,newpass->text().toStdString().c_str());
         qstrcpy(mcode,valid_code->text().toStdString().c_str());
         qstrcpy(confirm_password,confirm_pass->text().toStdString().c_str());
-        ret = client->user_resetpwd(cur_acc,new_pass,mcode);
-        if(qstrcmp(confirm_password,new_pass) != 0) {
+        ret = client->user_resetpwd(acco,new_pass,mcode);
+        if(newpass->check() == false) {
+            set_code(tr("At least 6 bit, include letters and digt"));
+            tips->show();
+            setshow(content);
+            return ;
+            return ;
+        }
+        if(qstrcmp(confirm_password,new_pass) != 0 ) {
             set_code(tr("Please check your password!"));
             tips->show();
             setshow(content);
@@ -253,7 +285,7 @@ void EditPassDialog::on_edit_submit() {
             qDebug()<<cur_acc;
         } else {
             set_code(messagebox(ret));
-            set_clear();
+            valid_code->setText("");
             tips->show();
             setshow(content);
         }
@@ -329,9 +361,6 @@ void EditPassDialog::on_edit_code_finished(int req) {
         tips->show();
         setshow(stackwidget);
     } else if(req == 0) {
-        timer->start();
-        timer->setInterval(1000);
-        get_code->setEnabled(false);
     }
 }
 
@@ -427,13 +456,20 @@ void EditPassDialog::set_clear() {
     if(!tips->isHidden()) {
         tips->hide();
     }
-    del_btn->raise();
     account->setText("");
     newpass->setText("");
+    confirm_pass->setText("");
     valid_code->setText("");
+    timerout_num = 60;
+    get_code->setEnabled(true);
+    get_code->setText(tr("Send"));
+    timer->stop();
 }
 
 void EditPassDialog::on_close() {
+    newpass->get_visble()->setChecked(false);
+    account->get_visble()->setChecked(false);
+    confirm_pass->get_visble()->setChecked(false);
     stackwidget->setCurrentIndex(0);
     set_clear();
     close();

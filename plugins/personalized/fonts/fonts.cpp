@@ -159,6 +159,13 @@ void Fonts::plugin_delay_control(){
 }
 
 void Fonts::setupStylesheet(){
+
+    ui->titleSecondLabel->setVisible(false);
+    ui->sampleBtn1->setVisible(false);
+    ui->sampleBtn2->setVisible(false);
+    ui->sampleBtn3->setVisible(false);
+    ui->sampleBtn4->setVisible(false);
+
 //    pluginWidget->setStyleSheet("background: #ffffff;");
 //    ui->fontSizeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 4px;}");
 //    ui->fontSizeLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
@@ -351,6 +358,8 @@ void Fonts::setupConnect(){
             //获取当前字体信息
             _getCurrentFontInfo();
             //设置字体大小
+
+
             ifsettings->set(GTK_FONT_KEY, QVariant(QString("%1 %2").arg(gtkfontStrList.at(0)).arg(defaultfontinfo.gtkfontsize * level)));
             ifsettings->set(DOC_FONT_KEY, QVariant(QString("%1 %2").arg(docfontStrList.at(0)).arg(defaultfontinfo.docfontsize * level)));
             ifsettings->set(MONOSPACE_FONT_KEY, QVariant(QString("%1 %2").arg(monospacefontStrList.at(0)).arg(defaultfontinfo.monospacefontsize * level)));

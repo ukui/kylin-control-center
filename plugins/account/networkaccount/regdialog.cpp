@@ -191,6 +191,7 @@ void RegDialog::set_clear() {
     if(!tips->isHidden()) {
         tips->hide();
     }
+    reg_pass->get_visble()->setChecked(false);
     reg_pass->setText("");
     reg_user->setText("");
     reg_phone->setText("");

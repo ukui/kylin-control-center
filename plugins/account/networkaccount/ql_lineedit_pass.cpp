@@ -45,4 +45,39 @@ ql_lineedit_pass::ql_lineedit_pass(QWidget *parent) : QLineEdit(parent)
     layout->setMargin(0);
     visble->setFocusPolicy(Qt::NoFocus);
     setLayout(layout);
+
+}
+
+QPushButton* ql_lineedit_pass::get_visble() {
+    return visble;
+}
+
+bool ql_lineedit_pass::check() {
+    bool uper = false;
+    bool normal = false;
+    bool number = false;
+    bool line = false;
+    if(this->text() != "") {
+        QString str = this->text();
+        for(QChar c:str) {
+            if(c>='A' && c <= 'Z') {
+                uper = true;
+                continue;
+            }
+            if(c>='a' && c <='z') {
+                normal = true;
+                continue;
+            }
+            if(c>='0' && c<='9') {
+                number = true;
+                continue;
+            }
+        }
+        if(text().length() >= 6) {
+            line = true;
+        }
+    } else {
+        return false;
+    }
+    return uper && normal && number && line;
 }
