@@ -80,7 +80,7 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pIpVolumeLabel->setFixedSize(115,24);
     m_pInputIconBtn->setFixedSize(24,24);
     m_pIpVolumeSlider->setFixedHeight(20);
-    m_pIpVolumePercentLabel->setFixedSize(36,24);
+    m_pIpVolumePercentLabel->setFixedSize(40,24);
     m_pMasterLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     m_pMasterLayout->addWidget(m_pIpVolumeLabel);
     m_pMasterLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));

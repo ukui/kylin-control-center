@@ -690,9 +690,9 @@ void UkmediaMainWidget::setInputStream(UkmediaMainWidget *m_pWidget, MateMixerSt
     }
     m_pControl = mate_mixer_stream_get_default_control(m_pStream);
     if (G_LIKELY (m_pControl != nullptr)) {
-        //if (m_pWidget->m_pDeviceStr == UKUI_INPUT_REAR_MIC || m_pWidget->m_pDeviceStr == UKUI_INPUT_FRONT_MIC || m_pWidget->m_pDeviceStr == UKUI_OUTPUT_HEADPH) {
+        if (m_pWidget->m_pDeviceStr == UKUI_INPUT_REAR_MIC || m_pWidget->m_pDeviceStr == UKUI_INPUT_FRONT_MIC || m_pWidget->m_pDeviceStr == UKUI_OUTPUT_HEADPH) {
             mate_mixer_stream_control_set_monitor_enabled(m_pControl,true);
-//        }
+        }
     }
 
 //    m_pControl = mate_mixer_stream_get_default_control(m_pStream);
@@ -712,9 +712,9 @@ void UkmediaMainWidget::onStreamControlMuteNotify (MateMixerStreamControl *m_pCo
         mate_mixer_stream_control_set_monitor_enabled (m_pControl, false);
     }
     else {
-//        if (m_pWidget->m_pDeviceStr == UKUI_INPUT_REAR_MIC || m_pWidget->m_pDeviceStr == UKUI_INPUT_FRONT_MIC || m_pWidget->m_pDeviceStr == UKUI_OUTPUT_HEADPH) {
+        if (m_pWidget->m_pDeviceStr == UKUI_INPUT_REAR_MIC || m_pWidget->m_pDeviceStr == UKUI_INPUT_FRONT_MIC || m_pWidget->m_pDeviceStr == UKUI_OUTPUT_HEADPH) {
             mate_mixer_stream_control_set_monitor_enabled(m_pControl,true);
-//        }
+        }
     }
 }
 
@@ -1099,20 +1099,20 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
 
     if (MATE_MIXER_IS_STREAM(m_pStream)) {
 
-        qDebug() << "get stream error" << mate_mixer_stream_control_get_label(m_pControl) << mate_mixer_stream_get_label(m_pStream);
+        qDebug() << "get stream correct" << mate_mixer_stream_control_get_label(m_pControl) << mate_mixer_stream_get_label(m_pStream);
     }
     else {
         m_pStream = m_pWidget->m_pStream;
         direction = mate_mixer_stream_get_direction(MATE_MIXER_STREAM(m_pStream));
         if (direction == MATE_MIXER_DIRECTION_OUTPUT) {
-            mate_mixer_context_set_default_output_stream(m_pWidget->m_pContext,m_pStream);
-            /*setOutputStream(m_pWidget,m_pStream);
-            qDebug() << "从control 获取的stream不为output stream" << mate_mixer_stream_get_label(m_pStream);*/
+//            mate_mixer_context_set_default_output_stream(m_pWidget->m_pContext,m_pStream);
+            setOutputStream(m_pWidget,m_pStream);
+            qDebug() << "从control 获取的stream不为output stream" << mate_mixer_stream_get_label(m_pStream);
         }
         else if (direction == MATE_MIXER_DIRECTION_INPUT) {
-            mate_mixer_context_set_default_input_stream(m_pWidget->m_pContext,m_pStream);
-            /*qDebug() << "从control 获取的stream不为input stream" << mate_mixer_stream_get_label(m_pStream);
-            setInputStream(m_pWidget,m_pStream);*/
+//            mate_mixer_context_set_default_input_stream(m_pWidget->m_pContext,m_pStream);
+            qDebug() << "从control 获取的stream不为input stream" << mate_mixer_stream_get_label(m_pStream);
+            setInputStream(m_pWidget,m_pStream);
         }
     }
 

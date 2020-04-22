@@ -102,7 +102,7 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pOpVolumeLabel->setFixedSize(115,24);
     m_pOutputIconBtn->setFixedSize(24,24);
     m_pOpVolumeSlider->setFixedHeight(20);
-    m_pOpVolumePercentLabel->setFixedSize(36,24);
+    m_pOpVolumePercentLabel->setFixedSize(40,24);
     masterLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     masterLayout->addWidget(m_pOpVolumeLabel);
     masterLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
