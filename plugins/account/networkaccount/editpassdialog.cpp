@@ -262,13 +262,20 @@ void EditPassDialog::on_edit_submit() {
         ok_acc = false;
         qstrcpy(acco,acc.toStdString().c_str());
     }
-    if(!ok_cur && !ok_new && !ok_code && !ok_confirm && !ok_acc) {
+    f(!ok_cur && !ok_new && !ok_code && !ok_confirm && !ok_acc) {
         qstrcpy(cur_acc,account->text().toStdString().c_str());
         qstrcpy(new_pass,newpass->text().toStdString().c_str());
         qstrcpy(mcode,valid_code->text().toStdString().c_str());
         qstrcpy(confirm_password,confirm_pass->text().toStdString().c_str());
         ret = client->user_resetpwd(acco,new_pass,mcode);
-        if(qstrcmp(confirm_password,new_pass) != 0 || newpass->check() == false) {
+        if(newpass->check() == false) {
+            set_code(tr("At least 6 bit, include letters and digt"));
+            tips->show();
+            setshow(content);
+            return ;
+            return ;
+        }
+        if(qstrcmp(confirm_password,new_pass) != 0 ) {
             set_code(tr("Please check your password!"));
             tips->show();
             setshow(content);
