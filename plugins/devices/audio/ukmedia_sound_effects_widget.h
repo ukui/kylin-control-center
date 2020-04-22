@@ -25,6 +25,7 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QStyledItemDelegate>
+#include "switchbutton.h"
 
 class UkuiMessageBox : public QMessageBox
 {
@@ -56,6 +57,7 @@ private:
     QComboBox *m_pSoundThemeCombobox;
     QComboBox *m_pShutdownCombobox;
     QComboBox *m_pLagoutCombobox;
+    SwitchButton *m_pBootButton;
 };
 
 #endif // UKMEDIASOUNDEFFECTSWIDGET_H

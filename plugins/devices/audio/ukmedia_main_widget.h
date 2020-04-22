@@ -48,6 +48,9 @@
 #define UKUI_OUTPUT_HEADPH "analog-output-headphones" //模拟耳机
 
 #define KEY_SOUNDS_SCHEMA "org.mate.sound"
+#define UKUI_SWITCH_SETTING "org.ukui.session"
+#define UKUI_BOOT_MUSIC_KEY "boot-music"
+
 #define EVENT_SOUNDS_KEY "event-sounds"
 #define INPUT_SOUNDS_KEY "input-feedback-sounds"
 #define SOUND_THEME_KEY "theme-name"
@@ -68,10 +71,12 @@ class UkmediaMainWidget : public QWidget
 public:
     UkmediaMainWidget(QWidget *parent = nullptr);
     ~UkmediaMainWidget();
-    void inputVolumeDarkThemeImage(int value);
-    void outputVolumeDarkThemeIamge(int value);
+    void inputVolumeDarkThemeImage(int value,bool status);
+    void outputVolumeDarkThemeImage(int value,bool status);
     int getInputVolume();
     int getOutputVolume();
+    bool getInputMuteStatus();
+    bool getOutputMuteStatus();
 
     static void listDevice(UkmediaMainWidget *w,MateMixerContext *context);
     static void streamStatusIconSetControl (UkmediaMainWidget *w,MateMixerStreamControl *control);
@@ -169,6 +174,8 @@ private Q_SLOTS:
     void outputWidgetSliderChangedSlot(int value);
     void inputWidgetSliderChangedSlot(int value);
     void ukuiThemeChangedSlot(const QString &);
+    void bootButtonSwitchChangedSlot(bool status);
+    void bootMusicSettingsChanged();
 
 private:
     UkmediaInputWidget *m_pInputWidget;
@@ -182,6 +189,7 @@ private:
     MateMixerStreamControl *m_pOutputBarStreamControl;
     MateMixerStreamControl *m_pInputBarStreamControl;
     MateMixerStreamControl *m_pControl;
+    MateMixerStream *m_pStream;
 
     QStringList *m_pSoundList;
     QStringList *m_pThemeDisplayNameList;
@@ -201,8 +209,10 @@ private:
     gdouble maxPeak;
     guint maxPeakId;
 
+    QGSettings *m_pBootSetting;
     QGSettings *m_pThemeSetting;
     QString mThemeName;
+    bool m_hasMusic;
 };
 
 #endif // WIDGET_H

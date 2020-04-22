@@ -144,14 +144,24 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     populateModelFromDir(this,SOUND_SET_DIR);
 
     //检测系统主题
-    if(QGSettings::isSchemaInstalled(UKUI_THEME_SETTING)){
+    if (QGSettings::isSchemaInstalled(UKUI_THEME_SETTING)){
         m_pThemeSetting = new QGSettings(UKUI_THEME_SETTING);
     }
-
     if (m_pThemeSetting->keys().contains("styleName")) {
         mThemeName = m_pThemeSetting->get(UKUI_THEME_NAME).toString();
     }
     connect(m_pThemeSetting, SIGNAL(changed(const QString &)),this,SLOT(ukuiThemeChangedSlot(const QString &)));
+
+    //检测设计开关机音乐
+    if (QGSettings::isSchemaInstalled(UKUI_SWITCH_SETTING)) {
+        m_pBootSetting = new QGSettings(UKUI_SWITCH_SETTING);
+    }
+    if (m_pBootSetting->keys().contains("bootMusic")) {
+        m_hasMusic = m_pBootSetting->get(UKUI_BOOT_MUSIC_KEY).toBool();
+    }
+
+    connect(m_pBootSetting,SIGNAL(changed(const QString &)),this,SLOT(bootMusicSettingsChanged()));
+    connect(m_pSoundWidget->m_pBootButton,SIGNAL(checkedChanged(bool)),this,SLOT(bootButtonSwitchChangedSlot(bool)));
     //输出音量控制
     //输出滑动条音量控制
     connect(m_pOutputWidget->m_pOpVolumeSlider,SIGNAL(valueChanged(int)),this,SLOT(outputWidgetSliderChangedSlot(int)));
@@ -167,6 +177,32 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     ukuiInputLevelSetProperty(this);
 }
 
+/*
+    是否播放开关机音乐
+*/
+void UkmediaMainWidget::bootButtonSwitchChangedSlot(bool status)
+{
+    bool bBootStatus = true;
+    if (m_pBootSetting->keys().contains("bootMusic")) {
+        bBootStatus = m_pBootSetting->get(UKUI_BOOT_MUSIC_KEY).toBool();
+        if (bBootStatus != status) {
+            m_pBootSetting->set(UKUI_BOOT_MUSIC_KEY,status);
+        }
+    }
+}
+
+void UkmediaMainWidget::bootMusicSettingsChanged()
+{
+    bool bBootStatus = true;
+    bool status = m_pSoundWidget->m_pBootButton->isChecked();
+    if (m_pBootSetting->keys().contains("bootMusic")) {
+        bBootStatus = m_pBootSetting->get(UKUI_BOOT_MUSIC_KEY).toBool();
+        if (status != bBootStatus ) {
+            m_pSoundWidget->m_pBootButton->setChecked(bBootStatus);
+        }
+    }
+}
+
 
 /*
     系统主题更改
@@ -178,8 +214,12 @@ void UkmediaMainWidget::ukuiThemeChangedSlot(const QString &themeStr)
     }
     int nInputValue = getInputVolume();
     int nOutputValue = getOutputVolume();
-    inputVolumeDarkThemeImage(nInputValue);
-    outputVolumeDarkThemeIamge(nOutputValue);
+    bool inputStatus = getInputMuteStatus();
+    bool outputStatus = getOutputMuteStatus();
+    inputVolumeDarkThemeImage(nInputValue,inputStatus);
+    outputVolumeDarkThemeImage(nOutputValue,outputStatus);
+    m_pOutputWidget->m_pOutputIconBtn->repaint();
+    m_pInputWidget->m_pInputIconBtn->repaint();
 }
 
 /*
@@ -537,7 +577,6 @@ void UkmediaMainWidget::removeStream (UkmediaMainWidget *m_pWidget, const gchar 
         if (index >= 0) {
             m_pWidget->m_pOutputStreamList->removeAt(index);
             m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->removeItem(index);
-//            qDebug() << "remove output stream :" << m_pName ;
         }
     }
     if (m_pWidget->m_pAppVolumeList != nullptr) {
@@ -687,11 +726,10 @@ void UkmediaMainWidget::onContextDefaultOutputStreamNotify (MateMixerContext *m_
     Q_UNUSED(pspec);
     g_debug("on context default output stream notify");
     MateMixerStream *m_pStream;
-//    qDebug() << "on context default stream notify********";
     m_pStream = mate_mixer_context_get_default_output_stream (m_pContext);
 
     if (m_pStream == nullptr) {
-//        qDebug() << "on context default output steam notify:" << "stream is null";
+        qDebug() << "on context default output steam notify:" << "stream is null";
         //当输出流更改异常时，使用默认的输入流，不应该发生这种情况
         m_pStream = m_pWidget->m_pOutputStream;
     }
@@ -743,9 +781,29 @@ int UkmediaMainWidget::getOutputVolume()
 }
 
 /*
+   获取输入状态
+*/
+bool UkmediaMainWidget::getInputMuteStatus()
+{
+    MateMixerStream *pStream = mate_mixer_context_get_default_input_stream(m_pContext);
+    MateMixerStreamControl *pControl = mate_mixer_stream_get_default_control(pStream);
+    return mate_mixer_stream_control_get_mute(pControl);
+}
+
+/*
+    获取输出状态
+*/
+bool UkmediaMainWidget::getOutputMuteStatus()
+{
+    MateMixerStream *pStream = mate_mixer_context_get_default_output_stream(m_pContext);
+    MateMixerStreamControl *pControl = mate_mixer_stream_get_default_control(pStream);
+    return mate_mixer_stream_control_get_mute(pControl);
+}
+
+/*
     深色主题时输出音量图标
 */
-void UkmediaMainWidget::outputVolumeDarkThemeIamge(int value)
+void UkmediaMainWidget::outputVolumeDarkThemeImage(int value,bool status)
 {
     QImage image;
     QColor color = QColor(0,0,0,216);
@@ -756,12 +814,16 @@ void UkmediaMainWidget::outputVolumeDarkThemeIamge(int value)
         color = QColor(255,255,255,216);
     }
     m_pOutputWidget->m_pOutputIconBtn->mColor = color;
-    if (value <= 0) {
-       image  = QImage("/usr/share/ukui-media/img/audio-volume-mute.svg");
+    if (status) {
+        image  = QImage("/usr/share/ukui-media/img/audio-volume-muted.svg");
+        m_pOutputWidget->m_pOutputIconBtn->mImage = image;
+    }
+    else if (value <= 0) {
+        image  = QImage("/usr/share/ukui-media/img/audio-volume-muted.svg");
         m_pOutputWidget->m_pOutputIconBtn->mImage = image;
     }
     else if (value > 0 && value <= 33) {
-       image = QImage("/usr/share/ukui-media/img/audio-volume-low.svg");
+        image = QImage("/usr/share/ukui-media/img/audio-volume-low.svg");
         m_pOutputWidget->m_pOutputIconBtn->mImage = image;
     }
     else if (value >33 && value <= 66) {
@@ -778,7 +840,7 @@ void UkmediaMainWidget::outputVolumeDarkThemeIamge(int value)
 /*
     输入音量图标
 */
-void UkmediaMainWidget::inputVolumeDarkThemeImage(int value)
+void UkmediaMainWidget::inputVolumeDarkThemeImage(int value,bool status)
 {
     QImage image;
     QColor color = QColor(0,0,0,190);
@@ -789,12 +851,16 @@ void UkmediaMainWidget::inputVolumeDarkThemeImage(int value)
         color = QColor(255,255,255,190);
     }
     m_pInputWidget->m_pInputIconBtn->mColor = color;
-    if (value <= 0) {
-       image  = QImage("/usr/share/ukui-media/img/microphone-mute.svg");
+    if (status) {
+        image  = QImage("/usr/share/ukui-media/img/microphone-mute.svg");
+        m_pInputWidget->m_pInputIconBtn->mImage = image;
+    }
+    else if (value <= 0) {
+        image  = QImage("/usr/share/ukui-media/img/microphone-mute.svg");
         m_pInputWidget->m_pInputIconBtn->mImage = image;
     }
     else if (value > 0 && value <= 33) {
-       image = QImage("/usr/share/ukui-media/img/microphone-low.svg");
+        image = QImage("/usr/share/ukui-media/img/microphone-low.svg");
         m_pInputWidget->m_pInputIconBtn->mImage = image;
     }
     else if (value >33 && value <= 66) {
@@ -822,8 +888,10 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
     const GList *m_pInputs =mate_mixer_stream_list_controls(m_pStream);
     m_pControl = mate_mixer_stream_get_default_control(m_pStream);
 
+    m_pWidget->m_pStream = m_pStream;
     //初始化滑动条的值
     int volume = mate_mixer_stream_control_get_volume(m_pControl);
+    bool status = mate_mixer_stream_control_get_mute(m_pControl);
     int value = volume *100 /65536.0+0.5;
     m_pWidget->m_pInputWidget->m_pIpVolumeSlider->setValue(value);
     QString percent = QString::number(value);
@@ -835,8 +903,8 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
     const QSize icon_size = QSize(24,24);
     m_pWidget->m_pInputWidget->m_pInputIconBtn->setIconSize(icon_size);
     //修改图标为深色主题图标
-    m_pWidget->inputVolumeDarkThemeImage(value);
-
+    m_pWidget->inputVolumeDarkThemeImage(value,status);
+    m_pWidget->m_pInputWidget->m_pInputIconBtn->repaint();
     while (m_pInputs != nullptr) {
         MateMixerStreamControl *input = MATE_MIXER_STREAM_CONTROL (m_pInputs->data);
         MateMixerStreamControlRole role = mate_mixer_stream_control_get_role (input);
@@ -918,6 +986,7 @@ void UkmediaMainWidget::updateIconOutput(UkmediaMainWidget *m_pWidget)
     streamStatusIconSetControl(m_pWidget, m_pControl);
     //初始化滑动条的值
     int volume = mate_mixer_stream_control_get_volume(m_pControl);
+    bool status = mate_mixer_stream_control_get_mute(m_pControl);
     int value = volume *100 /65536.0+0.5;
 
     m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->setValue(value);
@@ -929,26 +998,28 @@ void UkmediaMainWidget::updateIconOutput(UkmediaMainWidget *m_pWidget)
 
     const QSize icon_size = QSize(24,24);
     m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIconSize(icon_size);
-    m_pWidget->outputVolumeDarkThemeIamge(value);
+    m_pWidget->outputVolumeDarkThemeImage(value,status);
+    m_pWidget->m_pOutputWidget->m_pOutputIconBtn->repaint();
+//    //输出音量控制
+//    //输出滑动条和音量控制
+//    connect(m_pWidget->m_pOutputWidget->m_pOpVolumeSlider,&QSlider::valueChanged,[=](int value){
+//        QString percent;
 
-    //输出音量控制
-    //输出滑动条和音量控制
-    connect(m_pWidget->m_pOutputWidget->m_pOpVolumeSlider,&QSlider::valueChanged,[=](int value){
-        QString percent;
-
-        percent = QString::number(value);
-        int volume = value*65536/100;
-        mate_mixer_stream_control_set_volume(m_pControl,guint(volume));
-        if (value <= 0) {
-            mate_mixer_stream_control_set_mute(m_pControl,TRUE);
-            mate_mixer_stream_control_set_volume(m_pControl,0);
-            percent = QString::number(0);
-        }
-        m_pWidget->outputVolumeDarkThemeIamge(value);
-        mate_mixer_stream_control_set_mute(m_pControl,FALSE);
-        percent.append("%");
-        m_pWidget->m_pOutputWidget->m_pOpVolumePercentLabel->setText(percent);
-    });
+//        percent = QString::number(value);
+//        int volume = value*65536/100;
+//        mate_mixer_stream_control_set_volume(m_pControl,guint(volume));
+//        if (value <= 0) {
+//            mate_mixer_stream_control_set_mute(m_pControl,TRUE);
+//            mate_mixer_stream_control_set_volume(m_pControl,0);
+//            percent = QString::number(0);
+//        }
+//        bool status = mate_mixer_stream_control_get_mute(m_pControl);
+//        m_pWidget->outputVolumeDarkThemeImage(value,status);
+//        m_pWidget->m_pOutputWidget->m_pOutputIconBtn->repaint();
+//        mate_mixer_stream_control_set_mute(m_pControl,FALSE);
+//        percent.append("%");
+//        m_pWidget->m_pOutputWidget->m_pOpVolumePercentLabel->setText(percent);
+//    });
 
     if (m_pControl != nullptr) {
         g_debug ("Output icon enabled");
@@ -961,6 +1032,7 @@ void UkmediaMainWidget::updateIconOutput(UkmediaMainWidget *m_pWidget)
 void UkmediaMainWidget::streamStatusIconSetControl(UkmediaMainWidget *m_pWidget,MateMixerStreamControl *m_pControl)
 {
     g_debug("stream status icon set control");
+    qDebug() << "stream status icon set control" << mate_mixer_stream_control_get_label(m_pControl);
     g_signal_connect ( G_OBJECT (m_pControl),
                       "notify::volume",
                       G_CALLBACK (onStreamControlVolumeNotify),
@@ -989,21 +1061,18 @@ void UkmediaMainWidget::onControlMuteNotify (MateMixerStreamControl *m_pControl,
     gboolean mute = mate_mixer_stream_control_get_mute (m_pControl);
     int volume = int(mate_mixer_stream_control_get_volume(m_pControl));
     volume = int(volume*100/65536.0+0.5);
-    if (mute) {
-        m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-muted.svg"));
+    MateMixerStream *stream = mate_mixer_stream_control_get_stream(m_pControl);
+    MateMixerDirection direction = mate_mixer_stream_get_direction(stream);
+
+    if (direction == MATE_MIXER_DIRECTION_OUTPUT) {
+        m_pWidget->outputVolumeDarkThemeImage(volume,mute);
+        m_pWidget->m_pOutputWidget->m_pOutputIconBtn->repaint();
     }
-    else if (volume <= 0) {
-        m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-muted.svg"));
+    else if (direction == MATE_MIXER_DIRECTION_INPUT) {
+        m_pWidget->inputVolumeDarkThemeImage(volume,mute);
+        m_pWidget->m_pInputWidget->m_pInputIconBtn->repaint();
     }
-    else if (volume > 0 && volume <= 33) {
-        m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-low.svg"));
-    }
-    else if (volume >33 && volume <= 66) {
-        m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-medium.svg"));
-    }
-    else {
-        m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIcon(QIcon("/usr/share/ukui-media/img/audio-volume-high.svg"));
-    }
+
 }
 
 /*
@@ -1025,10 +1094,29 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
     }
 
     decscription = mate_mixer_stream_control_get_label(m_pControl);
-
+    MateMixerDirection direction;
     MateMixerStream *m_pStream = mate_mixer_stream_control_get_stream(m_pControl);
-    MateMixerDirection direction = mate_mixer_stream_get_direction(m_pStream);
 
+    if (MATE_MIXER_IS_STREAM(m_pStream)) {
+
+        qDebug() << "get stream error" << mate_mixer_stream_control_get_label(m_pControl) << mate_mixer_stream_get_label(m_pStream);
+    }
+    else {
+        m_pStream = m_pWidget->m_pStream;
+        direction = mate_mixer_stream_get_direction(MATE_MIXER_STREAM(m_pStream));
+        if (direction == MATE_MIXER_DIRECTION_OUTPUT) {
+            mate_mixer_context_set_default_output_stream(m_pWidget->m_pContext,m_pStream);
+            /*setOutputStream(m_pWidget,m_pStream);
+            qDebug() << "从control 获取的stream不为output stream" << mate_mixer_stream_get_label(m_pStream);*/
+        }
+        else if (direction == MATE_MIXER_DIRECTION_INPUT) {
+            mate_mixer_context_set_default_input_stream(m_pWidget->m_pContext,m_pStream);
+            /*qDebug() << "从control 获取的stream不为input stream" << mate_mixer_stream_get_label(m_pStream);
+            setInputStream(m_pWidget,m_pStream);*/
+        }
+    }
+
+    direction = mate_mixer_stream_get_direction(m_pStream);
     //设置输出滑动条的值
     int value = volume*100/65536.0 + 0.5;
     if (direction == MATE_MIXER_DIRECTION_OUTPUT) {
@@ -1123,8 +1211,6 @@ void UkmediaMainWidget::updateTheme (UkmediaMainWidget *m_pWidget)
         pThemeName = g_strdup (NO_SOUNDS_THEME_NAME);
     }
     //设置combox的主题
-
-    qDebug() << "设置主题名为:" <<pThemeName << 1063;
     setComboxForThemeName (m_pWidget, pThemeName);
     updateAlertsFromThemeName (m_pWidget, pThemeName);
 }
@@ -1238,7 +1324,7 @@ char *UkmediaMainWidget::loadIndexThemeName (const char *index,char **parent)
 void UkmediaMainWidget::setComboxForThemeName (UkmediaMainWidget *m_pWidget,const char *name)
 {
     g_debug("set combox for theme name");
-//    qDebug() << "set combox for theme name" << name;
+    qDebug() << "set combox for theme name" << name;
     gboolean      found;
     int count = 0;
     /* If the name is empty, use "freedesktop" */
@@ -1269,7 +1355,6 @@ void UkmediaMainWidget::setComboxForThemeName (UkmediaMainWidget *m_pWidget,cons
 /*    if (found) {
     }*/ else if (strcmp (name, "freedesktop") != 0) {//设置为默认的主题
         g_debug ("not found, falling back to fdo");
-        qDebug() << "设置主题名为:" << "freedesktop" << 1200;
         setComboxForThemeName (m_pWidget, "freedesktop");
     }
 }
@@ -1331,7 +1416,6 @@ void UkmediaMainWidget::updateAlert (UkmediaMainWidget *pWidget,const char *aler
     is_default = strcmp (alertId, DEFAULT_ALERT_ID) == 0;
 
     qDebug() << "namestr:" << nameStr << "themeStr:" << themeStr << "parent:" << parent << "theme:" << theme;
-    qDebug() << "is_custom:" << is_custom << "is_default:" << is_default  << pWidget->m_pThemeNameList->at(index);
     if (! is_custom && is_default) {
         /* remove custom just in case */
         remove_custom = TRUE;
@@ -1566,13 +1650,10 @@ void UkmediaMainWidget::playAlretSoundFromPath (QString path)
    connect(player,&QMediaPlayer::stateChanged,[=](QMediaPlayer::State state){
         switch (state) {
         case QMediaPlayer::StoppedState:
-            qDebug() << "状态" << "QMediaPlayer::StoppedState";
             break;
         case QMediaPlayer::PlayingState:
-            qDebug() << "状态" << "QMediaPlayer::PlayingState";
             break;
         default:
-            qDebug() << "状态" << "QMediaPlayer::PausedState";
             break;
         }
         player->deleteLater() ;
@@ -1641,6 +1722,7 @@ void UkmediaMainWidget::outputDeviceComboxIndexChangedSlot(QString str)
     if (flags & MATE_MIXER_BACKEND_CAN_SET_DEFAULT_OUTPUT_STREAM) {
 
         mate_mixer_context_set_default_output_stream (m_pContext, stream);
+        m_pStream = stream;
         MateMixerStreamControl *c = mate_mixer_stream_get_default_control(stream);
         int(mate_mixer_stream_control_get_volume(c) *100 /65536.0+0.5);
         /*miniWidget->masterVolumeSlider->setValue(volume);*/
@@ -1672,6 +1754,7 @@ void UkmediaMainWidget::inputDeviceComboxIndexChangedSlot(QString str)
     flags = mate_mixer_context_get_backend_flags (m_pContext);
 
     if (flags & MATE_MIXER_BACKEND_CAN_SET_DEFAULT_OUTPUT_STREAM) {
+        m_pStream = stream;
         mate_mixer_context_set_default_input_stream (m_pContext, stream);
         MateMixerStreamControl *c = mate_mixer_stream_get_default_control(stream);
         /*int volume = */int(mate_mixer_stream_control_get_volume(c) *100 /65536.0+0.5);
@@ -1719,7 +1802,6 @@ void UkmediaMainWidget::setOutputStream (UkmediaMainWidget *m_pWidget, MateMixer
     updateOutputStreamList (m_pWidget, m_pStream);
     if (m_pControl == nullptr) {
         return;
-//        qDebug() << "m_pControl is null";
     }
     updateOutputSettings(m_pWidget,m_pWidget->m_pOutputBarStreamControl);
 }
@@ -1801,22 +1883,24 @@ void UkmediaMainWidget::ukuiUpdatePeakValue (UkmediaMainWidget *m_pWidget)
 */
 void UkmediaMainWidget::outputWidgetSliderChangedSlot(int value)
 {
-    m_pOutputStream = mate_mixer_context_get_default_output_stream(m_pContext);
-    if (m_pOutputStream != nullptr)
-        m_pControl = mate_mixer_stream_get_default_control(m_pOutputStream);
-    QString percent;
+    m_pStream = mate_mixer_context_get_default_output_stream(m_pContext);
+    if (m_pStream != nullptr)
+        m_pControl = mate_mixer_stream_get_default_control(m_pStream);
 
+    QString percent;
+    bool status = false;
     percent = QString::number(value);
     int volume = value*65536/100;
     mate_mixer_stream_control_set_volume(m_pControl,guint(volume));
     if (value <= 0) {
-        mate_mixer_stream_control_set_mute(m_pControl,TRUE);
+        status = true;
+        mate_mixer_stream_control_set_mute(m_pControl,status);
         mate_mixer_stream_control_set_volume(m_pControl,0);
         percent = QString::number(0);
     }
 
-    outputVolumeDarkThemeIamge(value);
-    mate_mixer_stream_control_set_mute(m_pControl,FALSE);
+    outputVolumeDarkThemeImage(value,status);
+    mate_mixer_stream_control_set_mute(m_pControl,status);
     percent.append("%");
     m_pOutputWidget->m_pOpVolumePercentLabel->setText(percent);
     m_pOutputWidget->m_pOutputIconBtn->repaint();
@@ -1828,21 +1912,24 @@ void UkmediaMainWidget::outputWidgetSliderChangedSlot(int value)
 */
 void UkmediaMainWidget::inputWidgetSliderChangedSlot(int value)
 {
-    m_pInputStream = mate_mixer_context_get_default_input_stream(m_pContext);
-    m_pControl = mate_mixer_stream_get_default_control(m_pInputStream);
+    m_pStream = mate_mixer_context_get_default_input_stream(m_pContext);
+    m_pControl = mate_mixer_stream_get_default_control(m_pStream);
 
     QString percent;
+    bool status = false;
     if (value <= 0) {
-        mate_mixer_stream_control_set_mute(m_pControl,TRUE);
+        status = true;
+        mate_mixer_stream_control_set_mute(m_pControl,status);
         mate_mixer_stream_control_set_volume(m_pControl,0);
         percent = QString::number(0);
     }
     //输入图标修改成深色主题
-    inputVolumeDarkThemeImage(value);
 
+    inputVolumeDarkThemeImage(value,status);
+    m_pInputWidget->m_pInputIconBtn->repaint();
     percent = QString::number(value);
     value = value * 65536 / 100;
-    mate_mixer_stream_control_set_mute(m_pControl,FALSE);
+    mate_mixer_stream_control_set_mute(m_pControl,status);
     mate_mixer_stream_control_set_volume(m_pControl,value);
     percent.append("%");
     m_pInputWidget->m_pInputIconBtn->repaint();
@@ -1912,10 +1999,13 @@ void UkmediaMainWidget::onStreamControlMonitorValue (MateMixerStream *m_pStream,
     Q_UNUSED(m_pStream);
     g_debug("on stream control monitor value");
     value = value*100;
-    if (value >= 0)
+    if (value >= 0) {
+//        qDebug() << "设置输入等级的值为:" << value;
         m_pWidget->m_pInputWidget->m_pInputLevelSlider->setValue(value);
-    else
+    }
+    else {
         m_pWidget->m_pInputWidget->m_pInputLevelSlider->setValue(0);
+    }
 }
 
 /*
@@ -2138,6 +2228,7 @@ void UkmediaMainWidget::create_custom_theme (const char *parent)
     g_mkdir_with_parents (path, 0755);
     g_free (path);
 
+    qDebug() << "create_custom_theme" << parent;
     /* Set the data for index.theme */
     keyfile = g_key_file_new ();
     g_key_file_set_string (keyfile, "Sound Theme", "Name", _("Custom"));
