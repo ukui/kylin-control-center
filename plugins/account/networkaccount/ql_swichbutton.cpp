@@ -85,8 +85,8 @@ void QL_SwichButton::set_id(int id) {
     this->id = id;
 }
 
-void QL_SwichButton::set_active() {
-    active = !active;
+void QL_SwichButton::set_active(bool ok) {
+    active = ok;
 }
 
 int QL_SwichButton::get_active() {

@@ -276,6 +276,16 @@ void config_list_widget::finished_load(int ret) {
 }
 
 void config_list_widget::handle_conf() {
+    if(Config_File(home).Get("Auto-sync","enable").toString() == "true") {
+        auto_syn->make_itemon();
+    } else {
+        auto_syn->make_itemoff();
+        auto_ok = false;
+        for(int i  = 0;i < mapid.size();i ++) {
+            list->get_item(i)->set_active(auto_ok);
+        }
+        update();
+    }
     if(auto_ok == false) {
         return ;
     }
@@ -308,11 +318,9 @@ void config_list_widget::on_switch_button(int on,int id) {
 
 void config_list_widget::on_auto_syn(int on,int id) {
     char name[32];
-    qstrcpy(name,"Auto-sync");
-    qDebug()<<name;
     auto_ok = !auto_ok;
     for(int i  = 0;i < mapid.size();i ++) {
-        list->get_item(i)->set_active();
+        list->get_item(i)->set_active(auto_ok);
     }
     update();
     client->change_conf_value(name,on);

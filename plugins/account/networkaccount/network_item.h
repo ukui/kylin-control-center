@@ -40,7 +40,7 @@ public:
     QHBoxLayout*    get_layout();
     QL_SwichButton* get_swbtn();
     QWidget*        get_widget();
-    void            set_active();
+    void            set_active(bool ok);
 private:
     QLabel          *label_item;
     QHBoxLayout     *layout;

@@ -85,6 +85,6 @@ void network_item::make_itemoff() {
     }
 }
 
-void network_item::set_active() {
-    switch_btn->set_active();
+void network_item::set_active(bool ok) {
+    switch_btn->set_active(ok);
 }
