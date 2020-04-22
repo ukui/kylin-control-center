@@ -129,7 +129,7 @@ void RegDialog::setstyleline() {
                         "&nbsp;&nbsp;"+code+"</span></p></body></html>");
 }
 
-vvoid RegDialog::set_code(QString codenum) {
+void RegDialog::set_code(QString codenum) {
     code = codenum;
     emit code_changed();
 }
