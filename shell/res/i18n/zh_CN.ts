@@ -2222,7 +2222,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="73"/>
         <source>At least 6 bit, include letters and digt</source>
-        <translation type="unfinished">至少六位，包含大小写字母、数字</translation>
+        <translation>至少六位，包含大小写字母、数字</translation>
     </message>
 </context>
 <context>
@@ -2788,7 +2788,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="57"/>
         <source>Confirm your password</source>
-        <translation type="unfinished"></translation>
+        <translation>确认密码</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="58"/>
@@ -2839,7 +2839,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="408"/>
         <source>Min</source>
-        <translation type="unfinished">分钟</translation>
+        <translation>分钟</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="428"/>
@@ -2976,7 +2976,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="159"/>
         <source>System</source>
-        <translation type="unfinished">系统</translation>
+        <translation>系统</translation>
     </message>
 </context>
 <context>
@@ -3017,7 +3017,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/successdiaolog.cpp" line="64"/>
         <source>Binding phone success!</source>
-        <translation type="unfinished"></translation>
+        <translation>绑定手机！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/successdiaolog.cpp" line="56"/>
@@ -3025,7 +3025,7 @@ folder will be deleted!</source>
         <location filename="../../../plugins/account/networkaccount/successdiaolog.cpp" line="62"/>
         <location filename="../../../plugins/account/networkaccount/successdiaolog.cpp" line="65"/>
         <source>Confirm</source>
-        <translation type="unfinished">确定</translation>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
@@ -3639,7 +3639,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
     <message>
         <location filename="../../../plugins/system/display/widget.cpp" line="951"/>
         <source>Some applications need to be restarted to take effect</source>
-        <translation type="unfinished">缩放配置需要注销后生效</translation>
+        <translation>缩放配置需要注销后生效</translation>
     </message>
 </context>
 <context>

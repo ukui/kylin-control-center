@@ -155,9 +155,11 @@ void Desktop::initTranslation() {
     iconMap.insert("ukui-volume-control-applet-qt", "audio-volume-high");
     iconMap.insert("kylin-nm", "gpm-battery-change");
     iconMap.insert("indicator-china-weather", "indicator-china-weather");
-    iconMap.insert("ukui-flash-disk", "usb-management-tool");
+    iconMap.insert("ukui-flash-disk", "drive-removable-media");
+    iconMap.insert("kylin-nm", "nm-device-wired");
+    iconMap.insert("ukui-power-manager-tray", "battery-good");
 
-    disList<<"ukui-sidebar"<<"sogou-qimpanel"<<"update-notifier"<<"software-update-available"
+    disList<<"ukui-sidebar"<<"update-notifier"<<"software-update-available"
           <<"blueman-tray"<<"ukui-power-manager"<<"ukui-settings-daemon"<<"blueman-tray"
          <<"ErrorApplication"<<"livepatch";
 

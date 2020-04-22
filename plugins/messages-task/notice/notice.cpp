@@ -178,7 +178,11 @@ void Notice::initOriNoticeStatus() {
         iconSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
         iconBtn->setIconSize(QSize(32,32));
         iconBtn->setSizePolicy(iconSizePolicy);
-        iconBtn->setIcon(QIcon::fromTheme(appsName.at(i)));
+        QString iconame = appsName.at(i);
+        if ("ukui-power-statistics" == appsName.at(i)) {
+            iconame = "battery-good";
+        }
+        iconBtn->setIcon(QIcon::fromTheme(iconame));
 
 
         QLabel * nameLabel = new QLabel();
