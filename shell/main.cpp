@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
         QCommandLineOption userinfoRoleOption("u", "Go to userinfo settings page");
         QCommandLineOption aboutRoleOption("a", "Go to about settings page");
         QCommandLineOption powerRoleOption("p", "Go to power settings page");
-        QCommandLineOption datetimeRoleOption("t", "Go to area settings page");
+        QCommandLineOption datetimeRoleOption("t", "Go to datetime settings page");
         QCommandLineOption desktopRoleOption("d", "Go to desktop settings page");
         QCommandLineOption audioRoleOption("s", "Go to audio settings page");
         QCommandLineOption noticeRoleOption("n", "Go to notice settings page");
