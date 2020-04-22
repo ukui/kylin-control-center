@@ -68,7 +68,7 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     //Resize
     del_btn->setMaximumSize(30,30);
     del_btn->setMinimumSize(30,30);
-    title->setMinimumHeight(26);
+    title->adjustSize();
     del_btn->setFixedSize(30,30);
     account->setFixedSize(338,36);
     newpass->setFixedSize(338,36);
