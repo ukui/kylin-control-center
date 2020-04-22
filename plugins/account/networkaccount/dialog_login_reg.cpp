@@ -392,8 +392,6 @@ void Dialog_login_reg::on_login_btn() {
 void Dialog_login_reg::on_login_finished(int ret) {
     qDebug()<< "wb1111" <<ret;
     if(ret == 119) {
-        pm->stop();
-        gif->hide();
         title->setText(tr("Binding Phone"));
         stack_box->setCurrentWidget(box_bind);
         register_account->setText(tr("Back"));
@@ -429,9 +427,9 @@ void Dialog_login_reg::on_login_finished(int ret) {
             setshow(stack_box);
             return ;
         }
-        pm->stop();
-        gif->hide();
     }
+    pm->stop();
+    gif->hide();
 }
 
 void Dialog_login_reg::on_bind_finished(int ret) {
