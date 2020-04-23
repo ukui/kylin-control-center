@@ -82,20 +82,28 @@ Touchpad::Touchpad()
 //    ui->scrollingWidget->setStyleSheet("QWidget{background: #F4F4F4; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
 
     const QByteArray id(TOUCHPAD_SCHEMA);
-    tpsettings = new QGSettings(id);
 
-    setupComponent();
-    if (findSynaptics()){
-        qDebug() << "Touch Devices Available";
-        initTouchpadStatus();
+    if (QGSettings::isSchemaInstalled(TOUCHPAD_SCHEMA)){
+        tpsettings = new QGSettings(id);
+        setupComponent();
+        if (findSynaptics()){
+            qDebug() << "Touch Devices Available";
+            initTouchpadStatus();
+        }
     }
+
+
+
 }
 
 Touchpad::~Touchpad()
 {
     delete ui;
+    if (QGSettings::isSchemaInstalled(TOUCHPAD_SCHEMA)){
+        delete tpsettings;
+    }
 
-    delete tpsettings;
+
 }
 
 QString Touchpad::get_plugin_name(){

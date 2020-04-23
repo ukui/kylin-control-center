@@ -444,7 +444,11 @@ void Dialog_login_reg::on_bind_finished(int ret) {
         box_bind->get_send_code()->setEnabled(true);
         box_bind->get_send_code()->setText(tr("Send"));
         box_bind->setclear();
+        title->setText(tr("Sign in Cloud"));
         register_account->setText(tr("Sign up"));
+        stack_box->setCurrentWidget(box_login);
+
+        setshow(stack_box);
         disconnect(login_submit,SIGNAL(clicked()),this,SLOT(on_bind_btn()));
         connect(login_submit,SIGNAL(clicked()),this,SLOT(on_login_btn()));
         disconnect(register_account,SIGNAL(clicked()),this,SLOT(back_login_btn()));
@@ -901,7 +905,7 @@ void Dialog_login_reg::back_normal() {
     del_btn->raise();
     succ->hide();
     setshow(basewidegt);
-
+    title->setText(tr("Sign in Cloud"));
     stack_box->setCurrentWidget(box_login);
     box_login->set_clear();
 }

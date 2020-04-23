@@ -393,7 +393,7 @@ void MainWindow::loadPlugins(){
         //屏保功能依赖ukui-session-manager
         if ((!g_file_test(screensaverFile, G_FILE_TEST_EXISTS) ||
                 !g_file_test(sessionFile, G_FILE_TEST_EXISTS)) &&
-                fileName == "libscreensaver.so")
+                (fileName == "libscreensaver.so" || fileName == "libscreenlock.so"))
             continue;
 //        //桌面功能依赖peony-common
 //        if (!g_file_test(peonyFile, G_FILE_TEST_EXISTS) && fileName == "libdesktop.so")
