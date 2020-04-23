@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-
 #include "bindphonedialog.h"
 
 BindPhoneDialog::BindPhoneDialog(QWidget *parent) : QWidget(parent)
@@ -25,8 +24,6 @@ BindPhoneDialog::BindPhoneDialog(QWidget *parent) : QWidget(parent)
     setContentsMargins(0,0,0,0);
     this->setFixedWidth(338);
     phone = new area_code_lineedit(this);
-    account = new QLineEdit(this);
-    pass = new ql_lineedit_pass(this);
     valid_code = new QLineEdit(this);
     send_code = new QPushButton(this);
 
@@ -34,15 +31,20 @@ BindPhoneDialog::BindPhoneDialog(QWidget *parent) : QWidget(parent)
 
     layout = new QVBoxLayout;
     sublayout = new QHBoxLayout;
-    account->setPlaceholderText(tr("Your account here"));
-    pass->setPlaceholderText(tr("Your password here"));
+
+    QString str = ("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
+                   "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
+                   "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}");
+    //valid_code->setStyleSheet(str);
+    //phone->setStyleSheet(str);
     valid_code->setPlaceholderText(tr("Your code here"));
     send_code->setText(tr("Get phone code"));
+    //send_code->setStyleSheet("QPushButton{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(0,0,0,0.85);} "
+    //                         "QPushButton:hover{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}"
+    //                         "QPushButton:click{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}");
 
 
     phone->setFixedSize(QSize(338,36));
-    account->setFixedSize(338,36);
-    pass->setFixedSize(338,36);
     valid_code->setFixedSize(120,36);
     send_code->setFixedSize(198,36);
     layout->setMargin(0);
@@ -51,13 +53,9 @@ BindPhoneDialog::BindPhoneDialog(QWidget *parent) : QWidget(parent)
     sublayout->setMargin(0);
     sublayout->setSpacing(16);
 
-    account->setTextMargins(16,0,0,0);
-    pass->setTextMargins(16,0,0,0);
     valid_code->setTextMargins(16,0,0,0);
 
     layout->addWidget(phone);
-    layout->addWidget(account);
-    layout->addWidget(pass);
     sublayout->addWidget(valid_code,0,Qt::AlignLeft);
     sublayout->addWidget(send_code,0,Qt::AlignRight);
     layout->addLayout(sublayout);
@@ -83,7 +81,6 @@ void BindPhoneDialog::setstyleline() {
 
 void BindPhoneDialog::setclear() {
     phone->setText("");
-    account->setText("");
     valid_code->setText("");
 }
 
@@ -99,30 +96,20 @@ QString BindPhoneDialog::get_code() {
     return valid_code->text();
 }
 
-QString BindPhoneDialog::get_pass() {
-    return pass->text();
-}
+
 
 QString BindPhoneDialog::get_phone() {
     return phone->text();
 }
 
-QString BindPhoneDialog::get_account() {
-    return account->text();
-}
 
 QLineEdit* BindPhoneDialog::get_code_lineedit() {
     return valid_code;
 }
 
-ql_lineedit_pass* BindPhoneDialog::get_pass_lineedit() {
-    return pass;
-}
+
 
 area_code_lineedit* BindPhoneDialog::get_phone_lineedit() {
     return phone;
 }
 
-QLineEdit *BindPhoneDialog::get_account_lineedit() {
-    return account;
-}

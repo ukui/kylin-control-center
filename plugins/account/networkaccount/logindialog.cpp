@@ -89,7 +89,7 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
     account_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);} "
                                      "QPushButton:hover{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
                                      "QPushButton:click{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
-    message_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;color:rgba(0,0,0,0.85);} "
+    message_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;} "
                                      "QPushButton:hover{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
                                      "QPushButton:click{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
     account_login_btn->setFocusPolicy(Qt::NoFocus);
@@ -169,7 +169,7 @@ void LoginDialog::startaction_1() {
         message_login_btn->setMaximumSize(90,36);
         message_login_btn->setMinimumSize(90,36);
         //message_login_btn->setGeometry(161 + sizeoff,96 + sizeoff,90,36);
-        account_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;color:rgba(0,0,0,0.85);} "
+        account_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;} "
                                          "QPushButton:hover{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
                                          "QPushButton:click{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
         message_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;color:#3D6BE5;} "
@@ -216,7 +216,7 @@ void LoginDialog::startaction_2() {
         account_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);} "
                                          "QPushButton:hover{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
                                          "QPushButton:click{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
-        message_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;color:rgba(0,0,0,0.85);} "
+        message_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;} "
                                          "QPushButton:hover{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
                                          "QPushButton:click{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
         account_login_btn->setFocusPolicy(Qt::NoFocus);
@@ -250,7 +250,7 @@ bool LoginDialog::login_account_thr_number() {
     forgot_pass_btn->setMaximumSize(80,30);
     forgot_pass_btn->setMinimumSize(80,30);
     //forgot_pass_btn->setGeometry(289 + sizeoff,228 + sizeoff,80,30);
-    forgot_pass_btn->setStyleSheet("QPushButton {font-size:14px;background: transparent;color:rgba(0,0,0,0.65);border-radius: 4px;}"
+    forgot_pass_btn->setStyleSheet("QPushButton {font-size:14px;background: transparent;border-radius: 4px;}"
                                    "QPushButton:hover{font-size:14px;color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}"
                                    "QPushButton:click{font-size:14px;color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}");
     forgot_pass_btn->setFocusPolicy(Qt::NoFocus);

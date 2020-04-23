@@ -71,7 +71,7 @@ PassDialog::PassDialog(QWidget *parent) : QWidget(parent)
 //    reg_phone->setValidator(validator_acc);
 
     passtips->setText(tr("At least 6 bit, include letters and digt"));
-    passtips->setStyleSheet("font-size:14px;color:rgba(0,0,0,0.85)");
+    passtips->setStyleSheet("font-size:14px;");
     tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
                         "&nbsp;&nbsp;"+code+"</span></p></body></html>");
     //reg_pass->setStyleSheet(str);

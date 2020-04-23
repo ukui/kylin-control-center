@@ -29,7 +29,7 @@ config_list_widget::config_list_widget(QWidget *parent) : QWidget(parent) {
     stacked_widget->setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
     code = client->check_login();
     init_gui();
-    if(code != "" && code !="201" && code != "203") {
+    if(code != "" && code !="201" && code != "203" && code != "401") {
         /*QFuture<int> res = QtConcurrent::run(this, &config_list_widget::oss_initial);
         int result = res.result();*/
         if(client->init_oss() == 0) {
@@ -249,7 +249,7 @@ void config_list_widget::on_login() {
 
 void config_list_widget::open_cloud() {
     code = client->check_login();
-    if(code != "" && code != "201" && code != "203") {
+    if(code != "" && code != "201" && code != "203" && code != "401") {
         /*QFuture<int> res = QtConcurrent::run(this, &config_list_widget::oss_initial);
         int result = res.result();*/
         qDebug()<<"new debug 3";
@@ -273,6 +273,8 @@ void config_list_widget::finished_load(int ret) {
                 qDebug()<<"manual sync succes";
             }
         }
+    } else if(ret == 401) {
+        client->logout();
     }
 }
 
@@ -287,6 +289,7 @@ void config_list_widget::handle_conf() {
         auto_ok = false;
         QString enable;
         for(int i  = 0;i < mapid.size();i ++) {
+            Config_File(home).Get(mapid[i],"enable").toString();
             judge_item(Config_File(home).Get(mapid[i],"enable").toString(),i);
         }
         for(int i  = 0;i < mapid.size();i ++) {
@@ -298,7 +301,6 @@ void config_list_widget::handle_conf() {
     for(int i  = 0;i < mapid.size();i ++) {
         judge_item(Config_File(home).Get(mapid[i],"enable").toString(),i);
     }
-
 }
 
 bool config_list_widget::judge_item(QString enable,int cur) {
@@ -321,6 +323,11 @@ void config_list_widget::handle_write(int on, int id) {
 }
 
 void config_list_widget::on_switch_button(int on,int id) {
+    QString code = client->check_login();
+    if(code == "401") {
+        client->logout();
+        return ;
+    }
     if(!auto_ok) {
         return ;
     }
@@ -328,6 +335,11 @@ void config_list_widget::on_switch_button(int on,int id) {
 }
 
 void config_list_widget::on_auto_syn(int on,int id) {
+    QString code = client->check_login();
+    if(code == "401") {
+        client->logout();
+        return ;
+    }
     auto_ok = on;
     for(int i  = 0;i < mapid.size();i ++) {
         list->get_item(i)->set_active(auto_ok);
@@ -404,5 +416,4 @@ void config_list_widget::push_over() {
 config_list_widget::~config_list_widget() {
 
 }
-
 

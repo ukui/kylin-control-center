@@ -93,6 +93,8 @@ protected:
     bool            eventFilter(QObject *w,QEvent *e);
 
 private:
+    QString         account;
+    QString         passwd;
     LoginDialog     *box_login;
     QLabel          *title;
     QPushButton     *login_submit;

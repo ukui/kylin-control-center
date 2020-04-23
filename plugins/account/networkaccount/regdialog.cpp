@@ -63,8 +63,8 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     pass_tip->setText(tr("At least 6 bit, include letters and digt"));
     pass_tip->setFixedHeight(16);
     pass_tip->setContentsMargins(16,0,0,0);
-    user_tip->setStyleSheet("font-size:14px;color:rgba(0,0,0,0.85)");
-    pass_tip->setStyleSheet("font-size:14px;color:rgba(0,0,0,0.85)");
+    user_tip->setStyleSheet("font-size:14px;");
+    pass_tip->setStyleSheet("font-size:14px;");
 
     reg_confirm->setTextMargins(16,0,0,0);
     reg_user->setTextMargins(16,0,0,0);

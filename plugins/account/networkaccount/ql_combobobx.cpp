@@ -48,7 +48,7 @@ ql_combobobx::ql_combobobx(QWidget *parent) : QWidget(parent)
     pushbutton->setFocusPolicy(Qt::NoFocus);
 
     //Style
-    //lineedit->setStyleSheet("QLineEdit{border:none;border-radius:4px;font-size:14px;color:rgba(0,0,0,0.85);background-color:#F4F4F4;}");
+    lineedit->setStyleSheet("QLineEdit{border:none;font-size:14px;}");
     pushbutton->setStyleSheet("QPushButton{background-image: url(:/new/image/arrow_down.png);"
                               "background-repeat:no-repeat;background-position :center;font-size:14px;background-color:#F4F4F4;border:none}");
     listwidget->setStyleSheet("QListView{border:1px solid #CFCFCF;border-color:#F4F4F4;border-radius:4px;}"
