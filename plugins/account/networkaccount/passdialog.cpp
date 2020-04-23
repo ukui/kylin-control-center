@@ -62,7 +62,7 @@ PassDialog::PassDialog(QWidget *parent) : QWidget(parent)
     QValidator *validator = new QRegExpValidator(regx, valid_code );
     valid_code->setValidator( validator );
 
-    QRegExp regx_acc("^[a-zA-Z0-9_-]{4,16}$");
+    QRegExp regx_acc("^[a-zA-Z0-9_@.-]+$");
     QValidator *validator_acc = new QRegExpValidator(regx_acc, reg_phone );
     reg_phone->setValidator(validator_acc);
 

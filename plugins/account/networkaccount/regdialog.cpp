@@ -106,7 +106,7 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     QValidator *validator_phn = new QRegExpValidator(regx_phn, reg_phone);
     reg_phone->setValidator(validator_phn);
 
-    QRegExp regx_acc("^[a-zA-Z0-9_-]{4,30}$");
+    QRegExp regx_acc("^[a-zA-Z0-9_@.-]+$");
     QValidator *validator_acc = new QRegExpValidator(regx_acc, reg_user );
     reg_user->setValidator(validator_acc);
 

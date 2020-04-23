@@ -145,7 +145,7 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
    //Subabstract Build
     login_account_thr_number();
     login_account_thr_phone();
-    QRegExp regx("^[a-zA-Z0-9_-]{30}$");
+    QRegExp regx("^[a-zA-Z0-9_@.-]+$");
     QValidator *validator = new QRegExpValidator(regx, account_phone );
     account_phone->setValidator(validator);
     //Initial configuration
@@ -203,7 +203,7 @@ void LoginDialog::startaction_2() {
     if(stack_widget->currentIndex() == 1) {
         set_clear();
         account_phone->setFocus();
-        QRegExp regx("^[a-zA-Z0-9_-]{30}$");
+        QRegExp regx("^[a-zA-Z0-9_@.-]+$");
         account_phone->setMaxLength(30);
         QValidator *validator = new QRegExpValidator(regx, account_phone );
         account_phone->setValidator(validator);
@@ -232,7 +232,7 @@ bool LoginDialog::login_account_thr_number() {
 
     //Congfigurate the widgets
     account_phone->setFocus();
-    QRegExp regx("^[a-zA-Z0-9_-]{30}$");
+    QRegExp regx("^[a-zA-Z0-9_@.-]+$");
     QValidator *validator = new QRegExpValidator(regx, account_phone );
     account_phone->setValidator(validator);
 
