@@ -275,6 +275,7 @@ void config_list_widget::finished_load(int ret) {
         }
     } else if(ret == 401) {
         client->logout();
+        stacked_widget->setCurrentWidget(null_widget);
     }
 }
 
@@ -326,6 +327,7 @@ void config_list_widget::on_switch_button(int on,int id) {
     QString code = client->check_login();
     if(code == "401") {
         client->logout();
+        stacked_widget->setCurrentWidget(null_widget);
         return ;
     }
     if(!auto_ok) {
@@ -338,6 +340,7 @@ void config_list_widget::on_auto_syn(int on,int id) {
     QString code = client->check_login();
     if(code == "401") {
         client->logout();
+        stacked_widget->setCurrentWidget(null_widget);
         return ;
     }
     auto_ok = on;
@@ -378,6 +381,12 @@ QLabel* config_list_widget::get_title() {
 }
 
 void config_list_widget::download_files() {
+    QString code = client->check_login();
+    if(code == "401") {
+        client->logout();
+        stacked_widget->setCurrentWidget(null_widget);
+        return ;
+    }
     if(exit_page->property("on") == false) {
         exit_page->setProperty("on",true);
         exit_page->setText("");
@@ -388,6 +397,12 @@ void config_list_widget::download_files() {
 }
 
 void config_list_widget::push_files() {
+    QString code = client->check_login();
+    if(code == "401") {
+        client->logout();
+        stacked_widget->setCurrentWidget(null_widget);
+        return ;
+    }
     if(exit_page->property("on") == false) {
         exit_page->setText("");
         exit_page->setProperty("on",true);
