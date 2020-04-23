@@ -143,7 +143,7 @@ void Desktop::plugin_delay_control(){
 
 void Desktop::initTranslation() {
     transMap.insert("blueman", "蓝牙");
-    transMap.insert("sogou-qimpanel", "输入法");
+    transMap.insert("fcitx", "输入法");
     transMap.insert("indicator-china-weather", "麒麟天气");
     transMap.insert("explorer.exe", "微信");
     transMap.insert("ukui-flash-disk", "U盘管理工具");
@@ -158,6 +158,7 @@ void Desktop::initTranslation() {
     iconMap.insert("ukui-flash-disk", "drive-removable-media");
     iconMap.insert("kylin-nm", "nm-device-wired");
     iconMap.insert("ukui-power-manager-tray", "battery-good");
+    iconMap.insert("fcitx", "fcitx");
 
     disList<<"ukui-sidebar"<<"update-notifier"<<"software-update-available"
           <<"blueman-tray"<<"ukui-power-manager"<<"ukui-settings-daemon"<<"blueman-tray"
@@ -411,7 +412,7 @@ void Desktop::initTraySettings() {
             }
 //            qDebug()<<"name is-------------->"<<action<<" "<<name<<endl;
 
-            if (!("" == name || "fcitx" == name || "freeze" == action || disList.contains(name))){
+            if (!("" == name || "freeze" == action || disList.contains(name))){
                 QIcon icon;
                 if (!iconMap[name].isEmpty()) {
                     icon = QIcon::fromTheme(iconMap[name]);
