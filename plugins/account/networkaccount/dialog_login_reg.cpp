@@ -399,7 +399,6 @@ void Dialog_login_reg::on_login_finished(int ret) {
         register_account->setText(tr("Back"));
         login_submit->setText(tr("Bind now"));
         box_bind->setclear();
-        del_btn->hide();
         setshow(stack_box);
         disconnect(login_submit,SIGNAL(clicked()),this,SLOT(on_login_btn()));
         connect(login_submit,SIGNAL(clicked()),this,SLOT(on_bind_btn()));
@@ -929,8 +928,6 @@ void Dialog_login_reg::back_login_btn() {
         } else if(stack_box->currentWidget() == box_bind) {
             box_bind->setclear();
             client->logout();
-            del_btn->show();
-            del_btn->raise();
             disconnect(login_submit,SIGNAL(clicked()),this,SLOT(on_bind_btn()));
             connect(login_submit,SIGNAL(clicked()),this,SLOT(on_login_btn()));
         }
