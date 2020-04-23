@@ -159,6 +159,7 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     }
     if (m_pBootSetting->keys().contains("bootMusic")) {
         m_hasMusic = m_pBootSetting->get(UKUI_BOOT_MUSIC_KEY).toBool();
+        m_pSoundWidget->m_pBootButton->setChecked(m_hasMusic);
     }
 
     connect(m_pBootSetting,SIGNAL(changed(const QString &)),this,SLOT(bootMusicSettingsChanged()));
