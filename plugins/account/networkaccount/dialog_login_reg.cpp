@@ -414,6 +414,8 @@ void Dialog_login_reg::on_login_finished(int ret) {
         login_submit->setText(tr("Sign in"));
         emit on_login_success(); //ka zhu le bu duan fa xin hao ; notice:keyi ding yi yige tag zhi fa yi ci
     } else {
+        pm->stop();
+        gif->hide();
         login_submit->setText(tr("Sign in"));
         if(box_login->get_stack_widget()->currentIndex() == 0) {
             box_login->set_code(messagebox(ret));
@@ -429,8 +431,6 @@ void Dialog_login_reg::on_login_finished(int ret) {
             setshow(stack_box);
             return ;
         }
-        pm->stop();
-        gif->hide();
     }
 }
 
