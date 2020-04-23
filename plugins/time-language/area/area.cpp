@@ -27,6 +27,7 @@
 #include <QDateTime>
 #include <QTimer>
 #include <QGSettings/QGSettings>
+#include <KMessageBox>
 
 #define PANEL_GSCHEMAL   "org.ukui.control-center.panel.plugins"
 #define CALENDAR_KEY     "calendar"
@@ -96,6 +97,17 @@ Area::Area()
     connect(ui->countrycomboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(change_area_slot(int)));
     connect(ui->addlanBtn, SIGNAL(clicked()), this, SLOT(add_lan_btn_slot()));
     connect(ui->chgformButton,SIGNAL(clicked()),this,SLOT(changeform_slot()));
+
+    connect(ui->langcomboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            [=]{
+        KMessageBox::information(ui->languageframe, tr("Need to cancel to take effect"));
+    });
+
+    connect(ui->countrycomboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            [=]{
+        KMessageBox::information(ui->languageframe_2, tr("Need to cancel to take effect"));
+    });
+
 }
 
 Area::~Area()

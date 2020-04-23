@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += widgets dbus
+QT       += widgets dbus KWidgetsAddons
 
 TEMPLATE = lib
 CONFIG += plugin
