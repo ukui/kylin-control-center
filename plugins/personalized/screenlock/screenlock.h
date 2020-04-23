@@ -70,6 +70,7 @@ private:
     QGSettings * lSetting;
 
     SwitchButton * loginbgSwitchBtn;
+    SwitchButton * lockSwitchBtn;
     FlowLayout * flowLayout;
 
     QSize lockbgSize;

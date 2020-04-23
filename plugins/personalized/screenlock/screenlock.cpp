@@ -26,6 +26,8 @@
 #define SCREENLOCK_BG_SCHEMA "org.ukui.screensaver"
 #define SCREENLOCK_BG_KEY "background"
 #define SCREENLOCK_DELAY_KEY "lock-delay"
+#define SCREENLOCK_LOCK_KEY "lock-enabled"
+#define SCREENLOCK_ACTIVE_KEY "idle-activation-enabled"
 
 #include "bgfileparse.h"
 #include "pictureunit.h"
@@ -102,6 +104,27 @@ void Screenlock::setupComponent(){
 
     loginbgSwitchBtn = new SwitchButton(pluginWidget);
     ui->loginbgHorLayout->addWidget(loginbgSwitchBtn);
+
+    lockSwitchBtn = new SwitchButton(pluginWidget);
+    ui->lockHorLayout->addWidget(lockSwitchBtn);
+
+    connect(lockSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
+        QStringList keys =  lSetting->keys();
+        if (keys.contains("lockEnabled")) {
+            lSetting->set(SCREENLOCK_LOCK_KEY,  checked);
+        }
+    });
+
+    connect(lSetting, &QGSettings::changed, this, [=](QString key) {
+        if ( key == "idleActivationEnabled") {
+            bool judge = lSetting->get(SCREENLOCK_ACTIVE_KEY).toBool();
+            if (!judge) {
+                if (lockSwitchBtn->isChecked()) {
+                    lockSwitchBtn->setChecked(judge);
+                }
+            }
+        }
+    });
 
     //设置布局
     flowLayout = new FlowLayout;

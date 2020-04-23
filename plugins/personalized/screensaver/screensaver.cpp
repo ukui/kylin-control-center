@@ -108,6 +108,9 @@ Screensaver::~Screensaver()
     delete ui;
     delete process;
     process = nullptr;
+    if (!screenlock_settings) {
+        delete screenlock_settings;
+    }
 }
 
 QString Screensaver::get_plugin_name(){
@@ -159,25 +162,40 @@ void Screensaver::initComponent(){
     ui->idleSlider->setPageStep(IDLESTEP);
 
     connect(enableSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
+        qDebug()<<"enableSwitchBtn--------->"<<endl;
         screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
         g_settings_set_boolean(screensaver_settings, ACTIVE_KEY, checked);
 
         //刷新LockWidget状态
-        ui->lockFrame->setVisible(checked);
+//        ui->lockFrame->setVisible(checked);
         g_object_unref(screensaver_settings);
     });
 
-    connect(lockSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
-        //REVIEW*** g_object_unref faild
-        //    screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
-        //    g_settings_set_boolean(screensaver_settings, LOCK_KEY, status);
-        //    if (screensaver_settings)
-        //            g_object_unref(screensaver_settings);
-        const QByteArray ba(SCREENSAVER_SCHEMA);
-        QGSettings * settings = new QGSettings(ba);
-        settings->set(LOCK_KEY, checked);
-        delete settings;
-    });
+//    connect(lockSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
+//        //REVIEW*** g_object_unref faild
+//        //    screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
+//        //    g_settings_set_boolean(screensaver_settings, LOCK_KEY, status);
+//        //    if (screensaver_settings)
+//        //            g_object_unref(screensaver_settings);
+//        const QByteArray ba(SCREENSAVER_SCHEMA);
+//        QGSettings * settings = new QGSettings(ba);
+//        settings->set(LOCK_KEY, checked);
+//        delete settings;
+//    });
+
+    if (QGSettings::isSchemaInstalled(SCREENSAVER_SCHEMA)) {
+        const QByteArray id(SCREENSAVER_SCHEMA);
+        screenlock_settings = new QGSettings(id);
+
+        connect(screenlock_settings, &QGSettings::changed, [=](QString key) {
+            if (key == "lockEnabled") {
+                bool judge = screenlock_settings->get(LOCK_KEY).toBool();
+                if (judge && !enableSwitchBtn->isChecked()) {
+                    enableSwitchBtn->setChecked(judge);
+                }
+            }
+        });
+    }
 
     connect(ui->idleSlider, &QSlider::valueChanged, this, [=](int value){
         //刷新分钟显示
@@ -212,7 +230,7 @@ void Screensaver::initEnableBtnStatus(){
     enableSwitchBtn->blockSignals(false);
 
     //初始化LockWidget状态
-    ui->lockFrame->setVisible(active);
+    ui->lockFrame->setVisible(false);
 
     bool locked;
     locked = settings->get(LOCK_KEY).toBool();

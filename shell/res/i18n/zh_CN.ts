@@ -2847,49 +2847,58 @@ folder will be deleted!</source>
     <name>Screenlock</name>
     <message>
         <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="26"/>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="41"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="43"/>
         <source>Screenlock</source>
         <translation>锁屏</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="91"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="68"/>
         <source>Screenlock Interface</source>
         <translation>锁屏界面</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="159"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="136"/>
         <source>Screenlock Set</source>
         <translation>锁屏设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="408"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="262"/>
+        <source>Lock screen when screensaver boot</source>
+        <translation>激活屏保时锁定屏幕</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="331"/>
+        <source>Lock screen delay</source>
+        <translation>锁屏延时</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="449"/>
         <source>Min</source>
         <translation>分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="428"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="467"/>
         <source>Select screenlock background</source>
         <translation>选择锁屏背景</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="471"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="510"/>
         <source>Browser online wp</source>
         <translation>浏览线上壁纸</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="490"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="529"/>
         <source>Browser local wp</source>
         <translation>浏览本地壁纸</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="221"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="190"/>
         <source>Show picture of screenlock on screenlogin</source>
         <translation>显示锁屏壁纸在登录页面</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="290"/>
         <source>Enabel screenlock</source>
-        <translation>开启锁屏</translation>
+        <translation type="vanished">开启锁屏</translation>
     </message>
     <message>
         <source>Open</source>
@@ -2942,17 +2951,17 @@ folder will be deleted!</source>
         <translation type="vanished">屏保</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="145"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="148"/>
         <source>Default_ukui</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="146"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="149"/>
         <source>Blank_Only</source>
         <translation>黑屏</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="147"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="150"/>
         <source>Random</source>
         <translation>随机</translation>
     </message>

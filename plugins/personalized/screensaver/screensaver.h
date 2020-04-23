@@ -138,6 +138,8 @@ private:
     GSettings * screensaver_settings;
     GSettings * session_settings;
 
+    QGSettings * screenlock_settings = nullptr;
+
 //    SwitchButton * activeswitchbtn;
 //    SwitchButton * lockswitchbtn;
 
