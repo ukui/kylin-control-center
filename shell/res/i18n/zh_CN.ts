@@ -2628,22 +2628,22 @@ folder will be deleted!</source>
         <translation type="vanished">默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="506"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="516"/>
         <source>basic</source>
         <translation>基础</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="508"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="518"/>
         <source>classical</source>
         <translation>经典</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="510"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="520"/>
         <source>default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="512"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="522"/>
         <source>Unknown</source>
         <translation>未知</translation>
     </message>
@@ -3061,22 +3061,22 @@ folder will be deleted!</source>
         <translation>主题模式</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="98"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="99"/>
         <source>Theme</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="207"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="208"/>
         <source>Default</source>
         <translation>系统默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="208"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="209"/>
         <source>Light</source>
         <translation>浅色模式</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="209"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="210"/>
         <source>Dark</source>
         <translation>深色模式</translation>
     </message>
@@ -3102,8 +3102,12 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="525"/>
+        <source>Performance mode</source>
+        <translation>性能模式</translation>
+    </message>
+    <message>
         <source>Transparent</source>
-        <translation>透明特效</translation>
+        <translation type="vanished">透明特效</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="571"/>
@@ -3265,12 +3269,12 @@ folder will be deleted!</source>
 <context>
     <name>UkmediaMainWidget</name>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="241"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="242"/>
         <source>sound error</source>
         <translation>声音错误</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="241"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="242"/>
         <source>load sound failed</source>
         <translation>加载声音失败</translation>
     </message>

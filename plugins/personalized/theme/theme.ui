@@ -522,7 +522,7 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>Transparent</string>
+                <string>Performance mode</string>
                </property>
               </widget>
              </item>

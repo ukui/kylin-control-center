@@ -191,7 +191,7 @@ void Theme::setupSettings() {
 
     kwinSettings->endGroup();
 
-    effectSwitchBtn->setChecked(kwin);
+    effectSwitchBtn->setChecked(!kwin);
 }
 
 void Theme::setupComponent(){
@@ -490,7 +490,7 @@ void Theme::initConnection() {
     connect(ui->resetBtn, &QPushButton::clicked, this, &Theme::resetBtnClickSlot);
 
     connect(effectSwitchBtn, &SwitchButton::checkedChanged, [this](bool checked) {
-        writeKwinSettings(checked);
+        writeKwinSettings(!checked);
     });
 }
 
