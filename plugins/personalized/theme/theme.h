@@ -29,6 +29,12 @@
 
 #include "shell/interface.h"
 
+#include <QDir>
+#include <QSettings>
+#include <QtDBus/QDBusMessage>
+#include <QGSettings/QGSettings>
+#include <QtDBus/QtDBus>
+
 
 class QPushButton;
 class SwitchButton;
@@ -57,6 +63,7 @@ public:
 public:
 
     void setupStylesheet();
+    void setupSettings();
     void setupComponent();
     void initThemeMode();
     void initIconTheme();
@@ -84,6 +91,9 @@ private:
     QGSettings * gtkSettings;
     QGSettings * qtSettings;
     QGSettings * curSettings;
+    QSettings  * kwinSettings;
+
+    QGSettings * kwinGsettings;
 
     SwitchButton * effectSwitchBtn;
 
@@ -93,6 +103,7 @@ private:
 
 private slots:
     void resetBtnClickSlot();
+    void writeKwinSettings(bool change);
 
 };
 

@@ -31,7 +31,7 @@
 #include "../../../shell/customstyle.h"
 
 #include <QDebug>
-
+#include <QtDBus/QDBusConnection>
 /**
  * GTK主题
  */
@@ -112,6 +112,9 @@ Theme::Theme()
     //设置组件
     setupComponent();
 
+    // init kwin settings
+    setupSettings();
+
     if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(idd) && QGSettings::isSchemaInstalled(iid)){
         gtkSettings = new QGSettings(id);
         qtSettings = new QGSettings(idd);
@@ -177,6 +180,20 @@ void Theme::setupStylesheet(){
 //                                          "");
 }
 
+
+void Theme::setupSettings() {
+    QString filename = QDir::homePath() + "/.config/ukui-kwinrc";
+    kwinSettings = new QSettings(filename, QSettings::IniFormat);
+
+    kwinSettings->beginGroup("Plugins");
+
+    bool kwin = kwinSettings->value("blurEnabled", kwin).toBool();
+
+    kwinSettings->endGroup();
+
+    effectSwitchBtn->setChecked(kwin);
+}
+
 void Theme::setupComponent(){
 
     ui->lightButton->hide();
@@ -194,12 +211,26 @@ void Theme::setupComponent(){
 
     setupControlTheme();
 
-    ui->effectLabel->hide();
-    ui->effectWidget->hide();
+//    ui->effectLabel->hide();
+//    ui->effectWidget->hide();
+    ui->transparencySlider->hide();
+    ui->label_9->hide();
+    ui->label_11->hide();
+    ui->line->hide();
+
 
     //构建并填充特效开关按钮
     effectSwitchBtn = new SwitchButton(pluginWidget);
     ui->effectHorLayout->addWidget(effectSwitchBtn);
+
+
+//    kwinGsettings = new QDBusInterface("org.freedesktop.timedate1",
+//                                       "/org/freedesktop/timedate1",
+//                                       "org.freedesktop.timedate1",
+//                                       QDBusConnection::systemBus());
+//    QDBusConnection::sessionBus().unregisterService("com.ukui.KWin");
+//    QDBusConnection::sessionBus().registerService("com.ukui.KWin");
+//    QDBusConnection::sessionBus().registerObject("/KWin", this,QDBusConnection :: ExportAllSlots | QDBusConnection :: ExportAllSignals);
 
 }
 
@@ -457,6 +488,10 @@ void Theme::initEffectSettings(){
 
 void Theme::initConnection() {
     connect(ui->resetBtn, &QPushButton::clicked, this, &Theme::resetBtnClickSlot);
+
+    connect(effectSwitchBtn, &SwitchButton::checkedChanged, [this](bool checked) {
+        writeKwinSettings(checked);
+    });
 }
 
 QStringList Theme::_getSystemCursorThemes(){
@@ -512,6 +547,18 @@ void Theme::resetBtnClickSlot() {
     initThemeMode();
     initIconTheme();
     initCursorTheme();
+}
+
+void Theme::writeKwinSettings(bool change) {
+
+    kwinSettings->beginGroup("Plugins");
+    kwinSettings->setValue("blurEnabled",change);
+    kwinSettings->endGroup();
+
+    kwinSettings->sync();
+
+    QDBusMessage message = QDBusMessage::createSignal("/KWin", "org.ukui.KWin", "reloadConfig");
+    QDBusConnection::sessionBus().send(message);
 }
 
 void Theme::clearLayout(QLayout* mlayout, bool deleteWidgets)
