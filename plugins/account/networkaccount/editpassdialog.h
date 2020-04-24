@@ -35,7 +35,7 @@
 #include "successdiaolog.h"
 #include <QRegExpValidator>
 #include "ql_lineedit_pass.h"
-#include <libkylin-sso-client/include/libkylinssoclient.h>
+#include "dbushandleclient.h"
 
 class EditPassDialog : public QWidget
 {
@@ -44,7 +44,7 @@ public:
     explicit        EditPassDialog(QWidget *parent = nullptr);
     int             timerout_num = 60;
     void            set_code(QString codenum);
-    void            set_client(libkylinssoclient *c);
+    void            set_client(DbusHandleClient *c);
     void            set_clear();
     QLabel*         get_tips();
     QString         messagebox(int codenum);
@@ -76,7 +76,7 @@ private:
     QHBoxLayout     *hlayout;
     QHBoxLayout     *btnlayout;
     QPoint          m_startPoint;
-    libkylinssoclient   *client;
+    DbusHandleClient   *client;
     QTimer          *timer;
     QLabel          *tips;
     QString         code;

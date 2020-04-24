@@ -39,7 +39,7 @@
 #include <QTimer>
 #include <QSizePolicy>
 #include "ql_lineedit_pass.h"
-#include <libkylin-sso-client/include/libkylinssoclient.h>
+#include "dbushandleclient.h"
 #include <QShortcut>
 #include "bindphonedialog.h"
 #include <QMovie>
@@ -55,7 +55,7 @@ public:
     int             timerout_num_log = 60;
     int             timerout_num_bind = 60;
     QString         messagebox(int code);
-    void            set_client(libkylinssoclient *c);
+    void            set_client(DbusHandleClient *c);
     QPushButton    *get_login_submit();
     bool            retok = true;
     void            setclear();
@@ -134,7 +134,7 @@ private:
     QTimer          *timer_reg;
     QTimer          *timer_log;
     QTimer          *timer_bind;
-    libkylinssoclient   *client;
+    DbusHandleClient   *client;
     QWidget         *log_reg;
     QStackedWidget  *basewidegt;
     SuccessDiaolog  *succ;

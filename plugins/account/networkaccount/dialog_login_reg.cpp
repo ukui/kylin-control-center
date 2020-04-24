@@ -244,15 +244,21 @@ QPushButton * Dialog_login_reg::get_login_submit() {
     return login_submit;
 }
 
-void Dialog_login_reg::set_client(libkylinssoclient *c) {
+void Dialog_login_reg::set_client(DbusHandleClient *c) {
     client = c;
-    connect(client,SIGNAL(finished_login(int)),this,SLOT(on_login_finished(int)));
-    connect(client,SIGNAL(finished_user_phone_login(int)),this,SLOT(on_login_finished(int)));
-    connect(client,SIGNAL(finished_mcode_by_phone(int)),this,SLOT(on_get_mcode_by_phone(int)));
-    connect(client,SIGNAL(finished_user_resetpwd(int)),this,SLOT(on_pass_finished(int)));
-    connect(client,SIGNAL(finished_mcode_by_username(int)),this,SLOT(on_get_mcode_by_name(int)));
-    connect(client,SIGNAL(finished_registered(int)),this,SLOT(on_reg_finished(int)));
-    connect(client,SIGNAL(finished_bindPhone(int)),this,SLOT(on_bind_finished(int)));
+    client->connectdbus("finished_login",this,SLOT(on_login_finished(int)));
+    //connect(client,SIGNAL(finished_user_phone_login(int)),this,SLOT(on_login_finished(int)));
+    client->connectdbus("finished_user_phone_login",this,SLOT(on_login_finished(int)));
+    //connect(client,SIGNAL(finished_mcode_by_phone(int)),this,SLOT(on_get_mcode_by_phone(int)));
+    client->connectdbus("finished_mcode_by_phone",this,SLOT(on_get_mcode_by_phone(int)));
+    //connect(client,SIGNAL(finished_user_resetpwd(int)),this,SLOT(on_pass_finished(int)));
+    //connect(client,SIGNAL(finished_mcode_by_username(int)),this,SLOT(on_get_mcode_by_name(int)));
+    client->connectdbus("finished_user_resetpwd",this,SLOT(on_pass_finished(int)));
+    client->connectdbus("finished_mcode_by_username",this,SLOT(on_get_mcode_by_name(int)));
+    //connect(client,SIGNAL(finished_registered(int)),this,SLOT(on_reg_finished(int)));
+    client->connectdbus("finished_registered",this,SLOT(on_reg_finished(int)));
+    //connect(client,SIGNAL(finished_bindPhone(int)),this,SLOT(on_bind_finished(int)));
+    client->connectdbus("finished_bindPhone",this,SLOT(on_bind_finished(int)));
 }
 
 void Dialog_login_reg::setshow(QWidget *widget) {

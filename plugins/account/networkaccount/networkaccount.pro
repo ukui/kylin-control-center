@@ -1,4 +1,4 @@
-QT       += core gui svg
+QT       += core gui svg dbus
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -79,8 +79,3 @@ RESOURCES += \
     qss.qrc
 
 DISTFILES += \
-
-unix:!macx: LIBS += -L$$[QT_INSTALL_LIBS]  -lkylinssoclient
-
-INCLUDEPATH += $$[QT_INSTALL_LIBS]
-DEPENDPATH += $$[QT_INSTALL_LIBS]

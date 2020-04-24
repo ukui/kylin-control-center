@@ -36,7 +36,7 @@
 #include "config_file.h"
 #include <QGraphicsSvgItem>
 #include <QSvgWidget>
-#include <libkylin-sso-client/include/libkylinssoclient.h>
+#include "dbushandleclient.h"
 
 class config_list_widget : public QWidget
 {
@@ -71,7 +71,7 @@ private:
     EditPassDialog      *edit_dialog;
     QStackedWidget  *stacked_widget;
     QWidget         *null_widget;
-    libkylinssoclient   *client;
+    DbusHandleClient   *client;
     QPushButton         *login;
     QLabel              *logout;
     QSvgWidget              *title2;

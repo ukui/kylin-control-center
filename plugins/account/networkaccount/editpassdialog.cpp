@@ -199,10 +199,12 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     move((desktop->width() - this->width())/2, (desktop->height() - this->height())/2);
 }
 
-void EditPassDialog::set_client(libkylinssoclient *c) {
+void EditPassDialog::set_client(DbusHandleClient *c) {
     client = c;
-    connect(client,SIGNAL(finished_mcode_by_username(int)),this,SLOT(on_edit_code_finished(int)));
-    connect(client,SIGNAL(finished_user_resetpwd(int)),this,SLOT(on_edit_submit_finished(int)));
+    //connect(client,SIGNAL(finished_mcode_by_username(int)),this,SLOT(on_edit_code_finished(int)));
+    client->connectdbus("finished_mcode_by_username",this,SLOT(on_edit_code_finished(int)));
+    //connect(client,SIGNAL(finished_user_resetpwd(int)),this,SLOT(on_edit_submit_finished(int)));
+    client->connectdbus("finished_user_resetpwd",this,SLOT(on_edit_submit_finished(int)));
 }
 
 void EditPassDialog::set_code(QString codenum) {

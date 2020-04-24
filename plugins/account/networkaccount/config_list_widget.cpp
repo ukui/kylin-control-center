@@ -22,12 +22,21 @@
 #include <QtConcurrent/QtConcurrent>
 
 config_list_widget::config_list_widget(QWidget *parent) : QWidget(parent) {
-    client = new libkylinssoclient();
+    client = new DbusHandleClient();
 
     stacked_widget = new QStackedWidget(this);
     stacked_widget->resize(550,400);
     stacked_widget->setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
     code = client->check_login();
+    client->connectdbus("finished_init_oss",this,SLOT(finished_load(int)));
+    //connect(client,SIGNAL(backcall_start_download_signal()),this,SLOT(download_files()));
+    client->connectdbus("backcall_start_download_signal",this,SLOT(download_files()));
+    //connect(client,SIGNAL(backcall_end_download_signal()),this,SLOT(download_over()));
+    client->connectdbus("backcall_end_download_signal",this,SLOT(download_over()));
+    //connect(client,SIGNAL(backcall_start_push_signal()),this,SLOT(push_files()));
+    client->connectdbus("backcall_start_push_signal",this,SLOT(push_files()));
+    //connect(client,SIGNAL(backcall_end_push_signal()),this,SLOT(push_over()));
+    client->connectdbus("backcall_end_push_signal",this,SLOT(push_over()));
     init_gui();
     if(code != "" && code !="201" && code != "203" && code != "401") {
         /*QFuture<int> res = QtConcurrent::run(this, &config_list_widget::oss_initial);
@@ -43,11 +52,6 @@ config_list_widget::config_list_widget(QWidget *parent) : QWidget(parent) {
 
         stacked_widget->setCurrentWidget(null_widget);
     }
-    connect(client,SIGNAL(finished_init_oss(int)),this,SLOT(finished_load(int)));
-    connect(client,SIGNAL(backcall_start_download_signal()),this,SLOT(download_files()));
-    connect(client,SIGNAL(backcall_end_download_signal()),this,SLOT(download_over()));
-    connect(client,SIGNAL(backcall_start_push_signal()),this,SLOT(push_files()));
-    connect(client,SIGNAL(backcall_end_push_signal()),this,SLOT(push_over()));
 }
 
 void config_list_widget::init_gui() {
