@@ -433,6 +433,6 @@ void config_list_widget::push_over() {
 }
 
 config_list_widget::~config_list_widget() {
-
+    delete client;
 }
 

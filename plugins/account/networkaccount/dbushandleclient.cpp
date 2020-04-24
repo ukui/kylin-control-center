@@ -335,7 +335,7 @@ char* DbusHandleClient::check_login() {
     {
         qDebug() << "value method called failed!";
     }
-    char*  ch;
+    char*  ch = nullptr;
     QByteArray ba = re.toLatin1(); // must
     ch=ba.data();
     return ch;
