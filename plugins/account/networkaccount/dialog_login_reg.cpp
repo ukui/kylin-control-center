@@ -801,8 +801,8 @@ void Dialog_login_reg::on_send_code_bind() {
     char name[32];
     int ret = -1;
     if(box_bind->get_phone() != "") {
-        qstrcpy(name,account.toStdString().c_str());
-        ret = client->get_mcode_by_username(name);
+        qstrcpy(name,box_bind->get_phone().toStdString().c_str());
+        ret = client->get_mcode_by_phone(name);
         if(ret == 0) {
             //not do
         } else {
