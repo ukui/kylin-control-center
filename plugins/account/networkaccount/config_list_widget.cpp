@@ -273,7 +273,7 @@ void config_list_widget::finished_load(int ret) {
                 qDebug()<<"manual sync succes";
             }
         }
-    } else if(ret == 401) {
+    } else if(ret == 401 || ret == 203 || ret == 201) {
         client->logout();
         stacked_widget->setCurrentWidget(null_widget);
     }
@@ -325,7 +325,7 @@ void config_list_widget::handle_write(int on, int id) {
 
 void config_list_widget::on_switch_button(int on,int id) {
     QString code = client->check_login();
-    if(code == "401") {
+    if(code == "401" || code == "203" || code == "201" || code == "") {
         client->logout();
         stacked_widget->setCurrentWidget(null_widget);
         return ;
@@ -338,7 +338,7 @@ void config_list_widget::on_switch_button(int on,int id) {
 
 void config_list_widget::on_auto_syn(int on,int id) {
     QString code = client->check_login();
-    if(code == "401") {
+    if(code == "401" || code == "203" || code == "201" || code == "") {
         client->logout();
         stacked_widget->setCurrentWidget(null_widget);
         return ;
@@ -382,7 +382,7 @@ QLabel* config_list_widget::get_title() {
 
 void config_list_widget::download_files() {
     QString code = client->check_login();
-    if(code == "401") {
+    if(code == "401" || code == "203" || code == "201" || code == "") {
         client->logout();
         stacked_widget->setCurrentWidget(null_widget);
         return ;
@@ -398,7 +398,7 @@ void config_list_widget::download_files() {
 
 void config_list_widget::push_files() {
     QString code = client->check_login();
-    if(code == "401") {
+    if(code == "401" || code == "203" || code == "201" || code == "") {
         client->logout();
         stacked_widget->setCurrentWidget(null_widget);
         return ;
