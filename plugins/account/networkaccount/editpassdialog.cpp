@@ -231,9 +231,6 @@ void EditPassDialog::setret_code(int ret) {
         setshow(content);
         return ;
     } else {
-        timer->start();
-        timer->setInterval(1000);
-        get_code->setEnabled(false);
     }
 }
 
@@ -351,7 +348,7 @@ void EditPassDialog::on_edit_submit_finished(int req) {
 
     content->setEnabled(true);
     if(req == 0) {
-        emit account_changed();
+        //qDebug()<<"wb888";
         del_btn->hide();
         stackwidget->setCurrentWidget(success);
         success->back_login->setText(tr("Success！"));
