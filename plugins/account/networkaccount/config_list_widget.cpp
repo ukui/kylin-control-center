@@ -318,6 +318,7 @@ void config_list_widget::init_gui() {
     for(int btncnt = 0;btncnt < list->get_list().size();btncnt ++) {
         connect(list->get_item(btncnt)->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_switch_button(int,int)));
     }
+    setMaximumWidth(960);
     adjustSize();
 }
 

@@ -92,7 +92,7 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     register_account->setContentsMargins(0,0,0,0);
     del_btn->setMaximumSize(30,30);
     del_btn->setMinimumSize(30,30);
-    del_btn->setGeometry(this->width() - 46,10,30,30);
+    del_btn->setGeometry(this->width() - 46,14,30,30);
     del_btn->setFocusPolicy(Qt::NoFocus);
 
     login_submit->setStyleSheet("QPushButton {font-size:14px;background-color: #3D6BE5;border-radius: 4px;color:rgba(255,255,255,0.85);}"

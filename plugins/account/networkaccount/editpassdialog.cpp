@@ -83,7 +83,7 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     content->setFixedSize(420,446);
     success->setFixedSize(420,446);
 
-    del_btn->setGeometry(this->width() - 46,10,30,30);
+    del_btn->setGeometry(this->width() - 46,14,30,30);
 
     //设置样式表
     QString liness = "QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
