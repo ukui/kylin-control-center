@@ -182,6 +182,9 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     connect(cancel,SIGNAL(clicked()),this,SLOT(on_close()));
     connect(this,SIGNAL(code_changed()),this,SLOT(setstyleline()));
     connect(success->back_login,SIGNAL(clicked()),this,SLOT(on_close()));
+    connect(success->back_login,&QPushButton::clicked,[this] () {
+        emit account_changed();
+    });
 
    // setStyleSheet("EditPassDialog{border-radius:6px;}");
     setAttribute(Qt::WA_TranslucentBackground, true);
@@ -524,7 +527,6 @@ void EditPassDialog::set_clear() {
 
 /* 关闭窗口处理函数　*/
 void EditPassDialog::on_close() {
-    emit account_changed();
     newpass->get_visble()->setChecked(false);
     //account->get_visble()->setChecked(false);
     confirm_pass->get_visble()->setChecked(false);
