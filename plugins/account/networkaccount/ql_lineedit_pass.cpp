@@ -79,5 +79,6 @@ bool ql_lineedit_pass::check() {
     } else {
         return false;
     }
-    return uper && normal && number && line;
+    bool ok = uper && number && line == true ?true:normal && number && line;
+    return  ok;
 }

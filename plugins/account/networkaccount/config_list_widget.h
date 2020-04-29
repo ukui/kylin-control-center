@@ -36,7 +36,8 @@
 #include "config_file.h"
 #include <QGraphicsSvgItem>
 #include <QSvgWidget>
-#include <libkylin-sso-client/include/libkylinssoclient.h>
+#include "dbushandleclient.h"
+#include <QtDBus/QtDBus>
 
 class config_list_widget : public QWidget
 {
@@ -71,13 +72,13 @@ private:
     EditPassDialog      *edit_dialog;
     QStackedWidget  *stacked_widget;
     QWidget         *null_widget;
-    libkylinssoclient   *client;
+    DbusHandleClient   *client;
     QPushButton         *login;
     QLabel              *logout;
     QSvgWidget              *title2;
     QVBoxLayout         *vlayout;
     QVBoxLayout         *cvlayout;
-    QString             code;
+    QString             code = tr("Disconnected");
     QString             home;
     QStringList         mapid = {"wallpaper","ukui-menu","ukui-panel","ukui-control-center","indicator-china-weather","kylin-video"};
     Dialog_login_reg*   login_dialog;
@@ -85,6 +86,7 @@ private:
     QHBoxLayout         *hbox;
     QThread             *thread;
     bool                auto_ok = true;
+    bool                ret_ok = false;
 public slots:
     void            neweditdialog();
     void            on_login_out();
@@ -97,7 +99,20 @@ public slots:
     void            push_files();
     void            download_over();
     void            push_over();
+    void            setret_oss(int ret);
+    void            setret_conf(int ret);
+    void            setret_change(int ret);
+    void            setret_logout(int ret);
+    void            setret_man(int ret);
+    void            setname(QString n);
+    void            setret_check(QString ret);
 signals:
+    void dooss();
+    void doman();
+    void dologout();
+    void doconf();
+    void dochange(QString name,int flag);
+    void docheck();
 };
 
 #endif // CONFIG_LIST_WIDGET_H
