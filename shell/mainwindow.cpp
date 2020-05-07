@@ -26,6 +26,7 @@
 #include <QHBoxLayout>
 #include <QPluginLoader>
 #include <QPainter>
+#include <QProcess>
 #include <libmatemixer/matemixer.h>
 #include "utils/keyvalueconverter.h"
 #include "utils/functionselect.h"
@@ -346,7 +347,7 @@ void MainWindow::loadPlugins(){
         pluginsDir = QDir(qApp->applicationDirPath() + "/pluginlibs/");
     }
 
-
+    bool isExistCloud  = isExitsCloudAccount();
     foreach (QString fileName, pluginsDir.entryList(QDir::Files)){
 //        if (fileName == "libdesktop.so")
 //            continue;
@@ -354,6 +355,9 @@ void MainWindow::loadPlugins(){
 //            continue;
         if (fileName == "libexperienceplan.so")
             continue;
+        if ("libnetworkaccount.so" == fileName && !isExistCloud) {
+            continue;
+        }
 
         qDebug() << "Scan Plugin: " << fileName;
         //gsettings-desktop-schemas
@@ -528,6 +532,24 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname){
     leftsidebarBtn->setLayout(btnHorLayout);
 
     return leftsidebarBtn;
+}
+
+bool MainWindow::isExitsCloudAccount() {
+    QProcess *wifiPro = new QProcess();
+    QString shellOutput = "";
+    wifiPro->start("apt list kylin-sso-client");
+    wifiPro->waitForFinished();
+    QString output = wifiPro->readAll();
+    shellOutput += output;
+    QStringList slist = shellOutput.split("\n");
+
+    if (slist.length() >= 2) {
+        QString res = slist.at(1);
+        if(res.contains("kylin-sso-client")) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void MainWindow::setModuleBtnHightLight(int id){
