@@ -1,3 +1,22 @@
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ *
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
 #include "dbushandleclient.h"
 
 DbusHandleClient::DbusHandleClient(QObject *parent) : QObject(parent)
@@ -22,12 +41,12 @@ int DbusHandleClient::registered(QString username, QString pwd, QString phonenum
         //从返回参数获取返回值
         QString value = response.arguments().takeFirst().toString();
         re = value.toInt();
-        emit finished_ret_reg(re);
     }
     else
     {
 
     }
+    emit finished_ret_reg(re);
     return re;
 }
 
@@ -48,12 +67,12 @@ int DbusHandleClient::login(QString username, QString pwd) {
         //从返回参数获取返回值
         QString value = response.arguments().takeFirst().toString();
         re = value.toInt();
-        emit finished_ret_log(re);
     }
     else
     {
         //qDebug() << "value method called failed!";
     }
+    emit finished_ret_log(re);
     return re;
 }
 
@@ -74,13 +93,13 @@ int DbusHandleClient::get_mcode_by_phone(QString phonenumb) {
         //从返回参数获取返回值
         QString value = response.arguments().takeFirst().toString();
         re = value.toInt();
-        emit finished_ret_code_log(re);
-        emit finished_ret_code_reg(re);
     }
     else
     {
         //qDebug() << "value method called failed!";
     }
+    emit finished_ret_code_log(re);
+    emit finished_ret_code_reg(re);
     return re;
 }
 
@@ -101,13 +120,13 @@ int DbusHandleClient::get_mcode_by_username(QString username) {
         //从返回参数获取返回值
         QString value = response.arguments().takeFirst().toString();
         re = value.toInt();
-        emit finished_ret_code_pass(re);
-        emit finished_ret_code_bind(re);
     }
     else
     {
         //qDebug() << "value method called failed!";
     }
+    emit finished_ret_code_pass(re);
+    emit finished_ret_code_bind(re);
     return re;
 }
 
@@ -129,12 +148,12 @@ int DbusHandleClient::user_resetpwd(QString username, QString newpwd, QString mC
         //从返回参数获取返回值
         QString value = response.arguments().takeFirst().toString();
         re = value.toInt();
-        emit finished_ret_rest(re);
     }
     else
     {
         //qDebug() << "value method called failed!";
     }
+    emit finished_ret_rest(re);
     return re;
 }
 
@@ -155,12 +174,12 @@ int DbusHandleClient::user_phone_login(QString phone, QString mCode) {
         //从返回参数获取返回值
         QString value = response.arguments().takeFirst().toString();
         re = value.toInt();
-        emit finished_ret_phonelogin(re);
     }
     else
     {
         //qDebug() << "value method called failed!";
     }
+    emit finished_ret_phonelogin(re);
     return re;
 }
 
@@ -179,12 +198,12 @@ int DbusHandleClient::logout() {
         QString value = response.arguments().takeFirst().toString();
         re = value.toInt();
         //qDebug()<<"wb1010";
-        emit finished_logout(re);
     }
     else
     {
         //qDebug() << "value method called failed!";
     }
+    emit finished_logout(re);
     return re;
 }
 
@@ -202,12 +221,12 @@ int DbusHandleClient::init_conf() {
         //从返回参数获取返回值
         QString value = response.arguments().takeFirst().toString();
         re = value.toInt();
-        emit finished_conf(re);
     }
     else
     {
         //qDebug() << "value method called failed!";
     }
+    emit finished_conf(re);
     return re;
 }
 
@@ -228,12 +247,12 @@ int DbusHandleClient::change_conf_value(QString name, int flag) {
         //从返回参数获取返回值
         QString value = response.arguments().takeFirst().toString();
         re = value.toInt();
-        emit finished_change(re);
     }
     else
     {
         //qDebug() << "value method called failed!";
     }
+    emit finished_change(re);
     return re;
 }
 
@@ -254,12 +273,12 @@ int DbusHandleClient::bindPhone(QString username, QString pwd, QString phone, QS
         //从返回参数获取返回值
         QString value = response.arguments().takeFirst().toString();
         re = value.toInt();
-        emit finished_ret_bind(re);
     }
     else
     {
         //qDebug() << "value method called failed!";
     }
+    emit finished_ret_bind(re);
     return re;
 }
 
@@ -279,12 +298,12 @@ int DbusHandleClient::init_oss() {
         //从返回参数获取返回值
         QString value = response.arguments().takeFirst().toString();
         re = value.toInt();
-        emit finished_oss(re);
     }
     else
     {
         //qDebug() << "value method called failed!";
     }
+    emit finished_oss(re);
     return re;
 }
 
@@ -304,12 +323,12 @@ int DbusHandleClient::manual_sync() {
         //从返回参数获取返回值
         QString value = response.arguments().takeFirst().toString();
         re = value.toInt();
-        emit finished_man(re);
     }
     else
     {
         //qDebug() << "value method called failed!";
     }
+    emit finished_man(re);
     return re;
 }
 
@@ -330,11 +349,6 @@ char* DbusHandleClient::check_login() {
         QString value = response.arguments().takeFirst().toString();
         re = value;
         //qDebug()<<value;
-        if(!once) {
-            once = true;
-            emit finished_check_oss(value);
-        }
-        emit finished_check(value);
     }
     else
     {
@@ -344,5 +358,11 @@ char* DbusHandleClient::check_login() {
     QByteArray ba = re.toLatin1(); // must
     ch=ba.data();
     //qDebug()<<ch;
+    if(!once) {
+        once = true;
+        emit finished_check_oss(re);
+    }
+    emit finished_check(re);
     return ch;
 }
+

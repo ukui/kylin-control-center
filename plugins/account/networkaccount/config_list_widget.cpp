@@ -60,7 +60,8 @@ config_list_widget::config_list_widget(QWidget *parent) : QWidget(parent) {
 }
 /* 检测第一次登录，为用户添加名字 */
 void config_list_widget::setname(QString n) {
-    if( code == "201" || code == "203" || code == "401") {
+    if( n == "201" || n == "203" || n == "401" ||n == "") {
+        emit dologout();
         return ;
     }
     //qDebug()<<n;
@@ -79,7 +80,7 @@ void config_list_widget::setret_oss(int ret) {
         emit doman();
         //qDebug()<<"init oss is 0";
     } else {
-        //emit dologout();
+        emit dologout();
     }
 }
 
@@ -342,8 +343,8 @@ void config_list_widget::finished_load(int ret) {
     //qDebug()<<"wb111"<<ret;
     if (ret == 0) {
         emit doconf();
-    } else if(ret == 401 || ret == 203 || ret == 201) {
-        //emit dologout();
+    } else if(ret == 401 || ret == 203 || ret == 201 || ret == 301) {
+        emit dologout();
     }
 }
 
