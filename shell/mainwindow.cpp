@@ -347,7 +347,7 @@ void MainWindow::loadPlugins(){
         pluginsDir = QDir(qApp->applicationDirPath() + "/pluginlibs/");
     }
 
-    bool isExistCloud  = isExitsCloudAccount();
+    bool isExistCloud  = isExitsCloudAccount();    
     foreach (QString fileName, pluginsDir.entryList(QDir::Files)){
 //        if (fileName == "libdesktop.so")
 //            continue;
@@ -537,15 +537,14 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname){
 bool MainWindow::isExitsCloudAccount() {
     QProcess *wifiPro = new QProcess();
     QString shellOutput = "";
-    wifiPro->start("apt list kylin-sso-client");
+    wifiPro->start("dpkg -l  | grep kylin-sso-client");
     wifiPro->waitForFinished();
     QString output = wifiPro->readAll();
     shellOutput += output;
     QStringList slist = shellOutput.split("\n");
 
-    if (slist.length() >= 2) {
-        QString res = slist.at(1);
-        if(res.contains("kylin-sso-client")) {
+    for (QString res : slist) {
+        if (res.contains("kylin-sso-client")) {
             return true;
         }
     }
