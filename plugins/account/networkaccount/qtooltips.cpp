@@ -58,7 +58,7 @@ void QToolTips::paintEvent(QPaintEvent *event)
     }
 
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setBrush(QBrush(Qt::white));
+    painter.setBrush(QBrush(palette().color(QPalette::Base)));
     painter.setPen(Qt::transparent);
     QRect rect = this->rect();
     rect.setX(xpos);

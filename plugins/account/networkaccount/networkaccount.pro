@@ -1,4 +1,4 @@
-QT       += core gui svg
+QT       += core gui svg dbus
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,6 +30,7 @@ SOURCES += \
     bindphonedialog.cpp \
     config_file.cpp \
     config_list_widget.cpp \
+	dbushandleclient.cpp \
     dialog_login_reg.cpp \
     editpassdialog.cpp \
     item_list.cpp \
@@ -53,6 +54,7 @@ HEADERS += \
     bindphonedialog.h \
     config_file.h \
     config_list_widget.h \
+	dbushandleclient.h \
     dialog_login_reg.h \
     editpassdialog.h \
     item_list.h \
@@ -79,8 +81,3 @@ RESOURCES += \
     qss.qrc
 
 DISTFILES += \
-
-unix:!macx: LIBS += -L$$[QT_INSTALL_LIBS]  -lkylinssoclient
-
-INCLUDEPATH += $$[QT_INSTALL_LIBS]
-DEPENDPATH += $$[QT_INSTALL_LIBS]

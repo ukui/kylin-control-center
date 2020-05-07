@@ -23,38 +23,38 @@
 
 EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
 {
-    //Allocate the memory
-    stackwidget = new QStackedWidget(this);
-    title = new QLabel(this);
-    del_btn = new QPushButton(this);
-    account = new ql_lineedit_pass(this);
-    newpass = new ql_lineedit_pass(this);
-    confirm_pass = new ql_lineedit_pass(this);
-    pass_tips = new QLabel(this);
-    valid_code = new QLineEdit(this);
-    get_code = new QPushButton(this);
-    cancel = new QPushButton(this);
-    confirm = new QPushButton(this);
-    success = new SuccessDiaolog(this);
-    content = new QWidget(this);
+    //内存分配
+    stackwidget = new QStackedWidget(this);     //切换成功页面与业务逻辑页面
+    title = new QLabel(this);                   //标题
+    del_btn = new QPushButton(this);            //关闭按钮，定点摆放
+    //account = new ql_lineedit_pass(this);
+    newpass = new ql_lineedit_pass(this);       //新密码框
+    confirm_pass = new ql_lineedit_pass(this);  //确认密码框
+    pass_tips = new QLabel(this);               //密码提示
+    valid_code = new QLineEdit(this);           //验证码框
+    get_code = new QPushButton(this);           //发送验证码按钮
+    cancel = new QPushButton(this);             //取消按钮
+    confirm = new QPushButton(this);            //确认按钮
+    success = new SuccessDiaolog(this);         //成功页面
+    content = new QWidget(this);                //业务逻辑页面
 
-    vlayout = new QVBoxLayout;
-    hlayout = new QHBoxLayout;
-    btnlayout = new QHBoxLayout;
-    timer = new QTimer(this);
-    tips = new QLabel(this);
-    vboxlayout = new QVBoxLayout;
+    vlayout = new QVBoxLayout;                  //输入框布局
+    hlayout = new QHBoxLayout;                  //验证码布局
+    btnlayout = new QHBoxLayout;                //按钮布局
+    timer = new QTimer(this);                   //验证码计时器
+    tips = new QLabel(this);                    //错误提示
+    vboxlayout = new QVBoxLayout;               //主窗口界面布局
 
 
 
-    //Configuration
+    //控件初始化设置
     stackwidget->addWidget(content);
     stackwidget->addWidget(success);
     timer->stop();
     title->setText(tr("Edit Password"));
-    account->setPlaceholderText(tr("Your password here"));
+    //account->setPlaceholderText(tr("Your password here"));
     newpass->setPlaceholderText(tr("Your new password here"));
-    valid_code->setPlaceholderText(tr("Your code here"));
+    valid_code->setPlaceholderText(tr("Your code"));
     get_code->setText(tr("Get phone code"));
     cancel->setText(tr("Cancel"));
     confirm->setText(tr("Confirm"));
@@ -63,14 +63,16 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     pass_tips->setStyleSheet("font-size:14px;");
     pass_tips->setFixedHeight(16);
     valid_code->setMaxLength(4);
+    tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
+                        "&nbsp;&nbsp;"+code+"</span></p></body></html>");
     stackwidget->setCurrentWidget(content);
 
-    //Resize
+    //控件尺寸大小设置
     del_btn->setMaximumSize(30,30);
     del_btn->setMinimumSize(30,30);
     title->adjustSize();
     del_btn->setFixedSize(30,30);
-    account->setFixedSize(338,36);
+    //account->setFixedSize(338,36);
     newpass->setFixedSize(338,36);
     confirm_pass->setFixedSize(338,36);
     valid_code->setFixedSize(120,34);
@@ -81,9 +83,9 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     content->setFixedSize(420,446);
     success->setFixedSize(420,446);
 
-    del_btn->setGeometry(this->width() - 46,10,30,30);
+    del_btn->setGeometry(this->width() - 46,14,30,30);
 
-    //Set StyleSheet
+    //设置样式表
     QString liness = "QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
                      "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
                      "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}";
@@ -110,8 +112,6 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
                            "background-image: url(:new/image/delete_click.png);"
                            "background-repeat:no-repeat;background-position :center;"
                            "border-width:0px;width:30px;height:30px;border-radius:4px}");
-    tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                        "&nbsp;&nbsp;"+code+"</span></p></body></html>");
     title->setStyleSheet(labelss);
     //account->setStyleSheet(liness);
     //newpass->setStyleSheet(liness);
@@ -127,8 +127,8 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     QValidator *validator_code = new QRegExpValidator(regx_code, valid_code );
     valid_code->setValidator( validator_code );
 
-    //Layout
-    account->setTextMargins(16,0,0,0);
+    //布局设置
+    //account->setTextMargins(16,0,0,0);
     newpass->setTextMargins(16,0,0,0);
     valid_code->setTextMargins(16,0,0,0);
     confirm_pass->setTextMargins(16,0,0,0);
@@ -136,7 +136,7 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     vlayout->setContentsMargins(41,55,41,36);
     vlayout->addSpacing(20);
     vlayout->setSpacing(8);
-    vlayout->addWidget(account);
+    //vlayout->addWidget(account);
     vlayout->addWidget(newpass);
     vlayout->addWidget(pass_tips);
     vlayout->addWidget(confirm_pass);
@@ -170,11 +170,11 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     pass_tips->hide();
     pass_tips->setAttribute(Qt::WA_DontShowOnScreen);
 
-    account->installEventFilter(this);
+    //account->installEventFilter(this);
     newpass->installEventFilter(this);
     valid_code->installEventFilter(this);
 
-    //Connect
+    //控件逻辑信号连接
     connect(del_btn,SIGNAL(clicked()),this,SLOT(on_close()));
     connect(get_code,SIGNAL(clicked()),this,SLOT(on_send_code()));
     connect(confirm,SIGNAL(clicked()),this,SLOT(on_edit_submit()));
@@ -182,6 +182,9 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     connect(cancel,SIGNAL(clicked()),this,SLOT(on_close()));
     connect(this,SIGNAL(code_changed()),this,SLOT(setstyleline()));
     connect(success->back_login,SIGNAL(clicked()),this,SLOT(on_close()));
+    connect(success->back_login,&QPushButton::clicked,[this] () {
+        emit account_changed();
+    });
 
    // setStyleSheet("EditPassDialog{border-radius:6px;}");
     setAttribute(Qt::WA_TranslucentBackground, true);
@@ -194,104 +197,139 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     confirm->setShortcut(QKeySequence::InsertParagraphSeparator);
     confirm->setShortcut(Qt::Key_Enter);
     confirm->setShortcut(Qt::Key_Return);
-    account->setFocus();
-    QDesktopWidget* desktop = QApplication::desktop(); // =qApp->desktop();也可以
+    //account->setFocus();
+
+    //设置第一个输入框为聚焦
+    newpass->setFocus();
+
+    //窗口显示在屏幕中央
+    QDesktopWidget* desktop = QApplication::desktop();
     move((desktop->width() - this->width())/2, (desktop->height() - this->height())/2);
 }
 
-void EditPassDialog::set_client(libkylinssoclient *c) {
+/* 设置DBUS客户端 */
+void EditPassDialog::set_client(DbusHandleClient *c,QThread *t) {
     client = c;
-    connect(client,SIGNAL(finished_mcode_by_username(int)),this,SLOT(on_edit_code_finished(int)));
-    connect(client,SIGNAL(finished_user_resetpwd(int)),this,SLOT(on_edit_submit_finished(int)));
+    thread = t;
+
+    connect(this,SIGNAL(docode(QString)),client,SLOT(get_mcode_by_username(QString)));
+    connect(client,SIGNAL(finished_ret_code_edit(int)),this,SLOT(setret_code(int)));
+    connect(this,SIGNAL(doreset(QString,QString,QString)),client,SLOT(user_resetpwd(QString,QString,QString)));
+    connect(client,SIGNAL(finished_ret_reset_edit(int)),this,SLOT(setret_edit(int)));
+    connect(this,SIGNAL(docheck()),client,SLOT(check_login()));
+    connect(client,SIGNAL(finished_ret_check_edit(QString)),this,SLOT(setret_check(QString)));
+
+    //connect(client,SIGNAL(finished_mcode_by_username(int)),this,SLOT(on_edit_code_finished(int)));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_mcode_by_username",this,SLOT(on_edit_code_finished(int)));
+    //connect(client,SIGNAL(finished_user_resetpwd(int)),this,SLOT(on_edit_submit_finished(int)));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_user_resetpwd",this,SLOT(on_edit_submit_finished(int)));
 }
 
+/* DBUS客户端回调函数处理，处理异常 */
+void EditPassDialog::setret_code(int ret) {
+    if(ret != 0) {
+        valid_code->setText("");
+        set_code(messagebox(ret));
+        tips->show();
+        setshow(content);
+        return ;
+    } else {
+    }
+}
+
+void EditPassDialog::setret_check(QString ret) {
+    if (ret == "401" || ret == "201" || ret == "203" || ret == "") {
+        close();
+        emit dologout();
+    }
+}
+
+void EditPassDialog::setret_edit(int ret) {
+    if(ret == 0) {
+    } else {
+        set_code(messagebox(ret));
+        valid_code->setText("");
+        tips->show();
+        setshow(content);
+    }
+}
+
+/* 设置错误提示代码 */
 void EditPassDialog::set_code(QString codenum) {
     code = codenum;
     emit code_changed();
 }
 
+/* 设置提示错误消息 */
 void EditPassDialog::setstyleline() {
     tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
                         "&nbsp;&nbsp;"+code+"</span></p></body></html>");
 }
 
+/* 验证码发送按钮处理 */
 void EditPassDialog::on_send_code() {
-    int ret = -1;
     char phone[32];
-    QString acc = client->check_login();
-
+    emit docheck();
+    get_code->setEnabled(false);
     if(newpass->check() == false){
+        get_code->setEnabled(true);
         valid_code->setText("");
         set_code(tr("At least 6 bit, include letters and digt"));
         tips->show();
         setshow(content);
         return ;
     }
-    if(acc != "" && acc != "201" && acc != "203" &&confirm_pass->text()!="" &&account->text() != "") {
-        qstrcpy(phone,acc.toStdString().c_str());
-        ret = client->get_mcode_by_username(phone);
-        if(ret != 0) {
-            valid_code->setText("");
-            set_code(messagebox(ret));
-            tips->show();
-            setshow(content);
-            return ;
-        } else {
-            timer->start();
-            timer->setInterval(1000);
-            get_code->setEnabled(false);
-        }
+    //qDebug()<<name;
+    if(name != "" && name != "201" && name != "203" &&confirm_pass->text()!="") {
+        qstrcpy(phone,name.toStdString().c_str());
+        emit docode(phone);
     }else {
+        get_code->setEnabled(true);
         valid_code->setText("");
-        set_code(messagebox(ret));
+        set_code(messagebox(-1));
         tips->show();
         return ;
     }
 }
 
+/*　修改密码按钮处理 */
 void EditPassDialog::on_edit_submit() {
-    int ret = -1;
-    char cur_acc[32],new_pass[32],mcode[5],confirm_password[32],acco[32];
-    bool ok_cur = account->text().isNull();
+    QString new_pass,mcode,confirm_password,acco;
+    //bool ok_cur = account->text().isNull();
     bool ok_new = newpass->text().isNull();
     bool ok_code = valid_code->text().isNull();
     bool ok_confirm = confirm_pass->text().isNull();
-    bool ok_acc = true;
-    QString acc = client->check_login();
-    if(acc != "" && acc != "201" && acc != "203") {
-        ok_acc = false;
-        qstrcpy(acco,acc.toStdString().c_str());
-    }
-    if(!ok_cur && !ok_new && !ok_code && !ok_confirm && !ok_acc) {
-        qstrcpy(cur_acc,account->text().toStdString().c_str());
-        qstrcpy(new_pass,newpass->text().toStdString().c_str());
-        qstrcpy(mcode,valid_code->text().toStdString().c_str());
-        qstrcpy(confirm_password,confirm_pass->text().toStdString().c_str());
-        ret = client->user_resetpwd(acco,new_pass,mcode);
+    bool ok_acc = name.isNull();
+    content->setEnabled(false);  //防止用户乱点
+    if( !ok_new && !ok_code && !ok_confirm && !ok_acc) {
+        //qstrcpy(cur_acc,account->text().toStdString().c_str());
+        //cur_acc = account->text();
+       // qstrcpy(new_pass,newpass->text().toStdString().c_str());
+        new_pass = newpass->text();
+        //qstrcpy(mcode,valid_code->text().toStdString().c_str());
+        mcode = valid_code->text();
+        //qstrcpy(confirm_password,confirm_pass->text().toStdString().c_str());
+        confirm_password = confirm_pass->text();
+        acco = name;
         if(newpass->check() == false) {
+            content->setEnabled(true);
             set_code(tr("At least 6 bit, include letters and digt"));
             tips->show();
             setshow(content);
             return ;
-            return ;
         }
-        if(qstrcmp(confirm_password,new_pass) != 0 ) {
+        if(new_pass != confirm_password ) {
+            content->setEnabled(true);
             set_code(tr("Please check your password!"));
             tips->show();
             setshow(content);
             return ;
         }
-        if(ret == 0) {
-            qDebug()<<cur_acc;
-        } else {
-            set_code(messagebox(ret));
-            valid_code->setText("");
-            tips->show();
-            setshow(content);
-        }
+        emit doreset(acco,new_pass,mcode);
     }
 }
 
+/* 计时开始 */
 void EditPassDialog::on_timer_start() {
     if(timerout_num > 0) {
         QString str = tr("Resend(") + QString::number(timerout_num,10) + tr(")");
@@ -305,10 +343,15 @@ void EditPassDialog::on_timer_start() {
     }
 }
 
+/* 修改密码成功后进行回调处理 */
 void EditPassDialog::on_edit_submit_finished(int req) {
+    if(is_used == false) {
+        return ;
+    }
+
+    content->setEnabled(true);
     if(req == 0) {
-        client->logout();
-        emit account_changed();
+        //qDebug()<<"wb888";
         del_btn->hide();
         stackwidget->setCurrentWidget(success);
         success->back_login->setText(tr("Success！"));
@@ -319,6 +362,7 @@ void EditPassDialog::on_edit_submit_finished(int req) {
     }
 }
 
+/* 消息盒子 */
 QString EditPassDialog::messagebox(int code) {
     QString ret = tr("Error code:") + QString::number(code,10)+ tr("!");
     switch(code) {
@@ -347,6 +391,7 @@ QString EditPassDialog::messagebox(int code) {
     return ret;
 }
 
+/* 动态显示布局处理 */
 void EditPassDialog::setshow(QWidget *widget) {
     widget->hide();
     widget->setAttribute(Qt::WA_DontShowOnScreen);
@@ -355,16 +400,25 @@ void EditPassDialog::setshow(QWidget *widget) {
     widget->adjustSize();
 }
 
+/* 验证码获取回调 */
 void EditPassDialog::on_edit_code_finished(int req) {
+
+    if(is_used == false) {
+        return ;
+    }
+    get_code->setEnabled(true);
     if(req != 0) {
         set_code(messagebox(req));
         tips->show();
         setshow(stackwidget);
     } else if(req == 0) {
+        timer->start();
+        timer->setInterval(1000);
+        get_code->setEnabled(false);
     }
 }
 
-
+/* 窗口重绘，阴影设置 */
 void EditPassDialog::paintEvent(QPaintEvent *event)
 {
 
@@ -398,10 +452,11 @@ void EditPassDialog::paintEvent(QPaintEvent *event)
     rect.setY(10);
     rect.setWidth(rect.width() - 10);
     rect.setHeight(rect.height() - 10);
-    // rect: 绘制区域  15：圆角弧度
+    // rect: 绘制区域  10 圆角弧度 6
     painter.drawRoundedRect(rect, 6, 6);
 }
 
+/* 设置窗口可以动 */
 void EditPassDialog::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
@@ -409,20 +464,23 @@ void EditPassDialog::mousePressEvent(QMouseEvent *event)
     }
 }
 
+/* 设置窗口可以随鼠标动 */
 void EditPassDialog::mouseMoveEvent(QMouseEvent *event)
 {
     this->move(event->globalPos() + m_startPoint);
 }
 
+
+/*　控件聚焦失去焦点事件处理 */
 bool EditPassDialog::eventFilter(QObject *w, QEvent *e) {
-    if(w == account) {
-        if (e->type() == QEvent::FocusIn && !tips->isHidden()) {
-            tips->hide();
+//    if(w == account) {
+//        if (e->type() == QEvent::FocusIn && !tips->isHidden()) {
+//            tips->hide();
 
-            setshow(content);
+//            setshow(content);
 
-        }
-    }
+//        }
+//    }
     if(w == newpass) {
         if (e->type() == QEvent::FocusIn && !tips->isHidden()) {
             tips->hide();
@@ -452,11 +510,12 @@ bool EditPassDialog::eventFilter(QObject *w, QEvent *e) {
     return QWidget::eventFilter(w,e);
 }
 
+/* 清理窗口 */
 void EditPassDialog::set_clear() {
     if(!tips->isHidden()) {
         tips->hide();
     }
-    account->setText("");
+   // account->setText("");
     newpass->setText("");
     confirm_pass->setText("");
     valid_code->setText("");
@@ -466,9 +525,14 @@ void EditPassDialog::set_clear() {
     timer->stop();
 }
 
+/* 关闭窗口处理函数　*/
 void EditPassDialog::on_close() {
+    if(del_btn->isHidden()) {
+        del_btn->show();
+        del_btn->raise();
+    }
     newpass->get_visble()->setChecked(false);
-    account->get_visble()->setChecked(false);
+    //account->get_visble()->setChecked(false);
     confirm_pass->get_visble()->setChecked(false);
     stackwidget->setCurrentIndex(0);
     set_clear();

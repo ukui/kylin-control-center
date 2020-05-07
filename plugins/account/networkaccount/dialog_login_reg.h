@@ -39,10 +39,11 @@
 #include <QTimer>
 #include <QSizePolicy>
 #include "ql_lineedit_pass.h"
-#include <libkylin-sso-client/include/libkylinssoclient.h>
+#include "dbushandleclient.h"
 #include <QShortcut>
 #include "bindphonedialog.h"
 #include <QMovie>
+#include <QtDBus/QtDBus>
 
 class Dialog_login_reg : public QWidget
 {
@@ -55,11 +56,12 @@ public:
     int             timerout_num_log = 60;
     int             timerout_num_bind = 60;
     QString         messagebox(int code);
-    void            set_client(libkylinssoclient *c);
+    void            set_client(DbusHandleClient *c,QThread *t);
     QPushButton    *get_login_submit();
     bool            retok = true;
-    void            setclear();
+    void            set_clear();
     void            setshow(QWidget *w);
+    bool            is_used = false;
 
 public slots:
     void linked_forget_btn();
@@ -86,6 +88,15 @@ public slots:
     void on_bind_finished(int ret);
     void on_bind_btn();
     void cleanconfirm(QString str);
+    void setret_login(int ret);
+    void setret_phone_login(int ret);
+    void setret_rest(int ret);
+    void setret_reg(int ret);
+    void setret_bind(int ret);
+    void setret_code_phone_login(int ret);
+    void setret_code_phone_reg(int ret);
+    void setret_code_user_pass(int ret);
+    void setret_code_user_bind(int ret);
 protected:
     void            paintEvent(QPaintEvent *event);
     void            mousePressEvent(QMouseEvent *event);
@@ -93,6 +104,8 @@ protected:
     bool            eventFilter(QObject *w,QEvent *e);
 
 private:
+    QString         account;
+    QString         passwd;
     LoginDialog     *box_login;
     QLabel          *title;
     QPushButton     *login_submit;
@@ -132,13 +145,14 @@ private:
     QTimer          *timer_reg;
     QTimer          *timer_log;
     QTimer          *timer_bind;
-    libkylinssoclient   *client;
+    DbusHandleClient   *client;
     QWidget         *log_reg;
     QStackedWidget  *basewidegt;
     SuccessDiaolog  *succ;
     BindPhoneDialog *box_bind;
     QLabel          *gif;
     QMovie          *pm;
+    QThread         *thread;
     bool            send_is_ok = false;
     bool            send_is_ok_log = false;
     bool            send_is_ok_reg = false;
@@ -146,6 +160,16 @@ private:
 signals:
     void on_login_success();
     void on_allow_send();
+    void dologin(QString username,QString pwd);
+    void dogetmcode_phone_log(QString phonenumb);
+    void dogetmcode_phone_reg(QString phonenumb);
+    void dogetmcode_number_bind(QString username);
+    void dogetmcode_number_pass(QString username);
+    void dorest(QString username, QString newpwd, QString mCode);
+    void doreg(QString username, QString pwd, QString phonenumb, QString mcode);
+    void dophonelogin(QString phone, QString mCode);
+    void dobind(QString username, QString pwd, QString phone, QString mCode);
+
 };
 
 #endif // DIALOG_LOGIN_REG_H

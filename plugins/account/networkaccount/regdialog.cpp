@@ -63,8 +63,8 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     pass_tip->setText(tr("At least 6 bit, include letters and digt"));
     pass_tip->setFixedHeight(16);
     pass_tip->setContentsMargins(16,0,0,0);
-    user_tip->setStyleSheet("font-size:14px;color:rgba(0,0,0,0.85)");
-    pass_tip->setStyleSheet("font-size:14px;color:rgba(0,0,0,0.85)");
+    user_tip->setStyleSheet("font-size:14px;");
+    pass_tip->setStyleSheet("font-size:14px;");
 
     reg_confirm->setTextMargins(16,0,0,0);
     reg_user->setTextMargins(16,0,0,0);
@@ -106,7 +106,7 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     QValidator *validator_phn = new QRegExpValidator(regx_phn, reg_phone);
     reg_phone->setValidator(validator_phn);
 
-    QRegExp regx_acc("^[a-zA-Z0-9_-]{4,30}$");
+    QRegExp regx_acc("^[a-zA-Z0-9_@.-]+$");
     QValidator *validator_acc = new QRegExpValidator(regx_acc, reg_user );
     reg_user->setValidator(validator_acc);
 

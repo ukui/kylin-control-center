@@ -39,13 +39,9 @@ public:
     void    set_code(QString code);
     QPushButton *get_send_code();
     QLabel  *get_tips();
-    QString get_account();
     QString get_phone();
-    QString get_pass();
     QString get_code();
-    QLineEdit* get_account_lineedit();
     area_code_lineedit* get_phone_lineedit();
-    ql_lineedit_pass* get_pass_lineedit();
     QLineEdit* get_code_lineedit();
 public slots:
     void setstyleline();
@@ -54,8 +50,6 @@ signals:
 private:
     QString             code;
     area_code_lineedit  *phone;
-    QLineEdit           *account;
-    ql_lineedit_pass    *pass;
     QLineEdit           *valid_code;
     QPushButton         *send_code;
     QVBoxLayout         *layout;
@@ -65,3 +59,4 @@ private:
 };
 
 #endif // BINDPHONEDIALOG_H
+
