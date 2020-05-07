@@ -192,6 +192,7 @@ void Theme::setupSettings() {
     kwinSettings->endGroup();
 
     effectSwitchBtn->setChecked(!kwin);
+
 }
 
 void Theme::setupComponent(){
@@ -253,7 +254,11 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
     QLabel * statusLabel = new QLabel(button);
     statusLabel->setFixedSize(QSize(16, 16));
     statusLabel->setScaledContents(true);
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+    connect(ui->themeModeBtnGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked), [=](QAbstractButton * eBtn){
+#else
     connect(ui->themeModeBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), [=](QAbstractButton * eBtn){
+#endif
         if (eBtn == button)
             statusLabel->setPixmap(QPixmap("://img/plugins/theme/selected.png"));
         else
@@ -306,7 +311,6 @@ void Theme::initThemeMode(){
             button->click();
 //            button->setChecked(true);
     }
-
     connect(ui->themeModeBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this, [=](QAbstractButton * button){
 
         //设置主题
@@ -316,6 +320,8 @@ void Theme::initThemeMode(){
             qApp->setStyle(new InternalStyle(themeMode));
             qtSettings->set(MODE_QT_KEY, themeMode);
             gtkSettings->set(MODE_GTK_KEY, themeMode);
+
+            writeKwinSettings(!effectSwitchBtn->isChecked(), themeMode);
         }
     });
 }
@@ -413,10 +419,10 @@ void Theme::setupControlTheme(){
         selectedColorLabel->setPixmap(QPixmap("://img/plugins/theme/selected.png"));
         //初始化选中图标状态
         selectedColorLabel->setVisible(button->isChecked());
-        connect(colorBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this,[=]{
-            selectedColorLabel->setVisible(button->isChecked());
-            //设置控件主题
-        });
+//        connect(colorBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this,[=]{
+//            selectedColorLabel->setVisible(button->isChecked());
+//            //设置控件主题
+//        });
 
         colorHorLayout->addStretch();
         colorHorLayout->addWidget(selectedColorLabel);
@@ -487,10 +493,12 @@ void Theme::initEffectSettings(){
 }
 
 void Theme::initConnection() {
+
     connect(ui->resetBtn, &QPushButton::clicked, this, &Theme::resetBtnClickSlot);
 
     connect(effectSwitchBtn, &SwitchButton::checkedChanged, [this](bool checked) {
-        writeKwinSettings(!checked);
+        QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
+        writeKwinSettings(!checked, currentThemeMode);
     });
 }
 
@@ -549,16 +557,25 @@ void Theme::resetBtnClickSlot() {
     initCursorTheme();
 }
 
-void Theme::writeKwinSettings(bool change) {
-
+void Theme::writeKwinSettings(bool change, QString theme) {
+    QString th;
+    if ("ukui-white" == theme) {
+        th = "_aurorate_svg_Ukui-classic";
+    } else {
+        th = "_aurorate_svg_Ukui-classic_dark";
+    }
     kwinSettings->beginGroup("Plugins");
     kwinSettings->setValue("blurEnabled",change);
+    kwinSettings->endGroup();
+
+    kwinSettings->beginGroup("org.kde.kdecoration2");
+    kwinSettings->setValue("theme", th);
     kwinSettings->endGroup();
 
     kwinSettings->sync();
 
     QDBusMessage message = QDBusMessage::createSignal("/KWin", "org.ukui.KWin", "reloadConfig");
-    QDBusConnection::sessionBus().send(message);
+    QDBusConnection::sessionBus().send(message);       
 }
 
 void Theme::clearLayout(QLayout* mlayout, bool deleteWidgets)

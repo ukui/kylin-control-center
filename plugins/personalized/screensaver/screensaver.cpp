@@ -156,10 +156,22 @@ void Screensaver::initComponent(){
     }
 
     //初始化滑动条
-    ui->idleSlider->setMinimum(IDLEMIN);
-    ui->idleSlider->setMaximum(IDLEMAX);
-    ui->idleSlider->setSingleStep(IDLESTEP);
-    ui->idleSlider->setPageStep(IDLESTEP);
+    QStringList scaleList;
+    scaleList<< tr("Never") << tr("5m") << tr("10m") << tr("30m") << tr("45m")
+              <<tr("1h") << tr("1.5h") << tr("3h");
+
+    uslider = new Uslider(scaleList);
+    uslider->setRange(1,8);
+    uslider->setTickInterval(1);
+    uslider->setPageStep(1);
+
+    ui->lockhorizontalLayout->addWidget(uslider);
+    ui->lockhorizontalLayout->addSpacing(15);
+
+//    ui->idleSlider->setMinimum(IDLEMIN);
+//    ui->idleSlider->setMaximum(IDLEMAX);
+//    ui->idleSlider->setSingleStep(IDLESTEP);
+//    ui->idleSlider->setPageStep(IDLESTEP);
 
     connect(enableSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
         qDebug()<<"enableSwitchBtn--------->"<<endl;
@@ -197,14 +209,14 @@ void Screensaver::initComponent(){
         });
     }
 
-    connect(ui->idleSlider, &QSlider::valueChanged, this, [=](int value){
-        //刷新分钟显示
-        ui->idleLineEdit->blockSignals(true);
-        ui->idleLineEdit->setText(QString::number(value));
-        ui->idleLineEdit->blockSignals(false);
-    });
-    connect(ui->idleSlider, &QSlider::sliderReleased, this, [=]{
-        int value = ui->idleSlider->value();
+//    connect(uslider, &QSlider::valueChanged, this, [=](int value){
+//        //刷新分钟显示
+//        ui->idleLineEdit->blockSignals(true);
+//        ui->idleLineEdit->setText(QString::number(value));
+//        ui->idleLineEdit->blockSignals(false);
+//    });
+    connect(uslider, &QSlider::sliderReleased, this, [=]{
+        int value = convertToLocktime( uslider->value());
 
         session_settings = g_settings_new(SESSION_SCHEMA);
         g_settings_set_int(session_settings, IDLE_DELAY_KEY, value);
@@ -253,7 +265,14 @@ void Screensaver::initThemeStatus(){
 
     ui->comboBox->blockSignals(true);
 
-    screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
+    QByteArray id(SCREENSAVER_SCHEMA);
+    if (QGSettings::isSchemaInstalled(id)) {
+        screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
+    } else {
+        qDebug()<<"org.ukui.screensaver not installed"<<endl;
+        return ;
+    }
+
     mode = g_settings_get_enum(screensaver_settings, MODE_KEY);
 
     if (mode == MODE_DEFAULT_UKUI){
@@ -289,13 +308,18 @@ void Screensaver::initIdleSliderStatus(){
     session_settings = g_settings_new(SESSION_SCHEMA);
     minutes = g_settings_get_int(session_settings, IDLE_DELAY_KEY);
 
-    ui->idleSlider->blockSignals(true);
-    ui->idleSlider->setValue(minutes);
-    ui->idleSlider->blockSignals(false);
+//    qDebug()<<"minutes is----------->"<<minutes<<endl;
+    uslider->blockSignals(true);
+    uslider->setValue(lockConvertToSlider(minutes));
+    uslider->blockSignals(false);
 
-    ui->idleLineEdit->blockSignals(true);
-    ui->idleLineEdit->setText(QString::number(minutes));
-    ui->idleLineEdit->blockSignals(true);
+//    ui->idleSlider->blockSignals(true);
+//    ui->idleSlider->setValue(minutes);
+//    ui->idleSlider->blockSignals(false);
+
+//    ui->idleLineEdit->blockSignals(true);
+//    ui->idleLineEdit->setText(QString::number(minutes));
+//    ui->idleLineEdit->blockSignals(true);
 
     g_object_unref(session_settings);
 }
@@ -389,6 +413,7 @@ void Screensaver::status_init(){
     int minutes;
     session_settings = g_settings_new(SESSION_SCHEMA);
     minutes = g_settings_get_int(session_settings, IDLE_DELAY_KEY);
+    uslider->setValue(lockConvertToSlider(minutes));
 //    ui->idleSlider->setValue(minutes);
 //    ui->idleLabel->setText(QString("%1%2").arg(minutes).arg(tr("minutes")));
 
@@ -401,7 +426,7 @@ void Screensaver::status_init(){
     //connect
 //    connect(ui->powerBtn, &QPushButton::clicked, this, [=]{pluginWidget->emitting_toggle_signal(tmpList.at(2), SYSTEM, 0);});
 
-    connect(ui->idleSlider, SIGNAL(sliderReleased()), this, SLOT(slider_released_slot())); //改gsettings
+    connect(uslider, SIGNAL(sliderReleased()), this, SLOT(slider_released_slot())); //改gsettings
 //    connect(activeswitchbtn, SIGNAL(checkedChanged(bool)), this, SLOT(activebtn_changed_slot(bool)));
 //    connect(lockswitchbtn, SIGNAL(checkedChanged(bool)), this, SLOT(lockbtn_changed_slot(bool)));
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(combobox_changed_slot(int)));
@@ -478,6 +503,72 @@ void Screensaver::kill_and_start(){
 }
 
 
+int Screensaver::convertToLocktime(const int value) {
+    switch (value) {
+    case 1:
+        return 0;
+        break;
+    case 2:
+        return 5;
+        break;
+    case 3:
+        return 10;
+        break;
+    case 4:
+        return 30;
+        break;
+    case 5:
+        return 45;
+        break;
+    case 6:
+        return 60;
+        break;
+    case 7:
+        return 90;
+        break;
+    case 8:
+        return 180;
+        break;
+    default:
+        return 0;
+        break;
+    }
+}
+
+int Screensaver::lockConvertToSlider(const int value) {
+    switch (value) {
+    case 0:
+        return 1;
+        break;
+    case 5:
+        return 2;
+        break;
+    case 10:
+        return 3;
+        break;
+    case 30:
+        return 4;
+        break;
+    case 45:
+        return 5;
+        break;
+    case 60:
+        return 6;
+        break;
+    case 90:
+        return 7;
+        break;
+    case 180:
+        return 8;
+        break;
+    default:
+        return 0;
+        break;
+    }
+}
+
+
+
 void Screensaver::set_idle_gsettings_value(int value){
     session_settings = g_settings_new(SESSION_SCHEMA);
     g_settings_set_int(session_settings, IDLE_DELAY_KEY, value);
@@ -485,7 +576,8 @@ void Screensaver::set_idle_gsettings_value(int value){
 
 void Screensaver::slider_released_slot(){
     int minutes;
-    minutes = ui->idleSlider->value();
+//    minutes = ui->idleSlider->value();
+    minutes = convertToLocktime(uslider->value());
     set_idle_gsettings_value(minutes);
 }
 

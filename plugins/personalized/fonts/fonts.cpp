@@ -42,6 +42,9 @@
 //#define PEONY_SCHEMA "org.ukui.peony.desktop"
 //#define PEONY_FONT_KEY "font"  //桌面上图标描述所用的字体
 
+#define STYLE_FONT_SCHEMA "org.ukui.style"
+#define SYSTEM_FONT_EKY "system-font-size"
+
 #define FONT_RENDER_SCHEMA           "org.ukui.font-rendering"
 #define ANTIALIASING_KEY        "antialiasing" //绘制字形时使用反锯齿类型
 #define HINTING_KEY             "hinting" //绘制字形时使用微调的类型
@@ -112,15 +115,19 @@ Fonts::Fonts()
     //    const QByteArray iddd(PEONY_SCHEMA);
     //    peonysettings = new QGSettings(iddd);
 
+    const QByteArray styleID(STYLE_FONT_SCHEMA);
     const QByteArray id(INTERFACE_SCHEMA);
     const QByteArray idd(MARCO_SCHEMA);
     const QByteArray iid(FONT_RENDER_SCHEMA);
 
-    if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(iid) && QGSettings::isSchemaInstalled(idd)){
+    if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(iid) && QGSettings::isSchemaInstalled(idd) &&
+            QGSettings::isSchemaInstalled(styleID)){
         settingsCreate = true;
         marcosettings = new QGSettings(idd);
         ifsettings = new QGSettings(id);
         rendersettings = new QGSettings(iid);
+        stylesettings = new QGSettings(styleID);
+
 
         _getDefaultFontinfo();
         setupComponent();
@@ -138,6 +145,7 @@ Fonts::~Fonts()
         delete marcosettings;
     //    delete peonysettings;
         delete rendersettings;
+        delete stylesettings;
     }
 
 }
@@ -354,7 +362,7 @@ void Fonts::setupConnect(){
     connect(ui->fontSizeSlider, &QSlider::valueChanged, [=](int value){
         if (!(value % 25)){
             float level = (float)value / 100;
-            qDebug() << "" << level;
+//            qDebug() << "font is---->" << level<<" "<<monospacefontStrList.at(0)<<" "<<defaultfontinfo.monospacefontsize * level<<endl;
             //获取当前字体信息
             _getCurrentFontInfo();
             //设置字体大小
@@ -363,6 +371,7 @@ void Fonts::setupConnect(){
             ifsettings->set(GTK_FONT_KEY, QVariant(QString("%1 %2").arg(gtkfontStrList.at(0)).arg(defaultfontinfo.gtkfontsize * level)));
             ifsettings->set(DOC_FONT_KEY, QVariant(QString("%1 %2").arg(docfontStrList.at(0)).arg(defaultfontinfo.docfontsize * level)));
             ifsettings->set(MONOSPACE_FONT_KEY, QVariant(QString("%1 %2").arg(monospacefontStrList.at(0)).arg(defaultfontinfo.monospacefontsize * level)));
+            stylesettings->set(SYSTEM_FONT_EKY, QVariant(QString("%1").arg(defaultfontinfo.monospacefontsize * level)));
 //            peonysettings->set(PEONY_FONT_KEY, QVariant(QString("%1 %2").arg(peonyfontStrList[0]).arg(defaultfontinfo.monospacefontsize * level)));
             marcosettings->set(TITLEBAR_FONT_KEY, QVariant(QString("%1 %2").arg(titlebarfontStrList.at(0)).arg(defaultfontinfo.titlebarfontsize * level)));
 
@@ -416,10 +425,13 @@ void Fonts::setupConnect(){
 
     ////绑定信号
     //字体效果按钮
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+    connect(ui->sampleBtnGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked), [=](QAbstractButton * button){
+#else
     connect(ui->sampleBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), [=](QAbstractButton * button){
+#endif
         setFontEffect(button);
     });
-
     //重置按钮
     connect(ui->resetBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
@@ -616,7 +628,10 @@ void Fonts::_getCurrentFontInfo(){
 
 QStringList Fonts::_splitFontNameSize(QString value){
     QStringList valueStringList;
-    if (value.right(1) >= '0' && value.right(1) <= '9'){
+    QString str = value.right(1);
+    QString ch0 = static_cast<QString>('0');
+    QString ch9 = static_cast<QString>('9');
+    if (str >= ch0 && str <= ch9){
         QStringList tmpStringList = value.split(' ');
         QString::SectionFlag flag = QString::SectionSkipEmpty;
         valueStringList << value.section(' ', 0, tmpStringList.length() - 2, flag);

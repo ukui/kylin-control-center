@@ -158,7 +158,7 @@ void Shortcut::setupConnect(){
         generalMaps.insert(tr("Desktop"), desktopMap);
         generalMaps.insert(tr("System"), systemMap);
         showDialog->buildComponent(generalMaps);
-        showDialog->show();
+        showDialog->exec();
     });
 
     connect(addDialog, &addShortcutDialog::shortcutInfoSignal, [=](QString path, QString name, QString exec){
@@ -536,7 +536,7 @@ bool Shortcut::eventFilter(QObject *watched, QEvent *event){
             QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
             if (mouseEvent->button() == Qt::LeftButton){
                 addDialog->setTitleText(QObject::tr("Add Shortcut"));
-                addDialog->show();
+                addDialog->exec();
                 return true;
             } else
                 return false;

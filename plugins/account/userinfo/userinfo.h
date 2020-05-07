@@ -28,6 +28,7 @@
 //#include <QAction>
 #include <QSignalMapper>
 #include <QMouseEvent>
+#include <QSettings>
 
 #include "shell/interface.h"
 
@@ -135,6 +136,11 @@ private:
     SwitchButton * autoLoginSwitchBtn;
 
     SystemDbusDispatcher * sysdispatcher;
+    QSettings * autoSettings = nullptr;
+
+
+private:
+    bool getAutomaticLogin(QString username);
 
 private:
     QMap<QString, UserInfomation> allUserInfoMap;

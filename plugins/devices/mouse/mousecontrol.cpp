@@ -42,7 +42,7 @@ extern "C" {
 #define THRESHOLD_KEY "motion-threshold"
 
 #define SESSION_SCHEMA "org.ukui.session"
-#define SESSION_MOUSE_KEY "initialize-mouse-size"
+#define SESSION_MOUSE_KEY "mouse-size-changed"
 
 
 MouseControl::MouseControl()
@@ -152,7 +152,12 @@ void MouseControl::setupComponent(){
     flashingBtn = new SwitchButton(pluginWidget);
     ui->enableFlashingHorLayout->addWidget(flashingBtn);
 
-    connect(ui->handHabitComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+     connect(ui->handHabitComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
+#else
+     connect(ui->handHabitComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+
+#endif
         Q_UNUSED(index)
         settings->set(HAND_KEY, ui->handHabitComBox->currentData().toBool());
     });
@@ -169,12 +174,12 @@ void MouseControl::setupComponent(){
         settings->set(LOCATE_KEY, checked);
     });
 
-    connect(ui->pointerSizeComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index){
+    connect(ui->pointerSizeComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
         Q_UNUSED(index)
         settings->set(CURSOR_SIZE_KEY, ui->pointerSizeComBox->currentData().toInt());
 
         QStringList keys = sesstionSetttings->keys();
-        if (keys.contains("initializeMouseSize")) {
+        if (keys.contains("mouseSizeChanged")) {
             sesstionSetttings->set(SESSION_MOUSE_KEY, true);
         }
     });

@@ -49,7 +49,8 @@
 #define QT_SCALE_KEY "qt-scale-factor"
 #define USER_SACLE_KEY "hidpi"
 
-
+#define POWER_SCHMES "org.ukui.power-manager"
+#define POWER_KEY "brightness-ac"
 
 Q_DECLARE_METATYPE(KScreen::OutputPtr)
 
@@ -63,8 +64,14 @@ Widget::Widget(QWidget *parent)
 
     ui->setupUi(this);
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+
+#else
     ui->quickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
     ui->quickWidget->setClearColor(Qt::transparent);
+#endif
+
     ui->quickWidget->setContentsMargins(0,0,0,9);
 
     closeScreenButton = new SwitchButton;
@@ -132,7 +139,7 @@ Widget::Widget(QWidget *parent)
 
 
     connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(save()));
-    connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(saveBrigthnessConfig()));
+//    connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(saveBrigthnessConfig()));
 
 
 
@@ -275,9 +282,9 @@ void Widget::loadQml()
 //    QString tmpfile = QCoreApplication::applicationDirPath();
 
 //    qDebug()<<"路径----------------->";
-    const QString file = QStringLiteral(":/qml/main.qml");
+//    const QString file = QStringLiteral("/home/kylin/zhoubin/ukui/ukui-control-center/plugins/system/display/qml/main.qml");
 
-    ui->quickWidget->setSource(QUrl::fromLocalFile(file));
+    ui->quickWidget->setSource(QUrl("qrc:/qml/main.qml"));
 
     QQuickItem* rootObject = ui->quickWidget->rootObject();
     mScreen = rootObject->findChild<QMLScreen*>(QStringLiteral("outputView"));
@@ -295,9 +302,14 @@ void Widget::loadQml()
 void Widget::resetPrimaryCombo()
 {
     //qDebug()<<"resetPrimaryCombo----->"<<endl;
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+
+#else
     bool isPrimaryDisplaySupported = mConfig->supportedFeatures().testFlag(KScreen::Config::Feature::PrimaryDisplay);
     ui->primaryLabel->setVisible(isPrimaryDisplaySupported);
     ui->primaryCombo->setVisible(isPrimaryDisplaySupported);
+#endif
+
 
     // Don't emit currentIndexChanged when resetting
     bool blocked = ui->primaryCombo->blockSignals(true);
@@ -821,16 +833,26 @@ void Widget::slotIdentifyOutputs(KScreen::ConfigOperation *op)
         } else {
             deviceSize = QSize(mode->size().height(), mode->size().width());
         }
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+#else
         if (config->supportedFeatures() & KScreen::Config::Feature::PerOutputScaling) {
             // no scale adjustment needed on Wayland
             logicalSize = deviceSize;
         } else {
             logicalSize = deviceSize / devicePixelRatioF();
         }
+#endif
 
         rootObj->setProperty("outputName", Utils::outputName(output));
         rootObj->setProperty("modeName", Utils::sizeToString(deviceSize));
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+        view->setProperty("screenSize", QRect(output->pos(), deviceSize));
+#else
         view->setProperty("screenSize", QRect(output->pos(), logicalSize));
+#endif
+
         mOutputIdentifiers << view;
     }
 
@@ -849,6 +871,7 @@ void Widget::save()
     if (!this) {
         return;
     }
+
 
     const KScreen::ConfigPtr &config = this->currentConfig();
 
@@ -914,6 +937,7 @@ void Widget::save()
         getEdidInfo(output->name(),&inputXml[i]);
         i++;
     }   
+
     if (!atLeastOneEnabledOutput ) {
         qDebug()<<"atLeastOneEnabledOutput---->"<<connectedScreen<<endl;
         KMessageBox::error(this,tr("please insure at least one output!"),
@@ -945,11 +969,14 @@ void Widget::save()
         return;
     }
 
+
 //    qDebug()<<"scale ann screenScale is -------->"<<this->scaleRet()<<" "<<this->screenScale<<endl;
 
     if (scale != this->screenScale) {
         KMessageBox::information(this,tr("Some applications need to be restarted to take effect"));
     }
+
+
 
     m_blockChanges = true;
     /* Store the current config, apply settings */
@@ -966,6 +993,7 @@ void Widget::save()
             m_blockChanges = false;
         }
     );
+
 }
 
 void Widget::scaleChangedSlot(int index) {
@@ -1134,44 +1162,56 @@ QStringList Widget::getscreenBrightnesValue(){
 }
 
 
-void Widget::setBrightnessScreen(float index){
-    QStringList nameList = getscreenBrightnesName();
-    QString sliderValue = QString::number(ui->brightnessSlider->value()/100.0);
-
-    QString screenName =  getScreenName();
-
-    float value = index/100.0 >0.2?index/100.0:0.2;
-    QString brightnessValue = QString::number(value);
-
-    QProcess *process = new QProcess;
-    QMLOutput *base = mScreen->primaryOutput();
-    //qDebug()<<"primaryOutput---->"<<base<<endl;
-    if (!base) {
-
-        for (QMLOutput *output: mScreen->outputs()) {
-            if (output->output()->isConnected() && output->output()->isEnabled()) {
-                base = output;
-                break;
-            }
-        }
-
-        if (!base) {
-            // WTF?
-            return;
+void Widget::setBrightnessScreen(int index){
+    QGSettings *powerSettings;
+    if (QGSettings::isSchemaInstalled(POWER_SCHMES)) {
+        QByteArray id(POWER_SCHMES);
+        powerSettings = new QGSettings(id);
+        QStringList keys = powerSettings->keys();
+        if (keys.contains("brightnessAc")) {
+            powerSettings->set(POWER_KEY, index);
         }
     }
-    if(base->isCloneMode() == false) {
-        process->start("xrandr",QStringList()<<"--output"<<screenName<<"--brightness"<< brightnessValue);
-        process->waitForFinished();
-        const QString &cmd = "xrandr --output "+ screenName+" --brightness "+ brightnessValue;
-    } else {
-        for(int i = 0; i < nameList.length(); i++ ){
-            if(nameList.at(i) != ""){
-                process->start("xrandr",QStringList()<<"--output"<<nameList.at(i)<<"--brightness"<< sliderValue);
-                process->waitForFinished();
-            }
-        }
+    if (!powerSettings) {
+        delete powerSettings;
     }
+//    QStringList nameList = getscreenBrightnesName();
+//    QString sliderValue = QString::number(ui->brightnessSlider->value()/100.0);
+
+//    QString screenName =  getScreenName();
+
+//    float value = index/100.0 >0.2?index/100.0:0.2;
+//    QString brightnessValue = QString::number(value);
+
+//    QProcess *process = new QProcess;
+//    QMLOutput *base = mScreen->primaryOutput();
+//    //qDebug()<<"primaryOutput---->"<<base<<endl;
+//    if (!base) {
+
+//        for (QMLOutput *output: mScreen->outputs()) {
+//            if (output->output()->isConnected() && output->output()->isEnabled()) {
+//                base = output;
+//                break;
+//            }
+//        }
+
+//        if (!base) {
+//            // WTF?
+//            return;
+//        }
+//    }
+//    if(base->isCloneMode() == false) {
+//        process->start("xrandr",QStringList()<<"--output"<<screenName<<"--brightness"<< brightnessValue);
+//        process->waitForFinished();
+//        const QString &cmd = "xrandr --output "+ screenName+" --brightness "+ brightnessValue;
+//    } else {
+//        for(int i = 0; i < nameList.length(); i++ ){
+//            if(nameList.at(i) != ""){
+//                process->start("xrandr",QStringList()<<"--output"<<nameList.at(i)<<"--brightness"<< sliderValue);
+//                process->waitForFinished();
+//            }
+//        }
+//    }
 }
 
 
@@ -1215,19 +1255,34 @@ void Widget::saveBrigthnessConfig(){
 
 //滑块改变
 void Widget::setBrightnesSldierValue(QString name){
-   // qDebug()<<"setBrightnesSldierValue---->"<<endl;
-    QString screename = getScreenName(name);
-    QStringList nameList = getscreenBrightnesName();
-    QStringList valueList = getscreenBrightnesValue();
-//    qDebug()<<"nameList and valueList is--------->"<<nameList<<" \n"<<valueList<<endl;
-    int len = std::min(nameList.length(),valueList.length()) -1;
-    QMap<QString,float> brightnessMap;
+//   // qDebug()<<"setBrightnesSldierValue---->"<<endl;
+//    QString screename = getScreenName(name);
+//    QStringList nameList = getscreenBrightnesName();
+//    QStringList valueList = getscreenBrightnesValue();
+////    qDebug()<<"nameList and valueList is--------->"<<nameList<<" \n"<<valueList<<endl;
+//    int len = std::min(nameList.length(),valueList.length()) -1;
+//    QMap<QString,float> brightnessMap;
 
-    for(int i = 0;i < len;i++){
-        brightnessMap.insert(nameList.at(i).trimmed(),valueList.at(i).toFloat());
+//    for(int i = 0;i < len;i++){
+//        brightnessMap.insert(nameList.at(i).trimmed(),valueList.at(i).toFloat());
+//    }
+
+//    ui->brightnessSlider->setValue(brightnessMap[screename]*100);
+
+    QGSettings *powerSettings;
+    int value = 99;
+    if (QGSettings::isSchemaInstalled(POWER_SCHMES)) {
+        QByteArray id(POWER_SCHMES);
+        powerSettings = new QGSettings(id);
+        QStringList keys = powerSettings->keys();
+        if (keys.contains("brightnessAc")) {
+            value = powerSettings->get(POWER_KEY).toInt();
+        }
     }
-
-    ui->brightnessSlider->setValue(brightnessMap[screename]*100);
+    if (!powerSettings) {
+        delete powerSettings;
+    }
+    ui->brightnessSlider->setValue(value);
 }
 
 //亮度配置文件位置
@@ -1303,6 +1358,8 @@ void Widget::initConfigFile() {
     if (!(sunjudge && manualjudge)) {
         ui->sunradioBtn->setChecked(sunjudge);
         ui->customradioBtn->setChecked(manualjudge);
+    } else {
+        ui->sunradioBtn->setCheckable(true);
     }
 
     m_qsettings->endGroup();
@@ -1608,6 +1665,8 @@ void Widget::setNightMode(const bool nightMode){
     QString cmd;
     QString serverCmd;
 
+    m_gsettings->set(NIGHT_MODE_KEY, nightMode);
+
     if(nightMode) {
         cmd = "restart";
         serverCmd = "enable";
@@ -1740,6 +1799,26 @@ void Widget::initUiComponent() {
     if (nightButton->isChecked()) {
         showCustomWiget(value);
     }
+
+    //ubuntukylin youker DBus interface
+    QDBusInterface *brightnessInterface = new QDBusInterface("org.freedesktop.UPower",
+                                     "/org/freedesktop/UPower/devices/DisplayDevice",
+                                     "org.freedesktop.DBus.Properties",
+                                     QDBusConnection::systemBus());
+    if (!brightnessInterface->isValid()) {
+        qDebug() << "Create UPower Interface Failed : " << QDBusConnection::systemBus().lastError();
+        return;
+    }
+
+    QDBusReply<QVariant> briginfo;
+    briginfo  = brightnessInterface ->call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
+    if (!briginfo.isValid()) {
+        qDebug()<<"brightness info is invalid"<<endl;
+        ui->brightnessframe->setVisible(false);
+    } else {
+        bool status = briginfo.value().toBool();
+        ui->brightnessframe->setVisible(status);
+    }
 }
 
 void Widget::setRedShiftIsValid(bool redshiftIsValid){
@@ -1768,7 +1847,7 @@ void Widget::initNightStatus(){
 
     QString tmpNight = qbaOutput;
     m_isNightMode = (tmpNight=="active\n" ? true : false);
-//    qDebug()<<"m_isNightMode is------------->"<<m_isNightMode<<endl;
+//    qDebug()<<"m_isNightMode is------------->"<<tmpNight<<endl;
 
 
     if (isRedShiftValid){

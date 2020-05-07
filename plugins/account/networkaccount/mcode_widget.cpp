@@ -73,7 +73,7 @@ void mcode_widget::paintEvent(QPaintEvent *event)
     {
         painter.setPen(colorArray[i]);
         painter.save();
-        int charSpace = (charWidth - this->fontMetrics().horizontalAdvance(verificationCode[i]))/2;
+        int charSpace = (charWidth - this->fontMetrics().width("W"))/2;
         charSpace += 12/2;
         painter.translate(i*charWidth+charSpace,0);
         if(qrand()%2) {

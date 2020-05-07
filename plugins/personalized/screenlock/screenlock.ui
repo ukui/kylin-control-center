@@ -315,9 +315,12 @@
           <number>0</number>
          </property>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <layout class="QHBoxLayout" name="lockhorizontalLayout">
            <property name="spacing">
             <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>15</number>
            </property>
            <item>
             <widget class="QLabel" name="label_5">
@@ -337,6 +340,9 @@
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
              <property name="sizeHint" stdset="0">
               <size>
                <width>40</width>
@@ -344,111 +350,6 @@
               </size>
              </property>
             </spacer>
-           </item>
-           <item>
-            <widget class="QSlider" name="delaySlider">
-             <property name="minimumSize">
-              <size>
-               <width>320</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>320</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QSlider{
-    width: 178px;
-    height: 20px;
-}
-QSlider::groove:horizontal {
-    border: 0px solid #bbb;
-
-}
-QSlider::sub-page:horizontal {
-    background: #3D6BE5;
-    border-radius: 2px;
-    margin-top:8px;
-    margin-bottom:9px;
-}
-QSlider::add-page:horizontal {
-    background:  rgba(52,70,80,90%);
-    border: 0px solid #777;
-    border-radius: 2px;
-    margin-top:8px;
-    margin-bottom:9px;
-}
-QSlider::handle:horizontal {
-    width: 20px;
-    height: 20px;
-    background: #3D6BE5;
-    border-radius:10px;
-}</string>
-             </property>
-             <property name="maximum">
-              <number>60</number>
-             </property>
-             <property name="singleStep">
-              <number>10</number>
-             </property>
-             <property name="value">
-              <number>0</number>
-             </property>
-             <property name="sliderPosition">
-              <number>0</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_5">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Minimum</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="delayLinedit">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>48</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>48</width>
-               <height>30</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label">
-             <property name="text">
-              <string>Min</string>
-             </property>
-            </widget>
            </item>
           </layout>
          </item>

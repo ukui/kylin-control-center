@@ -11,7 +11,6 @@ Build-Depends: debhelper-compat (= 12),
                libmatekbd-dev,
                libqt5x11extras5-dev,
                libxklavier-dev,
-               libkf5windowsystem-dev,
                libkf5widgetsaddons-dev,
                libkf5config-dev,
                libkf5configwidgets-dev,
@@ -21,11 +20,10 @@ Build-Depends: debhelper-compat (= 12),
                libdconf-dev,
                edid-decode,
                redshift,
-	             libmatemixer-dev,
-	             libqt5xdg-dev,
-	             qtmultimedia5-dev,
-	             libxml2-dev,
-               kylin-sso-client
+               libmatemixer-dev,
+               libqt5xdg-dev,
+               qtmultimedia5-dev,
+               libxml2-dev,
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Homepage: https://github.com/ukui/ukui-control-center

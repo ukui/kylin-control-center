@@ -139,6 +139,19 @@ void Area::run_external_app_slot(){
     process.startDetached(cmd);
 }
 
+bool Area::eventFilter(QObject *watched, QEvent *event) {
+    if (watched == ui->addlanframe) {
+        if (event->type() == QEvent::MouseButtonPress){
+            QString cmd = "gnome-language-selector";
+
+            QProcess process(this);
+            process.startDetached(cmd);
+        }
+    }
+
+    return QObject::eventFilter(watched, event);
+}
+
 
 void Area::initUI(){
     ui->titleLabel->setText(tr("current area"));
@@ -197,6 +210,7 @@ void Area::initComponent() {
     int formatIndex = res.at(0) == "en_US.UTF-8" ? 0 : 1;
     ui->langcomboBox->setCurrentIndex(langIndex);
     ui->countrycomboBox->setCurrentIndex(formatIndex);
+    ui->addlanframe->installEventFilter(this);
 
     initFormatData();
 }
@@ -298,10 +312,7 @@ void Area::changeform_slot() {
     connect(dialog, SIGNAL(dataChangedSignal()),this,SLOT(initFormatData()));
     dialog->setWindowTitle(tr("change data format"));
     dialog->setAttribute(Qt::WA_DeleteOnClose);
-//    dialog->exec();
-    dialog->show();
-
-
+    dialog->exec();
 }
 
 QStringList Area::readFile(const QString& filepath) {

@@ -107,7 +107,10 @@ Desktop::Desktop()
 
     vecGsettings = new QVector<QGSettings*>();
     const QByteArray id(DESKTOP_SCHEMA);
-    dSettings = new QGSettings(id);
+    if (QGSettings::isSchemaInstalled(id)) {
+        dSettings = new QGSettings(id);
+    }
+
 
     initTranslation();
     setupComponent();
@@ -121,8 +124,13 @@ Desktop::~Desktop()
 {
     delete ui;
 
-    delete dSettings;
-    delete vecGsettings;
+    if (!dSettings ){
+        delete dSettings;
+    }
+
+    if (!vecGsettings) {
+        delete vecGsettings;
+    }
 }
 
 QString Desktop::get_plugin_name(){
@@ -214,6 +222,7 @@ void Desktop::setupComponent(){
 }
 
 void Desktop::setupConnect(){
+//    qDebug()<<"this is desktop setUpConnect ------->"<<endl;
     QStringList keys = dSettings->keys();
     connect(deskComputerSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(COMPUTER_VISIBLE_KEY, checked);});
     connect(deskTrashSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(TRASH_VISIBLE_KEY, checked);});

@@ -27,6 +27,9 @@
 #include "MaskWidget/maskwidget.h"
 
 #include <QDebug>
+#include <QDesktopServices>
+
+const QString kylinUrl = "https://www.ubuntukylin.com/wallpaper.html";
 
 enum{
     PICTURE, //图片背景
@@ -121,7 +124,7 @@ void Wallpaper::setupQStylesheet(){
 void Wallpaper::setupComponent(){
 
 //    ui->browserLocalwpBtn->hide();
-    ui->browserOnlinewpBtn->hide();
+//    ui->browserOnlinewpBtn->hide();
     //背景形式
     QStringList formList;
     formList << tr("picture") << tr("color")/* << tr("slideshow")*/ ;
@@ -213,6 +216,11 @@ void Wallpaper::setupConnect(){
     connect(ui->browserLocalwpBtn, &QPushButton::clicked, [=]{
         showLocalWpDialog();
     });
+
+
+    connect(ui->browserOnlinewpBtn, &QPushButton::clicked, [=]{
+        QDesktopServices::openUrl(QUrl(kylinUrl));
+    });
     connect(ui->resetBtn, SIGNAL(clicked(bool)), this, SLOT(resetDefaultWallpaperSlot()));
 
     ///纯色背景
@@ -241,7 +249,11 @@ void Wallpaper::setupConnect(){
         colorFlowLayout->addWidget(button);
     }
 
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+    connect(ui->formComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
+#else
     connect(ui->formComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index){
+#endif
         Q_UNUSED(index)
         //切换
         int currentPage = ui->formComBox->currentData(Qt::UserRole).toInt();
@@ -346,7 +358,7 @@ void Wallpaper::showComponent(int index){
 void Wallpaper::initPreviewStatus(){
     //设置图片背景的预览效果
     QString filename = bgsettings->get(FILENAME).toString();
-    qDebug()<<"preview pic is---------->"<<filename<<endl;
+//    qDebug()<<"preview pic is---------->"<<filename<<endl;
 
     QByteArray ba = filename.toLatin1();
 //    if (g_file_test(ba.data(), G_FILE_TEST_EXISTS)){

@@ -86,6 +86,9 @@ private:
     QString hourformat;
     QString qss;
 
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
 private:
     void initUI();
     void initComponent();

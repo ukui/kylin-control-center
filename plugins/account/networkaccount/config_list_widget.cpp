@@ -22,62 +22,150 @@
 #include <QtConcurrent/QtConcurrent>
 
 config_list_widget::config_list_widget(QWidget *parent) : QWidget(parent) {
-    client = new libkylinssoclient();
+    client = new DbusHandleClient();    //创建一个通信客户端
+    thread  = new QThread();            //为创建的客户端做异步处理
+    client->moveToThread(thread);
+    uuid = QUuid::createUuid().toString();
+    connect(this,SIGNAL(dooss(QString)),client,SLOT(init_oss(QString)));
+    connect(this,SIGNAL(docheck()),client,SLOT(check_login()));
+    connect(this,SIGNAL(doconf()),client,SLOT(init_conf()));
+    connect(this,SIGNAL(doman()),client,SLOT(manual_sync()));
+    connect(this,SIGNAL(dochange(QString,int)),client,SLOT(change_conf_value(QString,int)));
+    connect(this,SIGNAL(dologout()),client,SLOT(logout()));
+    connect(client,SIGNAL(finished_oss(int)),this,SLOT(setret_oss(int)));
+    connect(client,SIGNAL(finished_check_oss(QString)),this,SLOT(setname(QString)));
+    connect(client,SIGNAL(finished_check(QString)),this,SLOT(setret_check(QString)));
+    connect(client,SIGNAL(finished_conf(int)),this,SLOT(setret_conf(int)));
+    connect(client,SIGNAL(finished_man(int)),this,SLOT(setret_man(int)));
+    connect(client,SIGNAL(finished_change(int)),this,SLOT(setret_change(int)));
+    connect(client,SIGNAL(finished_logout(int)),this,SLOT(setret_logout(int)));
+    connect(thread,&QThread::finished,thread,&QObject::deleteLater);
+    connect(thread,&QThread::finished,thread,&QObject::deleteLater);
 
+    thread->start();    //线程开始
     stacked_widget = new QStackedWidget(this);
     stacked_widget->resize(550,400);
     stacked_widget->setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
-    code = client->check_login();
-    init_gui();
-    if(code != "" && code !="201" && code != "203") {
-        /*QFuture<int> res = QtConcurrent::run(this, &config_list_widget::oss_initial);
-        int result = res.result();*/
-        if(client->init_oss() == 0) {
-            qDebug()<<"init oss is 0";
-        }
-        else {
-            client->logout();
-            stacked_widget->setCurrentWidget(null_widget);
-        }
-    } else {
-
-        stacked_widget->setCurrentWidget(null_widget);
+    emit docheck();     //检测是否登录
+    init_gui();         //初始化gui
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_init_oss",this,SLOT(finished_load(int,QString)));
+    //connect(client,SIGNAL(backcall_start_download_signal()),this,SLOT(download_files()));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","backcall_start_download_signal",this,SLOT(download_files()));
+    //connect(client,SIGNAL(backcall_end_download_signal()),this,SLOT(download_over()));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","backcall_end_download_signal",this,SLOT(download_over()));
+    //connect(client,SIGNAL(backcall_start_push_signal()),this,SLOT(push_files()));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","backcall_start_push_signal",this,SLOT(push_files()));
+    //connect(client,SIGNAL(backcall_end_push_signal()),this,SLOT(push_over()));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","backcall_end_push_signal",this,SLOT(push_over()));
+}
+/* 检测第一次登录，为用户添加名字 */
+void config_list_widget::setname(QString n) {
+    //qDebug()<<n<<"2131231";
+    code = n;
+    if(code != "" && code !="201" && code != "203" && code != "401" && !ret_ok) {
+        info->setText(tr("Your account：%1").arg(code));
+        stacked_widget->setCurrentWidget(container);
+        emit doconf();
+        ret_ok = true;              //开启登录状态
+        client->once = false;        //关闭第一次打开状态
+        return ;
     }
-    connect(client,SIGNAL(finished_init_oss(int)),this,SLOT(finished_load(int)));
-    connect(client,SIGNAL(backcall_start_download_signal()),this,SLOT(download_files()));
-    connect(client,SIGNAL(backcall_end_download_signal()),this,SLOT(download_over()));
-    connect(client,SIGNAL(backcall_start_push_signal()),this,SLOT(push_files()));
-    connect(client,SIGNAL(backcall_end_push_signal()),this,SLOT(push_over()));
 }
 
+/* 客户端回调函数集 */
+void config_list_widget::setret_oss(int ret) {
+    if(ret == 0) {
+        emit docheck();
+        qDebug()<<"init oss is 0";
+    } else {
+        //emit dologout();
+    }
+}
+
+void config_list_widget::setret_logout(int ret) {
+    //do nothing
+    if(ret == 0) {
+
+    }
+}
+
+void config_list_widget::setret_conf(int ret) {
+    //qDebug()<<ret<<"csacasca";
+    if(ret == 0) {
+        QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
+        emit doman();
+        //emit doman();
+    } else {
+        //emit dologout();
+    }
+}
+
+void config_list_widget::setret_man(int ret) {
+    if(ret == 0) {
+        emit docheck();
+        //qDebug()<<"1111 manul";
+    }
+}
+
+void config_list_widget::setret_check(QString ret) {
+    code = ret;
+    //qDebug()<<ret<<!ret_ok;
+    if((code == "" || code =="201" || code == "203" || code == "401" ) && ret_ok) {
+        //qDebug()<<"checked"<<code<<ret;
+        emit dologout();
+        client->once = true;
+    } else if(!(code == "" || code =="201" || code == "203" || code == "401" ) &&!ret_ok){
+        ret_ok = true;
+        info->setText(tr("Your account：%1").arg(code));
+        stacked_widget->setCurrentWidget(container);
+        emit doconf();
+    } else if((code == "" || code =="201" || code == "203" || code == "401" ) && ret_ok == false){
+        client->once = true;
+        stacked_widget->setCurrentWidget(null_widget);
+    } else if(!(code == "" || code =="201" || code == "203" || code == "401" ) && ret_ok){
+        info->setText(tr("Your account：%1").arg(code));
+        stacked_widget->setCurrentWidget(container);
+        //emit doconf();
+    }
+}
+
+void config_list_widget::setret_change(int ret) {
+    if(ret == 0) {
+        emit docheck();
+    }
+}
+
+/* 初始化GUI */
 void config_list_widget::init_gui() {
     //Allocator
-    home = QDir::homePath() + "/.cache/kylinssoclient/All.conf";
-    vboxlayout = new QVBoxLayout;
-    tab = new QWidget(this);
-    container = new QWidget(this);
-    namewidget = new QWidget(this);
-    list = new item_list;
+    home = QDir::homePath() + "/.cache/kylinssoclient/All.conf"; //All.conf文件地址
+    vboxlayout = new QVBoxLayout;//整体布局
+    tab = new QWidget(this);//用户信息窗口
+    container = new QWidget(this);//业务逻辑窗口，包括用户信息以及同步
+    namewidget = new QWidget(this);//名字框
+    list = new item_list;//滑动按钮列表
     //ld = new LoginDialog(this);
-    auto_syn = new network_item(this);
-    title = new QLabel(this);
-    info = new QLabel(namewidget);
-    exit_page = new QPushButton(tr("Exit"),this);
-    cvlayout = new QVBoxLayout;
-    qDebug()<<"222222";
-    login_dialog = new Dialog_login_reg;
-    qDebug()<<"111111";
-    edit_dialog = new EditPassDialog;
-    qDebug()<<"000000";
-    hbox = new QHBoxLayout;
-    gif = new QLabel(exit_page);
+    auto_syn = new network_item(this);//自动同步按钮
+    title = new QLabel(this);//标题
+    info = new QLabel(namewidget);//名字
+    exit_page = new QPushButton(tr("Exit"),this);//退出按钮
+    cvlayout = new QVBoxLayout;//业务逻辑布局
+    //qDebug()<<"222222";
+    login_dialog = new Dialog_login_reg;//登录窗口
+    //qDebug()<<"111111";
+    edit_dialog = new EditPassDialog;//修改密码窗口
+    //qDebug()<<"000000";
+    hbox = new QHBoxLayout;//信息框布局
+    gif = new QLabel(exit_page);//同步动画
     pm = new QMovie(":/new/image/autosync.gif");
+    login_cloud = new QTimer(this);
+    login_cloud->stop();
 
     gif->hide();
     edit_dialog->hide();
     login_dialog->hide();
-    edit_dialog->set_client(client);
-    login_dialog->set_client(client);
+    edit_dialog->set_client(client,thread);//安装客户端通信
+    login_dialog->set_client(client,thread);
     QVBoxLayout *VBox_tab = new QVBoxLayout;
     QHBoxLayout *HBox_tab_sub = new QHBoxLayout;
     QHBoxLayout *HBox_tab_btn_sub = new QHBoxLayout;
@@ -99,7 +187,7 @@ void config_list_widget::init_gui() {
     edit = new ql_pushbutton_edit(namewidget);
     //login->setStyleSheet(btns);
 
-    //Configuration
+    //控件初始化设置
     tab->setFocusPolicy(Qt::NoFocus);
     title->setText(tr("Sync your settings"));
     title->setStyleSheet("font-size:18px;font-weight:500;");
@@ -134,11 +222,9 @@ void config_list_widget::init_gui() {
                         "background-repeat:no-repeat;background-position :center;"
                         "border-width:0px;width:34px;height:34px;border-radius:4px}");
     edit->installEventFilter(this);
-    //Configuration
     stacked_widget->addWidget(container);
-    //setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding); //可选;
 
-    //Resize (Only for QPushButton)
+    //控件大小尺寸设置
     setContentsMargins(0,0,0,0);
     setMinimumWidth(550);
     tab->resize(200,72);
@@ -158,7 +244,7 @@ void config_list_widget::init_gui() {
 //    gif->setMaximumSize(120,36);
 //    gif->resize(120,36);
 
-    //Layout
+    //布局
     HBox_tab_sub->addWidget(title,0,Qt::AlignLeft);
     HBox_tab_sub->setMargin(0);
     HBox_tab_sub->setSpacing(0);
@@ -226,56 +312,55 @@ void config_list_widget::init_gui() {
 
 
     exit_page->setFocusPolicy(Qt::NoFocus);
+
+    //连接信号
     connect(auto_syn->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_auto_syn(int,int)));
     connect(login,SIGNAL(clicked()),this,SLOT(on_login()));
-    //Connect
     connect(edit,SIGNAL(clicked()),this,SLOT(neweditdialog()));
     connect(exit_page,SIGNAL(clicked()),this,SLOT(on_login_out()));
     connect(edit_dialog,SIGNAL(account_changed()),this,SLOT(on_login_out()));
-    qDebug()<<"new debug 4";
     connect(login_dialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
-    adjustSize();
-    qDebug()<<"new debug 2";
+    connect(login_dialog->get_login_submit(),&QPushButton::clicked, [this] () {
+        login_cloud->start();
+    });
+    connect(login_cloud,SIGNAL(timeout()),login_dialog,SLOT(set_back()));
     for(int btncnt = 0;btncnt < list->get_list().size();btncnt ++) {
         connect(list->get_item(btncnt)->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_switch_button(int,int)));
     }
-    qDebug()<<"new debug 3";
+    setMaximumWidth(960);
+    adjustSize();
 }
 
+/* 打开登录框处理事件 */
 void config_list_widget::on_login() {
-        login_dialog->setclear();
-        login_dialog->show();
+    edit_dialog->is_used = false;
+    login_dialog->is_used = true;
+    login_dialog->set_clear();
+    //qDebug()<<"login";
+    login_dialog->show();
 }
 
+/* 登录过程处理事件 */
 void config_list_widget::open_cloud() {
-    code = client->check_login();
-    if(code != "" && code != "201" && code != "203") {
-        /*QFuture<int> res = QtConcurrent::run(this, &config_list_widget::oss_initial);
-        int result = res.result();*/
-        qDebug()<<"new debug 3";
-        if(client->init_oss() == 0) {
-        }else {
-            client->logout();
-            stacked_widget->setCurrentWidget(null_widget);
-        }
-    }
-
+    emit dooss(uuid);
+    login_dialog->on_close();
 }
 
-void config_list_widget::finished_load(int ret) {
+/* 登录成功处理事件 */
+void config_list_widget::finished_load(int ret,QString uuid) {
+    //qDebug()<<"wb111"<<ret;
+    if(uuid != this->uuid) {
+        return ;
+    }
+   // qDebug()<<"wb222"<<ret;
     if (ret == 0) {
-        if(client->init_conf() == 0) {
-            login_dialog->on_close();
-            QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
-            info->setText(tr("Your account：%1").arg(code));
-            stacked_widget->setCurrentWidget(container);
-            if(client->manual_sync() == 0) {
-                qDebug()<<"manual sync succes";
-            }
-        }
+        emit doconf();
+    } else if(ret == 401 || ret == 203 || ret == 201) {
+        emit dologout();
     }
 }
 
+/* 读取滑动按钮列表 */
 void config_list_widget::handle_conf() {
     if(Config_File(home).Get("Auto-sync","enable").toString() == "true") {
         auto_syn->make_itemon();
@@ -285,7 +370,6 @@ void config_list_widget::handle_conf() {
     } else {
         auto_syn->make_itemoff();
         auto_ok = false;
-        QString enable;
         for(int i  = 0;i < mapid.size();i ++) {
             judge_item(Config_File(home).Get(mapid[i],"enable").toString(),i);
         }
@@ -294,13 +378,12 @@ void config_list_widget::handle_conf() {
         }
         return ;
     }
-    QString enable;
     for(int i  = 0;i < mapid.size();i ++) {
         judge_item(Config_File(home).Get(mapid[i],"enable").toString(),i);
     }
-
 }
 
+/* 判断功能是否开启 */
 bool config_list_widget::judge_item(QString enable,int cur) {
     if(enable == "true") {
         list->get_item(cur)->make_itemon();
@@ -310,6 +393,7 @@ bool config_list_widget::judge_item(QString enable,int cur) {
     return true;
 }
 
+/* 滑动按钮点击后改变功能状态 */
 void config_list_widget::handle_write(int on, int id) {
     char name[32];
     if(id == -1) {
@@ -317,38 +401,62 @@ void config_list_widget::handle_write(int on, int id) {
     } else {
         qstrcpy(name,mapid[id].toStdString().c_str());
     }
-    client->change_conf_value(name,on);
+    emit dochange(name,on);
 }
 
+/* 滑动按钮点击处理事件 */
 void config_list_widget::on_switch_button(int on,int id) {
+    if(stacked_widget->currentWidget() == null_widget) {
+        return ;
+    }
     if(!auto_ok) {
         return ;
     }
-    QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_write,on,id);
+    //emit docheck();
+    handle_write(on,id);
 }
 
+/* 自动同步滑动按钮点击后改变功能状态 */
 void config_list_widget::on_auto_syn(int on,int id) {
+    if(stacked_widget->currentWidget() == null_widget) {
+        return ;
+    }
+    //emit docheck();
     auto_ok = on;
     for(int i  = 0;i < mapid.size();i ++) {
         list->get_item(i)->set_active(auto_ok);
     }
-    QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_write,on,-1);
+    handle_write(on,-1);
 }
 
+/* 登出处理事件 */
 void config_list_widget::on_login_out() {
-    if(client->logout() == 0) {
-        login_dialog->setclear();
-        stacked_widget->setCurrentWidget(null_widget);
+    ret_ok = false;
+    client->once = true;
+    //qDebug()<< "wb777";
+    emit dologout();
+    if(edit_dialog->isVisible() == true) {
+        edit_dialog->close();
     }
+    //qDebug()<<"1213131";
+    code = "";
+    login_dialog->set_clear();
+    edit_dialog->set_clear();
+    stacked_widget->setCurrentWidget(null_widget);
 }
 
+/* 修改密码打开处理事件 */
 void config_list_widget::neweditdialog() {
+    //emit docheck();
+    edit_dialog->is_used = true;
+    login_dialog->is_used = false;
     edit_dialog->set_clear();
+    edit_dialog->name  = code;
     edit_dialog->show();
     edit_dialog->raise();
 }
 
-
+/* 动态布局显示处理函数 */
 void config_list_widget::setshow(QWidget *widget) {
     widget->hide();
     widget->setAttribute(Qt::WA_DontShowOnScreen);
@@ -365,27 +473,37 @@ QLabel* config_list_widget::get_title() {
     return title;
 }
 
+/* 同步回调函数集 */
 void config_list_widget::download_files() {
+    if(stacked_widget->currentWidget() == null_widget) {
+        return ;
+    }
+    //emit docheck();
     if(exit_page->property("on") == false) {
         exit_page->setProperty("on",true);
         exit_page->setText("");
+        pm->start();
         gif->setMovie(pm);
         gif->show();
-        pm->start();
     }
 }
 
 void config_list_widget::push_files() {
+    if(stacked_widget->currentWidget() == null_widget) {
+        return ;
+    }
+   // emit docheck();
     if(exit_page->property("on") == false) {
         exit_page->setText("");
         exit_page->setProperty("on",true);
+        pm->start();
         gif->setMovie(pm);
         gif->show();
-        pm->start();
     }
 }
 
 void config_list_widget::download_over() {
+    //emit docheck();
     if(exit_page->property("on") == true) {
         gif->hide();
         exit_page->setText(tr("Exit"));
@@ -394,6 +512,7 @@ void config_list_widget::download_over() {
 }
 
 void config_list_widget::push_over() {
+    //emit docheck();
     if(exit_page->property("on") == true) {
         gif->hide();
         exit_page->setText(tr("Exit"));
@@ -401,8 +520,16 @@ void config_list_widget::push_over() {
     }
 }
 
+/* 析构函数 */
 config_list_widget::~config_list_widget() {
-
+    delete login_dialog;
+    delete edit_dialog;
+    delete client;
+    if(thread)
+    {
+        thread->quit();
+    }
+    thread->wait();
 }
 
 

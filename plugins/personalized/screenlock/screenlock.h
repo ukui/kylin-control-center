@@ -30,8 +30,10 @@
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
 #include "FlowLayout/flowlayout.h"
+#include "Uslider/uslider.h"
 
 #include "buildpicunitsworker.h"
+
 
 namespace Ui {
 class Screenlock;
@@ -59,6 +61,10 @@ public:
     void initScreenlockStatus();
 
 private:
+    int convertToLocktime(const int value);
+    int lockConvertToSlider(const int value);
+
+private:
     Ui::Screenlock *ui;
 
 private:
@@ -72,6 +78,7 @@ private:
     SwitchButton * loginbgSwitchBtn;
     SwitchButton * lockSwitchBtn;
     FlowLayout * flowLayout;
+    Uslider * uslider;
 
     QSize lockbgSize;
 

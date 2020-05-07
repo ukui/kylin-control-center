@@ -30,6 +30,7 @@
 
 #include <QSysInfo>
 #include <QLabel>
+#include <QStringList>
 
 #define MANUFACTURER "Manufacturer"
 #define VERSION "Version"
@@ -61,9 +62,15 @@ public:
     void setupComponent();
 
     void initUI();
+    QStringList  readFile(QString filePath);
 
     void _call_dbus_get_computer_info();
     void _data_init();
+private:
+    void setupDesktopComponent();
+    void setupKernelCompenent();
+    void setupVersionCompenent();
+    void setupSerialComponent();
 
 private:
     Ui::About *ui;
@@ -79,8 +86,10 @@ private:
     QString computerinfo;
     QMap<QString, QString> infoMap;
 
-//private slots:
+private slots:
 //    void call_finished_slot(QDBusPendingCallWatcher * call);
+    void runActiveWindow();
+    void showPdf();
 };
 
 #endif // ABOUT_H

@@ -80,6 +80,7 @@ private:
     void loadPlugins();
     void initLeftsideBar();
     QPushButton * buildLeftsideBtn(QString bname);
+    bool isExitsCloudAccount();
 
 public slots:
     void functionBtnClicked(QObject * plugin);

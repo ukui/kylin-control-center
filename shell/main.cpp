@@ -69,12 +69,15 @@ int main(int argc, char *argv[])
         //加载国际化文件
         QString locale = QLocale::system().name();
         QTranslator translator;
-        if (locale == "zh_CN"){
-            if (translator.load("zh_CN.qm", "://i18n/"))
-                a.installTranslator(&translator);
-            else
-                qDebug() << "Load translations file" << locale << "failed!";
-        }
+        QString qm  = locale + ".qm";
+//        qDebug()<<"locale is---->"<<qm<<endl;
+        if (translator.load(qm, "://i18n/"))
+            a.installTranslator(&translator);
+//        if (locale == "zh_CN"){
+
+//            else
+//                qDebug() << "Load translations file" << locale << "failed!";
+//        }
 
         //命令行参数
         QCoreApplication::setApplicationName("ukui-control-center");

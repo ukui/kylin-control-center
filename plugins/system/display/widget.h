@@ -6,6 +6,10 @@
 #include <QGSettings/QGSettings>
 #include <QSettings>
 #include <QButtonGroup>
+#include <QDBusInterface>
+#include <QDBusConnection>
+#include <QDBusError>
+#include <QDBusReply>
 
 #include <KF5/KScreen/kscreen/config.h>
 
@@ -138,7 +142,7 @@ class Widget : public QWidget
     //是否禁用屏幕
     void checkOutputScreen(bool judge);
     //设置屏幕亮度
-    void setBrightnessScreen(float brightnessValue);
+    void setBrightnessScreen(int brightnessValue);
     //设置亮度滑块数值
     void setBrightnesSldierValue(QString screeName);
     //保存屏幕亮度配置
@@ -173,8 +177,18 @@ class Widget : public QWidget
   private:
     Ui::DisplayWindow *ui;
     QMLScreen *mScreen = nullptr;
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+    KScreen::ConfigPtr mConfig ;
+    KScreen::ConfigPtr mPrevConfig ;
+    //这是outPutptr结果
+    KScreen::OutputPtr res ;
+#else
     KScreen::ConfigPtr mConfig = nullptr;
     KScreen::ConfigPtr mPrevConfig = nullptr;
+    //这是outPutptr结果
+    KScreen::OutputPtr res = nullptr;
+#endif
 
     ControlPanel *mControlPanel = nullptr;
     //这里是去设置主显示器相关控件
@@ -183,9 +197,6 @@ class Widget : public QWidget
 
     QList<QQuickView*> mOutputIdentifiers;
     QTimer *mOutputTimer = nullptr;
-
-    //这是outPutptr结果
-    KScreen::OutputPtr res = nullptr;
 
     bool m_blockChanges = false;
 

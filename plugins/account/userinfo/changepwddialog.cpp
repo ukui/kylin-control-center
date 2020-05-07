@@ -25,6 +25,7 @@
 #include <QStyledItemDelegate>
 
 #define PWD_LOW_LENGTH 6
+#define PWD_HIGH_LENGTH 20
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
@@ -93,22 +94,19 @@ void ChangePwdDialog::setupConnect(){
     });
 
     connect(ui->pwdLineEdit, &QLineEdit::textChanged, [=](QString text){
-        if (text.length() < PWD_LOW_LENGTH)
-            ui->tipLabel->setText(tr("Password length needs to more than 5 character!"));
-        else
-            ui->tipLabel->setText("");
-
-        //防止先输入确认密码，再输入密码后pwdsureLabel无法刷新
-        if (ui->pwdLineEdit->text() == ui->pwdsureLineEdit->text())
-            ui->pwdsureLabel->setText("");
-
-        refreshConfirmBtnStatus();
+        pwdLegalityCheck(text);
     });
     connect(ui->pwdsureLineEdit, &QLineEdit::textChanged, [=](QString text){
-        if (text != ui->pwdLineEdit->text())
-            ui->tipLabel->setText(tr("Inconsistency with pwd"));
-        else
-            ui->tipLabel->setText("");
+        if (!text.isEmpty() && text != ui->pwdLineEdit->text()){
+            pwdSureTip = tr("Inconsistency with pwd");
+        } else {
+            pwdSureTip = "";
+        }
+
+        ui->tipLabel->setText(pwdSureTip);
+        if (pwdSureTip.isEmpty()){
+            pwdTip.isEmpty() ? ui->tipLabel->setText(nameTip) : ui->tipLabel->setText(pwdTip);
+        }
 
         refreshConfirmBtnStatus();
     });
@@ -180,11 +178,38 @@ void ChangePwdDialog::paintEvent(QPaintEvent *event) {
 
 }
 
+void ChangePwdDialog::pwdLegalityCheck(QString pwd){
+    if (pwd.length() < PWD_LOW_LENGTH) {
+        pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
+    } else if (pwd.length() > PWD_HIGH_LENGTH) {
+        pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
+    } else {
+        pwdTip = "";
+    }
+
+    //防止先输入确认密码，再输入密码后pwdsuretipLabel无法刷新
+    if (!ui->pwdsureLineEdit->text().isEmpty()){
+        if (ui->pwdLineEdit->text() == ui->pwdsureLineEdit->text()) {
+            pwdSureTip = "";
+        } else {
+            pwdSureTip = tr("Inconsistency with pwd");
+        }
+    }
+
+    ui->tipLabel->setText(pwdTip);
+    if (pwdTip.isEmpty()){
+        pwdSureTip.isEmpty() ? ui->tipLabel->setText(nameTip) : ui->tipLabel->setText(pwdSureTip);
+    }
+
+    refreshConfirmBtnStatus();
+}
+
 
 void ChangePwdDialog::refreshConfirmBtnStatus(){
     if (!ui->tipLabel->text().isEmpty() || \
             ui->pwdLineEdit->text().isEmpty() || ui->pwdLineEdit->text() == tr("New Password") || \
-            ui->pwdsureLineEdit->text().isEmpty() || ui->pwdsureLineEdit->text() == tr("New Password Identify"))
+            ui->pwdsureLineEdit->text().isEmpty() || ui->pwdsureLineEdit->text() == tr("New Password Identify") ||
+            !nameTip.isEmpty() || !pwdTip.isEmpty() || !pwdSureTip.isEmpty())
         ui->confirmPushBtn->setEnabled(false);
     else
         ui->confirmPushBtn->setEnabled(true);

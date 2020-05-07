@@ -3,7 +3,7 @@
 # Project created by QtCreator 2019-02-20T15:36:43
 #
 #-------------------------------------------------
-QT            += widgets core gui quickwidgets quick xml KScreen KI18n KConfigCore KConfigWidgets KWidgetsAddons
+QT            += widgets core gui quickwidgets quick xml KScreen KI18n KConfigCore KConfigWidgets KWidgetsAddons dbus
 TEMPLATE = lib
 CONFIG        += plugin
 

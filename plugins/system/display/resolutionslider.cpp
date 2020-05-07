@@ -32,8 +32,12 @@ ResolutionSlider::ResolutionSlider(const KScreen::OutputPtr &output, QWidget *pa
 //    }
     connect(output.data(), &KScreen::Output::currentModeIdChanged,
             this, &ResolutionSlider::slotOutputModeChanged);
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+
+#else
     connect(output.data(), &KScreen::Output::modesChanged,
             this, &ResolutionSlider::init);
+#endif
 
     init();
 }
@@ -71,7 +75,7 @@ void ResolutionSlider::init()
     int margin = layout->margin();
     // Avoid double margins
     layout->setContentsMargins(0, 0, 0, 0);
-    if (mModes.count() <= 60&&!mModes.empty()) {
+    if (!mModes.empty()) {
         std::reverse(mModes.begin(), mModes.end());
         mComboBox = new QComboBox();
         mComboBox->setMinimumSize(402,30);

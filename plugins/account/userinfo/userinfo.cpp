@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  *
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
@@ -91,6 +91,7 @@ UserInfo::UserInfo()
 UserInfo::~UserInfo()
 {
     delete ui;
+    delete autoSettings;
 }
 
 QString UserInfo::get_plugin_name(){
@@ -182,7 +183,8 @@ UserInfomation UserInfo::_acquireUserInfo(QString objpath){
         user.iconfile = propertyMap.find("IconFile").value().toString();
         user.passwdtype = propertyMap.find("PasswordMode").value().toInt();
         user.uid = propertyMap.find("Uid").value().toInt();
-        user.autologin = propertyMap.find("AutomaticLogin").value().toBool();
+//        user.autologin = propertyMap.find("AutomaticLogin").value().toBool();
+        user.autologin = this->getAutomaticLogin(user.username);
         user.objpath = objpath;
     }
     else
@@ -205,6 +207,9 @@ void UserInfo::initComponent(){
 //    ui->changeTypeBtn->setStyleSheet(btnQss);
 
 //    ui->addUserWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+
+//    QString filename = "/etc/lightdm/lightdm.conf";
+//    autoSettings = new QSettings(filename, QSettings::IniFormat);
 
     nopwdSwitchBtn = new SwitchButton(ui->nopwdLoginFrame);
     ui->nopwdHorLayout->addWidget(nopwdSwitchBtn);
@@ -273,12 +278,16 @@ void UserInfo::initComponent(){
         UserDispatcher * userdispatcher  = new UserDispatcher(user.objpath);
 
 
-        bool status = userdispatcher->get_autoLogin_status();
-        qDebug()<<"the status and checked is---->"<<status <<" "<<checked<<endl;
+//        bool status = userdispatcher->get_autoLogin_status();
+
+        bool status = this->getAutomaticLogin(user.username);
         if ((checked != status)) {
             userdispatcher->change_user_autologin(checked);
         }
-        bool lstStatus = userdispatcher->get_autoLogin_status();
+
+//        bool lstStatus = userdispatcher->get_autoLogin_status();
+
+        bool lstStatus = this->getAutomaticLogin(user.username);
         autoLoginSwitchBtn->setChecked(lstStatus);
     });
 
@@ -485,7 +494,7 @@ void UserInfo::showCreateUserDialog(){
     connect(dialog, &CreateUserDialog::newUserWillCreate, this, [=](QString uName, QString pwd, QString pin, int aType){
         createUser(uName, pwd, pin, aType);
     });
-    dialog->show();
+    dialog->exec();
 }
 
 void UserInfo::createUser(QString username, QString pwd, QString pin, int atype){
@@ -569,11 +578,12 @@ void UserInfo::showChangeTypeDialog(QString username){
         dialog->setUsername(user.username);
         dialog->setCurrentAccountTypeLabel(_accountTypeIntToString(user.accounttype));
         dialog->setCurrentAccountTypeBtn(user.accounttype);
+        dialog->forbidenChange(adminnum);
 //        connect(dialog, SIGNAL(type_send(int,QString,bool)), this, SLOT(change_accounttype_slot(int,QString,bool)));
         connect(dialog, &ChangeTypeDialog::type_send, this, [=](int atype, QString userName){
             changeUserType(atype, userName);
         });
-        dialog->show();
+        dialog->exec();
 
     } else {
         qDebug() << "User Data Error When Change User type";
@@ -608,7 +618,7 @@ void UserInfo::showChangeFaceDialog(QString username){
     connect(dialog, &ChangeFaceDialog::face_file_send, [=](QString faceFile, QString userName){
         changeUserFace(faceFile, userName);
     });
-    dialog->show();
+    dialog->exec();
 }
 
 void UserInfo::changeUserFace(QString facefile, QString username){
@@ -654,7 +664,7 @@ void UserInfo::showChangePwdDialog(QString username){
         connect(dialog, &ChangePwdDialog::passwd_send, this, [=](QString pwd, QString userName){
             changeUserPwd(pwd, userName);
         });
-        dialog->show();
+        dialog->exec();
 
     } else {
         qDebug() << "User Info Data Error When Change User type";
@@ -686,4 +696,17 @@ bool UserInfo::eventFilter(QObject *watched, QEvent *event){
         }
     }
     return QObject::eventFilter(watched, event);
+}
+
+bool UserInfo::getAutomaticLogin(QString username) {
+
+    QString filename = "/etc/lightdm/lightdm.conf";
+    autoSettings = new QSettings(filename, QSettings::IniFormat);
+    autoSettings->beginGroup("SeatDefaults");
+
+    QString autoUser = autoSettings->value("autologin-user", "").toString();
+
+    autoSettings->endGroup();
+
+    return autoUser == username ? true : false;
 }

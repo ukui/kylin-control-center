@@ -99,6 +99,17 @@ void Screenlock::plugin_delay_control(){
 }
 
 void Screenlock::setupComponent(){
+    QStringList scaleList;
+    scaleList<< tr("Never") << tr("5m") << tr("10m") << tr("30m") << tr("45m")
+              <<tr("1h") << tr("1.5h") << tr("3h");
+
+    uslider = new Uslider(scaleList);
+    uslider->setRange(1,8);
+    uslider->setTickInterval(1);
+    uslider->setPageStep(1);
+
+    ui->lockhorizontalLayout->addWidget(uslider);
+
     ui->browserLocalwpBtn->hide();
     ui->browserOnlinewpBtn->hide();
 
@@ -133,21 +144,20 @@ void Screenlock::setupComponent(){
 }
 
 void Screenlock::setupConnect(){
-    ui->delaySlider->setMinimum(1);
-    ui->delaySlider->setMaximum(120);
-    connect(ui->delaySlider, &QSlider::valueChanged, [&](int value){
-
+//    ui->delaySlider->setMinimum(1);
+//    ui->delaySlider->setMaximum(120);
+    connect(uslider, &QSlider::valueChanged, [&](int value){
         QStringList keys = lSetting->keys();
         if (keys.contains("lockDelay")) {
-            lSetting->set(SCREENLOCK_DELAY_KEY, value);
-            ui->delayLinedit->setText(QString::number(value));
+            lSetting->set(SCREENLOCK_DELAY_KEY, convertToLocktime(value));
         }
     });
 
     QStringList keys = lSetting->keys();
     if (keys.contains("lockDelay")) {
-        int value = lSetting->get(SCREENLOCK_DELAY_KEY).toInt();
-        ui->delayLinedit->setText(QString::number(value));
+        int value = lockConvertToSlider(lSetting->get(SCREENLOCK_DELAY_KEY).toInt());
+
+        uslider->setValue(value);
     }
 }
 
@@ -201,8 +211,75 @@ void Screenlock::initScreenlockStatus(){
 
     //设置锁屏时间，屏保激活后多久锁定屏幕
     int lDelay = lSetting->get(SCREENLOCK_DELAY_KEY).toInt();
-    ui->delaySlider->blockSignals(true);
-    ui->delaySlider->setValue(lDelay);
-    ui->delaySlider->blockSignals(false);
+//    ui->delaySlider->blockSignals(true);
+//    ui->delaySlider->setValue(lDelay);
+//    ui->delaySlider->blockSignals(false);
 
+    uslider->blockSignals(true);
+    uslider->setValue(lockConvertToSlider(lDelay));
+    uslider->blockSignals(false);
+}
+
+int Screenlock::convertToLocktime(const int value) {
+    switch (value) {
+    case 1:
+        return 0;
+        break;
+    case 2:
+        return 5;
+        break;
+    case 3:
+        return 10;
+        break;
+    case 4:
+        return 30;
+        break;
+    case 5:
+        return 45;
+        break;
+    case 6:
+        return 60;
+        break;
+    case 7:
+        return 90;
+        break;
+    case 8:
+        return 180;
+        break;
+    default:
+        return 0;
+        break;
+    }
+}
+
+int Screenlock::lockConvertToSlider(const int value) {
+    switch (value) {
+    case 0:
+        return 1;
+        break;
+    case 5:
+        return 2;
+        break;
+    case 10:
+        return 3;
+        break;
+    case 30:
+        return 4;
+        break;
+    case 45:
+        return 5;
+        break;
+    case 60:
+        return 6;
+        break;
+    case 90:
+        return 7;
+        break;
+    case 180:
+        return 8;
+        break;
+    default:
+        return 0;
+        break;
+    }
 }

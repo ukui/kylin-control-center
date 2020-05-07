@@ -33,6 +33,7 @@ Backup::Backup()
     pluginType = UPDATE;
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 //    pluginWidget->setStyleSheet("background: #ffffff;");
 
 //    ui->backupLabel->setStyleSheet("QLabel{color: #A6000000;}");

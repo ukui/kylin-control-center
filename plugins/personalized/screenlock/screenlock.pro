@@ -16,7 +16,7 @@ include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 include($$PROJECT_COMPONENTSOURCE/flowlayout.pri)
 include($$PROJECT_COMPONENTSOURCE/maskwidget.pri)
-
+include($$PROJECT_COMPONENTSOURCE/uslider.pri)
 INCLUDEPATH   +=  \
                  $$PROJECT_ROOTDIR \
                  $$PROJECT_COMPONENTSOURCE \

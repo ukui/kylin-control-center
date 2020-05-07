@@ -89,7 +89,7 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
     account_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);} "
                                      "QPushButton:hover{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
                                      "QPushButton:click{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
-    message_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;color:rgba(0,0,0,0.85);} "
+    message_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;} "
                                      "QPushButton:hover{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
                                      "QPushButton:click{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
     account_login_btn->setFocusPolicy(Qt::NoFocus);
@@ -145,7 +145,7 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
    //Subabstract Build
     login_account_thr_number();
     login_account_thr_phone();
-    QRegExp regx("^[a-zA-Z0-9_-]{30}$");
+    QRegExp regx("^[a-zA-Z0-9_@.-]+$");
     QValidator *validator = new QRegExpValidator(regx, account_phone );
     account_phone->setValidator(validator);
     //Initial configuration
@@ -169,7 +169,7 @@ void LoginDialog::startaction_1() {
         message_login_btn->setMaximumSize(90,36);
         message_login_btn->setMinimumSize(90,36);
         //message_login_btn->setGeometry(161 + sizeoff,96 + sizeoff,90,36);
-        account_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;color:rgba(0,0,0,0.85);} "
+        account_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;} "
                                          "QPushButton:hover{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
                                          "QPushButton:click{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
         message_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;color:#3D6BE5;} "
@@ -203,7 +203,7 @@ void LoginDialog::startaction_2() {
     if(stack_widget->currentIndex() == 1) {
         set_clear();
         account_phone->setFocus();
-        QRegExp regx("^[a-zA-Z0-9_-]{30}$");
+        QRegExp regx("^[a-zA-Z0-9_@.-]+$");
         account_phone->setMaxLength(30);
         QValidator *validator = new QRegExpValidator(regx, account_phone );
         account_phone->setValidator(validator);
@@ -216,7 +216,7 @@ void LoginDialog::startaction_2() {
         account_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);} "
                                          "QPushButton:hover{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
                                          "QPushButton:click{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
-        message_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;color:rgba(0,0,0,0.85);} "
+        message_login_btn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;} "
                                          "QPushButton:hover{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
                                          "QPushButton:click{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
         account_login_btn->setFocusPolicy(Qt::NoFocus);
@@ -232,7 +232,7 @@ bool LoginDialog::login_account_thr_number() {
 
     //Congfigurate the widgets
     account_phone->setFocus();
-    QRegExp regx("^[a-zA-Z0-9_-]{30}$");
+    QRegExp regx("^[a-zA-Z0-9_@.-]+$");
     QValidator *validator = new QRegExpValidator(regx, account_phone );
     account_phone->setValidator(validator);
 
@@ -250,7 +250,7 @@ bool LoginDialog::login_account_thr_number() {
     forgot_pass_btn->setMaximumSize(80,30);
     forgot_pass_btn->setMinimumSize(80,30);
     //forgot_pass_btn->setGeometry(289 + sizeoff,228 + sizeoff,80,30);
-    forgot_pass_btn->setStyleSheet("QPushButton {font-size:14px;background: transparent;color:rgba(0,0,0,0.65);border-radius: 4px;}"
+    forgot_pass_btn->setStyleSheet("QPushButton {font-size:14px;background: transparent;border-radius: 4px;}"
                                    "QPushButton:hover{font-size:14px;color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}"
                                    "QPushButton:click{font-size:14px;color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}");
     forgot_pass_btn->setFocusPolicy(Qt::NoFocus);
@@ -329,7 +329,7 @@ void LoginDialog::setstyleline() {
     if(stack_widget->currentIndex() == 0) {
         error_pass->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
                                   "&nbsp;&nbsp;"+code+"</span></p></body></html>");
-        qDebug()<<"<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
+        //qDebug()<<"<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
                     "&nbsp;&nbsp;"+code+"</span></p></body></html>";
     } else {
         error_code->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"

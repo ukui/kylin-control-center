@@ -31,8 +31,10 @@
 #include <QShowEvent>
 #include <QMoveEvent>
 #include <QHideEvent>
+
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
+#include "Uslider/uslider.h"
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -117,6 +119,10 @@ public:
     void kill_and_start();
 
 private:
+    int convertToLocktime(const int value);
+    int lockConvertToSlider(const int value);
+
+private:
     Ui::Screensaver *ui;
 
     QString pluginName;
@@ -146,6 +152,8 @@ private:
     QProcess * process;
     QStringList killList;
     QStyledItemDelegate *itemDelege;
+
+    Uslider * uslider;
 
 
 private slots:

@@ -62,7 +62,7 @@ PassDialog::PassDialog(QWidget *parent) : QWidget(parent)
     QValidator *validator = new QRegExpValidator(regx, valid_code );
     valid_code->setValidator( validator );
 
-    QRegExp regx_acc("^[a-zA-Z0-9_-]{4,16}$");
+    QRegExp regx_acc("^[a-zA-Z0-9_@.-]+$");
     QValidator *validator_acc = new QRegExpValidator(regx_acc, reg_phone );
     reg_phone->setValidator(validator_acc);
 
@@ -71,7 +71,7 @@ PassDialog::PassDialog(QWidget *parent) : QWidget(parent)
 //    reg_phone->setValidator(validator_acc);
 
     passtips->setText(tr("At least 6 bit, include letters and digt"));
-    passtips->setStyleSheet("font-size:14px;color:rgba(0,0,0,0.85)");
+    passtips->setStyleSheet("font-size:14px;");
     tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
                         "&nbsp;&nbsp;"+code+"</span></p></body></html>");
     //reg_pass->setStyleSheet(str);

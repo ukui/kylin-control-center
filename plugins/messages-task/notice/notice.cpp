@@ -73,8 +73,13 @@ Notice::Notice()
 Notice::~Notice()
 {
     delete ui;
-    delete vecGsettins;
-    delete nSetting;
+    if (!vecGsettins) {
+        delete vecGsettins;
+    }
+
+    if (!nSetting) {
+        delete nSetting;
+    }
 }
 
 QString Notice::get_plugin_name(){
@@ -252,7 +257,7 @@ void Notice::initOriNoticeStatus() {
 //            qDebug()<<"clicked widget--------->"<<endl;
             AppDetail *app;
             app= new AppDetail(name,appsName.at(i), settings);
-            app->show();
+            app->exec();
         });
 
         connect(settings, &QGSettings::changed, [=](QString key){

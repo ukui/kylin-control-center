@@ -106,6 +106,7 @@ private:
 
 private:
     bool settingsCreate;
+    QGSettings * stylesettings;
 
 };
 

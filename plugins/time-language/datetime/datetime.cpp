@@ -25,6 +25,11 @@
 #include <QDir>
 #include <QDesktopWidget>
 
+#include <locale.h>
+#include <libintl.h>
+
+const char kTimezoneDomain[] = "installer-timezones";
+const char kDefaultLocale[] = "en_US.UTF-8";
 
 #define FORMAT_SCHEMA "org.ukui.control-center.panel.plugins"
 #define TIME_FORMAT_KEY "hoursystem"
@@ -82,10 +87,12 @@ DateTime::DateTime()
     connect(ui->chgzonebtn,SIGNAL(clicked()),this,SLOT(changezone_slot()));
     connect(m_formTimeBtn, SIGNAL(checkedChanged(bool)),this,SLOT(time_format_clicked_slot(bool)));
     connect(m_timezone, &TimeZoneChooser::confirmed, this, [this] (const QString &timezone) {
-        qDebug()<<"timezone is---------->"<<timezone<<endl;
+//        qDebug()<<"timezone is---------->"<<timezone<<endl;
         changezone_slot(timezone);
         m_timezone->hide();
-        ui->timezoneLabel->setText(timezone);
+        const QString locale = QLocale::system().name();
+        QString localizedTimezone = m_zoneinfo->getLocalTimezoneName(timezone, locale);
+        ui->timezoneLabel->setText(localizedTimezone);
     });
     connect(ui->synsystimeBtn,SIGNAL(clicked()),this,SLOT(rsync_with_network_slot()));
 }
@@ -186,6 +193,7 @@ void DateTime::component_init(){
 void DateTime::status_init(){
 
     //时区
+    const QString locale = QLocale::system().name();
     QDBusReply<QVariant> tz = m_datetimeiface->call("Get", "org.freedesktop.timedate1", "Timezone");
     QMap<QString, int>::iterator it = tzindexMapEn.find(tz.value().toString());
 //    qDebug()<<"TODO-------》"<<tz.value().toString()<<endl;
@@ -193,13 +201,13 @@ void DateTime::status_init(){
         for(QMap<QString,int>::iterator itc = tzindexMapCN.begin();itc!=tzindexMapCN.end();itc++)
         {
             if(itc.value() == it.value()){
-                ui->timezoneLabel->setText(itc.key());
+                ui->timezoneLabel->setText(getLocalTimezoneName(itc.key(), locale));
                 break;
             }
         }
     } else {
         QMap<QString, int>::iterator defaultit =  tzindexMapEn.find(DEFAULT_TZ);
-        ui->timezoneLabel->setText(defaultit.key());
+        ui->timezoneLabel->setText(getLocalTimezoneName(defaultit.key(), locale));
     }
 
 
@@ -253,8 +261,8 @@ void DateTime::changetime_slot(){
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     m_itimer->stop();
     m_itimer->start();
-//    dialog->exec();
-    dialog->show();
+    dialog->exec();
+
 }
 
 
@@ -354,4 +362,20 @@ void DateTime::connectGSetting() {
             QString value = m_formatsettings->get(DATE_KEY).toString();
         }
     });
+}
+
+QString DateTime::getLocalTimezoneName(QString timezone, QString locale) {
+    (void) setlocale(LC_ALL, QString(locale + ".UTF-8").toStdString().c_str());
+    const QString local_name(dgettext(kTimezoneDomain,
+                                      timezone.toStdString().c_str()));
+    int index = local_name.lastIndexOf('/');
+    if (index == -1) {
+      // Some translations of locale name contains non-standard char.
+      index = local_name.lastIndexOf("∕");
+    }
+
+    // Reset locale.
+    (void) setlocale(LC_ALL, kDefaultLocale);
+
+    return (index > -1) ? local_name.mid(index + 1) : local_name;
 }

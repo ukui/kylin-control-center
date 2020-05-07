@@ -87,11 +87,11 @@ void OutputConfig::initUi()
                 mRotation->setCurrentIndex(index);
             });
 
-    connect(mOutput.data(), &KScreen::Output::scaleChanged,
-            this, [=]() {
-                const int index = mScale->findData(mOutput->scale());
-                mScale->setCurrentIndex(index);
-            });
+//    connect(mOutput.data(), &KScreen::Output::scaleChanged,
+//            this, [=]() {
+//                const int index = mScale->findData(mOutput->scale());
+//                mScale->setCurrentIndex(index);
+//            });
 
 
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -336,7 +336,7 @@ int OutputConfig::getScreenScale() {
     }
 
     int scale  = m_gsettings->get(GDK_SCALE_KEY).toInt();
-    qDebug()<<"key is------->"<<scale<<endl;
+//    qDebug()<<"key is------->"<<scale<<endl;
     return scale;
 }
 

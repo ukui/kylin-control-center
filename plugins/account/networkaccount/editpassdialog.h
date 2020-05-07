@@ -35,7 +35,8 @@
 #include "successdiaolog.h"
 #include <QRegExpValidator>
 #include "ql_lineedit_pass.h"
-#include <libkylin-sso-client/include/libkylinssoclient.h>
+#include "dbushandleclient.h"
+#include <QtDBus/QtDBus>
 
 class EditPassDialog : public QWidget
 {
@@ -44,19 +45,24 @@ public:
     explicit        EditPassDialog(QWidget *parent = nullptr);
     int             timerout_num = 60;
     void            set_code(QString codenum);
-    void            set_client(libkylinssoclient *c);
+    void            set_client(DbusHandleClient *c,QThread *t);
     void            set_clear();
     QLabel*         get_tips();
     QString         messagebox(int codenum);
     void            setshow(QWidget *w);
+    QString         name;
+    bool            is_used = false;
 public slots:
     void            on_edit_submit();
-    void            on_edit_submit_finished(int req);
-    void            on_edit_code_finished(int req);
+    void            on_edit_submit_finished(int req,QString uuid);
+    void            on_edit_code_finished(int req,QString uuid);
     void            on_timer_start();
     void            on_send_code();
     void            setstyleline();
     void            on_close();
+    void            setret_code(int ret);
+    void            setret_check(QString ret);
+    void            setret_edit(int ret);
 protected:
     void            paintEvent(QPaintEvent *event);
     void            mousePressEvent(QMouseEvent *event);
@@ -65,7 +71,6 @@ protected:
 private:
     QLabel          *title;
     QPushButton     *del_btn;
-    ql_lineedit_pass       *account;
     ql_lineedit_pass       *newpass;
     QLineEdit       *valid_code;
     QPushButton     *get_code;
@@ -76,7 +81,7 @@ private:
     QHBoxLayout     *hlayout;
     QHBoxLayout     *btnlayout;
     QPoint          m_startPoint;
-    libkylinssoclient   *client;
+    DbusHandleClient   *client;
     QTimer          *timer;
     QLabel          *tips;
     QString         code;
@@ -85,9 +90,15 @@ private:
     SuccessDiaolog  *success;
     QVBoxLayout     *vboxlayout;
     QLabel          *pass_tips;
+    QThread         *thread;
+    QString         uuid;
 signals:
     void code_changed();
     void account_changed();
+    void docode(QString name,QString uuid);
+    void doreset(QString a,QString b,QString c,QString uuid);
+    void docheck();
+    void dologout();
 };
 
 #endif // EDITPASSDIALOG_H
