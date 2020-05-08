@@ -108,6 +108,14 @@ void ChangeTypeDialog::setCurrentAccountTypeBtn(int id){
     });
 }
 
+void ChangeTypeDialog::forbidenChange(int total){
+    if (total <= 1 && currenttype == 1){
+        ui->standardRadioButton->setEnabled(false);
+    } else {
+        ui->standardRadioButton->setEnabled(true);
+    }
+}
+
 void ChangeTypeDialog::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event);
     QPainter p(this);
