@@ -4,72 +4,133 @@
 <context>
     <name>About</name>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="93"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="46"/>
         <source>System Summary</source>
         <translation>系统概述</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="226"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="128"/>
+        <source>version</source>
+        <translation>版本</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="135"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="171"/>
+        <source>Copyright 2009-2020 @ Kylinos All rights reserved</source>
+        <translation>版权所有2009-2020@kylinos保留所有权利</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="256"/>
+        <source>Kernel</source>
+        <translation>内核</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="286"/>
+        <source>CPU</source>
+        <translation>CPU</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="328"/>
+        <source>Memory</source>
+        <translation>内存</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="370"/>
+        <source>Disk</source>
+        <translation>硬盘</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="424"/>
+        <source>Desktop</source>
+        <translation>桌面</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="454"/>
+        <source>User</source>
+        <translation>用户名</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="500"/>
+        <source>Active Status</source>
+        <translation>激活状态</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="530"/>
+        <source>Service serial number</source>
+        <translation>序列号</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="566"/>
+        <source>Active</source>
+        <translation>激活</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="596"/>
+        <source>Trial version disclaimer</source>
+        <translation>试用版免责声明</translation>
+    </message>
+    <message>
         <source>Devices Summary</source>
-        <translation>设备规格</translation>
+        <translation type="vanished">设备规格</translation>
     </message>
     <message>
         <source>about</source>
         <translation type="vanished">关于</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="37"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="38"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="118"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="128"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="132"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="137"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="145"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="257"/>
+        <source>Inactivated</source>
+        <translation>未激活</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="259"/>
+        <source>Activated</source>
+        <translation>已激活</translation>
+    </message>
+    <message>
         <source>UNKNOWN</source>
-        <translation>未知的</translation>
+        <translation type="vanished">未知的</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="121"/>
         <source>Current desktop env:</source>
-        <translation>当前桌面环境：</translation>
+        <translation type="vanished">当前桌面环境：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="130"/>
         <source>OS Version:</source>
-        <translation>系统版本：</translation>
+        <translation type="vanished">系统版本：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="134"/>
         <source>CPU Arch:</source>
-        <translation>CPU架构：</translation>
+        <translation type="vanished">CPU架构：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="139"/>
         <source>Kernel Version</source>
-        <translation>内核版本</translation>
+        <translation type="vanished">内核版本</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="162"/>
         <source>Manufacturers:</source>
-        <translation>制造商：</translation>
+        <translation type="vanished">制造商：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="163"/>
         <source>Product Name:</source>
-        <translation>产品名：</translation>
+        <translation type="vanished">产品名：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="164"/>
         <source>Version:</source>
-        <translation>版本：</translation>
+        <translation type="vanished">版本：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="165"/>
         <source>Serial Number:</source>
-        <translation>序列号：</translation>
+        <translation type="vanished">序列号：</translation>
     </message>
 </context>
 <context>
@@ -539,29 +600,39 @@ you can restore them to ensure the integrity of your system.</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="79"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="80"/>
         <source>General Pwd</source>
         <translation>通用密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="84"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="186"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="85"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="210"/>
         <source>New Password</source>
         <translation>新密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="85"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="187"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="86"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="211"/>
         <source>New Password Identify</source>
         <translation>新密码确认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="97"/>
-        <source>Password length needs to more than 5 character!</source>
-        <translation>密码长度需要大于5个字符！</translation>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="183"/>
+        <source>Password length needs to more than %1 character!</source>
+        <translation>密码长度至少大于%1个字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="109"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="185"/>
+        <source>Password length needs to less than %1 character!</source>
+        <translation>密码长度需要小于%1个字符！</translation>
+    </message>
+    <message>
+        <source>Password length needs to more than 5 character!</source>
+        <translation type="vanished">密码长度需要大于5个字符！</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="101"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="195"/>
         <source>Inconsistency with pwd</source>
         <translation>与新密码不同</translation>
     </message>

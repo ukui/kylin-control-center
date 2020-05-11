@@ -176,5 +176,6 @@
         <file>manufacturers/ZTE.jpg</file>
         <file>logo.svg</file>
         <file>logo.png</file>
+        <file>galaxyUnicorn.png</file>
     </qresource>
 </RCC>

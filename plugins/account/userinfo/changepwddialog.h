@@ -49,9 +49,13 @@ public:
 protected:
     void paintEvent(QPaintEvent *);
 
-
+private slots:
+    void pwdLegalityCheck(QString pwd);
 private:
     Ui::ChangePwdDialog *ui;
+    QString nameTip;
+    QString pwdTip;
+    QString pwdSureTip;
 
 Q_SIGNALS:
     void passwd_send(QString pwd, QString username);
