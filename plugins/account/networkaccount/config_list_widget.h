@@ -87,12 +87,14 @@ private:
     QThread             *thread;
     bool                auto_ok = true;
     bool                ret_ok = false;
+    QTimer              *login_cloud;
+    QString             uuid;
 public slots:
     void            neweditdialog();
     void            on_login_out();
     void            on_login();
     void            open_cloud();
-    void            finished_load(int ret);
+    void            finished_load(int ret,QString uuid);
     void            on_switch_button(int on,int id);
     void            on_auto_syn(int on,int id);
     void            download_files();
@@ -107,7 +109,7 @@ public slots:
     void            setname(QString n);
     void            setret_check(QString ret);
 signals:
-    void dooss();
+    void dooss(QString uuid);
     void doman();
     void dologout();
     void doconf();

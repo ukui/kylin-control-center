@@ -71,11 +71,11 @@ public slots:
     void on_login_btn();
     void on_pass_btn();
     void on_reg_btn();
-    void on_login_finished(int ret);
-    void on_pass_finished(int ret);
-    void on_reg_finished(int ret);
-    void on_get_mcode_by_name(int ret);
-    void on_get_mcode_by_phone(int ret);
+    void on_login_finished(int ret,QString uuid);
+    void on_pass_finished(int ret,QString uuid);
+    void on_reg_finished(int ret,QString uuid);
+    void on_get_mcode_by_name(int ret,QString uuid);
+    void on_get_mcode_by_phone(int ret,QString uuid);
     void on_timer_timeout();
     void on_send_code();
     void on_send_code_reg();
@@ -85,7 +85,7 @@ public slots:
     void on_timer_log_out();
     void on_timer_bind_out();
     void on_close();
-    void on_bind_finished(int ret);
+    void on_bind_finished(int ret,QString uuid);
     void on_bind_btn();
     void cleanconfirm(QString str);
     void setret_login(int ret);
@@ -97,6 +97,7 @@ public slots:
     void setret_code_phone_reg(int ret);
     void setret_code_user_pass(int ret);
     void setret_code_user_bind(int ret);
+    void set_back();
 protected:
     void            paintEvent(QPaintEvent *event);
     void            mousePressEvent(QMouseEvent *event);
@@ -156,19 +157,20 @@ private:
     bool            send_is_ok = false;
     bool            send_is_ok_log = false;
     bool            send_is_ok_reg = false;
+    QString         uuid;
 
 signals:
     void on_login_success();
     void on_allow_send();
-    void dologin(QString username,QString pwd);
-    void dogetmcode_phone_log(QString phonenumb);
-    void dogetmcode_phone_reg(QString phonenumb);
-    void dogetmcode_number_bind(QString username);
-    void dogetmcode_number_pass(QString username);
-    void dorest(QString username, QString newpwd, QString mCode);
-    void doreg(QString username, QString pwd, QString phonenumb, QString mcode);
-    void dophonelogin(QString phone, QString mCode);
-    void dobind(QString username, QString pwd, QString phone, QString mCode);
+    void dologin(QString username,QString pwd,QString uuid);
+    void dogetmcode_phone_log(QString phonenumb,QString uuid);
+    void dogetmcode_phone_reg(QString phonenumb,QString uuid);
+    void dogetmcode_number_bind(QString username,QString uuid);
+    void dogetmcode_number_pass(QString username,QString uuid);
+    void dorest(QString username, QString newpwd, QString mCode,QString uuid);
+    void doreg(QString username, QString pwd, QString phonenumb, QString mcode,QString uuid);
+    void dophonelogin(QString phone, QString mCode,QString uuid);
+    void dobind(QString username, QString pwd, QString phone, QString mCode,QString uuid);
 
 };
 
