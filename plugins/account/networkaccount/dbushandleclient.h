@@ -11,21 +11,21 @@ public:
     bool once = false;
     explicit DbusHandleClient(QObject *parent = nullptr);
 public slots:
-    int registered(QString username, QString pwd, QString phonenumb, QString mcode);  // 注册接口
-    int login(QString username, QString pwd);   // 登录接口
-    int get_mcode_by_phone(QString phonenumb);  // 手机获取验证码
-    int get_mcode_by_username(QString username);  // 用户名获取验证码
-    int user_resetpwd(QString username, QString newpwd, QString mCode);  // 重置密码
-    int user_phone_login(QString phone, QString mCode);   // 手机登录
+    int registered(QString username, QString pwd, QString phonenumb, QString mcode,QString uuid);  // 注册接口
+    int login(QString username, QString pwd,QString uuid);   // 登录接口
+    int get_mcode_by_phone(QString phonenumb,QString uuid);  // 手机获取验证码
+    int get_mcode_by_username(QString username,QString uuid);  // 用户名获取验证码
+    int user_resetpwd(QString username, QString newpwd, QString mCode,QString uuid);  // 重置密码
+    int user_phone_login(QString phone, QString mCode,QString uuid);   // 手机登录
     char * check_login();  //检测登录状态
     int logout();  // 注销
     int init_conf();  // 登录后，调用init_oss后再初始化conf
     int change_conf_value(QString name, int flag);  // 应用配置开关
-    int bindPhone(QString username, QString pwd, QString phone, QString mCode);
+    int bindPhone(QString username, QString pwd, QString phone, QString mCode,QString uuid);
 
 
     // ----------- 云相关 -----------------
-    int init_oss();  // 登录后，初始化云服务
+    int init_oss(QString uuid);  // 登录后，初始化云服务
     int manual_sync();  // 手动同步
 private:
 

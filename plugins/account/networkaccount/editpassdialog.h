@@ -54,8 +54,8 @@ public:
     bool            is_used = false;
 public slots:
     void            on_edit_submit();
-    void            on_edit_submit_finished(int req);
-    void            on_edit_code_finished(int req);
+    void            on_edit_submit_finished(int req,QString uuid);
+    void            on_edit_code_finished(int req,QString uuid);
     void            on_timer_start();
     void            on_send_code();
     void            setstyleline();
@@ -91,11 +91,12 @@ private:
     QVBoxLayout     *vboxlayout;
     QLabel          *pass_tips;
     QThread         *thread;
+    QString         uuid;
 signals:
     void code_changed();
     void account_changed();
-    void docode(QString name);
-    void doreset(QString a,QString b,QString c);
+    void docode(QString name,QString uuid);
+    void doreset(QString a,QString b,QString c,QString uuid);
     void docheck();
     void dologout();
 };

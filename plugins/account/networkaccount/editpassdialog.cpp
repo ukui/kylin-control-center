@@ -23,6 +23,7 @@
 
 EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
 {
+    uuid = QUuid::createUuid().toString();
     //内存分配
     stackwidget = new QStackedWidget(this);     //切换成功页面与业务逻辑页面
     title = new QLabel(this);                   //标题
@@ -188,7 +189,7 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
 
    // setStyleSheet("EditPassDialog{border-radius:6px;}");
     setAttribute(Qt::WA_TranslucentBackground, true);
-    setWindowFlag(Qt::FramelessWindowHint);
+    setWindowFlags(Qt::FramelessWindowHint);
     setWindowModality(Qt::ApplicationModal);
     del_btn->raise();
     cancel->setFocusPolicy(Qt::NoFocus);
@@ -212,17 +213,17 @@ void EditPassDialog::set_client(DbusHandleClient *c,QThread *t) {
     client = c;
     thread = t;
 
-    connect(this,SIGNAL(docode(QString)),client,SLOT(get_mcode_by_username(QString)));
+    connect(this,SIGNAL(docode(QString,QString)),client,SLOT(get_mcode_by_username(QString,QString)));
     connect(client,SIGNAL(finished_ret_code_edit(int)),this,SLOT(setret_code(int)));
-    connect(this,SIGNAL(doreset(QString,QString,QString)),client,SLOT(user_resetpwd(QString,QString,QString)));
+    connect(this,SIGNAL(doreset(QString,QString,QString,QString)),client,SLOT(user_resetpwd(QString,QString,QString,QString)));
     connect(client,SIGNAL(finished_ret_reset_edit(int)),this,SLOT(setret_edit(int)));
     connect(this,SIGNAL(docheck()),client,SLOT(check_login()));
     connect(client,SIGNAL(finished_ret_check_edit(QString)),this,SLOT(setret_check(QString)));
 
     //connect(client,SIGNAL(finished_mcode_by_username(int)),this,SLOT(on_edit_code_finished(int)));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_mcode_by_username",this,SLOT(on_edit_code_finished(int)));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_mcode_by_username",this,SLOT(on_edit_code_finished(int,QString)));
     //connect(client,SIGNAL(finished_user_resetpwd(int)),this,SLOT(on_edit_submit_finished(int)));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_user_resetpwd",this,SLOT(on_edit_submit_finished(int)));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_user_resetpwd",this,SLOT(on_edit_submit_finished(int,QString)));
 }
 
 /* DBUS客户端回调函数处理，处理异常 */
@@ -282,7 +283,7 @@ void EditPassDialog::on_send_code() {
     //qDebug()<<name;
     if(name != "" && name != "201" && name != "203" &&confirm_pass->text()!="") {
         qstrcpy(phone,name.toStdString().c_str());
-        emit docode(phone);
+        emit docode(phone,uuid);
     }else {
         get_code->setEnabled(true);
         valid_code->setText("");
@@ -325,7 +326,7 @@ void EditPassDialog::on_edit_submit() {
             setshow(content);
             return ;
         }
-        emit doreset(acco,new_pass,mcode);
+        emit doreset(acco,new_pass,mcode,uuid);
     }
 }
 
@@ -344,7 +345,10 @@ void EditPassDialog::on_timer_start() {
 }
 
 /* 修改密码成功后进行回调处理 */
-void EditPassDialog::on_edit_submit_finished(int req) {
+void EditPassDialog::on_edit_submit_finished(int req,QString uuid) {
+    if(uuid != this->uuid) {
+        return ;
+    }
     if(is_used == false) {
         return ;
     }
@@ -401,7 +405,10 @@ void EditPassDialog::setshow(QWidget *widget) {
 }
 
 /* 验证码获取回调 */
-void EditPassDialog::on_edit_code_finished(int req) {
+void EditPassDialog::on_edit_code_finished(int req,QString uuid) {
+    if(this->uuid != uuid) {
+        return ;
+    }
 
     if(is_used == false) {
         return ;

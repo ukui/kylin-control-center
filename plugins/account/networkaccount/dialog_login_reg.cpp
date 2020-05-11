@@ -24,6 +24,7 @@
 Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
 {
     //内存分配
+    uuid = QUuid::createUuid().toString();
     login_submit = new QPushButton(tr("Sign in"),this);     //登录或者确认或者注册或者重置密码或者绑定手机按钮（重用）
     register_account = new QPushButton(tr("Sign up"),this); //返回登录或者注册账户按钮（重用）
     box_login = new LoginDialog(this);      //登录页面
@@ -121,7 +122,7 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     //主窗口布局样式设置
     //setStyleSheet("Dialog_login_reg{border-radius:6px;}");
     setAttribute(Qt::WA_TranslucentBackground, true);
-    setWindowFlag(Qt::FramelessWindowHint);
+    setWindowFlags(Qt::FramelessWindowHint);
 
     vboxlayout->setSpacing(0);
     vboxlayout->setContentsMargins(41,55,41,36);
@@ -281,15 +282,15 @@ QPushButton * Dialog_login_reg::get_login_submit() {
 void Dialog_login_reg::set_client(DbusHandleClient *c,QThread *t) {
     client = c;
     thread  = t;
-    connect(this,SIGNAL(dologin(QString,QString)),client,SLOT(login(QString,QString)));
-    connect(this,SIGNAL(doreg(QString, QString, QString, QString)),client,SLOT(registered(QString, QString, QString, QString)));
-    connect(this,SIGNAL(dobind(QString, QString, QString, QString)),client,SLOT(bindPhone(QString, QString, QString, QString)));
-    connect(this,SIGNAL(dogetmcode_phone_reg(QString)),client,SLOT(get_mcode_by_phone(QString)));
-    connect(this,SIGNAL(dogetmcode_phone_log(QString)),client,SLOT(get_mcode_by_phone(QString)));
-    connect(this,SIGNAL(dogetmcode_number_pass(QString)),client,SLOT(get_mcode_by_username(QString)));
-    connect(this,SIGNAL(dogetmcode_number_bind(QString)),client,SLOT(get_mcode_by_phone(QString)));
-    connect(this,SIGNAL(dorest(QString, QString, QString)),client,SLOT(user_resetpwd(QString, QString, QString)));
-    connect(this,SIGNAL(dophonelogin(QString,QString)),client,SLOT(user_phone_login(QString,QString)));
+    connect(this,SIGNAL(dologin(QString,QString,QString)),client,SLOT(login(QString,QString,QString)));
+    connect(this,SIGNAL(doreg(QString, QString, QString, QString,QString)),client,SLOT(registered(QString, QString, QString, QString,QString)));
+    connect(this,SIGNAL(dobind(QString, QString, QString, QString,QString)),client,SLOT(bindPhone(QString, QString, QString, QString,QString)));
+    connect(this,SIGNAL(dogetmcode_phone_reg(QString,QString)),client,SLOT(get_mcode_by_phone(QString,QString)));
+    connect(this,SIGNAL(dogetmcode_phone_log(QString,QString)),client,SLOT(get_mcode_by_phone(QString,QString)));
+    connect(this,SIGNAL(dogetmcode_number_pass(QString,QString)),client,SLOT(get_mcode_by_username(QString,QString)));
+    connect(this,SIGNAL(dogetmcode_number_bind(QString,QString)),client,SLOT(get_mcode_by_phone(QString,QString)));
+    connect(this,SIGNAL(dorest(QString, QString, QString,QString)),client,SLOT(user_resetpwd(QString, QString, QString,QString)));
+    connect(this,SIGNAL(dophonelogin(QString,QString,QString)),client,SLOT(user_phone_login(QString,QString,QString)));
     connect(client,SIGNAL(finished_ret_log(int)),this,SLOT(setret_login(int)));
     connect(client,SIGNAL(finished_ret_reg(int)),this,SLOT(setret_reg(int)));
     connect(client,SIGNAL(finished_ret_phonelogin(int)),this,SLOT(setret_phone_login(int)));
@@ -300,20 +301,20 @@ void Dialog_login_reg::set_client(DbusHandleClient *c,QThread *t) {
     connect(client,SIGNAL(finished_ret_code_pass(int)),this,SLOT(setret_code_user_pass(int)));
     connect(client,SIGNAL(finished_ret_code_bind(int)),this,SLOT(setret_code_user_bind(int)));
 
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface", "finished_login", this, SLOT(on_login_finished(int)));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface", "finished_login", this, SLOT(on_login_finished(int,QString)));
     //client->connectdbus("finished_login",this,SLOT(on_login_finished(int)));
     //connect(client,SIGNAL(finished_user_phone_login(int)),this,SLOT(on_login_finished(int)));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_user_phone_login",this,SLOT(on_login_finished(int)));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_user_phone_login",this,SLOT(on_login_finished(int,QString)));
     //connect(client,SIGNAL(finished_mcode_by_phone(int)),this,SLOT(on_get_mcode_by_phone(int)));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_mcode_by_phone",this,SLOT(on_get_mcode_by_phone(int)));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_mcode_by_phone",this,SLOT(on_get_mcode_by_phone(int,QString)));
     //connect(client,SIGNAL(finished_user_resetpwd(int)),this,SLOT(on_pass_finished(int)));
     //connect(client,SIGNAL(finished_mcode_by_username(int)),this,SLOT(on_get_mcode_by_name(int)));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_user_resetpwd",this,SLOT(on_pass_finished(int)));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_mcode_by_username",this,SLOT(on_get_mcode_by_name(int)));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_user_resetpwd",this,SLOT(on_pass_finished(int,QString)));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_mcode_by_username",this,SLOT(on_get_mcode_by_name(int,QString)));
     //connect(client,SIGNAL(finished_registered(int)),this,SLOT(on_reg_finished(int)));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_registered",this,SLOT(on_reg_finished(int)));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_registered",this,SLOT(on_reg_finished(int,QString)));
     //connect(client,SIGNAL(finished_bindPhone(int)),this,SLOT(on_bind_finished(int)));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_bindPhone",this,SLOT(on_bind_finished(int)));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_bindPhone",this,SLOT(on_bind_finished(int,QString)));
 }
 
 /* 窗口控件动态显示处理过渡处理函数，每次窗口布局显示或者
@@ -358,10 +359,6 @@ void Dialog_login_reg::setret_login(int ret) {
         return ;
     } else {
 
-        login_submit->setText("");
-        pm->start();
-        gif->setMovie(pm);
-        gif->show();
     }
 }
 
@@ -535,7 +532,11 @@ void Dialog_login_reg::on_login_btn() {
         name = box_login->get_user_name();
         //qDebug()<<"1111111";
         pass = box_login->get_user_pass();
-        emit dologin(name,pass);            //触发登录信号，告知客户端进行登录操作
+        login_submit->setText("");
+        pm->start();
+        gif->setMovie(pm);
+        gif->show();
+        emit dologin(name,pass,uuid);            //触发登录信号，告知客户端进行登录操作
 
     } else if(box_login->get_user_name() != ""
                && box_login->get_login_code()->text() != ""
@@ -543,7 +544,7 @@ void Dialog_login_reg::on_login_btn() {
         QString phone,mcode;                    //如果用户选择手机登录，执行此处
         phone = box_login->get_user_name();
         mcode = box_login->get_login_code()->text();
-        emit dophonelogin(phone,mcode);
+        emit dophonelogin(phone,mcode,uuid);
     } else {
         //信息填写不完整执行此处，包括密码登录以及手机登录
         if(box_login->get_stack_widget()->currentIndex() == 0) {
@@ -602,7 +603,7 @@ void Dialog_login_reg::on_reg_btn() {
             setshow(stack_box);
             return ;
         }
-        emit doreg(account,passwd,phone,mcode);
+        emit doreg(account,passwd,phone,mcode,uuid);
     } else {
         basewidegt->setEnabled(true);
         box_reg->get_valid_code()->setText("");
@@ -648,7 +649,7 @@ void Dialog_login_reg::on_pass_btn() {
             return ;
         }
         //qDebug()<<phone<<pass<<code;
-        emit dorest(phone,pass,code);
+        emit dorest(phone,pass,code,uuid);
     }else {
         basewidegt->setEnabled(true);
         box_pass->get_valid_code()->setText("");
@@ -677,7 +678,7 @@ void Dialog_login_reg::on_bind_btn() {
         account_s = account;
         //qstrcpy(code,box_bind->get_code().toStdString().c_str());
         code = box_bind->get_code();
-        emit dobind(account_s,pass,phone,code);
+        emit dobind(account_s,pass,phone,code,uuid);
     }else {
         box_bind->get_code_lineedit()->setText("");
         box_bind->set_code(messagebox(ret));
@@ -819,7 +820,7 @@ void Dialog_login_reg::on_send_code_reg() {
     }
     if(box_reg->get_user_phone() != "") {
         phone = box_reg->get_user_phone();
-        emit dogetmcode_phone_reg(phone);
+        emit dogetmcode_phone_reg(phone,uuid);
     } else {
         box_reg->get_send_code()->setEnabled(true);
         box_reg->get_valid_code()->setText("");
@@ -837,7 +838,7 @@ void Dialog_login_reg::on_send_code_log() {
     box_login->get_user_mcode()->setEnabled(false);
     if(box_login->get_user_name() != "") {
         phone = box_login->get_user_name();
-        emit dogetmcode_phone_log(phone);
+        emit dogetmcode_phone_log(phone,uuid);
     } else {
         box_login->get_user_mcode()->setEnabled(true);
         box_login->get_mcode_lineedit()->setText("");
@@ -857,7 +858,7 @@ void Dialog_login_reg::on_send_code_bind() {
     if(box_bind->get_phone() != "") {
         //qstrcpy(name,box_bind->get_phone().toStdString().c_str());
         name = box_bind->get_phone();
-        emit dogetmcode_number_bind(name);
+        emit dogetmcode_number_bind(name,uuid);
     }else {
         box_bind->get_code_lineedit()->setText("");
         box_bind->set_code(messagebox(ret));
@@ -883,7 +884,7 @@ void Dialog_login_reg::on_send_code() {
     if(box_pass->get_user_name() != "" && box_pass->get_user_confirm() !="" && box_pass->get_user_newpass() != "") {
         //qstrcpy(name,box_pass->get_user_name().toStdString().c_str());
         name = box_pass->get_user_name();
-        emit dogetmcode_number_pass(name);
+        emit dogetmcode_number_pass(name,uuid);
     }else {
         box_pass->get_valid_code()->setText("");
         pass_tips->show();
@@ -948,7 +949,12 @@ void Dialog_login_reg::on_timer_reg_out() {
 }
 
 /* 登录回调槽函数，登录回执消息后执行此处 */
-void Dialog_login_reg::on_login_finished(int ret) {
+void Dialog_login_reg::on_login_finished(int ret,QString uuid) {
+    if(uuid != this->uuid) {
+        qDebug()<<uuid<<this->uuid;
+        return ;
+    }
+    qDebug()<<ret;
     basewidegt->setEnabled(true);
     //无手机号码绑定，进入手机号码绑定页面
     if(ret == 119) {
@@ -995,7 +1001,10 @@ void Dialog_login_reg::on_login_finished(int ret) {
 }
 
 /* 手机绑定回调槽函数，手机绑定回执消息后执行此处 */
-void Dialog_login_reg::on_bind_finished(int ret) {
+void Dialog_login_reg::on_bind_finished(int ret,QString uuid) {
+    if(uuid != this->uuid) {
+        return ;
+    }
     basewidegt->setEnabled(true);
     if(ret == 0) {
         timerout_num_bind = 0;
@@ -1023,7 +1032,10 @@ void Dialog_login_reg::on_bind_finished(int ret) {
 }
 
 /* 注册回调槽函数，注册回执消息后执行此处 */
-void Dialog_login_reg::on_reg_finished(int ret) {
+void Dialog_login_reg::on_reg_finished(int ret,QString uuid) {
+    if(this->uuid != uuid) {
+        return ;
+    }
     basewidegt->setEnabled(true);
     //qDebug()<<ret;
     if(ret == 0) {
@@ -1054,7 +1066,10 @@ void Dialog_login_reg::on_reg_finished(int ret) {
 }
 
 /* 忘记密码回调槽函数，忘记密码回执消息后执行此处 */
-void Dialog_login_reg::on_pass_finished(int ret) {
+void Dialog_login_reg::on_pass_finished(int ret,QString uuid) {
+    if(uuid != this->uuid) {
+        return ;
+    }
     if(is_used == false) {
         return ;
     }
@@ -1093,7 +1108,10 @@ void Dialog_login_reg::on_pass_finished(int ret) {
 }
 
 /* 手机号直接发送验证码回调函数，发送手机验证码回执消息后执行此处 */
-void Dialog_login_reg::on_get_mcode_by_phone(int ret) {
+void Dialog_login_reg::on_get_mcode_by_phone(int ret,QString uuid) {
+    if(uuid != this->uuid) {
+        return ;
+    }
     if(ret != 0) {
         if(stack_box->currentWidget() == box_login) {
             box_login->get_user_mcode()->setEnabled(true);
@@ -1148,7 +1166,10 @@ void Dialog_login_reg::on_get_mcode_by_phone(int ret) {
 }
 
 /* 根据用户名发送验证码回调函数，发送手机验证码回执消息后执行此处 */
-void Dialog_login_reg::on_get_mcode_by_name(int ret) {
+void Dialog_login_reg::on_get_mcode_by_name(int ret,QString uuid) {
+    if(uuid != this->uuid) {
+        return ;
+    }
 
     if(is_used == false) {
         return ;
@@ -1473,6 +1494,10 @@ void Dialog_login_reg::set_clear() {
     box_login->set_window2();
     del_btn->raise();
     setshow(basewidegt);
+}
+
+void Dialog_login_reg::set_back() {
+    basewidegt->setEnabled(true);
 }
 
 /* 关闭按钮触发处理 */

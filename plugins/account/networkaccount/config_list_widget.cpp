@@ -25,8 +25,8 @@ config_list_widget::config_list_widget(QWidget *parent) : QWidget(parent) {
     client = new DbusHandleClient();    //创建一个通信客户端
     thread  = new QThread();            //为创建的客户端做异步处理
     client->moveToThread(thread);
-
-    connect(this,SIGNAL(dooss()),client,SLOT(init_oss()));
+    uuid = QUuid::createUuid().toString();
+    connect(this,SIGNAL(dooss(QString)),client,SLOT(init_oss(QString)));
     connect(this,SIGNAL(docheck()),client,SLOT(check_login()));
     connect(this,SIGNAL(doconf()),client,SLOT(init_conf()));
     connect(this,SIGNAL(doman()),client,SLOT(manual_sync()));
@@ -48,7 +48,7 @@ config_list_widget::config_list_widget(QWidget *parent) : QWidget(parent) {
     stacked_widget->setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
     emit docheck();     //检测是否登录
     init_gui();         //初始化gui
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_init_oss",this,SLOT(finished_load(int)));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_init_oss",this,SLOT(finished_load(int,QString)));
     //connect(client,SIGNAL(backcall_start_download_signal()),this,SLOT(download_files()));
     QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","backcall_start_download_signal",this,SLOT(download_files()));
     //connect(client,SIGNAL(backcall_end_download_signal()),this,SLOT(download_over()));
@@ -60,50 +60,40 @@ config_list_widget::config_list_widget(QWidget *parent) : QWidget(parent) {
 }
 /* 检测第一次登录，为用户添加名字 */
 void config_list_widget::setname(QString n) {
-    if( code == "201" || code == "203" || code == "401") {
-        return ;
-    }
-    //qDebug()<<n;
+    //qDebug()<<n<<"2131231";
     code = n;
     if(code != "" && code !="201" && code != "203" && code != "401" && !ret_ok) {
-        /*QFuture<int> res = QtConcurrent::run(this, &config_list_widget::oss_initial);
-        int result = res.result();*/
-        emit dooss();
-        ret_ok = true;
+        info->setText(tr("Your account：%1").arg(code));
+        stacked_widget->setCurrentWidget(container);
+        emit doconf();
+        ret_ok = true;              //开启登录状态
+        client->once = false;        //关闭第一次打开状态
+        return ;
     }
 }
 
 /* 客户端回调函数集 */
 void config_list_widget::setret_oss(int ret) {
     if(ret == 0) {
-        emit doman();
-        //qDebug()<<"init oss is 0";
+        emit docheck();
+        qDebug()<<"init oss is 0";
     } else {
         //emit dologout();
     }
 }
 
 void config_list_widget::setret_logout(int ret) {
+    //do nothing
     if(ret == 0) {
-        if(edit_dialog->isVisible() == true) {
-            edit_dialog->close();
-        }
-        //qDebug()<<"1213131";
-        login_dialog->set_clear();
-        edit_dialog->set_clear();
-        stacked_widget->setCurrentWidget(null_widget);
-    } else {
-        //do nothing
+
     }
 }
 
 void config_list_widget::setret_conf(int ret) {
     //qDebug()<<ret<<"csacasca";
     if(ret == 0) {
-        login_dialog->on_close();
         QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
-        info->setText(tr("Your account：%1").arg(code));
-        stacked_widget->setCurrentWidget(container);
+        emit doman();
         //emit doman();
     } else {
         //emit dologout();
@@ -112,23 +102,36 @@ void config_list_widget::setret_conf(int ret) {
 
 void config_list_widget::setret_man(int ret) {
     if(ret == 0) {
+        emit docheck();
         //qDebug()<<"1111 manul";
     }
 }
 
 void config_list_widget::setret_check(QString ret) {
     code = ret;
-    if(code == "" || code =="201" || code == "203" || code == "401") {
+    //qDebug()<<ret<<!ret_ok;
+    if((code == "" || code =="201" || code == "203" || code == "401" ) && ret_ok) {
         //qDebug()<<"checked"<<code<<ret;
         emit dologout();
-    } else {
-
+        client->once = true;
+    } else if(!(code == "" || code =="201" || code == "203" || code == "401" ) &&!ret_ok){
+        ret_ok = true;
+        info->setText(tr("Your account：%1").arg(code));
+        stacked_widget->setCurrentWidget(container);
+        emit doconf();
+    } else if((code == "" || code =="201" || code == "203" || code == "401" ) && ret_ok == false){
+        client->once = true;
+        stacked_widget->setCurrentWidget(null_widget);
+    } else if(!(code == "" || code =="201" || code == "203" || code == "401" ) && ret_ok){
+        info->setText(tr("Your account：%1").arg(code));
+        stacked_widget->setCurrentWidget(container);
+        //emit doconf();
     }
 }
 
 void config_list_widget::setret_change(int ret) {
     if(ret == 0) {
-
+        emit docheck();
     }
 }
 
@@ -155,6 +158,8 @@ void config_list_widget::init_gui() {
     hbox = new QHBoxLayout;//信息框布局
     gif = new QLabel(exit_page);//同步动画
     pm = new QMovie(":/new/image/autosync.gif");
+    login_cloud = new QTimer(this);
+    login_cloud->stop();
 
     gif->hide();
     edit_dialog->hide();
@@ -315,6 +320,10 @@ void config_list_widget::init_gui() {
     connect(exit_page,SIGNAL(clicked()),this,SLOT(on_login_out()));
     connect(edit_dialog,SIGNAL(account_changed()),this,SLOT(on_login_out()));
     connect(login_dialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
+    connect(login_dialog->get_login_submit(),&QPushButton::clicked, [this] () {
+        login_cloud->start();
+    });
+    connect(login_cloud,SIGNAL(timeout()),login_dialog,SLOT(set_back()));
     for(int btncnt = 0;btncnt < list->get_list().size();btncnt ++) {
         connect(list->get_item(btncnt)->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_switch_button(int,int)));
     }
@@ -333,17 +342,21 @@ void config_list_widget::on_login() {
 
 /* 登录过程处理事件 */
 void config_list_widget::open_cloud() {
-    emit docheck();
-    emit dooss();
+    emit dooss(uuid);
+    login_dialog->on_close();
 }
 
 /* 登录成功处理事件 */
-void config_list_widget::finished_load(int ret) {
+void config_list_widget::finished_load(int ret,QString uuid) {
     //qDebug()<<"wb111"<<ret;
+    if(uuid != this->uuid) {
+        return ;
+    }
+   // qDebug()<<"wb222"<<ret;
     if (ret == 0) {
         emit doconf();
     } else if(ret == 401 || ret == 203 || ret == 201) {
-        //emit dologout();
+        emit dologout();
     }
 }
 
@@ -393,22 +406,22 @@ void config_list_widget::handle_write(int on, int id) {
 
 /* 滑动按钮点击处理事件 */
 void config_list_widget::on_switch_button(int on,int id) {
-    emit docheck();
     if(stacked_widget->currentWidget() == null_widget) {
         return ;
     }
     if(!auto_ok) {
         return ;
     }
+    //emit docheck();
     handle_write(on,id);
 }
 
 /* 自动同步滑动按钮点击后改变功能状态 */
 void config_list_widget::on_auto_syn(int on,int id) {
-    emit docheck();
     if(stacked_widget->currentWidget() == null_widget) {
         return ;
     }
+    //emit docheck();
     auto_ok = on;
     for(int i  = 0;i < mapid.size();i ++) {
         list->get_item(i)->set_active(auto_ok);
@@ -419,12 +432,22 @@ void config_list_widget::on_auto_syn(int on,int id) {
 /* 登出处理事件 */
 void config_list_widget::on_login_out() {
     ret_ok = false;
+    client->once = true;
     //qDebug()<< "wb777";
     emit dologout();
+    if(edit_dialog->isVisible() == true) {
+        edit_dialog->close();
+    }
+    //qDebug()<<"1213131";
+    code = "";
+    login_dialog->set_clear();
+    edit_dialog->set_clear();
+    stacked_widget->setCurrentWidget(null_widget);
 }
 
 /* 修改密码打开处理事件 */
 void config_list_widget::neweditdialog() {
+    //emit docheck();
     edit_dialog->is_used = true;
     login_dialog->is_used = false;
     edit_dialog->set_clear();
@@ -452,10 +475,10 @@ QLabel* config_list_widget::get_title() {
 
 /* 同步回调函数集 */
 void config_list_widget::download_files() {
-    emit docheck();
     if(stacked_widget->currentWidget() == null_widget) {
         return ;
     }
+    //emit docheck();
     if(exit_page->property("on") == false) {
         exit_page->setProperty("on",true);
         exit_page->setText("");
@@ -466,10 +489,10 @@ void config_list_widget::download_files() {
 }
 
 void config_list_widget::push_files() {
-    emit docheck();
     if(stacked_widget->currentWidget() == null_widget) {
         return ;
     }
+   // emit docheck();
     if(exit_page->property("on") == false) {
         exit_page->setText("");
         exit_page->setProperty("on",true);
@@ -480,6 +503,7 @@ void config_list_widget::push_files() {
 }
 
 void config_list_widget::download_over() {
+    //emit docheck();
     if(exit_page->property("on") == true) {
         gif->hide();
         exit_page->setText(tr("Exit"));
@@ -488,6 +512,7 @@ void config_list_widget::download_over() {
 }
 
 void config_list_widget::push_over() {
+    //emit docheck();
     if(exit_page->property("on") == true) {
         gif->hide();
         exit_page->setText(tr("Exit"));
