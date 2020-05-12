@@ -569,6 +569,7 @@ void UserInfo::showChangeTypeDialog(QString username){
         dialog->setUsername(user.username);
         dialog->setCurrentAccountTypeLabel(_accountTypeIntToString(user.accounttype));
         dialog->setCurrentAccountTypeBtn(user.accounttype);
+        dialog->forbidenChange(adminnum);
 //        connect(dialog, SIGNAL(type_send(int,QString,bool)), this, SLOT(change_accounttype_slot(int,QString,bool)));
         connect(dialog, &ChangeTypeDialog::type_send, this, [=](int atype, QString userName){
             changeUserType(atype, userName);
