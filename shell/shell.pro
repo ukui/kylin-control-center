@@ -25,10 +25,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../env.pri)
 
-#INCLUDEPATH   +=  \
-#                 /usr/include/KF5/KWindowSystem/ \
+INCLUDEPATH   +=  \
+                 /usr/include/KF5/KWindowSystem/ \
 
-LIBS += -L/usr/lib/ -lX11 -lKF5WindowSystem
+LIBS += -L/usr/lib/ -lX11
 
 #LIBS += -L$$[QT_INSTALL_LIBS] -lkylinssoclient
 

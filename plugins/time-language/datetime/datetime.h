@@ -134,6 +134,7 @@ private slots:
 private:
     void loadHour();
     void connectGSetting();
+    QString getLocalTimezoneName(QString timezone, QString locale);
 
 };
 
