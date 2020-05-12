@@ -485,7 +485,7 @@ void UserInfo::showCreateUserDialog(){
     connect(dialog, &CreateUserDialog::newUserWillCreate, this, [=](QString uName, QString pwd, QString pin, int aType){
         createUser(uName, pwd, pin, aType);
     });
-    dialog->show();
+    dialog->exec();
 }
 
 void UserInfo::createUser(QString username, QString pwd, QString pin, int atype){
@@ -573,7 +573,7 @@ void UserInfo::showChangeTypeDialog(QString username){
         connect(dialog, &ChangeTypeDialog::type_send, this, [=](int atype, QString userName){
             changeUserType(atype, userName);
         });
-        dialog->show();
+        dialog->exec();
 
     } else {
         qDebug() << "User Data Error When Change User type";
@@ -608,7 +608,7 @@ void UserInfo::showChangeFaceDialog(QString username){
     connect(dialog, &ChangeFaceDialog::face_file_send, [=](QString faceFile, QString userName){
         changeUserFace(faceFile, userName);
     });
-    dialog->show();
+    dialog->exec();
 }
 
 void UserInfo::changeUserFace(QString facefile, QString username){
@@ -654,7 +654,7 @@ void UserInfo::showChangePwdDialog(QString username){
         connect(dialog, &ChangePwdDialog::passwd_send, this, [=](QString pwd, QString userName){
             changeUserPwd(pwd, userName);
         });
-        dialog->show();
+        dialog->exec();
 
     } else {
         qDebug() << "User Info Data Error When Change User type";

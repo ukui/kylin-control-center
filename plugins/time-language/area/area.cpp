@@ -312,10 +312,7 @@ void Area::changeform_slot() {
     connect(dialog, SIGNAL(dataChangedSignal()),this,SLOT(initFormatData()));
     dialog->setWindowTitle(tr("change data format"));
     dialog->setAttribute(Qt::WA_DeleteOnClose);
-//    dialog->exec();
-    dialog->show();
-
-
+    dialog->exec();
 }
 
 QStringList Area::readFile(const QString& filepath) {

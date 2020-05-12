@@ -1303,6 +1303,8 @@ void Widget::initConfigFile() {
     if (!(sunjudge && manualjudge)) {
         ui->sunradioBtn->setChecked(sunjudge);
         ui->customradioBtn->setChecked(manualjudge);
+    } else {
+        ui->sunradioBtn->setCheckable(true);
     }
 
     m_qsettings->endGroup();
