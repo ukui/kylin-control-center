@@ -216,14 +216,16 @@ void About::setupVersionCompenent() {
         }
     }
     ui->versionContent->setText(version);
-    if (version != "Kylin V10") {
+    if (version == "Kylin V10" || version == "Kylin V10.1") {
+        ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/galaxyUnicorn.png"));
+    } else {
+        qDebug()<<"version----->"<<version<<endl;
         ui->activeFrame->setVisible(false);
         ui->trialButton->setVisible(false);
         //设置桌面环境LOGO
         ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/logo.png"));
-    } else {
-        ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/galaxyUnicorn.png"));
     }
+
 
 
 }
@@ -253,7 +255,7 @@ void About::setupSerialComponent() {
 
     QString serial;
     QDBusReply<QString> serialReply;
-    serialReply  = activeInterface ->call("status");
+    serialReply  = activeInterface ->call("serial_number");
     if (!serialReply.isValid()) {
         qDebug()<<"serialReply is invalid"<<endl;
     } else {

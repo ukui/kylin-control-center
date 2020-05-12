@@ -133,6 +133,7 @@
         <file>secondaryleftmenu/About.png</file>
         <file>secondaryleftmenu/NetworkAccountWhite.png</file>
         <file>secondaryleftmenu/NetworkAccount.png</file>
+        <file>plugins/about/galaxyUnicorn.png</file>
     </qresource>
     <qresource prefix="/">
         <file>i18n/zh_CN.qm</file>
