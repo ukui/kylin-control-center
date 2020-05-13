@@ -265,7 +265,14 @@ void Screensaver::initThemeStatus(){
 
     ui->comboBox->blockSignals(true);
 
-    screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
+    QByteArray id(SCREENSAVER_SCHEMA);
+    if (QGSettings::isSchemaInstalled(id)) {
+        screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
+    } else {
+        qDebug()<<"org.ukui.screensaver not installed"<<endl;
+        return ;
+    }
+
     mode = g_settings_get_enum(screensaver_settings, MODE_KEY);
 
     if (mode == MODE_DEFAULT_UKUI){
