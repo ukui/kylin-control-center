@@ -1610,6 +1610,8 @@ void Widget::setNightMode(const bool nightMode){
     QString cmd;
     QString serverCmd;
 
+    m_gsettings->set(NIGHT_MODE_KEY, nightMode);
+
     if(nightMode) {
         cmd = "restart";
         serverCmd = "enable";
