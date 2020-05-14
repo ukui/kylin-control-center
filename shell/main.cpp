@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
         QString locale = QLocale::system().name();
         QTranslator translator;
         QString qm  = locale + ".qm";
-        qDebug()<<"locale is---->"<<qm<<endl;
+//        qDebug()<<"locale is---->"<<qm<<endl;
         if (translator.load(qm, "://i18n/"))
             a.installTranslator(&translator);
 //        if (locale == "zh_CN"){

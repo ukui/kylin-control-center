@@ -219,7 +219,7 @@ void About::setupVersionCompenent() {
     if (version == "Kylin V10" || version == "Kylin V10.1") {
         ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/galaxyUnicorn.png"));
     } else {
-        qDebug()<<"version----->"<<version<<endl;
+//        qDebug()<<"version----->"<<version<<endl;
         ui->activeFrame->setVisible(false);
         ui->trialButton->setVisible(false);
         //设置桌面环境LOGO

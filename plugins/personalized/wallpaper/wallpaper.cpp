@@ -27,6 +27,9 @@
 #include "MaskWidget/maskwidget.h"
 
 #include <QDebug>
+#include <QDesktopServices>
+
+const QString kylinUrl = "https://www.ubuntukylin.com/wallpaper.html";
 
 enum{
     PICTURE, //图片背景
@@ -121,7 +124,7 @@ void Wallpaper::setupQStylesheet(){
 void Wallpaper::setupComponent(){
 
 //    ui->browserLocalwpBtn->hide();
-    ui->browserOnlinewpBtn->hide();
+//    ui->browserOnlinewpBtn->hide();
     //背景形式
     QStringList formList;
     formList << tr("picture") << tr("color")/* << tr("slideshow")*/ ;
@@ -212,6 +215,11 @@ void Wallpaper::setupConnect(){
 
     connect(ui->browserLocalwpBtn, &QPushButton::clicked, [=]{
         showLocalWpDialog();
+    });
+
+
+    connect(ui->browserOnlinewpBtn, &QPushButton::clicked, [=]{
+        QDesktopServices::openUrl(QUrl(kylinUrl));
     });
     connect(ui->resetBtn, SIGNAL(clicked(bool)), this, SLOT(resetDefaultWallpaperSlot()));
 
