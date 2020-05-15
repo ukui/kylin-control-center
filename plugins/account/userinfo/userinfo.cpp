@@ -91,7 +91,7 @@ UserInfo::UserInfo()
 UserInfo::~UserInfo()
 {
     delete ui;
-    delete autoSetti
+    delete autoSettings;
 }
 
 QString UserInfo::get_plugin_name(){

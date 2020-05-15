@@ -87,10 +87,12 @@ DateTime::DateTime()
     connect(ui->chgzonebtn,SIGNAL(clicked()),this,SLOT(changezone_slot()));
     connect(m_formTimeBtn, SIGNAL(checkedChanged(bool)),this,SLOT(time_format_clicked_slot(bool)));
     connect(m_timezone, &TimeZoneChooser::confirmed, this, [this] (const QString &timezone) {
-        qDebug()<<"timezone is---------->"<<timezone<<endl;
+//        qDebug()<<"timezone is---------->"<<timezone<<endl;
         changezone_slot(timezone);
         m_timezone->hide();
-        ui->timezoneLabel->setText(timezone);
+        const QString locale = QLocale::system().name();
+        QString localizedTimezone = m_zoneinfo->getLocalTimezoneName(timezone, locale);
+        ui->timezoneLabel->setText(localizedTimezone);
     });
     connect(ui->synsystimeBtn,SIGNAL(clicked()),this,SLOT(rsync_with_network_slot()));
 }
