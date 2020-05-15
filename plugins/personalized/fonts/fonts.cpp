@@ -425,10 +425,10 @@ void Fonts::setupConnect(){
 
     ////绑定信号
     //字体效果按钮
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->sampleBtnGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked), [=](QAbstractButton * button){
 #else
-    connect(ui->sampleBtnGroup, QOverload<QAbstractButton *>::of(&QButton::buttonClicked), [=](QAbstractButton * button){
+    connect(ui->sampleBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), [=](QAbstractButton * button){
 #endif
         setFontEffect(button);
     });

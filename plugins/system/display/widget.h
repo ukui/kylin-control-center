@@ -174,7 +174,7 @@ class Widget : public QWidget
     Ui::DisplayWindow *ui;
     QMLScreen *mScreen = nullptr;
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     KScreen::ConfigPtr mConfig ;
     KScreen::ConfigPtr mPrevConfig ;
     //这是outPutptr结果

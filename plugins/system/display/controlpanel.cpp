@@ -55,7 +55,7 @@ void ControlPanel::addOutput(const KScreen::OutputPtr &output)
 {
     OutputConfig *outputCfg = new OutputConfig(this);
     outputCfg->setVisible(false);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
     outputCfg->setShowScaleOption(mConfig->supportedFeatures().testFlag(KScreen::Config::Feature::PerOutputScaling));
 #else
 

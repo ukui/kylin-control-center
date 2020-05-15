@@ -173,10 +173,10 @@ void KeyboardControl::setupConnect(){
         rebuildLayoutsComBox();
     });
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->layoutsComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
 #else
-    connect(ui->layoutsComBox, QOverload<int>(&QComboBox::currentIndexChanged), [=](int index){
+    connect(ui->layoutsComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index){
 #endif
 
         QStringList layoutsList;

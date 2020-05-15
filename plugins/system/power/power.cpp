@@ -187,7 +187,7 @@ void Power::setupComponent(){
 
 void Power::setupConnect(){
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->powerModeBtnGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=](int id){
 #else
     connect(ui->powerModeBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [=](int id){
@@ -215,7 +215,7 @@ void Power::setupConnect(){
     });
 
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->powerTypeBtnGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, [=]{
 #else
     connect(ui->powerTypeBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, [=]{
@@ -224,7 +224,7 @@ void Power::setupConnect(){
     });
 
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->sleepComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
 #else
     connect(ui->sleepComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
@@ -239,7 +239,7 @@ void Power::setupConnect(){
         }
     });
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->closeComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
 #else
     connect(ui->closeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
@@ -254,7 +254,7 @@ void Power::setupConnect(){
         }
     });
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->iconComboBox,static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
 #else
     connect(ui->iconComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){

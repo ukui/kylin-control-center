@@ -249,7 +249,7 @@ void Wallpaper::setupConnect(){
         colorFlowLayout->addWidget(button);
     }
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->formComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
 #else
     connect(ui->formComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index){

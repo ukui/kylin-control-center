@@ -172,9 +172,9 @@ void ChangtimeDialog::changtimeApplySlot(){
 
     for(int i=0; i < 2; i++){
         m_datetimeInterface->call("SetNTP", false, true);//先关闭网络同步
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
 #else
-        m_datetimeInterface->call("SetTime", QVariant::fromValue(setdt.toSecSinceEpoch() * G_TIME_SPANls_SECOND), false, true);
+        m_datetimeInterface->call("SetTime", QVariant::fromValue(setdt.toSecsSinceEpoch() * G_TIME_SPAN_SECOND), false, true);
 #endif
     }
     this->close();

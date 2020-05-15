@@ -112,7 +112,7 @@ void KbdLayoutManager::setup_component(){
     connect(ui->languageComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(languages_changed_slot(int)));
     connect(this, SIGNAL(rebuild_variant_signals(bool,QString)), this, SLOT(rebuild_variant_slots(bool,QString)));
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=]{refresh_variant_combobox();refresh_widget_status();});
 #else
     connect(ui->buttonGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [=]{refresh_variant_combobox();refresh_widget_status();});

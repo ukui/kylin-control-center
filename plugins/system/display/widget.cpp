@@ -64,7 +64,7 @@ Widget::Widget(QWidget *parent)
     ui->setupUi(this);
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
 
 #else
     ui->quickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
@@ -301,7 +301,7 @@ void Widget::loadQml()
 void Widget::resetPrimaryCombo()
 {
     //qDebug()<<"resetPrimaryCombo----->"<<endl;
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
 
 #else
     bool isPrimaryDisplaySupported = mConfig->supportedFeatures().testFlag(KScreen::Config::Feature::PrimaryDisplay);
@@ -833,7 +833,7 @@ void Widget::slotIdentifyOutputs(KScreen::ConfigOperation *op)
             deviceSize = QSize(mode->size().height(), mode->size().width());
         }
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
 #else
         if (config->supportedFeatures() & KScreen::Config::Feature::PerOutputScaling) {
             // no scale adjustment needed on Wayland
@@ -846,7 +846,7 @@ void Widget::slotIdentifyOutputs(KScreen::ConfigOperation *op)
         rootObj->setProperty("outputName", Utils::outputName(output));
         rootObj->setProperty("modeName", Utils::sizeToString(deviceSize));
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
         view->setProperty("screenSize", QRect(output->pos(), deviceSize));
 #else
         view->setProperty("screenSize", QRect(output->pos(), logicalSize));

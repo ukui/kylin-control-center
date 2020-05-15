@@ -64,7 +64,7 @@ void DelUserDialog::setupConnect(){
         differSignalMapper->setMapping(button, button->text());
     }
 
-#if QT_VERSION <= QT_VERSION_CHECK(5,12,8)
+#if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
     connect(differSignalMapper, static_cast<void(QSignalMapper::*)(const QString &)>(&QSignalMapper::mapped), [=](const QString key){
 #else
     connect(differSignalMapper, QOverload<const QString &>::of(&QSignalMapper::mapped), [=](const QString key){

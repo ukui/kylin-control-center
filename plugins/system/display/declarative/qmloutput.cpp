@@ -230,7 +230,7 @@ int QMLOutput::currentOutputWidth() const
             return 1000;
         }
     }
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     return mode->size().width();// / m_output->scale();
 #else
     return mode->size().width() / m_output->scale();
