@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  *
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
@@ -91,6 +91,7 @@ UserInfo::UserInfo()
 UserInfo::~UserInfo()
 {
     delete ui;
+    delete autoSetti
 }
 
 QString UserInfo::get_plugin_name(){
@@ -182,7 +183,8 @@ UserInfomation UserInfo::_acquireUserInfo(QString objpath){
         user.iconfile = propertyMap.find("IconFile").value().toString();
         user.passwdtype = propertyMap.find("PasswordMode").value().toInt();
         user.uid = propertyMap.find("Uid").value().toInt();
-        user.autologin = propertyMap.find("AutomaticLogin").value().toBool();
+//        user.autologin = propertyMap.find("AutomaticLogin").value().toBool();
+        user.autologin = this->getAutomaticLogin(user.username);
         user.objpath = objpath;
     }
     else
@@ -205,6 +207,9 @@ void UserInfo::initComponent(){
 //    ui->changeTypeBtn->setStyleSheet(btnQss);
 
 //    ui->addUserWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+
+//    QString filename = "/etc/lightdm/lightdm.conf";
+//    autoSettings = new QSettings(filename, QSettings::IniFormat);
 
     nopwdSwitchBtn = new SwitchButton(ui->nopwdLoginFrame);
     ui->nopwdHorLayout->addWidget(nopwdSwitchBtn);
@@ -273,12 +278,16 @@ void UserInfo::initComponent(){
         UserDispatcher * userdispatcher  = new UserDispatcher(user.objpath);
 
 
-        bool status = userdispatcher->get_autoLogin_status();
-        qDebug()<<"the status and checked is---->"<<status <<" "<<checked<<endl;
+//        bool status = userdispatcher->get_autoLogin_status();
+
+        bool status = this->getAutomaticLogin(user.username);
         if ((checked != status)) {
             userdispatcher->change_user_autologin(checked);
         }
-        bool lstStatus = userdispatcher->get_autoLogin_status();
+
+//        bool lstStatus = userdispatcher->get_autoLogin_status();
+
+        bool lstStatus = this->getAutomaticLogin(user.username);
         autoLoginSwitchBtn->setChecked(lstStatus);
     });
 
@@ -349,6 +358,7 @@ void UserInfo::_refreshUserInfoUI(){
             //设置用户类型
             ui->userTypeLabel->setText(_accountTypeIntToString(user.accounttype));
             //设置登录状态
+            qDebug()<<" 设置登录状态-------->" << user.autologin<<endl;
             autoLoginSwitchBtn->setChecked(user.autologin);
             //设置免密登录状态
             nopwdSwitchBtn->setChecked(user.noPwdLogin);
@@ -687,4 +697,17 @@ bool UserInfo::eventFilter(QObject *watched, QEvent *event){
         }
     }
     return QObject::eventFilter(watched, event);
+}
+
+bool UserInfo::getAutomaticLogin(QString username) {
+
+    QString filename = "/etc/lightdm/lightdm.conf";
+    autoSettings = new QSettings(filename, QSettings::IniFormat);
+    autoSettings->beginGroup("SeatDefaults");
+
+    QString autoUser = autoSettings->value("autologin-user", "").toString();
+
+    autoSettings->endGroup();
+
+    return autoUser == username ? true : false;
 }

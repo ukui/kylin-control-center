@@ -192,6 +192,7 @@ void Theme::setupSettings() {
     kwinSettings->endGroup();
 
     effectSwitchBtn->setChecked(!kwin);
+
 }
 
 void Theme::setupComponent(){
@@ -316,6 +317,8 @@ void Theme::initThemeMode(){
             qApp->setStyle(new InternalStyle(themeMode));
             qtSettings->set(MODE_QT_KEY, themeMode);
             gtkSettings->set(MODE_GTK_KEY, themeMode);
+
+            writeKwinSettings(!effectSwitchBtn->isChecked(), themeMode);
         }
     });
 }
@@ -487,10 +490,12 @@ void Theme::initEffectSettings(){
 }
 
 void Theme::initConnection() {
+
     connect(ui->resetBtn, &QPushButton::clicked, this, &Theme::resetBtnClickSlot);
 
     connect(effectSwitchBtn, &SwitchButton::checkedChanged, [this](bool checked) {
-        writeKwinSettings(!checked);
+        QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
+        writeKwinSettings(!checked, currentThemeMode);
     });
 }
 
@@ -549,16 +554,25 @@ void Theme::resetBtnClickSlot() {
     initCursorTheme();
 }
 
-void Theme::writeKwinSettings(bool change) {
-
+void Theme::writeKwinSettings(bool change, QString theme) {
+    QString th;
+    if ("ukui-white" == theme) {
+        th = "_aurorate_svg_Ukui-classic";
+    } else {
+        th = "_aurorate_svg_Ukui-classic_dark";
+    }
     kwinSettings->beginGroup("Plugins");
     kwinSettings->setValue("blurEnabled",change);
+    kwinSettings->endGroup();
+
+    kwinSettings->beginGroup("org.kde.kdecoration2");
+    kwinSettings->setValue("theme", th);
     kwinSettings->endGroup();
 
     kwinSettings->sync();
 
     QDBusMessage message = QDBusMessage::createSignal("/KWin", "org.ukui.KWin", "reloadConfig");
-    QDBusConnection::sessionBus().send(message);
+    QDBusConnection::sessionBus().send(message);       
 }
 
 void Theme::clearLayout(QLayout* mlayout, bool deleteWidgets)
