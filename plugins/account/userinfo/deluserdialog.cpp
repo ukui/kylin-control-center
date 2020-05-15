@@ -21,6 +21,7 @@
 #include "ui_deluserdialog.h"
 
 #include <QDebug>
+#include <QtGlobal>
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
@@ -63,15 +64,19 @@ void DelUserDialog::setupConnect(){
         differSignalMapper->setMapping(button, button->text());
     }
 
-//    connect(differSignalMapper, QOverload<const QString &>::of(&QSignalMapper::mapped), [=](const QString key){
-//        this->accept();
-//        bool removefile;
-//        if (ui->removePushBtn->text() == key)
-//            removefile = true;
-//        else
-//            removefile = false;
-//        emit removefile_send(removefile, ui->usernameLabel->text());
-//    });
+#if QT_VERSION <= QT_VERSION_CHECK(5,12,8)
+    connect(differSignalMapper, static_cast<void(QSignalMapper::*)(const QString &)>(&QSignalMapper::mapped), [=](const QString key){
+#else
+    connect(differSignalMapper, QOverload<const QString &>::of(&QSignalMapper::mapped), [=](const QString key){
+#endif
+        this->accept();
+        bool removefile;
+        if (ui->removePushBtn->text() == key)
+            removefile = true;
+        else
+            removefile = false;
+        emit removefile_send(removefile, ui->usernameLabel->text());
+    });
 }
 
 void DelUserDialog::setFace(QString iconfile){

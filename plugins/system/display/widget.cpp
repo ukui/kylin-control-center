@@ -63,8 +63,14 @@ Widget::Widget(QWidget *parent)
 
     ui->setupUi(this);
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
-//    ui->quickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
-//    ui->quickWidget->setClearColor(Qt::transparent);
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+
+#else
+    ui->quickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
+    ui->quickWidget->setClearColor(Qt::transparent);
+#endif
+
     ui->quickWidget->setContentsMargins(0,0,0,9);
 
     closeScreenButton = new SwitchButton;
@@ -295,9 +301,14 @@ void Widget::loadQml()
 void Widget::resetPrimaryCombo()
 {
     //qDebug()<<"resetPrimaryCombo----->"<<endl;
-//    bool isPrimaryDisplaySupported = mConfig->supportedFeatures().testFlag(KScreen::Config::Feature::PrimaryDisplay);
-//    ui->primaryLabel->setVisible(isPrimaryDisplaySupported);
-//    ui->primaryCombo->setVisible(isPrimaryDisplaySupported);
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+
+#else
+    bool isPrimaryDisplaySupported = mConfig->supportedFeatures().testFlag(KScreen::Config::Feature::PrimaryDisplay);
+    ui->primaryLabel->setVisible(isPrimaryDisplaySupported);
+    ui->primaryCombo->setVisible(isPrimaryDisplaySupported);
+#endif
+
 
     // Don't emit currentIndexChanged when resetting
     bool blocked = ui->primaryCombo->blockSignals(true);
@@ -821,16 +832,26 @@ void Widget::slotIdentifyOutputs(KScreen::ConfigOperation *op)
         } else {
             deviceSize = QSize(mode->size().height(), mode->size().width());
         }
-//        if (config->supportedFeatures() & KScreen::Config::Feature::PerOutputScaling) {
-//            // no scale adjustment needed on Wayland
-//            logicalSize = deviceSize;
-//        } else {
-//            logicalSize = deviceSize / devicePixelRatioF();
-//        }
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#else
+        if (config->supportedFeatures() & KScreen::Config::Feature::PerOutputScaling) {
+            // no scale adjustment needed on Wayland
+            logicalSize = deviceSize;
+        } else {
+            logicalSize = deviceSize / devicePixelRatioF();
+        }
+#endif
 
         rootObj->setProperty("outputName", Utils::outputName(output));
         rootObj->setProperty("modeName", Utils::sizeToString(deviceSize));
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
         view->setProperty("screenSize", QRect(output->pos(), deviceSize));
+#else
+        view->setProperty("screenSize", QRect(output->pos(), logicalSize));
+#endif
+
         mOutputIdentifiers << view;
     }
 
@@ -1611,7 +1632,7 @@ void Widget::getEdidInfo(QString monitorName,xmlFile *xml){
     xml->serialNum = "0x"+QString("%1").arg(serialDec,4,16,QLatin1Char('0'));
 }
 
-void Widget::setNightMode(const bool nightMode){    
+void Widget::setNightMode(const bool nightMode){
     QProcess process;
     QString cmd;
     QString serverCmd;

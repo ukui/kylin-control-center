@@ -186,61 +186,84 @@ void Power::setupComponent(){
 }
 
 void Power::setupConnect(){
-//    connect(ui->powerModeBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [=](int id){
 
-//        refreshUI();
-//        if (id == BALANCE){
-//            //设置显示器关闭
-//            settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_BALANCE);
-//            settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_BALANCE);
-//            //设置计算机睡眠
-//            settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_BALANCE);
-//            settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_BALANCE);
-//        } else if (id == SAVING){
-//            //设置显示器关闭
-//            settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_SAVING);
-//            settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_SAVING);
-//            //设置计算机睡眠
-//            settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_SAVING);
-//            settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_SAVING);
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+    connect(ui->powerModeBtnGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=](int id){
+#else
+    connect(ui->powerModeBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [=](int id){
+#endif
+        refreshUI();
+        if (id == BALANCE){
+            //设置显示器关闭
+            settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_BALANCE);
+            settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_BALANCE);
+            //设置计算机睡眠
+            settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_BALANCE);
+            settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_BALANCE);
+        } else if (id == SAVING){
+            //设置显示器关闭
+            settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_SAVING);
+            settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_SAVING);
+            //设置计算机睡眠
+            settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_SAVING);
+            settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_SAVING);
 
-//        } else {
-//            resetCustomPlanStatus();
-//        }
+        } else {
+            resetCustomPlanStatus();
+        }
 
-//    });
+    });
 
 
-//    connect(ui->powerTypeBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, [=]{
-//        initCustomPlanStatus();
-//    });
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+    connect(ui->powerTypeBtnGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, [=]{
+#else
+    connect(ui->powerTypeBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, [=]{
+#endif
+        initCustomPlanStatus();
+    });
 
-//    connect(ui->sleepComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
-//        Q_UNUSED(index)
-//        int value = ui->sleepComboBox->currentData(Qt::UserRole).toInt() * 60;
-//        if (ui->acBtn->isChecked()){
-//            settings->set(SLEEP_COMPUTER_AC_KEY, QVariant(value));
-//        }
-//        if (ui->batteryBtn->isChecked()){
-//            settings->set(SLEEP_COMPUTER_BATT_KEY, QVariant(value));
-//        }
-//    });
-//    connect(ui->closeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
-//        Q_UNUSED(index)
-//        int value = ui->closeComboBox->currentData(Qt::UserRole).toInt() * 60;
-//        if (ui->acBtn->isChecked()){
-//            settings->set(SLEEP_DISPLAY_AC_KEY, QVariant(value));
-//        }
-//        if (ui->batteryBtn->isChecked()){
-//            settings->set(SLEEP_DISPLAY_BATT_KEY, QVariant(value));
-//        }
-//    });
 
-//    connect(ui->iconComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
-//        Q_UNUSED(index)
-//        QString value = ui->iconComboBox->currentData(Qt::UserRole).toString();
-//        settings->set(ICONPOLICY, value);
-//    });
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+    connect(ui->sleepComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
+#else
+    connect(ui->sleepComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+#endif
+        Q_UNUSED(index)
+        int value = ui->sleepComboBox->currentData(Qt::UserRole).toInt() * 60;
+        if (ui->acBtn->isChecked()){
+            settings->set(SLEEP_COMPUTER_AC_KEY, QVariant(value));
+        }
+        if (ui->batteryBtn->isChecked()){
+            settings->set(SLEEP_COMPUTER_BATT_KEY, QVariant(value));
+        }
+    });
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+    connect(ui->closeComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
+#else
+    connect(ui->closeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+#endif
+        Q_UNUSED(index)
+        int value = ui->closeComboBox->currentData(Qt::UserRole).toInt() * 60;
+        if (ui->acBtn->isChecked()){
+            settings->set(SLEEP_DISPLAY_AC_KEY, QVariant(value));
+        }
+        if (ui->batteryBtn->isChecked()){
+            settings->set(SLEEP_DISPLAY_BATT_KEY, QVariant(value));
+        }
+    });
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+    connect(ui->iconComboBox,static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
+#else
+    connect(ui->iconComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+#endif
+
+        Q_UNUSED(index)
+        QString value = ui->iconComboBox->currentData(Qt::UserRole).toString();
+        settings->set(ICONPOLICY, value);
+    });
 }
 
 void Power::initModeStatus(){

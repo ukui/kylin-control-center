@@ -207,6 +207,7 @@ int QMLOutput::currentOutputHeight() const
         }
     }
     //qDebug()<<"mode->size().height()---->"<<mode->size()<<endl;
+
     return mode->size().height() ;/// m_output->scale();
 }
 
@@ -229,7 +230,12 @@ int QMLOutput::currentOutputWidth() const
             return 1000;
         }
     }
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
     return mode->size().width();// / m_output->scale();
+#else
+    return mode->size().width() / m_output->scale();
+#endif
+
 }
 
 void QMLOutput::currentModeIdChanged()

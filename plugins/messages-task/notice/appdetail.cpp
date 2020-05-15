@@ -24,10 +24,10 @@ AppDetail::AppDetail(QString Name,QString key, QGSettings *gsettings, QWidget *p
     ui->closeBtn->setFlat(true);
 
 
-//    initUiStatus();
+    initUiStatus();
 //    initGSettings();
-//    initComponent();
-//    initConnect();
+    initComponent();
+    initConnect();
 }
 
 AppDetail::~AppDetail()

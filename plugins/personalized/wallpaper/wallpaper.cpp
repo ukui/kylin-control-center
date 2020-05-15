@@ -249,18 +249,22 @@ void Wallpaper::setupConnect(){
         colorFlowLayout->addWidget(button);
     }
 
-//    connect(ui->formComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index){
-//        Q_UNUSED(index)
-//        //切换
-//        int currentPage = ui->formComBox->currentData(Qt::UserRole).toInt();
-//        ui->substackedWidget->setCurrentIndex(currentPage);
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+    connect(ui->formComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
+#else
+    connect(ui->formComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index){
+#endif
+        Q_UNUSED(index)
+        //切换
+        int currentPage = ui->formComBox->currentData(Qt::UserRole).toInt();
+        ui->substackedWidget->setCurrentIndex(currentPage);
 
-//        if (currentPage == PICTURE){
+        if (currentPage == PICTURE){
 
-//        } else if (currentPage == COLOR){
-//        }
+        } else if (currentPage == COLOR){
+        }
 
-//    });
+    });
     //壁纸变动后改变用户属性
     connect(bgsettings, &QGSettings::changed, [=](QString key){
 

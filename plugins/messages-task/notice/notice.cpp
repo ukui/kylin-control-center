@@ -73,8 +73,13 @@ Notice::Notice()
 Notice::~Notice()
 {
     delete ui;
-//    delete vecGsettins;
-//    delete nSetting;
+    if (!vecGsettins) {
+        delete vecGsettins;
+    }
+
+    if (!nSetting) {
+        delete nSetting;
+    }
 }
 
 QString Notice::get_plugin_name(){
@@ -126,15 +131,15 @@ void Notice::setupGSettings() {
 }
 
 void Notice::initNoticeStatus(){
-//    newfeatureSwitchBtn->blockSignals(true);
-//    enableSwitchBtn->blockSignals(true);
-//    lockscreenSwitchBtn->blockSignals(true);
-//    newfeatureSwitchBtn->setChecked(nSetting->get(NEW_FEATURE_KEY).toBool());
-//    enableSwitchBtn->setChecked(nSetting->get(ENABLE_NOTICE_KEY).toBool());
-//    lockscreenSwitchBtn->setChecked(nSetting->get(SHOWON_LOCKSCREEN_KEY).toBool());
-//    newfeatureSwitchBtn->blockSignals(false);
-//    enableSwitchBtn->blockSignals(false);
-//    lockscreenSwitchBtn->blockSignals(false);
+    newfeatureSwitchBtn->blockSignals(true);
+    enableSwitchBtn->blockSignals(true);
+    lockscreenSwitchBtn->blockSignals(true);
+    newfeatureSwitchBtn->setChecked(nSetting->get(NEW_FEATURE_KEY).toBool());
+    enableSwitchBtn->setChecked(nSetting->get(ENABLE_NOTICE_KEY).toBool());
+    lockscreenSwitchBtn->setChecked(nSetting->get(SHOWON_LOCKSCREEN_KEY).toBool());
+    newfeatureSwitchBtn->blockSignals(false);
+    enableSwitchBtn->blockSignals(false);
+    lockscreenSwitchBtn->blockSignals(false);
 }
 
 void Notice::initOriNoticeStatus() {
@@ -306,14 +311,14 @@ void Notice::initGSettings() {
         }
         if (!isExist) {
             path = findFreePath();
-//            qDebug()<<"not contains newSetttings ----->path"<<path<<endl;
-//            newSetttings = new QGSettings(id, path.toLatin1().data());
-//            QStringList keys = newSetttings->keys();
-//            if (keys.contains(static_cast<QString>(NAME_KEY)) &&
-//                    keys.contains(static_cast<QString>(MESSAGES_KEY))) {
-//                newSetttings->set(NAME_KEY, appsKey.at(i));
-//                newSetttings->set(MESSAGES_KEY, true);
-//            }
+            qDebug()<<"not contains newSetttings ----->path"<<path<<endl;
+            newSetttings = new QGSettings(id, path.toLatin1().data());
+            QStringList keys = newSetttings->keys();
+            if (keys.contains(static_cast<QString>(NAME_KEY)) &&
+                    keys.contains(static_cast<QString>(MESSAGES_KEY))) {
+                newSetttings->set(NAME_KEY, appsKey.at(i));
+                newSetttings->set(MESSAGES_KEY, true);
+            }
         }
 
         if (newSetttings) {

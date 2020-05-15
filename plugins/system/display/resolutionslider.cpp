@@ -32,8 +32,12 @@ ResolutionSlider::ResolutionSlider(const KScreen::OutputPtr &output, QWidget *pa
 //    }
     connect(output.data(), &KScreen::Output::currentModeIdChanged,
             this, &ResolutionSlider::slotOutputModeChanged);
-//    connect(output.data(), &KScreen::Output::modesChanged,
-//            this, &ResolutionSlider::init);
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+
+#else
+    connect(output.data(), &KScreen::Output::modesChanged,
+            this, &ResolutionSlider::init);
+#endif
 
     init();
 }

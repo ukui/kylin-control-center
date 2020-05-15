@@ -124,8 +124,13 @@ Desktop::~Desktop()
 {
     delete ui;
 
-//    delete dSettings;
-//    delete vecGsettings;
+    if (!dSettings ){
+        delete dSettings;
+    }
+
+    if (!vecGsettings) {
+        delete vecGsettings;
+    }
 }
 
 QString Desktop::get_plugin_name(){
@@ -218,79 +223,79 @@ void Desktop::setupComponent(){
 
 void Desktop::setupConnect(){
     qDebug()<<"this is desktop setUpConnect ------->"<<endl;
-//    QStringList keys = dSettings->keys();
-//    connect(deskComputerSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(COMPUTER_VISIBLE_KEY, checked);});
-//    connect(deskTrashSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(TRASH_VISIBLE_KEY, checked);});
-//    connect(deskHomeSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(HOME_VISIBLE_KEY, checked);});
-//    connect(deskVolumeSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(VOLUMES_VISIBLE_KEY, checked);});
-//    connect(deskNetworkSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(NETWORK_VISIBLE_KEY, checked);});
+    QStringList keys = dSettings->keys();
+    connect(deskComputerSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(COMPUTER_VISIBLE_KEY, checked);});
+    connect(deskTrashSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(TRASH_VISIBLE_KEY, checked);});
+    connect(deskHomeSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(HOME_VISIBLE_KEY, checked);});
+    connect(deskVolumeSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(VOLUMES_VISIBLE_KEY, checked);});
+    connect(deskNetworkSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(NETWORK_VISIBLE_KEY, checked);});
 
-//    connect(fullMenuSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
-//        if (keys.contains("menufullScreen")) {
-//            dSettings->set(MENU_FULL_SCREEN_KEY, checked);
-//        }
+    connect(fullMenuSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+        if (keys.contains("menufullScreen")) {
+            dSettings->set(MENU_FULL_SCREEN_KEY, checked);
+        }
 
-//    });
-//    connect(menuComputerSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
-//        dSettings->set(COMPUTER_LOCK_KEY, checked);
-//    });
-//    connect(menuFilesystemSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
-//        if (keys.contains("personalIconLocking")) {
-//            dSettings->set(PERSONAL_LOCK_KEY, checked);
-//        }
-//    });
-//    connect(menuSettingSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
-//        dSettings->set(SETTINGS_LOCK_KEY, checked);
-//    });
-//    connect(menuTrashSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
-//        dSettings->set(TRASH_LOCK_KEY, checked);
-//    });
+    });
+    connect(menuComputerSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+        dSettings->set(COMPUTER_LOCK_KEY, checked);
+    });
+    connect(menuFilesystemSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+        if (keys.contains("personalIconLocking")) {
+            dSettings->set(PERSONAL_LOCK_KEY, checked);
+        }
+    });
+    connect(menuSettingSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+        dSettings->set(SETTINGS_LOCK_KEY, checked);
+    });
+    connect(menuTrashSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+        dSettings->set(TRASH_LOCK_KEY, checked);
+    });
 }
 
 void Desktop::initVisibleStatus(){
-//    deskComputerSwitchBtn->blockSignals(true);
-//    deskHomeSwitchBtn->blockSignals(true);
-//    deskTrashSwitchBtn->blockSignals(true);
-//    deskVolumeSwitchBtn->blockSignals(true);
-//    deskNetworkSwitchBtn->blockSignals(true);
+    deskComputerSwitchBtn->blockSignals(true);
+    deskHomeSwitchBtn->blockSignals(true);
+    deskTrashSwitchBtn->blockSignals(true);
+    deskVolumeSwitchBtn->blockSignals(true);
+    deskNetworkSwitchBtn->blockSignals(true);
 
-//    deskComputerSwitchBtn->setChecked(dSettings->get(COMPUTER_VISIBLE_KEY).toBool());
-//    deskHomeSwitchBtn->setChecked(dSettings->get(HOME_VISIBLE_KEY).toBool());
-//    deskTrashSwitchBtn->setChecked(dSettings->get(TRASH_VISIBLE_KEY).toBool());
-//    deskVolumeSwitchBtn->setChecked(dSettings->get(VOLUMES_VISIBLE_KEY).toBool());
-//    deskNetworkSwitchBtn->setChecked(dSettings->get(NETWORK_VISIBLE_KEY).toBool());
+    deskComputerSwitchBtn->setChecked(dSettings->get(COMPUTER_VISIBLE_KEY).toBool());
+    deskHomeSwitchBtn->setChecked(dSettings->get(HOME_VISIBLE_KEY).toBool());
+    deskTrashSwitchBtn->setChecked(dSettings->get(TRASH_VISIBLE_KEY).toBool());
+    deskVolumeSwitchBtn->setChecked(dSettings->get(VOLUMES_VISIBLE_KEY).toBool());
+    deskNetworkSwitchBtn->setChecked(dSettings->get(NETWORK_VISIBLE_KEY).toBool());
 
-//    deskComputerSwitchBtn->blockSignals(false);
-//    deskHomeSwitchBtn->blockSignals(false);
-//    deskTrashSwitchBtn->blockSignals(false);
-//    deskVolumeSwitchBtn->blockSignals(false);
-//    deskNetworkSwitchBtn->blockSignals(false);
+    deskComputerSwitchBtn->blockSignals(false);
+    deskHomeSwitchBtn->blockSignals(false);
+    deskTrashSwitchBtn->blockSignals(false);
+    deskVolumeSwitchBtn->blockSignals(false);
+    deskNetworkSwitchBtn->blockSignals(false);
 }
 
 void Desktop::initLockingStatus(){
-//    menuComputerSwitchBtn->blockSignals(true);
-//    menuFilesystemSwitchBtn->blockSignals(true);
-//    menuSettingSwitchBtn->blockSignals(true);
-//    menuTrashSwitchBtn->blockSignals(true);
+    menuComputerSwitchBtn->blockSignals(true);
+    menuFilesystemSwitchBtn->blockSignals(true);
+    menuSettingSwitchBtn->blockSignals(true);
+    menuTrashSwitchBtn->blockSignals(true);
 
 
-//    QStringList keys = dSettings->keys();
-//    if (keys.contains("menufullScreen")) {
-//        fullMenuSwitchBtn->setChecked(dSettings->get(MENU_FULL_SCREEN_KEY).toBool());
-//    }
+    QStringList keys = dSettings->keys();
+    if (keys.contains("menufullScreen")) {
+        fullMenuSwitchBtn->setChecked(dSettings->get(MENU_FULL_SCREEN_KEY).toBool());
+    }
 
-//    if (keys.contains("personalIconLocking")) {
-//        menuFilesystemSwitchBtn->setChecked(dSettings->get(PERSONAL_LOCK_KEY).toBool());
-//    }
+    if (keys.contains("personalIconLocking")) {
+        menuFilesystemSwitchBtn->setChecked(dSettings->get(PERSONAL_LOCK_KEY).toBool());
+    }
 
-//    menuSettingSwitchBtn->setChecked(dSettings->get(SETTINGS_LOCK_KEY).toBool());
-//    menuTrashSwitchBtn->setChecked(dSettings->get(TRASH_LOCK_KEY).toBool());
-//    menuComputerSwitchBtn->setChecked(dSettings->get(COMPUTER_LOCK_KEY).toBool());
+    menuSettingSwitchBtn->setChecked(dSettings->get(SETTINGS_LOCK_KEY).toBool());
+    menuTrashSwitchBtn->setChecked(dSettings->get(TRASH_LOCK_KEY).toBool());
+    menuComputerSwitchBtn->setChecked(dSettings->get(COMPUTER_LOCK_KEY).toBool());
 
-//    menuComputerSwitchBtn->blockSignals(false);
-//    menuFilesystemSwitchBtn->blockSignals(false);
-//    menuSettingSwitchBtn->blockSignals(false);
-//    menuTrashSwitchBtn->blockSignals(false);
+    menuComputerSwitchBtn->blockSignals(false);
+    menuFilesystemSwitchBtn->blockSignals(false);
+    menuSettingSwitchBtn->blockSignals(false);
+    menuTrashSwitchBtn->blockSignals(false);
 }
 
 void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {

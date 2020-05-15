@@ -152,7 +152,12 @@ void MouseControl::setupComponent(){
     flashingBtn = new SwitchButton(pluginWidget);
     ui->enableFlashingHorLayout->addWidget(flashingBtn);
 
-    connect(ui->handHabitComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+     connect(ui->handHabitComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
+#else
+     connect(ui->handHabitComBox, QOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index){
+
+#endif
         Q_UNUSED(index)
         settings->set(HAND_KEY, ui->handHabitComBox->currentData().toBool());
     });
