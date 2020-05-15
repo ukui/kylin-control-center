@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += widgets
+QT       += widgets xml
 
 TEMPLATE = lib
 CONFIG += plugin
@@ -20,7 +20,6 @@ CONFIG += c++11 \
 
 
 PKGCONFIG += libmatemixer \
-             Qt5Xdg \
              gio-2.0 \
              libxml-2.0 \
              Qt5Multimedia \

@@ -63,8 +63,14 @@ Widget::Widget(QWidget *parent)
 
     ui->setupUi(this);
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+
+#else
     ui->quickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
     ui->quickWidget->setClearColor(Qt::transparent);
+#endif
+
     ui->quickWidget->setContentsMargins(0,0,0,9);
 
     closeScreenButton = new SwitchButton;
@@ -275,9 +281,9 @@ void Widget::loadQml()
 //    QString tmpfile = QCoreApplication::applicationDirPath();
 
 //    qDebug()<<"路径----------------->";
-    const QString file = QStringLiteral(":/qml/main.qml");
+//    const QString file = QStringLiteral("/home/kylin/zhoubin/ukui/ukui-control-center/plugins/system/display/qml/main.qml");
 
-    ui->quickWidget->setSource(QUrl::fromLocalFile(file));
+    ui->quickWidget->setSource(QUrl("qrc:/qml/main.qml"));
 
     QQuickItem* rootObject = ui->quickWidget->rootObject();
     mScreen = rootObject->findChild<QMLScreen*>(QStringLiteral("outputView"));
@@ -295,9 +301,14 @@ void Widget::loadQml()
 void Widget::resetPrimaryCombo()
 {
     //qDebug()<<"resetPrimaryCombo----->"<<endl;
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+
+#else
     bool isPrimaryDisplaySupported = mConfig->supportedFeatures().testFlag(KScreen::Config::Feature::PrimaryDisplay);
     ui->primaryLabel->setVisible(isPrimaryDisplaySupported);
     ui->primaryCombo->setVisible(isPrimaryDisplaySupported);
+#endif
+
 
     // Don't emit currentIndexChanged when resetting
     bool blocked = ui->primaryCombo->blockSignals(true);
@@ -821,16 +832,26 @@ void Widget::slotIdentifyOutputs(KScreen::ConfigOperation *op)
         } else {
             deviceSize = QSize(mode->size().height(), mode->size().width());
         }
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+#else
         if (config->supportedFeatures() & KScreen::Config::Feature::PerOutputScaling) {
             // no scale adjustment needed on Wayland
             logicalSize = deviceSize;
         } else {
             logicalSize = deviceSize / devicePixelRatioF();
         }
+#endif
 
         rootObj->setProperty("outputName", Utils::outputName(output));
         rootObj->setProperty("modeName", Utils::sizeToString(deviceSize));
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+        view->setProperty("screenSize", QRect(output->pos(), deviceSize));
+#else
         view->setProperty("screenSize", QRect(output->pos(), logicalSize));
+#endif
+
         mOutputIdentifiers << view;
     }
 
@@ -849,6 +870,7 @@ void Widget::save()
     if (!this) {
         return;
     }
+
 
     const KScreen::ConfigPtr &config = this->currentConfig();
 
@@ -914,6 +936,7 @@ void Widget::save()
         getEdidInfo(output->name(),&inputXml[i]);
         i++;
     }   
+
     if (!atLeastOneEnabledOutput ) {
         qDebug()<<"atLeastOneEnabledOutput---->"<<connectedScreen<<endl;
         KMessageBox::error(this,tr("please insure at least one output!"),
@@ -945,11 +968,14 @@ void Widget::save()
         return;
     }
 
+
 //    qDebug()<<"scale ann screenScale is -------->"<<this->scaleRet()<<" "<<this->screenScale<<endl;
 
     if (scale != this->screenScale) {
         KMessageBox::information(this,tr("Some applications need to be restarted to take effect"));
     }
+
+
 
     m_blockChanges = true;
     /* Store the current config, apply settings */
@@ -966,6 +992,7 @@ void Widget::save()
             m_blockChanges = false;
         }
     );
+
 }
 
 void Widget::scaleChangedSlot(int index) {
@@ -1761,7 +1788,7 @@ void Widget::initNightStatus(){
 
     QProcess *process = new QProcess;
     const bool isRedShiftValid  = (0 == process->execute("which",QStringList() << "redshift"));
-//    qDebug()<<"isRedshitValid-------------->"<<isRedShiftValid<<endl;
+    qDebug()<<"isRedshitValid-------------->"<<isRedShiftValid<<endl;
 
 
     QProcess *process_2 = new QProcess;
@@ -1772,7 +1799,7 @@ void Widget::initNightStatus(){
 
     QString tmpNight = qbaOutput;
     m_isNightMode = (tmpNight=="active\n" ? true : false);
-//    qDebug()<<"m_isNightMode is------------->"<<m_isNightMode<<endl;
+    qDebug()<<"m_isNightMode is------------->"<<tmpNight<<endl;
 
 
     if (isRedShiftValid){

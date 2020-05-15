@@ -100,7 +100,7 @@ void ChangeTypeDialog::setCurrentAccountTypeBtn(int id){
     else
         ui->adminRadioButton->setChecked(true);
 
-    connect(ui->buttonGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [=](int id){
+    connect(ui->buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=](int id){
         if (id != currenttype)
             ui->confirmPushBtn->setEnabled(true);
         else

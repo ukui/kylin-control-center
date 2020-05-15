@@ -34,7 +34,15 @@ GetShortcutWorker::~GetShortcutWorker()
 void GetShortcutWorker::run(){
 
     // list system shortcut
-    GSettings * systemgsettings = g_settings_new(KEYBINDINGS_SYSTEM_SCHEMA);
+    QByteArray id(KEYBINDINGS_SYSTEM_SCHEMA);
+    GSettings * systemgsettings;
+    if (QGSettings::isSchemaInstalled(id)) {
+        systemgsettings = g_settings_new(KEYBINDINGS_SYSTEM_SCHEMA);
+    } else {
+        return;
+    }
+
+
     char ** skeys = g_settings_list_keys(systemgsettings);
     for (int i=0; skeys[i]!= NULL; i++){
         //切换为mutter后，原先为string的变为字符串数组，这块只取了字符串数组的第一个元素
@@ -54,25 +62,29 @@ void GetShortcutWorker::run(){
 
 
     // list desktop shortcut
-    GSettings * desktopsettings = g_settings_new(KEYBINDINGS_DESKTOP_SCHEMA);
-    char ** dkeys = g_settings_list_keys(desktopsettings);
-    for (int i=0; dkeys[i]!= NULL; i++){
-        //跳过非快捷键
-        if (!g_strcmp0(dkeys[i], "active") || !g_strcmp0(dkeys[i], "volume-step") ||
-                !g_strcmp0(dkeys[i], "priority") || !g_strcmp0(dkeys[i], "enable-osd"))
-            continue;
-
-        GVariant *variant = g_settings_get_value(desktopsettings, dkeys[i]);
-        gsize size = g_variant_get_size(variant);
-        char * str = const_cast<char *>(g_variant_get_string(variant, &size));
-
-        //保存桌面快捷键
-        QString key = QString(dkeys[i]); QString value = QString(str);
-        if (value != ""){
-            generalShortcutGenerate(KEYBINDINGS_DESKTOP_SCHEMA, key, value);
-        }
+    GSettings * desktopsettings;
+    if (QGSettings::isSchemaInstalled(KEYBINDINGS_DESKTOP_SCHEMA)) {
+        desktopsettings = g_settings_new(KEYBINDINGS_DESKTOP_SCHEMA);
     }
-    g_strfreev(dkeys);
+
+//    char ** dkeys = g_settings_list_keys(desktopsettings);
+//    for (int i=0; dkeys[i]!= NULL; i++){
+//        //跳过非快捷键
+//        if (!g_strcmp0(dkeys[i], "active") || !g_strcmp0(dkeys[i], "volume-step") ||
+//                !g_strcmp0(dkeys[i], "priority") || !g_strcmp0(dkeys[i], "enable-osd"))
+//            continue;
+
+//        GVariant *variant = g_settings_get_value(desktopsettings, dkeys[i]);
+//        gsize size = g_variant_get_size(variant);
+//        char * str = const_cast<char *>(g_variant_get_string(variant, &size));
+
+//        //保存桌面快捷键
+//        QString key = QString(dkeys[i]); QString value = QString(str);
+//        if (value != ""){
+//            generalShortcutGenerate(KEYBINDINGS_DESKTOP_SCHEMA, key, value);
+//        }
+//    }
+//    g_strfreev(dkeys);
     g_object_unref(desktopsettings);
 
     // list custdom shortcut

@@ -73,8 +73,13 @@ Notice::Notice()
 Notice::~Notice()
 {
     delete ui;
-    delete vecGsettins;
-    delete nSetting;
+    if (!vecGsettins) {
+        delete vecGsettins;
+    }
+
+    if (!nSetting) {
+        delete nSetting;
+    }
 }
 
 QString Notice::get_plugin_name(){

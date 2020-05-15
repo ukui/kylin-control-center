@@ -254,7 +254,11 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
     QLabel * statusLabel = new QLabel(button);
     statusLabel->setFixedSize(QSize(16, 16));
     statusLabel->setScaledContents(true);
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 8)
+    connect(ui->themeModeBtnGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked), [=](QAbstractButton * eBtn){
+#else
     connect(ui->themeModeBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), [=](QAbstractButton * eBtn){
+#endif
         if (eBtn == button)
             statusLabel->setPixmap(QPixmap("://img/plugins/theme/selected.png"));
         else
@@ -308,7 +312,7 @@ void Theme::initThemeMode(){
 //            button->setChecked(true);
     }
 
-    connect(ui->themeModeBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this, [=](QAbstractButton * button){
+    connect(ui->themeModeBtnGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked), this, [=](QAbstractButton * button){
 
         //设置主题
         QString themeMode = button->property("value").toString();
@@ -416,10 +420,10 @@ void Theme::setupControlTheme(){
         selectedColorLabel->setPixmap(QPixmap("://img/plugins/theme/selected.png"));
         //初始化选中图标状态
         selectedColorLabel->setVisible(button->isChecked());
-        connect(colorBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this,[=]{
-            selectedColorLabel->setVisible(button->isChecked());
-            //设置控件主题
-        });
+//        connect(colorBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this,[=]{
+//            selectedColorLabel->setVisible(button->isChecked());
+//            //设置控件主题
+//        });
 
         colorHorLayout->addStretch();
         colorHorLayout->addWidget(selectedColorLabel);

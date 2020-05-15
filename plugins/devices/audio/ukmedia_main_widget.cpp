@@ -18,8 +18,6 @@
  *
  */
 #include "ukmedia_main_widget.h"
-#include <XdgIcon>
-#include <XdgDesktopFile>
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QScrollArea>
@@ -147,22 +145,22 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     //检测系统主题
     if (QGSettings::isSchemaInstalled(UKUI_THEME_SETTING)){
         m_pThemeSetting = new QGSettings(UKUI_THEME_SETTING);
+        if (m_pThemeSetting->keys().contains("styleName")) {
+            mThemeName = m_pThemeSetting->get(UKUI_THEME_NAME).toString();
+        }
+        connect(m_pThemeSetting, SIGNAL(changed(const QString &)),this,SLOT(ukuiThemeChangedSlot(const QString &)));
     }
-    if (m_pThemeSetting->keys().contains("styleName")) {
-        mThemeName = m_pThemeSetting->get(UKUI_THEME_NAME).toString();
-    }
-    connect(m_pThemeSetting, SIGNAL(changed(const QString &)),this,SLOT(ukuiThemeChangedSlot(const QString &)));
 
     //检测设计开关机音乐
     if (QGSettings::isSchemaInstalled(UKUI_SWITCH_SETTING)) {
         m_pBootSetting = new QGSettings(UKUI_SWITCH_SETTING);
-    }
-    if (m_pBootSetting->keys().contains("bootMusic")) {
-        m_hasMusic = m_pBootSetting->get(UKUI_BOOT_MUSIC_KEY).toBool();
-        m_pSoundWidget->m_pBootButton->setChecked(m_hasMusic);
-    }
+        if (m_pBootSetting->keys().contains("bootMusic")) {
+            m_hasMusic = m_pBootSetting->get(UKUI_BOOT_MUSIC_KEY).toBool();
+            m_pSoundWidget->m_pBootButton->setChecked(m_hasMusic);
+        }
 
-    connect(m_pBootSetting,SIGNAL(changed(const QString &)),this,SLOT(bootMusicSettingsChanged()));
+        connect(m_pBootSetting,SIGNAL(changed(const QString &)),this,SLOT(bootMusicSettingsChanged()));
+    }
     connect(m_pSoundWidget->m_pBootButton,SIGNAL(checkedChanged(bool)),this,SLOT(bootButtonSwitchChangedSlot(bool)));
     //输出音量控制
     //输出滑动条音量控制
