@@ -92,7 +92,6 @@ private:
     QGSettings * qtSettings;
     QGSettings * curSettings;
     QSettings  * kwinSettings;
-
     QGSettings * kwinGsettings;
 
     SwitchButton * effectSwitchBtn;
@@ -103,7 +102,7 @@ private:
 
 private slots:
     void resetBtnClickSlot();
-    void writeKwinSettings(bool change);
+    void writeKwinSettings(bool change, QString theme);
 
 };
 
