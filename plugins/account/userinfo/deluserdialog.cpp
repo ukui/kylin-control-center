@@ -63,15 +63,15 @@ void DelUserDialog::setupConnect(){
         differSignalMapper->setMapping(button, button->text());
     }
 
-    connect(differSignalMapper, QOverload<const QString &>::of(&QSignalMapper::mapped), [=](const QString key){
-        this->accept();
-        bool removefile;
-        if (ui->removePushBtn->text() == key)
-            removefile = true;
-        else
-            removefile = false;
-        emit removefile_send(removefile, ui->usernameLabel->text());
-    });
+//    connect(differSignalMapper, QOverload<const QString &>::of(&QSignalMapper::mapped), [=](const QString key){
+//        this->accept();
+//        bool removefile;
+//        if (ui->removePushBtn->text() == key)
+//            removefile = true;
+//        else
+//            removefile = false;
+//        emit removefile_send(removefile, ui->usernameLabel->text());
+//    });
 }
 
 void DelUserDialog::setFace(QString iconfile){

@@ -425,10 +425,9 @@ void Fonts::setupConnect(){
 
     ////绑定信号
     //字体效果按钮
-    connect(ui->sampleBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), [=](QAbstractButton * button){
+    connect(ui->sampleBtnGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked), [=](QAbstractButton * button){
         setFontEffect(button);
     });
-
     //重置按钮
     connect(ui->resetBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
@@ -625,7 +624,10 @@ void Fonts::_getCurrentFontInfo(){
 
 QStringList Fonts::_splitFontNameSize(QString value){
     QStringList valueStringList;
-    if (value.right(1) >= '0' && value.right(1) <= '9'){
+    QString str = value.right(1);
+    QString ch0 = static_cast<QString>('0');
+    QString ch9 = static_cast<QString>('9');
+    if (str >= ch0 && str <= ch9){
         QStringList tmpStringList = value.split(' ');
         QString::SectionFlag flag = QString::SectionSkipEmpty;
         valueStringList << value.section(' ', 0, tmpStringList.length() - 2, flag);

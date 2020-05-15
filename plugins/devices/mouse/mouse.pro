@@ -20,7 +20,8 @@ INCLUDEPATH   +=  \
                  $$PROJECT_COMPONENTSOURCE \
                  $$PROJECT_ROOTDIR \
 
-LIBS          +=  -L/usr/lib/  -lXi -lgsettings-qt
+#LIBS          +=  -L/usr/lib/  -lXi -lgsettings-qt
+LIBS          +=  -L/usr/lib/   -lgsettings-qt
 
 
 

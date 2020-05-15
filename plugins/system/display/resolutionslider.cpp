@@ -32,8 +32,8 @@ ResolutionSlider::ResolutionSlider(const KScreen::OutputPtr &output, QWidget *pa
 //    }
     connect(output.data(), &KScreen::Output::currentModeIdChanged,
             this, &ResolutionSlider::slotOutputModeChanged);
-    connect(output.data(), &KScreen::Output::modesChanged,
-            this, &ResolutionSlider::init);
+//    connect(output.data(), &KScreen::Output::modesChanged,
+//            this, &ResolutionSlider::init);
 
     init();
 }

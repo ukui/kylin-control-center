@@ -225,9 +225,6 @@ void About::setupVersionCompenent() {
         //设置桌面环境LOGO
         ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/logo.png"));
     }
-
-
-
 }
 
 void About::setupSerialComponent() {
@@ -366,7 +363,6 @@ QStringList About::readFile(QString filepath) {
         return QStringList();
     }
 }
-
 
 void About::_call_dbus_get_computer_info(){
     interface = new QDBusInterface("com.kylin.assistant.qsessiondbus",

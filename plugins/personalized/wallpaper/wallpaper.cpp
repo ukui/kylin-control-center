@@ -249,18 +249,18 @@ void Wallpaper::setupConnect(){
         colorFlowLayout->addWidget(button);
     }
 
-    connect(ui->formComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index){
-        Q_UNUSED(index)
-        //切换
-        int currentPage = ui->formComBox->currentData(Qt::UserRole).toInt();
-        ui->substackedWidget->setCurrentIndex(currentPage);
+//    connect(ui->formComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index){
+//        Q_UNUSED(index)
+//        //切换
+//        int currentPage = ui->formComBox->currentData(Qt::UserRole).toInt();
+//        ui->substackedWidget->setCurrentIndex(currentPage);
 
-        if (currentPage == PICTURE){
+//        if (currentPage == PICTURE){
 
-        } else if (currentPage == COLOR){
-        }
+//        } else if (currentPage == COLOR){
+//        }
 
-    });
+//    });
     //壁纸变动后改变用户属性
     connect(bgsettings, &QGSettings::changed, [=](QString key){
 
@@ -354,7 +354,7 @@ void Wallpaper::showComponent(int index){
 void Wallpaper::initPreviewStatus(){
     //设置图片背景的预览效果
     QString filename = bgsettings->get(FILENAME).toString();
-    qDebug()<<"preview pic is---------->"<<filename<<endl;
+//    qDebug()<<"preview pic is---------->"<<filename<<endl;
 
     QByteArray ba = filename.toLatin1();
 //    if (g_file_test(ba.data(), G_FILE_TEST_EXISTS)){

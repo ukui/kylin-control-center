@@ -186,61 +186,61 @@ void Power::setupComponent(){
 }
 
 void Power::setupConnect(){
-    connect(ui->powerModeBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [=](int id){
+//    connect(ui->powerModeBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [=](int id){
 
-        refreshUI();
-        if (id == BALANCE){
-            //设置显示器关闭
-            settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_BALANCE);
-            settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_BALANCE);
-            //设置计算机睡眠
-            settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_BALANCE);
-            settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_BALANCE);
-        } else if (id == SAVING){
-            //设置显示器关闭
-            settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_SAVING);
-            settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_SAVING);
-            //设置计算机睡眠
-            settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_SAVING);
-            settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_SAVING);
+//        refreshUI();
+//        if (id == BALANCE){
+//            //设置显示器关闭
+//            settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_BALANCE);
+//            settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_BALANCE);
+//            //设置计算机睡眠
+//            settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_BALANCE);
+//            settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_BALANCE);
+//        } else if (id == SAVING){
+//            //设置显示器关闭
+//            settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_SAVING);
+//            settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_SAVING);
+//            //设置计算机睡眠
+//            settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_SAVING);
+//            settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_SAVING);
 
-        } else {
-            resetCustomPlanStatus();
-        }
+//        } else {
+//            resetCustomPlanStatus();
+//        }
 
-    });
+//    });
 
 
-    connect(ui->powerTypeBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, [=]{
-        initCustomPlanStatus();
-    });
+//    connect(ui->powerTypeBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, [=]{
+//        initCustomPlanStatus();
+//    });
 
-    connect(ui->sleepComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
-        Q_UNUSED(index)
-        int value = ui->sleepComboBox->currentData(Qt::UserRole).toInt() * 60;
-        if (ui->acBtn->isChecked()){
-            settings->set(SLEEP_COMPUTER_AC_KEY, QVariant(value));
-        }
-        if (ui->batteryBtn->isChecked()){
-            settings->set(SLEEP_COMPUTER_BATT_KEY, QVariant(value));
-        }
-    });
-    connect(ui->closeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
-        Q_UNUSED(index)
-        int value = ui->closeComboBox->currentData(Qt::UserRole).toInt() * 60;
-        if (ui->acBtn->isChecked()){
-            settings->set(SLEEP_DISPLAY_AC_KEY, QVariant(value));
-        }
-        if (ui->batteryBtn->isChecked()){
-            settings->set(SLEEP_DISPLAY_BATT_KEY, QVariant(value));
-        }
-    });
+//    connect(ui->sleepComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+//        Q_UNUSED(index)
+//        int value = ui->sleepComboBox->currentData(Qt::UserRole).toInt() * 60;
+//        if (ui->acBtn->isChecked()){
+//            settings->set(SLEEP_COMPUTER_AC_KEY, QVariant(value));
+//        }
+//        if (ui->batteryBtn->isChecked()){
+//            settings->set(SLEEP_COMPUTER_BATT_KEY, QVariant(value));
+//        }
+//    });
+//    connect(ui->closeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+//        Q_UNUSED(index)
+//        int value = ui->closeComboBox->currentData(Qt::UserRole).toInt() * 60;
+//        if (ui->acBtn->isChecked()){
+//            settings->set(SLEEP_DISPLAY_AC_KEY, QVariant(value));
+//        }
+//        if (ui->batteryBtn->isChecked()){
+//            settings->set(SLEEP_DISPLAY_BATT_KEY, QVariant(value));
+//        }
+//    });
 
-    connect(ui->iconComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
-        Q_UNUSED(index)
-        QString value = ui->iconComboBox->currentData(Qt::UserRole).toString();
-        settings->set(ICONPOLICY, value);
-    });
+//    connect(ui->iconComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+//        Q_UNUSED(index)
+//        QString value = ui->iconComboBox->currentData(Qt::UserRole).toString();
+//        settings->set(ICONPOLICY, value);
+//    });
 }
 
 void Power::initModeStatus(){

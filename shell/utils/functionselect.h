@@ -23,6 +23,7 @@
 #include <QList>
 #include <QStack>
 //#include <QStringList>
+#include <QObject>
 
 
 typedef struct _FuncInfo : QObjectUserData

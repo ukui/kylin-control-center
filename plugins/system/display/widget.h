@@ -173,8 +173,8 @@ class Widget : public QWidget
   private:
     Ui::DisplayWindow *ui;
     QMLScreen *mScreen = nullptr;
-    KScreen::ConfigPtr mConfig = nullptr;
-    KScreen::ConfigPtr mPrevConfig = nullptr;
+    KScreen::ConfigPtr mConfig ;
+    KScreen::ConfigPtr mPrevConfig ;
 
     ControlPanel *mControlPanel = nullptr;
     //这里是去设置主显示器相关控件
@@ -185,7 +185,7 @@ class Widget : public QWidget
     QTimer *mOutputTimer = nullptr;
 
     //这是outPutptr结果
-    KScreen::OutputPtr res = nullptr;
+    KScreen::OutputPtr res ;
 
     bool m_blockChanges = false;
 

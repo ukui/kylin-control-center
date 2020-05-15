@@ -173,7 +173,7 @@ void KeyboardControl::setupConnect(){
         rebuildLayoutsComBox();
     });
 
-    connect(ui->layoutsComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index){
+    connect(ui->layoutsComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
         QStringList layoutsList;
         layoutsList.append(ui->layoutsComBox->currentData(Qt::UserRole).toString());
         for (int i = 0; i < ui->layoutsComBox->count(); i++){

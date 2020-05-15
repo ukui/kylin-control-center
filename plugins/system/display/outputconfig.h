@@ -74,7 +74,7 @@ public:
     QComboBox *scaleCombox = nullptr;
     bool mShowScaleOption  = false;
 
-    KScreen::ConfigPtr mConfig = nullptr;
+    KScreen::ConfigPtr mConfig ;
     QString qss;
     QStringList proRes;        //profile文件内容
 

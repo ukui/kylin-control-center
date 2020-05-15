@@ -154,7 +154,7 @@ void Touchpad::setupComponent(){
         tpsettings->set(TOUCHPAD_CLICK_KEY, checked);
     });
 
-    connect(ui->scrollingTypeComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index){
+    connect(ui->scrollingTypeComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
         Q_UNUSED(index)
         //旧滚动类型设置为false,跳过N_SCROLLING
         QString oldType = _findKeyScrollingType();
