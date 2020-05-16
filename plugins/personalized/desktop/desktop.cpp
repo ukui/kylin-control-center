@@ -222,7 +222,7 @@ void Desktop::setupComponent(){
 }
 
 void Desktop::setupConnect(){
-    qDebug()<<"this is desktop setUpConnect ------->"<<endl;
+//    qDebug()<<"this is desktop setUpConnect ------->"<<endl;
     QStringList keys = dSettings->keys();
     connect(deskComputerSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(COMPUTER_VISIBLE_KEY, checked);});
     connect(deskTrashSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(TRASH_VISIBLE_KEY, checked);});

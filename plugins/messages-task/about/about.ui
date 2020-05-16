@@ -102,6 +102,9 @@
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_3">
+             <property name="rightMargin">
+              <number>2</number>
+             </property>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout">
                <item>
@@ -114,13 +117,13 @@
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>0</width>
+                   <width>120</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
+                   <width>120</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -150,13 +153,13 @@
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
+                   <width>120</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
+                   <width>120</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -242,13 +245,13 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>0</width>
+               <width>120</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>150</width>
+               <width>120</width>
                <height>16777215</height>
               </size>
              </property>
@@ -276,9 +279,15 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="maximumSize">
               <size>
-               <width>150</width>
+               <width>120</width>
                <height>16777215</height>
               </size>
              </property>
@@ -318,9 +327,15 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="maximumSize">
               <size>
-               <width>150</width>
+               <width>120</width>
                <height>16777215</height>
               </size>
              </property>
@@ -360,9 +375,15 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="maximumSize">
               <size>
-               <width>150</width>
+               <width>120</width>
                <height>16777215</height>
               </size>
              </property>
@@ -410,13 +431,13 @@
             <widget class="QLabel" name="label_3">
              <property name="minimumSize">
               <size>
-               <width>150</width>
+               <width>120</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>150</width>
+               <width>120</width>
                <height>16777215</height>
               </size>
              </property>
@@ -440,13 +461,13 @@
             <widget class="QLabel" name="label_6">
              <property name="minimumSize">
               <size>
-               <width>150</width>
+               <width>120</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>150</width>
+               <width>120</width>
                <height>16777215</height>
               </size>
              </property>
@@ -486,13 +507,13 @@
                 <widget class="QLabel" name="label_5">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
+                   <width>120</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
+                   <width>120</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -516,13 +537,13 @@
                 <widget class="QLabel" name="label_7">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
+                   <width>120</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
+                   <width>120</width>
                    <height>16777215</height>
                   </size>
                  </property>

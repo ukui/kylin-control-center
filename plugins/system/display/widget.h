@@ -6,6 +6,10 @@
 #include <QGSettings/QGSettings>
 #include <QSettings>
 #include <QButtonGroup>
+#include <QDBusInterface>
+#include <QDBusConnection>
+#include <QDBusError>
+#include <QDBusReply>
 
 #include <KF5/KScreen/kscreen/config.h>
 
@@ -138,7 +142,7 @@ class Widget : public QWidget
     //是否禁用屏幕
     void checkOutputScreen(bool judge);
     //设置屏幕亮度
-    void setBrightnessScreen(float brightnessValue);
+    void setBrightnessScreen(int brightnessValue);
     //设置亮度滑块数值
     void setBrightnesSldierValue(QString screeName);
     //保存屏幕亮度配置

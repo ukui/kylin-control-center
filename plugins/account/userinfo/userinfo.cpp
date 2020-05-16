@@ -358,7 +358,6 @@ void UserInfo::_refreshUserInfoUI(){
             //设置用户类型
             ui->userTypeLabel->setText(_accountTypeIntToString(user.accounttype));
             //设置登录状态
-            qDebug()<<" 设置登录状态-------->" << user.autologin<<endl;
             autoLoginSwitchBtn->setChecked(user.autologin);
             //设置免密登录状态
             nopwdSwitchBtn->setChecked(user.noPwdLogin);
