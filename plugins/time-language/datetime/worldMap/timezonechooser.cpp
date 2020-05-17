@@ -80,7 +80,9 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
 
     connect(m_confirmBtn, &QPushButton::clicked,[this]{
         QString timezone = m_map->getTimezone();
-        emit this->confirmed(timezone);
+        const QString locale = QLocale::system().name();
+        QString localizedTimezone = m_zoneinfo->getLocalTimezoneName(timezone, locale);
+        emit this->confirmed(localizedTimezone);
     });
 
     connect(m_cancelBtn, &QPushButton::clicked, this, [this]{

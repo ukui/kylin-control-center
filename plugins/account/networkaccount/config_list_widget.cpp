@@ -20,6 +20,7 @@
 #include "config_list_widget.h"
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
+#include <sys/stat.h>
 
 config_list_widget::config_list_widget(QWidget *parent) : QWidget(parent) {
     client = new DbusHandleClient();    //创建一个通信客户端
@@ -76,7 +77,7 @@ void config_list_widget::setname(QString n) {
 void config_list_widget::setret_oss(int ret) {
     if(ret == 0) {
         emit docheck();
-        qDebug()<<"init oss is 0";
+        //qDebug()<<"init oss is 0";
     } else {
         //emit dologout();
     }
@@ -125,7 +126,7 @@ void config_list_widget::setret_check(QString ret) {
     } else if(!(code == "" || code =="201" || code == "203" || code == "401" ) && ret_ok){
         info->setText(tr("Your account：%1").arg(code));
         stacked_widget->setCurrentWidget(container);
-        //emit doconf();
+        QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     }
 }
 
@@ -326,6 +327,17 @@ void config_list_widget::init_gui() {
     connect(login_cloud,SIGNAL(timeout()),login_dialog,SLOT(set_back()));
     for(int btncnt = 0;btncnt < list->get_list().size();btncnt ++) {
         connect(list->get_item(btncnt)->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_switch_button(int,int)));
+    }
+
+    struct stat buffer;
+    char conf_path[512]={0};
+    //All.conf的
+    QString all_conf_path = QDir::homePath() + "/.cache/kylinssoclient/All.conf";
+    qstrcpy(conf_path,all_conf_path.toStdString().c_str());
+
+    //
+    if(stat(conf_path, &buffer) == 0) {
+        QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     }
     setMaximumWidth(960);
     adjustSize();
@@ -531,5 +543,4 @@ config_list_widget::~config_list_widget() {
     }
     thread->wait();
 }
-
 
