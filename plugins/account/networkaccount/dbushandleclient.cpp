@@ -315,7 +315,7 @@ int DbusHandleClient::manual_sync() {
 }
 
 char* DbusHandleClient::check_login() {
-    QString re = "";
+    QString re = "-1"
     //构造一个method_call消息，服务名称为：org.kylinssoclient.dbus，对象路径为：/org/kylinssoclient/path
     //接口名称为org.freedesktop.kylinssoclient.interface，method名称为check_login
     QDBusMessage message = QDBusMessage::createMethodCall("org.kylinssoclient.dbus",
