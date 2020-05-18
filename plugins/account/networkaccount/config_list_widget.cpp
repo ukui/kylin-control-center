@@ -103,7 +103,7 @@ void config_list_widget::setret_conf(int ret) {
 
 void config_list_widget::setret_man(int ret) {
     if(ret == 0) {
-        emit docheck();
+        //emit docheck();
         //qDebug()<<"1111 manul";
     }
 }
@@ -132,7 +132,7 @@ void config_list_widget::setret_check(QString ret) {
 
 void config_list_widget::setret_change(int ret) {
     if(ret == 0) {
-        emit docheck();
+        //emit docheck();
     }
 }
 
