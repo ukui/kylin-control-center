@@ -23,13 +23,12 @@
 #include <QWidget>
 #include <QObject>
 #include <QtPlugin>
-#include "mainui/interface.h"
-
-#include "../../pluginsComponent/customwidget.h"
-
 #include <QProcess>
-
 #include <QDateTime>
+#include <QSettings>
+#include <QDir>
+
+#include "shell/interface.h"
 
 namespace Ui {
 class Update;
@@ -47,17 +46,22 @@ public:
 
     QString get_plugin_name() Q_DECL_OVERRIDE;
     int get_plugin_type() Q_DECL_OVERRIDE;
-    CustomWidget * get_plugin_ui() Q_DECL_OVERRIDE;
+    QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
 
     void ui_init();
+
+private:
+    void writeSyncTime();
 
 private:
     Ui::Update *ui;
 
     QString pluginName;
     int pluginType;
-    CustomWidget * pluginWidget;
+    QWidget * pluginWidget;
+
+    QSettings * syncSettings = nullptr;
 
 private slots:
     void update_btn_clicked();

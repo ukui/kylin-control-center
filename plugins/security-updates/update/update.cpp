@@ -20,20 +20,23 @@
 #include "update.h"
 #include "ui_update.h"
 
+#include <QMovie>
+#include <QDebug>
+
 Update::Update()
 {
+    qDebug()<<"this is update----->"<<endl;
     ui = new Ui::Update;
-    pluginWidget = new CustomWidget;
+    pluginWidget = new QWidget;
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
-    pluginName = tr("update");
-    pluginType = SECURITY_UPDATES;
+    pluginName = tr("Update");
+    pluginType = UPDATE;
 
     ui_init();
 
     connect(ui->checkBtn, SIGNAL(clicked()), this, SLOT(update_btn_clicked()));
-    connect(ui->changesettingsBtn, SIGNAL(clicked()), this, SLOT(update_settings_btn_clicked()));
 }
 
 Update::~Update()
@@ -49,7 +52,7 @@ int Update::get_plugin_type(){
     return pluginType;
 }
 
-CustomWidget *Update::get_plugin_ui(){
+QWidget *Update::get_plugin_ui(){
     return pluginWidget;
 }
 
@@ -58,14 +61,27 @@ void Update::plugin_delay_control(){
 }
 
 void Update::ui_init(){
-    ui->pushButton_2->setEnabled(false);
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-    QPixmap pixmap("://update/logo.svg");
-    ui->logoLabel->setPixmap(pixmap.scaled(QSize(64,64)));
+    QString filename = QDir::homePath() + "/.config/ukccUpdate.conf";
+    syncSettings = new QSettings(filename, QSettings::IniFormat);
 
-    QDateTime current =QDateTime::currentDateTime();
-    QString current_date_time =current.toString(QString("yyyy-MM-dd hh:mm:ss"));
-    ui->updatetimeLabel->setText(current_date_time);
+    syncSettings->beginGroup("updateTime");
+
+    QString time = syncSettings->value("time", "").toString();
+
+    if (time.isEmpty()) {
+        QDateTime current =QDateTime::currentDateTime();
+        QString current_date_time =current.toString(QString("yyyy-MM-dd hh:mm:ss"));
+        time = current_date_time;
+    }
+    ui->updatetimeLabel->setText(time);
+
+    syncSettings->endGroup();
+
+    QMovie *movie = new QMovie(":/img/plugins/update/update.gif");
+    ui->logoLabel->setMovie(movie);
+    movie->start();
 }
 
 void Update::update_btn_clicked(){
@@ -73,11 +89,13 @@ void Update::update_btn_clicked(){
 
     QProcess process(this);
     process.startDetached(cmd);
+    QDateTime current =QDateTime::currentDateTime();
+    QString current_date_time =current.toString(QString("yyyy-MM-dd hh:mm:ss"));
+
+    syncSettings->beginGroup("updateTime");
+    syncSettings->setValue("time", current_date_time);
+    syncSettings->endGroup();
+
+    syncSettings->sync();
 }
 
-void Update::update_settings_btn_clicked(){
-    QString cmd = "software-properties-gtk";
-
-    QProcess process(this);
-    process.startDetached(cmd);
-}

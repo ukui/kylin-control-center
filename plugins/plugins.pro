@@ -24,6 +24,7 @@ SUBDIRS = \
           account/userinfo \
           account/networkaccount \
           security-updates/backup \
+          security-updates/update \
           messages-task/about \
           time-language/datetime \
           time-language/area \

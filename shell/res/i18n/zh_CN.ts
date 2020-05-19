@@ -1842,7 +1842,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../utils/keyvalueconverter.cpp" line="64"/>
         <source>Update</source>
-        <translation>更新和备份</translation>
+        <translation>更新</translation>
     </message>
     <message>
         <location filename="../../utils/keyvalueconverter.cpp" line="67"/>
@@ -2845,7 +2845,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../utils/functionselect.cpp" line="174"/>
         <source>Update</source>
-        <translation>更新和备份</translation>
+        <translation>更新</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="176"/>
@@ -3563,6 +3563,30 @@ folder will be deleted!</source>
         <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="177"/>
         <source>aa</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Update</name>
+    <message>
+        <location filename="../../../plugins/security-updates/update/update.ui" line="26"/>
+        <location filename="../../../plugins/security-updates/update/update.cpp" line="34"/>
+        <source>Update</source>
+        <translation>更新</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/security-updates/update/update.ui" line="44"/>
+        <source>System Update</source>
+        <translation>系统更新</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/security-updates/update/update.ui" line="110"/>
+        <source>Last check time:</source>
+        <translation>上次更新检测时间:</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/security-updates/update/update.ui" line="158"/>
+        <source>CheckUpdate</source>
+        <translation>检测更新</translation>
     </message>
 </context>
 <context>

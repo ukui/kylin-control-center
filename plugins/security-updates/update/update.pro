@@ -8,17 +8,16 @@ QT       += widgets
 
 TEMPLATE = lib
 CONFIG += plugin
-INCLUDEPATH += ../../..
 
 TARGET = $$qtLibraryTarget(update)
-DESTDIR = ../..
+DESTDIR = ../../../pluginlibs
 
-include(../../pluginsComponent/pluginsComponent.pri)
+include(../../../env.pri)
+
+INCLUDEPATH   +=  \
+                 $$PROJECT_ROOTDIR \
 
 #DEFINES += QT_DEPRECATED_WARNINGS
-
-target.path = $$[QT_INSTALL_PREFIX]/lib/control-center/plugins/
-INSTALLS += target
 
 SOURCES += \
         update.cpp
