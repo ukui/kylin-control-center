@@ -560,9 +560,9 @@ void Theme::resetBtnClickSlot() {
 void Theme::writeKwinSettings(bool change, QString theme) {
     QString th;
     if ("ukui-white" == theme) {
-        th = "_aurorate_svg_Ukui-classic";
+        th = "__aurorate__svg__Ukui-classic";
     } else {
-        th = "_aurorate_svg_Ukui-classic_dark";
+        th = "__aurorate__svg__Ukui-classic_dark";
     }
     kwinSettings->beginGroup("Plugins");
     kwinSettings->setValue("blurEnabled",change);

@@ -29,6 +29,8 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
 
     closeBtn->setIcon(QIcon("://img/titlebar/closeWhite.png"));
     closeBtn->setFlat(true);
+    closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
     m_searchInput->setMinimumSize(560,40);
     m_searchInput->setMaximumSize(560,40);
@@ -80,9 +82,7 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
 
     connect(m_confirmBtn, &QPushButton::clicked,[this]{
         QString timezone = m_map->getTimezone();
-        const QString locale = QLocale::system().name();
-        QString localizedTimezone = m_zoneinfo->getLocalTimezoneName(timezone, locale);
-        emit this->confirmed(localizedTimezone);
+        emit this->confirmed(timezone);
     });
 
     connect(m_cancelBtn, &QPushButton::clicked, this, [this]{

@@ -98,10 +98,10 @@ Area::Area()
     connect(ui->addlanBtn, SIGNAL(clicked()), this, SLOT(add_lan_btn_slot()));
     connect(ui->chgformButton,SIGNAL(clicked()),this,SLOT(changeform_slot()));
 
-    connect(ui->langcomboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            [=]{
-        KMessageBox::information(ui->languageframe, tr("Need to cancel to take effect"));
-    });
+//    connect(ui->langcomboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+//            [=]{
+//        KMessageBox::information(ui->languageframe, tr("Need to cancel to take effect"));
+//    });
 
     connect(ui->countrycomboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             [=]{
@@ -249,7 +249,7 @@ void Area::initFormatData() {
     QDateTime current = QDateTime::currentDateTime();
     QString currentsecStr  ;
     QString dateFormat = m_gsettings->get(DATE_FORMATE_KEY).toString();
-    if ("cn" == dateFormat) {        
+    if ("cn" == dateFormat) {
        currentsecStr = current.toString("yyyy/MM/dd ");;
     } else {
        currentsecStr = current.toString("yyyy-MM-dd ");
@@ -269,6 +269,7 @@ void Area::change_language_slot(int index){
         res = m_areaInterface->call("SetLanguage","zh_CN");
         break;
     }
+    ui->countrycomboBox->setCurrentIndex(index);
 }
 
 void Area::change_area_slot(int index){
@@ -281,7 +282,7 @@ void Area::change_area_slot(int index){
     case 1:
         res = m_areaInterface->call("SetFormatsLocale","zh_CN.UTF-8");
         break;
-    }    
+    }
 }
 
 void Area::datetime_update_slot() {
@@ -364,7 +365,7 @@ QStringList Area::getUserDefaultLanguage() {
     if (reply.isValid()){
         QMap<QString, QVariant> propertyMap;
         propertyMap = reply.value();
-        formats = propertyMap.find("FormatsLocale").value().toString();        
+        formats = propertyMap.find("FormatsLocale").value().toString();
         if(language.isEmpty()) {
             language = propertyMap.find("Language").value().toString();
         }
@@ -376,8 +377,3 @@ QStringList Area::getUserDefaultLanguage() {
 //    qDebug()<<"result is---------->"<<result<<endl;
     return result;
 }
-
-
-
-
-

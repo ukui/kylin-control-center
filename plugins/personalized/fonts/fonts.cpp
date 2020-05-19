@@ -660,6 +660,7 @@ void Fonts::resetDefault(){
     ifsettings->reset(MONOSPACE_FONT_KEY);
 //    peonysettings->reset(PEONY_FONT_KEY);
     marcosettings->reset(TITLEBAR_FONT_KEY);
+    stylesettings->reset(SYSTEM_FONT_EKY);
 
     //reset font render
     rendersettings->reset(ANTIALIASING_KEY);
