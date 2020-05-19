@@ -298,10 +298,16 @@
    </item>
    <item>
     <widget class="QFrame" name="idleFrame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>69</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>550</width>
-       <height>50</height>
+       <height>69</height>
       </size>
      </property>
      <property name="maximumSize">

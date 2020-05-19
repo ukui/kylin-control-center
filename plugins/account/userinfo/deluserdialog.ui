@@ -75,6 +75,12 @@
         </property>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="topMargin">
+           <number>8</number>
+          </property>
+          <property name="rightMargin">
+           <number>8</number>
+          </property>
           <item>
            <spacer name="horizontalSpacer_4">
             <property name="orientation">

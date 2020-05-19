@@ -70,6 +70,12 @@
         <property name="spacing">
          <number>0</number>
         </property>
+        <property name="topMargin">
+         <number>8</number>
+        </property>
+        <property name="rightMargin">
+         <number>8</number>
+        </property>
         <item>
          <spacer name="horizontalSpacer_2">
           <property name="orientation">

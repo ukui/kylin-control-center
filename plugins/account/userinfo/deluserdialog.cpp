@@ -37,6 +37,8 @@ DelUserDialog::DelUserDialog(QWidget *parent) :
 //    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff;}");
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
+    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
     setupComonpent();
     setupConnect();

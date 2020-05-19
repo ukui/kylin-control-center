@@ -111,9 +111,8 @@ MainWindow::MainWindow(QWidget *parent) :
 //    ui->maxBtn->setStyleSheet("QPushButton#maxBtn{background: #ffffff; border: none;}"
 //                              "QPushButton:hover:!pressed#maxBtn{background: #FF3D6BE5; border-radius: 2px;}"
 //                              "QPushButton:hover:pressed#maxBtn{background: #415FC4; border-radius: 2px;}");
-//    ui->closeBtn->setStyleSheet("QPushButton#closeBtn{background: #ffffff; border: none;}"
-//                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 2px;}"
-//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 2px;}");
+    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
     //左侧一级菜单
 //    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background: #cccccc; border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
