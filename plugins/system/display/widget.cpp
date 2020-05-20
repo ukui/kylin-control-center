@@ -43,7 +43,7 @@
 #define QML_PATH "kcm_kscreen/qml/"
 #define UKUI_CONTORLCENTER_PANEL_SCHEMAS "org.ukui.control-center.panel.plugins"
 
-#define NIGHT_MODE_KEY "nightmode"
+#define NIGHT_MODE_KEY "nightmodestatus"
 #define SCRENN_SCALE_SCHMES "org.ukui.session"
 #define GDK_SCALE_KEY "gdk-scale"
 #define QT_SCALE_KEY "qt-scale-factor"
@@ -600,13 +600,6 @@ void Widget::initGSettings() {
         return ;
     }
 
-    connect(m_gsettings, &QGSettings::changed, this, [=] (const QString &key) {
-        if (static_cast<QString>(NIGHT_MODE_KEY) == key) {
-            bool night = m_gsettings->get(NIGHT_MODE_KEY).toBool();
-            nightButton->setChecked(night);
-        }
-    });
-
     QByteArray scaleId(SCRENN_SCALE_SCHMES);
     if(QGSettings::isSchemaInstalled(scaleId)) {
 //        qDebug()<<"initGSettings-------------------->"<<endl;
@@ -658,6 +651,10 @@ void Widget::setSessionScale(int scale) {
 
 void Widget::writeConfigFile() {
 
+    if (m_gsettings) {
+        m_gsettings->set(NIGHT_MODE_KEY, nightButton->isChecked());
+    }
+
     m_qsettings->beginGroup("redshift");
     QString optime = ui->opHourCom->currentText() + ":" + ui->opMinCom->currentText();
     QString cltime = ui->clHourCom->currentText() + ":" + ui->clMinCom->currentText();
@@ -681,6 +678,7 @@ void Widget::writeConfigFile() {
     m_qsettings->setValue("nightjudge", nightButton->isChecked());
     m_qsettings->setValue("sunjudge", ui->sunradioBtn->isChecked());
     m_qsettings->setValue("manualjudge", ui->customradioBtn->isChecked());
+    m_qsettings->setValue("nightStatus", nightButton->isChecked());
 
     m_qsettings->endGroup();
     m_qsettings->sync();
@@ -1664,8 +1662,6 @@ void Widget::setNightMode(const bool nightMode){
     QProcess process;
     QString cmd;
     QString serverCmd;
-
-    m_gsettings->set(NIGHT_MODE_KEY, nightMode);
 
     if(nightMode) {
         cmd = "restart";

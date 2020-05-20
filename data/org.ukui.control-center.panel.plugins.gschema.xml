@@ -1,10 +1,5 @@
 <schemalist gettext-domain="ukui-control-center">
         <schema id="org.ukui.control-center.panel.plugins" path="/org/ukui/control-center/panel/plugins/">
-        <key name="nightmode" type="b">
-            <default>false</default>
-            <summary>nightmode status</summary>
-            <description>nightmode used in UKUI Desktop Environment ,control by ukui-panel and ukui-control-center</description>
-        </key>
         <key name="hoursystem" type="s">
             <default>'24'</default>
             <summary>HourSystem status</summary>
@@ -29,6 +24,11 @@
             <default>'24'</default>
             <summary>first of week</summary>
             <description>Select the first day of the week</description>
+        </key>
+        <key name="nightmodestatus" type="b">
+            <default>false</default>
+            <summary>ukui-control-center sets the night mode status so that ukui-panel can get the status</summary>
+            <description></description>
         </key>
     </schema>
 </schemalist>
