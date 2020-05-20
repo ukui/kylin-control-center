@@ -93,8 +93,8 @@ void config_list_widget::setret_logout(int ret) {
 void config_list_widget::setret_conf(int ret) {
     //qDebug()<<ret<<"csacasca";
     if(ret == 0) {
-        QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
         emit doman();
+        QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
         //emit doman();
     } else {
         //emit dologout();
@@ -103,7 +103,7 @@ void config_list_widget::setret_conf(int ret) {
 
 void config_list_widget::setret_man(int ret) {
     if(ret == 0) {
-        emit docheck();
+        emit doconf();
         //qDebug()<<"1111 manul";
     }
 }
@@ -132,7 +132,7 @@ void config_list_widget::setret_check(QString ret) {
 
 void config_list_widget::setret_change(int ret) {
     if(ret == 0) {
-        emit docheck();
+        //emit docheck();
     }
 }
 
@@ -543,4 +543,5 @@ config_list_widget::~config_list_widget() {
     }
     thread->wait();
 }
+
 

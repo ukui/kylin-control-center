@@ -80,7 +80,7 @@ private:
     QVBoxLayout         *cvlayout;
     QString             code = tr("Disconnected");
     QString             home;
-    QStringList         mapid = {"wallpaper","ukui-menu","ukui-panel","ukui-control-center","indicator-china-weather","kylin-video"};
+    QStringList         mapid = {"wallpaper","ukui-menu","ukui-panel","ukui-panel2","indicator-china-weather","kylin-video"};
     Dialog_login_reg*   login_dialog;
     QWidget             *namewidget;
     QHBoxLayout         *hbox;

@@ -217,6 +217,10 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     connect(succ->back_login,SIGNAL(clicked()),this,SLOT(back_normal()));
     connect(pass_pwd,SIGNAL(textChanged(QString)),this,SLOT(cleanconfirm(QString)));
     connect(reg_pass,SIGNAL(textChanged(QString)),this,SLOT(cleanconfirm(QString)));
+    connect(box_login->get_mcode_lineedit(),SIGNAL(returnPressed()),login_submit,SIGNAL(clicked()),Qt::UniqueConnection);
+    connect(box_reg->get_valid_code(),SIGNAL(returnPressed()),login_submit,SIGNAL(clicked()),Qt::UniqueConnection);
+    connect(box_bind->get_code_lineedit(),SIGNAL(returnPressed()),login_submit,SIGNAL(clicked()),Qt::UniqueConnection);
+    connect(box_pass->get_valid_code(),SIGNAL(returnPressed()),login_submit,SIGNAL(clicked()),Qt::UniqueConnection);
     connect(box_login->get_stack_widget(),&QStackedWidget::currentChanged,[this] (int) {
         if(gif->isHidden() == false) {
             gif->hide();
