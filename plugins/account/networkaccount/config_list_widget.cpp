@@ -103,7 +103,7 @@ void config_list_widget::setret_conf(int ret) {
 
 void config_list_widget::setret_man(int ret) {
     if(ret == 0) {
-        //emit docheck();
+        emit doconf();
         //qDebug()<<"1111 manul";
     }
 }
