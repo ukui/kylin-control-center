@@ -144,7 +144,7 @@ void HomePageWidget::initUI(){
         titleLabel->setObjectName("mptitleLabel");
         titleLabel->setText(modulenamei18nString);
 
-        titleLabel->setStyleSheet("QLabel{font-size: 16px; color: palette(windowText);}");
+//        titleLabel->setStyleSheet("QLabel{font-size: 16px; color: palette(windowText);}");
         QHBoxLayout * funcHorLayout = new QHBoxLayout();
 
         //循环填充模块下属功能
@@ -194,12 +194,12 @@ void HomePageWidget::initUI(){
             ResHoverWidget * w = dynamic_cast<ResHoverWidget *>(QObject::sender());
             logoLabel->setPixmap(QPixmap(QString(":/img/homepage/%1Hover.png").arg(mname)));
 
-            titleLabel->setStyleSheet("font-size: 16px; color: palette(base);");
+            titleLabel->setStyleSheet("color: palette(base);");
 
 
             QList<ClickLabel *> clabelList = w->findChildren<ClickLabel *>();
             for (ClickLabel * tmpLabel : clabelList){
-                tmpLabel->setStyleSheet("font-size: 14px; color: palette(base);");
+                tmpLabel->setStyleSheet("color: palette(base);");
             }
         });
         //还原状态
@@ -207,11 +207,11 @@ void HomePageWidget::initUI(){
             ResHoverWidget * w = dynamic_cast<ResHoverWidget *>(QObject::sender());
             logoLabel->setPixmap(QPixmap(QString(":/img/homepage/%1.png").arg(mname)));
 
-            titleLabel->setStyleSheet("font-size: 16px; color: palette(windowText);");
+            titleLabel->setStyleSheet("color: palette(windowText);");
 
             QList<ClickLabel *> clabelList = w->findChildren<ClickLabel *>();
             for (ClickLabel * tmpLabel : clabelList){
-                tmpLabel->setStyleSheet("font-size: 14px; color: palette(Shadow);");
+                tmpLabel->setStyleSheet("color: palette(Shadow);");
             }
         });
 
