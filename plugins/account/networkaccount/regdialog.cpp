@@ -58,18 +58,18 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     valid_code->setPlaceholderText(tr("Your code here"));
     valid_code->setMaxLength(4);
     user_tip->setText(tr("This operation is permanent"));
-    user_tip->setContentsMargins(16,0,0,0);
+    user_tip->setContentsMargins(12,0,0,0);
     user_tip->setFixedHeight(16);
     pass_tip->setText(tr("At least 6 bit, include letters and digt"));
     pass_tip->setFixedHeight(16);
-    pass_tip->setContentsMargins(16,0,0,0);
+    pass_tip->setContentsMargins(12,0,0,0);
     user_tip->setStyleSheet("font-size:14px;");
     pass_tip->setStyleSheet("font-size:14px;");
 
-    reg_confirm->setTextMargins(16,0,0,0);
-    reg_user->setTextMargins(16,0,0,0);
-    reg_pass->setTextMargins(16,0,0,0);
-    valid_code->setTextMargins(16,0,0,0);
+    reg_confirm->setTextMargins(12,0,0,0);
+    reg_user->setTextMargins(12,0,0,0);
+    reg_pass->setTextMargins(12,0,0,0);
+    valid_code->setTextMargins(12,0,0,0);
     //valid_code->setStyleSheet(str);
 
     QRegExp regx("[a-zA-Z0-9]+$");

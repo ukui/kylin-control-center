@@ -35,7 +35,7 @@ ql_lineedit_pass::ql_lineedit_pass(QWidget *parent) : QLineEdit(parent)
         }
     });
     visble->setStyleSheet("QPushButton{width:  16px;height: 16px;qproperty-flat: true;"
-    "margin-right: 4px;border: none;border-width: 0;"
+    "margin-right: 8px;border: none;border-width: 0;"
     "border-image: url(:/invisible.png) 0 0 0 0 stretch stretch;"
     "background: transparent;}"
     "QPushButton:checked{border-image: url(:/visible.png) 0 0 0 0 stretch stretch;}");

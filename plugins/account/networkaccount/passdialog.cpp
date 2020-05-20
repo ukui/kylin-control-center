@@ -51,10 +51,10 @@ PassDialog::PassDialog(QWidget *parent) : QWidget(parent)
     valid_code->setPlaceholderText(tr("Your code here"));
     valid_code->setMaxLength(4);
 
-    reg_phone->setTextMargins(16,0,0,0);
-    reg_pass->setTextMargins(16,0,0,0);
-    reg_pass_confirm->setTextMargins(16,0,0,0);
-    valid_code->setTextMargins(16,0,0,0);
+    reg_phone->setTextMargins(12,0,0,0);
+    reg_pass->setTextMargins(12,0,0,0);
+    reg_pass_confirm->setTextMargins(12,0,0,0);
+    valid_code->setTextMargins(12,0,0,0);
     passtips->setFixedHeight(16);
 
     //valid_code->setStyleSheet(str);
@@ -86,7 +86,7 @@ PassDialog::PassDialog(QWidget *parent) : QWidget(parent)
     vlayout->addWidget(reg_phone);
     vlayout->addWidget(reg_pass);
     vlayout->addWidget(passtips);
-    passtips->setContentsMargins(16,0,0,0);
+    passtips->setContentsMargins(12,0,0,0);
     vlayout->addWidget(reg_pass_confirm);
     hlayout->setMargin(0);
     hlayout->setSpacing(16);

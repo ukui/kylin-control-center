@@ -53,7 +53,7 @@ BindPhoneDialog::BindPhoneDialog(QWidget *parent) : QWidget(parent)
     sublayout->setMargin(0);
     sublayout->setSpacing(16);
 
-    valid_code->setTextMargins(16,0,0,0);
+    valid_code->setTextMargins(12,0,0,0);
 
     layout->addWidget(phone);
     sublayout->addWidget(valid_code,0,Qt::AlignLeft);

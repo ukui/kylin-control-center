@@ -130,9 +130,9 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
 
     //布局设置
     //account->setTextMargins(16,0,0,0);
-    newpass->setTextMargins(16,0,0,0);
-    valid_code->setTextMargins(16,0,0,0);
-    confirm_pass->setTextMargins(16,0,0,0);
+    newpass->setTextMargins(12,0,0,0);
+    valid_code->setTextMargins(12,0,0,0);
+    confirm_pass->setTextMargins(12,0,0,0);
     vlayout->addWidget(title,0,Qt::AlignLeft);
     vlayout->setContentsMargins(41,55,41,36);
     vlayout->addSpacing(20);

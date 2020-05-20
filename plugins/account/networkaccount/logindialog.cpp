@@ -98,7 +98,7 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
     account_phone->setMaxLength(30);
     account_phone->setMaximumSize(338,36);
     account_phone->setMinimumSize(338,36);
-    account_phone->setTextMargins(16,0,0,0);
+    account_phone->setTextMargins(12,0,0,0);
     account_phone->setFocusPolicy(Qt::StrongFocus);
     account_phone->setPlaceholderText(tr("Your account here"));
 
@@ -107,7 +107,7 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
     //                             "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}");
 
     mcode_lineedit->setMaxLength(4);
-    mcode_lineedit->setTextMargins(16,0,0,0);
+    mcode_lineedit->setTextMargins(12,0,0,0);
     mcode_lineedit->setPlaceholderText(tr("Your code here"));
     //mcode_lineedit->setStyleSheet("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);}"
     //                              "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
@@ -239,7 +239,7 @@ bool LoginDialog::login_account_thr_number() {
     account_pass->setPlaceholderText(tr("Your password here"));
     account_pass->setMaximumSize(338,36);
     account_pass->setMinimumSize(338,36);
-    account_pass->setTextMargins(16,0,0,0);
+    account_pass->setTextMargins(12,0,0,0);
     account_pass->setMaxLength(30);
     //account_pass->setStyleSheet("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
     //                            "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
@@ -368,7 +368,7 @@ bool LoginDialog::login_account_thr_phone() {
     valid_code->setMinimumSize(192,36);
     send_msg_submit->setMinimumSize(130,36);
     send_msg_submit->setMaximumSize(130,36);
-    valid_code->setTextMargins(16,0,0,0);
+    valid_code->setTextMargins(12,0,0,0);
     //valid_code->setGeometry(31 + sizeoff,192 + sizeoff,192,36);
     //send_msg_submit->setGeometry(239 + sizeoff,192 + sizeoff,130,36);
     //valid_code->setStyleSheet("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #F4F4F4;font-size: 14px;color: rgba(0,0,0,0.85);}"
