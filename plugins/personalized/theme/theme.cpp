@@ -311,8 +311,12 @@ void Theme::initThemeMode(){
             button->click();
 //            button->setChecked(true);
     }
-    connect(ui->themeModeBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this, [=](QAbstractButton * button){
 
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+    connect(ui->themeModeBtnGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked), [=](QAbstractButton * button){
+#else
+    connect(ui->themeModeBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this, [=](QAbstractButton * button){
+#endif
         //设置主题
         QString themeMode = button->property("value").toString();
         QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
@@ -574,8 +578,12 @@ void Theme::writeKwinSettings(bool change, QString theme) {
 
     kwinSettings->sync();
 
+#if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
+
+#else
     QDBusMessage message = QDBusMessage::createSignal("/KWin", "org.ukui.KWin", "reloadConfig");
-    QDBusConnection::sessionBus().send(message);       
+    QDBusConnection::sessionBus().send(message);
+#endif
 }
 
 void Theme::clearLayout(QLayout* mlayout, bool deleteWidgets)

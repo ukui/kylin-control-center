@@ -97,10 +97,17 @@ Widget::Widget(QWidget *parent)
     initNightStatus();
 
 //    nightButton->setVisible(this->m_redshiftIsValid);
-      ui->nightframe->setVisible(this->m_redshiftIsValid);
+
+#if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
+    ui->nightframe->setVisible(false);
+#else
+    ui->nightframe->setVisible(this->m_redshiftIsValid);
+#endif
+
 
 //    qDebug()<<"set night mode here ---->"<<this->m_isNightMode<<endl;
     nightButton->setChecked(this->m_isNightMode);
+    showNightWidget(nightButton->isChecked());
 
 
 //    connect(this,&Widget::nightModeChanged,nightButton,&SwitchButton::setChecked);
@@ -1780,7 +1787,6 @@ void Widget::initUiQss() {
 }
 
 void Widget::initUiComponent() {
-
     singleButton = new QButtonGroup();
     singleButton->addButton(ui->sunradioBtn);
     singleButton->addButton(ui->customradioBtn);
