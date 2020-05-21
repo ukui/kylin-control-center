@@ -506,6 +506,24 @@ bool EditPassDialog::eventFilter(QObject *w, QEvent *e) {
             setshow(content);
         }
     }
+    if(w == confirm_pass) {
+        if (e->type() == QEvent::FocusIn && !tips->isHidden()) {
+            tips->hide();
+
+            setshow(content);
+
+        }
+        if (e->type() == QEvent::FocusIn && pass_tips->isHidden()) {
+            pass_tips->show();
+
+            setshow(content);
+
+        } else if (e->type() == QEvent::FocusOut && !pass_tips->isHidden()) {
+            pass_tips->hide();
+
+            setshow(content);
+        }
+    }
     if(w == valid_code) {
         if (e->type() == QEvent::FocusIn && !tips->isHidden()) {
             tips->hide();
