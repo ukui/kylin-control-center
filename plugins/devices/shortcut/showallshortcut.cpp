@@ -67,6 +67,7 @@ ShowAllShortcut::~ShowAllShortcut()
 }
 
 void ShowAllShortcut::buildComponent(QMap<QString, QMap<QString, QString> > shortcutsMap){
+    ui->searchLineEdit->setVisible(false);
     if (ui->scrollArea->widget()){
         ui->scrollArea->takeWidget();
         delete ui->scrollArea->widget();
