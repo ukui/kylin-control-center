@@ -76,7 +76,7 @@ void config_list_widget::setname(QString n) {
 /* 客户端回调函数集 */
 void config_list_widget::setret_oss(int ret) {
     if(ret == 0) {
-        emit docheck();
+        emit doconf();
         //qDebug()<<"init oss is 0";
     } else {
         //emit dologout();
