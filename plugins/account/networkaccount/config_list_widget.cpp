@@ -66,7 +66,7 @@ void config_list_widget::setname(QString n) {
     if(code != "" && code !="201" && code != "203" && code != "401" && !ret_ok) {
         info->setText(tr("Your account：%1").arg(code));
         stacked_widget->setCurrentWidget(container);
-        emit doconf();
+        //emit doconf();
         ret_ok = true;              //开启登录状态
         client->once = false;        //关闭第一次打开状态
         return ;
@@ -119,7 +119,7 @@ void config_list_widget::setret_check(QString ret) {
         ret_ok = true;
         info->setText(tr("Your account：%1").arg(code));
         stacked_widget->setCurrentWidget(container);
-        emit doconf();
+        QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     } else if((code == "" || code =="201" || code == "203" || code == "401" ) && ret_ok == false){
         client->once = true;
         stacked_widget->setCurrentWidget(null_widget);
