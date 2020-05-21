@@ -26,6 +26,7 @@
 #include <QLabel>
 #include <QThread>
 #include <QGSettings/QGSettings>
+#include <QSettings>
 
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
@@ -63,6 +64,8 @@ public:
 private:
     int convertToLocktime(const int value);
     int lockConvertToSlider(const int value);
+    void setLockBackground(bool status);
+    bool getLockStatus();
 
 private:
     Ui::Screenlock *ui;
@@ -79,6 +82,8 @@ private:
     SwitchButton * lockSwitchBtn;
     FlowLayout * flowLayout;
     Uslider * uslider;
+    QSettings * lockSetting; //锁屏状态QSettings
+    QSettings * lockLoginSettings;
 
     QSize lockbgSize;
 

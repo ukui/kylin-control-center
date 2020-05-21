@@ -57,6 +57,9 @@ public:
     void initGeneralStatus();
     void rebuildLayoutsComBox();
 
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
+
 private:
     Ui::KeyboardControl *ui;
 

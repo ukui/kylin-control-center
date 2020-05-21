@@ -23,6 +23,7 @@
 #include <QGSettings/QGSettings>
 
 #include <QDebug>
+#include <QMouseEvent>
 
 #define KEYBOARD_SCHEMA "org.ukui.peripherals-keyboard"
 #define REPEAT_KEY "repeat"
@@ -41,6 +42,8 @@ KeyboardControl::KeyboardControl()
 
     pluginName = tr("Keyboard");
     pluginType = DEVICES;
+
+    ui->addFrame->installEventFilter(this);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
@@ -145,6 +148,7 @@ void KeyboardControl::setupComponent(){
 
     ui->addBtn->setIcon(QIcon("://img/plugins/keyboardcontrol/add.png"));
     ui->addBtn->setIconSize(QSize(48, 48));
+    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
 }
 
 void KeyboardControl::setupConnect(){
@@ -213,4 +217,20 @@ void KeyboardControl::rebuildLayoutsComBox(){
         ui->layoutsComBox->addItem(layoutmanagerObj->kbd_get_description_by_id(const_cast<const char *>(layout.toLatin1().data())), layout);
     }
     ui->layoutsComBox->blockSignals(false);
+}
+
+bool KeyboardControl::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == ui->addFrame){
+        if (event->type() == QEvent::MouseButtonPress){
+            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
+            if (mouseEvent->button() == Qt::LeftButton){
+                layoutmanagerObj->exec();
+                return true;
+            } else
+                return false;
+        }
+    }
+    return QObject::eventFilter(watched, event);
+
 }

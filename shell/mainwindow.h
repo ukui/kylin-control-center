@@ -57,6 +57,7 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *);
+    bool eventFilter(QObject *watched, QEvent *event);
 
 private:
     Ui::MainWindow *ui;

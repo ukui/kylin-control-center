@@ -51,6 +51,7 @@ void FunctionSelect::initValue(){
     systemList[DISPLAY].namei18nString =  QObject::tr("Display");
     systemList[DEFAULTAPP].nameString = QString("Defaultapp");
     systemList[DEFAULTAPP].namei18nString =  QObject::tr("Defaultapp");
+    systemList[DEFAULTAPP].mainShow = false;
     systemList[POWER].nameString = QString("Power");
     systemList[POWER].namei18nString = QObject::tr("Power");
     systemList[AUTOBOOT].nameString = QString("Autoboot");
@@ -64,11 +65,12 @@ void FunctionSelect::initValue(){
         FuncInfo funcStruct;
         funcStruct.type = DEVICES;
         funcStruct.index = i;
-        funcStruct.mainShow = true;
+//        funcStruct.mainShow = true;
         devicesList.append(funcStruct);
     }
     devicesList[PRINTER].nameString = QString("Printer");
     devicesList[PRINTER].namei18nString = QObject::tr("Printer");
+    devicesList[PRINTER].mainShow = false;
     devicesList[MOUSE].nameString = QString("Mouse");
     devicesList[MOUSE].namei18nString = QObject::tr("Mouse");
     devicesList[TOUCHPAD].nameString = QString("Touchpad");
@@ -95,6 +97,7 @@ void FunctionSelect::initValue(){
     }
     personalizedList[BACKGROUND].nameString = QString("Background");
     personalizedList[BACKGROUND].namei18nString = QObject::tr("Background");
+    personalizedList[BACKGROUND].mainShow = false;
     personalizedList[THEME].nameString = QString("Theme");
     personalizedList[THEME].namei18nString = QObject::tr("Theme");
     personalizedList[SCREENLOCK].nameString = QString("Screenlock");
@@ -103,6 +106,7 @@ void FunctionSelect::initValue(){
     personalizedList[FONTS].namei18nString = QObject::tr("Fonts");
     personalizedList[SCREENSAVER].nameString = QString("Screensaver");
     personalizedList[SCREENSAVER].namei18nString = QObject::tr("Screensaver");
+    personalizedList[SCREENSAVER].mainShow = false;
     personalizedList[DESKTOP].nameString = QString("Desktop");
     personalizedList[DESKTOP].namei18nString = QObject::tr("Desktop");
     personalizedList[DESKTOP].mainShow = false;

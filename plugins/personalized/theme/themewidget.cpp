@@ -82,8 +82,9 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, QStringList iStringList, QWi
     mainHorLayout->addWidget(placeHolderLabel);
     mainHorLayout->addWidget(selectedLabel);
     mainHorLayout->addWidget(nameLabel);
-    mainHorLayout->addStretch();
+    mainHorLayout->addStretch(1);
     mainHorLayout->addLayout(iconHorLayout);
+    mainHorLayout->addStretch(2);
 
     setLayout(mainHorLayout);
 
@@ -147,6 +148,7 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, const QList<QPixmap> &listMa
     mainHorLayout->addStretch(1);
     mainHorLayout->addLayout(iconHorLayout);
     mainHorLayout->addStretch(2);
+
 
     setLayout(mainHorLayout);
 

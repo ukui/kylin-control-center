@@ -308,7 +308,6 @@ void Screensaver::initIdleSliderStatus(){
     session_settings = g_settings_new(SESSION_SCHEMA);
     minutes = g_settings_get_int(session_settings, IDLE_DELAY_KEY);
 
-//    qDebug()<<"minutes is----------->"<<minutes<<endl;
     uslider->blockSignals(true);
     uslider->setValue(lockConvertToSlider(minutes));
     uslider->blockSignals(false);
@@ -506,7 +505,7 @@ void Screensaver::kill_and_start(){
 int Screensaver::convertToLocktime(const int value) {
     switch (value) {
     case 1:
-        return 0;
+        return 1800;
         break;
     case 2:
         return 5;
@@ -530,14 +529,14 @@ int Screensaver::convertToLocktime(const int value) {
         return 180;
         break;
     default:
-        return 0;
+        return 1800;
         break;
     }
 }
 
 int Screensaver::lockConvertToSlider(const int value) {
     switch (value) {
-    case 0:
+    case 1800:
         return 1;
         break;
     case 5:
@@ -562,7 +561,7 @@ int Screensaver::lockConvertToSlider(const int value) {
         return 8;
         break;
     default:
-        return 0;
+        return 1;
         break;
     }
 }

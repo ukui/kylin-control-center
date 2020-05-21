@@ -28,6 +28,7 @@
 
 #include <QDebug>
 #include <QFont>
+#include <QMouseEvent>
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -61,6 +62,7 @@ AutoBoot::AutoBoot(){
     pluginName = tr("Autoboot");
     pluginType = SYSTEM;
 
+    ui->addFrame->installEventFilter(this);
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
 
@@ -73,6 +75,8 @@ AutoBoot::AutoBoot(){
 
     ui->addBtn->setIcon(QIcon("://img/plugins/autoboot/add.png"));
     ui->addBtn->setIconSize(QSize(48, 48));
+    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
+
 
     ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -776,7 +780,25 @@ void AutoBoot::del_autoboot_realize(QString bname){
         _delete_local_autoapp(bname);
         ui->listWidget->clear();
         initUI();
-//    }
+        //    }
+}
+
+
+
+bool AutoBoot::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == ui->addFrame){
+        if (event->type() == QEvent::MouseButtonPress){
+            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
+            if (mouseEvent->button() == Qt::LeftButton){
+                AddAutoBoot * mdialog = new AddAutoBoot();
+                mdialog->exec();
+                return true;
+            } else
+                return false;
+        }
+    }
+    return QObject::eventFilter(watched, event);
 }
 
 void AutoBoot::checkbox_changed_cb(QString bname){

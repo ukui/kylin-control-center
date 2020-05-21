@@ -49,6 +49,9 @@ public:
 
     void runExternalApp();
 
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
+
 private:
     Ui::Vpn *ui;
 

@@ -191,8 +191,12 @@ void Theme::setupSettings() {
 
     kwinSettings->endGroup();
 
-    effectSwitchBtn->setChecked(!kwin);
+    effectSwitchBtn->setChecked(kwin);
 
+    QFileInfo dir(filename);
+    if (!dir.isFile()) {
+        effectSwitchBtn->setChecked(true);
+    }
 }
 
 void Theme::setupComponent(){
@@ -502,7 +506,7 @@ void Theme::initConnection() {
 
     connect(effectSwitchBtn, &SwitchButton::checkedChanged, [this](bool checked) {
         QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-        writeKwinSettings(!checked, currentThemeMode);
+        writeKwinSettings(checked, currentThemeMode);
     });
 }
 

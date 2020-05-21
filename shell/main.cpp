@@ -54,7 +54,11 @@ void centerToScreen(QWidget* widget) {
 
 int main(int argc, char *argv[])
 {
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
+   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+   QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+#endif
     QtSingleApplication a(argc, argv);
 
     QTimer::singleShot(2000, [&](){

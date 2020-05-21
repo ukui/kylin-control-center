@@ -61,6 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
     resize(QSize(820, 600));
     //设置窗体无边框
     setWindowFlags(Qt::FramelessWindowHint | Qt::Widget);
+    this->installEventFilter(this);
 
     //该设置去掉了窗体透明后的黑色背景
     setAttribute(Qt::WA_TranslucentBackground, true);
@@ -309,6 +310,19 @@ void MainWindow::paintEvent(QPaintEvent *event) {
 //    p.fillPath(rectPath,QColor(0,0,0));
     p.restore();
 }
+
+bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
+    if (this == watched) {
+        if (event->type() == QEvent::WindowStateChange) {
+            if (this->windowState() == Qt::WindowMaximized) {
+                ui->maxBtn->setIcon(QIcon("://img/titlebar/revert.png"));
+            } else {
+                ui->maxBtn->setIcon(QIcon("://img/titlebar/max.png"));
+            }
+        }
+    }
+}
+
 
 void MainWindow::setBtnLayout(QPushButton * &pBtn){
     QLabel * imgLabel = new QLabel(pBtn);

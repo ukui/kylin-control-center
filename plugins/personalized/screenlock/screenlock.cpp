@@ -21,6 +21,7 @@
 #include "ui_screenlock.h"
 
 #include <QDebug>
+#include <QDir>
 
 #define BGPATH "/usr/share/backgrounds/"
 #define SCREENLOCK_BG_SCHEMA "org.ukui.screensaver"
@@ -78,8 +79,9 @@ Screenlock::Screenlock()
 Screenlock::~Screenlock()
 {
     delete ui;
-
     delete lSetting;
+    delete lockSetting;
+    delete lockLoginSettings;
 }
 
 QString Screenlock::get_plugin_name(){
@@ -99,6 +101,18 @@ void Screenlock::plugin_delay_control(){
 }
 
 void Screenlock::setupComponent(){
+    QString filename = QDir::homePath() + "/.config/ukui/ukui-control-center.conf";
+    lockSetting = new QSettings(filename, QSettings::IniFormat);
+
+
+    QString name = qgetenv("USER");
+    if (name.isEmpty()) {
+        name = qgetenv("USERNAME");
+    }
+
+    QString lockfilename = "/var/lib/lightdm-data/" + name + "/ukui-greeter.conf";
+    lockLoginSettings = new QSettings(lockfilename, QSettings::IniFormat);
+
     QStringList scaleList;
     scaleList<< tr("Never") << tr("5m") << tr("10m") << tr("30m") << tr("45m")
               <<tr("1h") << tr("1.5h") << tr("3h");
@@ -115,6 +129,7 @@ void Screenlock::setupComponent(){
 
     loginbgSwitchBtn = new SwitchButton(pluginWidget);
     ui->loginbgHorLayout->addWidget(loginbgSwitchBtn);
+    loginbgSwitchBtn->setChecked(getLockStatus());
 
     lockSwitchBtn = new SwitchButton(pluginWidget);
     ui->lockHorLayout->addWidget(lockSwitchBtn);
@@ -146,6 +161,12 @@ void Screenlock::setupComponent(){
 void Screenlock::setupConnect(){
 //    ui->delaySlider->setMinimum(1);
 //    ui->delaySlider->setMaximum(120);
+
+
+    connect(loginbgSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
+        setLockBackground(checked);
+    });
+
     connect(uslider, &QSlider::valueChanged, [&](int value){
         QStringList keys = lSetting->keys();
         if (keys.contains("lockDelay")) {
@@ -185,9 +206,11 @@ void Screenlock::initScreenlockStatus(){
         PictureUnit * picUnit = new PictureUnit;
         picUnit->setPixmap(pixmap);
         picUnit->setFilenameText(bgInfo.filename);
+
         connect(picUnit, &PictureUnit::clicked, [=](QString filename){
             ui->previewLabel->setPixmap(pixmap);
             lSetting->set(SCREENLOCK_BG_KEY, filename);
+            setLockBackground(loginbgSwitchBtn->isChecked());
         });
 
         flowLayout->addWidget(picUnit);
@@ -223,7 +246,7 @@ void Screenlock::initScreenlockStatus(){
 int Screenlock::convertToLocktime(const int value) {
     switch (value) {
     case 1:
-        return 0;
+        return 1800;
         break;
     case 2:
         return 5;
@@ -247,14 +270,14 @@ int Screenlock::convertToLocktime(const int value) {
         return 180;
         break;
     default:
-        return 0;
+        return 1800;
         break;
     }
 }
 
 int Screenlock::lockConvertToSlider(const int value) {
     switch (value) {
-    case 0:
+    case 1800:
         return 1;
         break;
     case 5:
@@ -279,7 +302,48 @@ int Screenlock::lockConvertToSlider(const int value) {
         return 8;
         break;
     default:
-        return 0;
+        return 1800;
         break;
     }
+}
+
+void Screenlock::setLockBackground(bool status)
+{
+    QString bgStr;
+    if (lSetting && status) {
+        bgStr= lSetting->get(SCREENLOCK_BG_KEY).toString();
+    } else if (!status) {
+        bgStr = "";
+    }
+
+    if (!bgStr.isEmpty()) {
+        int index = bgStr.lastIndexOf('/');
+        bgStr = bgStr.mid(index, bgStr.length() - index);
+    }
+
+    QString picname;
+
+    if (!bgStr.isEmpty()) {
+        picname = "/usr/share/backgrounds"  + bgStr;
+    } else {
+        picname = "";
+    }
+
+    lockSetting->beginGroup("ScreenLock");
+    lockSetting->setValue("lockStatus", status);
+    lockSetting->endGroup();
+
+
+    lockLoginSettings->beginGroup("greeter");
+    lockLoginSettings->setValue("backgroundPath", picname);
+    lockLoginSettings->endGroup();
+
+}
+
+bool Screenlock::getLockStatus()
+{
+    lockSetting->beginGroup("ScreenLock");
+    bool status = lockSetting->value("lockStatus").toBool();
+    lockSetting->endGroup();
+    return  status;
 }

@@ -24,6 +24,7 @@
 #include <QProcess>
 
 #include <QDebug>
+#include <QMouseEvent>
 
 #define ITEMFIXEDHEIGH 58
 
@@ -35,6 +36,8 @@ Printer::Printer(){
 
     pluginName = tr("Printer");
     pluginType = DEVICES;
+
+    ui->addFrame->installEventFilter(this);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
@@ -72,6 +75,7 @@ void Printer::initComponent(){
 
     ui->addBtn->setIcon(QIcon("://img/plugins/printer/add.png"));
     ui->addBtn->setIconSize(QSize(48, 48));
+    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
 
     QStringList printer = QPrinterInfo::availablePrinterNames();
 
@@ -135,4 +139,19 @@ void Printer::runExternalApp(){
 
     QProcess process(this);
     process.startDetached(cmd);
+}
+
+bool Printer::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == ui->addFrame){
+        if (event->type() == QEvent::MouseButtonPress){
+            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
+            if (mouseEvent->button() == Qt::LeftButton){
+                runExternalApp();
+                return true;
+            } else
+                return false;
+        }
+    }
+    return QObject::eventFilter(watched, event);
 }

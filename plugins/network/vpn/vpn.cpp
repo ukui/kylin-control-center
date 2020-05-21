@@ -21,6 +21,7 @@
 #include "ui_vpn.h"
 
 #include <QProcess>
+#include <QMouseEvent>
 
 Vpn::Vpn()
 {
@@ -31,6 +32,8 @@ Vpn::Vpn()
 
     pluginName = tr("Vpn");
     pluginType = NETWORK;
+
+    ui->addFrame->installEventFilter(this);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 //    pluginWidget->setStyleSheet("background: #ffffff;");
@@ -65,6 +68,7 @@ void Vpn::plugin_delay_control(){
 void Vpn::initComponent(){
     ui->addBtn->setIcon(QIcon("://img/plugins/vpn/add.png"));
     ui->addBtn->setIconSize(QSize(48, 48));
+    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
 
     connect(ui->addBtn, &QPushButton::clicked, this, [=](bool checked){
         Q_UNUSED(checked)
@@ -76,4 +80,19 @@ void Vpn::runExternalApp(){
     QString cmd = "nm-connection-editor";
     QProcess process(this);
     process.startDetached(cmd);
+}
+
+bool Vpn::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == ui->addFrame){
+        if (event->type() == QEvent::MouseButtonPress){
+            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
+            if (mouseEvent->button() == Qt::LeftButton){
+                runExternalApp();
+                return true;
+            } else
+                return false;
+        }
+    }
+    return QObject::eventFilter(watched, event);
 }

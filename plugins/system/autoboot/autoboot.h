@@ -69,6 +69,9 @@ public:
     void update_app_status();
     void del_autoboot_realize(QString bname);
 
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
+
 
 private:
     Ui::AutoBoot *ui;

@@ -51,6 +51,9 @@ public:
     void runExternalApp();
 
 private:
+    bool eventFilter(QObject *watched, QEvent *event);
+
+private:
     Ui::Printer *ui;
     QString pluginName;
     int pluginType;

@@ -53,6 +53,7 @@ Area::Area()
     pluginName = tr("Area");
     pluginType = DATETIME;
 
+    ui->addlanframe->installEventFilter(this);
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
@@ -200,6 +201,7 @@ void Area::initUI(){
 
     ui->addlanBtn->setIcon(QIcon("://img/plugins/printer/add.png"));
     ui->addlanBtn->setIconSize(QSize(48, 48));
+    ui->addlanBtn->setStyleSheet("QPushButton{background-color:transparent;}");
 
 }
 
