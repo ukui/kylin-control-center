@@ -164,7 +164,7 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     vboxlayout->setSpacing(0);
     vboxlayout->addWidget(stackwidget);
     setLayout(vboxlayout);
-
+    
     pass_tips->setContentsMargins(16,0,0,0);
     tips->hide();
     tips->setAttribute(Qt::WA_DontShowOnScreen);
@@ -172,6 +172,7 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     pass_tips->setAttribute(Qt::WA_DontShowOnScreen);
 
     //account->installEventFilter(this);
+    confirm_pass->installEventFilter(this);
     newpass->installEventFilter(this);
     valid_code->installEventFilter(this);
 
