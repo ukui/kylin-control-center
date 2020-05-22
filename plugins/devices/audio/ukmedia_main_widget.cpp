@@ -251,7 +251,7 @@ void UkmediaMainWidget::onContextStateNotify (MateMixerContext *m_pContext,GPara
 */
 void UkmediaMainWidget::onContextStoredControlAdded(MateMixerContext *m_pContext,const gchar *m_pName,UkmediaMainWidget *m_pWidget)
 {
-    g_debug("on conext stored control add");
+    g_debug("on context stored control add");
     MateMixerStreamControl *m_pControl;
     MateMixerStreamControlMediaRole mediaRole;
     m_pControl = MATE_MIXER_STREAM_CONTROL (mate_mixer_context_get_stored_control (m_pContext, m_pName));
