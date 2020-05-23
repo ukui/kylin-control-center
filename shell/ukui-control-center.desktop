@@ -11,6 +11,6 @@ Exec=ukui-control-center
 Terminal=false
 Type=Application
 StartupNotify=true
-NoDisplay=true
+NoDisplay=false
 Categories=Qt;Settings;
 Keywords=UKUI;control;center;configuration;tool;destop;preferences;

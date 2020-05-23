@@ -107,7 +107,7 @@
        <number>0</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <layout class="QHBoxLayout" name="fontLayout">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -138,79 +138,6 @@
            <string>Font size</string>
           </property>
          </widget>
-        </item>
-        <item>
-         <widget class="QSlider" name="fontSizeSlider">
-          <property name="minimumSize">
-           <size>
-            <width>400</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>400</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QSlider{
-    width: 178px;
-    height: 20px;
-}
-QSlider::groove:horizontal {
-    border: 0px solid #bbb;
-
-}
-QSlider::sub-page:horizontal {
-    background: #3D6BE5;
-    border-radius: 2px;
-    margin-top:8px;
-    margin-bottom:9px;
-}
-QSlider::add-page:horizontal {
-    background:  rgba(52,70,80,90%);
-    border: 0px solid #777;
-    border-radius: 2px;
-    margin-top:8px;
-    margin-bottom:9px;
-}
-QSlider::handle:horizontal {
-    width: 20px;
-    height: 20px;
-    background: #3D6BE5;
-    border-radius:10px;
-}</string>
-          </property>
-          <property name="minimum">
-           <number>100</number>
-          </property>
-          <property name="maximum">
-           <number>200</number>
-          </property>
-          <property name="singleStep">
-           <number>25</number>
-          </property>
-          <property name="pageStep">
-           <number>25</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </item>

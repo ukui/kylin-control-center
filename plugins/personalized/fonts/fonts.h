@@ -30,6 +30,7 @@
 #include <QStyledItemDelegate>
 
 #include "shell/interface.h"
+#include "Uslider/uslider.h"
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -82,6 +83,9 @@ public:
     void _getCurrentFontInfo();
     QStringList _splitFontNameSize(QString value);
 
+    int fontConvertToSlider(const int size) const;
+    int sliderConvertToSize(const int value) const;
+
 private:
     Ui::Fonts *ui;
 
@@ -104,9 +108,11 @@ private:
 
     QFontDatabase fontdb;
 
+
 private:
     bool settingsCreate;
     QGSettings * stylesettings;
+    Uslider * uslider;
 
 };
 

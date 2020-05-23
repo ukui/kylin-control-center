@@ -20,8 +20,10 @@ PKGCONFIG     += gio-2.0 \
                  gio-unix-2.0
 
 include(../../../env.pri)
+include($$PROJECT_COMPONENTSOURCE/uslider.pri)
 
 INCLUDEPATH   +=  \
+                 $$PROJECT_COMPONENTSOURCE \
                  $$PROJECT_ROOTDIR \
 
 LIBS += -L/usr/lib/ -lgsettings-qt

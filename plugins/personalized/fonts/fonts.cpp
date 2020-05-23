@@ -168,6 +168,8 @@ void Fonts::plugin_delay_control(){
 
 void Fonts::setupStylesheet(){
 
+
+
     ui->titleSecondLabel->setVisible(false);
     ui->sampleBtn1->setVisible(false);
     ui->sampleBtn2->setVisible(false);
@@ -211,47 +213,24 @@ void Fonts::setupStylesheet(){
 }
 
 void Fonts::setupComponent(){
-    ui->fontSelectComBox->setItemDelegate(itemDelege);
-    ui->fontSelectComBox->setMaxVisibleItems(5);
 
-    ui->monoSelectComBox->setItemDelegate(itemDelege);
-    ui->monoSelectComBox->setMaxVisibleItems(5);
+    QStringList fontScale;
+    fontScale<< tr("11") << tr("12") << tr("13") << tr("14") << tr("15")
+              <<tr("16") << tr("17") << tr("18");
 
-    ui->defaultFontComBox->setItemDelegate(itemDelege);
-    ui->defaultFontComBox->setMaxVisibleItems(5);
+    uslider  = new Uslider(fontScale);
+    uslider->setRange(1,8);
+    uslider->setTickInterval(1);
+    uslider->setPageStep(1);
 
-    ui->docFontComBox->setItemDelegate(itemDelege);
-    ui->docFontComBox->setMaxVisibleItems(5);
+    ui->fontLayout->addWidget(uslider);
+    ui->fontLayout->addSpacing(8);
 
-    ui->peonyFontComBox->setItemDelegate(itemDelege);
-    ui->peonyFontComBox->setMaxVisibleItems(5);
-
-    ui->monoFontComBox->setItemDelegate(itemDelege);
-    ui->monoFontComBox->setMaxVisibleItems(5);
-
-    ui->titleFontComBox->setItemDelegate(itemDelege);
-    ui->titleFontComBox->setMaxVisibleItems(5);
-
-    ui->defaultSizeComBox->setItemDelegate(itemDelege);
-    ui->defaultSizeComBox->setMaxVisibleItems(5);
-
-    ui->docSizeComBox->setItemDelegate(itemDelege);
-    ui->docSizeComBox->setMaxVisibleItems(5);
-
-    ui->MonoSizeComBox->setItemDelegate(itemDelege);
-    ui->MonoSizeComBox->setMaxVisibleItems(5);
-
-    ui->peonySizeComBox->setItemDelegate(itemDelege);
-    ui->peonySizeComBox->setMaxVisibleItems(5);
-
-    ui->titleSizeComBox->setItemDelegate(itemDelege);
-    ui->titleSizeComBox->setMaxVisibleItems(5);
-
-    ui->fontSizeSlider->setMinimum(100);
-    ui->fontSizeSlider->setMaximum(275);
-    ui->fontSizeSlider->setSingleStep(25);
-    ui->fontSizeSlider->setPageStep(25);
-    ui->fontSizeSlider->setTickPosition(QSlider::TicksBelow);
+//    ui->fontSizeSlider->setMinimum(100);
+//    ui->fontSizeSlider->setMaximum(275);
+//    ui->fontSizeSlider->setSingleStep(25);
+//    ui->fontSizeSlider->setPageStep(25);
+//    ui->fontSizeSlider->setTickPosition(QSlider::TicksBelow);
 
     //导入系统字体列表
     QStringList fontfamiles = fontdb.families();
@@ -349,34 +328,29 @@ void Fonts::setSampleButton(QPushButton *button){
 }
 
 void Fonts::setupConnect(){
-    connect(ui->fontSizeSlider, &QSlider::sliderReleased, [=]{
-        int value = ui->fontSizeSlider->value();
+//    connect(uslider, &QSlider::sliderReleased, [=]{
+//        int value = uslider->value();
 
-        int setup = value / 25; int overage = value % 25;
+//        int setup = value / 25; int overage = value % 25;
 
-        if (overage > 12)
-            ui->fontSizeSlider->setSliderPosition(ui->fontSizeSlider->singleStep() * (setup + 1));
-        else
-            ui->fontSizeSlider->setSliderPosition(ui->fontSizeSlider->singleStep() * setup);
-    });
-    connect(ui->fontSizeSlider, &QSlider::valueChanged, [=](int value){
-        if (!(value % 25)){
-            float level = (float)value / 100;
-//            qDebug() << "font is---->" << level<<" "<<monospacefontStrList.at(0)<<" "<<defaultfontinfo.monospacefontsize * level<<endl;
-            //获取当前字体信息
-            _getCurrentFontInfo();
-            //设置字体大小
+//        if (overage > 12)
+//            ui->fontSizeSlider->setSliderPosition(ui->fontSizeSlider->singleStep() * (setup + 1));
+//        else
+//            ui->fontSizeSlider->setSliderPosition(ui->fontSizeSlider->singleStep() * setup);
+//    });
+    connect(uslider, &QSlider::valueChanged, [=](int value){
+        int size = sliderConvertToSize(value);
+        //获取当前字体信息
+        _getCurrentFontInfo();
+        //设置字体大小
 
-
-            ifsettings->set(GTK_FONT_KEY, QVariant(QString("%1 %2").arg(gtkfontStrList.at(0)).arg(defaultfontinfo.gtkfontsize * level)));
-            ifsettings->set(DOC_FONT_KEY, QVariant(QString("%1 %2").arg(docfontStrList.at(0)).arg(defaultfontinfo.docfontsize * level)));
-            ifsettings->set(MONOSPACE_FONT_KEY, QVariant(QString("%1 %2").arg(monospacefontStrList.at(0)).arg(defaultfontinfo.monospacefontsize * level)));
-            stylesettings->set(SYSTEM_FONT_EKY, QVariant(QString("%1").arg(defaultfontinfo.monospacefontsize * level)));
+        qDebug()<<"字体大小－－－－－>"<<value <<" " <<size<<endl;
+        ifsettings->set(GTK_FONT_KEY, QVariant(QString("%1 %2").arg(gtkfontStrList.at(0)).arg(size)));
+        ifsettings->set(DOC_FONT_KEY, QVariant(QString("%1 %2").arg(docfontStrList.at(0)).arg(size)));
+        ifsettings->set(MONOSPACE_FONT_KEY, QVariant(QString("%1 %2").arg(monospacefontStrList.at(0)).arg(size)));
+        stylesettings->set(SYSTEM_FONT_EKY, QVariant(QString("%1").arg(size)));
 //            peonysettings->set(PEONY_FONT_KEY, QVariant(QString("%1 %2").arg(peonyfontStrList[0]).arg(defaultfontinfo.monospacefontsize * level)));
-            marcosettings->set(TITLEBAR_FONT_KEY, QVariant(QString("%1 %2").arg(titlebarfontStrList.at(0)).arg(defaultfontinfo.titlebarfontsize * level)));
-
-        }
-
+        marcosettings->set(TITLEBAR_FONT_KEY, QVariant(QString("%1 %2").arg(titlebarfontStrList.at(0)).arg(size)));
     });
 
     connect(ui->fontSelectComBox, &QComboBox::currentTextChanged, [=](QString text){
@@ -470,14 +444,16 @@ void Fonts::initGeneralFontStatus(){
     ui->monoSelectComBox->blockSignals(false);
 
     //获取字体大小倍率,选择文档字体大小作为标准，来自gtk控制面板的逻辑
-    float res = QString(docfontStrList[1]).toFloat() / (float)defaultfontinfo.docfontsize;
-    int value = int(res * 100);
+//    float res = QString(docfontStrList[1]).toFloat() / (float)defaultfontinfo.docfontsize;
+//    int value = int(res * 100);
 
-    ui->fontSizeSlider->blockSignals(true);
+    int size = fontConvertToSlider(QString(docfontStrList[1]).toInt());
 
-    ui->fontSizeSlider->setValue(value);
+    uslider->blockSignals(true);
 
-    ui->fontSizeSlider->blockSignals(false);
+    uslider->setValue(size);
+
+    uslider->blockSignals(false);
 
 }
 
@@ -643,6 +619,71 @@ QStringList Fonts::_splitFontNameSize(QString value){
     return valueStringList;
 }
 
+int Fonts::fontConvertToSlider(const int size) const
+{
+    switch (size) {
+    case 11:
+        return 1;
+        break;
+    case 12:
+        return 2;
+        break;
+    case 13:
+        return 3;
+        break;
+    case 14:
+        return 4;
+        break;
+    case 15:
+        return 5;
+        break;
+    case 16:
+        return 6;
+        break;
+    case 17:
+        return 7;
+        break;
+    case 18:
+        return 8;
+        break;
+    default:
+        return 1;
+        break;
+    }
+}
+
+int Fonts::sliderConvertToSize(const int value) const
+{
+    switch (value) {
+    case 1:
+        return 11;
+        break;
+    case 2:
+        return 12;
+        break;
+    case 3:
+        return 13;
+        break;
+    case 4:
+        return 14;
+        break;
+    case 5:
+        return 15;
+        break;
+    case 6:
+        return 16;
+        break;
+    case 7:
+        return 17;
+        break;
+    case 8:
+        return 18;
+    default:
+        return 11;
+        break;
+    }
+}
+
 void Fonts::setFontEffect(QAbstractButton *button){
     QPushButton * btnclicked = (QPushButton *)button;
     FontEffects * setFontEffects = (FontEffects *)(btnclicked->userData(Qt::UserRole));
@@ -660,7 +701,7 @@ void Fonts::resetDefault(){
     ifsettings->reset(MONOSPACE_FONT_KEY);
 //    peonysettings->reset(PEONY_FONT_KEY);
     marcosettings->reset(TITLEBAR_FONT_KEY);
-    stylesettings->reset(SYSTEM_FONT_EKY);
+    stylesettings->set(SYSTEM_FONT_EKY, 11);
 
     //reset font render
     rendersettings->reset(ANTIALIASING_KEY);
