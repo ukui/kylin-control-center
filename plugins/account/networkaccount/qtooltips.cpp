@@ -31,7 +31,7 @@ QToolTips::QToolTips(QWidget *parent) : QWidget(parent)
     setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);
 }
 
-
+/* 重绘加上边框阴影 */
 void QToolTips::paintEvent(QPaintEvent *event)
 {
 
@@ -65,6 +65,5 @@ void QToolTips::paintEvent(QPaintEvent *event)
     rect.setY(ypos);
     rect.setWidth(rect.width() - ypos);
     rect.setHeight(rect.height() - xpos);
-    // rect: 绘制区域  15：圆角弧度
     painter.drawRoundedRect(rect, radius, radius);
 }

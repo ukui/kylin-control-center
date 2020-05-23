@@ -39,20 +39,24 @@ ql_box_item::ql_box_item(QWidget *parent) : QWidget(parent)
     //setFixedSize(200,36);
 }
 
+/* 设置国家名字 */
 void ql_box_item::set_code(QString str) {
     cd->setText(str);
 }
 
+/* 设置国家代码 */
 void ql_box_item::set_country_code(QString str) {
     ct->setText(str);
 }
 
+/* 鼠标进入选框，相对应的国家及代码变白色 */
 void ql_box_item::enterEvent(QEvent *e) {
     QString str = "color:#FFFFFF;font-size:14px";
     cd->setStyleSheet(str);
     ct->setStyleSheet(str);
 }
 
+/* 鼠标离开选框，相对应的国家及代码变回黑色 */
 void ql_box_item::leaveEvent(QEvent *e) {
     cd->setStyleSheet("color:rgba(0,0,0,0.85);font-size:14px");
     ct->setStyleSheet("color:rgba(0,0,0,0.65);font-size:14px");

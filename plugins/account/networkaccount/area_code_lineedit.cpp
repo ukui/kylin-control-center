@@ -20,6 +20,7 @@
 #include "area_code_lineedit.h"
 
 
+/* 读取国家代码JSon文件并写入ComboBox */
 void area_code_lineedit::InittoCountrycode() {
     loadfile = new QFile(":/country.json",this);
     if(!loadfile->open(QIODevice::ReadOnly)) {

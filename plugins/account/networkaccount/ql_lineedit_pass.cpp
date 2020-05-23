@@ -33,7 +33,7 @@ ql_lineedit_pass::ql_lineedit_pass(QWidget *parent) : QLineEdit(parent)
         } else {
             setEchoMode(QLineEdit::Password);
         }
-    });
+    }); //点击后可见或者不可见
     visble->setStyleSheet("QPushButton{width:  16px;height: 16px;qproperty-flat: true;"
     "margin-right: 8px;border: none;border-width: 0;"
     "border-image: url(:/invisible.png) 0 0 0 0 stretch stretch;"
@@ -48,10 +48,12 @@ ql_lineedit_pass::ql_lineedit_pass(QWidget *parent) : QLineEdit(parent)
 
 }
 
+/* 获取密码显示按钮 */
 QPushButton* ql_lineedit_pass::get_visble() {
     return visble;
 }
 
+/* 密码检测模块 */
 bool ql_lineedit_pass::check() {
     bool uper = false;
     bool normal = false;

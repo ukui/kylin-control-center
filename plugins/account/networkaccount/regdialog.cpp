@@ -123,12 +123,13 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     adjustSize();
 }
 
-
+/* 更新设置错误提示 */
 void RegDialog::setstyleline() {
     tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
                         "&nbsp;&nbsp;"+code+"</span></p></body></html>");
 }
 
+/* 获取错误代码 */
 void RegDialog::set_code(QString codenum) {
     code = codenum;
     emit code_changed();
@@ -167,6 +168,7 @@ QPushButton* RegDialog::get_send_code() {
     return send_msg_btn;
 }
 
+/* 小写字母转大写，备用 */
 void RegDialog::change_uppercase() {
     QString str = valid_code->text();
     valid_code->setText(str.toUpper());
@@ -187,6 +189,7 @@ QString RegDialog::get_user_passwd() {
     return reg_pass->text();
 }
 
+/* 清空注册框 */
 void RegDialog::set_clear() {
     if(!tips->isHidden()) {
         tips->hide();

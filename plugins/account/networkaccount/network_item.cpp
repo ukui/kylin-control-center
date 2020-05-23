@@ -43,26 +43,32 @@ network_item::network_item(QWidget *parent)
 
 }
 
+/* 获取子部件SwicthButton */ 
 QL_SwichButton* network_item::get_swbtn() {
     return switch_btn;
 }
 
+/* 获取背景部件 */
 QWidget* network_item::get_widget() {
     return widget;
 }
 
+/* 获取项目名字 */
 QString network_item::get_itemname() {
     return label_item->text();
 }
 
+/* 获取布局*/
 QHBoxLayout* network_item::get_layout() {
     return layout;
 }
 
+/* 设置项目名字 */
 void network_item::set_itemname(QString name) {
     label_item->setText(name);
 }
 
+/* 让SwitchButton播放打开动画 */
 void network_item::make_itemon() {
     if(switch_btn != nullptr) {
         if(switch_btn->get_swichbutton_val() != 1) {
@@ -74,6 +80,7 @@ void network_item::make_itemon() {
     }
 }
 
+/* 让SwitchButton播放关闭动画 */
 void network_item::make_itemoff() {
     if(switch_btn != nullptr) {
         if(switch_btn->get_swichbutton_val() != 0) {
@@ -85,6 +92,7 @@ void network_item::make_itemoff() {
     }
 }
 
+/* 让列表的SwitchButton可用或者不可用，调用一次就是取反 */
 void network_item::set_active(bool ok) {
     switch_btn->set_active(ok);
 }

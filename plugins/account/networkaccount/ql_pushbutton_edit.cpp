@@ -41,6 +41,7 @@ ql_pushbutton_edit::ql_pushbutton_edit(QWidget *parent) : QPushButton(parent)
     label->setFocusPolicy(Qt::NoFocus);
 }
 
+/* 鼠标进入，弹出提示框 */
 void ql_pushbutton_edit::enterEvent(QEvent *e) {
 
     QPoint pos;
@@ -51,6 +52,7 @@ void ql_pushbutton_edit::enterEvent(QEvent *e) {
     return QPushButton::enterEvent(e);
 }
 
+/* 鼠标离开，提示框消失 */
 void ql_pushbutton_edit::leaveEvent(QEvent *e) {
     tips->hide();
 

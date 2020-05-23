@@ -36,6 +36,7 @@ QL_SwichButton::QL_SwichButton(QWidget *parent) : QWidget(parent) {
     connect(timer,SIGNAL(timeout()),this,SLOT(startAnimation()));
 }
 
+/* 绘制SwitchButton */
 void QL_SwichButton::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event);
     QPainter ql_painter(this);
@@ -80,40 +81,45 @@ void QL_SwichButton::paintEvent(QPaintEvent *event) {
     }
 }
 
+/* 给SwitchButton设置一个id，方便管理 */
 void QL_SwichButton::set_id(int id) {
     this->id = id;
 }
 
+/* 让SwitchButton处于可用状态 */
 void QL_SwichButton::set_active(bool ok) {
     active = ok;
     update();
 }
 
+/* 获取按钮是否可用 */
 int QL_SwichButton::get_active() {
     return active;
 }
 
-void QL_SwichButton::startAnimation() { //hua dong dong zuo
+/* 播放按钮开启关闭动画 */
+void QL_SwichButton::startAnimation() { //滑动按钮动作播放
     if(active == 0) {
         return ;
     }
     int pos = 4;
     int size = ql_width - 16;
     if(on) {
-        cur_val ++;                     //wang you hua dong
-        if(cur_val > size - pos) {      //dao da zui da zhi ting xia lai
+        cur_val ++;                     //往右滑动
+        if(cur_val > size - pos) {      //到达边界停下来
             timer->stop();
         }
 
     } else {
         cur_val --;
-        if(cur_val < pos) {             //dao da zui xiao zhi ting xia lai
+        if(cur_val < pos) {             //到达最小值，停止继续前进
             timer->stop();
         }
     }
     update();
 }
 
+/* 按钮按下处理 */
 void QL_SwichButton::mousePressEvent(QMouseEvent *event) {
     if(active == 0) {
         return ;
@@ -125,10 +131,12 @@ void QL_SwichButton::mousePressEvent(QMouseEvent *event) {
     update();
 }
 
+/* 获取开关状况 */
 int QL_SwichButton::get_swichbutton_val() {
     return this->on;
 }
 
+/* 设置开关状态 */
 void QL_SwichButton::set_swichbutton_val(int on) {
     this->on = on;
     if(on == 1) {

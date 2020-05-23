@@ -154,6 +154,8 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
     adjustSize();
 }
 
+/* 用户密码登录方式的界面设置 *
+ * Setting the page of login that use password way. */ 
 void LoginDialog::startaction_1() {
     if(stack_widget->currentIndex() == 0) {
         set_clear();
@@ -183,6 +185,7 @@ void LoginDialog::startaction_1() {
     }
 }
 
+/* 同上 */
 void LoginDialog::set_window1() {
     startaction_1();
 }
@@ -403,6 +406,7 @@ bool LoginDialog::login_account_thr_phone() {
     return false;
 }
 
+/* 清空登录框 */
 void LoginDialog::set_clear() {
     if(!error_code->isHidden()) {
         error_code->hide();

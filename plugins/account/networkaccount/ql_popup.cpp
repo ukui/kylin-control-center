@@ -29,7 +29,7 @@ ql_popup::ql_popup(QWidget *parent) : QWidget(parent)
     setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
 }
 
-
+/* 主要目的是绘制阴影 */
 void ql_popup::paintEvent(QPaintEvent *event)
 {
 

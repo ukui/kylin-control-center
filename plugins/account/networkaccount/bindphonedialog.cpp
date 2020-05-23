@@ -68,47 +68,52 @@ BindPhoneDialog::BindPhoneDialog(QWidget *parent) : QWidget(parent)
     adjustSize();
 }
 
-
+/* 设置错误代码，并发出错误代码更换信号，传给主框，让主框完成错误代码更新 */
 void BindPhoneDialog::set_code(QString codenum) {
     code = codenum;
     emit code_changed();
 }
 
+/* 富文本处理错误提示消息 */
 void BindPhoneDialog::setstyleline() {
     tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
                   "&nbsp;&nbsp;"+code+"</span></p></body></html>");
 }
 
+/* 清理绑定手机号码框 */
 void BindPhoneDialog::setclear() {
     phone->setText("");
     valid_code->setText("");
 }
 
+/* 获取验证码发送按钮 */
 QPushButton* BindPhoneDialog::get_send_code() {
     return send_code;
 }
 
+/* 获取密码输入提示文本 */
 QLabel* BindPhoneDialog::get_tips() {
     return tips;
 }
 
+/* 获取验证码字符串 */
 QString BindPhoneDialog::get_code() {
     return valid_code->text();
 }
 
 
-
+/* 获取手机号码字符串 */
 QString BindPhoneDialog::get_phone() {
     return phone->text();
 }
 
-
+/* 获取验证码输入框 */
 QLineEdit* BindPhoneDialog::get_code_lineedit() {
     return valid_code;
 }
 
 
-
+/* 获取手机号码输入框 */
 area_code_lineedit* BindPhoneDialog::get_phone_lineedit() {
     return phone;
 }

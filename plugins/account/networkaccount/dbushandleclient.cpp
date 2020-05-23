@@ -5,6 +5,7 @@ DbusHandleClient::DbusHandleClient(QObject *parent) : QObject(parent)
 
 }
 
+/* DBUS接口之注册 */
 int DbusHandleClient::registered(QString username, QString pwd, QString phonenumb, QString mcode,QString uuid) {
     int re = -1;
     //构造一个method_call消息，服务名称为：org.kylinssoclient.dbus，对象路径为：/org/kylinssoclient/path
@@ -31,6 +32,7 @@ int DbusHandleClient::registered(QString username, QString pwd, QString phonenum
     return re;
 }
 
+/* DBUS接口之登录 */
 int DbusHandleClient::login(QString username, QString pwd,QString uuid) {
     int re = 104;
     //构造一个method_call消息，服务名称为：org.kylinssoclient.dbus，对象路径为：/org/kylinssoclient/path
@@ -57,6 +59,7 @@ int DbusHandleClient::login(QString username, QString pwd,QString uuid) {
     return re;
 }
 
+/* DBUS接口之手机验证码 */
 int DbusHandleClient::get_mcode_by_phone(QString phonenumb,QString uuid) {
     int re = 105;
     //构造一个method_call消息，服务名称为：org.kylinssoclient.dbus，对象路径为：/org/kylinssoclient/path
@@ -84,6 +87,7 @@ int DbusHandleClient::get_mcode_by_phone(QString phonenumb,QString uuid) {
     return re;
 }
 
+/* DBUS接口之用户名验证码 */
 int DbusHandleClient::get_mcode_by_username(QString username,QString uuid) {
     int re = 106;
     //构造一个method_call消息，服务名称为：org.kylinssoclient.dbus，对象路径为：/org/kylinssoclient/path
@@ -111,6 +115,7 @@ int DbusHandleClient::get_mcode_by_username(QString username,QString uuid) {
     return re;
 }
 
+/* DBUS接口之重置密码 */
 int DbusHandleClient::user_resetpwd(QString username, QString newpwd, QString mCode,QString uuid) {
     int re = 107;
     //构造一个method_call消息，服务名称为：org.kylinssoclient.dbus，对象路径为：/org/kylinssoclient/path
@@ -138,6 +143,7 @@ int DbusHandleClient::user_resetpwd(QString username, QString newpwd, QString mC
     return re;
 }
 
+/* DBUS接口之手机登录 */
 int DbusHandleClient::user_phone_login(QString phone, QString mCode,QString uuid) {
     int re = 104;
     //构造一个method_call消息，服务名称为：org.kylinssoclient.dbus，对象路径为：/org/kylinssoclient/path
@@ -164,6 +170,7 @@ int DbusHandleClient::user_phone_login(QString phone, QString mCode,QString uuid
     return re;
 }
 
+/* DBUS接口之登出 */
 int DbusHandleClient::logout() {
     int re = 401;
     QDBusMessage message = QDBusMessage::createMethodCall("org.kylinssoclient.dbus",
@@ -188,6 +195,7 @@ int DbusHandleClient::logout() {
     return re;
 }
 
+/* DBUS接口之初始化conf文件 */
 int DbusHandleClient::init_conf() {
     int re = 108;
     QDBusMessage message = QDBusMessage::createMethodCall("org.kylinssoclient.dbus",
@@ -211,6 +219,7 @@ int DbusHandleClient::init_conf() {
     return re;
 }
 
+/* DBUS接口之改变conf值 */
 int DbusHandleClient::change_conf_value(QString name, int flag) {
     int re = 304;
     //构造一个method_call消息，服务名称为：org.kylinssoclient.dbus，对象路径为：/org/kylinssoclient/path
@@ -237,6 +246,7 @@ int DbusHandleClient::change_conf_value(QString name, int flag) {
     return re;
 }
 
+/* DBUS接口之绑定手机号码 */
 int DbusHandleClient::bindPhone(QString username, QString pwd, QString phone, QString mCode,QString uuid) {
     int re = 109;
     //构造一个method_call消息，服务名称为：org.kylinssoclient.dbus，对象路径为：/org/kylinssoclient/path
@@ -263,6 +273,7 @@ int DbusHandleClient::bindPhone(QString username, QString pwd, QString phone, QS
     return re;
 }
 
+/* DBUS接口之初始化OSS */
 int DbusHandleClient::init_oss(QString uuid) {
     int re = 301;
     //构造一个method_call消息，服务名称为：org.kylinssoclient.dbus，对象路径为：/org/kylinssoclient/path
@@ -289,6 +300,7 @@ int DbusHandleClient::init_oss(QString uuid) {
     return re;
 }
 
+/* DBUS接口之手动同步 */
 int DbusHandleClient::manual_sync() {
     int re = 401;
     //构造一个method_call消息，服务名称为：org.kylinssoclient.dbus，对象路径为：/org/kylinssoclient/path
@@ -314,6 +326,7 @@ int DbusHandleClient::manual_sync() {
     return re;
 }
 
+/* DBUS接口之检查登录，返回用户名 */
 char* DbusHandleClient::check_login() {
     QString re = "";
     //构造一个method_call消息，服务名称为：org.kylinssoclient.dbus，对象路径为：/org/kylinssoclient/path

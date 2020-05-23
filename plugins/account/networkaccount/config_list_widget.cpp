@@ -121,8 +121,7 @@ void config_list_widget::setret_check(QString ret) {
         stacked_widget->setCurrentWidget(container);
         QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     } else if((code == "" || code =="201" || code == "203" || code == "401" ) && ret_ok == false){
-        client->once = true;
-        stacked_widget->setCurrentWidget(null_widget);
+        ret_ok = true;
     } else if(!(code == "" || code =="201" || code == "203" || code == "401" ) && ret_ok){
         info->setText(tr("Your account：%1").arg(code));
         stacked_widget->setCurrentWidget(container);

@@ -38,6 +38,7 @@ mcode_widget::mcode_widget(QWidget *parent): QLabel(parent)
     this->setFocusPolicy(Qt::NoFocus);
 }
 
+/* 该函数实现了鼠标点击后验证码更新的操作 ，用ok变量控制以防止界面刷新就更新 */
 void mcode_widget::mousePressEvent(QMouseEvent *ev) {
     if(ev->button() == Qt::LeftButton)
     {
@@ -46,11 +47,13 @@ void mcode_widget::mousePressEvent(QMouseEvent *ev) {
     }
 }
 
+/* 返回得到的验证码 */
 QChar* mcode_widget::get_verificate_code() {
     return verificationCode;
 }
 
 
+/* 重新绘制事件,先根据生成的数的奇偶性掰弯数字，然后再根据新生成的数字奇偶性变形 */
 void mcode_widget::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
@@ -108,6 +111,7 @@ void mcode_widget::paintEvent(QPaintEvent *event)
     return;
 }
 
+/* 产生一个随机数字 */
 void mcode_widget::produceVerificationCode() const
 {
     for (int i = 0; i < letter_number; ++i)
@@ -116,6 +120,7 @@ void mcode_widget::produceVerificationCode() const
     return;
 }
 
+/* 产生一个随机字母（备用）*/
 QChar mcode_widget::produceRandomLetter() const
 {
     QChar c;
@@ -123,6 +128,7 @@ QChar mcode_widget::produceRandomLetter() const
     return c;
 }
 
+/* 产生随机颜色 */
 void mcode_widget::produceRandomColor() const
 {
     for (int i = 0; i < letter_number; ++i)
@@ -130,6 +136,7 @@ void mcode_widget::produceRandomColor() const
     return;
 }
 
+/* 控制字母是否能改变，用于外部控制 */
 void mcode_widget::set_change(int ok_num) {
     if(ok_num == 0) {
         ok = false;
@@ -138,7 +145,7 @@ void mcode_widget::set_change(int ok_num) {
     }
 }
 
-
+/* 刷新验证码 ，实际上是重绘 */
 void mcode_widget::reflushVerification()
 {
     repaint();

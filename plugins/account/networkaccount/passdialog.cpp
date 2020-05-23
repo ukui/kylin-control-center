@@ -110,16 +110,19 @@ PassDialog::PassDialog(QWidget *parent) : QWidget(parent)
     connect(this,SIGNAL(code_changed()),this,SLOT(setstyleline()));
 }
 
+/* 获取错误代码 */
 void PassDialog::set_code(QString codenum) {
     code = codenum;
     emit code_changed();
 }
 
+/* 设置错误代码更新 */
 void PassDialog::setstyleline() {
     tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
                         "&nbsp;&nbsp;"+code+"</span></p></body></html>");
 }
 
+/* 以下均为类接口函数 */
 QLabel* PassDialog::get_passtips() {
     return passtips;
 }
@@ -165,6 +168,7 @@ QLineEdit* PassDialog::get_valid_code() {
     return valid_code;
 }
 
+/* 清空忘记密码框 */
 void PassDialog::set_clear() {
     if(!tips->isHidden()) {
         tips->hide();

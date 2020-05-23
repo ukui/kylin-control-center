@@ -82,6 +82,7 @@ ql_combobobx::ql_combobobx(QWidget *parent) : QWidget(parent)
     connect(pushbutton, SIGNAL(clicked()),this,SLOT(showpopup()));
 }
 
+/* 显示下拉框 */
 void ql_combobobx::showpopup() {
     if (popup->isHidden()) {
         QPoint pos;
@@ -94,6 +95,7 @@ void ql_combobobx::showpopup() {
     }
 }
 
+/* 关闭下拉框，并记录鼠标点击的位置相对应的国家代码输入到代码框 */
 void ql_combobobx::closepopup(QListWidgetItem *item) {
     popup->hide();
     QWidget *wgt = listwidget->itemWidget(item);
@@ -103,6 +105,7 @@ void ql_combobobx::closepopup(QListWidgetItem *item) {
     }
 }
 
+/* 增加新的国家以及代码，不常用 */
 void ql_combobobx::addItem(QString country, QString code) {
     QListWidgetItem* widgetItem = new QListWidgetItem(listwidget);
     ql_box_item *wgt = new ql_box_item(this);

@@ -41,10 +41,14 @@ item_list::item_list(QListWidget *parent,int itemssize) : QListWidget(parent) {
     this->setSpacing(1);
 }
 
+/* 获取列表物品，如麒麟天气、壁纸等选单列表
+ * Get a item of list, for example: Getting Kylin-Weather, Wallpaper etc.. */
 network_item*  item_list::get_item(int cur) {
     return itempack[cur];
 }
 
+/* 添加物品选单，方便以后扩展 *
+ * Add item for list to make convienience for future application */
 void item_list::add_item(QString item_name) {
     itemsize = itemsize + 1;
     itempack[itemsize - 1] = new network_item(this);
@@ -58,7 +62,8 @@ void item_list::add_item(QString item_name) {
     setItemWidget(items[itemsize - 1], itempack[itemsize - 1]->get_widget());
 }
 
-
+/* 读取列表
+ * Read the list */
 QStringList item_list::get_list() {
     return varmap;
 }
