@@ -48,9 +48,9 @@ extern "C" {
 #define HEADHEIGHT 38
 
 
-struct SaveData : QObjectUserData {
-    QString bname;
-};
+//struct SaveData : QObjectUserData {
+//    QString bname;
+//};
 
 AutoBoot::AutoBoot(){
     ui = new Ui::AutoBoot;

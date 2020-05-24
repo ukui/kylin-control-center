@@ -26,7 +26,7 @@
 #include <QObject>
 
 
-typedef struct _FuncInfo : QObjectUserData
+typedef struct _FuncInfo
 {
     int type;
     int index;
@@ -35,7 +35,7 @@ typedef struct _FuncInfo : QObjectUserData
     QString namei18nString;
 }FuncInfo;
 
-typedef struct _RecordFunc : QObjectUserData
+typedef struct _RecordFunc
 {
     int type;
     QString namei18nString;

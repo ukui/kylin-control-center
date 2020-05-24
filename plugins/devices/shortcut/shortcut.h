@@ -39,7 +39,7 @@ QT_END_NAMESPACE
 
 typedef struct _KeyEntry KeyEntry;
 
-struct _KeyEntry : QObjectUserData{
+struct _KeyEntry{
 //    int keyval;
     QString gsSchema;
     QString keyStr;
@@ -52,7 +52,7 @@ struct _KeyEntry : QObjectUserData{
     QString actionStr;
 };
 
-Q_DECLARE_METATYPE(KeyEntry)
+Q_DECLARE_METATYPE(KeyEntry *)
 
 class Shortcut : public QObject, CommonInterface
 {

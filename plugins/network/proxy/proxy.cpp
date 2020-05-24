@@ -159,46 +159,45 @@ void Proxy::setupComponent(){
     ui->manualHorLayout->addWidget(manualSwitchBtn);
 
     //QLineEdit 设置数据
-    KeyValue * httpHostValue = new KeyValue();
-    httpHostValue->schema = HTTP_PROXY_SCHEMA;
-    httpHostValue->key = PROXY_HOST_KEY;
-    ui->httpHostLineEdit->setUserData(Qt::UserRole, httpHostValue);
+    GSData httpHostData;
+    httpHostData.schema = HTTP_PROXY_SCHEMA;
+    httpHostData.key = PROXY_HOST_KEY;
+    ui->httpHostLineEdit->setProperty("gData", QVariant::fromValue(httpHostData));
 
-    KeyValue * httpsHostValue = new KeyValue();
-    httpsHostValue->schema = HTTPS_PROXY_SCHEMA;
-    httpsHostValue->key = PROXY_HOST_KEY;
-    ui->httpsHostLineEdit->setUserData(Qt::UserRole, httpsHostValue);
+    GSData httpsHostData;
+    httpsHostData.schema = HTTPS_PROXY_SCHEMA;
+    httpsHostData.key = PROXY_HOST_KEY;
+    ui->httpsHostLineEdit->setProperty("gData", QVariant::fromValue(httpsHostData));
 
-    KeyValue * ftpHostValue = new KeyValue();
-    ftpHostValue->schema = FTP_PROXY_SCHEMA;
-    ftpHostValue->key = PROXY_HOST_KEY;
-    ui->ftpHostLineEdit->setUserData(Qt::UserRole, ftpHostValue);
+    GSData ftpHostData;
+    ftpHostData.schema = FTP_PROXY_SCHEMA;
+    ftpHostData.key = PROXY_HOST_KEY;
+    ui->ftpHostLineEdit->setProperty("gData", QVariant::fromValue(ftpHostData));
 
-    KeyValue * socksHostValue = new KeyValue();
-    socksHostValue->schema = SOCKS_PROXY_SCHEMA;
-    socksHostValue->key = PROXY_HOST_KEY;
-    ui->socksHostLineEdit->setUserData(Qt::UserRole, socksHostValue);
+    GSData socksHostData;
+    socksHostData.schema = SOCKS_PROXY_SCHEMA;
+    socksHostData.key = PROXY_HOST_KEY;
+    ui->socksHostLineEdit->setProperty("gData", QVariant::fromValue(socksHostData));
 
-    KeyValue * httpPortValue = new KeyValue();
-    httpPortValue->schema = HTTP_PROXY_SCHEMA;
-    httpPortValue->key = PROXY_PORT_KEY;
-    ui->httpPortLineEdit->setUserData(Qt::UserRole, httpPortValue);
+    GSData httpPortData;
+    httpPortData.schema = HTTP_PROXY_SCHEMA;
+    httpPortData.key = PROXY_PORT_KEY;
+    ui->httpPortLineEdit->setProperty("gData", QVariant::fromValue(httpPortData));
 
-    KeyValue * httpsPortValue = new KeyValue();
-    httpsPortValue->schema = HTTPS_PROXY_SCHEMA;
-    httpsPortValue->key = PROXY_PORT_KEY;
-    ui->httpsPortLineEdit->setUserData(Qt::UserRole, httpsPortValue);
+    GSData httpsPortData;
+    httpsPortData.schema = HTTPS_PROXY_SCHEMA;
+    httpsPortData.key = PROXY_PORT_KEY;
+    ui->httpsPortLineEdit->setProperty("gData", QVariant::fromValue(httpsPortData));
 
-    KeyValue * ftpPortValue = new KeyValue();
-    ftpPortValue->schema = FTP_PROXY_SCHEMA;
-    ftpPortValue->key = PROXY_PORT_KEY;
-    ui->ftpPortLineEdit->setUserData(Qt::UserRole, ftpPortValue);
+    GSData ftpPortData;
+    ftpPortData.schema = FTP_PROXY_SCHEMA;
+    ftpPortData.key = PROXY_PORT_KEY;
+    ui->ftpPortLineEdit->setProperty("gData", QVariant::fromValue(ftpPortData));
 
-    KeyValue * socksPortValue = new KeyValue();
-    socksPortValue->schema = SOCKS_PROXY_SCHEMA;
-    socksPortValue->key = PROXY_PORT_KEY;
-    ui->socksPortLineEdit->setUserData(Qt::UserRole, socksPortValue);
-
+    GSData socksPortData;
+    socksPortData.schema = SOCKS_PROXY_SCHEMA;
+    socksPortData.key = PROXY_PORT_KEY;
+    ui->socksPortLineEdit->setProperty("gData", QVariant::fromValue(socksPortData));
 }
 
 void Proxy::setupConnect(){
@@ -351,8 +350,8 @@ void Proxy::manualProxyTextChanged(QString txt){
     QLineEdit * who = dynamic_cast<QLineEdit *>(pobject);
 
     //获取控件保存的用户数据
-    KeyValue * current = (KeyValue *)(who->userData(Qt::UserRole));
-    QString schema = current->schema; QString key = current->key;
+    GSData currentData = who->property("gData").value<GSData>();
+    QString schema = currentData.schema; QString key = currentData.key;
 
     //构建临时QGSettings
     const QByteArray id = schema.toUtf8();

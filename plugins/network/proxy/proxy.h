@@ -45,7 +45,8 @@ extern "C" {
 #include <gio/gio.h>
 }
 
-struct KeyValue : QObjectUserData {
+struct GSData
+{
     QString key;
     QString schema;
 };
@@ -59,6 +60,7 @@ typedef enum{
 
 //自定义类型使用QVariant需要使用 Q_DECLARE_METATYPE 注册
 Q_DECLARE_METATYPE(ProxyMode)
+Q_DECLARE_METATYPE(GSData)
 
 namespace Ui {
 class Proxy;

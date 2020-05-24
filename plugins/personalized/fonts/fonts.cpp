@@ -87,10 +87,12 @@ typedef enum{
     HINT_FULL
 }Hinting;
 
-struct FontEffects : QObjectUserData {
+struct FontEffects{
     Antialiasing antial;
     Hinting hinting;
 };
+
+Q_DECLARE_METATYPE(FontEffects)
 
 QList<int> defaultsizeList = {6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72};
 
@@ -127,7 +129,6 @@ Fonts::Fonts()
         ifsettings = new QGSettings(id);
         rendersettings = new QGSettings(iid);
         stylesettings = new QGSettings(styleID);
-
 
         _getDefaultFontinfo();
         setupComponent();
@@ -313,19 +314,19 @@ void Fonts::setupComponent(){
     ui->advancedFrame->setVisible(ui->advancedBtn->isChecked());
 
     //init sample button
-    FontEffects * example1 = new FontEffects();
-    FontEffects * example2 = new FontEffects();
-    FontEffects * example3 = new FontEffects();
-    FontEffects * example4 = new FontEffects();
-    example1->antial = ANTIALIASING_NONE; example1->hinting = HINT_FULL;
-    example2->antial = ANTIALIASING_GRAYSCALE; example2->hinting = HINT_FULL;
-    example3->antial = ANTIALIASING_GRAYSCALE; example3->hinting = HINT_MEDIUM;
-    example4->antial = ANTIALIASING_RGBA; example4->hinting = HINT_FULL;
+    FontEffects example1;
+    FontEffects example2;
+    FontEffects example3;
+    FontEffects example4;
+    example1.antial = ANTIALIASING_NONE; example1.hinting = HINT_FULL;
+    example2.antial = ANTIALIASING_GRAYSCALE; example2.hinting = HINT_FULL;
+    example3.antial = ANTIALIASING_GRAYSCALE; example3.hinting = HINT_MEDIUM;
+    example4.antial = ANTIALIASING_RGBA; example4.hinting = HINT_FULL;
 
-    ui->sampleBtn1->setUserData(Qt::UserRole, example1);
-    ui->sampleBtn2->setUserData(Qt::UserRole, example2);
-    ui->sampleBtn3->setUserData(Qt::UserRole, example3);
-    ui->sampleBtn4->setUserData(Qt::UserRole, example4);
+    ui->sampleBtn1->setProperty("userData", QVariant::fromValue(example1));
+    ui->sampleBtn2->setProperty("userData", QVariant::fromValue(example2));
+    ui->sampleBtn3->setProperty("userData", QVariant::fromValue(example3));
+    ui->sampleBtn4->setProperty("userData", QVariant::fromValue(example4));
 
 //    setSampleButton(ui->sampleBtn1);
 
@@ -535,8 +536,8 @@ void Fonts::initSampleFontStatus(){
     int currenthinting = g_settings_get_enum(settings, HINTING_KEY);
     QList<QAbstractButton *> buttonsList = ui->sampleBtnGroup->buttons();
     for (int num = 0; num < buttonsList.size(); num++){
-        FontEffects * btnFontEffects = (FontEffects *)((QPushButton *)buttonsList[num])->userData(Qt::UserRole);
-        if (currentantial == btnFontEffects->antial && currenthinting == btnFontEffects->hinting){
+        FontEffects btnFontEffects = dynamic_cast<QPushButton *>(buttonsList[num])->property("userData").value<FontEffects>();
+        if (currentantial == btnFontEffects.antial && currenthinting == btnFontEffects.hinting){
             QPushButton * button = ((QPushButton *)buttonsList[num]);
             button->blockSignals(true);
             button->setChecked(true);
@@ -645,11 +646,11 @@ QStringList Fonts::_splitFontNameSize(QString value){
 
 void Fonts::setFontEffect(QAbstractButton *button){
     QPushButton * btnclicked = (QPushButton *)button;
-    FontEffects * setFontEffects = (FontEffects *)(btnclicked->userData(Qt::UserRole));
+    FontEffects setFontEffects = btnclicked->property("userData").value<FontEffects>();
 
     GSettings * settings = g_settings_new(FONT_RENDER_SCHEMA);
-    g_settings_set_enum(settings, ANTIALIASING_KEY, setFontEffects->antial);
-    g_settings_set_enum(settings, HINTING_KEY, setFontEffects->hinting);
+    g_settings_set_enum(settings, ANTIALIASING_KEY, setFontEffects.antial);
+    g_settings_set_enum(settings, HINTING_KEY, setFontEffects.hinting);
     g_object_unref(settings);
 }
 

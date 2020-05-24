@@ -179,7 +179,8 @@ void Shortcut::setupConnect(){
         if (!selectedItems.isEmpty()){
             QListWidgetItem * sItem = selectedItems.first();
             DefineShortcutItem * wItem = dynamic_cast<DefineShortcutItem *>(ui->generalListWidget->itemWidget(sItem));
-            KeyEntry * currentEntry = dynamic_cast<KeyEntry *>(wItem->userData(Qt::UserRole));
+//            KeyEntry * currentEntry = dynamic_cast<KeyEntry *>(wItem->userData(Qt::UserRole));
+            KeyEntry * currentEntry = wItem->property("userData").value<KeyEntry *>();
 
             const QByteArray id(currentEntry->gsSchema.toLatin1().data());
             QGSettings * settings = new QGSettings(id);
@@ -250,7 +251,8 @@ void Shortcut::appendGeneralItems(){
         if (showList.contains(gkeyEntry->keyStr)){
             DefineShortcutItem * singleWidget = new DefineShortcutItem(gkeyEntry->keyStr, gkeyEntry->valueStr);
             singleWidget->setFrameShape(QFrame::Shape::Box);
-            singleWidget->setUserData(Qt::UserRole, gkeyEntry);
+//            singleWidget->setUserData(Qt::UserRole, gkeyEntry);
+            singleWidget->setProperty("userData", QVariant::fromValue(gkeyEntry));
 
             CustomLineEdit * line = singleWidget->lineeditComponent();
             connect(line, &CustomLineEdit::shortcutCodeSignals, this, [=](QList<int> keyCode){
@@ -275,7 +277,8 @@ void Shortcut::buildCustomItem(KeyEntry * nkeyEntry){
     DefineShortcutItem * singleWidget = new DefineShortcutItem(nkeyEntry->nameStr, nkeyEntry->bindingStr);
     singleWidget->setDeleteable(true);
     singleWidget->setUpdateable(true);
-    singleWidget->setUserData(Qt::UserRole, nkeyEntry);
+//    singleWidget->setUserData(Qt::UserRole, nkeyEntry);
+    singleWidget->setProperty("userData", QVariant::fromValue(nkeyEntry));
     connect(singleWidget, &DefineShortcutItem::updateShortcutSignal, [=]{
         addDialog->setTitleText(QObject::tr("Update Shortcut"));
         addDialog->setUpdateEnv(nkeyEntry->gsPath, nkeyEntry->nameStr, nkeyEntry->actionStr);
@@ -396,7 +399,8 @@ void Shortcut::createNewShortcut(QString path, QString name, QString exec){
                 DefineShortcutItem * widgetItem = dynamic_cast<DefineShortcutItem *>(ui->customListWidget->itemWidget(item));
                 widgetItem->setShortcutName(name);
                 KeyEntry * uKeyentry = customEntries.at(i);
-                widgetItem->setUserData(Qt::UserRole, uKeyentry);
+//                widgetItem->setUserData(Qt::UserRole, uKeyentry);
+                widgetItem->setProperty("userData", QVariant::fromValue(uKeyentry));
             }
         }
     }
@@ -442,7 +446,8 @@ void Shortcut::newBindingRequest(QList<int> keyCode){
     CustomLineEdit * current = qobject_cast<CustomLineEdit *>(object); //孙子
     QWidget * widget = current->parentWidget();
     DefineShortcutItem * widgetItem = dynamic_cast<DefineShortcutItem *>(widget->parentWidget());
-    KeyEntry * nkeyEntry = dynamic_cast<KeyEntry *>(widgetItem->userData(Qt::UserRole));
+//    KeyEntry * nkeyEntry = dynamic_cast<KeyEntry *>(widgetItem->userData(Qt::UserRole));
+    KeyEntry * nkeyEntry = widgetItem->property("userData").value<KeyEntry *>();
 
     QString shortcutString = getBindingName(keyCode);
 
@@ -502,6 +507,11 @@ void Shortcut::newBindingRequest(QList<int> keyCode){
     }
 }
 
+/**
+ * @brief Shortcut::getBindingName
+ * @param keyCode
+ * @return
+ */
 QString Shortcut::getBindingName(QList<int> keyCode){
     QStringList tmpList;
     for (int keycode : keyCode){
