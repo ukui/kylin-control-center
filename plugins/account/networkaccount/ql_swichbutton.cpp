@@ -136,6 +136,10 @@ int QL_SwichButton::get_swichbutton_val() {
     return this->on;
 }
 
+QL_SwichButton::~QL_SwichButton() {
+    delete ql_color;
+}
+
 /* 设置开关状态 */
 void QL_SwichButton::set_swichbutton_val(int on) {
     this->on = on;

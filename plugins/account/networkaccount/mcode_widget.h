@@ -32,6 +32,7 @@ class mcode_widget : public QLabel
     Q_OBJECT
 public:
     mcode_widget(QWidget *parent = 0);
+    ~mcode_widget();
     QChar *get_verificate_code();
     void set_change(int ok);
 protected:

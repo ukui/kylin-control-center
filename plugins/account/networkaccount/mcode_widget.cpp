@@ -145,6 +145,11 @@ void mcode_widget::set_change(int ok_num) {
     }
 }
 
+mcode_widget::~mcode_widget(){
+    delete[] colorArray;
+    delete[] verificationCode;
+}
+
 /* 刷新验证码 ，实际上是重绘 */
 void mcode_widget::reflushVerification()
 {

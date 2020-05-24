@@ -54,7 +54,7 @@ area_code_lineedit::area_code_lineedit(QWidget *parent) : QLineEdit(parent)
 {
     //Allocate the memories
     combobox = new ql_combobobx(this);
-    vertical_line = new QFrame;
+    vertical_line = new QFrame(this);
     layout = new QHBoxLayout;
 
     //Resize

@@ -29,6 +29,7 @@ class QL_SwichButton : public QWidget
     Q_OBJECT
 public:
     explicit        QL_SwichButton(QWidget *parent = nullptr);
+    ~QL_SwichButton();
     void            set_swichbutton_val(int on);
     int             get_swichbutton_val();
     void            set_id(int id);
