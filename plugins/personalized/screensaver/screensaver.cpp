@@ -157,7 +157,7 @@ void Screensaver::initComponent(){
 
     //初始化滑动条
     QStringList scaleList;
-    scaleList<< tr("Never") << tr("5m") << tr("10m") << tr("30m") << tr("45m")
+    scaleList<< tr("1m") << tr("5m") << tr("10m") << tr("30m") << tr("45m")
               <<tr("1h") << tr("1.5h") << tr("3h");
 
     uslider = new Uslider(scaleList);
@@ -174,7 +174,6 @@ void Screensaver::initComponent(){
 //    ui->idleSlider->setPageStep(IDLESTEP);
 
     connect(enableSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
-        qDebug()<<"enableSwitchBtn--------->"<<endl;
         screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
         g_settings_set_boolean(screensaver_settings, ACTIVE_KEY, checked);
 
@@ -505,7 +504,7 @@ void Screensaver::kill_and_start(){
 int Screensaver::convertToLocktime(const int value) {
     switch (value) {
     case 1:
-        return 1800;
+        return 1;
         break;
     case 2:
         return 5;
@@ -529,14 +528,14 @@ int Screensaver::convertToLocktime(const int value) {
         return 180;
         break;
     default:
-        return 1800;
+        return 1;
         break;
     }
 }
 
 int Screensaver::lockConvertToSlider(const int value) {
     switch (value) {
-    case 1800:
+    case 1:
         return 1;
         break;
     case 5:

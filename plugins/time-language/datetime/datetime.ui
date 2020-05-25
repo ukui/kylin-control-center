@@ -154,15 +154,21 @@
      </property>
      <item>
       <widget class="QPushButton" name="synsystimeBtn">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
-         <width>120</width>
+         <width>130</width>
          <height>36</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>120</width>
+         <width>130</width>
          <height>16777215</height>
         </size>
        </property>
@@ -178,13 +184,13 @@
       <widget class="QPushButton" name="chgtimebtn">
        <property name="minimumSize">
         <size>
-         <width>120</width>
+         <width>130</width>
          <height>36</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>120</width>
+         <width>130</width>
          <height>36</height>
         </size>
        </property>
@@ -197,13 +203,13 @@
       <widget class="QPushButton" name="chgzonebtn">
        <property name="minimumSize">
         <size>
-         <width>120</width>
+         <width>130</width>
          <height>36</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>120</width>
+         <width>130</width>
          <height>36</height>
         </size>
        </property>

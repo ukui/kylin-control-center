@@ -114,7 +114,7 @@ void Screenlock::setupComponent(){
     lockLoginSettings = new QSettings(lockfilename, QSettings::IniFormat);
 
     QStringList scaleList;
-    scaleList<< tr("Never") << tr("5m") << tr("10m") << tr("30m") << tr("45m")
+    scaleList<< tr("1m") << tr("5m") << tr("10m") << tr("30m") << tr("45m")
               <<tr("1h") << tr("1.5h") << tr("3h");
 
     uslider = new Uslider(scaleList);
@@ -134,9 +134,16 @@ void Screenlock::setupComponent(){
     lockSwitchBtn = new SwitchButton(pluginWidget);
     ui->lockHorLayout->addWidget(lockSwitchBtn);
 
+    bool lockKey = false;
+    QStringList keys =  lSetting->keys();
+    if (keys.contains("lockEnabled")) {
+        lockKey = true;
+        bool status = lSetting->get(SCREENLOCK_LOCK_KEY).toBool();
+        lockSwitchBtn->setChecked(status);
+    }
+
     connect(lockSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
-        QStringList keys =  lSetting->keys();
-        if (keys.contains("lockEnabled")) {
+        if (lockKey) {
             lSetting->set(SCREENLOCK_LOCK_KEY,  checked);
         }
     });
@@ -246,7 +253,7 @@ void Screenlock::initScreenlockStatus(){
 int Screenlock::convertToLocktime(const int value) {
     switch (value) {
     case 1:
-        return 1800;
+        return 1;
         break;
     case 2:
         return 5;
@@ -270,14 +277,14 @@ int Screenlock::convertToLocktime(const int value) {
         return 180;
         break;
     default:
-        return 1800;
+        return 1;
         break;
     }
 }
 
 int Screenlock::lockConvertToSlider(const int value) {
     switch (value) {
-    case 1800:
+    case 1:
         return 1;
         break;
     case 5:
@@ -302,7 +309,7 @@ int Screenlock::lockConvertToSlider(const int value) {
         return 8;
         break;
     default:
-        return 1800;
+        return 1;
         break;
     }
 }
