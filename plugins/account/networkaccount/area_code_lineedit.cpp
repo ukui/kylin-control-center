@@ -93,3 +93,7 @@ area_code_lineedit::area_code_lineedit(QWidget *parent) : QLineEdit(parent)
     setContentsMargins(0,0,0,0);
 
 }
+
+area_code_lineedit::~area_code_lineedit() {
+    delete json_file;
+}
