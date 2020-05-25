@@ -143,7 +143,7 @@ void config_list_widget::init_gui() {
     tab = new QWidget(this);//用户信息窗口
     container = new QWidget(this);//业务逻辑窗口，包括用户信息以及同步
     namewidget = new QWidget(this);//名字框
-    list = new item_list(this);//滑动按钮列表
+    list = new item_list();//滑动按钮列表
     //ld = new LoginDialog(this);
     auto_syn = new network_item(this);//自动同步按钮
     title = new QLabel(this);//标题
@@ -533,6 +533,7 @@ void config_list_widget::push_over() {
 
 /* 析构函数 */
 config_list_widget::~config_list_widget() {
+    delete list;
     delete pm;
     delete login_dialog;
     delete edit_dialog;
