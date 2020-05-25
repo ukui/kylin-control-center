@@ -41,6 +41,7 @@ class area_code_lineedit : public QLineEdit
 public:
     explicit    area_code_lineedit(QWidget *parent = nullptr);
     void        InittoCountrycode();
+    ~area_code_lineedit();
 private:
     ql_combobobx *combobox;
     QJsonArray json_code;
