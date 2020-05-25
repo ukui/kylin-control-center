@@ -83,6 +83,8 @@ public:
     void _acquireCardInfo();
     void runExternalApp();
 
+    bool getwifiisEnable();
+
 private:
     Ui::NetConnect *ui;
 

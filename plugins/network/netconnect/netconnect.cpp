@@ -26,6 +26,8 @@
 #include <QGSettings/QGSettings>
 #include <QProcess>
 #include <QTimer>
+#include <QDBusInterface>
+#include <QDBusReply>
 
 
 #define CONTROL_CENTER_WIFI "org.ukui.control-center.wifi.switch"
@@ -69,9 +71,6 @@ NetConnect::NetConnect():m_wifiList(new Wifi)
 //    ui->openWifiWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
     ui->openWIifLayout->addWidget(wifiBtn);
 
-//    ui->openWifiWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-    ui->openWIifLayout->addWidget(wifiBtn);
-
     //构建网络配置对象
     nmg  = new QNetworkConfigurationManager();
     initComponent();
@@ -104,6 +103,8 @@ void NetConnect::plugin_delay_control(){
 }
 
 void NetConnect::initComponent(){
+    wifiBtn->setEnabled(getwifiisEnable());
+
     const QByteArray id(CONTROL_CENTER_WIFI);
     if(QGSettings::isSchemaInstalled(id)) {
 //        qDebug()<<"isSchemaInstalled"<<endl;
@@ -364,6 +365,39 @@ void NetConnect::runExternalApp(){
     QString cmd = "nm-connection-editor";
     QProcess process(this);
     process.startDetached(cmd);
+}
+
+bool NetConnect::getwifiisEnable()
+{
+    QDBusInterface m_interface( "org.freedesktop.NetworkManager",
+                                "/org/freedesktop/NetworkManager",
+                                "org.freedesktop.NetworkManager",
+                                QDBusConnection::systemBus() );
+
+    QDBusReply<QList<QDBusObjectPath>> obj_reply = m_interface.call("GetAllDevices");
+    if (!obj_reply.isValid()) {
+        qDebug()<<"execute dbus method 'GetAllDevices' is invalid in func getObjectPath()";
+    }
+
+    QList<QDBusObjectPath> obj_paths = obj_reply.value();
+
+    foreach (QDBusObjectPath obj_path, obj_paths){
+        QDBusInterface interface( "org.freedesktop.NetworkManager",
+                                  obj_path.path(),
+                                  "org.freedesktop.DBus.Introspectable",
+                                  QDBusConnection::systemBus() );
+
+        QDBusReply<QString> reply = interface.call("Introspect");
+        if (!reply.isValid()) {
+            qDebug()<<"execute dbus method 'Introspect' is invalid in func getObjectPath()";
+        }
+
+        if(reply.value().indexOf("org.freedesktop.NetworkManager.Device.Wired") != -1){
+        } else if (reply.value().indexOf("org.freedesktop.NetworkManager.Device.Wireless") != -1){
+            return true;
+        }
+    }
+    return false ;
 }
 
 
