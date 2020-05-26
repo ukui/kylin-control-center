@@ -19,7 +19,7 @@ typedef struct
     char *dev;//活动网络所属设备
 }activecon;//存放当前活动网络连接
 
-activecon *kylin_network_get_activecon_info();
+activecon *kylin_network_get_activecon_info(char *path);
 
 #ifdef __cplusplus
 }

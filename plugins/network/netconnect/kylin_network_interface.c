@@ -1,11 +1,20 @@
 #include "kylin_network_interface.h"
 
+#include <syslog.h>
+
 //获取所有网络连接
 //获取当前活动网络连接
-activecon *kylin_network_get_activecon_info()
+
+activecon *kylin_network_get_activecon_info(char *path)
 {
-    system("nmcli connection show -active > /tmp/netactivecon.txt");
-    char *filename="/tmp/netactivecon.txt";
+    char *chr = "nmcli connection show -active > ";
+    char *cmd = (char *) malloc(strlen(chr) + strlen(path) + 1);
+    strcpy(cmd, chr);
+    strcat(cmd, path);
+    int status = system(cmd);
+    //int status = system("nmcli connection show -active > /tmp/activecon.txt");
+    if (status != 0){ syslog(LOG_ERR, "execute 'nmcli connection show -active' in function 'kylin_network_get_activecon_info' failed");}
+    char *filename = path;
 
     FILE *activefp;
     int activenum=0;
@@ -21,7 +30,7 @@ activecon *kylin_network_get_activecon_info()
         fgets(activeStrLine,1024,activefp);
         activenum++;
     }
-//    printf("%d\n",activenum);
+    // printf("%d\n",activenum);
     fclose(activefp);
     activecon *activelist=(activecon *)malloc(sizeof(activecon)*activenum);
 
@@ -55,12 +64,12 @@ activecon *kylin_network_get_activecon_info()
             num++;
         }
 
-//        printf("连接名称长度：%d\n",num);
+        // printf("连接名称长度：%d\n",num);
         activelist[count].con_name=(char *)malloc(sizeof(char)*(num+1));
         strncpy(conname,StrLine,num+1);
         conname[num]='\0';
         strncpy(activelist[count].con_name,conname,num+1);
-//        printf("%s\n",activelist[count].con_name);
+        // printf("%s\n",activelist[count].con_name);
 
         //截取连接类型
         char type[100];
@@ -94,7 +103,7 @@ activecon *kylin_network_get_activecon_info()
         strncpy(type,index1+2,num1+1);
         type[num1]='\0';
         strncpy(activelist[count].type,type,num1+1);
-//        printf("%s\n",activelist[count].type);
+        // printf("%s\n",activelist[count].type);
 
         //截取连接所属设备
         char *index3=index2;
@@ -118,7 +127,7 @@ activecon *kylin_network_get_activecon_info()
         strncpy(dev,index3+1,num2+1);
         dev[num2]='\0';
         strncpy(activelist[count].dev,dev,num2+1);
-//        printf("%s\n",activelist[count].dev);
+        // printf("%s\n",activelist[count].dev);
         count++;
     }
     fclose(fp);

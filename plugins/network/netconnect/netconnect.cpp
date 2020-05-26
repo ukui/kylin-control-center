@@ -28,6 +28,7 @@
 #include <QTimer>
 #include <QDBusInterface>
 #include <QDBusReply>
+#include <QDir>
 
 
 #define CONTROL_CENTER_WIFI "org.ukui.control-center.wifi.switch"
@@ -430,6 +431,7 @@ QStringList NetConnect::execGetWifiList(){
 }
 
 void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanList) {
+    QString lockPath = QDir::homePath() + "/.config/control-center-net";
 
     //if is wifi list
     if(!getwifislist.isEmpty()){
@@ -437,11 +439,11 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
         wifiList.clear();
 
         QString actWifiName = "--";
-        activecon *act = kylin_network_get_activecon_info();
+        activecon *act = kylin_network_get_activecon_info(lockPath.toUtf8().data());
 
         int index = 0;
         while(act[index].con_name != NULL){
-            if(QString(act[index].type) == "wifi"){
+            if(QString(act[index].type) == "wifi" ||QString(act[index].type) == "802-11-wireless"){
                 actWifiName = QString(act[index].con_name);
                 break;
             }
@@ -486,10 +488,11 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
         connectedLan.clear();
 
         // 获取当前连接的lan name
-        activecon *actLan = kylin_network_get_activecon_info();
+        activecon *actLan = kylin_network_get_activecon_info(lockPath.toUtf8().data());
+//        qDebug()<<"the net type is----->"<<actLan[0].type<<endl;
         int indexLan = 0;
         while(actLan[indexLan].con_name != NULL){
-            if(QString(actLan[indexLan].type) == "ethernet"){
+            if (QString(actLan[indexLan].type) == "ethernet" || QString(actLan[indexLan].type) == "802-3-ethernet"){
                 actLanName = QString(actLan[indexLan].con_name);
                 break;
             }
@@ -498,17 +501,25 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
 //        qDebug()<<"actLanName is-------->"<<this->actLanName<<endl;
 
         // 填充可用网络列表
-        QString lanheadLine = getlanList.at(0);
-        lanheadLine = lanheadLine.trimmed();
-        int lanindexDevice = lanheadLine.indexOf("DEVICE");
-        int lanindexName = lanheadLine.indexOf("NAME");
+        QString headLine = getlanList.at(0);
+        int indexDevice, indexName;
+        headLine = headLine.trimmed();
+
+        bool isChineseExist = headLine.contains(QRegExp("[\\x4e00-\\x9fa5]+"));
+        if (isChineseExist) {
+            indexDevice = headLine.indexOf("设备") + 2;
+            indexName = headLine.indexOf("名称") + 4;
+        } else {
+            indexDevice = headLine.indexOf("DEVICE");
+            indexName = headLine.indexOf("NAME");
+    }
 
     //    qDebug()<<"getlanList-------------->"<<getlanList<<endl;
         for(int i =1 ;i < getlanList.length(); i++)
         {
             QString line = getlanList.at(i);
-            QString ltype = line.mid(0, lanindexDevice).trimmed();
-            QString nname = line.mid(lanindexName).trimmed();
+            QString ltype = line.mid(0, indexDevice).trimmed();
+            QString nname = line.mid(indexName).trimmed();
             if(ltype  != "wifi" && ltype != "" && ltype != "--"){
                 this->lanList << nname;
             }
