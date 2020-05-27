@@ -70,10 +70,23 @@ AddAutoBoot::AddAutoBoot(QWidget *parent) :
 
     connect(ui->openBtn, SIGNAL(clicked(bool)), this, SLOT(open_desktop_dir_slots()));
     connect(ui->cancelBtn, SIGNAL(clicked(bool)), this, SLOT(close()));
-    connect(ui->certainBtn, &QPushButton::clicked, this, [=]{emit autoboot_adding_signals(selectFile, ui->nameLineEdit->text(), ui->execLineEdit->text(), ui->commentLineEdit->text());close();});
-    connect(ui->closeBtn, &QPushButton::clicked, [=]{
-        close();
+    connect(ui->cancelBtn, &QPushButton::clicked, [=]{
+        resetBeforeClose();
     });
+    connect(ui->certainBtn, &QPushButton::clicked, this, [=]{
+        emit autoboot_adding_signals(selectFile, ui->nameLineEdit->text(), ui->execLineEdit->text(), ui->commentLineEdit->text());
+        resetBeforeClose();
+    });
+    connect(ui->closeBtn, &QPushButton::clicked, [=]{
+        resetBeforeClose();
+    });
+}
+
+void AddAutoBoot::resetBeforeClose(){
+    ui->nameLineEdit->setText(QString());
+    ui->commentLineEdit->setText(QString());
+    ui->execLineEdit->setText(QString());
+    close();
 }
 
 void AddAutoBoot::paintEvent(QPaintEvent *event) {

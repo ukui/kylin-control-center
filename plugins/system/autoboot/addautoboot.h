@@ -50,6 +50,8 @@ public:
     explicit AddAutoBoot(QWidget *parent = 0);
     ~AddAutoBoot();
 
+    void resetBeforeClose();
+
 protected:
     void paintEvent(QPaintEvent *);
 

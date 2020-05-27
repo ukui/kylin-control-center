@@ -91,8 +91,11 @@ AutoBoot::AutoBoot(){
     initUI();
 
     connect(ui->addBtn, &QPushButton::clicked, this, [=]{
-        AddAutoBoot * mdialog = new AddAutoBoot();
-        mdialog->exec();});
+//        AddAutoBoot * mdialog = new AddAutoBoot();
+//        mdialog->exec();
+        dialog->exec();
+
+    });
     connect(dialog, SIGNAL(autoboot_adding_signals(QString, QString,QString,QString)), this, SLOT(add_autoboot_realize_slot(QString ,QString,QString,QString)));
 }
 
@@ -791,8 +794,9 @@ bool AutoBoot::eventFilter(QObject *watched, QEvent *event)
         if (event->type() == QEvent::MouseButtonPress){
             QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
             if (mouseEvent->button() == Qt::LeftButton){
-                AddAutoBoot * mdialog = new AddAutoBoot();
-                mdialog->exec();
+//                AddAutoBoot * mdialog = new AddAutoBoot();
+//                mdialog->exec();
+                dialog->exec();
                 return true;
             } else
                 return false;
