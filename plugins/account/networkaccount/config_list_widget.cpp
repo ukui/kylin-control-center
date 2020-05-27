@@ -109,21 +109,23 @@ void config_list_widget::setret_man(int ret) {
 }
 
 void config_list_widget::setret_check(QString ret) {
-    code = ret;
     //qDebug()<<ret<<!ret_ok;
-    if((code == "" || code =="201" || code == "203" || code == "401" ) && ret_ok) {
-        //qDebug()<<"checked"<<code<<ret;
+    if((ret == "" || ret =="201" || ret == "203" || ret == "401" ) && ret_ok) {
+        //qDebug()<<"checked"<<ret<<ret;
         emit dologout();
         client->once = true;
-    } else if(!(code == "" || code =="201" || code == "203" || code == "401" ) &&!ret_ok){
+    } else if(!(ret == "" || ret =="201" || ret == "203" || ret == "401" ) &&!ret_ok){
         ret_ok = true;
-        info->setText(tr("Your account：%1").arg(code));
+        code = ret;
+        info->setText(tr("Your account：%1").arg(ret));
         stacked_widget->setCurrentWidget(container);
         QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
-    } else if((code == "" || code =="201" || code == "203" || code == "401" ) && ret_ok == false){
+    } else if((ret == "" || ret =="201" || ret == "203" || ret == "401" ) && ret_ok == false){
         ret_ok = true;
-    } else if(!(code == "" || code =="201" || code == "203" || code == "401" ) && ret_ok){
-        info->setText(tr("Your account：%1").arg(code));
+        stacked_widget->setCurrentWidget(null_widget);
+    } else if(!(ret == "" || ret =="201" || ret == "203" || ret == "401" ) && ret_ok){
+        info->setText(tr("Your account：%1").arg(ret));
+        code = ret;
         stacked_widget->setCurrentWidget(container);
         QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     }
