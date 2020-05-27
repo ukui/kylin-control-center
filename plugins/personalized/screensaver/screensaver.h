@@ -157,6 +157,9 @@ private:
 
 
 private slots:
+    void themesComboxChanged(int index);
+
+private slots:
     void combobox_changed_slot(int index);
     void activebtn_changed_slot(bool status);
     void lockbtn_changed_slot(bool status);

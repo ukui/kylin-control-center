@@ -71,14 +71,14 @@ Screensaver::Screensaver()
 
 //    pluginWidget->setStyleSheet("background: #ffffff;");
 
-//    ui->previewWidget->setStyleSheet("#previewWidget{background: black; border-radius: 6px;}");
+    ui->previewWidget->setStyleSheet("#previewWidget{background: black; border-radius: 6px;}");
     ui->previewWidget->setAutoFillBackground(true);
 
-    mPreviewWidget = new PreviewWidget;
-    mPreviewWidget->resize(400,222);
-    QBoxLayout *mPreviewLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    mPreviewLayout->addWidget(mPreviewWidget);
-    ui->previewWidget->setLayout(mPreviewLayout);
+//    mPreviewWidget = new PreviewWidget;
+//    mPreviewWidget->resize(400,222);
+//    QBoxLayout *mPreviewLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+//    mPreviewLayout->addWidget(mPreviewWidget);
+//    ui->previewWidget->setLayout(mPreviewLayout);
 
 //    ui->enableWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
 
@@ -98,9 +98,9 @@ Screensaver::Screensaver()
     initThemeStatus();
     initIdleSliderStatus();
 
-    init_theme_info_map();
-    component_init();
-    status_init();
+//    init_theme_info_map();
+//    component_init();
+//    status_init();
 }
 
 Screensaver::~Screensaver()
@@ -147,9 +147,9 @@ void Screensaver::initComponent(){
     ui->comboBox->setMaxVisibleItems(5);
     ui->comboBox->addItem(tr("Default_ukui"));
     ui->comboBox->addItem(tr("Blank_Only"));
-    ui->comboBox->addItem(tr("Random"));
+//    ui->comboBox->addItem(tr("Random"));
     QMap<QString, SSThemeInfo>::iterator it = infoMap.begin();
-    for (int index = 3; it != infoMap.end(); it++, index++){
+    for (int index = 2; it != infoMap.end(); it++, index++){
         SSThemeInfo info = (SSThemeInfo)it.value();
         ui->comboBox->addItem(info.name);
         ui->comboBox->setItemData(index, QVariant::fromValue(info));
@@ -223,6 +223,13 @@ void Screensaver::initComponent(){
         g_object_unref(session_settings);
     });
 
+
+    connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(themesComboxChanged(int)));
+
+    connect(ui->previewWidget, &QWidget::destroyed, this, [=]{
+        closeScreensaver();
+    });
+
 }
 
 void Screensaver::initPreviewWidget(){
@@ -281,21 +288,24 @@ void Screensaver::initThemeStatus(){
     else if (mode == MODE_BLANK_ONLY){
         ui->comboBox->setCurrentIndex(1); //Black_Only
     }
-    else if (mode == MODE_RANDOM){
-        ui->comboBox->setCurrentIndex(2); //Random
-    }
+//    else if (mode == MODE_RANDOM){
+//        ui->comboBox->setCurrentIndex(2); //Random
+//    }
     else{
         gchar ** strv;
         strv = g_settings_get_strv(screensaver_settings, THEMES_KEY);
-
         if (strv != NULL){
             name = g_strdup(strv[0]);
-            QString nameqt = QString(name);
-            SSThemeInfo info = (SSThemeInfo)infoMap.find(name).value();
-            ui->comboBox->setCurrentText(info.name);
+
+            QString dest =  (infoMap.find(name) != infoMap.end()) ? infoMap.value(name).name : "";
+
+            if (dest == "")
+                ui->comboBox->setCurrentIndex(1); //
+            else
+                ui->comboBox->setCurrentText(dest);
         }
         else
-            ui->comboBox->setCurrentIndex(0); //no data, default Blank_Only
+            ui->comboBox->setCurrentIndex(1); //no data, default Blank_Only
         g_strfreev(strv);
     }
     g_object_unref(screensaver_settings);
@@ -383,7 +393,6 @@ void Screensaver::status_init(){
 
         if (strv != NULL){
             name = g_strdup(strv[0]);
-            QString nameqt = QString(name);
             SSThemeInfo info = (SSThemeInfo)infoMap.find(name).value();
             ui->comboBox->setCurrentText(info.name);
         }
@@ -439,25 +448,25 @@ void Screensaver::status_init(){
 void Screensaver::startupScreensaver(){
     //关闭屏保
     closeScreensaver();
-    qDebug() << Q_FUNC_INFO << mPreviewWidget->winId();
+    qDebug() << Q_FUNC_INFO << ui->previewWidget->winId();
     if (ui->comboBox->currentIndex() == 0){//UKUI
         QStringList args;
-        args << "-window-id" << QString::number(mPreviewWidget->winId());
+        args << "-window-id" << QString::number(ui->previewWidget->winId());
         //启动屏保
         process->startDetached(UKUI_SCREENSAVER_BIN, args);
         runStringList.append(UKUI_SCREENSAVER_BIN);
     }
     else if (ui->comboBox->currentIndex() == 1){//黑屏
-        mPreviewWidget->update();
+        ui->previewWidget->update();
     }
-    else if (ui->comboBox->currentIndex() == 2){//随机
-        mPreviewWidget->update();
-    }
+//    else if (ui->comboBox->currentIndex() == 2){//随机
+//        ui->previewWidget->update();
+//    }
     else{//屏保
 
         SSThemeInfo info = ui->comboBox->currentData().value<SSThemeInfo>();
         QStringList args;
-        args << "-window-id" << QString::number(mPreviewWidget->winId());
+        args << "-window-id" << QString::number(ui->previewWidget->winId());
         //启动屏保
         process->startDetached(info.exec, args);
         runStringList.append(info.exec);
@@ -608,6 +617,34 @@ void Screensaver::activebtn_changed_slot(bool status){
 
 }
 
+void Screensaver::themesComboxChanged(int index){
+
+    char ** strv = NULL;
+
+    //设置屏保
+    screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
+    if (index == 0){
+        g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_DEFAULT_UKUI);
+    } else if (index == 1){
+        g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_BLANK_ONLY);
+    } else {
+        g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_SINGLE);
+        //获取当前屏保的id
+        QVariant variant = ui->comboBox->itemData(index);
+        SSThemeInfo info = variant.value<SSThemeInfo>();
+        QByteArray ba = info.id.toLatin1();
+        strv = g_strsplit(ba.data(), "%%%", 1);
+        qDebug() << Q_FUNC_INFO << "wxy-----------" <<strv;
+        g_settings_set_strv(screensaver_settings, THEMES_KEY, (const gchar * const*)strv);
+    }
+    g_object_unref(screensaver_settings);
+    g_strfreev(strv);
+
+    //刷新预览
+    startupScreensaver();
+
+}
+
 void Screensaver::combobox_changed_slot(int index){
     char ** strv = NULL;
 
@@ -619,7 +656,7 @@ void Screensaver::combobox_changed_slot(int index){
     else if (index == 1){ //Blank_Only
         g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_BLANK_ONLY);
     }
-    else if (index == 2){ //Random
+    else if (index == 10000){ //Random not in
 //        int mode = MODE_RANDOM;
         g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_RANDOM);
         //REVIEW*** 二维字符数组赋值字符串段错误？
