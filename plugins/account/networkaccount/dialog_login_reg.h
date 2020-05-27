@@ -62,6 +62,7 @@ public:
     void            set_clear();
     void            setshow(QWidget *w);
     bool            is_used = false;
+    ~Dialog_login_reg();
 
 public slots:
     void linked_forget_btn();

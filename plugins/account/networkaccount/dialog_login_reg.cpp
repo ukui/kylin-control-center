@@ -1517,3 +1517,7 @@ void Dialog_login_reg::on_close() {
     close();
 }
 
+Dialog_login_reg::~Dialog_login_reg() {
+    delete pm;
+}
+
