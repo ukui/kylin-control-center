@@ -981,7 +981,7 @@ change system settings</source>
     <message>
         <location filename="../../../plugins/system/defaultapp/defaultapp.ui" line="53"/>
         <source>Select Default Application</source>
-        <translation>选择默认的应用</translation>
+        <translation>默认应用</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/defaultapp/defaultapp.ui" line="130"/>
@@ -2330,7 +2330,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="91"/>
         <source>select power plan</source>
-        <translation>选择电源计划</translation>
+        <translation>电源计划</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="167"/>

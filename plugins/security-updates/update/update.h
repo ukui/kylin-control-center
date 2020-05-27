@@ -53,6 +53,7 @@ public:
 
 private:
     void writeSyncTime();
+    QStringList readFile(QString filepath);
 
 private:
     Ui::Update *ui;
@@ -65,7 +66,6 @@ private:
 
 private slots:
     void update_btn_clicked();
-    void update_settings_btn_clicked();
 };
 
 #endif // UPDATE_H

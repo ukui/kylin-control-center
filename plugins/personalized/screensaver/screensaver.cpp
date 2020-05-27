@@ -616,6 +616,7 @@ void Screensaver::combobox_changed_slot(int index){
         g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_DEFAULT_UKUI);
     }
     else if (index == 1){ //Blank_Only
+        qDebug()<<"this is Blan_only----------------->"<<endl;
         g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_BLANK_ONLY);
     }
     else if (index == 2){ //Random

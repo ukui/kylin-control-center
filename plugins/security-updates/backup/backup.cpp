@@ -21,6 +21,8 @@
 #include "ui_backup.h"
 
 #include <QProcess>
+#include <QFile>
+#include <QDebug>
 
 Backup::Backup()
 {
@@ -77,6 +79,46 @@ void Backup::plugin_delay_control(){
 void Backup::btnClicked(){
     QString cmd = "/usr/bin/deja-dup";
 
+    QString versionPath = "/etc/os-release";
+    QStringList osRes =  readFile(versionPath);
+    QString version;
+
+    for (QString str : osRes) {
+        if (str.contains("PRETTY_NAME=")) {
+            int index = str.indexOf("PRETTY_NAME=");
+            int startIndex = index + 13;
+            int length = str.length() - startIndex - 1;
+            version = str.mid(startIndex, length);
+        }
+    }
+
+    if (version == "Kylin V10" || version == "Kylin V10.1") {
+        cmd = "/usr/bin/kybackup";
+    }
+
     QProcess process(this);
     process.startDetached(cmd);
+}
+
+QStringList Backup::readFile(QString filepath)
+{
+    QStringList fileCont;
+    QFile file(filepath);
+    if(file.exists()) {
+        if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            qWarning() << "ReadFile() failed to open" << filepath;
+            return QStringList();
+        }
+        QTextStream textStream(&file);
+        while(!textStream.atEnd()) {
+            QString line= textStream.readLine();
+            line.remove('\n');
+            fileCont<<line;
+        }
+        file.close();
+        return fileCont;
+    } else {
+        qWarning() << filepath << " not found"<<endl;
+        return QStringList();
+    }
 }

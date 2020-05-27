@@ -46,6 +46,7 @@ public:
 
 public:
     void btnClicked();
+    QStringList readFile(QString filepath);
 
 private:
     Ui::Backup *ui;

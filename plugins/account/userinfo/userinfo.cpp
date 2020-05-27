@@ -223,9 +223,8 @@ void UserInfo::initComponent(){
     ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setSpacing(0);
 
-//    ElipseMaskWidget * mainElipseMaskWidget = new ElipseMaskWidget(ui->currentUserFaceLabel);
-//    mainElipseMaskWidget->setBgColor("#F4F4F4");
-//    mainElipseMaskWidget->setGeometry(0, 0, ui->currentUserFaceLabel->width(), ui->currentUserFaceLabel->height());
+    ElipseMaskWidget * mainElipseMaskWidget = new ElipseMaskWidget(ui->currentUserFaceLabel);
+    mainElipseMaskWidget->setGeometry(0, 0, ui->currentUserFaceLabel->width(), ui->currentUserFaceLabel->height());
 
     //设置添加用户的图标
     ui->addBtn->setIcon(QIcon("://img/plugins/userinfo/add.png"));

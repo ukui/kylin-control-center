@@ -369,7 +369,7 @@ void Wallpaper::initPreviewStatus(){
     QString color = bgsettings->get(PRIMARY).toString();
     if (!color.isEmpty()){
         QString widgetQss = QString("QWidget{background: %1; border-radius: 6px;}").arg(color);
-//        ui->previewWidget->setStyleSheet(widgetQss);
+        ui->previewWidget->setStyleSheet(widgetQss);
     }
 }
 

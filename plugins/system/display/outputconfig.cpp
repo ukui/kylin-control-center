@@ -98,6 +98,7 @@ void OutputConfig::initUi()
 
     QVBoxLayout *vbox = new QVBoxLayout(this);
     vbox->setContentsMargins(0,0,0,0);
+    vbox->setSpacing(2);
 
     //注释显示器上方标签
 
@@ -125,9 +126,6 @@ void OutputConfig::initUi()
 
 //    mMonitor = new QComboBox(this);
 //    formLayout->addRow(i18n("主显示器"),mMonitor);
-    QFont ft;
-    ft.setPointSize(14);
-
 
     //分辨率下拉框
     mResolution = new ResolutionSlider(mOutput, this);

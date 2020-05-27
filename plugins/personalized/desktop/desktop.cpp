@@ -182,13 +182,11 @@ void Desktop::setupComponent(){
     ui->deskNetworkLabel->setPixmap(QPixmap("://img/plugins/desktop/default.png"));
     ui->deskVolumeLabel->setPixmap(QPixmap("://img/plugins/desktop/default.png"));
 
-
     deskComputerSwitchBtn = new SwitchButton(pluginWidget);
     ui->deskComputerHorLayout->addWidget(deskComputerSwitchBtn);
 
     deskTrashSwitchBtn = new SwitchButton(pluginWidget);
     ui->deskTrashHorLayout->addWidget(deskTrashSwitchBtn);
-
 
     deskHomeSwitchBtn = new SwitchButton(pluginWidget);
     ui->deskHomeHorLayout->addWidget(deskHomeSwitchBtn);
@@ -199,10 +197,11 @@ void Desktop::setupComponent(){
     deskNetworkSwitchBtn = new SwitchButton(pluginWidget);
     ui->deskNetworkHorLayout->addWidget(deskNetworkSwitchBtn);
 
-    ui->menuComputerLabel->setPixmap(QPixmap("://img/plugins/desktop/computer.png"));
-    ui->menuFilesystemLabel->setPixmap(QPixmap("://img/plugins/desktop/default.png"));
-    ui->menuSettingsLabel->setPixmap(QPixmap("://img/plugins/desktop/default.png"));
-    ui->menuTrashLabel->setPixmap(QPixmap("://img/plugins/desktop/trash.png"));
+    ui->menuComputerLabel->setPixmap(QPixmap::fromImage(QIcon::fromTheme("computer").pixmap(32,32).toImage()));
+    ui->menuFilesystemLabel->setPixmap(QPixmap::fromImage(QIcon::fromTheme("user-home").pixmap(32,32).toImage()));
+    ui->menuSettingsLabel->setPixmap(QPixmap::fromImage(QIcon::fromTheme("ukui-control-center").pixmap(32,32).toImage()));
+    ui->menuTrashLabel->setPixmap(QPixmap::fromImage(QIcon::fromTheme("user-trash").pixmap(32,32).toImage()));
+
 
     fullMenuSwitchBtn = new SwitchButton(pluginWidget);
     ui->fullScreenMenuLayout->addWidget(fullMenuSwitchBtn);

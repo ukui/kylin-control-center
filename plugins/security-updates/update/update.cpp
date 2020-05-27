@@ -25,7 +25,6 @@
 
 Update::Update()
 {
-    qDebug()<<"this is update----->"<<endl;
     ui = new Ui::Update;
     pluginWidget = new QWidget;
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
@@ -84,8 +83,49 @@ void Update::ui_init(){
     movie->start();
 }
 
+QStringList Update::readFile(QString filepath)
+{
+    QStringList fileCont;
+    QFile file(filepath);
+    if(file.exists()) {
+        if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            qWarning() << "ReadFile() failed to open" << filepath;
+            return QStringList();
+        }
+        QTextStream textStream(&file);
+        while(!textStream.atEnd()) {
+            QString line= textStream.readLine();
+            line.remove('\n');
+            fileCont<<line;
+        }
+        file.close();
+        return fileCont;
+    } else {
+        qWarning() << filepath << " not found"<<endl;
+        return QStringList();
+    }
+}
+
 void Update::update_btn_clicked(){
     QString cmd = "/usr/bin/update-manager";
+
+
+    QString versionPath = "/etc/os-release";
+    QStringList osRes =  readFile(versionPath);
+    QString version;
+
+    for (QString str : osRes) {
+        if (str.contains("PRETTY_NAME=")) {
+            int index = str.indexOf("PRETTY_NAME=");
+            int startIndex = index + 13;
+            int length = str.length() - startIndex - 1;
+            version = str.mid(startIndex, length);
+        }
+    }
+
+    if (version == "Kylin V10" || version == "Kylin V10.1") {
+        cmd = "/usr/bin/kylin-update-manager";
+    }
 
     QProcess process(this);
     process.startDetached(cmd);

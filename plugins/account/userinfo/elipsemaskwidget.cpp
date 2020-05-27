@@ -49,8 +49,11 @@ void ElipseMaskWidget::paintEvent(QPaintEvent *e){
 
     QPainter painter(this);
     painter.setRenderHint(QPainter:: Antialiasing, true);  //设置渲染,启动反锯齿
-    painter.setPen(QPen(QColor(pColor), pBorder));
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(palette().color(QPalette::Base));
+    painter.setOpacity(1);
     painter.drawPath(cPath);
-    painter.fillPath(cPath, QBrush(QColor(pColor)));
-
+    painter.setBrush(palette().color(QPalette::Button));
+    painter.setOpacity(0.45);
+    painter.drawPath(cPath);
 }
