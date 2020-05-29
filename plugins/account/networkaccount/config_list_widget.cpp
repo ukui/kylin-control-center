@@ -66,7 +66,6 @@ void config_list_widget::setname(QString n) {
     if(code != "" && code !="201" && code != "203" && code != "401" && !ret_ok) {
         info->setText(tr("Your account：%1").arg(code));
         stacked_widget->setCurrentWidget(container);
-        emit dooss(uuid);
         ret_ok = true;              //开启登录状态
         client->once = false;        //关闭第一次打开状态
         return ;
