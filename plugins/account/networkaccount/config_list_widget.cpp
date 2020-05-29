@@ -94,9 +94,7 @@ void config_list_widget::setret_logout(int ret) {
 void config_list_widget::setret_conf(int ret) {
     //qDebug()<<ret<<"csacasca";
     if(ret == 0) {
-        emit doman();
         QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
-        //emit doman();
     } else {
         //emit dologout();
     }
@@ -334,8 +332,14 @@ void config_list_widget::init_gui() {
     struct stat buffer;
     char conf_path[512]={0};
     //All.conf的
-    QString all_conf_path = QDir::homePath() + "/.cache/kylinssoclient/All.conf";
-    qstrcpy(conf_path,all_conf_path.toStdString().c_str());
+    QString all_conf_path = QDir::homePath() + "/.cache/kylinssoclient/";
+    QString all_conf_path2 = QDir::homePath() + "/.cache/kylinssoclient/All.conf";
+    fsWatcher.addPath(all_conf_path);
+    qstrcpy(conf_path,all_conf_path2.toStdString().c_str());
+
+    connect(&fsWatcher,&QFileSystemWatcher::directoryChanged,[this] () {
+         QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
+    });
 
     //
     if(stat(conf_path, &buffer) == 0) {
@@ -368,7 +372,8 @@ void config_list_widget::finished_load(int ret,QString uuid) {
     }
    // qDebug()<<"wb222"<<ret;
     if (ret == 0) {
-        emit doconf();
+        emit doman();
+        QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     } else if(ret == 401 || ret == 203 || ret == 201) {
         emit dologout();
     }
