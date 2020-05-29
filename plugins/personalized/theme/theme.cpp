@@ -574,9 +574,9 @@ void Theme::resetBtnClickSlot() {
 void Theme::writeKwinSettings(bool change, QString theme) {
     QString th;
     if ("ukui-white" == theme) {
-        th = "__aurorate__svg__Ukui-classic";
+        th = "__aurorae__svg__Ukui-classic";
     } else {
-        th = "__aurorate__svg__Ukui-classic_dark";
+        th = "__aurorae__svg__Ukui-classic-dark";
     }
     kwinSettings->beginGroup("Plugins");
     kwinSettings->setValue("blurEnabled",change);
@@ -584,6 +584,10 @@ void Theme::writeKwinSettings(bool change, QString theme) {
 
     kwinSettings->beginGroup("org.kde.kdecoration2");
     kwinSettings->setValue("theme", th);
+    kwinSettings->endGroup();
+
+    kwinSettings->beginGroup("org.kde.kdecoration2");
+    kwinSettings->setValue("library", "org.ukui.kwin.aurorae");
     kwinSettings->endGroup();
 
     kwinSettings->sync();
