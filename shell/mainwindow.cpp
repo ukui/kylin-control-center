@@ -206,7 +206,6 @@ MainWindow::MainWindow(QWidget *parent) :
             QMap<QString, QObject *> pluginsObjMap = modulesList.at(FunctionSelect::recordFuncStack.last().type);
             modulepageWidget->switchPage(pluginsObjMap.value(FunctionSelect::recordFuncStack.last().namei18nString), false);
         }
-
     });
 
     //快捷参数
@@ -315,9 +314,29 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     if (this == watched) {
         if (event->type() == QEvent::WindowStateChange) {
             if (this->windowState() == Qt::WindowMaximized) {
+                ui->leftsidebarWidget->setMaximumWidth(130);
                 ui->maxBtn->setIcon(QIcon("://img/titlebar/revert.png"));
+                for (int i = 0; i <= 9; i++) {
+                    QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
+
+                    if (btn) {
+                        QLayout *layout = btn->layout();
+                        QLabel * tipLabel = static_cast<QLabel *>(layout->itemAt(1)->widget());
+                        tipLabel->setVisible(true);
+                    }
+                }
+
             } else {
+                ui->leftsidebarWidget->setMaximumWidth(60);
                 ui->maxBtn->setIcon(QIcon("://img/titlebar/max.png"));
+                for (int i = 0; i <= 9; i++) {
+                    QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
+                    if (btn) {
+                        QLayout *layout = btn->layout();
+                        QLabel * tipLabel = static_cast<QLabel *>(layout->itemAt(1)->widget());
+                        tipLabel->setVisible(false);
+                    }
+                }
             }
         }
     }
@@ -450,24 +469,36 @@ void MainWindow::initLeftsideBar(){
     leftMicBtnGroup = new QButtonGroup();
 
     //构建左侧边栏返回首页按钮
-    QPushButton * hBtn = buildLeftsideBtn("homepage");
+    QPushButton * hBtn = buildLeftsideBtn("homepage",tr("HOME"));
     hBtn->setObjectName("homepage");
     connect(hBtn, &QPushButton::clicked, this, [=]{
         ui->stackedWidget->setCurrentIndex(0);
     });
     hBtn->setStyleSheet("QPushButton#homepage{background: palette(button); border: none;}");
 //    hBtn->setStyleSheet("QPushButton#homepage{background: palette(base);}");
-
+    ui->leftsidebarVerLayout->addStretch();
     ui->leftsidebarVerLayout->addWidget(hBtn);
 
+    QString locale = QLocale::system().name();
     for(int type = 0; type < TOTALMODULES; type++){
         //循环构建左侧边栏一级菜单按钮
         if (moduleIndexList.contains(type)){
             QString mnameString = kvConverter->keycodeTokeystring(type);
             QString mnamei18nString  = kvConverter->keycodeTokeyi18nstring(type); //设置TEXT
-            QPushButton * button = buildLeftsideBtn(mnameString);
+
+            QPushButton * button;
+            QString btnName = "btn" + QString::number(type + 1);
+            if ("zh_CN" == locale) {
+                button = buildLeftsideBtn(mnameString,mnamei18nString);
+                button->setToolTip(mnamei18nString);
+            } else {
+                button = buildLeftsideBtn(mnameString,mnameString);
+                button->setToolTip(mnameString);
+            }
+            button->setObjectName(btnName);
             button->setCheckable(true);
             leftBtnGroup->addButton(button, type);
+
             //设置样式
 //            button->setStyleSheet("QPushButton::checked{background: palette(button); border: none; border-image: url('://img/primaryleftmenu/checked.png');}"
 //                                  "QPushButton::!checked{background: palette(button);border: none;}");
@@ -498,14 +529,15 @@ void MainWindow::initLeftsideBar(){
     ui->leftsidebarVerLayout->addStretch();
 }
 
-QPushButton * MainWindow::buildLeftsideBtn(QString bname){
+QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName){
     QString iname = bname.toLower();
     int itype = kvConverter->keystringTokeycode(bname);
 
     QPushButton * leftsidebarBtn = new QPushButton();
     leftsidebarBtn->setAttribute(Qt::WA_DeleteOnClose);
     leftsidebarBtn->setCheckable(true);
-    leftsidebarBtn->setFixedSize(QSize(60, 56)); //Widget Width 60
+//    leftsidebarBtn->setFixedSize(QSize(60, 56)); //Widget Width 60
+    leftsidebarBtn->setFixedHeight(56);
 
     QPushButton * iconBtn = new QPushButton(leftsidebarBtn);
     iconBtn->setCheckable(true);
@@ -531,6 +563,8 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname){
     });
 
     QLabel * textLabel = new QLabel(leftsidebarBtn);
+    textLabel->setVisible(false);
+    textLabel->setText(tipName);
     QSizePolicy textLabelPolicy = textLabel->sizePolicy();
     textLabelPolicy.setHorizontalPolicy(QSizePolicy::Fixed);
     textLabelPolicy.setVerticalPolicy(QSizePolicy::Fixed);
@@ -595,4 +629,3 @@ void MainWindow::sltMessageReceived(const QString &msg) {
     setWindowFlags(flags);
     showNormal();
 }
-

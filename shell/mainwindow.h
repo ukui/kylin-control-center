@@ -80,13 +80,12 @@ private:
     void setBtnLayout(QPushButton * &pBtn);
     void loadPlugins();
     void initLeftsideBar();
-    QPushButton * buildLeftsideBtn(QString bname);
+    QPushButton * buildLeftsideBtn(QString bname, QString tipName);
     bool isExitsCloudAccount();
 
 public slots:
     void functionBtnClicked(QObject * plugin);
     void sltMessageReceived(const QString &msg);
-
 };
 
 #endif // MAINWINDOW_H
