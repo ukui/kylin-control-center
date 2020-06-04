@@ -136,6 +136,14 @@
         <file>plugins/about/galaxyUnicorn.png</file>
         <file>plugins/about/logoukui.png</file>
         <file>plugins/update/update.gif</file>
+        <file>homepage/account.svg</file>
+        <file>homepage/datetime.svg</file>
+        <file>homepage/devices.svg</file>
+        <file>homepage/network.svg</file>
+        <file>homepage/noticeandtasks.svg</file>
+        <file>homepage/personalized.svg</file>
+        <file>homepage/system.svg</file>
+        <file>homepage/update.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>i18n/zh_CN.qm</file>

@@ -21,6 +21,16 @@
 #define HOMEPAGEWIDGET_H
 
 #include <QWidget>
+#include <QPixmap>
+#include <QPainter>
+#include <QSvgRenderer>
+
+enum COLOR{
+    BLUE,
+    WHITE,
+    BLACK,
+    GRAY,
+};
 
 class MainWindow;
 class QListWidgetItem;
@@ -39,6 +49,12 @@ public:
 
 public:
     void initUI();
+
+private:
+    // load svg picture
+    const QPixmap loadSvg(const QString &fileName, COLOR color);
+    // chang svg picture's color
+    QPixmap drawSymbolicColoredPixmap(const QPixmap &source, COLOR color);
 
 private slots:
     void slotItemPressed(QListWidgetItem *item);

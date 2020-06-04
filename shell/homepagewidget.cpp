@@ -134,7 +134,11 @@ void HomePageWidget::initUI(){
         QLabel * logoLabel = new QLabel(widget);
         logoLabel->setObjectName("logoLabel");
         logoLabel->setScaledContents(true);
-        logoLabel->setPixmap(QPixmap(QString(":/img/homepage/%1.png").arg(modulenameString)));
+
+        QString path = (QString(":/img/homepage/%1.svg").arg(modulenameString));
+        QPixmap pix = loadSvg(path, BLUE);
+
+        logoLabel->setPixmap(pix);
 
         QVBoxLayout * rightVerLayout = new QVBoxLayout();
         rightVerLayout->setContentsMargins(0, 2, 0, 0);
@@ -192,7 +196,8 @@ void HomePageWidget::initUI(){
         //悬浮改变Widget状态
         connect(widget, &ResHoverWidget::enterWidget, this, [=](QString mname){
             ResHoverWidget * w = dynamic_cast<ResHoverWidget *>(QObject::sender());
-            logoLabel->setPixmap(QPixmap(QString(":/img/homepage/%1Hover.png").arg(mname)));
+            QPixmap cgPix = loadSvg(path, WHITE);
+            logoLabel->setPixmap(cgPix);
 
             titleLabel->setStyleSheet("color: palette(base);");
 
@@ -205,7 +210,8 @@ void HomePageWidget::initUI(){
         //还原状态
         connect(widget, &ResHoverWidget::leaveWidget, this, [=](QString mname){
             ResHoverWidget * w = dynamic_cast<ResHoverWidget *>(QObject::sender());
-            logoLabel->setPixmap(QPixmap(QString(":/img/homepage/%1.png").arg(mname)));
+            QPixmap cgPix = loadSvg(path, BLUE);
+            logoLabel->setPixmap(cgPix);
 
             titleLabel->setStyleSheet("color: palette(windowText);");
 
@@ -222,7 +228,60 @@ void HomePageWidget::initUI(){
         ui->listWidget->setItemWidget(item, baseWidget);
     }
     connect(moduleSignalMapper, SIGNAL(mapped(QObject*)), pmainWindow, SLOT(functionBtnClicked(QObject*)));
-//    connect(ui->listWidget, SIGNAL(itemPressed(QListWidgetItem *)), this, SLOT(slotItemPressed(QListWidgetItem *)));
+    //    connect(ui->listWidget, SIGNAL(itemPressed(QListWidgetItem *)), this, SLOT(slotItemPressed(QListWidgetItem *)));
+}
+
+const QPixmap HomePageWidget::loadSvg(const QString &fileName, COLOR color)
+{
+    int size = 48;
+    const auto ratio = qApp->devicePixelRatio();
+    if ( 2 == ratio) {
+        size = 96;
+    } else if (2 == ratio) {
+        size = 144;
+    }
+    QPixmap pixmap(size, size);
+    QSvgRenderer renderer(fileName);
+    pixmap.fill(Qt::transparent);
+
+    QPainter painter;
+    painter.begin(&pixmap);
+    renderer.render(&painter);
+    painter.end();
+
+    pixmap.setDevicePixelRatio(ratio);
+    return drawSymbolicColoredPixmap(pixmap, color);
+}
+
+QPixmap HomePageWidget::drawSymbolicColoredPixmap(const QPixmap &source, COLOR cgColor)
+{
+    QImage img = source.toImage();
+    for (int x = 0; x < img.width(); x++) {
+        for (int y = 0; y < img.height(); y++) {
+            auto color = img.pixelColor(x, y);
+            if (color.alpha() > 0) {
+                if ( WHITE == cgColor) {
+                    color.setRed(255);
+                    color.setGreen(255);
+                    color.setBlue(255);
+                    img.setPixelColor(x, y, color);
+                } else if( BLACK == cgColor) {
+                    color.setRed(0);
+                    color.setGreen(0);
+                    color.setBlue(0);
+                    img.setPixelColor(x, y, color);
+                } else if (GRAY == cgColor) {
+                    color.setRed(152);
+                    color.setGreen(163);
+                    color.setBlue(164);
+                    img.setPixelColor(x, y, color);
+                } else {
+                    return source;
+                }
+            }
+        }
+    }
+    return QPixmap::fromImage(img);
 }
 
 /*
