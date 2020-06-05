@@ -392,6 +392,8 @@ void MainWindow::loadPlugins(){
             continue;
         }
 
+        const char * securityCmd = "/usr/sbin/defender";
+
         qDebug() << "Scan Plugin: " << fileName;
         //gsettings-desktop-schemas
 //        const char * proxyFile = "/usr/share/glib-2.0/schemas/org.gnome.system.proxy.gschema.xml";
@@ -431,6 +433,8 @@ void MainWindow::loadPlugins(){
         if ((!g_file_test(screensaverFile, G_FILE_TEST_EXISTS) ||
                 !g_file_test(sessionFile, G_FILE_TEST_EXISTS)) &&
                 (fileName == "libscreensaver.so" || fileName == "libscreenlock.so"))
+            continue;
+        if ((!g_file_test(securityCmd, G_FILE_TEST_EXISTS)) && (fileName == "libsecuritycenter.so"))
             continue;
 //        //桌面功能依赖peony-common
 //        if (!g_file_test(peonyFile, G_FILE_TEST_EXISTS) && fileName == "libdesktop.so")

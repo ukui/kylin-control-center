@@ -83,6 +83,7 @@ enum DatetimeIndex{
 };
 
 enum SeUpdatesIndex{
+    SECURITYCENTER,
     UPDATES,
     BACKUP,
     TOTALSUFUNC,

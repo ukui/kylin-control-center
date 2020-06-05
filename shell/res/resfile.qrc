@@ -136,6 +136,16 @@
         <file>plugins/about/galaxyUnicorn.png</file>
         <file>plugins/about/logoukui.png</file>
         <file>plugins/update/update.gif</file>
+        <file>secondaryleftmenu/SecurityCenterWhite.png</file>
+        <file>secondaryleftmenu/SecurityCenter.png</file>
+        <file>plugins/securitycenter/kysec.png</file>
+        <file>plugins/securitycenter/kysecHover.png</file>
+        <file>plugins/securitycenter/net.png</file>
+        <file>plugins/securitycenter/netHover.png</file>
+        <file>plugins/securitycenter/protect.png</file>
+        <file>plugins/securitycenter/protectHover.png</file>
+        <file>plugins/securitycenter/user.png</file>
+        <file>plugins/securitycenter/userHover.png</file>
     </qresource>
     <qresource prefix="/">
         <file>i18n/zh_CN.qm</file>
