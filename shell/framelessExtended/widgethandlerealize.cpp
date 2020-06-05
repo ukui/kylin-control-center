@@ -23,7 +23,7 @@
 
 #include <X11/Xlib.h>
 #include <QtX11Extras/QX11Info>
-
+#include <QApplication>
 
 
 WidgetHandleRealize::WidgetHandleRealize(FramelessHandlePrivate *_fpri, QWidget * pTopLevelWidget )
@@ -213,7 +213,8 @@ void WidgetHandleRealize::moveMainWindow(){
     Display *display = QX11Info::display();
     Atom netMoveResize = XInternAtom(display, "_NET_WM_MOVERESIZE", False);
     XEvent xEvent;
-    const auto pos = QCursor::pos();
+    auto pos = QCursor::pos();
+    pos *= qApp->devicePixelRatio();
 
     memset(&xEvent, 0, sizeof(XEvent));
     xEvent.xclient.type = ClientMessage;

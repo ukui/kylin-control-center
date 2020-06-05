@@ -46,7 +46,7 @@ DateTime::DateTime()
     pluginName = tr("Datetime");
     pluginType = DATETIME;
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->timeClockLable->setStyleSheet("QLabel{font-size: 24px;QFont:Bold; color: palette(windowText);}");
+    ui->timeClockLable->setStyleSheet("QLabel{color: palette(windowText);}");
 
 //    qDebug()<<"进入时间日期UI------------------》"<<endl;
 
