@@ -23,6 +23,8 @@
 #include <QWidget>
 #include <QLabel>
 #include <QHBoxLayout>
+#include <QSvgRenderer>
+#include <QPixmap>
 
 class LeftWidgetItem : public QWidget
 {
@@ -33,7 +35,7 @@ public:
     ~LeftWidgetItem();
 
 public:
-    void setLabelPixmap(QString filename, QString icoName);
+    void setLabelPixmap(QString filename, QString icoName, QString color);
     void isSetLabelPixmapWhite(bool selected);
     void setLabelText(QString text);
     void setLabelTextIsWhite(bool selected);
@@ -41,6 +43,12 @@ public:
     void setSelected(bool selected);
 
     QString text();
+
+private:
+    // load svg picture
+    const QPixmap loadSvg(const QString &fileName, QString color);
+    // chang svg picture's color
+    QPixmap drawSymbolicColoredPixmap(const QPixmap &source, QString cgcolor);
 
 private:
     QLabel * iconLabel;

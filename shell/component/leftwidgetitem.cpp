@@ -22,6 +22,8 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QDebug>
+#include <QSvgRenderer>
+#include <QApplication>
 
 LeftWidgetItem::LeftWidgetItem(QWidget *parent) :
     QWidget(parent)
@@ -72,20 +74,23 @@ LeftWidgetItem::~LeftWidgetItem()
 {
 }
 
-void LeftWidgetItem::setLabelPixmap(QString filename, QString icoName){
+void LeftWidgetItem::setLabelPixmap(QString filename, QString icoName, QString color) {
     this->icoName = icoName;
-    iconLabel->setPixmap(QPixmap(filename));
+
+    QPixmap pix = loadSvg(filename, color);
+    iconLabel->setPixmap(pix);
 }
 
 void LeftWidgetItem::isSetLabelPixmapWhite(bool selected) {
     QString fileName;
     if(selected) {
-        fileName = "://img/secondaryleftmenu/"+this->icoName+"White.png";
+        fileName = "://img/secondaryleftmenu/"+this->icoName+"White.svg";
     } else {
-        fileName = "://img/secondaryleftmenu/"+this->icoName+".png";
+        fileName = "://img/secondaryleftmenu/"+this->icoName+".svg";
     }
 //    qDebug()<<"file name is-------->"<<fileName<<endl;
-    iconLabel->setPixmap(QPixmap(fileName));
+    QPixmap pix =  loadSvg(fileName, "blue");
+    iconLabel->setPixmap(pix);
 }
 
 void LeftWidgetItem::setLabelText(QString text){
@@ -107,9 +112,62 @@ void LeftWidgetItem::setSelected(bool selected){
     } else {
         widget->setStyleSheet("QWidget{background: palette(base);}");
     }
-
 }
 
 QString LeftWidgetItem::text(){
     return textLabel->text();
 }
+
+const QPixmap LeftWidgetItem::loadSvg(const QString &fileName, QString color)
+{
+    int size = 24;
+    const auto ratio = qApp->devicePixelRatio();
+    if ( 2 == ratio) {
+        size = 48;
+    } else if (3 == ratio) {
+        size = 96;
+    }
+    QPixmap pixmap(size, size);
+    QSvgRenderer renderer(fileName);
+    pixmap.fill(Qt::transparent);
+
+    QPainter painter;
+    painter.begin(&pixmap);
+    renderer.render(&painter);
+    painter.end();
+
+    pixmap.setDevicePixelRatio(ratio);
+    return drawSymbolicColoredPixmap(pixmap, color);
+}
+
+QPixmap LeftWidgetItem::drawSymbolicColoredPixmap(const QPixmap &source, QString cgColor)
+{
+    QImage img = source.toImage();
+    for (int x = 0; x < img.width(); x++) {
+        for (int y = 0; y < img.height(); y++) {
+            auto color = img.pixelColor(x, y);
+            if (color.alpha() > 0) {
+                if ("white" == cgColor) {
+                    color.setRed(255);
+                    color.setGreen(255);
+                    color.setBlue(255);
+                    img.setPixelColor(x, y, color);
+                } else if ("black" == cgColor) {
+                    color.setRed(0);
+                    color.setGreen(0);
+                    color.setBlue(0);
+                    img.setPixelColor(x, y, color);
+                } else if ("gray" == cgColor) {
+                    color.setRed(152);
+                    color.setGreen(163);
+                    color.setBlue(164);
+                    img.setPixelColor(x, y, color);
+                } else {
+                    return source;
+                }
+            }
+        }
+    }
+    return QPixmap::fromImage(img);
+}
+

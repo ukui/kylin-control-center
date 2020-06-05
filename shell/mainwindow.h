@@ -83,6 +83,11 @@ private:
     QPushButton * buildLeftsideBtn(QString bname, QString tipName);
     bool isExitsCloudAccount();
 
+    // load svg picture
+    const QPixmap loadSvg(const QString &fileName, QString color);
+    // chang svg picture's color
+    QPixmap drawSymbolicColoredPixmap(const QPixmap &source, QString color);
+
 public slots:
     void functionBtnClicked(QObject * plugin);
     void sltMessageReceived(const QString &msg);

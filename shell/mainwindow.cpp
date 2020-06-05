@@ -120,14 +120,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
 
     //设置左上角按钮图标
-    ui->backBtn->setIcon(QIcon("://img/titlebar/back.png"));
+    ui->backBtn->setIcon(QIcon("://img/titlebar/back.svg"));
 
     //设置右上角按钮图标
-    ui->minBtn->setIcon(QIcon(":/img/titlebar/min.png"));
-    ui->maxBtn->setIcon(QIcon("://img/titlebar/max.png"));
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
+    QPixmap pix = loadSvg(":/img/titlebar/min.svg", "default");
+    ui->minBtn->setIcon(pix);
+    pix = loadSvg("://img/titlebar/max.svg", "default");
+    ui->maxBtn->setIcon(pix);
+    pix = loadSvg("://img/titlebar/close.svg", "default");
+    ui->closeBtn->setIcon(pix);
 
-    //
 
     //初始化功能列表数据
     FunctionSelect::initValue();
@@ -145,10 +147,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->maxBtn, &QPushButton::clicked, this, [=]{
         if (isMaximized()){
             showNormal();
-            ui->maxBtn->setIcon(QIcon("://img/titlebar/max.png"));
+            QPixmap pix = loadSvg(":/img/titlebar/max.svg", "default");
+            ui->maxBtn->setIcon(pix);
         } else {
             showMaximized();
-            ui->maxBtn->setIcon(QIcon("://img/titlebar/revert.png"));
+            QPixmap pix = loadSvg(":/img/titlebar/revert.svg", "default");
+            ui->maxBtn->setIcon(pix);
         }
     });
     connect(ui->closeBtn, &QPushButton::clicked, this, [=]{
@@ -545,21 +549,45 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName){
     iconBtn->setFocusPolicy(Qt::NoFocus);
 
 
-    QString iconHomePageBtnQss = QString("QPushButton{background: palette(button); border: none; border-image: url('://img/primaryleftmenu/%1.png');}").arg(iname);
-    QString iconBtnQss = QString("QPushButton:checked{background: palette(base); border: none; border-image: url('://img/primaryleftmenu/%1Checked.png');}"
-                                 "QPushButton:!checked{background: palette(button); border: none; border-image: url('://img/primaryleftmenu/%2.png');}").arg(iname).arg(iname);
+    QString iconHomePageBtnQss = QString("QPushButton{background: palette(button); border: none;}");
+    QString iconBtnQss = QString("QPushButton:checked{background: palette(base); border: none;}"
+                                 "QPushButton:!checked{background: palette(button); border: none;}");
+    QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
+    QPixmap pix = loadSvg(path, "default");
     //单独设置HomePage按钮样式
-    if (iname == "homepage")
+    if (iname == "homepage") {
+        iconBtn->setFlat(true);
         iconBtn->setStyleSheet(iconHomePageBtnQss);
-    else
+    } else {
         iconBtn->setStyleSheet(iconBtnQss);
+    }
+    iconBtn->setIcon(pix);
 
     leftMicBtnGroup->addButton(iconBtn, itype);
 
+    connect(iconBtn, &QPushButton::toggled, this, [=] (bool checked){
+       QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
+       QPixmap pix;
+       if (checked) {
+           pix = loadSvg(path, "blue");
+       } else {
+           pix = loadSvg(path, "default");
+       }
+       iconBtn->setIcon(pix);
+    });
+
     connect(iconBtn, &QPushButton::clicked, leftsidebarBtn, &QPushButton::click);
 
-    connect(leftsidebarBtn, &QPushButton::clicked, this, [=](bool checked){
+    connect(leftsidebarBtn, &QPushButton::toggled, this, [=](bool checked){
         iconBtn->setChecked(checked);
+        QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
+        QPixmap pix;
+        if (checked) {
+            pix = loadSvg(path, "blue");
+        } else {
+            pix = loadSvg(path, "default");
+        }
+        iconBtn->setIcon(pix);
     });
 
     QLabel * textLabel = new QLabel(leftsidebarBtn);
@@ -597,6 +625,66 @@ bool MainWindow::isExitsCloudAccount() {
         }
     }
     return false;
+}
+
+const QPixmap MainWindow::loadSvg(const QString &fileName, QString color)
+{
+    int size = 24;
+    const auto ratio = qApp->devicePixelRatio();
+    if ( 2 == ratio) {
+        size = 48;
+    } else if (3 == ratio) {
+        size = 96;
+    }
+    QPixmap pixmap(size, size);
+    QSvgRenderer renderer(fileName);
+    pixmap.fill(Qt::transparent);
+
+    QPainter painter;
+    painter.begin(&pixmap);
+    renderer.render(&painter);
+    painter.end();
+
+    pixmap.setDevicePixelRatio(ratio);
+    return drawSymbolicColoredPixmap(pixmap, color);
+}
+
+QPixmap MainWindow::drawSymbolicColoredPixmap(const QPixmap &source, QString cgColor)
+{
+    QImage img = source.toImage();
+    for (int x = 0; x < img.width(); x++) {
+        for (int y = 0; y < img.height(); y++) {
+            auto color = img.pixelColor(x, y);
+            if (color.alpha() > 0) {
+                if ("white" == cgColor) {
+                    color.setRed(255);
+                    color.setGreen(255);
+                    color.setBlue(255);
+                    img.setPixelColor(x, y, color);
+                } else if ("black" == cgColor) {
+                    color.setRed(0);
+                    color.setGreen(0);
+                    color.setBlue(0);
+//                    color.setAlpha(0.1);
+                    color.setAlphaF(0.9);
+                    img.setPixelColor(x, y, color);
+                } else if ("gray" == cgColor) {
+                    color.setRed(152);
+                    color.setGreen(163);
+                    color.setBlue(164);
+                    img.setPixelColor(x, y, color);
+                } else if ("blue" == cgColor){
+                    color.setRed(61);
+                    color.setGreen(107);
+                    color.setBlue(229);
+                    img.setPixelColor(x, y, color);
+                } else {
+                    return source;
+                }
+            }
+        }
+    }
+    return QPixmap::fromImage(img);
 }
 
 void MainWindow::setModuleBtnHightLight(int id){

@@ -1,34 +1,5 @@
 <RCC>
     <qresource prefix="/img">
-        <file>homepage/updateHover.png</file>
-        <file>homepage/update.png</file>
-        <file>homepage/systemHover.png</file>
-        <file>homepage/system.png</file>
-        <file>homepage/personalizedHover.png</file>
-        <file>homepage/personalized.png</file>
-        <file>homepage/networkHover.png</file>
-        <file>homepage/network.png</file>
-        <file>homepage/devicesHover.png</file>
-        <file>homepage/devices.png</file>
-        <file>homepage/datetimeHover.png</file>
-        <file>homepage/datetime.png</file>
-        <file>homepage/accountHover.png</file>
-        <file>homepage/account.png</file>
-        <file>titlebar/revert.png</file>
-        <file>titlebar/min.png</file>
-        <file>titlebar/max.png</file>
-        <file>titlebar/close.png</file>
-        <file>titlebar/back.png</file>
-        <file>secondaryleftmenu/Theme.png</file>
-        <file>secondaryleftmenu/Screensaver.png</file>
-        <file>secondaryleftmenu/Screenlock.png</file>
-        <file>secondaryleftmenu/Power.png</file>
-        <file>secondaryleftmenu/Fonts.png</file>
-        <file>secondaryleftmenu/Display.png</file>
-        <file>secondaryleftmenu/Desktop.png</file>
-        <file>secondaryleftmenu/Defaultapp.png</file>
-        <file>secondaryleftmenu/Background.png</file>
-        <file>secondaryleftmenu/Autoboot.png</file>
         <file>plugins/theme/selected.png</file>
         <file>plugins/desktop/trash.png</file>
         <file>plugins/desktop/homefolder.png</file>
@@ -38,86 +9,19 @@
         <file>plugins/printer/printer.png</file>
         <file>plugins/keyboardcontrol/add.png</file>
         <file>plugins/vpn/add.png</file>
-        <file>secondaryleftmenu/Update.png</file>
-        <file>secondaryleftmenu/Backup.png</file>
-        <file>secondaryleftmenu/Vpn.png</file>
-        <file>secondaryleftmenu/Netconnect.png</file>
-        <file>secondaryleftmenu/Proxy.png</file>
-        <file>primaryleftmenu/updateChecked.png</file>
-        <file>primaryleftmenu/update.png</file>
-        <file>primaryleftmenu/systemChecked.png</file>
-        <file>primaryleftmenu/system.png</file>
-        <file>primaryleftmenu/personalizedChecked.png</file>
-        <file>primaryleftmenu/personalized.png</file>
-        <file>primaryleftmenu/networkChecked.png</file>
-        <file>primaryleftmenu/devicesChecked.png</file>
-        <file>primaryleftmenu/devices.png</file>
-        <file>primaryleftmenu/datetimeChecked.png</file>
-        <file>primaryleftmenu/datetime.png</file>
-        <file>primaryleftmenu/accountChecked.png</file>
-        <file>primaryleftmenu/account.png</file>
-        <file>primaryleftmenu/homepage.png</file>
-        <file>primaryleftmenu/homepageChecked.png</file>
-        <file>primaryleftmenu/checked-2.png</file>
-        <file>primaryleftmenu/checked.png</file>
         <file>plugins/userinfo/add.png</file>
-        <file>secondaryleftmenu/Userinfo.png</file>
-        <file>secondaryleftmenu/Printer.png</file>
-        <file>secondaryleftmenu/Keyboard.png</file>
-        <file>secondaryleftmenu/Mouse.png</file>
-        <file>secondaryleftmenu/Touchpad.png</file>
         <file>dropArrow/downpx.png</file>
-        <file>secondaryleftmenu/AutobootWhite.png</file>
-        <file>secondaryleftmenu/DefaultappWhite.png</file>
-        <file>secondaryleftmenu/PowerWhite.png</file>
-        <file>secondaryleftmenu/DisplayWhite.png</file>
-        <file>secondaryleftmenu/BackgroundWhite.png</file>
-        <file>secondaryleftmenu/ScreenlockWhite.png</file>
-        <file>secondaryleftmenu/ThemeWhite.png</file>
-        <file>secondaryleftmenu/ScreensaverWhite.png</file>
-        <file>secondaryleftmenu/DesktopWhite.png</file>
-        <file>secondaryleftmenu/ProxyWhite.png</file>
-        <file>secondaryleftmenu/VpnWhite.png</file>
-        <file>secondaryleftmenu/NetconnectWhite.png</file>
-        <file>secondaryleftmenu/FontsWhite.png</file>
-        <file>secondaryleftmenu/UserinfoWhite.png</file>
-        <file>secondaryleftmenu/Datetime.png</file>
-        <file>secondaryleftmenu/DatetimeWhite.png</file>
-        <file>secondaryleftmenu/Area.png</file>
-        <file>secondaryleftmenu/AreaWhite.png</file>
-        <file>secondaryleftmenu/BackupWhite.png</file>
-        <file>secondaryleftmenu/PrinterWhite.png</file>
-        <file>secondaryleftmenu/KeyboardWhite.png</file>
-        <file>secondaryleftmenu/AudioWhite.png</file>
-        <file>secondaryleftmenu/Audio.png</file>
-        <file>secondaryleftmenu/Mousecontrol.png</file>
-        <file>secondaryleftmenu/MousecontrolWhite.png</file>
-        <file>secondaryleftmenu/UpdateWhite.png</file>
         <file>plugins/fonts/bigRoller.png</file>
         <file>plugins/fonts/smallRoller.png</file>
-        <file>secondaryleftmenu/MouseWhite.png</file>
-        <file>secondaryleftmenu/TouchpadWhite.png</file>
         <file>plugins/theme/dark.png</file>
         <file>plugins/theme/default.png</file>
-        <file>primaryleftmenu/network.png</file>
         <file>plugins/theme/light.png</file>
         <file>plugins/netconnect/wifi1.png</file>
         <file>plugins/netconnect/wifi2.png</file>
         <file>plugins/netconnect/wifi3.png</file>
         <file>plugins/netconnect/wifi4.png</file>
         <file>plugins/netconnect/eth.png</file>
-        <file>titlebar/closeWhite.png</file>
         <file>plugins/shortcut/add.png</file>
-        <file>secondaryleftmenu/ShortcutWhite.png</file>
-        <file>secondaryleftmenu/Shortcut.png</file>
-        <file>homepage/noticeandtasks.png</file>
-        <file>homepage/noticeandtasksHover.png</file>
-        <file>primaryleftmenu/noticeandtasks.png</file>
-        <file>primaryleftmenu/noticeandtasksChecked.png</file>
-        <file>secondaryleftmenu/Notice.png</file>
-        <file>secondaryleftmenu/NoticeWhite.png</file>
-        <file>secondaryleftmenu/Experienceplan.png</file>
-        <file>secondaryleftmenu/ExperienceplanWhite.png</file>
         <file>plugins/shortcut/note.png</file>
         <file>plugins/screenlock/none.png</file>
         <file>plugins/about/logo.png</file>
@@ -129,10 +33,6 @@
         <file>plugins/shortcut/down.png</file>
         <file>plugins/shortcut/up.png</file>
         <file>plugins/netconnect/nonet.png</file>
-        <file>secondaryleftmenu/AboutWhite.png</file>
-        <file>secondaryleftmenu/About.png</file>
-        <file>secondaryleftmenu/NetworkAccountWhite.png</file>
-        <file>secondaryleftmenu/NetworkAccount.png</file>
         <file>plugins/about/galaxyUnicorn.png</file>
         <file>plugins/about/logoukui.png</file>
         <file>plugins/update/update.gif</file>
@@ -144,6 +44,75 @@
         <file>homepage/personalized.svg</file>
         <file>homepage/system.svg</file>
         <file>homepage/update.svg</file>
+        <file>secondaryleftmenu/About.svg</file>
+        <file>secondaryleftmenu/AboutWhite.svg</file>
+        <file>secondaryleftmenu/Area.svg</file>
+        <file>secondaryleftmenu/AreaWhite.svg</file>
+        <file>secondaryleftmenu/Audio.svg</file>
+        <file>secondaryleftmenu/AudioWhite.svg</file>
+        <file>secondaryleftmenu/Autoboot.svg</file>
+        <file>secondaryleftmenu/AutobootWhite.svg</file>
+        <file>secondaryleftmenu/Background.svg</file>
+        <file>secondaryleftmenu/BackgroundWhite.svg</file>
+        <file>secondaryleftmenu/Backup.svg</file>
+        <file>secondaryleftmenu/BackupWhite.svg</file>
+        <file>secondaryleftmenu/Datetime.svg</file>
+        <file>secondaryleftmenu/DatetimeWhite.svg</file>
+        <file>secondaryleftmenu/Defaultapp.svg</file>
+        <file>secondaryleftmenu/DefaultappWhite.svg</file>
+        <file>secondaryleftmenu/Desktop.svg</file>
+        <file>secondaryleftmenu/DesktopWhite.svg</file>
+        <file>secondaryleftmenu/Display.svg</file>
+        <file>secondaryleftmenu/DisplayWhite.svg</file>
+        <file>secondaryleftmenu/Experienceplan.svg</file>
+        <file>secondaryleftmenu/ExperienceplanWhite.svg</file>
+        <file>secondaryleftmenu/Fonts.svg</file>
+        <file>secondaryleftmenu/FontsWhite.svg</file>
+        <file>secondaryleftmenu/Keyboard.svg</file>
+        <file>secondaryleftmenu/KeyboardWhite.svg</file>
+        <file>secondaryleftmenu/Mouse.svg</file>
+        <file>secondaryleftmenu/MouseWhite.svg</file>
+        <file>secondaryleftmenu/Netconnect.svg</file>
+        <file>secondaryleftmenu/NetconnectWhite.svg</file>
+        <file>secondaryleftmenu/Notice.svg</file>
+        <file>secondaryleftmenu/NoticeWhite.svg</file>
+        <file>secondaryleftmenu/Power.svg</file>
+        <file>secondaryleftmenu/PowerWhite.svg</file>
+        <file>secondaryleftmenu/Printer.svg</file>
+        <file>secondaryleftmenu/PrinterWhite.svg</file>
+        <file>secondaryleftmenu/Proxy.svg</file>
+        <file>secondaryleftmenu/ProxyWhite.svg</file>
+        <file>secondaryleftmenu/Screenlock.svg</file>
+        <file>secondaryleftmenu/ScreenlockWhite.svg</file>
+        <file>secondaryleftmenu/Screensaver.svg</file>
+        <file>secondaryleftmenu/ScreensaverWhite.svg</file>
+        <file>secondaryleftmenu/Shortcut.svg</file>
+        <file>secondaryleftmenu/ShortcutWhite.svg</file>
+        <file>secondaryleftmenu/Theme.svg</file>
+        <file>secondaryleftmenu/ThemeWhite.svg</file>
+        <file>secondaryleftmenu/Touchpad.svg</file>
+        <file>secondaryleftmenu/TouchpadWhite.svg</file>
+        <file>secondaryleftmenu/Update.svg</file>
+        <file>secondaryleftmenu/UpdateWhite.svg</file>
+        <file>secondaryleftmenu/Userinfo.svg</file>
+        <file>secondaryleftmenu/UserinfoWhite.svg</file>
+        <file>secondaryleftmenu/VpnWhite.svg</file>
+        <file>secondaryleftmenu/Vpn.svg</file>
+        <file>titlebar/close.svg</file>
+        <file>titlebar/max.svg</file>
+        <file>titlebar/revert.svg</file>
+        <file>primaryleftmenu/account.svg</file>
+        <file>primaryleftmenu/checked.svg</file>
+        <file>primaryleftmenu/devices.svg</file>
+        <file>primaryleftmenu/homepage.svg</file>
+        <file>primaryleftmenu/network.svg</file>
+        <file>primaryleftmenu/noticeandtasks.svg</file>
+        <file>primaryleftmenu/personalized.svg</file>
+        <file>primaryleftmenu/system.svg</file>
+        <file>primaryleftmenu/update.svg</file>
+        <file>primaryleftmenu/datetime.svg</file>
+        <file>titlebar/min.svg</file>
+        <file>titlebar/back.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>i18n/zh_CN.qm</file>

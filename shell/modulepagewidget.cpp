@@ -120,7 +120,8 @@ void ModulePageWidget::initUI(){
             LeftWidgetItem * leftWidgetItem = new LeftWidgetItem();
             leftWidgetItem->setAttribute(Qt::WA_DeleteOnClose);
             leftWidgetItem->setLabelText(single.namei18nString);
-            leftWidgetItem->setLabelPixmap(QString("://img/secondaryleftmenu/%1.png").arg(single.nameString), single.nameString);
+
+            leftWidgetItem->setLabelPixmap(QString("://img/secondaryleftmenu/%1.svg").arg(single.nameString), single.nameString, "default");
 
             QListWidgetItem * item = new QListWidgetItem(leftListWidget);
             item->setSizeHint(QSize(ui->leftStackedWidget->width(), 40)); //QSize(120, 40) spacing: 12px;
