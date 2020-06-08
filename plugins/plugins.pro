@@ -23,6 +23,7 @@ SUBDIRS = \
           network/proxy \
           account/userinfo \
           account/networkaccount \
+          security-updates/securitycenter \
           security-updates/backup \
           security-updates/update \
           messages-task/about \

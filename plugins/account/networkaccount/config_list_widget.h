@@ -38,6 +38,7 @@
 #include <QSvgWidget>
 #include "dbushandleclient.h"
 #include <QtDBus/QtDBus>
+#include <QDir>
 
 class config_list_widget : public QWidget
 {
@@ -89,6 +90,7 @@ private:
     bool                ret_ok = false;
     QTimer              *login_cloud;
     QString             uuid;
+    QFileSystemWatcher fsWatcher;
 public slots:
     void            neweditdialog();
     void            on_login_out();
