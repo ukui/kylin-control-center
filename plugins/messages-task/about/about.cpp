@@ -28,6 +28,7 @@
 #include <QDebug>
 
 const QString TYPEVERSION = "Kylin V10";
+const QString UbuntuVesion = "Ubuntu 20.04 LTS";
 
 About::About()
 {
@@ -195,6 +196,9 @@ void About::setupVersionCompenent() {
             int length = str.length() - startIndex - 1;
             version = str.mid(startIndex, length);
         }
+    }
+    if (UbuntuVesion == version) {
+        version = "UbuntuKylin 20.04 LTS";
     }
     ui->versionContent->setText(version);
     if (version == "Kylin V10" || version == "Kylin V10.1") {
