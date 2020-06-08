@@ -1,4 +1,4 @@
-QT       += widgets dbus
+QT       += widgets dbus KI18n KCoreAddons
 
 TEMPLATE = lib
 CONFIG += plugin
@@ -14,10 +14,14 @@ INCLUDEPATH   +=  \
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += \
-    about.h
+    about.h \
+    entry.h \
+    memoryentry.h
 
 SOURCES += \
-    about.cpp
+    about.cpp \
+    entry.cpp \
+    memoryentry.cpp
 
 FORMS += \
     about.ui

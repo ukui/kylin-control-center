@@ -59,8 +59,6 @@ public:
     void plugin_delay_control() Q_DECL_OVERRIDE;
 
 public:
-    void setupComponent();
-
     void initUI();
     QStringList  readFile(QString filePath);
 
