@@ -42,7 +42,7 @@ void MaskWidget::paintEvent(QPaintEvent *event){
 
     painter.setRenderHint(QPainter:: Antialiasing, true);  //设置渲染,启动反锯齿
 
-    painter.setPen( QPen(QColor(pColor), pBorder));
+    painter.setPen(QPen(QColor(palette().color(QPalette::Base)), pBorder));
 
     painter.drawRect(0, 0, pWidth, pHeigh);
     painter.drawRoundedRect(0, 0, pWidth, pHeigh, pRadius, pRadius);

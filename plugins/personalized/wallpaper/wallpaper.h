@@ -84,7 +84,6 @@ public:
     void plugin_delay_control() Q_DECL_OVERRIDE;
 
 public:
-    void setupQStylesheet();
     void setupComponent();
     void setupConnect();
     void initBgFormStatus();
