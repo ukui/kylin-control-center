@@ -80,7 +80,6 @@ public:
     void rebuildNetStatusComponent(QString iconPath, QString netName);
     void rebuildAvailComponent(QString iconpath, QString netName);
 
-    void _acquireCardInfo();
     void runExternalApp();
 
     bool getwifiisEnable();
@@ -93,10 +92,6 @@ private:
     QWidget * pluginWidget;
 
     SwitchButton *wifiBtn;
-
-    QNetworkConfigurationManager * nmg;
-
-    QList<CardInfo> cardinfoQList;
 
     QMap<QString, int> connectedWifi;
     QMap<QString,int> wifiList;     //wifi list<name,Signal strength>
@@ -113,20 +108,17 @@ private:
 
     QString actLanName;
 
-
 private:
-    int setSignal(QString lv); //get wifi's strength
+    int setSignal(QString lv);      //get wifi's strength
     QStringList execGetLanList();
-    QStringList execGetWifiList();
     void getWifiListDone(QStringList wifislist, QStringList lanList);
     bool getSwitchStatus(QString key);
+    // clear the lan and wifi list
+    void clearContent();
 
 private slots:
     void wifiSwitchSlot(bool signal);
     void getNetList();
-
-
-
 };
 
 #endif // NETCONNECT_H

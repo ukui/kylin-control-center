@@ -10,7 +10,15 @@ NetconnectWork::~NetconnectWork() {
 }
 
 void NetconnectWork::run() {
-    Wifi *wifi = new Wifi();
-    QStringList  wifiList= wifi->getWifiList();
-    emit wifiGerneral(wifiList);
+    QProcess *wifiPro = new QProcess();
+    wifiPro->start("nmcli -f signal,ssid device wifi");
+    wifiPro->waitForFinished();
+    QString shellOutput = "";
+    QString output = wifiPro->readAll();
+    shellOutput += output;
+    QStringList slist = shellOutput.split("\n");
+
+//    qDebug()<<"slist is--------->"<<slist<<endl;
+    wifiGerneral(slist);
+    emit workerComplete();
 }
