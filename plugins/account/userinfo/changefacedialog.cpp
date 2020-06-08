@@ -135,7 +135,7 @@ void ChangeFaceDialog::showLocalFaceDialog(){
     fd.setViewMode(QFileDialog::List);
     fd.setNameFilter(filters);
     fd.setFileMode(QFileDialog::ExistingFile);
-    fd.setWindowTitle(tr("selsect custom face file"));
+    fd.setWindowTitle(tr("select custom face file"));
     fd.setLabelText(QFileDialog::Accept, tr("Select"));
     fd.setLabelText(QFileDialog::LookIn, tr("Position: "));
     fd.setLabelText(QFileDialog::FileName, tr("FileName: "));

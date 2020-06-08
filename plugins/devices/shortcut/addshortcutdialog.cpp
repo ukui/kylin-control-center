@@ -182,7 +182,7 @@ void addShortcutDialog::openProgramFileDialog(){
     fd.setViewMode(QFileDialog::List);
     fd.setNameFilter(filters);
     fd.setFileMode(QFileDialog::ExistingFile);
-    fd.setWindowTitle(tr("selsect desktop"));
+    fd.setWindowTitle(tr("select desktop"));
     fd.setLabelText(QFileDialog::Accept, "Select");
 
     if (fd.exec() != QDialog::Accepted)

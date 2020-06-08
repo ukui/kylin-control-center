@@ -190,7 +190,7 @@
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="133"/>
-        <source>selsect autoboot desktop</source>
+        <source>select autoboot desktop</source>
         <translation>otomatik önyükleme masaüstü seç</translation>
     </message>
 </context>
@@ -527,7 +527,7 @@ you can restore them to ensure the integrity of your system.</source>
     <name>ChangeFaceDialog</name>
     <message>
         <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="138"/>
-        <source>selsect custom face file</source>
+        <source>select custom face file</source>
         <translation>özel yüz dosyası seç</translation>
     </message>
     <message>
@@ -3688,7 +3688,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="277"/>
-        <source>Select form</source>
+        <source>Select from</source>
         <translation>Form seç</translation>
     </message>
     <message>
@@ -3776,7 +3776,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="442"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="471"/>
-        <source>selsect custom wallpaper file</source>
+        <source>select custom wallpaper file</source>
         <translation>özel duvar kağıdı dosyasını seç</translation>
     </message>
     <message>
@@ -3896,7 +3896,7 @@ Genel nedenler, toplam ekran boyutunun çok büyük olması veya GPU'nuz tarafı
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/addshortcutdialog.cpp" line="185"/>
-        <source>selsect desktop</source>
+        <source>select desktop</source>
         <translation>masaüstü seç</translation>
     </message>
 </context>
