@@ -224,7 +224,7 @@ void config_list_widget::init_gui() {
     stacked_widget->addWidget(container);
 
     //控件大小尺寸设置
-    setContentsMargins(0,0,0,0);
+    setContentsMargins(0,0,32,0);
     setMinimumWidth(550);
     tab->resize(200,72);
     stacked_widget->adjustSize();
