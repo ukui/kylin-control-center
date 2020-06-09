@@ -63,7 +63,7 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
 //    ui->pwdLineEdit->setStyleSheet("QLineEdit{background: #F4F4F4; border: none; border-radius: 4px;}");
 //    ui->pwdsureLineEdit->setStyleSheet("QLineEdit{background: #F4F4F4; border: none; border-radius: 4px;}");
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
+    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
 //    ui->pwdTypeComBox->setStyleSheet("QComboBox{background: #F4F4F4; border-radius: 4px; font-size:14px;padding-left: 8px; color: black; min-height: 30px; combobox-popup: 0;}"
 //                                     "QComboBox::down-arrow{image:url(://img/dropArrow/downpx.png)}"

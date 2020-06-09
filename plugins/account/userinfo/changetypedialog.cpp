@@ -47,7 +47,7 @@ ChangeTypeDialog::ChangeTypeDialog(QWidget *parent) :
 
 
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
+    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
 
     setupComonpent();

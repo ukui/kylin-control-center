@@ -100,6 +100,7 @@ private:
 
 private slots:
     void resetBtnClickSlot();
+    // write the kwin's configuration
     void writeKwinSettings(bool change, QString theme);
 
 };

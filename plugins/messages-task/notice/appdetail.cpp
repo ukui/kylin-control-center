@@ -43,7 +43,7 @@ void AppDetail::initUiStatus(){
 //    ui->numberWidget->setStyleSheet("QWidget#numberWidget{background: #F4F4F4; border-radius: 6px;}");
 //    ui->numberWidget->setStyleSheet("QWidget#numberWidget{background: #F4F4F4; border-radius: 6px;}");
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
+    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 //    ui->closeBtn->setStyleSheet("QPushButton#closeBtn{background: #ffffff; border: none; border-radius: 6px;}"

@@ -45,6 +45,8 @@ ShowAllShortcut::ShowAllShortcut(QWidget *parent) :
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
+
+
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
 
     //关闭按钮在右上角，窗体radius 6px，所以按钮只得6px
@@ -52,7 +54,7 @@ ShowAllShortcut::ShowAllShortcut(QWidget *parent) :
 //                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}"
 //                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}");
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
+    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
     connect(ui->closeBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
@@ -76,7 +78,7 @@ void ShowAllShortcut::buildComponent(QMap<QString, QMap<QString, QString> > shor
     QWidget * baseWidget = new QWidget;
     baseWidget->setAttribute(Qt::WA_DeleteOnClose);
     baseWidget->setFixedWidth(ui->scrollArea->width());
-    baseWidget->setStyleSheet("QWidget{background: #ffffff;/* border-radius: 6px;*/ }");
+    baseWidget->setStyleSheet("QWidget{background: palette(base);/* border-radius: 6px;*/ }");
 
     QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);
     baseVerLayout->setSpacing(0);

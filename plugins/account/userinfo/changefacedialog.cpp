@@ -50,7 +50,7 @@ ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
 //    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
 
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
+    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
     ElipseMaskWidget * cfMaskWidget = new ElipseMaskWidget(ui->faceLabel);
 //    cfMaskWidget->setBgColor("#F4F4F4");

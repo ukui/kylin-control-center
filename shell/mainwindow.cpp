@@ -319,7 +319,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
         if (event->type() == QEvent::WindowStateChange) {
             if (this->windowState() == Qt::WindowMaximized) {
                 ui->leftsidebarWidget->setMaximumWidth(130);
-                ui->maxBtn->setIcon(QIcon("://img/titlebar/revert.png"));
+                ui->maxBtn->setIcon(QIcon("://img/titlebar/revert.svg"));
                 for (int i = 0; i <= 9; i++) {
                     QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
 
@@ -332,7 +332,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 
             } else {
                 ui->leftsidebarWidget->setMaximumWidth(60);
-                ui->maxBtn->setIcon(QIcon("://img/titlebar/max.png"));
+                ui->maxBtn->setIcon(QIcon("://img/titlebar/max.svg"));
                 for (int i = 0; i <= 9; i++) {
                     QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
                     if (btn) {

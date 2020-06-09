@@ -123,7 +123,7 @@ Theme::Theme()
         initThemeMode();
         initIconTheme();
         initCursorTheme();
-        initEffectSettings();
+//        initEffectSettings();
         initConnection();
     } else {
         qCritical() << THEME_GTK_SCHEMA << "or" << THEME_QT_SCHEMA << "or" << CURSOR_THEME_SCHEMA << "not installed\n";
@@ -313,7 +313,7 @@ void Theme::initThemeMode(){
             qtSettings->set(MODE_QT_KEY, themeMode);
             gtkSettings->set(MODE_GTK_KEY, themeMode);
 
-            writeKwinSettings(!effectSwitchBtn->isChecked(), themeMode);
+            writeKwinSettings(true, themeMode);
         }
     });
 }
@@ -570,11 +570,12 @@ void Theme::writeKwinSettings(bool change, QString theme) {
 
     kwinSettings->sync();
 
+
 #if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
 
 #else
-    QDBusMessage message = QDBusMessage::createSignal("/KWin", "org.ukui.KWin", "reloadConfig");
-    QDBusConnection::sessionBus().send(message);
+        QDBusMessage message = QDBusMessage::createSignal("/KWin", "org.ukui.KWin", "reloadConfig");
+        QDBusConnection::sessionBus().send(message);
 #endif
 }
 
