@@ -22,7 +22,7 @@
 networkaccount::networkaccount()
 {
     pluginWidget = new config_list_widget();
-    pluginName = tr("NetworkAccount");
+    pluginName = tr("Cloud ID");
     pluginType = ACCOUNT;
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
 }
