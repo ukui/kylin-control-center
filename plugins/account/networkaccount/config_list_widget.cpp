@@ -376,7 +376,7 @@ void config_list_widget::finished_load(int ret,QString uuid) {
     if (ret == 0) {
         emit docheck();
         emit doconf();
-        mansync->start(5000);
+        mansync->start(1000);
         QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     } else if(ret == 401 || ret == 203 || ret == 201) {
         emit dologout();
