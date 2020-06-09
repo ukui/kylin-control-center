@@ -217,6 +217,11 @@ void KeyboardControl::rebuildLayoutsComBox(){
         ui->layoutsComBox->addItem(layoutmanagerObj->kbd_get_description_by_id(const_cast<const char *>(layout.toLatin1().data())), layout);
     }
     ui->layoutsComBox->blockSignals(false);
+    if (0 == ui->layoutsComBox->count()) {
+        ui->layoutsComBox->setVisible(false);
+    } else {
+        ui->layoutsComBox->setVisible(true);
+    }
 }
 
 bool KeyboardControl::eventFilter(QObject *watched, QEvent *event)
