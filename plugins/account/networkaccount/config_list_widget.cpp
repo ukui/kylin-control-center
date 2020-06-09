@@ -75,8 +75,6 @@ void config_list_widget::setname(QString n) {
 /* 客户端回调函数集 */
 void config_list_widget::setret_oss(int ret) {
     if(ret == 0) {
-        emit docheck();
-        emit doconf();
         //qDebug()<<"init oss is 0";
     } else {
         //emit dologout();
@@ -179,6 +177,7 @@ void config_list_widget::init_gui() {
     title2 = new QSvgWidget(":/new/image/96_color.svg");
     logout = new QLabel(this);
     login  = new QPushButton(tr("Sign in"),this);
+    mansync = new QTimer(this);
 
     //    gif = new QLabel(status);
     //    gif->setWindowFlags(Qt::FramelessWindowHint);//无边框
@@ -328,6 +327,10 @@ void config_list_widget::init_gui() {
         connect(list->get_item(btncnt)->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_switch_button(int,int)));
     }
 
+    connect(mansync,&QTimer::timeout,[=] () {
+        emit doman();
+    });
+
     struct stat buffer;
     char conf_path[512]={0};
     //All.conf的
@@ -371,7 +374,9 @@ void config_list_widget::finished_load(int ret,QString uuid) {
     }
    // qDebug()<<"wb222"<<ret;
     if (ret == 0) {
-        emit doman();
+        emit docheck();
+        emit doconf();
+        mansync->start(5000);
         QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     } else if(ret == 401 || ret == 203 || ret == 201) {
         emit dologout();
