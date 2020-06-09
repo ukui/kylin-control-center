@@ -89,6 +89,7 @@ private:
     bool                auto_ok = true;
     bool                ret_ok = false;
     QTimer              *login_cloud;
+    QTimer              *mansync;
     QString             uuid;
     QFileSystemWatcher fsWatcher;
 public slots:

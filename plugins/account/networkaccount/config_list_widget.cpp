@@ -528,6 +528,7 @@ void config_list_widget::push_files() {
 void config_list_widget::download_over() {
     //emit docheck();
     if(exit_page->property("on") == true) {
+        mansync->stop();
         gif->hide();
         exit_page->setText(tr("Exit"));
         exit_page->setProperty("on",false);
