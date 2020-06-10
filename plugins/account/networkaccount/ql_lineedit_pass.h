@@ -26,6 +26,7 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QRegExpValidator>
+#include "ql_svg_handler.h"
 
 class ql_lineedit_pass : public QLineEdit
 {
@@ -36,6 +37,7 @@ public:
     QPushButton* get_visble();
 private:
     QPushButton *visble;
+    ql_svg_handler *svg_hd;
     QHBoxLayout *layout;
 };
 

@@ -41,9 +41,11 @@ SOURCES += \
     passdialog.cpp \
     ql_box_item.cpp \
     ql_combobobx.cpp \
+    ql_label_info.cpp \
     ql_lineedit_pass.cpp \
     ql_popup.cpp \
     ql_pushbutton_edit.cpp \
+    ql_svg_handler.cpp \
     ql_swichbutton.cpp \
     qtooltips.cpp \
     regdialog.cpp \
@@ -65,9 +67,11 @@ HEADERS += \
     passdialog.h \
     ql_box_item.h \
     ql_combobobx.h \
+    ql_label_info.h \
     ql_lineedit_pass.h \
     ql_popup.h \
     ql_pushbutton_edit.h \
+    ql_svg_handler.h \
     ql_swichbutton.h \
     qtooltips.h \
     regdialog.h \

@@ -30,7 +30,8 @@ PassDialog::PassDialog(QWidget *parent) : QWidget(parent)
 
     vlayout = new QVBoxLayout;
     hlayout = new QHBoxLayout;
-    tips = new QLabel(this);
+    tips = new ql_label_info(this);
+    svg_hd = new ql_svg_handler(this);
     QString str = ("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
                    "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
                    "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}");
@@ -118,8 +119,9 @@ void PassDialog::set_code(QString codenum) {
 
 /* 设置错误代码更新 */
 void PassDialog::setstyleline() {
-    tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                        "&nbsp;&nbsp;"+code+"</span></p></body></html>");
+    QPixmap pixmap = svg_hd->loadSvg(":/new/image/_.svg");
+    tips->set_text(code);
+    tips->icon.setPixmap(pixmap);
 }
 
 /* 以下均为类接口函数 */
@@ -181,6 +183,6 @@ void PassDialog::set_clear() {
     valid_code->setText("");
 }
 
-QLabel* PassDialog::get_tips() {
+ql_label_info* PassDialog::get_tips() {
     return tips;
 }

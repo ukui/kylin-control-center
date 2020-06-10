@@ -25,8 +25,10 @@ SuccessDiaolog::SuccessDiaolog(QWidget *parent) : QWidget(parent)
     text_msg = new QLabel(this);
     back_login = new QPushButton(this);
     layout = new QVBoxLayout;
+    svg_hd = new ql_svg_handler(this);
 
-    bkg->setStyleSheet("background-image:url(:/new/image/success.png);width:148px;height:148px;");
+    QPixmap pixmap = svg_hd->loadSvg(":/new/image/success.svg");
+    bkg->setPixmap(pixmap);
     bkg->setFixedSize(148,148);
 
     text_msg->setStyleSheet("font-size:24px");

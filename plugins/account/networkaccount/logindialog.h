@@ -35,6 +35,8 @@
 #include "area_code_lineedit.h"
 #include "mcode_widget.h"
 #include "ql_lineedit_pass.h"
+#include "ql_label_info.h"
+#include "ql_svg_handler.h"
 
 class LoginDialog : public QWidget
 {
@@ -51,8 +53,8 @@ public:
     QLineEdit*      get_user_edit();
     QPushButton*    get_forget_btn();
     ql_lineedit_pass*      get_login_pass();
-    QLabel*         get_tips_pass();
-    QLabel*         get_tips_code();
+    ql_label_info*         get_tips_pass();
+    ql_label_info*         get_tips_code();
     QLineEdit*      get_login_code();
     QString         get_user_name();
     QString         get_user_pass();
@@ -95,12 +97,13 @@ private:
     QListWidget     *list_widget;
     QListWidget     *list_content;
     area_code_lineedit *acl;
-    QLabel          *error_pass;
-    QLabel          *error_code;
+    ql_label_info          *error_pass;
+    ql_label_info          *error_code;
     QString         code;
     mcode_widget    *mcode;
     QLineEdit       *mcode_lineedit;
     QHBoxLayout     *mcode_layout;
+    ql_svg_handler  *svg_hd;
 signals:
     void code_changed();
 };

@@ -29,6 +29,7 @@ ql_combobobx::ql_combobobx(QWidget *parent) : QWidget(parent)
     editcontrol = new QHBoxLayout;
     popupcontrol = new QVBoxLayout;
     comboboxcontrol = new QVBoxLayout;
+    svg_hd = new ql_svg_handler(this);
 
     //Size
     lineedit->setFixedSize(66,34);
@@ -49,7 +50,9 @@ ql_combobobx::ql_combobobx(QWidget *parent) : QWidget(parent)
 
     //Style
     //lineedit->setStyleSheet("QLineEdit{border:none;font-size:14px;}");
-    pushbutton->setStyleSheet("QPushButton{background-image: url(:/new/image/arrow_down.png);"
+    QPixmap pixmap = svg_hd->loadSvg(":/new/image/arrow_down.svg");
+    pushbutton->setIcon(pixmap);
+    pushbutton->setStyleSheet("QPushButton{"
                               "background-repeat:no-repeat;background-position :center;font-size:14px;background-color:transparent;border:none}");
     listwidget->setStyleSheet("QListView{border:1px solid #CFCFCF;border-color:#F4F4F4;border-radius:4px;}"
                               "QListView::item{background: #FFF;border-radius:4px;}"

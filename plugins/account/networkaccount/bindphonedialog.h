@@ -29,6 +29,8 @@
 #include <QHBoxLayout>
 #include "area_code_lineedit.h"
 #include <QLabel>
+#include "ql_label_info.h"
+#include "ql_svg_handler.h"
 
 class BindPhoneDialog : public QWidget
 {
@@ -38,7 +40,7 @@ public:
     void    setclear();
     void    set_code(QString code);
     QPushButton *get_send_code();
-    QLabel  *get_tips();
+    ql_label_info  *get_tips();
     QString get_phone();
     QString get_code();
     area_code_lineedit* get_phone_lineedit();
@@ -54,7 +56,8 @@ private:
     QPushButton         *send_code;
     QVBoxLayout         *layout;
     QHBoxLayout         *sublayout;
-    QLabel              *tips;
+    ql_label_info              *tips;
+    ql_svg_handler      *svg_hd;
 
 };
 

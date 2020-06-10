@@ -1,19 +1,18 @@
 <RCC>
     <qresource prefix="/new/image">
-        <file>delete.png</file>
-        <file>delete_click.png</file>
-        <file>arrow_down.png</file>
-        <file>_.png</file>
-        <file>edit.png</file>
-        <file>edit_hover.png</file>
-        <file>success.png</file>
         <file>96_color.svg</file>
         <file>autosync.gif</file>
         <file>login.gif</file>
+        <file>visible.svg</file>
+        <file>success.svg</file>
+        <file>invisible.svg</file>
+        <file>edit.svg</file>
+        <file>edit_hover.svg</file>
+        <file>delete.svg</file>
+        <file>delete_click.svg</file>
+        <file>arrow_down.svg</file>
+        <file>_.svg</file>
     </qresource>
     <qresource prefix="/arrow"/>
-    <qresource prefix="/">
-        <file>invisible.png</file>
-        <file>visible.png</file>
-    </qresource>
+    <qresource prefix="/"/>
 </RCC>

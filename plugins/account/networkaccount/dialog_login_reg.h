@@ -44,6 +44,8 @@
 #include "bindphonedialog.h"
 #include <QMovie>
 #include <QtDBus/QtDBus>
+#include "ql_label_info.h"
+#include "ql_svg_handler.h"
 
 class Dialog_login_reg : public QWidget
 {
@@ -121,8 +123,8 @@ private:
     RegDialog       *box_reg;
     QLabel          *user_tip;
     QLabel          *pass_tip;
-    QLabel          *pass_tips;
-    QLabel          *reg_tips;
+    ql_label_info          *pass_tips;
+    ql_label_info          *reg_tips;
     ql_lineedit_pass       *reg_pass;
     QLineEdit       *reg_user;
     ql_lineedit_pass       *login_pass;
@@ -135,10 +137,10 @@ private:
     QLineEdit       *login_mcode;
     QLineEdit       *login_user;
     ql_lineedit_pass       *reg_confirm;
-    QLabel          *passlabel;
+    ql_label_info          *passlabel;
     QLabel          *passtips;
     QLineEdit       *login_code;
-    QLabel          *codelable;
+    ql_label_info          *codelable;
     QPushButton     *send_btn_reg;
     QPushButton     *send_btn_fgt;
     QPushButton     *send_btn_log;
@@ -159,6 +161,7 @@ private:
     bool            send_is_ok_log = false;
     bool            send_is_ok_reg = false;
     QString         uuid;
+    ql_svg_handler *svg_hd;
 
 signals:
     void on_login_success();

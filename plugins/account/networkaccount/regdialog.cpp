@@ -33,7 +33,8 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     hlayout = new QHBoxLayout;
     pass_tip = new QLabel(this);
     user_tip = new QLabel(this);
-    tips = new QLabel(this);
+    tips = new ql_label_info(this);
+    svg_hd = new ql_svg_handler(this);
 
     QString str = ("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
                    "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
@@ -47,8 +48,7 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     reg_phone->setFocusPolicy(Qt::StrongFocus);
     reg_phone->setFocus();
 
-    tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                        "&nbsp;&nbsp;"+code+"</span></p></body></html>");
+
     reg_phone->setMaxLength(11);
     reg_pass->setPlaceholderText(tr("Your password here"));
     reg_pass->setEchoMode(QLineEdit::Password);
@@ -125,8 +125,9 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
 
 /* 更新设置错误提示 */
 void RegDialog::setstyleline() {
-    tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                        "&nbsp;&nbsp;"+code+"</span></p></body></html>");
+    QPixmap pixmap = svg_hd->loadSvg(":/new/image/_.svg");
+    tips->set_text(code);
+    tips->icon.setPixmap(pixmap);
 }
 
 /* 获取错误代码 */
@@ -201,6 +202,6 @@ void RegDialog::set_clear() {
     valid_code->setText("");
 }
 
-QLabel* RegDialog::get_tips() {
+ql_label_info* RegDialog::get_tips() {
     return tips;
 }

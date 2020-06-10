@@ -28,6 +28,8 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include "ql_lineedit_pass.h"
+#include "ql_label_info.h"
+#include "ql_svg_handler.h"
 
 class PassDialog : public QWidget
 {
@@ -45,7 +47,7 @@ public:
     QLineEdit*  get_valid_code();
     void        set_code(QString codenum);
     void        set_clear();
-    QLabel*     get_tips();
+    ql_label_info*     get_tips();
     QLabel*     get_passtips();
 public slots:
     void change_uppercase();
@@ -61,8 +63,9 @@ private:
     QPushButton *send_msg_btn;
     QVBoxLayout *vlayout;
     QHBoxLayout *hlayout;
-    QLabel *tips;
+    ql_label_info *tips;
     QString     code;
+    ql_svg_handler *svg_hd;
     QLabel *passtips;
 };
 

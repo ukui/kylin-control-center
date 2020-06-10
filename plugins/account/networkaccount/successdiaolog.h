@@ -26,7 +26,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QPixmap>
-
+#include "ql_svg_handler.h"
 class SuccessDiaolog : public QWidget
 {
     Q_OBJECT
@@ -35,6 +35,7 @@ public:
     QPushButton *back_login;
     QLabel      *text_msg;
     QLabel      *bkg;
+    ql_svg_handler *svg_hd;
     void     set_mode_text(int mode);
 private:
     QVBoxLayout *layout;

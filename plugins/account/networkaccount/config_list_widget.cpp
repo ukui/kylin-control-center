@@ -178,6 +178,12 @@ void config_list_widget::init_gui() {
     logout = new QLabel(this);
     login  = new QPushButton(tr("Sign in"),this);
     mansync = new QTimer(this);
+    mansync->stop();
+    svg_hd = new ql_svg_handler(this);
+    tooltips = new QToolTips(exit_page);
+    texttips = new QLabel(tooltips);
+    texttips->setText(tr("Stop sync"));
+    exit_page->installEventFilter(this);
 
     //    gif = new QLabel(status);
     //    gif->setWindowFlags(Qt::FramelessWindowHint);//无边框
@@ -208,16 +214,13 @@ void config_list_widget::init_gui() {
     auto_syn->get_swbtn()->set_id(mapid.size());
     container->setFocusPolicy(Qt::NoFocus);
     edit->setStyleSheet("QPushButton{border-style: flat;"
-                        "background-image:url(:/new/image/edit.png);"
                         "background-repeat:no-repeat;background-position :center;"
                         "border-width:0px;width:34px;height:34px;}"
                         "QPushButton:hover{"
-                        "background-image: url(:new/image/edit_hover.png);"
                         "background-repeat:no-repeat;background-position :center;"
                         "border-width:0px;width:34px;height:34px;"
                         "border-radius:4px}"
                         "QPushButton:click{"
-                        "background-image: url(:new/image/edit_hover.png);"
                         "background-repeat:no-repeat;background-position :center;"
                         "border-width:0px;width:34px;height:34px;border-radius:4px}");
     edit->installEventFilter(this);
@@ -364,6 +367,32 @@ void config_list_widget::on_login() {
 void config_list_widget::open_cloud() {
     emit dooss(uuid);
     login_dialog->on_close();
+}
+
+bool config_list_widget::eventFilter(QObject *watched, QEvent *event) {
+    if(watched == edit) {
+        if(event->type() == QEvent::FocusIn) {
+            QPixmap pixmap = svg_hd->loadSvg(":/new/image/edit_hover.svg");
+            edit->setIcon(pixmap);
+        }
+        if(event->type() == QEvent::FocusOut) {
+            QPixmap pixmap = svg_hd->loadSvg(":/new/image/edit.svg");
+            edit->setIcon(pixmap);
+        }
+    }
+    if(watched == exit_page) {
+        if(event->type() == QEvent::FocusIn && tooltips->isHidden() == true && exit_page->property("on") == true) {
+            QPoint pos;
+            pos.setX(this->mapToGlobal(QPoint(0, 0)).x() + 26);
+            pos.setY(this->mapToGlobal(QPoint(0, 0)).y() + 26);
+            tooltips->move(pos);
+            tooltips->show();
+        }
+        if((event->type() == QEvent::FocusOut && tooltips->isHidden() == false) || exit_page->property("on") == false) {
+            tooltips->hide();
+        }
+    }
+    return QWidget::eventFilter(watched,event);
 }
 
 /* 登录成功处理事件 */

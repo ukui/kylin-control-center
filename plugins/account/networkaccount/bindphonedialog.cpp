@@ -27,8 +27,8 @@ BindPhoneDialog::BindPhoneDialog(QWidget *parent) : QWidget(parent)
     valid_code = new QLineEdit(this);
     send_code = new QPushButton(this);
 
-    tips = new QLabel(this);
-
+    tips = new ql_label_info(this);
+    svg_hd = new ql_svg_handler(this);
     layout = new QVBoxLayout;
     sublayout = new QHBoxLayout;
 
@@ -76,8 +76,9 @@ void BindPhoneDialog::set_code(QString codenum) {
 
 /* 富文本处理错误提示消息 */
 void BindPhoneDialog::setstyleline() {
-    tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                  "&nbsp;&nbsp;"+code+"</span></p></body></html>");
+    QPixmap pixmap = svg_hd->loadSvg(":/new/image/_.svg");
+    tips->set_text(code);
+    tips->icon.setPixmap(pixmap);
 }
 
 /* 清理绑定手机号码框 */

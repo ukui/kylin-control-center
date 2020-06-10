@@ -38,7 +38,9 @@
 #include <QSvgWidget>
 #include "dbushandleclient.h"
 #include <QtDBus/QtDBus>
+#include "qtooltips.h"
 #include <QDir>
+#include "ql_svg_handler.h"
 
 class config_list_widget : public QWidget
 {
@@ -55,6 +57,7 @@ public:
     bool            judge_item(QString enable,int cur);
     void            handle_write(int on,int id);
 protected:
+    bool eventFilter(QObject *watched, QEvent *event);
 private:
     item_list       *list;
     network_item    *auto_syn;
@@ -92,6 +95,10 @@ private:
     QTimer              *mansync;
     QString             uuid;
     QFileSystemWatcher fsWatcher;
+    ql_svg_handler *svg_hd;
+    QToolTips       *tooltips;
+    QLabel          *texttips;
+
 public slots:
     void            neweditdialog();
     void            on_login_out();
