@@ -89,6 +89,7 @@ SecurityCenter::SecurityCenter()
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
+    qDebug()<<"this is SecurityCenter ------------->"<<endl;
     pluginName = tr("SecurityCenter");
     pluginType = UPDATE;
 
@@ -122,6 +123,8 @@ void SecurityCenter::plugin_delay_control(){
 }
 
 void SecurityCenter::initComponent(){
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
     //设置布局
     flowLayout = new FlowLayout;
     flowLayout->setContentsMargins(0, 0, 0, 0);
@@ -129,26 +132,26 @@ void SecurityCenter::initComponent(){
 
     BlockWidget * kysecWidget = new BlockWidget();
     kysecWidget->setupComponent(":/img/plugins/securitycenter/kysec.png", \
-                                "Virus Protection", \
-                                "Protect system from threats", \
+                                tr("Virus Protection"), \
+                                tr("Protect system from threats"), \
                                 "/usr/sbin/defender");
 
     BlockWidget * netWidget = new BlockWidget();
     netWidget->setupComponent(":/img/plugins/securitycenter/net.png", \
-                              "Network Protection", \
-                              "Setup app that can access web", \
+                              tr("Network Protection"), \
+                              tr("Setup app that can access web"), \
                               "/usr/sbin/defender");
 
     BlockWidget * protectWidget = new BlockWidget();
     protectWidget->setupComponent(":/img/plugins/securitycenter/protect.png", \
-                                  "App Execution Control", \
-                                  "App install and exe protection", \
+                                  tr("App Execution Control"), \
+                                  tr("App install and exe protection"), \
                                   "/usr/sbin/defender");
 
     BlockWidget * userWidget = new BlockWidget();
     userWidget->setupComponent(":/img/plugins/securitycenter/user.png", \
-                               "Account Security", \
-                               "Protect account and login security", \
+                               tr("Account Security"), \
+                               tr("Protect account and login security"), \
                                "/usr/sbin/defender");
 
     flowLayout->addWidget(kysecWidget);

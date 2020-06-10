@@ -16,11 +16,6 @@
         <file>plugins/theme/dark.png</file>
         <file>plugins/theme/default.png</file>
         <file>plugins/theme/light.png</file>
-        <file>plugins/netconnect/wifi1.png</file>
-        <file>plugins/netconnect/wifi2.png</file>
-        <file>plugins/netconnect/wifi3.png</file>
-        <file>plugins/netconnect/wifi4.png</file>
-        <file>plugins/netconnect/eth.png</file>
         <file>plugins/shortcut/add.png</file>
         <file>plugins/shortcut/note.png</file>
         <file>plugins/screenlock/none.png</file>
@@ -32,7 +27,6 @@
         <file>plugins/autoboot/desktop.png</file>
         <file>plugins/shortcut/down.png</file>
         <file>plugins/shortcut/up.png</file>
-        <file>plugins/netconnect/nonet.png</file>
         <file>plugins/about/galaxyUnicorn.png</file>
         <file>plugins/about/logoukui.png</file>
         <file>plugins/update/update.gif</file>
@@ -113,6 +107,22 @@
         <file>primaryleftmenu/datetime.svg</file>
         <file>titlebar/min.svg</file>
         <file>titlebar/back.svg</file>
+        <file>secondaryleftmenu/NetworkAccount.svg</file>
+        <file>secondaryleftmenu/NetworkAccountWhite.svg</file>
+        <file>plugins/netconnect/eth.svg</file>
+        <file>plugins/netconnect/nonet.svg</file>
+        <file>plugins/netconnect/wifi1.svg</file>
+        <file>plugins/netconnect/wifi2.svg</file>
+        <file>plugins/netconnect/wifi3.svg</file>
+        <file>plugins/netconnect/wifi4.svg</file>
+        <file>plugins/securitycenter/kysec.png</file>
+        <file>plugins/securitycenter/kysecHover.png</file>
+        <file>plugins/securitycenter/net.png</file>
+        <file>plugins/securitycenter/netHover.png</file>
+        <file>plugins/securitycenter/protect.png</file>
+        <file>plugins/securitycenter/protectHover.png</file>
+        <file>plugins/securitycenter/user.png</file>
+        <file>plugins/securitycenter/userHover.png</file>
     </qresource>
     <qresource prefix="/">
         <file>i18n/zh_CN.qm</file>

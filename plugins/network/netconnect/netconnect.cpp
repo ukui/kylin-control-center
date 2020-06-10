@@ -49,21 +49,6 @@ NetConnect::NetConnect():m_wifiList(new Wifi)
 
     wifiBtn = new SwitchButton();
 
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-
-//    ui->statusListWidget->setStyleSheet("QListWidget#statusListWidget{border: none;}");
-
-    ui->statusListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->statusListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-    ui->statusListWidget->setSpacing(0);
-    ui->statusListWidget->setFocusPolicy(Qt::NoFocus);
-    ui->statusListWidget->setSelectionMode(QAbstractItemView::NoSelection);
-
-//    ui->detailBtn->setStyleSheet("QPushButton{border: none;}");
-
-//    ui->openWifiWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
     ui->openWIifLayout->addWidget(wifiBtn);
 
     initComponent();
@@ -122,10 +107,25 @@ void NetConnect::initComponent(){
 
     connect(ui->RefreshBtn, &QPushButton::clicked, this, [=](bool checked){
         Q_UNUSED(checked)
+        clearContent();
+        ui->waitLabel->setVisible(true);
+        ui->statuswaitLabel->setVisible(true);
+        ui->RefreshBtn->setEnabled(false);
+        wifiBtn->setEnabled(false);
         QTimer::singleShot(1*1000,this,SLOT(getNetList()));
     });
 
-    connect(wifiBtn,SIGNAL(checkedChanged(bool)), this, SLOT(wifiSwitchSlot(bool)));
+    connect(wifiBtn, &SwitchButton::checkedChanged, this,[=](bool checked){
+        clearContent();
+        ui->waitLabel->setVisible(true);
+        ui->statuswaitLabel->setVisible(true);
+        ui->RefreshBtn->setEnabled(false);
+        wifiBtn->setEnabled(false);
+
+        wifiBtn->blockSignals(true);
+        wifiSwitchSlot(checked);
+        wifiBtn->blockSignals(false);
+    });
 
     wifiBtn->setChecked(getSwitchStatus("switch"));
 }
@@ -195,17 +195,13 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){
 
     baseWidget->setLayout(baseVerLayout);
 
-    QListWidgetItem * item = new QListWidgetItem(ui->statusListWidget);
-    item->setSizeHint(QSize(502, 52));
-
-    ui->statusListWidget->setItemWidget(item, baseWidget);
+    ui->statusLayout->addWidget(baseWidget);
 }
 
 void NetConnect::getNetList() {
     clearContent();
 
     bool wifiSt = getwifiisEnable();
-    qDebug()<<"the wifi wifiSt is---------->"<<wifiSt<<endl;
     if (!wifiSt) {
         wifiBtn->setChecked(wifiSt);
     }
@@ -216,7 +212,6 @@ void NetConnect::getNetList() {
     pNetWorker = new NetconnectWork;
 
     connect(pNetWorker, &NetconnectWork::wifiGerneral,this,[&](QStringList list){
-//        wifiBtn->setEnabled(false);
         this->TwifiList = list;
         getWifiListDone(this->TwifiList, this->TlanList);
         QMap<QString, int>::iterator iter = this->wifiList.begin();
@@ -225,13 +220,13 @@ void NetConnect::getNetList() {
             if (!wifiBtn->isChecked()){
                 break;
             }
-            iconamePah= ":/img/plugins/netconnect/wifi" + QString::number(iter.value())+".png";
+            iconamePah= ":/img/plugins/netconnect/wifi" + QString::number(iter.value())+".svg";
             rebuildAvailComponent(iconamePah , iter.key());
             iter++;
         }
 
         for(int i = 0; i < this->lanList.length(); i++) {        ;
-            iconamePah= ":/img/plugins/netconnect/eth.png";
+            iconamePah= ":/img/plugins/netconnect/eth.svg";
             rebuildAvailComponent(iconamePah , lanList.at(i));
         }
 
@@ -243,7 +238,12 @@ void NetConnect::getNetList() {
     pNetWorker->moveToThread(pThread);
     connect(pThread, &QThread::started, pNetWorker, &NetconnectWork::run);
     connect(pThread, &QThread::finished, this, [=]{
-//        wifiBtn->setEnabled(true);
+        bool wifiSt = getwifiisEnable();
+        wifiBtn->setEnabled(wifiSt);
+        ui->RefreshBtn->setEnabled(true);
+
+        ui->waitLabel->setVisible(false);
+        ui->statuswaitLabel->setVisible(false);
     });
     connect(pThread, &QThread::finished, pNetWorker, &NetconnectWork::deleteLater);
     pThread->start();
@@ -467,18 +467,18 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
 
     if (!this->connectedWifi.isEmpty()){
         QMap<QString, int>::iterator iter = this->connectedWifi.begin();
-        QString iconamePah = ":/img/plugins/netconnect/wifi" + QString::number(iter.value())+".png";
+        QString iconamePah = ":/img/plugins/netconnect/wifi" + QString::number(iter.value())+".svg";
 //        qDebug()<<"name is=------------>"<<iter.key();
         rebuildNetStatusComponent(iconamePah , iter.key());
     }
     if (!this->actLanName.isEmpty()){
-        QString lanIconamePah= ":/img/plugins/netconnect/eth.png";
+        QString lanIconamePah= ":/img/plugins/netconnect/eth.svg";
         rebuildNetStatusComponent(lanIconamePah, this->actLanName);
 //        qDebug()<<"name is=------------>"<<this->actLanName;
     }
 
     if (this->connectedWifi.isEmpty() && this->actLanName.isEmpty())  {
-        rebuildNetStatusComponent(":/img/plugins/netconnect/nonet.png" , "No Net");
+        rebuildNetStatusComponent(":/img/plugins/netconnect/nonet.svg" , "No Net");
     }
 }
 
@@ -499,14 +499,24 @@ void NetConnect::clearContent()
 {
     if (ui->availableLayout->layout() != NULL) {
         QLayoutItem* item;
-        while ( ( item = ui->availableLayout->layout()->takeAt( 0 ) ) != NULL )
+        while ((item = ui->availableLayout->layout()->takeAt( 0 )) != NULL )
         {
             delete item->widget();
             delete item;
         }
 //        delete ui->availableLayout->layout();
     }
-    ui->statusListWidget->clear();
+
+    if (ui->statusLayout->layout() != NULL) {
+        QLayoutItem* item;
+        while ((item = ui->statusLayout->layout()->takeAt( 0 )) != NULL )
+        {
+            delete item->widget();
+            delete item;
+        }
+//        delete ui->availableLayout->layout();
+    }
+//    ui->statusListWidget->clear();
 
     this->connectedLan.clear();
     this->connectedWifi.clear();
