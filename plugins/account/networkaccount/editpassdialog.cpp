@@ -263,7 +263,7 @@ void EditPassDialog::set_code(QString codenum) {
 void EditPassDialog::setstyleline() {
     QPixmap pixmap = svg_hd->loadSvg(":/new/image/_.svg");
     tips->set_text(code);
-    tips->icon.setPixmap(pixmap);
+    tips->setpixmap(pixmap);
 }
 
 /* 验证码发送按钮处理 */

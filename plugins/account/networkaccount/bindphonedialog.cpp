@@ -78,7 +78,7 @@ void BindPhoneDialog::set_code(QString codenum) {
 void BindPhoneDialog::setstyleline() {
     QPixmap pixmap = svg_hd->loadSvg(":/new/image/_.svg");
     tips->set_text(code);
-    tips->icon.setPixmap(pixmap);
+    tips->setpixmap(pixmap);
 }
 
 /* 清理绑定手机号码框 */
@@ -93,7 +93,7 @@ QPushButton* BindPhoneDialog::get_send_code() {
 }
 
 /* 获取密码输入提示文本 */
-QLabel* BindPhoneDialog::get_tips() {
+ql_label_info* BindPhoneDialog::get_tips() {
     return tips;
 }
 

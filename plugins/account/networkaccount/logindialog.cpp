@@ -57,13 +57,6 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
 
     error_code->setContentsMargins(9,0,0,0);
     error_pass->setContentsMargins(9,0,0,0);
-    error_code->setScaledContents(true);
-    error_pass->setScaledContents(true);
-
-    error_code->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                              "&nbsp;&nbsp;"+code+"</span></p></body></html>");
-    error_pass->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                              "&nbsp;&nbsp;"+code+"</span></p></body></html>");
 
     //Basic Widget Configuration
 
@@ -333,11 +326,11 @@ void LoginDialog::setstyleline() {
     if(stack_widget->currentIndex() == 0) {
         QPixmap pixmap = svg_hd->loadSvg(":/new/image/_.svg");
         error_pass->set_text(code);
-        error_pass->icon.setPixmap(pixmap);
+        error_pass->setpixmap(pixmap);
     } else {
         QPixmap pixmap = svg_hd->loadSvg(":/new/image/_.svg");
         error_code->set_text(code);
-        error_code->icon.setPixmap(pixmap);
+        error_code->setpixmap(pixmap);
     }
 }
 

@@ -127,7 +127,7 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
 void RegDialog::setstyleline() {
     QPixmap pixmap = svg_hd->loadSvg(":/new/image/_.svg");
     tips->set_text(code);
-    tips->icon.setPixmap(pixmap);
+    tips->setpixmap(pixmap);
 }
 
 /* 获取错误代码 */

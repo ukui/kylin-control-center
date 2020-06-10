@@ -14,7 +14,11 @@ ql_label_info::ql_label_info(QWidget *parent) : QWidget(parent)
     hide();
 }
 
-void ql_label_info::set_text(QString text) {
+void ql_label_info::set_text(const QString text) {
     context = text;
-    this->text.setText(context);
+    this->text->setText(context);
+}
+
+void ql_label_info::setpixmap(const QPixmap pixmap) {
+    this->icon->setPixmap(pixmap);
 }

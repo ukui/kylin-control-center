@@ -73,8 +73,6 @@ PassDialog::PassDialog(QWidget *parent) : QWidget(parent)
 
     passtips->setText(tr("At least 6 bit, include letters and digt"));
     passtips->setStyleSheet("font-size:14px;");
-    tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                        "&nbsp;&nbsp;"+code+"</span></p></body></html>");
     //reg_pass->setStyleSheet(str);
     //reg_phone->setStyleSheet(str);
     //reg_pass_confirm->setStyleSheet(str);
@@ -121,7 +119,7 @@ void PassDialog::set_code(QString codenum) {
 void PassDialog::setstyleline() {
     QPixmap pixmap = svg_hd->loadSvg(":/new/image/_.svg");
     tips->set_text(code);
-    tips->icon.setPixmap(pixmap);
+    tips->setpixmap(pixmap);
 }
 
 /* 以下均为类接口函数 */
