@@ -233,7 +233,7 @@ void NetConnect::getNetList() {
         }
 
     });
-    connect(pNetWorker, &NetconnectWork::workerComplete, [=]{
+    connect(pNetWorker, &NetconnectWork::workerComplete,this, [=]{
        pThread->quit();
        pThread->wait();
     });
