@@ -8,7 +8,7 @@ ql_label_info::ql_label_info(QWidget *parent) : QWidget(parent)
     icon->setFixedSize(16,16);
     layout->addWidget(icon);
     layout->addWidget(text);
-    layout->setMargin(0);
+    layout->setContentsMargins(12,0,0,0);
     layout->setSpacing(8);
     text->setStyleSheet("QLabel{font-size:14px;color:#F53547}");
     setLayout(layout);
