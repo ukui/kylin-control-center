@@ -19,6 +19,6 @@ void NetconnectWork::run() {
     QStringList slist = shellOutput.split("\n");
 
 //    qDebug()<<"slist is--------->"<<slist<<endl;
-    wifiGerneral(slist);
+    emit wifiGerneral(slist);
     emit workerComplete();
 }

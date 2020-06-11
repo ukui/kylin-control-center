@@ -128,6 +128,8 @@ void NetConnect::initComponent(){
     });
 
     wifiBtn->setChecked(getSwitchStatus("switch"));
+    ui->RefreshBtn->setEnabled(false);
+    wifiBtn->setEnabled(false);
 }
 
 void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){

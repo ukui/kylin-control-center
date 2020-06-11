@@ -72,7 +72,7 @@
         </font>
        </property>
        <property name="text">
-        <string>waitting...</string>
+        <string>Waitting...</string>
        </property>
       </widget>
      </item>
@@ -264,7 +264,7 @@
         </font>
        </property>
        <property name="text">
-        <string>waitting...</string>
+        <string>Waitting...</string>
        </property>
       </widget>
      </item>

@@ -9,67 +9,67 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="140"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="137"/>
         <source>version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="147"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="144"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="183"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="180"/>
         <source>Copyright 2009-2020 @ Kylinos All rights reserved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="271"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="265"/>
         <source>Kernel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="310"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="301"/>
         <source>CPU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="361"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="349"/>
         <source>Memory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="412"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="397"/>
         <source>Disk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="469"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="451"/>
         <source>Desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="502"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="481"/>
         <source>User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="554"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="527"/>
         <source>Active Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="587"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="557"/>
         <source>Service serial number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="623"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="593"/>
         <source>Active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="653"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="623"/>
         <source>Trial version disclaimer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2015,22 +2015,28 @@ folder will be deleted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="103"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="75"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="267"/>
+        <source>Waitting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="142"/>
         <source>Available Network</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="126"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="165"/>
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="176"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="215"/>
         <source>open wifi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="234"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="319"/>
         <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="48"/>
         <source>Network settings</source>
         <translation type="unfinished"></translation>
@@ -2041,12 +2047,12 @@ folder will be deleted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="184"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="182"/>
         <source>connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="186"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="184"/>
         <source>No network</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2840,42 +2846,42 @@ folder will be deleted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="133"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="135"/>
         <source>Virus Protection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="134"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="136"/>
         <source>Protect system from threats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="139"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="141"/>
         <source>Network Protection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="140"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="142"/>
         <source>Setup app that can access web</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="145"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="147"/>
         <source>App Execution Control</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="146"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="148"/>
         <source>App install and exe protection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="151"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="153"/>
         <source>Account Security</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="152"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="154"/>
         <source>Protect account and login security</source>
         <translation type="unfinished"></translation>
     </message>
