@@ -127,8 +127,8 @@ void QL_SwichButton::mousePressEvent(QMouseEvent *event) {
     Q_UNUSED(event);
     on = !on;
     emit status(on,id);
-    timer->start(1);
-    update();
+    timer->start();
+    return QWidget::mousePressEvent(event);
 }
 
 /* 获取开关状况 */
