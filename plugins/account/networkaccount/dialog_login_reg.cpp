@@ -105,16 +105,13 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
                                     "QPushButton:hover{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
                                     "QPushButton:click{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
 
-    del_btn->setStyleSheet("QPushButton{width:30px;height:30px;border-style: flat;"
-                           "background-repeat:no-repeat;background-position :center;"
-                           "border-width:0px;width:30px;height:30px;}"
-                           "QPushButton:hover{background-color:#F86457;width:30px;height:30px;"
-                           "background-repeat:no-repeat;background-position :center;"
-                           "border-width:0px;width:30px;height:30px;"
+    del_btn->setFlat(true);
+    QPixmap pixmap = svg_hd->loadSvg(":/new/image/delete.svg");
+    del_btn->setIcon(pixmap);
+    del_btn->setStyleSheet("QPushButton{background:transparent;border-radius:4px;}"
+                           "QPushButton:hover{background:transparent;background-color:#F86457;"
                            "border-radius:4px}"
-                           "QPushButton:click{background-color:#E44C50;width:30px;height:30px;"
-                           "background-repeat:no-repeat;background-position :center;"
-                           "border-width:0px;width:30px;height:30px;border-radius:4px}");
+                           "QPushButton:click{background:transparent;background-color:#E44C50;border-radius:4px}");
 
     del_btn->installEventFilter(this);
 
@@ -368,7 +365,7 @@ void Dialog_login_reg::setret_login(int ret) {
 }
 
 void Dialog_login_reg::setret_phone_login(int ret) {
-    if(stack_box->currentWidget() != box_login && box_login->get_stack_widget()->currentIndex() != 1) {
+    if(stack_box->currentWidget() != box_login && box_login->get_stack_widget()->currentIndex()) {
         return ;
     }
     if(ret != 0) {
@@ -1296,11 +1293,11 @@ void Dialog_login_reg::mouseMoveEvent(QMouseEvent *event)
 bool Dialog_login_reg::eventFilter(QObject *w, QEvent *e) {
 
     if(w == del_btn) {
-        if(e->type() == QEvent::FocusIn) {
+        if(e->type() == QEvent::Enter) {
             QPixmap pixmap = svg_hd->loadSvg(":/new/image/delete_click.svg");
             del_btn->setIcon(pixmap);
         }
-        if(e->type() == QEvent::FocusOut) {
+        if(e->type() == QEvent::Leave) {
             QPixmap pixmap = svg_hd->loadSvg(":/new/image/delete.svg");
             del_btn->setIcon(pixmap);
         }

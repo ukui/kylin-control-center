@@ -84,7 +84,7 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     success->setFixedSize(420,446);
 
     del_btn->setGeometry(this->width() - 46,14,30,30);
-
+    del_btn->setFlat(true);
     //设置样式表
     QString liness = "QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
                      "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
@@ -99,16 +99,13 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     QString btns = "QPushButton {font-size:14px;background: #E7E7E7;color:rgba(0,0,0,0.85);border-radius: 4px;}"
                     "QPushButton:hover{font-size:14px;color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}"
                     "QPushButton:click{font-size:14px;color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}";
-    del_btn->setStyleSheet("QPushButton{width:30px;height:30px;border-style: flat;"
-                           "background-repeat:no-repeat;background-position :center;"
-                           "border-width:0px;width:30px;height:30px;}"
-                           "QPushButton:hover{background-color:#F86457;width:30px;height:30px;"
-                           "background-repeat:no-repeat;background-position :center;"
-                           "border-width:0px;width:30px;height:30px;"
+    del_btn->setFlat(true);
+    QPixmap pixmap = svg_hd->loadSvg(":/new/image/delete.svg");
+    del_btn->setIcon(pixmap);
+    del_btn->setStyleSheet("QPushButton{background:transparent;border-radius:4px;}"
+                           "QPushButton:hover{background:transparent;background-color:#F86457;"
                            "border-radius:4px}"
-                           "QPushButton:click{background-color:#E44C50;width:30px;height:30px;"
-                           "background-repeat:no-repeat;background-position :center;"
-                           "border-width:0px;width:30px;height:30px;border-radius:4px}");
+                           "QPushButton:click{background:transparent;background-color:#E44C50;border-radius:4px}");
     del_btn->installEventFilter(this);
     title->setStyleSheet(labelss);
     //account->setStyleSheet(liness);
@@ -488,11 +485,11 @@ bool EditPassDialog::eventFilter(QObject *w, QEvent *e) {
 //        }
 //    }
     if(w == del_btn) {
-        if(e->type() == QEvent::FocusIn) {
+        if(e->type() == QEvent::Enter) {
             QPixmap pixmap = svg_hd->loadSvg(":/new/image/delete_click.svg");
             del_btn->setIcon(pixmap);
         }
-        if(e->type() == QEvent::FocusOut) {
+        if(e->type() == QEvent::Leave) {
             QPixmap pixmap = svg_hd->loadSvg(":/new/image/delete.svg");
             del_btn->setIcon(pixmap);
         }

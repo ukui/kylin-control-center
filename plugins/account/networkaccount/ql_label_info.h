@@ -11,7 +11,7 @@ class ql_label_info : public QWidget
     Q_OBJECT
 public:
     void set_text(const QString text);
-    void setpixmap(const QPixmap pixmap);
+    void setpixmap(QPixmap pixmap);
     explicit ql_label_info(QWidget *parent = nullptr);
 private:
     QLabel *icon;

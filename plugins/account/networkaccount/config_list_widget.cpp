@@ -213,16 +213,7 @@ void config_list_widget::init_gui() {
     auto_syn->make_itemon();
     auto_syn->get_swbtn()->set_id(mapid.size());
     container->setFocusPolicy(Qt::NoFocus);
-    edit->setStyleSheet("QPushButton{border-style: flat;"
-                        "background-repeat:no-repeat;background-position :center;"
-                        "border-width:0px;width:34px;height:34px;}"
-                        "QPushButton:hover{"
-                        "background-repeat:no-repeat;background-position :center;"
-                        "border-width:0px;width:34px;height:34px;"
-                        "border-radius:4px}"
-                        "QPushButton:click{"
-                        "background-repeat:no-repeat;background-position :center;"
-                        "border-width:0px;width:34px;height:34px;border-radius:4px}");
+    edit->setFixedSize(34,34);
     edit->installEventFilter(this);
     stacked_widget->addWidget(container);
 
@@ -282,7 +273,8 @@ void config_list_widget::init_gui() {
     container->setLayout(cvlayout);
 
     login->setFixedSize(180,36);
-
+    edit->setFlat(true);
+    edit->setStyleSheet("QPushButton{background:transparent;}");
     null_widget->resize(550,892);
     logout->setText(tr("Synchronize your personalized settings and data"));
     logout->setStyleSheet("font-size:18px;");
@@ -314,6 +306,8 @@ void config_list_widget::init_gui() {
 
 
     exit_page->setFocusPolicy(Qt::NoFocus);
+    QPixmap pixmap = svg_hd->loadSvg(":/new/image/edit.svg");
+    edit->setIcon(pixmap);
 
     //连接信号
     connect(auto_syn->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_auto_syn(int,int)));
@@ -371,11 +365,11 @@ void config_list_widget::open_cloud() {
 
 bool config_list_widget::eventFilter(QObject *watched, QEvent *event) {
     if(watched == edit) {
-        if(event->type() == QEvent::FocusIn) {
+        if(event->type() == QEvent::Enter) {
             QPixmap pixmap = svg_hd->loadSvg(":/new/image/edit_hover.svg");
             edit->setIcon(pixmap);
         }
-        if(event->type() == QEvent::FocusOut) {
+        if(event->type() == QEvent::Leave) {
             QPixmap pixmap = svg_hd->loadSvg(":/new/image/edit.svg");
             edit->setIcon(pixmap);
         }

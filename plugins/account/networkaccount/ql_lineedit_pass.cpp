@@ -28,6 +28,10 @@ ql_lineedit_pass::ql_lineedit_pass(QWidget *parent) : QLineEdit(parent)
 
     visble->setCursor(Qt::PointingHandCursor);
     visble->setCheckable(true);
+    visble->setFlat(true);
+    visble->setFixedSize(32,32);
+    QPixmap pixmap = svg_hd->loadSvg(":/new/image/invisible.svg");
+    visble->setIcon(pixmap);
     connect(visble,&QPushButton::toggled,[this] (bool checked) {
         if(checked) {
             setEchoMode(QLineEdit::Normal);
@@ -39,11 +43,9 @@ ql_lineedit_pass::ql_lineedit_pass(QWidget *parent) : QLineEdit(parent)
             visble->setIcon(pixmap);
         }
     }); //点击后可见或者不可见
-//    visble->setStyleSheet("QPushButton{width:  16px;height: 16px;qproperty-flat: true;"
-//    "margin-right: 8px;border: none;border-width: 0;"
-//    "border-image: url(:/invisible.png) 0 0 0 0 stretch stretch;"
-//    "background: transparent;}"
-//    "QPushButton:checked{border-image: url(:/visible.png) 0 0 0 0 stretch stretch;}");
+    visble->setStyleSheet("QPushButton{width:  16px;height: 16px;qproperty-flat: true;"
+    "margin-right: 8px;border: none;border-width: 0;"
+    "background: transparent;}");
 
     layout->addStretch();
     layout->addWidget(visble);

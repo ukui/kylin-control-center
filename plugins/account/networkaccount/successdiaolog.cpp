@@ -21,14 +21,11 @@
 
 SuccessDiaolog::SuccessDiaolog(QWidget *parent) : QWidget(parent)
 {
-    bkg = new QLabel(this);
+    bkg = new QSvgWidget(":/new/image/success.svg");
     text_msg = new QLabel(this);
     back_login = new QPushButton(this);
     layout = new QVBoxLayout;
-    svg_hd = new ql_svg_handler(this);
 
-    QPixmap pixmap = svg_hd->loadSvg(":/new/image/success.svg");
-    bkg->setPixmap(pixmap);
     bkg->setFixedSize(148,148);
 
     text_msg->setStyleSheet("font-size:24px");
