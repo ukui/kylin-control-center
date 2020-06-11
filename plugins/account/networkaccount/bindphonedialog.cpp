@@ -76,9 +76,7 @@ void BindPhoneDialog::set_code(QString codenum) {
 
 /* 富文本处理错误提示消息 */
 void BindPhoneDialog::setstyleline() {
-    QPixmap pixmap = svg_hd->loadSvg(":/new/image/_.svg");
     tips->set_text(code);
-    tips->setpixmap(pixmap);
 }
 
 /* 清理绑定手机号码框 */

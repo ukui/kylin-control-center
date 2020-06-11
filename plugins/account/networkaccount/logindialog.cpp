@@ -324,13 +324,9 @@ void LoginDialog::set_code(QString codenum) {
 
 void LoginDialog::setstyleline() {
     if(stack_widget->currentIndex() == 0) {
-        QPixmap pixmap = svg_hd->loadSvg(":/new/image/_.svg");
         error_pass->set_text(code);
-        error_pass->setpixmap(pixmap);
     } else {
-        QPixmap pixmap = svg_hd->loadSvg(":/new/image/_.svg");
         error_code->set_text(code);
-        error_code->setpixmap(pixmap);
     }
 }
 

@@ -5,16 +5,18 @@
 #include <QWidget>
 #include <QLabel>
 #include <QHBoxLayout>
+#include <QSvgWidget>
+#include <QGraphicsSvgItem>
 
 class ql_label_info : public QWidget
 {
     Q_OBJECT
 public:
     void set_text(const QString text);
-    void setpixmap(QPixmap pixmap);
     explicit ql_label_info(QWidget *parent = nullptr);
+    ~ql_label_info();
 private:
-    QLabel *icon;
+    QSvgWidget *icon;
     QLabel *text;
     QString context;
     QHBoxLayout *layout;

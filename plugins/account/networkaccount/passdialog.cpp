@@ -117,9 +117,7 @@ void PassDialog::set_code(QString codenum) {
 
 /* 设置错误代码更新 */
 void PassDialog::setstyleline() {
-    QPixmap pixmap = svg_hd->loadSvg(":/new/image/_.svg");
     tips->set_text(code);
-    tips->setpixmap(pixmap);
 }
 
 /* 以下均为类接口函数 */

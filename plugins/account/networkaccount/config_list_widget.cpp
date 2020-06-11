@@ -574,6 +574,7 @@ config_list_widget::~config_list_widget() {
     delete login_dialog;
     delete edit_dialog;
     delete client;
+    delete title2;
     if(thread)
     {
         thread->quit();
