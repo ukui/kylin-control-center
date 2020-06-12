@@ -91,7 +91,7 @@ void config_list_widget::setret_logout(int ret) {
 void config_list_widget::setret_conf(int ret) {
     //qDebug()<<ret<<"csacasca";
     if(ret == 0) {
-        QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
+        //QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     } else {
         //emit dologout();
     }
@@ -115,7 +115,7 @@ void config_list_widget::setret_check(QString ret) {
         code = ret;
         info->setText(tr("Your account：%1").arg(ret));
         stacked_widget->setCurrentWidget(container);
-        QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
+        //QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     } else if((ret == "" || ret =="201" || ret == "203" || ret == "401" ) && ret_ok == false){
         ret_ok = true;
         stacked_widget->setCurrentWidget(null_widget);
@@ -123,7 +123,7 @@ void config_list_widget::setret_check(QString ret) {
         info->setText(tr("Your account：%1").arg(ret));
         code = ret;
         stacked_widget->setCurrentWidget(container);
-        QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
+        //QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     }
 }
 
@@ -328,22 +328,16 @@ void config_list_widget::init_gui() {
         emit doman();
     });
 
-    struct stat buffer;
     char conf_path[512]={0};
     //All.conf的
     QString all_conf_path = QDir::homePath() + "/.cache/kylinssoclient/";
-    QString all_conf_path2 = QDir::homePath() + "/.cache/kylinssoclient/All.conf";
     fsWatcher.addPath(all_conf_path);
-    qstrcpy(conf_path,all_conf_path2.toStdString().c_str());
 
     connect(&fsWatcher,&QFileSystemWatcher::directoryChanged,[this] () {
-         QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
+         handle_conf();
     });
 
     //
-    if(stat(conf_path, &buffer) == 0) {
-        QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
-    }
     setMaximumWidth(960);
     adjustSize();
 }

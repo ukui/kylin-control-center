@@ -143,11 +143,6 @@ QL_SwichButton::~QL_SwichButton() {
 /* 设置开关状态 */
 void QL_SwichButton::set_swichbutton_val(int on) {
     this->on = on;
-    if(on == 1) {
-        cur_val = ql_width - 16 - 4;
-    }
-    else {
-        cur_val = 4;
-    }
+    timer->start();
     update();
 }
