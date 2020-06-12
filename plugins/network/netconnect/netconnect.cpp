@@ -127,7 +127,7 @@ void NetConnect::initComponent(){
         wifiBtn->blockSignals(false);
     });
 
-    wifiBtn->setChecked(getSwitchStatus("switch"));
+    wifiBtn->setChecked(getInitStatus());
     ui->RefreshBtn->setEnabled(false);
     wifiBtn->setEnabled(false);
 }
@@ -201,7 +201,6 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){
 }
 
 void NetConnect::getNetList() {
-    clearContent();
 
     bool wifiSt = getwifiisEnable();
     if (!wifiSt) {
@@ -370,7 +369,7 @@ QStringList NetConnect::execGetLanList(){
 void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanList) {
 
 //    qDebug()<<"getwifiListDone--------->"<<getwifislist<<" \n" <<getlanList<<endl;
-
+    clearContent();
 
     QString lockPath = QDir::homePath() + "/.config/control-center-net";
     activecon *act = kylin_network_get_activecon_info(lockPath.toUtf8().data());
@@ -495,6 +494,25 @@ bool NetConnect::getSwitchStatus(QString key){
     }
     bool res = m_gsettings->get(key).toBool();
     return res;
+}
+
+bool NetConnect::getInitStatus()
+{
+
+    QDBusInterface interface( "org.freedesktop.NetworkManager",
+                              "/org/freedesktop/NetworkManager",
+                              "org.freedesktop.DBus.Properties",
+                              QDBusConnection::systemBus() );
+    //获取当前wifi是否连接
+    QDBusReply<QVariant> m_result = interface.call("Get", "org.freedesktop.NetworkManager", "WirelessEnabled");
+
+    if (m_result.isValid()){
+        bool status = m_result.value().toBool();
+        return status;
+    } else {
+        qDebug()<<"org.freedesktop.NetworkManager get invalid"<<endl;
+        return false;
+    }
 }
 
 void NetConnect::clearContent()

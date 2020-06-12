@@ -113,6 +113,12 @@ private:
     QStringList execGetLanList();
     void getWifiListDone(QStringList wifislist, QStringList lanList);
     bool getSwitchStatus(QString key);
+
+    /*
+     * the wifi's origin status
+     */
+    bool getInitStatus();
+
     // clear the lan and wifi list
     void clearContent();
 
