@@ -115,6 +115,7 @@ void config_list_widget::setret_check(QString ret) {
         code = ret;
         info->setText(tr("Your account：%1").arg(ret));
         stacked_widget->setCurrentWidget(container);
+        handle_conf();
         //QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     } else if((ret == "" || ret =="201" || ret == "203" || ret == "401" ) && ret_ok == false){
         ret_ok = true;
@@ -123,6 +124,7 @@ void config_list_widget::setret_check(QString ret) {
         info->setText(tr("Your account：%1").arg(ret));
         code = ret;
         stacked_widget->setCurrentWidget(container);
+        handle_conf();
         //QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     }
 }
@@ -231,6 +233,8 @@ void config_list_widget::init_gui() {
     list->setSizeIncrement(QSize(size().width(),size().height()));
 
     namewidget->setFixedHeight(36);
+    list->setMinimumWidth(550);
+    list->setMinimumHeight(container->size().height() - 82);
     title2->setFixedSize(96,96);
 
 //    gif->setMinimumSize(120,36);
@@ -260,6 +264,7 @@ void config_list_widget::init_gui() {
     VBox_tab->addLayout(HBox_tab_btn_sub);
     tab->setLayout(VBox_tab);
     tab->setContentsMargins(0,0,0,0);
+    container->setMaximumWidth(550);
 
 
 
@@ -270,6 +275,7 @@ void config_list_widget::init_gui() {
     cvlayout->addWidget(auto_syn->get_widget());
     cvlayout->addSpacing(16);
     cvlayout->addWidget(list);
+    cvlayout->addStretch();
     container->setLayout(cvlayout);
 
     login->setFixedSize(180,36);
@@ -403,11 +409,14 @@ void config_list_widget::finished_load(int ret,QString uuid) {
 /* 读取滑动按钮列表 */
 void config_list_widget::handle_conf() {
     if(Config_File(home).Get("Auto-sync","enable").toString() == "true") {
+        list->show();
+        list->adjustSize();
         auto_syn->make_itemon();
         for(int i  = 0;i < mapid.size();i ++) {
             list->get_item(i)->set_active(true);
         }
     } else {
+        list->hide();
         auto_syn->make_itemoff();
         auto_ok = false;
         for(int i  = 0;i < mapid.size();i ++) {
@@ -463,6 +472,12 @@ void config_list_widget::on_auto_syn(int on,int id) {
     }
     //emit docheck();
     auto_ok = on;
+    if(auto_ok) {
+        list->show();
+        list->adjustSize();
+    } else {
+        list->hide();
+    }
     for(int i  = 0;i < mapid.size();i ++) {
         list->get_item(i)->set_active(auto_ok);
     }
