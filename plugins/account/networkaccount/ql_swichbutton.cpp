@@ -107,12 +107,14 @@ void QL_SwichButton::startAnimation() { //滑动按钮动作播放
     if(on) {
         cur_val ++;                     //往右滑动
         if(cur_val >= size - pos) {      //到达边界停下来
+            cur_val = size - pos;
             timer->stop();
         }
 
     } else {
         cur_val --;
         if(cur_val <= pos) {             //到达最小值，停止继续前进
+            cur_val = pos;
             timer->stop();
         }
     }
@@ -144,5 +146,4 @@ QL_SwichButton::~QL_SwichButton() {
 void QL_SwichButton::set_swichbutton_val(int on) {
     this->on = on;
     timer->start();
-    update();
 }
