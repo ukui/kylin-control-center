@@ -264,7 +264,7 @@ void config_list_widget::init_gui() {
     VBox_tab->addLayout(HBox_tab_btn_sub);
     tab->setLayout(VBox_tab);
     tab->setContentsMargins(0,0,0,0);
-    container->setMaximumWidth(550);
+    container->setMinimumWidth(550);
 
 
 
