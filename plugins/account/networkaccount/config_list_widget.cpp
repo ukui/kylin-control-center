@@ -224,13 +224,11 @@ void config_list_widget::init_gui() {
     setMinimumWidth(550);
     tab->resize(200,72);
     stacked_widget->adjustSize();
-    list->resize(550,container->size().height());
     auto_syn->get_widget()->setFixedHeight(50);
     info->setFixedHeight(40);
 
     tab->setSizeIncrement(QSize(size().width(),1));
     container->setSizeIncrement(QSize(size().width(),size().height()));
-    list->setSizeIncrement(QSize(size().width(),size().height()));
 
     namewidget->setFixedHeight(36);
     list->setMinimumWidth(550);

@@ -106,13 +106,13 @@ void QL_SwichButton::startAnimation() { //滑动按钮动作播放
     int size = ql_width - 16;
     if(on) {
         cur_val ++;                     //往右滑动
-        if(cur_val > size - pos) {      //到达边界停下来
+        if(cur_val >= size - pos) {      //到达边界停下来
             timer->stop();
         }
 
     } else {
         cur_val --;
-        if(cur_val < pos) {             //到达最小值，停止继续前进
+        if(cur_val <= pos) {             //到达最小值，停止继续前进
             timer->stop();
         }
     }
