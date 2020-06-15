@@ -44,9 +44,15 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     timer_log = new QTimer(this);
     timer_bind = new QTimer(this);
     succ = new SuccessDiaolog(this);        //注册成功页面
-    gif = new QLabel(login_submit);         //登录按钮过程动画
     QHBoxLayout *hbox = new QHBoxLayout;    //整体布局
-    pm = new QMovie(":/new/image/login.gif");
+    pm = new ql_animation_label(login_submit);
+    animationlayout = new QHBoxLayout;
+    animationlayout->addWidget(pm);
+    animationlayout->setMargin(0);
+    animationlayout->setSpacing(0);
+    animationlayout->setAlignment(Qt::AlignCenter);
+    login_submit->setLayout(animationlayout);
+    pm->settext(tr("Login in progress"));
     svg_hd = new ql_svg_handler(this);
 
 
@@ -57,7 +63,6 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     timer_bind->stop();
 
     //隐藏同步开关动画
-    gif->hide();
 
     //控件尺寸以及布局设置
     this->setFixedSize(418,505);
@@ -220,10 +225,7 @@ Dialog_login_reg::Dialog_login_reg(QWidget *parent) : QWidget(parent)
     connect(box_bind->get_code_lineedit(),SIGNAL(returnPressed()),login_submit,SIGNAL(clicked()),Qt::UniqueConnection);
     connect(box_pass->get_valid_code(),SIGNAL(returnPressed()),login_submit,SIGNAL(clicked()),Qt::UniqueConnection);
     connect(box_login->get_stack_widget(),&QStackedWidget::currentChanged,[this] (int) {
-        if(gif->isHidden() == false) {
-            gif->hide();
-            pm->stop();
-        }
+        pm->stop();
     });
     //为各个子控件安装事件过滤
     login_submit->installEventFilter(this);
@@ -535,9 +537,7 @@ void Dialog_login_reg::on_login_btn() {
         //qDebug()<<"1111111";
         pass = box_login->get_user_pass();
         login_submit->setText("");
-        pm->start();
-        gif->setMovie(pm);
-        gif->show();
+        pm->startmoive();
         emit dologin(name,pass,uuid);            //触发登录信号，告知客户端进行登录操作
 
     } else if(box_login->get_user_name() != ""
@@ -694,10 +694,6 @@ void Dialog_login_reg::on_bind_btn() {
 
 /* 从成功注册，修改密码成功界面返回所需要的处理 */
 void Dialog_login_reg::back_normal() {
-    if(gif->isHidden() == false) {
-        pm->stop();
-        gif->hide();
-    }
     del_btn->show();
     //qDebug()<<"back normal";
     basewidegt->setCurrentWidget(log_reg);
@@ -712,10 +708,6 @@ void Dialog_login_reg::back_normal() {
  * 界面返回到登录界面的必要操作 */
 void Dialog_login_reg::back_login_btn() {
     //qDebug()<<stack_box->currentIndex();
-    if(gif->isHidden() == false) {
-        pm->stop();
-        gif->hide();
-    }
     if(stack_box->currentWidget() != box_login) {
         title->setText(tr("Sign in Cloud"));
         if(stack_box->currentWidget() == box_reg) {
@@ -755,10 +747,7 @@ void Dialog_login_reg::back_login_btn() {
 /* 进入忘记密码界面的一些必要处理,重用了登录按钮 */
 void Dialog_login_reg::linked_forget_btn() {
     if(stack_box->currentWidget()!= box_pass) {
-        if(gif->isHidden() == false) {
-            pm->stop();
-            gif->hide();
-        }
+
         title->setText(tr("Forget"));
         stack_box->setCurrentWidget(box_pass);
         login_submit->setText(tr("Set"));
@@ -780,10 +769,7 @@ void Dialog_login_reg::linked_forget_btn() {
 /* 进入注册界面的一些必要处理,重用了登录按钮 */
 void Dialog_login_reg::linked_register_btn() {
     if(stack_box->currentWidget()!= box_reg) {
-        if(gif->isHidden() == false) {
-            pm->stop();
-            gif->hide();
-        }
+
         title->setText(tr("Create Account"));
         stack_box->setCurrentWidget(box_reg);
         register_account->setText(tr("Back"));
@@ -961,7 +947,6 @@ void Dialog_login_reg::on_login_finished(int ret,QString uuid) {
     //无手机号码绑定，进入手机号码绑定页面
     if(ret == 119) {
         pm->stop();
-        gif->hide();
         title->setText(tr("Binding Phone"));
         stack_box->setCurrentWidget(box_bind);
         register_account->setText(tr("Back"));
@@ -984,7 +969,6 @@ void Dialog_login_reg::on_login_finished(int ret,QString uuid) {
         emit on_login_success(); //发送成功登录信号给主页面
     } else {
         pm->stop();             //登录失败，执行此处，关闭登录执行过程效果，并打印错误消息
-        gif->hide();
         login_submit->setText(tr("Sign in"));
         if(box_login->get_stack_widget()->currentIndex() == 0) {
             box_login->set_code(messagebox(ret));
@@ -1483,10 +1467,7 @@ bool Dialog_login_reg::eventFilter(QObject *w, QEvent *e) {
 
 /* 页面的清空，包括所有子页面的清空 */
 void Dialog_login_reg::set_clear() {
-    if(gif->isHidden() == false) {
-        pm->stop();
-        gif->hide();
-    }
+
     del_btn->show();
     //qDebug()<<"11111back normal";
     basewidegt->setCurrentWidget(log_reg);
@@ -1517,7 +1498,6 @@ void Dialog_login_reg::on_close() {
     //qDebug()<<"yes";
     basewidegt->setEnabled(true);
     pm->stop();
-    gif->hide();
     login_submit->setText(tr("Sign in"));
     box_login->get_mcode_widget()->set_change(1);
     back_login_btn();
@@ -1526,6 +1506,5 @@ void Dialog_login_reg::on_close() {
 }
 
 Dialog_login_reg::~Dialog_login_reg() {
-    delete pm;
 }
 

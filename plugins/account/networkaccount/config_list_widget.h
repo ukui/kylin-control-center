@@ -24,7 +24,6 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QStackedWidget>
-#include <QMovie>
 #include "item_list.h"
 #include "network_item.h"
 #include <QGraphicsDropShadowEffect>
@@ -41,6 +40,7 @@
 #include "qtooltips.h"
 #include <QDir>
 #include "ql_svg_handler.h"
+#include "ql_animation_label.h"
 
 class config_list_widget : public QWidget
 {
@@ -63,8 +63,7 @@ private:
     network_item    *auto_syn;
     QLabel          *title;
     QLabel          *info;
-    QLabel          *gif;
-    QMovie          *pm;
+    ql_animation_label          *pm;
     QPushButton     *exit_page;
     LoginDialog     *ld;
     QWidget         *container;
@@ -98,6 +97,7 @@ private:
     ql_svg_handler *svg_hd;
     QToolTips       *tooltips;
     QLabel          *texttips;
+    QHBoxLayout     *animationlayout;
 
 public slots:
     void            neweditdialog();

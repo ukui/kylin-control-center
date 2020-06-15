@@ -39,6 +39,7 @@ SOURCES += \
     network_item.cpp \
     networkaccount.cpp \
     passdialog.cpp \
+    ql_animation_label.cpp \
     ql_box_item.cpp \
     ql_combobobx.cpp \
     ql_label_info.cpp \
@@ -65,6 +66,7 @@ HEADERS += \
     network_item.h \
     networkaccount.h \
     passdialog.h \
+    ql_animation_label.h \
     ql_box_item.h \
     ql_combobobx.h \
     ql_label_info.h \

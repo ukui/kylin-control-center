@@ -46,6 +46,7 @@
 #include <QtDBus/QtDBus>
 #include "ql_label_info.h"
 #include "ql_svg_handler.h"
+#include "ql_animation_label.h"
 
 class Dialog_login_reg : public QWidget
 {
@@ -154,14 +155,14 @@ private:
     QStackedWidget  *basewidegt;
     SuccessDiaolog  *succ;
     BindPhoneDialog *box_bind;
-    QLabel          *gif;
-    QMovie          *pm;
+    ql_animation_label          *pm;
     QThread         *thread;
     bool            send_is_ok = false;
     bool            send_is_ok_log = false;
     bool            send_is_ok_reg = false;
     QString         uuid;
     ql_svg_handler *svg_hd;
+    QHBoxLayout    *animationlayout;
 
 signals:
     void on_login_success();
