@@ -98,6 +98,7 @@ private:
     QToolTips       *tooltips;
     QLabel          *texttips;
     QHBoxLayout     *animationlayout;
+    QHBoxLayout     *tipslayout;
 
 public slots:
     void            neweditdialog();
