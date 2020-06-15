@@ -193,12 +193,18 @@ void config_list_widget::init_gui() {
     svg_hd = new ql_svg_handler(this);
     tooltips = new QToolTips(exit_page);
     texttips = new QLabel(tooltips);
+    tipslayout = new QHBoxLayout;
+
+    tipslayout->addWidget(texttips);
+    tipslayout->setMargin(0);
+    tipslayout->setSpacing(0);
+    tipslayout->setAlignment(Qt::AlignCenter);
+    tooltips->setLayout(tipslayout);
     texttips->setText(tr("Stop sync"));
     exit_page->installEventFilter(this);
 
 
-    
-    tooltips->setFixedSize(40,40);
+    tooltips->setFixedSize(86,44);
     //    gif = new QLabel(status);
     //    gif->setWindowFlags(Qt::FramelessWindowHint);//无边框
     //    gif->setAttribute(Qt::WA_TranslucentBackground);//背景透明
