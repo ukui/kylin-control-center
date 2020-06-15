@@ -196,6 +196,9 @@ void config_list_widget::init_gui() {
     texttips->setText(tr("Stop sync"));
     exit_page->installEventFilter(this);
 
+
+    
+    tooltips->setFixedSize(40,40);
     //    gif = new QLabel(status);
     //    gif->setWindowFlags(Qt::FramelessWindowHint);//无边框
     //    gif->setAttribute(Qt::WA_TranslucentBackground);//背景透明
