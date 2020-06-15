@@ -20,6 +20,9 @@
    <property name="rightMargin">
     <number>32</number>
    </property>
+   <property name="bottomMargin">
+    <number>48</number>
+   </property>
    <item>
     <widget class="QFrame" name="mainframe">
      <property name="minimumSize">

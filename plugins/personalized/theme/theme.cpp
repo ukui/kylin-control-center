@@ -250,7 +250,7 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
 #endif
         if (eBtn == button) {
             nameLabel->setStyleSheet("color: #ffffff;");
-            statusLabel->setPixmap(QPixmap("://img/plugins/theme/selected.png"));
+            statusLabel->setPixmap(QPixmap("://img/plugins/theme/selected.svg"));
         }
         else {
             nameLabel->setStyleSheet("color: palette(windowText);");

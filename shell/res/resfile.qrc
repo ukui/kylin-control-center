@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/img">
-        <file>plugins/theme/selected.png</file>
         <file>plugins/desktop/trash.png</file>
         <file>plugins/desktop/homefolder.png</file>
         <file>plugins/desktop/default.png</file>
@@ -123,6 +122,9 @@
         <file>plugins/securitycenter/protectHover.png</file>
         <file>plugins/securitycenter/user.png</file>
         <file>plugins/securitycenter/userHover.png</file>
+        <file>plugins/theme/selected.svg</file>
+        <file>plugins/shortcut/up.svg</file>
+        <file>plugins/shortcut/down.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>i18n/zh_CN.qm</file>

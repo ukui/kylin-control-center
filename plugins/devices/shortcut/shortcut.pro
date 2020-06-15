@@ -8,6 +8,7 @@ TARGET = $$qtLibraryTarget(shortcut)
 DESTDIR = ../../../pluginlibs
 
 include(../../../env.pri)
+include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
 
 INCLUDEPATH   +=  \
                  $$PROJECT_ROOTDIR \
