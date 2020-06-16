@@ -47,7 +47,6 @@ QStringList MemoryEntry::totalMemory()
     const qlonglong totalRam = calculateTotalRam();
 
     if (totalRam > 0) {
-        qDebug()<<"the totalRam is--------->"<<KFormat().formatByteSize(totalRam,0)<<endl;
         QString total =  KFormat().formatByteSize(totalRam, 0);
         QString available = KFormat().formatByteSize(totalRam, 1);
         res << total << available;

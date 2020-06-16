@@ -709,7 +709,11 @@ bool UserInfo::getAutomaticLogin(QString username) {
 
     QString filename = "/etc/lightdm/lightdm.conf";
     autoSettings = new QSettings(filename, QSettings::IniFormat);
+#if QT_VERSION < QT_VERSION_CHECK(5, 12, 0)
+    autoSettings->beginGroup("Seat:*]");
+#else
     autoSettings->beginGroup("SeatDefaults");
+#endif
 
     QString autoUser = autoSettings->value("autologin-user", "").toString();
 

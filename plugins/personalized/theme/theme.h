@@ -28,6 +28,7 @@
 #include <QDir>
 
 #include "shell/interface.h"
+#include "commonComponent/Uslider/uslider.h"
 
 #include <QDir>
 #include <QSettings>
@@ -78,6 +79,8 @@ public:
 
 private:
     void clearLayout(QLayout* mlayout, bool deleteWidgets);
+    double convertToTran(const int value);
+    int tranConvertToSlider(const double value);
 
 private:
     Ui::Theme *ui;
@@ -90,18 +93,21 @@ private:
     QGSettings * qtSettings;
     QGSettings * curSettings;
     QSettings  * kwinSettings;
-    QGSettings * kwinGsettings;
+    QGSettings * kwinGsettings =  nullptr;
+    QGSettings * personliseGsettings = nullptr;
 
     SwitchButton * effectSwitchBtn;
 
     WidgetGroup * iconThemeWidgetGroup;
 
     bool settingsCreate;
+    Uslider * uslider;
+    Uslider * kwinSlider;
 
 private slots:
     void resetBtnClickSlot();
     // write the kwin's configuration
-    void writeKwinSettings(bool change, QString theme);
+    void writeKwinSettings(bool change, QString theme, int effect = 0);
 
 };
 

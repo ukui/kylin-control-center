@@ -26,21 +26,6 @@
    <string notr="true">Theme</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
-   <property name="spacing">
-    <number>0</number>
-   </property>
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>32</number>
-   </property>
-   <property name="bottomMargin">
-    <number>48</number>
-   </property>
    <item>
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -62,7 +47,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <property name="spacing">
-         <number>16</number>
+         <number>1</number>
         </property>
         <property name="bottomMargin">
          <number>10</number>
@@ -471,6 +456,12 @@
         </item>
         <item>
          <widget class="QFrame" name="effectFrame">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
             <width>550</width>
@@ -480,7 +471,7 @@
           <property name="maximumSize">
            <size>
             <width>960</width>
-            <height>110</height>
+            <height>200</height>
            </size>
           </property>
           <property name="frameShape">
@@ -541,15 +532,47 @@
              </item>
             </layout>
            </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="transFrame">
+          <property name="minimumSize">
+           <size>
+            <width>550</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>960</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="sizeIncrement">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
            <item>
-            <widget class="Line" name="line">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <layout class="QHBoxLayout" name="transparentLayout">
              <property name="spacing">
               <number>16</number>
              </property>
@@ -559,39 +582,58 @@
              <property name="rightMargin">
               <number>6</number>
              </property>
-             <item>
-              <widget class="QLabel" name="label_9">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Low</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QSlider" name="transparencySlider">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_11">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>High</string>
-               </property>
-              </widget>
-             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="kwinFrame">
+          <property name="minimumSize">
+           <size>
+            <width>550</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>960</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="sizeIncrement">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="kwinLayout">
+             <property name="spacing">
+              <number>16</number>
+             </property>
+             <property name="leftMargin">
+              <number>6</number>
+             </property>
+             <property name="rightMargin">
+              <number>6</number>
+             </property>
             </layout>
            </item>
           </layout>

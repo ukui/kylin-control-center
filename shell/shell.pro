@@ -47,6 +47,7 @@ inst3.files += $$PROJECT_ROOTDIR/data/org.ukui.control-center.keybinding.gschema
 inst3.files += $$PROJECT_ROOTDIR/data/org.ukui.control-center.desktop.gschema.xml
 inst3.files += $$PROJECT_ROOTDIR/data/org.ukui.control-center.notice.gschema.xml
 inst3.files += $$PROJECT_ROOTDIR/data/org.ukui.control-center.experienceplan.gschema.xml
+inst3.files += $$PROJECT_ROOTDIR/data/org.ukui.control-center.personalise.gschema.xml
 inst3.path = /usr/share/glib-2.0/schemas/
 inst4.files += $$PROJECT_ROOTDIR/data/org.ukui.control-center.wifi.switch.gschema.xml
 inst4.path = /usr/share/glib-2.0/schemas/
@@ -120,4 +121,5 @@ RESOURCES += \
 DISTFILES += \
     ../data/installer-timezones.mo \
     ../data/org.ukui.control-center.panel.plugins.gschema.xml \
+    ../data/org.ukui.control-center.personalise.gschema.xml \
     ../data/org.ukui.control-center.wifi.switch.gschema.xml
