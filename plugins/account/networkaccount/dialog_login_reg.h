@@ -65,6 +65,7 @@ public:
     void            set_clear();
     void            setshow(QWidget *w);
     bool            is_used = false;
+    void            set_staus(bool ok);
     ~Dialog_login_reg();
 
 public slots:

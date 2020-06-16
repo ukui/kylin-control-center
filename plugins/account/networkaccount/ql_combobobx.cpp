@@ -79,6 +79,7 @@ ql_combobobx::ql_combobobx(QWidget *parent) : QWidget(parent)
     comboboxcontrol->setAlignment(Qt::AlignLeft);
     setLayout(comboboxcontrol);
     lineedit->setText("+86");
+    pushbutton->setEnabled(false);
 
     //Connect slots
     connect(listwidget,SIGNAL(itemClicked(QListWidgetItem *)),this,SLOT(closepopup(QListWidgetItem *)));

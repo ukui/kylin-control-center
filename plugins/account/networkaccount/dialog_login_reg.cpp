@@ -512,6 +512,7 @@ QString Dialog_login_reg::messagebox(int code) {
 /* 1.登录逻辑处理槽函数 */
 void Dialog_login_reg::on_login_btn() {
     basewidegt->setEnabled(false); //防止用户在登录按钮按完之后到处乱点，下同
+    set_staus(false);
     del_btn->setEnabled(true);
     //如果验证码输入错误，执行此处
     if(box_login->get_stack_widget()->currentIndex() == 0 &&
@@ -519,6 +520,7 @@ void Dialog_login_reg::on_login_btn() {
         box_login->set_code(tr("Your code is wrong!"));
         passlabel->show();
         basewidegt->setEnabled(true);
+        set_staus(true);
         box_login->get_mcode_widget()->set_change(1);
         box_login->get_mcode_widget()->repaint();
         setshow(stack_box);
@@ -553,6 +555,7 @@ void Dialog_login_reg::on_login_btn() {
             box_login->set_code(messagebox(-1));
             passlabel->show();
             basewidegt->setEnabled(true);
+            set_staus(true);
             box_login->get_mcode_widget()->set_change(1);
             box_login->get_mcode_widget()->repaint();
             setshow(stack_box);
@@ -561,6 +564,7 @@ void Dialog_login_reg::on_login_btn() {
         } else {
             box_login->get_mcode_lineedit()->setText("");
             basewidegt->setEnabled(true);
+            set_staus(true);
             box_login->set_code(messagebox(-1));
             codelable->show();
             setshow(stack_box);
@@ -944,6 +948,7 @@ void Dialog_login_reg::on_login_finished(int ret,QString uuid) {
     }
     qDebug()<<ret;
     basewidegt->setEnabled(true);
+    set_staus(true);
     //无手机号码绑定，进入手机号码绑定页面
     if(ret == 119) {
         pm->stop();
@@ -961,6 +966,7 @@ void Dialog_login_reg::on_login_finished(int ret,QString uuid) {
     }
     //登录返回成功，执行此处
     if(ret == 0) {
+        pm->stop();
         timerout_num_log = 0;
         timer_log->stop();
         send_btn_log->setEnabled(true);
@@ -1487,6 +1493,23 @@ void Dialog_login_reg::set_clear() {
     box_login->set_window2();
     del_btn->raise();
     setshow(basewidegt);
+}
+
+void Dialog_login_reg::set_staus(bool ok) {
+    if(basewidegt->currentWidget() == log_reg) {
+        if(stack_box->currentWidget() == box_login) {
+            box_login->set_staus(ok);
+        } else if(stack_box->currentWidget() == box_bind) {
+            box_bind->set_staus(ok);
+        } else if(stack_box->currentWidget() == box_pass) {
+            box_pass->set_staus(ok);
+        } else if(stack_box->currentWidget() == box_reg) {
+            box_reg->set_staus(ok);
+        }
+        stack_box->setEnabled(ok);
+        login_submit->setEnabled(ok);
+        register_account->setEnabled(ok);
+    }
 }
 
 void Dialog_login_reg::set_back() {

@@ -49,6 +49,7 @@ public:
     void        set_clear();
     ql_label_info*     get_tips();
     QLabel*     get_passtips();
+    void        set_staus(bool ok);
 public slots:
     void change_uppercase();
     void setstyleline();

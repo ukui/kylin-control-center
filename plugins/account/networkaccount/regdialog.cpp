@@ -22,7 +22,7 @@
 RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
 {
     this->setFixedWidth(338);
-    reg_phone = new QLineEdit(this);
+    reg_phone = new area_code_lineedit(this);
     reg_user = new QLineEdit(this);
     reg_pass = new ql_lineedit_pass(this);
     reg_confirm = new ql_lineedit_pass(this);
@@ -46,11 +46,10 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     send_msg_btn->setFixedSize(QSize(130,36));
     reg_confirm->setFixedSize(QSize(338,36));
     reg_phone->setFocusPolicy(Qt::StrongFocus);
-    reg_phone->setFocus();
+
 
 
     reg_phone->setMaxLength(11);
-    reg_phone->setPlaceholderText(tr("Your phone here"));
     reg_pass->setPlaceholderText(tr("Your password here"));
     reg_pass->setEchoMode(QLineEdit::Password);
     reg_confirm->setEchoMode(QLineEdit::Password);
@@ -70,7 +69,6 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     reg_confirm->setTextMargins(12,0,0,0);
     reg_user->setTextMargins(12,0,0,0);
     reg_pass->setTextMargins(12,0,0,0);
-    reg_phone->setTextMargins(12,0,0,0);
     valid_code->setTextMargins(12,0,0,0);
     //valid_code->setStyleSheet(str);
 
@@ -123,6 +121,15 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     connect(valid_code,SIGNAL(textChanged(QString)),this,SLOT(change_uppercase()));
     connect(this,SIGNAL(code_changed()),this,SLOT(setstyleline()));
     adjustSize();
+    reg_phone->setFocus();
+}
+
+void RegDialog::set_staus(bool ok) {
+    reg_confirm->setEnabled(ok);
+    reg_user->setEnabled(ok);
+    reg_phone->setEnabled(ok);
+    valid_code->setEnabled(ok);
+    send_msg_btn->setEnabled(ok);
 }
 
 /* 更新设置错误提示 */
@@ -161,7 +168,7 @@ QLineEdit* RegDialog::get_valid_code() {
     return valid_code;
 }
 
-QLineEdit* RegDialog::get_phone_user() {
+area_code_lineedit* RegDialog::get_phone_user() {
     return reg_phone;
 }
 

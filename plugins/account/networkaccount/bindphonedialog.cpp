@@ -68,6 +68,12 @@ BindPhoneDialog::BindPhoneDialog(QWidget *parent) : QWidget(parent)
     adjustSize();
 }
 
+void BindPhoneDialog::set_staus(bool ok) {
+   phone->setEnabled(ok);
+   valid_code->setEnabled(ok);
+   send_code->setEnabled(ok);
+}
+
 /* 设置错误代码，并发出错误代码更换信号，传给主框，让主框完成错误代码更新 */
 void BindPhoneDialog::set_code(QString codenum) {
     code = codenum;

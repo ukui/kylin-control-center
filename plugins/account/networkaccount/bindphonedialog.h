@@ -45,6 +45,7 @@ public:
     QString get_code();
     area_code_lineedit* get_phone_lineedit();
     QLineEdit* get_code_lineedit();
+    void set_staus(bool ok);
 public slots:
     void setstyleline();
 signals:
