@@ -61,7 +61,7 @@ protected:
 signals:
     void code_changed();
 private:
-    area_code_lineedit *reg_phone;
+    QLineEdit *reg_phone;
     QLineEdit *reg_user;
     ql_lineedit_pass *reg_pass;
     QLineEdit *valid_code;

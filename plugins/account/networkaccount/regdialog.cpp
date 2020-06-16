@@ -22,7 +22,7 @@
 RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
 {
     this->setFixedWidth(338);
-    reg_phone = new area_code_lineedit(this);
+    reg_phone = new QLineEdit(this);
     reg_user = new QLineEdit(this);
     reg_pass = new ql_lineedit_pass(this);
     reg_confirm = new ql_lineedit_pass(this);
@@ -50,6 +50,7 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
 
 
     reg_phone->setMaxLength(11);
+    reg_phone->setPlaceholderText(tr("Your phone here"));
     reg_pass->setPlaceholderText(tr("Your password here"));
     reg_pass->setEchoMode(QLineEdit::Password);
     reg_confirm->setEchoMode(QLineEdit::Password);
@@ -69,6 +70,7 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     reg_confirm->setTextMargins(12,0,0,0);
     reg_user->setTextMargins(12,0,0,0);
     reg_pass->setTextMargins(12,0,0,0);
+    reg_phone->setTextMargins(12,0,0,0);
     valid_code->setTextMargins(12,0,0,0);
     //valid_code->setStyleSheet(str);
 
