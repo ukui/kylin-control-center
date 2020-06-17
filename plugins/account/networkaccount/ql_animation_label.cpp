@@ -8,10 +8,10 @@ ql_animation_label::ql_animation_label(QWidget *parent) : QWidget(parent)
     svg_hd = new ql_svg_handler(this);
     layout = new QHBoxLayout;
 
-    icon->setFixedSize(20,20);
     this->setStyleSheet("ql_animation_label{background-color:#3D6BE5;border-radius:4px;}");
     text->setStyleSheet("font-size:14px;color:#ffffff;background:transparent;");
     icon->setStyleSheet("background:transparent;");
+    icon->setFixedSize(24,24);
     layout->setSpacing(8);
     layout->setMargin(0);
     layout->setAlignment(Qt::AlignCenter);
@@ -22,7 +22,7 @@ ql_animation_label::ql_animation_label(QWidget *parent) : QWidget(parent)
     connect(timer,&QTimer::timeout, [this] () {
         QPixmap pixmap = svg_hd->loadSvg(QString(":/new/image/loading1%1.svg").arg(cnt));
         icon->setPixmap(pixmap);
-        cnt = (cnt + 9) % 8;
+        cnt = (cnt + 8) % 7;
     });
     hide();
 }
@@ -32,7 +32,7 @@ void ql_animation_label::settext(QString t) {
 }
 
 void ql_animation_label::startmoive() {
-    timer->start(125);
+    timer->start(140);
     show();
     adjustSize();
 }
