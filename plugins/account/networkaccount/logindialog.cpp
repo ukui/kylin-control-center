@@ -396,6 +396,18 @@ bool LoginDialog::login_account_thr_phone() {
     return false;
 }
 
+void LoginDialog::set_staus(bool ok) {
+    account_login_btn->setEnabled(ok);
+    message_login_btn->setEnabled(ok);
+    account_pass->setEnabled(ok);
+    account_phone->setEnabled(ok);
+    valid_code->setEnabled(ok);
+    mcode_lineedit->setEnabled(ok);
+    send_msg_submit->setEnabled(ok);
+    forgot_pass_btn->setEnabled(ok);
+
+}
+
 /* 清空登录框 */
 void LoginDialog::set_clear() {
     if(!error_code->isHidden()) {

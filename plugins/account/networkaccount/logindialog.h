@@ -64,6 +64,7 @@ public:
     mcode_widget*   get_mcode_widget();
     QLineEdit*      get_mcode_lineedit();
     void            set_clear();
+    void            set_staus(bool ok);
 public slots:
     void            set_window1();
     void            set_window2();

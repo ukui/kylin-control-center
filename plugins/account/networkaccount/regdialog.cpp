@@ -46,7 +46,7 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     send_msg_btn->setFixedSize(QSize(130,36));
     reg_confirm->setFixedSize(QSize(338,36));
     reg_phone->setFocusPolicy(Qt::StrongFocus);
-    reg_phone->setFocus();
+
 
 
     reg_phone->setMaxLength(11);
@@ -121,6 +121,15 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     connect(valid_code,SIGNAL(textChanged(QString)),this,SLOT(change_uppercase()));
     connect(this,SIGNAL(code_changed()),this,SLOT(setstyleline()));
     adjustSize();
+    reg_phone->setFocus();
+}
+
+void RegDialog::set_staus(bool ok) {
+    reg_confirm->setEnabled(ok);
+    reg_user->setEnabled(ok);
+    reg_phone->setEnabled(ok);
+    valid_code->setEnabled(ok);
+    send_msg_btn->setEnabled(ok);
 }
 
 /* 更新设置错误提示 */
@@ -159,7 +168,7 @@ QLineEdit* RegDialog::get_valid_code() {
     return valid_code;
 }
 
-QLineEdit* RegDialog::get_phone_user() {
+area_code_lineedit* RegDialog::get_phone_user() {
     return reg_phone;
 }
 

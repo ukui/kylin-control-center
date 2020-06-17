@@ -166,6 +166,14 @@ QLineEdit* PassDialog::get_valid_code() {
     return valid_code;
 }
 
+void PassDialog::set_staus(bool ok) {
+    reg_pass->setEnabled(ok);
+    reg_pass_confirm->setEnabled(ok);
+    reg_phone->setEnabled(ok);
+    valid_code->setEnabled(ok);
+    send_msg_btn->setEnabled(ok);
+}
+
 /* 清空忘记密码框 */
 void PassDialog::set_clear() {
     if(!tips->isHidden()) {

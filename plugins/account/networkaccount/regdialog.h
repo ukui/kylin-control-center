@@ -43,13 +43,14 @@ public:
     QLineEdit* get_reg_user();
     ql_lineedit_pass* get_reg_pass();
     QLineEdit* get_valid_code();
-    QLineEdit* get_phone_user();
+    area_code_lineedit* get_phone_user();
     ql_lineedit_pass* get_reg_confirm();
     QPushButton* get_send_code();
     QString     get_user_phone();
     QString     get_user_account();
     QString     get_user_passwd();
     QString     get_user_mcode();
+    void        set_staus(bool ok);
     void        set_code(QString codenum);
     void        set_clear();
     ql_label_info*     get_tips();

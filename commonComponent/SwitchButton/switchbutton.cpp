@@ -67,7 +67,7 @@ void SwitchButton::drawBg(QPainter *painter){
 //    painter->setPen(Qt::NoPen);
 
     if (!checked){
-        painter->setPen(borderColorOff);
+        painter->setPen(Qt::NoPen);
         painter->setBrush(bgColorOff);
     }
     else{

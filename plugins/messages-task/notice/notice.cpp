@@ -281,7 +281,7 @@ void Notice::initOriNoticeStatus() {
         });
 
 
-//        delete newSettings;
+//        delete newSetttings;
 //        delete settings;
     }
 }
@@ -293,7 +293,7 @@ void Notice::initGSettings() {
 
         const QByteArray id(NOTICE_ORIGIN_SCHEMA);
         QGSettings * settings = nullptr;
-        QGSettings * newSettings = nullptr;
+        QGSettings * newSetttings = nullptr;
         QString path;
         bool isExist = false;
 
@@ -311,18 +311,18 @@ void Notice::initGSettings() {
         }
         if (!isExist) {
             path = findFreePath();
-            qDebug()<<"not contains newSettings ----->path"<<path<<endl;
-            newSettings = new QGSettings(id, path.toLatin1().data());
-            QStringList keys = newSettings->keys();
+            qDebug()<<"not contains newSetttings ----->path"<<path<<endl;
+            newSetttings = new QGSettings(id, path.toLatin1().data());
+            QStringList keys = newSetttings->keys();
             if (keys.contains(static_cast<QString>(NAME_KEY)) &&
                     keys.contains(static_cast<QString>(MESSAGES_KEY))) {
-                newSettings->set(NAME_KEY, appsKey.at(i));
-                newSettings->set(MESSAGES_KEY, true);
+                newSetttings->set(NAME_KEY, appsKey.at(i));
+                newSetttings->set(MESSAGES_KEY, true);
             }
         }
 
-        if (newSettings) {
-            delete newSettings;
+        if (newSetttings) {
+            delete newSetttings;
         }
     }
 
