@@ -40,12 +40,6 @@ class OutputConfig : public QWidget
     QStringList readFile(const QString& filepath);
     int scaleRet();
 
-
-public:
-    QStyledItemDelegate  *itemDelege;
-
-
-
   protected Q_SLOTS:
     void slotResolutionChanged(const QSize &size);
     void slotRotationChanged(int index);

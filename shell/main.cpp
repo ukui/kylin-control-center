@@ -141,6 +141,14 @@ int main(int argc, char *argv[])
         auto style = new InternalStyle(nullptr);
         a.setStyle(style);
 
+        QObject::connect(&a, &QtSingleApplication::fontChanged, [&] {
+            QFont f =a.font();
+            for (auto widget : a.allWidgets()) {
+                widget->repaint();
+                widget->setFont(f);
+            }
+        });
+
         return a.exec();
     }
 }

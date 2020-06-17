@@ -203,9 +203,9 @@ void Theme::setupComponent(){
     ui->controlLabel->hide();
     ui->controlWidget->hide();
 
-    ui->defaultButton->setProperty("value", "ukui-white");
-    ui->lightButton->setProperty("value", "ukui-default");
-    ui->darkButton->setProperty("value", "ukui-black");
+    ui->defaultButton->setProperty("value", "ukui-default");
+//    ui->lightButton->setProperty("value", "ukui-default");
+    ui->darkButton->setProperty("value", "ukui-dark");
 
     buildThemeModeBtn(ui->defaultButton, tr("Default"), "default");
     buildThemeModeBtn(ui->lightButton, tr("Light"), "light");
@@ -323,23 +323,22 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
 
 void Theme::initThemeMode(){
     //监听主题改变
-    connect(qtSettings, &QGSettings::changed, this, [=](const QString &key){
-        if (key == "styleName") {
-            auto style = qtSettings->get(key).toString();
-            writeKwinSettings(true, style);
-            qApp->setStyle(new InternalStyle(style));
-        }
+//    connect(qtSettings, &QGSettings::changed, this, [=](const QString &key){
+//        auto style = qtSettings->get(key).toString();
+//        writeKwinSettings(true, style);
+//        qApp->setStyle(new InternalStyle(style));
+//        if (key == "styleName") {
+//            //获取当前主题
+//            QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
+//            qApp->setStyle(new InternalStyle(currentThemeMode));
 
-        //获取当前主题
-        QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-        qApp->setStyle(new InternalStyle(currentThemeMode));
-
-        for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
-            QVariant valueVariant = button->property("value");
-            if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode)
-                button->click();
-        }
-    });
+//            for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
+//                QVariant valueVariant = button->property("value");
+//                if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode)
+//                    button->click();
+//            }
+//        }
+//    });
 
     //获取当前主题
     QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
@@ -357,14 +356,14 @@ void Theme::initThemeMode(){
 #else
     connect(ui->themeModeBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this, [=](QAbstractButton * button){
 #endif
-        //设置主题
+//        //设置主题
         QString themeMode = button->property("value").toString();
         QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-        if (QString::compare(currentThemeMode, themeMode)){
+        if (QString::compare(currentThemeMode, themeMode) || true){
+
             qApp->setStyle(new InternalStyle(themeMode));
             qtSettings->set(MODE_QT_KEY, themeMode);
             gtkSettings->set(MODE_GTK_KEY, themeMode);
-
             writeKwinSettings(true, themeMode);
         }
     });
@@ -578,11 +577,15 @@ QString Theme::dullTranslation(QString str){
 void Theme::resetBtnClickSlot() {
 
     // reset theme(because MODE_QT_KEY's default is null, use "SET" to reset default key )
-    QString theme = "ukui-white";
-    qtSettings->set(MODE_QT_KEY, theme);
-    gtkSettings->set(MODE_GTK_KEY, theme);
+//    QString theme = "ukui-default";
+//    qtSettings->set(MODE_QT_KEY, theme);
+//    gtkSettings->set(MODE_GTK_KEY, theme);
+//    emit ui->defaultButton->clicked();
+    emit ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
 
-    // reset cursor default theme    
+//    ui->defaultButton->setChecked(true);
+
+    // reset cursor default theme
     QString cursorTheme = "breeze_cursors";
     curSettings->set(CURSOR_THEME_KEY,cursorTheme);
 
