@@ -167,7 +167,7 @@ void Desktop::initTranslation() {
     iconMap.insert("kylin-nm", "nm-device-wired");
     iconMap.insert("ukui-power-manager-tray", "battery-good");
     iconMap.insert("fcitx", "fcitx");
-    iconMap.insert("blueman", "preferences-system-bluetooth");.
+    iconMap.insert("blueman", "preferences-system-bluetooth");
     iconMap.insert("kylin-video", "kylin-video");
 
     disList<<"ukui-sidebar"<<"update-notifier"<<"software-update-available"
