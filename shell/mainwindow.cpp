@@ -68,6 +68,11 @@ MainWindow::MainWindow(QWidget *parent) :
     //将最外层窗体设置为透明
 
 //    setStyleSheet("QMainWindow#MainWindow{background-color: transparent;}");
+    connect(qApp, &QApplication::fontChanged, this, [=] {
+        QFont font = this->font();
+        int width = font.pointSize();
+        ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
+    });
 
 
     //设置panel图标
@@ -318,7 +323,11 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     if (this == watched) {
         if (event->type() == QEvent::WindowStateChange) {
             if (this->windowState() == Qt::WindowMaximized) {
-                ui->leftsidebarWidget->setMaximumWidth(130);
+                QFont font = this->font();
+                int width = font.pointSize();
+                ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
+
+//                ui->leftsidebarWidget->setMaximumWidth(130);
                 ui->maxBtn->setIcon(QIcon("://img/titlebar/revert.svg"));
                 for (int i = 0; i <= 9; i++) {
                     QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
