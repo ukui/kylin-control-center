@@ -24,6 +24,8 @@
 #include <QObject>
 #include <QtPlugin>
 
+#include <QTimer>
+
 #include "shell/interface.h"
 
 namespace Ui {
@@ -58,6 +60,13 @@ private:
     QString pluginName;
     int pluginType;
     QWidget * pluginWidget;
+
+private:
+    QTimer * pTimer;
+
+public slots:
+    void refreshPrinterDev();
+
 };
 
 #endif // PRINTER_H
