@@ -44,6 +44,9 @@ extern "C" {
 #define SESSION_SCHEMA "org.ukui.session"
 #define SESSION_MOUSE_KEY "mouse-size-changed"
 
+#define DESKTOP_SCHEMA "org.mate.interface"
+#define CURSOR_BLINK_KEY "cursor-blink"
+
 
 MouseControl::MouseControl()
 {
@@ -89,14 +92,17 @@ MouseControl::MouseControl()
     //初始化鼠标设置GSettings
     const QByteArray id(MOUSE_SCHEMA);
     const QByteArray sessionId(SESSION_SCHEMA);
-    if (QGSettings::isSchemaInstalled(sessionId) && QGSettings::isSchemaInstalled(id)) {
+    const QByteArray idd(DESKTOP_SCHEMA);
+    if (QGSettings::isSchemaInstalled(sessionId) && QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(DESKTOP_SCHEMA)) {
         sesstionSetttings = new QGSettings(sessionId);
         settings = new QGSettings(id);
+        desktopSettings = new QGSettings(idd);
 
         setupComponent();
 
         initHandHabitStatus();
         initPointerStatus();
+        initCursorStatus();
     }
 
 
@@ -109,6 +115,7 @@ MouseControl::~MouseControl()
     if (QGSettings::isSchemaInstalled(MOUSE_SCHEMA) && QGSettings::isSchemaInstalled(SESSION_SCHEMA)) {
         delete settings;
         delete sesstionSetttings;
+        delete desktopSettings;
     }
 }
 
@@ -183,6 +190,10 @@ void MouseControl::setupComponent(){
             sesstionSetttings->set(SESSION_MOUSE_KEY, true);
         }
     });
+
+    connect(flashingBtn, &SwitchButton::checkedChanged, [=](bool checked){
+        desktopSettings->set(CURSOR_BLINK_KEY, checked);
+    });
 }
 
 void MouseControl::initHandHabitStatus(){
@@ -236,5 +247,7 @@ void MouseControl::initPointerStatus(){
 }
 
 void MouseControl::initCursorStatus(){
-
+    flashingBtn->blockSignals(true);
+    flashingBtn->setChecked(desktopSettings->get(CURSOR_BLINK_KEY).toBool());
+    flashingBtn->blockSignals(false);
 }

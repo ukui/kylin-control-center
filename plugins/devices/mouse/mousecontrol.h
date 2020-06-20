@@ -69,6 +69,7 @@ private:
 
     QGSettings * settings;
     QGSettings * sesstionSetttings;
+    QGSettings * desktopSettings;
 
     QString leftStr;
     QString rightStr;
