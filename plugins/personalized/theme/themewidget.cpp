@@ -59,7 +59,7 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, QStringList iStringList, QWi
     sSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
     selectedLabel->setSizePolicy(sSizePolicy);
     selectedLabel->setScaledContents(true);
-    selectedLabel->setPixmap(QPixmap("://img/plugins/theme/selected.png"));
+    selectedLabel->setPixmap(QPixmap("://img/plugins/theme/selected.svg"));
 
     QLabel * nameLabel = new QLabel(this);
     QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
@@ -121,7 +121,7 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, const QList<QPixmap> &listMa
     sSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
     selectedLabel->setSizePolicy(sSizePolicy);
     selectedLabel->setScaledContents(true);
-    selectedLabel->setPixmap(QPixmap("://img/plugins/theme/selected.png"));
+    selectedLabel->setPixmap(QPixmap("://img/plugins/theme/selected.svg"));
 
     QLabel * nameLabel = new QLabel(this);
     QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
