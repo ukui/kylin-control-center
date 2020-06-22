@@ -363,7 +363,13 @@ void Theme::initThemeMode(){
 
             qApp->setStyle(new InternalStyle(themeMode));
             qtSettings->set(MODE_QT_KEY, themeMode);
+            if ("ukui-dark" == themeMode) {
+                themeMode = "ukui-black";
+            } else {
+                themeMode = "ukui-white";
+            }
             gtkSettings->set(MODE_GTK_KEY, themeMode);
+
             writeKwinSettings(true, themeMode);
         }
     });

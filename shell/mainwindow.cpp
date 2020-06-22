@@ -128,12 +128,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->backBtn->setIcon(QIcon("://img/titlebar/back.svg"));
 
     //设置右上角按钮图标
-    QPixmap pix = loadSvg(":/img/titlebar/min.svg", "default");
-    ui->minBtn->setIcon(pix);
-    pix = loadSvg("://img/titlebar/max.svg", "default");
-    ui->maxBtn->setIcon(pix);
-    pix = loadSvg("://img/titlebar/close.svg", "default");
-    ui->closeBtn->setIcon(pix);
+    ui->minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
+    ui->maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
+    ui->closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
 
 
     //初始化功能列表数据
@@ -152,12 +149,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->maxBtn, &QPushButton::clicked, this, [=]{
         if (isMaximized()){
             showNormal();
-            QPixmap pix = loadSvg(":/img/titlebar/max.svg", "default");
-            ui->maxBtn->setIcon(pix);
+            ui->maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
         } else {
             showMaximized();
-            QPixmap pix = loadSvg(":/img/titlebar/revert.svg", "default");
-            ui->maxBtn->setIcon(pix);
+            ui->maxBtn->setIcon(QIcon::fromTheme("window-restore-symbolic"));
         }
     });
     connect(ui->closeBtn, &QPushButton::clicked, this, [=]{
@@ -326,9 +321,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
                 QFont font = this->font();
                 int width = font.pointSize();
                 ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
-
-//                ui->leftsidebarWidget->setMaximumWidth(130);
-                ui->maxBtn->setIcon(QIcon("://img/titlebar/revert.svg"));
                 for (int i = 0; i <= 9; i++) {
                     QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
 
@@ -341,7 +333,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 
             } else {
                 ui->leftsidebarWidget->setMaximumWidth(60);
-                ui->maxBtn->setIcon(QIcon("://img/titlebar/max.svg"));
                 for (int i = 0; i <= 9; i++) {
                     QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
                     if (btn) {

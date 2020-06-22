@@ -24,6 +24,7 @@ Build-Depends: debhelper-compat (= 12),
                libqt5xdg-dev,
                qtmultimedia5-dev,
                libxml2-dev,
+               qtbase5-dev,
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Homepage: https://github.com/ukui/ukui-control-center
@@ -33,17 +34,17 @@ Vcs-Git: https://github.com/ukui/ukui-control-center.git
 Package: ukui-control-center
 Architecture: any
 Depends: ${shlibs:Depends},
-         ${misc:Depends}
+         ${misc:Depends},
+         qml-module-qtgraphicaleffects,
+         qml-module-qtquick-controls,
 Recommends: edid-decode,
             redshift,
-            qml-module-qtquick-controls
 Suggests: gsettings-desktop-schemas,
           mate-desktop-common,
           ukui-power-manager,
           ukui-session-manager,
           ukui-screensaver,
           ukui-settings-daemon,
-          qml-module-qtgraphicaleffects,
 Description: utilities to configure the UKUI desktop
  The UKUI control center contains configuration applets for the UKUI desktop,
  allowing to set accessibility configuration, desktop fonts, keyboard
