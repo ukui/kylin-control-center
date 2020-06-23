@@ -28,7 +28,7 @@ include(../env.pri)
 INCLUDEPATH   +=  \
                  /usr/include/KF5/KWindowSystem/ \
 
-LIBS += -L/usr/lib/ -lX11
+LIBS += -L/usr/lib/ -lX11 -lgsettings-qt
 
 #LIBS += -L$$[QT_INSTALL_LIBS] -lkylinssoclient
 
