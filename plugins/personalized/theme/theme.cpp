@@ -32,6 +32,7 @@
 
 #include <QDebug>
 #include <QtDBus/QDBusConnection>
+#include <QtConcurrent>
 /**
  * GTK主题
  */
