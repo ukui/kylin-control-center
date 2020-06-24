@@ -96,6 +96,8 @@ void KbdLayoutManager::component_init(){
 
     // init country comboBox
     for (Layout keylayout : countries){
+        if (keylayout.name == "TW")
+            continue;
         ui->countryComboBox->addItem(keylayout.desc, keylayout.name);
     }
 
