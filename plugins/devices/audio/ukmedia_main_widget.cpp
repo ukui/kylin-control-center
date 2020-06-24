@@ -68,6 +68,7 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     this->setLayout(m_pvLayout);
     this->setMinimumWidth(582);
     this->setMaximumWidth(910);
+    this->layout()->setContentsMargins(0,0,31,0);
 //    this->setStyleSheet("QWidget{background: white;}");
 
     if (mate_mixer_init() == FALSE) {
