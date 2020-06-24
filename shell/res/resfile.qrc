@@ -28,7 +28,6 @@
         <file>plugins/shortcut/up.png</file>
         <file>plugins/about/galaxyUnicorn.png</file>
         <file>plugins/about/logoukui.png</file>
-        <file>plugins/update/update.gif</file>
         <file>homepage/account.svg</file>
         <file>homepage/datetime.svg</file>
         <file>homepage/devices.svg</file>
@@ -125,11 +124,13 @@
         <file>plugins/theme/selected.svg</file>
         <file>plugins/shortcut/up.svg</file>
         <file>plugins/shortcut/down.svg</file>
+        <file>plugins/update/update.png</file>
     </qresource>
     <qresource prefix="/">
         <file>i18n/zh_CN.qm</file>
         <file>i18n/tr.ts</file>
         <file>global.qss</file>
         <file>combox.qss</file>
+        <file>plugins/update/update.png</file>
     </qresource>
 </RCC>
