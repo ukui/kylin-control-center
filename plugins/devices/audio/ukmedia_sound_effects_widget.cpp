@@ -54,7 +54,7 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pLagoutWidget->setMinimumSize(550,50);
     m_pLagoutWidget->setMaximumSize(960,50);
 
-    m_pSoundEffectLabel->setFixedSize(115,24);
+    m_pSoundEffectLabel->setFixedSize(120,24);
     m_pSoundThemeLabel->setFixedSize(115,24);
     m_pShutdownlabel->setFixedSize(115,24);
     m_pLagoutLabel->setFixedSize(115,24);
