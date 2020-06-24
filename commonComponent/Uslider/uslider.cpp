@@ -9,7 +9,7 @@
 Uslider::Uslider(QStringList list) : scaleList(list), QSlider(Qt::Horizontal)
 {
     this->setMinimumHeight(50);
-    this->setMaximumHeight(100);
+    this->setMaximumHeight(16777215);
 }
 
 void Uslider::paintEvent(QPaintEvent *e)
@@ -33,7 +33,7 @@ void Uslider::paintEvent(QPaintEvent *e)
             int tickNum = minimum() + (tickInterval() * i);
 
             int tickX = (((rect.width()/numTicks) * i) - (fontMetrics.width(QString::number(tickNum *10))/2 + 2));
-            int tickY = rect.height()/2 + fontHeight;
+            int tickY = rect.height()/2 + fontHeight + 1;
 
             if( 0 == i) {
                 tickX += 11;

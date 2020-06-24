@@ -70,6 +70,9 @@
         <property name="spacing">
          <number>16</number>
         </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
         <property name="bottomMargin">
          <number>0</number>
         </property>
@@ -95,7 +98,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QListWidget" name="listWidget"/>
+         <layout class="QVBoxLayout" name="autoLayout">
+          <property name="spacing">
+           <number>1</number>
+          </property>
+         </layout>
         </item>
         <item>
          <widget class="QFrame" name="addFrame">

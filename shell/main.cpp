@@ -36,8 +36,6 @@
 #include <QSharedPointer>
 #include <memory>
 
-#define THEME_QT_SCHEMA "org.ukui.style"
-
 void centerToScreen(QWidget* widget) {
     if (!widget)
       return;
@@ -127,21 +125,6 @@ int main(int argc, char *argv[])
 
         auto style = new InternalStyle(nullptr);
         a.setStyle(style);
-
-        const QByteArray id(THEME_QT_SCHEMA);
-        QGSettings * fontSetting = new QGSettings(id);
-        QObject::connect(fontSetting, &QGSettings::changed,[=](QString key){
-            if ("systemFont" == key || "systemFontSize" ==key) {
-                QFont f =qApp->font();
-                for (auto widget : qApp->allWidgets()) {
-                    widget->repaint();
-                    widget->setFont(f);
-                }
-            }
-        });
-        if (fontSetting) {
-            delete fontSetting;
-        }
 
         return a.exec();
     }

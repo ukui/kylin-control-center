@@ -323,22 +323,19 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
 
 void Theme::initThemeMode(){
     //监听主题改变
-//    connect(qtSettings, &QGSettings::changed, this, [=](const QString &key){
-//        auto style = qtSettings->get(key).toString();
-//        writeKwinSettings(true, style);
-//        qApp->setStyle(new InternalStyle(style));
-//        if (key == "styleName") {
-//            //获取当前主题
-//            QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-//            qApp->setStyle(new InternalStyle(currentThemeMode));
-
-//            for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
-//                QVariant valueVariant = button->property("value");
-//                if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode)
-//                    button->click();
-//            }
-//        }
-//    });
+    connect(qtSettings, &QGSettings::changed, this, [=](const QString &key){
+        if (key == "styleName") {
+            //获取当前主题
+            QString currentThemeMode = qtSettings->get(key).toString();
+            writeKwinSettings(true, currentThemeMode);
+            for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
+                QVariant valueVariant = button->property("value");
+                if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode) {
+                    button->click();
+                }
+            }
+        }
+    });
 
     //获取当前主题
     QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
@@ -359,10 +356,13 @@ void Theme::initThemeMode(){
 //        //设置主题
         QString themeMode = button->property("value").toString();
         QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-        if (QString::compare(currentThemeMode, themeMode) || true){
 
-            qApp->setStyle(new InternalStyle(themeMode));
-            qtSettings->set(MODE_QT_KEY, themeMode);
+        qApp->setStyle(new InternalStyle(themeMode));
+        if (QString::compare(currentThemeMode, themeMode)){
+            QtConcurrent::run([=](){
+                qtSettings->set(MODE_QT_KEY, themeMode);
+            });
+
             if ("ukui-dark" == themeMode) {
                 themeMode = "ukui-black";
             } else {

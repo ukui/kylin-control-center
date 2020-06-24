@@ -19,6 +19,8 @@
  */
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "utils/keyvalueconverter.h"
+#include "utils/functionselect.h"
 
 #include <QLabel>
 #include <QPushButton>
@@ -28,13 +30,9 @@
 #include <QPainter>
 #include <QProcess>
 #include <libmatemixer/matemixer.h>
-#include "utils/keyvalueconverter.h"
-#include "utils/functionselect.h"
-
-//#include <KWindowSystem>
-
 #include <QDebug>
 #include <QMessageBox>
+#include <QGSettings/QGSettings>
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -68,12 +66,20 @@ MainWindow::MainWindow(QWidget *parent) :
     //将最外层窗体设置为透明
 
 //    setStyleSheet("QMainWindow#MainWindow{background-color: transparent;}");
-    connect(qApp, &QApplication::fontChanged, this, [=] {
-        QFont font = this->font();
-        int width = font.pointSize();
-        ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
-    });
 
+    const QByteArray id("org.ukui.style");
+    QGSettings * fontSetting = new QGSettings(id);
+    connect(fontSetting, &QGSettings::changed,[=](QString key){
+        if ("systemFont" == key || "systemFontSize" ==key) {
+            QFont font = this->font();
+            int width = font.pointSize();
+            for (auto widget : qApp->allWidgets()) {
+                widget->repaint();
+                widget->setFont(font);
+            }
+            ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
+        }
+    });
 
     //设置panel图标
     QIcon panelicon;

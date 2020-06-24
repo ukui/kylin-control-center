@@ -78,9 +78,7 @@ void Update::ui_init(){
 
     syncSettings->endGroup();
 
-    QMovie *movie = new QMovie(":/img/plugins/update/update.gif");
-    ui->logoLabel->setMovie(movie);
-    movie->start();
+    ui->logoLabel->setPixmap(QPixmap(":/img/plugins/update/update.png"));
 }
 
 QStringList Update::readFile(QString filepath)
