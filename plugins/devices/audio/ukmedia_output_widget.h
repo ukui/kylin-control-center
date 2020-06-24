@@ -30,6 +30,7 @@
 #include <QCoreApplication>
 #include <QVBoxLayout>
 #include "ukui_custom_style.h"
+#include "customstyle.h"
 
 class AudioSlider : public QSlider
 {
@@ -78,7 +79,7 @@ private:
     QLabel *m_pOpVolumePercentLabel;
     QLabel *m_pOpBalanceLabel;
     QLabel *m_pLeftBalanceLabel;
-    AudioSlider *m_pOpBalanceSlider;
+    UkmediaVolumeSlider *m_pOpBalanceSlider;
     QLabel *m_pRightBalanceLabel;
 
     QString sliderQss;

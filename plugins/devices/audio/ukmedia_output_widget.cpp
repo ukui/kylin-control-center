@@ -19,7 +19,6 @@
  */
 #include "ukmedia_output_widget.h"
 #include <QHBoxLayout>
-
 #include <QDebug>
 AudioSlider::AudioSlider(QWidget *parent)
 {
@@ -75,9 +74,10 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pOpVolumePercentLabel = new QLabel(m_pMasterVolumeWidget);
     m_pOpBalanceLabel = new QLabel(tr("Channel balance"),m_pChannelBalanceWidget);
     m_pLeftBalanceLabel = new QLabel(tr("Left"),m_pChannelBalanceWidget);
-    m_pOpBalanceSlider = new AudioSlider(m_pChannelBalanceWidget);
+    m_pOpBalanceSlider = new UkmediaVolumeSlider(m_pChannelBalanceWidget);
     m_pRightBalanceLabel = new QLabel(tr("right"),m_pChannelBalanceWidget);
 
+    m_pOpBalanceSlider->setStyle(new CustomStyle());
     m_pOpVolumeSlider->setOrientation(Qt::Horizontal);
     m_pOpBalanceSlider->setOrientation(Qt::Horizontal);
     m_pOpVolumeSlider->setRange(0,100);
