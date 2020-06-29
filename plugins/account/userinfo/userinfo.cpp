@@ -542,7 +542,7 @@ void UserInfo::showDeleteUserDialog(QString username){
     connect(dialog, &DelUserDialog::removefile_send, this, [=](bool removeFile, QString userName){
         deleteUser(removeFile, userName);
     });
-    dialog->open();
+    dialog->exec();
 }
 
 void UserInfo::deleteUser(bool removefile, QString username){
