@@ -63,6 +63,7 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     m_pvLayout->addWidget(m_pOutputWidget);
     m_pvLayout->addWidget(m_pInputWidget);
     m_pvLayout->addWidget(m_pSoundWidget);
+    m_pvLayout->addSpacing(48);
     m_pvLayout->addSpacerItem(new QSpacerItem(20,0,QSizePolicy::Fixed,QSizePolicy::Expanding));
     m_pvLayout->setSpacing(48);
     this->setLayout(m_pvLayout);
@@ -84,6 +85,8 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     m_pAppVolumeList = new QStringList;
     m_pStreamControlList = new QStringList;
     m_pAppNameList = new QStringList;
+    m_pInputPortList = new QStringList;
+    m_pOutputPortList = new QStringList;
     //创建context
     m_pContext = mate_mixer_context_new();
 
@@ -174,6 +177,7 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     connect(m_pSoundWidget->m_pLagoutCombobox ,SIGNAL(currentIndexChanged(int)),this,SLOT(comboxIndexChangedSlot(int)));
     connect(m_pSoundWidget->m_pSoundThemeCombobox,SIGNAL(currentIndexChanged(int)),this,SLOT(themeComboxIndexChangedSlot(int)));
     connect(m_pInputWidget->m_pInputLevelSlider,SIGNAL(valueChanged(int)),this,SLOT(inputLevelValueChangedSlot()));
+//    connect(m_pInputWidget->m_pInputPortCombobox,SIGNAL(currentIndexChanged(int)),this,SLOT(inputPortComboxChangedSlot(int)));
     //输入等级
     ukuiInputLevelSetProperty(this);
 }
@@ -322,11 +326,6 @@ void UkmediaMainWidget::addStream (UkmediaMainWidget *m_pWidget, MateMixerStream
         m_pLabel = mate_mixer_stream_get_label (m_pStream);
         if (m_pStream == m_pInput) {
             ukuiBarSetStream(m_pWidget,m_pStream);
-            m_pControl = mate_mixer_stream_get_default_control(m_pStream);
-            updateInputSettings (m_pWidget,m_pControl);
-        }
-        if (m_pStream == m_pInput) {
-            ukuiBarSetStream (m_pWidget, m_pStream);
             m_pControl = mate_mixer_stream_get_default_control(m_pStream);
             updateInputSettings (m_pWidget,m_pControl);
         }
@@ -671,7 +670,7 @@ void UkmediaMainWidget::setInputStream(UkmediaMainWidget *m_pWidget, MateMixerSt
             MateMixerStream *parent;
 
             m_pControl = MATE_MIXER_STREAM_CONTROL (m_pControls->data);
-            parent  = mate_mixer_stream_control_get_stream (m_pControl);
+            parent = mate_mixer_stream_control_get_stream (m_pControl);
 
             /* Prefer streamless controls to stay the way they are, forcing them to
              * a particular owning stream would be wrong for eg. event controls */
@@ -739,6 +738,7 @@ void UkmediaMainWidget::onContextDefaultOutputStreamNotify (MateMixerContext *m_
     if (index < 0)
         return;
     m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->setCurrentIndex(index);
+
     updateIconOutput(m_pWidget);
     setOutputStream (m_pWidget, m_pStream);
 }
@@ -1170,13 +1170,44 @@ void UkmediaMainWidget::updateOutputSettings (UkmediaMainWidget *m_pWidget,MateM
     if (m_pControl == nullptr) {
         return;
     }
+    if(m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->count() != 0 || m_pWidget->m_pOutputPortList->count() != 0) {
+        qDebug() << "下拉框的大小为:" << m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->count();
+        m_pWidget->m_pOutputPortList->clear();
+        m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->clear();
+        m_pWidget->m_pOutputWidget->outputWidgetRemovePort();
+    }
 
+    MateMixerSwitch *portSwitch;
     flags = mate_mixer_stream_control_get_flags(m_pControl);
 
     if (flags & MATE_MIXER_STREAM_CONTROL_CAN_BALANCE) {
         ukuiBalanceBarSetProperty(m_pWidget,m_pControl);
     }
-
+    MateMixerStream *stream = mate_mixer_stream_control_get_stream(m_pControl);
+    /* Enable the port selector if the stream has one */
+    portSwitch = findStreamPortSwitch (m_pWidget,stream);
+    if (portSwitch != nullptr) {
+        const GList *options;
+        options = mate_mixer_switch_list_options(MATE_MIXER_SWITCH(portSwitch));
+        while (options != nullptr) {
+            MateMixerSwitchOption *opt = MATE_MIXER_SWITCH_OPTION(options->data);
+            QString label = mate_mixer_switch_option_get_label(opt);
+            QString name = mate_mixer_switch_option_get_name(opt);
+//            qDebug() << "opt label******: "<< label << "opt name :" << mate_mixer_switch_option_get_name(opt);
+            qDebug() << "设置组合框当前值为:" << label;
+            m_pWidget->m_pOutputPortList->append(name);
+            m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->addItem(label);
+            options = options->next;
+        }
+        MateMixerSwitchOption *option = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(portSwitch));
+        QString label = mate_mixer_switch_option_get_label(option);
+//        m_pWidget->m_pInputWidget->m_pInputPortWidget->show();
+//        m_pWidget->m_pInputWidget->setMinimumSize(550,200);
+//        m_pWidget->m_pInputWidget->setMaximumSize(960,200);
+        m_pWidget->m_pOutputWidget->outputWidgetAddPort();
+        m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(label);
+        connect(m_pWidget->m_pOutputWidget->m_pOutputPortCombobox,SIGNAL(currentIndexChanged(int)),m_pWidget,SLOT(outputPortComboxChangedSlot(int)));
+    }
     connect(m_pWidget->m_pOutputWidget->m_pOpBalanceSlider,&QSlider::valueChanged,[=](int volume){
         gdouble value = volume/100.0;
         mate_mixer_stream_control_set_balance(m_pControl,value);
@@ -1847,6 +1878,7 @@ void UkmediaMainWidget::ukuiBarSetStreamControl (UkmediaMainWidget *m_pWidget,Ma
             m_pWidget->m_pInputBarStreamControl = m_pControl;
         }
         m_pName = mate_mixer_stream_control_get_name (m_pControl);
+        qDebug() << "ukuiBarSetStreamControl*********" << m_pName << direction;
     }
 }
 
@@ -1899,9 +1931,17 @@ void UkmediaMainWidget::outputWidgetSliderChangedSlot(int value)
         mate_mixer_stream_control_set_volume(m_pControl,0);
         percent = QString::number(0);
     }
-
+    else {
+        if (firstEnterSystem) {
+            bool status = mate_mixer_stream_control_get_mute(m_pControl);
+            mate_mixer_stream_control_set_mute(m_pControl,status);
+        }
+        else {
+            mate_mixer_stream_control_set_mute(m_pControl,status);
+        }
+    }
+    firstEnterSystem = false;
     outputVolumeDarkThemeImage(value,status);
-    mate_mixer_stream_control_set_mute(m_pControl,status);
     percent.append("%");
     m_pOutputWidget->m_pOpVolumePercentLabel->setText(percent);
     m_pOutputWidget->m_pOutputIconBtn->repaint();
@@ -1935,6 +1975,38 @@ void UkmediaMainWidget::inputWidgetSliderChangedSlot(int value)
     percent.append("%");
     m_pInputWidget->m_pInputIconBtn->repaint();
     m_pInputWidget->m_pIpVolumePercentLabel->setText(percent);
+}
+
+void UkmediaMainWidget::inputPortComboxChangedSlot(int index)
+{
+    if (index < 0)
+        return;
+    QString portStr = m_pInputPortList->at(index);
+    QByteArray ba = portStr.toLatin1();
+    const char *portName = ba.data();
+    MateMixerStream *stream = mate_mixer_context_get_default_input_stream(m_pContext);
+    MateMixerSwitch *portSwitch = findStreamPortSwitch (this,stream);
+    if (portSwitch != nullptr) {
+
+        MateMixerSwitchOption *opt = mate_mixer_switch_get_option(portSwitch,portName);
+        mate_mixer_switch_set_active_option(MATE_MIXER_SWITCH(portSwitch),opt);
+    }
+}
+
+void UkmediaMainWidget::outputPortComboxChangedSlot(int index)
+{
+    if (index < 0)
+        return;
+    QString portStr = m_pOutputPortList->at(index);
+    QByteArray ba = portStr.toLatin1();
+    const char *portName = ba.data();
+    MateMixerStream *stream = mate_mixer_context_get_default_output_stream(m_pContext);
+    MateMixerSwitch *portSwitch = findStreamPortSwitch (this,stream);
+    if (portSwitch != nullptr) {
+
+        MateMixerSwitchOption *opt = mate_mixer_switch_get_option(portSwitch,portName);
+        mate_mixer_switch_set_active_option(MATE_MIXER_SWITCH(portSwitch),opt);
+    }
 }
 
 void UkmediaMainWidget::inputLevelValueChangedSlot()
@@ -1974,7 +2046,17 @@ void UkmediaMainWidget::updateInputSettings (UkmediaMainWidget *m_pWidget,MateMi
     g_debug ("updating input settings");
     MateMixerStream            *stream;
     MateMixerStreamControlFlags flags;
+    MateMixerSwitch            *portSwitch;
 
+    if(m_pWidget->m_pInputWidget->m_pInputPortCombobox->count() != 0 || m_pWidget->m_pInputPortList->count() != 0) {
+        qDebug() << "下拉框的大小为:" << m_pWidget->m_pInputWidget->m_pInputPortCombobox->count();
+        m_pWidget->m_pInputPortList->clear();
+        m_pWidget->m_pInputWidget->m_pInputPortCombobox->clear();
+        m_pWidget->m_pInputWidget->inputWidgetRemovePort();
+//        m_pWidget->m_pInputWidget->m_pInputPortWidget->hide();
+//        m_pWidget->m_pInputWidget->setMinimumSize(550,150);
+//        m_pWidget->m_pInputWidget->setMaximumSize(960,150);
+    }
     /* Get the control currently associated with the input slider */
     if (m_pControl == nullptr)
         return;
@@ -1990,9 +2072,54 @@ void UkmediaMainWidget::updateInputSettings (UkmediaMainWidget *m_pWidget,MateMi
     }
 
     /* Get owning stream of the control */
+    qDebug() << "control name is :" << mate_mixer_stream_control_get_label(m_pControl);
     stream = mate_mixer_stream_control_get_stream (m_pControl);
     if (G_UNLIKELY (stream == nullptr))
         return;
+    /* Enable the port selector if the stream has one */
+    portSwitch = findStreamPortSwitch (m_pWidget,stream);
+    if (portSwitch != nullptr) {
+        const GList *options;
+        options = mate_mixer_switch_list_options(MATE_MIXER_SWITCH(portSwitch));
+        while (options != nullptr) {
+            MateMixerSwitchOption *opt = MATE_MIXER_SWITCH_OPTION(options->data);
+            QString label = mate_mixer_switch_option_get_label(opt);
+            QString name = mate_mixer_switch_option_get_name(opt);
+//            qDebug() << "opt label******: "<< label << "opt name :" << mate_mixer_switch_option_get_name(opt);
+            m_pWidget->m_pInputPortList->append(name);
+            m_pWidget->m_pInputWidget->m_pInputPortCombobox->addItem(label);
+            options = options->next;
+        }
+        MateMixerSwitchOption *option = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(portSwitch));
+        QString label = mate_mixer_switch_option_get_label(option);
+//        m_pWidget->m_pInputWidget->m_pInputPortWidget->show();
+//        m_pWidget->m_pInputWidget->setMinimumSize(550,200);
+//        m_pWidget->m_pInputWidget->setMaximumSize(960,200);
+        qDebug() << "设置组合框当前值为:" << label;
+        m_pWidget->m_pInputWidget->inputWidgetAddPort();
+        m_pWidget->m_pInputWidget->m_pInputPortCombobox->setCurrentText(label);
+        connect(m_pWidget->m_pInputWidget->m_pInputPortCombobox,SIGNAL(currentIndexChanged(int)),m_pWidget,SLOT(inputPortComboxChangedSlot(int)));
+    }
+
+}
+
+MateMixerSwitch* UkmediaMainWidget::findStreamPortSwitch (UkmediaMainWidget *widget,MateMixerStream *stream)
+{
+    const GList *switches;
+//    stream = mate_mixer_context_get_default_input_stream(widget->m_pContext);
+    switches = mate_mixer_stream_list_switches (stream);
+    while (switches != nullptr) {
+        MateMixerStreamSwitch *swtch = MATE_MIXER_STREAM_SWITCH (switches->data);
+
+        if (!MATE_MIXER_IS_STREAM_TOGGLE (swtch) &&
+                mate_mixer_stream_switch_get_role (swtch) == MATE_MIXER_STREAM_SWITCH_ROLE_PORT) {
+            qDebug() << "find  Switch&&&&&&&&&&";
+            return MATE_MIXER_SWITCH (swtch);
+        }
+        switches = switches->next;
+    }
+    qDebug() << " not find  Switch&&&&&&&&&&";
+    return NULL;
 }
 
 void UkmediaMainWidget::onStreamControlMonitorValue (MateMixerStream *m_pStream,gdouble value,UkmediaMainWidget *m_pWidget)

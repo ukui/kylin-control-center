@@ -28,20 +28,23 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pInputDeviceWidget = new QFrame(m_pInputWidget);
     m_pVolumeWidget = new QFrame(m_pInputWidget);
     m_pInputLevelWidget = new QFrame(m_pInputWidget);
+    m_pInputPortWidget = new QFrame(m_pInputWidget);
 
     m_pInputDeviceWidget->setFrameShape(QFrame::Shape::Box);
     m_pVolumeWidget->setFrameShape(QFrame::Shape::Box);
     m_pInputLevelWidget->setFrameShape(QFrame::Shape::Box);
-
+    m_pInputPortWidget->setFrameShape(QFrame::Shape::Box);
     //设置大小
-    m_pInputWidget->setMinimumSize(550,150);
-    m_pInputWidget->setMaximumSize(960,150);
+    m_pInputWidget->setMinimumSize(550,152);
+    m_pInputWidget->setMaximumSize(960,152);
     m_pInputDeviceWidget->setMinimumSize(550,50);
     m_pInputDeviceWidget->setMaximumSize(960,50);
     m_pVolumeWidget->setMinimumSize(550,50);
     m_pVolumeWidget->setMaximumSize(960,50);
     m_pInputLevelWidget->setMinimumSize(550,50);
     m_pInputLevelWidget->setMaximumSize(960,50);
+    m_pInputPortWidget->setMinimumSize(550,50);
+    m_pInputPortWidget->setMaximumSize(960,50);
 
     m_pInputLabel = new QLabel(tr("Input"),this);
     m_pInputLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
@@ -57,11 +60,14 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pInputLevelSlider = new AudioSlider(m_pInputLevelWidget);
     m_pHighLevelLabel = new QLabel(tr("high"),m_pInputLevelWidget);
 
+    m_pInputPortCombobox = new QComboBox(m_pInputPortWidget);
+    m_pInputPortLabel = new QLabel(tr("Connector"),m_pInputPortWidget);
+
     m_pIpVolumeSlider->setOrientation(Qt::Horizontal);
     m_pInputLevelSlider->setOrientation(Qt::Horizontal);
     m_pIpVolumeSlider->setRange(0,100);
     m_pInputIconBtn->setFocusPolicy(Qt::NoFocus);
-    //输出设备添加布局
+    //输入设备添加布局
     QHBoxLayout *m_pInputDeviceLayout = new QHBoxLayout(m_pInputDeviceWidget);
     m_pInputLabel->setFixedSize(83,24);
     m_pInputDeviceCombobox->setMinimumSize(50,32);
@@ -111,16 +117,33 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pSoundLayout->setSpacing(0);
     m_pInputLevelWidget->setLayout(m_pSoundLayout);
     m_pInputLevelWidget->layout()->setContentsMargins(0,0,0,0);
+
+    //连接器添加布局
+    QHBoxLayout *pConnectLayout = new QHBoxLayout(m_pInputLevelWidget);
+    m_pInputPortLabel->setFixedSize(115,24);
+    m_pInputPortCombobox->setMinimumSize(50,32);
+    m_pInputPortCombobox->setMaximumSize(900,32);
+    pConnectLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    pConnectLayout->addWidget(m_pInputPortLabel);
+    pConnectLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    pConnectLayout->addWidget(m_pInputPortCombobox);
+    pConnectLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    pConnectLayout->setSpacing(0);
+    m_pInputPortWidget->setLayout(pConnectLayout);
+    pConnectLayout->layout()->setContentsMargins(0,0,0,0);
+
     //进行整体布局
-    QVBoxLayout *m_pVlayout = new QVBoxLayout(m_pInputWidget);
+    m_pVlayout = new QVBoxLayout(m_pInputWidget);
     m_pVlayout->addWidget(m_pInputDeviceWidget);
-    m_pVlayout->addSpacing(1);
+//    m_pVlayout->addSpacing(1);
     m_pVlayout->addWidget(m_pVolumeWidget);
-    m_pVlayout->addSpacing(1);
+//    m_pVlayout->addSpacing(1);
     m_pVlayout->addWidget(m_pInputLevelWidget);
+    m_pVlayout->setSpacing(1);
     m_pInputWidget->setLayout(m_pVlayout);
     m_pInputWidget->layout()->setContentsMargins(0,0,0,0);
-
+//    inputWidgetAddPort();
+    m_pInputPortWidget->hide();
     QVBoxLayout *m_pVlayout1 = new QVBoxLayout(this);
     m_pVlayout1->addWidget(m_pInputLabel);
     m_pVlayout1->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
@@ -163,6 +186,24 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
                                    "border-radius:10px;}");
 
 
+}
+
+void UkmediaInputWidget::inputWidgetAddPort()
+{
+    m_pInputWidget->setMinimumSize(550,203);
+    m_pInputWidget->setMaximumSize(960,203);
+//    m_pVlayout->addSpacing(1);
+    m_pVlayout->addWidget(m_pInputPortWidget);
+    m_pInputPortWidget->show();
+}
+
+void UkmediaInputWidget::inputWidgetRemovePort()
+{
+//    m_pVlayout->addSpacing(1);
+    m_pInputWidget->setMinimumSize(550,152);
+    m_pInputWidget->setMaximumSize(960,152);
+    m_pVlayout->removeWidget(m_pInputPortWidget);
+    m_pInputPortWidget->hide();
 }
 
 UkmediaInputWidget::~UkmediaInputWidget()

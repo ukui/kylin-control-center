@@ -161,6 +161,7 @@ public:
     static void create_custom_theme (const char *parent);
     static void custom_theme_update_time (void);
     static gboolean custom_theme_dir_is_empty (void);
+    static MateMixerSwitch *findStreamPortSwitch (UkmediaMainWidget *widget,MateMixerStream *stream);
 
 Q_SIGNALS:
     void appVolumeChangedSignal(bool is_mute,int volume,const QString app_name);
@@ -176,6 +177,8 @@ private Q_SLOTS:
     void ukuiThemeChangedSlot(const QString &);
     void bootButtonSwitchChangedSlot(bool status);
     void bootMusicSettingsChanged();
+    void inputPortComboxChangedSlot(int index);
+    void outputPortComboxChangedSlot(int index);
 
 private:
     UkmediaInputWidget *m_pInputWidget;
@@ -201,6 +204,8 @@ private:
     QStringList *m_pInputStreamList;
     QStringList *m_pAppVolumeList;
     QStringList *m_pStreamControlList;
+    QStringList *m_pInputPortList;
+    QStringList *m_pOutputPortList;
     QString m_pDeviceStr;
 
     GSettings *m_pSoundSettings;
@@ -213,6 +218,7 @@ private:
     QGSettings *m_pThemeSetting;
     QString mThemeName;
     bool m_hasMusic;
+    bool firstEnterSystem = true;
 };
 
 #endif // WIDGET_H
