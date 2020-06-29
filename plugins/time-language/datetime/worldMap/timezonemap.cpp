@@ -7,31 +7,31 @@
 #include <QImageReader>
 #include <QDebug>
 
-const QString timezoneMapFile =":/images/map.png";
+const QString timezoneMapFile =":/images/map.svg";
 const QString dotFile = ":/images/indicator.png";
 
 
-//QPixmap TimezoneMap::loadPixmap(const QString &path)
-//{
-//    qreal ratio = 1.0;
-//    QPixmap pixmap;
+QPixmap TimezoneMap::loadPixmap(const QString &path)
+{
+    qreal ratio = 1.0;
+    QPixmap pixmap;
 
-//    const qreal devicePixelRatio = qApp->devicePixelRatio();
+    const qreal devicePixelRatio = qApp->devicePixelRatio();
 
-//    if (!qFuzzyCompare(ratio, devicePixelRatio)) {
-//        QImageReader reader;
-//        reader.setFileName(qt_findAtNxFile(path, devicePixelRatio, &ratio));
-//        if (reader.canRead()) {
-//            reader.setScaledSize(reader.size() * (devicePixelRatio / ratio));
-//            pixmap = QPixmap::fromImage(reader.read());
-//            pixmap.setDevicePixelRatio(devicePixelRatio);
-//        }
-//    } else {
-//        pixmap.load(path);
-//    }
+    if (!qFuzzyCompare(ratio, devicePixelRatio)) {
+        QImageReader reader;
+        reader.setFileName(qt_findAtNxFile(path, devicePixelRatio, &ratio));
+        if (reader.canRead()) {
+            reader.setScaledSize(reader.size() * (devicePixelRatio / ratio));
+            pixmap = QPixmap::fromImage(reader.read());
+            pixmap.setDevicePixelRatio(devicePixelRatio);
+        }
+    } else {
+        pixmap.load(path);
+    }
 
-//    return pixmap;
-//}
+    return pixmap;
+}
 
 TimezoneMap::TimezoneMap(QWidget* parent) : QFrame (parent),
     m_zoninfo(new ZoneInfo),m_currentZone(),m_nearestZones()
@@ -211,7 +211,7 @@ void TimezoneMap::resizeEvent(QResizeEvent *event) {
 
     QLabel *background_label = findChild<QLabel*>("background_label");
     if (background_label) {
-        QPixmap timezone_pixmap(timezoneMapFile);
+        QPixmap timezone_pixmap = loadPixmap(timezoneMapFile);
         background_label->setPixmap(timezone_pixmap.scaled(event->size() * devicePixelRatioF(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
     QWidget::resizeEvent(event);

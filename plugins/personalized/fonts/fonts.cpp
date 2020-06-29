@@ -737,6 +737,7 @@ void Fonts::resetDefault(){
 //    peonysettings->reset(PEONY_FONT_KEY);
     marcosettings->reset(TITLEBAR_FONT_KEY);
     stylesettings->set(SYSTEM_FONT_EKY, 11);
+    stylesettings->reset(SYSTEM_NAME_KEY);
 
     //reset font render
     rendersettings->reset(ANTIALIASING_KEY);
