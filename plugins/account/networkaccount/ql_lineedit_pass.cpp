@@ -50,6 +50,35 @@ ql_lineedit_pass::ql_lineedit_pass(QWidget *parent) : QLineEdit(parent)
     layout->addStretch();
     layout->addWidget(visble);
     layout->setMargin(0);
+    connect(this,&ql_lineedit_pass::textChanged,[this] (const QString &text) {
+        bool uper = false;
+        bool normal = false;
+        bool number = false;
+        bool line = false;
+        for(QChar c:text) {
+            if(c>='A' && c <= 'Z') {
+                uper = true;
+                continue;
+            }
+            if(c>='a' && c <='z') {
+                normal = true;
+                continue;
+            }
+            if(c>='0' && c<='9') {
+                number = true;
+                continue;
+            }
+        }
+        if(text.length() >= 6) {
+            line = true;
+        }
+        bool ok = uper && number && line == true ?true:normal && number && line;
+        if(ok) {
+            emit verify_text();
+        } else {
+            emit false_text();
+        }
+    });
     visble->setFocusPolicy(Qt::NoFocus);
     setLayout(layout);
 

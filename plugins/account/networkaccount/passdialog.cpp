@@ -104,7 +104,12 @@ PassDialog::PassDialog(QWidget *parent) : QWidget(parent)
     tips->hide();
     passtips->hide();
     passtips->setAttribute(Qt::WA_DontShowOnScreen);
-
+    connect(reg_pass,&ql_lineedit_pass::verify_text,[this] () {
+       passtips->setText(tr("Your password is valid!"));
+    });
+    connect(reg_pass,&ql_lineedit_pass::false_text,[this] () {
+       passtips->setText(tr("At least 6 bit, include letters and digt"));
+    });
     connect(valid_code,SIGNAL(textChanged(QString)),this,SLOT(change_uppercase()));
     connect(this,SIGNAL(code_changed()),this,SLOT(setstyleline()));
 }

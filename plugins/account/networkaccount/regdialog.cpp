@@ -120,6 +120,12 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     send_msg_btn->setFocusPolicy(Qt::NoFocus);
     connect(valid_code,SIGNAL(textChanged(QString)),this,SLOT(change_uppercase()));
     connect(this,SIGNAL(code_changed()),this,SLOT(setstyleline()));
+    connect(reg_pass,&ql_lineedit_pass::verify_text,[this] () {
+       pass_tip->setText(tr("Your password is valid!"));
+    });
+    connect(reg_pass,&ql_lineedit_pass::false_text,[this] () {
+       pass_tip->setText(tr("At least 6 bit, include letters and digt"));
+    });
     adjustSize();
     reg_phone->setFocus();
 }

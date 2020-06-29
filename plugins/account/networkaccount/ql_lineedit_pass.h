@@ -39,6 +39,9 @@ private:
     QPushButton *visble;
     ql_svg_handler *svg_hd;
     QHBoxLayout *layout;
+signals:
+    void verify_text();
+    void false_text();
 };
 
 #endif // QL_LINEEDIT_PASS_H

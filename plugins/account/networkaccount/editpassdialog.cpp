@@ -99,7 +99,6 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     QString btns = "QPushButton {font-size:14px;background: #E7E7E7;color:rgba(0,0,0,0.85);border-radius: 4px;}"
                     "QPushButton:hover{font-size:14px;color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}"
                     "QPushButton:click{font-size:14px;color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}";
-    del_btn->setFlat(true);
     QPixmap pixmap = svg_hd->loadSvg(":/new/image/delete.svg");
     del_btn->setIcon(pixmap);
     del_btn->setStyleSheet("QPushButton{background:transparent;border-radius:4px;}"
@@ -118,6 +117,7 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     del_btn->setFocusPolicy(Qt::NoFocus);
 
     valid_code->setMaxLength(4);
+    success->set_mode_text(1);
     QRegExp regx_code("[0-9]+$");
     QValidator *validator_code = new QRegExpValidator(regx_code, valid_code );
     valid_code->setValidator( validator_code );
@@ -180,6 +180,12 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     connect(success->back_login,SIGNAL(clicked()),this,SLOT(on_close()));
     connect(success->back_login,&QPushButton::clicked,[this] () {
         emit account_changed();
+    });
+    connect(newpass,&ql_lineedit_pass::verify_text,[this] () {
+       pass_tips->setText(tr("Your password is valid!"));
+    });
+    connect(newpass,&ql_lineedit_pass::false_text,[this] () {
+       pass_tips->setText(tr("At least 6 bit, include letters and digt"));
     });
 
    // setStyleSheet("EditPassDialog{border-radius:6px;}");
@@ -352,7 +358,7 @@ void EditPassDialog::on_edit_submit_finished(int req,QString uuid) {
         //qDebug()<<"wb888";
         del_btn->hide();
         stackwidget->setCurrentWidget(success);
-        success->back_login->setText(tr("Success！"));
+        success->back_login->setText(tr("Reback sign in"));
     } else {
         set_code(messagebox(req));
         tips->show();
