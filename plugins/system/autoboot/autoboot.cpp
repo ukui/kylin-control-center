@@ -198,6 +198,7 @@ void AutoBoot::initUI(){
     QMap<QString, AutoApp>::iterator it = statusMaps.begin();
     for (int index = 0; it != statusMaps.end(); it++, index++){
         QString bname = it.value().bname;
+        QString appName = it.value().name;
 
         QFrame * baseWidget = new QFrame;
         baseWidget->setMinimumWidth(550);
@@ -232,7 +233,7 @@ void AutoBoot::initUI(){
         QLabel * textLabel = new QLabel(widget);
 //        textLabel->setStyleSheet("background: #F4F4F4");
         textLabel->setFixedWidth(250);
-        textLabel->setText(bname);
+        textLabel->setText(appName);
 
         SwitchButton * button = new SwitchButton();
         button->setAttribute(Qt::WA_DeleteOnClose);
