@@ -214,7 +214,7 @@ void Screensaver::initComponent(){
 //        ui->idleLineEdit->setText(QString::number(value));
 //        ui->idleLineEdit->blockSignals(false);
 //    });
-    connect(uslider, &QSlider::sliderReleased, this, [=]{
+    connect(uslider, &QSlider::valueChanged, this, [=]{
         int value = convertToLocktime( uslider->value());
 
         session_settings = g_settings_new(SESSION_SCHEMA);
