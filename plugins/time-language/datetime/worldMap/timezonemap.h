@@ -50,7 +50,7 @@ private:
     PopList* m_popList;
     ToolPop* m_singleList;
     PopList* m_popLists;
-//    QPixmap loadPixmap(const QString &path);
+    QPixmap loadPixmap(const QString &path);
 
 private slots:
     void popListActiveSlot(int index);

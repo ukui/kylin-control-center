@@ -19,26 +19,22 @@
  */
 #include "mainwindow.h"
 #include <QApplication>
-#include <QtSingleApplication>
+#include "framelessExtended/framelesshandle.h"
+#include "customstyle.h"
 
+#include <QtSingleApplication>
 #include <QTranslator>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <syslog.h>
 #include <QObject>
 #include <QDesktopWidget>
 #include <QCommandLineOption>
 #include <QCommandLineParser>
-
-#include "framelessExtended/framelesshandle.h"
-
-#include "customstyle.h"
-
 #include <QTimer>
-
 #include <QDebug>
-
+#include <QGSettings/QGSettings>
+#include <QSharedPointer>
+#include <memory>
 
 void centerToScreen(QWidget* widget) {
     if (!widget)
@@ -115,17 +111,6 @@ int main(int argc, char *argv[])
 //        parser.addPositionalArgument("ffff", "ggggggggggggggggggg");
         parser.process(a);
 
-        //加载qss样式文件
-//        QString qss;
-//        QFile QssFile("://global.qss");
-//        QssFile.open(QFile::ReadOnly);
-
-//        if (QssFile.isOpen()){
-//            qss = QLatin1String(QssFile.readAll());
-//            qApp->setStyleSheet(qss);
-//            QssFile.close();
-//        }
-
 
         MainWindow * w = new MainWindow;
         centerToScreen(w);
@@ -140,14 +125,6 @@ int main(int argc, char *argv[])
 
         auto style = new InternalStyle(nullptr);
         a.setStyle(style);
-
-        QObject::connect(&a, &QtSingleApplication::fontChanged, [&] {
-            QFont f =a.font();
-            for (auto widget : a.allWidgets()) {
-                widget->repaint();
-                widget->setFont(f);
-            }
-        });
 
         return a.exec();
     }

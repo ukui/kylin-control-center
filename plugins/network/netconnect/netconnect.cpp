@@ -53,7 +53,7 @@ NetConnect::NetConnect():m_wifiList(new Wifi)
 
     initComponent();
 
-    getNetList();
+//    getNetList();
 }
 
 NetConnect::~NetConnect()
@@ -130,6 +130,8 @@ void NetConnect::initComponent(){
     wifiBtn->setChecked(getInitStatus());
     ui->RefreshBtn->setEnabled(false);
     wifiBtn->setEnabled(false);
+
+    emit ui->RefreshBtn->clicked(true);
 }
 
 void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){

@@ -44,6 +44,7 @@
 
 #define STYLE_FONT_SCHEMA "org.ukui.style"
 #define SYSTEM_FONT_EKY "system-font-size"
+#define SYSTEM_NAME_KEY "system-font"
 
 #define FONT_RENDER_SCHEMA           "org.ukui.font-rendering"
 #define ANTIALIASING_KEY        "antialiasing" //绘制字形时使用反锯齿类型
@@ -353,7 +354,6 @@ void Fonts::setupConnect(){
         _getCurrentFontInfo();
         //设置字体大小
 
-        qDebug()<<"字体大小－－－－－>"<<value <<" " <<size<<endl;
         ifsettings->set(GTK_FONT_KEY, QVariant(QString("%1 %2").arg(gtkfontStrList.at(0)).arg(size)));
         ifsettings->set(DOC_FONT_KEY, QVariant(QString("%1 %2").arg(docfontStrList.at(0)).arg(size)));
         ifsettings->set(MONOSPACE_FONT_KEY, QVariant(QString("%1 %2").arg(monospacefontStrList.at(0)).arg(size)));
@@ -366,8 +366,9 @@ void Fonts::setupConnect(){
         //获取当前字体信息
         _getCurrentFontInfo();
         ifsettings->set(GTK_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(gtkfontStrList.at(1))));
-        ifsettings->set(DOC_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(docfontStrList.at(1))));
+        ifsettings->set(DOC_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(docfontStrList.at(1))));        
 //        peonysettings->set(PEONY_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(peonyfontStrList.at(1))));
+        stylesettings->set(SYSTEM_NAME_KEY, QVariant(QString("%1").arg(text)));
         marcosettings->set(TITLEBAR_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(titlebarfontStrList.at(1))));
 
         //给更新高级字体配置
@@ -736,6 +737,7 @@ void Fonts::resetDefault(){
 //    peonysettings->reset(PEONY_FONT_KEY);
     marcosettings->reset(TITLEBAR_FONT_KEY);
     stylesettings->set(SYSTEM_FONT_EKY, 11);
+    stylesettings->reset(SYSTEM_NAME_KEY);
 
     //reset font render
     rendersettings->reset(ANTIALIASING_KEY);

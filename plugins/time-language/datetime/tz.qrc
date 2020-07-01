@@ -5,5 +5,6 @@
         <file>images/indicator.png</file>
         <file>list.css</file>
         <file>images/map.png</file>
+        <file>images/map.svg</file>
     </qresource>
 </RCC>

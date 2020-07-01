@@ -26,6 +26,7 @@
 #include <QProcess>
 #include <QFile>
 #include <QDebug>
+#include <QStorageInfo>
 
 const QString TYPEVERSION = "Kylin V10";
 const QString UbuntuVesion = "Ubuntu 20.04 LTS";
@@ -161,6 +162,12 @@ void About::setupKernelCompenent() {
     } else {
         QMap<QString, QVariant> res = diskinfo.value();
         diskSize = res["DiskCapacity"].toString();
+        if (diskSize.contains("<1_1>")) {
+            int index = diskSize.indexOf("<1_1>");
+            QString disk1 = diskSize.left(index);
+            QString disk2 = diskSize.mid(index + 5, diskSize.length() - index - 5);
+            diskSize = tr("Disk One:") + disk1 + " " + tr("Disk Two:")+disk2;
+        }
     }
 
     QDBusReply<QMap<QString, QVariant>> cpuinfo;

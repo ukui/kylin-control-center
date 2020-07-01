@@ -427,7 +427,8 @@ bool DefaultApp::setWebBrowsersDefaultProgram(char * appid){
                 gboolean ret1=g_app_info_set_as_default_for_type(appitem, "x-scheme-handler/http", NULL);
                 gboolean ret2=g_app_info_set_as_default_for_type(appitem, "x-scheme-handler/https", NULL);
                 gboolean ret3=g_app_info_set_as_default_for_type(appitem, "x-scheme-handler/about", NULL);
-                if(ret1 && ret2 && ret3)
+                gboolean ret4=g_app_info_set_as_default_for_type(appitem, "text/html", NULL);
+                if(ret1 && ret2 && ret3 && ret4)
                     judge=true;
                 break;
             }

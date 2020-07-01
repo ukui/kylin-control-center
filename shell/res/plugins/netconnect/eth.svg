@@ -1,1 +1,33 @@
-<svg id="图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;}.cls-2{fill:#404040;}</style></defs><title>1以太网</title><path class="cls-1" d="M3,7.73V8a2.48,2.48,0,0,1,0-.27Z"/><path class="cls-1" d="M5,13.73V16a1,1,0,0,0,1,1H20a1,1,0,0,0,1-1V8a1,1,0,0,0-1-1H9v6.73Z"/><path class="cls-2" d="M20,5H6a3,3,0,0,0-1.94.73L4,5.78v.13H3.86A3,3,0,0,0,3,7.73h2A1,1,0,0,1,6,7H20a1,1,0,0,1,1,1v8a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V13.73H3V16a3,3,0,0,0,3,3H20a3,3,0,0,0,3-3V8A3,3,0,0,0,20,5Z"/><rect class="cls-2" x="3" y="12.82" width="2" height="0.91"/><rect class="cls-2" x="10" y="19" width="6" height="2" rx="1" transform="translate(33 7) rotate(90)"/><rect class="cls-2" x="9" y="21" width="8" height="2" rx="1"/><rect class="cls-2" x="4" y="12.09" width="2" height="10.91"/><path class="cls-2" d="M1,5.87v7.94H9V5.87Zm6,6H3v-4H7Z"/><path class="cls-2" d="M2,1V7H8V1ZM6,5H4V3H6Z"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="图层_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
+	 enable-background="new 0 0 24 24" xml:space="preserve">
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="1298" width="1504" x="-206" y="-620"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<rect x="4" y="3" fill="none" width="2" height="2"/>
+<path fill="none" d="M7.7,11H7H6v6.6c1,1.4,2.5,2.5,4.1,3c-1.2-1.8-2.6-4.5-2.6-7.6C7.5,12.3,7.6,11.6,7.7,11z"/>
+<path fill="none" d="M9,7.3c0.4-0.7,0.8-1.4,1.1-1.9C9.7,5.5,9.4,5.6,9,5.8V7V7.3z"/>
+<ellipse fill="none" cx="12.5" cy="13" rx="3" ry="7.5"/>
+<path fill="none" d="M14.9,20.6c3.3-1,5.6-4.1,5.6-7.6s-2.4-6.6-5.6-7.6c1.2,1.8,2.6,4.5,2.6,7.6S16.1,18.9,14.9,20.6z"/>
+<path fill="#404040" d="M12.5,3C10.9,3,9.4,3.4,8,4.1V3V1H6H4H2v2v2H1.5H1v2v2h0v2h0h1.7c-0.1,0.6-0.2,1.3-0.2,2
+	c0,1.9,0.6,3.7,1.5,5.2V23h2v-2.4c1.7,1.5,4,2.4,6.5,2.4c5.5,0,10-4.5,10-10S18,3,12.5,3z M20.4,12h-3c-0.3-2.7-1.5-5.1-2.6-6.6
+	C17.8,6.3,20,8.9,20.4,12z M15.4,12H9.6c0.3-2.8,2-5.3,2.9-6.5C13.5,6.7,15.1,9.2,15.4,12z M9,7V5.8c0.4-0.2,0.7-0.3,1.1-0.5
+	C9.8,5.9,9.4,6.5,9,7.3V7z M4,3h2v2H4V3z M5.6,9H4H3.3H3V7h1h0.5H6h0.5H7v0.2V9H6H5.6z M7.7,11c-0.1,0.3-0.1,0.7-0.1,1H6v-1h1H7.7z
+	 M6,17.6V14h1.6c0.3,2.7,1.5,5.1,2.6,6.6C8.5,20.1,7,19.1,6,17.6z M9.6,14h5.9c-0.3,2.8-2,5.3-2.9,6.5C11.5,19.3,9.9,16.8,9.6,14z
+	 M14.9,20.6c1.1-1.6,2.3-3.9,2.6-6.6h3C20,17.1,17.8,19.7,14.9,20.6z"/>
+</svg>

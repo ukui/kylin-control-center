@@ -282,14 +282,20 @@ void UserInfo::initComponent(){
 //        bool status = userdispatcher->get_autoLogin_status();
 
         bool status = this->getAutomaticLogin(user.username);
+
+
         if ((checked != status)) {
-            userdispatcher->change_user_autologin(checked);
+            if (checked) {
+                userdispatcher->change_user_autologin(user.username);
+            } else {
+                userdispatcher->change_user_autologin("");
+            }
         }
 
 //        bool lstStatus = userdispatcher->get_autoLogin_status();
 
-        bool lstStatus = this->getAutomaticLogin(user.username);
-        autoLoginSwitchBtn->setChecked(lstStatus);
+//        bool lstStatus = this->getAutomaticLogin(user.username);
+//        autoLoginSwitchBtn->setChecked(lstStatus);
     });
 
     //成功删除用户的回调
@@ -536,7 +542,7 @@ void UserInfo::showDeleteUserDialog(QString username){
     connect(dialog, &DelUserDialog::removefile_send, this, [=](bool removeFile, QString userName){
         deleteUser(removeFile, userName);
     });
-    dialog->open();
+    dialog->exec();
 }
 
 void UserInfo::deleteUser(bool removefile, QString username){
@@ -710,7 +716,7 @@ bool UserInfo::getAutomaticLogin(QString username) {
     QString filename = "/etc/lightdm/lightdm.conf";
     autoSettings = new QSettings(filename, QSettings::IniFormat);
 #if QT_VERSION < QT_VERSION_CHECK(5, 12, 0)
-    autoSettings->beginGroup("Seat:*]");
+    autoSettings->beginGroup("Seat:*");
 #else
     autoSettings->beginGroup("SeatDefaults");
 #endif

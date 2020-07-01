@@ -3,7 +3,7 @@
 # Project created by QtCreator 2019-06-21T10:50:19
 #
 #-------------------------------------------------
-QT       += widgets KConfigCore KI18n x11extras
+QT       += widgets KConfigCore KI18n x11extras concurrent
 
 TEMPLATE = lib
 CONFIG += plugin

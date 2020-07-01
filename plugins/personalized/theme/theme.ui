@@ -26,6 +26,9 @@
    <string notr="true">Theme</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="rightMargin">
+    <number>32</number>
+   </property>
    <item>
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -540,7 +543,7 @@
           <property name="minimumSize">
            <size>
             <width>550</width>
-            <height>60</height>
+            <height>65</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -592,7 +595,7 @@
           <property name="minimumSize">
            <size>
             <width>550</width>
-            <height>60</height>
+            <height>65</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -667,7 +670,7 @@
             </property>
             <property name="maximumSize">
              <size>
-              <width>120</width>
+              <width>16777215</width>
               <height>36</height>
              </size>
             </property>

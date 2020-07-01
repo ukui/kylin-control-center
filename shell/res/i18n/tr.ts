@@ -983,7 +983,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <source>Login in progress</source>
-        <translation type="unfinished"></translation>
+        <translation>Giriş devam ediyor</translation>
     </message>
 </context>
 <context>
@@ -1469,7 +1469,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <source>HOME</source>
-        <translation type="unfinished"></translation>
+        <translation>GİRİŞ</translation>
     </message>
 </context>
 <context>
@@ -1606,11 +1606,11 @@ folder will be deleted!</source>
     </message>
     <message>
         <source>Waitting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekleniyor...</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Yenile</translation>
     </message>
 </context>
 <context>
@@ -1648,15 +1648,15 @@ folder will be deleted!</source>
     <name>OutputConfig</name>
     <message>
         <source>100%</source>
-        <translation></translation>
+        <translation>%100</translation>
     </message>
     <message>
         <source>200%</source>
-        <translation></translation>
+        <translation>%200</translation>
     </message>
     <message>
         <source>300%</source>
-        <translation></translation>
+        <translation>%300</translation>
     </message>
     <message>
         <source>auto</source>
@@ -2047,7 +2047,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <source>SecurityCenter</source>
-        <translation type="unfinished"></translation>
+        <translation>Güvenlik Merkezi</translation>
     </message>
 </context>
 <context>
@@ -2120,11 +2120,11 @@ folder will be deleted!</source>
     </message>
     <message>
         <source>Never</source>
-        <translation type="vanished">Asla</translation>
+        <translation>Asla</translation>
     </message>
     <message>
         <source>Screenlock Interface</source>
-        <translation>Ekrankilidi Arayüzü</translation>
+        <translation>Ekran Kilidi Arayüzü</translation>
     </message>
     <message>
         <source>Lock screen delay</source>
@@ -2195,7 +2195,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <source>Never</source>
-        <translation type="vanished">Asla</translation>
+        <translation>Asla</translation>
     </message>
     <message>
         <source>idle time</source>
@@ -2207,7 +2207,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <source>Random</source>
-        <translation type="vanished">Rasgele</translation>
+        <translation>Rasgele</translation>
     </message>
     <message>
         <source>Default_ukui</source>
@@ -2238,51 +2238,51 @@ folder will be deleted!</source>
     <name>SecurityCenter</name>
     <message>
         <source>SecurityCenter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Güvenlik Merkezi</translation>
     </message>
     <message>
         <source>Summarize</source>
-        <translation type="unfinished"></translation>
+        <translation>Özetler</translation>
     </message>
     <message>
         <source>Recognize the current security of the system, and can take the necessary settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sistemin mevcut güvenliğini tanır ve gerekli ayarları yapabilir</translation>
     </message>
     <message>
         <source>Run Security Center</source>
-        <translation type="unfinished"></translation>
+        <translation>Güvenlik Merkezi'ni çalıştırın</translation>
     </message>
     <message>
         <source>Virus Protection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Virüs Koruması</translation>
     </message>
     <message>
         <source>Protect system from threats</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sistemi tehditlerden koruyun</translation>
     </message>
     <message>
         <source>Network Protection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ağ Koruması</translation>
     </message>
     <message>
         <source>Setup app that can access web</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Web'e erişebilen kurulum uygulaması</translation>
     </message>
     <message>
         <source>App Execution Control</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Uygulama Yürütme Denetimi</translation>
     </message>
     <message>
         <source>App install and exe protection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Uygulama yükleme ve exe koruması</translation>
     </message>
     <message>
         <source>Account Security</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hesap güvenliği</translation>
     </message>
     <message>
         <source>Protect account and login security</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hesabı ve giriş güvenliğini koruyun</translation>
     </message>
 </context>
 <context>
@@ -2414,7 +2414,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <source>Middle</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Orta</translation>
     </message>
 </context>
 <context>
@@ -2444,7 +2444,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <source>Touchpad Settings</source>
-        <translation>Touchpad Ayarları</translation>
+        <translation>Dokunmatik Yüzey Ayarları</translation>
     </message>
     <message>
         <source>Touchpad</source>
@@ -2476,11 +2476,11 @@ folder will be deleted!</source>
     </message>
     <message>
         <source>Enabled touchpad</source>
-        <translation>Touchpad etkin</translation>
+        <translation>Dokunmatik yüzey etkin</translation>
     </message>
     <message>
         <source>No touchpad found</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dokunmatik yüzey bulunamadı</translation>
     </message>
 </context>
 <context>
@@ -2813,7 +2813,7 @@ Genel nedenler, toplam ekran boyutunun çok büyük olması veya GPU&apos;nuz ta
     <message>
         <source>@title:window</source>
         <comment>Unsupported Configuration</comment>
-        <translation type="unfinished"></translation>
+        <translation>Desteklenmeyen Yapılandırma</translation>
     </message>
 </context>
 <context>
@@ -2929,11 +2929,11 @@ Genel nedenler, toplam ekran boyutunun çok büyük olması veya GPU&apos;nuz ta
     </message>
     <message>
         <source>Sync</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Senk.</translation>
     </message>
     <message>
         <source>Stop sync</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Senk. Durdur</translation>
     </message>
 </context>
 <context>

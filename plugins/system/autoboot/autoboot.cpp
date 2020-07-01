@@ -78,11 +78,11 @@ AutoBoot::AutoBoot(){
     ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
 
 
-    ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 
-    ui->listWidget->setSpacing(0);
+//    ui->listWidget->setSpacing(0);
 
     localconfigdir = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
     //初始化添加界面
@@ -130,7 +130,7 @@ void AutoBoot::initUI(){
     int num = statusMaps.count();
 
     //显示全部ITEM，设置高
-    ui->listWidget->setFixedHeight(num * ITEMHEIGHT + HEADHEIGHT);
+//    ui->listWidget->setFixedHeight(num * ITEMHEIGHT + HEADHEIGHT);
 
 
     //构建行头基础Widget
@@ -186,17 +186,19 @@ void AutoBoot::initUI(){
     headbaseVerLayout->addWidget(headWidget);
     headbaseVerLayout->addStretch();
 
-    headbaseFrame->setLayout(headbaseVerLayout);
+//    headbaseFrame->setLayout(headbaseVerLayout);
 
-    QListWidgetItem * hItem = new QListWidgetItem(ui->listWidget);
-    hItem->setSizeHint(QSize(ITEMWIDTH, HEADHEIGHT));
-    ui->listWidget->setItemWidget(hItem, headbaseFrame);
+//    QListWidgetItem * hItem = new QListWidgetItem(ui->listWidget);
+//    hItem->setSizeHint(QSize(ITEMWIDTH, HEADHEIGHT));
+//    ui->listWidget->setItemWidget(hItem, headbaseFrame);
+    ui->autoLayout->addWidget(headbaseFrame);
 
     //构建每个启动项
     QSignalMapper * checkSignalMapper = new QSignalMapper(this);
     QMap<QString, AutoApp>::iterator it = statusMaps.begin();
     for (int index = 0; it != statusMaps.end(); it++, index++){
         QString bname = it.value().bname;
+        QString appName = it.value().name;
 
         QFrame * baseWidget = new QFrame;
         baseWidget->setMinimumWidth(550);
@@ -231,7 +233,7 @@ void AutoBoot::initUI(){
         QLabel * textLabel = new QLabel(widget);
 //        textLabel->setStyleSheet("background: #F4F4F4");
         textLabel->setFixedWidth(250);
-        textLabel->setText(bname);
+        textLabel->setText(appName);
 
         SwitchButton * button = new SwitchButton();
         button->setAttribute(Qt::WA_DeleteOnClose);
@@ -286,10 +288,11 @@ void AutoBoot::initUI(){
 
         baseWidget->setLayout(baseVerLayout);
 
-        QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
-        item->setSizeHint(QSize(ITEMWIDTH, ITEMHEIGHT));
-        ui->listWidget->setItemWidget(item, baseWidget);
-        ui->listWidget->setSpacing(1);
+//        QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
+//        item->setSizeHint(QSize(ITEMWIDTH, ITEMHEIGHT));
+//        ui->listWidget->setItemWidget(item, baseWidget);
+//        ui->listWidget->setSpacing(1);
+        ui->autoLayout->addWidget(baseWidget);
     }
     connect(checkSignalMapper, SIGNAL(mapped(QString)), this, SLOT(checkbox_changed_cb(QString)));
 }
@@ -337,6 +340,19 @@ bool AutoBoot::_copy_desktop_file_to_local(QString bname){
     g_object_unref(dstfile);
     g_free(dstpath);
     return true;
+}
+
+void AutoBoot::clearAutoItem()
+{
+    if (ui->autoLayout->layout() != NULL) {
+        QLayoutItem* item;
+        while ((item = ui->autoLayout->layout()->takeAt(0)) != NULL )
+        {
+            delete item->widget();
+            delete item;
+        }
+//        delete ui->availableLayout->layout();
+    }
 }
 
 bool AutoBoot::_delete_local_autoapp(QString bname){
@@ -447,7 +463,8 @@ bool AutoBoot::_delete_autoapp(QString bname){
     }
 
     //刷新界面
-    ui->listWidget->clear();
+//    ui->listWidget->clear();
+    clearAutoItem();
     initUI();
 
     g_free(dstpath);
@@ -757,7 +774,8 @@ void AutoBoot::add_autoboot_realize_slot(QString path, QString name, QString exe
     g_free(filepath);
 
     //refresh
-    ui->listWidget->clear();
+//    ui->listWidget->clear();
+    clearAutoItem();
     initUI();
 
 }
@@ -781,7 +799,8 @@ void AutoBoot::del_autoboot_realize(QString bname){
 //    }
 //    else if (it.value().xdg_position == LOCALPOS){ //删除
         _delete_local_autoapp(bname);
-        ui->listWidget->clear();
+//        ui->listWidget->clear();
+        clearAutoItem();
         initUI();
         //    }
 }

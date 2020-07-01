@@ -24,6 +24,7 @@
 #include "elipsemaskwidget.h"
 
 #include <QDebug>
+#include <QMessageBox>
 
 #define FACEPATH "/usr/share/ukui/faces/"
 
@@ -148,9 +149,16 @@ void ChangeFaceDialog::showLocalFaceDialog(){
     QString selectedfile;
     selectedfile = fd.selectedFiles().first();
 
+    QFile pic(selectedfile);
+    int size = pic.size();
+
+    if (size >= 2) {
+        QMessageBox::warning(this, tr("Waning"), tr("The avatar is larger than 2M, please choose again"));
+        return;
+    }
+
     setFace(selectedfile);
     emit face_file_send(selectedfile, ui->usernameLabel->text());
-
 }
 
 void ChangeFaceDialog::paintEvent(QPaintEvent *event) {
