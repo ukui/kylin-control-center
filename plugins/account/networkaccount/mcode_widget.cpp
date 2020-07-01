@@ -28,7 +28,7 @@ mcode_widget::mcode_widget(QWidget *parent): QLabel(parent)
     qsrand(QTime::currentTime().second() * 1000 + QTime::currentTime().msec());
     colorArray = new QColor[letter_number];
     verificationCode = new QChar[letter_number];
-    noice_point_number = this->width()*4;
+    noice_point_number = this->width() * 3;
     QFont defaultFont;
     defaultFont.setFamily(tr( "SongTi"));
     defaultFont.setPointSize(20);
@@ -64,7 +64,7 @@ void mcode_widget::paintEvent(QPaintEvent *event)
         produceRandomColor();
         ok = false;
     }
-    int charWidth = (this->width()- 12 ) / 4;
+    int charWidth = (this->width()- 14 ) / 4;
     for (int j = 0; j < noice_point_number; ++j)
     {
         p.setX(qrand() % this->width());
@@ -77,7 +77,7 @@ void mcode_widget::paintEvent(QPaintEvent *event)
         painter.setPen(colorArray[i]);
         painter.save();
         int charSpace = (charWidth - this->fontMetrics().width("W"))/2;
-        charSpace += 12/2;
+        charSpace += 14/2;
         painter.translate(i*charWidth+charSpace,0);
         if(qrand()%2) {
             if(qrand()%2)
@@ -88,8 +88,8 @@ void mcode_widget::paintEvent(QPaintEvent *event)
             {
                 painter.rotate(-qrand()% 20);
             }
-            double xSize = (qrand()%3+9)/10.0;
-            double ySize = (qrand()%3+9)/10.0;
+            double xSize = (qrand()%3+14)/10.0;
+            double ySize = (qrand()%3+14)/10.0;
             painter.scale(xSize,ySize);
         } else {
             double xShear = qrand()%4/10.0;
@@ -104,7 +104,7 @@ void mcode_widget::paintEvent(QPaintEvent *event)
             }
             painter.shear(xShear,yShear);
         }
-        painter.drawText(0,this->height()-12, QString(verificationCode[i]));
+        painter.drawText(0,this->height()-14, QString(verificationCode[i]));
         painter.restore();
     }
     QLabel::paintEvent(event);
