@@ -70,16 +70,16 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
 
     m_pOutputLabel = new QLabel(tr("Output"),this);
     m_pOutputLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    m_pOutputDeviceLabel = new QLabel(tr("Output device"),m_pOutputWidget);
+    m_pOutputDeviceLabel = new QLabel(tr("Output Device"),m_pOutputWidget);
     m_pOutputDeviceCombobox = new QComboBox(m_pOutputDeviceWidget);
-    m_pOpVolumeLabel = new QLabel(tr("Master volume"),m_pMasterVolumeWidget);
+    m_pOpVolumeLabel = new QLabel(tr("Master Volume"),m_pMasterVolumeWidget);
     m_pOutputIconBtn = new UkuiButtonDrawSvg(m_pMasterVolumeWidget);
     m_pOpVolumeSlider = new AudioSlider(m_pMasterVolumeWidget);
     m_pOpVolumePercentLabel = new QLabel(m_pMasterVolumeWidget);
-    m_pOpBalanceLabel = new QLabel(tr("Channel balance"),m_pChannelBalanceWidget);
+    m_pOpBalanceLabel = new QLabel(tr("Balance"),m_pChannelBalanceWidget);
     m_pLeftBalanceLabel = new QLabel(tr("Left"),m_pChannelBalanceWidget);
     m_pOpBalanceSlider = new UkmediaVolumeSlider(m_pChannelBalanceWidget);
-    m_pRightBalanceLabel = new QLabel(tr("right"),m_pChannelBalanceWidget);
+    m_pRightBalanceLabel = new QLabel(tr("Right"),m_pChannelBalanceWidget);
     m_pOutputPortLabel = new QLabel(tr("Connector"),m_pOutputPortWidget);
     m_pOutputPortCombobox = new QComboBox(m_pOutputPortWidget);
 

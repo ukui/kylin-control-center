@@ -48,17 +48,17 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
 
     m_pInputLabel = new QLabel(tr("Input"),this);
     m_pInputLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    m_pInputDeviceLabel = new QLabel(tr("Input device"),m_pInputWidget);
+    m_pInputDeviceLabel = new QLabel(tr("Input Device"),m_pInputWidget);
     m_pInputDeviceCombobox = new QComboBox(m_pInputDeviceWidget);
 
-    m_pIpVolumeLabel = new QLabel(tr("volume"),m_pVolumeWidget);
+    m_pIpVolumeLabel = new QLabel(tr("Volume"),m_pVolumeWidget);
     m_pInputIconBtn = new UkuiButtonDrawSvg(m_pVolumeWidget);
     m_pIpVolumeSlider = new AudioSlider(m_pVolumeWidget);
     m_pIpVolumePercentLabel = new QLabel(m_pVolumeWidget);
-    m_pInputLevelLabel = new QLabel(tr("Input level"),m_pInputLevelWidget);
-    m_pLowLevelLabel = new QLabel(tr("low"),m_pInputLevelWidget);
+    m_pInputLevelLabel = new QLabel(tr("Input Level"),m_pInputLevelWidget);
+    m_pLowLevelLabel = new QLabel(tr("Low"),m_pInputLevelWidget);
     m_pInputLevelSlider = new AudioSlider(m_pInputLevelWidget);
-    m_pHighLevelLabel = new QLabel(tr("high"),m_pInputLevelWidget);
+    m_pHighLevelLabel = new QLabel(tr("High"),m_pInputLevelWidget);
 
     m_pInputPortCombobox = new QComboBox(m_pInputPortWidget);
     m_pInputPortLabel = new QLabel(tr("Connector"),m_pInputPortWidget);

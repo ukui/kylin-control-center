@@ -36,13 +36,13 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pThemeWidget->setFrameShape(QFrame::Shape::Box);
     m_pShutDownWidget->setFrameShape(QFrame::Shape::Box);
     m_pLagoutWidget->setFrameShape(QFrame::Shape::Box);
-    m_pSoundEffectLabel = new QLabel(tr("System sound"),this);
+    m_pSoundEffectLabel = new QLabel(tr("System Sound"),this);
     m_pSoundEffectLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    m_pSoundThemeLabel = new QLabel(tr("Sound theme"),m_pThemeWidget);
+    m_pSoundThemeLabel = new QLabel(tr("Sound Theme"),m_pThemeWidget);
     m_pSoundThemeCombobox = new QComboBox(m_pThemeWidget);
-    m_pShutdownlabel = new QLabel(tr("Prompt voice"),m_pShutDownWidget);
+    m_pShutdownlabel = new QLabel(tr("Alert Sound"),m_pShutDownWidget);
     m_pShutdownCombobox = new QComboBox(m_pShutDownWidget);
-    m_pLagoutLabel = new QLabel(tr("Boot music"),m_pLagoutWidget);
+    m_pLagoutLabel = new QLabel(tr("Boot Music"),m_pLagoutWidget);
     m_pLagoutCombobox = new QComboBox(m_pLagoutWidget);
     m_pBootButton = new SwitchButton(m_pLagoutWidget);
 
