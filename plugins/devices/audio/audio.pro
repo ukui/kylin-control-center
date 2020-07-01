@@ -24,6 +24,7 @@ PKGCONFIG += libmatemixer \
              libxml-2.0 \
              Qt5Multimedia \
              gsettings-qt \
+             libcanberra \
 
 #DEFINES += QT_DEPRECATED_WARNINGS
 

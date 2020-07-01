@@ -1356,7 +1356,7 @@ char *UkmediaMainWidget::loadIndexThemeName (const char *index,char **parent)
 void UkmediaMainWidget::setComboxForThemeName (UkmediaMainWidget *m_pWidget,const char *name)
 {
     g_debug("set combox for theme name");
-    qDebug() << "set combox for theme name" << name;
+//    qDebug() << "set combox for theme name" << name;
     gboolean      found;
     int count = 0;
     /* If the name is empty, use "freedesktop" */
@@ -1447,18 +1447,18 @@ void UkmediaMainWidget::updateAlert (UkmediaMainWidget *pWidget,const char *aler
     is_custom = strcmp (theme, CUSTOM_THEME_NAME) == 0;
     is_default = strcmp (alertId, DEFAULT_ALERT_ID) == 0;
 
-    qDebug() << "namestr:" << nameStr << "themeStr:" << themeStr << "parent:" << parent << "theme:" << theme;
+//    qDebug() << "namestr:" << nameStr << "themeStr:" << themeStr << "parent:" << parent << "theme:" << theme;
     if (! is_custom && is_default) {
         /* remove custom just in case */
         remove_custom = TRUE;
     } else if (! is_custom && ! is_default) {
-        create_custom_theme (parent);
+        createCustomTheme (parent);
         saveAlertSounds(pWidget->m_pSoundWidget->m_pSoundThemeCombobox, alertId);
         add_custom = TRUE;
     } else if (is_custom && is_default) {
         saveAlertSounds(pWidget->m_pSoundWidget->m_pSoundThemeCombobox, alertId);
         /* after removing files check if it is empty */
-        if (custom_theme_dir_is_empty ()) {
+        if (customThemeDirIsEmpty ()) {
             remove_custom = TRUE;
         }
     } else if (is_custom && ! is_default) {
@@ -1671,25 +1671,52 @@ xmlChar *UkmediaMainWidget::xmlGetAndTrimNames (xmlNodePtr node)
 /*
  * 播放报警声音
 */
-void UkmediaMainWidget::playAlretSoundFromPath (QString path)
+void UkmediaMainWidget::playAlretSoundFromPath (UkmediaMainWidget *w,QString path)
 {
     g_debug("play alert sound from path");
-   QMediaPlayer *player = new QMediaPlayer;
-   player->setMedia(QUrl::fromLocalFile(path));
-   player->play();
-   qDebug() << path << player->state() << player->mediaStatus();
-//   player->deleteLater();
-   connect(player,&QMediaPlayer::stateChanged,[=](QMediaPlayer::State state){
-        switch (state) {
-        case QMediaPlayer::StoppedState:
-            break;
-        case QMediaPlayer::PlayingState:
-            break;
-        default:
-            break;
-        }
-        player->deleteLater() ;
-   });
+//   QMediaPlayer *player = new QMediaPlayer;
+//   player->setMedia(QUrl::fromLocalFile(path));
+   gchar * themeName = g_settings_get_string (w->m_pSoundSettings, SOUND_THEME_KEY);
+//   player->play();
+
+//   qDebug() << "主题名为:" << themeName << "id :" << path.toLatin1().data();
+   if (strcmp (path.toLatin1().data(), DEFAULT_ALERT_ID) == 0) {
+       if (themeName != NULL) {
+           caPlayForWidget (w, 0,
+                            CA_PROP_APPLICATION_NAME, _("Sound Preferences"),
+                            CA_PROP_EVENT_ID, "bell-window-system",
+                            CA_PROP_CANBERRA_XDG_THEME_NAME, themeName,
+                            CA_PROP_EVENT_DESCRIPTION, _("Testing event sound"),
+                            CA_PROP_CANBERRA_CACHE_CONTROL, "never",
+                            CA_PROP_APPLICATION_ID, "org.mate.VolumeControl",
+                 #ifdef CA_PROP_CANBERRA_ENABLE
+                            CA_PROP_CANBERRA_ENABLE, "1",
+                 #endif
+                            NULL);
+       } else {
+           caPlayForWidget (w, 0,
+                            CA_PROP_APPLICATION_NAME, _("Sound Preferences"),
+                            CA_PROP_EVENT_ID, "bell-window-system",
+                            CA_PROP_EVENT_DESCRIPTION, _("Testing event sound"),
+                            CA_PROP_CANBERRA_CACHE_CONTROL, "never",
+                            CA_PROP_APPLICATION_ID, "org.mate.VolumeControl",
+                 #ifdef CA_PROP_CANBERRA_ENABLE
+                            CA_PROP_CANBERRA_ENABLE, "1",
+                 #endif
+                            NULL);
+       }
+   } else {
+       caPlayForWidget (w, 0,
+                        CA_PROP_APPLICATION_NAME, _("Sound Preferences"),
+                        CA_PROP_MEDIA_FILENAME, path.toLatin1().data(),
+                        CA_PROP_EVENT_DESCRIPTION, _("Testing event sound"),
+                        CA_PROP_CANBERRA_CACHE_CONTROL, "never",
+                        CA_PROP_APPLICATION_ID, "org.mate.VolumeControl",
+                 #ifdef CA_PROP_CANBERRA_ENABLE
+                        CA_PROP_CANBERRA_ENABLE, "1",
+                 #endif
+                        NULL);
+   }
 }
 
 /*
@@ -1699,7 +1726,8 @@ void UkmediaMainWidget::comboxIndexChangedSlot(int index)
 {
     g_debug("combox index changed slot");
     QString sound_name = m_pSoundList->at(index);
-    playAlretSoundFromPath(sound_name);
+    updateAlert(this,sound_name.toLatin1().data());
+    playAlretSoundFromPath(this,sound_name);
 
 }
 
@@ -1878,7 +1906,7 @@ void UkmediaMainWidget::ukuiBarSetStreamControl (UkmediaMainWidget *m_pWidget,Ma
             m_pWidget->m_pInputBarStreamControl = m_pControl;
         }
         m_pName = mate_mixer_stream_control_get_name (m_pControl);
-        qDebug() << "ukuiBarSetStreamControl*********" << m_pName << direction;
+//        qDebug() << "ukuiBarSetStreamControl*********" << m_pName << direction;
     }
 }
 
@@ -2049,13 +2077,9 @@ void UkmediaMainWidget::updateInputSettings (UkmediaMainWidget *m_pWidget,MateMi
     MateMixerSwitch            *portSwitch;
 
     if(m_pWidget->m_pInputWidget->m_pInputPortCombobox->count() != 0 || m_pWidget->m_pInputPortList->count() != 0) {
-        qDebug() << "下拉框的大小为:" << m_pWidget->m_pInputWidget->m_pInputPortCombobox->count();
         m_pWidget->m_pInputPortList->clear();
         m_pWidget->m_pInputWidget->m_pInputPortCombobox->clear();
         m_pWidget->m_pInputWidget->inputWidgetRemovePort();
-//        m_pWidget->m_pInputWidget->m_pInputPortWidget->hide();
-//        m_pWidget->m_pInputWidget->setMinimumSize(550,150);
-//        m_pWidget->m_pInputWidget->setMaximumSize(960,150);
     }
     /* Get the control currently associated with the input slider */
     if (m_pControl == nullptr)
@@ -2085,16 +2109,12 @@ void UkmediaMainWidget::updateInputSettings (UkmediaMainWidget *m_pWidget,MateMi
             MateMixerSwitchOption *opt = MATE_MIXER_SWITCH_OPTION(options->data);
             QString label = mate_mixer_switch_option_get_label(opt);
             QString name = mate_mixer_switch_option_get_name(opt);
-//            qDebug() << "opt label******: "<< label << "opt name :" << mate_mixer_switch_option_get_name(opt);
             m_pWidget->m_pInputPortList->append(name);
             m_pWidget->m_pInputWidget->m_pInputPortCombobox->addItem(label);
             options = options->next;
         }
         MateMixerSwitchOption *option = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(portSwitch));
         QString label = mate_mixer_switch_option_get_label(option);
-//        m_pWidget->m_pInputWidget->m_pInputPortWidget->show();
-//        m_pWidget->m_pInputWidget->setMinimumSize(550,200);
-//        m_pWidget->m_pInputWidget->setMaximumSize(960,200);
         qDebug() << "设置组合框当前值为:" << label;
         m_pWidget->m_pInputWidget->inputWidgetAddPort();
         m_pWidget->m_pInputWidget->m_pInputPortCombobox->setCurrentText(label);
@@ -2113,12 +2133,10 @@ MateMixerSwitch* UkmediaMainWidget::findStreamPortSwitch (UkmediaMainWidget *wid
 
         if (!MATE_MIXER_IS_STREAM_TOGGLE (swtch) &&
                 mate_mixer_stream_switch_get_role (swtch) == MATE_MIXER_STREAM_SWITCH_ROLE_PORT) {
-            qDebug() << "find  Switch&&&&&&&&&&";
             return MATE_MIXER_SWITCH (swtch);
         }
         switches = switches->next;
     }
-    qDebug() << " not find  Switch&&&&&&&&&&";
     return NULL;
 }
 
@@ -2128,7 +2146,6 @@ void UkmediaMainWidget::onStreamControlMonitorValue (MateMixerStream *m_pStream,
     g_debug("on stream control monitor value");
     value = value*100;
     if (value >= 0) {
-//        qDebug() << "设置输入等级的值为:" << value;
         m_pWidget->m_pInputWidget->m_pInputLevelSlider->setValue(value);
     }
     else {
@@ -2201,12 +2218,12 @@ gboolean UkmediaMainWidget::saveAlertSounds (QComboBox *combox,const char *id)
     char *path;
 
     if (strcmp (id, DEFAULT_ALERT_ID) == 0) {
-        delete_old_files (sounds);
-        delete_disabled_files (sounds);
+        deleteOldFiles (sounds);
+        deleteDisabledFiles (sounds);
     } else {
-        delete_old_files (sounds);
-        delete_disabled_files (sounds);
-        add_custom_file (sounds, id);
+        deleteOldFiles (sounds);
+        deleteDisabledFiles (sounds);
+        addCustomFile (sounds, id);
     }
 
     /* And poke the directory so the theme gets updated */
@@ -2220,15 +2237,15 @@ gboolean UkmediaMainWidget::saveAlertSounds (QComboBox *combox,const char *id)
     return FALSE;
 }
 
-void UkmediaMainWidget::delete_old_files (const char **sounds)
+void UkmediaMainWidget::deleteOldFiles (const char **sounds)
 {
     guint i;
     for (i = 0; sounds[i] != NULL; i++) {
-        delete_one_file (sounds[i], "%s.ogg");
+        deleteOneFile (sounds[i], "%s.ogg");
     }
 }
 
-void UkmediaMainWidget::delete_one_file (const char *sound_name, const char *pattern)
+void UkmediaMainWidget::deleteOneFile (const char *sound_name, const char *pattern)
 {
         GFile *file;
         char *name, *filename;
@@ -2238,20 +2255,20 @@ void UkmediaMainWidget::delete_one_file (const char *sound_name, const char *pat
         g_free (name);
         file = g_file_new_for_path (filename);
         g_free (filename);
-        capplet_file_delete_recursive (file, NULL);
+        cappletFileDeleteRecursive (file, NULL);
         g_object_unref (file);
 }
 
 
-void UkmediaMainWidget::delete_disabled_files (const char **sounds)
+void UkmediaMainWidget::deleteDisabledFiles (const char **sounds)
 {
     guint i;
     for (i = 0; sounds[i] != NULL; i++) {
-        delete_one_file (sounds[i], "%s.disabled");
+        deleteOneFile (sounds[i], "%s.disabled");
     }
 }
 
-void UkmediaMainWidget::add_custom_file (const char **sounds, const char *filename)
+void UkmediaMainWidget::addCustomFile (const char **sounds, const char *filename)
 {
     guint i;
 
@@ -2283,7 +2300,7 @@ void UkmediaMainWidget::add_custom_file (const char **sounds, const char *filena
  * A utility routine to delete files and/or directories,
  * including non-empty directories.
  **/
-gboolean UkmediaMainWidget::capplet_file_delete_recursive (GFile *file, GError **error)
+gboolean UkmediaMainWidget::cappletFileDeleteRecursive (GFile *file, GError **error)
 {
     GFileInfo *info;
     GFileType type;
@@ -2302,14 +2319,14 @@ gboolean UkmediaMainWidget::capplet_file_delete_recursive (GFile *file, GError *
     g_object_unref (info);
 
     if (type == G_FILE_TYPE_DIRECTORY) {
-        return directory_delete_recursive (file, error);
+        return directoryDeleteRecursive (file, error);
     }
     else {
         return g_file_delete (file, NULL, error);
     }
 }
 
-gboolean UkmediaMainWidget::directory_delete_recursive (GFile *directory, GError **error)
+gboolean UkmediaMainWidget::directoryDeleteRecursive (GFile *directory, GError **error)
 {
     GFileEnumerator *enumerator;
     GFileInfo *info;
@@ -2330,7 +2347,7 @@ gboolean UkmediaMainWidget::directory_delete_recursive (GFile *directory, GError
         child = g_file_get_child (directory, g_file_info_get_name (info));
 
         if (g_file_info_get_file_type (info) == G_FILE_TYPE_DIRECTORY) {
-            success = directory_delete_recursive (child, error);
+            success = directoryDeleteRecursive (child, error);
         }
         g_object_unref (info);
 
@@ -2345,7 +2362,7 @@ gboolean UkmediaMainWidget::directory_delete_recursive (GFile *directory, GError
     return success;
 }
 
-void UkmediaMainWidget::create_custom_theme (const char *parent)
+void UkmediaMainWidget::createCustomTheme (const char *parent)
 {
     GKeyFile *keyfile;
     char     *data;
@@ -2371,12 +2388,12 @@ void UkmediaMainWidget::create_custom_theme (const char *parent)
     g_free (path);
     g_free (data);
 
-    custom_theme_update_time ();
+    customThemeUpdateTime ();
 }
 
 /* This function needs to be called after each individual
  * changeset to the theme */
-void UkmediaMainWidget::custom_theme_update_time (void)
+void UkmediaMainWidget::customThemeUpdateTime (void)
 {
     char *path;
     path = customThemeDirPath (NULL);
@@ -2384,7 +2401,7 @@ void UkmediaMainWidget::custom_theme_update_time (void)
     g_free (path);
 }
 
-gboolean UkmediaMainWidget::custom_theme_dir_is_empty (void)
+gboolean UkmediaMainWidget::customThemeDirIsEmpty (void)
 {
     char            *dir;
     GFile           *file;
@@ -2426,6 +2443,117 @@ out:
 
     return is_empty;
 }
+
+int UkmediaMainWidget::caPlayForWidget(UkmediaMainWidget *w, uint32_t id, ...)
+{
+    va_list ap;
+    int ret;
+    ca_proplist *p;
+
+    if ((ret = ca_proplist_create(&p)) < 0)
+        return ret;
+
+    if ((ret = caProplistSetForWidget(p, w)) < 0)
+        return -1;
+
+    va_start(ap, id);
+    ret = caProplistMergeAp(p, ap);
+    va_end(ap);
+
+    if (ret < 0)
+        return -1;
+    ca_context *c ;
+    ca_context_create(&c);
+    ret = ca_context_play_full(c, id, p, NULL, NULL);
+
+    return ret;
+}
+
+int UkmediaMainWidget::caProplistMergeAp(ca_proplist *p, va_list ap)
+{
+    int ret;
+    for (;;) {
+        const char *key, *value;
+
+        if (!(key = va_arg(ap, const char*)))
+            break;
+
+        if (!(value = va_arg(ap, const char*)))
+            return CA_ERROR_INVALID;
+
+        if ((ret = ca_proplist_sets(p, key, value)) < 0)
+            return ret;
+    }
+
+    return CA_SUCCESS;
+}
+
+int UkmediaMainWidget::caProplistSetForWidget(ca_proplist *p, UkmediaMainWidget *widget)
+{
+    int ret;
+    const char *t;
+    QScreen *screen;
+    gint x = -1;
+    gint y = -1;
+    gint width = -1;
+    gint height = -1;
+    gint screen_width = -1;
+    gint screen_height = -1;
+
+    if ((t = widget->windowTitle().toLatin1().data()))
+        if ((ret = ca_proplist_sets(p, CA_PROP_WINDOW_NAME, t)) < 0)
+            return ret;
+
+    if (t)
+        if ((ret = ca_proplist_sets(p, CA_PROP_WINDOW_ID, t)) < 0)
+            return ret;
+
+    if ((t = widget->windowIconText().toLatin1().data()))
+        if ((ret = ca_proplist_sets(p, CA_PROP_WINDOW_ICON_NAME, t)) < 0)
+            return ret;
+    if (screen = qApp->primaryScreen()) {
+        if ((ret = ca_proplist_setf(p, CA_PROP_WINDOW_X11_SCREEN, "%i", 0)) < 0)
+            return ret;
+    }
+
+    width = widget->size().width();
+    height = widget->size().height();
+
+    if (width > 0)
+        if ((ret = ca_proplist_setf(p, CA_PROP_WINDOW_WIDTH, "%i", width)) < 0)
+            return ret;
+    if (height > 0)
+        if ((ret = ca_proplist_setf(p, CA_PROP_WINDOW_HEIGHT, "%i", height)) < 0)
+            return ret;
+
+    if (x >= 0 && width > 0) {
+        screen_width = qApp->primaryScreen()->size().width();
+
+        x += width/2;
+        x = CA_CLAMP(x, 0, screen_width-1);
+
+        /* We use these strange format strings here to avoid that libc
+                         * applies locale information on the formatting of floating
+                         * numbers. */
+
+        if ((ret = ca_proplist_setf(p, CA_PROP_WINDOW_HPOS, "%i.%03i",
+                                    (int) (x/(screen_width-1)), (int) (1000.0*x/(screen_width-1)) % 1000)) < 0)
+            return ret;
+    }
+
+    if (y >= 0 && height > 0) {
+        screen_height = qApp->primaryScreen()->size().height();
+
+        y += height/2;
+        y = CA_CLAMP(y, 0, screen_height-1);
+
+        if ((ret = ca_proplist_setf(p, CA_PROP_WINDOW_VPOS, "%i.%03i",
+                                    (int) (y/(screen_height-1)), (int) (1000.0*y/(screen_height-1)) % 1000)) < 0)
+            return ret;
+    }
+    return CA_SUCCESS;
+}
+
 
 UkmediaMainWidget::~UkmediaMainWidget()
 {

@@ -152,7 +152,7 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     outputPortLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     outputPortLayout->setSpacing(0);
     m_pOutputPortWidget->setLayout(outputPortLayout);
-    outputDeviceLayout->layout()->setContentsMargins(0,0,0,0);
+    outputPortLayout->layout()->setContentsMargins(0,0,0,0);
     //进行整体布局
     m_pVlayout = new QVBoxLayout(m_pOutputWidget);
     m_pVlayout->addWidget(m_pOutputDeviceWidget);
