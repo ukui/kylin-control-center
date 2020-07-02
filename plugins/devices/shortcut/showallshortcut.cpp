@@ -57,7 +57,7 @@ ShowAllShortcut::ShowAllShortcut(QWidget *parent) :
 //                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}"
 //                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}");
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+    ui->closeBtn->setIcon(QIcon(QPixmap("://img/titlebar/close.svg")));
 
     connect(ui->closeBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
