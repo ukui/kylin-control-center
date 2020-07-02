@@ -61,7 +61,7 @@ addShortcutDialog::addShortcutDialog(QWidget *parent) :
 //    ui->cancelBtn->setStyleSheet(btnQss);
 //    ui->certainBtn->setStyleSheet(btnQss);
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+    ui->closeBtn->setIcon(QIcon(QPixmap("://img/titlebar/close.svg")));
     ui->noteLabel->setPixmap(QPixmap("://img/plugins/shortcut/note.png"));
 
     ui->stackedWidget->setCurrentIndex(1);

@@ -22,7 +22,7 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
     m_cancelBtn = new QPushButton(tr("Cancel"));
     m_confirmBtn = new QPushButton(tr("Confirm"));
 
-    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);//无边框
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint| Qt::Tool);//无边框
     setAttribute(Qt::WA_StyledBackground,true);
 
     this->setObjectName("MapFrame");
