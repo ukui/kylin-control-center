@@ -101,8 +101,8 @@ private:
     WidgetGroup * iconThemeWidgetGroup;
 
     bool settingsCreate;
-    Uslider * uslider;
-    Uslider * kwinSlider;
+//    Uslider * uslider;
+//    Uslider * kwinSlider;
 
 private slots:
     void resetBtnClickSlot();

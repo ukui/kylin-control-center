@@ -115,6 +115,7 @@ void NetConnect::initComponent(){
         QTimer::singleShot(1*1000,this,SLOT(getNetList()));
     });
 
+    wifiBtn->setChecked(getInitStatus());
     connect(wifiBtn, &SwitchButton::checkedChanged, this,[=](bool checked){
         clearContent();
         ui->waitLabel->setVisible(true);
@@ -127,7 +128,6 @@ void NetConnect::initComponent(){
         wifiBtn->blockSignals(false);
     });
 
-    wifiBtn->setChecked(getInitStatus());
     ui->RefreshBtn->setEnabled(false);
     wifiBtn->setEnabled(false);
 

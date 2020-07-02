@@ -195,6 +195,12 @@ void Theme::setupSettings() {
     if (!dir.isFile()) {
         effectSwitchBtn->setChecked(true);
     }
+
+    if (effectSwitchBtn->isChecked()) {
+        ui->transFrame->setVisible(true);
+    } else {
+        ui->transFrame->setVisible(false);
+    }
 }
 
 void Theme::setupComponent(){
@@ -212,44 +218,52 @@ void Theme::setupComponent(){
     buildThemeModeBtn(ui->lightButton, tr("Light"), "light");
     buildThemeModeBtn(ui->darkButton, tr("Dark"), "dark");
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    QStringList traList;
-    traList<< "0.2" << "0.4" << "0.6" << "0.8" << "1";
+//#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+//    QStringList traList;
+//    traList<< "0.2" << "0.4" << "0.6" << "0.8" << "1";
 
-    uslider = new Uslider(traList);
-    uslider->setRange(1,5);
-    uslider->setTickInterval(1);
-    uslider->setPageStep(1);
-    ui->transparentLayout->addWidget(uslider);
+//    uslider = new Uslider(traList);
+//    uslider->setRange(1,5);
+//    uslider->setTickInterval(1);
+//    uslider->setPageStep(1);
+//    ui->transparentLayout->addWidget(uslider);
 
-    if (personliseGsettings) {
-        double tranvalue = personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble();
-        uslider->setValue(tranConvertToSlider(tranvalue));
-    }
-    connect(uslider, &QSlider::valueChanged, [=](int value){
-        writeKwinSettings(false, "", value);
+//    if (personliseGsettings) {
+//        double tranvalue = personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble();
+//        uslider->setValue(tranConvertToSlider(tranvalue));
+//    }
+//    connect(uslider, &QSlider::valueChanged, [=](int value){
+//        writeKwinSettings(false, "", value);
+//    });
+//#else
+//    QStringList kwinList;
+//    kwinList<< tr("Low") << tr("Middle") << tr("High");
+//    kwinSlider = new Uslider(kwinList);
+//    kwinSlider->setRange(1,3);
+//    kwinSlider->setTickInterval(1);
+//    kwinSlider->setPageStep(1);
+//    ui->kwinLayout->addWidget(kwinSlider);
+
+//    if (personliseGsettings) {
+//        int level = personliseGsettings->get(PERSONALSIE_BLURRY_KEY).toInt();
+//        kwinSlider->setValue(level);
+//    }
+
+//    connect(kwinSlider, &QSlider::valueChanged, [=](int value){
+//        writeKwinSettings(false, "", value);
+//    });
+//#endif
+    ui->tranSlider->setRange(1, 100);
+    ui->tranSlider->setTickInterval(1);
+    ui->tranSlider->setPageStep(1);
+
+//    ui->tranSlider->setValue(static_cast<int>(personliseGTheme::setupSettingssettings->get(PERSONALSIE_TRAN_KEY).toDouble() * 100));
+    ui->tranLabel->setText(QString::number(static_cast<double>(ui->tranSlider->value())/100.0));
+    connect(ui->tranSlider, &QSlider::valueChanged, [=](int value){
+        personliseGsettings->set(PERSONALSIE_TRAN_KEY, static_cast<double>(value)/100.0);
+        ui->tranLabel->setText(QString::number(static_cast<double>(ui->tranSlider->value())/100.0));
     });
-#else
-    QStringList kwinList;
-    kwinList<< tr("Low") << tr("Middle") << tr("High");
-    kwinSlider = new Uslider(kwinList);
-    kwinSlider->setRange(1,3);
-    kwinSlider->setTickInterval(1);
-    kwinSlider->setPageStep(1);
-    ui->kwinLayout->addWidget(kwinSlider);
-
-    if (personliseGsettings) {
-        int level = personliseGsettings->get(PERSONALSIE_BLURRY_KEY).toInt();
-        kwinSlider->setValue(level);
-    }
-
-    connect(kwinSlider, &QSlider::valueChanged, [=](int value){
-        writeKwinSettings(false, "", value);
-    });
-#endif
-
     setupControlTheme();
-
 
 //    ui->effectLabel->hide();
 //    ui->effectWidget->hide();
@@ -258,15 +272,9 @@ void Theme::setupComponent(){
     effectSwitchBtn = new SwitchButton(pluginWidget);
     ui->effectHorLayout->addWidget(effectSwitchBtn);
 
-    ui->effectFrame->setVisible(false);
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    ui->transFrame->setVisible(true);
     ui->kwinFrame->setVisible(false);
-#else
-    ui->transFrame->setVisible(false);
-    ui->kwinFrame->setVisible(true);
-#endif
+    ui->transFrame->setVisible(true);
 }
 
 void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
@@ -358,19 +366,20 @@ void Theme::initThemeMode(){
         QString themeMode = button->property("value").toString();
         QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
 
+
         qApp->setStyle(new InternalStyle(themeMode));
         if (QString::compare(currentThemeMode, themeMode)){
+            QString tmpMode;
+            if ("ukui-dark" == themeMode) {
+                tmpMode = "ukui-black";
+            } else {
+                tmpMode = "ukui-white";
+            }
+            gtkSettings->set(MODE_GTK_KEY, tmpMode);
+
             QtConcurrent::run([=](){
                 qtSettings->set(MODE_QT_KEY, themeMode);
             });
-
-            if ("ukui-dark" == themeMode) {
-                themeMode = "ukui-black";
-            } else {
-                themeMode = "ukui-white";
-            }
-            gtkSettings->set(MODE_GTK_KEY, themeMode);
-
             writeKwinSettings(true, themeMode);
         }
     });
@@ -512,7 +521,8 @@ void Theme::initCursorTheme(){
         XCursorTheme *cursorTheme = new XCursorTheme(path);
 
         for(int i = 0; i < numCursors; i++){
-            QImage image = cursorTheme->loadImage(cursor_names[i],20);
+            int size = qApp->devicePixelRatio() * 16;
+            QImage image = cursorTheme->loadImage(cursor_names[i],size);
             cursorVec.append(QPixmap::fromImage(image));
         }
 
@@ -548,6 +558,7 @@ void Theme::initConnection() {
 
     connect(effectSwitchBtn, &SwitchButton::checkedChanged, [this](bool checked) {
         QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
+        ui->transFrame->setVisible(checked);
         writeKwinSettings(checked, currentThemeMode);
     });
 }
@@ -619,7 +630,7 @@ void Theme::writeKwinSettings(bool change, QString theme, int effect) {
     } else if ("ukui-black" == theme){
         th = "__aurorae__svg__Ukui-classic-dark";
     }
-    if (1 == effect) {
+    if (!change) {
         kwinSettings->clear();
         kwinSettings->beginGroup("Plugins");
         kwinSettings->setValue("blurEnabled",false);
@@ -640,14 +651,10 @@ void Theme::writeKwinSettings(bool change, QString theme, int effect) {
         kwinSettings->setValue("slidingpopupsEnabled",false);
         kwinSettings->setValue("zoomEnabled",false);
         kwinSettings->endGroup();
-    } else if (2 == effect) {
+    } else {
         kwinSettings->clear();
         kwinSettings->beginGroup("Plugins");
-        kwinSettings->setValue("blurEnabled",false);
-        kwinSettings->endGroup();
-    } else if (3 == effect) {
-        kwinSettings->clear();
-        kwinSettings->beginGroup("Plugins");
+        kwinSettings->setValue("blurEnabled",true);
         kwinSettings->endGroup();
     }
 

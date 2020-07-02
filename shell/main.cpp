@@ -57,10 +57,6 @@ int main(int argc, char *argv[])
 #endif
     QtSingleApplication a(argc, argv);
 
-    QTimer::singleShot(2000, [&](){
-
-    });
-
     if (a.isRunning()){
         a.sendMessage(QApplication::arguments().length() > 1 ? QApplication::arguments().at(1) : a.applicationFilePath());
         qDebug() << QObject::tr("ukui-control-center had already running!");
