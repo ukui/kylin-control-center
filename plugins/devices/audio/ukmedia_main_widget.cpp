@@ -165,7 +165,10 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
 
         connect(m_pBootSetting,SIGNAL(changed(const QString &)),this,SLOT(bootMusicSettingsChanged()));
     }
+    bool status = g_settings_get_boolean(m_pSoundSettings, EVENT_SOUNDS_KEY);
+    m_pSoundWidget->m_pAlertSoundSwitchButton->setChecked(status);
     connect(m_pSoundWidget->m_pBootButton,SIGNAL(checkedChanged(bool)),this,SLOT(bootButtonSwitchChangedSlot(bool)));
+    connect(m_pSoundWidget->m_pAlertSoundSwitchButton,SIGNAL(checkedChanged(bool)),this,SLOT(alertSoundButtonSwitchChangedSlot(bool)));
     //输出音量控制
     //输出滑动条音量控制
     connect(m_pOutputWidget->m_pOpVolumeSlider,SIGNAL(valueChanged(int)),this,SLOT(outputWidgetSliderChangedSlot(int)));
@@ -194,6 +197,14 @@ void UkmediaMainWidget::bootButtonSwitchChangedSlot(bool status)
             m_pBootSetting->set(UKUI_BOOT_MUSIC_KEY,status);
         }
     }
+}
+
+/*
+    提示音的开关
+*/
+void UkmediaMainWidget::alertSoundButtonSwitchChangedSlot(bool status)
+{
+    g_settings_set_boolean (m_pSoundSettings, EVENT_SOUNDS_KEY, status);
 }
 
 void UkmediaMainWidget::bootMusicSettingsChanged()
@@ -1236,12 +1247,13 @@ void UkmediaMainWidget::updateTheme (UkmediaMainWidget *m_pWidget)
     gboolean eventsEnabled;
     feedBackEnabled = g_settings_get_boolean(m_pWidget->m_pSoundSettings, INPUT_SOUNDS_KEY);
     eventsEnabled = g_settings_get_boolean(m_pWidget->m_pSoundSettings,EVENT_SOUNDS_KEY);
-
+//    eventsEnabled = FALSE;
     if (eventsEnabled) {
         pThemeName = g_settings_get_string (m_pWidget->m_pSoundSettings, SOUND_THEME_KEY);
     } else {
         pThemeName = g_strdup (NO_SOUNDS_THEME_NAME);
     }
+    qDebug() << "update theme，主题名" << pThemeName << eventsEnabled;
     //设置combox的主题
     setComboxForThemeName (m_pWidget, pThemeName);
     updateAlertsFromThemeName (m_pWidget, pThemeName);
@@ -1314,10 +1326,12 @@ void UkmediaMainWidget::soundThemeInDir (UkmediaMainWidget *m_pWidget,GHashTable
             continue;
         }
         //设置主题到combox中
-        qDebug() << "sound theme in dir" << "displayname:" << m_pIndexName << "theme name:" << m_pName;
-        m_pWidget->m_pThemeDisplayNameList->append(m_pIndexName);
-        m_pWidget->m_pThemeNameList->append(m_pName);
-        m_pWidget->m_pSoundWidget->m_pSoundThemeCombobox->addItem(m_pIndexName);
+//        if(m_pName != NO_SOUNDS_THEME_NAME) {
+            qDebug() << "sound theme in dir" << "displayname:" << m_pIndexName << "theme name:" << m_pName;
+            m_pWidget->m_pThemeDisplayNameList->append(m_pIndexName);
+            m_pWidget->m_pThemeNameList->append(m_pName);
+            m_pWidget->m_pSoundWidget->m_pSoundThemeCombobox->addItem(m_pIndexName);
+//        }
     }
     g_dir_close (d);
 }
@@ -1384,8 +1398,9 @@ void UkmediaMainWidget::setComboxForThemeName (UkmediaMainWidget *m_pWidget,cons
     }
     /* When we can't find the theme we need to set, try to set the default
      * one "freedesktop" */
-/*    if (found) {
-    }*/ else if (strcmp (name, "freedesktop") != 0) {//设置为默认的主题
+    if (found) {
+    } else if (strcmp (name, "freedesktop") != 0) {//设置为默认的主题
+        qDebug() << "设置为默认的主题" << "freedesktop";
         g_debug ("not found, falling back to fdo");
         setComboxForThemeName (m_pWidget, "freedesktop");
     }
@@ -1466,8 +1481,10 @@ void UkmediaMainWidget::updateAlert (UkmediaMainWidget *pWidget,const char *aler
     }
 
     if (add_custom) {
+        qDebug() << "add custom 设置主题";
         setComboxForThemeName (pWidget, CUSTOM_THEME_NAME);
     } else if (remove_custom) {
+        qDebug() << "remove custom 设置主题";
         setComboxForThemeName (pWidget, parent);
     }
 }
@@ -1679,7 +1696,7 @@ void UkmediaMainWidget::playAlretSoundFromPath (UkmediaMainWidget *w,QString pat
    gchar * themeName = g_settings_get_string (w->m_pSoundSettings, SOUND_THEME_KEY);
 //   player->play();
 
-//   qDebug() << "主题名为:" << themeName << "id :" << path.toLatin1().data();
+   qDebug() << "主题名为:" << themeName << "id :" << path.toLatin1().data();
    if (strcmp (path.toLatin1().data(), DEFAULT_ALERT_ID) == 0) {
        if (themeName != NULL) {
            caPlayForWidget (w, 0,
@@ -1745,11 +1762,12 @@ void UkmediaMainWidget::themeComboxIndexChangedSlot(int index)
     QString theme = m_pThemeNameList->at(index);
     QByteArray ba = theme.toLatin1();
     const char *m_pThemeName = ba.data();
-    qDebug() << "index changed:" << index << m_pThemeNameList->at(index) << m_pThemeName;
-    g_settings_set_string (m_pSoundSettings, SOUND_THEME_KEY, m_pThemeName);
+    gboolean ok = g_settings_set_string (m_pSoundSettings, SOUND_THEME_KEY, m_pThemeName);
+    qDebug() << "index changed:" << index << m_pThemeNameList->at(index) << m_pThemeName << "设置主题是否成功" << ok;
 
     /* special case for no sounds */
     if (strcmp (m_pThemeName, NO_SOUNDS_THEME_NAME) == 0) {
+        //设置提示音关闭
         g_settings_set_boolean (m_pSoundSettings, EVENT_SOUNDS_KEY, FALSE);
         return;
     } else {
