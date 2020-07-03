@@ -2792,7 +2792,7 @@ folder will be deleted!</source>
         <translation type="vanished">主题</translation>
     </message>
     <message>
-        <location filename="../../main.cpp" line="66"/>
+        <location filename="../../main.cpp" line="62"/>
         <source>ukui-control-center had already running!</source>
         <translation>控制面板已经在运行！</translation>
     </message>
@@ -2809,22 +2809,22 @@ folder will be deleted!</source>
         <translation type="vanished">默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="584"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="585"/>
         <source>basic</source>
         <translation>基础</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="586"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="587"/>
         <source>classical</source>
         <translation>经典</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="588"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="589"/>
         <source>default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="590"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="591"/>
         <source>Unknown</source>
         <translation>未知</translation>
     </message>
@@ -3607,38 +3607,58 @@ folder will be deleted!</source>
         <translation>输入</translation>
     </message>
     <message>
-        <source>Select input device</source>
-        <translation type="vanished">选择输入设备</translation>
-    </message>
-    <message>
         <location filename="../../../plugins/devices/audio/ukmedia_input_widget.cpp" line="51"/>
-        <source>Input device</source>
+        <source>Input Device</source>
         <translation>选择输入设备</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_input_widget.cpp" line="54"/>
-        <source>volume</source>
+        <source>Volume</source>
         <translation>音量大小</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_input_widget.cpp" line="58"/>
-        <source>Input level</source>
+        <source>Input Level</source>
         <translation>输入等级</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_input_widget.cpp" line="59"/>
-        <source>low</source>
+        <source>Low</source>
         <translation>低</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_input_widget.cpp" line="61"/>
-        <source>high</source>
+        <source>High</source>
         <translation>高</translation>
+    </message>
+    <message>
+        <source>Select input device</source>
+        <translation type="vanished">选择输入设备</translation>
+    </message>
+    <message>
+        <source>Input device</source>
+        <translation type="vanished">选择输入设备</translation>
+    </message>
+    <message>
+        <source>volume</source>
+        <translation type="vanished">音量大小</translation>
+    </message>
+    <message>
+        <source>Input level</source>
+        <translation type="vanished">输入等级</translation>
+    </message>
+    <message>
+        <source>low</source>
+        <translation type="vanished">低</translation>
+    </message>
+    <message>
+        <source>high</source>
+        <translation type="vanished">高</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_input_widget.cpp" line="64"/>
         <source>Connector</source>
-        <translation type="unfinished"></translation>
+        <translation>连接器</translation>
     </message>
 </context>
 <context>
@@ -3662,23 +3682,40 @@ folder will be deleted!</source>
         <translation>输出</translation>
     </message>
     <message>
-        <source>Select output device</source>
-        <translation type="vanished">选择输出设备</translation>
-    </message>
-    <message>
         <location filename="../../../plugins/devices/audio/ukmedia_output_widget.cpp" line="73"/>
-        <source>Output device</source>
+        <source>Output Device</source>
         <translation>选择输出设备</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_output_widget.cpp" line="75"/>
-        <source>Master volume</source>
+        <source>Master Volume</source>
         <translation>主音量大小</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_output_widget.cpp" line="79"/>
-        <source>Channel balance</source>
+        <source>Balance</source>
         <translation>声道平衡</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/audio/ukmedia_output_widget.cpp" line="82"/>
+        <source>Right</source>
+        <translation>右</translation>
+    </message>
+    <message>
+        <source>Select output device</source>
+        <translation type="vanished">选择输出设备</translation>
+    </message>
+    <message>
+        <source>Output device</source>
+        <translation type="vanished">选择输出设备</translation>
+    </message>
+    <message>
+        <source>Master volume</source>
+        <translation type="vanished">主音量大小</translation>
+    </message>
+    <message>
+        <source>Channel balance</source>
+        <translation type="vanished">声道平衡</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_output_widget.cpp" line="80"/>
@@ -3686,37 +3723,32 @@ folder will be deleted!</source>
         <translation>左</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_output_widget.cpp" line="82"/>
         <source>right</source>
-        <translation>右</translation>
+        <translation type="vanished">右</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_output_widget.cpp" line="83"/>
         <source>Connector</source>
-        <translation type="unfinished"></translation>
+        <translation>连接器</translation>
     </message>
 </context>
 <context>
     <name>UkmediaSoundEffectsWidget</name>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="39"/>
         <source>System sound</source>
-        <translation>系统音效</translation>
+        <translation type="vanished">系统音效</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="41"/>
         <source>Sound theme</source>
-        <translation>系统音效主题</translation>
+        <translation type="vanished">系统音效主题</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="43"/>
         <source>Prompt voice</source>
-        <translation>提示音</translation>
+        <translation type="vanished">提示音</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="45"/>
         <source>Boot music</source>
-        <translation>开关机音乐</translation>
+        <translation type="vanished">开关机音乐</translation>
     </message>
     <message>
         <source>System sound theme</source>
@@ -3733,6 +3765,26 @@ folder will be deleted!</source>
     <message>
         <source>Lagout</source>
         <translation type="vanished">注销</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="39"/>
+        <source>System Sound</source>
+        <translation>系统音效</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="41"/>
+        <source>Sound Theme</source>
+        <translation>系统音效主题</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="43"/>
+        <source>Alert Sound</source>
+        <translation>提示音</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="45"/>
+        <source>Boot Music</source>
+        <translation>开关机音乐</translation>
     </message>
 </context>
 <context>
@@ -4080,7 +4132,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
     <message>
         <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="26"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="181"/>

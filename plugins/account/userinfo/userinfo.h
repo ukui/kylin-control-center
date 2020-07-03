@@ -41,6 +41,12 @@
 #include "deluserdialog.h"
 #include "createuserdialog.h"
 
+#ifdef ENABLEPQ
+extern "C" {
+#include <pwquality.h>
+}
+#endif
+
 enum {
     STANDARDUSER,
     ADMINISTRATOR,
@@ -60,6 +66,32 @@ typedef struct _UserInfomation {
     bool noPwdLogin;
     qint64 uid;
 }UserInfomation;
+
+typedef struct _PwdQualityOption {
+
+    int diff_ok;
+    int min_length;
+    int dig_credit;
+    int up_credit;
+    int low_credit;
+    int oth_credit;
+    int min_class;
+    int max_repeat;
+    int max_class_repeat;
+    int max_sequence;
+    int gecos_check;
+    int dict_check;
+    int user_check;
+    int enforcing;
+    int retry_times;
+    int enforce_for_root;
+    int local_users_only;
+    int palindrome;
+    int no_similar_check;
+    char *bad_words;
+    char *dict_path;
+
+}PwdQualityOption;
 
 namespace Ui {
 class UserInfo;
@@ -121,6 +153,9 @@ public:
     QString accounttype_enum_to_string(int id);
     QString login_status_bool_to_string(bool status);
 
+
+    void readCurrentPwdConf();
+
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
 
@@ -166,6 +201,16 @@ private:
     QString pwdcreate;
 
     QDBusInterface * sysinterface;
+
+    bool enablePwdQuality;
+
+#ifdef ENABLEPQ
+    pwquality_settings_t * pwdconf;
+#endif
+
+    PwdQualityOption pwdOption;
+
+    QString pwdMsg;
 
 private slots:
 //    void show_change_pwd_dialog_slot(QString username);

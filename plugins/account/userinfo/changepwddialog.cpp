@@ -24,6 +24,8 @@
 
 #include <QStyledItemDelegate>
 
+#include <QDebug>
+
 #define PWD_LOW_LENGTH 6
 #define PWD_HIGH_LENGTH 20
 
@@ -64,7 +66,7 @@ ChangePwdDialog::ChangePwdDialog(QWidget *parent) :
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
-
+    initPwdChecked();
     setupComponent();
     setupConnect();
 }
@@ -72,6 +74,32 @@ ChangePwdDialog::ChangePwdDialog(QWidget *parent) :
 ChangePwdDialog::~ChangePwdDialog()
 {
     delete ui;
+}
+
+void ChangePwdDialog::initPwdChecked(){
+#ifdef ENABLEPQ
+    int ret;
+    void *auxerror;
+    char buf[255];
+
+    settings = pwquality_default_settings();
+    if (settings == NULL) {
+        enablePwdQuality = false;
+        qDebug() << "init pwquality settings failed";
+    } else {
+        enablePwdQuality = true;
+    }
+
+    ret = pwquality_read_config(settings, PWCONF, &auxerror);
+    if (ret != 0){
+        enablePwdQuality = false;
+        qDebug() << "Reading pwquality configuration file failed: " << pwquality_strerror(buf, sizeof(buf), ret, auxerror);
+    } else {
+        enablePwdQuality = true;
+    }
+#else
+    enablePwdQuality = false;
+#endif
 }
 
 void ChangePwdDialog::setupComponent(){
@@ -181,13 +209,35 @@ void ChangePwdDialog::paintEvent(QPaintEvent *event) {
 }
 
 void ChangePwdDialog::pwdLegalityCheck(QString pwd){
-    if (pwd.length() < PWD_LOW_LENGTH) {
-        pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
-    } else if (pwd.length() > PWD_HIGH_LENGTH) {
-        pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
-    } else {
-        pwdTip = "";
+    if (enablePwdQuality){
+#ifdef ENABLEPQ
+        void * auxerror;
+        int ret;
+        const char * msg;
+        char buf[256];
+
+        QByteArray ba = pwd.toLatin1();
+
+        ret = pwquality_check(settings, ba.data(), NULL, NULL, &auxerror);
+        if (ret < 0 && pwd.length() > 0){
+            msg = pwquality_strerror(buf, sizeof(buf), ret, auxerror);
+            pwdTip = QString(msg);
+        } else {
+            pwdTip = "";
+        }
+#endif
+
+    } else { //系统未开启pwdquality模块
+        if (pwd.length() < PWD_LOW_LENGTH) {
+            pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
+        } else if (pwd.length() > PWD_HIGH_LENGTH) {
+            pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
+        } else {
+            pwdTip = "";
+        }
     }
+
+
 
     //防止先输入确认密码，再输入密码后pwdsuretipLabel无法刷新
     if (!ui->pwdsureLineEdit->text().isEmpty()){

@@ -104,6 +104,8 @@ void Screenlock::setupComponent(){
     QString filename = QDir::homePath() + "/.config/ukui/ukui-control-center.conf";
     lockSetting = new QSettings(filename, QSettings::IniFormat);
 
+    //锁屏延时暂时不可用，屏蔽
+    ui->enableFrame->hide();
 
     QString name = qgetenv("USER");
     if (name.isEmpty()) {

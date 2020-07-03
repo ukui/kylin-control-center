@@ -257,7 +257,7 @@ void Theme::setupComponent(){
     ui->tranSlider->setTickInterval(1);
     ui->tranSlider->setPageStep(1);
 
-//    ui->tranSlider->setValue(static_cast<int>(personliseGTheme::setupSettingssettings->get(PERSONALSIE_TRAN_KEY).toDouble() * 100));
+    ui->tranSlider->setValue(static_cast<int>(personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble() * 100));
     ui->tranLabel->setText(QString::number(static_cast<double>(ui->tranSlider->value())/100.0));
     connect(ui->tranSlider, &QSlider::valueChanged, [=](int value){
         personliseGsettings->set(PERSONALSIE_TRAN_KEY, static_cast<double>(value)/100.0);
