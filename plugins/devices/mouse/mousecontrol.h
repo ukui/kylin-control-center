@@ -28,6 +28,8 @@
 #include <QGSettings/QGSettings>
 #include <QStyledItemDelegate>
 
+#include <QProcess>
+
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
 
@@ -55,6 +57,9 @@ public:
     void initHandHabitStatus();
     void initPointerStatus();
     void initCursorStatus();
+    void initWheelStatus();
+    int _get_mouse_mid_speed();
+    void _set_mouse_mid_speed(int value);
 
 private:
     Ui::MouseControl *ui;
