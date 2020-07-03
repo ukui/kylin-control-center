@@ -218,41 +218,6 @@ void Theme::setupComponent(){
     buildThemeModeBtn(ui->lightButton, tr("Light"), "light");
     buildThemeModeBtn(ui->darkButton, tr("Dark"), "dark");
 
-//#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-//    QStringList traList;
-//    traList<< "0.2" << "0.4" << "0.6" << "0.8" << "1";
-
-//    uslider = new Uslider(traList);
-//    uslider->setRange(1,5);
-//    uslider->setTickInterval(1);
-//    uslider->setPageStep(1);
-//    ui->transparentLayout->addWidget(uslider);
-
-//    if (personliseGsettings) {
-//        double tranvalue = personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble();
-//        uslider->setValue(tranConvertToSlider(tranvalue));
-//    }
-//    connect(uslider, &QSlider::valueChanged, [=](int value){
-//        writeKwinSettings(false, "", value);
-//    });
-//#else
-//    QStringList kwinList;
-//    kwinList<< tr("Low") << tr("Middle") << tr("High");
-//    kwinSlider = new Uslider(kwinList);
-//    kwinSlider->setRange(1,3);
-//    kwinSlider->setTickInterval(1);
-//    kwinSlider->setPageStep(1);
-//    ui->kwinLayout->addWidget(kwinSlider);
-
-//    if (personliseGsettings) {
-//        int level = personliseGsettings->get(PERSONALSIE_BLURRY_KEY).toInt();
-//        kwinSlider->setValue(level);
-//    }
-
-//    connect(kwinSlider, &QSlider::valueChanged, [=](int value){
-//        writeKwinSettings(false, "", value);
-//    });
-//#endif
     ui->tranSlider->setRange(1, 100);
     ui->tranSlider->setTickInterval(1);
     ui->tranSlider->setPageStep(1);
@@ -272,9 +237,14 @@ void Theme::setupComponent(){
     effectSwitchBtn = new SwitchButton(pluginWidget);
     ui->effectHorLayout->addWidget(effectSwitchBtn);
 
-
     ui->kwinFrame->setVisible(false);
     ui->transFrame->setVisible(true);
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
+
+#else
+
+#endif
 }
 
 void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
@@ -625,9 +595,9 @@ void Theme::resetBtnClickSlot() {
 void Theme::writeKwinSettings(bool change, QString theme, int effect) {
 
     QString th = "";
-    if ("ukui-white" == theme) {
+    if ("ukui-default" == theme) {
         th = "__aurorae__svg__Ukui-classic";
-    } else if ("ukui-black" == theme){
+    } else if ("ukui-dark" == theme){
         th = "__aurorae__svg__Ukui-classic-dark";
     }
     if (!change) {

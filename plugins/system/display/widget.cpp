@@ -975,7 +975,10 @@ void Widget::save()
 //    int scale = static_cast<int>(this->scaleRet());
     initScreenXml(countOutput);
     writeScreenXml(countOutput);
+#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
+#else
     writeScale(static_cast<float>(this->screenScale));
+#endif
     writeConfigFile();
     setNightMode(nightButton->isChecked());
 
