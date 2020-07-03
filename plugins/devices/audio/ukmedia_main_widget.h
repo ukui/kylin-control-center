@@ -194,10 +194,10 @@ private Q_SLOTS:
     void inputWidgetSliderChangedSlot(int value);
     void ukuiThemeChangedSlot(const QString &);
     void bootButtonSwitchChangedSlot(bool status);
+    void alertSoundButtonSwitchChangedSlot(bool status);
     void bootMusicSettingsChanged();
     void inputPortComboxChangedSlot(int index);
     void outputPortComboxChangedSlot(int index);
-
 private:
     UkmediaInputWidget *m_pInputWidget;
     UkmediaOutputWidget *m_pOutputWidget;
