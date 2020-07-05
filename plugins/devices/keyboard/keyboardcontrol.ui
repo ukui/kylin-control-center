@@ -579,6 +579,12 @@ QSlider::handle:horizontal {
               <height>50</height>
              </size>
             </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
             <layout class="QHBoxLayout" name="horizontalLayout_10">
              <property name="spacing">
               <number>0</number>
@@ -596,7 +602,7 @@ QSlider::handle:horizontal {
               <number>0</number>
              </property>
              <item>
-              <layout class="QHBoxLayout" name="capsLockHorLayout">
+              <layout class="QHBoxLayout" name="tipKeyboardHorLayout">
                <property name="spacing">
                 <number>0</number>
                </property>
@@ -615,7 +621,7 @@ QSlider::handle:horizontal {
                   </sizepolicy>
                  </property>
                  <property name="text">
-                  <string>Message of capslock</string>
+                  <string>Tip of keyboard</string>
                  </property>
                  <property name="scaledContents">
                   <bool>true</bool>

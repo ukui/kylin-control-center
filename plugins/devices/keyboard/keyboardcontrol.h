@@ -70,9 +70,10 @@ private:
 private:
     QGSettings * settings;
     QGSettings * kbdsettings;
+    QGSettings * osdSettings;
 
     SwitchButton * keySwitchBtn;
-    SwitchButton * capsLockSwitchBtn;
+    SwitchButton * tipKeyboardSwitchBtn;
     SwitchButton * numLockSwitchBtn;
 
     KbdLayoutManager * layoutmanagerObj;

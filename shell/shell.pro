@@ -54,6 +54,8 @@ inst6.files += $$PROJECT_ROOTDIR/data/faces/
 inst6.path = /usr/share/ukui/
 inst7.files += $$PROJECT_ROOTDIR/data/installer-timezones.mo
 inst7.path = /usr/share/locale/zh_CN/LC_MESSAGES/
+inst8.files += $$PROJECT_ROOTDIR/data/org.ukui.control-center.keyboard.gschema.xml
+inst8.path = /usr/share/glib-2.0/schemas/
 
 target.source += $$TARGET
 target.path = /usr/bin
@@ -66,6 +68,7 @@ INSTALLS +=  \
             inst5 \
             inst6 \
             inst7 \
+            inst8 \
             target \
 
 INCLUDEPATH += qtsingleapplication

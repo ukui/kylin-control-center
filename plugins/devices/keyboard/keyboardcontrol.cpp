@@ -33,6 +33,9 @@
 #define KBD_LAYOUTS_SCHEMA "org.mate.peripherals-keyboard-xkb.kbd"
 #define KBD_LAYOUTS_KEY "layouts"
 
+#define CC_KEYBOARD_OSD_SCHEMA "org.ukui.control-center.osd"
+#define CC_KEYBOARD_OSD_KEY "show-lock-tip"
+
 KeyboardControl::KeyboardControl()
 {
     ui = new Ui::KeyboardControl;
@@ -58,6 +61,10 @@ KeyboardControl::KeyboardControl()
 
     //初始化键盘布局GSettings
     const QByteArray idd(KBD_LAYOUTS_SCHEMA);
+
+    //初始化按键提示GSettings
+    const QByteArray iid(CC_KEYBOARD_OSD_SCHEMA);
+    osdSettings = new QGSettings(iid); //控制面板自带GSettings，不再判断是否安装
 
     if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(idd)){
         settingsCreate = true;
@@ -127,16 +134,15 @@ void KeyboardControl::setupComponent(){
     itemDelege = new QStyledItemDelegate();
 
     //隐藏未开发功能
-    ui->repeatFrame_4->hide();
     ui->repeatFrame_5->hide();
 
     //重复输入开关按钮
     keySwitchBtn = new SwitchButton(pluginWidget);
     ui->enableHorLayout->addWidget(keySwitchBtn);
 
-    //大写锁定开关按钮
-    capsLockSwitchBtn = new SwitchButton(pluginWidget);
-    ui->capsLockHorLayout->addWidget(capsLockSwitchBtn);
+    //按键提示开关按钮
+    tipKeyboardSwitchBtn = new SwitchButton(pluginWidget);
+    ui->tipKeyboardHorLayout->addWidget(tipKeyboardSwitchBtn);
 
     //小键盘开关按钮
     numLockSwitchBtn = new SwitchButton(pluginWidget);
@@ -177,6 +183,10 @@ void KeyboardControl::setupConnect(){
         rebuildLayoutsComBox();
     });
 
+    connect(tipKeyboardSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
+        osdSettings->set(CC_KEYBOARD_OSD_KEY, checked);
+    });
+
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->layoutsComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
 #else
@@ -203,6 +213,10 @@ void KeyboardControl::initGeneralStatus(){
 
     //设置按键重复的速度
     ui->speedHorSlider->setValue(settings->get(RATE_KEY).toInt());
+
+    tipKeyboardSwitchBtn->blockSignals(true);
+    tipKeyboardSwitchBtn->setChecked(osdSettings->get(CC_KEYBOARD_OSD_KEY).toBool());
+    tipKeyboardSwitchBtn->blockSignals(false);
 
 }
 
