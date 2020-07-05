@@ -175,6 +175,12 @@ void KeyboardControl::setupConnect(){
         layoutmanagerObj->exec();
     });
 
+    connect(ui->resetBtn, &QPushButton::clicked, this, [=]{
+        kbdsettings->reset(KBD_LAYOUTS_KEY);
+        layoutmanagerObj->rebuild_listwidget();
+        rebuildLayoutsComBox();
+    });
+
     connect(layoutmanagerObj, &KbdLayoutManager::del_variant_signals, [=](QString layout){
         rebuildLayoutsComBox();
         qDebug() << layout;
