@@ -45,7 +45,7 @@ extern "C" {
 
 
 #define DEFAULTFACE "/usr/share/ukui/faces/default.png"
-#define ITEMHEIGH 58
+#define ITEMHEIGH 52
 
 UserInfo::UserInfo()
 {
@@ -334,8 +334,8 @@ void UserInfo::initComponent(){
 
 
 //    ui->listWidget->setStyleSheet("QListWidget{border: none}");
-    ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setSpacing(0);
 
     ElipseMaskWidget * mainElipseMaskWidget = new ElipseMaskWidget(ui->currentUserFaceLabel);
@@ -432,7 +432,7 @@ void UserInfo::initComponent(){
 
 void UserInfo::_resetListWidgetHeigh(){
     //设置其他用户控件的总高度
-    ui->listWidget->setFixedHeight((allUserInfoMap.count() - 1) * ITEMHEIGH);
+    ui->listWidget->setFixedHeight((allUserInfoMap.count()) * ITEMHEIGH);
 }
 
 void UserInfo::initAllUserStatus(){
