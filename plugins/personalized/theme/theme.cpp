@@ -491,7 +491,7 @@ void Theme::initCursorTheme(){
         XCursorTheme *cursorTheme = new XCursorTheme(path);
 
         for(int i = 0; i < numCursors; i++){
-            int size = qApp->devicePixelRatio() * 16;
+            int size = qApp->devicePixelRatio() * 8;
             QImage image = cursorTheme->loadImage(cursor_names[i],size);
             cursorVec.append(QPixmap::fromImage(image));
         }
