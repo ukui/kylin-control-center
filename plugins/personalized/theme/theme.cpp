@@ -46,6 +46,8 @@
  */
 #define THEME_QT_SCHEMA "org.ukui.style"
 #define MODE_QT_KEY "style-name"
+#define THEME_TRAN_KEY "menu-transparency"
+
 /* QT图标主题 */
 #define ICON_QT_KEY "icon-theme-name"
 
@@ -72,6 +74,8 @@
 #define PERSONALSIE_SCHEMA "org.ukui.control-center.personalise"
 #define PERSONALSIE_TRAN_KEY "transparency"
 #define PERSONALSIE_BLURRY_KEY "blurry"
+
+const QString defCursor = "DMZ-White";
 
 
 namespace {
@@ -226,6 +230,7 @@ void Theme::setupComponent(){
     ui->tranLabel->setText(QString::number(static_cast<double>(ui->tranSlider->value())/100.0));
     connect(ui->tranSlider, &QSlider::valueChanged, [=](int value){
         personliseGsettings->set(PERSONALSIE_TRAN_KEY, static_cast<double>(value)/100.0);
+        qtSettings->set(THEME_TRAN_KEY, value);
         ui->tranLabel->setText(QString::number(static_cast<double>(ui->tranSlider->value())/100.0));
     });
     setupControlTheme();
@@ -507,7 +512,7 @@ void Theme::initCursorTheme(){
         cursorThemeWidgetGroup->addWidget(widget);
 
         //初始化指针主题选中界面
-        if (currentCursorTheme == cursor){
+        if (currentCursorTheme == cursor || (currentCursorTheme.isEmpty() && cursor == defCursor)){
             cursorThemeWidgetGroup->setCurrentWidget(widget);
             widget->setSelectedStatus(true);
         } else {
