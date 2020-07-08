@@ -580,7 +580,7 @@ KScreen::OutputPtr Widget::findOutput(const KScreen::ConfigPtr &config, const QV
 
 void Widget::writeScale(int scale) {
     if (isScaleChanged) {
-        KMessageBox::information(this,tr("Some applications need to be restarted to take effect"));
+        KMessageBox::information(this,tr("Some applications need to be logouted to take effect"));
     }
     isScaleChanged = false;
     int cursize;
@@ -947,6 +947,7 @@ void Widget::save()
                 else if(8 == output->rotation())
                     return "right";
         };
+
         inputXml[i].rotationValue = rotation();
         inputXml[i].isPrimary = (output->isPrimary() == true?"yes":"no");
         inputXml[i].isEnable = output->isEnabled();

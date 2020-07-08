@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>945</width>
-    <height>824</height>
+    <height>841</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -99,12 +99,6 @@
             <width>118</width>
             <height>30</height>
            </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>Noto Sans CJK SC</family>
-            <pointsize>11</pointsize>
-           </font>
           </property>
           <property name="text">
            <string>monitor</string>
