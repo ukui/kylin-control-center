@@ -48,6 +48,7 @@ extern "C" {
 
 #define DESKTOP_SCHEMA "org.mate.interface"
 #define CURSOR_BLINK_KEY "cursor-blink"
+#define CURSOR_BLINK_TIME_KEY "cursor-blink-time"
 
 #define MOUSE_MID_GET_CMD "/usr/bin/mouse-midbtn-speed-get"
 #define MOUSE_MID_SET_CMD "/usr/bin/mouse-midbtn-speed-set"
@@ -143,8 +144,8 @@ void MouseControl::plugin_delay_control(){
 
 void MouseControl::setupComponent(){
 
-    ui->title3Label->hide();
-    ui->cursorSpeedFrame->hide();
+//    ui->title3Label->hide();
+//    ui->cursorSpeedFrame->hide();
     ui->cursorWeightFrame->hide();
 
     //设置左手右手鼠标控件
@@ -209,6 +210,10 @@ void MouseControl::setupComponent(){
     connect(ui->midHorSlider, &QSlider::sliderReleased, [=]{
         _set_mouse_mid_speed(ui->midHorSlider->value());
     });
+
+    connect(ui->cursorSpeedSlider, &QSlider::sliderReleased, [=]{
+        desktopSettings->set(CURSOR_BLINK_TIME_KEY, ui->cursorSpeedSlider->value());
+    });
 }
 
 void MouseControl::initHandHabitStatus(){
@@ -265,6 +270,10 @@ void MouseControl::initCursorStatus(){
     flashingBtn->blockSignals(true);
     flashingBtn->setChecked(desktopSettings->get(CURSOR_BLINK_KEY).toBool());
     flashingBtn->blockSignals(false);
+
+    ui->cursorSpeedSlider->blockSignals(true);
+    ui->cursorSpeedSlider->setValue(desktopSettings->get(CURSOR_BLINK_TIME_KEY).toInt());
+    ui->cursorSpeedSlider->blockSignals(false);
 }
 
 void MouseControl::initWheelStatus(){
