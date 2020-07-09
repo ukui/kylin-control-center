@@ -42,7 +42,8 @@ SOURCES += \
     changetypedialog.cpp \
     changefacedialog.cpp \
     deluserdialog.cpp \
-    createuserdialog.cpp
+    createuserdialog.cpp \
+    changevailddialog.cpp
 
 HEADERS += \
     elipsemaskwidget.h \
@@ -53,7 +54,8 @@ HEADERS += \
     changetypedialog.h \
     changefacedialog.h \
     deluserdialog.h \
-    createuserdialog.h
+    createuserdialog.h \
+    changevailddialog.h
 
 FORMS += \
         userinfo.ui \
@@ -61,6 +63,7 @@ FORMS += \
     changetypedialog.ui \
     changefacedialog.ui \
     deluserdialog.ui \
-    createuserdialog.ui
+    createuserdialog.ui \
+    changevailddialog.ui
 
 RESOURCES += \

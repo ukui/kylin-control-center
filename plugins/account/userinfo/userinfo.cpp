@@ -365,6 +365,14 @@ void UserInfo::initComponent(){
         showChangeTypeDialog(user.username);
     });
 
+    connect(ui->changeVaildBtn, &QPushButton::clicked, this, [=](bool checked){
+        Q_UNUSED(checked)
+        UserInfomation user = allUserInfoMap.value(g_get_user_name());
+
+        showChangeVaildDialog(user.username);
+
+    });
+
     //修改当前用户免密登录
     connect(nopwdSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
 
@@ -689,6 +697,20 @@ void UserInfo::deleteUserDone(QString objpath){
 
     //重置其他用户ListWidget高度
     _resetListWidgetHeigh();
+}
+
+void UserInfo::showChangeVaildDialog(QString username){
+    if (allUserInfoMap.keys().contains(username)){
+        UserInfomation user = allUserInfoMap.value(username);
+
+        ChangeVaildDialog * dialog = new ChangeVaildDialog(user.username);
+        dialog->setUserLogo(user.iconfile);
+        dialog->setUserType(_accountTypeIntToString(user.accounttype));
+        dialog->exec();
+
+    } else {
+        qDebug() << "User Data Error When Change User type";
+    }
 }
 
 
