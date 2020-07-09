@@ -104,6 +104,9 @@ Desktop::Desktop()
 //    ui->menuFilesystemFrame->setVisible(false);
 //    ui->menuSettingFrame->setVisible(false);
 
+    ui->title2Label->hide();
+    ui->fullScreenMenuFrame->setVisible(false);
+
 
     vecGsettings = new QVector<QGSettings*>();
     const QByteArray id(DESKTOP_SCHEMA);
