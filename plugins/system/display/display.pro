@@ -37,7 +37,8 @@ SOURCES += \
     slider.cpp \
     unifiedoutputconfig.cpp \
     utils.cpp \
-    widget.cpp
+    widget.cpp \
+    displayperformancedialog.cpp
 
 HEADERS += \
         display.h \
@@ -50,10 +51,12 @@ HEADERS += \
     slider.h \
     unifiedoutputconfig.h \
     utils.h \
-    widget.h
+    widget.h \
+    displayperformancedialog.h
 
 FORMS += \
-    display.ui
+    display.ui \
+    displayperformancedialog.ui
 
 #DISTFILES += \
 #    qml/main.qml \

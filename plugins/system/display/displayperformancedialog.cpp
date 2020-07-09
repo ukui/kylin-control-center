@@ -17,19 +17,22 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#include "changetypedialog.h"
-#include "ui_changetypedialog.h"
+#include "displayperformancedialog.h"
+#include "ui_displayperformancedialog.h"
 
-#include "elipsemaskwidget.h"
+#include <QPainter>
 
-#include <QDebug>
+#define ADVANCED_SCHEMAS "org.mate.session.required-components"
+#define ADVANCED_KEY "windowmanager"
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
-ChangeTypeDialog::ChangeTypeDialog(QWidget *parent) :
+DisplayPerformanceDialog::DisplayPerformanceDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ChangeTypeDialog)
+    ui(new Ui::DisplayPerformanceDialog)
 {
+    ui->setupUi(this);
+
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
@@ -39,90 +42,74 @@ ChangeTypeDialog::ChangeTypeDialog(QWidget *parent) :
     ui->closeBtn->setProperty("useIconHighlightEffect", true);
     ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
     ui->closeBtn->setFlat(true);
+
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
-//    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
-//    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
-
-
-
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
+    const QByteArray id(ADVANCED_SCHEMAS);
+    settings = new QGSettings(id);
 
-    setupComonpent();
+    setupComponent();
+    setupConnect();
+    initModeStatus();
 
 }
 
-ChangeTypeDialog::~ChangeTypeDialog()
+DisplayPerformanceDialog::~DisplayPerformanceDialog()
 {
     delete ui;
+    delete settings;
 }
 
-void ChangeTypeDialog::setupComonpent(){
+void DisplayPerformanceDialog::setupComponent(){
+    ui->performanceRadioBtn->setProperty("wm", "mutter");
+    ui->compatibleRadioBtn->setProperty("wm", "marco");
+    ui->autoRadioBtn->setProperty("wm", "kylin-wm-chooser");
+}
 
-    ElipseMaskWidget * ctMaskWidget = new ElipseMaskWidget(ui->faceLabel);
-    ctMaskWidget->setGeometry(0, 0, ui->faceLabel->width(), ui->faceLabel->height());
-
-    ui->buttonGroup->setId(ui->standardRadioButton, 0);
-    ui->buttonGroup->setId(ui->adminRadioButton, 1);
-
-    ui->confirmPushBtn->setEnabled(false);
-
+void DisplayPerformanceDialog::setupConnect(){
     connect(ui->closeBtn, &QPushButton::clicked, [=]{
         close();
     });
-    connect(ui->cancelPushBtn, &QPushButton::clicked, [=](bool checked){
-        Q_UNUSED(checked)
-        reject();
-    });
-    connect(ui->confirmPushBtn, &QPushButton::clicked, [=](bool checked){
-        Q_UNUSED(checked)
-        this->accept();
-        emit type_send(ui->buttonGroup->checkedId(), ui->usernameLabel->text());
-    });
-}
-
-void ChangeTypeDialog::setFace(QString faceFile){
-    ui->faceLabel->setPixmap(QPixmap(faceFile));
-}
-
-void ChangeTypeDialog::setUsername(QString username){
-    ui->usernameLabel->setText(username);
-}
-
-void ChangeTypeDialog::setCurrentAccountTypeLabel(QString atype){
-    ui->typeLabel->setText(atype);
-}
-
-void ChangeTypeDialog::setCurrentAccountTypeBtn(int id){
-    currenttype = id;
-    if (id == 0)
-        ui->standardRadioButton->setChecked(true);
-    else
-        ui->adminRadioButton->setChecked(true);
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    connect(ui->buttonGroup, static_cast<void (QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=](int id){
+    connect(ui->buttonGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked), [=](QAbstractButton * button){
 #else
-    connect(ui->buttonGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [=](int id){
+    connect(ui->buttonGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), [=](QAbstractButton * button){
 #endif
-        if (id != currenttype)
-            ui->confirmPushBtn->setEnabled(true);
-        else
-            ui->confirmPushBtn->setEnabled(false);
+        QString mode = button->property("wm").toString();
+        settings->set(ADVANCED_KEY, mode);
+    });
+
+    connect(ui->autoRadioBtn, &QRadioButton::toggled, this, [=](bool checked){
+        ui->lineEdit->setEnabled(checked);
+        ui->applyBtn->setEnabled(checked);
+        ui->resetBtn->setEnabled(checked);
     });
 }
 
-void ChangeTypeDialog::forbidenChange(int total){
-    if (total <= 1 && currenttype == 1){
-        ui->standardRadioButton->setEnabled(false);
-    } else {
-        ui->standardRadioButton->setEnabled(true);
+void DisplayPerformanceDialog::initModeStatus(){
+    QString mode = settings->get(ADVANCED_KEY).toString();
+
+    if (mode == ui->performanceRadioBtn->property("wm").toString()){
+        ui->performanceRadioBtn->blockSignals(true);
+        ui->performanceRadioBtn->setChecked(true);
+        ui->performanceRadioBtn->blockSignals(false);
+    } else if (mode == ui->compatibleRadioBtn->property("wm").toString()){
+        ui->compatibleRadioBtn->blockSignals(true);
+        ui->compatibleRadioBtn->setChecked(true);
+        ui->compatibleRadioBtn->blockSignals(false);
+    } else{
+        ui->autoRadioBtn->blockSignals(true);
+        ui->autoRadioBtn->setChecked(true);
+        ui->autoRadioBtn->blockSignals(false);
     }
+
 }
 
-void ChangeTypeDialog::paintEvent(QPaintEvent *event) {
+void DisplayPerformanceDialog::paintEvent(QPaintEvent *event){
     Q_UNUSED(event);
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
@@ -142,7 +129,6 @@ void ChangeTypeDialog::paintEvent(QPaintEvent *event) {
     // 模糊这个黑底
     QImage img = pixmap.toImage();
     qt_blurImage(img, 10, false, false);
-
     // 挖掉中心
     pixmap = QPixmap::fromImage(img);
     QPainter pixmapPainter2(&pixmap);
@@ -154,10 +140,9 @@ void ChangeTypeDialog::paintEvent(QPaintEvent *event) {
 
     // 绘制阴影
     p.drawPixmap(this->rect(), pixmap, pixmap.rect());
-
     // 绘制一个背景
     p.save();
     p.fillPath(rectPath,palette().color(QPalette::Base));
+
     p.restore();
 }
-

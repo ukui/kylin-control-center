@@ -39,6 +39,8 @@
 #include <KF5/KScreen/kscreen/setconfigoperation.h>
 #include <KF5/KScreen/kscreen/edid.h>
 
+#include "displayperformancedialog.h"
+
 
 #define QML_PATH "kcm_kscreen/qml/"
 #define UKUI_CONTORLCENTER_PANEL_SCHEMAS "org.ukui.control-center.panel.plugins"
@@ -60,6 +62,9 @@
 
 #define POWER_SCHMES "org.ukui.power-manager"
 #define POWER_KEY "brightness-ac"
+
+#define ADVANCED_SCHEMAS "org.mate.session.required-components"
+#define ADVANCED_KEY "windowmanager"
 
 Q_DECLARE_METATYPE(KScreen::OutputPtr)
 
@@ -96,6 +101,15 @@ Widget::Widget(QWidget *parent)
     nightLayout->addWidget(nightLabel);
     nightLayout->addStretch();
     nightLayout->addWidget(nightButton);
+
+    const QByteArray idd(ADVANCED_SCHEMAS);
+    if (QGSettings::isSchemaInstalled(idd)){
+        ui->advancedBtn->show();
+        ui->advancedHorLayout->setContentsMargins(9, 8, 9, 32);
+    } else {
+        ui->advancedBtn->hide();
+        ui->advancedHorLayout->setContentsMargins(9, 0, 9, 0);
+    }
 
 
     initUiQss();
@@ -155,6 +169,11 @@ Widget::Widget(QWidget *parent)
 
     connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(save()));
 //    connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(saveBrigthnessConfig()));
+
+    connect(ui->advancedBtn, &QPushButton::clicked, this, [=]{
+        DisplayPerformanceDialog * dialog = new DisplayPerformanceDialog;
+        dialog->exec();
+    });
 
 
 
