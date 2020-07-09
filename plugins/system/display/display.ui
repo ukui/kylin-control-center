@@ -97,12 +97,6 @@
             <height>30</height>
            </size>
           </property>
-          <property name="font">
-           <font>
-            <family>Noto Sans CJK SC</family>
-            <pointsize>11</pointsize>
-           </font>
-          </property>
           <property name="text">
            <string>monitor</string>
           </property>

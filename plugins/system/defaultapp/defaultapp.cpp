@@ -39,8 +39,6 @@ DefaultApp::DefaultApp(){
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
-    itemDelege = new QStyledItemDelegate();
-
     pluginName = tr("Defaultapp");
     pluginType = SYSTEM;
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
@@ -93,29 +91,10 @@ void DefaultApp::plugin_delay_control(){
 
 void DefaultApp::initUI(){
 //    ui->browserComBoBox->setView(new QListView());
-    ui->browserComBoBox->setItemDelegate(itemDelege);
-    ui->browserComBoBox->setMaxVisibleItems(5);
-
-    ui->mailComBoBox->setItemDelegate(itemDelege);
-    ui->mailComBoBox->setMaxVisibleItems(5);
-
-    ui->imageComBoBox->setItemDelegate(itemDelege);
-    ui->imageComBoBox->setMaxVisibleItems(5);
-
-    ui->audioComBoBox->setItemDelegate(itemDelege);
-    ui->audioComBoBox->setMaxVisibleItems(5);
-
-    ui->videoComBoBox->setItemDelegate(itemDelege);
-    ui->videoComBoBox->setMaxVisibleItems(5);
-
-    ui->textComBoBox->setItemDelegate(itemDelege);
-    ui->textComBoBox->setMaxVisibleItems(5);
-
 
     // BROWSER
     int browserindex = -1;
     QString currentbrowser(getDefaultAppId(BROWSERTYPE)); //获取当前
-
     AppList * list = getAppIdList(BROWSERTYPE); //获取可选列表
     if (list){
         for (int i = 0; list[i].appid != NULL; i++){
@@ -538,8 +517,15 @@ bool DefaultApp::setAudioPlayersDefaultProgram(char *appid){
                 gboolean ret3 = g_app_info_set_as_default_for_type(appitem, "audio/x-scpls", NULL);
                 gboolean ret4 = g_app_info_set_as_default_for_type(appitem, "audio/x-vorbis+ogg", NULL);
                 gboolean ret5 = g_app_info_set_as_default_for_type(appitem, "audio/x-wav", NULL);
-                if(ret1 && ret2 && ret3 && ret4 && ret5)
+                gboolean ret6 = g_app_info_set_as_default_for_type(appitem, "audio/x-ms-wma", NULL);
+                gboolean ret7 = g_app_info_set_as_default_for_type(appitem, "audio/x-flac", NULL);
+                gboolean ret8 = g_app_info_set_as_default_for_type(appitem, "audio/ac3", NULL);
+                gboolean ret9 = g_app_info_set_as_default_for_type(appitem, "audio/acc", NULL);
+                gboolean ret10 = g_app_info_set_as_default_for_type(appitem, "audio/aac", NULL);
+                if(ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8 && ret9 && ret10) {
+                    qDebug()<<"set succes in default app----->"<<endl;
                     judge=true;
+                }
                 break;
             }
         }

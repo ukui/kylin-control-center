@@ -250,17 +250,26 @@ void OutputConfig::initUi()
 //    mRefreshRate->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     scaleCombox->setMinimumSize(402,30);
     scaleCombox->setMaximumSize(16777215,30);
-//    scaleCombox->setStyleSheet(qss);
-//    scaleCombox->setItemDelegate(itemDelege);
-//    scaleCombox->setMaxVisibleItems(5);
-    scaleCombox->addItem(tr("100%"));
+
+
+
     int maxReslu = mResolution->getMaxResolution().width();
+
+#if QT_VERSION < QT_VERSION_CHECK(5,7,0)
+    if (maxReslu >= 2000) {
+        scaleCombox->addItem(tr("200%"));
+    } else {
+        scaleCombox->addItem(tr("100%"));
+    }
+#else
+    scaleCombox->addItem(tr("100%"));
     if (maxReslu >= 2000 && maxReslu <= 3800) {
         scaleCombox->addItem(tr("200%"));
     } else if (maxReslu >= 3800 || maxReslu >= 4000) {
         scaleCombox->addItem(tr("200%"));
         scaleCombox->addItem(tr("300%"));
     }
+#endif
 
     QLabel *scaleLabel = new QLabel();
     scaleLabel->setText(tr("screen zoom"));
@@ -283,23 +292,20 @@ void OutputConfig::initUi()
     scaleFrame->setMaximumSize(960,50);
     vbox->addWidget(scaleFrame);
 
-    connect(scaleCombox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated),
-            this, &OutputConfig::slotScaleChanged);
-
     int scale = getScreenScale();
+#if QT_VERSION < QT_VERSION_CHECK(5,7,0)
 
+#else
     scaleCombox->setCurrentIndex(0);
     if (scale <= scaleCombox->count() && scale > 0) {
 //        qDebug()<<"scale is----->"<<scale<<endl;
         scaleCombox->setCurrentIndex(scale - 1);
     }
     slotScaleChanged(scale - 1);
+#endif
 
-//    int gScale = getScreenScale();
-////    qDebug()<<"scale is----->test--------->"<<gScale<<endl;
-//    if (gScale <= scaleCombox->count() && gScale > 0) {
-//        scaleCombox->setCurrentIndex(gScale - 1);
-//    }
+    connect(scaleCombox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated),
+            this, &OutputConfig::slotScaleChanged);
 }
 
 int OutputConfig::getMaxReslotion() {
