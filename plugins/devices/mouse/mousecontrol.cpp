@@ -20,6 +20,9 @@
 #include "mousecontrol.h"
 #include "ui_mousecontrol.h"
 
+#include <QSizePolicy>
+#include <QTimer>
+
 #include <QFile>
 #include <QDebug>
 
@@ -38,6 +41,7 @@ extern "C" {
 
 #define MOUSE_SCHEMA "org.ukui.peripherals-mouse"
 #define HAND_KEY "left-handed"
+#define DOUBLE_CLICK_KEY "double-click"
 #define LOCATE_KEY "locate-pointer"
 #define CURSOR_SIZE_KEY "cursor-size"
 #define ACCELERATION_KEY "motion-acceleration"
@@ -52,6 +56,47 @@ extern "C" {
 
 #define MOUSE_MID_GET_CMD "/usr/bin/mouse-midbtn-speed-get"
 #define MOUSE_MID_SET_CMD "/usr/bin/mouse-midbtn-speed-set"
+
+MyLabel::MyLabel(){
+
+    setAttribute(Qt::WA_DeleteOnClose);
+
+    QSizePolicy pSizePolicy = this->sizePolicy();
+    pSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
+    pSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
+    this->setSizePolicy(pSizePolicy);
+
+    setFixedSize(QSize(48, 48));
+    setScaledContents(true);
+
+    setPixmap(QPixmap(":/img/plugins/mouse/double-click-off.png"));
+
+    const QByteArray id(MOUSE_SCHEMA);
+    if (QGSettings::isSchemaInstalled(id)){
+        mSettings = new QGSettings(id);
+    }
+
+}
+
+MyLabel::~MyLabel(){
+    if (QGSettings::isSchemaInstalled(MOUSE_SCHEMA))
+        delete mSettings;
+}
+
+void MyLabel::mousePressEvent(QMouseEvent *ev){
+    setPixmap(QPixmap(":/img/plugins/mouse/double-click-maybe.png"));
+    int delay = mSettings->get(DOUBLE_CLICK_KEY).toInt();
+    QTimer::singleShot(delay, this, [=]{
+        setPixmap(QPixmap(":/img/plugins/mouse/double-click-off.png"));
+    });
+}
+
+void MyLabel::mouseDoubleClickEvent(QMouseEvent *event){
+    setPixmap(QPixmap(":/img/plugins/mouse/double-click-on.png"));
+    QTimer::singleShot(2500, this, [=]{
+        setPixmap(QPixmap(":/img/plugins/mouse/double-click-off.png"));
+    });
+}
 
 
 MouseControl::MouseControl()
@@ -152,6 +197,9 @@ void MouseControl::setupComponent(){
     ui->handHabitComBox->addItem(tr("Lefthand"), true);
     ui->handHabitComBox->addItem(tr("Righthand"), false);
 
+    MyLabel * testLabel = new MyLabel();
+    ui->doubleClickHorLayout->addWidget(testLabel);
+
     //设置指针可见性控件
     visiblityBtn = new SwitchButton(pluginWidget);
     ui->visibilityHorLayout->addWidget(visiblityBtn);
@@ -180,6 +228,10 @@ void MouseControl::setupComponent(){
         Q_UNUSED(index)
         settings->set(HAND_KEY, ui->handHabitComBox->currentData().toBool());
     });
+
+     connect(ui->doubleclickHorSlider, &QSlider::sliderReleased, [=]{
+        settings->set(DOUBLE_CLICK_KEY, ui->doubleclickHorSlider->value());
+     });
 
     connect(ui->pointerSpeedSlider, &QSlider::valueChanged, [=](int value){
         settings->set(ACCELERATION_KEY, static_cast<double>(value)/ui->pointerSpeedSlider->maximum()*10);
@@ -222,6 +274,11 @@ void MouseControl::initHandHabitStatus(){
     ui->handHabitComBox->blockSignals(true);
     ui->handHabitComBox->setCurrentIndex(handHabitIndex);
     ui->handHabitComBox->blockSignals(false);
+
+    int dc = settings->get(DOUBLE_CLICK_KEY).toInt();
+    ui->doubleclickHorSlider->blockSignals(true);
+    ui->doubleclickHorSlider->setValue(dc);
+    ui->doubleclickHorSlider->blockSignals(false);
 }
 
 void MouseControl::initPointerStatus(){
