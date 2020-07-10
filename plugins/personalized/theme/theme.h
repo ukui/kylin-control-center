@@ -28,11 +28,12 @@
 #include <QDir>
 
 #include "shell/interface.h"
+#include "commonComponent/Uslider/uslider.h"
 
 #include <QDir>
 #include <QSettings>
 #include <QtDBus/QDBusMessage>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QtDBus/QtDBus>
 
 
@@ -61,8 +62,6 @@ public:
     void plugin_delay_control() Q_DECL_OVERRIDE;
 
 public:
-
-    void setupStylesheet();
     void setupSettings();
     void setupComponent();
     void initThemeMode();
@@ -80,6 +79,8 @@ public:
 
 private:
     void clearLayout(QLayout* mlayout, bool deleteWidgets);
+    double convertToTran(const int value);
+    int tranConvertToSlider(const double value);
 
 private:
     Ui::Theme *ui;
@@ -92,17 +93,21 @@ private:
     QGSettings * qtSettings;
     QGSettings * curSettings;
     QSettings  * kwinSettings;
-    QGSettings * kwinGsettings;
+    QGSettings * kwinGsettings =  nullptr;
+    QGSettings * personliseGsettings = nullptr;
 
     SwitchButton * effectSwitchBtn;
 
     WidgetGroup * iconThemeWidgetGroup;
 
     bool settingsCreate;
+//    Uslider * uslider;
+//    Uslider * kwinSlider;
 
 private slots:
     void resetBtnClickSlot();
-    void writeKwinSettings(bool change, QString theme);
+    // write the kwin's configuration
+    void writeKwinSettings(bool change, QString theme, int effect = 0);
 
 };
 

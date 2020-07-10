@@ -28,7 +28,7 @@
 #include <QAbstractButton>
 #include <QDir>
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QX11Info>
 
 #include "kylin-mouse-interface.h"

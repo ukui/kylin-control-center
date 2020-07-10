@@ -2,6 +2,7 @@
 
 #include <QDebug>
 #include <QPainter>
+#include <QPainterPath>
 #include <QStyleOption>
 
 #include <QLineEdit>

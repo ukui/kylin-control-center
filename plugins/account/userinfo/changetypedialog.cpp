@@ -47,7 +47,7 @@ ChangeTypeDialog::ChangeTypeDialog(QWidget *parent) :
 
 
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
+    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
 
     setupComonpent();
@@ -102,7 +102,11 @@ void ChangeTypeDialog::setCurrentAccountTypeBtn(int id){
     else
         ui->adminRadioButton->setChecked(true);
 
-    connect(ui->buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=](int id){
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+    connect(ui->buttonGroup, static_cast<void (QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=](int id){
+#else
+    connect(ui->buttonGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [=](int id){
+#endif
         if (id != currenttype)
             ui->confirmPushBtn->setEnabled(true);
         else

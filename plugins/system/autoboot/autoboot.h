@@ -100,6 +100,8 @@ private:
     gboolean _key_file_to_file(GKeyFile * keyfile, const gchar * path);
     bool _copy_desktop_file_to_local(QString bname);
 
+    void clearAutoItem();
+
 public slots:
     void checkbox_changed_cb(QString bname);
     void add_autoboot_realize_slot(QString path, QString name, QString exec, QString comment);

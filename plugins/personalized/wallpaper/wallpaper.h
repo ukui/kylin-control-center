@@ -29,7 +29,7 @@
 #include <QFileDialog>
 #include <QStyledItemDelegate>
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 
 #include "shell/interface.h"
 #include "FlowLayout/flowlayout.h"
@@ -84,7 +84,6 @@ public:
     void plugin_delay_control() Q_DECL_OVERRIDE;
 
 public:
-    void setupQStylesheet();
     void setupComponent();
     void setupConnect();
     void initBgFormStatus();

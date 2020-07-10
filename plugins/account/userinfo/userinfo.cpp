@@ -45,7 +45,7 @@ extern "C" {
 
 
 #define DEFAULTFACE "/usr/share/ukui/faces/default.png"
-#define ITEMHEIGH 58
+#define ITEMHEIGH 52
 
 UserInfo::UserInfo()
 {
@@ -66,6 +66,7 @@ UserInfo::UserInfo()
     _acquireAllUsersInfo();
 
 
+    readCurrentPwdConf();
     initComponent();
     initAllUserStatus();
     //设置界面用户信息
@@ -195,6 +196,120 @@ UserInfomation UserInfo::_acquireUserInfo(QString objpath){
     return user;
 }
 
+void UserInfo::readCurrentPwdConf(){
+#ifdef ENABLEPQ
+    int ret, status;
+    void *auxerror;
+    char buf[255];
+
+    pwdMsg = "";
+
+    pwdconf = pwquality_default_settings();
+    if (pwdconf == NULL) {
+        enablePwdQuality = false;
+        qDebug() << "init pwquality settings failed";
+    } else {
+        enablePwdQuality = true;
+    }
+
+    ret = pwquality_read_config(pwdconf, PWCONF, &auxerror);
+    if (ret != 0){
+        enablePwdQuality = false;
+        qDebug() << "Reading pwquality configuration file failed: " << pwquality_strerror(buf, sizeof(buf), ret, auxerror);
+    } else {
+        enablePwdQuality = true;
+    }
+
+    if (enablePwdQuality){
+        int minLen;
+        status = pwquality_get_int_value(pwdconf, PWQ_SETTING_MIN_LENGTH, &minLen);
+        if (!status && minLen > 0){
+            pwdOption.min_length = minLen;
+            pwdMsg += QObject::tr("min lenght %1\n").arg(minLen);
+
+        } else {
+            pwdMsg += "";
+        }
+
+        int digCredit;
+        status = pwquality_get_int_value(pwdconf, PWQ_SETTING_DIG_CREDIT, &digCredit);
+        if (!status && digCredit > 0){
+            pwdOption.dig_credit = digCredit;
+            pwdMsg += QObject::tr("min digit num %1\n").arg(digCredit);
+        } else {
+            pwdMsg += "";
+        }
+
+        int upCredit;
+        status = pwquality_get_int_value(pwdconf, PWQ_SETTING_UP_CREDIT, &upCredit);
+        if (!status && upCredit > 0){
+            pwdOption.up_credit = upCredit;
+            pwdMsg += QObject::tr("min upper num %1\n").arg(upCredit);
+        } else {
+            pwdMsg += "";
+        }
+
+        int lowCredit;
+        status = pwquality_get_int_value(pwdconf, PWQ_SETTING_LOW_CREDIT, &lowCredit);
+        if (!status && lowCredit > 0){
+            pwdOption.low_credit = lowCredit;
+            pwdMsg += QObject::tr("min lower num %1\n").arg(lowCredit);
+        } else {
+            pwdMsg += "";
+        }
+
+        int othCredit;
+        status = pwquality_get_int_value(pwdconf, PWQ_SETTING_OTH_CREDIT, &othCredit);
+        if (!status && othCredit > 0){
+            pwdOption.oth_credit = othCredit;
+            pwdMsg += QObject::tr("min other num %1\n").arg(othCredit);
+        } else {
+            pwdMsg += "";
+        }
+
+
+        int minClass;
+        status = pwquality_get_int_value(pwdconf, PWQ_SETTING_MIN_CLASS, &minClass);
+        if (!status && minClass > 0){
+            pwdOption.min_class = minClass;
+            pwdMsg += QObject::tr("min char class %1\n").arg(minClass);
+        } else {
+            pwdMsg += "";
+        }
+
+        int maxRepeat;
+        status = pwquality_get_int_value(pwdconf, PWQ_SETTING_MAX_REPEAT, &maxRepeat);
+        if (!status && maxRepeat > 0){
+            pwdOption.max_repeat = maxRepeat;
+            pwdMsg += QObject::tr("max repeat %1\n").arg(maxRepeat);
+        } else {
+            pwdMsg += "";
+        }
+
+        int maxClassRepeat;
+        status = pwquality_get_int_value(pwdconf, PWQ_SETTING_MAX_CLASS_REPEAT, &maxClassRepeat);
+        if (!status && maxClassRepeat > 0){
+            pwdOption.max_class_repeat = maxClassRepeat;
+            pwdMsg += QObject::tr("max class repeat %1\n").arg(maxClassRepeat);
+        } else {
+            pwdMsg += "";
+        }
+
+        int maxSequence;
+        status = pwquality_get_int_value(pwdconf, PWQ_SETTING_MAX_SEQUENCE, &maxSequence);
+        if (!status && maxSequence > 0){
+            pwdOption.max_class_repeat = maxSequence;
+            pwdMsg += QObject::tr("max sequence %1\n").arg(maxSequence);
+        } else {
+            pwdMsg += "";
+        }
+    }
+
+    qDebug() << "pwquality:" << pwdOption.min_length << pwdOption.min_class << pwdOption.dig_credit << pwdOption.low_credit << pwdOption.up_credit;
+    qDebug() << "pwquality msg:" << pwdMsg;
+#endif
+}
+
 void UserInfo::initComponent(){
     //样式表
 //    pluginWidget->setStyleSheet("background: #ffffff;");
@@ -219,8 +334,8 @@ void UserInfo::initComponent(){
 
 
 //    ui->listWidget->setStyleSheet("QListWidget{border: none}");
-    ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setSpacing(0);
 
     ElipseMaskWidget * mainElipseMaskWidget = new ElipseMaskWidget(ui->currentUserFaceLabel);
@@ -282,14 +397,20 @@ void UserInfo::initComponent(){
 //        bool status = userdispatcher->get_autoLogin_status();
 
         bool status = this->getAutomaticLogin(user.username);
+
+
         if ((checked != status)) {
-            userdispatcher->change_user_autologin(checked);
+            if (checked) {
+                userdispatcher->change_user_autologin(user.username);
+            } else {
+                userdispatcher->change_user_autologin("");
+            }
         }
 
 //        bool lstStatus = userdispatcher->get_autoLogin_status();
 
-        bool lstStatus = this->getAutomaticLogin(user.username);
-        autoLoginSwitchBtn->setChecked(lstStatus);
+//        bool lstStatus = this->getAutomaticLogin(user.username);
+//        autoLoginSwitchBtn->setChecked(lstStatus);
     });
 
     //成功删除用户的回调
@@ -311,7 +432,7 @@ void UserInfo::initComponent(){
 
 void UserInfo::_resetListWidgetHeigh(){
     //设置其他用户控件的总高度
-    ui->listWidget->setFixedHeight((allUserInfoMap.count() - 1) * ITEMHEIGH);
+    ui->listWidget->setFixedHeight((allUserInfoMap.count()) * ITEMHEIGH);
 }
 
 void UserInfo::initAllUserStatus(){
@@ -492,6 +613,7 @@ void UserInfo::showCreateUserDialog(){
     }
 
     CreateUserDialog * dialog = new CreateUserDialog(usersStringList);
+    dialog->setRequireLabel(pwdMsg);
     connect(dialog, &CreateUserDialog::newUserWillCreate, this, [=](QString uName, QString pwd, QString pin, int aType){
         createUser(uName, pwd, pin, aType);
     });
@@ -536,7 +658,7 @@ void UserInfo::showDeleteUserDialog(QString username){
     connect(dialog, &DelUserDialog::removefile_send, this, [=](bool removeFile, QString userName){
         deleteUser(removeFile, userName);
     });
-    dialog->open();
+    dialog->exec();
 }
 
 void UserInfo::deleteUser(bool removefile, QString username){
@@ -709,7 +831,11 @@ bool UserInfo::getAutomaticLogin(QString username) {
 
     QString filename = "/etc/lightdm/lightdm.conf";
     autoSettings = new QSettings(filename, QSettings::IniFormat);
+#if QT_VERSION < QT_VERSION_CHECK(5, 12, 0)
+    autoSettings->beginGroup("Seat:*");
+#else
     autoSettings->beginGroup("SeatDefaults");
+#endif
 
     QString autoUser = autoSettings->value("autologin-user", "").toString();
 

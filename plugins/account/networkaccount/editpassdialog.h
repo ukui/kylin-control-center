@@ -37,6 +37,8 @@
 #include "ql_lineedit_pass.h"
 #include "dbushandleclient.h"
 #include <QtDBus/QtDBus>
+#include "ql_label_info.h"
+#include "ql_svg_handler.h"
 
 class EditPassDialog : public QWidget
 {
@@ -47,7 +49,7 @@ public:
     void            set_code(QString codenum);
     void            set_client(DbusHandleClient *c,QThread *t);
     void            set_clear();
-    QLabel*         get_tips();
+    ql_label_info*         get_tips();
     QString         messagebox(int codenum);
     void            setshow(QWidget *w);
     QString         name;
@@ -83,7 +85,7 @@ private:
     QPoint          m_startPoint;
     DbusHandleClient   *client;
     QTimer          *timer;
-    QLabel          *tips;
+    ql_label_info          *tips;
     QString         code;
     QStackedWidget  *stackwidget;
     QWidget         *content;
@@ -92,6 +94,7 @@ private:
     QLabel          *pass_tips;
     QThread         *thread;
     QString         uuid;
+    ql_svg_handler *svg_hd;
 signals:
     void code_changed();
     void account_changed();

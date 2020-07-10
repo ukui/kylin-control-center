@@ -39,18 +39,32 @@
 #include <KF5/KScreen/kscreen/setconfigoperation.h>
 #include <KF5/KScreen/kscreen/edid.h>
 
+#include "displayperformancedialog.h"
+
 
 #define QML_PATH "kcm_kscreen/qml/"
 #define UKUI_CONTORLCENTER_PANEL_SCHEMAS "org.ukui.control-center.panel.plugins"
 
 #define NIGHT_MODE_KEY "nightmodestatus"
-#define SCRENN_SCALE_SCHMES "org.ukui.session"
-#define GDK_SCALE_KEY "gdk-scale"
-#define QT_SCALE_KEY "qt-scale-factor"
-#define USER_SACLE_KEY "hidpi"
+
+
+//#define SCRENN_SCALE_SCHMES "org.ukui.session"
+//#define GDK_SCALE_KEY "gdk-scale"
+//#define QT_SCALE_KEY "qt-scale-factor"
+//#define USER_SACLE_KEY "hidpi"
+
+
+#define FONT_RENDERING_DPI "org.ukui.font-rendering"
+#define DPI_KEY "dpi"
+
+#define MOUSE_SIZE_SCHEMAS "org.ukui.peripherals-mouse"
+#define CURSOR_SIZE_KEY "cursor-size"
 
 #define POWER_SCHMES "org.ukui.power-manager"
 #define POWER_KEY "brightness-ac"
+
+#define ADVANCED_SCHEMAS "org.mate.session.required-components"
+#define ADVANCED_KEY "windowmanager"
 
 Q_DECLARE_METATYPE(KScreen::OutputPtr)
 
@@ -60,7 +74,6 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::DisplayWindow()), slider(new Slider())
 {
     qRegisterMetaType<QQuickView*>();
-    itemDelege= new QStyledItemDelegate(this);
 
     ui->setupUi(this);
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
@@ -88,6 +101,15 @@ Widget::Widget(QWidget *parent)
     nightLayout->addWidget(nightLabel);
     nightLayout->addStretch();
     nightLayout->addWidget(nightButton);
+
+    const QByteArray idd(ADVANCED_SCHEMAS);
+    if (QGSettings::isSchemaInstalled(idd)){
+        ui->advancedBtn->show();
+        ui->advancedHorLayout->setContentsMargins(9, 8, 9, 32);
+    } else {
+        ui->advancedBtn->hide();
+        ui->advancedHorLayout->setContentsMargins(9, 0, 9, 0);
+    }
 
 
     initUiQss();
@@ -147,6 +169,11 @@ Widget::Widget(QWidget *parent)
 
     connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(save()));
 //    connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(saveBrigthnessConfig()));
+
+    connect(ui->advancedBtn, &QPushButton::clicked, this, [=]{
+        DisplayPerformanceDialog * dialog = new DisplayPerformanceDialog;
+        dialog->exec();
+    });
 
 
 
@@ -552,49 +579,54 @@ KScreen::OutputPtr Widget::findOutput(const KScreen::ConfigPtr &config, const QV
     return KScreen::OutputPtr();
 }
 
-float Widget::scaleRet() {
-    QString filepath = getenv("HOME");
-    QString scale;
-    filepath += "/.profile";
-    QStringList res = this->readFile(filepath);
-    QRegExp re("export( GDK_SCALE)?=(.*)$");
-    for(int i = 0; i < res.length(); i++) {
-        int pos = 0;
-//        qDebug()<<res.at(i)<<endl;
-        QString str = res.at(i);
-        while ((pos = re.indexIn(str, pos)) != -1) {
-            scale = re.cap(2);
-            pos += re.matchedLength();
-        }
-    }
-    return scale.toFloat();
-}
+//float Widget::scaleRet() {
+//    QString filepath = getenv("HOME");
+//    QString scale;
+//    filepath += "/.profile";
+//    QStringList res = this->readFile(filepath);
+//    QRegExp re("export( GDK_SCALE)?=(.*)$");
+//    for(int i = 0; i < res.length(); i++) {
+//        int pos = 0;
+////        qDebug()<<res.at(i)<<endl;
+//        QString str = res.at(i);
+//        while ((pos = re.indexIn(str, pos)) != -1) {
+//            scale = re.cap(2);
+//            pos += re.matchedLength();
+//        }
+//    }
+//    return scale.toFloat();
+//}
 
-void Widget::writeScale(float scale) {
-    QString strGDK = "export GDK_SCALE=";
-    QString strQT  = "export QT_SCALE_FACTOR=";
-    QString strAutoQT  = "export QT_AUTO_SCREEN_SET_FACTOR=0";
-    bool judge = false;
-    QString filepath = getenv("HOME");
-    filepath += "/.profile";
-    for(int i = 0; i < proRes.length(); i++) {
-        QString tmpstr =  proRes.at(i);
-        if(tmpstr.contains(strGDK)) {
-            proRes[i] = strGDK + QString::number(scale);
-            judge = true;
-        }
-        if(tmpstr.contains(strQT)) {
-            proRes[i] = strQT + QString::number(scale);
-        }
+void Widget::writeScale(int scale) {
+    if (isScaleChanged) {
+        KMessageBox::information(this,tr("Some applications need to be logouted to take effect"));
     }
-    if(!judge) {
-        this->proRes.append(strGDK + QString::number(scale));
-        this->proRes.append(strQT + QString::number(scale));
-        this->proRes.append(strAutoQT);
-    }
+    isScaleChanged = false;
+    int cursize;
+    QGSettings * dpiSettings;
+    QGSettings * cursorSettings;
+    QByteArray id(FONT_RENDERING_DPI);
+    QByteArray iid(MOUSE_SIZE_SCHEMAS);
+    if (QGSettings::isSchemaInstalled(FONT_RENDERING_DPI) && QGSettings::isSchemaInstalled(MOUSE_SIZE_SCHEMAS)) {
+        dpiSettings = new QGSettings(id);
+        cursorSettings = new QGSettings(iid);
 
-    writeFile(filepath, this->proRes);
-    setSessionScale(static_cast<int>(scale));
+        if (1 == scale)  {
+            scale = 96;
+            cursize = 24;
+        } else if (2 == scale) {
+            scale = 192;
+            cursize = 48;
+        } else if (3 == scale) {
+            scale = 288;
+            cursize = 96;
+        } else {
+            scale = 1;
+            cursize = 24;
+        }
+        dpiSettings->set(DPI_KEY, scale);
+        cursorSettings->set(CURSOR_SIZE_KEY, cursize);
+    }
 }
 
 
@@ -607,14 +639,14 @@ void Widget::initGSettings() {
         return ;
     }
 
-    QByteArray scaleId(SCRENN_SCALE_SCHMES);
-    if(QGSettings::isSchemaInstalled(scaleId)) {
-//        qDebug()<<"initGSettings-------------------->"<<endl;
-        scaleGSettings = new QGSettings(scaleId)        ;
-    } else {
-        qDebug()<<"org.ukui.session schemas not installed"<<endl;
-        return ;
-    }
+//    QByteArray scaleId(SCRENN_SCALE_SCHMES);
+//    if(QGSettings::isSchemaInstalled(scaleId)) {
+////        qDebug()<<"initGSettings-------------------->"<<endl;
+//        scaleGSettings = new QGSettings(scaleId)        ;
+//    } else {
+//        qDebug()<<"org.ukui.session schemas not installed"<<endl;
+//        return ;
+//    }
 }
 
 bool Widget::getNightModeGSetting(const QString &key) {
@@ -640,20 +672,20 @@ void Widget::setNightModebyPanel(bool judge) {
 
 void Widget::setSessionScale(int scale) {
 
-    if (!scaleGSettings) {
-        return;
-    }    
-    QStringList keys = scaleGSettings->keys();   
-    if (keys.contains("hidpi")){
-        scaleGSettings->set(USER_SACLE_KEY, true);
-    }
-    if (keys.contains("gdkScale")){
+//    if (!scaleGSettings) {
+//        return;
+//    }
+//    QStringList keys = scaleGSettings->keys();
+//    if (keys.contains("hidpi")){
+//        scaleGSettings->set(USER_SACLE_KEY, true);
+//    }
+//    if (keys.contains("gdkScale")){
 
-        scaleGSettings->set(GDK_SCALE_KEY, scale);
-    }
-    if (keys.contains("qtScaleFactor")) {
-        scaleGSettings->set(QT_SCALE_KEY, scale);
-    }
+//        scaleGSettings->set(GDK_SCALE_KEY, scale);
+//    }
+//    if (keys.contains("qtScaleFactor")) {
+//        scaleGSettings->set(QT_SCALE_KEY, scale);
+//    }
 }
 
 void Widget::writeConfigFile() {
@@ -934,6 +966,7 @@ void Widget::save()
                 else if(8 == output->rotation())
                     return "right";
         };
+
         inputXml[i].rotationValue = rotation();
         inputXml[i].isPrimary = (output->isPrimary() == true?"yes":"no");
         inputXml[i].isEnable = output->isEnabled();
@@ -959,10 +992,13 @@ void Widget::save()
         return ;
     }
 
-    int scale = static_cast<int>(this->scaleRet());
+//    int scale = static_cast<int>(this->scaleRet());
     initScreenXml(countOutput);
     writeScreenXml(countOutput);
+#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
+#else
     writeScale(static_cast<float>(this->screenScale));
+#endif
     writeConfigFile();
     setNightMode(nightButton->isChecked());
 
@@ -977,9 +1013,9 @@ void Widget::save()
 
 //    qDebug()<<"scale ann screenScale is -------->"<<this->scaleRet()<<" "<<this->screenScale<<endl;
 
-    if (scale != this->screenScale) {
-        KMessageBox::information(this,tr("Some applications need to be restarted to take effect"));
-    }
+//    if (scale != this->screenScale) {
+////        KMessageBox::information(this,tr("Some applications need to be restarted to take effect"));
+//    }
 
 
 
@@ -1017,6 +1053,8 @@ void Widget::scaleChangedSlot(int index) {
         this->screenScale = 1;
         break;
     }
+
+    isScaleChanged = true;
 }
 
 

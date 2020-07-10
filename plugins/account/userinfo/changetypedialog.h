@@ -22,6 +22,7 @@
 
 #include <QDialog>
 #include <QPainter>
+#include <QPainterPath>
 
 namespace Ui {
 class ChangeTypeDialog;

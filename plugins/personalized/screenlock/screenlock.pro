@@ -25,8 +25,9 @@ LIBS += -L/usr/lib/ -lgsettings-qt
 
 
 ##加载gio库和gio-unix库
-#CONFIG        += link_pkgconfig \
-#                 C++11
+CONFIG        += link_pkgconfig \
+                 C++11
+PKGCONFIG     += gsettings-qt \
 #PKGCONFIG     += gio-2.0 \
 #                 gio-unix-2.0
 

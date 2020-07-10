@@ -21,14 +21,15 @@
 
 #include "about.h"
 #include "ui_about.h"
+#include "memoryentry.h"
 
 #include <QProcess>
-#include <QFont>
 #include <QFile>
-
 #include <QDebug>
+#include <QStorageInfo>
 
 const QString TYPEVERSION = "Kylin V10";
+const QString UbuntuVesion = "Ubuntu 20.04 LTS";
 
 About::About()
 {
@@ -48,7 +49,6 @@ About::About()
 //    ui->systemWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 //    ui->deviceWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
-
 //    qDebug() << "--------start------->";
 //    qDebug() << QSysInfo::kernelType();
 //    qDebug() << QSysInfo::kernelVersion();
@@ -63,7 +63,6 @@ About::About()
 //    _call_dbus_get_computer_info();
     _data_init();
 
-//    setupComponent();
     setupDesktopComponent();
     setupKernelCompenent();
     setupVersionCompenent();
@@ -153,16 +152,7 @@ void About::setupKernelCompenent() {
                                      QDBusConnection::systemBus());
     if (!youkerInterface->isValid()) {
         qCritical() << "Create youker Interface Failed When Get Computer info: " << QDBusConnection::systemBus().lastError();
-//        return;
-    }
-
-    QDBusInterface *sessionInterface = new QDBusInterface("com.kylin.assistant.sessiondaemon",
-                                     "/com/kylin/assistant/sessiondaemon",
-                                     "com.kylin.assistant.sessiondaemon",
-                                     QDBusConnection::sessionBus());
-    if (!sessionInterface->isValid()) {
-        qCritical() << "Create sessionInterface  Failed When Get Computer info: " << QDBusConnection::sessionBus().lastError();
-//        return;
+        return;
     }
 
     QDBusReply<QMap<QString, QVariant>> diskinfo;
@@ -172,8 +162,13 @@ void About::setupKernelCompenent() {
     } else {
         QMap<QString, QVariant> res = diskinfo.value();
         diskSize = res["DiskCapacity"].toString();
+        if (diskSize.contains("<1_1>")) {
+            int index = diskSize.indexOf("<1_1>");
+            QString disk1 = diskSize.left(index);
+            QString disk2 = diskSize.mid(index + 5, diskSize.length() - index - 5);
+            diskSize = tr("Disk One:") + disk1 + " " + tr("Disk Two:")+disk2;
+        }
     }
-
 
     QDBusReply<QMap<QString, QVariant>> cpuinfo;
     cpuinfo  = youkerInterface ->call("get_cpu_info");
@@ -184,15 +179,9 @@ void About::setupKernelCompenent() {
         cpuType = res["CpuVersion"].toString();
     }
 
-
-    QDBusReply<QMap<QString, QVariant>> memoryinfo;
-    memoryinfo  = sessionInterface ->call("get_system_message");
-    if (!diskinfo.isValid()) {
-        qDebug()<<"memoryinfo is invalid"<<endl;
-    } else {
-        QMap<QString, QVariant> res = memoryinfo.value();
-        memorySize = res["ram"].toString();
-    }
+    MemoryEntry * memoryInfo = new MemoryEntry;
+    QStringList memory = memoryInfo->totalMemory();
+    memorySize = memorySize + memory.at(0) + "(" + memory.at(1) + tr(" available") + ")";
 
     ui->cpuContent->setText(cpuType);
     ui->diskContent->setText(diskSize);
@@ -214,6 +203,9 @@ void About::setupVersionCompenent() {
             int length = str.length() - startIndex - 1;
             version = str.mid(startIndex, length);
         }
+    }
+    if (UbuntuVesion == version) {
+        version = "UbuntuKylin 20.04 LTS";
     }
     ui->versionContent->setText(version);
     if (version == "Kylin V10" || version == "Kylin V10.1") {
@@ -272,74 +264,6 @@ void About::setupSerialComponent() {
 
     connect(ui->activeButton, &QPushButton::clicked, this, &About::runActiveWindow);
     connect(ui->trialButton, &QPushButton::clicked, this, &About::showPdf);
-}
-
-void About::setupComponent(){
-
-
-//    //获取当前桌面环境
-//    QString dEnv;
-//    foreach (dEnv, QProcess::systemEnvironment()){
-//        if (dEnv.startsWith("XDG_CURRENT_DESKTOP"))
-//            break;
-//    }
-//    //设置当前桌面环境信息
-//    QLabel * dEnvLabel = new QLabel(tr("UNKNOWN"));
-//    if (!dEnv.isEmpty())
-//        dEnvLabel->setText(dEnv.section("=", -1, -1));
-//    ui->systemFormLayout->addRow(tr("Current desktop env:"), dEnvLabel);
-//    qDebug()<<"dEnvLabel is------->"<<(*dEnvLabel).text()<<endl;
-
-//    /**
-//     * 设置当前操作系统信息
-//     */
-//    //设置操作系统版本
-////    qDebug() << QSysInfo::prettyProductName() << QSysInfo::productType() << QSysInfo::productVersion();
-//    QLabel * osVersionLabel = new QLabel(tr("UNKNOWN"));
-//    osVersionLabel->setText(QSysInfo::productVersion());
-//    ui->systemFormLayout->addRow(tr("OS Version:"), osVersionLabel);
-//    //设置CPU平台
-//    QLabel * cpuArch = new QLabel(tr("UNKNOWN"));
-//    cpuArch->setText(QSysInfo::currentCpuArchitecture());
-//    ui->systemFormLayout->addRow(tr("CPU Arch:"), cpuArch);
-//    //设置内核版本号
-////    qDebug() << QSysInfo::kernelType() << QSysInfo::kernelVersion();
-//    QLabel * kernelLabel = new QLabel(tr("UNKNOWN"));
-//    kernelLabel->setText(QSysInfo::kernelType() + " " + QSysInfo::kernelVersion());
-//    ui->systemFormLayout->addRow(tr("Kernel Version"), kernelLabel);
-
-
-//    /**
-//     * 设置硬件详情的信息项目
-//     */
-//    QLabel * manufacturers = new QLabel(tr("UNKNOWN"));
-//    if (infoMap.contains(MANUFACTURER))
-//        manufacturers->setText(QString(infoMap.find(MANUFACTURER).value()));
-
-//    QLabel * productname = new QLabel("UNKNOWN");
-//    if (infoMap.contains(PRODUCTNAME))
-//        productname->setText(QString(infoMap.find(PRODUCTNAME).value()));
-
-//    QLabel * version = new QLabel("UNKNOWN");
-//    if (infoMap.contains(VERSION))
-//        version->setText(QString(infoMap.find(VERSION).value()));
-
-//    QLabel * serialnumber = new QLabel("UNKNOWN");
-//    if (infoMap.contains(SERIALNUMBER))
-//        serialnumber->setText(QString(infoMap.find(SERIALNUMBER).value()));
-
-////    ui->devicesFormLayout->setHorizontalSpacing(70);
-////    ui->devicesFormLayout->addRow(tr("Manufacturers:"), manufacturers);
-////    ui->devicesFormLayout->addRow(tr("Product Name:"), productname);
-////    ui->devicesFormLayout->addRow(tr("Version:"), version);
-////    ui->devicesFormLayout->addRow(tr("Serial Number:"), serialnumber);
-////    ui->devicesFormLayout->addRow(tr("hostname:"), "hostname");
-////    ui->devicesFormLayout->addRow(tr("running time:"), "running time");
-////    ui->devicesFormLayout->addRow(tr("os type:"), "os type");
-////    ui->devicesFormLayout->addRow(tr("os version"), "os version");
-////    ui->devicesFormLayout->addRow(tr("system bit"), "system bit");
-////    ui->devicesFormLayout->addRow(tr("kernel version"), "kernel version");
-////    ui->devicesFormLayout->addRow(tr("architecture"), "architecture");QT
 }
 
 QStringList About::readFile(QString filepath) {

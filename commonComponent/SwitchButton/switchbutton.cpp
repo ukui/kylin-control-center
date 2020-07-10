@@ -25,7 +25,7 @@ SwitchButton::SwitchButton(QWidget *parent) :
     QWidget(parent)
 {
 //    this->resize(QSize(52, 24));
-    this->setFixedSize(QSize(52, 24));
+    this->setFixedSize(QSize(48, 24));
 
     checked = false;
 
@@ -40,7 +40,7 @@ SwitchButton::SwitchButton(QWidget *parent) :
     space = 4;
 //    rectRadius = 5;
 
-    step = width() / 50;
+    step = width() / 40;
     startX = 0;
     endX= 0;
 
@@ -67,7 +67,7 @@ void SwitchButton::drawBg(QPainter *painter){
 //    painter->setPen(Qt::NoPen);
 
     if (!checked){
-        painter->setPen(borderColorOff);
+        painter->setPen(Qt::NoPen);
         painter->setBrush(bgColorOff);
     }
     else{
@@ -125,7 +125,7 @@ void SwitchButton::mousePressEvent(QMouseEvent *){
     checked = !checked;
     emit checkedChanged(checked);
 
-    step = width() / 50;
+    step = width() / 40;
 
     if (checked){
         //circle out
@@ -141,7 +141,7 @@ void SwitchButton::mousePressEvent(QMouseEvent *){
 
 void SwitchButton::resizeEvent(QResizeEvent *){
     //
-    step = width() / 50;
+    step = width() / 40;
 
     if (checked){
         //circle out
@@ -183,7 +183,7 @@ void SwitchButton::setChecked(bool checked){
         update();
     }
 
-    step = width() / 50;
+    step = width() / 40;
 
     if (checked){
         //circle out

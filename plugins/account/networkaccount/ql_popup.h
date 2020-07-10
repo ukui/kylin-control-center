@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QWidget>
 #include <QPainter>
+#include <QPainterPath>
 #include <QtMath>
 #include <QVBoxLayout>
 

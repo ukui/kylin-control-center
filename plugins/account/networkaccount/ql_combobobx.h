@@ -37,6 +37,7 @@
 #include "ql_box_item.h"
 #include "ql_popup.h"
 #include <QScrollArea>
+#include "ql_svg_handler.h"
 
 class ql_combobobx : public QWidget
 {
@@ -57,6 +58,7 @@ private:
     QHBoxLayout     *editcontrol;
     QVBoxLayout     *popupcontrol;
     QVBoxLayout     *comboboxcontrol;
+    ql_svg_handler  *svg_hd;
 signals:
     void currentIndexChanged(int index);
 };

@@ -7,7 +7,7 @@
 
 #include <KF5/KScreen/kscreen/output.h>
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 
 class QCheckBox;
 class ResolutionSlider;
@@ -39,12 +39,6 @@ class OutputConfig : public QWidget
     void initConfig(const KScreen::ConfigPtr &config);
     QStringList readFile(const QString& filepath);
     int scaleRet();
-
-
-public:
-    QStyledItemDelegate  *itemDelege;
-
-
 
   protected Q_SLOTS:
     void slotResolutionChanged(const QSize &size);

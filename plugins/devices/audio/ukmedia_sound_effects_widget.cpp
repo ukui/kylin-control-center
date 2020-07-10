@@ -32,20 +32,25 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pThemeWidget = new QFrame(this);
     m_pShutDownWidget = new QFrame(this);
     m_pLagoutWidget = new QFrame(this);
+    m_pAlertSoundSwitchWidget = new QFrame(this);
 
     m_pThemeWidget->setFrameShape(QFrame::Shape::Box);
     m_pShutDownWidget->setFrameShape(QFrame::Shape::Box);
     m_pLagoutWidget->setFrameShape(QFrame::Shape::Box);
-    m_pSoundEffectLabel = new QLabel(tr("System sound"),this);
+    m_pAlertSoundSwitchWidget->setFrameShape(QFrame::Shape::Box);
+
+    m_pSoundEffectLabel = new QLabel(tr("System Sound"),this);
     m_pSoundEffectLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    m_pSoundThemeLabel = new QLabel(tr("Sound theme"),m_pThemeWidget);
+    m_pSoundThemeLabel = new QLabel(tr("Sound Theme"),m_pThemeWidget);
     m_pSoundThemeCombobox = new QComboBox(m_pThemeWidget);
-    m_pShutdownlabel = new QLabel(tr("Prompt voice"),m_pShutDownWidget);
+    m_pShutdownlabel = new QLabel(tr("Alert Sound"),m_pShutDownWidget);
     m_pShutdownCombobox = new QComboBox(m_pShutDownWidget);
-    m_pLagoutLabel = new QLabel(tr("Boot music"),m_pLagoutWidget);
+    m_pLagoutLabel = new QLabel(tr("Boot Music"),m_pLagoutWidget);
     m_pLagoutCombobox = new QComboBox(m_pLagoutWidget);
     m_pBootButton = new SwitchButton(m_pLagoutWidget);
 
+    m_pAlertSoundSwitchLabel = new QLabel(tr("Beep Switch"),m_pAlertSoundSwitchWidget);
+    m_pAlertSoundSwitchButton = new SwitchButton(m_pAlertSoundSwitchWidget);
     //设置大小
     m_pThemeWidget->setMinimumSize(550,50);
     m_pThemeWidget->setMaximumSize(960,50);
@@ -53,8 +58,10 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pShutDownWidget->setMaximumSize(960,50);
     m_pLagoutWidget->setMinimumSize(550,50);
     m_pLagoutWidget->setMaximumSize(960,50);
+    m_pAlertSoundSwitchWidget->setMinimumSize(550,50);
+    m_pAlertSoundSwitchWidget->setMaximumSize(960,50);
 
-    m_pSoundEffectLabel->setFixedSize(115,24);
+    m_pSoundEffectLabel->setFixedSize(120,24);
     m_pSoundThemeLabel->setFixedSize(115,24);
     m_pShutdownlabel->setFixedSize(115,24);
     m_pLagoutLabel->setFixedSize(115,24);
@@ -101,6 +108,18 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pLagoutWidget->layout()->setContentsMargins(0,0,0,0);
 //    m_pLagoutWidget->setVisible(false);
     m_pLagoutCombobox->setVisible(false);
+
+    //提示音开关布局
+    QHBoxLayout *alertSoundLayout = new QHBoxLayout(m_pAlertSoundSwitchWidget);
+    alertSoundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    alertSoundLayout->addWidget(m_pAlertSoundSwitchLabel);
+    alertSoundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Expanding));
+//    lagoutLayout->addWidget(m_pLagoutCombobox);
+    alertSoundLayout->addWidget(m_pAlertSoundSwitchButton);
+    alertSoundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    alertSoundLayout->setSpacing(0);
+    m_pAlertSoundSwitchWidget->setLayout(alertSoundLayout);
+    m_pAlertSoundSwitchWidget->layout()->setContentsMargins(0,0,0,0);
     //进行整体布局
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     vLayout->addWidget(m_pSoundEffectLabel);
@@ -109,6 +128,7 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     vLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     vLayout->addWidget(m_pShutDownWidget);
     vLayout->addWidget(m_pLagoutWidget);
+    vLayout->addWidget(m_pAlertSoundSwitchWidget);
     this->setLayout(vLayout);
 //    vLayout->setSpacing(0);
     this->layout()->setContentsMargins(0,0,0,0);

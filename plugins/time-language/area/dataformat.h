@@ -3,10 +3,11 @@
 
 #include <QTimer>
 #include <QDialog>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QListView>
 #include <QFile>
 #include <QPainter>
+#include <QPainterPath>
 
 namespace Ui {
 class DataFormat;

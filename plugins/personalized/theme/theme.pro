@@ -3,7 +3,7 @@
 # Project created by QtCreator 2019-06-21T10:50:19
 #
 #-------------------------------------------------
-QT       += widgets KConfigCore KI18n x11extras
+QT       += widgets KConfigCore KI18n x11extras concurrent
 
 TEMPLATE = lib
 CONFIG += plugin
@@ -15,6 +15,7 @@ DESTDIR = ../../../pluginlibs
 
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+include($$PROJECT_COMPONENTSOURCE/uslider.pri)
 
 INCLUDEPATH   +=  \
                  $$PROJECT_COMPONENTSOURCE \
@@ -22,6 +23,12 @@ INCLUDEPATH   +=  \
 
 LIBS          += -L/usr/lib/ -lgsettings-qt -lX11 -lXfixes -lXcursor
 
+
+CONFIG +=  \
+          link_pkgconfig \
+          c++11
+
+PKGCONFIG += gsettings-qt \
 
 #DEFINES += QT_DEPRECATED_WARNINGS
 

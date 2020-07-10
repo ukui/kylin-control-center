@@ -16,6 +16,8 @@ INCLUDEPATH += ../../.. \
 
 LIBS          +=  -L/usr/lib/ -lmouseclient  -ltouchpadclient -lXi -lgsettings-qt
 
+
+
 DESTDIR = ../..
 
 include(../../pluginsComponent/pluginsComponent.pri)
@@ -23,6 +25,11 @@ include(../../pluginsComponent/pluginsComponent.pri)
 target.path = $$[QT_INSTALL_PREFIX]/lib/control-center/plugins/
 INSTALLS += target
 
+CONFIG +=  \
+          link_pkgconfig \
+          c++11
+
+PKGCONFIG += gsettings-qt \
 
 #DEFINES += QT_DEPRECATED_WARNINGS
 

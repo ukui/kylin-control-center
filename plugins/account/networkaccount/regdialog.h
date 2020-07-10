@@ -29,8 +29,9 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QEvent>
-#include <ql_lineedit_pass.h>
-
+#include "ql_lineedit_pass.h"
+#include "ql_label_info.h"
+#include "ql_svg_handler.h"
 
 class RegDialog : public QWidget
 {
@@ -42,16 +43,17 @@ public:
     QLineEdit* get_reg_user();
     ql_lineedit_pass* get_reg_pass();
     QLineEdit* get_valid_code();
-    QLineEdit* get_phone_user();
+    area_code_lineedit* get_phone_user();
     ql_lineedit_pass* get_reg_confirm();
     QPushButton* get_send_code();
     QString     get_user_phone();
     QString     get_user_account();
     QString     get_user_passwd();
     QString     get_user_mcode();
+    void        set_staus(bool ok);
     void        set_code(QString codenum);
     void        set_clear();
-    QLabel*     get_tips();
+    ql_label_info*     get_tips();
 public slots:
     void change_uppercase();
     void setstyleline();
@@ -70,8 +72,9 @@ private:
     QHBoxLayout *hlayout;
     QLabel      *user_tip;
     QLabel      *pass_tip;
-    QLabel      *tips;
+    ql_label_info      *tips;
     QString     code;
+    ql_svg_handler *svg_hd;
 };
 
 #endif // REGDIALOG_H

@@ -20,7 +20,7 @@
 #include "keyboardcontrol.h"
 #include "ui_keyboardcontrol.h"
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 
 #include <QDebug>
 #include <QMouseEvent>
@@ -32,6 +32,9 @@
 
 #define KBD_LAYOUTS_SCHEMA "org.mate.peripherals-keyboard-xkb.kbd"
 #define KBD_LAYOUTS_KEY "layouts"
+
+#define CC_KEYBOARD_OSD_SCHEMA "org.ukui.control-center.osd"
+#define CC_KEYBOARD_OSD_KEY "show-lock-tip"
 
 KeyboardControl::KeyboardControl()
 {
@@ -58,6 +61,10 @@ KeyboardControl::KeyboardControl()
 
     //初始化键盘布局GSettings
     const QByteArray idd(KBD_LAYOUTS_SCHEMA);
+
+    //初始化按键提示GSettings
+    const QByteArray iid(CC_KEYBOARD_OSD_SCHEMA);
+    osdSettings = new QGSettings(iid); //控制面板自带GSettings，不再判断是否安装
 
     if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(idd)){
         settingsCreate = true;
@@ -127,16 +134,15 @@ void KeyboardControl::setupComponent(){
     itemDelege = new QStyledItemDelegate();
 
     //隐藏未开发功能
-    ui->repeatFrame_4->hide();
     ui->repeatFrame_5->hide();
 
     //重复输入开关按钮
     keySwitchBtn = new SwitchButton(pluginWidget);
     ui->enableHorLayout->addWidget(keySwitchBtn);
 
-    //大写锁定开关按钮
-    capsLockSwitchBtn = new SwitchButton(pluginWidget);
-    ui->capsLockHorLayout->addWidget(capsLockSwitchBtn);
+    //按键提示开关按钮
+    tipKeyboardSwitchBtn = new SwitchButton(pluginWidget);
+    ui->tipKeyboardHorLayout->addWidget(tipKeyboardSwitchBtn);
 
     //小键盘开关按钮
     numLockSwitchBtn = new SwitchButton(pluginWidget);
@@ -169,12 +175,22 @@ void KeyboardControl::setupConnect(){
         layoutmanagerObj->exec();
     });
 
+    connect(ui->resetBtn, &QPushButton::clicked, this, [=]{
+        kbdsettings->reset(KBD_LAYOUTS_KEY);
+        layoutmanagerObj->rebuild_listwidget();
+        rebuildLayoutsComBox();
+    });
+
     connect(layoutmanagerObj, &KbdLayoutManager::del_variant_signals, [=](QString layout){
         rebuildLayoutsComBox();
         qDebug() << layout;
     });
     connect(layoutmanagerObj, &KbdLayoutManager::add_new_variant_signals, [=](QString layout){
         rebuildLayoutsComBox();
+    });
+
+    connect(tipKeyboardSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
+        osdSettings->set(CC_KEYBOARD_OSD_KEY, checked);
     });
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
@@ -204,6 +220,10 @@ void KeyboardControl::initGeneralStatus(){
     //设置按键重复的速度
     ui->speedHorSlider->setValue(settings->get(RATE_KEY).toInt());
 
+    tipKeyboardSwitchBtn->blockSignals(true);
+    tipKeyboardSwitchBtn->setChecked(osdSettings->get(CC_KEYBOARD_OSD_KEY).toBool());
+    tipKeyboardSwitchBtn->blockSignals(false);
+
 }
 
 void KeyboardControl::rebuildLayoutsComBox(){
@@ -217,6 +237,11 @@ void KeyboardControl::rebuildLayoutsComBox(){
         ui->layoutsComBox->addItem(layoutmanagerObj->kbd_get_description_by_id(const_cast<const char *>(layout.toLatin1().data())), layout);
     }
     ui->layoutsComBox->blockSignals(false);
+    if (0 == ui->layoutsComBox->count()) {
+        ui->layoutsComBox->setVisible(false);
+    } else {
+        ui->layoutsComBox->setVisible(true);
+    }
 }
 
 bool KeyboardControl::eventFilter(QObject *watched, QEvent *event)

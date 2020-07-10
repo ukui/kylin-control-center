@@ -23,6 +23,7 @@
 #include <QWidget>
 #include <QTimer>
 #include <QPainter>
+#include <QPainterPath>
 #include <QEvent>
 
 class SwitchButton : public QWidget

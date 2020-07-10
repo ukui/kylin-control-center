@@ -44,8 +44,9 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
     account_login_btn = new QPushButton(tr("User Sign in"),this);
     message_login_btn = new QPushButton(tr("Quick Sign in"),this);
 
-    error_code = new QLabel(this);
-    error_pass = new QLabel(this);
+    error_code = new ql_label_info(this);
+    error_pass = new ql_label_info(this);
+    svg_hd = new ql_svg_handler(this);
 
     mcode = new mcode_widget(widget_number);
     mcode_lineedit = new QLineEdit(widget_number);
@@ -56,13 +57,6 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
 
     error_code->setContentsMargins(9,0,0,0);
     error_pass->setContentsMargins(9,0,0,0);
-    error_code->setScaledContents(true);
-    error_pass->setScaledContents(true);
-
-    error_code->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                              "&nbsp;&nbsp;"+code+"</span></p></body></html>");
-    error_pass->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                              "&nbsp;&nbsp;"+code+"</span></p></body></html>");
 
     //Basic Widget Configuration
 
@@ -307,7 +301,7 @@ ql_lineedit_pass* LoginDialog::get_login_pass() {
     return account_pass;
 }
 
-QLabel* LoginDialog::get_tips_pass() {
+ql_label_info* LoginDialog::get_tips_pass() {
     return error_pass;
 }
 
@@ -315,7 +309,7 @@ QLineEdit* LoginDialog::get_login_code() {
     return valid_code;
 }
 
-QLabel* LoginDialog::get_tips_code() {
+ql_label_info* LoginDialog::get_tips_code() {
     return error_code;
 }
 
@@ -330,13 +324,9 @@ void LoginDialog::set_code(QString codenum) {
 
 void LoginDialog::setstyleline() {
     if(stack_widget->currentIndex() == 0) {
-        error_pass->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                                  "&nbsp;&nbsp;"+code+"</span></p></body></html>");
-        //qDebug()<<"<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                    "&nbsp;&nbsp;"+code+"</span></p></body></html>";
+        error_pass->set_text(code);
     } else {
-        error_code->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                                  "&nbsp;&nbsp;"+code+"</span></p></body></html>");
+        error_code->set_text(code);
     }
 }
 
@@ -404,6 +394,18 @@ bool LoginDialog::login_account_thr_phone() {
 
     //Update Widgets
     return false;
+}
+
+void LoginDialog::set_staus(bool ok) {
+    account_login_btn->setEnabled(ok);
+    message_login_btn->setEnabled(ok);
+    account_pass->setEnabled(ok);
+    account_phone->setEnabled(ok);
+    valid_code->setEnabled(ok);
+    mcode_lineedit->setEnabled(ok);
+    send_msg_submit->setEnabled(ok);
+    forgot_pass_btn->setEnabled(ok);
+
 }
 
 /* 清空登录框 */

@@ -1,0 +1,11 @@
+<schemalist gettext-domain="ukui-control-center">
+  <schema id="org.ukui.control-center.keyboard" path="/org/ukui/control-center/keyboard/">
+  </schema>
+  <schema id="org.ukui.control-center.osd" path="/org/ukui/control-center/osd/">
+    <key type="b" name="show-lock-tip">
+      <default>true</default>
+      <summary>show keyboard tip</summary>
+      <description>show keyboard tip or not. eg. Caps Lock. Num Lock</description>
+    </key>
+  </schema>
+</schemalist>

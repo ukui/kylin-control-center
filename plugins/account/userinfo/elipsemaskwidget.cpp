@@ -20,6 +20,7 @@
 #include "elipsemaskwidget.h"
 
 #include <QPainter>
+#include <QPainterPath>
 
 ElipseMaskWidget::ElipseMaskWidget(QWidget *parent) :
     QWidget(parent)

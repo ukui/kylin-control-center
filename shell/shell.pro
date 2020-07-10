@@ -25,10 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../env.pri)
 
-INCLUDEPATH   +=  \
-                 /usr/include/KF5/KWindowSystem/ \
-
-LIBS += -L/usr/lib/ -lX11
+LIBS += -L/usr/lib/ -lX11 -lgsettings-qt
 
 #LIBS += -L$$[QT_INSTALL_LIBS] -lkylinssoclient
 
@@ -37,7 +34,8 @@ CONFIG        += link_pkgconfig \
                  C++11
 PKGCONFIG     += gio-2.0 \
                  gio-unix-2.0 \
-                 libmatemixer
+                 libmatemixer \
+                 gsettings-qt \
 
 inst1.files += ukui-control-center.desktop
 inst1.path = /usr/share/applications
@@ -47,6 +45,7 @@ inst3.files += $$PROJECT_ROOTDIR/data/org.ukui.control-center.keybinding.gschema
 inst3.files += $$PROJECT_ROOTDIR/data/org.ukui.control-center.desktop.gschema.xml
 inst3.files += $$PROJECT_ROOTDIR/data/org.ukui.control-center.notice.gschema.xml
 inst3.files += $$PROJECT_ROOTDIR/data/org.ukui.control-center.experienceplan.gschema.xml
+inst3.files += $$PROJECT_ROOTDIR/data/org.ukui.control-center.personalise.gschema.xml
 inst3.path = /usr/share/glib-2.0/schemas/
 inst4.files += $$PROJECT_ROOTDIR/data/org.ukui.control-center.wifi.switch.gschema.xml
 inst4.path = /usr/share/glib-2.0/schemas/
@@ -56,6 +55,8 @@ inst6.files += $$PROJECT_ROOTDIR/data/faces/
 inst6.path = /usr/share/ukui/
 inst7.files += $$PROJECT_ROOTDIR/data/installer-timezones.mo
 inst7.path = /usr/share/locale/zh_CN/LC_MESSAGES/
+inst8.files += $$PROJECT_ROOTDIR/data/org.ukui.control-center.keyboard.gschema.xml
+inst8.path = /usr/share/glib-2.0/schemas/
 
 target.source += $$TARGET
 target.path = /usr/bin
@@ -68,6 +69,7 @@ INSTALLS +=  \
             inst5 \
             inst6 \
             inst7 \
+            inst8 \
             target \
 
 INCLUDEPATH += qtsingleapplication
@@ -120,4 +122,5 @@ RESOURCES += \
 DISTFILES += \
     ../data/installer-timezones.mo \
     ../data/org.ukui.control-center.panel.plugins.gschema.xml \
+    ../data/org.ukui.control-center.personalise.gschema.xml \
     ../data/org.ukui.control-center.wifi.switch.gschema.xml

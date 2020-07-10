@@ -33,6 +33,10 @@
 #include <glib.h>
 #include <gobject/gparamspecs.h>
 #include <glib/gi18n.h>
+#include <canberra.h>
+#include <QScreen>
+#include <QApplication>
+#include <a.out.h>
 #include <utime.h>
 #include <glib/gstdio.h>
 #include <QDomDocument>
@@ -59,6 +63,17 @@
 #define CUSTOM_THEME_NAME "__custom"
 #define NO_SOUNDS_THEME_NAME "__no_sounds"
 
+#ifdef __GNUC__
+#define CA_CLAMP(x, low, high)                                          \
+        __extension__ ({ typeof(x) _x = (x);                            \
+                        typeof(low) _low = (low);                       \
+                        typeof(high) _high = (high);                    \
+                        ((_x > _high) ? _high : ((_x < _low) ? _low : _x)); \
+                })
+#else
+#define CA_CLAMP(x, low, high) (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
+#endif
+
 typedef enum
 {
     GVC_LEVEL_SCALE_LINEAR,
@@ -71,6 +86,9 @@ class UkmediaMainWidget : public QWidget
 public:
     UkmediaMainWidget(QWidget *parent = nullptr);
     ~UkmediaMainWidget();
+    static int caProplistMergeAp(ca_proplist *p, va_list ap);
+    static int caPlayForWidget(UkmediaMainWidget *w, uint32_t id, ...);
+    static int caProplistSetForWidget(ca_proplist *p, UkmediaMainWidget *widget);
     void inputVolumeDarkThemeImage(int value,bool status);
     void outputVolumeDarkThemeImage(int value,bool status);
     int getInputVolume();
@@ -134,7 +152,7 @@ public:
     static void populateModelFromNode (UkmediaMainWidget *w,xmlNodePtr node);
     static xmlChar *xmlGetAndTrimNames (xmlNodePtr node);
 
-    static void playAlretSoundFromPath (QString path);
+    static void playAlretSoundFromPath (UkmediaMainWidget *w,QString path);
     static void setOutputStream (UkmediaMainWidget *w, MateMixerStream *stream);
     static void updateOutputStreamList(UkmediaMainWidget *w,MateMixerStream *stream);
     static void ukuiBarSetStream (UkmediaMainWidget *w ,MateMixerStream *stream);
@@ -152,15 +170,16 @@ public:
     static gboolean updateDefaultInputStream (UkmediaMainWidget *w);
 
     static gboolean saveAlertSounds (QComboBox *combox,const char *id);
-    static void delete_old_files (const char **sounds);
-    static void delete_one_file (const char *sound_name, const char *pattern);
-    static void delete_disabled_files (const char **sounds);
-    static void add_custom_file (const char **sounds, const char *filename);
-    static gboolean capplet_file_delete_recursive (GFile *file, GError **error);
-    static gboolean directory_delete_recursive (GFile *directory, GError **error);
-    static void create_custom_theme (const char *parent);
-    static void custom_theme_update_time (void);
-    static gboolean custom_theme_dir_is_empty (void);
+    static void deleteOldFiles (const char **sounds);
+    static void deleteOneFile (const char *sound_name, const char *pattern);
+    static void deleteDisabledFiles (const char **sounds);
+    static void addCustomFile (const char **sounds, const char *filename);
+    static gboolean cappletFileDeleteRecursive (GFile *file, GError **error);
+    static gboolean directoryDeleteRecursive (GFile *directory, GError **error);
+    static void createCustomTheme (const char *parent);
+    static void customThemeUpdateTime (void);
+    static gboolean customThemeDirIsEmpty (void);
+    static MateMixerSwitch *findStreamPortSwitch (UkmediaMainWidget *widget,MateMixerStream *stream);
 
 Q_SIGNALS:
     void appVolumeChangedSignal(bool is_mute,int volume,const QString app_name);
@@ -175,8 +194,10 @@ private Q_SLOTS:
     void inputWidgetSliderChangedSlot(int value);
     void ukuiThemeChangedSlot(const QString &);
     void bootButtonSwitchChangedSlot(bool status);
+    void alertSoundButtonSwitchChangedSlot(bool status);
     void bootMusicSettingsChanged();
-
+    void inputPortComboxChangedSlot(int index);
+    void outputPortComboxChangedSlot(int index);
 private:
     UkmediaInputWidget *m_pInputWidget;
     UkmediaOutputWidget *m_pOutputWidget;
@@ -201,6 +222,8 @@ private:
     QStringList *m_pInputStreamList;
     QStringList *m_pAppVolumeList;
     QStringList *m_pStreamControlList;
+    QStringList *m_pInputPortList;
+    QStringList *m_pOutputPortList;
     QString m_pDeviceStr;
 
     GSettings *m_pSoundSettings;
@@ -213,6 +236,7 @@ private:
     QGSettings *m_pThemeSetting;
     QString mThemeName;
     bool m_hasMusic;
+    bool firstEnterSystem = true;
 };
 
 #endif // WIDGET_H

@@ -94,8 +94,19 @@ void UserDispatcher::change_user_face(QString facefile){
     useriface->call("SetIconFile", QVariant(facefile));
 }
 
-void UserDispatcher::change_user_autologin(bool status){
-    useriface->call("SetAutomaticLogin", QVariant(status));
+void UserDispatcher::change_user_autologin(QString username){
+    QDBusInterface * tmpSysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
+                                                          "/",
+                                                          "com.control.center.interface",
+                                                          QDBusConnection::systemBus());
+
+    if (!tmpSysinterface->isValid()){
+        qCritical() << "Create Client Interface Failed When : " << QDBusConnection::systemBus().lastError();
+        return;
+    }
+    tmpSysinterface->call("setAutoLoginStatus", username);
+
+    delete tmpSysinterface;
 }
 
 bool UserDispatcher::get_autoLogin_status() {

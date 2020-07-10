@@ -1,1 +1,41 @@
-<svg id="图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:#404040;}</style></defs><title>defaultapp</title><path class="cls-1" d="M8.27,11H3.73A2.76,2.76,0,0,1,1,8.22V3.78A2.76,2.76,0,0,1,3.73,1H8.27A2.76,2.76,0,0,1,11,3.78V8.22A2.76,2.76,0,0,1,8.27,11ZM3.73,2.85a.92.92,0,0,0-.91.93V8.22a.92.92,0,0,0,.91.93H8.27a.92.92,0,0,0,.91-.93V3.78a.92.92,0,0,0-.91-.93Z"/><path class="cls-1" d="M20.27,11H15.73A2.76,2.76,0,0,1,13,8.22V3.78A2.76,2.76,0,0,1,15.73,1h4.54A2.76,2.76,0,0,1,23,3.78V8.22A2.76,2.76,0,0,1,20.27,11ZM15.73,2.85a.92.92,0,0,0-.91.93V8.22a.92.92,0,0,0,.91.93h4.54a.92.92,0,0,0,.91-.93V3.78a.92.92,0,0,0-.91-.93Z"/><path class="cls-1" d="M8.27,23H3.73A2.76,2.76,0,0,1,1,20.22V15.78A2.76,2.76,0,0,1,3.73,13H8.27A2.76,2.76,0,0,1,11,15.78v4.44A2.76,2.76,0,0,1,8.27,23ZM3.73,14.85a.92.92,0,0,0-.91.93v4.44a.92.92,0,0,0,.91.93H8.27a.92.92,0,0,0,.91-.93V15.78a.92.92,0,0,0-.91-.93Z"/><path class="cls-1" d="M20.27,23H15.73A2.76,2.76,0,0,1,13,20.22V15.78A2.76,2.76,0,0,1,15.73,13h4.54A2.76,2.76,0,0,1,23,15.78v4.44A2.76,2.76,0,0,1,20.27,23Zm-4.54-8.15a.92.92,0,0,0-.91.93v4.44a.92.92,0,0,0,.91.93h4.54a.92.92,0,0,0,.91-.93V15.78a.92.92,0,0,0-.91-.93Z"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="图层_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
+	 enable-background="new 0 0 24 24" xml:space="preserve">
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="1298" width="1504" x="-206" y="-620"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<g>
+	<path fill="#404040" d="M8.3,11H3.7C2.2,11,1,9.8,1,8.2V3.8C1,2.2,2.2,1,3.7,1h4.5C9.8,1,11,2.2,11,3.8v4.4C11,9.8,9.8,11,8.3,11z
+		 M3.7,2.9c-0.5,0-0.9,0.4-0.9,0.9v4.4c0,0.5,0.4,0.9,0.9,0.9h4.5c0.5,0,0.9-0.4,0.9-0.9V3.8c0-0.5-0.4-0.9-0.9-0.9H3.7z"/>
+</g>
+<g>
+	<path fill="#404040" d="M20.3,11h-4.5C14.2,11,13,9.8,13,8.2V3.8C13,2.2,14.2,1,15.7,1h4.5C21.8,1,23,2.2,23,3.8v4.4
+		C23,9.8,21.8,11,20.3,11z M15.7,2.9c-0.5,0-0.9,0.4-0.9,0.9v4.4c0,0.5,0.4,0.9,0.9,0.9h4.5c0.5,0,0.9-0.4,0.9-0.9V3.8
+		c0-0.5-0.4-0.9-0.9-0.9H15.7z"/>
+</g>
+<g>
+	<path fill="#404040" d="M8.3,23H3.7C2.2,23,1,21.8,1,20.2v-4.4C1,14.2,2.2,13,3.7,13h4.5c1.5,0,2.7,1.2,2.7,2.8v4.4
+		C11,21.8,9.8,23,8.3,23z M3.7,14.9c-0.5,0-0.9,0.4-0.9,0.9v4.4c0,0.5,0.4,0.9,0.9,0.9h4.5c0.5,0,0.9-0.4,0.9-0.9v-4.4
+		c0-0.5-0.4-0.9-0.9-0.9H3.7z"/>
+</g>
+<g>
+	<path fill="#404040" d="M20.3,23h-4.5c-1.5,0-2.7-1.2-2.7-2.8v-4.4c0-1.5,1.2-2.8,2.7-2.8h4.5c1.5,0,2.7,1.2,2.7,2.8v4.4
+		C23,21.8,21.8,23,20.3,23z M15.7,14.9c-0.5,0-0.9,0.4-0.9,0.9v4.4c0,0.5,0.4,0.9,0.9,0.9h4.5c0.5,0,0.9-0.4,0.9-0.9v-4.4
+		c0-0.5-0.4-0.9-0.9-0.9H15.7z"/>
+</g>
+</svg>

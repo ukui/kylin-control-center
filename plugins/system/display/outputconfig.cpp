@@ -14,41 +14,24 @@
 
 //#include <KLocalizedString>
 #include <QComboBox>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 
 #include <KF5/KScreen/kscreen/output.h>
 #include <KF5/KScreen/kscreen/edid.h>
 
 #include "ComboBox/combobox.h"
 
+#define FONT_RENDERING_DPI "org.ukui.font-rendering"
+#define DPI_KEY "dpi"
 
-#define SCRENN_SCALE_SCHMES "org.ukui.session"
-
-#define GDK_SCALE_KEY "gdk-scale"
+//#define SCRENN_SCALE_SCHMES "org.ukui.session"
+//#define GDK_SCALE_KEY "gdk-scale"
 
 
 OutputConfig::OutputConfig(QWidget *parent)
     : QWidget(parent)
     , mOutput(nullptr)
 {
-    //加载qss样式文件
-    QByteArray idScale(SCRENN_SCALE_SCHMES);
-    if (QGSettings::isSchemaInstalled(idScale)) {
-//        qDebug()<<"initGSettings-------------------->"<<endl;
-        m_gsettings = new QGSettings(idScale);
-    } else {
-        qDebug()<<"org.ukui.session.required-components not installed"<<endl;        
-    }
-
-//    QFile QssFile("://combox.qss");
-//    QssFile.open(QFile::ReadOnly);
-
-//    if (QssFile.isOpen()){
-//        qss = QLatin1String(QssFile.readAll());
-//        QssFile.close();
-//    }
-//    itemDelege = new QStyledItemDelegate();
-
 }
 
 OutputConfig::OutputConfig(const KScreen::OutputPtr &output, QWidget *parent)
@@ -267,17 +250,26 @@ void OutputConfig::initUi()
 //    mRefreshRate->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     scaleCombox->setMinimumSize(402,30);
     scaleCombox->setMaximumSize(16777215,30);
-//    scaleCombox->setStyleSheet(qss);
-//    scaleCombox->setItemDelegate(itemDelege);
-//    scaleCombox->setMaxVisibleItems(5);
-    scaleCombox->addItem(tr("100%"));
+
+
+
     int maxReslu = mResolution->getMaxResolution().width();
+
+#if QT_VERSION < QT_VERSION_CHECK(5,7,0)
+    if (maxReslu >= 2000) {
+        scaleCombox->addItem(tr("200%"));
+    } else {
+        scaleCombox->addItem(tr("100%"));
+    }
+#else
+    scaleCombox->addItem(tr("100%"));
     if (maxReslu >= 2000 && maxReslu <= 3800) {
         scaleCombox->addItem(tr("200%"));
     } else if (maxReslu >= 3800 || maxReslu >= 4000) {
         scaleCombox->addItem(tr("200%"));
         scaleCombox->addItem(tr("300%"));
     }
+#endif
 
     QLabel *scaleLabel = new QLabel();
     scaleLabel->setText(tr("screen zoom"));
@@ -300,23 +292,20 @@ void OutputConfig::initUi()
     scaleFrame->setMaximumSize(960,50);
     vbox->addWidget(scaleFrame);
 
-    connect(scaleCombox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated),
-            this, &OutputConfig::slotScaleChanged);
+    int scale = getScreenScale();
+#if QT_VERSION < QT_VERSION_CHECK(5,7,0)
 
-    int scale = this->scaleRet();
-
+#else
     scaleCombox->setCurrentIndex(0);
     if (scale <= scaleCombox->count() && scale > 0) {
 //        qDebug()<<"scale is----->"<<scale<<endl;
         scaleCombox->setCurrentIndex(scale - 1);
     }
     slotScaleChanged(scale - 1);
+#endif
 
-    int gScale = getScreenScale();
-//    qDebug()<<"scale is----->test--------->"<<gScale<<endl;
-    if (gScale <= scaleCombox->count() && gScale > 0) {
-        scaleCombox->setCurrentIndex(gScale - 1);
-    }
+    connect(scaleCombox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated),
+            this, &OutputConfig::slotScaleChanged);
 }
 
 int OutputConfig::getMaxReslotion() {
@@ -324,17 +313,22 @@ int OutputConfig::getMaxReslotion() {
 }
 
 int OutputConfig::getScreenScale() {
-    if (!m_gsettings) {
-        return 1;
+    QGSettings * dpiSettings;
+    QByteArray id(FONT_RENDERING_DPI);
+    int scale = 0;
+    if (QGSettings::isSchemaInstalled(FONT_RENDERING_DPI)) {
+        dpiSettings = new QGSettings(id);
+        scale = dpiSettings->get(DPI_KEY).toInt();
+        if (96 == scale)  {
+            scale = 1;
+        } else if (192 == scale) {
+            scale = 2;
+        } else if (288 == scale) {
+            scale = 3;
+        } else {
+            scale = 1;
+        }
     }
-    const QStringList list = m_gsettings->keys();
-
-    if (!list.contains("gdkScale")) {
-        return 1;
-    }
-
-    int scale  = m_gsettings->get(GDK_SCALE_KEY).toInt();
-//    qDebug()<<"key is------->"<<scale<<endl;
     return scale;
 }
 
@@ -439,7 +433,6 @@ bool OutputConfig::showScaleOption() const
 
 //拿取配置
 void OutputConfig::initConfig(const KScreen::ConfigPtr &config){
-    qDebug()<<"initCofnig--->"<<endl;
     mConfig = config;
 }
 
@@ -465,20 +458,21 @@ QStringList OutputConfig::readFile(const QString& filepath) {
 }
 
 int OutputConfig::scaleRet() {
-    QString filepath = getenv("HOME");
-    QString scale;
-    filepath += "/.profile";
-    QStringList res = this->readFile(filepath);
-    QRegExp re("export( GDK_SCALE)?=(.*)$");
-    for(int i = 0; i < res.length(); i++) {
-        int pos = 0;
-//        qDebug()<<res.at(i)<<endl;
-        QString str = res.at(i);
-        while ((pos = re.indexIn(str, pos)) != -1) {
-            scale = re.cap(2);
-            pos += re.matchedLength();
+    QGSettings * dpiSettings;
+    QByteArray id(FONT_RENDERING_DPI);
+    int scale = 0;
+    if (QGSettings::isSchemaInstalled(FONT_RENDERING_DPI)) {
+        dpiSettings = new QGSettings(id);
+        scale = dpiSettings->get(DPI_KEY).toInt();
+        if (96 == scale)  {
+            scale = 1;
+        } else if (192 == scale) {
+            scale = 2;
+        } else if (288 == scale) {
+            scale = 3;
+        } else {
+            scale = 1;
         }
     }
-//    qDebug()<<"scale---------------->"<<scale.toInt();
-    return scale.toInt();
+    return scale;
 }

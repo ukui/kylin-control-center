@@ -30,7 +30,8 @@ PassDialog::PassDialog(QWidget *parent) : QWidget(parent)
 
     vlayout = new QVBoxLayout;
     hlayout = new QHBoxLayout;
-    tips = new QLabel(this);
+    tips = new ql_label_info(this);
+    svg_hd = new ql_svg_handler(this);
     QString str = ("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
                    "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
                    "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}");
@@ -72,8 +73,6 @@ PassDialog::PassDialog(QWidget *parent) : QWidget(parent)
 
     passtips->setText(tr("At least 6 bit, include letters and digt"));
     passtips->setStyleSheet("font-size:14px;");
-    tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                        "&nbsp;&nbsp;"+code+"</span></p></body></html>");
     //reg_pass->setStyleSheet(str);
     //reg_phone->setStyleSheet(str);
     //reg_pass_confirm->setStyleSheet(str);
@@ -105,7 +104,12 @@ PassDialog::PassDialog(QWidget *parent) : QWidget(parent)
     tips->hide();
     passtips->hide();
     passtips->setAttribute(Qt::WA_DontShowOnScreen);
-
+    connect(reg_pass,&ql_lineedit_pass::verify_text,[this] () {
+       passtips->setText(tr("Your password is valid!"));
+    });
+    connect(reg_pass,&ql_lineedit_pass::false_text,[this] () {
+       passtips->setText(tr("At least 6 bit, include letters and digt"));
+    });
     connect(valid_code,SIGNAL(textChanged(QString)),this,SLOT(change_uppercase()));
     connect(this,SIGNAL(code_changed()),this,SLOT(setstyleline()));
 }
@@ -118,8 +122,7 @@ void PassDialog::set_code(QString codenum) {
 
 /* 设置错误代码更新 */
 void PassDialog::setstyleline() {
-    tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                        "&nbsp;&nbsp;"+code+"</span></p></body></html>");
+    tips->set_text(code);
 }
 
 /* 以下均为类接口函数 */
@@ -168,6 +171,14 @@ QLineEdit* PassDialog::get_valid_code() {
     return valid_code;
 }
 
+void PassDialog::set_staus(bool ok) {
+    reg_pass->setEnabled(ok);
+    reg_pass_confirm->setEnabled(ok);
+    reg_phone->setEnabled(ok);
+    valid_code->setEnabled(ok);
+    send_msg_btn->setEnabled(ok);
+}
+
 /* 清空忘记密码框 */
 void PassDialog::set_clear() {
     if(!tips->isHidden()) {
@@ -181,6 +192,6 @@ void PassDialog::set_clear() {
     valid_code->setText("");
 }
 
-QLabel* PassDialog::get_tips() {
+ql_label_info* PassDialog::get_tips() {
     return tips;
 }

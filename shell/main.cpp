@@ -19,26 +19,22 @@
  */
 #include "mainwindow.h"
 #include <QApplication>
-#include <QtSingleApplication>
+#include "framelessExtended/framelesshandle.h"
+#include "customstyle.h"
 
+#include <QtSingleApplication>
 #include <QTranslator>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <syslog.h>
 #include <QObject>
 #include <QDesktopWidget>
 #include <QCommandLineOption>
 #include <QCommandLineParser>
-
-#include "framelessExtended/framelesshandle.h"
-
-#include "customstyle.h"
-
 #include <QTimer>
-
 #include <QDebug>
-
+#include <QGSettings>
+#include <QSharedPointer>
+#include <memory>
 
 void centerToScreen(QWidget* widget) {
     if (!widget)
@@ -60,10 +56,6 @@ int main(int argc, char *argv[])
    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 #endif
     QtSingleApplication a(argc, argv);
-
-    QTimer::singleShot(2000, [&](){
-
-    });
 
     if (a.isRunning()){
         a.sendMessage(QApplication::arguments().length() > 1 ? QApplication::arguments().at(1) : a.applicationFilePath());
@@ -114,17 +106,6 @@ int main(int argc, char *argv[])
 
 //        parser.addPositionalArgument("ffff", "ggggggggggggggggggg");
         parser.process(a);
-
-        //加载qss样式文件
-//        QString qss;
-//        QFile QssFile("://global.qss");
-//        QssFile.open(QFile::ReadOnly);
-
-//        if (QssFile.isOpen()){
-//            qss = QLatin1String(QssFile.readAll());
-//            qApp->setStyleSheet(qss);
-//            QssFile.close();
-//        }
 
 
         MainWindow * w = new MainWindow;

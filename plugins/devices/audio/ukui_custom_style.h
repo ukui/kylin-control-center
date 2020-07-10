@@ -23,12 +23,29 @@
 #include <QObject>
 #include <QPushButton>
 #include <QImage>
+#include <QSlider>
+
 static QColor symbolic_color = Qt::gray;
-class UkuiCustomStyle:public QObject
+
+class UkmediaVolumeSlider : public QSlider
 {
     Q_OBJECT
 public:
-    UkuiCustomStyle();
+    UkmediaVolumeSlider(QWidget *parent = nullptr);
+    void initStyleOption(QStyleOptionSlider *option);
+    ~UkmediaVolumeSlider();
+
+Q_SIGNALS:
+    void silderPressedSignal(int);
+
+protected:
+    void mousePressEvent(QMouseEvent *ev);
+    void mouseMoveEvent(QMouseEvent *e)
+    {
+        setCursor(QCursor(Qt::OpenHandCursor));
+//        m_displayLabel->move((this->width()-m_displayLabel->width())*this->value()/(this->maximum()-this->minimum()),3);
+        QSlider::mouseMoveEvent(e);
+    }
 };
 
 class UkuiButtonDrawSvg:public QPushButton

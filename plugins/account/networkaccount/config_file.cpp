@@ -44,6 +44,7 @@ void Config_File::Set(QString qstrnodename,QString qstrkeyname,QVariant qvarvalu
 {
 
     m_psetting->setValue(QString("/%1/%2").arg(qstrnodename).arg(qstrkeyname), qvarvalue);
+    m_psetting->sync();
 }
 
 QVariant Config_File::Get(QString qstrnodename,QString qstrkeyname)

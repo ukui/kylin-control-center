@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="图层_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
+	 enable-background="new 0 0 24 24" xml:space="preserve">
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="1298" width="1504" x="-206" y="-620"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<rect x="4.3" y="3" fill="none" width="2" height="2"/>
+<path fill="none" d="M9.3,7.3c0.4-0.7,0.8-1.4,1.1-1.9C10,5.5,9.6,5.6,9.3,5.8V7V7.3z"/>
+<path fill="#404040" d="M12.8,3c-1.6,0-3.1,0.4-4.5,1.1V3V1h-2h-2h-2v2v2H1.7H1.3v2v2h0v2h0H3c-0.1,0.6-0.2,1.3-0.2,2
+	c0,1.9,0.6,3.7,1.5,5.2V23h2v-2.4c1.7,1.5,4,2.4,6.5,2.4c5.5,0,10-4.5,10-10S18.3,3,12.8,3z M20.7,12h-3c-0.3-2.7-1.5-5.1-2.6-6.6
+	C18.1,6.3,20.3,8.9,20.7,12z M15.7,12H9.8c0.3-2.8,2-5.3,2.9-6.5C13.7,6.7,15.3,9.2,15.7,12z M9.3,7.1L9.3,7.1V5.8
+	c0.4-0.2,0.7-0.3,1.1-0.5C10,5.9,9.7,6.5,9.3,7.1L9.3,7.1z M7.9,11c-0.1,0.3-0.1,0.7-0.1,1H6.3v-1h1H7.9L7.9,11z M4.3,3h2v2h-2V3z
+	 M5.8,9H4.3H3.6H3.3V7h1h0.5h1.5h1v0.2V9h-1H5.8z M6.3,17.6V14h1.6c0.3,2.7,1.5,5.1,2.6,6.6C8.7,20.1,7.3,19.1,6.3,17.6z M9.8,14
+	h5.9c-0.3,2.8-2,5.3-2.9,6.5C11.8,19.3,10.2,16.8,9.8,14z M15.1,20.6c1.1-1.6,2.3-3.9,2.6-6.6h3C20.3,17.1,18.1,19.7,15.1,20.6z"/>
+<g>
+	<circle fill="#FA6056" cx="16" cy="16" r="7"/>
+	<g>
+		<rect x="15.4" y="10.9" transform="matrix(0.7071 0.7071 -0.7071 0.7071 16 -6.6274)" fill="#FFFFFF" width="1.1" height="10.2"/>
+		<rect x="15.4" y="10.9" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -6.6274 16)" fill="#FFFFFF" width="1.1" height="10.2"/>
+	</g>
+</g>
+</svg>

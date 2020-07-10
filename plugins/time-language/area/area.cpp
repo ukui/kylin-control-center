@@ -26,7 +26,7 @@
 #include <QString>
 #include <QDateTime>
 #include <QTimer>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <KMessageBox>
 
 #define PANEL_GSCHEMAL   "org.ukui.control-center.panel.plugins"
@@ -106,7 +106,7 @@ Area::Area()
 
     connect(ui->countrycomboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             [=]{
-        KMessageBox::information(ui->languageframe_2, tr("Need to cancel to take effect"));
+        KMessageBox::information(ui->languageframe_2, tr("Need to log off to take effect"));
     });
 
 }

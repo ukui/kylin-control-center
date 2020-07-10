@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>945</width>
-    <height>824</height>
+    <height>919</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,6 +19,9 @@
    </property>
    <property name="rightMargin">
     <number>32</number>
+   </property>
+   <property name="bottomMargin">
+    <number>48</number>
    </property>
    <item>
     <widget class="QFrame" name="mainframe">
@@ -39,7 +42,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QQuickWidget" name="quickWidget">
+       <widget class="QQuickWidget" name="quickWidget" native="true">
         <property name="minimumSize">
          <size>
           <width>550</width>
@@ -51,9 +54,6 @@
           <width>550</width>
           <height>200</height>
          </size>
-        </property>
-        <property name="resizeMode">
-         <enum>QQuickWidget::SizeRootObjectToView</enum>
         </property>
        </widget>
       </item>
@@ -96,12 +96,6 @@
             <width>118</width>
             <height>30</height>
            </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>Noto Sans CJK SC</family>
-            <pointsize>11</pointsize>
-           </font>
           </property>
           <property name="text">
            <string>monitor</string>
@@ -229,6 +223,57 @@
         </item>
        </layout>
       </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="advancedHorLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>9</number>
+       </property>
+       <property name="topMargin">
+        <number>8</number>
+       </property>
+       <property name="rightMargin">
+        <number>9</number>
+       </property>
+       <property name="bottomMargin">
+        <number>32</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="advancedBtn">
+         <property name="minimumSize">
+          <size>
+           <width>120</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>120</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Advanced</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_8">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </item>
      <item>
       <widget class="QFrame" name="unionframe">

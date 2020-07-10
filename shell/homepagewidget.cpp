@@ -237,7 +237,7 @@ const QPixmap HomePageWidget::loadSvg(const QString &fileName, COLOR color)
     const auto ratio = qApp->devicePixelRatio();
     if ( 2 == ratio) {
         size = 96;
-    } else if (2 == ratio) {
+    } else if (3 == ratio) {
         size = 144;
     }
     QPixmap pixmap(size, size);

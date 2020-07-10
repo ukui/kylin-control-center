@@ -44,6 +44,7 @@
 
 #define STYLE_FONT_SCHEMA "org.ukui.style"
 #define SYSTEM_FONT_EKY "system-font-size"
+#define SYSTEM_NAME_KEY "system-font"
 
 #define FONT_RENDER_SCHEMA           "org.ukui.font-rendering"
 #define ANTIALIASING_KEY        "antialiasing" //绘制字形时使用反锯齿类型
@@ -270,25 +271,33 @@ void Fonts::setupComponent(){
 
     if (gtksizeList.length() == 0)
         gtksizeList = defaultsizeList;
-    for (int size : gtksizeList)
-        ui->defaultSizeComBox->addItem(QString::number(size));
+    for (int size : gtksizeList) {
+        if (size >=11 && size <= 18)
+            ui->defaultSizeComBox->addItem(QString::number(size));
+    }
+
     if (docsizeList.length() == 0)
         docsizeList = defaultsizeList;
-    for (int size : docsizeList)
-        ui->docSizeComBox->addItem(QString::number(size));
+    for (int size : docsizeList) {
+        if (size >=11 && size <= 18)
+            ui->docSizeComBox->addItem(QString::number(size));
+    }
     if (monosizeList.length() == 0)
         monosizeList = defaultsizeList;
-    for (int size : monosizeList)
-        ui->MonoSizeComBox->addItem(QString::number(size));
+    for (int size : monosizeList) {
+        if (size >=11 && size <= 18)
+            ui->MonoSizeComBox->addItem(QString::number(size));
+    }
 //    if (peonysizeList.length() == 0)
 //        peonysizeList = defaultsizeList;
 //    for (int size : peonysizeList)
 //        ui->peonySizeComBox->addItem(QString::number(size));
     if (titlesizeList.length() == 0)
         titlesizeList = defaultsizeList;
-    for (int size : titlesizeList)
-        ui->titleSizeComBox->addItem(QString::number(size));
-
+    for (int size : titlesizeList) {
+        if (size >=11 && size <= 18)
+            ui->titleSizeComBox->addItem(QString::number(size));
+    }
     //设置高级配置是否显示
     ui->advancedFrame->setVisible(ui->advancedBtn->isChecked());
 
@@ -345,7 +354,6 @@ void Fonts::setupConnect(){
         _getCurrentFontInfo();
         //设置字体大小
 
-        qDebug()<<"字体大小－－－－－>"<<value <<" " <<size<<endl;
         ifsettings->set(GTK_FONT_KEY, QVariant(QString("%1 %2").arg(gtkfontStrList.at(0)).arg(size)));
         ifsettings->set(DOC_FONT_KEY, QVariant(QString("%1 %2").arg(docfontStrList.at(0)).arg(size)));
         ifsettings->set(MONOSPACE_FONT_KEY, QVariant(QString("%1 %2").arg(monospacefontStrList.at(0)).arg(size)));
@@ -358,8 +366,9 @@ void Fonts::setupConnect(){
         //获取当前字体信息
         _getCurrentFontInfo();
         ifsettings->set(GTK_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(gtkfontStrList.at(1))));
-        ifsettings->set(DOC_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(docfontStrList.at(1))));
+        ifsettings->set(DOC_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(docfontStrList.at(1))));        
 //        peonysettings->set(PEONY_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(peonyfontStrList.at(1))));
+        stylesettings->set(SYSTEM_NAME_KEY, QVariant(QString("%1").arg(text)));
         marcosettings->set(TITLEBAR_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(titlebarfontStrList.at(1))));
 
         //给更新高级字体配置
@@ -382,20 +391,39 @@ void Fonts::setupConnect(){
 
     connect(ui->defaultFontComBox, &QComboBox::currentTextChanged, [=](QString text){
         _getCurrentFontInfo();
-        ifsettings->set(GTK_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(gtkfontStrList.at(1))));
+        ifsettings->set(GTK_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(ui->defaultSizeComBox->currentText())));
     });
+    connect(ui->defaultSizeComBox, &QComboBox::currentTextChanged, [=](QString text){
+        _getCurrentFontInfo();
+        ifsettings->set(GTK_FONT_KEY, QVariant(QString("%1 %2").arg(ui->defaultFontComBox->currentText()).arg(text)));
+    });
+
     connect(ui->docFontComBox, &QComboBox::currentTextChanged, [=](QString text){
         _getCurrentFontInfo();
-        ifsettings->set(DOC_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(docfontStrList.at(1))));
+        ifsettings->set(DOC_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(ui->docSizeComBox->currentText())));
     });
+    connect(ui->docSizeComBox, &QComboBox::currentTextChanged, [=](QString text){
+        _getCurrentFontInfo();
+        ifsettings->set(DOC_FONT_KEY, QVariant(QString("%1 %2").arg(ui->docFontComBox->currentText()).arg(text)));
+    });
+
     connect(ui->monoFontComBox, &QComboBox::currentTextChanged, [=](QString text){
         _getCurrentFontInfo();
-        ifsettings->set(MONOSPACE_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(monospacefontStrList.at(1))));
+        ifsettings->set(MONOSPACE_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(ui->MonoSizeComBox->currentText())));
+        initGeneralFontStatus();
+    });
+    connect(ui->MonoSizeComBox, &QComboBox::currentTextChanged, [=](QString text){
+        _getCurrentFontInfo();
+        ifsettings->set(MONOSPACE_FONT_KEY, QVariant(QString("%1 %2").arg(ui->monoFontComBox->currentText()).arg(text)));
     });
 
     connect(ui->titleFontComBox, &QComboBox::currentTextChanged, [=](QString text){
         _getCurrentFontInfo();
-        marcosettings->set(TITLEBAR_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(titlebarfontStrList.at(1))));
+        marcosettings->set(TITLEBAR_FONT_KEY, QVariant(QString("%1 %2").arg(text).arg(ui->titleSizeComBox->currentText())));
+    });
+    connect(ui->titleSizeComBox, &QComboBox::currentTextChanged, [=](QString text){
+        _getCurrentFontInfo();
+        marcosettings->set(TITLEBAR_FONT_KEY, QVariant(QString("%1 %2").arg(ui->titleFontComBox->currentText()).arg(text)));
     });
 
     ////绑定信号
@@ -472,7 +500,13 @@ void Fonts::initAdvancedFontStatus(){
     //初始化高级字体ComBox
     ui->defaultFontComBox->setCurrentText(gtkfontStrList.at(0));
     ui->docFontComBox->setCurrentText(docfontStrList.at(0));
-    ui->monoFontComBox->setCurrentText(monospacefontStrList.at(0));
+
+
+    QString currentmonofont = monospacefontStrList.at(0);
+    if ("DejaVu sans Mono" == currentmonofont) {
+        currentmonofont = "DejaVu Sans Mono";
+    }
+    ui->monoFontComBox->setCurrentText(currentmonofont);
 //    ui->peonyFontComBox->setCurrentText(peonyfontStrList.at(0));
     ui->titleFontComBox->setCurrentText(titlebarfontStrList.at(0));
 
@@ -703,6 +737,7 @@ void Fonts::resetDefault(){
 //    peonysettings->reset(PEONY_FONT_KEY);
     marcosettings->reset(TITLEBAR_FONT_KEY);
     stylesettings->set(SYSTEM_FONT_EKY, 11);
+    stylesettings->reset(SYSTEM_NAME_KEY);
 
     //reset font render
     rendersettings->reset(ANTIALIASING_KEY);

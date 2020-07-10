@@ -1,1 +1,26 @@
-<svg id="图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:#fff;}</style></defs><title>themeWhite</title><path class="cls-1" d="M22.8,9.86A11,11,0,0,0,1.2,14.14l.13.67.67.13A8.92,8.92,0,0,1,9.06,22l.13.67.67.13A12.23,12.23,0,0,0,12,23,11,11,0,0,0,22.8,9.86ZM9,10a2,2,0,1,1,2-2A2,2,0,0,1,9,10Zm5,8a2,2,0,1,1,2-2A2,2,0,0,1,14,18Zm2-7a2,2,0,1,1,2-2A2,2,0,0,1,16,11Z"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="图层_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
+	 enable-background="new 0 0 24 24" xml:space="preserve">
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="1298" width="1504" x="-206" y="-620"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<path fill="#FFFFFF" d="M22.8,9.9C22,5.5,18.5,2,14.1,1.2c-3.7-0.7-7.3,0.4-9.9,3c-2.6,2.6-3.7,6.2-3,9.9l0.1,0.7L2,14.9
+	c3.6,0.7,6.4,3.5,7.1,7.1l0.1,0.7l0.7,0.1c0.7,0.1,1.5,0.2,2.2,0.2c2.9,0,5.7-1.1,7.8-3.2C22.4,17.2,23.5,13.5,22.8,9.9z M9,10
+	c-1.1,0-2-0.9-2-2c0-1.1,0.9-2,2-2s2,0.9,2,2C11,9.1,10.1,10,9,10z M14,18c-1.1,0-2-0.9-2-2c0-1.1,0.9-2,2-2s2,0.9,2,2
+	C16,17.1,15.1,18,14,18z M16,11c-1.1,0-2-0.9-2-2c0-1.1,0.9-2,2-2s2,0.9,2,2C18,10.1,17.1,11,16,11z"/>
+</svg>

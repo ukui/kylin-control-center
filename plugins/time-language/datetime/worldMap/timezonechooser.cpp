@@ -10,6 +10,7 @@
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QPainter>
+#include <QPainterPath>
 TimeZoneChooser::TimeZoneChooser():QFrame ()
 {
     m_map = new TimezoneMap(this);
@@ -21,13 +22,13 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
     m_cancelBtn = new QPushButton(tr("Cancel"));
     m_confirmBtn = new QPushButton(tr("Confirm"));
 
-    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);//无边框
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint| Qt::Tool);//无边框
     setAttribute(Qt::WA_StyledBackground,true);
 
     this->setObjectName("MapFrame");
 //    this->setStyleSheet("QFrame#MapFrame{background-color: rgb(22, 24, 26);border-radius:4px}");
 
-    closeBtn->setIcon(QIcon("://img/titlebar/closeWhite.png"));
+    closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
     closeBtn->setFlat(true);
     closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");

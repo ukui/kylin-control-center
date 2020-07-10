@@ -48,16 +48,19 @@ private:
     QFrame *m_pThemeWidget;
     QFrame *m_pShutDownWidget;
     QFrame *m_pLagoutWidget;
+    QFrame *m_pAlertSoundSwitchWidget;
     QString qss;
     QStyledItemDelegate *itemDelegate;
     QLabel *m_pSoundEffectLabel;
     QLabel *m_pSoundThemeLabel;
     QLabel *m_pShutdownlabel;
     QLabel *m_pLagoutLabel;
+    QLabel *m_pAlertSoundSwitchLabel;
     QComboBox *m_pSoundThemeCombobox;
     QComboBox *m_pShutdownCombobox;
     QComboBox *m_pLagoutCombobox;
     SwitchButton *m_pBootButton;
+    SwitchButton *m_pAlertSoundSwitchButton;
 };
 
 #endif // UKMEDIASOUNDEFFECTSWIDGET_H

@@ -20,7 +20,7 @@
 #include "theme.h"
 #include "ui_theme.h"
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 
 #include "SwitchButton/switchbutton.h"
 
@@ -32,6 +32,7 @@
 
 #include <QDebug>
 #include <QtDBus/QDBusConnection>
+#include <QtConcurrent>
 /**
  * GTK主题
  */
@@ -45,6 +46,8 @@
  */
 #define THEME_QT_SCHEMA "org.ukui.style"
 #define MODE_QT_KEY "style-name"
+#define THEME_TRAN_KEY "menu-transparency"
+
 /* QT图标主题 */
 #define ICON_QT_KEY "icon-theme-name"
 
@@ -63,6 +66,16 @@
 #define CURSOR_THEME_KEY "cursor-theme"
 
 #define ICONWIDGETHEIGH 74
+
+
+/**
+ * 透明度设置
+ */
+#define PERSONALSIE_SCHEMA "org.ukui.control-center.personalise"
+#define PERSONALSIE_TRAN_KEY "transparency"
+#define PERSONALSIE_BLURRY_KEY "blurry"
+
+const QString defCursor = "DMZ-White";
 
 
 namespace {
@@ -86,7 +99,7 @@ namespace {
         "split_v",
     };
 
-    const int numCursors      = 9;     // The number of cursors from the above list to be previewed
+    const int numCursors = 9;     // The number of cursors from the above list to be previewed
 }
 
 Theme::Theme()
@@ -106,16 +119,18 @@ Theme::Theme()
     const QByteArray id(THEME_GTK_SCHEMA);
     const QByteArray idd(THEME_QT_SCHEMA);
     const QByteArray iid(CURSOR_THEME_SCHEMA);
-
-    //设置样式
-    setupStylesheet();
+    const QByteArray iiid(PERSONALSIE_SCHEMA);
+    if (QGSettings::isSchemaInstalled(iiid)) {
+        personliseGsettings = new QGSettings(iiid);
+    }
     //设置组件
     setupComponent();
 
     // init kwin settings
     setupSettings();
 
-    if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(idd) && QGSettings::isSchemaInstalled(iid)){
+    if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(idd)
+            && QGSettings::isSchemaInstalled(iid)){
         gtkSettings = new QGSettings(id);
         qtSettings = new QGSettings(idd);
         curSettings = new QGSettings(iid);
@@ -125,7 +140,7 @@ Theme::Theme()
         initThemeMode();
         initIconTheme();
         initCursorTheme();
-        initEffectSettings();
+//        initEffectSettings();
         initConnection();
     } else {
         qCritical() << THEME_GTK_SCHEMA << "or" << THEME_QT_SCHEMA << "or" << CURSOR_THEME_SCHEMA << "not installed\n";
@@ -141,7 +156,15 @@ Theme::~Theme()
         delete qtSettings;
         delete curSettings;
     }
-
+    if (kwinSettings ){
+        delete kwinSettings;
+    }
+    if (kwinGsettings) {
+        delete kwinGsettings;
+    }
+    if (personliseGsettings) {
+        delete personliseGsettings;
+    }
 }
 
 QString Theme::get_plugin_name(){
@@ -160,27 +183,6 @@ void Theme::plugin_delay_control(){
 
 }
 
-void Theme::setupStylesheet(){
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-//    ui->controlWidget->setStyleSheet("QWidget#controlWidget{background: #F4F4F4; border-radius: 6px;}");
-
-//    ui->effectWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->line->setStyleSheet("QFrame{border-top: 1px solid #CCCCCC; border-left: none; border-right: none; border-bottom: none;}");
-
-//    ui->resetBtn->setStyleSheet("QPushButton#resetBtn{background: #F4F4F4; border: none; border-radius: 4px;}"
-//                                "QPushButton:hover:!pressed#resetBtn{border: none; background: #3D6BE5; border-radius: 2px;}"
-//                                "QPushButton:hover:pressed#resetBtn{border: none; background: #2C5AD6; border-radius: 2px;}");
-
-//    ui->transparencySlider->setStyleSheet("QSlider{height: 20px;}"
-//                                          "QSlider::groove:horizontal{border: none;}"
-//                                          "QSlider::add-page:horizontal{background: #808080; border-radius: 2px; margin-top: 8px; margin-bottom: 9px;}"
-//                                          "QSlider::sub-page:horizontal{background: #3D6BE5; border-radius: 2px; margin-top: 8px; margin-bottom: 9px;}"
-//                                          "QSlider::handle:horizontal{width: 20px; height: 20px; border-image: url(:/img/plugins/fonts/bigRoller.png);}"
-//                                          "");
-}
-
-
 void Theme::setupSettings() {
     QString filename = QDir::homePath() + "/.config/ukui-kwinrc";
     kwinSettings = new QSettings(filename, QSettings::IniFormat);
@@ -197,6 +199,12 @@ void Theme::setupSettings() {
     if (!dir.isFile()) {
         effectSwitchBtn->setChecked(true);
     }
+
+    if (effectSwitchBtn->isChecked()) {
+        ui->transFrame->setVisible(true);
+    } else {
+        ui->transFrame->setVisible(false);
+    }
 }
 
 void Theme::setupComponent(){
@@ -206,37 +214,42 @@ void Theme::setupComponent(){
     ui->controlLabel->hide();
     ui->controlWidget->hide();
 
-    ui->defaultButton->setProperty("value", "ukui-white");
-    ui->lightButton->setProperty("value", "ukui-default");
-    ui->darkButton->setProperty("value", "ukui-black");
+    ui->defaultButton->setProperty("value", "ukui-default");
+//    ui->lightButton->setProperty("value", "ukui-default");
+    ui->darkButton->setProperty("value", "ukui-dark");
 
     buildThemeModeBtn(ui->defaultButton, tr("Default"), "default");
     buildThemeModeBtn(ui->lightButton, tr("Light"), "light");
     buildThemeModeBtn(ui->darkButton, tr("Dark"), "dark");
 
+    ui->tranSlider->setRange(1, 100);
+    ui->tranSlider->setTickInterval(1);
+    ui->tranSlider->setPageStep(1);
+
+    ui->tranSlider->setValue(static_cast<int>(personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble() * 100));
+    ui->tranLabel->setText(QString::number(static_cast<double>(ui->tranSlider->value())/100.0));
+    connect(ui->tranSlider, &QSlider::valueChanged, [=](int value){
+        personliseGsettings->set(PERSONALSIE_TRAN_KEY, static_cast<double>(value)/100.0);
+        qtSettings->set(THEME_TRAN_KEY, value);
+        ui->tranLabel->setText(QString::number(static_cast<double>(ui->tranSlider->value())/100.0));
+    });
     setupControlTheme();
 
 //    ui->effectLabel->hide();
 //    ui->effectWidget->hide();
-    ui->transparencySlider->hide();
-    ui->label_9->hide();
-    ui->label_11->hide();
-    ui->line->hide();
-
 
     //构建并填充特效开关按钮
     effectSwitchBtn = new SwitchButton(pluginWidget);
     ui->effectHorLayout->addWidget(effectSwitchBtn);
 
+    ui->kwinFrame->setVisible(false);
+    ui->transFrame->setVisible(true);
 
-//    kwinGsettings = new QDBusInterface("org.freedesktop.timedate1",
-//                                       "/org/freedesktop/timedate1",
-//                                       "org.freedesktop.timedate1",
-//                                       QDBusConnection::systemBus());
-//    QDBusConnection::sessionBus().unregisterService("com.ukui.KWin");
-//    QDBusConnection::sessionBus().registerService("com.ukui.KWin");
-//    QDBusConnection::sessionBus().registerObject("/KWin", this,QDBusConnection :: ExportAllSlots | QDBusConnection :: ExportAllSignals);
+#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
 
+#else
+
+#endif
 }
 
 void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
@@ -273,7 +286,7 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
 #endif
         if (eBtn == button) {
             nameLabel->setStyleSheet("color: #ffffff;");
-            statusLabel->setPixmap(QPixmap("://img/plugins/theme/selected.png"));
+            statusLabel->setPixmap(QPixmap("://img/plugins/theme/selected.svg"));
         }
         else {
             nameLabel->setStyleSheet("color: palette(windowText);");
@@ -296,18 +309,15 @@ void Theme::initThemeMode(){
     //监听主题改变
     connect(qtSettings, &QGSettings::changed, this, [=](const QString &key){
         if (key == "styleName") {
-            auto style = qtSettings->get(key).toString();
-            qApp->setStyle(new InternalStyle(style));
-        }
-
-        //获取当前主题
-        QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-        qApp->setStyle(new InternalStyle(currentThemeMode));
-
-        for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
-            QVariant valueVariant = button->property("value");
-            if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode)
-                button->click();
+            //获取当前主题
+            QString currentThemeMode = qtSettings->get(key).toString();
+            writeKwinSettings(true, currentThemeMode);
+            for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
+                QVariant valueVariant = button->property("value");
+                if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode) {
+                    button->click();
+                }
+            }
         }
     });
 
@@ -327,15 +337,25 @@ void Theme::initThemeMode(){
 #else
     connect(ui->themeModeBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this, [=](QAbstractButton * button){
 #endif
-        //设置主题
+//        //设置主题
         QString themeMode = button->property("value").toString();
         QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-        if (QString::compare(currentThemeMode, themeMode)){
-            qApp->setStyle(new InternalStyle(themeMode));
-            qtSettings->set(MODE_QT_KEY, themeMode);
-            gtkSettings->set(MODE_GTK_KEY, themeMode);
 
-            writeKwinSettings(!effectSwitchBtn->isChecked(), themeMode);
+
+        qApp->setStyle(new InternalStyle(themeMode));
+        if (QString::compare(currentThemeMode, themeMode)){
+            QString tmpMode;
+            if ("ukui-dark" == themeMode) {
+                tmpMode = "ukui-black";
+            } else {
+                tmpMode = "ukui-white";
+            }
+            gtkSettings->set(MODE_GTK_KEY, tmpMode);
+
+            QtConcurrent::run([=](){
+                qtSettings->set(MODE_QT_KEY, themeMode);
+            });
+            writeKwinSettings(true, themeMode);
         }
     });
 }
@@ -476,7 +496,8 @@ void Theme::initCursorTheme(){
         XCursorTheme *cursorTheme = new XCursorTheme(path);
 
         for(int i = 0; i < numCursors; i++){
-            QImage image = cursorTheme->loadImage(cursor_names[i],20);
+            int size = qApp->devicePixelRatio() * 8;
+            QImage image = cursorTheme->loadImage(cursor_names[i],size);
             cursorVec.append(QPixmap::fromImage(image));
         }
 
@@ -491,7 +512,7 @@ void Theme::initCursorTheme(){
         cursorThemeWidgetGroup->addWidget(widget);
 
         //初始化指针主题选中界面
-        if (currentCursorTheme == cursor){
+        if (currentCursorTheme == cursor || (currentCursorTheme.isEmpty() && cursor == defCursor)){
             cursorThemeWidgetGroup->setCurrentWidget(widget);
             widget->setSelectedStatus(true);
         } else {
@@ -512,6 +533,7 @@ void Theme::initConnection() {
 
     connect(effectSwitchBtn, &SwitchButton::checkedChanged, [this](bool checked) {
         QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
+        ui->transFrame->setVisible(checked);
         writeKwinSettings(checked, currentThemeMode);
     });
 }
@@ -548,11 +570,15 @@ QString Theme::dullTranslation(QString str){
 void Theme::resetBtnClickSlot() {
 
     // reset theme(because MODE_QT_KEY's default is null, use "SET" to reset default key )
-    QString theme = "ukui-white";
-    qtSettings->set(MODE_QT_KEY, theme);
-    gtkSettings->set(MODE_GTK_KEY, theme);
+//    QString theme = "ukui-default";
+//    qtSettings->set(MODE_QT_KEY, theme);
+//    gtkSettings->set(MODE_GTK_KEY, theme);
+//    emit ui->defaultButton->clicked();
+    emit ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
 
-    // reset cursor default theme    
+//    ui->defaultButton->setChecked(true);
+
+    // reset cursor default theme
     QString cursorTheme = "breeze_cursors";
     curSettings->set(CURSOR_THEME_KEY,cursorTheme);
 
@@ -571,32 +597,56 @@ void Theme::resetBtnClickSlot() {
     initCursorTheme();
 }
 
-void Theme::writeKwinSettings(bool change, QString theme) {
-    QString th;
-    if ("ukui-white" == theme) {
+void Theme::writeKwinSettings(bool change, QString theme, int effect) {
+
+    QString th = "";
+    if ("ukui-default" == theme) {
         th = "__aurorae__svg__Ukui-classic";
-    } else {
+    } else if ("ukui-dark" == theme){
         th = "__aurorae__svg__Ukui-classic-dark";
     }
-    kwinSettings->beginGroup("Plugins");
-    kwinSettings->setValue("blurEnabled",change);
-    kwinSettings->endGroup();
+    if (!change) {
+        kwinSettings->clear();
+        kwinSettings->beginGroup("Plugins");
+        kwinSettings->setValue("blurEnabled",false);
+        kwinSettings->setValue("contrastEnabled",false);
+        kwinSettings->setValue("kwin4_effect_dialogparentEnabled",false);
+        kwinSettings->setValue("kwin4_effect_fadingpopupsEnabled",false);
+        kwinSettings->setValue("kwin4_effect_frozenappEnabled",false);
+        kwinSettings->setValue("kwin4_effect_loginEnabled",false);
+        kwinSettings->setValue("kwin4_effect_logoutEnabled",false);
+        kwinSettings->setValue("kwin4_effect_maximizeEnabled",false);
+        kwinSettings->setValue("kwin4_effect_maximizeEnabled",false);
+        kwinSettings->setValue("kwin4_effect_morphingpopupsEnabled",false);
+        kwinSettings->setValue("kwin4_effect_squashEnabled",false);
+        kwinSettings->setValue("kwin4_effect_translucencyEnabled",false);
+        kwinSettings->setValue("presentwindowsEnabled",false);
+        kwinSettings->setValue("screenedgeEnabled",false);
+        kwinSettings->setValue("slideEnabled",false);
+        kwinSettings->setValue("slidingpopupsEnabled",false);
+        kwinSettings->setValue("zoomEnabled",false);
+        kwinSettings->endGroup();
+    } else {
+        kwinSettings->clear();
+        kwinSettings->beginGroup("Plugins");
+        kwinSettings->setValue("blurEnabled",true);
+        kwinSettings->endGroup();
+    }
 
-    kwinSettings->beginGroup("org.kde.kdecoration2");
-    kwinSettings->setValue("theme", th);
-    kwinSettings->endGroup();
-
-    kwinSettings->beginGroup("org.kde.kdecoration2");
-    kwinSettings->setValue("library", "org.ukui.kwin.aurorae");
-    kwinSettings->endGroup();
+    if (!th.isEmpty()) {
+        kwinSettings->beginGroup("org.kde.kdecoration2");
+        kwinSettings->setValue("theme", th);
+        kwinSettings->setValue("library", "org.ukui.kwin.aurorae");
+        kwinSettings->endGroup();
+    }
 
     kwinSettings->sync();
 
 #if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
 
 #else
-    QDBusMessage message = QDBusMessage::createSignal("/KWin", "org.ukui.KWin", "reloadConfig");
-    QDBusConnection::sessionBus().send(message);
+        QDBusMessage message = QDBusMessage::createSignal("/KWin", "org.ukui.KWin", "reloadConfig");
+        QDBusConnection::sessionBus().send(message);
 #endif
 }
 
@@ -610,5 +660,46 @@ void Theme::clearLayout(QLayout* mlayout, bool deleteWidgets)
             delete item->widget();
             delete item;
         }
+    }
+}
+
+double Theme::convertToTran(const int value)
+{
+    switch (value) {
+    case 1:
+        return 0.2;
+        break;
+    case 2:
+        return 0.4;
+        break;
+    case 3:
+        return 0.6;
+        break;
+    case 4:
+        return 0.8;
+        break;
+    case 5:
+        return 1.0;
+        break;
+    default:
+        return 1.0;
+        break;
+    }
+}
+
+int Theme::tranConvertToSlider(const double value)
+{
+    if (0.2 ==  value) {
+        return 1;
+    } else if (0.4 ==  value){
+        return 2;
+    } else if (0.6 ==  value){
+        return 3;
+    } else if (0.8 ==  value){
+        return 4;
+    } else if (1.0 ==  value){
+        return 5;
+    } else {
+        return 5;
     }
 }

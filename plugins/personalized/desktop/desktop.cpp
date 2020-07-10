@@ -20,7 +20,7 @@
 #include "desktop.h"
 #include "ui_desktop.h"
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include "SwitchButton/switchbutton.h"
 #include "realizedesktop.h"
 
@@ -104,6 +104,9 @@ Desktop::Desktop()
 //    ui->menuFilesystemFrame->setVisible(false);
 //    ui->menuSettingFrame->setVisible(false);
 
+    ui->title2Label->hide();
+    ui->fullScreenMenuFrame->setVisible(false);
+
 
     vecGsettings = new QVector<QGSettings*>();
     const QByteArray id(DESKTOP_SCHEMA);
@@ -160,16 +163,17 @@ void Desktop::initTranslation() {
     transMap.insert("ukui-sidebar", "侧边栏");
     transMap.insert("ukui-power-manager-tray", "电源管理");
 
-    iconMap.insert("ukui-volume-control-applet-qt", "audio-volume-high");
-    iconMap.insert("kylin-nm", "gpm-battery-change");
+    iconMap.insert("ukui-volume-control-applet-qt", "audio-card");
+    iconMap.insert("kylin-nm", "preferences-system-network");
     iconMap.insert("indicator-china-weather", "indicator-china-weather");
     iconMap.insert("ukui-flash-disk", "drive-removable-media");
-    iconMap.insert("kylin-nm", "nm-device-wired");
-    iconMap.insert("ukui-power-manager-tray", "battery-good");
+    iconMap.insert("ukui-power-manager-tray", "cs-power");
     iconMap.insert("fcitx", "fcitx");
+    iconMap.insert("blueman", "preferences-system-bluetooth");
+    iconMap.insert("kylin-video", "kylin-video");
 
     disList<<"ukui-sidebar"<<"update-notifier"<<"software-update-available"
-          <<"blueman-tray"<<"ukui-power-manager"<<"ukui-settings-daemon"<<"blueman-tray"
+          <<"blueman-tray"<<"ukui-power-manager"<<"ukui-settings-daemon"<<"blueman-applet"
          <<"ErrorApplication"<<"livepatch";
 
 }

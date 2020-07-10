@@ -30,6 +30,7 @@
 #include <QCoreApplication>
 #include <QVBoxLayout>
 #include "ukui_custom_style.h"
+#include "customstyle.h"
 
 class AudioSlider : public QSlider
 {
@@ -59,6 +60,8 @@ class UkmediaOutputWidget : public QWidget
 public:
     explicit UkmediaOutputWidget(QWidget *parent = nullptr);
     ~UkmediaOutputWidget();
+    void outputWidgetAddPort();
+    void outputWidgetRemovePort();
     friend class UkmediaMainWidget;
 Q_SIGNALS:
 
@@ -69,18 +72,23 @@ private:
     QFrame *m_pOutputDeviceWidget;
     QFrame *m_pMasterVolumeWidget;
     QFrame *m_pChannelBalanceWidget;
+    QFrame * m_pOutputPortWidget;
+
+    QLabel *m_pOutputPortLabel;
     QLabel *m_pOutputLabel;
     QLabel *m_pOutputDeviceLabel;
-    QComboBox *m_pOutputDeviceCombobox;
     QLabel *m_pOpVolumeLabel;
-    UkuiButtonDrawSvg *m_pOutputIconBtn;
-    AudioSlider *m_pOpVolumeSlider;
     QLabel *m_pOpVolumePercentLabel;
     QLabel *m_pOpBalanceLabel;
     QLabel *m_pLeftBalanceLabel;
-    AudioSlider *m_pOpBalanceSlider;
     QLabel *m_pRightBalanceLabel;
 
+    QComboBox *m_pOutputPortCombobox;
+    QComboBox *m_pOutputDeviceCombobox;
+    UkuiButtonDrawSvg *m_pOutputIconBtn;
+    AudioSlider *m_pOpVolumeSlider;
+    UkmediaVolumeSlider *m_pOpBalanceSlider;
+    QVBoxLayout *m_pVlayout;
     QString sliderQss;
 };
 

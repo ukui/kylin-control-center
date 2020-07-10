@@ -58,8 +58,6 @@ Wallpaper::Wallpaper()
 
     settingsCreate = false;
 
-    //设置样式
-    setupQStylesheet();
     //初始化控件
     setupComponent();
     //初始化gsettings
@@ -100,25 +98,6 @@ QWidget *Wallpaper::get_plugin_ui(){
 }
 
 void Wallpaper::plugin_delay_control(){
-}
-
-void Wallpaper::setupQStylesheet(){
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-//    ui->previewLabel->setStyleSheet("QLabel#previewLabel{border-radius: 6px;}");
-
-//    ui->switchWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-
-//    ui->listWidget->setStyleSheet("QListWidget#listWidget{background: #ffffff; border: none;}");
-//    ui->colorListWidget->setStyleSheet("QListWidget#colorListWidget{background: #ffffff; border: none;}");
-
-//    QString btnQss = QString("QPushButton{background: #E9E9E9; border-radius: 4px;}"
-//                             "QPushButton:hover:!pressed{background: #3d6be5; border: none; border-radius: 4px;}"
-//                             "QPushButton:hover:pressed{background: #415FC4; border: none; border-radius: 4px;}");
-//    ui->browserLocalwpBtn->setStyleSheet(btnQss);
-//    ui->browserOnlinewpBtn->setStyleSheet(btnQss);
-
-//    ui->resetBtn->setStyleSheet(btnQss);
 }
 
 void Wallpaper::setupComponent(){

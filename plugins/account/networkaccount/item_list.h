@@ -38,7 +38,7 @@ public:
     void            add_item(QString item_name);
 private:
     QListWidgetItem *items[30];
-    QStringList     varmap = {tr("Walpaper"),tr("Menu"),tr("Quick Start"),tr("Tab"),tr("Weather"),tr("Media")};
+    QStringList     varmap = {tr("Walpaper"),tr("ScreenSaver"),tr("Menu"),tr("Quick Start"),tr("Tab"),tr("Weather"),tr("Media")};
     int             itemsize = 0;
     network_item    *itempack[30];
     QPoint          m_startPoint;

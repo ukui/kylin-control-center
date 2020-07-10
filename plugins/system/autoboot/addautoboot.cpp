@@ -59,7 +59,7 @@ AddAutoBoot::AddAutoBoot(QWidget *parent) :
 //    ui->cancelBtn->setStyleSheet(btnQss);
 //    ui->certainBtn->setStyleSheet(btnQss);
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
+    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
     ui->closeBtn->setProperty("useIconHighlightEffect", true);
     ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
     ui->closeBtn->setFlat(true);

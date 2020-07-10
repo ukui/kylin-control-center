@@ -21,12 +21,11 @@
 
 SuccessDiaolog::SuccessDiaolog(QWidget *parent) : QWidget(parent)
 {
-    bkg = new QLabel(this);
+    bkg = new QSvgWidget(":/new/image/success.svg");
     text_msg = new QLabel(this);
     back_login = new QPushButton(this);
     layout = new QVBoxLayout;
 
-    bkg->setStyleSheet("background-image:url(:/new/image/success.png);width:148px;height:148px;");
     bkg->setFixedSize(148,148);
 
     text_msg->setStyleSheet("font-size:24px");
@@ -40,11 +39,11 @@ SuccessDiaolog::SuccessDiaolog(QWidget *parent) : QWidget(parent)
                               "QPushButton:click {font-size:14px;background-color: #415FC4;border-radius: 4px;postion:realative;color:rgba(255,255,255,0.85);}");
     back_login->setContentsMargins(0,16,0,0);
 
-    layout->setContentsMargins(41,100,41,126);
+    layout->setContentsMargins(41,100,41,110);
     layout->setSpacing(0);
     layout->addWidget(bkg,0,Qt::AlignCenter);
-    layout->addSpacing(16);
     layout->addWidget(text_msg,0,Qt::AlignCenter);
+    layout->addStretch();
     layout->addWidget(back_login,0,Qt::AlignCenter | Qt::AlignBottom);
 
     setLayout(layout);

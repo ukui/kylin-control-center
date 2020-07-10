@@ -63,7 +63,7 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
 //    ui->pwdLineEdit->setStyleSheet("QLineEdit{background: #F4F4F4; border: none; border-radius: 4px;}");
 //    ui->pwdsureLineEdit->setStyleSheet("QLineEdit{background: #F4F4F4; border: none; border-radius: 4px;}");
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
+    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
 //    ui->pwdTypeComBox->setStyleSheet("QComboBox{background: #F4F4F4; border-radius: 4px; font-size:14px;padding-left: 8px; color: black; min-height: 30px; combobox-popup: 0;}"
 //                                     "QComboBox::down-arrow{image:url(://img/dropArrow/downpx.png)}"
@@ -75,6 +75,7 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
     ui->pwdTypeComBox->setMaxVisibleItems(5);
 
 
+    initPwdChecked();
     setupComonpent();
     setupConnect();
 
@@ -84,6 +85,35 @@ CreateUserDialog::~CreateUserDialog()
 {
     delete ui;
 //    delete process;
+}
+
+void CreateUserDialog::initPwdChecked(){
+
+#ifdef ENABLEPQ
+    int ret;
+    void *auxerror;
+    char buf[255];
+
+    settings = pwquality_default_settings();
+    if (settings == NULL) {
+        enablePwdQuality = false;
+        qDebug() << "init pwquality settings failed";
+    } else {
+        enablePwdQuality = true;
+    }
+
+    ret = pwquality_read_config(settings, PWCONF, &auxerror);
+    if (ret != 0){
+        enablePwdQuality = false;
+        qDebug() << "Reading pwquality configuration file failed: " << pwquality_strerror(buf, sizeof(buf), ret, auxerror);
+    } else {
+        enablePwdQuality = true;
+    }
+
+#else
+    enablePwdQuality = false;
+#endif
+
 }
 
 void CreateUserDialog::setupComonpent(){
@@ -222,6 +252,10 @@ void CreateUserDialog::setupConnect(){
 //        ui->pinsuretipLabel->show();
 //}
 
+void CreateUserDialog::setRequireLabel(QString msg){
+//    ui->requireLabel->setText(msg);
+}
+
 void CreateUserDialog::refreshConfirmBtnStatus(){
     if (ui->usernameLineEdit->text().isEmpty() ||
             ui->pwdLineEdit->text().isEmpty() ||
@@ -233,13 +267,32 @@ void CreateUserDialog::refreshConfirmBtnStatus(){
 }
 
 
-void CreateUserDialog::pwdLegalityCheck(QString pwd){    
-    if (pwd.length() < PWD_LOW_LENGTH) {
-        pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
-    } else if (pwd.length() > PWD_HIGH_LENGTH) {
-        pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
+void CreateUserDialog::pwdLegalityCheck(QString pwd){
+    if (enablePwdQuality){
+#ifdef ENABLEPQ
+        void * auxerror;
+        int ret;
+        const char * msg;
+        char buf[256];
+
+        QByteArray ba = pwd.toLatin1();
+
+        ret = pwquality_check(settings, ba.data(), NULL, NULL, &auxerror);
+        if (ret < 0 && pwd.length() > 0){
+            msg = pwquality_strerror(buf, sizeof(buf), ret, auxerror);
+            pwdTip = QString(msg);
+        } else {
+            pwdTip = "";
+        }
+#endif
     } else {
-        pwdTip = "";
+        if (pwd.length() < PWD_LOW_LENGTH) {
+            pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
+        } else if (pwd.length() > PWD_HIGH_LENGTH) {
+            pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
+        } else {
+            pwdTip = "";
+        }
     }
 
     //防止先输入确认密码，再输入密码后pwdsuretipLabel无法刷新

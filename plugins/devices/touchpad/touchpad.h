@@ -24,7 +24,7 @@
 #include <QtPlugin>
 #include <QListView>
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QX11Info>
 
 #include "shell/interface.h"

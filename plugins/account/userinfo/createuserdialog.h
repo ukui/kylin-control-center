@@ -23,10 +23,23 @@
 #include <QDialog>
 #include <QProcess>
 #include <QPainter>
+#include <QPainterPath>
 
 #include <QKeyEvent>
 #include <QFile>
 #include <QStyledItemDelegate>
+
+
+#ifdef ENABLEPQ
+extern "C" {
+
+#include <pwquality.h>
+
+}
+#define PWCONF "/etc/security/pwquality.conf"
+#define RFLAG 0x1
+#define CFLAG 0x2
+#endif
 
 namespace Ui {
 class CreateUserDialog;
@@ -43,11 +56,14 @@ public:
 public:
     void setupComonpent();
     void setupConnect();
+    void setRequireLabel(QString msg);
 
     void refreshConfirmBtnStatus();
 
     void nameLegalityCheck(QString username);
     void pwdLegalityCheck(QString pwd);
+
+    void initPwdChecked();
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -67,6 +83,12 @@ private:
 private:
     QStyledItemDelegate* itemDelege;
     bool isCreateUser = false;
+
+    bool enablePwdQuality;
+
+#ifdef ENABLEPQ
+    pwquality_settings_t *settings;
+#endif
 
 Q_SIGNALS:
     void newUserWillCreate(QString username, QString pwd, QString pin, int atype);

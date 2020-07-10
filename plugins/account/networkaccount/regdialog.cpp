@@ -33,7 +33,8 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     hlayout = new QHBoxLayout;
     pass_tip = new QLabel(this);
     user_tip = new QLabel(this);
-    tips = new QLabel(this);
+    tips = new ql_label_info(this);
+    svg_hd = new ql_svg_handler(this);
 
     QString str = ("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
                    "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
@@ -45,10 +46,9 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     send_msg_btn->setFixedSize(QSize(130,36));
     reg_confirm->setFixedSize(QSize(338,36));
     reg_phone->setFocusPolicy(Qt::StrongFocus);
-    reg_phone->setFocus();
 
-    tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                        "&nbsp;&nbsp;"+code+"</span></p></body></html>");
+
+
     reg_phone->setMaxLength(11);
     reg_pass->setPlaceholderText(tr("Your password here"));
     reg_pass->setEchoMode(QLineEdit::Password);
@@ -120,13 +120,27 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     send_msg_btn->setFocusPolicy(Qt::NoFocus);
     connect(valid_code,SIGNAL(textChanged(QString)),this,SLOT(change_uppercase()));
     connect(this,SIGNAL(code_changed()),this,SLOT(setstyleline()));
+    connect(reg_pass,&ql_lineedit_pass::verify_text,[this] () {
+       pass_tip->setText(tr("Your password is valid!"));
+    });
+    connect(reg_pass,&ql_lineedit_pass::false_text,[this] () {
+       pass_tip->setText(tr("At least 6 bit, include letters and digt"));
+    });
     adjustSize();
+    reg_phone->setFocus();
+}
+
+void RegDialog::set_staus(bool ok) {
+    reg_confirm->setEnabled(ok);
+    reg_user->setEnabled(ok);
+    reg_phone->setEnabled(ok);
+    valid_code->setEnabled(ok);
+    send_msg_btn->setEnabled(ok);
 }
 
 /* 更新设置错误提示 */
 void RegDialog::setstyleline() {
-    tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                        "&nbsp;&nbsp;"+code+"</span></p></body></html>");
+    tips->set_text(code);
 }
 
 /* 获取错误代码 */
@@ -160,7 +174,7 @@ QLineEdit* RegDialog::get_valid_code() {
     return valid_code;
 }
 
-QLineEdit* RegDialog::get_phone_user() {
+area_code_lineedit* RegDialog::get_phone_user() {
     return reg_phone;
 }
 
@@ -201,6 +215,6 @@ void RegDialog::set_clear() {
     valid_code->setText("");
 }
 
-QLabel* RegDialog::get_tips() {
+ql_label_info* RegDialog::get_tips() {
     return tips;
 }

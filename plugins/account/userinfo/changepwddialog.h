@@ -22,6 +22,21 @@
 
 #include <QDialog>
 #include <QPainter>
+#include <QPainterPath>
+
+
+#ifdef ENABLEPQ
+extern "C" {
+
+#include <pwquality.h>
+
+}
+
+#define PWCONF "/etc/security/pwquality.conf"
+#define RFLAG 0x1
+#define CFLAG 0x2
+
+#endif
 
 namespace Ui {
 class ChangePwdDialog;
@@ -36,6 +51,7 @@ public:
     ~ChangePwdDialog();
 
 public:
+    void initPwdChecked();
     void setupComponent();
     void setupConnect();
 
@@ -56,6 +72,12 @@ private:
     QString nameTip;
     QString pwdTip;
     QString pwdSureTip;
+
+    bool enablePwdQuality;
+
+#ifdef ENABLEPQ
+    pwquality_settings_t *settings;
+#endif
 
 Q_SIGNALS:
     void passwd_send(QString pwd, QString username);

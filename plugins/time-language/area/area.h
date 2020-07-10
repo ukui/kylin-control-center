@@ -31,7 +31,7 @@
 #include <QProcess>
 #include <QDBusInterface>
 #include <QDBusReply>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QListView>
 
 

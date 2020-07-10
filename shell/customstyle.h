@@ -35,7 +35,7 @@ public:
     void polish(QPalette &pal);
     void polish(QWidget *widget);
 
-signals:
+//signals:
 
 };
 

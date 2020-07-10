@@ -24,6 +24,7 @@ LIBS          +=  -L/usr/lib/ -lgsettings-qt
 CONFIG        += link_pkgconfig \
                  C++11
 PKGCONFIG     += libmatekbd \
+                 gsettings-qt \
 
 
 #DEFINES += QT_DEPRECATED_WARNINGS

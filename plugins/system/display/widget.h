@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QVariantMap>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QSettings>
 #include <QButtonGroup>
 #include <QDBusInterface>
@@ -166,8 +166,8 @@ class Widget : public QWidget
     void addOutputToPrimaryCombo(const KScreen::OutputPtr &output);
     KScreen::OutputPtr findOutput(const KScreen::ConfigPtr &config, const QVariantMap &info);
 
-    float scaleRet();
-    void writeScale(float scale);
+//    float scaleRet();
+    void writeScale(int scale);
     void initGSettings();
     bool getNightModeGSetting(const QString &key);
     void setNightModebyPanel(bool judge);
@@ -211,7 +211,6 @@ class Widget : public QWidget
     bool m_isNightMode = false;//是否为夜间模式
     bool m_redshiftIsValid = false;
 
-    QStyledItemDelegate *itemDelege;
     QStringList proRes;        //profile文件内容
 
     Slider *slider;
@@ -223,6 +222,7 @@ class Widget : public QWidget
 
     QButtonGroup *singleButton;
 
+    bool isScaleChanged = false;
 };
 
 #endif // WIDGET_H

@@ -47,6 +47,11 @@ Printer::Printer(){
     ui->listWidget->setSpacing(0);
 //    ui->listWidget->setStyleSheet("QListWidget#listWidget{border: none;}");
 
+
+    pTimer = new QTimer(this);
+    pTimer->setInterval(1000);
+    connect(pTimer, SIGNAL(timeout()), this, SLOT(refreshPrinterDev()));
+
     initComponent();
 }
 
@@ -76,6 +81,17 @@ void Printer::initComponent(){
     ui->addBtn->setIcon(QIcon("://img/plugins/printer/add.png"));
     ui->addBtn->setIconSize(QSize(48, 48));
     ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
+
+    pTimer->start();
+
+    connect(ui->addBtn, &QPushButton::clicked, this, [=]{
+        runExternalApp();
+    });
+}
+
+void Printer::refreshPrinterDev(){
+
+    ui->listWidget->clear();
 
     QStringList printer = QPrinterInfo::availablePrinterNames();
 
@@ -128,10 +144,6 @@ void Printer::initComponent(){
         item->setSizeHint(QSize(ui->listWidget->width(), ITEMFIXEDHEIGH));
         ui->listWidget->setItemWidget(item, baseWidget);
     }
-
-    connect(ui->addBtn, &QPushButton::clicked, this, [=]{
-        runExternalApp();
-    });
 }
 
 void Printer::runExternalApp(){

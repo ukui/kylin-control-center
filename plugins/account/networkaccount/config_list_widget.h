@@ -24,7 +24,6 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QStackedWidget>
-#include <QMovie>
 #include "item_list.h"
 #include "network_item.h"
 #include <QGraphicsDropShadowEffect>
@@ -38,7 +37,10 @@
 #include <QSvgWidget>
 #include "dbushandleclient.h"
 #include <QtDBus/QtDBus>
+#include "qtooltips.h"
 #include <QDir>
+#include "ql_svg_handler.h"
+#include "ql_animation_label.h"
 
 class config_list_widget : public QWidget
 {
@@ -55,13 +57,13 @@ public:
     bool            judge_item(QString enable,int cur);
     void            handle_write(int on,int id);
 protected:
+    bool eventFilter(QObject *watched, QEvent *event);
 private:
     item_list       *list;
     network_item    *auto_syn;
     QLabel          *title;
     QLabel          *info;
-    QLabel          *gif;
-    QMovie          *pm;
+    ql_animation_label          *pm;
     QPushButton     *exit_page;
     LoginDialog     *ld;
     QWidget         *container;
@@ -79,9 +81,11 @@ private:
     QSvgWidget              *title2;
     QVBoxLayout         *vlayout;
     QVBoxLayout         *cvlayout;
+    QStackedWidget      *listwidget;
+    QWidget             *listnull;
     QString             code = tr("Disconnected");
     QString             home;
-    QStringList         mapid = {"wallpaper","ukui-menu","ukui-panel","ukui-panel2","indicator-china-weather","kylin-video"};
+    QStringList         mapid = {"wallpaper","ukui-screensaver","ukui-menu","ukui-panel","ukui-panel2","indicator-china-weather","kylin-video"};
     Dialog_login_reg*   login_dialog;
     QWidget             *namewidget;
     QHBoxLayout         *hbox;
@@ -89,8 +93,15 @@ private:
     bool                auto_ok = true;
     bool                ret_ok = false;
     QTimer              *login_cloud;
+    QTimer              *mansync;
     QString             uuid;
     QFileSystemWatcher fsWatcher;
+    ql_svg_handler *svg_hd;
+    QToolTips       *tooltips;
+    QLabel          *texttips;
+    QHBoxLayout     *animationlayout;
+    QHBoxLayout     *tipslayout;
+
 public slots:
     void            neweditdialog();
     void            on_login_out();

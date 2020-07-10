@@ -24,6 +24,7 @@
 #include <QSignalMapper>
 #include <QAbstractButton>
 #include <QPainter>
+#include <QPainterPath>
 
 namespace Ui {
 class DelUserDialog;

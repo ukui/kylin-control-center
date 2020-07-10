@@ -88,7 +88,13 @@ Touchpad::Touchpad()
         setupComponent();
         if (findSynaptics()){
             qDebug() << "Touch Devices Available";
+            ui->tipLabel->hide();
             initTouchpadStatus();
+        } else {
+            ui->clickFrame->hide();
+            ui->enableFrame->hide();
+            ui->scrollingFrame->hide();
+            ui->typingFrame->hide();
         }
     }
 

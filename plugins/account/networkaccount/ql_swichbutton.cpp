@@ -106,13 +106,15 @@ void QL_SwichButton::startAnimation() { //滑动按钮动作播放
     int size = ql_width - 16;
     if(on) {
         cur_val ++;                     //往右滑动
-        if(cur_val > size - pos) {      //到达边界停下来
+        if(cur_val >= size - pos) {      //到达边界停下来
+            cur_val = size - pos;
             timer->stop();
         }
 
     } else {
         cur_val --;
-        if(cur_val < pos) {             //到达最小值，停止继续前进
+        if(cur_val <= pos) {             //到达最小值，停止继续前进
+            cur_val = pos;
             timer->stop();
         }
     }
@@ -127,8 +129,8 @@ void QL_SwichButton::mousePressEvent(QMouseEvent *event) {
     Q_UNUSED(event);
     on = !on;
     emit status(on,id);
-    timer->start(1);
-    update();
+    timer->start();
+    return QWidget::mousePressEvent(event);
 }
 
 /* 获取开关状况 */
@@ -143,11 +145,5 @@ QL_SwichButton::~QL_SwichButton() {
 /* 设置开关状态 */
 void QL_SwichButton::set_swichbutton_val(int on) {
     this->on = on;
-    if(on == 1) {
-        cur_val = ql_width - 16 - 4;
-    }
-    else {
-        cur_val = 4;
-    }
-    update();
+    timer->start();
 }

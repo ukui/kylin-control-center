@@ -27,8 +27,8 @@ BindPhoneDialog::BindPhoneDialog(QWidget *parent) : QWidget(parent)
     valid_code = new QLineEdit(this);
     send_code = new QPushButton(this);
 
-    tips = new QLabel(this);
-
+    tips = new ql_label_info(this);
+    svg_hd = new ql_svg_handler(this);
     layout = new QVBoxLayout;
     sublayout = new QHBoxLayout;
 
@@ -68,6 +68,12 @@ BindPhoneDialog::BindPhoneDialog(QWidget *parent) : QWidget(parent)
     adjustSize();
 }
 
+void BindPhoneDialog::set_staus(bool ok) {
+   phone->setEnabled(ok);
+   valid_code->setEnabled(ok);
+   send_code->setEnabled(ok);
+}
+
 /* 设置错误代码，并发出错误代码更换信号，传给主框，让主框完成错误代码更新 */
 void BindPhoneDialog::set_code(QString codenum) {
     code = codenum;
@@ -76,8 +82,7 @@ void BindPhoneDialog::set_code(QString codenum) {
 
 /* 富文本处理错误提示消息 */
 void BindPhoneDialog::setstyleline() {
-    tips->setText("<html><head/><body><p><img src=':/new/image/_.png'/><span style=' font-size:14px;color:#F53547'>"
-                  "&nbsp;&nbsp;"+code+"</span></p></body></html>");
+    tips->set_text(code);
 }
 
 /* 清理绑定手机号码框 */
@@ -92,7 +97,7 @@ QPushButton* BindPhoneDialog::get_send_code() {
 }
 
 /* 获取密码输入提示文本 */
-QLabel* BindPhoneDialog::get_tips() {
+ql_label_info* BindPhoneDialog::get_tips() {
     return tips;
 }
 

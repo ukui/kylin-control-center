@@ -23,6 +23,7 @@
 #include <QDialog>
 #include <QFileDialog>
 #include <QPainter>
+#include <QPainterPath>
 
 namespace Ui {
 class addShortcutDialog;

@@ -19,8 +19,11 @@
  */
 #include "showallshortcut.h"
 #include "ui_showallshortcut.h"
+#include "commonComponent/ImageUtil/imageutil.h"
+
 
 #include <QPainter>
+#include <QPainterPath>
 #include <QStyleOption>
 
 #include <QDebug>
@@ -45,6 +48,8 @@ ShowAllShortcut::ShowAllShortcut(QWidget *parent) :
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
+
+
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
 
     //关闭按钮在右上角，窗体radius 6px，所以按钮只得6px
@@ -52,7 +57,7 @@ ShowAllShortcut::ShowAllShortcut(QWidget *parent) :
 //                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}"
 //                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}");
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.png"));
+    ui->closeBtn->setIcon(QIcon(QPixmap("://img/titlebar/close.svg")));
 
     connect(ui->closeBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
@@ -76,7 +81,7 @@ void ShowAllShortcut::buildComponent(QMap<QString, QMap<QString, QString> > shor
     QWidget * baseWidget = new QWidget;
     baseWidget->setAttribute(Qt::WA_DeleteOnClose);
     baseWidget->setFixedWidth(ui->scrollArea->width());
-    baseWidget->setStyleSheet("QWidget{background: #ffffff;/* border-radius: 6px;*/ }");
+    baseWidget->setStyleSheet("QWidget{background: palette(base);/* border-radius: 6px;*/ }");
 
     QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);
     baseVerLayout->setSpacing(0);
@@ -242,9 +247,19 @@ ClickWidget::ClickWidget(QString name){
     directionBtn->setFixedSize(16, 16);
     directionBtn->setCheckable(true);
     directionBtn->setChecked(true);
-    directionBtn->setStyleSheet("QPushButton{background: palette(button); border: none;}"
-                                "QPushButton:checked{background: palette(button); border:none; border-image: url(:/img/plugins/shortcut/up.png)}"
-                                "QPushButton:!checked{background: palette(button); border:none; border-image: url(:/img/plugins/shortcut/down.png)}");
+    directionBtn->setStyleSheet("QPushButton{background: palette(button); border: none;}");
+
+    QPixmap pixUP = ImageUtil::loadSvg(":/img/plugins/shortcut/up.svg", "white", 24);
+    QPixmap pixdwon = ImageUtil::loadSvg(":/img/plugins/shortcut/down.svg", "white", 24);
+
+    directionBtn->setIcon(pixUP);
+    connect(directionBtn, &QPushButton::toggled, [=](bool checked){
+        if (checked) {
+            directionBtn->setIcon(pixUP);
+        } else {
+            directionBtn->setIcon(pixdwon);
+        }
+    });
 
     connect(directionBtn, &QPushButton::clicked, this, &ClickWidget::widgetClicked);
 

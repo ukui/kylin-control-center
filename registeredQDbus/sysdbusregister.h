@@ -56,6 +56,10 @@ public slots:
 
     //获取免密登录状态
     Q_SCRIPTABLE QString getNoPwdLoginStatus();
+
+    //设置自动登录状态
+    Q_SCRIPTABLE void setAutoLoginStatus(QString username);
+
 };
 
 #endif // SYSDBUSREGISTER_H
