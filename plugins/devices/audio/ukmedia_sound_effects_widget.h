@@ -49,6 +49,10 @@ private:
     QFrame *m_pShutDownWidget;
     QFrame *m_pLagoutWidget;
     QFrame *m_pAlertSoundSwitchWidget;
+    QFrame *m_pWindowClosedWidget;
+    QFrame *m_pVolumeChangeWidget;
+    QFrame *m_pSettingSoundWidget;
+
     QString qss;
     QStyledItemDelegate *itemDelegate;
     QLabel *m_pSoundEffectLabel;
@@ -56,9 +60,16 @@ private:
     QLabel *m_pShutdownlabel;
     QLabel *m_pLagoutLabel;
     QLabel *m_pAlertSoundSwitchLabel;
+    QLabel *m_pWindowClosedLabel;
+    QLabel *m_pVolumeChangeLabel;
+    QLabel *m_pSettingSoundLabel;
+
     QComboBox *m_pSoundThemeCombobox;
     QComboBox *m_pShutdownCombobox;
     QComboBox *m_pLagoutCombobox;
+    QComboBox *m_pWindowClosedCombobox;
+    QComboBox *m_pVolumeChangeCombobox;
+    QComboBox *m_pSettingSoundCombobox;
     SwitchButton *m_pBootButton;
     SwitchButton *m_pAlertSoundSwitchButton;
 };

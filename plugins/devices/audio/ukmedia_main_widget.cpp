@@ -36,6 +36,15 @@
 #define GVC_SOUND_NAME     (xmlChar *) "name"
 #define GVC_SOUND_FILENAME (xmlChar *) "filename"
 #define SOUND_SET_DIR "/usr/share/ukui-media/sounds"
+
+#define KEYBINDINGS_CUSTOM_SCHEMA "org.ukui.media.sound"
+#define KEYBINDINGS_CUSTOM_DIR "/org/ukui/sound/keybindings/"
+
+#define MAX_CUSTOM_SHORTCUTS 1000
+
+#define FILENAME_KEY "filename"
+#define NAME_KEY "name"
+
 guint appnum = 0;
 typedef enum {
     BALANCE_TYPE_RL,
@@ -50,7 +59,9 @@ enum {
     SOUND_TYPE_BUILTIN,
     SOUND_TYPE_CUSTOM
 };
-
+static void callback(ca_context *c, uint32_t id, int error, void *userdata) {
+        fprintf(stderr, "callback called for id %u, error '%s', userdata=%p\n", id, ca_strerror(error), userdata);
+}
 UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     : QWidget(parent)
 {
@@ -87,6 +98,23 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     m_pAppNameList = new QStringList;
     m_pInputPortList = new QStringList;
     m_pOutputPortList = new QStringList;
+    m_pSoundNameList = new QStringList;
+
+    eventList = new QStringList;
+    eventIdNameList = new QStringList;
+
+    eventList->append("window-close");
+    eventList->append("system-setting");
+    eventList->append("volume-changed");
+    eventIdNameList->append("dialog-warning");
+    eventIdNameList->append("bell");
+    eventIdNameList->append("audio-volume-change");
+
+    for (int i=0;i<eventList->count();i++) {
+//        getValue();
+        addValue(eventList->at(i),eventIdNameList->at(i));
+    }
+
     //创建context
     m_pContext = mate_mixer_context_new();
 
@@ -142,10 +170,10 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
                              this);
     setupThemeSelector(this);
     updateTheme(this);
-
     //报警声音,从指定路径获取报警声音文件
     populateModelFromDir(this,SOUND_SET_DIR);
-
+    //初始化combobox的值
+    comboboxCurrentTextInit();
     //检测系统主题
     if (QGSettings::isSchemaInstalled(UKUI_THEME_SETTING)){
         m_pThemeSetting = new QGSettings(UKUI_THEME_SETTING);
@@ -181,8 +209,61 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     connect(m_pSoundWidget->m_pSoundThemeCombobox,SIGNAL(currentIndexChanged(int)),this,SLOT(themeComboxIndexChangedSlot(int)));
     connect(m_pInputWidget->m_pInputLevelSlider,SIGNAL(valueChanged(int)),this,SLOT(inputLevelValueChangedSlot()));
 //    connect(m_pInputWidget->m_pInputPortCombobox,SIGNAL(currentIndexChanged(int)),this,SLOT(inputPortComboxChangedSlot(int)));
+    connect(m_pSoundWidget->m_pWindowClosedCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(windowClosedComboboxChangedSlot(int)));
+    connect(m_pSoundWidget->m_pVolumeChangeCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(volumeChangedComboboxChangeSlot(int)));
+    connect(m_pSoundWidget->m_pSettingSoundCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(settingMenuComboboxChangedSlot(int)));
+
     //输入等级
     ukuiInputLevelSetProperty(this);
+}
+
+/*
+    初始化combobox的值
+*/
+void UkmediaMainWidget::comboboxCurrentTextInit()
+{
+    QList<char *> existsPath = listExistsPath();
+
+    for (char * path : existsPath) {
+
+        char * prepath = QString(KEYBINDINGS_CUSTOM_DIR).toLatin1().data();
+        char * allpath = strcat(prepath, path);
+
+        const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
+        const QByteArray bba(allpath);
+        if(QGSettings::isSchemaInstalled(ba))
+        {
+            QGSettings * settings = new QGSettings(ba, bba);
+            QString filenameStr = settings->get(FILENAME_KEY).toString();
+            QString nameStr = settings->get(NAME_KEY).toString();
+            int index;
+            for (int i=0;i<m_pSoundList->count();i++) {
+                QString str = m_pSoundList->at(i);
+                if (str.contains(filenameStr,Qt::CaseSensitive)) {
+                    index = i;
+                    break;
+                }
+            }
+            if (nameStr == "window-close") {
+                QString displayName = m_pSoundNameList->at(index);
+                m_pSoundWidget->m_pWindowClosedCombobox->setCurrentText(displayName);
+                continue;
+            }
+            else if (nameStr == "volume-changed") {
+                QString displayName = m_pSoundNameList->at(index);
+                m_pSoundWidget->m_pVolumeChangeCombobox->setCurrentText(displayName);
+                continue;
+            }
+            else if (nameStr == "system-setting") {
+                QString displayName = m_pSoundNameList->at(index);
+                m_pSoundWidget->m_pSettingSoundCombobox->setCurrentText(displayName);
+                continue;
+            }
+        }
+        else {
+            continue;
+        }
+    }
 }
 
 /*
@@ -1620,8 +1701,12 @@ void UkmediaMainWidget::populateModelFromNode (UkmediaMainWidget *m_pWidget,xmlN
     //将找到的声音文件名设置到combox中
     if (filename != nullptr && name != nullptr) {
         m_pWidget->m_pSoundList->append((const char *)filename);
+        m_pWidget->m_pSoundNameList->append((const char *)name);
         m_pWidget->m_pSoundWidget->m_pShutdownCombobox->addItem((char *)name);
         m_pWidget->m_pSoundWidget->m_pLagoutCombobox->addItem((char *)name);
+        m_pWidget->m_pSoundWidget->m_pWindowClosedCombobox->addItem((char *)name);
+        m_pWidget->m_pSoundWidget->m_pVolumeChangeCombobox->addItem((char *)name);
+        m_pWidget->m_pSoundWidget->m_pSettingSoundCombobox->addItem((char *)name);
     }
     xmlFree (filename);
     xmlFree (name);
@@ -1691,10 +1776,8 @@ xmlChar *UkmediaMainWidget::xmlGetAndTrimNames (xmlNodePtr node)
 void UkmediaMainWidget::playAlretSoundFromPath (UkmediaMainWidget *w,QString path)
 {
     g_debug("play alert sound from path");
-//   QMediaPlayer *player = new QMediaPlayer;
-//   player->setMedia(QUrl::fromLocalFile(path));
+
    gchar * themeName = g_settings_get_string (w->m_pSoundSettings, SOUND_THEME_KEY);
-//   player->play();
 
    qDebug() << "主题名为:" << themeName << "id :" << path.toLatin1().data();
    if (strcmp (path.toLatin1().data(), DEFAULT_ALERT_ID) == 0) {
@@ -1746,6 +1829,107 @@ void UkmediaMainWidget::comboxIndexChangedSlot(int index)
     updateAlert(this,sound_name.toLatin1().data());
     playAlretSoundFromPath(this,sound_name);
 
+}
+
+/*
+    设置窗口关闭的提示音
+*/
+void UkmediaMainWidget::windowClosedComboboxChangedSlot(int index)
+{
+    QString fileName = m_pSoundList->at(index);
+    QStringList list = fileName.split("/");
+    QString soundName = list.at(list.count()-1);
+    QStringList eventIdList = soundName.split(".");
+    QString eventId = eventIdList.at(0);
+    QList<char *> existsPath = listExistsPath();
+
+    for (char * path : existsPath) {
+
+        char * prepath = QString(KEYBINDINGS_CUSTOM_DIR).toLatin1().data();
+        char * allpath = strcat(prepath, path);
+
+        const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
+        const QByteArray bba(allpath);
+        if(QGSettings::isSchemaInstalled(ba))
+        {
+            QGSettings * settings = new QGSettings(ba, bba);
+//            QString filenameStr = settings->get(FILENAME_KEY).toString();
+            QString nameStr = settings->get(NAME_KEY).toString();
+            if (nameStr == "window-close") {
+                qDebug() << "找到窗口关闭" <<  nameStr << eventId;
+                settings->set(FILENAME_KEY,eventId);
+                return;
+            }
+        }
+        else {
+            continue;
+        }
+    }
+}
+
+/*
+    设置音量改变的提示声音
+*/
+void UkmediaMainWidget::volumeChangedComboboxChangeSlot(int index)
+{
+    QString fileName = m_pSoundList->at(index);
+    QStringList list = fileName.split("/");
+    QString soundName = list.at(list.count()-1);
+    QStringList eventIdList = soundName.split(".");
+    QString eventId = eventIdList.at(0);
+    QList<char *> existsPath = listExistsPath();
+    for (char * path : existsPath) {
+
+        char * prepath = QString(KEYBINDINGS_CUSTOM_DIR).toLatin1().data();
+        char * allpath = strcat(prepath, path);
+        const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
+        const QByteArray bba(allpath);
+        if(QGSettings::isSchemaInstalled(ba))
+        {
+            QGSettings * settings = new QGSettings(ba, bba);
+//            QString filenameStr = settings->get(FILENAME_KEY).toString();
+            QString nameStr = settings->get(NAME_KEY).toString();
+            if (nameStr == "volume-changed") {
+                qDebug() << "找到音量改变volume changed event id" << eventId;
+                settings->set(FILENAME_KEY,eventId);
+                return;
+            }
+        }
+        else {
+            continue;
+        }
+    }
+}
+
+void UkmediaMainWidget::settingMenuComboboxChangedSlot(int index)
+{
+    QString fileName = m_pSoundList->at(index);
+    QStringList list = fileName.split("/");
+    QString soundName = list.at(list.count()-1);
+    QStringList eventIdList = soundName.split(".");
+    QString eventId = eventIdList.at(0);
+    QList<char *> existsPath = listExistsPath();
+    for (char * path : existsPath) {
+
+        char * prepath = QString(KEYBINDINGS_CUSTOM_DIR).toLatin1().data();
+        char * allpath = strcat(prepath, path);
+        const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
+        const QByteArray bba(allpath);
+        if(QGSettings::isSchemaInstalled(ba))
+        {
+            QGSettings * settings = new QGSettings(ba, bba);
+//            QString filenameStr = settings->get(FILENAME_KEY).toString();
+            QString nameStr = settings->get(NAME_KEY).toString();
+            if (nameStr == "system-setting") {
+                qDebug() << "找到设置菜单system-setting event id" << eventId;
+                settings->set(FILENAME_KEY,eventId);
+                return;
+            }
+        }
+        else {
+            continue;
+        }
+    }
 }
 
 /*
@@ -2572,6 +2756,103 @@ int UkmediaMainWidget::caProplistSetForWidget(ca_proplist *p, UkmediaMainWidget 
     return CA_SUCCESS;
 }
 
+QList<char *> UkmediaMainWidget::listExistsPath()
+{
+    char ** childs;
+    int len;
+
+    DConfClient * client = dconf_client_new();
+    childs = dconf_client_list (client, KEYBINDINGS_CUSTOM_DIR, &len);
+    g_object_unref (client);
+
+    QList<char *> vals;
+
+    for (int i = 0; childs[i] != NULL; i++){
+        if (dconf_is_rel_dir (childs[i], NULL)){
+            char * val = g_strdup (childs[i]);
+
+            vals.append(val);
+        }
+    }
+    g_strfreev (childs);
+    return vals;
+}
+
+QString UkmediaMainWidget::findFreePath(){
+    int i = 0;
+    char * dir;
+    bool found;
+    QList<char *> existsdirs;
+
+    existsdirs = listExistsPath();
+
+    for (; i < MAX_CUSTOM_SHORTCUTS; i++){
+        found = true;
+        dir = QString("custom%1/").arg(i).toLatin1().data();
+        for (int j = 0; j < existsdirs.count(); j++)
+            if (!g_strcmp0(dir, existsdirs.at(j))){
+                found = false;
+                break;
+            }
+        if (found)
+            break;
+    }
+
+    if (i == MAX_CUSTOM_SHORTCUTS){
+        qDebug() << "Keyboard Shortcuts" << "Too many custom shortcuts";
+        return "";
+    }
+
+    return QString("%1%2").arg(KEYBINDINGS_CUSTOM_DIR).arg(QString(dir));
+}
+
+void UkmediaMainWidget::addValue(QString name,QString filename)
+{
+    //在创建setting表时，先判断是否存在该设置，存在时不创建
+    QList<char *> existsPath = listExistsPath();
+
+    for (char * path : existsPath) {
+
+        char * prepath = QString(KEYBINDINGS_CUSTOM_DIR).toLatin1().data();
+        char * allpath = strcat(prepath, path);
+
+        const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
+        const QByteArray bba(allpath);
+        if(QGSettings::isSchemaInstalled(ba))
+        {
+            QGSettings * settings = new QGSettings(ba, bba);
+            QString filenameStr = settings->get(FILENAME_KEY).toString();
+            QString nameStr = settings->get(NAME_KEY).toString();
+
+            g_warning("full path: %s", allpath);
+            qDebug() << filenameStr << FILENAME_KEY <<NAME_KEY << nameStr;
+            if (nameStr == name) {
+                qDebug() << "系统已存在该值，跳过" ;
+                return;
+            }
+            delete settings;
+        }
+        else {
+            continue;
+        }
+
+    }
+    QString availablepath = findFreePath();
+
+    qDebug() << "Add Path" << availablepath;
+
+    const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
+    const QByteArray idd(availablepath.toUtf8().data());
+    if(QGSettings::isSchemaInstalled(id))
+    {
+        QGSettings * settings = new QGSettings(id, idd);
+        settings->set(FILENAME_KEY, filename);
+        settings->set(NAME_KEY, name);
+    }
+
+
+//    delete settings;
+}
 
 UkmediaMainWidget::~UkmediaMainWidget()
 {

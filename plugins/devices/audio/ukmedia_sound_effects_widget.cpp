@@ -33,11 +33,17 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pShutDownWidget = new QFrame(this);
     m_pLagoutWidget = new QFrame(this);
     m_pAlertSoundSwitchWidget = new QFrame(this);
+    m_pWindowClosedWidget = new QFrame(this);
+    m_pVolumeChangeWidget = new QFrame(this);
+    m_pSettingSoundWidget = new QFrame(this);
 
     m_pThemeWidget->setFrameShape(QFrame::Shape::Box);
     m_pShutDownWidget->setFrameShape(QFrame::Shape::Box);
     m_pLagoutWidget->setFrameShape(QFrame::Shape::Box);
     m_pAlertSoundSwitchWidget->setFrameShape(QFrame::Shape::Box);
+    m_pWindowClosedWidget->setFrameShape(QFrame::Shape::Box);
+    m_pVolumeChangeWidget->setFrameShape(QFrame::Shape::Box);
+    m_pSettingSoundWidget->setFrameShape(QFrame::Shape::Box);
 
     m_pSoundEffectLabel = new QLabel(tr("System Sound"),this);
     m_pSoundEffectLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
@@ -48,9 +54,16 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pLagoutLabel = new QLabel(tr("Boot Music"),m_pLagoutWidget);
     m_pLagoutCombobox = new QComboBox(m_pLagoutWidget);
     m_pBootButton = new SwitchButton(m_pLagoutWidget);
+    m_pWindowClosedCombobox = new QComboBox(m_pWindowClosedWidget);
+    m_pVolumeChangeCombobox = new QComboBox(m_pVolumeChangeWidget);
+    m_pSettingSoundCombobox = new QComboBox(m_pSettingSoundWidget);
 
     m_pAlertSoundSwitchLabel = new QLabel(tr("Beep Switch"),m_pAlertSoundSwitchWidget);
     m_pAlertSoundSwitchButton = new SwitchButton(m_pAlertSoundSwitchWidget);
+
+    m_pWindowClosedLabel = new QLabel(tr("Window Closed"),m_pWindowClosedWidget);
+    m_pVolumeChangeLabel = new QLabel(tr("Volume Change"),m_pVolumeChangeWidget);
+    m_pSettingSoundLabel = new QLabel(tr("Setting Menu"),m_pSettingSoundWidget);
     //设置大小
     m_pThemeWidget->setMinimumSize(550,50);
     m_pThemeWidget->setMaximumSize(960,50);
@@ -60,11 +73,20 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pLagoutWidget->setMaximumSize(960,50);
     m_pAlertSoundSwitchWidget->setMinimumSize(550,50);
     m_pAlertSoundSwitchWidget->setMaximumSize(960,50);
+    m_pWindowClosedWidget->setMinimumSize(550,50);
+    m_pWindowClosedWidget->setMaximumSize(960,50);
+    m_pVolumeChangeWidget->setMinimumSize(550,50);
+    m_pVolumeChangeWidget->setMaximumSize(960,50);
+    m_pSettingSoundWidget->setMinimumSize(550,50);
+    m_pSettingSoundWidget->setMaximumSize(960,50);
 
     m_pSoundEffectLabel->setFixedSize(120,24);
     m_pSoundThemeLabel->setFixedSize(115,24);
     m_pShutdownlabel->setFixedSize(115,24);
     m_pLagoutLabel->setFixedSize(115,24);
+    m_pWindowClosedLabel->setFixedSize(115,24);
+    m_pVolumeChangeLabel->setFixedSize(115,24);
+    m_pSettingSoundLabel->setFixedSize(115,24);
 
     m_pSoundThemeCombobox->setMinimumSize(50,32);
     m_pSoundThemeCombobox->setMaximumSize(900,32);
@@ -73,7 +95,12 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pShutdownCombobox->setMaximumSize(900,32);
     m_pLagoutCombobox->setMinimumSize(50,32);
     m_pLagoutCombobox->setMaximumSize(900,32);
-
+    m_pWindowClosedCombobox->setMinimumSize(50,32);
+    m_pWindowClosedCombobox->setMaximumSize(900,32);
+    m_pVolumeChangeCombobox->setMinimumSize(50,32);
+    m_pVolumeChangeCombobox->setMaximumSize(900,32);
+    m_pSettingSoundCombobox->setMinimumSize(50,32);
+    m_pSettingSoundCombobox->setMaximumSize(900,32);
     //添加布局
     QHBoxLayout *themeLayout = new QHBoxLayout(m_pThemeWidget);
     themeLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
@@ -120,125 +147,58 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     alertSoundLayout->setSpacing(0);
     m_pAlertSoundSwitchWidget->setLayout(alertSoundLayout);
     m_pAlertSoundSwitchWidget->layout()->setContentsMargins(0,0,0,0);
+
+    //窗口关闭提示音
+    QHBoxLayout *windowClosedLayout = new QHBoxLayout(m_pWindowClosedWidget);
+    windowClosedLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    windowClosedLayout->addWidget(m_pWindowClosedLabel);
+    windowClosedLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    windowClosedLayout->addWidget(m_pWindowClosedCombobox);
+    windowClosedLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    windowClosedLayout->setSpacing(0);
+    m_pWindowClosedWidget->setLayout(windowClosedLayout);
+    m_pWindowClosedWidget->layout()->setContentsMargins(0,0,0,0);
+
+    //音量改变提示音
+    QHBoxLayout *volumeChangedLayout = new QHBoxLayout(m_pVolumeChangeWidget);
+    volumeChangedLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    volumeChangedLayout->addWidget(m_pVolumeChangeLabel);
+    volumeChangedLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    volumeChangedLayout->addWidget(m_pVolumeChangeCombobox);
+    volumeChangedLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    volumeChangedLayout->setSpacing(0);
+    m_pVolumeChangeWidget->setLayout(volumeChangedLayout);
+    m_pVolumeChangeWidget->layout()->setContentsMargins(0,0,0,0);
+    //设置菜单提示音
+    QHBoxLayout *settingMenuLayout = new QHBoxLayout(m_pSettingSoundWidget);
+    settingMenuLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    settingMenuLayout->addWidget(m_pSettingSoundLabel);
+    settingMenuLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    settingMenuLayout->addWidget(m_pSettingSoundCombobox);
+    settingMenuLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    settingMenuLayout->setSpacing(0);
+    m_pSettingSoundWidget->setLayout(settingMenuLayout);
+    m_pSettingSoundWidget->layout()->setContentsMargins(0,0,0,0);
+
     //进行整体布局
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     vLayout->addWidget(m_pSoundEffectLabel);
-    vLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
-    vLayout->addWidget(m_pThemeWidget);
-    vLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
-    vLayout->addWidget(m_pShutDownWidget);
+    vLayout->addItem(new QSpacerItem(16,14,QSizePolicy::Fixed));
     vLayout->addWidget(m_pLagoutWidget);
+    vLayout->addItem(new QSpacerItem(16,6,QSizePolicy::Fixed));
     vLayout->addWidget(m_pAlertSoundSwitchWidget);
+
+    vLayout->addItem(new QSpacerItem(16,7,QSizePolicy::Fixed));
+    vLayout->addWidget(m_pThemeWidget);
+    vLayout->addWidget(m_pShutDownWidget);
+//    vLayout->addWidget(m_pWindowClosedWidget);
+    vLayout->addWidget(m_pVolumeChangeWidget);
+//    vLayout->addWidget(m_pSettingSoundWidget);
     this->setLayout(vLayout);
-//    vLayout->setSpacing(0);
+    vLayout->setSpacing(1);
     this->layout()->setContentsMargins(0,0,0,0);
-
-//    m_pLagoutCombobox->setStyleSheet(qss);
-//    m_pLagoutCombobox->setItemDelegate(itemDelegate);
-//    m_pShutDownWidget->setObjectName("shutDownWidget");
-//    m_pSoundThemeCombobox->setStyleSheet("QComboBox {width:140px;height:30px;background:rgba(248,248,248,1);"
-//                                      "border:2px solid rgba(218, 227, 250, 1);border-radius:4px;}"
-//                                      "QComboBox QAbstractItemView{"
-//                                      "font-size: 14px;height: 80px;width: 140px;}"
-//                                      "QComboBox QAbstractItemView::item {"
-//                                      "height: 30px;}"
-//                                      "QComboBox QAbstractItemView::item:hover {"
-//                                      "background: rgba(218,227,250,0.9);"
-//                                      "border-radius: 2px;"
-//                                      "font-color: rgb(225, 0, 0);}"
-//                                      "QComboBox::drop-down{background-color:rgba(248,248,248,1);}"
-//                                      "QComboBox:on{background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(248,248,248,0.9) 100%);"
-//                                      "border-radius:4px;}"
-//                                      "QComboBox::down-arrow:hover{"
-//                                      "width:184px;height:30px;"
-//                                      "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
-//                                      "border-radius:2px;}"
-//                                      "QComboBox::down-arrow {"
-//                                      "image: url(/usr/share/ukui-media/img/dowm.png);"
-//                                      "height:6px;width:11px;}"
-//                                      "QComboBox::down-arrow:hover{"
-//                                      "width:184px;height:30px;"
-//                                      "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
-//                                      "border-radius:2px;}");
-//    m_pShutdownCombobox->setStyleSheet("QComboBox {width:140px;height:30px;background:rgba(248,248,248,1);"
-//                                    "border:2px solid rgba(218, 227, 250, 1);border-radius:4px;}"
-//                                    "QComboBox QAbstractItemView{"
-//                                    "font-size: 14px;height: 80px;width: 140px;}"
-//                                    "QComboBox QAbstractItemView::item {"
-//                                    "height: 30px;}"
-//                                    "QComboBox QAbstractItemView::item:hover {"
-//                                    "background: rgba(218,227,250,0.9);"
-//                                    "border-radius: 2px;"
-//                                    "font-color: rgb(225, 0, 0);}"
-//                                    "QComboBox::drop-down{background-color:rgba(248,248,248,1);}"
-//                                    "QComboBox:on{background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(248,248,248,0.9) 100%);"
-//                                    "border-radius:4px;}"
-//                                    "QComboBox::down-arrow:hover{"
-//                                    "width:184px;height:30px;"
-//                                    "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
-//                                    "border-radius:2px;}"
-//                                    "QComboBox::down-arrow {"
-//                                    "image: url(/usr/share/ukui-media/img/dowm.png);"
-//                                    "height:6px;width:11px;}"
-//                                    "QComboBox::down-arrow:hover{"
-//                                    "width:184px;height:30px;"
-//                                    "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
-//                                    "border-radius:2px;}");
-
-//    m_pLagoutCombobox->setStyleSheet("QComboBox {width:140px;height:30px;background:rgba(248,248,248,1);"
-//                                     "border:2px solid rgba(218, 227, 250, 1);border-radius:4px;}"
-//                                     "QComboBox QAbstractItemView{"
-//                                     "font-size: 14px;height: 80px;width: 140px;}"
-//                                     "QComboBox QAbstractItemView::item {"
-//                                     "height: 30px;}"
-//                                     "QComboBox QAbstractItemView::item:hover {"
-//                                     "background: rgba(218,227,250,0.9);"
-//                                     "border-radius: 2px;"
-//                                     "font-color: rgb(225, 0, 0);}"
-//                                     "QComboBox::drop-down{background-color:rgba(248,248,248,1);}"
-//                                     "QComboBox:on{background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(248,248,248,0.9) 100%);"
-//                                     "border-radius:4px;}"
-//                                     "QComboBox::down-arrow:hover{"
-//                                     "width:184px;height:30px;"
-//                                     "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
-//                                     "border-radius:2px;}"
-//                                     "QComboBox::down-arrow {"
-//                                     "image: url(/usr/share/ukui-media/img/dowm.png);"
-//                                     "height:6px;width:11px;}"
-//                                     "QComboBox::down-arrow:hover{"
-//                                     "width:184px;height:30px;"
-//                                     "background:linear-gradient(180deg,rgba(218,227,250,0.9),rgba(218,227,250,1));"
-//                                     "border-radius:2px;}");
-
-//    m_pSoundEffectLabel->setStyleSheet("QLabel{font-size:18px;"
-//                                     "font-family:Noto Sans S Chinese;"
-//                                     "font-weight:500;"
-//                                     "color:rgba(0,0,0,1);"
-//                                     "background-color: rgba(0,0,0,0);"
-//                                     "line-height:40px;}");
-//   m_pSoundThemeLabel->setStyleSheet("QLabel{font-size:14px;"
-//                                       "font-family:Noto Sans S Chinese;"
-//                                       "font-weight:400;"
-//                                       "color:rgba(67,67,69,1);"
-//                                       "line-height:40px;}");
-//    m_pShutdownlabel->setStyleSheet("QLabel{font-size:14px;"
-//                                    "font-family:Noto Sans S Chinese;"
-//                                    "font-weight:400;"
-//                                    "color:rgba(67,67,69,1);"
-//                                    "line-height:40px;}");
-//    m_pLagoutLabel->setStyleSheet("QLabel{font-size:14px;"
-//                                  "font-family:Noto Sans S Chinese;"
-//                                  "font-weight:400;"
-//                                  "color:rgba(67,67,69,1);"
-//                                  "line-height:40px;}");
-
-//    this->setStyleSheet("QWidget{width: 552px;height: 150px;"
-//                        "background: rgba(244,244,244,1);"
-//                        "border-radius: 4px;}");
-//    m_pShutDownWidget->setStyleSheet("QWidget#shutDownWidget{border-bottom:1px solid white;"
-//                                      "border-radius:0px;}");
-
-
+    m_pSettingSoundWidget->hide();
+    m_pWindowClosedWidget->hide();
 }
 
 UkmediaSoundEffectsWidget::~UkmediaSoundEffectsWidget()

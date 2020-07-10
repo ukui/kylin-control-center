@@ -25,20 +25,22 @@
 #include "ukmedia_input_widget.h"
 #include "ukmedia_sound_effects_widget.h"
 #include <QMediaPlayer>
-
 #include <gio/gio.h>
 #include <libxml/tree.h>
 #include <libmatemixer/matemixer.h>
 #include <glib-object.h>
 #include <glib.h>
-#include <gobject/gparamspecs.h>
 #include <glib/gi18n.h>
+#include <gobject/gparamspecs.h>
+#include <glib/gstdio.h>
+extern "C" {
+#include <dconf/dconf.h>
 #include <canberra.h>
+}
+#include <utime.h>
+#include <a.out.h>
 #include <QScreen>
 #include <QApplication>
-#include <a.out.h>
-#include <utime.h>
-#include <glib/gstdio.h>
 #include <QDomDocument>
 #include <QGSettings>
 
@@ -50,6 +52,12 @@
 #define UKUI_INPUT_REAR_MIC "analog-input-rear-mic"  //后置麦克风
 #define UKUI_INPUT_FRONT_MIC "analog-input-front-mic" //前置麦克风
 #define UKUI_OUTPUT_HEADPH "analog-output-headphones" //模拟耳机
+
+#define KEYBINDINGS_CUSTOM_SCHEMA "org.ukui.media.sound"
+#define KEYBINDINGS_CUSTOM_DIR "/org/ukui/sound/keybindings/"
+#define MAX_CUSTOM_SHORTCUTS 1000
+#define FILENAME_KEY "filename"
+#define NAME_KEY "name"
 
 #define KEY_SOUNDS_SCHEMA "org.mate.sound"
 #define UKUI_SWITCH_SETTING "org.ukui.session"
@@ -95,6 +103,10 @@ public:
     int getOutputVolume();
     bool getInputMuteStatus();
     bool getOutputMuteStatus();
+    void comboboxCurrentTextInit();
+    QList<char *> listExistsPath();
+    QString findFreePath();
+    void addValue(QString name,QString filename);
 
     static void listDevice(UkmediaMainWidget *w,MateMixerContext *context);
     static void streamStatusIconSetControl (UkmediaMainWidget *w,MateMixerStreamControl *control);
@@ -198,6 +210,9 @@ private Q_SLOTS:
     void bootMusicSettingsChanged();
     void inputPortComboxChangedSlot(int index);
     void outputPortComboxChangedSlot(int index);
+    void windowClosedComboboxChangedSlot(int index);
+    void volumeChangedComboboxChangeSlot(int index);
+    void settingMenuComboboxChangedSlot(int index);
 private:
     UkmediaInputWidget *m_pInputWidget;
     UkmediaOutputWidget *m_pOutputWidget;
@@ -224,6 +239,10 @@ private:
     QStringList *m_pStreamControlList;
     QStringList *m_pInputPortList;
     QStringList *m_pOutputPortList;
+
+    QStringList *m_pSoundNameList;
+    QStringList *eventList;
+    QStringList *eventIdNameList;
     QString m_pDeviceStr;
 
     GSettings *m_pSoundSettings;
@@ -234,6 +253,7 @@ private:
 
     QGSettings *m_pBootSetting;
     QGSettings *m_pThemeSetting;
+//    QGSettings *m_pWindowClosedSetting;
     QString mThemeName;
     bool m_hasMusic;
     bool firstEnterSystem = true;

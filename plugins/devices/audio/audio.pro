@@ -18,14 +18,13 @@ DESTDIR = ../../../pluginlibs
 CONFIG += c++11 \
           no_keywords link_pkgconfig
 
-
 PKGCONFIG += libmatemixer \
              gio-2.0 \
              libxml-2.0 \
              Qt5Multimedia \
              gsettings-qt \
              libcanberra \
-
+             dconf
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 target.path = $$[QT_INSTALL_PREFIX]/lib/control-center/plugins/
