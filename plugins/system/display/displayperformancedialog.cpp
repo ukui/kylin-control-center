@@ -21,6 +21,7 @@
 #include "ui_displayperformancedialog.h"
 
 #include <QPainter>
+#include <QPainterPath>
 
 #define ADVANCED_SCHEMAS "org.mate.session.required-components"
 #define ADVANCED_KEY "windowmanager"
