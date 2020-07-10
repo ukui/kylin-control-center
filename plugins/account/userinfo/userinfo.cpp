@@ -28,7 +28,7 @@
 #include <QDebug>
 
 #include "SwitchButton/switchbutton.h"
-#include "HoverWidget/hoverwidget.h"
+#include "ImageUtil/imageutil.h"
 #include "elipsemaskwidget.h"
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
@@ -326,6 +326,43 @@ void UserInfo::initComponent(){
 //    QString filename = "/etc/lightdm/lightdm.conf";
 //    autoSettings = new QSettings(filename, QSettings::IniFormat);
 
+    addWgt = new HoverWidget("");
+    addWgt->setObjectName("addwgt");
+    addWgt->setMinimumSize(QSize(580, 50));
+    addWgt->setMaximumSize(QSize(960, 50));
+    addWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
+
+    QHBoxLayout *addLyt = new QHBoxLayout;
+
+    QLabel * iconLabel = new QLabel();
+    QLabel * textLabel = new QLabel(tr("Add new user"));
+    QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+    iconLabel->setPixmap(pixgray);
+    addLyt->addWidget(iconLabel);
+    addLyt->addWidget(textLabel);
+    addLyt->addStretch();
+    addWgt->setLayout(addLyt);
+
+    // 悬浮改变Widget状态
+    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(base);");
+
+    });
+    // 还原状态
+    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(windowText);");
+    });
+
+    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
+        showCreateUserDialog();
+    });
+
+    ui->addLyt->addWidget(addWgt);
+
     nopwdSwitchBtn = new SwitchButton(ui->nopwdLoginFrame);
     ui->nopwdHorLayout->addWidget(nopwdSwitchBtn);
 
@@ -342,12 +379,12 @@ void UserInfo::initComponent(){
     mainElipseMaskWidget->setGeometry(0, 0, ui->currentUserFaceLabel->width(), ui->currentUserFaceLabel->height());
 
     //设置添加用户的图标
-    ui->addBtn->setIcon(QIcon("://img/plugins/userinfo/add.png"));
-    ui->addBtn->setIconSize(ui->addBtn->size());
-    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
+//    ui->addBtn->setIcon(QIcon("://img/plugins/userinfo/add.png"));
+//    ui->addBtn->setIconSize(ui->addBtn->size());
+//    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
 
-    ui->currentUserFaceLabel->installEventFilter(this);
-    ui->addUserFrame->installEventFilter(this);
+//    ui->currentUserFaceLabel->installEventFilter(this);
+//    ui->addUserFrame->installEventFilter(this);
 
     //修改当前用户密码的回调
     connect(ui->changePwdBtn, &QPushButton::clicked, this, [=](bool checked){
@@ -419,10 +456,10 @@ void UserInfo::initComponent(){
     });
 
     //新建用户的回调
-    connect(ui->addBtn, &QPushButton::clicked, this, [=](bool checked){
-        Q_UNUSED(checked)
-        showCreateUserDialog();
-    });
+//    connect(ui->addBtn, &QPushButton::clicked, this, [=](bool checked){
+//        Q_UNUSED(checked)
+//        showCreateUserDialog();
+//    });
 
     //成功新建用户的回调
     connect(sysdispatcher, &SystemDbusDispatcher::createuserdone, this, [=](QString objPath){
@@ -807,25 +844,25 @@ void UserInfo::changeUserPwd(QString pwd, QString username){
 }
 
 
-bool UserInfo::eventFilter(QObject *watched, QEvent *event){
-    if (watched == ui->currentUserFaceLabel || watched == ui->addUserFrame){
-        if (event->type() == QEvent::MouseButtonPress){
-            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
-            if (mouseEvent->button() == Qt::LeftButton ){
-                if(watched == ui->currentUserFaceLabel){
-                    showChangeFaceDialog(ui->userNameLabel->text());
-                } else if (watched == ui->addUserFrame) {
-                    showCreateUserDialog();
-                }
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
+//bool UserInfo::eventFilter(QObject *watched, QEvent *event){
+//    if (watched == ui->currentUserFaceLabel || watched == ui->addUserFrame){
+//        if (event->type() == QEvent::MouseButtonPress){
+//            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
+//            if (mouseEvent->button() == Qt::LeftButton ){
+//                if(watched == ui->currentUserFaceLabel){
+//                    showChangeFaceDialog(ui->userNameLabel->text());
+//                } else if (watched == ui->addUserFrame) {
+//                    showCreateUserDialog();
+//                }
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
+//    }
 
-    return QObject::eventFilter(watched, event);
-}
+//    return QObject::eventFilter(watched, event);
+//}
 
 bool UserInfo::getAutomaticLogin(QString username) {
 

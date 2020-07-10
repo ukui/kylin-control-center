@@ -9,8 +9,10 @@ DESTDIR = ../../../pluginlibs
 
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
+include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
 
 INCLUDEPATH   +=  \
+                 $$PROJECT_COMPONENTSOURCE \
                  $$PROJECT_ROOTDIR \
                  /usr/include/dconf
 

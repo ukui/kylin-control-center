@@ -15,6 +15,15 @@ DESTDIR = ../../../pluginlibs
 
 LIBS += -L/usr/lib/ -lgsettings-qt
 
+
+include(../../../env.pri)
+include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
+include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
+
+INCLUDEPATH   +=  \
+                 $$PROJECT_COMPONENTSOURCE \
+
+
 ##加载gio库和gio-unix库，用于处理时间
 CONFIG        += link_pkgconfig \
                  C++11

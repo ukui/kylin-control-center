@@ -32,6 +32,8 @@
 #include "addshortcutdialog.h"
 #include "getshortcutworker.h"
 #include "showallshortcut.h"
+#include "HoverWidget/hoverwidget.h"
+#include "ImageUtil/imageutil.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Shortcut; }
@@ -96,7 +98,7 @@ public:
 
 protected:
 //    bool event(QEvent *event);
-    bool eventFilter(QObject *watched, QEvent *event);
+//    bool eventFilter(QObject *watched, QEvent *event);
 
 private:
     Ui::Shortcut *ui;
@@ -104,6 +106,8 @@ private:
     QString pluginName;
     int pluginType;
     QWidget * pluginWidget;
+
+    HoverWidget *addWgt;
 
 private:
     QThread * pThread;

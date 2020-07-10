@@ -13,8 +13,12 @@ TARGET = $$qtLibraryTarget(vpn)
 DESTDIR = ../../../pluginlibs
 
 include(../../../env.pri)
+include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
+include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
+
 
 INCLUDEPATH   +=  \
+                 $$PROJECT_COMPONENTSOURCE \
                  $$PROJECT_ROOTDIR \
 
 

@@ -128,6 +128,7 @@
         <file>plugins/mouse/double-click-maybe.png</file>
         <file>plugins/mouse/double-click-off.png</file>
         <file>plugins/mouse/double-click-on.png</file>
+        <file>titlebar/add.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>i18n/zh_CN.qm</file>

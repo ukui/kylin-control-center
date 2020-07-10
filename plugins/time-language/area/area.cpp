@@ -53,7 +53,7 @@ Area::Area()
     pluginName = tr("Area");
     pluginType = DATETIME;
 
-    ui->addlanframe->installEventFilter(this);
+//    ui->addlanframe->installEventFilter(this);
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
@@ -96,7 +96,7 @@ Area::Area()
     initComponent();
     connect(ui->langcomboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(change_language_slot(int)));
     connect(ui->countrycomboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(change_area_slot(int)));
-    connect(ui->addlanBtn, SIGNAL(clicked()), this, SLOT(add_lan_btn_slot()));
+//    connect(ui->addlanBtn, SIGNAL(clicked()), this, SLOT(add_lan_btn_slot()));
     connect(ui->chgformButton,SIGNAL(clicked()),this,SLOT(changeform_slot()));
 
 //    connect(ui->langcomboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
@@ -140,18 +140,18 @@ void Area::run_external_app_slot(){
     process.startDetached(cmd);
 }
 
-bool Area::eventFilter(QObject *watched, QEvent *event) {
-    if (watched == ui->addlanframe) {
-        if (event->type() == QEvent::MouseButtonPress){
-            QString cmd = "gnome-language-selector";
+//bool Area::eventFilter(QObject *watched, QEvent *event) {
+//    if (watched == ui->addlanframe) {
+//        if (event->type() == QEvent::MouseButtonPress){
+//            QString cmd = "gnome-language-selector";
 
-            QProcess process(this);
-            process.startDetached(cmd);
-        }
-    }
+//            QProcess process(this);
+//            process.startDetached(cmd);
+//        }
+//    }
 
-    return QObject::eventFilter(watched, event);
-}
+//    return QObject::eventFilter(watched, event);
+//}
 
 
 void Area::initUI(){
@@ -197,11 +197,49 @@ void Area::initUI(){
     ui->langcomboBox->addItem(tr("Chinese"));
 
 //    ui->addlanlabel->setStyleSheet("QLabel{background-color:#E5E7E9}");
-    ui->addlanlabel->setText(tr("add main language"));
+//    ui->addlanlabel->setText(tr("add main language"));
 
-    ui->addlanBtn->setIcon(QIcon("://img/plugins/printer/add.png"));
-    ui->addlanBtn->setIconSize(QSize(48, 48));
-    ui->addlanBtn->setStyleSheet("QPushButton{background-color:transparent;}");
+//    ui->addlanBtn->setIcon(QIcon("://img/plugins/printer/add.png"));
+//    ui->addlanBtn->setIconSize(QSize(48, 48));
+//    ui->addlanBtn->setStyleSheet("QPushButton{background-color:transparent;}");
+
+    addWgt = new HoverWidget("");
+    addWgt->setObjectName(tr("addwgt"));
+    addWgt->setMinimumSize(QSize(580, 50));
+    addWgt->setMaximumSize(QSize(960, 50));
+    addWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
+
+    QHBoxLayout *addLyt = new QHBoxLayout;
+
+    QLabel * iconLabel = new QLabel();
+    QLabel * textLabel = new QLabel(tr("Add main language"));
+    QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+    iconLabel->setPixmap(pixgray);
+    addLyt->addWidget(iconLabel);
+    addLyt->addWidget(textLabel);
+    addLyt->addStretch();
+    addWgt->setLayout(addLyt);
+
+    // 悬浮改变Widget状态
+    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(base);");
+
+    });
+    // 还原状态
+    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(windowText);");
+    });
+
+    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
+        add_lan_btn_slot();
+    });
+
+    ui->addLyt->addWidget(addWgt);
+
 
 }
 
@@ -212,7 +250,7 @@ void Area::initComponent() {
     int formatIndex = res.at(0) == "en_US.UTF-8" ? 0 : 1;
     ui->langcomboBox->setCurrentIndex(langIndex);
     ui->countrycomboBox->setCurrentIndex(formatIndex);
-    ui->addlanframe->installEventFilter(this);
+//    ui->addlanframe->installEventFilter(this);
 
     initFormatData();
 }

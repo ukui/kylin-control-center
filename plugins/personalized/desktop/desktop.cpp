@@ -164,7 +164,7 @@ void Desktop::initTranslation() {
     transMap.insert("ukui-power-manager-tray", "电源管理");
 
     iconMap.insert("ukui-volume-control-applet-qt", "audio-card");
-    iconMap.insert("kylin-nm", "preferences-system-network");
+    iconMap.insert("kylin-nm", "network-workgroup");
     iconMap.insert("indicator-china-weather", "indicator-china-weather");
     iconMap.insert("ukui-flash-disk", "drive-removable-media");
     iconMap.insert("ukui-power-manager-tray", "cs-power");

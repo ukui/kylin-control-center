@@ -198,7 +198,7 @@
            <widget class="QListWidget" name="customListWidget"/>
           </item>
           <item>
-           <widget class="QFrame" name="addFrame">
+           <widget class="QWidget" name="addWidget" native="true">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -211,15 +211,12 @@
               <height>60</height>
              </size>
             </property>
-            <property name="frameShape">
-             <enum>QFrame::Box</enum>
-            </property>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
              <property name="spacing">
-              <number>0</number>
+              <number>8</number>
              </property>
              <property name="leftMargin">
-              <number>16</number>
+              <number>0</number>
              </property>
              <property name="topMargin">
               <number>0</number>
@@ -231,9 +228,9 @@
               <number>0</number>
              </property>
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <layout class="QHBoxLayout" name="addLyt">
                <property name="spacing">
-                <number>16</number>
+                <number>8</number>
                </property>
                <property name="leftMargin">
                 <number>0</number>
@@ -241,57 +238,6 @@
                <property name="rightMargin">
                 <number>0</number>
                </property>
-               <item>
-                <widget class="QLabel" name="addLabel">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>48</width>
-                   <height>48</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>48</width>
-                   <height>48</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_3">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Add custom shortcut</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_3">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
               </layout>
              </item>
             </layout>

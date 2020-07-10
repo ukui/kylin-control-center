@@ -37,7 +37,7 @@ Printer::Printer(){
     pluginName = tr("Printer");
     pluginType = DEVICES;
 
-    ui->addFrame->installEventFilter(this);
+//    ui->addFrame->installEventFilter(this);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
@@ -78,15 +78,51 @@ void Printer::plugin_delay_control(){
 
 void Printer::initComponent(){
 
-    ui->addBtn->setIcon(QIcon("://img/plugins/printer/add.png"));
-    ui->addBtn->setIconSize(QSize(48, 48));
-    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
+//    ui->addBtn->setIcon(QIcon("://img/plugins/printer/add.png"));
+//    ui->addBtn->setIconSize(QSize(48, 48));
+//    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
+
+    addWgt = new HoverWidget("");
+    addWgt->setObjectName("addwgt");
+    addWgt->setMinimumSize(QSize(580, 50));
+    addWgt->setMaximumSize(QSize(960, 50));
+    addWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
+
+    QHBoxLayout *addLyt = new QHBoxLayout;
+
+    QLabel * iconLabel = new QLabel();
+    QLabel * textLabel = new QLabel(tr("Add printers and scanners"));
+    QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+    iconLabel->setPixmap(pixgray);
+    addLyt->addWidget(iconLabel);
+    addLyt->addWidget(textLabel);
+    addLyt->addStretch();
+    addWgt->setLayout(addLyt);
+
+    // 悬浮改变Widget状态
+    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(base);");
+
+    });
+    // 还原状态
+    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(windowText);");
+    });
+
+    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
+        runExternalApp();
+    });
+    ui->addLyt->addWidget(addWgt);
 
     pTimer->start();
 
-    connect(ui->addBtn, &QPushButton::clicked, this, [=]{
-        runExternalApp();
-    });
+//    connect(ui->addBtn, &QPushButton::clicked, this, [=]{
+//        runExternalApp();
+//    });
 }
 
 void Printer::refreshPrinterDev(){
@@ -153,17 +189,17 @@ void Printer::runExternalApp(){
     process.startDetached(cmd);
 }
 
-bool Printer::eventFilter(QObject *watched, QEvent *event)
-{
-    if (watched == ui->addFrame){
-        if (event->type() == QEvent::MouseButtonPress){
-            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
-            if (mouseEvent->button() == Qt::LeftButton){
-                runExternalApp();
-                return true;
-            } else
-                return false;
-        }
-    }
-    return QObject::eventFilter(watched, event);
-}
+//bool Printer::eventFilter(QObject *watched, QEvent *event)
+//{
+//    if (watched == ui->addFrame){
+//        if (event->type() == QEvent::MouseButtonPress){
+//            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
+//            if (mouseEvent->button() == Qt::LeftButton){
+//                runExternalApp();
+//                return true;
+//            } else
+//                return false;
+//        }
+//    }
+//    return QObject::eventFilter(watched, event);
+//}

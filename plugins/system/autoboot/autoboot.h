@@ -26,6 +26,7 @@
 #include "shell/interface.h"
 #include "datadefined.h"
 #include "addautoboot.h"
+#include "HoverWidget/hoverwidget.h"
 
 namespace Ui {
 class AutoBoot;
@@ -70,7 +71,7 @@ public:
     void del_autoboot_realize(QString bname);
 
 protected:
-    bool eventFilter(QObject *watched, QEvent *event);
+//    bool eventFilter(QObject *watched, QEvent *event);
 
 
 private:
@@ -88,6 +89,8 @@ private:
     QMultiMap<QString, QWidget *> appgroupMultiMaps;
 
     char * localconfigdir;
+
+    HoverWidget *addWgt;
 
     void _walk_config_dirs();
     AutoApp _app_new(const char * path);

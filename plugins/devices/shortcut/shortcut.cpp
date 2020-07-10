@@ -118,7 +118,7 @@ void Shortcut::plugin_delay_control(){
 }
 
 void Shortcut::setupComponent(){
-    ui->addLabel->setPixmap(QPixmap("://img/plugins/printer/add.png"));
+//    ui->addLabel->setPixmap(QPixmap("://img/plugins/printer/add.png"));
 
     ui->generalListWidget->setFocusPolicy(Qt::NoFocus);
     ui->generalListWidget->setSelectionMode(QAbstractItemView::NoSelection);
@@ -133,7 +133,41 @@ void Shortcut::setupComponent(){
     ui->customListWidget->setSpacing(0);
 //    ui->customListWidget->setFixedHeight((showList.length() * ITEMHEIGH));
 
-    ui->addFrame->installEventFilter(this);
+    addWgt = new HoverWidget("");
+    addWgt->setObjectName("addwgt");
+    addWgt->setMinimumSize(QSize(580, 50));
+    addWgt->setMaximumSize(QSize(960, 50));
+    addWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
+
+    QHBoxLayout *addLyt = new QHBoxLayout;
+
+    QLabel * iconLabel = new QLabel();
+    QLabel * textLabel = new QLabel(tr("Add custom shortcut"));
+    QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+    iconLabel->setPixmap(pixgray);
+    addLyt->addWidget(iconLabel);
+    addLyt->addWidget(textLabel);
+    addLyt->addStretch();
+    addWgt->setLayout(addLyt);
+
+    // 悬浮改变Widget状态
+    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(base);");
+
+    });
+    // 还原状态
+    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(windowText);");
+    });
+
+    ui->addLyt->addWidget(addWgt);
+
+
+//    ui->addFrame->installEventFilter(this);
     ui->generalListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 
     ui->resetBtn->hide();
@@ -141,6 +175,11 @@ void Shortcut::setupComponent(){
 }
 
 void Shortcut::setupConnect(){
+
+    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
+        addDialog->exec();
+    });
+
     connect(ui->showBtn, &QPushButton::clicked, [=]{
         QMap<QString, QString> systemMap;
         QMap<QString, QString> desktopMap;
@@ -544,20 +583,20 @@ bool Shortcut::keyIsForbidden(QString key){
     return false;
 }
 
-bool Shortcut::eventFilter(QObject *watched, QEvent *event){
-    if (watched == ui->addFrame){
-        if (event->type() == QEvent::MouseButtonPress){
-            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
-            if (mouseEvent->button() == Qt::LeftButton){
-                addDialog->setTitleText(QObject::tr("Add Shortcut"));
-                addDialog->exec();
-                return true;
-            } else
-                return false;
-        }
-    }
-    return QObject::eventFilter(watched, event);
-}
+//bool Shortcut::eventFilter(QObject *watched, QEvent *event){
+//    if (watched == ui->addFrame){
+//        if (event->type() == QEvent::MouseButtonPress){
+//            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
+//            if (mouseEvent->button() == Qt::LeftButton){
+//                addDialog->setTitleText(QObject::tr("Add Shortcut"));
+//                addDialog->exec();
+//                return true;
+//            } else
+//                return false;
+//        }
+//    }
+//    return QObject::eventFilter(watched, event);
+//}
 
 //bool Shortcut::event(QEvent *event){
 //    qDebug() << "---111--->";

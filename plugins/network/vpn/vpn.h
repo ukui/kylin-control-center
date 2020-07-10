@@ -24,6 +24,8 @@
 #include <QtPlugin>
 
 #include "shell/interface.h"
+#include "HoverWidget/hoverwidget.h"
+#include "ImageUtil/imageutil.h"
 
 namespace Ui {
 class Vpn;
@@ -50,7 +52,7 @@ public:
     void runExternalApp();
 
 protected:
-    bool eventFilter(QObject *watched, QEvent *event);
+//    bool eventFilter(QObject *watched, QEvent *event);
 
 private:
     Ui::Vpn *ui;
@@ -58,6 +60,7 @@ private:
     QString pluginName;
     int pluginType;
     QWidget * pluginWidget;
+    HoverWidget * addWgt;
 
 };
 
