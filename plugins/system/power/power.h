@@ -55,7 +55,7 @@ public:
     void initModeStatus();
     void initCustomPlanStatus();
     void resetCustomPlanStatus();
-    void initIconPolicyStatus();
+    void initPowerOtherStatus();
 
 
     void refreshUI();
@@ -74,6 +74,8 @@ private:
 
     QStringList sleepStringList;
     QStringList closeStringList;
+    QStringList closeLidStringList;
+    QStringList darkenStringList;
     QStringList lidStringList;
     QStringList buttonStringList;
     QStringList iconShowList;

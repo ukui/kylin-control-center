@@ -73,7 +73,7 @@ Power::Power()
         settings = new QGSettings(id);
         setupConnect();
         initModeStatus();
-        initIconPolicyStatus();
+        initPowerOtherStatus();
     } else {
         qCritical() << POWERMANAGER_SCHEMA << "not installed!\n";
     }
@@ -156,16 +156,41 @@ void Power::setupComponent(){
     ui->closeComboBox->insertItem(6, closeStringList.at(6), QVariant::fromValue(60));
     ui->closeComboBox->insertItem(7, closeStringList.at(7), QVariant::fromValue(120));
 
+    //合盖
+    closeLidStringList << tr("nothing") << tr("blank") << tr("suspend") << tr("hibernate") << tr("shutdown");
+    ui->closeLidCombo->insertItem(0, closeLidStringList.at(0), "nothing");
+    ui->closeLidCombo->insertItem(1, closeLidStringList.at(1), "blank");
+    ui->closeLidCombo->insertItem(2, closeLidStringList.at(2), "suspend");
+    ui->closeLidCombo->insertItem(3, closeLidStringList.at(3), "hibernate");
+    ui->closeLidCombo->insertItem(4, closeLidStringList.at(4), "shutdown");
+
+    //使用电池时屏幕变暗
+    darkenStringList << tr("never") << tr("1 min") << tr("5 min") << tr("10 min") << tr("20 min");
+    ui->darkenCombo->setItemDelegate(itemDelege);
+    ui->darkenCombo->setMaxVisibleItems(5);
+    ui->darkenCombo->insertItem(0, darkenStringList.at(0), QVariant::fromValue(0));
+    ui->darkenCombo->insertItem(1, darkenStringList.at(1), QVariant::fromValue(1));
+    ui->darkenCombo->insertItem(2, darkenStringList.at(2), QVariant::fromValue(5));
+    ui->darkenCombo->insertItem(3, darkenStringList.at(3), QVariant::fromValue(10));
+    ui->darkenCombo->insertItem(4, darkenStringList.at(4), QVariant::fromValue(20));
+
 
     //默认电源
     ui->acBtn->setChecked(true);
+    //电源不显示变暗功能
+    ui->darkenFrame->hide();
+
+    //s3tos4先隐藏
+    ui->s3Tos4Frame->hide();
 
     //电源图标
-    iconShowList << tr("always") << tr("present");
+    iconShowList << tr("always") << tr("present") << tr("charge");
     ui->iconComboBox->setItemDelegate(itemDelege);
     ui->iconComboBox->setMaxVisibleItems(6);
     ui->iconComboBox->insertItem(0, iconShowList.at(0), "always");
     ui->iconComboBox->insertItem(1, iconShowList.at(1), "present");
+    ui->iconComboBox->insertItem(2, iconShowList.at(2), "charge");
+
 
 
     //lid
@@ -264,6 +289,33 @@ void Power::setupConnect(){
         QString value = ui->iconComboBox->currentData(Qt::UserRole).toString();
         settings->set(ICONPOLICY, value);
     });
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+    connect(ui->closeLidCombo,static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
+#else
+    connect(ui->closeLidCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+#endif
+
+        Q_UNUSED(index)
+        QString value = ui->closeLidCombo->currentData(Qt::UserRole).toString();
+        if (ui->acBtn->isChecked()){
+            settings->set(BUTTON_LID_AC_KEY, value);
+        }
+        if (ui->batteryBtn->isChecked()){
+            settings->set(BUTTON_LID_BATT_KET, value);
+        }
+    });
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+    connect(ui->darkenCombo,static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
+#else
+    connect(ui->darkenCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+#endif
+
+        Q_UNUSED(index)
+        int idleDarken = ui->darkenCombo->currentData(Qt::UserRole).toInt();
+        settings->set(IDLE_DIM_TIME_KEY, idleDarken);
+    });
 }
 
 void Power::initModeStatus(){
@@ -290,7 +342,7 @@ void Power::initModeStatus(){
     refreshUI();
 }
 
-void Power::initIconPolicyStatus(){
+void Power::initPowerOtherStatus(){
     QString value = settings->get(ICONPOLICY).toString();
     ui->iconComboBox->blockSignals(true);
     ui->iconComboBox->setCurrentIndex(ui->iconComboBox->findData(value));
@@ -305,6 +357,9 @@ void Power::resetCustomPlanStatus(){
     //设置计算机睡眠
     settings->set(SLEEP_COMPUTER_AC_KEY, 0);
     settings->set(SLEEP_COMPUTER_BATT_KEY, 0);
+    //
+    settings->set(BUTTON_LID_AC_KEY, "nothing");
+    settings->set(BUTTON_LID_BATT_KET, "nothing");
 
     ui->acBtn->setChecked(true);
     initCustomPlanStatus();
@@ -315,6 +370,7 @@ void Power::initCustomPlanStatus(){
     //信号阻塞
     ui->sleepComboBox->blockSignals(true);
     ui->closeComboBox->blockSignals(true);
+    ui->darkenCombo->blockSignals(true);
 
     if (ui->acBtn->isChecked()){
         //计算机睡眠延迟
@@ -324,6 +380,13 @@ void Power::initCustomPlanStatus(){
         //显示器关闭延迟
         int acclose = settings->get(SLEEP_DISPLAY_AC_KEY).toInt() / FIXES;
         ui->closeComboBox->setCurrentIndex(ui->closeComboBox->findData(acclose));
+
+        //合盖
+        QString aclid = settings->get(BUTTON_LID_AC_KEY).toString();
+        ui->closeLidCombo->setCurrentIndex(ui->closeLidCombo->findData(aclid));
+
+        //变暗
+        ui->darkenFrame->hide();
 
     }
 
@@ -335,11 +398,21 @@ void Power::initCustomPlanStatus(){
         //显示器关闭延迟
         int batclose = settings->get(SLEEP_DISPLAY_BATT_KEY).toInt() / FIXES;
         ui->closeComboBox->setCurrentIndex(ui->closeComboBox->findData(batclose));
+
+        //合盖
+        QString batlid = settings->get(BUTTON_LID_BATT_KET).toString();
+        ui->closeLidCombo->setCurrentIndex(ui->closeLidCombo->findData(batlid));
+
+        //变暗
+        int darkentime = settings->get(IDLE_DIM_TIME_KEY).toInt();
+        ui->darkenCombo->setCurrentIndex(ui->darkenCombo->findData(darkentime));
+        ui->darkenFrame->show();
     }
 
     //信号阻塞解除
     ui->sleepComboBox->blockSignals(false);
     ui->closeComboBox->blockSignals(false);
+    ui->darkenCombo->blockSignals(false);
 
     //lid 枚举类型但是toint为零只能toString
 //    QString aclidString = settings->get(BUTTON_LID_AC_KEY).toString();
@@ -367,6 +440,9 @@ void Power::refreshUI(){
 //        ui->custom2Widget->setEnabled(false);
         ui->custom1Frame->hide();
         ui->custom2Frame->hide();
+        ui->closeLidFrame->hide();
+        if (ui->batteryBtn->isChecked())
+            ui->darkenFrame->hide();
 //        ui->customWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
 
@@ -375,6 +451,7 @@ void Power::refreshUI(){
 //        ui->custom2Widget->setEnabled(true);
         ui->custom1Frame->show();
         ui->custom2Frame->show();
+        ui->closeLidFrame->show();
 //        ui->customWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
     }
 }

@@ -31,9 +31,11 @@
 #define BUTTON_LID_BATT_KET "button-lid-battery"
 #define BUTTON_SUSPEND_KEY "button-suspend"
 #define BUTTON_POWER_KEY "button-power"
+#define IDLE_DIM_TIME_KEY "idle-dim-time"
 
 #define PRESENT_VALUE "present"
 #define ALWAYS_VALUE "always"
+#define CHARGE_VALUE "charge"
 
 #define FIXES 60
 
