@@ -26,7 +26,7 @@
 #include <QPushButton>
 #include <QAbstractButton>
 #include <QFontDatabase>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QStyledItemDelegate>
 
 #include "shell/interface.h"

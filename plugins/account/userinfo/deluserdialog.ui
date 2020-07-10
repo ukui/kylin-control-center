@@ -286,7 +286,7 @@ folder will be deleted!</string>
                <string>Cancel</string>
               </property>
               <property name="flat">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>

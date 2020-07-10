@@ -17,33 +17,37 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef ITEM_LIST_H
-#define ITEM_LIST_H
+#ifndef DISPLAYPERFORMANCEDIALOG_H
+#define DISPLAYPERFORMANCEDIALOG_H
 
-#include <QObject>
-#include <QListWidget>
-#include <QMouseEvent>
-#include <QComboBox>
-#include "network_item.h"
+#include <QDialog>
+#include <QGSettings>
 
-#define CURSIZE 6
+namespace Ui {
+class DisplayPerformanceDialog;
+}
 
-class item_list : public QListWidget
+class DisplayPerformanceDialog : public QDialog
 {
     Q_OBJECT
-public:
-    explicit        item_list(QListWidget *parent = nullptr,int itemssize = CURSIZE);
-    QStringList     get_list();
-    network_item*   get_item(int cur);
-    void            add_item(QString item_name);
-private:
-    QListWidgetItem *items[30];
-    QStringList     varmap = {tr("Walpaper"),tr("ScreenSaver"),tr("Menu"),tr("Quick Start"),tr("Tab"),tr("Weather"),tr("Media")};
-    int             itemsize = 0;
-    network_item    *itempack[30];
-    QPoint          m_startPoint;
-signals:
 
+public:
+    explicit DisplayPerformanceDialog(QWidget *parent = 0);
+    ~DisplayPerformanceDialog();
+
+public:
+    void setupComponent();
+    void setupConnect();
+    void initModeStatus();
+
+private:
+    void paintEvent(QPaintEvent * event);
+
+private:
+    Ui::DisplayPerformanceDialog *ui;
+
+private:
+    QGSettings * settings;
 };
 
-#endif // ITEM_LIST_H
+#endif // DISPLAYPERFORMANCEDIALOG_H

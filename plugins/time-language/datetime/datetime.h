@@ -31,7 +31,7 @@
 #include <QLabel>
 #include <QAbstractButton>
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 
 #include <QDBusInterface>
 #include <QDBusConnection>
@@ -42,7 +42,6 @@
 #include <QDateTime>
 #include <QTimer>
 #include <QSettings>
-#include <QGSettings/QGSettings>
 
 #include "worldMap/timezonechooser.h"
 #include "worldMap/zoneinfo.h"

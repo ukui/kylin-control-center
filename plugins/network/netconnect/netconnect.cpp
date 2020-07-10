@@ -23,7 +23,7 @@
 #include "kylin_network_interface.h"
 
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QProcess>
 #include <QTimer>
 #include <QDBusInterface>

@@ -7,7 +7,7 @@
 
 #include <KF5/KScreen/kscreen/output.h>
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 
 class QCheckBox;
 class ResolutionSlider;

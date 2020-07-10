@@ -24,7 +24,7 @@
 #include <QtPlugin>
 #include <QStyledItemDelegate>
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 
 #include "shell/interface.h"
 

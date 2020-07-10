@@ -20,6 +20,11 @@ INCLUDEPATH   +=  \
 
 LIBS          += -L/usr/lib/ -lgsettings-qt
 
+CONFIG +=  \
+          link_pkgconfig \
+          c++11
+
+PKGCONFIG += gsettings-qt \
 
 SOURCES += \
         display.cpp \
@@ -32,7 +37,8 @@ SOURCES += \
     slider.cpp \
     unifiedoutputconfig.cpp \
     utils.cpp \
-    widget.cpp
+    widget.cpp \
+    displayperformancedialog.cpp
 
 HEADERS += \
         display.h \
@@ -45,10 +51,12 @@ HEADERS += \
     slider.h \
     unifiedoutputconfig.h \
     utils.h \
-    widget.h
+    widget.h \
+    displayperformancedialog.h
 
 FORMS += \
-    display.ui
+    display.ui \
+    displayperformancedialog.ui
 
 #DISTFILES += \
 #    qml/main.qml \

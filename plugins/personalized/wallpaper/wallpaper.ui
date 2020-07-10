@@ -274,7 +274,7 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>Select form</string>
+                <string>Select from</string>
                </property>
               </widget>
              </item>

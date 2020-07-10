@@ -17,7 +17,8 @@ DESTDIR = ../../../pluginlibs
 CONFIG        += link_pkgconfig \
                  C++11
 PKGCONFIG     += gio-2.0 \
-                 gio-unix-2.0
+                 gio-unix-2.0 \
+                 gsettings-qt \
 
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/uslider.pri)

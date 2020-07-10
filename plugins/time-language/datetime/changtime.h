@@ -25,7 +25,7 @@
 #include <QWidget>
 #include <QTimer>
 #include <QDateTime>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QDBusInterface>
 #include <QDBusConnection>
 #include <QDBusReply>

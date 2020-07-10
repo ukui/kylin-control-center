@@ -20,7 +20,7 @@
 #include "certificationdialog.h"
 #include "ui_certificationdialog.h"
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include "SwitchButton/switchbutton.h"
 
 #include <QDebug>

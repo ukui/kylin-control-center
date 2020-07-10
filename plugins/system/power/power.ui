@@ -594,13 +594,13 @@
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>200</width>
+                   <width>300</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>200</width>
+                   <width>16777215</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -696,13 +696,13 @@
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>200</width>
+                   <width>300</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>200</width>
+                   <width>300</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -891,7 +891,7 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="powerTypeBtnGroup"/>
   <buttongroup name="powerModeBtnGroup"/>
+  <buttongroup name="powerTypeBtnGroup"/>
  </buttongroups>
 </ui>

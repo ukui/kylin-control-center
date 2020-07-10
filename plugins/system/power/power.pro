@@ -13,6 +13,12 @@ INCLUDEPATH += \
 
 LIBS     += -L/usr/lib/ -lgsettings-qt
 
+CONFIG +=  \
+          link_pkgconfig \
+          c++11
+
+PKGCONFIG += gsettings-qt \
+
 
 FORMS += \
     power.ui

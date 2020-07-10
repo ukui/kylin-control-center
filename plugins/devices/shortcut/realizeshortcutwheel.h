@@ -20,7 +20,7 @@
 #ifndef REALIZESHORTCUTWHEEL_H
 #define REALIZESHORTCUTWHEEL_H
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QList>
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏

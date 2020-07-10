@@ -32,7 +32,7 @@
 #include <QCommandLineParser>
 #include <QTimer>
 #include <QDebug>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QSharedPointer>
 #include <memory>
 

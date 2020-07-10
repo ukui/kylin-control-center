@@ -418,7 +418,7 @@ void Wallpaper::showLocalWpDialog(){
     fd.setViewMode(QFileDialog::List);
     fd.setNameFilter(filters);
     fd.setFileMode(QFileDialog::ExistingFile);
-    fd.setWindowTitle(tr("selsect custom wallpaper file"));
+    fd.setWindowTitle(tr("select custom wallpaper file"));
     fd.setLabelText(QFileDialog::Accept, tr("Select"));
     fd.setLabelText(QFileDialog::LookIn, tr("Position: "));
     fd.setLabelText(QFileDialog::FileName, tr("FileName: "));
@@ -447,7 +447,7 @@ void Wallpaper::add_custom_wallpaper(){
     fd.setViewMode(QFileDialog::List);
     fd.setNameFilter(filters);
     fd.setFileMode(QFileDialog::ExistingFile);
-    fd.setWindowTitle(tr("selsect custom wallpaper file"));
+    fd.setWindowTitle(tr("select custom wallpaper file"));
     fd.setLabelText(QFileDialog::Accept, tr("Select"));
     fd.setLabelText(QFileDialog::LookIn, tr("Position: "));
     fd.setLabelText(QFileDialog::FileName, tr("FileName: "));

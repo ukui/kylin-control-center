@@ -22,6 +22,7 @@ CONFIG +=  \
 
 PKGCONFIG += gio-2.0 \
              gio-unix-2.0 \
+             gsettings-qt \
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings

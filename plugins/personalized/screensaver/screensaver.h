@@ -25,7 +25,7 @@
 #include <QPushButton>
 #include <QMap>
 #include <QProcess>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QStyledItemDelegate>
 #include <QPaintEvent>
 #include <QShowEvent>

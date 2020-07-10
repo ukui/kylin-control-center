@@ -2,6 +2,7 @@
 
 #include <QStyleOptionToolButton>
 #include <QPainter>
+#include <QPainterPath>
 #include <QApplication>
 CustomStyle::CustomStyle(const QString &proxyStyleName, QObject *parent) : QProxyStyle (proxyStyleName)
 {

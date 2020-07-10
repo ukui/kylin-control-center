@@ -23,7 +23,7 @@
 #include <QObject>
 #include <QtPlugin>
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"

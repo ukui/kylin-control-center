@@ -30,7 +30,7 @@
 
 #include <QTimer>
 #include <QStringList>
-#include <QGSettings/qgsettings.h>
+#include <QGSettings>
 
 #include "wifi.h"
 #include "netconnectwork.h"

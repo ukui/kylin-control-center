@@ -26,7 +26,7 @@
 #include <QString>
 #include <QDateTime>
 #include <QTimer>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <KMessageBox>
 
 #define PANEL_GSCHEMAL   "org.ukui.control-center.panel.plugins"

@@ -20,7 +20,7 @@
 #include "desktop.h"
 #include "ui_desktop.h"
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include "SwitchButton/switchbutton.h"
 #include "realizedesktop.h"
 
@@ -103,6 +103,9 @@ Desktop::Desktop()
 //    ui->menuTrashFrame->setVisible(false);
 //    ui->menuFilesystemFrame->setVisible(false);
 //    ui->menuSettingFrame->setVisible(false);
+
+    ui->title2Label->hide();
+    ui->fullScreenMenuFrame->setVisible(false);
 
 
     vecGsettings = new QVector<QGSettings*>();

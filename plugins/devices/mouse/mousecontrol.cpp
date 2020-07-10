@@ -32,6 +32,8 @@
 
 extern "C" {
 #include <X11/Xlib.h>
+#include <glib.h>
+#include <gio/gio.h>
 }
 
 #define MOUSE_SCHEMA "org.ukui.peripherals-mouse"
@@ -46,6 +48,10 @@ extern "C" {
 
 #define DESKTOP_SCHEMA "org.mate.interface"
 #define CURSOR_BLINK_KEY "cursor-blink"
+#define CURSOR_BLINK_TIME_KEY "cursor-blink-time"
+
+#define MOUSE_MID_GET_CMD "/usr/bin/mouse-midbtn-speed-get"
+#define MOUSE_MID_SET_CMD "/usr/bin/mouse-midbtn-speed-set"
 
 
 MouseControl::MouseControl()
@@ -103,6 +109,7 @@ MouseControl::MouseControl()
         initHandHabitStatus();
         initPointerStatus();
         initCursorStatus();
+        initWheelStatus();
     }
 
 
@@ -137,8 +144,8 @@ void MouseControl::plugin_delay_control(){
 
 void MouseControl::setupComponent(){
 
-    ui->title3Label->hide();
-    ui->cursorSpeedFrame->hide();
+//    ui->title3Label->hide();
+//    ui->cursorSpeedFrame->hide();
     ui->cursorWeightFrame->hide();
 
     //设置左手右手鼠标控件
@@ -154,6 +161,11 @@ void MouseControl::setupComponent(){
     ui->pointerSizeComBox->addItem(tr("Default(Recommended)"), 24); //100%
     ui->pointerSizeComBox->addItem(tr("Medium"), 32); //125%
     ui->pointerSizeComBox->addItem(tr("Large"), 48); //150%
+
+    //设置鼠标滚轮是否显示
+    if (!g_file_test(MOUSE_MID_GET_CMD, G_FILE_TEST_EXISTS) || !g_file_test(MOUSE_MID_SET_CMD, G_FILE_TEST_EXISTS)){
+        ui->midSpeedFrame->hide();
+    }
 
     //设置启用光标闪烁
     flashingBtn = new SwitchButton(pluginWidget);
@@ -193,6 +205,14 @@ void MouseControl::setupComponent(){
 
     connect(flashingBtn, &SwitchButton::checkedChanged, [=](bool checked){
         desktopSettings->set(CURSOR_BLINK_KEY, checked);
+    });
+
+    connect(ui->midHorSlider, &QSlider::sliderReleased, [=]{
+        _set_mouse_mid_speed(ui->midHorSlider->value());
+    });
+
+    connect(ui->cursorSpeedSlider, &QSlider::sliderReleased, [=]{
+        desktopSettings->set(CURSOR_BLINK_TIME_KEY, ui->cursorSpeedSlider->value());
     });
 }
 
@@ -250,4 +270,42 @@ void MouseControl::initCursorStatus(){
     flashingBtn->blockSignals(true);
     flashingBtn->setChecked(desktopSettings->get(CURSOR_BLINK_KEY).toBool());
     flashingBtn->blockSignals(false);
+
+    ui->cursorSpeedSlider->blockSignals(true);
+    ui->cursorSpeedSlider->setValue(desktopSettings->get(CURSOR_BLINK_TIME_KEY).toInt());
+    ui->cursorSpeedSlider->blockSignals(false);
+}
+
+void MouseControl::initWheelStatus(){
+    int value = _get_mouse_mid_speed();
+    ui->midHorSlider->blockSignals(true);
+    ui->midHorSlider->setValue(value);
+    ui->midHorSlider->blockSignals(false);
+}
+
+int MouseControl::_get_mouse_mid_speed(){
+
+    int value = 0;
+
+    if (g_file_test(MOUSE_MID_GET_CMD, G_FILE_TEST_EXISTS)){
+        QProcess * getProcess = new QProcess();
+        getProcess->start(MOUSE_MID_GET_CMD);
+        getProcess->waitForFinished();
+
+        QByteArray ba = getProcess->readAllStandardOutput();
+        QString speedStr = QString(ba.data()).simplified();
+        value = speedStr.toInt();
+    }
+
+    return value;
+}
+
+void MouseControl::_set_mouse_mid_speed(int value){
+    QString cmd;
+
+    cmd = MOUSE_MID_SET_CMD + QString(" ") + QString::number(value);
+
+    QProcess * setProcess = new QProcess();
+    setProcess->start(cmd);
+    setProcess->waitForFinished();
 }

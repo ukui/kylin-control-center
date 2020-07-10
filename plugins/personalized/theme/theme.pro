@@ -24,6 +24,12 @@ INCLUDEPATH   +=  \
 LIBS          += -L/usr/lib/ -lgsettings-qt -lX11 -lXfixes -lXcursor
 
 
+CONFIG +=  \
+          link_pkgconfig \
+          c++11
+
+PKGCONFIG += gsettings-qt \
+
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 

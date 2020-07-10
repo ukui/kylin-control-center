@@ -25,7 +25,7 @@
 
 #include <QLabel>
 #include <QThread>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QSettings>
 
 #include "shell/interface.h"

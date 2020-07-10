@@ -28,7 +28,7 @@
 #include <QLineEdit>
 #include "certificationdialog.h"
 
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"

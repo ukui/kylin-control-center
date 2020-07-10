@@ -469,7 +469,7 @@ you can restore them to ensure the integrity of your system.</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="138"/>
-        <source>selsect custom face file</source>
+        <source>select custom face file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3404,7 +3404,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="277"/>
-        <source>Select form</source>
+        <source>Select from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3595,7 +3595,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/addshortcutdialog.cpp" line="185"/>
-        <source>selsect desktop</source>
+        <source>select desktop</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

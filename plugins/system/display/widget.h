@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QVariantMap>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QSettings>
 #include <QButtonGroup>
 #include <QDBusInterface>

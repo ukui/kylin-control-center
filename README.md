@@ -1,5 +1,7 @@
 ## ukui-control-center
 
+![build](https://github.com/ukui/ukui-control-center/workflows/build/badge.svg?branch=master)
+
 UKCC(ukui-control-center)是UKUI桌面环境的控制面板
 
 ### 依赖

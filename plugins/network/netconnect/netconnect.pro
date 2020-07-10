@@ -19,6 +19,12 @@ INCLUDEPATH   +=  \
                  $$PROJECT_ROOTDIR \
 
 LIBS          +=  -L/usr/lib/ -lgsettings-qt
+
+CONFIG += c++11 \
+          link_pkgconfig \
+
+PKGCONFIG += gsettings-qt \
+
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \

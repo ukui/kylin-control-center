@@ -33,7 +33,7 @@
 #include <QDir>
 #include <QSettings>
 #include <QtDBus/QDBusMessage>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QtDBus/QtDBus>
 
 

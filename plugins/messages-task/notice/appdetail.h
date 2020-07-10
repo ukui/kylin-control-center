@@ -2,7 +2,7 @@
 #define APPDETAIL_H
 
 #include <QDialog>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 #include <QPainter>
 
 #include "SwitchButton/switchbutton.h"
