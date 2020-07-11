@@ -79,8 +79,9 @@ Widget::Widget(QWidget *parent)
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-
+    oriApply = true;
 #else
+    oriApply = false;
     ui->quickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
     ui->quickWidget->setClearColor(Qt::transparent);
 #endif
@@ -167,7 +168,18 @@ Widget::Widget(QWidget *parent)
     //ui->controlPanelLayout->setContentsMargins(0,0,60,10);
 
 
-    connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(save()));
+//    connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(save()));
+    // TODO: Find out why adjusting the screen orientation does not take effect
+    connect(ui->applyButton, &QPushButton::clicked, this, [=](){
+       save();
+       if (oriApply) {
+           QTimer::singleShot(1000, this,
+               [this] () {
+                  save();
+               }
+           );
+       }
+    });
 //    connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(saveBrigthnessConfig()));
 
     connect(ui->advancedBtn, &QPushButton::clicked, this, [=]{

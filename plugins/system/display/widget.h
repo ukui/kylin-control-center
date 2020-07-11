@@ -217,12 +217,11 @@ class Widget : public QWidget
     QGSettings *m_gsettings = nullptr;
     QGSettings *scaleGSettings = nullptr;
     QSettings *m_qsettings = nullptr;
-
-    int screenScale = 1;
-
     QButtonGroup *singleButton;
 
+    int screenScale = 1;
     bool isScaleChanged = false;
+    bool oriApply;
 };
 
 #endif // WIDGET_H
