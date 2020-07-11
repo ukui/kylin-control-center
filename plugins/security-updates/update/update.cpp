@@ -78,7 +78,7 @@ void Update::ui_init(){
 
     syncSettings->endGroup();
 
-    ui->logoLabel->setPixmap(QPixmap(":/img/plugins/update/update.png"));
+    ui->logoLabel->setPixmap(QPixmap(":/img/plugins/update/update.svg"));
 }
 
 QStringList Update::readFile(QString filepath)
