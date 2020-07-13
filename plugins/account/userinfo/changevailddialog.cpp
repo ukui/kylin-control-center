@@ -172,8 +172,17 @@ void ChangeVaildDialog::setupComponent(){
     //chage源码中超过10000天会显示从不，10000/365 = 27.3，为了方便显示，取整，界面显示26年
     if (lastChangeDate.isValid()){
         setupYearCombo();
+
+
         setupMonthCombo();
+        ui->monthCombox->blockSignals(true);
+        ui->monthCombox->setCurrentIndex(ui->monthCombox->findData(lastChangeDate.addDays(delayDays).month()));
+        ui->monthCombox->blockSignals(false);
+
         setupDayCombo();
+        ui->dayCombox->blockSignals(true);
+        ui->dayCombox->setCurrentIndex(ui->dayCombox->findData(lastChangeDate.addDays(delayDays).day()));
+        ui->dayCombox->blockSignals(false);
     } else {
 
     }
@@ -191,7 +200,10 @@ void ChangeVaildDialog::setupYearCombo(){
         ui->yearCombox->addItem(QString::number(year)+QObject::tr("Year"), year);
     }
 
-    ui->yearCombox->setCurrentIndex(ui->yearCombox->findData(lastChangeDate.addDays(delayDays).year()));
+    if (delayDays > 10000)
+        ui->yearCombox->setCurrentIndex(0);
+    else
+        ui->yearCombox->setCurrentIndex(ui->yearCombox->findData(lastChangeDate.addDays(delayDays).year()));
 
     ui->yearCombox->blockSignals(false);
 }
@@ -215,8 +227,6 @@ void ChangeVaildDialog::setupMonthCombo(){
         ui->monthCombox->addItem(QObject::tr("Oct"), 10);
         ui->monthCombox->addItem(QObject::tr("Nov"), 11);
         ui->monthCombox->addItem(QObject::tr("Dec"), 12);
-
-        ui->monthCombox->setCurrentIndex(ui->monthCombox->findData(lastChangeDate.addDays(delayDays).month()));
     }
 
 
@@ -239,8 +249,6 @@ void ChangeVaildDialog::setupDayCombo(){
             for (int d = 1; d <= days; d++){
                 ui->dayCombox->addItem(QString::number(d)+QObject::tr("Day"), d);
             }
-
-            ui->dayCombox->setCurrentIndex(ui->dayCombox->findData(lastChangeDate.addDays(delayDays).day()));
         }
     } else {
 
