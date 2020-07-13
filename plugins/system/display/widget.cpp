@@ -29,7 +29,6 @@
 #include <KAboutData>
 #include <KMessageBox>
 #include <QStyledItemDelegate>
-//#include <KLocalizedString>
 #include <KF5/KScreen/kscreen/output.h>
 #include <KF5/KScreen/kscreen/edid.h>
 #include <KF5/KScreen/kscreen/mode.h>
@@ -68,12 +67,25 @@
 
 Q_DECLARE_METATYPE(KScreen::OutputPtr)
 
+#ifdef signals
+#undef signals
+#endif
+
+extern "C" {
+#define MATE_DESKTOP_USE_UNSTABLE_API
+#include <libmate-desktop/mate-rr.h>
+#include <libmate-desktop/mate-rr-config.h>
+#include <libmate-desktop/mate-rr-labeler.h>
+#include <libmate-desktop/mate-desktop-utils.h>
+}
+
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::DisplayWindow()), slider(new Slider())
 {
     qRegisterMetaType<QQuickView*>();
+    gdk_init(NULL, NULL);
 
     ui->setupUi(this);
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
@@ -112,8 +124,6 @@ Widget::Widget(QWidget *parent)
         ui->advancedHorLayout->setContentsMargins(9, 0, 9, 0);
     }
 
-
-    initUiQss();
     initTemptSlider();
     initConfigFile();
     initUiComponent();
@@ -132,27 +142,18 @@ Widget::Widget(QWidget *parent)
     nightButton->setChecked(this->m_isNightMode);
     showNightWidget(nightButton->isChecked());
 
-
 //    connect(this,&Widget::nightModeChanged,nightButton,&SwitchButton::setChecked);
 //    connect(this,&Widget::redShiftValidChanged,nightButton,&SwitchButton::setVisible);
     connect(nightButton,SIGNAL(checkedChanged(bool)),this,SLOT(showNightWidget(bool)));
     connect(singleButton, SIGNAL(buttonClicked(int)), this, SLOT(showCustomWiget(int)));
 
-
-    //这里是设置主显示器(已经废弃重写了)
-//    connect(ui->primaryCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
-//            this, &Widget::primaryOutputSelected);
-
-
     //是否禁用主显示器确认按钮
     connect(ui->primaryCombo, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this, &Widget::mainScreenButtonSelect);
 
-
     //主屏确认按钮
     connect(ui->mainScreenButton, SIGNAL(clicked()),
             this, SLOT(primaryButtonEnable()));
-
 
     mControlPanel = new ControlPanel(this);
     connect(mControlPanel, &ControlPanel::changed,
@@ -163,9 +164,6 @@ Widget::Widget(QWidget *parent)
 
     //ui->formLayout_2->addWidget(mControlPanel);
     ui->controlPanelLayout->addWidget(mControlPanel);
-
-
-    //ui->controlPanelLayout->setContentsMargins(0,0,60,10);
 
 
 //    connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(save()));
@@ -187,24 +185,11 @@ Widget::Widget(QWidget *parent)
         dialog->exec();
     });
 
-
-
-    //统一输出按钮
-//    connect(ui->unifyButton, &QPushButton::released,
-//            [this]{
-//                slotUnifyOutputs();
-//            });
     connect(m_unifybutton,&SwitchButton::checkedChanged,
             [this]{
 //                  if(checked)
                     slotUnifyOutputs();
             });
-
-
-//    connect(ui->checkBox, &QCheckBox::clicked,
-//            this, [=](bool checked) {
-//                checkOutputScreen(checked);
-//            });
 
     //TODO----->bug
 //    ui->showMonitorwidget->setVisible(false);
@@ -212,14 +197,6 @@ Widget::Widget(QWidget *parent)
             this,[=](bool checked){
                 checkOutputScreen(checked);
         });
-
-    //缩放按钮注释
-//    connect(ui->scaleAllOutputsButton, &QPushButton::released,
-//            [this] {
-//                QPointer<ScalingConfig> dialog = new ScalingConfig(mConfig->outputs(), this);
-//                dialog->exec();
-//                delete dialog;
-//            });
 
     mOutputTimer = new QTimer(this);
     connect(mOutputTimer, &QTimer::timeout,
@@ -230,8 +207,6 @@ Widget::Widget(QWidget *parent)
     setBrigthnessFile();
     //亮度调节UI
 //    initBrightnessUI();
-
-
 }
 
 Widget::~Widget()
@@ -252,7 +227,6 @@ bool Widget::eventFilter(QObject* object, QEvent* event)
             // Pass the event further
         }
     }
-
     return QObject::eventFilter(object, event);
 }
 
@@ -269,7 +243,6 @@ void Widget::setConfig(const KScreen::ConfigPtr &config)
 
     mConfig = config;
 
-
     KScreen::ConfigMonitor::instance()->addConfig(mConfig);
     resetPrimaryCombo();
     connect(mConfig.data(), &KScreen::Config::outputAdded,
@@ -279,7 +252,7 @@ void Widget::setConfig(const KScreen::ConfigPtr &config)
     connect(mConfig.data(), &KScreen::Config::primaryOutputChanged,
             this, &Widget::primaryOutputChanged);
 
-    //上面屏幕拿取配置
+    // 上面屏幕拿取配置
     mScreen->setConfig(mConfig);
     mControlPanel->setConfig(mConfig);
 //    ui->unifyButton->setEnabled(mConfig->outputs().count() > 1);
@@ -302,7 +275,6 @@ void Widget::setConfig(const KScreen::ConfigPtr &config)
             primaryButtonEnable();
         }
     }
-
     slotOutputEnabledChanged();
 }
 
@@ -313,22 +285,12 @@ KScreen::ConfigPtr Widget::currentConfig() const
 
 void Widget::loadQml()
 {
-
-
     qmlRegisterType<QMLOutput>("org.kde.kscreen", 1, 0, "QMLOutput");
     qmlRegisterType<QMLScreen>("org.kde.kscreen", 1, 0, "QMLScreen");
 
     qmlRegisterType<KScreen::Output>("org.kde.kscreen", 1, 0, "KScreenOutput");
     qmlRegisterType<KScreen::Edid>("org.kde.kscreen", 1, 0, "KScreenEdid");
     qmlRegisterType<KScreen::Mode>("org.kde.kscreen", 1, 0, "KScreenMode");
-
-    //这里的qml路径还需要更改
-    //auto tmpfile = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
-
-//    QString tmpfile = QCoreApplication::applicationDirPath();
-
-//    qDebug()<<"路径----------------->";
-//    const QString file = QStringLiteral("/home/kylin/zhoubin/ukui/ukui-control-center/plugins/system/display/qml/main.qml");
 
     ui->quickWidget->setSource(QUrl("qrc:/qml/main.qml"));
 
@@ -339,10 +301,6 @@ void Widget::loadQml()
     }
     connect(mScreen, &QMLScreen::focusedOutputChanged,
             this, &Widget::slotFocusedOutputChanged);
-
-    //识别按钮注释
-//    connect(rootObject->findChild<QObject*>(QStringLiteral("identifyButton")), SIGNAL(clicked()),
-//            this, SLOT(slotIdentifyButtonClicked()));
 }
 
 void Widget::resetPrimaryCombo()
@@ -355,7 +313,6 @@ void Widget::resetPrimaryCombo()
     ui->primaryLabel->setVisible(isPrimaryDisplaySupported);
     ui->primaryCombo->setVisible(isPrimaryDisplaySupported);
 #endif
-
 
     // Don't emit currentIndexChanged when resetting
     bool blocked = ui->primaryCombo->blockSignals(true);
@@ -374,7 +331,7 @@ void Widget::resetPrimaryCombo()
 
 void Widget::addOutputToPrimaryCombo(const KScreen::OutputPtr &output)
 {
-       //注释后让他显示全部屏幕下拉框
+    // 注释后让他显示全部屏幕下拉框
     if (!output->isConnected()) {
         return;
     }
@@ -392,7 +349,6 @@ void Widget::slotFocusedOutputChanged(QMLOutput *output)
 {
     mControlPanel->activateOutput(output->outputPtr());
 
-
     //读取屏幕点击选择下拉框
     Q_ASSERT(mConfig);
     int index = output->outputPtr().isNull() ? 0 : ui->primaryCombo->findData(output->outputPtr()->id());
@@ -401,7 +357,6 @@ void Widget::slotFocusedOutputChanged(QMLOutput *output)
     }
     //qDebug()<<"下拉框id----->"<<index<<endl;
     ui->primaryCombo->setCurrentIndex(index);
-
 }
 
 void Widget::slotFocusedOutputChangedNoParam()
@@ -413,9 +368,8 @@ void Widget::slotFocusedOutputChangedNoParam()
 
 void Widget::slotOutputEnabledChanged()
 {
-    //这里为点击禁用屏幕输出后的改变
+    // 这里为点击禁用屏幕输出后的改变
     resetPrimaryCombo();
-
     int enabledOutputsCount = 0;
     Q_FOREACH (const KScreen::OutputPtr &output, mConfig->outputs()) {
         if (output->isEnabled()) {
@@ -441,14 +395,12 @@ void Widget::slotUnifyOutputs()
     QList<int> clones;
 
     if (!base) {
-
         for (QMLOutput *output: mScreen->outputs()) {
             if (output->output()->isConnected() && output->output()->isEnabled()) {
                 base = output;
                 break;
             }
         }
-
         if (!base) {
             // WTF?
             return;
@@ -544,7 +496,6 @@ void Widget::slotUnifyOutputs()
 
 //        ui->unifyButton->setText(tr("取消统一输出"));
     }
-
     Q_EMIT changed();
 }
 
@@ -921,11 +872,8 @@ void Widget::save()
         return;
     }
 
-
     const KScreen::ConfigPtr &config = this->currentConfig();
-
     const int countOutput = config->connectedOutputs().count();
-
 
     bool atLeastOneEnabledOutput = false;
     int i = 0;
@@ -1021,15 +969,11 @@ void Widget::save()
                  tr("@title:window", "Unsupported Configuration"));
         return;
     }
-
-
 //    qDebug()<<"scale ann screenScale is -------->"<<this->scaleRet()<<" "<<this->screenScale<<endl;
 
 //    if (scale != this->screenScale) {
-////        KMessageBox::information(this,tr("Some applications need to be restarted to take effect"));
+//        KMessageBox::information(this,tr("Some applications need to be restarted to take effect"));
 //    }
-
-
 
     m_blockChanges = true;
     /* Store the current config, apply settings */
@@ -1046,7 +990,6 @@ void Widget::save()
             m_blockChanges = false;
         }
     );
-
 }
 
 void Widget::scaleChangedSlot(int index) {
@@ -1065,7 +1008,6 @@ void Widget::scaleChangedSlot(int index) {
         this->screenScale = 1;
         break;
     }
-
     isScaleChanged = true;
 }
 
@@ -1089,7 +1031,7 @@ void Widget::mainScreenButtonSelect(int index){
 //        ui->checkBox->setEnabled(false);
 //        return ;
 //    }
-    //设置是否勾选
+    // 设置是否勾选
 //   ui->checkBox->setEnabled(true);
     closeScreenButton->setEnabled(true);
 //   ui->checkBox->setChecked(newPrimary->isEnabled());
@@ -1100,7 +1042,6 @@ void Widget::mainScreenButtonSelect(int index){
 
 //设置主屏按钮
 void Widget::primaryButtonEnable(){
-
     if (!mConfig) {
         return;
     }
@@ -1120,7 +1061,6 @@ void Widget::checkOutputScreen(bool judge){
 //   if(ui->primaryCombo->count()<=1&&judge ==false)
 //       return ;
 //   qDebug()<<"newPrimary---------->"<<newPrimary<<endl;
-
 
    KScreen::OutputPtr  mainScreen=  mConfig->primaryOutput();
 //   qDebug()<<"mainScreen is------------>"<<mainScreen<<endl;
@@ -1182,7 +1122,6 @@ QStringList Widget::getscreenBrightnesName(){
     QString str =  QString(ba);
 //    qDebug()<<"strlist------>"<<str<<endl;
     QStringList strlist = str.split("\n");
-
     return strlist;
 }
 
@@ -1193,7 +1132,6 @@ QStringList Widget::getscreenBrightnesValue(){
     char cmd[1024];
     char buf[1024];
 //    const char * cmdstr = ;
-
 
     sprintf(cmd, "xrandr --verbose | grep Brightness |cut -f2 -d :");
     if ((fp = popen(cmd, "r")) != NULL){
@@ -1211,8 +1149,6 @@ QStringList Widget::getscreenBrightnesValue(){
 //    qDebug()<<"strlist  value------>"<<str<<endl;
     str = str.mid(1,str.length())+" ";
     QStringList strlist = str.split("\n ");
-
-
     return strlist;
 }
 
@@ -1362,7 +1298,6 @@ void Widget::initTemptSlider() {
 }
 
 void Widget::initConfigFile() {
-
     QString filename = QDir::homePath() + "/.config/redshift.conf";
     m_qsettings = new QSettings(filename, QSettings::IniFormat);
 
@@ -1418,7 +1353,6 @@ void Widget::initConfigFile() {
     }
 
     m_qsettings->endGroup();
-
 }
 
 void Widget::writeScreenXml(int count){
@@ -1454,7 +1388,6 @@ void Widget::writeScreenXml(int count){
 //         qDebug() << (felm.tagName())
 //             << (felm.attribute("version"));
     }
-
 
     // 返回根元素
     QDomElement docElem = doc.documentElement();
@@ -1552,7 +1485,6 @@ void Widget::writeScreenXml(int count){
                             height.appendChild(heightext);
                             node.appendChild(height);
 
-
                             QDomElement rate  = doc.createElement("rate");
                             QDomText ratetext = doc.createTextNode(inputXml[i-1].rateValue);
                             rate.appendChild(ratetext);
@@ -1568,12 +1500,10 @@ void Widget::writeScreenXml(int count){
                             y.appendChild(ytext);
                             node.appendChild(y);
 
-
                             QDomElement rotation  = doc.createElement("rotation");
                             QDomText rotationtext = doc.createTextNode(inputXml[i-1].rotationValue);
                             rotation.appendChild(rotationtext);
                             node.appendChild(rotation);
-
 
                             QDomElement reflect_x  = doc.createElement("reflect_x");
                             QDomText reflect_xtext = doc.createTextNode("no");
@@ -1655,64 +1585,70 @@ void Widget::initScreenXml(int count){
 
 
 
-void Widget::getEdidInfo(QString monitorName,xmlFile *xml){
-    int index = monitorName.indexOf('-');
-    monitorName = monitorName.mid(0,index);\
+void Widget::getEdidInfo(QString monitorName,xmlFile *xml) {
+    int i;
+    int modelDec;
+    int serialDec;
 
-    QString cmdGrep  = "ls /sys/class/drm/ | grep " +monitorName;
-    QByteArray tmpBa = cmdGrep.toLatin1();
-    const char *cmdfile =tmpBa.data();
+    GList *justTurnedOn;
 
-    QByteArray ba;
-    FILE * fp = NULL;
-    char cmd[128];
-    char buf[1024];
+    MateRRScreen *rwScreen;
+    MateRRConfig *config;
+    MateRROutputInfo **outputs;
 
-    sprintf(cmd, "%s", cmdfile);
-    if ((fp = popen(cmd, "r")) != NULL){
-        fgets(buf, sizeof (buf), fp);
-        ba.append(buf);
-        pclose(fp);
-        fp = NULL;
-    }else{
-        qDebug()<<"popen文件打开失败"<<endl;
-    }
-    QString fileName = QString(ba);
-    fileName = fileName.mid(0,fileName.length()-1);
+    rwScreen = mate_rr_screen_new (gdk_screen_get_default (), NULL);
+    config = mate_rr_config_new_current (rwScreen, NULL);
+    justTurnedOn = NULL;
+    outputs = mate_rr_config_get_outputs (config);
 
-//    qDebug()<<"file name is----------------------->"<<fileName<<endl;
-
-    QString edidPath = "cat /sys/class/drm/"+fileName+"/edid | edid-decode | grep Manufacturer";
-    QByteArray tmpEdit = edidPath.toLatin1();
-    const char *runCmd = tmpEdit.data();
-
-    QByteArray edidBa;
-    FILE * fpEdid = NULL;
-    char cmdEdid[128];
-    char bufEdid[1024];
-    sprintf(cmdEdid, "%s", runCmd);
-    if ((fpEdid = popen(cmdEdid, "r")) != NULL){
-        fgets(bufEdid, sizeof (bufEdid), fpEdid);
-        edidBa.append(bufEdid);
-        pclose(fpEdid);
-        fpEdid = NULL;
-    }else{
-        qDebug()<<"popen文件打开失败"<<endl;
+    for (i = 0; outputs[i] != NULL; i++) {
+        MateRROutputInfo *output = outputs[i];
+        if (mate_rr_output_info_is_connected (output) && !mate_rr_output_info_is_active (output)) {
+            justTurnedOn = g_list_prepend (justTurnedOn, GINT_TO_POINTER (i));
+        }
     }
 
-    QString res = QString(edidBa);
-    res = res.mid(0,res.length()-1);
+    for (i = 0; outputs[i] != NULL; i++){
+        MateRROutputInfo *output = outputs[i];
+        if (g_list_find (justTurnedOn, GINT_TO_POINTER (i)))  {
+            continue;
+        }
 
-    int modelIndex = res.indexOf("Model");
-    int serialIndex =  res.indexOf("Serial Number");
-    QString modelStr= res.mid(modelIndex+6,serialIndex-modelIndex-7);
-    int modelDec = modelStr.toInt();
+        if (mate_rr_output_info_is_active (output)){
+            g_assert (mate_rr_output_info_is_connected (output));
+            char *name = mate_rr_output_info_get_name(output);;
+            unsigned int product = mate_rr_output_info_get_product(output);
+            unsigned int serial = mate_rr_output_info_get_serial(output);
+            qDebug()<<"the product and serial is------->"<<name<<" "<<product<<" "<<serial<<endl;
+            if (monitorName == QString(QLatin1String(name))) {
+               modelDec = product;
+               serialDec = serial;
+            }
+        }
+    }
+
+    for (GList *l = justTurnedOn; l; l = l->next) {
+        MateRROutputInfo *output;
+        i = GPOINTER_TO_INT (l->data);
+        output = outputs[i];
+        if (mate_rr_output_info_is_active(output)) {
+            g_assert (mate_rr_output_info_is_connected (output));
+            char *name = mate_rr_output_info_get_name(output);
+            unsigned int product = mate_rr_output_info_get_product(output);
+            unsigned int serial = mate_rr_output_info_get_serial(output);
+            qDebug()<<"the product and serial is------->"<<name<<" "<<product<<" "<<serial<<endl;
+            if (monitorName == QString(QLatin1String(name))) {
+               modelDec = product;
+               serialDec = serial;
+            }
+        }
+    }
+
     xml->productName = "0x"+QString("%1").arg(modelDec,4,16,QLatin1Char('0'));
-
-
-    QString serialStr = res.mid(serialIndex+14,res.length()-serialIndex-14);
-    int serialDec = serialStr.toInt();
     xml->serialNum = "0x"+QString("%1").arg(serialDec,4,16,QLatin1Char('0'));
+
+    g_list_free (justTurnedOn);
+    g_object_unref (config);
 }
 
 void Widget::setNightMode(const bool nightMode){
@@ -1731,7 +1667,6 @@ void Widget::setNightMode(const bool nightMode){
     process.startDetached("systemctl", QStringList() << "--user" << serverCmd << "redshift.service");
 
     process.startDetached("systemctl", QStringList() << "--user" << cmd << "redshift.service");
-
     updateNightStatus();
 }
 
@@ -1797,45 +1732,6 @@ void Widget::writeFile(const QString &filepath, const QStringList &content) {
     file.close();
 }
 
-void Widget::initUiQss() {
-
-//    ui->mainwidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-//    ui->screenwidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-//    ui->nightwidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-//    ui->unionwidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-
-//    ui->nightwidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-//    ui->sunwidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-//    ui->customwidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-//    ui->opwidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-//    ui->clswidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-//    ui->temptwidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-
-//    ui->mainScreenButton->setStyleSheet("QPushButton{background-color:#F8F9F9;border-radius:6px;font-size:14px;}"
-//                                   "QPushButton:hover{background-color: #3D6BE5;};border-radius:6px");
-
-//    ui->primaryCombo->setStyleSheet("background-color:#F8F9F9");
-//    ui->primaryCombo->setMaxVisibleItems(1);
-
-//    ui->showMonitorwidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-
-
-//    ui->applyButton->setStyleSheet("QPushButton{background-color:#F4F4F4;border-radius:6px}"
-//                                   "QPushButton:hover{background-color: #3D6BE5;color:white};border-radius:6px");
-
-//    ui->primaryCombo->setContentsMargins(8,0,0,0);
-//    ui->primaryCombo->setItemDelegate(new QStyledItemDelegate());
-
-//    ui->opHourCom->setItemDelegate(new QStyledItemDelegate());
-//    ui->opHourCom->setMaxVisibleItems(5);
-//    ui->opMinCom->setItemDelegate(new QStyledItemDelegate());
-//    ui->opMinCom->setMaxVisibleItems(5);
-//    ui->clHourCom->setItemDelegate(new QStyledItemDelegate());
-//    ui->clHourCom->setMaxVisibleItems(5);
-//    ui->clMinCom->setItemDelegate(new QStyledItemDelegate());
-//    ui->clMinCom->setMaxVisibleItems(5);
-}
-
 void Widget::initUiComponent() {
     singleButton = new QButtonGroup();
     singleButton->addButton(ui->sunradioBtn);
@@ -1883,7 +1779,6 @@ void Widget::setRedShiftIsValid(bool redshiftIsValid){
     emit redShiftValidChanged(redshiftIsValid);
 }
 
-
 void Widget::initNightStatus(){
 
     QProcess *process = new QProcess;
@@ -1906,5 +1801,4 @@ void Widget::initNightStatus(){
         updateNightStatus();
     }
     setRedShiftIsValid(isRedShiftValid);
-
 }

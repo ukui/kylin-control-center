@@ -8,7 +8,7 @@ include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 
 QT            += widgets core gui quickwidgets quick xml KScreen KI18n KConfigCore KConfigWidgets KWidgetsAddons dbus
 TEMPLATE = lib
-CONFIG        += plugin
+CONFIG        += c++11   link_pkgconfig plugin
 
 TARGET = $$qtLibraryTarget(display)
 DESTDIR = ../..
@@ -21,11 +21,10 @@ INCLUDEPATH   +=  \
 
 LIBS          += -L$$[QT_INSTALL_LIBS] -lgsettings-qt
 
-CONFIG +=  \
-          link_pkgconfig \
-          c++11
-
-PKGCONFIG += gsettings-qt \
+PKGCONFIG += gsettings-qt     \
+#             gtk+-3.0         \
+#             glib-2.0         \
+             mate-desktop-2.0 \
 
 SOURCES += \
     display.cpp \

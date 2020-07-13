@@ -92,7 +92,6 @@ class Widget : public QWidget
     void initScreenXml(int count);
     //获取edid信息
     void getEdidInfo(QString monitorName,xmlFile *xml);
-
     void setIsNightMode(bool isNightMode);
 
     QStringList readFile(const QString& filepath);
@@ -102,9 +101,6 @@ class Widget : public QWidget
     int scaleToSlider(const float value);
 
     void initUiComponent();
-    void initUiQss();
-
-
 
   protected:
     bool eventFilter(QObject *object, QEvent *event) override;
