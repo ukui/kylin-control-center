@@ -49,8 +49,8 @@ void CustomLineEdit::focusInEvent(QFocusEvent *evt){
 }
 
 void CustomLineEdit::focusOutEvent(QFocusEvent *evt){
-//    if (this->text() == _wait)
-//        this->setText(_oldshortcut);
+    if (this->text() == _wait)
+        this->setText(_oldshortcut);
     flag = false;
 }
 

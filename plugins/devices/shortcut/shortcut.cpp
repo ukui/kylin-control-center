@@ -246,7 +246,7 @@ void Shortcut::initFunctionStatus(){
     pThread = new QThread;
     pWorker = new GetShortcutWorker;
     connect(pWorker, &GetShortcutWorker::generalShortcutGenerate, this, [=](QString schema, QString key, QString value){
-//        qDebug() << "general shortcut" << schema << key << value;
+        //qDebug() << "general shortcut" << schema << key << value;
         KeyEntry * generalKeyEntry = new KeyEntry;
         generalKeyEntry->gsSchema = schema;
         generalKeyEntry->keyStr = key;
@@ -255,7 +255,7 @@ void Shortcut::initFunctionStatus(){
 
     });
     connect(pWorker, &GetShortcutWorker::customShortcutGenerate, this, [=](QString path, QString name, QString binding, QString action){
-//        qDebug() << "custom shortcut" << path << name << binding;
+        //qDebug() << "custom shortcut" << path << name << binding;
         KeyEntry * customKeyEntry = new KeyEntry;
         customKeyEntry->gsSchema = KEYBINDINGS_CUSTOM_SCHEMA;
         customKeyEntry->gsPath = path;
