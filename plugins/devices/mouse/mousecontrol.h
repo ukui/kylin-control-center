@@ -96,9 +96,6 @@ private:
 
     QString leftStr;
     QString rightStr;
-
-    QStyledItemDelegate* itemDelege;
-
 };
 
 #endif // MOUSECONTROL_H

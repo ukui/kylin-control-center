@@ -153,7 +153,6 @@ private:
 
     QProcess * process;
     QStringList killList;
-    QStyledItemDelegate *itemDelege;
 
     Uslider * uslider;
 

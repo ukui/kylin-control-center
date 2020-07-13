@@ -59,7 +59,6 @@ void PreviewWidget::paintEvent(QPaintEvent *e){
 Screensaver::Screensaver()
 {
     ui = new Ui::Screensaver;
-    itemDelege = new QStyledItemDelegate();
     pluginWidget = new QWidget;
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
@@ -143,8 +142,6 @@ void Screensaver::initComponent(){
     ui->lockHorLayout->addWidget(lockSwitchBtn);
 
     //初始化屏保程序下拉列表
-    ui->comboBox->setItemDelegate(itemDelege);
-    ui->comboBox->setMaxVisibleItems(5);
     ui->comboBox->addItem(tr("Default_ukui"));
     ui->comboBox->addItem(tr("Blank_Only"));
 //    ui->comboBox->addItem(tr("Random"));

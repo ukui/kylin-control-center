@@ -62,7 +62,6 @@ private:
     QComboBox *m_pInputDeviceCombobox;
     QComboBox *m_pInputPortCombobox;
 
-    QStyledItemDelegate *itemDelege;
     QString sliderQss;
     QVBoxLayout *m_pVlayout;
 

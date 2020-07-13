@@ -100,7 +100,6 @@ QList<int> defaultsizeList = {6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26
 Fonts::Fonts()
 {
     ui = new Ui::Fonts;
-    itemDelege = new QStyledItemDelegate();
     pluginWidget = new QWidget;
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);

@@ -90,7 +90,6 @@ private:
 private:
     QString pluginName;
     int pluginType;
-    QStyledItemDelegate *itemDelege;
 
 private:
     char * getDefaultAppId(const char * contentType);

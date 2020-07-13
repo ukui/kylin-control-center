@@ -69,16 +69,9 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
 //                                     "QComboBox::down-arrow{image:url(://img/dropArrow/downpx.png)}"
 //                                     "QComboBox::drop-down{width: 30px; border: none;}"
 //                                     "");
-    //构建Combox代理，否则样式不全部生效
-    itemDelege = new QStyledItemDelegate();
-    ui->pwdTypeComBox->setItemDelegate(itemDelege);
-    ui->pwdTypeComBox->setMaxVisibleItems(5);
-
-
     initPwdChecked();
     setupComonpent();
     setupConnect();
-
 }
 
 CreateUserDialog::~CreateUserDialog()

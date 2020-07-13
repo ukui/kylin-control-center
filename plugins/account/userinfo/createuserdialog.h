@@ -81,9 +81,7 @@ private:
     QString pwdSureTip;
 
 private:
-    QStyledItemDelegate* itemDelege;
     bool isCreateUser = false;
-
     bool enablePwdQuality;
 
 #ifdef ENABLEPQ

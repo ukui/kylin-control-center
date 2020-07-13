@@ -125,7 +125,6 @@ private:
     WorkerObject * pObject;
 
     QMap<QString, QListWidgetItem*> picWpItemMap;
-    QStyledItemDelegate *itemDelege;
 
 private:
     bool settingsCreate;

@@ -22,14 +22,6 @@ ResolutionSlider::ResolutionSlider(const KScreen::OutputPtr &output, QWidget *pa
     : QWidget(parent)
     , mOutput(output)
 {
-//    itemDelege = new QStyledItemDelegate();
-//    QFile QssFile("://combox.qss");
-//    QssFile.open(QFile::ReadOnly);
-
-//    if (QssFile.isOpen()){
-//        qss = QLatin1String(QssFile.readAll());
-//        QssFile.close();
-//    }
     connect(output.data(), &KScreen::Output::currentModeIdChanged,
             this, &ResolutionSlider::slotOutputModeChanged);
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)

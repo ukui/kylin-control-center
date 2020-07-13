@@ -44,7 +44,6 @@ const QVector<QString> CFormats{"zh_SG.UTF-8", "zh_CN.UTF-8", "lt_LT.UTF-8", "en
 Area::Area()
 {
     ui = new Ui::Area;
-    itemDelege = new QStyledItemDelegate();
     pluginWidget = new QWidget;
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
 //    pluginWidget->setStyleSheet("background: #ffffff;");

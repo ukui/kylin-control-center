@@ -81,7 +81,6 @@ private:
     QString objpath;
 
     QDBusInterface *m_areaInterface;
-    QStyledItemDelegate *itemDelege;
 
     QGSettings *m_gsettings = nullptr;
     QTimer *m_itimer = nullptr;
