@@ -22,7 +22,9 @@ Build-Depends: debhelper-compat (= 12),
                qtmultimedia5-dev,
                libxml2-dev,
                qtbase5-dev,
-               libcanberra-dev
+               libcanberra-dev,
+               libpwquality-dev,
+               libmate-desktop-dev,
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Homepage: https://github.com/ukui/ukui-control-center
