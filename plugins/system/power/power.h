@@ -23,8 +23,9 @@
 #include <QObject>
 #include <QtPlugin>
 #include <QStyledItemDelegate>
-
 #include <QGSettings>
+#include <QDBusInterface>
+#include <QDBusReply>
 
 #include "shell/interface.h"
 
@@ -56,7 +57,7 @@ public:
     void initCustomPlanStatus();
     void resetCustomPlanStatus();
     void initPowerOtherStatus();
-
+    void isPowerSupply();
 
     void refreshUI();
 

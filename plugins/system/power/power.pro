@@ -1,4 +1,4 @@
-QT       += widgets
+QT       += widgets dbus
 TEMPLATE = lib
 CONFIG   += plugin
 

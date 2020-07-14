@@ -67,7 +67,7 @@ Power::Power()
 
     setupStylesheet();
     setupComponent();
-
+    isPowerSupply();
     if (QGSettings::isSchemaInstalled(id)){
         settingsCreate = true;
         settings = new QGSettings(id);
@@ -101,6 +101,29 @@ QWidget * Power::get_plugin_ui(){
 
 void Power::plugin_delay_control(){
 
+}
+
+void Power::isPowerSupply(){
+    //ubuntukylin youker DBus interface
+    QDBusInterface *brightnessInterface = new QDBusInterface("org.freedesktop.UPower",
+                                     "/org/freedesktop/UPower/devices/DisplayDevice",
+                                     "org.freedesktop.DBus.Properties",
+                                     QDBusConnection::systemBus());
+    if (!brightnessInterface->isValid()) {
+        qDebug() << "Create UPower Interface Failed : " << QDBusConnection::systemBus().lastError();
+        return;
+    }
+
+    QDBusReply<QVariant> briginfo;
+    briginfo  = brightnessInterface ->call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
+    if (!briginfo.isValid()) {
+        qDebug()<<"brightness info is invalid"<<endl;
+        ui->batteryBtn->setVisible(false);
+    } else {
+        qDebug() << "brightness info is valid";
+        bool status = briginfo.value().toBool();
+        ui->batteryBtn->setVisible(status);
+    }
 }
 
 void Power::setupStylesheet(){
