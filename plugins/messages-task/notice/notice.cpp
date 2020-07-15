@@ -164,6 +164,7 @@ void Notice::initOriNoticeStatus() {
         baseVerLayout->setContentsMargins(0, 0, 0, 2);
 
         HoverWidget * devWidget = new HoverWidget(appname,baseWidget);
+        devWidget->setObjectName("hovorWidget");
         devWidget->setMinimumWidth(550);
         devWidget->setMaximumWidth(960);
         devWidget->setMinimumHeight(50);
@@ -185,7 +186,7 @@ void Notice::initOriNoticeStatus() {
         iconBtn->setSizePolicy(iconSizePolicy);
         QString iconame = appsName.at(i);
         if ("ukui-power-statistics" == appsName.at(i)) {
-            iconame = "battery-good";
+            iconame = "cs-power";
         }
         iconBtn->setIcon(QIcon::fromTheme(iconame));
 
@@ -244,13 +245,13 @@ void Notice::initOriNoticeStatus() {
 
         connect(devWidget, &HoverWidget::enterWidget, this, [=](QString name){
             Q_UNUSED(name)
-//            devWidget->setStyleSheet("background: #CFCFCF;");
+            devWidget->setStyleSheet("QWidget#hovorWidget{background-color: rgba(61,107,229,40%);border-radius:4px;}");
 
         });
 
         connect(devWidget, &HoverWidget::leaveWidget, this, [=](QString name){
             Q_UNUSED(name)
-//            devWidget->setStyleSheet("background: #F4F4F4;");
+            devWidget->setStyleSheet("QWidget#hovorWidget{background: palette(button);border-radius:4px;}");
         });
 
         connect(devWidget, &HoverWidget::widgetClicked, this, [=](QString name){

@@ -309,8 +309,8 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     baseWidget->setAttribute(Qt::WA_DeleteOnClose);
 
     QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);
-    baseVerLayout->setSpacing(0);
-    baseVerLayout->setContentsMargins(0, 0, 0, 2);
+    baseVerLayout->setSpacing(1);
+    baseVerLayout->setContentsMargins(0, 0, 0, 1);
 
     QFrame * devFrame = new QFrame();
     devFrame->setFrameShape(QFrame::Shape::Box);
