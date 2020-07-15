@@ -88,6 +88,8 @@ private:
     // chang svg picture's color
     QPixmap drawSymbolicColoredPixmap(const QPixmap &source, QString color);
 
+    bool dblOnEdge(QMouseEvent *event);
+
 public slots:
     void functionBtnClicked(QObject * plugin);
     void sltMessageReceived(const QString &msg);

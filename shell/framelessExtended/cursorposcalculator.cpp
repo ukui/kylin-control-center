@@ -18,8 +18,10 @@
  *
  */
 #include "cursorposcalculator.h"
+#include <QDebug>
 
 int CursorPosCalculator::borderWidth = 5;
+int CursorPosCalculator::moveWidth = 50;
 
 CursorPosCalculator::CursorPosCalculator()
 {
@@ -28,6 +30,7 @@ CursorPosCalculator::CursorPosCalculator()
 
 void CursorPosCalculator::reset(){
     onEdges = false;
+    moveEdges = false;
 
     onLeftEdges = false;
     onTopEdges = false;
@@ -68,4 +71,15 @@ void CursorPosCalculator::recalculate(const QPoint &globalMousePos, const QRect 
     onLeftBottomEdges = onLeftEdges && onBottomEdges;
 
     onEdges = onLeftEdges || onRightEdges || onTopEdges || onBottomEdges;
+}
+
+
+void CursorPosCalculator::recalculateMove(const QPoint &globalMousePos, const QRect &frameRect){
+    int globalMouseY = globalMousePos.y();
+    int frameY = frameRect.y();
+
+    onTopEdges = (globalMouseY >= frameY &&
+                  globalMouseY <= frameY + moveWidth);
+
+    moveEdges =  onTopEdges;
 }
