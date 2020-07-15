@@ -63,7 +63,7 @@
 #define POWER_SCHMES "org.ukui.power-manager"
 #define POWER_KEY "brightness-ac"
 
-#define ADVANCED_SCHEMAS "org.mate.session.required-components"
+#define ADVANCED_SCHEMAS "org.ukui.session.required-components"
 #define ADVANCED_KEY "windowmanager"
 
 Q_DECLARE_METATYPE(KScreen::OutputPtr)
@@ -103,8 +103,17 @@ Widget::Widget(QWidget *parent)
     nightLayout->addStretch();
     nightLayout->addWidget(nightButton);
 
+
+    QProcess * process = new QProcess;
+    process->start("lsb_release -r");
+    process->waitForFinished();
+
+    QByteArray ba = process->readAllStandardOutput();
+    QString osReleaseCrude = QString(ba.data());
+    QString osRelease = QString(osReleaseCrude.split(":").at(1)).simplified();
+
     const QByteArray idd(ADVANCED_SCHEMAS);
-    if (QGSettings::isSchemaInstalled(idd)){
+    if (QGSettings::isSchemaInstalled(idd) && osRelease == "V10"){
         ui->advancedBtn->show();
         ui->advancedHorLayout->setContentsMargins(9, 8, 9, 32);
     } else {

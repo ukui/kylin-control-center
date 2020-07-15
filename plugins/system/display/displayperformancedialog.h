@@ -21,6 +21,7 @@
 #define DISPLAYPERFORMANCEDIALOG_H
 
 #include <QDialog>
+#include <QSettings>
 #include <QGSettings>
 
 namespace Ui {
@@ -39,6 +40,9 @@ public:
     void setupComponent();
     void setupConnect();
     void initModeStatus();
+    void initThresholdStatus();
+
+    void changeConfValue();
 
 private:
     void paintEvent(QPaintEvent * event);
@@ -48,6 +52,7 @@ private:
 
 private:
     QGSettings * settings;
+    QSettings * confSettings;
 };
 
 #endif // DISPLAYPERFORMANCEDIALOG_H
