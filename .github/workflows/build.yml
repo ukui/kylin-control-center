@@ -23,7 +23,7 @@ jobs:
       - name: Refresh pacman repository
         run: pacman -Sy
       - name: Install build dependencies
-        run: pacman -S --noconfirm base-devel qt5-base gsettings-qt kwindowsystem poppler-qt5 qt5-x11extras glib2 qt5-tools pkg-config kwidgetsaddons kconfig kconfigwidgets kscreen qt5-svg libmatekbd qt5-x11extras libxklavier qt5-declarative libmatemixer libqtxdg qt5-multimedia libxml2 libcanberra
+        run: pacman -S --noconfirm base-devel qt5-base gsettings-qt kwindowsystem poppler-qt5 qt5-x11extras glib2 qt5-tools pkg-config kwidgetsaddons kconfig kconfigwidgets kscreen qt5-svg libmatekbd qt5-x11extras libxklavier qt5-declarative libmatemixer libqtxdg qt5-multimedia libxml2 libcanberra libmate-desktop
       - name: QMake configure & Make
         run: |
           mkdir build;
@@ -42,7 +42,7 @@ jobs:
       - name: Update apt repository
         run: apt-get update -y
       - name: Install build dependcies
-        run: apt-get install -y build-essential qt5-default qttools5-dev-tools pkg-kde-tools pkg-config libkf5widgetsaddons-dev libkf5config-dev libkf5configwidgets-dev libkf5screen-dev debhelper-compat libqt5svg5-dev libgsettings-qt-dev libglib2.0-dev libmatekbd-dev libqt5x11extras5-dev libxklavier-dev qtdeclarative5-dev libdconf-dev libmatemixer-dev libqt5xdg-dev qtmultimedia5-dev libxml2-dev libcanberra-dev
+        run: apt-get install -y build-essential qt5-default qttools5-dev-tools pkg-kde-tools pkg-config libkf5widgetsaddons-dev libkf5config-dev libkf5configwidgets-dev libkf5screen-dev debhelper-compat libqt5svg5-dev libgsettings-qt-dev libglib2.0-dev libmatekbd-dev libqt5x11extras5-dev libxklavier-dev qtdeclarative5-dev libdconf-dev libmatemixer-dev libqt5xdg-dev qtmultimedia5-dev libxml2-dev libcanberra-dev libmate-desktop-dev
       - name: QMake configure & Make
         run: |
           mkdir build;
@@ -60,7 +60,7 @@ jobs:
       - name: Install curl and patch
         run: dnf install --refresh -y curl patch
       - name: Install build dependencies
-        run: dnf install -y which gcc gcc-c++ make cmake cmake-rpm-macros autoconf automake intltool rpm-build qt5-rpm-macros qt5-qtbase-devel qt5-qtsvg-devel gsettings-qt-devel glib2-devel qt5-qtx11extras-devel libmatekbd-devel libxklavier-devel kf5-kconfigwidgets-devel kf5-kconfig-devel qt5-qtdeclarative-devel dconf-devel redshift edid-decode libmatemixer-devel libqtxdg-devel qt5-qtmultimedia-devel libxml2-devel libkscreen-qt5-devel kf5-ki18n-devel libcanberra-devel libXi-devel
+        run: dnf install -y which gcc gcc-c++ make cmake cmake-rpm-macros autoconf automake intltool rpm-build qt5-rpm-macros qt5-qtbase-devel qt5-qtsvg-devel gsettings-qt-devel glib2-devel qt5-qtx11extras-devel libmatekbd-devel libxklavier-devel kf5-kconfigwidgets-devel kf5-kconfig-devel qt5-qtdeclarative-devel dconf-devel redshift edid-decode libmatemixer-devel libqtxdg-devel qt5-qtmultimedia-devel libxml2-devel libkscreen-qt5-devel kf5-ki18n-devel libcanberra-devel libXi-devel libmate-desktop-devel
       - name: QMake configure & Make
         run: |
           mkdir build;
@@ -79,7 +79,7 @@ jobs:
       - name: Update apt repository
         run: apt-get update -y
       - name: Install build dependcies
-        run: apt-get install -y build-essential qt5-default qttools5-dev-tools pkg-kde-tools pkg-config libkf5widgetsaddons-dev libkf5config-dev libkf5configwidgets-dev libkf5screen-dev debhelper-compat libqt5svg5-dev libgsettings-qt-dev libglib2.0-dev libmatekbd-dev libqt5x11extras5-dev libxklavier-dev qtdeclarative5-dev libdconf-dev libmatemixer-dev libqt5xdg-dev qtmultimedia5-dev libxml2-dev libcanberra-dev
+        run: apt-get install -y build-essential qt5-default qttools5-dev-tools pkg-kde-tools pkg-config libkf5widgetsaddons-dev libkf5config-dev libkf5configwidgets-dev libkf5screen-dev debhelper-compat libqt5svg5-dev libgsettings-qt-dev libglib2.0-dev libmatekbd-dev libqt5x11extras5-dev libxklavier-dev qtdeclarative5-dev libdconf-dev libmatemixer-dev libqt5xdg-dev qtmultimedia5-dev libxml2-dev libcanberra-dev libmate-desktop-dev
       - name: QMake configure & Make
         run: |
           mkdir build;
