@@ -89,14 +89,13 @@ SecurityCenter::SecurityCenter()
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
-    qDebug()<<"this is SecurityCenter ------------->"<<endl;
     pluginName = tr("SecurityCenter");
     pluginType = UPDATE;
 
     initComponent();
 
     connect(ui->pushButton, &QPushButton::clicked, [=]{
-        QString cmd = "/usr/sbin/defender";
+        QString cmd = "/usr/sbin/ksc-defender";
         runExternalApp(cmd);
     });
 }
@@ -134,25 +133,25 @@ void SecurityCenter::initComponent(){
     kysecWidget->setupComponent(":/img/plugins/securitycenter/kysec.png", \
                                 tr("Virus Protection"), \
                                 tr("Protect system from threats"), \
-                                "/usr/sbin/defender");
+                                "/usr/sbin/ksc-defender");
 
     BlockWidget * netWidget = new BlockWidget();
     netWidget->setupComponent(":/img/plugins/securitycenter/net.png", \
                               tr("Network Protection"), \
                               tr("Setup app that can access web"), \
-                              "/usr/sbin/defender");
+                              "/usr/sbin/ksc-defender");
 
     BlockWidget * protectWidget = new BlockWidget();
     protectWidget->setupComponent(":/img/plugins/securitycenter/protect.png", \
                                   tr("App Execution Control"), \
                                   tr("App install and exe protection"), \
-                                  "/usr/sbin/defender");
+                                  "/usr/sbin/ksc-defender");
 
     BlockWidget * userWidget = new BlockWidget();
     userWidget->setupComponent(":/img/plugins/securitycenter/user.png", \
                                tr("Account Security"), \
                                tr("Protect account and login security"), \
-                               "/usr/sbin/defender");
+                               "/usr/sbin/ksc-defender");
 
     flowLayout->addWidget(kysecWidget);
     flowLayout->addWidget(netWidget);

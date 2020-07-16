@@ -579,7 +579,7 @@ void Theme::resetBtnClickSlot() {
 //    ui->defaultButton->setChecked(true);
 
     // reset cursor default theme
-    QString cursorTheme = "breeze_cursors";
+    QString cursorTheme = "DMZ-White";
     curSettings->set(CURSOR_THEME_KEY,cursorTheme);
 
 
