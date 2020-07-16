@@ -62,6 +62,7 @@ public:
 
     void nameLegalityCheck(QString username);
     void pwdLegalityCheck(QString pwd);
+    bool nameTraverse(QString username);
 
     void initPwdChecked();
 
