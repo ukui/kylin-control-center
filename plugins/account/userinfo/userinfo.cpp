@@ -383,7 +383,7 @@ void UserInfo::initComponent(){
 //    ui->addBtn->setIconSize(ui->addBtn->size());
 //    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
 
-//    ui->currentUserFaceLabel->installEventFilter(this);
+    ui->currentUserFaceLabel->installEventFilter(this);
 //    ui->addUserFrame->installEventFilter(this);
 
     //修改当前用户密码的回调
@@ -866,25 +866,23 @@ void UserInfo::changeUserPwd(QString pwd, QString username){
 }
 
 
-//bool UserInfo::eventFilter(QObject *watched, QEvent *event){
-//    if (watched == ui->currentUserFaceLabel || watched == ui->addUserFrame){
-//        if (event->type() == QEvent::MouseButtonPress){
-//            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
-//            if (mouseEvent->button() == Qt::LeftButton ){
-//                if(watched == ui->currentUserFaceLabel){
-//                    showChangeFaceDialog(ui->userNameLabel->text());
-//                } else if (watched == ui->addUserFrame) {
-//                    showCreateUserDialog();
-//                }
-//                return true;
-//            } else {
-//                return false;
-//            }
-//        }
-//    }
+bool UserInfo::eventFilter(QObject *watched, QEvent *event){
+    if (watched == ui->currentUserFaceLabel){
+        if (event->type() == QEvent::MouseButtonPress){
+            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
+            if (mouseEvent->button() == Qt::LeftButton ){
+                if(watched == ui->currentUserFaceLabel){
+                    showChangeFaceDialog(ui->userNameLabel->text());
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 
-//    return QObject::eventFilter(watched, event);
-//}
+    return QObject::eventFilter(watched, event);
+}
 
 bool UserInfo::getAutomaticLogin(QString username) {
 

@@ -66,6 +66,7 @@ public:
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
 
+    void initAddBtn();
     void initUI();
     void update_app_status();
     void del_autoboot_realize(QString bname);

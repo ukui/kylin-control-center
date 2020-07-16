@@ -90,6 +90,7 @@ AutoBoot::AutoBoot(){
     //初始化添加界面
     dialog = new AddAutoBoot();
 
+    initAddBtn();
     initUI();
 
     connect(dialog, SIGNAL(autoboot_adding_signals(QString, QString,QString,QString)), this, SLOT(add_autoboot_realize_slot(QString ,QString,QString,QString)));
@@ -118,16 +119,7 @@ void AutoBoot::plugin_delay_control(){
 
 }
 
-void AutoBoot::initUI(){
-    _walk_config_dirs();
-
-    appgroupMultiMaps.clear();
-
-    int num = statusMaps.count();
-
-    //显示全部ITEM，设置高
-//    ui->listWidget->setFixedHeight(num * ITEMHEIGHT + HEADHEIGHT);
-
+void AutoBoot::initAddBtn() {
     addWgt = new HoverWidget("");
     addWgt->setObjectName("addwgt");
     addWgt->setMinimumSize(QSize(580, 50));
@@ -164,6 +156,18 @@ void AutoBoot::initUI(){
     });
 
     ui->addLyt->addWidget(addWgt);
+
+}
+
+void AutoBoot::initUI(){
+    _walk_config_dirs();
+
+    appgroupMultiMaps.clear();
+
+    int num = statusMaps.count();
+
+    //显示全部ITEM，设置高
+//    ui->listWidget->setFixedHeight(num * ITEMHEIGHT + HEADHEIGHT);
 
     //构建行头基础Widget
     QFrame * headbaseFrame = new QFrame;

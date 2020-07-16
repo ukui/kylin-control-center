@@ -161,7 +161,7 @@ public:
     void readCurrentPwdConf();
 
 protected:
-//    bool eventFilter(QObject *watched, QEvent *event);
+    bool eventFilter(QObject *watched, QEvent *event);
 
 private:
     Ui::UserInfo *ui;
