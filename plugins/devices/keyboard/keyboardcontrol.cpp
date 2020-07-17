@@ -73,7 +73,7 @@ KeyboardControl::KeyboardControl()
         settings = new QGSettings(id);
 
         //构建布局管理器对象
-        layoutmanagerObj = new KbdLayoutManager(kbdsettings->get(KBD_LAYOUTS_KEY).toStringList());
+        layoutmanagerObj = new KbdLayoutManager();
 
         setupConnect();
         initGeneralStatus();
@@ -203,25 +203,19 @@ void KeyboardControl::setupConnect(){
     });
 
     connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
-        layoutmanagerObj->exec();
+        KbdLayoutManager * templayoutManager = new KbdLayoutManager;
+        templayoutManager->exec();
     });
-//    connect(ui->addBtn, &QPushButton::clicked, this, [=]{
-//        layoutmanagerObj->exec();
-//    });
 
     connect(ui->resetBtn, &QPushButton::clicked, this, [=]{
         kbdsettings->reset(KBD_LAYOUTS_KEY);
-        layoutmanagerObj->rebuild_listwidget();
-        rebuildLayoutsComBox();
     });
 
-    connect(layoutmanagerObj, &KbdLayoutManager::del_variant_signals, [=](QString layout){
-        rebuildLayoutsComBox();
-        qDebug() << layout;
+    connect(kbdsettings, &QGSettings::changed, [=](QString key){
+        if (key == KBD_LAYOUTS_KEY)
+            rebuildLayoutsComBox();
     });
-    connect(layoutmanagerObj, &KbdLayoutManager::add_new_variant_signals, [=](QString layout){
-        rebuildLayoutsComBox();
-    });
+
 
     connect(tipKeyboardSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
         osdSettings->set(CC_KEYBOARD_OSD_KEY, checked);

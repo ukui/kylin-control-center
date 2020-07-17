@@ -42,6 +42,7 @@ HEADERS += \
 
 FORMS += \
     keyboardcontrol.ui \
-    kbdlayoutmanager.ui
+    kbdlayoutmanager.ui \
+    layoutmanager.ui
 
 INSTALLS += target

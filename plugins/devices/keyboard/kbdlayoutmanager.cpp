@@ -18,7 +18,9 @@
  *
  */
 #include "kbdlayoutmanager.h"
-#include "ui_kbdlayoutmanager.h"
+#include "ui_layoutmanager.h"
+
+#include <QPainter>
 
 #include <QDebug>
 
@@ -46,14 +48,48 @@ QList<Layout> languages;
 QList<Layout> countries;
 QStringList availablelayoutsList;
 
+extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
-KbdLayoutManager::KbdLayoutManager(QStringList ll, QWidget *parent) :
+KbdLayoutManager::KbdLayoutManager(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::KbdLayoutManager),
-    layoutsList(ll)
+    ui(new Ui::LayoutManager)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+    setAttribute(Qt::WA_TranslucentBackground);
+    setAttribute(Qt::WA_DeleteOnClose);
 
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->closeBtn->setFlat(true);
+
+    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+
+
+    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+
+    configRegistry();
+
+    const QByteArray id(KBD_LAYOUTS_SCHEMA);
+    if (QGSettings::isSchemaInstalled(id)){
+        kbdsettings = new QGSettings(id);
+        setupComponent();
+        setupConnect();
+    }
+
+}
+
+KbdLayoutManager::~KbdLayoutManager()
+{
+    delete ui;
+    if (QGSettings::isSchemaInstalled(KBD_LAYOUTS_SCHEMA)){
+        delete kbdsettings;
+    }
+}
+
+void KbdLayoutManager::configRegistry(){
     engine = xkl_engine_get_instance (QX11Info::display());
     config_registry = xkl_config_registry_get_instance (engine);
 
@@ -63,80 +99,106 @@ KbdLayoutManager::KbdLayoutManager(QStringList ll, QWidget *parent) :
 
     xkl_config_registry_foreach_language(config_registry,(ConfigItemProcessFunc)kbd_set_languages, NULL);
 
-    const QByteArray id(KBD_LAYOUTS_SCHEMA);
-    kbdsettings = new QGSettings(id);
-
-    component_init();
-    setup_component();
-
 }
 
-KbdLayoutManager::~KbdLayoutManager()
-{
-    delete ui;
-    delete kbdsettings;
-}
+void KbdLayoutManager::setupComponent(){
 
-void KbdLayoutManager::component_init(){
     ui->countryRadioButton->setChecked(true);
 
-    // init listwidget intalled
     //设置listwidget无点击
     ui->listWidget->setFocusPolicy(Qt::NoFocus);
     ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);
+
+    rebuildSelectListWidget();
+    rebuildVariantCombo();
+
     rebuild_listwidget();
-//    for (QString layout : layoutsList){
-//        create_listwidgetitem(layout);
-//        QString desc = kbd_get_description_by_id(const_cast<const char *>(layout.toLatin1().data()));
-//        QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
-//        item->setText(desc);
-//        item->setData(Qt::UserRole, layout);
-//        ui->listWidget->addItem(item);
-//    }
-
-    // init country comboBox
-    for (Layout keylayout : countries){
-        if (keylayout.name == "TW")
-            continue;
-        ui->countryComboBox->addItem(keylayout.desc, keylayout.name);
-    }
-
-    // init language comboBox
-    for (Layout keylayout : languages){
-        ui->languageComboBox->addItem(keylayout.desc, keylayout.name);
-    }
-
-    refresh_widget_status();
 }
 
-void KbdLayoutManager::setup_component(){
-    connect(ui->countryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(countries_changed_slot(int)));
-    connect(ui->languageComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(languages_changed_slot(int)));
-    connect(this, SIGNAL(rebuild_variant_signals(bool,QString)), this, SLOT(rebuild_variant_slots(bool,QString)));
+void KbdLayoutManager::setupConnect(){
+    connect(ui->closeBtn, &QPushButton::clicked, [=]{
+        close();
+    });
+    connect(ui->cancelBtn, &QPushButton::clicked, [=]{
+        close();
+    });
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    connect(ui->buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=]{refresh_variant_combobox();refresh_widget_status();});
+    connect(ui->buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=]{
 #else
-    connect(ui->buttonGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [=]{refresh_variant_combobox();refresh_widget_status();});
+    connect(ui->buttonGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [=]{
 #endif
+        rebuildSelectListWidget();
+
+        rebuildVariantCombo();
+    });
+
+    connect(ui->selectListWidget, &QListWidget::currentItemChanged, [=]{
+        rebuildVariantCombo();
+    });
+
+    connect(ui->installBtn, &QPushButton::clicked, this, [=]{
+        QString layout = ui->variantComboBox->currentData().toString();
+
+        QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
+        layouts.append(layout);
+
+        kbdsettings->set(KBD_LAYOUTS_KEY, layouts);
+        rebuild_listwidget();
+    });
+}
+
+void KbdLayoutManager::rebuildSelectListWidget(){
+
+    ui->selectListWidget->blockSignals(true);
+    ui->selectListWidget->clear();
+    if (ui->countryRadioButton->isChecked()){
+        for (Layout keylayout : countries){
+            if (keylayout.name == "TW")
+                continue;
+            QListWidgetItem * item = new QListWidgetItem(ui->selectListWidget);
+            item->setText(keylayout.desc);
+            item->setData(Qt::UserRole, keylayout.name);
+            ui->selectListWidget->addItem(item);
+        }
+    } else if (ui->languageRadioButton->isChecked()){
+        for (Layout keylayout : languages){
+            QListWidgetItem * item = new QListWidgetItem(ui->selectListWidget);
+            item->setText(keylayout.desc);
+            item->setData(Qt::UserRole, keylayout.name);
+            ui->selectListWidget->addItem(item);
+        }
+    }
 
 
-    connect(ui->addBtn, &QPushButton::clicked, [=]{emit add_new_variant_signals(ui->variantComboBox->currentData(Qt::UserRole).toString());});
+    ui->selectListWidget->setCurrentRow(0);
+    ui->selectListWidget->blockSignals(false);
+}
 
-    connect(this, &KbdLayoutManager::add_new_variant_signals, [=](QString id){add_layout(id);});
+void KbdLayoutManager::rebuildVariantCombo(){
+    QString id = ui->selectListWidget->currentItem()->data(Qt::UserRole).toString();
 
-    connect(this, &KbdLayoutManager::del_variant_signals, [=](QString id){delete_layout(id);});
+    availablelayoutsList.clear();
+    char * iid = id.toLatin1().data();
+    if (ui->countryRadioButton->isChecked())
+        kbd_trigger_available_countries(iid);
+    else if (ui->languageRadioButton->isChecked())
+        kbd_trigger_available_languages(iid);
 
-    refresh_variant_combobox();
+    ui->variantComboBox->clear();
+    for (QString name : availablelayoutsList){
+       QString desc = kbd_get_description_by_id(const_cast<const char *>(name.toLatin1().data()));
+       ui->variantComboBox->addItem(desc, name);
+    }
 }
 
 void KbdLayoutManager::rebuild_listwidget(){
     //最多4个布局，来自GTK控制面板，原因未知
     QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
     if (layouts.length() >= MAXNUM)
-        ui->addBtn->setEnabled(false);
+        ui->installBtn->setEnabled(false);
     else
-        ui->addBtn->setEnabled(true);
+        ui->installBtn->setEnabled(true);
 
     ui->listWidget->clear();
 
@@ -156,7 +218,12 @@ void KbdLayoutManager::rebuild_listwidget(){
 //                            "QPushButton{background: #FA6056; border-radius: 2px;}"
 //                            "QPushButton:hover:pressed{background: #E54A50; border-radius: 2px;}");
 
-        connect(layoutdelBtn, &QPushButton::clicked, this, [=]{emit del_variant_signals(layout);});
+        connect(layoutdelBtn, &QPushButton::clicked, this, [=]{
+            QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
+            layouts.removeOne(layout);
+            kbdsettings->set(KBD_LAYOUTS_KEY, layouts);
+            rebuild_listwidget();
+        });
 
         mainHLayout->addWidget(layoutLabel);
         mainHLayout->addStretch();
@@ -165,52 +232,13 @@ void KbdLayoutManager::rebuild_listwidget(){
 
         QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
         item->setData(Qt::UserRole, layout);
-        item->setSizeHint(QSize(328, 36));  //330 - 2
+        item->setSizeHint(QSize(ui->listWidget->width(), 36));
 
         layoutLabel->setText(desc);
         ui->listWidget->addItem(item);
         ui->listWidget->setItemWidget(item, layoutWidget);
     }
 
-}
-
-void KbdLayoutManager::add_layout(QString layout){
-    QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
-    layouts.append(layout);
-    kbdsettings->set(KBD_LAYOUTS_KEY, layouts);
-    rebuild_listwidget();
-}
-
-void KbdLayoutManager::delete_layout(QString layout){
-    QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
-    layouts.removeOne(layout);
-    kbdsettings->set(KBD_LAYOUTS_KEY, layouts);
-    rebuild_listwidget();
-}
-
-void KbdLayoutManager::refresh_variant_combobox(){
-
-    if (ui->countryRadioButton->isChecked()){
-        QString id = ui->countryComboBox->currentData(Qt::UserRole).toString();
-        emit rebuild_variant_signals(true, id);
-    }
-    else{
-        QString id = ui->languageComboBox->currentData(Qt::UserRole).toString();
-        emit rebuild_variant_signals(false, id);
-    }
-}
-
-void KbdLayoutManager::refresh_widget_status(){
-    ui->countryWidget->setEnabled(ui->countryRadioButton->isChecked());
-    ui->languageWidget->setEnabled(ui->languageRadioButton->isChecked());
-}
-
-void KbdLayoutManager::rebuild_variant_combobox(){
-    ui->variantComboBox->clear();
-    for (QString name : availablelayoutsList){
-       QString desc = kbd_get_description_by_id(const_cast<const char *>(name.toLatin1().data()));
-       ui->variantComboBox->addItem(desc, name);
-    }
 }
 
 void KbdLayoutManager::kbd_trigger_available_countries(char *countryid){
@@ -226,28 +254,6 @@ QString KbdLayoutManager::kbd_get_description_by_id(const char *visible){
     if (matekbd_keyboard_config_get_descriptions(config_registry, visible, &sl, &l, &sv, &v))
         visible = matekbd_keyboard_config_format_full_layout (l, v);
     return QString(const_cast<char *>(visible));
-}
-
-void KbdLayoutManager::countries_changed_slot(int index){
-    Q_UNUSED(index);
-    QString id = ui->countryComboBox->currentData().toString();
-    emit rebuild_variant_signals(true, id);
-}
-
-void KbdLayoutManager::languages_changed_slot(int index){
-    Q_UNUSED(index);
-    QString id = ui->languageComboBox->currentData().toString();
-    emit rebuild_variant_signals(false, id);
-}
-
-void KbdLayoutManager::rebuild_variant_slots(bool type, QString id){
-    availablelayoutsList.clear();
-    char * iid = id.toLatin1().data();
-    if (type)
-        kbd_trigger_available_countries(iid);
-    else
-        kbd_trigger_available_languages(iid);
-    rebuild_variant_combobox();
 }
 
 static void kbd_set_countries(XklConfigRegistry *config_registry, XklConfigItem *config_item, QList<Layout> *list){
@@ -281,4 +287,43 @@ static void kbd_set_available_countries(XklConfigRegistry *config_registry, XklC
 static void kbd_set_available_languages(XklConfigRegistry *config_registry, XklConfigItem *parent_config_item, XklConfigItem *config_item, QList<Layout> *list){
     Q_UNUSED(list);
     kbd_set_available_countries(config_registry, parent_config_item, config_item, NULL);
+}
+
+
+void KbdLayoutManager::paintEvent(QPaintEvent *event){
+    Q_UNUSED(event);
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+    QPainterPath rectPath;
+    rectPath.addRoundedRect(this->rect().adjusted(10, 10, -10, -10), 6, 6);
+
+    // 画一个黑底
+    QPixmap pixmap(this->rect().size());
+    pixmap.fill(Qt::transparent);
+    QPainter pixmapPainter(&pixmap);
+    pixmapPainter.setRenderHint(QPainter::Antialiasing);
+    pixmapPainter.setPen(Qt::transparent);
+    pixmapPainter.setBrush(Qt::black);
+    pixmapPainter.drawPath(rectPath);
+    pixmapPainter.end();
+
+    // 模糊这个黑底
+    QImage img = pixmap.toImage();
+    qt_blurImage(img, 10, false, false);
+    // 挖掉中心
+    pixmap = QPixmap::fromImage(img);
+    QPainter pixmapPainter2(&pixmap);
+    pixmapPainter2.setRenderHint(QPainter::Antialiasing);
+    pixmapPainter2.setCompositionMode(QPainter::CompositionMode_Clear);
+    pixmapPainter2.setPen(Qt::transparent);
+    pixmapPainter2.setBrush(Qt::transparent);
+    pixmapPainter2.drawPath(rectPath);
+
+    // 绘制阴影
+    p.drawPixmap(this->rect(), pixmap, pixmap.rect());
+    // 绘制一个背景
+    p.save();
+    p.fillPath(rectPath,palette().color(QPalette::Base));
+
+    p.restore();
 }
