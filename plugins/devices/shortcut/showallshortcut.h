@@ -62,7 +62,7 @@ public:
     void buildComponent(QMap<QString, QMap<QString, QString>> shortcutsMap);
 
     QWidget * buildTitleWidget(QString tName);
-    QWidget * buildGeneralWidget(QMap<QString, QString> subShortcutsMap);
+    QWidget * buildGeneralWidget(QString schema, QMap<QString, QString> subShortcutsMap);
 
 protected:
     void paintEvent(QPaintEvent *);

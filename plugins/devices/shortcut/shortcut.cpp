@@ -195,11 +195,11 @@ void Shortcut::setupConnect(){
         }
         QMap<QString, QMap<QString, QString>> generalMaps;
         if (desktopMap.count() != 0) {
-            generalMaps.insert(tr("Desktop"), desktopMap);
+            generalMaps.insert("Desktop", desktopMap);
         }
-        if (systemMap.count() != 0) {
-            generalMaps.insert(tr("System"), systemMap);
-        }
+//        if (systemMap.count() != 0) {
+//            generalMaps.insert("System", systemMap);
+//        }
         showDialog->buildComponent(generalMaps);
         showDialog->exec();
     });

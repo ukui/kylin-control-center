@@ -28,6 +28,20 @@
 
 #include <QDebug>
 
+#include "realizeshortcutwheel.h"
+
+/* qt会将glib里的signals成员识别为宏，所以取消该宏
+ * 后面如果用到signals时，使用Q_SIGNALS代替即可
+ **/
+#ifdef signals
+#undef signals
+#endif
+
+extern "C" {
+#include <glib.h>
+#include <glib/gi18n.h>
+}
+
 #define TITLEWIDGETHEIGH 36
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
@@ -96,7 +110,7 @@ void ShowAllShortcut::buildComponent(QMap<QString, QMap<QString, QString> > shor
 //            tWidget->setStyleSheet("ClickWidget{background: #F4F4F4;}");
         }
 
-        QWidget * gWidget = buildGeneralWidget(it.value());
+        QWidget * gWidget = buildGeneralWidget(it.key(), it.value());
 
         if ((it+1) == shortcutsMap.end())
             connect(tWidget, &ClickWidget::widgetClicked, [=](bool checked){
@@ -133,7 +147,10 @@ QWidget * ShowAllShortcut::buildTitleWidget(QString tName){
     titleHorLayout->setContentsMargins(16, 0, 32, 0);
 
     QLabel * titleNameLabel = new QLabel(titleWidget);
-    titleNameLabel->setText(tName);
+    if (tName == "Desktop")
+        titleNameLabel->setText(tr("Desktop"));
+    else
+        titleNameLabel->setText(tName);
 
     QPushButton * directionBtn = new QPushButton(titleWidget);
     directionBtn->setFixedSize(16, 16);
@@ -148,7 +165,23 @@ QWidget * ShowAllShortcut::buildTitleWidget(QString tName){
     return titleWidget;
 }
 
-QWidget * ShowAllShortcut::buildGeneralWidget(QMap<QString, QString> subShortcutsMap){
+QWidget * ShowAllShortcut::buildGeneralWidget(QString schema, QMap<QString, QString> subShortcutsMap){
+
+    GSettingsSchema * pSettings;
+    QString domain;
+
+    if (schema == "Desktop"){
+        pSettings = g_settings_schema_source_lookup(g_settings_schema_source_new_from_directory("/usr/share/glib-2.0/schemas/", g_settings_schema_source_get_default(), FALSE, NULL),
+                                                    KEYBINDINGS_DESKTOP_SCHEMA,
+                                                    FALSE);
+        domain = "ukui-settings-daemon";
+
+    } else if (schema == "System"){
+        pSettings = g_settings_schema_source_lookup(g_settings_schema_source_new_from_directory("/usr/share/glib-2.0/schemas/", g_settings_schema_source_get_default(), FALSE, NULL),
+                                                    KEYBINDINGS_SYSTEM_SCHEMA,
+                                                    FALSE);
+        domain = "gsettings-desktop-schemas";
+    }
 
     QWidget * pWidget = new QWidget;
     pWidget->setAttribute(Qt::WA_DeleteOnClose);
@@ -171,8 +204,16 @@ QWidget * ShowAllShortcut::buildGeneralWidget(QMap<QString, QString> subShortcut
         gHorLayout->setSpacing(0);
         gHorLayout->setContentsMargins(16, 0, 32, 0);
 
+        //
+        QByteArray ba = domain.toLatin1();
+        QByteArray ba1 = it.key().toLatin1();
+
+        GSettingsSchemaKey * keyObj = g_settings_schema_get_key(pSettings, ba1.data());
+
+        char * i18nKey;
         QLabel * nameLabel  = new QLabel(gWidget);
-        nameLabel->setText(it.key());
+        i18nKey = const_cast<char *>(g_dgettext(ba.data(), g_settings_schema_key_get_summary(keyObj)));
+        nameLabel->setText(QString(i18nKey));
 
         QLabel * bindingLabel = new QLabel(gWidget);
         bindingLabel->setText(it.value());
@@ -185,7 +226,11 @@ QWidget * ShowAllShortcut::buildGeneralWidget(QMap<QString, QString> subShortcut
 
 
         pVerLayout->addWidget(gWidget);
+
+        g_settings_schema_key_unref(keyObj);
     }
+
+    g_settings_schema_unref(pSettings);
 
     return pWidget;
 
