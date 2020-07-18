@@ -21,6 +21,7 @@
 #include "ui_layoutmanager.h"
 
 #include <QPainter>
+#include <QPainterPath>
 
 #include <QDebug>
 
