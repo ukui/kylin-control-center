@@ -51,7 +51,6 @@
 /* QT图标主题 */
 #define ICON_QT_KEY "icon-theme-name"
 
-
 /**
  * 窗口管理器Marco主题
  */
@@ -67,7 +66,6 @@
 
 #define ICONWIDGETHEIGH 74
 
-
 /**
  * 透明度设置
  */
@@ -76,6 +74,7 @@
 #define PERSONALSIE_BLURRY_KEY "blurry"
 
 const QString defCursor = "DMZ-White";
+const int transparency = 95;
 
 
 namespace {
@@ -222,7 +221,7 @@ void Theme::setupComponent(){
     buildThemeModeBtn(ui->lightButton, tr("Light"), "light");
     buildThemeModeBtn(ui->darkButton, tr("Dark"), "dark");
 
-    ui->tranSlider->setRange(1, 100);
+    ui->tranSlider->setRange(35, 100);
     ui->tranSlider->setTickInterval(1);
     ui->tranSlider->setPageStep(1);
 
@@ -582,12 +581,11 @@ void Theme::resetBtnClickSlot() {
     QString cursorTheme = "DMZ-White";
     curSettings->set(CURSOR_THEME_KEY,cursorTheme);
 
-
     //reset icon default theme
     qtSettings->reset(ICON_QT_KEY);
     gtkSettings->reset(ICON_GTK_KEY);
 
-
+    ui->tranSlider->setValue(transparency);
 
     clearLayout(ui->iconThemeVerLayout->layout(), true);
     clearLayout(ui->cursorVerLayout->layout(), true);

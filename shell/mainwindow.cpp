@@ -76,7 +76,6 @@ MainWindow::MainWindow(QWidget *parent) :
             QFont font = this->font();
             int width = font.pointSize();
             for (auto widget : qApp->allWidgets()) {
-                widget->repaint();
                 widget->setFont(font);
             }
             ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
