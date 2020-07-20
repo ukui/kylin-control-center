@@ -416,7 +416,7 @@ void MainWindow::loadPlugins(){
             continue;
         }
 
-        const char * securityCmd = "/usr/sbin/defender";
+        const char * securityCmd = "/usr/sbin/ksc-defender";
 
         qDebug() << "Scan Plugin: " << fileName;
         //gsettings-desktop-schemas

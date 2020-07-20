@@ -133,25 +133,25 @@ void SecurityCenter::initComponent(){
     kysecWidget->setupComponent(":/img/plugins/securitycenter/kysec.png", \
                                 tr("Virus Protection"), \
                                 tr("Protect system from threats"), \
-                                "/usr/sbin/ksc-defender");
+                                "/usr/sbin/ksc-defender  --virus-protect");
 
     BlockWidget * netWidget = new BlockWidget();
     netWidget->setupComponent(":/img/plugins/securitycenter/net.png", \
                               tr("Network Protection"), \
                               tr("Setup app that can access web"), \
-                              "/usr/sbin/ksc-defender");
+                              "/usr/sbin/ksc-defender --net-protect");
 
     BlockWidget * protectWidget = new BlockWidget();
     protectWidget->setupComponent(":/img/plugins/securitycenter/protect.png", \
                                   tr("App Execution Control"), \
                                   tr("App install and exe protection"), \
-                                  "/usr/sbin/ksc-defender");
+                                  "/usr/sbin/ksc-defender --exec-ctrl");
 
     BlockWidget * userWidget = new BlockWidget();
     userWidget->setupComponent(":/img/plugins/securitycenter/user.png", \
                                tr("Account Security"), \
                                tr("Protect account and login security"), \
-                               "/usr/sbin/ksc-defender");
+                               "/usr/sbin/ksc-defender --account-sec");
 
     flowLayout->addWidget(kysecWidget);
     flowLayout->addWidget(netWidget);
