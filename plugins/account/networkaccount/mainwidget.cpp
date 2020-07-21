@@ -32,7 +32,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     connect(this,SIGNAL(doconf()),m_dbusClient,SLOT(init_conf()));
     connect(this,SIGNAL(doman()),m_dbusClient,SLOT(manual_sync()));
     connect(this,SIGNAL(dochange(QString,int)),m_dbusClient,SLOT(change_conf_value(QString,int)));
-    connect(this,SIGNAL(dologout()),m_dbusClient,SLOT(m_welcomeMsg()));
+    connect(this,SIGNAL(dologout()),m_dbusClient,SLOT(logout()));
     connect(m_dbusClient,SIGNAL(finished_oss(int)),this,SLOT(setret_oss(int)));
     connect(m_dbusClient,SIGNAL(finished_check_oss(QString)),this,SLOT(setname(QString)));
     connect(m_dbusClient,SIGNAL(finished_check(QString)),this,SLOT(setret_check(QString)));
