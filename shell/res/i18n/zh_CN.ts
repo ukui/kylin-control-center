@@ -468,7 +468,7 @@
     <name>Backup</name>
     <message>
         <location filename="../../../plugins/security-updates/backup/backup.ui" line="53"/>
-        <location filename="../../../plugins/security-updates/backup/backup.cpp" line="34"/>
+        <location filename="../../../plugins/security-updates/backup/backup.cpp" line="42"/>
         <source>Backup</source>
         <translation>备份</translation>
     </message>
@@ -1037,7 +1037,7 @@ change system settings</source>
         <translation>24小时制</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="260"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="259"/>
         <source>change time</source>
         <translation>更改时间</translation>
     </message>
@@ -1956,7 +1956,12 @@ folder will be deleted!</source>
         <translation>添加</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/keyboard/kbdlayoutmanager.cpp" line="154"/>
+        <location filename="../../../plugins/devices/keyboard/kbdlayoutmanager.cpp" line="60"/>
+        <source>Add Layout</source>
+        <translation>添加布局</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/keyboard/kbdlayoutmanager.cpp" line="222"/>
         <source>Del</source>
         <translation>删除</translation>
     </message>
@@ -2130,6 +2135,54 @@ folder will be deleted!</source>
         <location filename="../../../plugins/devices/keyboard/keyboardcontrol.cpp" line="46"/>
         <source>Keyboard</source>
         <translation>键盘</translation>
+    </message>
+</context>
+<context>
+    <name>LayoutManager</name>
+    <message>
+        <location filename="../../../plugins/devices/keyboard/layoutmanager.ui" line="26"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/keyboard/layoutmanager.ui" line="172"/>
+        <source>Manager Keyboard Layout</source>
+        <translation>管理键盘布局</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/keyboard/layoutmanager.ui" line="231"/>
+        <source>Language</source>
+        <translation>语言</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/keyboard/layoutmanager.ui" line="247"/>
+        <source>Country</source>
+        <translation>国家</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/keyboard/layoutmanager.ui" line="286"/>
+        <source>Variant</source>
+        <translation>变体</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/keyboard/layoutmanager.ui" line="343"/>
+        <source>Layout installed</source>
+        <translation>安装布局</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/keyboard/layoutmanager.ui" line="391"/>
+        <source>Preview</source>
+        <translation>预览</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/keyboard/layoutmanager.ui" line="423"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/keyboard/layoutmanager.ui" line="442"/>
+        <source>Install</source>
+        <translation>安装</translation>
     </message>
 </context>
 <context>
@@ -2480,12 +2533,12 @@ folder will be deleted!</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="93"/>
+        <location filename="../../mainwindow.cpp" line="92"/>
         <source>ukcc</source>
         <translation>控制面板</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="500"/>
+        <location filename="../../mainwindow.cpp" line="499"/>
         <source>HOME</source>
         <translation>首页</translation>
     </message>
@@ -3298,22 +3351,22 @@ folder will be deleted!</source>
         <translation type="vanished">默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="560"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="559"/>
         <source>basic</source>
         <translation>基础</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="562"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="561"/>
         <source>classical</source>
         <translation>经典</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="564"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="563"/>
         <source>default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="566"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="565"/>
         <location filename="../../../plugins/account/userinfo/changevailddialog.cpp" line="167"/>
         <source>Unknown</source>
         <translation>未知</translation>
@@ -3963,14 +4016,12 @@ folder will be deleted!</source>
         <translation>快捷键</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="198"/>
         <source>Desktop</source>
-        <translation>桌面</translation>
+        <translation type="vanished">桌面</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="201"/>
         <source>System</source>
-        <translation>系统</translation>
+        <translation type="vanished">系统</translation>
     </message>
 </context>
 <context>
@@ -3984,6 +4035,11 @@ folder will be deleted!</source>
         <location filename="../../../plugins/devices/shortcut/showallshortcut.ui" line="159"/>
         <source>System Shortcuts</source>
         <translation>快捷键</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/shortcut/showallshortcut.cpp" line="151"/>
+        <source>Desktop</source>
+        <translation type="unfinished">桌面</translation>
     </message>
 </context>
 <context>
@@ -4030,22 +4086,22 @@ folder will be deleted!</source>
         <translation>主题模式</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="112"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="111"/>
         <source>Theme</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="221"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="220"/>
         <source>Default</source>
         <translation>系统默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="222"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="221"/>
         <source>Light</source>
         <translation>浅色模式</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="223"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="222"/>
         <source>Dark</source>
         <translation>深色模式</translation>
     </message>
