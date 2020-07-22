@@ -81,7 +81,7 @@ void ResolutionSlider::init()
         int currentModeIndex = -1;
         int preferredModeIndex = -1;
         Q_FOREACH (const QSize &size, mModes) {
-            if (size.width() < 800) {
+            if (size.width() <= 800) {
                 continue;
             }
             if (size == mModes[0]) {
