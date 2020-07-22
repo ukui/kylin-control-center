@@ -19,6 +19,7 @@
  */
 #include "kbdlayoutmanager.h"
 #include "ui_layoutmanager.h"
+#include "tastenbrett.h"
 
 #include <QPainter>
 #include <QPainterPath>
@@ -56,6 +57,7 @@ KbdLayoutManager::KbdLayoutManager(QWidget *parent) :
     ui(new Ui::LayoutManager)
 {
     ui->setupUi(this);
+    this->setWindowTitle(tr("Add Layout"));
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -147,6 +149,9 @@ void KbdLayoutManager::setupConnect(){
         kbdsettings->set(KBD_LAYOUTS_KEY, layouts);
         rebuild_listwidget();
     });
+
+    connect(ui->PreBtn, &QPushButton::clicked, this, &KbdLayoutManager::preview);
+
 }
 
 void KbdLayoutManager::rebuildSelectListWidget(){
@@ -242,6 +247,22 @@ void KbdLayoutManager::rebuild_listwidget(){
 
 }
 
+void KbdLayoutManager::preview()
+{
+    QString variantID;
+    QString layoutID = ui->variantComboBox->currentData(Qt::UserRole).toString();
+    QStringList layList = layoutID.split('\t');
+
+    for (int i = 0; i < layList.length(); i++) {
+        if (0 == i) {
+            layoutID = layList.at(0);
+        }
+        if (1 == i) {
+            variantID = layList.at(1);
+        }
+    }
+    Tastenbrett::launch("pc104", layoutID, variantID, "");
+}
 void KbdLayoutManager::kbd_trigger_available_countries(char *countryid){
     xkl_config_registry_foreach_country_variant (config_registry, countryid, (TwoConfigItemsProcessFunc)kbd_set_available_countries, NULL);
 }

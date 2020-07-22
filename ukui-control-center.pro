@@ -6,6 +6,8 @@ SUBDIRS = \
     registeredQDbus \
     plugins\
     shell \
+    tastenbrett \
+
 
 TRANSLATIONS += \
     shell/res/i18n/zh_CN.ts \

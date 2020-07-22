@@ -51,7 +51,6 @@
 /* QT图标主题 */
 #define ICON_QT_KEY "icon-theme-name"
 
-
 /**
  * 窗口管理器Marco主题
  */
@@ -66,7 +65,6 @@
 #define CURSOR_THEME_KEY "cursor-theme"
 
 #define ICONWIDGETHEIGH 74
-
 
 /**
  * 透明度设置
@@ -584,11 +582,12 @@ void Theme::resetBtnClickSlot() {
     QString cursorTheme = "DMZ-White";
     curSettings->set(CURSOR_THEME_KEY,cursorTheme);
 
-
     //reset icon default theme
     qtSettings->reset(ICON_QT_KEY);
     qtSettings->reset(THEME_TRAN_KEY);
     gtkSettings->reset(ICON_GTK_KEY);
+
+    ui->tranSlider->setValue(transparency);
 
     clearLayout(ui->iconThemeVerLayout->layout(), true);
     clearLayout(ui->cursorVerLayout->layout(), true);

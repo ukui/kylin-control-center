@@ -34,11 +34,13 @@ PKGCONFIG     += libmatekbd \
 
 SOURCES += \
     keyboardcontrol.cpp \
-    kbdlayoutmanager.cpp
+    kbdlayoutmanager.cpp \
+    tastenbrett.cpp
 
 HEADERS += \
     keyboardcontrol.h \
-    kbdlayoutmanager.h
+    kbdlayoutmanager.h \
+    tastenbrett.h
 
 FORMS += \
     keyboardcontrol.ui \
