@@ -152,7 +152,7 @@ void ChangeFaceDialog::showLocalFaceDialog(){
     QFile pic(selectedfile);
     int size = pic.size();
 
-    if (size >= 1048576) {
+    if (size >= 2097152) {
         QMessageBox::warning(this, tr("Warning"), tr("The avatar is larger than 2M, please choose again"));
         return;
     }
