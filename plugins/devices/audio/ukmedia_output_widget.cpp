@@ -50,7 +50,9 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pMasterVolumeWidget = new QFrame(m_pOutputWidget);
     m_pChannelBalanceWidget = new QFrame(m_pOutputWidget);
     m_pOutputPortWidget = new QFrame(m_pOutputWidget);
+    m_pProfileWidget = new QFrame(m_pProfileWidget);
 
+    m_pProfileWidget->setFrameShape(QFrame::Shape::Box);
     m_pOutputDeviceWidget->setFrameShape(QFrame::Shape::Box);
     m_pMasterVolumeWidget->setFrameShape(QFrame::Shape::Box);
     m_pChannelBalanceWidget->setFrameShape(QFrame::Shape::Box);
@@ -67,6 +69,8 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pChannelBalanceWidget->setMaximumSize(960,50);
     m_pOutputPortWidget->setMinimumSize(550,50);
     m_pOutputPortWidget->setMaximumSize(960,50);
+    m_pProfileWidget->setMinimumSize(550,50);
+    m_pProfileWidget->setMaximumSize(960,50);
 
     m_pOutputLabel = new QLabel(tr("Output"),this);
     m_pOutputLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
@@ -82,6 +86,12 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pRightBalanceLabel = new QLabel(tr("Right"),m_pChannelBalanceWidget);
     m_pOutputPortLabel = new QLabel(tr("Connector"),m_pOutputPortWidget);
     m_pOutputPortCombobox = new QComboBox(m_pOutputPortWidget);
+    m_pProfileLabel = new QLabel(tr("Profile"),m_pProfileWidget);
+    m_pProfileCombobox = new QComboBox(m_pProfileWidget);
+    m_pProfileCombobox->setMinimumSize(50,32);
+    m_pProfileCombobox->setMaximumSize(900,32);
+
+    m_pProfileLabel->setFixedSize(115,24);
 
     m_pOpBalanceSlider->setStyle(new CustomStyle());
     m_pOpVolumeSlider->setOrientation(Qt::Horizontal);
@@ -153,12 +163,27 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     outputPortLayout->setSpacing(0);
     m_pOutputPortWidget->setLayout(outputPortLayout);
     outputPortLayout->layout()->setContentsMargins(0,0,0,0);
+
+    //配置文件布局
+    QHBoxLayout *profileLayout = new QHBoxLayout(m_pProfileWidget);
+
+    profileLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    profileLayout->addWidget(m_pProfileLabel);
+    profileLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    profileLayout->addWidget(m_pProfileCombobox);
+    profileLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    profileLayout->setSpacing(0);
+    m_pProfileWidget->setLayout(profileLayout);
+    profileLayout->layout()->setContentsMargins(0,0,0,0);
+    m_pProfileWidget->setVisible(false);
     //进行整体布局
     m_pVlayout = new QVBoxLayout(m_pOutputWidget);
     m_pVlayout->addWidget(m_pOutputDeviceWidget);
     m_pVlayout->addWidget(m_pMasterVolumeWidget);
     m_pVlayout->addWidget(m_pChannelBalanceWidget);
+//    m_pVlayout->addWidget(m_pProfileWidget);
     m_pVlayout->setSpacing(1);
+
     m_pOutputWidget->setLayout(m_pVlayout);
     m_pOutputWidget->layout()->setContentsMargins(0,0,0,0);
 

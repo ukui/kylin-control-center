@@ -192,7 +192,10 @@ public:
     static void customThemeUpdateTime (void);
     static gboolean customThemeDirIsEmpty (void);
     static MateMixerSwitch *findStreamPortSwitch (UkmediaMainWidget *widget,MateMixerStream *stream);
-
+    static MateMixerSwitch *findDeviceProfileSwitch (UkmediaMainWidget *widget,MateMixerDevice *device);
+    static void onDeviceProfileActiveOptionNotify (MateMixerDeviceSwitch *swtch,GParamSpec *pspec,UkmediaMainWidget *w);
+    static gchar *deviceStatus (MateMixerDevice *device);
+    static void updateDeviceInfo (UkmediaMainWidget *w, MateMixerDevice *device);
 Q_SIGNALS:
     void appVolumeChangedSignal(bool is_mute,int volume,const QString app_name);
 
@@ -213,6 +216,9 @@ private Q_SLOTS:
     void windowClosedComboboxChangedSlot(int index);
     void volumeChangedComboboxChangeSlot(int index);
     void settingMenuComboboxChangedSlot(int index);
+    void profileComboboxChangedSlot(int index);
+    void selectComboboxChangedSlot(int index);
+
 private:
     UkmediaInputWidget *m_pInputWidget;
     UkmediaOutputWidget *m_pOutputWidget;
@@ -226,6 +232,8 @@ private:
     MateMixerStreamControl *m_pInputBarStreamControl;
     MateMixerStreamControl *m_pControl;
     MateMixerStream *m_pStream;
+    MateMixerDevice *m_pDevice;
+    MateMixerSwitch *m_pSwitch;
 
     QStringList *m_pSoundList;
     QStringList *m_pThemeDisplayNameList;
@@ -239,7 +247,7 @@ private:
     QStringList *m_pStreamControlList;
     QStringList *m_pInputPortList;
     QStringList *m_pOutputPortList;
-
+    QStringList *m_pProfileNameList;
     QStringList *m_pSoundNameList;
     QStringList *eventList;
     QStringList *eventIdNameList;

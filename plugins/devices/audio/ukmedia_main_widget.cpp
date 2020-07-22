@@ -99,7 +99,7 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     m_pInputPortList = new QStringList;
     m_pOutputPortList = new QStringList;
     m_pSoundNameList = new QStringList;
-
+    m_pProfileNameList = new QStringList;
     eventList = new QStringList;
     eventIdNameList = new QStringList;
 
@@ -212,6 +212,9 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     connect(m_pSoundWidget->m_pWindowClosedCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(windowClosedComboboxChangedSlot(int)));
     connect(m_pSoundWidget->m_pVolumeChangeCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(volumeChangedComboboxChangeSlot(int)));
     connect(m_pSoundWidget->m_pSettingSoundCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(settingMenuComboboxChangedSlot(int)));
+    connect(m_pOutputWidget->m_pProfileCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(profileComboboxChangedSlot(int)));
+
+    connect(m_pInputWidget->m_pSelectCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(selectComboboxChangedSlot(int)));
 
     //输入等级
     ukuiInputLevelSetProperty(this);
@@ -236,7 +239,7 @@ void UkmediaMainWidget::comboboxCurrentTextInit()
             QGSettings * settings = new QGSettings(ba, bba);
             QString filenameStr = settings->get(FILENAME_KEY).toString();
             QString nameStr = settings->get(NAME_KEY).toString();
-            int index;
+            int index = 0;
             for (int i=0;i<m_pSoundList->count();i++) {
                 QString str = m_pSoundList->at(i);
                 if (str.contains(filenameStr,Qt::CaseSensitive)) {
@@ -381,10 +384,37 @@ void UkmediaMainWidget::listDevice(UkmediaMainWidget *m_pWidget,MateMixerContext
     g_debug("list device");
     const GList *m_pList;
     m_pList = mate_mixer_context_list_streams (m_pContext);
-
+    qDebug() << "list device";
     while (m_pList != nullptr) {
         addStream (m_pWidget, MATE_MIXER_STREAM (m_pList->data),m_pContext);
         m_pList = m_pList->next;
+    }
+
+    const GList *pDeviceList;
+    const GList *switches;
+    const gchar *profileName;
+    const gchar *profileLabel;
+    pDeviceList = mate_mixer_context_list_devices(m_pContext);
+    while (pDeviceList) {
+        addDevice(m_pWidget, MATE_MIXER_DEVICE (pDeviceList->data));
+        switches = mate_mixer_device_list_switches (MATE_MIXER_DEVICE(pDeviceList->data));
+        while (switches != nullptr) {
+            MateMixerDeviceSwitch *swtch = MATE_MIXER_DEVICE_SWITCH (switches->data);
+            const GList *options;
+            options = mate_mixer_switch_list_options ( MATE_MIXER_SWITCH(swtch));
+            while (options != NULL) {
+                MateMixerSwitchOption *option = MATE_MIXER_SWITCH_OPTION (options->data);
+                profileLabel = mate_mixer_switch_option_get_label (option);
+                profileName = mate_mixer_switch_option_get_name(option);
+                m_pWidget->m_pProfileNameList->append(profileName);
+                m_pWidget->m_pOutputWidget->m_pProfileCombobox->addItem(profileLabel);
+                qDebug() << "profile name:" << profileName << "profile label :" << profileLabel;
+                /* Select the currently active option of the switch */
+                options = options->next;
+            }
+            switches = switches->next;
+        }
+        pDeviceList = pDeviceList->next;
     }
 }
 
@@ -693,16 +723,40 @@ void UkmediaMainWidget::onContextDeviceAdded(MateMixerContext *m_pContext, const
 /*
     添加设备
 */
-void UkmediaMainWidget::addDevice (UkmediaMainWidget *m_pWidget, MateMixerDevice *m_pDevice)
+void UkmediaMainWidget::addDevice (UkmediaMainWidget *m_pWidget, MateMixerDevice *pDevice)
 {
     g_debug("add device");
-    const gchar *m_pName;
+    const gchar *pName;
+    const gchar *pLabel;
+    const gchar *profileLabel = NULL;
     /*
      * const gchar *m_pLabel;
      * m_pLabel = mate_mixer_device_get_label (m_pDevice);
     */
-    m_pName  = mate_mixer_device_get_name (m_pDevice);
-    m_pWidget->m_pDeviceNameList->append(m_pName);
+    m_pWidget->m_pDevice = pDevice;
+    pName  = mate_mixer_device_get_name (pDevice);
+    pLabel = mate_mixer_device_get_label(pDevice);
+    if (m_pWidget->m_pDeviceNameList->contains(pName) == false) {
+        m_pWidget->m_pDeviceNameList->append(pName);
+        m_pWidget->m_pInputWidget->m_pSelectCombobox->addItem(pLabel);
+    }
+    MateMixerSwitch *profileSwitch;
+    qDebug() << "device name " << pName << "device label :" << pLabel;
+    profileSwitch = findDeviceProfileSwitch(m_pWidget,pDevice);
+    m_pWidget->m_pSwitch = profileSwitch;
+    if (profileSwitch != NULL) {
+        MateMixerSwitchOption *active;
+
+        active = mate_mixer_switch_get_active_option (profileSwitch);
+        if (G_LIKELY (active != NULL))
+            profileLabel = mate_mixer_switch_option_get_label (active);
+//        qDebug() << "profilelabel :" << profileLabel;
+        g_signal_connect (G_OBJECT (profileSwitch),
+                          "notify::active-option",
+                          G_CALLBACK (onDeviceProfileActiveOptionNotify),
+                          m_pWidget);
+    }
+
 }
 
 /*
@@ -1932,6 +1986,23 @@ void UkmediaMainWidget::settingMenuComboboxChangedSlot(int index)
     }
 }
 
+void UkmediaMainWidget::profileComboboxChangedSlot(int index)
+{
+//    mate_mixer_
+    QString name = m_pProfileNameList->at(index);
+
+    MateMixerSwitchOption *opt = mate_mixer_switch_get_option(m_pSwitch,name.toLocal8Bit().data());
+    qDebug() << "combox " << name << mate_mixer_switch_option_get_name(opt);
+    mate_mixer_switch_set_active_option(m_pSwitch,opt);
+}
+
+void UkmediaMainWidget::selectComboboxChangedSlot(int index)
+{
+    QString deviceStr = m_pDeviceNameList->at(index);
+
+    qDebug() << "device combox name :" << deviceStr;
+}
+
 /*
     点击声音主题实现主题切换
 */
@@ -2849,9 +2920,124 @@ void UkmediaMainWidget::addValue(QString name,QString filename)
         settings->set(FILENAME_KEY, filename);
         settings->set(NAME_KEY, name);
     }
-
-
 //    delete settings;
+}
+
+MateMixerSwitch * UkmediaMainWidget::findDeviceProfileSwitch (UkmediaMainWidget *w,MateMixerDevice *device)
+{
+    const GList *switches;
+    const gchar *profileLabel = NULL;
+    switches = mate_mixer_device_list_switches (device);
+    while (switches != nullptr) {
+        MateMixerDeviceSwitch *swtch = MATE_MIXER_DEVICE_SWITCH (switches->data);
+        MateMixerSwitchOption *active;
+        active = mate_mixer_switch_get_active_option (MATE_MIXER_SWITCH (swtch));
+        if (G_LIKELY (active != NULL))
+            profileLabel = mate_mixer_switch_option_get_label (active);
+        qDebug() << "profilelabel :" << profileLabel;
+//        if (w->m_pOutputWidget->m_pProfileCombobox)
+        w->m_pOutputWidget->m_pProfileCombobox->setCurrentText(profileLabel);
+        if (mate_mixer_device_switch_get_role (swtch) == MATE_MIXER_DEVICE_SWITCH_ROLE_PROFILE)
+            return MATE_MIXER_SWITCH (swtch);
+
+        switches = switches->next;
+    }
+    return nullptr;
+}
+
+gchar * UkmediaMainWidget::deviceStatus (MateMixerDevice *device)
+{
+    guint        inputs = 0;
+    guint        outputs = 0;
+    gchar       *inputs_str = NULL;
+    gchar       *outputs_str = NULL;
+    const GList *streams;
+
+    /* Get number of input and output streams in the device */
+    streams = mate_mixer_device_list_streams (device);
+    while (streams != NULL) {
+        MateMixerStream   *stream = MATE_MIXER_STREAM (streams->data);
+        MateMixerDirection direction;
+
+        direction = mate_mixer_stream_get_direction (stream);
+
+        if (direction == MATE_MIXER_DIRECTION_INPUT)
+            inputs++;
+        else if (direction == MATE_MIXER_DIRECTION_OUTPUT)
+            outputs++;
+
+        streams = streams->next;
+    }
+
+    if (inputs == 0 && outputs == 0) {
+        /* translators:
+                 * The device has been disabled */
+        return g_strdup (_("Disabled"));
+    }
+
+    if (outputs > 0) {
+        /* translators:
+                 * The number of sound outputs on a particular device */
+        outputs_str = g_strdup_printf (ngettext ("%u Output",
+                                                 "%u Outputs",
+                                                 outputs),
+                                       outputs);
+    }
+
+    if (inputs > 0) {
+        /* translators:
+                 * The number of sound inputs on a particular device */
+        inputs_str = g_strdup_printf (ngettext ("%u Input",
+                                                "%u Inputs",
+                                                inputs),
+                                      inputs);
+    }
+
+    if (inputs_str != NULL && outputs_str != NULL) {
+        gchar *ret = g_strdup_printf ("%s / %s",
+                                      outputs_str,
+                                      inputs_str);
+        g_free (outputs_str);
+        g_free (inputs_str);
+        return ret;
+    }
+
+    if (inputs_str != NULL)
+        return inputs_str;
+
+    return outputs_str;
+}
+
+void UkmediaMainWidget::updateDeviceInfo (UkmediaMainWidget *w, MateMixerDevice *device)
+{
+    const gchar     *label;
+    const gchar     *profileLabel = NULL;
+    gchar           *status;
+    MateMixerSwitch *profileSwitch;
+
+    label = mate_mixer_device_get_label (device);
+
+    profileSwitch = findDeviceProfileSwitch (w,device);
+    w->m_pSwitch = profileSwitch;
+    if (profileSwitch != NULL) {
+        MateMixerSwitchOption *active;
+
+        active = mate_mixer_switch_get_active_option (profileSwitch);
+        if (G_LIKELY (active != NULL))
+            profileLabel = mate_mixer_switch_option_get_label (active);
+    }
+
+    status = deviceStatus (device);
+    g_free (status);
+}
+
+void UkmediaMainWidget::onDeviceProfileActiveOptionNotify (MateMixerDeviceSwitch *swtch,GParamSpec *pspec,UkmediaMainWidget *w)
+{
+    MateMixerDevice *device;
+
+    device = mate_mixer_device_switch_get_device (swtch);
+
+    updateDeviceInfo (w, device);
 }
 
 UkmediaMainWidget::~UkmediaMainWidget()

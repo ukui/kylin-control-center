@@ -48,6 +48,8 @@ private:
     QFrame *m_pVolumeWidget;
     QFrame *m_pInputLevelWidget;
     QFrame *m_pInputPortWidget;
+    QFrame *m_pselectWidget;
+
     QLabel *m_pInputLabel;
     QLabel *m_pInputDeviceLabel;
     QLabel *m_pIpVolumeLabel;
@@ -56,11 +58,14 @@ private:
     QLabel *m_pHighLevelLabel;
     QLabel *m_pIpVolumePercentLabel;
     QLabel *m_pInputPortLabel;
+    QLabel *m_pSelectDeviceLabel;
+
     UkuiButtonDrawSvg *m_pInputIconBtn;
     AudioSlider *m_pIpVolumeSlider;
     AudioSlider *m_pInputLevelSlider;
     QComboBox *m_pInputDeviceCombobox;
     QComboBox *m_pInputPortCombobox;
+    QComboBox *m_pSelectCombobox;
 
     QStyledItemDelegate *itemDelege;
     QString sliderQss;
