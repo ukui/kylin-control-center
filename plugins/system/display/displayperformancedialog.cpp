@@ -20,10 +20,19 @@
 #include "displayperformancedialog.h"
 #include "ui_displayperformancedialog.h"
 
+#include <QFile>
+#include <QDBusReply>
+#include <QDBusInterface>
 #include <QPainter>
+#include <QPainterPath>
 
-#define ADVANCED_SCHEMAS "org.mate.session.required-components"
+#include <QDebug>
+
+#define ADVANCED_SCHEMAS "org.ukui.session.required-components"
 #define ADVANCED_KEY "windowmanager"
+
+#define WM_CHOOSER_CONF "/etc/kylin-wm-chooser/default.conf"
+#define WM_CHOOSER_CONF_TMP "/tmp/default.conf"
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
@@ -33,7 +42,6 @@ DisplayPerformanceDialog::DisplayPerformanceDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -51,9 +59,12 @@ DisplayPerformanceDialog::DisplayPerformanceDialog(QWidget *parent) :
     const QByteArray id(ADVANCED_SCHEMAS);
     settings = new QGSettings(id);
 
+    confSettings = new QSettings(WM_CHOOSER_CONF, QSettings::NativeFormat);
+
     setupComponent();
     setupConnect();
     initModeStatus();
+    initThresholdStatus();
 
 }
 
@@ -61,6 +72,7 @@ DisplayPerformanceDialog::~DisplayPerformanceDialog()
 {
     delete ui;
     delete settings;
+    delete confSettings;
 }
 
 void DisplayPerformanceDialog::setupComponent(){
@@ -88,6 +100,15 @@ void DisplayPerformanceDialog::setupConnect(){
         ui->applyBtn->setEnabled(checked);
         ui->resetBtn->setEnabled(checked);
     });
+
+    connect(ui->applyBtn, &QPushButton::clicked, this, [=]{
+        changeConfValue();
+    });
+
+    connect(ui->resetBtn, &QPushButton::clicked, this, [=]{
+        ui->lineEdit->setText("256");
+        changeConfValue();
+    });
 }
 
 void DisplayPerformanceDialog::initModeStatus(){
@@ -106,7 +127,44 @@ void DisplayPerformanceDialog::initModeStatus(){
         ui->autoRadioBtn->setChecked(true);
         ui->autoRadioBtn->blockSignals(false);
     }
+}
 
+void DisplayPerformanceDialog::initThresholdStatus(){
+    confSettings->beginGroup("mutter");
+    QString value = confSettings->value("threshold").toString();
+    ui->lineEdit->blockSignals(true);
+    ui->lineEdit->setText(value);
+    ui->lineEdit->blockSignals(false);
+    confSettings->endGroup();
+}
+
+void DisplayPerformanceDialog::changeConfValue(){
+    if (!QFile::copy(WM_CHOOSER_CONF, WM_CHOOSER_CONF_TMP))
+        return;
+
+    QSettings * tempSettings = new QSettings(WM_CHOOSER_CONF_TMP, QSettings::NativeFormat);
+    tempSettings->beginGroup("mutter");
+    tempSettings->setValue("threshold", ui->lineEdit->text());
+    tempSettings->endGroup();
+
+    delete tempSettings;
+
+    //替换kylin-wm-chooser
+    QDBusInterface * sysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
+                                     "/",
+                                     "com.control.center.interface",
+                                     QDBusConnection::systemBus());
+
+    if (!sysinterface->isValid()){
+        qCritical() << "Create Client Interface Failed When Copy Face File: " << QDBusConnection::systemBus().lastError();
+        return;
+    }
+
+    QString cmd = QString("mv %1 %2").arg(WM_CHOOSER_CONF_TMP).arg(WM_CHOOSER_CONF);
+
+    QDBusReply<QString> reply =  sysinterface->call("systemRun", QVariant(cmd));
+
+    delete sysinterface;
 }
 
 void DisplayPerformanceDialog::paintEvent(QPaintEvent *event){

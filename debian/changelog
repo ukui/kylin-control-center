@@ -1,3 +1,47 @@
+ukui-control-center (2.0.5-1) unstable; urgency=medium
+
+  * New upstream release. (Closes: #964606)
+  * debian/control:
+    - Add libmatemixer-dev, qtmultimedia5-dev, libxml2-dev, qtbase5-dev,
+      libcanberra-dev to Build-Depends.
+    - Add qml-module-qtgraphicaleffects, edid-decode to Depends.
+    - Move edid-decode from Recommends to Depends.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Sun, 12 Jul 2020 18:22:09 +0800
+
+ukui-control-center (2.0.4-1) unstable; urgency=medium
+
+  * New upstream bugfix release:
+    - Add judgement for gsettings to avoid crash.
+    - Add judgement for FormatsLocale to avoid crash.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Tue, 07 Apr 2020 16:08:40 +0800
+
+ukui-control-center (2.0.3-1) unstable; urgency=medium
+
+  * New upstream bugfix release:
+    - Fix the wrong return value of QGsettings.
+    - Fix that failed to reset the theme.
+    - Fix the error when open display module.
+    - Fix that the settings been reset on multi-screen.
+    - Fix that the user information display incomplete.
+    - Fix a memory leak.
+    - Remove the useless component.
+    - Fix that can't switch to the submodule when it already opened.
+    - Fix the wrong default value of power plan.
+    - Avoid crash when set default app.
+    - Fix the error when create user.
+    - Fix the spelling errors in zh_CN.ts.
+    - Fix that the function of adjust brightness didn't work.
+    - Fix the error when set shortcuts.
+    - Fix the error when the path of background contains chinese.
+  * debian/control:
+    - Add qml-module-qtquick-controls to depends. (LP: #1870934)
+    - Remove the unused build-depends libdbus-glib-1-dev.
+      (Closes: #955851)
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Tue, 07 Apr 2020 00:13:01 +0800
+
 ukui-control-center (2.0.2-1) unstable; urgency=medium
 
   * New upstream bugfix release:
@@ -48,7 +92,7 @@ ukui-control-center (1.1.5-0ubuntu1) cosmic; urgency=medium
 ukui-control-center (1.1.4-0ubuntu1) cosmic; urgency=medium
 
   * Adjust the width of the wallpaper layout. (LP: #1766506)
-  * Drop liboobs.
+  * Drop liboobs. (Closes: #888672)
 
  -- handsome_feng <jianfengli@ubuntukylin.com>  Tue, 10 Jul 2018 09:48:14 +0800
 

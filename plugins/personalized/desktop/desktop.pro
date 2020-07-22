@@ -4,13 +4,17 @@
 #
 #-------------------------------------------------
 
+include(../../../env.pri)
+include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+
 QT       += widgets x11extras
 
 TEMPLATE = lib
 CONFIG += plugin
 
 TARGET = $$qtLibraryTarget(desktop)
-DESTDIR = ../../../pluginlibs
+DESTDIR = ../..
+target.path = $${PLUGIN_INSTALL_DIRS}
 
 ##加载gio库和gio-unix库，用于处理desktop文件
 CONFIG        += link_pkgconfig \
@@ -20,18 +24,14 @@ PKGCONFIG     += gio-2.0 \
                  gsettings-qt \
 #                 xdamage \
 #                 xrender \
-#                 xcomposite\
-
-include(../../../env.pri)
-include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+#                 xcomposite
 
 INCLUDEPATH   +=  \
                  $$PROJECT_COMPONENTSOURCE \
                  $$PROJECT_ROOTDIR \
                  /usr/include/dconf \
 
-
-LIBS          += -L/usr/lib/ -lgsettings-qt -ldconf
+LIBS          += -L$$[QT_INSTALL_LIBS] -lgsettings-qt -ldconf
 
 #DEFINES += QT_DEPRECATED_WARNINGS
 
@@ -45,3 +45,5 @@ HEADERS += \
 
 FORMS += \
         desktop.ui
+
+INSTALLS += target

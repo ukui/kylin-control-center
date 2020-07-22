@@ -21,47 +21,47 @@
 
 SuccessDiaolog::SuccessDiaolog(QWidget *parent) : QWidget(parent)
 {
-    bkg = new QSvgWidget(":/new/image/success.svg");
-    text_msg = new QLabel(this);
-    back_login = new QPushButton(this);
-    layout = new QVBoxLayout;
+    m_bkgWidget = new QSvgWidget(":/new/image/success.svg");
+    m_textLabel = new QLabel(this);
+    m_backloginBtn = new QPushButton(this);
+    m_workLayout = new QVBoxLayout;
 
-    bkg->setFixedSize(148,148);
+    m_bkgWidget->setFixedSize(148,148);
 
-    text_msg->setStyleSheet("font-size:24px");
+    m_textLabel->setStyleSheet("font-size:24px");
 
-    text_msg->adjustSize();
+    m_textLabel->adjustSize();
 
-    back_login->setFixedSize(338,36);
-    back_login->setText(tr("Reback sign in"));
-    back_login->setStyleSheet("QPushButton {font-size:14px;background-color: #3D6BE5;border-radius: 4px;color:rgba(255,255,255,0.85);}"
+    m_backloginBtn->setFixedSize(338,36);
+    m_backloginBtn->setText(tr("Reback sign in"));
+    m_backloginBtn->setStyleSheet("QPushButton {font-size:14px;background-color: #3D6BE5;border-radius: 4px;color:rgba(255,255,255,0.85);}"
                               "QPushButton:hover {font-size:14px;background-color: #415FC4;border-radius: 4px;position:relative;color:rgba(255,255,255,0.85);}"
                               "QPushButton:click {font-size:14px;background-color: #415FC4;border-radius: 4px;postion:realative;color:rgba(255,255,255,0.85);}");
-    back_login->setContentsMargins(0,16,0,0);
+    m_backloginBtn->setContentsMargins(0,16,0,0);
 
-    layout->setContentsMargins(41,100,41,110);
-    layout->setSpacing(0);
-    layout->addWidget(bkg,0,Qt::AlignCenter);
-    layout->addWidget(text_msg,0,Qt::AlignCenter);
-    layout->addStretch();
-    layout->addWidget(back_login,0,Qt::AlignCenter | Qt::AlignBottom);
+    m_workLayout->setContentsMargins(41,100,41,110);
+    m_workLayout->setSpacing(0);
+    m_workLayout->addWidget(m_bkgWidget,0,Qt::AlignCenter);
+    m_workLayout->addWidget(m_textLabel,0,Qt::AlignCenter);
+    m_workLayout->addStretch();
+    m_workLayout->addWidget(m_backloginBtn,0,Qt::AlignCenter | Qt::AlignBottom);
 
-    setLayout(layout);
+    setLayout(m_workLayout);
 }
 
 /* 成功消息统一接收机制 */
 void SuccessDiaolog::set_mode_text(int mode) {
     if(mode == 0) {
-        text_msg->setText(tr("Sign up success!"));
-        back_login->setText(tr("Confirm"));
+        m_textLabel->setText(tr("Sign up success!"));
+        m_backloginBtn->setText(tr("Confirm"));
     } else if(mode == 1) {
-        text_msg->setText(tr("Reset success!"));
-        back_login->setText(tr("Confirm"));
+        m_textLabel->setText(tr("Reset success!"));
+        m_backloginBtn->setText(tr("Confirm"));
     } else if(mode == 2) {
-        text_msg->setText(tr("Sign in success!"));
-        back_login->setText(tr("Confirm"));
+        m_textLabel->setText(tr("Sign in success!"));
+        m_backloginBtn->setText(tr("Confirm"));
     } else if(mode == 3) {
-        text_msg->setText(tr("Binding phone success!"));
-        back_login->setText(tr("Confirm"));
+        m_textLabel->setText(tr("Binding phone success!"));
+        m_backloginBtn->setText(tr("Confirm"));
     }
 }

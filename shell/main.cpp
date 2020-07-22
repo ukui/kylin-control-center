@@ -50,11 +50,11 @@ void centerToScreen(QWidget* widget) {
 
 int main(int argc, char *argv[])
 {
-
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
-   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-   QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 #endif
+
     QtSingleApplication a(argc, argv);
 
     if (a.isRunning()){
@@ -119,8 +119,8 @@ int main(int argc, char *argv[])
         FramelessHandle * pHandle = new FramelessHandle(w);
         pHandle->activateOn(w);
 
-        auto style = new InternalStyle(nullptr);
-        a.setStyle(style);
+//        auto style = new InternalStyle(nullptr);
+//        a.setStyle(style);
 
         return a.exec();
     }

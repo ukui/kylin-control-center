@@ -27,6 +27,8 @@
 
 #include "shell/interface.h"
 #include "dataformat.h"
+#include "HoverWidget/hoverwidget.h"
+#include "ImageUtil/imageutil.h"
 
 #include <QProcess>
 #include <QDBusInterface>
@@ -79,15 +81,16 @@ private:
     QString objpath;
 
     QDBusInterface *m_areaInterface;
-    QStyledItemDelegate *itemDelege;
 
     QGSettings *m_gsettings = nullptr;
     QTimer *m_itimer = nullptr;
     QString hourformat;
     QString qss;
 
+    HoverWidget *addWgt;
+
 protected:
-    bool eventFilter(QObject *watched, QEvent *event) override;
+//    bool eventFilter(QObject *watched, QEvent *event) override;
 
 private:
     void initUI();

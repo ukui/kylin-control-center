@@ -3,6 +3,9 @@
 # Project created by QtCreator 2019-06-17T11:16:02
 #
 #-------------------------------------------------
+include(../../../env.pri)
+include($$PROJECT_COMPONENTSOURCE/flowlayout.pri)
+include($$PROJECT_COMPONENTSOURCE/maskwidget.pri)
 
 QT       += widgets xml dbus
 
@@ -10,17 +13,15 @@ TEMPLATE = lib
 CONFIG += plugin
 
 TARGET = $$qtLibraryTarget(wallpaper)
-DESTDIR = ../../../pluginlibs
-
-include(../../../env.pri)
-include($$PROJECT_COMPONENTSOURCE/flowlayout.pri)
-include($$PROJECT_COMPONENTSOURCE/maskwidget.pri)
+DESTDIR = ../..
+target.path = $${PLUGIN_INSTALL_DIRS}
+INSTALLS += target
 
 INCLUDEPATH   +=  \
                  $$PROJECT_ROOTDIR \
                  $$PROJECT_COMPONENTSOURCE \
 
-LIBS += -L/usr/lib/ -lgsettings-qt
+LIBS += -L$$[QT_INSTALL_LIBS] -lgsettings-qt
 
 ##加载gio库和gio-unix库，用于获取和设置enum类型的gsettings
 CONFIG        += link_pkgconfig \
@@ -33,7 +34,7 @@ PKGCONFIG     += gio-2.0 \
 
 SOURCES += \
     pictureunit.cpp \
-        wallpaper.cpp \
+    wallpaper.cpp \
     xmlhandle.cpp \
     component/custdomitemmodel.cpp \
     simplethread.cpp \
@@ -41,11 +42,11 @@ SOURCES += \
 
 HEADERS += \
     pictureunit.h \
-        wallpaper.h \
+    wallpaper.h \
     xmlhandle.h \
     component/custdomitemmodel.h \
     simplethread.h \
     workerobject.h
 
 FORMS += \
-        wallpaper.ui
+    wallpaper.ui

@@ -23,14 +23,14 @@
 #include <QObject>
 #include <QWidget>
 #include <QLineEdit>
-#include "ql_lineedit_pass.h"
+#include "passwordlineedit.h"
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include "area_code_lineedit.h"
+#include "areacodelineedit.h"
 #include <QLabel>
-#include "ql_label_info.h"
-#include "ql_svg_handler.h"
+#include "tips.h"
+#include "svghandler.h"
 
 class BindPhoneDialog : public QWidget
 {
@@ -38,12 +38,12 @@ class BindPhoneDialog : public QWidget
 public:
     explicit BindPhoneDialog(QWidget *parent = nullptr);
     void    setclear();
-    void    set_code(QString code);
+    void    set_code(QString m_countryCode);
     QPushButton *get_send_code();
-    ql_label_info  *get_tips();
+    Tips  *get_tips();
     QString get_phone();
     QString get_code();
-    area_code_lineedit* get_phone_lineedit();
+    AreaCodeLineEdit* get_phone_lineedit();
     QLineEdit* get_code_lineedit();
     void set_staus(bool ok);
 public slots:
@@ -51,14 +51,14 @@ public slots:
 signals:
     void code_changed();
 private:
-    QString             code;
-    area_code_lineedit  *phone;
-    QLineEdit           *valid_code;
-    QPushButton         *send_code;
-    QVBoxLayout         *layout;
-    QHBoxLayout         *sublayout;
-    ql_label_info              *tips;
-    ql_svg_handler      *svg_hd;
+    QString             m_countryCode;
+    AreaCodeLineEdit  *m_phoneLineEdit;
+    QLineEdit           *m_mCodeLineEdit;
+    QPushButton         *m_sendCode_btn;
+    QVBoxLayout         *m_vboxLayout;
+    QHBoxLayout         *m_subHBoxLayout;
+    Tips              *m_tips;
+    SVGHandler      *m_svgHandler;
 
 };
 

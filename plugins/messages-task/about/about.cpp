@@ -146,10 +146,13 @@ void About::setupKernelCompenent() {
     QString cpuType;
 
     //ubuntukylin youker DBus interface
-    QDBusInterface *youkerInterface = new QDBusInterface("com.kylin.assistant.systemdaemon",
-                                     "/com/kylin/assistant/systemdaemon",
-                                     "com.kylin.assistant.systemdaemon",
-                                     QDBusConnection::systemBus());
+    QDBusInterface *youkerInterface;
+    for (int i = 0; i < 2; i++) {
+        youkerInterface = new QDBusInterface("com.kylin.assistant.systemdaemon",
+                                             "/com/kylin/assistant/systemdaemon",
+                                             "com.kylin.assistant.systemdaemon",
+                                             QDBusConnection::systemBus());
+    }
     if (!youkerInterface->isValid()) {
         qCritical() << "Create youker Interface Failed When Get Computer info: " << QDBusConnection::systemBus().lastError();
         return;

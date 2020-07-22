@@ -32,9 +32,11 @@ public:
 public:
     void reset();
     void recalculate(const QPoint &globalMousePos, const QRect &frameRect);
+    void recalculateMove(const QPoint &globalMousePos, const QRect &frameRect);
 
 public:
     bool onEdges : true;
+    bool moveEdges : true;
 
     bool onLeftEdges : true;
     bool onTopEdges : true;
@@ -47,6 +49,7 @@ public:
     bool onLeftBottomEdges : true;
 
     static int borderWidth;
+    static int moveWidth;
 };
 
 #endif // CURSORPOSCALCULATOR_H

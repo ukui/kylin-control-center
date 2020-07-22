@@ -350,7 +350,7 @@ char* DbusHandleClient::check_login() {
         //qDebug() << "value method called failed!";
     }
     qDebug()<<re;
-    if(!once) {
+    if(!m_bFirstAttempt) {
         emit finished_check(re);
     }else {
         emit finished_check_oss(re);

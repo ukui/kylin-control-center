@@ -66,24 +66,16 @@ public:
     Notice();
     ~Notice();
 
-public:
     QString get_plugin_name() Q_DECL_OVERRIDE;
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
 
-public:
     void setupComponent();
     void setupGSettings();
     void initNoticeStatus();
     void initOriNoticeStatus();
     void initGSettings();
-
-private:
-    void changeAppstatus(bool checked, QString name,SwitchButton *appBtn);
-
-private:
-    Ui::Notice *ui;
 
 private:
     QString pluginName;
@@ -102,6 +94,10 @@ private:
     QStringList appsKey;
     QVector<QGSettings*> *vecGsettins;
 
+    void changeAppstatus(bool checked, QString name,SwitchButton *appBtn);
+
+private:
+    Ui::Notice *ui;
 
 };
 #endif // NOTICE_H

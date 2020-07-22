@@ -22,7 +22,10 @@ Build-Depends: debhelper-compat (= 12),
                qtmultimedia5-dev,
                libxml2-dev,
                qtbase5-dev,
-               libcanberra-dev
+               libcanberra-dev,
+               libmate-desktop-dev,
+               libxkbcommon-dev,
+               libxkbfile-dev,
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Homepage: https://github.com/ukui/ukui-control-center
@@ -35,11 +38,8 @@ Depends: ${shlibs:Depends},
          ${misc:Depends},
          qml-module-qtgraphicaleffects,
          qml-module-qtquick-controls,
-         language-selector-gnome,
          edid-decode,
-         redshift,
-Recommends: edid-decode,
-            redshift,
+Recommends: redshift
 Suggests: gsettings-desktop-schemas,
           mate-desktop-common,
           ukui-power-manager,

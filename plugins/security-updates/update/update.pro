@@ -4,15 +4,17 @@
 #
 #-------------------------------------------------
 
+include(../../../env.pri)
+
 QT       += widgets
 
 TEMPLATE = lib
 CONFIG += plugin
 
 TARGET = $$qtLibraryTarget(update)
-DESTDIR = ../../../pluginlibs
-
-include(../../../env.pri)
+DESTDIR = ../..
+target.path = $${PLUGIN_INSTALL_DIRS}
+INSTALLS += target
 
 INCLUDEPATH   +=  \
                  $$PROJECT_ROOTDIR \
@@ -20,10 +22,10 @@ INCLUDEPATH   +=  \
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
-        update.cpp
+    update.cpp
 
 HEADERS += \
-        update.h
+    update.h
 
 FORMS += \
-        update.ui
+    update.ui

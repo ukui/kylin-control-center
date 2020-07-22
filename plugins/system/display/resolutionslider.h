@@ -44,8 +44,6 @@ class ResolutionSlider : public QWidget
     QComboBox *mComboBox = nullptr;
 
     QString qss;
-
-    QStyledItemDelegate *itemDelege;
 };
 
 #endif // RESOLUTIONSLIDER_H

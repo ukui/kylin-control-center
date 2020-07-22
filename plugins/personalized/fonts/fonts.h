@@ -104,10 +104,8 @@ private:
     QStringList monospacefontStrList;
     QStringList peonyfontStrList;
     QStringList titlebarfontStrList;
-    QStyledItemDelegate *itemDelege;
 
     QFontDatabase fontdb;
-
 
 private:
     bool settingsCreate;

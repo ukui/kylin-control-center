@@ -41,7 +41,7 @@ struct _Layout{
 };
 
 namespace Ui {
-class KbdLayoutManager;
+class LayoutManager;
 }
 
 class KbdLayoutManager : public QDialog
@@ -49,7 +49,7 @@ class KbdLayoutManager : public QDialog
     Q_OBJECT
 
 public:
-    explicit KbdLayoutManager(QStringList ll, QWidget *parent = 0);
+    explicit KbdLayoutManager(QWidget *parent = 0);
     ~KbdLayoutManager();
 
     QString kbd_get_description_by_id(const char *visible);
@@ -57,30 +57,26 @@ public:
     void kbd_trigger_available_countries(char * countryid);
     void kbd_trigger_available_languages(char * languageid);
 
-    void component_init();
-    void setup_component();
+
+    void configRegistry();
+    void setupComponent();
+    void setupConnect();
+    void rebuildSelectListWidget();
+    void rebuildVariantCombo();
+
     void rebuild_listwidget();
-    void add_layout(QString layout);
-    void delete_layout(QString layout);
-    void refresh_variant_combobox();
-    void refresh_widget_status();
-    void rebuild_variant_combobox();
+    void preview();
+
+protected:
+    void paintEvent(QPaintEvent * event);
 
 private:
-    Ui::KbdLayoutManager *ui;
+    Ui::LayoutManager *ui;
+
     QStringList layoutsList;
 
     QGSettings * kbdsettings;
 
-Q_SIGNALS:
-    void rebuild_variant_signals(bool type, QString id);
-    void add_new_variant_signals(QString id);
-    void del_variant_signals(QString id);
-
-private slots:
-    void countries_changed_slot(int index);
-    void languages_changed_slot(int index);
-    void rebuild_variant_slots(bool type, QString id);
 };
 
 #endif // KBDLAYOUTMANAGER_H

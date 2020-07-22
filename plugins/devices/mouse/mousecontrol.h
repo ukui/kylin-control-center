@@ -30,12 +30,30 @@
 
 #include <QProcess>
 
+
+#include <QLabel>
+
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
 
 namespace Ui {
 class MouseControl;
 }
+
+class MyLabel : public QLabel{
+    Q_OBJECT
+public:
+    MyLabel();
+    ~MyLabel();
+
+public:
+    QGSettings * mSettings;
+
+protected:
+    void mousePressEvent(QMouseEvent *ev);
+    void mouseDoubleClickEvent(QMouseEvent *event);
+
+};
 
 class MouseControl : public QObject, CommonInterface
 {
@@ -78,9 +96,6 @@ private:
 
     QString leftStr;
     QString rightStr;
-
-    QStyledItemDelegate* itemDelege;
-
 };
 
 #endif // MOUSECONTROL_H

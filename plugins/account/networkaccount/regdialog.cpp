@@ -22,59 +22,59 @@
 RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
 {
     this->setFixedWidth(338);
-    reg_phone = new area_code_lineedit(this);
-    reg_user = new QLineEdit(this);
-    reg_pass = new ql_lineedit_pass(this);
-    reg_confirm = new ql_lineedit_pass(this);
-    valid_code = new QLineEdit(this);
-    send_msg_btn = new QPushButton(tr("Get"),this);
+    m_phoneLineEdit = new AreaCodeLineEdit(this);
+    m_accountLineEdit = new QLineEdit(this);
+    m_passLineEdit = new PasswordLineEdit(this);
+    m_confirmLineEdit = new PasswordLineEdit(this);
+    m_mcodeLineEdit = new QLineEdit(this);
+    m_sendMsgBtn = new QPushButton(tr("Get"),this);
 
-    vlayout = new QVBoxLayout;
-    hlayout = new QHBoxLayout;
-    pass_tip = new QLabel(this);
-    user_tip = new QLabel(this);
-    tips = new ql_label_info(this);
-    svg_hd = new ql_svg_handler(this);
+    m_workLayout = new QVBoxLayout;
+    m_mcodeLayout = new QHBoxLayout;
+    m_passTips = new QLabel(this);
+    m_accountTips = new QLabel(this);
+    m_errorTips = new Tips(this);
+    m_svgHandler = new SVGHandler(this);
 
     QString str = ("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
                    "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
                    "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}");
-    reg_phone->setFixedSize(QSize(338,36));
-    reg_user->setFixedSize(QSize(338,36));
-    reg_pass->setFixedSize(QSize(338,36));
-    valid_code->setFixedSize(QSize(192,36));
-    send_msg_btn->setFixedSize(QSize(130,36));
-    reg_confirm->setFixedSize(QSize(338,36));
-    reg_phone->setFocusPolicy(Qt::StrongFocus);
+    m_phoneLineEdit->setFixedSize(QSize(338,36));
+    m_accountLineEdit->setFixedSize(QSize(338,36));
+    m_passLineEdit->setFixedSize(QSize(338,36));
+    m_mcodeLineEdit->setFixedSize(QSize(192,36));
+    m_sendMsgBtn->setFixedSize(QSize(130,36));
+    m_confirmLineEdit->setFixedSize(QSize(338,36));
+    m_phoneLineEdit->setFocusPolicy(Qt::StrongFocus);
 
 
 
-    reg_phone->setMaxLength(11);
-    reg_pass->setPlaceholderText(tr("Your password here"));
-    reg_pass->setEchoMode(QLineEdit::Password);
-    reg_confirm->setEchoMode(QLineEdit::Password);
-    reg_user->setPlaceholderText(tr("Your account here"));
-    reg_confirm->setPlaceholderText(tr("Confirm your password"));
-    valid_code->setPlaceholderText(tr("Your code here"));
-    valid_code->setMaxLength(4);
-    user_tip->setText(tr("This operation is permanent"));
-    user_tip->setContentsMargins(12,0,0,0);
-    user_tip->setFixedHeight(16);
-    pass_tip->setText(tr("At least 6 bit, include letters and digt"));
-    pass_tip->setFixedHeight(16);
-    pass_tip->setContentsMargins(12,0,0,0);
-    user_tip->setStyleSheet("font-size:14px;");
-    pass_tip->setStyleSheet("font-size:14px;");
+    m_phoneLineEdit->setMaxLength(11);
+    m_passLineEdit->setPlaceholderText(tr("Your password here"));
+    m_passLineEdit->setEchoMode(QLineEdit::Password);
+    m_confirmLineEdit->setEchoMode(QLineEdit::Password);
+    m_accountLineEdit->setPlaceholderText(tr("Your account here"));
+    m_confirmLineEdit->setPlaceholderText(tr("Confirm your password"));
+    m_mcodeLineEdit->setPlaceholderText(tr("Your code here"));
+    m_mcodeLineEdit->setMaxLength(4);
+    m_accountTips->setText(tr("This operation is permanent"));
+    m_accountTips->setContentsMargins(12,0,0,0);
+    m_accountTips->setFixedHeight(16);
+    m_passTips->setText(tr("At least 6 bit, include letters and digt"));
+    m_passTips->setFixedHeight(16);
+    m_passTips->setContentsMargins(12,0,0,0);
+    m_accountTips->setStyleSheet("font-size:14px;");
+    m_passTips->setStyleSheet("font-size:14px;");
 
-    reg_confirm->setTextMargins(12,0,0,0);
-    reg_user->setTextMargins(12,0,0,0);
-    reg_pass->setTextMargins(12,0,0,0);
-    valid_code->setTextMargins(12,0,0,0);
+    m_confirmLineEdit->setTextMargins(12,0,0,0);
+    m_accountLineEdit->setTextMargins(12,0,0,0);
+    m_passLineEdit->setTextMargins(12,0,0,0);
+    m_mcodeLineEdit->setTextMargins(12,0,0,0);
     //valid_code->setStyleSheet(str);
 
     QRegExp regx("[a-zA-Z0-9]+$");
-    QValidator *validator = new QRegExpValidator(regx, valid_code );
-    valid_code->setValidator( validator );
+    QValidator *validator = new QRegExpValidator(regx, m_mcodeLineEdit );
+    m_mcodeLineEdit->setValidator( validator );
 
     //reg_pass->setStyleSheet(str);
     //reg_phone->setStyleSheet(str);
@@ -84,137 +84,137 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
      //                           "QPushButton:hover{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}"
     //                            "QPushButton:click{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}");
 
-    vlayout->setMargin(0);
-    vlayout->setSpacing(8);
-    vlayout->addWidget(reg_phone);
-    vlayout->addWidget(reg_user);
-    vlayout->addWidget(user_tip);
-    vlayout->addWidget(reg_pass);
-    vlayout->addWidget(pass_tip);
-    vlayout->addWidget(reg_confirm);
-    hlayout->setMargin(0);
-    hlayout->setSpacing(16);
-    hlayout->addWidget(valid_code);
-    hlayout->addWidget(send_msg_btn);
-    hlayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    vlayout->addLayout(hlayout);
-    vlayout->addWidget(tips);
-    vlayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    setLayout(vlayout);
+    m_workLayout->setMargin(0);
+    m_workLayout->setSpacing(8);
+    m_workLayout->addWidget(m_phoneLineEdit);
+    m_workLayout->addWidget(m_accountLineEdit);
+    m_workLayout->addWidget(m_accountTips);
+    m_workLayout->addWidget(m_passLineEdit);
+    m_workLayout->addWidget(m_passTips);
+    m_workLayout->addWidget(m_confirmLineEdit);
+    m_mcodeLayout->setMargin(0);
+    m_mcodeLayout->setSpacing(16);
+    m_mcodeLayout->addWidget(m_mcodeLineEdit);
+    m_mcodeLayout->addWidget(m_sendMsgBtn);
+    m_mcodeLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    m_workLayout->addLayout(m_mcodeLayout);
+    m_workLayout->addWidget(m_errorTips);
+    m_workLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    setLayout(m_workLayout);
 
     QRegExp regx_phn("^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$");
-    QValidator *validator_phn = new QRegExpValidator(regx_phn, reg_phone);
-    reg_phone->setValidator(validator_phn);
+    QValidator *validator_phn = new QRegExpValidator(regx_phn, m_phoneLineEdit);
+    m_phoneLineEdit->setValidator(validator_phn);
 
     QRegExp regx_acc("^[a-zA-Z0-9_@.-]+$");
-    QValidator *validator_acc = new QRegExpValidator(regx_acc, reg_user );
-    reg_user->setValidator(validator_acc);
+    QValidator *validator_acc = new QRegExpValidator(regx_acc, m_accountLineEdit );
+    m_accountLineEdit->setValidator(validator_acc);
 
-    pass_tip->hide();
-    pass_tip->setAttribute(Qt::WA_DontShowOnScreen);
-    user_tip->hide();
-    user_tip->setAttribute(Qt::WA_DontShowOnScreen);
+    m_passTips->hide();
+    m_passTips->setAttribute(Qt::WA_DontShowOnScreen);
+    m_accountTips->hide();
+    m_accountTips->setAttribute(Qt::WA_DontShowOnScreen);
 
-    tips->hide();
-    tips->setAttribute(Qt::WA_DontShowOnScreen);
-    send_msg_btn->setFocusPolicy(Qt::NoFocus);
-    connect(valid_code,SIGNAL(textChanged(QString)),this,SLOT(change_uppercase()));
+    m_errorTips->hide();
+    m_errorTips->setAttribute(Qt::WA_DontShowOnScreen);
+    m_sendMsgBtn->setFocusPolicy(Qt::NoFocus);
+    connect(m_mcodeLineEdit,SIGNAL(textChanged(QString)),this,SLOT(change_uppercase()));
     connect(this,SIGNAL(code_changed()),this,SLOT(setstyleline()));
-    connect(reg_pass,&ql_lineedit_pass::verify_text,[this] () {
-       pass_tip->setText(tr("Your password is valid!"));
+    connect(m_passLineEdit,&PasswordLineEdit::verify_text,[this] () {
+       m_passTips->setText(tr("Your password is valid!"));
     });
-    connect(reg_pass,&ql_lineedit_pass::false_text,[this] () {
-       pass_tip->setText(tr("At least 6 bit, include letters and digt"));
+    connect(m_passLineEdit,&PasswordLineEdit::false_text,[this] () {
+       m_passTips->setText(tr("At least 6 bit, include letters and digt"));
     });
     adjustSize();
-    reg_phone->setFocus();
+    m_phoneLineEdit->setFocus();
 }
 
 void RegDialog::set_staus(bool ok) {
-    reg_confirm->setEnabled(ok);
-    reg_user->setEnabled(ok);
-    reg_phone->setEnabled(ok);
-    valid_code->setEnabled(ok);
-    send_msg_btn->setEnabled(ok);
+    m_confirmLineEdit->setEnabled(ok);
+    m_accountLineEdit->setEnabled(ok);
+    m_phoneLineEdit->setEnabled(ok);
+    m_mcodeLineEdit->setEnabled(ok);
+    m_sendMsgBtn->setEnabled(ok);
 }
 
 /* 更新设置错误提示 */
 void RegDialog::setstyleline() {
-    tips->set_text(code);
+    m_errorTips->set_text(m_errorCode);
 }
 
 /* 获取错误代码 */
 void RegDialog::set_code(QString codenum) {
-    code = codenum;
+    m_errorCode = codenum;
     emit code_changed();
 }
 
-ql_lineedit_pass* RegDialog::get_reg_confirm() {
-    return reg_confirm;
+PasswordLineEdit* RegDialog::get_reg_confirm() {
+    return m_confirmLineEdit;
 }
 
 QLabel* RegDialog::get_pass_tip() {
 
-    return pass_tip;
+    return m_passTips;
 }
 
 QLabel* RegDialog::get_user_tip() {
-    return user_tip;
+    return m_accountTips;
 }
 
 QLineEdit* RegDialog::get_reg_user() {
-    return reg_user;
+    return m_accountLineEdit;
 }
 
-ql_lineedit_pass* RegDialog::get_reg_pass() {
-    return reg_pass;
+PasswordLineEdit* RegDialog::get_reg_pass() {
+    return m_passLineEdit;
 }
 
 QLineEdit* RegDialog::get_valid_code() {
-    return valid_code;
+    return m_mcodeLineEdit;
 }
 
-area_code_lineedit* RegDialog::get_phone_user() {
-    return reg_phone;
+AreaCodeLineEdit* RegDialog::get_phone_user() {
+    return m_phoneLineEdit;
 }
 
 QPushButton* RegDialog::get_send_code() {
-    return send_msg_btn;
+    return m_sendMsgBtn;
 }
 
 /* 小写字母转大写，备用 */
 void RegDialog::change_uppercase() {
-    QString str = valid_code->text();
-    valid_code->setText(str.toUpper());
+    QString str = m_mcodeLineEdit->text();
+    m_mcodeLineEdit->setText(str.toUpper());
 }
 
 QString RegDialog::get_user_mcode() {
-    return valid_code->text();
+    return m_mcodeLineEdit->text();
 }
 
 QString RegDialog::get_user_phone() {
-    return reg_phone->text();
+    return m_phoneLineEdit->text();
 }
 
 QString RegDialog::get_user_account() {
-    return reg_user->text();
+    return m_accountLineEdit->text();
 }
 QString RegDialog::get_user_passwd() {
-    return reg_pass->text();
+    return m_passLineEdit->text();
 }
 
 /* 清空注册框 */
 void RegDialog::set_clear() {
-    if(!tips->isHidden()) {
-        tips->hide();
+    if(!m_errorTips->isHidden()) {
+        m_errorTips->hide();
     }
-    reg_pass->get_visble()->setChecked(false);
-    reg_pass->setText("");
-    reg_user->setText("");
-    reg_phone->setText("");
-    valid_code->setText("");
+    m_passLineEdit->get_visble()->setChecked(false);
+    m_passLineEdit->setText("");
+    m_accountLineEdit->setText("");
+    m_phoneLineEdit->setText("");
+    m_mcodeLineEdit->setText("");
 }
 
-ql_label_info* RegDialog::get_tips() {
-    return tips;
+Tips* RegDialog::get_tips() {
+    return m_errorTips;
 }

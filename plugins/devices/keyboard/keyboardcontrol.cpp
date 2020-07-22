@@ -46,7 +46,7 @@ KeyboardControl::KeyboardControl()
     pluginName = tr("Keyboard");
     pluginType = DEVICES;
 
-    ui->addFrame->installEventFilter(this);
+//    ui->addFrame->installEventFilter(this);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
@@ -73,7 +73,7 @@ KeyboardControl::KeyboardControl()
         settings = new QGSettings(id);
 
         //构建布局管理器对象
-        layoutmanagerObj = new KbdLayoutManager(kbdsettings->get(KBD_LAYOUTS_KEY).toStringList());
+        layoutmanagerObj = new KbdLayoutManager();
 
         setupConnect();
         initGeneralStatus();
@@ -130,8 +130,40 @@ void KeyboardControl::setupStylesheet(){
 }
 
 void KeyboardControl::setupComponent(){
-    //构建Combox代理，否则样式不全部生效
-    itemDelege = new QStyledItemDelegate();
+
+    addWgt = new HoverWidget("");
+    addWgt->setObjectName("addwgt");
+    addWgt->setMinimumSize(QSize(580, 50));
+    addWgt->setMaximumSize(QSize(960, 50));
+    addWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
+
+    QHBoxLayout *addLyt = new QHBoxLayout;
+
+    QLabel * iconLabel = new QLabel();
+    QLabel * textLabel = new QLabel(tr("Install layouts"));
+    QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+    iconLabel->setPixmap(pixgray);
+    addLyt->addWidget(iconLabel);
+    addLyt->addWidget(textLabel);
+    addLyt->addStretch();
+    addWgt->setLayout(addLyt);
+
+    // 悬浮改变Widget状态
+    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(base);");
+
+    });
+    // 还原状态
+    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(windowText);");
+    });
+
+    ui->addLyt->addWidget(addWgt);
+
 
     //隐藏未开发功能
     ui->repeatFrame_5->hide();
@@ -149,12 +181,12 @@ void KeyboardControl::setupComponent(){
     ui->numLockHorLayout->addWidget(numLockSwitchBtn);
 
     //布局代理
-    ui->layoutsComBox->setItemDelegate(itemDelege);
-    ui->layoutsComBox->setMaxVisibleItems(5);
+//    ui->layoutsComBox->setItemDelegate(itemDelege);
+//    ui->layoutsComBox->setMaxVisibleItems(5);
 
-    ui->addBtn->setIcon(QIcon("://img/plugins/keyboardcontrol/add.png"));
-    ui->addBtn->setIconSize(QSize(48, 48));
-    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
+//    ui->addBtn->setIcon(QIcon("://img/plugins/keyboardcontrol/add.png"));
+//    ui->addBtn->setIconSize(QSize(48, 48));
+//    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
 }
 
 void KeyboardControl::setupConnect(){
@@ -170,24 +202,20 @@ void KeyboardControl::setupConnect(){
         settings->set(RATE_KEY, value);
     });
 
-
-    connect(ui->addBtn, &QPushButton::clicked, this, [=]{
-        layoutmanagerObj->exec();
+    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
+        KbdLayoutManager * templayoutManager = new KbdLayoutManager;
+        templayoutManager->exec();
     });
 
     connect(ui->resetBtn, &QPushButton::clicked, this, [=]{
         kbdsettings->reset(KBD_LAYOUTS_KEY);
-        layoutmanagerObj->rebuild_listwidget();
-        rebuildLayoutsComBox();
     });
 
-    connect(layoutmanagerObj, &KbdLayoutManager::del_variant_signals, [=](QString layout){
-        rebuildLayoutsComBox();
-        qDebug() << layout;
+    connect(kbdsettings, &QGSettings::changed, [=](QString key){
+        if (key == KBD_LAYOUTS_KEY)
+            rebuildLayoutsComBox();
     });
-    connect(layoutmanagerObj, &KbdLayoutManager::add_new_variant_signals, [=](QString layout){
-        rebuildLayoutsComBox();
-    });
+
 
     connect(tipKeyboardSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
         osdSettings->set(CC_KEYBOARD_OSD_KEY, checked);
@@ -244,18 +272,18 @@ void KeyboardControl::rebuildLayoutsComBox(){
     }
 }
 
-bool KeyboardControl::eventFilter(QObject *watched, QEvent *event)
-{
-    if (watched == ui->addFrame){
-        if (event->type() == QEvent::MouseButtonPress){
-            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
-            if (mouseEvent->button() == Qt::LeftButton){
-                layoutmanagerObj->exec();
-                return true;
-            } else
-                return false;
-        }
-    }
-    return QObject::eventFilter(watched, event);
+//bool KeyboardControl::eventFilter(QObject *watched, QEvent *event)
+//{
+//    if (watched == ui->addFrame){
+//        if (event->type() == QEvent::MouseButtonPress){
+//            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
+//            if (mouseEvent->button() == Qt::LeftButton){
+//                layoutmanagerObj->exec();
+//                return true;
+//            } else
+//                return false;
+//        }
+//    }
+//    return QObject::eventFilter(watched, event);
 
-}
+//}

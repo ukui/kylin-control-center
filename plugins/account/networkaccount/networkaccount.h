@@ -23,7 +23,7 @@
 
 #include <QObject>
 #include <QtPlugin>
-#include "config_list_widget.h"
+#include "mainwidget.h"
 
 #include "shell/interface.h"
 

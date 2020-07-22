@@ -181,9 +181,9 @@ void WidgetHandleRealize::handleMousePressEvent(QMouseEvent *event){
 
         QRect frameRect = widgetInAction->frameGeometry();
         pressedMousePos.recalculate(event->globalPos(), frameRect);
+        moveMousePos.recalculateMove(event->globalPos(), frameRect);
 
         dragPos = event->globalPos() - frameRect.topLeft();
-
     }
 }
 
@@ -199,7 +199,7 @@ void WidgetHandleRealize::handleMouseMoveEvent(QMouseEvent *event){
         if (fpri->widgetResizable && pressedMousePos.onEdges){
             resizeWidget(event->globalPos());
         }
-        else if (fpri->widgetMovable && leftBtnPressed){
+        else if (fpri->widgetMovable && leftBtnPressed && moveMousePos.moveEdges){
 //            moveWidget(event->globalPos());
             moveMainWindow();
         }

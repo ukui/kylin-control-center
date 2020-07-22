@@ -8,7 +8,7 @@ class DbusHandleClient : public QObject
 {
     Q_OBJECT
 public:
-    bool once = false;
+    bool m_bFirstAttempt = false;
     explicit DbusHandleClient(QObject *parent = nullptr);
 public slots:
     int registered(QString username, QString pwd, QString phonenumb, QString mcode,QString uuid);  // 注册接口

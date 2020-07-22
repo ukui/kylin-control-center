@@ -4,23 +4,27 @@
 #
 #-------------------------------------------------
 
+include(../../../env.pri)
+include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+include($$PROJECT_COMPONENTSOURCE/uslider.pri)
+
 QT       += widgets
 
 TEMPLATE = lib
 CONFIG += plugin
 
 TARGET = $$qtLibraryTarget(screensaver)
-DESTDIR = ../../../pluginlibs
+DESTDIR = ../..
+target.path = $${PLUGIN_INSTALL_DIRS}
+INSTALLS += target
 
-include(../../../env.pri)
-include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
-include($$PROJECT_COMPONENTSOURCE/uslider.pri)
+DEFINES += QT_INSTALL_LIBS='\\"$$[QT_INSTALL_LIBS]\\"'
 
 INCLUDEPATH   +=  \
                  $$PROJECT_COMPONENTSOURCE \
                  $$PROJECT_ROOTDIR \
 
-LIBS          += -L/usr/lib/ -lgsettings-qt
+LIBS          += -L$$[QT_INSTALL_LIBS] -lgsettings-qt
 
 ##加载gio库和gio-unix库
 CONFIG        += link_pkgconfig \

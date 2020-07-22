@@ -55,7 +55,6 @@ ChangePwdDialog::ChangePwdDialog(QWidget *parent) :
 
 
     //构建Combox代理，否则样式不全部生效
-    QStyledItemDelegate * itemDelege = new QStyledItemDelegate();
 //    ui->pwdtypeComboBox->setItemDelegate(itemDelege);
 //    ui->pwdtypeComboBox->setMaxVisibleItems(5);
 //    ui->pwdtypeComboBox->setStyleSheet("QComboBox{background: #F4F4F4; border-radius: 4px; font-size:14px;padding-left: 8px; color: black; min-height: 30px; combobox-popup: 0;}"

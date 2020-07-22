@@ -4,19 +4,22 @@
 #
 #-------------------------------------------------
 
+include(../../../env.pri)
+include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
+include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
+
 QT       += widgets printsupport
 
 TEMPLATE = lib
 CONFIG += plugin
 
 TARGET = $$qtLibraryTarget(printer)
-DESTDIR = ../../../pluginlibs
-
-include(../../../env.pri)
+DESTDIR = ../..
+target.path = $${PLUGIN_INSTALL_DIRS}
 
 INCLUDEPATH += \
+               $$PROJECT_COMPONENTSOURCE \
                $$PROJECT_ROOTDIR \
-
 
 #DEFINES += QT_DEPRECATED_WARNINGS
 
@@ -28,3 +31,5 @@ HEADERS += \
 
 FORMS += \
         printer.ui
+
+INSTALLS += target

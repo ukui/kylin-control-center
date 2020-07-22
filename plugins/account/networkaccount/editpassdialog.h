@@ -34,30 +34,30 @@
 #include <QStackedWidget>
 #include "successdiaolog.h"
 #include <QRegExpValidator>
-#include "ql_lineedit_pass.h"
+#include "passwordlineedit.h"
 #include "dbushandleclient.h"
 #include <QtDBus/QtDBus>
-#include "ql_label_info.h"
-#include "ql_svg_handler.h"
+#include "tips.h"
+#include "svghandler.h"
 
 class EditPassDialog : public QWidget
 {
     Q_OBJECT
 public:
     explicit        EditPassDialog(QWidget *parent = nullptr);
-    int             timerout_num = 60;
+    int             m_szTimerNum = 60;
     void            set_code(QString codenum);
     void            set_client(DbusHandleClient *c,QThread *t);
     void            set_clear();
-    ql_label_info*         get_tips();
+    Tips*         get_tips();
     QString         messagebox(int codenum);
     void            setshow(QWidget *w);
-    QString         name;
-    bool            is_used = false;
+    QString         m_szCode;
+    bool            m_bIsUsed = false;
 public slots:
     void            on_edit_submit();
-    void            on_edit_submit_finished(int req,QString uuid);
-    void            on_edit_code_finished(int req,QString uuid);
+    void            on_edit_submit_finished(int req,QString m_szUuid);
+    void            on_edit_code_finished(int req,QString m_szUuid);
     void            on_timer_start();
     void            on_send_code();
     void            setstyleline();
@@ -71,35 +71,35 @@ protected:
     void            mouseMoveEvent(QMouseEvent *event);
     bool            eventFilter(QObject *w,QEvent *e);
 private:
-    QLabel          *title;
-    QPushButton     *del_btn;
-    ql_lineedit_pass       *newpass;
-    QLineEdit       *valid_code;
-    QPushButton     *get_code;
-    QPushButton     *cancel;
-    QPushButton     *confirm;
-    QVBoxLayout     *vlayout;
-    ql_lineedit_pass       *confirm_pass;
-    QHBoxLayout     *hlayout;
-    QHBoxLayout     *btnlayout;
+    QLabel          *m_title;
+    QPushButton     *m_delBtn;
+    PasswordLineEdit       *m_newPassLineEdit;
+    QLineEdit       *m_mcodeLineEdit;
+    QPushButton     *m_mcodeBtn;
+    QPushButton     *m_cancelBtn;
+    QPushButton     *m_confirmBtn;
+    QVBoxLayout     *m_wokrLayout;
+    PasswordLineEdit       *m_passConfirm;
+    QHBoxLayout     *m_hboxLayout;
+    QHBoxLayout     *m_btnLayout;
     QPoint          m_startPoint;
-    DbusHandleClient   *client;
-    QTimer          *timer;
-    ql_label_info          *tips;
-    QString         code;
-    QStackedWidget  *stackwidget;
-    QWidget         *content;
-    SuccessDiaolog  *success;
-    QVBoxLayout     *vboxlayout;
-    QLabel          *pass_tips;
-    QThread         *thread;
-    QString         uuid;
-    ql_svg_handler *svg_hd;
+    DbusHandleClient   *m_dbusClient;
+    QTimer          *m_cMcodeTimer;
+    Tips          *m_Tips;
+    QString         m_codeStatus;
+    QStackedWidget  *m_stackedWidget;
+    QWidget         *m_workWidget;
+    SuccessDiaolog  *m_successDialog;
+    QVBoxLayout     *m_vboxLayout;
+    QLabel          *m_passTips;
+    QThread         *m_workThread;
+    QString         m_szUuid;
+    SVGHandler *m_svgHandler;
 signals:
     void code_changed();
     void account_changed();
-    void docode(QString name,QString uuid);
-    void doreset(QString a,QString b,QString c,QString uuid);
+    void docode(QString m_szCode,QString m_szUuid);
+    void doreset(QString a,QString b,QString c,QString m_szUuid);
     void docheck();
     void dologout();
 };

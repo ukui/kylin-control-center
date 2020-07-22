@@ -4,12 +4,15 @@
 #
 #-------------------------------------------------
 
+include(../../../env.pri)
 QT            += widgets
 TEMPLATE = lib
 CONFIG        += plugin
 
 TARGET = $$qtLibraryTarget(defaultapp)
-DESTDIR = ../../../pluginlibs
+DESTDIR = ../..
+target.path = $${PLUGIN_INSTALL_DIRS}
+INSTALLS += target
 
 ##加载gio库和gio-unix库，用于处理desktop文件
 CONFIG        += link_pkgconfig \
@@ -17,21 +20,18 @@ CONFIG        += link_pkgconfig \
 PKGCONFIG     += gio-2.0 \
                  gio-unix-2.0
 
-include(../../../env.pri)
-
 INCLUDEPATH   +=  \
                  $$PROJECT_ROOTDIR \
 
-#LIBS          += -L/usr/lib/ -ldefaultprograms \
-
+#LIBS          += -L$$[QT_INSTALL_LIBS] -ldefaultprograms \
 
 SOURCES += \
-        defaultapp.cpp \
+    defaultapp.cpp \
     addappdialog.cpp \
 #    component/custdomcombobox.cpp
 
 HEADERS += \
-        defaultapp.h \
+    defaultapp.h \
     addappdialog.h \
 #    component/custdomcombobox.h
 

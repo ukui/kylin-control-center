@@ -92,7 +92,6 @@ class Widget : public QWidget
     void initScreenXml(int count);
     //获取edid信息
     void getEdidInfo(QString monitorName,xmlFile *xml);
-
     void setIsNightMode(bool isNightMode);
 
     QStringList readFile(const QString& filepath);
@@ -102,9 +101,6 @@ class Widget : public QWidget
     int scaleToSlider(const float value);
 
     void initUiComponent();
-    void initUiQss();
-
-
 
   protected:
     bool eventFilter(QObject *object, QEvent *event) override;
@@ -217,12 +213,11 @@ class Widget : public QWidget
     QGSettings *m_gsettings = nullptr;
     QGSettings *scaleGSettings = nullptr;
     QSettings *m_qsettings = nullptr;
-
-    int screenScale = 1;
-
     QButtonGroup *singleButton;
 
+    int screenScale = 1;
     bool isScaleChanged = false;
+    bool oriApply;
 };
 
 #endif // WIDGET_H

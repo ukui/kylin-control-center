@@ -67,7 +67,6 @@ private:
     QComboBox *m_pInputPortCombobox;
     QComboBox *m_pSelectCombobox;
 
-    QStyledItemDelegate *itemDelege;
     QString sliderQss;
     QVBoxLayout *m_pVlayout;
 

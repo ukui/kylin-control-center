@@ -1,12 +1,13 @@
+include(../../../env.pri)
+
 QT       += widgets dbus KI18n KCoreAddons
 
 TEMPLATE = lib
 CONFIG += plugin
 
 TARGET = $$qtLibraryTarget(about)
-DESTDIR = ../../../pluginlibs
-
-include(../../../env.pri)
+DESTDIR = ../..
+target.path = $${PLUGIN_INSTALL_DIRS}
 
 INCLUDEPATH   +=  \
                  $$PROJECT_ROOTDIR \
@@ -28,3 +29,5 @@ FORMS += \
 
 RESOURCES += \
     res/img.qrc
+
+INSTALLS += target

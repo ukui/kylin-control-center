@@ -4,23 +4,23 @@
 #
 #-------------------------------------------------
 
+include(../../../env.pri)
+include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+
 QT       += widgets
 
 TEMPLATE = lib
 CONFIG += plugin
 
 TARGET = $$qtLibraryTarget(proxy)
-DESTDIR = ../../../pluginlibs
-
-
-include(../../../env.pri)
-include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+DESTDIR = ../..
+target.path = $${PLUGIN_INSTALL_DIRS}
 
 INCLUDEPATH   +=  \
                  $$PROJECT_COMPONENTSOURCE \
                  $$PROJECT_ROOTDIR \
 
-LIBS          += -L/usr/lib/ -lgsettings-qt
+LIBS          += -L$$[QT_INSTALL_LIBS] -lgsettings-qt
 
 ##加载gio库和gio-unix库，用于获取和设置enum类型的gsettings
 CONFIG        += link_pkgconfig \
@@ -32,13 +32,15 @@ PKGCONFIG     += gio-2.0 \
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
-        proxy.cpp \
+    proxy.cpp \
     certificationdialog.cpp
 
 HEADERS += \
-        proxy.h \
+    proxy.h \
     certificationdialog.h
 
 FORMS += \
-        proxy.ui \
+    proxy.ui \
     certificationdialog.ui
+
+INSTALLS += target

@@ -22,14 +22,14 @@
 
 #include <QObject>
 #include <QWidget>
-#include "area_code_lineedit.h"
+#include "areacodelineedit.h"
 #include <QLineEdit>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include "ql_lineedit_pass.h"
-#include "ql_label_info.h"
-#include "ql_svg_handler.h"
+#include "passwordlineedit.h"
+#include "tips.h"
+#include "svghandler.h"
 
 class PassDialog : public QWidget
 {
@@ -42,12 +42,12 @@ public:
     QString     get_user_confirm();
     QString     get_user_mcode();
     QLineEdit*  get_reg_phone();
-    ql_lineedit_pass*  get_reg_pass();
-    ql_lineedit_pass*  get_reg_pass_confirm();
+    PasswordLineEdit*  get_reg_pass();
+    PasswordLineEdit*  get_reg_pass_confirm();
     QLineEdit*  get_valid_code();
     void        set_code(QString codenum);
     void        set_clear();
-    ql_label_info*     get_tips();
+    Tips*     get_tips();
     QLabel*     get_passtips();
     void        set_staus(bool ok);
 public slots:
@@ -57,17 +57,17 @@ public slots:
 signals:
     void code_changed();
 private:
-    QLineEdit *reg_phone;
-    ql_lineedit_pass *reg_pass;
-    ql_lineedit_pass *reg_pass_confirm;
-    QLineEdit *valid_code;
-    QPushButton *send_msg_btn;
-    QVBoxLayout *vlayout;
-    QHBoxLayout *hlayout;
-    ql_label_info *tips;
-    QString     code;
-    ql_svg_handler *svg_hd;
-    QLabel *passtips;
+    QLineEdit *m_phoneLineEdit;
+    PasswordLineEdit *m_passLineEdit;
+    PasswordLineEdit *m_confirmLineEdit;
+    QLineEdit *m_mcodeLineEdit;
+    QPushButton *m_sendMsgBtn;
+    QVBoxLayout *m_workLayout;
+    QHBoxLayout *m_hboxLayout;
+    Tips *m_errorTips;
+    QString     m_errorCode;
+    SVGHandler *m_svgHandler;
+    QLabel *m_passwordTips;
 };
 
 #endif // PASSDIALOG_H

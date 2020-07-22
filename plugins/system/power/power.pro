@@ -1,24 +1,24 @@
-QT       += widgets
+QT       += widgets dbus
 TEMPLATE = lib
 CONFIG   += plugin
 
-TARGET = $$qtLibraryTarget(power)
-DESTDIR = ../../../pluginlibs
-
 include(../../../env.pri)
+
+TARGET = $$qtLibraryTarget(power)
+DESTDIR = ../..
+target.path = $${PLUGIN_INSTALL_DIRS}
+INSTALLS += target
 
 INCLUDEPATH += \
                $$PROJECT_ROOTDIR \
 
-
-LIBS     += -L/usr/lib/ -lgsettings-qt
+LIBS     += -L$$[QT_INSTALL_LIBS] -lgsettings-qt
 
 CONFIG +=  \
           link_pkgconfig \
           c++11
 
 PKGCONFIG += gsettings-qt \
-
 
 FORMS += \
     power.ui

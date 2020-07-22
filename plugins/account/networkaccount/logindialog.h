@@ -32,11 +32,11 @@
 #include <QDebug>
 #include <QStackedWidget>
 #include <QListWidget>
-#include "area_code_lineedit.h"
-#include "mcode_widget.h"
-#include "ql_lineedit_pass.h"
-#include "ql_label_info.h"
-#include "ql_svg_handler.h"
+#include "areacodelineedit.h"
+#include "mcodewidget.h"
+#include "passwordlineedit.h"
+#include "tips.h"
+#include "svghandler.h"
 
 class LoginDialog : public QWidget
 {
@@ -52,16 +52,16 @@ public:
     void            startaction_2();
     QLineEdit*      get_user_edit();
     QPushButton*    get_forget_btn();
-    ql_lineedit_pass*      get_login_pass();
-    ql_label_info*         get_tips_pass();
-    ql_label_info*         get_tips_code();
+    PasswordLineEdit*      get_login_pass();
+    Tips*         get_tips_pass();
+    Tips*         get_tips_code();
     QLineEdit*      get_login_code();
     QString         get_user_name();
     QString         get_user_pass();
     QPushButton*    get_user_mcode();
     QStackedWidget* get_stack_widget();
     void            set_code(QString codenum);
-    mcode_widget*   get_mcode_widget();
+    MCodeWidget*   get_mcode_widget();
     QLineEdit*      get_mcode_lineedit();
     void            set_clear();
     void            set_staus(bool ok);
@@ -71,40 +71,33 @@ public slots:
     void            setstyleline();
 private:
     //Basic Widgets
-    QWidget         *widget_number;
-    QWidget         *widget_phone;
+    QWidget         *m_normalWidget;
+    QWidget         *m_phoneWidget;
 
     //Suppoter Widgets
-    QListWidgetItem *items[5];
-    QVBoxLayout     *vlayout_p;
-    QVBoxLayout     *vlayout;
-    QHBoxLayout     *HBox_forget;
-    QHBoxLayout     *HBox_forgett;
-    QVBoxLayout     *waylayout;
-    QPushButton     *account_login_btn;
-    QPushButton     *message_login_btn;
-    QLineEdit       *account_phone;
-    ql_lineedit_pass       *account_pass;
-    QLineEdit       *reg_phone;
-    QPushButton     *phone_number;
-    QLineEdit       *reg_name;
-    ql_lineedit_pass       *reg_pass;
-    QLineEdit       *valid_code;
-    QPushButton     *send_msg_submit;
-    QPushButton     *register_submit;
-    QPushButton     *back_login_btn;
-    QPushButton     *forgot_pass_btn;
-    QStackedWidget  *stack_widget;
-    QListWidget     *list_widget;
-    QListWidget     *list_content;
-    area_code_lineedit *acl;
-    ql_label_info          *error_pass;
-    ql_label_info          *error_code;
-    QString         code;
-    mcode_widget    *mcode;
-    QLineEdit       *mcode_lineedit;
-    QHBoxLayout     *mcode_layout;
-    ql_svg_handler  *svg_hd;
+    QListWidgetItem *m_itemwidgetList[5];
+    QVBoxLayout     *m_phoneLayout;
+    QVBoxLayout     *m_normalLayout;
+    QHBoxLayout     *m_subHBoxLayout;
+    QHBoxLayout     *m_mcodePhoneLayout;
+    QVBoxLayout     *m_wayLayout;
+    QPushButton     *m_accountLogin_btn;
+    QPushButton     *m_phoneLogin_btn;
+    QLineEdit       *m_accountLineEdit;
+    PasswordLineEdit       *m_passwordLineEdit;
+    QLineEdit       *m_phoneLineEdit;
+    QLineEdit       *m_mcodeNormalLineEdit;
+    QPushButton     *m_sendMsgBtn;
+    QPushButton     *m_forgetPasswordBtn;
+    QStackedWidget  *m_stackedWidget;
+    QListWidget     *m_listWidget;
+    Tips          *m_passTips;
+    Tips          *m_phoneTips;
+    QString         m_szCode;
+    MCodeWidget    *m_mcodeWidget;
+    QLineEdit       *m_mcodePhoneLineEdit;
+    QHBoxLayout     *m_mcodeNormalLayout;
+    SVGHandler  *m_svgHandler;
 signals:
     void code_changed();
 };

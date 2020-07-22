@@ -21,7 +21,7 @@
 
 networkaccount::networkaccount()
 {
-    pluginWidget = new config_list_widget();
+    pluginWidget = new MainWidget();
     pluginName = tr("NetworkAccount");
     pluginType = ACCOUNT;
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);

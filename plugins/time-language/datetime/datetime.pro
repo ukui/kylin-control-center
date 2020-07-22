@@ -7,26 +7,25 @@
 QT       += widgets dbus x11extras
 
 TEMPLATE = lib
-CONFIG += plugin
-
-TARGET = $$qtLibraryTarget(datetime)
-DESTDIR = ../../../pluginlibs
-
+CONFIG += plugin \
+          link_pkgconfig \
+          C++11
 
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 
+TARGET = $$qtLibraryTarget(datetime)
+DESTDIR = ../..
+target.path = $${PLUGIN_INSTALL_DIRS}
+INSTALLS += target
 
 INCLUDEPATH   +=  \
                  $$PROJECT_COMPONENTSOURCE \
                  $$PROJECT_ROOTDIR \
 
-
-LIBS += -L/usr/lib/ -lgsettings-qt
+LIBS += -L$$[QT_INSTALL_LIBS] -lgsettings-qt
 
 ##加载gio库和gio-unix库，用于处理时间
-CONFIG        += link_pkgconfig \
-                 C++11
 PKGCONFIG     += gio-2.0 \
                  gio-unix-2.0 \
                  gsettings-qt \
@@ -34,7 +33,7 @@ PKGCONFIG     += gio-2.0 \
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
-        datetime.cpp \
+    datetime.cpp \
     changtime.cpp \
     worldMap/zoneinfo.cpp \
     worldMap/toolpop.cpp \
@@ -44,7 +43,7 @@ SOURCES += \
     worldMap/poplist.cpp
 
 HEADERS += \
-        datetime.h \
+    datetime.h \
     changtime.h \
     worldMap/zoneinfo.h \
     worldMap/toolpop.h \
@@ -54,10 +53,8 @@ HEADERS += \
     worldMap/poplist.h
 
 FORMS += \
-        datetime.ui \
+    datetime.ui \
     changtime.ui
 
 RESOURCES += \
     tz.qrc
-
-DISTFILES +=

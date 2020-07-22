@@ -100,6 +100,7 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     m_pOutputPortList = new QStringList;
     m_pSoundNameList = new QStringList;
     m_pProfileNameList = new QStringList;
+
     eventList = new QStringList;
     eventIdNameList = new QStringList;
 
@@ -3038,6 +3039,7 @@ void UkmediaMainWidget::onDeviceProfileActiveOptionNotify (MateMixerDeviceSwitch
     device = mate_mixer_device_switch_get_device (swtch);
 
     updateDeviceInfo (w, device);
+//    delete settings;
 }
 
 UkmediaMainWidget::~UkmediaMainWidget()

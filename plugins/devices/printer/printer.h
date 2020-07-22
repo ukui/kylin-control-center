@@ -23,10 +23,11 @@
 
 #include <QObject>
 #include <QtPlugin>
-
 #include <QTimer>
 
 #include "shell/interface.h"
+#include "HoverWidget/hoverwidget.h"
+#include "ImageUtil/imageutil.h"
 
 namespace Ui {
 class Printer;
@@ -53,13 +54,14 @@ public:
     void runExternalApp();
 
 private:
-    bool eventFilter(QObject *watched, QEvent *event);
+//    bool eventFilter(QObject *watched, QEvent *event);
 
 private:
     Ui::Printer *ui;
     QString pluginName;
     int pluginType;
     QWidget * pluginWidget;
+    HoverWidget * addWgt;
 
 private:
     QTimer * pTimer;

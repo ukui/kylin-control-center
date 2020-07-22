@@ -33,12 +33,12 @@ class SuccessDiaolog : public QWidget
     Q_OBJECT
 public:
     explicit SuccessDiaolog(QWidget *parent = nullptr);
-    QPushButton *back_login;
-    QLabel      *text_msg;
-    QSvgWidget      *bkg;
+    QPushButton *m_backloginBtn;
+    QLabel      *m_textLabel;
+    QSvgWidget      *m_bkgWidget;
     void     set_mode_text(int mode);
 private:
-    QVBoxLayout *layout;
+    QVBoxLayout *m_workLayout;
 signals:
 
 };

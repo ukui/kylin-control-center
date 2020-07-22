@@ -22,16 +22,16 @@
 
 #include <QObject>
 #include <QWidget>
-#include "area_code_lineedit.h"
+#include "areacodelineedit.h"
 #include <QLineEdit>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QEvent>
-#include "ql_lineedit_pass.h"
-#include "ql_label_info.h"
-#include "ql_svg_handler.h"
+#include "passwordlineedit.h"
+#include "tips.h"
+#include "svghandler.h"
 
 class RegDialog : public QWidget
 {
@@ -41,10 +41,10 @@ public:
     QLabel* get_pass_tip();
     QLabel* get_user_tip();
     QLineEdit* get_reg_user();
-    ql_lineedit_pass* get_reg_pass();
+    PasswordLineEdit* get_reg_pass();
     QLineEdit* get_valid_code();
-    area_code_lineedit* get_phone_user();
-    ql_lineedit_pass* get_reg_confirm();
+    AreaCodeLineEdit* get_phone_user();
+    PasswordLineEdit* get_reg_confirm();
     QPushButton* get_send_code();
     QString     get_user_phone();
     QString     get_user_account();
@@ -53,7 +53,7 @@ public:
     void        set_staus(bool ok);
     void        set_code(QString codenum);
     void        set_clear();
-    ql_label_info*     get_tips();
+    Tips*     get_tips();
 public slots:
     void change_uppercase();
     void setstyleline();
@@ -62,19 +62,19 @@ protected:
 signals:
     void code_changed();
 private:
-    area_code_lineedit *reg_phone;
-    QLineEdit *reg_user;
-    ql_lineedit_pass *reg_pass;
-    QLineEdit *valid_code;
-    ql_lineedit_pass *reg_confirm;
-    QPushButton *send_msg_btn;
-    QVBoxLayout *vlayout;
-    QHBoxLayout *hlayout;
-    QLabel      *user_tip;
-    QLabel      *pass_tip;
-    ql_label_info      *tips;
-    QString     code;
-    ql_svg_handler *svg_hd;
+    AreaCodeLineEdit *m_phoneLineEdit;
+    QLineEdit *m_accountLineEdit;
+    PasswordLineEdit *m_passLineEdit;
+    QLineEdit *m_mcodeLineEdit;
+    PasswordLineEdit *m_confirmLineEdit;
+    QPushButton *m_sendMsgBtn;
+    QVBoxLayout *m_workLayout;
+    QHBoxLayout *m_mcodeLayout;
+    QLabel      *m_accountTips;
+    QLabel      *m_passTips;
+    Tips      *m_errorTips;
+    QString     m_errorCode;
+    SVGHandler *m_svgHandler;
 };
 
 #endif // REGDIALOG_H

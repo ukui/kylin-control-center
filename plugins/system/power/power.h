@@ -23,8 +23,9 @@
 #include <QObject>
 #include <QtPlugin>
 #include <QStyledItemDelegate>
-
 #include <QGSettings>
+#include <QDBusInterface>
+#include <QDBusReply>
 
 #include "shell/interface.h"
 
@@ -55,8 +56,8 @@ public:
     void initModeStatus();
     void initCustomPlanStatus();
     void resetCustomPlanStatus();
-    void initIconPolicyStatus();
-
+    void initPowerOtherStatus();
+    void isPowerSupply();
 
     void refreshUI();
 
@@ -74,15 +75,14 @@ private:
 
     QStringList sleepStringList;
     QStringList closeStringList;
+    QStringList closeLidStringList;
+    QStringList darkenStringList;
     QStringList lidStringList;
     QStringList buttonStringList;
     QStringList iconShowList;
 
-    QStyledItemDelegate *itemDelege;
-
 private:
     bool settingsCreate;
-
 };
 
 #endif // POWER_H

@@ -24,6 +24,14 @@
 #include <QFile>
 #include <QDebug>
 
+#ifdef signals
+#undef signals
+#endif
+
+extern "C" {
+#include <gio/gdesktopappinfo.h>
+}
+
 Backup::Backup()
 {
     ui = new Ui::Backup;
@@ -93,7 +101,11 @@ void Backup::btnClicked(){
     }
 
     if (version == "Kylin V10" || version == "Kylin V10.1") {
-        cmd = "/usr/bin/kybackup";
+        QString desktopfp = "/usr/share/applications/yhkylin-backup-tools.desktop";
+        GDesktopAppInfo *desktopAppInfo = g_desktop_app_info_new_from_filename(desktopfp.toLocal8Bit().data());
+        g_app_info_launch(G_APP_INFO(desktopAppInfo), nullptr, nullptr, nullptr);
+        g_object_unref(desktopAppInfo);
+        return;
     }
 
     QProcess process(this);

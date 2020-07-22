@@ -194,9 +194,8 @@ void DateTime::status_init(){
 
     //时区
     const QString locale = QLocale::system().name();
-    QDBusReply<QVariant> tz = m_datetimeiface->call("Get", "org.freedesktop.timedate1", "Timezone");
+    QDBusReply<QVariant> tz = m_datetimeiproperties->call("Get", "org.freedesktop.timedate1", "Timezone");
     QMap<QString, int>::iterator it = tzindexMapEn.find(tz.value().toString());
-//    qDebug()<<"TODO-------》"<<tz.value().toString()<<endl;
     if(it != tzindexMapEn.end()){
         for(QMap<QString,int>::iterator itc = tzindexMapCN.begin();itc!=tzindexMapCN.end();itc++)
         {

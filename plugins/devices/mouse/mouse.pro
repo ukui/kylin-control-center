@@ -4,6 +4,9 @@
 #
 #-------------------------------------------------
 
+include(../../../env.pri)
+include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+
 QT       += widgets x11extras
 
 #greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -11,17 +14,15 @@ TEMPLATE = lib
 CONFIG += plugin
 
 TARGET = $$qtLibraryTarget(mouse)
-DESTDIR = ../../../pluginlibs
-
-include(../../../env.pri)
-include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+DESTDIR = ../..
+target.path = $${PLUGIN_INSTALL_DIRS}
 
 INCLUDEPATH   +=  \
                  $$PROJECT_COMPONENTSOURCE \
                  $$PROJECT_ROOTDIR \
 
-LIBS          +=  -L/usr/lib/  -lXi -lgsettings-qt
-#LIBS          +=  -L/usr/lib/   -lgsettings-qt
+LIBS          +=  -L$$[QT_INSTALL_LIBS]  -lXi -lgsettings-qt
+#LIBS          +=  -L$$[QT_INSTALL_LIBS] -lgsettings-qt
 
 ##加载gio库和gio-unix库
 CONFIG        += link_pkgconfig \
@@ -29,7 +30,6 @@ CONFIG        += link_pkgconfig \
 PKGCONFIG     += gio-2.0 \
                  gio-unix-2.0 \
                  gsettings-qt \
-
 
 #DEFINES += QT_DEPRECATED_WARNINGS
 
@@ -41,3 +41,5 @@ HEADERS += \
 
 FORMS += \
         mousecontrol.ui
+
+INSTALLS += target

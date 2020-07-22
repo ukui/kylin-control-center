@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>642</width>
-    <height>658</height>
+    <height>682</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -861,7 +861,7 @@ QSlider::handle:horizontal {
            </widget>
           </item>
           <item>
-           <widget class="QFrame" name="addFrame">
+           <widget class="QWidget" name="addWidget" native="true">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -873,9 +873,6 @@ QSlider::handle:horizontal {
               <width>16777215</width>
               <height>60</height>
              </size>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::Box</enum>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_16">
              <property name="spacing">
@@ -894,64 +891,16 @@ QSlider::handle:horizontal {
               <number>0</number>
              </property>
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_15">
+              <layout class="QHBoxLayout" name="addLyt">
                <property name="spacing">
-                <number>16</number>
+                <number>8</number>
                </property>
                <property name="leftMargin">
-                <number>16</number>
+                <number>0</number>
                </property>
                <property name="rightMargin">
-                <number>16</number>
+                <number>0</number>
                </property>
-               <item>
-                <widget class="QPushButton" name="addBtn">
-                 <property name="minimumSize">
-                  <size>
-                   <width>48</width>
-                   <height>48</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>48</width>
-                   <height>48</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_14">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Install layouts</string>
-                 </property>
-                 <property name="scaledContents">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_6">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
               </layout>
              </item>
             </layout>

@@ -10,15 +10,14 @@ TEMPLATE = lib
 CONFIG += plugin
 INCLUDEPATH += ../../..
 
+include(../../pluginsComponent/pluginsComponent.pri)
+include(../../../env.pri)
+
 TARGET = $$qtLibraryTarget(loginoptions)
 DESTDIR = ../..
-
-include(../../pluginsComponent/pluginsComponent.pri)
+target.path = $${PLUGIN_INSTALL_DIRS}
 
 #DEFINES += QT_DEPRECATED_WARNINGS
-
-target.path = $$[QT_INSTALL_PREFIX]/lib/control-center/plugins/
-INSTALLS += target
 
 SOURCES += \
         loginoptions.cpp
@@ -28,3 +27,5 @@ HEADERS += \
 
 FORMS += \
         loginoptions.ui
+
+INSTALLS += target

@@ -19,16 +19,17 @@
  */
 #include "autoboot.h"
 #include "ui_autoboot.h"
+#include "SwitchButton/switchbutton.h"
+#include "HoverWidget/hoverwidget.h"
+#include "ImageUtil/imageutil.h"
+#include "autobootworker.h"
 
 #include <QThread>
 #include <QSignalMapper>
-#include "SwitchButton/switchbutton.h"
-#include "HoverWidget/hoverwidget.h"
-#include "autobootworker.h"
-
 #include <QDebug>
 #include <QFont>
 #include <QMouseEvent>
+#include <QPushButton>
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -62,7 +63,7 @@ AutoBoot::AutoBoot(){
     pluginName = tr("Autoboot");
     pluginType = SYSTEM;
 
-    ui->addFrame->installEventFilter(this);
+//    ui->addFrame->installEventFilter(this);
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
 
@@ -73,9 +74,10 @@ AutoBoot::AutoBoot(){
 //    ui->listWidget->setStyleSheet("QListWidget#listWidget{background: #ffffff; border: none;}"
 //                                  "");
 
-    ui->addBtn->setIcon(QIcon("://img/plugins/autoboot/add.png"));
-    ui->addBtn->setIconSize(QSize(48, 48));
-    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
+//    ui->addBtn->setIcon(QIcon("://img/plugins/autoboot/add.png"));
+//    ui->addBtn->setIconSize(QSize(48, 48));
+//    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
+
 
 
 //    ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -88,14 +90,9 @@ AutoBoot::AutoBoot(){
     //初始化添加界面
     dialog = new AddAutoBoot();
 
+    initAddBtn();
     initUI();
 
-    connect(ui->addBtn, &QPushButton::clicked, this, [=]{
-//        AddAutoBoot * mdialog = new AddAutoBoot();
-//        mdialog->exec();
-        dialog->exec();
-
-    });
     connect(dialog, SIGNAL(autoboot_adding_signals(QString, QString,QString,QString)), this, SLOT(add_autoboot_realize_slot(QString ,QString,QString,QString)));
 }
 
@@ -122,6 +119,46 @@ void AutoBoot::plugin_delay_control(){
 
 }
 
+void AutoBoot::initAddBtn() {
+    addWgt = new HoverWidget("");
+    addWgt->setObjectName("addwgt");
+    addWgt->setMinimumSize(QSize(580, 50));
+    addWgt->setMaximumSize(QSize(960, 50));
+    addWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
+
+    QHBoxLayout *addLyt = new QHBoxLayout;
+
+    QLabel * iconLabel = new QLabel();
+    QLabel * textLabel = new QLabel(tr("Add autoboot app "));
+    QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+    iconLabel->setPixmap(pixgray);
+    addLyt->addWidget(iconLabel);
+    addLyt->addWidget(textLabel);
+    addLyt->addStretch();
+    addWgt->setLayout(addLyt);
+
+    // 悬浮改变Widget状态
+    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(base);");
+
+    });
+    // 还原状态
+    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(windowText);");
+    });
+
+    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
+        dialog->exec();
+    });
+
+    ui->addLyt->addWidget(addWgt);
+
+}
+
 void AutoBoot::initUI(){
     _walk_config_dirs();
 
@@ -131,7 +168,6 @@ void AutoBoot::initUI(){
 
     //显示全部ITEM，设置高
 //    ui->listWidget->setFixedHeight(num * ITEMHEIGHT + HEADHEIGHT);
-
 
     //构建行头基础Widget
     QFrame * headbaseFrame = new QFrame;
@@ -807,22 +843,22 @@ void AutoBoot::del_autoboot_realize(QString bname){
 
 
 
-bool AutoBoot::eventFilter(QObject *watched, QEvent *event)
-{
-    if (watched == ui->addFrame){
-        if (event->type() == QEvent::MouseButtonPress){
-            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
-            if (mouseEvent->button() == Qt::LeftButton){
+//bool AutoBoot::eventFilter(QObject *watched, QEvent *event)
+//{
+//    if (watched == ui->addFrame){
+//        if (event->type() == QEvent::MouseButtonPress){
+//            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
+//            if (mouseEvent->button() == Qt::LeftButton){
 //                AddAutoBoot * mdialog = new AddAutoBoot();
 //                mdialog->exec();
-                dialog->exec();
-                return true;
-            } else
-                return false;
-        }
-    }
-    return QObject::eventFilter(watched, event);
-}
+//                dialog->exec();
+//                return true;
+//            } else
+//                return false;
+//        }
+//    }
+//    return QObject::eventFilter(watched, event);
+//}
 
 void AutoBoot::checkbox_changed_cb(QString bname){
     foreach (QString key, appgroupMultiMaps.keys()) {

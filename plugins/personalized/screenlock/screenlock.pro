@@ -4,24 +4,27 @@
 #
 #-------------------------------------------------
 
+include(../../../env.pri)
+include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+include($$PROJECT_COMPONENTSOURCE/flowlayout.pri)
+include($$PROJECT_COMPONENTSOURCE/maskwidget.pri)
+include($$PROJECT_COMPONENTSOURCE/uslider.pri)
+
 QT       += widgets xml
 
 TEMPLATE = lib
 CONFIG += plugin
 
 TARGET = $$qtLibraryTarget(screenlock)
-DESTDIR = ../../../pluginlibs
+DESTDIR = ../..
+target.path = $${PLUGIN_INSTALL_DIRS}
+INSTALLS += target
 
-include(../../../env.pri)
-include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
-include($$PROJECT_COMPONENTSOURCE/flowlayout.pri)
-include($$PROJECT_COMPONENTSOURCE/maskwidget.pri)
-include($$PROJECT_COMPONENTSOURCE/uslider.pri)
 INCLUDEPATH   +=  \
                  $$PROJECT_ROOTDIR \
                  $$PROJECT_COMPONENTSOURCE \
 
-LIBS += -L/usr/lib/ -lgsettings-qt
+LIBS += -L$$[QT_INSTALL_LIBS] -lgsettings-qt
 
 
 ##加载gio库和gio-unix库

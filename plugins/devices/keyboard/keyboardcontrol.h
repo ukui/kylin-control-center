@@ -26,6 +26,8 @@
 
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
+#include "HoverWidget/hoverwidget.h"
+#include "ImageUtil/imageutil.h"
 
 #include "kbdlayoutmanager.h"
 
@@ -58,7 +60,7 @@ public:
     void rebuildLayoutsComBox();
 
 protected:
-    bool eventFilter(QObject *watched, QEvent *event);
+//    bool eventFilter(QObject *watched, QEvent *event);
 
 private:
     Ui::KeyboardControl *ui;
@@ -78,8 +80,7 @@ private:
 
     KbdLayoutManager * layoutmanagerObj;
 
-
-    QStyledItemDelegate* itemDelege;
+    HoverWidget * addWgt;
 
 private:
     bool settingsCreate;

@@ -4,20 +4,20 @@
 #
 #-------------------------------------------------
 
+include(../../../env.pri)
+include(../../pluginsComponent/pluginsComponent.pri)
+
 QT       += widgets
 
 TARGET = $$qtLibraryTarget(multitask)
+DESTDIR = ../..
 TEMPLATE = lib
 CONFIG += plugin
 INCLUDEPATH += ../../..
 
-DESTDIR = ../..
-
-include(../../pluginsComponent/pluginsComponent.pri)
-
 #DEFINES += QT_DEPRECATED_WARNINGS
 
-target.path = $$[QT_INSTALL_PREFIX]/lib/control-center/plugins/
+target.path = $${PLUGIN_INSTALL_DIRS}
 INSTALLS += target
 
 SOURCES += \

@@ -49,6 +49,7 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
 
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+    ui->tipLabel->setAlignment(Qt::AlignCenter);
 
     ui->label_8->adjustSize();
     ui->label_8->setWordWrap(true);
@@ -69,16 +70,9 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
 //                                     "QComboBox::down-arrow{image:url(://img/dropArrow/downpx.png)}"
 //                                     "QComboBox::drop-down{width: 30px; border: none;}"
 //                                     "");
-    //构建Combox代理，否则样式不全部生效
-    itemDelege = new QStyledItemDelegate();
-    ui->pwdTypeComBox->setItemDelegate(itemDelege);
-    ui->pwdTypeComBox->setMaxVisibleItems(5);
-
-
     initPwdChecked();
     setupComonpent();
     setupConnect();
-
 }
 
 CreateUserDialog::~CreateUserDialog()
@@ -363,8 +357,22 @@ void CreateUserDialog::keyPressEvent(QKeyEvent *event)
     QDialog::keyPressEvent(event);
 }
 
+bool CreateUserDialog::nameTraverse(QString username){
+    QString::const_iterator cit = NULL;
+    for (cit = username.cbegin(); cit < username.cend(); cit++){
+        QString str = *cit;
+        if (str.contains(QRegExp("[a-z]"))){
+        } else if (str.contains(QRegExp("[0-9]"))){
+        } else if (str.contains("_")){
+        } else{
+            return false;
+        }
+    }
+    return true;
+}
 
 void CreateUserDialog::nameLegalityCheck(QString username){
+
     if (username.isEmpty())
         nameTip = tr("The user name cannot be empty");
     else if (username.startsWith("_") || username.left(1).contains((QRegExp("[0-9]")))){
@@ -373,7 +381,7 @@ void CreateUserDialog::nameLegalityCheck(QString username){
     else if (username.contains(QRegExp("[A-Z]"))){
         nameTip = tr("User name can not contain capital letters!");
     }
-    else if (username.contains(QRegExp("[a-z]")) || username.contains(QRegExp("[0-9]")) || username.contains("_"))
+    else if (nameTraverse(username))
         if (username.length() > 0 && username.length() < USER_LENGTH){
             /*
              * 此处代码需要优化

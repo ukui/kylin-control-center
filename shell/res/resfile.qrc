@@ -125,6 +125,13 @@
         <file>plugins/shortcut/up.svg</file>
         <file>plugins/shortcut/down.svg</file>
         <file>plugins/update/update.png</file>
+        <file>plugins/mouse/double-click-maybe.png</file>
+        <file>plugins/mouse/double-click-off.png</file>
+        <file>plugins/mouse/double-click-on.png</file>
+        <file>titlebar/add.svg</file>
+        <file>plugins/update/update.svg</file>
+        <file>secondaryleftmenu/SecurityCenter.svg</file>
+        <file>secondaryleftmenu/SecurityCenterWhite.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>i18n/zh_CN.qm</file>

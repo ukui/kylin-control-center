@@ -218,7 +218,6 @@ private Q_SLOTS:
     void settingMenuComboboxChangedSlot(int index);
     void profileComboboxChangedSlot(int index);
     void selectComboboxChangedSlot(int index);
-
 private:
     UkmediaInputWidget *m_pInputWidget;
     UkmediaOutputWidget *m_pOutputWidget;
@@ -248,6 +247,7 @@ private:
     QStringList *m_pInputPortList;
     QStringList *m_pOutputPortList;
     QStringList *m_pProfileNameList;
+
     QStringList *m_pSoundNameList;
     QStringList *eventList;
     QStringList *eventIdNameList;

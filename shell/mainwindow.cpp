@@ -47,6 +47,7 @@ extern "C" {
 #include <gio/gio.h>
 }
 
+const int dbWitdth = 50;
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -75,7 +76,6 @@ MainWindow::MainWindow(QWidget *parent) :
             QFont font = this->font();
             int width = font.pointSize();
             for (auto widget : qApp->allWidgets()) {
-                widget->repaint();
                 widget->setFont(font);
             }
             ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
@@ -166,6 +166,7 @@ MainWindow::MainWindow(QWidget *parent) :
         close();
 //        qApp->quit();
     });
+
 //    connect(ui->backBtn, &QPushButton::clicked, this, [=]{
 //        if (ui->stackedWidget->currentIndex())
 //            ui->stackedWidget->setCurrentIndex(0);
@@ -349,11 +350,20 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
                     }
                 }
             }
+        } else if (event->type() == QEvent::MouseButtonDblClick) {
+            bool res = dblOnEdge(dynamic_cast<QMouseEvent*>(event));
+            if (res) {
+                if (this->windowState() == Qt::WindowMaximized) {
+                    this->showNormal();
+                } else {
+                    this->showMaximized();
+                }
+            }
+
         }
     }
     return QObject::eventFilter(watched, event);
 }
-
 
 void MainWindow::setBtnLayout(QPushButton * &pBtn){
     QLabel * imgLabel = new QLabel(pBtn);
@@ -386,13 +396,15 @@ void MainWindow::loadPlugins(){
     static bool installed = (QCoreApplication::applicationDirPath() == QDir(("/usr/bin")).canonicalPath());
 
     if (installed)
-        pluginsDir = QDir("/usr/lib/control-center/pluginlibs/");
+        pluginsDir = QDir(PLUGIN_INSTALL_DIRS);
     else {
-        pluginsDir = QDir(qApp->applicationDirPath() + "/pluginlibs/");
+        pluginsDir = QDir(qApp->applicationDirPath() + "/plugins");
     }
 
-    bool isExistCloud  = isExitsCloudAccount();    
+    bool isExistCloud  = isExitsCloudAccount();
     foreach (QString fileName, pluginsDir.entryList(QDir::Files)){
+        if (!fileName.endsWith(".so"))
+            continue;
 //        if (fileName == "libdesktop.so")
 //            continue;
 //        if (fileName == "libnotice.so")
@@ -403,7 +415,7 @@ void MainWindow::loadPlugins(){
             continue;
         }
 
-        const char * securityCmd = "/usr/sbin/defender";
+        const char * securityCmd = "/usr/sbin/ksc-defender";
 
         qDebug() << "Scan Plugin: " << fileName;
         //gsettings-desktop-schemas
@@ -696,6 +708,18 @@ QPixmap MainWindow::drawSymbolicColoredPixmap(const QPixmap &source, QString cgC
         }
     }
     return QPixmap::fromImage(img);
+}
+
+bool MainWindow::dblOnEdge(QMouseEvent *event)
+{
+    QPoint pos = event->globalPos();
+    int globalMouseY = pos.y();
+
+    int frameY = this->y();
+
+    bool onTopEdges = (globalMouseY >= frameY &&
+                  globalMouseY <= frameY + dbWitdth);
+    return onTopEdges;
 }
 
 void MainWindow::setModuleBtnHightLight(int id){
