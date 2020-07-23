@@ -309,7 +309,7 @@ void NetConnect::rebuildAvailComponent(QString iconPath, QString netName){
     devFrame->setLayout(devHorLayout);
 
     baseVerLayout->addWidget(devFrame);
-    baseVerLayout->addStretch();
+//    baseVerLayout->addStretch();
 
 //    baseWidget->setLayout(baseVerLayout);
 

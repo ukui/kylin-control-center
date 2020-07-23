@@ -218,7 +218,7 @@ void KbdLayoutManager::rebuild_listwidget(){
         QHBoxLayout * mainHLayout = new QHBoxLayout(layoutWidget);
         QLabel * layoutLabel = new QLabel(layoutWidget);
         QPushButton * layoutdelBtn = new QPushButton(layoutWidget);
-        layoutdelBtn->setIcon(QIcon("://keyboardcontrol/delete.png"));
+//        layoutdelBtn->setIcon(QIcon("://keyboardcontrol/delete.png"));
         layoutdelBtn->setText(tr("Del"));
 //        layoutdelBtn->setStyleSheet(""
 //                            "QPushButton{background: #FA6056; border-radius: 2px;}"
@@ -238,7 +238,7 @@ void KbdLayoutManager::rebuild_listwidget(){
 
         QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
         item->setData(Qt::UserRole, layout);
-        item->setSizeHint(QSize(ui->listWidget->width(), 36));
+        item->setSizeHint(QSize(ui->listWidget->width(), 50));
 
         layoutLabel->setText(desc);
         ui->listWidget->addItem(item);

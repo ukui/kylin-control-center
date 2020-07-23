@@ -522,7 +522,8 @@ bool DefaultApp::setAudioPlayersDefaultProgram(char *appid){
                 gboolean ret8 = g_app_info_set_as_default_for_type(appitem, "audio/ac3", NULL);
                 gboolean ret9 = g_app_info_set_as_default_for_type(appitem, "audio/acc", NULL);
                 gboolean ret10 = g_app_info_set_as_default_for_type(appitem, "audio/aac", NULL);
-                if(ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8 && ret9 && ret10) {
+                gboolean ret11 = g_app_info_set_as_default_for_type(appitem, "audio/mp4", NULL);
+                if(ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8 && ret9 && ret10 && ret11) {
                     qDebug()<<"set succes in default app----->"<<endl;
                     judge=true;
                 }
