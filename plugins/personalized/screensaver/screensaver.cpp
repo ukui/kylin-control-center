@@ -130,6 +130,7 @@ void Screensaver::plugin_delay_control(){
 }
 
 void Screensaver::initComponent(){
+    screensaver_bin = "/usr/lib/ukui-screensaver/ukui-screensaver-default";
 
     //添加开启屏保按钮
     enableSwitchBtn = new SwitchButton(ui->enableFrame);
