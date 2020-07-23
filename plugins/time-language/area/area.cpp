@@ -160,12 +160,6 @@ void Area::initUI(){
 //    ui->showformwidget->setStyleSheet("QWidget#showformwidget{background-color:#E5E7E9;border-radius:6px}");
 //    ui->countrylabel->setStyleSheet("QLabel#countrylabel{background: #E5E7E9;}");
 
-
-//    ui->countrycomboBox->setStyleSheet(qss);
-//    ui->countrycomboBox->setItemDelegate(itemDelege);
-    ui->countrycomboBox->setView(new QListView());
-    ui->countrycomboBox->setMaxVisibleItems(5);
-
     ui->countrycomboBox->addItem(tr("US"));
     ui->countrycomboBox->addItem(tr("CN"));
 
@@ -190,8 +184,6 @@ void Area::initUI(){
 //    ui->addlanwidget->setStyleSheet("QWidget#addlanwidget{background-color:#E5E7E9;border-radius:6px}");
 
 //    ui->langcomboBox->setItemDelegate(itemDelege);
-    ui->langcomboBox->setView(new QListView());
-    ui->langcomboBox->setMaxVisibleItems(5);
     ui->langcomboBox->addItem(tr("English"));
     ui->langcomboBox->addItem(tr("Chinese"));
 
@@ -238,8 +230,6 @@ void Area::initUI(){
     });
 
     ui->addLyt->addWidget(addWgt);
-
-
 }
 
 void Area::initComponent() {

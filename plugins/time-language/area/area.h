@@ -23,7 +23,6 @@
 #include <QWidget>
 #include <QObject>
 #include <QtPlugin>
-#include <QStyledItemDelegate>
 
 #include "shell/interface.h"
 #include "dataformat.h"

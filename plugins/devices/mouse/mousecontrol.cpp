@@ -66,7 +66,7 @@ MyLabel::MyLabel(){
     pSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
     this->setSizePolicy(pSizePolicy);
 
-    setFixedSize(QSize(48, 48));
+    setFixedSize(QSize(54, 28));
     setScaledContents(true);
 
     setPixmap(QPixmap(":/img/plugins/mouse/double-click-off.png"));

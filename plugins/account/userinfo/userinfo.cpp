@@ -371,7 +371,7 @@ void UserInfo::initComponent(){
 
 
 //    ui->listWidget->setStyleSheet("QListWidget{border: none}");
-//    ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 //    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setSpacing(0);
 
@@ -635,6 +635,8 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
 
     baseHorLayout->addWidget(widget);
     baseHorLayout->addWidget(delBtn, Qt::AlignVCenter);
+    baseHorLayout->addSpacing(4);
+
 
     baseVerLayout->addLayout(baseHorLayout);
 //    baseVerLayout->addStretch();

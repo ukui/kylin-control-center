@@ -76,7 +76,6 @@
 const QString defCursor = "DMZ-White";
 const int transparency = 95;
 
-
 namespace {
 
     // Preview cursors
@@ -245,9 +244,9 @@ void Theme::setupComponent(){
     ui->transFrame->setVisible(true);
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
-
+    ui->transFrame->setVisible(false);
+    ui->effectFrame->setVisible(false);
 #else
-
 #endif
 }
 
@@ -575,6 +574,8 @@ void Theme::resetBtnClickSlot() {
 //    emit ui->defaultButton->clicked();
     emit ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
 
+    ui->tranSlider->setValue(transparency);
+
 //    ui->defaultButton->setChecked(true);
 
     // reset cursor default theme
@@ -583,6 +584,7 @@ void Theme::resetBtnClickSlot() {
 
     //reset icon default theme
     qtSettings->reset(ICON_QT_KEY);
+    qtSettings->reset(THEME_TRAN_KEY);
     gtkSettings->reset(ICON_GTK_KEY);
 
     ui->tranSlider->setValue(transparency);
