@@ -106,7 +106,7 @@ Screensaver::~Screensaver()
 {
     delete ui;
     delete process;
-    process = nullptr;
+    process = nullptr;    
     if (!screenlock_settings) {
         delete screenlock_settings;
     }
@@ -130,6 +130,28 @@ void Screensaver::plugin_delay_control(){
 }
 
 void Screensaver::initComponent(){
+    if (QGSettings::isSchemaInstalled(SCREENSAVER_SCHEMA)) {
+        const QByteArray id(SCREENSAVER_SCHEMA);
+        screenlock_settings = new QGSettings(id);
+
+        connect(screenlock_settings, &QGSettings::changed, [=](QString key) {
+            if (key == "lockEnabled") {
+                bool judge = screenlock_settings->get(LOCK_KEY).toBool();
+                if (judge && !enableSwitchBtn->isChecked()) {
+                    enableSwitchBtn->setChecked(judge);
+                }
+            }
+        });
+    }
+
+    if(QGSettings::isSchemaInstalled(SESSION_SCHEMA)) {
+        qSessionSetting = new QGSettings(SESSION_SCHEMA, QByteArray(), this);
+    }
+
+    if(QGSettings::isSchemaInstalled(SCREENSAVER_SCHEMA)) {
+        qScreenSaverSetting = new QGSettings(SCREENSAVER_SCHEMA, QByteArray(), this);
+    }
+
     screensaver_bin = "/usr/lib/ukui-screensaver/ukui-screensaver-default";
 
     //添加开启屏保按钮
@@ -171,7 +193,7 @@ void Screensaver::initComponent(){
 //    ui->idleSlider->setSingleStep(IDLESTEP);
 //    ui->idleSlider->setPageStep(IDLESTEP);
 
-    connect(enableSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
+    connect(enableSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked) {
         screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
         g_settings_set_boolean(screensaver_settings, ACTIVE_KEY, checked);
 
@@ -179,6 +201,14 @@ void Screensaver::initComponent(){
 //        ui->lockFrame->setVisible(checked);
         g_object_unref(screensaver_settings);
     });
+
+    connect(qScreenSaverSetting, &QGSettings::changed, this, [=](const QString key){
+        if ("idleActivationEnabled" == key) {
+            auto status = qScreenSaverSetting->get(ACTIVE_KEY).toBool();
+            enableSwitchBtn->setChecked(status);
+        }
+    });
+
 
 //    connect(lockSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
 //        //REVIEW*** g_object_unref faild
@@ -192,20 +222,6 @@ void Screensaver::initComponent(){
 //        delete settings;
 //    });
 
-    if (QGSettings::isSchemaInstalled(SCREENSAVER_SCHEMA)) {
-        const QByteArray id(SCREENSAVER_SCHEMA);
-        screenlock_settings = new QGSettings(id);
-
-        connect(screenlock_settings, &QGSettings::changed, [=](QString key) {
-            if (key == "lockEnabled") {
-                bool judge = screenlock_settings->get(LOCK_KEY).toBool();
-                if (judge && !enableSwitchBtn->isChecked()) {
-                    enableSwitchBtn->setChecked(judge);
-                }
-            }
-        });
-    }
-
 //    connect(uslider, &QSlider::valueChanged, this, [=](int value){
 //        //刷新分钟显示
 //        ui->idleLineEdit->blockSignals(true);
@@ -213,20 +229,25 @@ void Screensaver::initComponent(){
 //        ui->idleLineEdit->blockSignals(false);
 //    });
     connect(uslider, &QSlider::valueChanged, this, [=]{
-        int value = convertToLocktime( uslider->value());
-
+        int value = convertToLocktime(uslider->value());
         session_settings = g_settings_new(SESSION_SCHEMA);
         g_settings_set_int(session_settings, IDLE_DELAY_KEY, value);
         g_object_unref(session_settings);
     });
 
+    connect(qSessionSetting, &QGSettings::changed, this,[=](const QString& key){
+       if ("idleDelay" == key) {
+           auto value = qSessionSetting->get(key).toInt();
+           uslider->setValue(lockConvertToSlider(value));
+       }
+    });
 
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(themesComboxChanged(int)));
+
 
     connect(ui->previewWidget, &QWidget::destroyed, this, [=]{
         closeScreensaver();
     });
-
 }
 
 void Screensaver::initPreviewWidget(){
@@ -418,13 +439,11 @@ void Screensaver::status_init(){
 
     //获取空闲时间
     int minutes;
-    session_settings = g_settings_new(SESSION_SCHEMA);
     minutes = g_settings_get_int(session_settings, IDLE_DELAY_KEY);
     uslider->setValue(lockConvertToSlider(minutes));
 //    ui->idleSlider->setValue(minutes);
 //    ui->idleLabel->setText(QString("%1%2").arg(minutes).arg(tr("minutes")));
 
-    g_object_unref(session_settings);
 
     //获取功能列表
 //    PublicData * publicdata = new PublicData();
@@ -433,7 +452,7 @@ void Screensaver::status_init(){
     //connect
 //    connect(ui->powerBtn, &QPushButton::clicked, this, [=]{pluginWidget->emitting_toggle_signal(tmpList.at(2), SYSTEM, 0);});
 
-    connect(uslider, SIGNAL(sliderReleased()), this, SLOT(slider_released_slot())); //改gsettings
+//    connect(uslider, SIGNAL(sliderReleased()), this, SLOT(slider_released_slot())); //改gsettings
 //    connect(activeswitchbtn, SIGNAL(checkedChanged(bool)), this, SLOT(activebtn_changed_slot(bool)));
 //    connect(lockswitchbtn, SIGNAL(checkedChanged(bool)), this, SLOT(lockbtn_changed_slot(bool)));
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(combobox_changed_slot(int)));
@@ -575,8 +594,7 @@ int Screensaver::lockConvertToSlider(const int value) {
 
 
 
-void Screensaver::set_idle_gsettings_value(int value){
-    session_settings = g_settings_new(SESSION_SCHEMA);
+void Screensaver::set_idle_gsettings_value(int value){    
     g_settings_set_int(session_settings, IDLE_DELAY_KEY, value);
 }
 

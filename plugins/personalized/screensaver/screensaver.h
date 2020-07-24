@@ -78,7 +78,6 @@ protected:
 //    void showEvent(QShowEvent *e);
 //    void moveEvent(QMoveEvent *e);
 //    void hideEvent(QHideEvent *e);
-
 };
 
 class Screensaver : public QObject, CommonInterface
@@ -125,46 +124,45 @@ private:
 private:
     Ui::Screensaver *ui;
 
-    QString pluginName;
     int pluginType;
-    QWidget * pluginWidget;
+    QWidget       * pluginWidget;
     PreviewWidget * mPreviewWidget;
 
-private:
     SwitchButton * enableSwitchBtn;
     SwitchButton * lockSwitchBtn;
-
-    SSThemeInfo _info_new(const char * path);
-    void init_theme_info_map();
-
-    QStringList runStringList;
+    /*
+    SwitchButton * activeswitchbtn;
+    SwitchButton * lockswitchbtn;
+    */
 
     QMap<QString, SSThemeInfo> infoMap;
 
-    GSettings * screensaver_settings;
-    GSettings * session_settings;
-
+    GSettings  * screensaver_settings;
+    GSettings  * session_settings;
     QGSettings * screenlock_settings = nullptr;
+    QGSettings * qSessionSetting = nullptr;
+    QGSettings * qScreenSaverSetting = nullptr;
 
-    QString screensaver_bin;
+    QProcess   * process;
 
-//    SwitchButton * activeswitchbtn;
-//    SwitchButton * lockswitchbtn;
+    QString      pluginName;
+    QString      screensaver_bin;
 
-    QProcess * process;
-    QStringList killList;
+    QStringList  killList;
+    QStringList  runStringList;
 
-    Uslider * uslider;
+    Uslider    * uslider;
+
+private:
+    SSThemeInfo _info_new(const char * path);
+    void init_theme_info_map();
 
 private slots:
     void themesComboxChanged(int index);
-
-private slots:
     void combobox_changed_slot(int index);
     void activebtn_changed_slot(bool status);
     void lockbtn_changed_slot(bool status);
     void slider_released_slot();
-
     void kill_screensaver_preview();
 
 Q_SIGNALS:
