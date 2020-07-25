@@ -34,6 +34,7 @@ PKGCONFIG     += gio-2.0 \
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
+    changevaliddialog.cpp \
     elipsemaskwidget.cpp \
     userinfo.cpp \
     qtdbus/systemdbusdispatcher.cpp \
@@ -42,10 +43,10 @@ SOURCES += \
     changetypedialog.cpp \
     changefacedialog.cpp \
     deluserdialog.cpp \
-    createuserdialog.cpp \
-    changevailddialog.cpp
+    createuserdialog.cpp
 
 HEADERS += \
+    changevaliddialog.h \
     elipsemaskwidget.h \
     userinfo.h \
     qtdbus/systemdbusdispatcher.h \
@@ -54,16 +55,15 @@ HEADERS += \
     changetypedialog.h \
     changefacedialog.h \
     deluserdialog.h \
-    createuserdialog.h \
-    changevailddialog.h
+    createuserdialog.h
 
 FORMS += \
+    changevaliddialog.ui \
     userinfo.ui \
     changepwddialog.ui \
     changetypedialog.ui \
     changefacedialog.ui \
     deluserdialog.ui \
-    createuserdialog.ui \
-    changevailddialog.ui
+    createuserdialog.ui
 
 INSTALLS += target

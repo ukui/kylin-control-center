@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ChangeVaildDialog</class>
- <widget class="QDialog" name="ChangeVaildDialog">
+ <class>ChangeValidDialog</class>
+ <widget class="QDialog" name="ChangeValidDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -314,7 +314,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="vaildDateLabel">
+             <widget class="QLabel" name="validDateLabel">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>

@@ -30,7 +30,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     connect(this,SIGNAL(dooss(QString)),m_dbusClient,SLOT(init_oss(QString)));
     connect(this,SIGNAL(docheck()),m_dbusClient,SLOT(check_login()));
     connect(this,SIGNAL(doconf()),m_dbusClient,SLOT(init_conf()));
-    connect(this,SIGNAL(doman()),m_dbusClient,SLOT(manual_sync()));
+    connect(this,SIGNAL(domain()),m_dbusClient,SLOT(manual_sync()));
     connect(this,SIGNAL(dochange(QString,int)),m_dbusClient,SLOT(change_conf_value(QString,int)));
     connect(this,SIGNAL(dologout()),m_dbusClient,SLOT(logout()));
     connect(m_dbusClient,SIGNAL(finished_oss(int)),this,SLOT(setret_oss(int)));
@@ -345,7 +345,7 @@ void MainWidget::init_gui() {
     }
 
     connect(m_cSyncDelay,&QTimer::timeout,[=] () {
-        emit doman();
+        emit domain();
     });
 
     //All.conf的

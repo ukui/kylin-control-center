@@ -120,7 +120,7 @@ public slots:
     void            setret_check(QString ret);
 signals:
     void dooss(QString m_szUuid);
-    void doman();
+    void domain();
     void dologout();
     void doconf();
     void dochange(QString name,int flag);

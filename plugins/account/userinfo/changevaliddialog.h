@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef CHANGEVAILDDIALOG_H
-#define CHANGEVAILDDIALOG_H
+#ifndef CHANGEVALIDDIALOG_H
+#define CHANGEVALIDDIALOG_H
 
 #include <QDialog>
 
@@ -29,16 +29,16 @@
 
 
 namespace Ui {
-class ChangeVaildDialog;
+class ChangeValidDialog;
 }
 
-class ChangeVaildDialog : public QDialog
+class ChangeValidDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit ChangeVaildDialog(QString userName, QWidget *parent = 0);
-    ~ChangeVaildDialog();
+    explicit ChangeValidDialog(QString userName, QWidget *parent = 0);
+    ~ChangeValidDialog();
 
     void setupConnect();
 
@@ -48,7 +48,7 @@ public:
 
     void _getCurrentPwdStatus();
 
-    void setupCurrentVaild();
+    void setupCurrentValid();
     void setupComponent();
 
     void setupYearCombo();
@@ -59,7 +59,7 @@ protected:
     void paintEvent(QPaintEvent *);
 
 private:
-    Ui::ChangeVaildDialog *ui;
+    Ui::ChangeValidDialog *ui;
 
 private:
     QString _name;
@@ -69,4 +69,4 @@ private:
     int delayDays;
 };
 
-#endif // CHANGEVAILDDIALOG_H
+#endif // CHANGEVALIDDIALOG_H

@@ -225,7 +225,7 @@ void UserInfo::readCurrentPwdConf(){
         status = pwquality_get_int_value(pwdconf, PWQ_SETTING_MIN_LENGTH, &minLen);
         if (!status && minLen > 0){
             pwdOption.min_length = minLen;
-            pwdMsg += QObject::tr("min lenght %1\n").arg(minLen);
+            pwdMsg += QObject::tr("min length %1\n").arg(minLen);
 
         } else {
             pwdMsg += "";
@@ -402,11 +402,11 @@ void UserInfo::initComponent(){
         showChangeTypeDialog(user.username);
     });
 
-    connect(ui->changeVaildBtn, &QPushButton::clicked, this, [=](bool checked){
+    connect(ui->changeValidBtn, &QPushButton::clicked, this, [=](bool checked){
         Q_UNUSED(checked)
         UserInfomation user = allUserInfoMap.value(g_get_user_name());
 
-        showChangeVaildDialog(user.username);
+        showChangeValidDialog(user.username);
 
     });
 
@@ -738,11 +738,11 @@ void UserInfo::deleteUserDone(QString objpath){
     _resetListWidgetHeigh();
 }
 
-void UserInfo::showChangeVaildDialog(QString username){
+void UserInfo::showChangeValidDialog(QString username){
     if (allUserInfoMap.keys().contains(username)){
         UserInfomation user = allUserInfoMap.value(username);
 
-        ChangeVaildDialog * dialog = new ChangeVaildDialog(user.username);
+        ChangeValidDialog * dialog = new ChangeValidDialog(user.username);
         dialog->setUserLogo(user.iconfile);
         dialog->setUserType(_accountTypeIntToString(user.accounttype));
         dialog->exec();

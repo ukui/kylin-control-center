@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#include "changevailddialog.h"
-#include "ui_changevailddialog.h"
+#include "changevaliddialog.h"
+#include "ui_changevaliddialog.h"
 
 #include <QProcess>
 #include <QDBusInterface>
@@ -27,10 +27,10 @@
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
-ChangeVaildDialog::ChangeVaildDialog(QString userName, QWidget *parent) :
+ChangeValidDialog::ChangeValidDialog(QString userName, QWidget *parent) :
     QDialog(parent),
     _name(userName),
-    ui(new Ui::ChangeVaildDialog)
+    ui(new Ui::ChangeValidDialog)
 {
     ui->setupUi(this);
 
@@ -50,18 +50,18 @@ ChangeVaildDialog::ChangeVaildDialog(QString userName, QWidget *parent) :
 
     _getCurrentPwdStatus();
 
-    setupCurrentVaild();
+    setupCurrentValid();
     setupConnect();
     setupComponent();
 
 }
 
-ChangeVaildDialog::~ChangeVaildDialog()
+ChangeValidDialog::~ChangeValidDialog()
 {
     delete ui;
 }
 
-void ChangeVaildDialog::setupConnect(){
+void ChangeValidDialog::setupConnect(){
     connect(ui->closeBtn, &QPushButton::clicked, [=]{
         close();
     });
@@ -121,19 +121,19 @@ void ChangeVaildDialog::setupConnect(){
     });
 }
 
-void ChangeVaildDialog::setUserLogo(QString iconfile){
+void ChangeValidDialog::setUserLogo(QString iconfile){
     ui->faceLabel->setPixmap(QPixmap(iconfile));
 }
 
-void ChangeVaildDialog::setUserName(){
+void ChangeValidDialog::setUserName(){
     ui->nameLabel->setText(_name);
 }
 
-void ChangeVaildDialog::setUserType(QString atype){
+void ChangeValidDialog::setUserType(QString atype){
     ui->typeLabel->setText(atype);
 }
 
-void ChangeVaildDialog::_getCurrentPwdStatus(){
+void ChangeValidDialog::_getCurrentPwdStatus(){
     //
     QString cmd = "passwd -S " + _name;
 
@@ -142,33 +142,33 @@ void ChangeVaildDialog::_getCurrentPwdStatus(){
     process->waitForFinished();
 
     QByteArray ba = process->readAllStandardOutput();
-    QString vaild = QString(ba.data()).simplified();
+    QString valid = QString(ba.data()).simplified();
 
-    if (vaild.startsWith(_name)){
-        QStringList vaildList = vaild.split(" ");
-        QString lastChangeStr = vaildList.at(2);
+    if (valid.startsWith(_name)){
+        QStringList validList = valid.split(" ");
+        QString lastChangeStr = validList.at(2);
         QStringList lastChangeList = lastChangeStr.split("/");
         lastChangeDate = QDate(QString(lastChangeList.at(2)).toInt(), QString(lastChangeList.at(0)).toInt(), QString(lastChangeList.at(1)).toInt());
-        delayDays = QString(vaildList.at(4)).toInt();
+        delayDays = QString(validList.at(4)).toInt();
     } else {
         delayDays = -1;
     }
 }
 
-void ChangeVaildDialog::setupCurrentVaild(){
+void ChangeValidDialog::setupCurrentValid(){
     if (lastChangeDate.isValid() && delayDays >= 0){
         if (delayDays >= 10000){
-            ui->vaildDateLabel->setText(QObject::tr("Never"));
+            ui->validDateLabel->setText(QObject::tr("Never"));
         } else {
-            QDate invaild = lastChangeDate.addDays(delayDays);
-            ui->vaildDateLabel->setText(invaild.toString("yyyy-MM-dd"));
+            QDate invalid = lastChangeDate.addDays(delayDays);
+            ui->validDateLabel->setText(invalid.toString("yyyy-MM-dd"));
         }
     } else {
-        ui->vaildDateLabel->setText(QObject::tr("Unknown"));
+        ui->validDateLabel->setText(QObject::tr("Unknown"));
     }
 }
 
-void ChangeVaildDialog::setupComponent(){
+void ChangeValidDialog::setupComponent(){
     //chage源码中超过10000天会显示从不，10000/365 = 27.3，为了方便显示，取整，界面显示26年
     if (lastChangeDate.isValid()){
         setupYearCombo();
@@ -188,7 +188,7 @@ void ChangeVaildDialog::setupComponent(){
     }
 }
 
-void ChangeVaildDialog::setupYearCombo(){
+void ChangeValidDialog::setupYearCombo(){
     ui->yearCombox->blockSignals(true);
     ui->yearCombox->clear();
 
@@ -208,7 +208,7 @@ void ChangeVaildDialog::setupYearCombo(){
     ui->yearCombox->blockSignals(false);
 }
 
-void ChangeVaildDialog::setupMonthCombo(){
+void ChangeValidDialog::setupMonthCombo(){
     ui->monthCombox->blockSignals(true);
 
     ui->monthCombox->clear();
@@ -234,7 +234,7 @@ void ChangeVaildDialog::setupMonthCombo(){
     ui->monthCombox->blockSignals(false);
 }
 
-void ChangeVaildDialog::setupDayCombo(){
+void ChangeValidDialog::setupDayCombo(){
     ui->dayCombox->blockSignals(true);
 
     ui->dayCombox->clear();
@@ -258,7 +258,7 @@ void ChangeVaildDialog::setupDayCombo(){
 }
 
 
-void ChangeVaildDialog::paintEvent(QPaintEvent * event){
+void ChangeValidDialog::paintEvent(QPaintEvent * event){
     Q_UNUSED(event)
 
     QPainter p(this);

@@ -38,7 +38,7 @@
 #include "changepwddialog.h"
 #include "changefacedialog.h"
 #include "changetypedialog.h"
-#include "changevailddialog.h"
+#include "changevaliddialog.h"
 #include "deluserdialog.h"
 #include "createuserdialog.h"
 #include "HoverWidget/hoverwidget.h"
@@ -146,7 +146,7 @@ public:
     void showChangeFaceDialog(QString username);
     void changeUserFace(QString facefile, QString username);
 
-    void showChangeVaildDialog(QString username);
+    void showChangeValidDialog(QString username);
 
     void get_all_users();
     UserInfomation init_user_info(QString objpath);
