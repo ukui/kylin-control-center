@@ -74,23 +74,18 @@ int main(int argc, char *argv[])
 
     QtSingleApplication a(argc, argv);
 
-    if (a.isRunning()){
+    if (a.isRunning()) {
         a.sendMessage(QApplication::arguments().length() > 1 ? QApplication::arguments().at(1) : a.applicationFilePath());
-        qDebug() << QObject::tr("ukui-control-center had already running!");
+        qDebug() << QObject::tr("ukui-control-center is already running!");
         return EXIT_SUCCESS;
     } else {
         //加载国际化文件
         QString locale = QLocale::system().name();
         QTranslator translator;
         QString qm  = locale + ".qm";
-//        qDebug()<<"locale is---->"<<qm<<endl;
+//        qDebug() << "locale is "<< qm <<endl;
         if (translator.load(qm, "://i18n/"))
             a.installTranslator(&translator);
-//        if (locale == "zh_CN"){
-
-//            else
-//                qDebug() << "Load translations file" << locale << "failed!";
-//        }
 
         //命令行参数
         QCoreApplication::setApplicationName("ukui-control-center");
@@ -106,9 +101,6 @@ int main(int argc, char *argv[])
         QCommandLineOption audioRoleOption("s", "Go to audio settings page");
         QCommandLineOption noticeRoleOption("n", "Go to notice settings page");
 
-//        QCommandLineOption powerRoleOption(QStringList() << "aaa" << "bbb", "ccccccccccccccccc");
-
-//        parser.setApplicationDescription("eeeeeeeeeeeee");
         parser.addHelpOption();
         parser.addVersionOption();
         parser.addOption(monitorRoleOption);
@@ -120,10 +112,7 @@ int main(int argc, char *argv[])
         parser.addOption(desktopRoleOption);
         parser.addOption(audioRoleOption);
         parser.addOption(noticeRoleOption);
-
-//        parser.addPositionalArgument("ffff", "ggggggggggggggggggg");
         parser.process(a);
-
 
         MainWindow * w = new MainWindow;
         centerToScreen(w);

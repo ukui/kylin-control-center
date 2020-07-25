@@ -53,8 +53,8 @@
 //#define USER_SACLE_KEY "hidpi"
 
 
-#define FONT_RENDERING_DPI "org.ukui.font-rendering"
-#define DPI_KEY "dpi"
+#define FONT_RENDERING_DPI "org.ukui.SettingsDaemon.plugins.xsettings"
+#define DPI_KEY "scaling-factor"
 
 #define MOUSE_SIZE_SCHEMAS "org.ukui.peripherals-mouse"
 #define CURSOR_SIZE_KEY "cursor-size"
@@ -596,9 +596,18 @@ void Widget::writeScale(int scale) {
             scale = 1;
             cursize = 24;
         }
-        dpiSettings->set(DPI_KEY, scale);
+
+        QStringList keys = dpiSettings->keys();
+        if (keys.contains("scalingFactor")) {
+            qDebug()<<"sclaing facor--->"<<endl;
+            dpiSettings->set(DPI_KEY, scale);
+        }
         cursorSettings->set(CURSOR_SIZE_KEY, cursize);
+
+        delete dpiSettings;
+        delete cursorSettings;
     }
+
 }
 
 

@@ -233,27 +233,27 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::bootOptionsFilter(QString opt){
-    if (opt == "-m"){
+    if (opt == "-m") {
         //显示器
         bootOptionsSwitch(SYSTEM, DISPLAY);
 
-    } else if (opt == "-b"){
+    } else if (opt == "-b") {
         //背景
         bootOptionsSwitch(PERSONALIZED, BACKGROUND);
 
-    } else if (opt == "-d"){
+    } else if (opt == "-d") {
         //桌面
         bootOptionsSwitch(PERSONALIZED, DESKTOP);
 
-    } else if (opt == "-u"){
+    } else if (opt == "-u") {
         //账户
         bootOptionsSwitch(ACCOUNT, USERINFO);
 
-    } else if (opt == "-a"){
+    } else if (opt == "-a") {
         //关于
         bootOptionsSwitch(NOTICEANDTASKS, ABOUT);
 
-    } else if (opt == "-p"){
+    } else if (opt == "-p") {
         //电源
         bootOptionsSwitch(SYSTEM, POWER);
     } else if (opt == "-t") {
@@ -338,7 +338,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
                         tipLabel->setVisible(true);
                     }
                 }
-
             } else {
                 ui->leftsidebarWidget->setMaximumWidth(60);
                 for (int i = 0; i <= 9; i++) {
@@ -359,7 +358,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
                     this->showMaximized();
                 }
             }
-
         }
     }
     return QObject::eventFilter(watched, event);
@@ -405,74 +403,33 @@ void MainWindow::loadPlugins(){
     foreach (QString fileName, pluginsDir.entryList(QDir::Files)){
         if (!fileName.endsWith(".so"))
             continue;
-//        if (fileName == "libdesktop.so")
-//            continue;
-//        if (fileName == "libnotice.so")
-//            continue;
         if (fileName == "libexperienceplan.so")
             continue;
         if ("libnetworkaccount.so" == fileName && !isExistCloud) {
             continue;
         }
 
-        const char * securityCmd = "/usr/sbin/ksc-defender";
-
         qDebug() << "Scan Plugin: " << fileName;
-        //gsettings-desktop-schemas
-//        const char * proxyFile = "/usr/share/glib-2.0/schemas/org.gnome.system.proxy.gschema.xml";
-//        const char * gnomedesktopFile = "/usr/share/glib-2.0/schemas/org.gnome.desktop.wm.preferences.gschema.xml";
-        //mate-desktop-common
-//        const char * interfaceFile = "/usr/share/glib-2.0/schemas/org.mate.interface.gschema.xml";
-//        const char * bgFile = "/usr/share/glib-2.0/schemas/org.mate.background.gschema.xml";
-        //peony-common
-//        const char * peonyFile = "/usr/share/glib-2.0/schemas/org.ukui.peony.gschema.xml";
-        //libmatekbd-common
-//        const char * kbdFile = "/usr/share/glib-2.0/schemas/org.mate.peripherals-keyboard-xkb.gschema.xml";
-        //ukui-power-manager-common
-//        const char * powerFile = "/usr/share/glib-2.0/schemas/org.ukui.power-manager.gschema.xml";
+
         //ukui-session-manager
         const char * sessionFile = "/usr/share/glib-2.0/schemas/org.ukui.session.gschema.xml";
         //ukui-screensaver
         const char * screensaverFile = "/usr/share/glib-2.0/schemas/org.ukui.screensaver.gschema.xml";
-        //ukui-settings-daemon-common
-//        const char * usdFile = "/usr/share/glib-2.0/schemas/org.ukui.font-rendering.gschema.xml";
 
-        //代理功能依赖gsettings-desktop-schemas
-//        if (!g_file_test(proxyFile, G_FILE_TEST_EXISTS) && fileName == "libproxy.so")
-//            continue;
-        //字体功能依赖gsettings-desktop-schemas,mate-desktop-common,peony-common,ukui-settings-daemon-common
-//        if ((!g_file_test(interfaceFile, G_FILE_TEST_EXISTS) ||
-//                !g_file_test(gnomedesktopFile, G_FILE_TEST_EXISTS) ||
-//                !g_file_test(peonyFile, G_FILE_TEST_EXISTS) ||
-//                !g_file_test(usdFile, G_FILE_TEST_EXISTS)) && fileName == "libfonts.so")
-//            continue;
-        //键盘功能的键盘布局依赖libmatekbd-common
-//        if (!g_file_test(kbdFile, G_FILE_TEST_EXISTS) && fileName == "libkeyboard.so")
-//            continue;
-        //电源功能依赖ukui-power-manager-common
-//        if (!g_file_test(powerFile, G_FILE_TEST_EXISTS) && fileName == "libpower.so")
-//            continue;
         //屏保功能依赖ukui-session-manager
         if ((!g_file_test(screensaverFile, G_FILE_TEST_EXISTS) ||
                 !g_file_test(sessionFile, G_FILE_TEST_EXISTS)) &&
                 (fileName == "libscreensaver.so" || fileName == "libscreenlock.so"))
             continue;
+
+        const char * securityCmd = "/usr/sbin/ksc-defender";
+
         if ((!g_file_test(securityCmd, G_FILE_TEST_EXISTS)) && (fileName == "libsecuritycenter.so"))
             continue;
-//        //桌面功能依赖peony-common
-//        if (!g_file_test(peonyFile, G_FILE_TEST_EXISTS) && fileName == "libdesktop.so")
-//            continue;
-        //wallpaper mate-desktop-common
-//        if (!g_file_test(bgFile, G_FILE_TEST_EXISTS) && fileName == "libwallpaper.so")
-//            continue;
-        //主题功能依赖gsettings-desktop-schemas,mate-desktop-common
-//        if ((!g_file_test(interfaceFile, G_FILE_TEST_EXISTS) ||
-//                !g_file_test(gnomedesktopFile, G_FILE_TEST_EXISTS)) && fileName == "libtheme.so")
-//            continue;
 
         QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
         QObject * plugin = loader.instance();
-        if (plugin){
+        if (plugin) {
             CommonInterface * pluginInstance = qobject_cast<CommonInterface *>(plugin);
             modulesList[pluginInstance->get_plugin_type()].insert(pluginInstance->get_plugin_name(), plugin);
 
@@ -481,8 +438,7 @@ void MainWindow::loadPlugins(){
             int moduletypeInt = pluginInstance->get_plugin_type();
             if (!moduleIndexList.contains(moduletypeInt))
                 moduleIndexList.append(moduletypeInt);
-        }
-        else {
+        } else {
             //如果加载错误且文件后缀为so，输出错误
             if (fileName.endsWith(".so"))
                 qDebug() << fileName << "Load Failed: " << loader.errorString() << "\n";

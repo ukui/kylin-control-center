@@ -73,7 +73,6 @@ Screenlock::Screenlock()
     initScreenlockStatus();
 
     lockbgSize = QSize(400, 240);
-
 }
 
 Screenlock::~Screenlock()
@@ -150,14 +149,20 @@ void Screenlock::setupComponent(){
         }
     });
 
+
     connect(lSetting, &QGSettings::changed, this, [=](QString key) {
-        if ( key == "idleActivationEnabled") {
+        if ("idleActivationEnabled" == key) {
             bool judge = lSetting->get(SCREENLOCK_ACTIVE_KEY).toBool();
             if (!judge) {
                 if (lockSwitchBtn->isChecked()) {
                     lockSwitchBtn->setChecked(judge);
                 }
             }
+        } else if ("lockEnabled" == key) {
+            bool status = lSetting->get(SCREENLOCK_LOCK_KEY).toBool();
+            lockSwitchBtn->setChecked(status);
+        } else if ("background == key") {
+            initScreenlockStatus();
         }
     });
 
@@ -170,8 +175,6 @@ void Screenlock::setupComponent(){
 void Screenlock::setupConnect(){
 //    ui->delaySlider->setMinimum(1);
 //    ui->delaySlider->setMaximum(120);
-
-
     connect(loginbgSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
         setLockBackground(checked);
     });
@@ -355,7 +358,6 @@ void Screenlock::setLockBackground(bool status)
     lockSetting->beginGroup("ScreenLock");
     lockSetting->setValue("lockStatus", status);
     lockSetting->endGroup();
-
 
     lockLoginSettings->beginGroup("greeter");
     lockLoginSettings->setValue("backgroundPath", picname);
