@@ -50,7 +50,7 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pMasterVolumeWidget = new QFrame(m_pOutputWidget);
     m_pChannelBalanceWidget = new QFrame(m_pOutputWidget);
     m_pOutputPortWidget = new QFrame(m_pOutputWidget);
-    m_pProfileWidget = new QFrame(m_pProfileWidget);
+    m_pProfileWidget = new QFrame(m_pOutputWidget);
 
     m_pProfileWidget->setFrameShape(QFrame::Shape::Box);
     m_pOutputDeviceWidget->setFrameShape(QFrame::Shape::Box);
