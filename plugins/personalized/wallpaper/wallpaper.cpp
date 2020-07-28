@@ -124,6 +124,38 @@ void Wallpaper::setupComponent(){
     colorFlowLayout->setContentsMargins(0, 0, 0, 0);
     ui->colorListWidget->setLayout(colorFlowLayout);
 
+
+    colWgt = new HoverWidget("");
+    colWgt->setObjectName("colWgt");
+    colWgt->setMinimumSize(QSize(580, 50));
+    colWgt->setMaximumSize(QSize(960, 50));
+    colWgt->setStyleSheet("HoverWidget#colWgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#colWgt{background: #3D6BE5; border-radius: 4px;}");
+    QHBoxLayout *addLyt = new QHBoxLayout;
+    QLabel * iconLabel = new QLabel();
+    QLabel * textLabel = new QLabel(tr("Add custom shortcut"));
+    QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+    iconLabel->setPixmap(pixgray);
+    addLyt->addWidget(iconLabel);
+    addLyt->addWidget(textLabel);
+    addLyt->addStretch();
+    colWgt->setLayout(addLyt);
+
+    // 悬浮改变Widget状态
+    connect(colWgt, &HoverWidget::enterWidget, this, [=](QString mname){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(base);");
+
+    });
+    // 还原状态
+    connect(colWgt, &HoverWidget::leaveWidget, this, [=](QString mname){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(windowText);");
+    });
+
+    //colorFlowLayout->addWidget(colWgt);
+
     //壁纸放置方式
     ui->picOptionsComBox->addItem(tr("wallpaper"), "wallpaper");
     ui->picOptionsComBox->addItem(tr("centered"), "centered");

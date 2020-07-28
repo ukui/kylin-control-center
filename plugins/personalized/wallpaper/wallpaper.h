@@ -33,7 +33,8 @@
 
 #include "shell/interface.h"
 #include "FlowLayout/flowlayout.h"
-
+#include "HoverWidget/hoverwidget.h"
+#include "ImageUtil/imageutil.h"
 #include "xmlhandle.h"
 #include "component/custdomitemmodel.h"
 #include "simplethread.h"
@@ -100,6 +101,8 @@ private:
     QString pluginName;
     int pluginType;
     QWidget * pluginWidget;
+
+    HoverWidget *colWgt;
 
 private:
     FlowLayout * picFlowLayout;

@@ -6,6 +6,8 @@
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/flowlayout.pri)
 include($$PROJECT_COMPONENTSOURCE/maskwidget.pri)
+include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
+include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
 
 QT       += widgets xml dbus
 
@@ -33,6 +35,10 @@ PKGCONFIG     += gio-2.0 \
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
+    colordialog.cpp \
+    colorpreview.cpp \
+    colorsquare.cpp \
+    gradientslider.cpp \
     pictureunit.cpp \
     wallpaper.cpp \
     xmlhandle.cpp \
@@ -41,6 +47,10 @@ SOURCES += \
     workerobject.cpp
 
 HEADERS += \
+    colordialog.h \
+    colorpreview.h \
+    colorsquare.h \
+    gradientslider.h \
     pictureunit.h \
     wallpaper.h \
     xmlhandle.h \
@@ -49,4 +59,5 @@ HEADERS += \
     workerobject.h
 
 FORMS += \
+    colordialog.ui \
     wallpaper.ui
