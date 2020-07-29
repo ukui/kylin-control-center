@@ -48,7 +48,6 @@ extern "C" {
 #include <gio/gio.h>
 }
 
-
 namespace Ui {
 class Area;
 }
@@ -71,30 +70,29 @@ public:
     QStringList readFile(const QString& filePath);
 
 private:
+    void initUI();
+    void initComponent();
+    QStringList getUserDefaultLanguage();
+
+private:
     Ui::Area *ui;
 
-    QString pluginName;
     int pluginType;
-    QWidget * pluginWidget;
 
+    QString qss;
     QString objpath;
+    QString pluginName;
+    QString hourformat;
+
+    QWidget * pluginWidget;
 
     QDBusInterface *m_areaInterface;
 
     QGSettings *m_gsettings = nullptr;
+
     QTimer *m_itimer = nullptr;
-    QString hourformat;
-    QString qss;
 
     HoverWidget *addWgt;
-
-protected:
-//    bool eventFilter(QObject *watched, QEvent *event) override;
-
-private:
-    void initUI();
-    void initComponent();
-    QStringList getUserDefaultLanguage();
 
 private slots:
     void initFormatData();

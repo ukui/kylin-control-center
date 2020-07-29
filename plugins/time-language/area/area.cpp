@@ -52,30 +52,21 @@ Area::Area()
     pluginName = tr("Area");
     pluginType = DATETIME;
 
-//    ui->addlanframe->installEventFilter(this);
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-//    QFile QssFile("://combox.qss");
-//    QssFile.open(QFile::ReadOnly);
-
-//    if (QssFile.isOpen()){
-//        qss = QLatin1String(QssFile.readAll());
-//        QssFile.close();
-//    }
-
 
     const QByteArray id(PANEL_GSCHEMAL);
-//    // if gsetting is exits
-    if(QGSettings::isSchemaInstalled(id)) {
-//        qDebug()<<"gsettings is ------->"<<endl;
-        m_gsettings = new QGSettings(id);
 
-////        监听key的value是否发生了变化
+    if(QGSettings::isSchemaInstalled(id)) {
+        m_gsettings = new QGSettings(id);
+        //  监听key的value是否发生了变化
+        /*
         connect(m_gsettings, &QGSettings::changed, this, [=] (const QString &key) {
             initFormatData();
         });
+        */
     }
 
     unsigned int uid = getuid();
@@ -139,60 +130,22 @@ void Area::run_external_app_slot(){
     process.startDetached(cmd);
 }
 
-//bool Area::eventFilter(QObject *watched, QEvent *event) {
-//    if (watched == ui->addlanframe) {
-//        if (event->type() == QEvent::MouseButtonPress){
-//            QString cmd = "gnome-language-selector";
-
-//            QProcess process(this);
-//            process.startDetached(cmd);
-//        }
-//    }
-
-//    return QObject::eventFilter(watched, event);
-//}
-
-
 void Area::initUI(){
     ui->titleLabel->setText(tr("current area"));
-
     ui->countrylabel->setText(tr("display format area"));
-//    ui->showformwidget->setStyleSheet("QWidget#showformwidget{background-color:#E5E7E9;border-radius:6px}");
-//    ui->countrylabel->setStyleSheet("QLabel#countrylabel{background: #E5E7E9;}");
-
-    ui->countrycomboBox->addItem(tr("US"));
-    ui->countrycomboBox->addItem(tr("CN"));
-
     ui->title2Label->setText(tr("format of area"));
     ui->calendarlabel->setText(tr("calendar"));
     ui->weeklabel->setText(tr("first day of week"));
     ui->datelabel->setText(tr("date"));
     ui->timelabel->setText(tr("time"));
-
-//    ui->chgformButton->setStyleSheet("QPushButton{background-color:#E5E7E9;border-radius:4px}"
-//                                   "QPushButton:hover{background-color: #3D6BE5;color:white;};border-radius:4px");
-
     ui->chgformButton->setText(tr("change format of data"));
-
-//    ui->formwidget->setStyleSheet("background-color:#E5E7E9;border-radius:6px");
-
     ui->title3Label->setText(tr("first language"));
-//    ui->languagewidget->setStyleSheet("QWidget#languagewidget{background-color:#E5E7E9;border-radius:6px}");
     ui->languagelabel->setText(tr("system language"));
-//    ui->languagelabel->setStyleSheet("QLabel#languagelabel{background: #E5E7E9;}");
 
-//    ui->addlanwidget->setStyleSheet("QWidget#addlanwidget{background-color:#E5E7E9;border-radius:6px}");
-
-//    ui->langcomboBox->setItemDelegate(itemDelege);
+    ui->countrycomboBox->addItem(tr("US"));
+    ui->countrycomboBox->addItem(tr("CN"));
     ui->langcomboBox->addItem(tr("English"));
     ui->langcomboBox->addItem(tr("Chinese"));
-
-//    ui->addlanlabel->setStyleSheet("QLabel{background-color:#E5E7E9}");
-//    ui->addlanlabel->setText(tr("add main language"));
-
-//    ui->addlanBtn->setIcon(QIcon("://img/plugins/printer/add.png"));
-//    ui->addlanBtn->setIconSize(QSize(48, 48));
-//    ui->addlanBtn->setStyleSheet("QPushButton{background-color:transparent;}");
 
     addWgt = new HoverWidget("");
     addWgt->setObjectName(tr("addwgt"));
@@ -239,14 +192,12 @@ void Area::initComponent() {
     int formatIndex = res.at(0) == "en_US.UTF-8" ? 0 : 1;
     ui->langcomboBox->setCurrentIndex(langIndex);
     ui->countrycomboBox->setCurrentIndex(formatIndex);
-//    ui->addlanframe->installEventFilter(this);
 
     initFormatData();
 }
 
 
 void Area::initFormatData() {
-//    qDebug()<<"initFormatData------>"<<endl;
 
     QString locale = QLocale::system().name();
     if (!m_gsettings) {
@@ -334,15 +285,11 @@ void Area::add_lan_btn_slot() {
 }
 
 void Area::changeform_slot() {
-//    ChangFormat *dialog = new ChangFormat();
-//    dialog->setWindowTitle(tr("chang format of data"));
+//    DataFormat *dialog = new DataFormat();
+//    connect(dialog, SIGNAL(dataChangedSignal()),this,SLOT(initFormatData()));
+//    dialog->setWindowTitle(tr("change data format"));
 //    dialog->setAttribute(Qt::WA_DeleteOnClose);
 //    dialog->exec();
-    DataFormat *dialog = new DataFormat();
-    connect(dialog, SIGNAL(dataChangedSignal()),this,SLOT(initFormatData()));
-    dialog->setWindowTitle(tr("change data format"));
-    dialog->setAttribute(Qt::WA_DeleteOnClose);
-    dialog->exec();
 }
 
 QStringList Area::readFile(const QString& filepath) {
