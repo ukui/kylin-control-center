@@ -50,13 +50,11 @@ public:
     Screenlock();
     ~Screenlock();
 
-public:
     QString get_plugin_name() Q_DECL_OVERRIDE;
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
 
-public:
     void setupComponent();
     void setupConnect();
     void initScreenlockStatus();
@@ -70,25 +68,25 @@ private:
 private:
     Ui::Screenlock *ui;
 
-private:
     QString pluginName;
     int pluginType;
     QWidget * pluginWidget;
 
-private:
-    QGSettings * lSetting;
-
     SwitchButton * loginbgSwitchBtn;
     SwitchButton * lockSwitchBtn;
-    FlowLayout * flowLayout;
+
     Uslider * uslider;
+
+    QGSettings * lSetting;
     QSettings * lockSetting; //锁屏状态QSettings
     QSettings * lockLoginSettings;
 
     QSize lockbgSize;
 
-private:
     QThread * pThread;
+
+    FlowLayout * flowLayout;
+
     BuildPicUnitsWorker * pWorker;
 };
 

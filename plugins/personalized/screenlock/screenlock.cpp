@@ -48,22 +48,6 @@ Screenlock::Screenlock()
     ui->title1Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-//    ui->loginWidget->setStyleSheet("QWidget{background: #F4F4F4; border: none; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-//    ui->enableWidget->setStyleSheet("QWidget{background: #F4F4F4; border: none; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
-
-//    QString btnQss = QString("background: #E9E9E9; border: none; border-radius: 4px;");
-//    ui->browserLocalwpBtn->setStyleSheet(btnQss);
-//    ui->browserOnlinewpBtn->setStyleSheet(btnQss);
-
-//    ui->delaySlider->setStyleSheet("QSlider{height: 20px;}"
-//                                   "QSlider::groove:horizontal{border: none;}"
-//                                   "QSlider::add-page:horizontal{background: #808080; border-radius: 2px; margin-top: 8px; margin-bottom: 9px;}"
-//                                   "QSlider::sub-page:horizontal{background: #3D6BE5; border-radius: 2px; margin-top: 8px; margin-bottom: 9px;}"
-//                                   "QSlider::handle:horizontal{width: 20px; height: 20px; border-image: url(:/img/plugins/fonts/bigRoller.png);}"
-//                                   "");
-
     const QByteArray id(SCREENLOCK_BG_SCHEMA);
     lSetting = new QGSettings(id);
 
@@ -152,17 +136,18 @@ void Screenlock::setupComponent(){
 
     connect(lSetting, &QGSettings::changed, this, [=](QString key) {
         if ("idleActivationEnabled" == key) {
-            bool judge = lSetting->get(SCREENLOCK_ACTIVE_KEY).toBool();
+            bool judge = lSetting->get(key).toBool();
             if (!judge) {
                 if (lockSwitchBtn->isChecked()) {
                     lockSwitchBtn->setChecked(judge);
                 }
             }
         } else if ("lockEnabled" == key) {
-            bool status = lSetting->get(SCREENLOCK_LOCK_KEY).toBool();
+            bool status = lSetting->get(key).toBool();
             lockSwitchBtn->setChecked(status);
-        } else if ("background == key") {
-            initScreenlockStatus();
+        } else if ("background" == key) {
+            QString filename = lSetting->get(key).toString();
+            ui->previewLabel->setPixmap(QPixmap(filename).scaled(ui->previewLabel->size()));
         }
     });
 
