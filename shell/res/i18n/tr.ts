@@ -861,7 +861,7 @@ sistem ayarlarını değiştir</translation>
     <message>
         <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="410"/>
         <source>The username is configured, please change the username</source>
-        <translation type="unfinished"></translation>
+        <translation>Kullanıcı adı yapılandırıldı, lütfen kullanıcı adını değiştirin</translation>
     </message>
 </context>
 <context>
@@ -1601,42 +1601,42 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="219"/>
         <source>11</source>
-        <translation></translation>
+        <translation>11</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="219"/>
         <source>12</source>
-        <translation></translation>
+        <translation>12</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="219"/>
         <source>13</source>
-        <translation></translation>
+        <translation>13</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="219"/>
         <source>14</source>
-        <translation></translation>
+        <translation>14</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="219"/>
         <source>15</source>
-        <translation></translation>
+        <translation>15</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="220"/>
         <source>16</source>
-        <translation></translation>
+        <translation>16</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="220"/>
         <source>17</source>
-        <translation></translation>
+        <translation>17</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="220"/>
         <source>18</source>
-        <translation></translation>
+        <translation>18</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="332"/>
@@ -3055,7 +3055,8 @@ folder will be deleted!</source>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="228"/>
         <source>min length %1
 </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">en az uzunluk %1
+        </translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="238"/>
@@ -3192,7 +3193,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../main.cpp" line="79"/>
         <source>ukui-control-center is already running!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukui Denetim Merkezi zaten çalışıyor!</translation>
     </message>
 </context>
 <context>
@@ -3747,7 +3748,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_input_widget.cpp" line="70"/>
         <source>Select Device</source>
-        <translation type="unfinished"></translation>
+        <translation>Aygıt Seç</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_input_widget.cpp" line="68"/>
@@ -3798,7 +3799,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_output_widget.cpp" line="89"/>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Profil</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_output_widget.cpp" line="84"/>
@@ -3973,7 +3974,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="361"/>
         <source>Change valid</source>
-        <translation type="unfinished"></translation>
+        <translation>Geçerli Değişiklik</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="429"/>
@@ -4068,12 +4069,12 @@ folder will be deleted!</source>
     </message>
     <message>
         <source>Add custom shortcut</source>
-        <translation type="obsolete">Özel Kısayol Ekle</translation>
+        <translation>Özel Kısayol Ekle</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="131"/>
         <source>Custom color</source>
-        <translation type="unfinished"></translation>
+        <translation>Özel Renk</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="164"/>
