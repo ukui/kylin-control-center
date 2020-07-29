@@ -34,6 +34,7 @@ ColorDialog::ColorDialog(QWidget *parent) :
 
 ColorDialog::~ColorDialog()
 {
+    qDebug()<<"this is color destructor:" << endl;
     delete ui;
 }
 
@@ -84,7 +85,7 @@ void ColorDialog::setupInit()
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);//开启窗口无边框
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
-
+    setWindowTitle(tr("Custom color"));
     // 左侧颜色框
     colorSquare = new ColorSquare(this);
     //ui->horizontalLayout_2->setContentsMargins(8,10,8,10);
@@ -101,15 +102,7 @@ void ColorDialog::setupInit()
     colorPreview = new ColorPreview(this);
     //colorPreview = static_cast<ColorPreview*>(ui->colorPreviewWg);
     colorPreview->setFixedSize(48,48);
-//    horizontalLayout_3->addWidget(colorPreview);
-//    horizontalLayout_3->addWidget(ui->label_r);
-//    horizontalLayout_3->addWidget(ui->spinBox_r);
-//    horizontalLayout_3->addWidget(ui->label_g);
-//    horizontalLayout_3->addWidget(ui->spinBox_g);
-//    horizontalLayout_3->addWidget(ui->label_b);
-//    horizontalLayout_3->addWidget(ui->spinBox_b);
-//    this->setLayout(horizontalLayout_3);
-    colorPreview->setGeometry(32,371,48,48);
+    colorPreview->setGeometry(45,345,48,48);
 
     // spinbox
     // α:
@@ -193,8 +186,16 @@ void ColorDialog::setupInit()
 void ColorDialog::signalsBind()
 {
     qDebug() << "signals bind";
-    connect(ui->closeBtn,&QPushButton::clicked,this,&ColorDialog::close);
-    connect(ui->cancelBtn,&QPushButton::clicked,this,&ColorDialog::close);
+    connect(ui->closeBtn, &QPushButton::clicked, [=](bool checked){
+        Q_UNUSED(checked)
+        close();
+    });
+    connect(ui->cancelBtn, &QPushButton::clicked, [=](bool checked){
+        Q_UNUSED(checked)
+        close();
+    });
+//    connect(ui->cancelBtn,&QPushButton::clicked,this,&ColorDialog::close);
+    connect(ui->okBtn,&QPushButton::clicked,this,&ColorDialog::okSlot);
 
     connect(sliderAlpha,&GradientSlider::valueChanged,spinAlpha,&QSpinBox::setValue);
     connect(spinAlpha,static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
@@ -228,6 +229,7 @@ void ColorDialog::signalsBind()
     connect(sliderAlpha,&GradientSlider::valueChanged,this,&ColorDialog::updateWidgetsSlot);
     connect(colorSquare,&ColorSquare::colorSelected,this,&ColorDialog::updateWidgetsSlot);
     connect(this,&ColorDialog::checkedChanged,colorSquare,&ColorSquare::setCheckedColorSlot);
+
 }
 
 void ColorDialog::drawSlider()
@@ -254,7 +256,7 @@ QColor ColorDialog::color() const
 void ColorDialog::SetColor(QColor color)
 {
     qDebug() << "SetColor";
-    colorPreview->setPreviousColor(color);
+    //colorPreview->setPreviousColor(color);
     //colorSquare->setProperty("color",color);
     colorSquare->setColor(color);
     sliderAlpha->setValue(color.alpha() / 2.55);
@@ -263,6 +265,13 @@ void ColorDialog::SetColor(QColor color)
 
 
 /****************Slots*********************/
+
+void ColorDialog::okSlot()
+{
+    QColor color = this->color();
+    emit colorSelected(color);
+    this->close();
+}
 
 void ColorDialog::setRgbSlot()
 {
@@ -292,7 +301,6 @@ void ColorDialog::SetHsvSlot()
 
 void ColorDialog::updateWidgetsSlot()
 {
-    qDebug() << "updateWidgetsSlot";
     blockSignals(true);
     foreach(QWidget* w, findChildren<QWidget*>())
         w->blockSignals(true);

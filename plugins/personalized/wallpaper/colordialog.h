@@ -98,10 +98,12 @@ private slots:
     void updateWidgetsSlot();
     void setRgbSlot();
     void SetHsvSlot();
+    void okSlot();
 
 signals:
     void colorChanged(QColor);
     void checkedChanged(char);
+    void colorSelected(QColor);
 };
 
 #endif // COLORDIALOG_H

@@ -39,6 +39,7 @@
 #include "component/custdomitemmodel.h"
 #include "simplethread.h"
 #include "workerobject.h"
+#include "colordialog.h"
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -113,6 +114,7 @@ private:
     QMap<QString, QMap<QString, QString> > wallpaperinfosMap;
 
     XmlHandle * xmlhandleObj;
+    ColorDialog * colordialog;
     QGSettings * bgsettings;
     QString localwpconf;
     QMap<QString, QListWidgetItem*> delItemsMap;
@@ -135,6 +137,7 @@ private:
 public slots:
     void resetDefaultWallpaperSlot();
     void wpOptionsChangedSlot(QString op);
+    void colorSelectedSlot(QColor color);
 
 public slots:
     void add_custom_wallpaper();

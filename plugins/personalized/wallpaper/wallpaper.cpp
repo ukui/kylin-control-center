@@ -56,7 +56,6 @@ Wallpaper::Wallpaper()
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
     settingsCreate = false;
-
     //初始化控件
     setupComponent();
     //初始化gsettings
@@ -70,7 +69,6 @@ Wallpaper::Wallpaper()
     }
     //构建xmlhandle对象
     xmlhandleObj = new XmlHandle();
-
 }
 
 Wallpaper::~Wallpaper()
@@ -79,9 +77,7 @@ Wallpaper::~Wallpaper()
     if (settingsCreate){
         delete bgsettings;
     }
-
     delete xmlhandleObj;
-
 }
 
 QString Wallpaper::get_plugin_name(){
@@ -132,7 +128,7 @@ void Wallpaper::setupComponent(){
     colWgt->setStyleSheet("HoverWidget#colWgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#colWgt{background: #3D6BE5; border-radius: 4px;}");
     QHBoxLayout *addLyt = new QHBoxLayout;
     QLabel * iconLabel = new QLabel();
-    QLabel * textLabel = new QLabel(tr("Add custom shortcut"));
+    QLabel * textLabel = new QLabel(tr("Custom color"));
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);
     addLyt->addWidget(iconLabel);
@@ -142,6 +138,7 @@ void Wallpaper::setupComponent(){
 
     // 悬浮改变Widget状态
     connect(colWgt, &HoverWidget::enterWidget, this, [=](QString mname){
+        Q_UNUSED(mname);
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(base);");
@@ -149,12 +146,19 @@ void Wallpaper::setupComponent(){
     });
     // 还原状态
     connect(colWgt, &HoverWidget::leaveWidget, this, [=](QString mname){
+        Q_UNUSED(mname);
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(windowText);");
     });
 
-    //colorFlowLayout->addWidget(colWgt);
+    connect(colWgt, &HoverWidget::widgetClicked,[=](QString mname){
+        Q_UNUSED(mname);
+        colordialog = new ColorDialog();
+        connect(colordialog,&ColorDialog::colorSelected,this,&Wallpaper::colorSelectedSlot);
+        colordialog->exec();
+
+    });
 
     //壁纸放置方式
     ui->picOptionsComBox->addItem(tr("wallpaper"), "wallpaper");
@@ -252,7 +256,9 @@ void Wallpaper::setupConnect(){
             ui->previewStackedWidget->setCurrentIndex(COLOR);
         });
         colorFlowLayout->addWidget(button);
+
     }
+    colorFlowLayout->addWidget(colWgt);
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->formComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
@@ -336,6 +342,7 @@ int Wallpaper::_getCurrentBgForm(){
 void Wallpaper::initBgFormStatus(){
     initPreviewStatus();
 
+
     int currentIndex = _getCurrentBgForm();
     //设置当前背景形式
     ui->formComBox->blockSignals(true);
@@ -376,6 +383,19 @@ void Wallpaper::initPreviewStatus(){
         QString widgetQss = QString("QWidget{background: %1; border-radius: 6px;}").arg(color);
         ui->previewWidget->setStyleSheet(widgetQss);
     }
+}
+
+void Wallpaper::colorSelectedSlot(QColor color){
+    qDebug() << "colorSelectedSlot" << color << color.name();
+
+    QString widgetQss = QString("QWidget{background: %1; border-radius: 6px;}").arg(color.name());
+    ui->previewWidget->setStyleSheet(widgetQss);
+
+    ///设置系统纯色背景
+    bgsettings->set(FILENAME, "");
+    bgsettings->set(PRIMARY, QVariant(color.name()));
+
+    ui->previewStackedWidget->setCurrentIndex(COLOR);
 }
 
 void Wallpaper::wpOptionsChangedSlot(QString op){
