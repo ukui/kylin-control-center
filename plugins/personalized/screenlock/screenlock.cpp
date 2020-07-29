@@ -30,6 +30,9 @@
 #define SCREENLOCK_LOCK_KEY "lock-enabled"
 #define SCREENLOCK_ACTIVE_KEY "idle-activation-enabled"
 
+#define MATE_BACKGROUND_SCHEMAS "org.mate.background"
+#define FILENAME "picture-filename"
+
 #include "bgfileparse.h"
 #include "pictureunit.h"
 #include "MaskWidget/maskwidget.h"
@@ -182,10 +185,15 @@ void Screenlock::setupConnect(){
 void Screenlock::initScreenlockStatus(){
     //获取当前锁屏壁纸
     QString bgStr = lSetting->get(SCREENLOCK_BG_KEY).toString();
-//    if (bgStr.isEmpty())
-        ui->previewLabel->setPixmap(QPixmap("://img/plugins/screenlock/none.png"));
-//    else
-//        ui->previewLabel->setPixmap(QPixmap(bgStr).scaled(ui->previewLabel->size()));
+    if (bgStr.isEmpty()) {
+        if (QGSettings::isSchemaInstalled(MATE_BACKGROUND_SCHEMAS)) {
+            QGSettings * bgGsetting  = new QGSettings(MATE_BACKGROUND_SCHEMAS, QByteArray(), this);
+            bgStr = bgGsetting->get(FILENAME).toString();
+        }
+    }
+
+    ui->previewLabel->setPixmap(QPixmap(bgStr).scaled(ui->previewLabel->size()));
+
     //遮罩
     MaskWidget * maskWidget = new MaskWidget(ui->previewLabel);
     maskWidget->setGeometry(0, 0, ui->previewLabel->width(), ui->previewLabel->height());
@@ -347,7 +355,6 @@ void Screenlock::setLockBackground(bool status)
     lockLoginSettings->beginGroup("greeter");
     lockLoginSettings->setValue("backgroundPath", picname);
     lockLoginSettings->endGroup();
-
 }
 
 bool Screenlock::getLockStatus()
