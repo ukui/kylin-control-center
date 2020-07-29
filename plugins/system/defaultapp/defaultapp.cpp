@@ -43,27 +43,6 @@ DefaultApp::DefaultApp(){
     pluginType = SYSTEM;
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-//    ui->browserWidget->setStyleSheet("QWidget#browserWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-//    ui->browserLabel->setStyleSheet("QLabel#browserLabel{background: #F4F4F4;}");
-
-//    ui->mailWidget->setStyleSheet("QWidget#mailWidget{background: #F4F4F4;}");
-//    ui->mailLabel->setStyleSheet("QLabel#mailLabel{background: #F4F4F4;}");
-
-//    ui->imageWidget->setStyleSheet("QWidget#imageWidget{background: #F4F4F4;}");
-//    ui->imageLabel->setStyleSheet("QLabel#imageLabel{background: #F4F4F4;}");
-
-//    ui->audioWidget->setStyleSheet("QWidget#audioWidget{background: #F4F4F4;}");
-//    ui->audioLabel->setStyleSheet("QLabel#audioLabel{background: #F4F4F4;}");
-
-//    ui->videoWidget->setStyleSheet("QWidget#videoWidget{background: #F4F4F4;}");
-//    ui->videoLabel->setStyleSheet("QLabel#videoLabel{background: #F4F4F4;}");
-
-//    ui->textWidget->setStyleSheet("QWidget#textWidget{background: #F4F4F4; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
-//    ui->textLabel->setStyleSheet("QLabel#textLabel{background: #F4F4F4;}");
-
     initUI();
 
 //    ui->resetPushBtn->hide();
@@ -115,9 +94,8 @@ void DefaultApp::initUI(){
         }
         free(list);
     }
-//    ui->browserComBoBox->addItem("add", "add");
     ui->browserComBoBox->setCurrentIndex(browserindex);
-
+    browserComBoBox_changed_cb(browserindex);
     connect(ui->browserComBoBox, SIGNAL(currentIndexChanged(int)), this, SLOT(browserComBoBox_changed_cb(int)));
 
     // MAIL
@@ -144,7 +122,7 @@ void DefaultApp::initUI(){
         free(maillist);
     }
     ui->mailComBoBox->setCurrentIndex(mailindex);
-
+    mailComBoBox_changed_cb(mailindex);
     connect(ui->mailComBoBox, SIGNAL(currentIndexChanged(int)), this, SLOT(mailComBoBox_changed_cb(int)));
 
     // IMAGE
@@ -171,7 +149,7 @@ void DefaultApp::initUI(){
         free(imagelist);
     }
     ui->imageComBoBox->setCurrentIndex(imageindex);
-
+    imageComBoBox_changed_cb(imageindex);
     connect(ui->imageComBoBox, SIGNAL(currentIndexChanged(int)), this, SLOT(imageComBoBox_changed_cb(int)));
 
     // AUDIO
@@ -198,7 +176,7 @@ void DefaultApp::initUI(){
         free(audiolist);
     }
     ui->audioComBoBox->setCurrentIndex(audioindex);
-
+    audioComBoBox_changed_cb(audioindex);
     connect(ui->audioComBoBox, SIGNAL(currentIndexChanged(int)), this, SLOT(audioComBoBox_changed_cb(int)));
 
     // VIDEO
@@ -225,7 +203,7 @@ void DefaultApp::initUI(){
         free(videolist);
     }
     ui->videoComBoBox->setCurrentIndex(videoindex);
-
+    videoComBoBox_changed_cb(videoindex);
     connect(ui->videoComBoBox, SIGNAL(currentIndexChanged(int)), this, SLOT(videoComBoBox_changed_cb(int)));
 
     // TEXT
@@ -252,7 +230,7 @@ void DefaultApp::initUI(){
         free(textlist);
     }
     ui->textComBoBox->setCurrentIndex(textindex);
-
+    textComBoBox_changed_cb(textindex);
     connect(ui->textComBoBox, SIGNAL(currentIndexChanged(int)), this, SLOT(textComBoBox_changed_cb(int)));
 }
 
@@ -293,6 +271,8 @@ void DefaultApp::imageComBoBox_changed_cb(int index){
 }
 
 void DefaultApp::audioComBoBox_changed_cb(int  index){
+    qDebug() << "this is audio:" << endl;
+
     QString appid = ui->audioComBoBox->itemData(index).toString();
     if (appid == "add"){
         qDebug() << "add clicked";

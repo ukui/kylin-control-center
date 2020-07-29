@@ -44,12 +44,12 @@ extern "C" {
 typedef struct _Applist
 {
     char *appid;
-}AppList;//用于存放应用列表
+}AppList;// 用于存放应用列表
 
 typedef struct _AppInfo
 {
     GAppInfo *item;
-}Appinfo;//用于存放应用列表信息
+}Appinfo;// 用于存放应用列表信息
 
 namespace Ui {
 class DefaultAppWindow;
@@ -65,13 +65,11 @@ public:
     DefaultApp();
     ~DefaultApp();
 
-public:
     QString get_plugin_name() Q_DECL_OVERRIDE;
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
 
-public:
     void initUI();
 
     bool setWebBrowsersDefaultProgram(char * appid);
@@ -81,21 +79,20 @@ public:
     bool setVideoPlayersDefaultProgram(char * appid);
     bool setTextEditorsDefautlProgram(char * appid);
 
-private:
-    Ui::DefaultAppWindow * ui;
 
 private:
-    QWidget * pluginWidget;
-
-private:
-    QString pluginName;
-    int pluginType;
-
-private:
-    char * getDefaultAppId(const char * contentType);
+    char    * getDefaultAppId(const char * contentType);
     AppList * getAppIdList(const char * contentType);
     static Appinfo * _getAppList(const char *contentType);
 
+private:
+    Ui::DefaultAppWindow * ui;
+
+    QWidget * pluginWidget;
+
+    QString pluginName;
+
+    int pluginType;
 
 public slots:
     void browserComBoBox_changed_cb(int index);
