@@ -216,8 +216,8 @@ private Q_SLOTS:
     void windowClosedComboboxChangedSlot(int index);
     void volumeChangedComboboxChangeSlot(int index);
     void settingMenuComboboxChangedSlot(int index);
-    void profileComboboxChangedSlot(int index);
-    void selectComboboxChangedSlot(int index);
+//    void profileComboboxChangedSlot(int index);
+//    void selectComboboxChangedSlot(int index);
 private:
     UkmediaInputWidget *m_pInputWidget;
     UkmediaOutputWidget *m_pOutputWidget;

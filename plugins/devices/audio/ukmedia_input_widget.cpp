@@ -29,13 +29,12 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pVolumeWidget = new QFrame(m_pInputWidget);
     m_pInputLevelWidget = new QFrame(m_pInputWidget);
     m_pInputPortWidget = new QFrame(m_pInputWidget);
-    m_pselectWidget = new QFrame(m_pInputWidget);
 
     m_pInputDeviceWidget->setFrameShape(QFrame::Shape::Box);
     m_pVolumeWidget->setFrameShape(QFrame::Shape::Box);
     m_pInputLevelWidget->setFrameShape(QFrame::Shape::Box);
     m_pInputPortWidget->setFrameShape(QFrame::Shape::Box);
-    m_pselectWidget->setFrameShape(QFrame::Shape::Box);
+
     //设置大小
     m_pInputWidget->setMinimumSize(550,152);
     m_pInputWidget->setMaximumSize(960,152);
@@ -47,8 +46,6 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pInputLevelWidget->setMaximumSize(960,50);
     m_pInputPortWidget->setMinimumSize(550,50);
     m_pInputPortWidget->setMaximumSize(960,50);
-    m_pselectWidget->setMinimumSize(550,50);
-    m_pselectWidget->setMaximumSize(960,50);
 
     m_pInputLabel = new QLabel(tr("Input"),this);
     m_pInputLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
@@ -66,9 +63,6 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
 
     m_pInputPortCombobox = new QComboBox(m_pInputPortWidget);
     m_pInputPortLabel = new QLabel(tr("Connector"),m_pInputPortWidget);
-
-    m_pSelectDeviceLabel = new QLabel(tr("Select Device"),m_pselectWidget);
-    m_pSelectCombobox = new QComboBox(m_pselectWidget);
 
     m_pIpVolumeSlider->setOrientation(Qt::Horizontal);
     m_pInputLevelSlider->setOrientation(Qt::Horizontal);
@@ -139,26 +133,11 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pInputPortWidget->setLayout(pConnectLayout);
     pConnectLayout->layout()->setContentsMargins(0,0,0,0);
 
-    //选择的设备布局
-    QHBoxLayout *pSelectDeviceLayout = new QHBoxLayout(m_pInputLevelWidget);
-    m_pSelectDeviceLabel->setFixedSize(115,24);
-    m_pSelectCombobox->setMinimumSize(50,32);
-    m_pSelectCombobox->setMaximumSize(900,32);
-    pSelectDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
-    pSelectDeviceLayout->addWidget(m_pSelectDeviceLabel);
-    pSelectDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
-    pSelectDeviceLayout->addWidget(m_pSelectCombobox);
-    pSelectDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
-    pSelectDeviceLayout->setSpacing(0);
-    m_pselectWidget->setLayout(pSelectDeviceLayout);
-    pSelectDeviceLayout->layout()->setContentsMargins(0,0,0,0);
-    m_pselectWidget->setVisible(false);
     //进行整体布局
     m_pVlayout = new QVBoxLayout(m_pInputWidget);
     m_pVlayout->addWidget(m_pInputDeviceWidget);
     m_pVlayout->addWidget(m_pVolumeWidget);
     m_pVlayout->addWidget(m_pInputLevelWidget);
-//    m_pVlayout->addWidget(m_pselectWidget);
     m_pVlayout->setSpacing(1);
     m_pInputWidget->setLayout(m_pVlayout);
     m_pInputWidget->layout()->setContentsMargins(0,0,0,0);

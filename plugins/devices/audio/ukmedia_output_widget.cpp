@@ -51,7 +51,9 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pChannelBalanceWidget = new QFrame(m_pOutputWidget);
     m_pOutputPortWidget = new QFrame(m_pOutputWidget);
     m_pProfileWidget = new QFrame(m_pOutputWidget);
+    m_pselectWidget = new QFrame(m_pOutputWidget);
 
+    m_pselectWidget->setFrameShape(QFrame::Shape::Box);
     m_pProfileWidget->setFrameShape(QFrame::Shape::Box);
     m_pOutputDeviceWidget->setFrameShape(QFrame::Shape::Box);
     m_pMasterVolumeWidget->setFrameShape(QFrame::Shape::Box);
@@ -59,8 +61,8 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pOutputPortWidget->setFrameShape(QFrame::Shape::Box);
 
     //设置大小
-    m_pOutputWidget->setMinimumSize(550,152);
-    m_pOutputWidget->setMaximumSize(960,152);
+    m_pOutputWidget->setMinimumSize(550,203);
+    m_pOutputWidget->setMaximumSize(960,203);
     m_pOutputDeviceWidget->setMinimumSize(550,50);
     m_pOutputDeviceWidget->setMaximumSize(960,50);
     m_pMasterVolumeWidget->setMinimumSize(550,50);
@@ -90,7 +92,10 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pProfileCombobox = new QComboBox(m_pProfileWidget);
     m_pProfileCombobox->setMinimumSize(50,32);
     m_pProfileCombobox->setMaximumSize(900,32);
-
+    m_pselectWidget->setMinimumSize(550,50);
+    m_pselectWidget->setMaximumSize(960,50);
+    m_pSelectDeviceLabel = new QLabel(tr("Card"),m_pselectWidget);
+    m_pSelectCombobox = new QComboBox(m_pselectWidget);
     m_pProfileLabel->setFixedSize(115,24);
 
     m_pOpBalanceSlider->setStyle(new CustomStyle());
@@ -164,6 +169,20 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pOutputPortWidget->setLayout(outputPortLayout);
     outputPortLayout->layout()->setContentsMargins(0,0,0,0);
 
+    //选择的设备布局
+    QHBoxLayout *pSelectDeviceLayout = new QHBoxLayout();
+    m_pSelectDeviceLabel->setFixedSize(115,24);
+    m_pSelectCombobox->setMinimumSize(50,32);
+    m_pSelectCombobox->setMaximumSize(900,32);
+    pSelectDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    pSelectDeviceLayout->addWidget(m_pSelectDeviceLabel);
+    pSelectDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    pSelectDeviceLayout->addWidget(m_pSelectCombobox);
+    pSelectDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    pSelectDeviceLayout->setSpacing(0);
+    m_pselectWidget->setLayout(pSelectDeviceLayout);
+    pSelectDeviceLayout->layout()->setContentsMargins(0,0,0,0);
+
     //配置文件布局
     QHBoxLayout *profileLayout = new QHBoxLayout(m_pProfileWidget);
 
@@ -180,8 +199,9 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pVlayout = new QVBoxLayout(m_pOutputWidget);
     m_pVlayout->addWidget(m_pOutputDeviceWidget);
     m_pVlayout->addWidget(m_pMasterVolumeWidget);
-    m_pVlayout->addWidget(m_pChannelBalanceWidget);
+    m_pVlayout->addWidget(m_pselectWidget);
 //    m_pVlayout->addWidget(m_pProfileWidget);
+    m_pVlayout->addWidget(m_pChannelBalanceWidget);
     m_pVlayout->setSpacing(1);
 
     m_pOutputWidget->setLayout(m_pVlayout);
@@ -236,17 +256,17 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
 
 void UkmediaOutputWidget::outputWidgetAddPort()
 {
-    m_pOutputWidget->setMinimumSize(550,203);
-    m_pOutputWidget->setMaximumSize(960,203);
-    m_pVlayout->addWidget(m_pOutputPortWidget);
+    m_pOutputWidget->setMinimumSize(550,254);
+    m_pOutputWidget->setMaximumSize(960,254);
+    m_pVlayout->insertWidget(3,m_pOutputPortWidget);
     m_pOutputPortWidget->show();
 }
 
 void UkmediaOutputWidget::outputWidgetRemovePort()
 {
 //    m_pVlayout->addSpacing(1);
-    m_pOutputWidget->setMinimumSize(550,152);
-    m_pOutputWidget->setMaximumSize(960,152);
+    m_pOutputWidget->setMinimumSize(550,203);
+    m_pOutputWidget->setMaximumSize(960,203);
     m_pVlayout->removeWidget(m_pOutputPortWidget);
     m_pOutputPortWidget->hide();
 }

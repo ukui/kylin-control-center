@@ -74,7 +74,9 @@ private:
     QFrame *m_pChannelBalanceWidget;
     QFrame * m_pOutputPortWidget;
     QFrame *m_pProfileWidget;
+    QFrame *m_pselectWidget;
 
+    QLabel *m_pSelectDeviceLabel;
     QLabel *m_pProfileLabel;
     QLabel *m_pOutputPortLabel;
     QLabel *m_pOutputLabel;
@@ -85,6 +87,7 @@ private:
     QLabel *m_pLeftBalanceLabel;
     QLabel *m_pRightBalanceLabel;
 
+    QComboBox *m_pSelectCombobox;
     QComboBox *m_pProfileCombobox;
     QComboBox *m_pOutputPortCombobox;
     QComboBox *m_pOutputDeviceCombobox;

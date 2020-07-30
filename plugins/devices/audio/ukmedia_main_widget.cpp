@@ -213,9 +213,9 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     connect(m_pSoundWidget->m_pWindowClosedCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(windowClosedComboboxChangedSlot(int)));
     connect(m_pSoundWidget->m_pVolumeChangeCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(volumeChangedComboboxChangeSlot(int)));
     connect(m_pSoundWidget->m_pSettingSoundCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(settingMenuComboboxChangedSlot(int)));
-    connect(m_pOutputWidget->m_pProfileCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(profileComboboxChangedSlot(int)));
+//    connect(m_pOutputWidget->m_pProfileCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(profileComboboxChangedSlot(int)));
 
-    connect(m_pInputWidget->m_pSelectCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(selectComboboxChangedSlot(int)));
+//    connect(m_pOutputWidget->m_pSelectCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(selectComboboxChangedSlot(int)));
 
     //输入等级
     ukuiInputLevelSetProperty(this);
@@ -407,8 +407,11 @@ void UkmediaMainWidget::listDevice(UkmediaMainWidget *m_pWidget,MateMixerContext
                 MateMixerSwitchOption *option = MATE_MIXER_SWITCH_OPTION (options->data);
                 profileLabel = mate_mixer_switch_option_get_label (option);
                 profileName = mate_mixer_switch_option_get_name(option);
-                m_pWidget->m_pProfileNameList->append(profileName);
-                m_pWidget->m_pOutputWidget->m_pProfileCombobox->addItem(profileLabel);
+                if (!m_pWidget->m_pProfileNameList->contains(profileName)) {
+
+                    m_pWidget->m_pProfileNameList->append(profileName);
+                    m_pWidget->m_pOutputWidget->m_pProfileCombobox->addItem(profileLabel);
+                }
                 qDebug() << "profile name:" << profileName << "profile label :" << profileLabel;
                 /* Select the currently active option of the switch */
                 options = options->next;
@@ -739,7 +742,7 @@ void UkmediaMainWidget::addDevice (UkmediaMainWidget *m_pWidget, MateMixerDevice
     pLabel = mate_mixer_device_get_label(pDevice);
     if (m_pWidget->m_pDeviceNameList->contains(pName) == false) {
         m_pWidget->m_pDeviceNameList->append(pName);
-        m_pWidget->m_pInputWidget->m_pSelectCombobox->addItem(pLabel);
+        m_pWidget->m_pOutputWidget->m_pSelectCombobox->addItem(pLabel);
     }
     MateMixerSwitch *profileSwitch;
     qDebug() << "device name " << pName << "device label :" << pLabel;
@@ -1987,22 +1990,21 @@ void UkmediaMainWidget::settingMenuComboboxChangedSlot(int index)
     }
 }
 
-void UkmediaMainWidget::profileComboboxChangedSlot(int index)
-{
-//    mate_mixer_
-    QString name = m_pProfileNameList->at(index);
+//void UkmediaMainWidget::profileComboboxChangedSlot(int index)
+//{
+//    QString name = m_pProfileNameList->at(index);
 
-    MateMixerSwitchOption *opt = mate_mixer_switch_get_option(m_pSwitch,name.toLocal8Bit().data());
-    qDebug() << "combox " << name << mate_mixer_switch_option_get_name(opt);
-    mate_mixer_switch_set_active_option(m_pSwitch,opt);
-}
+//    MateMixerSwitchOption *opt = mate_mixer_switch_get_option(m_pSwitch,name.toLocal8Bit().data());
+//    qDebug() << "combox " << name << mate_mixer_switch_option_get_name(opt);
+//    mate_mixer_switch_set_active_option(m_pSwitch,opt);
+//}
 
-void UkmediaMainWidget::selectComboboxChangedSlot(int index)
-{
-    QString deviceStr = m_pDeviceNameList->at(index);
+//void UkmediaMainWidget::selectComboboxChangedSlot(int index)
+//{
+//    QString deviceStr = m_pDeviceNameList->at(index);
 
-    qDebug() << "device combox name :" << deviceStr;
-}
+//    qDebug() << "device combox name :" << deviceStr;
+//}
 
 /*
     点击声音主题实现主题切换
