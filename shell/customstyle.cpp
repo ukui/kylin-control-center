@@ -4,12 +4,11 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QStyleOption>
-
 #include <QLineEdit>
 #include <QFileDialog>
 #include <QAbstractItemView>
-
 #include <QApplication>
+#include <QComboBox>
 
 InternalStyle::InternalStyle(const QString &styleName, QObject *parent) : QProxyStyle(styleName)
 {
@@ -81,12 +80,22 @@ void InternalStyle::drawControl(QStyle::ControlElement element, const QStyleOpti
         }
         case QFrame::Panel: {
             // Do not draw corner
-
             painter->fillRect(frame.rect, option->palette.color(QPalette::Button));
             return;
         }
+
+        case QFrame::StyledPanel: {
+            if (widget && qobject_cast<const QComboBox *>(widget->parentWidget())) {
+                painter->save();
+                painter->setRenderHint(QPainter::Antialiasing, true);
+                painter->setPen(QPen(frame.palette.color(frame.state & State_Enabled ? QPalette::Active : QPalette::Disabled, QPalette::Button), 2));
+                painter->setBrush(frame.palette.base());
+                painter->drawRoundedRect(frame.rect, 4, 4);
+                painter->restore();
+            }
+            return;
+        }
         default:
-//            qDebug()<<"this is deafault"<<endl;
             return;
         }
         return;

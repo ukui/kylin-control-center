@@ -4,6 +4,7 @@
 #include "declarative/qmlscreen.h"
 #include "utils.h"
 #include "ui_display.h"
+#include "displayperformancedialog.h"
 
 #include <QHBoxLayout>
 #include <QTimer>
@@ -23,12 +24,9 @@
 #include <QStandardPaths>
 #include <QComboBox>
 #include <QQuickWidget>
-#include <QStyledItemDelegate>
 
-#include <KPluginFactory>
 #include <KAboutData>
 #include <KMessageBox>
-#include <QStyledItemDelegate>
 #include <KF5/KScreen/kscreen/output.h>
 #include <KF5/KScreen/kscreen/edid.h>
 #include <KF5/KScreen/kscreen/mode.h>
@@ -37,28 +35,6 @@
 #include <KF5/KScreen/kscreen/configmonitor.h>
 #include <KF5/KScreen/kscreen/setconfigoperation.h>
 #include <KF5/KScreen/kscreen/edid.h>
-
-#include "displayperformancedialog.h"
-
-
-#define QML_PATH "kcm_kscreen/qml/"
-
-#define UKUI_CONTORLCENTER_PANEL_SCHEMAS "org.ukui.control-center.panel.plugins"
-#define NIGHT_MODE_KEY "nightmodestatus"
-
-#define FONT_RENDERING_DPI "org.ukui.SettingsDaemon.plugins.xsettings"
-#define DPI_KEY "scaling-factor"
-
-#define MOUSE_SIZE_SCHEMAS "org.ukui.peripherals-mouse"
-#define CURSOR_SIZE_KEY "cursor-size"
-
-#define POWER_SCHMES "org.ukui.power-manager"
-#define POWER_KEY "brightness-ac"
-
-#define ADVANCED_SCHEMAS "org.ukui.session.required-components"
-#define ADVANCED_KEY "windowmanager"
-
-Q_DECLARE_METATYPE(KScreen::OutputPtr)
 
 #ifdef signals
 #undef signals
@@ -72,6 +48,25 @@ extern "C" {
 #include <libmate-desktop/mate-desktop-utils.h>
 }
 
+#define QML_PATH "kcm_kscreen/qml/"
+
+#define UKUI_CONTORLCENTER_PANEL_SCHEMAS "org.ukui.control-center.panel.plugins"
+#define NIGHT_MODE_KEY "nightmodestatus"
+
+#define FONT_RENDERING_DPI "org.ukui.SettingsDaemon.plugins.xsettings"
+#define DPI_KEY "dpi"
+#define SCALE_KEY "scaling-factor"
+
+#define MOUSE_SIZE_SCHEMAS "org.ukui.peripherals-mouse"
+#define CURSOR_SIZE_KEY "cursor-size"
+
+#define POWER_SCHMES "org.ukui.power-manager"
+#define POWER_KEY "brightness-ac"
+
+#define ADVANCED_SCHEMAS "org.ukui.session.required-components"
+#define ADVANCED_KEY "windowmanager"
+
+Q_DECLARE_METATYPE(KScreen::OutputPtr)
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -577,13 +572,10 @@ void Widget::writeScale(int scale) {
         cursorSettings = new QGSettings(iid);
 
         if (1 == scale)  {
-            scale = 96;
             cursize = 24;
         } else if (2 == scale) {
-            scale = 192;
             cursize = 48;
         } else if (3 == scale) {
-            scale = 288;
             cursize = 96;
         } else {
             scale = 1;
@@ -592,15 +584,14 @@ void Widget::writeScale(int scale) {
 
         QStringList keys = dpiSettings->keys();
         if (keys.contains("scalingFactor")) {
-            qDebug()<<"sclaing facor--->"<<endl;
-            dpiSettings->set(DPI_KEY, scale);
+            dpiSettings->set(DPI_KEY, 96);
+            dpiSettings->set(SCALE_KEY, scale);
         }
         cursorSettings->set(CURSOR_SIZE_KEY, cursize);
 
         delete dpiSettings;
         delete cursorSettings;
     }
-
 }
 
 
@@ -877,8 +868,6 @@ void Widget::slotIdentifyOutputs(KScreen::ConfigOperation *op)
 
 void Widget::save()
 {
-    //readScreenXml();
-    //qDebug()<<"save------------>"<<endl;
     if (!this) {
         return;
     }
@@ -941,7 +930,6 @@ void Widget::save()
         inputXml[i].rotationValue = rotation();
         inputXml[i].isPrimary = (output->isPrimary() == true?"yes":"no");
         inputXml[i].isEnable = output->isEnabled();
-
 
         getEdidInfo(output->name(),&inputXml[i]);
         i++;
