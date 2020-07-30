@@ -132,6 +132,7 @@
         <file>plugins/update/update.svg</file>
         <file>secondaryleftmenu/SecurityCenter.svg</file>
         <file>secondaryleftmenu/SecurityCenterWhite.svg</file>
+        <file>plugins/about/logoukui.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>i18n/zh_CN.qm</file>

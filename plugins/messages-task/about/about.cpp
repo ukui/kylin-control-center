@@ -218,7 +218,7 @@ void About::setupVersionCompenent() {
         ui->activeFrame->setVisible(false);
         ui->trialButton->setVisible(false);
         //设置桌面环境LOGO
-        ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/logoukui.png"));
+        ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/logoukui.svg"));
     }
 }
 
