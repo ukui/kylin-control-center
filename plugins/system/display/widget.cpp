@@ -54,8 +54,10 @@ extern "C" {
 #define NIGHT_MODE_KEY "nightmodestatus"
 
 #define FONT_RENDERING_DPI "org.ukui.SettingsDaemon.plugins.xsettings"
-#define DPI_KEY "dpi"
 #define SCALE_KEY "scaling-factor"
+
+#define DPI_SCHEMAS "org.ukui.font-rendering"
+#define DPI_KEY "dpi"
 
 #define MOUSE_SIZE_SCHEMAS "org.ukui.peripherals-mouse"
 #define CURSOR_SIZE_KEY "cursor-size"
@@ -565,11 +567,15 @@ void Widget::writeScale(int scale) {
     int cursize;
     QGSettings * dpiSettings;
     QGSettings * cursorSettings;
+    QGSettings * fontSettings;
     QByteArray id(FONT_RENDERING_DPI);
     QByteArray iid(MOUSE_SIZE_SCHEMAS);
-    if (QGSettings::isSchemaInstalled(FONT_RENDERING_DPI) && QGSettings::isSchemaInstalled(MOUSE_SIZE_SCHEMAS)) {
+    QByteArray iiid(DPI_SCHEMAS);
+    if (QGSettings::isSchemaInstalled(FONT_RENDERING_DPI) && QGSettings::isSchemaInstalled(MOUSE_SIZE_SCHEMAS)
+            && QGSettings::isSchemaInstalled(DPI_SCHEMAS)) {
         dpiSettings = new QGSettings(id);
         cursorSettings = new QGSettings(iid);
+        fontSettings = new QGSettings(iiid);
 
         if (1 == scale)  {
             cursize = 24;
@@ -584,7 +590,7 @@ void Widget::writeScale(int scale) {
 
         QStringList keys = dpiSettings->keys();
         if (keys.contains("scalingFactor")) {
-            dpiSettings->set(DPI_KEY, 96);
+            fontSettings->set(DPI_KEY, 96);
             dpiSettings->set(SCALE_KEY, scale);
         }
         cursorSettings->set(CURSOR_SIZE_KEY, cursize);
@@ -933,7 +939,7 @@ void Widget::save()
 
         getEdidInfo(output->name(),&inputXml[i]);
         i++;
-    }   
+    }
 
     if (!atLeastOneEnabledOutput ) {
         qDebug()<<"atLeastOneEnabledOutput---->"<<connectedScreen<<endl;
