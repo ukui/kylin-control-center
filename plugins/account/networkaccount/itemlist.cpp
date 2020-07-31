@@ -19,24 +19,23 @@
  */
 #include "itemlist.h"
 
-ItemList::ItemList(QListWidget *parent,int itemssize) : QListWidget(parent) {
+ItemList::ItemList(QWidget *parent,int itemssize) : QWidget(parent) {
     this->parent();
+    m_vboxLayout = new QVBoxLayout;
     m_cItemCnt = m_szItemNameList.size();
     for(int cur_ptr = 0; cur_ptr < m_cItemCnt; cur_ptr ++) {
         m_itemWidget[cur_ptr] = new FrameItem(this);
-        m_listwidgetItem[cur_ptr] = new QListWidgetItem(this);
-        m_listwidgetItem[cur_ptr]->setSizeHint(QSize(200, 50));
-        m_listwidgetItem[cur_ptr]->setFlags(m_listwidgetItem[cur_ptr]->flags() & ~Qt::ItemIsEnabled & ~Qt::ItemIsSelectable);
         m_itemWidget[cur_ptr]->set_itemname(m_szItemNameList[cur_ptr]);
         m_itemWidget[cur_ptr]->get_swbtn()->set_id(cur_ptr);
-        this->addItem(m_listwidgetItem[cur_ptr]);
-        setItemWidget(m_listwidgetItem[cur_ptr], m_itemWidget[cur_ptr]->get_widget());
+        m_vboxLayout->addWidget(m_itemWidget[cur_ptr]);
     }
-    setFrameShape(QListWidget::NoFrame);
     //customize the script on/off area
-    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_vboxLayout->setSpacing(1);
+    m_vboxLayout->setMargin(0);
+    m_vboxLayout->addStretch();
+    m_vboxLayout->addSpacing(48);
+    this->setLayout(m_vboxLayout);
     //decorate the widget
-    this->setSpacing(1);
     adjustSize();
 }
 
@@ -53,19 +52,6 @@ FrameItem* ItemList::get_item_by_name(QString name) {
             return m_itemWidget[cur_ptr];
         }
     }
-}
-
-/* 添加物品选单，方便以后扩展 *
- * Add item for list to make convienience for future application */
-void ItemList::add_item(QString item_name) {
-    m_cItemCnt = m_cItemCnt + 1;
-    m_itemWidget[m_cItemCnt - 1] = new FrameItem(this);
-    m_listwidgetItem[m_cItemCnt - 1] = new QListWidgetItem(this);
-    m_listwidgetItem[m_cItemCnt - 1]->setSizeHint(QSize(200, 50));
-    m_listwidgetItem[m_cItemCnt - 1]->setFlags(m_listwidgetItem[m_cItemCnt - 1]->flags() & ~Qt::ItemIsEnabled & ~Qt::ItemIsSelectable);
-    m_itemWidget[m_cItemCnt - 1]->set_itemname(item_name);
-    this->addItem(m_listwidgetItem[m_cItemCnt - 1]);
-    setItemWidget(m_listwidgetItem[m_cItemCnt - 1], m_itemWidget[m_cItemCnt - 1]->get_widget());
 }
 
 /* 读取列表

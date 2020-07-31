@@ -21,28 +21,27 @@
 #define ITEM_LIST_H
 
 #include <QObject>
-#include <QListWidget>
+#include <QVBoxLayout>
 #include <QMouseEvent>
 #include <QComboBox>
 #include "frameitem.h"
 
 #define CURSIZE 6
 
-class ItemList : public QListWidget
+class ItemList : public QWidget
 {
     Q_OBJECT
 public:
-    explicit        ItemList(QListWidget *parent = nullptr,int itemssize = CURSIZE);
+    explicit        ItemList(QWidget *parent = nullptr,int itemssize = CURSIZE);
     QStringList     get_list();
     FrameItem*   get_item(int cur);
     FrameItem*   get_item_by_name(QString name);
-    void            add_item(QString item_name);
 private:
-    QListWidgetItem *m_listwidgetItem[30];
     QStringList     m_szItemNameList = {tr("Walpaper"),tr("ScreenSaver"),tr("Menu"),tr("Quick Start"),tr("Tab"),tr("Weather"),tr("Media")};
     int             m_cItemCnt = 0;
     FrameItem    *m_itemWidget[30];
     QPoint          m_startPoint;
+    QVBoxLayout     *m_vboxLayout;
 signals:
 
 };
