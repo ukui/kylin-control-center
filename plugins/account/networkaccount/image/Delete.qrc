@@ -12,13 +12,14 @@
         <file>delete_click.svg</file>
         <file>arrow_down.svg</file>
         <file>_.svg</file>
-        <file>loading17.svg</file>
         <file>loading16.svg</file>
         <file>loading15.svg</file>
         <file>loading14.svg</file>
         <file>loading13.svg</file>
         <file>loading12.svg</file>
         <file>loading11.svg</file>
+        <file>loading10.svg</file>
+        <file>loading17.svg</file>
     </qresource>
     <qresource prefix="/arrow"/>
     <qresource prefix="/"/>

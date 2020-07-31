@@ -46,6 +46,15 @@ FrameItem*  ItemList::get_item(int cur) {
     return m_itemWidget[cur];
 }
 
+FrameItem* ItemList::get_item_by_name(QString name) {
+    m_cItemCnt = m_szItemNameList.size();
+    for(int cur_ptr = 0; cur_ptr < m_cItemCnt; cur_ptr ++) {
+        if(m_itemWidget[cur_ptr]->get_itemname() == name) {
+            return m_itemWidget[cur_ptr];
+        }
+    }
+}
+
 /* 添加物品选单，方便以后扩展 *
  * Add item for list to make convienience for future application */
 void ItemList::add_item(QString item_name) {

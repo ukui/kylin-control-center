@@ -35,6 +35,7 @@ public:
     explicit        ItemList(QListWidget *parent = nullptr,int itemssize = CURSIZE);
     QStringList     get_list();
     FrameItem*   get_item(int cur);
+    FrameItem*   get_item_by_name(QString name);
     void            add_item(QString item_name);
 private:
     QListWidgetItem *m_listwidgetItem[30];

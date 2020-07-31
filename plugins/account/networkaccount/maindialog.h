@@ -61,11 +61,13 @@ public:
     QString         messagebox(int code);
     void            set_client(DbusHandleClient *c,QThread *t);
     QPushButton    *get_login_submit();
+    LoginDialog     *get_dialog();
     bool            retok = true;
     void            set_clear();
     void            setshow(QWidget *w);
     bool            is_used = false;
     void            set_staus(bool ok);
+    void            closedialog();
     ~MainDialog();
 
 public slots:
@@ -110,6 +112,9 @@ protected:
     bool            eventFilter(QObject *w,QEvent *e);
 
 private:
+    bool            m_bAutoLogin = false;
+    QString         m_szRegAccount;
+    QString         m_szRegPass;
     QString         m_szAccount;
     QString         m_szPass;
     LoginDialog     *m_loginDialog;

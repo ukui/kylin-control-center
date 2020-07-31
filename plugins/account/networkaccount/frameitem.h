@@ -27,8 +27,12 @@
 #include <QHBoxLayout>
 #include "switchbutton.h"
 #include <QFrame>
+#include <QTimer>
+#include <QStackedWidget>
+#include "infolabel.h"
+#include "svghandler.h"
 
-class FrameItem : public QWidget
+class FrameItem : public QFrame
 {
     Q_OBJECT
 public:
@@ -37,18 +41,27 @@ public:
     QString         get_itemname();
     void            make_itemoff();
     void            make_itemon();
+    void            set_change(int status,QString code);
     QHBoxLayout*    get_layout();
     SwitchButton* get_swbtn();
     QWidget*        get_widget();
     void            set_active(bool ok);
+    ~FrameItem();
 private:
     QLabel          *m_itemName;
     QHBoxLayout     *m_workLayout;
-    QFrame          *m_itemFrame;
+    QHBoxLayout     *m_hboxLayout;
     int             m_bOn;
     SwitchButton  *m_switchBtn;
+    QLabel      *m_run;
+    QWidget          *m_nullWidget;
+    InfoLabel            *m_errorStatusLabel;
+    QStackedWidget  *m_stackedWidget;
+    QTimer          *m_cTimer;
+    bool            bIsStart = false;
+    int             m_cCnt = 1;
+    SVGHandler      *m_svgHandler;
 signals:
-
 };
 
 #endif // NETWORK_ITEM_H

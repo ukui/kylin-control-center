@@ -268,13 +268,13 @@ MainDialog::MainDialog(QWidget *parent) : QWidget(parent)
 }
 
 /* 确认密码框如果遇到新密码或者注册密码改变，立即改变
- * 成空的状态，防止用户多余操作*/
+ * 成空的状态，防止用户多余操作(舍弃）*/
 void MainDialog::cleanconfirm(QString str) {
     //qDebug()<<str;
     if(m_stackedWidget->currentWidget() == m_passDialog) {
-        m_passConfirmLineEdit->setText("");
+        //m_passConfirmLineEdit->setText("");
     } else if(m_stackedWidget->currentWidget() == m_regDialog) {
-        m_regConfirmLineEdit->setText("");
+        //m_regConfirmLineEdit->setText("");
     }
 }
 
@@ -478,12 +478,16 @@ void MainDialog::setret_code_user_pass(int ret) {
     }
 }
 
+LoginDialog* MainDialog::get_dialog() {
+    return m_loginDialog;
+}
+
 /* 错误消息提示盒子，所有服务器消息基本上来源于此，默认
  * 返回未知代码，显示错误以及代码编号 */
 QString MainDialog::messagebox(int code) {
     QString ret = tr("Error code:") + QString::number(code,10)+ tr("!");
     switch(code) {
-    case 101:ret = tr("Internal error occurring!");break;
+    case 101:ret = tr("Internal error occurred!");break;
     case 102:ret = tr("Failed to sign up!");break;
     case 103:ret = tr("Failed attempt to return value!");break;
     case 104:ret = tr("Check your connection!");break;
@@ -503,7 +507,7 @@ QString MainDialog::messagebox(int code) {
     case 614:ret = tr("Please check your code!");break;
     case 615:ret = tr("Account doesn't exist!");break;
     case 616:ret = tr("User has bound the phone!");break;
-    case 619:ret = tr("Sending code error occurring!");break;
+    case 619:ret = tr("Sending code error occurred!");break;
     case -1:ret = tr("Please check your information!");break;
 
     }
@@ -517,7 +521,8 @@ void MainDialog::on_login_btn() {
     m_delBtn->setEnabled(true);
     //如果验证码输入错误，执行此处
     if(m_loginDialog->get_stack_widget()->currentIndex() == 0 &&
-        QString(m_loginDialog->get_mcode_widget()->get_verificate_code()) != m_loginDialog->get_mcode_lineedit()->text()) {
+        QString(m_loginDialog->get_mcode_widget()->get_verificate_code()) != m_loginDialog->get_mcode_lineedit()->text() &&
+            m_bAutoLogin == false) {
         m_loginDialog->set_code(tr("Your code is wrong!"));
         m_loginTips->show();
         m_baseWidget->setEnabled(true);
@@ -533,15 +538,16 @@ void MainDialog::on_login_btn() {
     if(m_loginDialog->get_user_name() != "" &&
         m_loginDialog->get_user_pass() != "" &&
         m_loginDialog->get_stack_widget()->currentIndex() == 0){
-        QString name,pass;
         m_szAccount = m_loginDialog->get_user_name();
         m_szPass = m_loginDialog->get_user_pass();
-        name = m_loginDialog->get_user_name();
+
+        m_szRegPass = m_szPass;
+        m_szRegAccount = m_szAccount;
         //qDebug()<<"1111111";
-        pass = m_loginDialog->get_user_pass();
+
         m_submitBtn->setText("");
         m_blueEffect->startmoive();
-        emit dologin(name,pass,m_uuid);            //触发登录信号，告知客户端进行登录操作
+        emit dologin(m_szRegAccount,m_szRegPass,m_uuid);            //触发登录信号，告知客户端进行登录操作
 
     } else if(m_loginDialog->get_user_name() != ""
                && m_loginDialog->get_login_code()->text() != ""
@@ -610,6 +616,8 @@ void MainDialog::on_reg_btn() {
             setshow(m_stackedWidget);
             return ;
         }
+        m_szRegAccount = account;
+        m_szRegPass = passwd;
         emit doreg(account,passwd,phone,mcode,m_uuid);
     } else {
         m_baseWidget->setEnabled(true);
@@ -699,6 +707,8 @@ void MainDialog::on_bind_btn() {
 
 /* 从成功注册，修改密码成功界面返回所需要的处理 */
 void MainDialog::back_normal() {
+    //回到登录框
+
     m_delBtn->show();
     //qDebug()<<"back normal";
     m_baseWidget->setCurrentWidget(m_containerWidget);
@@ -707,6 +717,13 @@ void MainDialog::back_normal() {
     m_titleLable->setText(tr("Sign in Cloud"));
     m_stackedWidget->setCurrentWidget(m_loginDialog);
     m_loginDialog->set_clear();
+
+    //设置注册时候的账号密码为登录账号密码，然后执行登录逻辑
+    if(m_bAutoLogin == true) {
+        m_loginDialog->get_login_pass()->setText(m_szRegPass);
+        m_loginDialog->get_user_edit()->setText(m_szRegAccount);
+        m_submitBtn->click();
+    }
 }
 
 /* 从忘记密码或者注册界面或者或者手机绑定
@@ -948,10 +965,9 @@ void MainDialog::on_login_finished(int ret,QString uuid) {
         return ;
     }
     qDebug()<<ret;
-    m_baseWidget->setEnabled(true);
-    set_staus(true);
     //无手机号码绑定，进入手机号码绑定页面
     if(ret == 119) {
+        set_back();
         m_blueEffect->stop();
         m_titleLable->setText(tr("Binding Phone"));
         m_stackedWidget->setCurrentWidget(m_BindDialog);
@@ -967,14 +983,11 @@ void MainDialog::on_login_finished(int ret,QString uuid) {
     }
     //登录返回成功，执行此处
     if(ret == 0) {
-        m_blueEffect->stop();
-        timerout_num_log = 0;
-        m_cLogTimer->stop();
-        m_forgetpassSendBtn->setEnabled(true);
-        m_forgetpassSendBtn->setText(tr("Send"));
-        m_submitBtn->setText(tr("Sign in"));
+        //m_blueEffect->stop();
+        //m_submitBtn->setText(tr("Sign in"));
         emit on_login_success(); //发送成功登录信号给主页面
     } else {
+        set_back();
         m_blueEffect->stop();             //登录失败，执行此处，关闭登录执行过程效果，并打印错误消息
         m_submitBtn->setText(tr("Sign in"));
         if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
@@ -1010,6 +1023,7 @@ void MainDialog::on_bind_finished(int ret,QString uuid) {
         m_regBtn->setText(tr("Sign up"));
         m_stackedWidget->setCurrentWidget(m_loginDialog);
         setshow(m_stackedWidget);
+        m_bAutoLogin = true;
         m_baseWidget->setCurrentWidget(m_successDialog);
         m_successDialog->set_mode_text(3);
         disconnect(m_submitBtn,SIGNAL(clicked()),this,SLOT(on_bind_btn()));
@@ -1041,6 +1055,7 @@ void MainDialog::on_reg_finished(int ret,QString uuid) {
         m_regDialog->get_reg_user()->clear();
         m_regDialog->get_phone_user()->clear();
         m_regDialog->get_valid_code()->clear();
+        m_bAutoLogin = true;
         m_baseWidget->setCurrentWidget(m_successDialog);
         m_delBtn->hide();
         m_successDialog->set_mode_text(0);
@@ -1521,13 +1536,32 @@ void MainDialog::set_back() {
 /* 关闭按钮触发处理 */
 void MainDialog::on_close() {
     //qDebug()<<"yes";
+    m_forgetpassSendBtn->setEnabled(true);
+    m_forgetpassSendBtn->setText(tr("Send"));
     m_baseWidget->setEnabled(true);
     m_blueEffect->stop();
-    m_submitBtn->setText(tr("Sign in"));
+    set_staus(true);
+
     m_loginDialog->get_mcode_widget()->set_change(1);
     back_login_btn();
     set_clear();
     close();
+}
+
+void MainDialog::closedialog() {
+    m_forgetpassSendBtn->setEnabled(true);
+    m_forgetpassSendBtn->setText(tr("Send"));
+    m_baseWidget->setEnabled(true);
+    m_blueEffect->stop();
+    m_bAutoLogin = false;
+    set_staus(true);
+    m_submitBtn->setText(tr("Sign in"));
+    m_loginDialog->get_mcode_widget()->set_change(1);
+
+    back_login_btn();
+    set_clear();
+    close();
+
 }
 
 MainDialog::~MainDialog() {

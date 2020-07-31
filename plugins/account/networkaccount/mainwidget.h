@@ -92,12 +92,18 @@ private:
     QTimer              *m_cLoginTimer;
     QTimer              *m_cSyncDelay;
     QString             m_szUuid;
+    QTimer              *m_cRetry;
     QFileSystemWatcher m_fsWatcher;
     SVGHandler *m_svgHandler;
     Tooltips       *m_syncTooltips;
     QLabel          *m_syncTipsText;
     QHBoxLayout     *m_animateLayout;
     QHBoxLayout     *m_tipsLayout;
+    QMap<QString,QString> m_itemMap;
+    QStringList     m_keyInfoList;
+    QLabel          *m_infoText;
+    bool            __once__ = false;
+    bool            __run__ = false;
 
 public slots:
     void            neweditdialog();
@@ -118,6 +124,7 @@ public slots:
     void            setret_man(int ret);
     void            setname(QString n);
     void            setret_check(QString ret);
+    void            get_key_info(QString info);
 signals:
     void dooss(QString m_szUuid);
     void doman();

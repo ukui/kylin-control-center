@@ -20,9 +20,9 @@ Blueeffect::Blueeffect(QWidget *parent) : QWidget(parent)
     setLayout(m_workLayout);
     m_cTimer->stop();
     connect(m_cTimer,&QTimer::timeout, [this] () {
-        QPixmap pixmap = m_svgHandler->loadSvg(QString(":/new/image/loading1%1.svg").arg(m_cCnt));
+        QPixmap pixmap = m_svgHandler->loadSvgColor(QString(":/new/image/loading1%1.svg").arg(m_cCnt),"white",16);
         m_iconLabel->setPixmap(pixmap);
-        m_cCnt = (m_cCnt + 8) % 7;
+        m_cCnt = (m_cCnt + 9) % 8;
     });
     hide();
 }
@@ -40,6 +40,7 @@ void Blueeffect::startmoive() {
 void Blueeffect::stop() {
     m_cCnt = 1;
     m_iconLabel->setPixmap(m_svgHandler->loadSvg(":/new/image/loading11.svg"));
-    m_cTimer->stop();
+    if(m_cTimer->isActive())
+        m_cTimer->stop();
     hide();
 }

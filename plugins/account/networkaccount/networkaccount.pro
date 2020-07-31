@@ -35,6 +35,7 @@ SOURCES += \
     editpassdialog.cpp \
     editpushbutton.cpp \
     frameitem.cpp \
+    infolabel.cpp \
     itemlist.cpp \
     logindialog.cpp \
     maindialog.cpp \
@@ -62,6 +63,7 @@ HEADERS += \
     editpassdialog.h \
     editpushbutton.h \
     frameitem.h \
+    infolabel.h \
     itemlist.h \
     logindialog.h \
     maindialog.h \

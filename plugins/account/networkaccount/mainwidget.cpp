@@ -57,6 +57,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","backcall_start_push_signal",this,SLOT(push_files()));
     //connect(client,SIGNAL(backcall_end_push_signal()),this,SLOT(push_over()));
     QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","backcall_end_push_signal",this,SLOT(push_over()));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","backcall_key_info",this,SLOT(get_key_info(QString)));
 }
 /* 检测第一次登录，为用户添加名字 */
 void MainWidget::setname(QString n) {
@@ -66,6 +67,13 @@ void MainWidget::setname(QString n) {
         m_infoTab->setText(tr("Your account：%1").arg(m_szCode));
         m_mainWidget->setCurrentWidget(m_widgetContainer);
         m_bTokenValid = true;              //开启登录状态
+
+        m_autoSyn->set_change(0,"0");
+
+        for(int i = 0;i < m_szItemlist.size();i ++) {
+            m_itemList->get_item(i)->set_change(0,"0");
+        }
+
         m_dbusClient->m_bFirstAttempt = false;        //关闭第一次打开状态
         return ;
     }
@@ -83,16 +91,24 @@ void MainWidget::setret_oss(int ret) {
 void MainWidget::setret_logout(int ret) {
     //do nothing
     if(ret == 0) {
-
+        m_mainDialog->set_back();
+        m_mainDialog->get_dialog()->set_code(m_mainDialog->messagebox(101));
     }
 }
 
 void MainWidget::setret_conf(int ret) {
     //qDebug()<<ret<<"csacasca";
     if(ret == 0) {
+        emit docheck();
+        m_mainDialog->closedialog();
+
+        m_cSyncDelay->start(1000);
         //QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     } else {
-        //emit dologout();
+        QProcess p;
+        p.start("killall kylin-sso-client");
+        p.waitForFinished();
+        emit dologout();
     }
 }
 
@@ -114,7 +130,10 @@ void MainWidget::setret_check(QString ret) {
         m_szCode = ret;
         m_infoTab->setText(tr("Your account：%1").arg(ret));
         m_mainWidget->setCurrentWidget(m_widgetContainer);
+
+
         handle_conf();
+
         //QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     } else if((ret == "" || ret =="201" || ret == "203" || ret == "401" ) && m_bTokenValid == false){
         m_bTokenValid = true;
@@ -195,6 +214,8 @@ void MainWidget::init_gui() {
     m_tipsLayout = new QHBoxLayout;
     m_stackedWidget = new QStackedWidget(this);
     m_nullwidgetContainer = new QWidget(this);
+    m_infoText = new QLabel(this);
+    m_cRetry = new QTimer(this);
 
     m_stackedWidget->addWidget(m_itemList);
     m_stackedWidget->addWidget(m_nullwidgetContainer);
@@ -291,7 +312,9 @@ void MainWidget::init_gui() {
     m_workLayout->setContentsMargins(1,0,1,0);
     m_workLayout->addSpacing(16);
     m_workLayout->addWidget(m_autoSyn->get_widget());
-    m_workLayout->addSpacing(16);
+    m_workLayout->addSpacing(8);
+    m_workLayout->addWidget(m_infoText);
+    m_workLayout->addSpacing(8);
     m_workLayout->addWidget(m_stackedWidget);
     m_widgetContainer->setLayout(m_workLayout);
 
@@ -299,6 +322,11 @@ void MainWidget::init_gui() {
     m_openEditDialog_btn->setFlat(true);
     m_openEditDialog_btn->setStyleSheet("QPushButton{background:transparent;}");
     m_welcomeMsg->setText(tr("Synchronize your personalized settings and data"));
+
+    m_infoText->setText(tr("Synchronize your computer's settings into your cloud account here."));
+    m_infoText->setStyleSheet("QLabel{color:rgba(0,0,0,0.65);font-size:12px}");
+    m_infoText->adjustSize();
+
     m_welcomeMsg->setStyleSheet("font-size:18px;");
 
     m_exitCloud_btn->setStyleSheet("QPushButton[on=true]{background-color:#3D6BE5;border-radius:4px;}");
@@ -329,6 +357,13 @@ void MainWidget::init_gui() {
     QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/edit.svg");
     m_openEditDialog_btn->setIcon(pixmap);
 
+    int cItem = 0;
+
+    for(QString key : m_szItemlist) {
+        m_itemMap.insert(key,m_itemList->get_item(cItem)->get_itemname());
+        cItem ++;
+    }
+
     //连接信号
     connect(m_autoSyn->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_auto_syn(int,int)));
     connect(m_login_btn,SIGNAL(clicked()),this,SLOT(on_login()));
@@ -337,8 +372,15 @@ void MainWidget::init_gui() {
     connect(m_editDialog,SIGNAL(account_changed()),this,SLOT(on_login_out()));
     connect(m_mainDialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
     connect(m_mainDialog->get_login_submit(),&QPushButton::clicked, [this] () {
-        m_cLoginTimer->start();
+        m_cLoginTimer->start(15000);
     });
+
+    connect(m_cRetry,&QTimer::timeout, [this] () {
+        emit doman();
+        download_files();
+        m_cRetry->stop();
+    });
+
     connect(m_cLoginTimer,SIGNAL(timeout()),m_mainDialog,SLOT(set_back()));
     for(int btncnt = 0;btncnt < m_itemList->get_list().size();btncnt ++) {
         connect(m_itemList->get_item(btncnt)->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_switch_button(int,int)));
@@ -346,6 +388,7 @@ void MainWidget::init_gui() {
 
     connect(m_cSyncDelay,&QTimer::timeout,[=] () {
         emit doman();
+        m_cSyncDelay->stop();
     });
 
     //All.conf的
@@ -353,11 +396,40 @@ void MainWidget::init_gui() {
     m_fsWatcher.addPath(all_conf_path);
 
     connect(&m_fsWatcher,&QFileSystemWatcher::directoryChanged,[this] () {
-         handle_conf();
+        QFile conf(QDir::homePath()+ "/.cache/kylinssoclient/All.conf");
+        if(conf.exists() == true) {
+            handle_conf();
+        }
+
+         if(m_bTokenValid == false && __run__ == false) {
+             QFile token(QDir::homePath()+"/.cache/kylinssoclient/token.ini");
+             if(token.exists() == true) {
+                 QProcess p;
+                 p.start("killall kylin-sso-client");
+                 p.waitForFinished();
+                 token.remove();
+                 __run__ = true;
+             }
+         }
     });
+
+
     connect(m_autoSyn->get_swbtn(),&SwitchButton::status,[=] (int on,int id) {
        if(on == 1) {
            m_stackedWidget->setCurrentWidget(m_itemList);
+           m_keyInfoList.clear();
+           m_infoText->setText(tr("Synchronize your computer's settings into your cloud account here."));
+           __once__ = false;
+
+           m_autoSyn->set_change(0,"0");
+           for(int i  = 0;i < m_szItemlist.size();i ++) {
+               if(m_itemList->get_item(i)->get_swbtn()->get_swichbutton_val() == 1) {
+                   m_itemList->get_item(i)->set_change(0,"0");
+               }
+           }
+
+           m_cRetry->start(1000);
+
        } else {
            m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
        }
@@ -384,7 +456,7 @@ void MainWidget::on_login() {
 /* 登录过程处理事件 */
 void MainWidget::open_cloud() {
     emit dooss(m_szUuid);
-    m_mainDialog->on_close();
+    //m_mainDialog->on_close();
 }
 
 bool MainWidget::eventFilter(QObject *watched, QEvent *event) {
@@ -416,15 +488,16 @@ bool MainWidget::eventFilter(QObject *watched, QEvent *event) {
 /* 登录成功处理事件 */
 void MainWidget::finished_load(int ret,QString uuid) {
     //qDebug()<<"wb111"<<ret;
+    if(ret != 0) {
+        emit dologout();
+    }
+
     if(uuid != this->m_szUuid) {
         return ;
     }
    // qDebug()<<"wb222"<<ret;
     if (ret == 0) {
-        emit docheck();
         emit doconf();
-        m_cSyncDelay->start(1000);
-        QFuture<void> res1 = QtConcurrent::run(this, &MainWidget::handle_conf);
     } else if(ret == 401 || ret == 203 || ret == 201) {
         emit dologout();
     }
@@ -432,14 +505,19 @@ void MainWidget::finished_load(int ret,QString uuid) {
 
 /* 读取滑动按钮列表 */
 void MainWidget::handle_conf() {
+    if(__once__ ) {
+        return ;
+    }
+
+
     if(ConfigFile(m_szConfPath).Get("Auto-sync","enable").toString() == "true") {
-        m_itemList->show();
+        m_stackedWidget->setCurrentWidget(m_itemList);
         m_autoSyn->make_itemon();
         for(int i  = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(true);
         }
     } else {
-        m_itemList->hide();
+        m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
         m_autoSyn->make_itemoff();
         m_bAutoSyn = false;
         for(int i  = 0;i < m_szItemlist.size();i ++) {
@@ -514,7 +592,13 @@ void MainWidget::on_login_out() {
     m_szCode = "";
     m_mainDialog->set_clear();
     m_editDialog->set_clear();
+    m_autoSyn->set_change(0,"0");
+    m_autoSyn->set_active(true);
+    m_keyInfoList.clear();
+    m_infoText->setText(tr("Synchronize your computer's settings into your cloud account here."));
     m_mainWidget->setCurrentWidget(m_nullWidget);
+    __once__ = false;
+    __run__ = false;
 }
 
 /* 修改密码打开处理事件 */
@@ -547,6 +631,9 @@ QLabel* MainWidget::get_title() {
 
 /* 同步回调函数集 */
 void MainWidget::download_files() {
+    if(__once__ == true) {
+        return ;
+    }
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
@@ -559,9 +646,23 @@ void MainWidget::download_files() {
         m_exitCloud_btn->setText("");
         m_blueEffect_sync->startmoive();
     }
+
+    m_infoText->setText(tr("Sync downloading,please wait!"));
+
+
+    if(m_autoSyn->get_swbtn()->get_swichbutton_val() == 0) {
+        return ;
+    }
+    m_autoSyn->set_change(1,"0");
+
 }
 
 void MainWidget::push_files() {
+
+    if(__once__ == true) {
+        return ;
+    }
+
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
@@ -574,27 +675,39 @@ void MainWidget::push_files() {
         m_exitCloud_btn->update();
         m_blueEffect_sync->startmoive();
     }
+
+    m_infoText->setText(tr("Sync uploading,please wait!"));
+
+    if(m_autoSyn->get_swbtn()->get_swichbutton_val() == 0) {
+        return ;
+    }
+    m_autoSyn->set_change(1,"0");
+
 }
 
 void MainWidget::download_over() {
     //emit docheck();
+
     if(m_exitCloud_btn->property("on") == true) {
-        m_cSyncDelay->stop();
         m_blueEffect_sync->stop();
         m_exitCloud_btn->setText(tr("Exit"));
         m_exitCloud_btn->setProperty("on",false);
         m_exitCloud_btn->style()->unpolish(m_exitCloud_btn);
         m_exitCloud_btn->style()->polish(m_exitCloud_btn);
         m_exitCloud_btn->update();
+    }
+    if(__once__ == false) {
+        m_infoText->setText(tr("Synchronize your computer's settings into your cloud account here."));
+        m_autoSyn->set_change(0,"0");
+    }
+    else {
+        m_infoText->setText(tr("Sync failed, please check your internet connection or login out to retry!"));
     }
 }
 
 void MainWidget::push_over() {
     //emit docheck();
     if(m_exitCloud_btn->property("on") == true) {
-        if(m_cSyncDelay->isActive()) {
-            m_cSyncDelay->stop();
-        }
         m_blueEffect_sync->stop();
         m_exitCloud_btn->setText(tr("Exit"));
         m_exitCloud_btn->setProperty("on",false);
@@ -602,6 +715,83 @@ void MainWidget::push_over() {
         m_exitCloud_btn->style()->polish(m_exitCloud_btn);
         m_exitCloud_btn->update();
     }
+    if(__once__ == false) {
+        m_infoText->setText(tr("Synchronize your computer's settings into your cloud account here."));
+        m_autoSyn->set_change(0,"0");
+    }
+    else {
+        m_infoText->setText(tr("Sync failed, please check your internet connection or login out to retry!"));
+    }
+
+}
+
+void MainWidget::get_key_info(QString info) {
+
+    if(m_mainWidget->currentWidget() == m_nullWidget) {
+        return ;
+    }
+
+    if(info == "Upload") {
+        return ;
+    }
+    if(info == "Download") {
+        return ;
+    }
+
+    bool bIsFailed = false;
+    qDebug()<<"networkaccount:"+info;
+    if(info.contains(",")) {
+        m_keyInfoList = info.split(',');
+    } else {
+        m_keyInfoList << info;
+    }
+
+    if(m_keyInfoList.size() == 1) {
+        m_autoSyn->set_change(-1,m_keyInfoList[0]);
+        m_autoSyn->make_itemoff();
+        for(int i = 0;i < m_szItemlist.size();i ++) {
+            m_itemList->get_item(i)->set_active(false);
+        }
+        handle_write(0,-1);
+        __once__ = true;
+        return ;
+    } else if(m_keyInfoList.size() > 1){
+        bIsFailed = true;
+    } else {
+         m_autoSyn->set_change(0,"0");
+         for(int i  = 0;i < m_szItemlist.size();i ++) {
+             if(m_itemList->get_item(i)->get_swbtn()->get_swichbutton_val() == 1) {
+                 m_itemList->get_item(i)->set_change(0,"0");
+             }
+         }
+         return ;
+    }
+
+    //m_keyInfoList.size() > 1的情况
+    //说明size大于2
+    if(bIsFailed) {
+        QString keys = "";
+        for(QString key : m_keyInfoList) {
+            if(key != m_keyInfoList.last()) {
+
+                if(m_itemMap.value(key).isEmpty() == false)
+                {
+                    m_itemList->get_item_by_name(m_itemMap.value(key))->set_change(-1,"Failed!");
+                    keys.append(tr("%1,").arg(m_itemMap.value(key)));
+                }
+            }
+        }
+        m_infoText->setText(tr("Synchronized failed: %1 please retry or login out to get a better experience.").arg(keys));
+        m_infoText->adjustSize();
+        m_autoSyn->make_itemoff();
+        for(int i = 0;i < m_szItemlist.size();i ++) {
+            m_itemList->get_item(i)->set_active(false);
+        }
+        m_autoSyn->set_change(-1,"Failed!");
+        handle_write(0,-1);
+        __once__ = true;
+    }
+    m_keyInfoList.clear();
 }
 
 /* 析构函数 */
