@@ -247,6 +247,12 @@ void Shortcut::setupConnect(){
             QString value = settings->get(currentEntry->keyStr).toString();
             wItem->setShortcutBinding(value);
 
+            // 同时更新 显示全部快捷键中 对应键值
+            for (int index = 0; index < generalEntries.count(); index++){
+                if (currentEntry->keyStr == generalEntries[index]->keyStr){
+                    generalEntries[index]->valueStr = value;
+                }
+            }
             delete settings;
         }
     });
