@@ -39,7 +39,7 @@ Depends: ${shlibs:Depends},
          ${misc:Depends},
          qml-module-qtgraphicaleffects,
          qml-module-qtquick-controls,
-         edid-decode,
+         lsb_release,
 Recommends: redshift
 Suggests: gsettings-desktop-schemas,
           mate-desktop-common,

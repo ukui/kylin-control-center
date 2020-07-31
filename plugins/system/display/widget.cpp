@@ -112,7 +112,9 @@ Widget::Widget(QWidget *parent)
 
     QByteArray ba = process->readAllStandardOutput();
     QString osReleaseCrude = QString(ba.data());
-    QString osRelease = QString(osReleaseCrude.split(":").at(1)).simplified();
+    QStringList res = osReleaseCrude.split(":");
+    QString osRelease = res.length() >= 2 ?  res.at(1) : "";
+    osRelease = osRelease.simplified();
 
     const QByteArray idd(ADVANCED_SCHEMAS);
     if (QGSettings::isSchemaInstalled(idd) && osRelease == "V10"){
