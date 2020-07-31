@@ -135,6 +135,7 @@ void Wallpaper::setupComponent(){
     addLyt->addWidget(textLabel);
     addLyt->addStretch();
     colWgt->setLayout(addLyt);
+    ui->horizontalLayout_7->addWidget(colWgt);
 
     // 悬浮改变Widget状态
     connect(colWgt, &HoverWidget::enterWidget, this, [=](QString mname){
@@ -256,9 +257,7 @@ void Wallpaper::setupConnect(){
             ui->previewStackedWidget->setCurrentIndex(COLOR);
         });
         colorFlowLayout->addWidget(button);
-
     }
-    colorFlowLayout->addWidget(colWgt);
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->formComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
