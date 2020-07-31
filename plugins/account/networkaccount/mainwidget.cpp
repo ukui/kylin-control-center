@@ -91,8 +91,7 @@ void MainWidget::setret_oss(int ret) {
 void MainWidget::setret_logout(int ret) {
     //do nothing
     if(ret == 0) {
-        m_mainDialog->set_back();
-        m_mainDialog->get_dialog()->set_code(m_mainDialog->messagebox(101));
+        m_mainDialog->setnormal();
     }
 }
 

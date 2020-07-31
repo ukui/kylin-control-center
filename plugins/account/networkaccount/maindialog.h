@@ -68,6 +68,7 @@ public:
     bool            is_used = false;
     void            set_staus(bool ok);
     void            closedialog();
+    void            setnormal();
     ~MainDialog();
 
 public slots:

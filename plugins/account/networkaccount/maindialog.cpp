@@ -1533,6 +1533,16 @@ void MainDialog::set_back() {
     set_staus(true);
 }
 
+void MainDialog::setnormal() {
+    m_baseWidget->setEnabled(true);
+    set_staus(true);
+    m_blueEffect->stop();
+    m_loginDialog->set_code(messagebox(101));
+    m_loginCodeStatusTips->show();
+    setshow(m_stackedWidget);
+
+}
+
 /* 关闭按钮触发处理 */
 void MainDialog::on_close() {
     //qDebug()<<"yes";
