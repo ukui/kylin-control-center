@@ -57,22 +57,6 @@ Desktop::Desktop()
     ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->menuLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-
-//    ui->deskComputerWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->deskTrashWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->deskHomeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->deskVolumeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->deskNetworkWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-
-//    ui->menuComputerWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->menuTrashWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->menuFilesystemWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->menuSettingWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-
-
     ui->titleLabel->setVisible(false);
 //    ui->title2Label->setVisible(false);
 
@@ -82,9 +66,6 @@ Desktop::Desktop()
     ui->deskVolumeFrame->setVisible(false);
     ui->deskNetworkFrame->setVisible(false);
 
-//    ui->trayWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//    ui->trayWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
     ui->titleLabel->setVisible(false);
 //    ui->title2Label->setVisible(false);
 
@@ -93,20 +74,9 @@ Desktop::Desktop()
     ui->deskHomeFrame->setVisible(false);
     ui->deskVolumeFrame->setVisible(false);
     ui->deskNetworkFrame->setVisible(false);
-
-//    ui->menuComputerFrame->setVisible(false);
-//    ui->menuTrashFrame->setVisible(false);
-//    ui->menuFilesystemFrame->setVisible(false);
-//    ui->menuSettingFrame->setVisible(false);
-
-//    ui->menuComputerFrame->setVisible(false);
-//    ui->menuTrashFrame->setVisible(false);
-//    ui->menuFilesystemFrame->setVisible(false);
-//    ui->menuSettingFrame->setVisible(false);
 
     ui->title2Label->hide();
     ui->fullScreenMenuFrame->setVisible(false);
-
 
     vecGsettings = new QVector<QGSettings*>();
     const QByteArray id(DESKTOP_SCHEMA);
@@ -225,7 +195,6 @@ void Desktop::setupComponent(){
 }
 
 void Desktop::setupConnect(){
-//    qDebug()<<"this is desktop setUpConnect ------->"<<endl;
     QStringList keys = dSettings->keys();
     connect(deskComputerSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(COMPUTER_VISIBLE_KEY, checked);});
     connect(deskTrashSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(TRASH_VISIBLE_KEY, checked);});
@@ -304,13 +273,8 @@ void Desktop::initLockingStatus(){
 void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     const QString locale = QLocale::system().name();
 
-    //构建Widget
-    QWidget * baseWidget = new QWidget();
-    baseWidget->setAttribute(Qt::WA_DeleteOnClose);
-
-    QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);
+    QVBoxLayout * baseVerLayout = new QVBoxLayout();
     baseVerLayout->setSpacing(1);
-    baseVerLayout->setContentsMargins(0, 0, 0, 1);
 
     QFrame * devFrame = new QFrame();
     devFrame->setFrameShape(QFrame::Shape::Box);
@@ -318,7 +282,6 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     devFrame->setMaximumWidth(960);
     devFrame->setMinimumHeight(50);
     devFrame->setMaximumHeight(50);
-//    devFrame->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
     QHBoxLayout * devHorLayout = new QHBoxLayout();
     devHorLayout->setSpacing(8);
@@ -337,7 +300,6 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     iconBtn->setIconSize(QSize(32, 32));
     iconBtn->setIcon(icon);
 
-
     QLabel * nameLabel = new QLabel();
     QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
     nameSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
@@ -350,7 +312,6 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
         nameLabel->setText(name);
     }
 
-
     SwitchButton *appSwitch = new SwitchButton();
     if (disList.contains(name)) {
         appSwitch->setEnabled(false);
@@ -361,21 +322,11 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     devHorLayout->addStretch();
 
     devHorLayout->addWidget(appSwitch);
-
     devFrame->setLayout(devHorLayout);
-
     baseVerLayout->addWidget(devFrame);
-
     baseVerLayout->addStretch();
 
-    baseWidget->setLayout(baseVerLayout);
-
-//    QListWidgetItem * item = new QListWidgetItem(ui->trayListWidget);
-//    item->setSizeHint(QSize(502, 52));
-
-//    ui->trayListWidget->setItemWidget(item, baseWidget);
-    ui->trayVBoxLayout->addWidget(baseWidget);
-
+    ui->trayVBoxLayout->addWidget(devFrame);
 
     QString status = gsettings->get(TRAY_ACTION_KEY).toString();
     if ("tray" == status) {
@@ -433,7 +384,6 @@ void Desktop::initTraySettings() {
                 }
                 initTrayStatus(name, icon, traySettings);
             }
-
         }
     }
 }
