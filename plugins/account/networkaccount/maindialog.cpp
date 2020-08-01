@@ -533,6 +533,7 @@ void MainDialog::on_login_btn() {
         setshow(m_stackedWidget);
         m_loginDialog->get_mcode_lineedit()->setText("");
         m_loginDialog->get_mcode_widget()->set_change(0);
+        emit on_login_failed();
         return ;
     }
     //如果信息正确可提交，执行此处
@@ -544,7 +545,7 @@ void MainDialog::on_login_btn() {
 
         m_szRegPass = m_szPass;
         m_szRegAccount = m_szAccount;
-        //qDebug()<<m_szRegPass<<m_szRegAccount;
+        qDebug()<<m_szRegPass<<m_szRegAccount;
 
         m_submitBtn->setText("");
         m_blueEffect->startmoive();
@@ -558,6 +559,7 @@ void MainDialog::on_login_btn() {
         mcode = m_loginDialog->get_login_code()->text();
         emit dophonelogin(phone,mcode,m_uuid);
     } else {
+        emit on_login_failed();
         //信息填写不完整执行此处，包括密码登录以及手机登录
         if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
             m_loginDialog->set_code(messagebox(-1));
@@ -962,10 +964,10 @@ void MainDialog::on_timer_reg_out() {
 /* 登录回调槽函数，登录回执消息后执行此处 */
 void MainDialog::on_login_finished(int ret,QString uuid) {
     if(uuid != this->m_uuid) {
-        //qDebug()<<uuid<<this->m_uuid;
+        qDebug()<<uuid<<this->m_uuid;
         return ;
     }
-    //qDebug()<<ret;
+    qDebug()<<ret;
     //无手机号码绑定，进入手机号码绑定页面
     if(ret == 119) {
         set_back();
