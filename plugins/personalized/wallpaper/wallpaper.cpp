@@ -19,15 +19,14 @@
  */
 #include "wallpaper.h"
 #include "ui_wallpaper.h"
-
-#include <QDBusReply>
-#include <QDBusInterface>
-
 #include "pictureunit.h"
 #include "MaskWidget/maskwidget.h"
 
+#include <QDBusReply>
+#include <QDBusInterface>
 #include <QDebug>
 #include <QDesktopServices>
+#include <QProcess>
 
 const QString kylinUrl = "https://www.ubuntukylin.com/wallpaper.html";
 
@@ -253,6 +252,7 @@ void Wallpaper::setupConnect(){
             ///设置系统纯色背景
             bgsettings->set(FILENAME, "");
             bgsettings->set(PRIMARY, QVariant(color));
+            bgsettings->set(SECONDARY, QVariant(color));
 
             ui->previewStackedWidget->setCurrentIndex(COLOR);
         });
@@ -475,10 +475,20 @@ void Wallpaper::showLocalWpDialog(){
     QString selectedfile;
     selectedfile = fd.selectedFiles().first();
 
+    QStringList fileRes = selectedfile.split("/");
 
-    ///TODO: chinese and space support
+    QProcess * process = new QProcess();
+    QString program("cp");
+    QStringList arguments;
+    arguments << selectedfile ;
+    arguments << "/tmp";
+    process->start(program, arguments);
+
+    QString bgfile = "/tmp/" + fileRes.at(fileRes.length() - 1);
+
+    // TODO: chinese and space support
 //    if (g_file_test(selectedfile.toLatin1().data(), G_FILE_TEST_EXISTS)) {
-        bgsettings->set(FILENAME, QVariant(selectedfile));
+        bgsettings->set(FILENAME, QVariant(bgfile));
 //    } else {
 //        bgsettings->reset(FILENAME);
 //    }

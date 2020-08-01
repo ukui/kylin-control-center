@@ -314,16 +314,6 @@ int Screenlock::lockConvertToSlider(const int value) {
 
 void Screenlock::setLockBackground(bool status)
 {
-    QString username;
-#if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
-    username = qgetenv("USER");
-    if (username.isEmpty()) {
-        username = qgetenv("USERNAME");
-    }
-#else
-    username = "";
-#endif
-
     QString bgStr;
     if (lSetting && status) {
         bgStr= lSetting->get(SCREENLOCK_BG_KEY).toString();
@@ -331,29 +321,12 @@ void Screenlock::setLockBackground(bool status)
         bgStr = "";
     }
 
-    if (!bgStr.isEmpty()) {
-        int index = bgStr.lastIndexOf('/');
-        bgStr = bgStr.mid(index, bgStr.length() - index);
-    }
-
-    QString picname;
-
-    if (!bgStr.isEmpty()) {
-        if (!username.isEmpty()) {
-            picname = "/usr/share/backgrounds/" + username + bgStr;
-        } else {
-            picname = "/usr/share/backgrounds"  + bgStr;
-        }
-    } else {
-        picname = "";
-    }
-
     lockSetting->beginGroup("ScreenLock");
     lockSetting->setValue("lockStatus", status);
     lockSetting->endGroup();
 
     lockLoginSettings->beginGroup("greeter");
-    lockLoginSettings->setValue("backgroundPath", picname);
+    lockLoginSettings->setValue("backgroundPath", bgStr);
     lockLoginSettings->endGroup();
 }
 

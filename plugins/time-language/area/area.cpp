@@ -89,11 +89,6 @@ Area::Area()
 //    connect(ui->addlanBtn, SIGNAL(clicked()), this, SLOT(add_lan_btn_slot()));
     connect(ui->chgformButton,SIGNAL(clicked()),this,SLOT(changeform_slot()));
 
-//    connect(ui->langcomboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-//            [=]{
-//        KMessageBox::information(ui->languageframe, tr("Need to cancel to take effect"));
-//    });
-
     connect(ui->countrycomboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             [=]{
         KMessageBox::information(ui->languageframe_2, tr("Need to log off to take effect"));
@@ -249,11 +244,14 @@ void Area::change_language_slot(int index){
         res = m_areaInterface->call("SetLanguage","zh_CN");
         break;
     }
+
+    if (index == ui->countrycomboBox->currentIndex()) {
+        KMessageBox::information(ui->languageframe, tr("Need to log off to take effect"));
+    }
     ui->countrycomboBox->setCurrentIndex(index);
 }
 
-void Area::change_area_slot(int index){
-    qDebug()<<"area----------->"<<endl;
+void Area::change_area_slot(int index) {
     QDBusReply<bool> res;
     switch (index) {
     case 0:
@@ -285,11 +283,11 @@ void Area::add_lan_btn_slot() {
 }
 
 void Area::changeform_slot() {
-//    DataFormat *dialog = new DataFormat();
-//    connect(dialog, SIGNAL(dataChangedSignal()),this,SLOT(initFormatData()));
-//    dialog->setWindowTitle(tr("change data format"));
-//    dialog->setAttribute(Qt::WA_DeleteOnClose);
-//    dialog->exec();
+    DataFormat *dialog = new DataFormat();
+    connect(dialog, SIGNAL(dataChangedSignal()),this,SLOT(initFormatData()));
+    dialog->setWindowTitle(tr("change data format"));
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->exec();
 }
 
 QStringList Area::readFile(const QString& filepath) {
