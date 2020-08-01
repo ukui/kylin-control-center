@@ -544,7 +544,7 @@ void MainDialog::on_login_btn() {
 
         m_szRegPass = m_szPass;
         m_szRegAccount = m_szAccount;
-        qDebug()<<m_szRegPass<<m_szRegAccount;
+        //qDebug()<<m_szRegPass<<m_szRegAccount;
 
         m_submitBtn->setText("");
         m_blueEffect->startmoive();
@@ -962,10 +962,10 @@ void MainDialog::on_timer_reg_out() {
 /* 登录回调槽函数，登录回执消息后执行此处 */
 void MainDialog::on_login_finished(int ret,QString uuid) {
     if(uuid != this->m_uuid) {
-        qDebug()<<uuid<<this->m_uuid;
+        //qDebug()<<uuid<<this->m_uuid;
         return ;
     }
-    qDebug()<<ret;
+    //qDebug()<<ret;
     //无手机号码绑定，进入手机号码绑定页面
     if(ret == 119) {
         set_back();

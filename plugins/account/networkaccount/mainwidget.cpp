@@ -89,14 +89,14 @@ void MainWidget::setret_oss(int ret) {
 
 void MainWidget::setret_logout(int ret) {
     //do nothing
-    qDebug()<<ret<<"Coutner SatRieaf";
+    //qDebug()<<ret<<"Coutner SatRieaf";
     if(ret == 0) {
         m_mainDialog->set_back();
     }
 }
 
 void MainWidget::setret_conf(int ret) {
-    qDebug()<<ret<<"csacasca";
+    //qDebug()<<ret<<"csacasca";
     if(ret == 0) {
         emit docheck();
         m_mainDialog->closedialog();
@@ -489,15 +489,15 @@ bool MainWidget::eventFilter(QObject *watched, QEvent *event) {
 
 /* 登录成功处理事件 */
 void MainWidget::finished_load(int ret,QString uuid) {
-    qDebug()<<"wb111"<<ret;
+    //qDebug()<<"wb111"<<ret;
     if(ret != 0) {
         emit dologout();
     }
-    qDebug()<<uuid<<this->m_szUuid;
+    //qDebug()<<uuid<<this->m_szUuid;
     if(uuid != this->m_szUuid) {
         return ;
     }
-    qDebug()<<"wb222"<<ret;
+    //qDebug()<<"wb222"<<ret;
     if (ret == 0) {
         emit doconf();
     } else if(ret == 401 || ret == 203 || ret == 201) {
@@ -741,7 +741,7 @@ void MainWidget::get_key_info(QString info) {
     }
 
     bool bIsFailed = false;
-    qDebug()<<"networkaccount:"+info;
+    //qDebug()<<"networkaccount:"+info;
     if(info.contains(",")) {
         m_keyInfoList = info.split(',');
     } else {
