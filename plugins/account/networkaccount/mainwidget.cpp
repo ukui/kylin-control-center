@@ -41,7 +41,6 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     connect(m_dbusClient,SIGNAL(finished_change(int)),this,SLOT(setret_change(int)));
     connect(m_dbusClient,SIGNAL(finished_logout(int)),this,SLOT(setret_logout(int)));
     connect(thread,&QThread::finished,thread,&QObject::deleteLater);
-    connect(thread,&QThread::finished,thread,&QObject::deleteLater);
 
     thread->start();    //线程开始
     m_mainWidget = new QStackedWidget(this);
@@ -90,8 +89,9 @@ void MainWidget::setret_oss(int ret) {
 
 void MainWidget::setret_logout(int ret) {
     //do nothing
+    //qDebug()<<ret<<"Coutner SatRieaf";
     if(ret == 0) {
-        m_mainDialog->setnormal();
+        m_mainDialog->set_back();
     }
 }
 
@@ -371,16 +371,30 @@ void MainWidget::init_gui() {
     connect(m_editDialog,SIGNAL(account_changed()),this,SLOT(on_login_out()));
     connect(m_mainDialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
     connect(m_mainDialog->get_login_submit(),&QPushButton::clicked, [this] () {
+        m_cLoginTimer->setSingleShot(true);
         m_cLoginTimer->start(15000);
+    });
+
+    connect(m_mainDialog,&MainDialog::on_login_failed,[this] () {
+       if(m_cLoginTimer->isActive()) {
+           m_cLoginTimer->stop();
+       }
     });
 
     connect(m_cRetry,&QTimer::timeout, [this] () {
         emit doman();
-        download_files();
         m_cRetry->stop();
     });
 
-    connect(m_cLoginTimer,SIGNAL(timeout()),m_mainDialog,SLOT(set_back()));
+    connect(m_cLoginTimer,&QTimer::timeout,[this]() {
+        if(m_mainWidget->currentWidget()  == m_widgetContainer) {
+            m_cLoginTimer->stop();
+        } else if (m_mainWidget->currentWidget() == m_nullWidget) {
+            m_mainDialog->setnormal();
+            emit dologout();
+            m_cLoginTimer->stop();
+        }
+    });
     for(int btncnt = 0;btncnt < m_itemList->get_list().size();btncnt ++) {
         connect(m_itemList->get_item(btncnt)->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_switch_button(int,int)));
     }
@@ -399,17 +413,6 @@ void MainWidget::init_gui() {
         if(conf.exists() == true) {
             handle_conf();
         }
-
-         if(m_bTokenValid == false && __run__ == false) {
-             QFile token(QDir::homePath()+"/.cache/kylinssoclient/token.ini");
-             if(token.exists() == true) {
-                 QProcess p;
-                 p.start("killall kylin-sso-client");
-                 p.waitForFinished();
-                 token.remove();
-                 __run__ = true;
-             }
-         }
     });
 
 
@@ -490,11 +493,11 @@ void MainWidget::finished_load(int ret,QString uuid) {
     if(ret != 0) {
         emit dologout();
     }
-
+    //qDebug()<<uuid<<this->m_szUuid;
     if(uuid != this->m_szUuid) {
         return ;
     }
-   // qDebug()<<"wb222"<<ret;
+    //qDebug()<<"wb222"<<ret;
     if (ret == 0) {
         emit doconf();
     } else if(ret == 401 || ret == 203 || ret == 201) {
@@ -738,7 +741,7 @@ void MainWidget::get_key_info(QString info) {
     }
 
     bool bIsFailed = false;
-    qDebug()<<"networkaccount:"+info;
+    //qDebug()<<"networkaccount:"+info;
     if(info.contains(",")) {
         m_keyInfoList = info.split(',');
     } else {
