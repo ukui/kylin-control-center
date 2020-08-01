@@ -92,6 +92,7 @@ void MainWidget::setret_logout(int ret) {
     //qDebug()<<ret<<"Coutner SatRieaf";
     if(ret == 0) {
         m_mainDialog->set_back();
+        m_bIsStopped = false;
     }
 }
 
