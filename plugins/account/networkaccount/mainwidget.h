@@ -104,6 +104,7 @@ private:
     QLabel          *m_infoText;
     bool            __once__ = false;
     bool            __run__ = false;
+    bool            m_bIsStopped = false;
 
 public slots:
     void            neweditdialog();
