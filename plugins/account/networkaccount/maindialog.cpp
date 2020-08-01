@@ -494,6 +494,7 @@ QString MainDialog::messagebox(int code) {
     case 105:ret = tr("Failed to get by phone!");break;
     case 106:ret = tr("Failed to get by user!");break;
     case 107:ret = tr("Failed to reset password!");break;
+    case 108:ret = tr("Timeout!");break;
     case 109:ret = tr("Phone binding falied!");break;
     case 110:ret = tr("Please check your information!");break;
     case 401:ret = tr("Please check your account!");break;
@@ -543,7 +544,7 @@ void MainDialog::on_login_btn() {
 
         m_szRegPass = m_szPass;
         m_szRegAccount = m_szAccount;
-        //qDebug()<<"1111111";
+        qDebug()<<m_szRegPass<<m_szRegAccount;
 
         m_submitBtn->setText("");
         m_blueEffect->startmoive();
@@ -987,6 +988,7 @@ void MainDialog::on_login_finished(int ret,QString uuid) {
         //m_submitBtn->setText(tr("Sign in"));
         emit on_login_success(); //发送成功登录信号给主页面
     } else {
+        emit on_login_failed();
         set_back();
         m_blueEffect->stop();             //登录失败，执行此处，关闭登录执行过程效果，并打印错误消息
         m_submitBtn->setText(tr("Sign in"));
@@ -1531,14 +1533,22 @@ void MainDialog::set_staus(bool ok) {
 void MainDialog::set_back() {
     m_baseWidget->setEnabled(true);
     set_staus(true);
+    m_blueEffect->stop();
+    m_submitBtn->setText(tr("Sign in"));
+    m_loginDialog->set_code(messagebox(108));
+    m_loginDialog->get_mcode_widget()->set_change(1);
+    m_loginTips->show();
+    setshow(m_stackedWidget);
 }
 
 void MainDialog::setnormal() {
     m_baseWidget->setEnabled(true);
     set_staus(true);
     m_blueEffect->stop();
-    m_loginDialog->set_code(messagebox(101));
-    m_loginCodeStatusTips->show();
+    m_submitBtn->setText(tr("Sign in"));
+    m_loginDialog->set_code(messagebox(108));
+    m_loginDialog->get_mcode_widget()->set_change(1);
+    m_loginTips->show();
     setshow(m_stackedWidget);
 
 }

@@ -172,6 +172,7 @@ private:
     QHBoxLayout    *m_animateLayout;
 
 signals:
+    void on_login_failed();
     void on_login_success();
     void on_allow_send();
     void dologin(QString username,QString pwd,QString uuid);
