@@ -463,21 +463,6 @@ void EditPassDialog::paintEvent(QPaintEvent *event)
     painter.drawRoundedRect(rect, 6, 6);
 }
 
-/* 设置窗口可以动 */
-void EditPassDialog::mousePressEvent(QMouseEvent *event)
-{
-    if (event->button() == Qt::LeftButton) {
-        m_startPoint = frameGeometry().topLeft() - event->globalPos();
-    }
-}
-
-/* 设置窗口可以随鼠标动 */
-void EditPassDialog::mouseMoveEvent(QMouseEvent *event)
-{
-    this->move(event->globalPos() + m_startPoint);
-}
-
-
 /*　控件聚焦失去焦点事件处理 */
 bool EditPassDialog::eventFilter(QObject *w, QEvent *e) {
 //    if(w == account) {

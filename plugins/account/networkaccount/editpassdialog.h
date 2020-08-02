@@ -67,8 +67,6 @@ public slots:
     void            setret_edit(int ret);
 protected:
     void            paintEvent(QPaintEvent *event);
-    void            mousePressEvent(QMouseEvent *event);
-    void            mouseMoveEvent(QMouseEvent *event);
     bool            eventFilter(QObject *w,QEvent *e);
 private:
     QLabel          *m_title;
