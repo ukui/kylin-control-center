@@ -48,6 +48,8 @@ ChangeValidDialog::ChangeValidDialog(QString userName, QWidget *parent) :
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
+    ui->validFrame->setFrameShape(QFrame::Shape::Box);
+
     _getCurrentPwdStatus();
 
     setupCurrentValid();

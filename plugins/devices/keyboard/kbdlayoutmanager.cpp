@@ -74,6 +74,8 @@ KbdLayoutManager::KbdLayoutManager(QWidget *parent) :
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
     ui->PreBtn->setVisible(false);
 
+    ui->variantFrame->setFrameShape(QFrame::Shape::Box);
+
     configRegistry();
 
     const QByteArray id(KBD_LAYOUTS_SCHEMA);
