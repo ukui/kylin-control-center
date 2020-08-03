@@ -1285,20 +1285,6 @@ void MainDialog::paintEvent(QPaintEvent *event)
     painter.drawRoundedRect(rect, 6, 6);
 }
 
-/* 使得窗口可以任意移动 */
-void MainDialog::mousePressEvent(QMouseEvent *event)
-{
-    if (event->button() == Qt::LeftButton) {
-        m_startPoint = frameGeometry().topLeft() - event->globalPos();
-    }
-}
-
-/* 按下鼠标使得窗口可以任意移动 */
-void MainDialog::mouseMoveEvent(QMouseEvent *event)
-{
-    this->move(event->globalPos() + m_startPoint);
-}
-
 /* 子控件事件过滤，主要针对获得或者失去焦点时捕捉 */
 bool MainDialog::eventFilter(QObject *w, QEvent *e) {
 

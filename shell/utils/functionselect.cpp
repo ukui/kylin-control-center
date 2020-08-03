@@ -70,7 +70,6 @@ void FunctionSelect::initValue(){
     }
     devicesList[PRINTER].nameString = QString("Printer");
     devicesList[PRINTER].namei18nString = QObject::tr("Printer");
-    devicesList[PRINTER].mainShow = false;
     devicesList[MOUSE].nameString = QString("Mouse");
     devicesList[MOUSE].namei18nString = QObject::tr("Mouse");
     devicesList[TOUCHPAD].nameString = QString("Touchpad");
@@ -83,6 +82,7 @@ void FunctionSelect::initValue(){
     devicesList[SHORTCUT].mainShow = false;
     devicesList[AUDIO].nameString = QString("Audio");
     devicesList[AUDIO].namei18nString = QObject::tr("Audio");
+    devicesList[AUDIO].mainShow = false;
 
     funcinfoList.append(devicesList);
 

@@ -48,20 +48,7 @@ ChangePwdDialog::ChangePwdDialog(QWidget *parent) :
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
-//    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
-//    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
-//    ui->pwdLineEdit->setStyleSheet("QLineEdit{background: #F4F4F4; border: none; border-radius: 4px;}");
-//    ui->pwdsureLineEdit->setStyleSheet("QLineEdit{background: #F4F4F4; border: none; border-radius: 4px;}");
-
-
-    //构建Combox代理，否则样式不全部生效
-//    ui->pwdtypeComboBox->setItemDelegate(itemDelege);
-//    ui->pwdtypeComboBox->setMaxVisibleItems(5);
-//    ui->pwdtypeComboBox->setStyleSheet("QComboBox{background: #F4F4F4; border-radius: 4px; font-size:14px;padding-left: 8px; color: black; min-height: 30px; combobox-popup: 0;}"
-//                                     "QComboBox::down-arrow{image:url(://img/dropArrow/downpx.png)}"
-//                                     "QComboBox::drop-down{width: 30px; border: none;}"
-//                                     "");
-
+    ui->pwdFrame->setFrameShape(QFrame::Shape::Box);
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 

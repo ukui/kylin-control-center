@@ -92,6 +92,7 @@ void MainWidget::setret_logout(int ret) {
     //qDebug()<<ret<<"Coutner SatRieaf";
     if(ret == 0) {
         m_mainDialog->set_back();
+        m_bIsStopped = false;
     }
 }
 
@@ -376,9 +377,8 @@ void MainWidget::init_gui() {
     });
 
     connect(m_mainDialog,&MainDialog::on_login_failed,[this] () {
-       if(m_cLoginTimer->isActive()) {
            m_cLoginTimer->stop();
-       }
+           m_bIsStopped = true;
     });
 
     connect(m_cRetry,&QTimer::timeout, [this] () {
@@ -387,6 +387,10 @@ void MainWidget::init_gui() {
     });
 
     connect(m_cLoginTimer,&QTimer::timeout,[this]() {
+        if(m_bIsStopped){
+            return ;
+        }
+
         if(m_mainWidget->currentWidget()  == m_widgetContainer) {
             m_cLoginTimer->stop();
         } else if (m_mainWidget->currentWidget() == m_nullWidget) {
@@ -601,6 +605,7 @@ void MainWidget::on_login_out() {
     m_mainWidget->setCurrentWidget(m_nullWidget);
     __once__ = false;
     __run__ = false;
+    m_bIsStopped = false;
 }
 
 /* 修改密码打开处理事件 */

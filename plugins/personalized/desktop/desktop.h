@@ -43,7 +43,6 @@ class Desktop : public QObject, CommonInterface
     Q_PLUGIN_METADATA(IID "org.kycc.CommonInterface")
     Q_INTERFACES(CommonInterface)
 
-
 public:
     Desktop();
     ~Desktop();
@@ -53,7 +52,6 @@ public:
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
 
-public:
     void initTranslation();
     void setupComponent();
     void setupConnect();
@@ -62,9 +60,17 @@ public:
     void initTrayStatus(QString name, QIcon icon, QGSettings *gsettings);
     void initTraySettings();
 
-
-
 private:
+    Ui::Desktop *ui;
+
+    int pluginType;
+    QString pluginName;
+    QWidget * pluginWidget;
+    QVector<QGSettings*> *vecGsettings;
+    QMap<QString, QString> transMap; // transaltion Map
+    QMap<QString, QString> iconMap;
+    QStringList disList;
+
     SwitchButton * deskComputerSwitchBtn;
     SwitchButton * deskTrashSwitchBtn;
     SwitchButton * deskHomeSwitchBtn;
@@ -78,17 +84,6 @@ private:
     SwitchButton * menuSettingSwitchBtn;
 
     QGSettings * dSettings;
-
-private:
-    Ui::Desktop *ui;
-
-    int pluginType;
-    QString pluginName;
-    QWidget * pluginWidget;
-    QVector<QGSettings*> *vecGsettings;
-    QMap<QString, QString> transMap; // transaltion Map
-    QMap<QString, QString> iconMap;
-    QStringList disList;
 
 };
 

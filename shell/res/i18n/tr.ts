@@ -21,7 +21,7 @@
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="180"/>
         <source>Copyright 2009-2020 @ Kylinos All rights reserved</source>
-        <translation>Copyright 2009-2020 @ Kylinos Tüm hakları saklıdır</translation>
+        <translation>Telif Hakkı 2009-2020 @ Kylinos Tüm hakları saklıdır</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="265"/>
@@ -1246,7 +1246,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/system/display/display.ui" line="101"/>
         <source>monitor</source>
-        <translation>Monitor:</translation>
+        <translation>Ekran:</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/display/display.ui" line="144"/>
@@ -1256,12 +1256,12 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/system/display/display.ui" line="301"/>
         <source>unify output</source>
-        <translation>Çıktıyı birleştir</translation>
+        <translation>Çıktıyı Birleştir</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/display/display.ui" line="205"/>
         <source>open monitor</source>
-        <translation>Monitörü aç</translation>
+        <translation>Monitörü Aç</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/display/display.ui" line="259"/>
@@ -1271,7 +1271,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/system/display/display.ui" line="360"/>
         <source>screen brightness adjustment</source>
-        <translation>Ekran parlaklık ayarı</translation>
+        <translation>Ekran Parlaklığı</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/display/display.ui" line="367"/>
@@ -2462,7 +2462,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/messages-task/notice/notice.ui" line="72"/>
         <source>Set the type of notice in the operation center</source>
-        <translation>İşlem merkezinde bildirim türünü ayarla</translation>
+        <translation>İşlem Merkezinde Bildirim Türünü Ayarla</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/notice/notice.ui" line="134"/>
@@ -2640,12 +2640,12 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="517"/>
         <source>Power supply</source>
-        <translation>Fişe Takılı</translation>
+        <translation>A/C Gücünde</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="551"/>
         <source>Battery powered</source>
-        <translation>Pilde</translation>
+        <translation>Pil Gücünde</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="611"/>
@@ -2675,7 +2675,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="1118"/>
         <source>S3 to S4 when:</source>
-        <translation>S3 ila S4 durumlarında:</translation>
+        <translation>S3 ile S4 durumlarında:</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="1019"/>
@@ -3279,7 +3279,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="374"/>
         <source>Select screenlock background</source>
-        <translation>Ekran kilidi arkaplanını Seç</translation>
+        <translation>Kilit Ekranı Arkaplanını Seç</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="417"/>
@@ -3738,12 +3738,12 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_input_widget.cpp" line="63"/>
         <source>Low</source>
-        <translation>Düşük</translation>
+        <translation>Az</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_input_widget.cpp" line="65"/>
         <source>High</source>
-        <translation>Yüksek</translation>
+        <translation>Çok</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_input_widget.cpp" line="70"/>
@@ -3973,7 +3973,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="361"/>
-        <source>Change valid</source>
+        <source>Change vaild</source>
         <translation>Geçerli Değişiklik</translation>
     </message>
     <message>
@@ -3994,7 +3994,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="340"/>
         <source>Add new user</source>
-        <translation>Yeni kullanıcı ekle</translation>
+        <translation>Yeni Kullanıcı Ekle</translation>
     </message>
 </context>
 <context>
