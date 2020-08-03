@@ -1151,6 +1151,9 @@ void UkmediaMainWidget::updateIconOutput(UkmediaMainWidget *m_pWidget)
     m_pWidget->m_pOutputWidget->m_pOutputIconBtn->setIconSize(icon_size);
     m_pWidget->outputVolumeDarkThemeImage(value,status);
     m_pWidget->m_pOutputWidget->m_pOutputIconBtn->repaint();
+
+    gdouble balance_value = mate_mixer_stream_control_get_balance(m_pControl);
+    m_pWidget->m_pOutputWidget->m_pOpBalanceSlider->setValue(balance_value*100);
 //    //输出音量控制
 //    //输出滑动条和音量控制
 //    connect(m_pWidget->m_pOutputWidget->m_pOpVolumeSlider,&QSlider::valueChanged,[=](int value){

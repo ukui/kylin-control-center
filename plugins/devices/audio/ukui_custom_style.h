@@ -42,7 +42,7 @@ protected:
     void mousePressEvent(QMouseEvent *ev);
     void mouseMoveEvent(QMouseEvent *e)
     {
-        setCursor(QCursor(Qt::OpenHandCursor));
+//        setCursor(QCursor(Qt::OpenHandCursor));
 //        m_displayLabel->move((this->width()-m_displayLabel->width())*this->value()/(this->maximum()-this->minimum()),3);
         QSlider::mouseMoveEvent(e);
     }
