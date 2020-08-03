@@ -47,7 +47,7 @@ NetConnect::NetConnect():m_wifiList(new Wifi)
 
     ui->detailBtn->setText(tr("Network settings"));
 
-    wifiBtn = new SwitchButton();
+    wifiBtn = new SwitchButton(pluginWidget);
 
     ui->openWIifLayout->addWidget(wifiBtn);
 
@@ -134,6 +134,7 @@ void NetConnect::initComponent(){
     wifiBtn->setEnabled(false);
 
     emit ui->RefreshBtn->clicked(true);
+    ui->verticalLayout_2->setContentsMargins(0,0,32,0);
 }
 
 void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){

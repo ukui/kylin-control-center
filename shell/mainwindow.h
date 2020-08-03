@@ -85,6 +85,8 @@ private:
 
     // load svg picture
     const QPixmap loadSvg(const QString &fileName, QString color);
+    //Render icon from theme
+    const QPixmap renderSvg(const QIcon &icon, QString color);
     // chang svg picture's color
     QPixmap drawSymbolicColoredPixmap(const QPixmap &source, QString color);
 

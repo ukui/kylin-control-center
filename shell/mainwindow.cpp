@@ -62,7 +62,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //设置窗体无边框
     setWindowFlags(Qt::FramelessWindowHint | Qt::Widget);
     this->installEventFilter(this);
-
+    ui->closeBtn->setFixedSize(32,32);
     //该设置去掉了窗体透明后的黑色背景
     setAttribute(Qt::WA_TranslucentBackground, true);
     //将最外层窗体设置为透明
@@ -114,9 +114,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->maxBtn->setProperty("useIconHighlightEffect", true);
     ui->maxBtn->setProperty("iconHighlightEffectMode", 1);
     ui->maxBtn->setFlat(true);
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    //ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    //ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
     ui->closeBtn->setFlat(true);
+    ui->closeBtn->installEventFilter(this);
 
 //    ui->minBtn->setStyleSheet("QPushButton#minBtn{background: #ffffff; border: none;}"
 //                              "QPushButton:hover:!pressed#minBtn{background: #FF3D6BE5; border-radius: 2px;}"
@@ -166,6 +167,7 @@ MainWindow::MainWindow(QWidget *parent) :
         close();
 //        qApp->quit();
     });
+
 
 //    connect(ui->backBtn, &QPushButton::clicked, this, [=]{
 //        if (ui->stackedWidget->currentIndex())
@@ -358,6 +360,13 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
                     this->showMaximized();
                 }
             }
+        }
+    }
+    if(ui->closeBtn == watched) {
+        if(event->type() == QEvent::Enter) {
+            ui->closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"white"));
+        }else if(event->type() == QEvent::Leave) {
+            ui->closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
         }
     }
     return QObject::eventFilter(watched, event);
@@ -707,4 +716,50 @@ void MainWindow::sltMessageReceived(const QString &msg) {
     flags &= ~Qt::WindowStaysOnTopHint;
     setWindowFlags(flags);
     showNormal();
+}
+
+const QPixmap MainWindow::renderSvg(const QIcon &icon, QString cgColor) {
+    int size = 24;
+    const auto ratio = qApp->devicePixelRatio();
+    if ( 2 == ratio) {
+        size = 48;
+    } else if (3 == ratio) {
+        size = 96;
+    }
+    QPixmap iconPixmap = icon.pixmap(size,size);
+    iconPixmap.setDevicePixelRatio(ratio);
+    QImage img = iconPixmap.toImage();
+    for (int x = 0; x < img.width(); x++) {
+        for (int y = 0; y < img.height(); y++) {
+            auto color = img.pixelColor(x, y);
+            if (color.alpha() > 0) {
+                if ("white" == cgColor) {
+                    color.setRed(255);
+                    color.setGreen(255);
+                    color.setBlue(255);
+                    img.setPixelColor(x, y, color);
+                } else if ("black" == cgColor) {
+                    color.setRed(0);
+                    color.setGreen(0);
+                    color.setBlue(0);
+//                    color.setAlpha(0.1);
+                    color.setAlphaF(0.9);
+                    img.setPixelColor(x, y, color);
+                } else if ("gray" == cgColor) {
+                    color.setRed(152);
+                    color.setGreen(163);
+                    color.setBlue(164);
+                    img.setPixelColor(x, y, color);
+                } else if ("blue" == cgColor){
+                    color.setRed(61);
+                    color.setGreen(107);
+                    color.setBlue(229);
+                    img.setPixelColor(x, y, color);
+                } else {
+                    return iconPixmap;
+                }
+            }
+        }
+    }
+    return QPixmap::fromImage(img);
 }
