@@ -52,15 +52,12 @@ public:
     QWidget *get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
 
-public:
     void setupStylesheet();
     void setupComponent();
     void setupConnect();
     void initGeneralStatus();
     void rebuildLayoutsComBox();
-
-protected:
-//    bool eventFilter(QObject *watched, QEvent *event);
+    void setKeyboardVisible(bool checked);
 
 private:
     Ui::KeyboardControl *ui;
@@ -69,7 +66,6 @@ private:
     int pluginType;
     QWidget * pluginWidget;
 
-private:
     QGSettings * settings;
     QGSettings * kbdsettings;
     QGSettings * osdSettings;
@@ -82,7 +78,6 @@ private:
 
     HoverWidget * addWgt;
 
-private:
     bool settingsCreate;
 };
 
