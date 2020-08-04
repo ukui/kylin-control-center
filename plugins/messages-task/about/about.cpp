@@ -30,6 +30,7 @@
 
 const QString TYPEVERSION = "Kylin V10";
 const QString UbuntuVesion = "Ubuntu 20.04 LTS";
+const QString UbuntuVesionEnhance = "Ubuntu 20.04.1 LTS";
 
 About::About()
 {
@@ -42,25 +43,6 @@ About::About()
     pluginType = NOTICEANDTASKS;
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-//    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-//    ui->systemWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->deviceWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-
-//    qDebug() << "--------start------->";
-//    qDebug() << QSysInfo::kernelType();
-//    qDebug() << QSysInfo::kernelVersion();
-//    qDebug() << "---------1---------->";
-//    qDebug() << QSysInfo::machineHostName();
-//    qDebug() << QSysInfo::currentCpuArchitecture();
-//    qDebug() << "----------2----------->";
-//    qDebug() << QSysInfo::prettyProductName();
-//    qDebug() << QSysInfo::productType();
-//    qDebug() << QSysInfo::productVersion();
-//    qDebug() << "-------end---------->";
-//    _call_dbus_get_computer_info();
     _data_init();
 
     setupDesktopComponent();
@@ -209,6 +191,8 @@ void About::setupVersionCompenent() {
     }
     if (UbuntuVesion == version) {
         version = "UbuntuKylin 20.04 LTS";
+    } else if (UbuntuVesionEnhance == version) {
+        version = "UbuntuKylin 20.04.1 LTS";
     }
     ui->versionContent->setText(version);
     if (version == "Kylin V10" || version == "Kylin V10.1") {
