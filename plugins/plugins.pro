@@ -6,7 +6,7 @@ SUBDIRS = \
           system/defaultapp \
           system/power \
           system/autoboot \
-#          system/display \
+          system/display \
           devices/printer \
           devices/mouse \
           devices/keyboard \
