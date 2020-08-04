@@ -115,3 +115,7 @@ void CustomLineEdit::keyReleaseEvent(QKeyEvent *evt){
     }
 
 }
+
+void CustomLineEdit::updateOldShow(QString newStr){
+    _oldshortcut = newStr;
+}

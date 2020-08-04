@@ -182,7 +182,8 @@ void Shortcut::setupComponent(){
 
 
 //    ui->addFrame->installEventFilter(this);
-    ui->generalListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+//    ui->generalListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->generalListWidget->setSelectionMode(QAbstractItemView::NoSelection);
 
     ui->resetBtn->hide();
 
@@ -333,6 +334,7 @@ void Shortcut::appendGeneralItems(){
             singleWidget->setProperty("userData", QVariant::fromValue(gkeyEntry));
 
             CustomLineEdit * line = singleWidget->lineeditComponent();
+            line->setFocusPolicy(Qt::NoFocus);
             connect(line, &CustomLineEdit::shortcutCodeSignals, this, [=](QList<int> keyCode){
                 newBindingRequest(keyCode);
             });
@@ -528,36 +530,64 @@ void Shortcut::newBindingRequest(QList<int> keyCode){
     KeyEntry * nkeyEntry = widgetItem->property("userData").value<KeyEntry *>();
 
     QString shortcutString = getBindingName(keyCode);
-
+    int len = shortcutString.length();
     //check for unmodified keys
-    if (keyCode.count() == 1){
-        if (shortcutString.contains(QRegExp("[a-z]")) ||
-                shortcutString.contains(QRegExp("[0-9]")) ||
-                keyIsForbidden(shortcutString)){
-            qDebug() << "Please try with a key such as Control, Alt or Shift at the same time.";
-            return;
-        }
-    }
-
-    /* flag to see if the new accelerator was in use by something */
-    for (KeyEntry * ckeyEntry : generalEntries){
-        if (shortcutString == ckeyEntry->valueStr){
-            qDebug() << QString("The shortcut \"%1\" is already used for\n\"%2\",please reset!!!").arg(shortcutString).arg(ckeyEntry->keyStr);
-            return;
-        }
-    }
-
-    current->setText(shortcutString);
-
-    //已经设置了值，清除焦点不再监听
-    current->clearFocus();
-
     if (nkeyEntry->gsPath.isEmpty()){ //非自定义快捷键的修改
+        if (keyCode.count() == 1 && shortcutString.length() <= 1){
+            if (shortcutString.contains(QRegExp("[a-z]")) ||
+                    shortcutString.contains(QRegExp("[0-9]")) ||
+                    keyIsForbidden(shortcutString)){
+                const QByteArray iid(nkeyEntry->gsSchema.toLatin1().data());
+                QGSettings * settings = new QGSettings(iid);
+                current->setText(settings->get(nkeyEntry->keyStr).toString());
+                current->updateOldShow(settings->get(nkeyEntry->keyStr).toString());
+                current->clearFocus();
+                qDebug() << "Please try with a key such as Control, Alt or Shift at the same time.";
+                delete settings;
+                return;
+            }
+        }
+
+        if(shortcutString.isEmpty()){   //fn
+            qDebug() << "the key is null";
+            const QByteArray iid(nkeyEntry->gsSchema.toLatin1().data());
+            QGSettings * settings = new QGSettings(iid);
+
+            current->setText(settings->get(nkeyEntry->keyStr).toString());
+            current->updateOldShow(settings->get(nkeyEntry->keyStr).toString());
+            current->clearFocus();
+            delete settings;
+            return;
+        }
+        if(shortcutString.endsWith(">")){   //special key
+            qDebug() << "end with >";
+            const QByteArray iid(nkeyEntry->gsSchema.toLatin1().data());
+            QGSettings * settings = new QGSettings(iid);
+
+            current->setText(settings->get(nkeyEntry->keyStr).toString());
+            current->updateOldShow(settings->get(nkeyEntry->keyStr).toString());
+            current->clearFocus();
+            delete settings;
+            return;
+        }
+        /* flag to see if the new accelerator was in use by something */
+        for (KeyEntry * ckeyEntry : generalEntries){
+            if (shortcutString == ckeyEntry->valueStr){
+                const QByteArray iid(nkeyEntry->gsSchema.toLatin1().data());
+                QGSettings * settings = new QGSettings(iid);
+
+                current->setText(settings->get(nkeyEntry->keyStr).toString());
+                current->updateOldShow(settings->get(nkeyEntry->keyStr).toString());
+                current->clearFocus();
+                qDebug() << QString("The shortcut \"%1\" is already used for\n\"%2\",please reset!!!").arg(shortcutString).arg(ckeyEntry->keyStr);
+                delete settings;
+                return;
+            }
+        }
         const QByteArray iid(nkeyEntry->gsSchema.toLatin1().data());
         QGSettings * settings = new QGSettings(iid);
 
         settings->set(nkeyEntry->keyStr, shortcutString);
-
         delete settings;
 
         //更新
@@ -566,14 +596,99 @@ void Shortcut::newBindingRequest(QList<int> keyCode){
                 generalEntries[index]->valueStr = shortcutString;
             }
         }
+    }else { //自定义快捷键的修改
+        qDebug() << "custom key";
 
-    } else { //自定义快捷键的修改
+        if(shortcutString.isEmpty()){   //fn
+            current->setText(nkeyEntry->bindingStr);
+            current->updateOldShow(nkeyEntry->bindingStr);
+            current->clearFocus();
+            qDebug() << "Please try with a valid key.";
+            return;
+        }
+        if(shortcutString.endsWith(">")){   //special key
+            current->setText(nkeyEntry->bindingStr);
+            current->updateOldShow(nkeyEntry->bindingStr);
+            current->clearFocus();
+            qDebug() << "Please try with a valid key value";
+            return;
+        }
+        /* flag to see if the new accelerator was in use by something */
+        for (KeyEntry * ckeyEntry : generalEntries){
+            if (shortcutString == ckeyEntry->valueStr){
+                current->setText(nkeyEntry->bindingStr);
+                current->updateOldShow(nkeyEntry->bindingStr);
+                current->clearFocus();
+                qDebug() << QString("The shortcut \"%1\" is already used for\n\"%2\",please reset!!!").arg(shortcutString).arg(ckeyEntry->keyStr);
+                return;
+            }
+        }
+        if (keyCode.count() == 1){
+            if (shortcutString.contains(QRegExp("[a-z]")) ||
+                    shortcutString.contains(QRegExp("[0-9]")) ||
+                    keyIsForbidden(shortcutString)){
+                current->setText(nkeyEntry->bindingStr);
+                current->updateOldShow(nkeyEntry->bindingStr);
+                current->clearFocus();
+                qDebug() << "Please try with a key such as Control, Alt or Shift at the same time.";
+                return;
+            }
+        }
+        if (keyCode.count() == 2){
+            if (shortcutString == "<Control>F1"){
+                current->setText(nkeyEntry->bindingStr);
+                current->updateOldShow(nkeyEntry->bindingStr);
+                current->clearFocus();
+                qDebug() << "Please try with a valid key.";
+                return;
+            } else if (shortcutString.startsWith("<")){
+                int len = shortcutString.length();
+                for(int i = 0; i < len; i++){
+                    qDebug() << "len : " << len << shortcutString.at(i);
+                    if(shortcutString.at(i) == ">"){
+                        len = len - i - 1;
+                        qDebug() << len;
+                        break;
+                    }
+                }
+                if(len > 3)
+                {
+                    qDebug() << nkeyEntry->bindingStr;
+                    current->setText(nkeyEntry->bindingStr);
+                    current->updateOldShow(nkeyEntry->bindingStr);
+                    current->clearFocus();
+                    return;
+                }
+            }
+        }
+        if(keyCode.count() == 3){
+            int len = shortcutString.length();
+            int count = 0;
+            for(int i = 0; i < len; i++){
+                qDebug() << "len : " << len << shortcutString.at(i);
+                if(shortcutString.at(i) == ">"){
+                    count += 1;
+                    if(count == 2){
+                        len = len - i - 1;
+                        qDebug() << len;
+                        break;
+                    }
+                }
+            }
+            if(len > 3)
+            {
+                qDebug() << nkeyEntry->bindingStr;
+                current->setText(nkeyEntry->bindingStr);
+                current->updateOldShow(nkeyEntry->bindingStr);
+                current->clearFocus();
+                return;
+            }
+        }
+
         const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
         const QByteArray idd(nkeyEntry->gsPath.toLatin1().data());
         QGSettings * settings = new QGSettings(id, idd);
-
         settings->set(BINDING_KEY, shortcutString);
-
         delete settings;
 
         //更新
@@ -583,6 +698,11 @@ void Shortcut::newBindingRequest(QList<int> keyCode){
             }
         }
     }
+
+    current->setText(shortcutString);
+    current->updateOldShow(shortcutString);
+    //已经设置了值，清除焦点不再监听
+    current->clearFocus();
 }
 
 /**
@@ -594,7 +714,11 @@ QString Shortcut::getBindingName(QList<int> keyCode){
     QStringList tmpList;
     for (int keycode : keyCode){
         if (keycode >= 16777216 && keycode <= 16777254){ //1677216=Escape; 16777254=ScrollLock
-            tmpList.append(QString("<%1>").arg(pKeyMap->keycodeTokeystring(keycode)));
+            if(keycode == 16777223 || keycode == 16777225){ // 16777223=Delete  16777225=Print
+                tmpList.append(pKeyMap->keycodeTokeystring(keycode));
+            }else {
+                tmpList.append(QString("<%1>").arg(pKeyMap->keycodeTokeystring(keycode)));
+            }
         }
         else if (keycode >= 48 && keycode <= 57){ // 48 = 0; 57 = 9
             QString str = pKeyMap->keycodeTokeystring(keycode);
