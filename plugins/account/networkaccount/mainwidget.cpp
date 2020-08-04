@@ -522,6 +522,7 @@ void MainWidget::handle_conf() {
         for(int i  = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(true);
         }
+        m_bAutoSyn = true;
     } else {
         m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
         m_autoSyn->make_itemoff();
