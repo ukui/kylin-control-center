@@ -168,49 +168,11 @@ void Fonts::plugin_delay_control(){
 }
 
 void Fonts::setupStylesheet(){
-
-
-
     ui->titleSecondLabel->setVisible(false);
     ui->sampleBtn1->setVisible(false);
     ui->sampleBtn2->setVisible(false);
     ui->sampleBtn3->setVisible(false);
     ui->sampleBtn4->setVisible(false);
-
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-//    ui->fontSizeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 4px;}");
-//    ui->fontSizeLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-
-//    ui->fontTypeWidget->setStyleSheet("QWidget#fontTypeWidget{background: #F4F4F4; border-radius: 4px;}");
-//    ui->fontSelectLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-//    ui->monoSelectLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-
-//    ui->fontSizeSlider->setStyleSheet("QSlider{height: 20px;}"
-//                                      "QSlider::groove:horizontal{border: none;}"
-//                                      "QSlider::add-page:horizontal{background: #808080; border-radius: 2px; margin-top: 8px; margin-bottom: 9px;}"
-//                                      "QSlider::sub-page:horizontal{background: #3D6BE5; border-radius: 2px; margin-top: 8px; margin-bottom: 9px;}"
-//                                      "QSlider::handle:horizontal{width: 20px; height: 20px; border-image: url(:/img/plugins/fonts/bigRoller.png);}"
-//                                      "");
-
-
-//    ui->advancedBtn->setStyleSheet("QPushButton#advancedBtn{background: #F4F4F4; border: none; border-radius: 4px;}");
-
-//    ui->advancedWidget->setStyleSheet("QWidget#advancedWidget{background: #F4F4F4; border-radius: 4px;}");
-//    ui->defaultFontLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-//    ui->monoFontLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-//    ui->docFontLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-//    ui->peonyFontLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-//    ui->titleFontLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-
-
-//    ui->sampleBtn1->setStyleSheet("QPushButton{background: #F0F0F0; border-radius: 4px;}"
-//                                  "QPushButton:checked{background: #F0F3FD; border-radius: 4px;}");
-//    ui->sampleBtn2->setStyleSheet("QPushButton{background: #F0F0F0; border-radius: 4px;}"
-//                                  "QPushButton:checked{background: #F0F3FD; border-radius: 4px;}");
-//    ui->sampleBtn3->setStyleSheet("QPushButton{background: #F0F0F0; border-radius: 4px;}"
-//                                  "QPushButton:checked{background: #F0F3FD; border-radius: 4px;}");
-//    ui->sampleBtn4->setStyleSheet("QPushButton{background: #F0F0F0; border-radius: 4px;}"
-//                                  "QPushButton:checked{background: #F0F3FD; border-radius: 4px;}");
 }
 
 void Fonts::setupComponent(){
@@ -247,7 +209,7 @@ void Fonts::setupComponent(){
         //doc font
         ui->docFontComBox->addItem(font);
         // peony font
-        ui->peonyFontComBox->addItem(font);
+//        ui->peonyFontComBox->addItem(font);
         //monospace font
         ui->monoFontComBox->addItem(font);
         //title font

@@ -80,12 +80,16 @@ int main(int argc, char *argv[])
         return EXIT_SUCCESS;
     } else {
         //加载国际化文件
-        QString locale = QLocale::system().name();
+//        QString locale = QLocale::system().name();
+//        QTranslator translator;
+//        QString qm  = locale + ".qm";
+////        qDebug() << "locale is "<< qm <<endl;
+//        if (translator.load(qm, "://i18n/"))
+//            a.installTranslator(&translator);
+
         QTranslator translator;
-        QString qm  = locale + ".qm";
-//        qDebug() << "locale is "<< qm <<endl;
-        if (translator.load(qm, "://i18n/"))
-            a.installTranslator(&translator);
+        translator.load("/usr/share/ukui-control-center/shell/res/i18n/" + QLocale::system().name());
+        a.installTranslator(&translator);
 
         //命令行参数
         QCoreApplication::setApplicationName("ukui-control-center");
