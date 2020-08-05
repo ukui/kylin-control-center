@@ -214,7 +214,7 @@ void Theme::setupComponent(){
     ui->controlWidget->hide();
 
     ui->defaultButton->setProperty("value", "ukui-default");
- //    ui->lightButton->setProperty("value", "ukui-default");
+//    ui->lightButton->setProperty("value", "ukui-default");
     ui->darkButton->setProperty("value", "ukui-dark");
 
     buildThemeModeBtn(ui->defaultButton, tr("Default"), "default");
