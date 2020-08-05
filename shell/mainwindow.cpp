@@ -114,8 +114,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->maxBtn->setProperty("useIconHighlightEffect", true);
     ui->maxBtn->setProperty("iconHighlightEffectMode", 1);
     ui->maxBtn->setFlat(true);
-    //ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    //ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
     ui->closeBtn->setFlat(true);
     ui->closeBtn->installEventFilter(this);
 
