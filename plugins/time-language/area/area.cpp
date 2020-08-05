@@ -245,10 +245,10 @@ void Area::change_language_slot(int index){
         break;
     }
 
-    if (index == ui->countrycomboBox->currentIndex()) {
+//    if (index == ui->countrycomboBox->currentIndex()) {
         KMessageBox::information(ui->languageframe, tr("Need to log off to take effect"));
-    }
-    ui->countrycomboBox->setCurrentIndex(index);
+//    }
+//    ui->countrycomboBox->setCurrentIndex(index);
 }
 
 void Area::change_area_slot(int index) {

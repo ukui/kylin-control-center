@@ -75,20 +75,20 @@ class Widget : public QWidget
     KScreen::ConfigPtr currentConfig() const;
 
     void slotFocusedOutputChangedNoParam();
-    //亮度调节UI
+    // 亮度调节UI
     void initBrightnessUI();
     QString getScreenName(QString name = "");
-    //获得显示器名称(shell获得)
+    // 获得显示器名称(shell获得)
     QStringList  getscreenBrightnesName();
-    //获得显示器名称(shell获得)
+    // 获得显示器名称(shell获得)
     QStringList  getscreenBrightnesValue();
-    //获取配置文件位置
+    // 获取配置文件位置
     void setBrigthnessFile();
     void initTemptSlider();
     void initConfigFile();
-    //获取屏幕xml文件
+    // 获取屏幕xml文件
     void writeScreenXml(int count);
-    //初始化屏幕配置文件
+    // 初始化屏幕配置文件
     void initScreenXml(int count);
     //获取edid信息
     void getEdidInfo(QString monitorName,xmlFile *xml);
@@ -131,25 +131,25 @@ class Widget : public QWidget
     void showNightWidget(bool judge);
     void showCustomWiget(int index);
 
-    //按钮选择主屏确认按钮
+    // 按钮选择主屏确认按钮
     void primaryButtonEnable();
-    //是否禁用设置主屏按钮
+    // 是否禁用设置主屏按钮
     void mainScreenButtonSelect(int index);
-    //是否禁用屏幕
+    // 是否禁用屏幕
     void checkOutputScreen(bool judge);
-    //设置屏幕亮度
+    // 设置屏幕亮度
     void setBrightnessScreen(int brightnessValue);
-    //设置亮度滑块数值
+    // 设置亮度滑块数值
     void setBrightnesSldierValue(QString screeName);
-    //保存屏幕亮度配置
+    // 保存屏幕亮度配置
     void saveBrigthnessConfig();
-    //设置夜间模式
+    // 设置夜间模式
     void setNightMode(const bool nightMode);
-    //redshitf是否合法
+    // redshitf是否合法
     void setRedShiftIsValid(bool redshiftIsValid);
-    //更新夜间模式状态
+    // 更新夜间模式状态
     void updateNightStatus();
-    //初始化夜间模式
+    // 初始化夜间模式
     void initNightStatus();
 
   public Q_SLOTS:
@@ -182,12 +182,12 @@ class Widget : public QWidget
 #else
     KScreen::ConfigPtr mConfig = nullptr;
     KScreen::ConfigPtr mPrevConfig = nullptr;
-    //这是outPutptr结果
+    // outPutptr结果
     KScreen::OutputPtr res = nullptr;
 #endif
 
     ControlPanel *mControlPanel = nullptr;
-    //这里是去设置主显示器相关控件
+    // 设置主显示器相关控件
     OutputConfig *mOutputConfig = nullptr;
 
 
@@ -196,18 +196,22 @@ class Widget : public QWidget
 
     bool m_blockChanges = false;
 
-    QString brightnessFile = nullptr;//亮度配置文件位置
-    xmlFile inputXml[100];//xml文件
+    // 亮度配置文件位置
+    QString brightnessFile = nullptr;
+    // xml文件
+    xmlFile inputXml[100];
 
     SwitchButton *nightButton = nullptr;
     SwitchButton *closeScreenButton = nullptr;
     SwitchButton *m_unifybutton = nullptr;
     QLabel *nightLabel = nullptr;
 
-    bool m_isNightMode = false;//是否为夜间模式
+    // 是否为夜间模式
+    bool m_isNightMode = false;
     bool m_redshiftIsValid = false;
 
-    QStringList proRes;        //profile文件内容
+    // profile文件内容
+    QStringList proRes;
 
     Slider *slider;
     QGSettings *m_gsettings = nullptr;
