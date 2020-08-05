@@ -13,8 +13,8 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  archlinux:
-    name: on Archlinux
+  archlinux-latest:
+    name: on Archlinux Latest
     runs-on: ubuntu-20.04
     container: docker.io/library/archlinux:latest
     steps:
@@ -30,7 +30,8 @@ jobs:
           cd build;
           qmake-qt5 ..;
           make -j$(nproc);
-  debian:
+
+  debian-sid:
     name: on Debian Sid
     runs-on: ubuntu-20.04
     container: docker.io/library/debian:sid
@@ -50,10 +51,10 @@ jobs:
           qmake ..;
           make -j$(nproc);
   
-  fedora:
-    name: on Fedora 32
+  fedora-latest:
+    name: on Fedora Latest
     runs-on: ubuntu-20.04
-    container: docker.io/library/fedora:32
+    container: docker.io/library/fedora:latest
     steps:
       - name: Checkout ukui-control-center source code
         uses: actions/checkout@v2
@@ -67,10 +68,29 @@ jobs:
           cd build;
           qmake-qt5 ..;
           make -j$(nproc);
-  ubuntu:
-    name: on Ubuntu 20.04
+
+  fedora-rawhide:
+    name: on Fedora Rawhide
     runs-on: ubuntu-20.04
-    container: docker.io/library/ubuntu:focal
+    container: docker.io/library/fedora:rawhide
+    steps:
+      - name: Checkout ukui-control-center source code
+        uses: actions/checkout@v2
+      - name: Install curl and patch
+        run: dnf install --refresh -y curl patch
+      - name: Install build dependencies
+        run: dnf install -y which gcc gcc-c++ make cmake cmake-rpm-macros autoconf automake intltool rpm-build qt5-rpm-macros qt5-qtbase-devel qt5-qtsvg-devel gsettings-qt-devel glib2-devel qt5-qtx11extras-devel libmatekbd-devel libxklavier-devel kf5-kconfigwidgets-devel kf5-kconfig-devel qt5-qtdeclarative-devel dconf-devel redshift edid-decode libmatemixer-devel libqtxdg-devel qt5-qtmultimedia-devel libxml2-devel libkscreen-qt5-devel kf5-ki18n-devel libcanberra-devel libXi-devel mate-desktop-devel libxkbcommon-devel libxkbfile-devel
+      - name: QMake configure & Make
+        run: |
+          mkdir build;
+          cd build;
+          qmake-qt5 ..;
+          make -j$(nproc);
+
+  ubuntu-latest:
+    name: on Ubuntu Latest
+    runs-on: ubuntu-20.04
+    container: docker.io/library/ubuntu:latest
     env:
       DEBIAN_FRONTEND: noninteractive
     steps:
