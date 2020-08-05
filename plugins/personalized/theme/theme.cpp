@@ -214,7 +214,7 @@ void Theme::setupComponent(){
     ui->controlWidget->hide();
 
     ui->defaultButton->setProperty("value", "ukui-default");
-//    ui->lightButton->setProperty("value", "ukui-default");
+    //    ui->lightButton->setProperty("value", "ukui-default");
     ui->darkButton->setProperty("value", "ukui-dark");
 
     buildThemeModeBtn(ui->defaultButton, tr("Default"), "default");
@@ -227,22 +227,19 @@ void Theme::setupComponent(){
 
     ui->tranSlider->setValue(static_cast<int>(personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble() * 100));
     ui->tranLabel->setText(QString::number(static_cast<double>(ui->tranSlider->value())/100.0));
-	connect(ui->tranSlider, &QSlider::valueChanged, [=](int value){
-        if(i!=(static_cast<int>(value)/5)/20.0)
-        {
-        ui->tranSlider->setSingleStep(5);
-        personliseGsettings->set(PERSONALSIE_TRAN_KEY,(static_cast<int>(value)/5)/20.0);
-        qDebug()<<i;
-        qtSettings->set(THEME_TRAN_KEY, value);
-        qtSettings->set(PEONY_TRAN_KEY, value);
-        ui->tranLabel->setText(QString::number((static_cast<int>(value)/5)/20.0));
-        i=(static_cast<int>(value)/5)/20.0;
+    connect(ui->tranSlider, &QSlider::valueChanged, [=](int value){
+        if(i!=(static_cast<int>(value)/5)/20.0){
+            ui->tranSlider->setSingleStep(5);
+            personliseGsettings->set(PERSONALSIE_TRAN_KEY,(static_cast<int>(value)/5)/20.0);
+            qtSettings->set(THEME_TRAN_KEY, value);
+            qtSettings->set(PEONY_TRAN_KEY, value);
+            ui->tranLabel->setText(QString::number((static_cast<int>(value)/5)/20.0));
+            i=(static_cast<int>(value)/5)/20.0;
         }
     });
     setupControlTheme();
-
-//    ui->effectLabel->hide();
-//    ui->effectWidget->hide();
+    //    ui->effectLabel->hide();
+    //    ui->effectWidget->hide();
 
     //构建并填充特效开关按钮
     effectSwitchBtn = new SwitchButton(pluginWidget);
