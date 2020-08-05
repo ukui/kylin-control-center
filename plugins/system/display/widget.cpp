@@ -129,6 +129,7 @@ Widget::Widget(QWidget *parent)
     initConfigFile();
     initUiComponent();
     initNightStatus();
+    initBrightnessUI();
 
 //    nightButton->setVisible(this->m_redshiftIsValid);
 
@@ -913,8 +914,7 @@ void Widget::save()
                 return;
             }
         }
-//        qDebug()<<" clone mode--------->"<<endl;
-        inputXml[i].isClone = base->isCloneMode() == true?"true":"false";
+        inputXml[i].isClone = base->isCloneMode() == true? "yes" : "no";
         inputXml[i].outputName = output->name();
 
         inputXml[i].widthValue = QString::number(mode->size().width());
