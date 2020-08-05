@@ -214,7 +214,7 @@ void Theme::setupComponent(){
     ui->controlWidget->hide();
 
     ui->defaultButton->setProperty("value", "ukui-default");
-    //    ui->lightButton->setProperty("value", "ukui-default");
+ //    ui->lightButton->setProperty("value", "ukui-default");
     ui->darkButton->setProperty("value", "ukui-dark");
 
     buildThemeModeBtn(ui->defaultButton, tr("Default"), "default");
@@ -238,8 +238,8 @@ void Theme::setupComponent(){
         }
     });
     setupControlTheme();
-    //    ui->effectLabel->hide();
-    //    ui->effectWidget->hide();
+//    ui->effectLabel->hide();
+//    ui->effectWidget->hide();
 
     //构建并填充特效开关按钮
     effectSwitchBtn = new SwitchButton(pluginWidget);
