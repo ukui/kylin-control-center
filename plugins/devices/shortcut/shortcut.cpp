@@ -644,16 +644,13 @@ void Shortcut::newBindingRequest(QList<int> keyCode){
             } else if (shortcutString.startsWith("<")){
                 int len = shortcutString.length();
                 for(int i = 0; i < len; i++){
-                    qDebug() << "len : " << len << shortcutString.at(i);
-                    if(shortcutString.at(i) == ">"){
+                    if(shortcutString.at(i) == '>'){
                         len = len - i - 1;
-                        qDebug() << len;
                         break;
                     }
                 }
                 if(len > 3)
                 {
-                    qDebug() << nkeyEntry->bindingStr;
                     current->setText(nkeyEntry->bindingStr);
                     current->updateOldShow(nkeyEntry->bindingStr);
                     current->clearFocus();
@@ -665,19 +662,16 @@ void Shortcut::newBindingRequest(QList<int> keyCode){
             int len = shortcutString.length();
             int count = 0;
             for(int i = 0; i < len; i++){
-                qDebug() << "len : " << len << shortcutString.at(i);
-                if(shortcutString.at(i) == ">"){
+                if(shortcutString.at(i) == '>'){
                     count += 1;
                     if(count == 2){
                         len = len - i - 1;
-                        qDebug() << len;
                         break;
                     }
                 }
             }
             if(len > 3)
             {
-                qDebug() << nkeyEntry->bindingStr;
                 current->setText(nkeyEntry->bindingStr);
                 current->updateOldShow(nkeyEntry->bindingStr);
                 current->clearFocus();
