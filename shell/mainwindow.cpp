@@ -138,7 +138,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //设置右上角按钮图标
     ui->minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
     ui->maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
-    ui->closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
+    ui->closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
 
 
     //初始化功能列表数据
@@ -366,7 +366,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
         if(event->type() == QEvent::Enter) {
             ui->closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"white"));
         }else if(event->type() == QEvent::Leave) {
-            ui->closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
+            ui->closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
         }
     }
     return QObject::eventFilter(watched, event);
