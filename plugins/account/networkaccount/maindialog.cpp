@@ -557,7 +557,6 @@ void MainDialog::on_login_btn() {
         QString phone,mcode;                    //如果用户选择手机登录，执行此处
         phone = m_loginDialog->get_user_name();
         mcode = m_loginDialog->get_login_code()->text();
-
         m_submitBtn->setText("");
         m_blueEffect->startmoive();
         emit dophonelogin(phone,mcode,m_uuid);
@@ -830,15 +829,7 @@ void MainDialog::on_send_code_reg() {
         m_regDialog->get_send_code()->setEnabled(true);
         m_regDialog->get_valid_code()->setText("");
         m_regDialog->set_code(tr("At least 6 bit, include letters and digt"));
-        m_errorRegTips->show();
-        setshow(m_stackedWidget);
-        return ;
-    }
-    if(m_regDialog->get_reg_confirm()->text() != m_regDialog->get_reg_pass()->text()) {
-        m_regDialog->get_send_code()->setEnabled(true);
-        m_regDialog->get_valid_code()->setText("");
-        m_regDialog->set_code(tr("Please confirm your password!"));
-        m_errorRegTips->show();
+            m_errorRegTips->show();
         setshow(m_stackedWidget);
         return ;
     }
@@ -905,15 +896,6 @@ void MainDialog::on_send_code() {
         setshow(m_stackedWidget);
         return ;
     }
-    if(m_passDialog->get_reg_pass()->text() != m_passDialog->get_reg_pass_confirm()->text()) {
-        m_passDialog->get_valid_code()->setText("");
-        m_passDialog->set_code(tr("Please confirm your password!"));
-        m_errorPassTips->show();
-        m_passDialog->get_send_msg_btn()->setEnabled(true);
-        setshow(m_stackedWidget);
-        return ;
-    }
-
     if(m_passDialog->get_user_name() != "" && m_passDialog->get_user_confirm() !="" && m_passDialog->get_user_newpass() != "") {
         //qstrcpy(name,box_pass->get_user_name().toStdString().c_str());
         name = m_passDialog->get_user_name();

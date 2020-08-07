@@ -42,6 +42,8 @@
 #include "svghandler.h"
 #include "blueeffect.h"
 
+#define PATH "/.cache/kylinssoclient/All.conf"
+
 class MainWidget : public QWidget
 {
     Q_OBJECT
@@ -56,6 +58,7 @@ public:
     void            handle_conf();
     bool            judge_item(QString enable,int cur);
     void            handle_write(int on,int id);
+    void            showDesktopNotify(const QString &message);
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
 private:
@@ -82,7 +85,7 @@ private:
     QWidget             *m_nullwidgetContainer;
     QString             m_szCode = tr("Disconnected");
     QString             m_szConfPath;
-    QStringList         m_szItemlist = {"wallpaper","ukui-screensaver","ukui-menu","ukui-panel","ukui-panel2","indicator-china-weather","kylin-video"};
+    QStringList         m_szItemlist = {"wallpaper","ukui-screensaver","ukui-menu","ukui-panel","ukui-panel2","mouse","touchpad","keyboard","shortcut","indicator-china-weather","kylin-video"};
     MainDialog*   m_mainDialog;
     QWidget             *m_infoWidget;
     QHBoxLayout         *m_infoLayout;
@@ -101,7 +104,6 @@ private:
     QHBoxLayout     *m_tipsLayout;
     QMap<QString,QString> m_itemMap;
     QStringList     m_keyInfoList;
-    QLabel          *m_infoText;
     bool            __once__ = false;
     bool            __run__ = false;
     bool            m_bIsStopped = false;
