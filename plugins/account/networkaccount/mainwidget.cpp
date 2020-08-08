@@ -421,9 +421,6 @@ void MainWidget::init_gui() {
 
     connect(m_autoSyn->get_swbtn(),&SwitchButton::status,[=] (int on,int id) {
        if(on == 1) {
-           if(m_szItemlist.at(id) == "shortcut") {
-                showDesktopNotify(tr("This operation may cover your settings!"));
-           }
 
            m_stackedWidget->setCurrentWidget(m_itemList);
            m_keyInfoList.clear();
@@ -569,6 +566,10 @@ void MainWidget::on_switch_button(int on,int id) {
     }
     if(!m_bAutoSyn) {
         return ;
+    }
+
+    if(m_szItemlist.at(id) == "shortcut" && on == 1) {
+        showDesktopNotify(tr("This operation may cover your settings!"));
     }
     //emit docheck();
     handle_write(on,id);
