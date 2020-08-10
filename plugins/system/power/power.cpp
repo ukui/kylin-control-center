@@ -341,13 +341,13 @@ void Power::initModeStatus(){
 
     if (acsleep == COMPUTER_BALANCE && batsleep == COMPUTER_BALANCE &&
             acclose == DISPLAY_BALANCE && batclose == DISPLAY_BALANCE){
-        ui->custdomRadioBtn->setChecked(true);
+        ui->balanceRadioBtn->setChecked(true);
 
     } else if (acsleep == COMPUTER_SAVING && batsleep == COMPUTER_SAVING &&
                acclose == DISPLAY_SAVING && batclose == DISPLAY_SAVING){
         ui->savingRadioBtn->setChecked(true);
     } else {
-        ui->balanceRadioBtn->setChecked(true);
+        ui->custdomRadioBtn->setChecked(true);
         //
         ui->acBtn->setChecked(true);
 
