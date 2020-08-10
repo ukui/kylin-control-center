@@ -93,7 +93,7 @@ void ChangePwdDialog::setupComponent(){
     ElipseMaskWidget * cpMaskWidget = new ElipseMaskWidget(ui->faceLabel);
     cpMaskWidget->setGeometry(0, 0, ui->faceLabel->width(), ui->faceLabel->height());
 
-    ui->pwdtypeComboBox->addItem(tr("General Pwd"));
+    ui->pwdtypeComboBox->setText(tr("General Pwd"));
 
     ui->pwdLineEdit->setEchoMode(QLineEdit::Password);
     ui->pwdsureLineEdit->setEchoMode(QLineEdit::Password);
@@ -145,9 +145,9 @@ void ChangePwdDialog::setUsername(QString username){
     ui->usernameLabel->setText(username);
 }
 
-void ChangePwdDialog::setPwdType(QString type){
-    ui->pwdtypeComboBox->setCurrentText(type);
-}
+//void ChangePwdDialog::setPwdType(QStr ing type){
+//    ui->pwdtypeComboBox->setCurrentText(type);
+//}
 
 void ChangePwdDialog::setAccountType(QString aType){
     ui->aTypeLabel->setText(aType);
