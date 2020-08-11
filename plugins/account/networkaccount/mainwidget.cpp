@@ -370,7 +370,7 @@ void MainWidget::init_gui() {
     connect(m_exitCloud_btn,SIGNAL(clicked()),this,SLOT(on_login_out()));
     connect(m_editDialog,SIGNAL(account_changed()),this,SLOT(on_login_out()));
     connect(m_mainDialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
-    connect(m_mainDialog->get_login_submit(),&QPushButton::clicked, [this] () {
+    connect(m_mainDialog,&MainDialog::on_login_success, [this] () {
         m_cLoginTimer->setSingleShot(true);
         m_cLoginTimer->start(15000);
     });
