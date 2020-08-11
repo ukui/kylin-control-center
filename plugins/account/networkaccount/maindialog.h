@@ -170,6 +170,7 @@ private:
     QHBoxLayout    *m_animateLayout;
 
 signals:
+    void on_close_event();
     void on_login_failed();
     void on_login_success();
     void on_allow_send();
