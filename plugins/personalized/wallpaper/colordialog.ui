@@ -199,7 +199,7 @@
     <string>     G</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>100</x>
@@ -265,8 +265,8 @@
   <widget class="QPushButton" name="closeBtn">
    <property name="geometry">
     <rect>
-     <x>358</x>
-     <y>10</y>
+     <x>350</x>
+     <y>20</y>
      <width>32</width>
      <height>32</height>
     </rect>

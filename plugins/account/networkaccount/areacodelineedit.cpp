@@ -24,7 +24,7 @@
 void AreaCodeLineEdit::InittoCountrycode() {
     m_loadFile = new QFile(":/country.json",this);
     if(!m_loadFile->open(QIODevice::ReadOnly)) {
-        qDebug() <<"Open fail!";
+        //qDebug() <<"Open fail!";
         return ;
     }
     QByteArray Data = m_loadFile->readAll();
@@ -33,7 +33,7 @@ void AreaCodeLineEdit::InittoCountrycode() {
     m_jsonFile = new QJsonDocument(QJsonDocument::fromJson(Data,&json_error));
 
     if(json_error.error != QJsonParseError::NoError) {
-        qDebug() << "Json Error!";
+        //qDebug() << "Json Error!";
         return ;
     }
 

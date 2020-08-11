@@ -39,16 +39,11 @@ HomePageWidget::HomePageWidget(QWidget *parent) :
     ui(new Ui::HomePageWidget)
 {
     ui->setupUi(this);
-    //获取主窗口
+    // 获取主窗口
     this->setParent(parent);
     pmainWindow = (MainWindow *)parentWidget();
 
-    //
-//    ui->listWidget->setStyleSheet("QListWidget#listWidget{border: none;background:#FFFFFF}");
-
-
-
-    //初始化首页
+    // 初始化首页
     initUI();
 }
 
@@ -104,8 +99,8 @@ void HomePageWidget::initUI(){
 
         //内容Widget的构建
         ResHoverWidget * widget = new ResHoverWidget(modulenameString);
-//        QWidget * widget = new QWidget;
-        widget->setFixedSize(QSize(320, 80));
+        widget->setMinimumWidth(320);
+        widget->setMinimumHeight(80);
         widget->setAttribute(Qt::WA_DeleteOnClose);
 
         widget->setObjectName("itemWidget");
@@ -132,6 +127,7 @@ void HomePageWidget::initUI(){
         mainHorLayout->setSpacing(16);
 
         QLabel * logoLabel = new QLabel(widget);
+        logoLabel->setFixedSize(48, 48);
         logoLabel->setObjectName("logoLabel");
         logoLabel->setScaledContents(true);
 

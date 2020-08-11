@@ -19,23 +19,22 @@
  */
 #include "screenlock.h"
 #include "ui_screenlock.h"
+#include "bgfileparse.h"
+#include "pictureunit.h"
+#include "MaskWidget/maskwidget.h"
 
 #include <QDebug>
 #include <QDir>
 
-#define BGPATH "/usr/share/backgrounds/"
-#define SCREENLOCK_BG_SCHEMA "org.ukui.screensaver"
-#define SCREENLOCK_BG_KEY "background"
-#define SCREENLOCK_DELAY_KEY "lock-delay"
-#define SCREENLOCK_LOCK_KEY "lock-enabled"
+#define BGPATH                "/usr/share/backgrounds/"
+#define SCREENLOCK_BG_SCHEMA  "org.ukui.screensaver"
+#define SCREENLOCK_BG_KEY     "background"
+#define SCREENLOCK_DELAY_KEY  "lock-delay"
+#define SCREENLOCK_LOCK_KEY   "lock-enabled"
 #define SCREENLOCK_ACTIVE_KEY "idle-activation-enabled"
 
 #define MATE_BACKGROUND_SCHEMAS "org.mate.background"
-#define FILENAME "picture-filename"
-
-#include "bgfileparse.h"
-#include "pictureunit.h"
-#include "MaskWidget/maskwidget.h"
+#define FILENAME                "picture-filename"
 
 Screenlock::Screenlock()
 {
@@ -53,7 +52,6 @@ Screenlock::Screenlock()
 
     const QByteArray id(SCREENLOCK_BG_SCHEMA);
     lSetting = new QGSettings(id);
-
 
     setupComponent();
     setupConnect();
@@ -130,12 +128,11 @@ void Screenlock::setupComponent(){
         lockSwitchBtn->setChecked(status);
     }
 
-    connect(lockSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
+    connect(lockSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked) {
         if (lockKey) {
             lSetting->set(SCREENLOCK_LOCK_KEY,  checked);
         }
     });
-
 
     connect(lSetting, &QGSettings::changed, this, [=](QString key) {
         if ("idleActivationEnabled" == key) {
@@ -163,11 +160,11 @@ void Screenlock::setupComponent(){
 void Screenlock::setupConnect(){
 //    ui->delaySlider->setMinimum(1);
 //    ui->delaySlider->setMaximum(120);
-    connect(loginbgSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
+    connect(loginbgSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked) {
         setLockBackground(checked);
     });
 
-    connect(uslider, &QSlider::valueChanged, [&](int value){
+    connect(uslider, &QSlider::valueChanged, [&](int value) {
         QStringList keys = lSetting->keys();
         if (keys.contains("lockDelay")) {
             lSetting->set(SCREENLOCK_DELAY_KEY, convertToLocktime(value));
@@ -177,13 +174,12 @@ void Screenlock::setupConnect(){
     QStringList keys = lSetting->keys();
     if (keys.contains("lockDelay")) {
         int value = lockConvertToSlider(lSetting->get(SCREENLOCK_DELAY_KEY).toInt());
-
         uslider->setValue(value);
     }
 }
 
 void Screenlock::initScreenlockStatus(){
-    //获取当前锁屏壁纸
+    // 获取当前锁屏壁纸
     QString bgStr = lSetting->get(SCREENLOCK_BG_KEY).toString();
     if (bgStr.isEmpty()) {
         if (QGSettings::isSchemaInstalled(MATE_BACKGROUND_SCHEMAS)) {
@@ -194,20 +190,20 @@ void Screenlock::initScreenlockStatus(){
 
     ui->previewLabel->setPixmap(QPixmap(bgStr).scaled(ui->previewLabel->size()));
 
-    //遮罩
+    // 遮罩
     MaskWidget * maskWidget = new MaskWidget(ui->previewLabel);
     maskWidget->setGeometry(0, 0, ui->previewLabel->width(), ui->previewLabel->height());
 
-    //使用线程解析本地壁纸文件；获取壁纸单元
+    // 使用线程解析本地壁纸文件；获取壁纸单元
     pThread = new QThread;
     pWorker = new BuildPicUnitsWorker;
     connect(pWorker, &BuildPicUnitsWorker::pixmapGeneral, this, [=](QPixmap pixmap, BgInfo bgInfo){
-        //设置当前锁屏壁纸的预览
+        // 设置当前锁屏壁纸的预览
         if (bgInfo.filename == bgStr){
             ui->previewLabel->setPixmap(QPixmap(bgStr).scaled(ui->previewLabel->size()));
         }
 
-        //线程中构建控件传递会报告event无法install 的警告
+        // 线程中构建控件传递会报告event无法install 的警告
         PictureUnit * picUnit = new PictureUnit;
         picUnit->setPixmap(pixmap);
         picUnit->setFilenameText(bgInfo.filename);
@@ -221,23 +217,20 @@ void Screenlock::initScreenlockStatus(){
         flowLayout->addWidget(picUnit);
     });
     connect(pWorker, &BuildPicUnitsWorker::workerComplete, [=]{
-        pThread->quit(); //退出事件循环
-        pThread->wait(); //释放资源
+        pThread->quit(); // 退出事件循环
+        pThread->wait(); // 释放资源
     });
 
     pWorker->moveToThread(pThread);
     connect(pThread, &QThread::started, pWorker, &BuildPicUnitsWorker::run);
-    connect(pThread, &QThread::finished, this, [=]{
+    connect(pThread, &QThread::finished, this, [=] {
 
     });
     connect(pThread, &QThread::finished, pWorker, &BuildPicUnitsWorker::deleteLater);
 
     pThread->start();
 
-    //设置登录界面背景开关
-
-
-    //设置锁屏时间，屏保激活后多久锁定屏幕
+    // 设置锁屏时间，屏保激活后多久锁定屏幕
     int lDelay = lSetting->get(SCREENLOCK_DELAY_KEY).toInt();
 //    ui->delaySlider->blockSignals(true);
 //    ui->delaySlider->setValue(lDelay);

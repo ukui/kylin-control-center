@@ -19,7 +19,7 @@
  */
 #include "kbdlayoutmanager.h"
 #include "ui_layoutmanager.h"
-#include "tastenbrett.h"
+#include "preview/keyboardpainter.h"
 
 #include <QPainter>
 #include <QPainterPath>
@@ -72,7 +72,7 @@ KbdLayoutManager::KbdLayoutManager(QWidget *parent) :
 
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
-    ui->PreBtn->setVisible(false);
+//    ui->PreBtn->setVisible(false);
 
     ui->variantFrame->setFrameShape(QFrame::Shape::Box);
 
@@ -153,8 +153,7 @@ void KbdLayoutManager::setupConnect(){
         rebuild_listwidget();
     });
 
-//    connect(ui->PreBtn, &QPushButton::clicked, this, &KbdLayoutManager::preview);
-
+    connect(ui->PreBtn, &QPushButton::clicked, this, &KbdLayoutManager::preview);
 }
 
 void KbdLayoutManager::rebuildSelectListWidget(){
@@ -250,22 +249,28 @@ void KbdLayoutManager::rebuild_listwidget(){
 
 }
 
-//void KbdLayoutManager::preview()
-//{
-//    QString variantID;
-//    QString layoutID = ui->variantComboBox->currentData(Qt::UserRole).toString();
-//    QStringList layList = layoutID.split('\t');
+void KbdLayoutManager::preview()
+{
+    QString variantID;
+    QString layoutID = ui->variantComboBox->currentData(Qt::UserRole).toString();
+    QStringList layList = layoutID.split('\t');
 
-//    for (int i = 0; i < layList.length(); i++) {
-//        if (0 == i) {
-//            layoutID = layList.at(0);
-//        }
-//        if (1 == i) {
-//            variantID = layList.at(1);
-//        }
-//    }
-//    Tastenbrett::launch("pc104", layoutID, variantID, "");
-//}
+    for (int i = 0; i < layList.length(); i++) {
+        if (0 == i) {
+            layoutID = layList.at(0);
+        }
+        if (1 == i) {
+            variantID = layList.at(1);
+        }
+    }
+
+    KeyboardPainter* layoutPreview = new KeyboardPainter();
+
+    qDebug() << " layoutID:"  << layoutID << "variantID:" << variantID <<endl;
+    layoutPreview->generateKeyboardLayout(layoutID, variantID, "pc104", "");
+    layoutPreview->setModal(true);
+    layoutPreview->exec();
+}
 
 void KbdLayoutManager::kbd_trigger_available_countries(char *countryid){
     xkl_config_registry_foreach_country_variant (config_registry, countryid, (TwoConfigItemsProcessFunc)kbd_set_available_countries, NULL);

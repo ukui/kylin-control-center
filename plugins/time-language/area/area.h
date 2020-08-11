@@ -62,9 +62,9 @@ public:
     Area();
     ~Area();
 
-    QString get_plugin_name() Q_DECL_OVERRIDE;
-    int get_plugin_type() Q_DECL_OVERRIDE;
-    QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
+    QString get_plugin_name()   Q_DECL_OVERRIDE;
+    int get_plugin_type()       Q_DECL_OVERRIDE;
+    QWidget * get_plugin_ui()   Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
 
     QStringList readFile(const QString& filePath);
@@ -79,7 +79,6 @@ private:
 
     int pluginType;
 
-    QString qss;
     QString objpath;
     QString pluginName;
     QString hourformat;
@@ -87,12 +86,9 @@ private:
     QWidget * pluginWidget;
 
     QDBusInterface *m_areaInterface;
-
-    QGSettings *m_gsettings = nullptr;
-
-    QTimer *m_itimer = nullptr;
-
-    HoverWidget *addWgt;
+    QGSettings     *m_gsettings = nullptr;
+    QTimer         *m_itimer    = nullptr;
+    HoverWidget    *addWgt;
 
 private slots:
     void initFormatData();

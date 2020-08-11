@@ -33,10 +33,10 @@
     <number>0</number>
    </property>
    <property name="topMargin">
-    <number>9</number>
+    <number>15</number>
    </property>
    <property name="rightMargin">
-    <number>9</number>
+    <number>15</number>
    </property>
    <property name="bottomMargin">
     <number>0</number>

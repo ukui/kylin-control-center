@@ -40,6 +40,7 @@ public:
 
 public:
     void setFlagStatus(bool checked);
+    void updateOldShow(QString newStr);
 
 private:
     QString _oldshortcut;

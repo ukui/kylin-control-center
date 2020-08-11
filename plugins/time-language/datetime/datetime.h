@@ -91,7 +91,6 @@ public:
 private:
     Ui::DateTime *ui;
 
-
     QString pluginName;
     int pluginType;
     QWidget * pluginWidget;
@@ -114,8 +113,6 @@ private:
     ZoneInfo* m_zoneinfo;
 
     QDateTime current;
-
-//    bool m_EFHour = true;//默认为24小时制
 
 Q_SIGNALS:
     void changed();

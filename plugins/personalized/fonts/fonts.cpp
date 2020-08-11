@@ -58,7 +58,7 @@
 */
 
 typedef struct _FontInfo FontInfo;
-struct _FontInfo{
+struct _FontInfo {
     QString type;
     QString gtkfont;
     QString docfont;
@@ -75,20 +75,20 @@ struct _FontInfo{
 FontInfo defaultfontinfo;
 
 //字体效果
-typedef enum{
+typedef enum {
     ANTIALIASING_NONE,
     ANTIALIASING_GRAYSCALE,
     ANTIALIASING_RGBA
 }Antialiasing;
 
-typedef enum{
+typedef enum {
     HINT_NONE,
     HINT_SLIGHT,
     HINT_MEDIUM,
     HINT_FULL
 }Hinting;
 
-struct FontEffects{
+struct FontEffects {
     Antialiasing antial;
     Hinting hinting;
 };
@@ -113,17 +113,13 @@ Fonts::Fonts()
 
     setupStylesheet();
 
-
-    //    const QByteArray iddd(PEONY_SCHEMA);
-    //    peonysettings = new QGSettings(iddd);
-
     const QByteArray styleID(STYLE_FONT_SCHEMA);
     const QByteArray id(INTERFACE_SCHEMA);
     const QByteArray idd(MARCO_SCHEMA);
     const QByteArray iid(FONT_RENDER_SCHEMA);
 
     if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(iid) && QGSettings::isSchemaInstalled(idd) &&
-            QGSettings::isSchemaInstalled(styleID)){
+            QGSettings::isSchemaInstalled(styleID)) {
         settingsCreate = true;
         marcosettings = new QGSettings(idd);
         ifsettings = new QGSettings(id);
@@ -135,7 +131,6 @@ Fonts::Fonts()
         setupConnect();
         initFontStatus();
     }
-
 }
 
 Fonts::~Fonts()
@@ -148,7 +143,6 @@ Fonts::~Fonts()
         delete rendersettings;
         delete stylesettings;
     }
-
 }
 
 QString Fonts::get_plugin_name(){
@@ -168,49 +162,13 @@ void Fonts::plugin_delay_control(){
 }
 
 void Fonts::setupStylesheet(){
-
-
-
+    ui->advancedBtn->setVisible(false);
+    ui->advancedFrame->setVisible(false);
     ui->titleSecondLabel->setVisible(false);
     ui->sampleBtn1->setVisible(false);
     ui->sampleBtn2->setVisible(false);
     ui->sampleBtn3->setVisible(false);
     ui->sampleBtn4->setVisible(false);
-
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-//    ui->fontSizeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 4px;}");
-//    ui->fontSizeLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-
-//    ui->fontTypeWidget->setStyleSheet("QWidget#fontTypeWidget{background: #F4F4F4; border-radius: 4px;}");
-//    ui->fontSelectLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-//    ui->monoSelectLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-
-//    ui->fontSizeSlider->setStyleSheet("QSlider{height: 20px;}"
-//                                      "QSlider::groove:horizontal{border: none;}"
-//                                      "QSlider::add-page:horizontal{background: #808080; border-radius: 2px; margin-top: 8px; margin-bottom: 9px;}"
-//                                      "QSlider::sub-page:horizontal{background: #3D6BE5; border-radius: 2px; margin-top: 8px; margin-bottom: 9px;}"
-//                                      "QSlider::handle:horizontal{width: 20px; height: 20px; border-image: url(:/img/plugins/fonts/bigRoller.png);}"
-//                                      "");
-
-
-//    ui->advancedBtn->setStyleSheet("QPushButton#advancedBtn{background: #F4F4F4; border: none; border-radius: 4px;}");
-
-//    ui->advancedWidget->setStyleSheet("QWidget#advancedWidget{background: #F4F4F4; border-radius: 4px;}");
-//    ui->defaultFontLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-//    ui->monoFontLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-//    ui->docFontLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-//    ui->peonyFontLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-//    ui->titleFontLabel->setStyleSheet("QLabel{background: #F4F4F4;}");
-
-
-//    ui->sampleBtn1->setStyleSheet("QPushButton{background: #F0F0F0; border-radius: 4px;}"
-//                                  "QPushButton:checked{background: #F0F3FD; border-radius: 4px;}");
-//    ui->sampleBtn2->setStyleSheet("QPushButton{background: #F0F0F0; border-radius: 4px;}"
-//                                  "QPushButton:checked{background: #F0F3FD; border-radius: 4px;}");
-//    ui->sampleBtn3->setStyleSheet("QPushButton{background: #F0F0F0; border-radius: 4px;}"
-//                                  "QPushButton:checked{background: #F0F3FD; border-radius: 4px;}");
-//    ui->sampleBtn4->setStyleSheet("QPushButton{background: #F0F0F0; border-radius: 4px;}"
-//                                  "QPushButton:checked{background: #F0F3FD; border-radius: 4px;}");
 }
 
 void Fonts::setupComponent(){
@@ -227,12 +185,6 @@ void Fonts::setupComponent(){
     ui->fontLayout->addWidget(uslider);
     ui->fontLayout->addSpacing(8);
 
-//    ui->fontSizeSlider->setMinimum(100);
-//    ui->fontSizeSlider->setMaximum(275);
-//    ui->fontSizeSlider->setSingleStep(25);
-//    ui->fontSizeSlider->setPageStep(25);
-//    ui->fontSizeSlider->setTickPosition(QSlider::TicksBelow);
-
     //导入系统字体列表
     QStringList fontfamiles = fontdb.families();
     for (QString font : fontfamiles){
@@ -247,15 +199,14 @@ void Fonts::setupComponent(){
         //doc font
         ui->docFontComBox->addItem(font);
         // peony font
-        ui->peonyFontComBox->addItem(font);
+//        ui->peonyFontComBox->addItem(font);
         //monospace font
         ui->monoFontComBox->addItem(font);
         //title font
         ui->titleFontComBox->addItem(font);
     }
 
-    ////导入字体大小列表
-    //获取当前字体
+    // 获取当前字体
     QStringList gtkfontStrList = _splitFontNameSize(ifsettings->get(GTK_FONT_KEY).toString());
     QStringList docfontStrList = _splitFontNameSize(ifsettings->get(DOC_FONT_KEY).toString());
     QStringList monospacefontStrList = _splitFontNameSize(ifsettings->get(MONOSPACE_FONT_KEY).toString());
@@ -314,9 +265,7 @@ void Fonts::setupComponent(){
     ui->sampleBtn2->setProperty("userData", QVariant::fromValue(example2));
     ui->sampleBtn3->setProperty("userData", QVariant::fromValue(example3));
     ui->sampleBtn4->setProperty("userData", QVariant::fromValue(example4));
-
 //    setSampleButton(ui->sampleBtn1);
-
 }
 
 void Fonts::setSampleButton(QPushButton *button){

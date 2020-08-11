@@ -37,7 +37,7 @@ public:
     FrameItem*   get_item(int cur);
     FrameItem*   get_item_by_name(QString name);
 private:
-    QStringList     m_szItemNameList = {tr("Walpaper"),tr("ScreenSaver"),tr("Menu"),tr("Quick Start"),tr("Tab"),tr("Weather"),tr("Media")};
+    QStringList     m_szItemNameList = {tr("Walpaper"),tr("ScreenSaver"),tr("Menu"),tr("Quick Start"),tr("Tab"),tr("Mouse"),tr("TouchPad"),tr("KeyBoard"),tr("ShortCut"),tr("Weather"),tr("Media")};
     int             m_cItemCnt = 0;
     FrameItem    *m_itemWidget[30];
     QPoint          m_startPoint;

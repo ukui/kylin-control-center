@@ -21,12 +21,8 @@
 
 #include "ComboBox/combobox.h"
 
-#define FONT_RENDERING_DPI "org.ukui.font-rendering"
-#define DPI_KEY "dpi"
-
-//#define SCRENN_SCALE_SCHMES "org.ukui.session"
-//#define GDK_SCALE_KEY "gdk-scale"
-
+#define SCALE_SCHEMAS "org.ukui.SettingsDaemon.plugins.xsettings"
+#define SCALE_KEY "scaling-factor"
 
 OutputConfig::OutputConfig(QWidget *parent)
     : QWidget(parent)
@@ -308,25 +304,14 @@ void OutputConfig::initUi()
             this, &OutputConfig::slotScaleChanged);
 }
 
-int OutputConfig::getMaxReslotion() {
-
-}
-
 int OutputConfig::getScreenScale() {
     QGSettings * dpiSettings;
-    QByteArray id(FONT_RENDERING_DPI);
-    int scale = 0;
-    if (QGSettings::isSchemaInstalled(FONT_RENDERING_DPI)) {
+    QByteArray id(SCALE_SCHEMAS);
+    int scale = 1;
+    if (QGSettings::isSchemaInstalled(SCALE_SCHEMAS)) {
         dpiSettings = new QGSettings(id);
-        scale = dpiSettings->get(DPI_KEY).toInt();
-        if (96 == scale)  {
-            scale = 1;
-        } else if (192 == scale) {
-            scale = 2;
-        } else if (288 == scale) {
-            scale = 3;
-        } else {
-            scale = 1;
+        if (dpiSettings->keys().contains("scalingFactor")) {
+            scale = dpiSettings->get(SCALE_KEY).toInt();
         }
     }
     return scale;
@@ -457,22 +442,3 @@ QStringList OutputConfig::readFile(const QString& filepath) {
     }
 }
 
-int OutputConfig::scaleRet() {
-    QGSettings * dpiSettings;
-    QByteArray id(FONT_RENDERING_DPI);
-    int scale = 0;
-    if (QGSettings::isSchemaInstalled(FONT_RENDERING_DPI)) {
-        dpiSettings = new QGSettings(id);
-        scale = dpiSettings->get(DPI_KEY).toInt();
-        if (96 == scale)  {
-            scale = 1;
-        } else if (192 == scale) {
-            scale = 2;
-        } else if (288 == scale) {
-            scale = 3;
-        } else {
-            scale = 1;
-        }
-    }
-    return scale;
-}

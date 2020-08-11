@@ -40,13 +40,15 @@ SOURCES += \
         bgfileparse.cpp \
         buildpicunitsworker.cpp \
         pictureunit.cpp \
-        screenlock.cpp
+        screenlock.cpp \
+        xmlhandle.cpp
 
 HEADERS += \
         bgfileparse.h \
         buildpicunitsworker.h \
         pictureunit.h \
-        screenlock.h
+        screenlock.h \
+        xmlhandle.h
 
 FORMS += \
         screenlock.ui

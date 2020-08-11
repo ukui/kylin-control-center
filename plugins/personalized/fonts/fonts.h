@@ -20,7 +20,6 @@
 #ifndef FONTS_H
 #define FONTS_H
 
-
 #include <QObject>
 #include <QtPlugin>
 #include <QPushButton>
@@ -111,7 +110,6 @@ private:
     bool settingsCreate;
     QGSettings * stylesettings;
     Uslider * uslider;
-
 };
 
 #endif // FONTS_H

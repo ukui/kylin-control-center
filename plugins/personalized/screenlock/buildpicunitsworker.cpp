@@ -29,9 +29,16 @@ BuildPicUnitsWorker::BuildPicUnitsWorker()
 
 BuildPicUnitsWorker::~BuildPicUnitsWorker()
 {
+    delete xmlHandleObj;
 }
 
 void BuildPicUnitsWorker::run(){
+    //构建xmlhandle对象
+    xmlHandleObj = new XmlHandle();
+
+    //解析壁纸数据，如果本地xml文件不存在则自动构建
+    xmlHandleObj->init();
+
     //获取本地壁纸列表
     QMap<QString, BgInfo> wholeBgInfo = BgFileParse::bgFileReader();
     for (BgInfo sinBfInfo : wholeBgInfo){

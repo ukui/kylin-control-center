@@ -142,7 +142,7 @@ void Desktop::initTranslation() {
     iconMap.insert("blueman", "preferences-system-bluetooth");
     iconMap.insert("kylin-video", "kylin-video");
 
-    disList<<"ukui-sidebar"<<"update-notifier"<<"software-update-available"
+    disList<<"ukui-sidebar"<<"kylin-nm"<<"ukui-volume-control-applet-qt"<<"update-notifier"<<"software-update-available"
           <<"blueman-tray"<<"ukui-power-manager"<<"ukui-settings-daemon"<<"blueman-applet"
          <<"ErrorApplication"<<"livepatch";
 

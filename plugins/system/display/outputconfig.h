@@ -38,7 +38,6 @@ class OutputConfig : public QWidget
     //拿取配置
     void initConfig(const KScreen::ConfigPtr &config);
     QStringList readFile(const QString& filepath);
-    int scaleRet();
 
   protected Q_SLOTS:
     void slotResolutionChanged(const QSize &size);
@@ -52,7 +51,6 @@ class OutputConfig : public QWidget
 
   protected:
     virtual void initUi();
-    int getMaxReslotion();
     int getScreenScale();
 
   protected:

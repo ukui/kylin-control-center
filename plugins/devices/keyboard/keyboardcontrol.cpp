@@ -46,25 +46,19 @@ KeyboardControl::KeyboardControl()
     pluginName = tr("Keyboard");
     pluginType = DEVICES;
 
-//    ui->addFrame->installEventFilter(this);
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
     settingsCreate = false;
 
     setupStylesheet();
     setupComponent();
 
-    //初始化键盘通用设置GSettings
+    // 初始化键盘通用设置GSettings
     const QByteArray id(KEYBOARD_SCHEMA);
-
-    //初始化键盘布局GSettings
+    // 初始化键盘布局GSettings
     const QByteArray idd(KBD_LAYOUTS_SCHEMA);
-
-    //初始化按键提示GSettings
+    // 初始化按键提示GSettings
     const QByteArray iid(CC_KEYBOARD_OSD_SCHEMA);
-    osdSettings = new QGSettings(iid); //控制面板自带GSettings，不再判断是否安装
+    // 控制面板自带GSettings，不再判断是否安装
+    osdSettings = new QGSettings(iid);
 
     if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(idd)){
         settingsCreate = true;
@@ -110,23 +104,8 @@ void KeyboardControl::plugin_delay_control(){
 }
 
 void KeyboardControl::setupStylesheet(){
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-//    ui->repeatWidget_0->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->repeatWidget_1->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->repeatWidget_2->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-
-//    ui->repeatWidget_3->setStyleSheet("QWidget#repeatWidget_3{background: #F4F4F4; border-radius: 6px;}");
-//    ui->repeatLabel_3->setStyleSheet("QLabel{background: #F4F4F4; font-size: 14px; color: #D9000000;}");
-
-//    ui->repeatWidget_4->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->repeatWidget_5->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-
-
-//    ui->layoutWidget_0->setStyleSheet("QWidget#layoutWidget_0{background: #F4F4F4; border-radius: 6px;}");
-//    ui->layoutLabel_0->setStyleSheet("QLabel{background: #F4F4F4; font-size: 14px; color: #D9000000;}");
-
-//    ui->layoutWidget_1->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 }
 
 void KeyboardControl::setupComponent(){
@@ -149,14 +128,16 @@ void KeyboardControl::setupComponent(){
     addWgt->setLayout(addLyt);
 
     // 悬浮改变Widget状态
-    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname){
+    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname) {
+        Q_UNUSED(mname);
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(base);");
-
     });
+
     // 还原状态
-    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname){
+    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname) {
+        Q_UNUSED(mname);
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(windowText);");
@@ -164,69 +145,60 @@ void KeyboardControl::setupComponent(){
 
     ui->addLyt->addWidget(addWgt);
 
-
-    //隐藏未开发功能
+    // 隐藏未开发功能
     ui->repeatFrame_5->hide();
 
-    //重复输入开关按钮
+    // 重复输入开关按钮
     keySwitchBtn = new SwitchButton(pluginWidget);
     ui->enableHorLayout->addWidget(keySwitchBtn);
 
-    //按键提示开关按钮
+    // 按键提示开关按钮
     tipKeyboardSwitchBtn = new SwitchButton(pluginWidget);
     ui->tipKeyboardHorLayout->addWidget(tipKeyboardSwitchBtn);
 
-    //小键盘开关按钮
+    // 小键盘开关按钮
     numLockSwitchBtn = new SwitchButton(pluginWidget);
     ui->numLockHorLayout->addWidget(numLockSwitchBtn);
-
-    //布局代理
-//    ui->layoutsComBox->setItemDelegate(itemDelege);
-//    ui->layoutsComBox->setMaxVisibleItems(5);
-
-//    ui->addBtn->setIcon(QIcon("://img/plugins/keyboardcontrol/add.png"));
-//    ui->addBtn->setIconSize(QSize(48, 48));
-//    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
 }
 
 void KeyboardControl::setupConnect(){
-    connect(keySwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
+    connect(keySwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked) {
+        setKeyboardVisible(checked);
         settings->set(REPEAT_KEY, checked);
     });
 
-    connect(ui->delayHorSlider, &QSlider::valueChanged, this, [=](int value){
+    connect(ui->delayHorSlider, &QSlider::valueChanged, this, [=](int value) {
         settings->set(DELAY_KEY, value);
     });
 
-    connect(ui->speedHorSlider, &QSlider::valueChanged, this, [=](int value){
+    connect(ui->speedHorSlider, &QSlider::valueChanged, this, [=](int value) {
         settings->set(RATE_KEY, value);
     });
 
-    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
+    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname) {
+        Q_UNUSED(mname);
         KbdLayoutManager * templayoutManager = new KbdLayoutManager;
         templayoutManager->exec();
     });
 
-    connect(ui->resetBtn, &QPushButton::clicked, this, [=]{
+    connect(ui->resetBtn, &QPushButton::clicked, this, [=] {
         kbdsettings->reset(KBD_LAYOUTS_KEY);
     });
 
-    connect(kbdsettings, &QGSettings::changed, [=](QString key){
+    connect(kbdsettings, &QGSettings::changed, [=](QString key) {
         if (key == KBD_LAYOUTS_KEY)
             rebuildLayoutsComBox();
     });
 
-
-    connect(tipKeyboardSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
+    connect(tipKeyboardSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked) {
         osdSettings->set(CC_KEYBOARD_OSD_KEY, checked);
     });
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->layoutsComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
 #else
-    connect(ui->layoutsComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index){
+    connect(ui->layoutsComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
 #endif
-
         QStringList layoutsList;
         layoutsList.append(ui->layoutsComBox->currentData(Qt::UserRole).toString());
         for (int i = 0; i < ui->layoutsComBox->count(); i++){
@@ -238,9 +210,10 @@ void KeyboardControl::setupConnect(){
     });
 }
 
-void KeyboardControl::initGeneralStatus(){
+void KeyboardControl::initGeneralStatus() {
     //设置按键重复状态
     keySwitchBtn->setChecked(settings->get(REPEAT_KEY).toBool());
+    setKeyboardVisible(keySwitchBtn->isChecked());
 
     //设置按键重复的延时
     ui->delayHorSlider->setValue(settings->get(DELAY_KEY).toInt());
@@ -254,14 +227,14 @@ void KeyboardControl::initGeneralStatus(){
 
 }
 
-void KeyboardControl::rebuildLayoutsComBox(){
+void KeyboardControl::rebuildLayoutsComBox() {
     QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
     ui->layoutsComBox->blockSignals(true);
     //清空键盘布局下拉列表
     ui->layoutsComBox->clear();
 
     //重建键盘布局下拉列表
-    for (QString layout : layouts){
+    for (QString layout : layouts) {
         ui->layoutsComBox->addItem(layoutmanagerObj->kbd_get_description_by_id(const_cast<const char *>(layout.toLatin1().data())), layout);
     }
     ui->layoutsComBox->blockSignals(false);
@@ -272,18 +245,8 @@ void KeyboardControl::rebuildLayoutsComBox(){
     }
 }
 
-//bool KeyboardControl::eventFilter(QObject *watched, QEvent *event)
-//{
-//    if (watched == ui->addFrame){
-//        if (event->type() == QEvent::MouseButtonPress){
-//            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
-//            if (mouseEvent->button() == Qt::LeftButton){
-//                layoutmanagerObj->exec();
-//                return true;
-//            } else
-//                return false;
-//        }
-//    }
-//    return QObject::eventFilter(watched, event);
-
-//}
+void KeyboardControl::setKeyboardVisible(bool checked) {
+    ui->repeatFrame_1->setVisible(checked);
+    ui->repeatFrame_2->setVisible(checked);
+    ui->repeatFrame_3->setVisible(checked);
+}

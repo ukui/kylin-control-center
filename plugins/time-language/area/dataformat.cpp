@@ -44,9 +44,7 @@ DataFormat::~DataFormat()
 }
 
 
-void DataFormat::initUi() {    
-
-//    ui->frame->setStyleSheet("QFrame{background: #ffffff;}");
+void DataFormat::initUi() {
     //关闭按钮在右上角，窗体radius 6px，所以按钮只得6px
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"

@@ -108,6 +108,7 @@ void DefineShortcutItem::setShortcutName(QString newName){
 
 void DefineShortcutItem::setShortcutBinding(QString newBinding){
     pLineEdit->setText(newBinding);
+    pLineEdit->updateOldShow(newBinding);
 }
 
 void DefineShortcutItem::mousePressEvent(QMouseEvent *e){

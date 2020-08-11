@@ -142,7 +142,13 @@ void MainWidget::setret_check(QString ret) {
         m_infoTab->setText(tr("Your account：%1").arg(ret));
         m_szCode = ret;
         m_mainWidget->setCurrentWidget(m_widgetContainer);
-        handle_conf();
+        QFile all_conf_file(QDir::homePath() + PATH);
+        if(all_conf_file.exists() == false) {
+            doconf();
+        } else {
+            handle_conf();
+        }
+
         //QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     }
 }
@@ -214,7 +220,6 @@ void MainWidget::init_gui() {
     m_tipsLayout = new QHBoxLayout;
     m_stackedWidget = new QStackedWidget(this);
     m_nullwidgetContainer = new QWidget(this);
-    m_infoText = new QLabel(this);
     m_cRetry = new QTimer(this);
 
     m_stackedWidget->addWidget(m_itemList);
@@ -312,9 +317,7 @@ void MainWidget::init_gui() {
     m_workLayout->setContentsMargins(1,0,1,0);
     m_workLayout->addSpacing(16);
     m_workLayout->addWidget(m_autoSyn->get_widget());
-    m_workLayout->addSpacing(8);
-    m_workLayout->addWidget(m_infoText);
-    m_workLayout->addSpacing(8);
+    m_workLayout->addSpacing(16);
     m_workLayout->addWidget(m_stackedWidget);
     m_widgetContainer->setLayout(m_workLayout);
 
@@ -322,10 +325,6 @@ void MainWidget::init_gui() {
     m_openEditDialog_btn->setFlat(true);
     m_openEditDialog_btn->setStyleSheet("QPushButton{background:transparent;}");
     m_welcomeMsg->setText(tr("Synchronize your personalized settings and data"));
-
-    m_infoText->setText(tr("Synchronize your computer's settings into your cloud account here."));
-    m_infoText->setStyleSheet("QLabel{color:rgba(0,0,0,0.65);font-size:12px}");
-    m_infoText->adjustSize();
 
     m_welcomeMsg->setStyleSheet("font-size:18px;");
 
@@ -422,9 +421,9 @@ void MainWidget::init_gui() {
 
     connect(m_autoSyn->get_swbtn(),&SwitchButton::status,[=] (int on,int id) {
        if(on == 1) {
+
            m_stackedWidget->setCurrentWidget(m_itemList);
            m_keyInfoList.clear();
-           m_infoText->setText(tr("Synchronize your computer's settings into your cloud account here."));
            __once__ = false;
 
            m_autoSyn->set_change(0,"0");
@@ -433,7 +432,6 @@ void MainWidget::init_gui() {
                    m_itemList->get_item(i)->set_change(0,"0");
                }
            }
-
            m_cRetry->start(1000);
 
        } else {
@@ -522,6 +520,7 @@ void MainWidget::handle_conf() {
         for(int i  = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(true);
         }
+        m_bAutoSyn = true;
     } else {
         m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
         m_autoSyn->make_itemoff();
@@ -568,6 +567,10 @@ void MainWidget::on_switch_button(int on,int id) {
     if(!m_bAutoSyn) {
         return ;
     }
+
+    if(m_szItemlist.at(id) == "shortcut" && on == 1) {
+        showDesktopNotify(tr("This operation may cover your settings!"));
+    }
     //emit docheck();
     handle_write(on,id);
 }
@@ -601,7 +604,7 @@ void MainWidget::on_login_out() {
     m_autoSyn->set_change(0,"0");
     m_autoSyn->set_active(true);
     m_keyInfoList.clear();
-    m_infoText->setText(tr("Synchronize your computer's settings into your cloud account here."));
+
     m_mainWidget->setCurrentWidget(m_nullWidget);
     __once__ = false;
     __run__ = false;
@@ -654,7 +657,6 @@ void MainWidget::download_files() {
         m_blueEffect_sync->startmoive();
     }
 
-    m_infoText->setText(tr("Sync downloading,please wait!"));
 
 
     if(m_autoSyn->get_swbtn()->get_swichbutton_val() == 0) {
@@ -683,7 +685,6 @@ void MainWidget::push_files() {
         m_blueEffect_sync->startmoive();
     }
 
-    m_infoText->setText(tr("Sync uploading,please wait!"));
 
     if(m_autoSyn->get_swbtn()->get_swichbutton_val() == 0) {
         return ;
@@ -704,11 +705,7 @@ void MainWidget::download_over() {
         m_exitCloud_btn->update();
     }
     if(__once__ == false) {
-        m_infoText->setText(tr("Synchronize your computer's settings into your cloud account here."));
         m_autoSyn->set_change(0,"0");
-    }
-    else {
-        m_infoText->setText(tr("Sync failed, please check your internet connection or login out to retry!"));
     }
 }
 
@@ -723,17 +720,11 @@ void MainWidget::push_over() {
         m_exitCloud_btn->update();
     }
     if(__once__ == false) {
-        m_infoText->setText(tr("Synchronize your computer's settings into your cloud account here."));
         m_autoSyn->set_change(0,"0");
     }
-    else {
-        m_infoText->setText(tr("Sync failed, please check your internet connection or login out to retry!"));
-    }
-
 }
 
 void MainWidget::get_key_info(QString info) {
-
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
@@ -788,8 +779,6 @@ void MainWidget::get_key_info(QString info) {
                 }
             }
         }
-        m_infoText->setText(tr("Synchronized failed: %1 please retry or login out to get a better experience.").arg(keys));
-        m_infoText->adjustSize();
         m_autoSyn->make_itemoff();
         for(int i = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(false);
@@ -801,8 +790,28 @@ void MainWidget::get_key_info(QString info) {
     m_keyInfoList.clear();
 }
 
+void MainWidget::showDesktopNotify(const QString &message)
+{
+    QDBusInterface iface("org.freedesktop.Notifications",
+                         "/org/freedesktop/Notifications",
+                         "org.freedesktop.Notifications",
+                         QDBusConnection::sessionBus());
+    QList<QVariant> args;
+    args<<(QCoreApplication::applicationName())
+    <<((unsigned int) 0)
+    <<QString("qweq")
+    <<tr("Cloud ID desktop message") //显示的是什么类型的信息
+    <<message //显示的具体信息
+    <<QStringList()
+    <<QVariantMap()
+    <<(int)-1;
+    iface.callWithArgumentList(QDBus::AutoDetect,"Notify",args);
+}
+
 /* 析构函数 */
 MainWidget::~MainWidget() {
+
+    m_fsWatcher.removePath(QDir::homePath() + "/.cache/kylinssoclient/");
     delete m_itemList;
     delete m_mainDialog;
     delete m_editDialog;

@@ -222,19 +222,22 @@ void Theme::setupComponent(){
     buildThemeModeBtn(ui->darkButton, tr("Dark"), "dark");
 
     ui->tranSlider->setRange(35, 100);
-    ui->tranSlider->setTickInterval(1);
-    ui->tranSlider->setPageStep(1);
+    ui->tranSlider->setTickInterval(5);
+    ui->tranSlider->setPageStep(5);
 
     ui->tranSlider->setValue(static_cast<int>(personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble() * 100));
     ui->tranLabel->setText(QString::number(static_cast<double>(ui->tranSlider->value())/100.0));
     connect(ui->tranSlider, &QSlider::valueChanged, [=](int value){
-        personliseGsettings->set(PERSONALSIE_TRAN_KEY, static_cast<double>(value)/100.0);
-        qtSettings->set(THEME_TRAN_KEY, value);
-        qtSettings->set(PEONY_TRAN_KEY, value);
-        ui->tranLabel->setText(QString::number(static_cast<double>(ui->tranSlider->value())/100.0));
+        if(i!=(static_cast<int>(value)/5)/20.0){
+            ui->tranSlider->setSingleStep(5);
+            personliseGsettings->set(PERSONALSIE_TRAN_KEY,(static_cast<int>(value)/5)/20.0);
+            qtSettings->set(THEME_TRAN_KEY, value);
+            qtSettings->set(PEONY_TRAN_KEY, value);
+            ui->tranLabel->setText(QString::number((static_cast<int>(value)/5)/20.0));
+            i=(static_cast<int>(value)/5)/20.0;
+        }
     });
     setupControlTheme();
-
 //    ui->effectLabel->hide();
 //    ui->effectWidget->hide();
 

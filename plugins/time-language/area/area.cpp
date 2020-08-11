@@ -35,12 +35,6 @@
 #define DATE_FORMATE_KEY "date"
 #define TIME_KEY         "hoursystem"
 
-const QVector<QString> CFormats{"zh_SG.UTF-8", "zh_CN.UTF-8", "lt_LT.UTF-8", "en_ZW.UTF-8", "en_ZM.UTF-8",
-                               "en_ZA.UTF-8", "en_US.UTF-8", "en_SG.UTF-8", "en_PH.UTF-8", "en_NZ.UTF-8",
-                               "en_NG.UTF-8", "en_IN.UTF-8", "en_IL.UTF-8", "en_IE.UTF-8", "en_HK.UTF-8",
-                               "en_GB.UTF-8", "en_DK.UTF-8", "en_CA.UTF-8", "en_BW.UTF-8", "en_AU.UTF-8",
-                               "en_AG.UTF-8", "af_ZA.UTF-8"};
-
 Area::Area()
 {
     ui = new Ui::Area;
@@ -56,17 +50,10 @@ Area::Area()
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-
     const QByteArray id(PANEL_GSCHEMAL);
 
     if(QGSettings::isSchemaInstalled(id)) {
         m_gsettings = new QGSettings(id);
-        //  监听key的value是否发生了变化
-        /*
-        connect(m_gsettings, &QGSettings::changed, this, [=] (const QString &key) {
-            initFormatData();
-        });
-        */
     }
 
     unsigned int uid = getuid();
@@ -80,20 +67,18 @@ Area::Area()
 
     m_itimer = new QTimer();
     m_itimer->start(1000);
-    connect(m_itimer,SIGNAL(timeout()), this, SLOT(datetime_update_slot()));
 
     initUI();
     initComponent();
+
+    connect(m_itimer,SIGNAL(timeout()), this, SLOT(datetime_update_slot()));
     connect(ui->langcomboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(change_language_slot(int)));
     connect(ui->countrycomboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(change_area_slot(int)));
-//    connect(ui->addlanBtn, SIGNAL(clicked()), this, SLOT(add_lan_btn_slot()));
     connect(ui->chgformButton,SIGNAL(clicked()),this,SLOT(changeform_slot()));
-
     connect(ui->countrycomboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             [=]{
         KMessageBox::information(ui->languageframe_2, tr("Need to log off to take effect"));
     });
-
 }
 
 Area::~Area()
@@ -102,30 +87,30 @@ Area::~Area()
     delete m_itimer;
 }
 
-QString Area::get_plugin_name(){
+QString Area::get_plugin_name() {
     return pluginName;
 }
 
-int Area::get_plugin_type(){
+int Area::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *Area::get_plugin_ui(){
+QWidget *Area::get_plugin_ui() {
     return pluginWidget;
 }
 
-void Area::plugin_delay_control(){
+void Area::plugin_delay_control() {
 
 }
 
-void Area::run_external_app_slot(){
+void Area::run_external_app_slot() {
     QString cmd = "gnome-language-selector";
 
     QProcess process(this);
     process.startDetached(cmd);
 }
 
-void Area::initUI(){
+void Area::initUI() {
     ui->titleLabel->setText(tr("current area"));
     ui->countrylabel->setText(tr("display format area"));
     ui->title2Label->setText(tr("format of area"));
@@ -160,20 +145,23 @@ void Area::initUI(){
     addWgt->setLayout(addLyt);
 
     // 悬浮改变Widget状态
-    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname){
+    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname) {
+        Q_UNUSED(mname);
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(base);");
 
     });
     // 还原状态
-    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname){
+    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname) {
+        Q_UNUSED(mname);
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(windowText);");
     });
 
-    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
+    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname) {
+        Q_UNUSED(mname);
         add_lan_btn_slot();
     });
 
@@ -234,7 +222,7 @@ void Area::initFormatData() {
     this->hourformat = m_gsettings->get(TIME_KEY).toString();
 }
 
-void Area::change_language_slot(int index){
+void Area::change_language_slot(int index) {
     QDBusReply<bool> res;
     switch (index) {
     case 0:
@@ -245,10 +233,7 @@ void Area::change_language_slot(int index){
         break;
     }
 
-    if (index == ui->countrycomboBox->currentIndex()) {
-        KMessageBox::information(ui->languageframe, tr("Need to log off to take effect"));
-    }
-    ui->countrycomboBox->setCurrentIndex(index);
+    KMessageBox::information(ui->languageframe, tr("Need to log off to take effect"));
 }
 
 void Area::change_area_slot(int index) {
@@ -322,7 +307,6 @@ QStringList Area::getUserDefaultLanguage() {
     fname += "/.pam_environment";
 
     filestr = this->readFile(fname);
-//    qDebug()<<"result is------>"<<filestr<<endl;
     QRegExp re("LANGUAGE(\t+DEFAULT)?=(.*)$");
     for(int i = 0; i < filestr.length(); i++) {
         while((pos = re.indexIn(filestr.at(i), pos)) != -1) {
@@ -348,6 +332,5 @@ QStringList Area::getUserDefaultLanguage() {
     }
     result.append(formats);
     result.append(language);
-//    qDebug()<<"result is---------->"<<result<<endl;
     return result;
 }

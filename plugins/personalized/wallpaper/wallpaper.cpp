@@ -456,7 +456,7 @@ void Wallpaper::resetDefaultWallpaperSlot(){
 }
 
 void Wallpaper::showLocalWpDialog(){
-    QString filters = "Wallpaper files(*.png *.jpg)";
+    QString filters = "Wallpaper files(*.png *.jpg *.jpeg, *.bmp *.tif)";
     QFileDialog fd;
     fd.setDirectory(QString(const_cast<char *>(g_get_user_special_dir(G_USER_DIRECTORY_PICTURES))));
     fd.setAcceptMode(QFileDialog::AcceptOpen);

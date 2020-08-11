@@ -13,8 +13,8 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  archlinux:
-    name: on Archlinux
+  archlinux-latest:
+    name: on Archlinux Latest
     runs-on: ubuntu-20.04
     container: docker.io/library/archlinux:latest
     steps:
@@ -23,14 +23,15 @@ jobs:
       - name: Refresh pacman repository
         run: pacman -Sy
       - name: Install build dependencies
-        run: pacman -S --noconfirm base-devel qt5-base gsettings-qt kwindowsystem poppler-qt5 qt5-x11extras glib2 qt5-tools pkg-config kwidgetsaddons kconfig kconfigwidgets kscreen qt5-svg libmatekbd qt5-x11extras libxklavier qt5-declarative libmatemixer libqtxdg qt5-multimedia libxml2 libcanberra mate-desktop libxkbcommon libxkbfile
+        run: pacman -S --noconfirm base-devel qt5-base gsettings-qt kwindowsystem poppler-qt5 qt5-x11extras glib2 qt5-tools pkg-config kwidgetsaddons kconfig kconfigwidgets kscreen qt5-svg libmatekbd qt5-x11extras libxklavier qt5-declarative libmatemixer libqtxdg qt5-multimedia libxml2 libcanberra mate-desktop libxkbcommon libxkbfile ki18n kguiaddons kcoreaddons 	boost
       - name: QMake configure & Make
         run: |
           mkdir build;
           cd build;
           qmake-qt5 ..;
           make -j$(nproc);
-  debian:
+
+  debian-sid:
     name: on Debian Sid
     runs-on: ubuntu-20.04
     container: docker.io/library/debian:sid
@@ -42,7 +43,7 @@ jobs:
       - name: Update apt repository
         run: apt-get update -y
       - name: Install build dependcies
-        run: apt-get install -y build-essential qt5-default qttools5-dev-tools pkg-kde-tools pkg-config libkf5widgetsaddons-dev libkf5config-dev libkf5configwidgets-dev libkf5screen-dev debhelper-compat libqt5svg5-dev libgsettings-qt-dev libglib2.0-dev libmatekbd-dev libqt5x11extras5-dev libxklavier-dev qtdeclarative5-dev libdconf-dev libmatemixer-dev libqt5xdg-dev qtmultimedia5-dev libxml2-dev libcanberra-dev libmate-desktop-dev libxkbcommon-dev libxkbfile-dev
+        run: apt-get install -y build-essential qt5-default qttools5-dev-tools pkg-kde-tools pkg-config libkf5widgetsaddons-dev libkf5config-dev libkf5configwidgets-dev libkf5screen-dev debhelper-compat libqt5svg5-dev libgsettings-qt-dev libglib2.0-dev libmatekbd-dev libqt5x11extras5-dev libxklavier-dev qtdeclarative5-dev libdconf-dev libmatemixer-dev libqt5xdg-dev qtmultimedia5-dev libxml2-dev libcanberra-dev libmate-desktop-dev libxkbcommon-dev libxkbfile-dev libkf5i18n-dev libkf5windowsystem-dev libkf5guiaddons-dev libkf5coreaddons-dev libboost-dev libxcb-xkb-dev
       - name: QMake configure & Make
         run: |
           mkdir build;
@@ -50,27 +51,44 @@ jobs:
           qmake ..;
           make -j$(nproc);
   
-  fedora:
-    name: on Fedora 32
+  fedora-latest:
+    name: on Fedora Latest
     runs-on: ubuntu-20.04
-    container: docker.io/library/fedora:32
+    container: docker.io/library/fedora:latest
     steps:
       - name: Checkout ukui-control-center source code
         uses: actions/checkout@v2
-      - name: Install curl and patch
-        run: dnf install --refresh -y curl patch
       - name: Install build dependencies
-        run: dnf install -y which gcc gcc-c++ make cmake cmake-rpm-macros autoconf automake intltool rpm-build qt5-rpm-macros qt5-qtbase-devel qt5-qtsvg-devel gsettings-qt-devel glib2-devel qt5-qtx11extras-devel libmatekbd-devel libxklavier-devel kf5-kconfigwidgets-devel kf5-kconfig-devel qt5-qtdeclarative-devel dconf-devel redshift edid-decode libmatemixer-devel libqtxdg-devel qt5-qtmultimedia-devel libxml2-devel libkscreen-qt5-devel kf5-ki18n-devel libcanberra-devel libXi-devel mate-desktop-devel libxkbcommon-devel libxkbfile-devel
+        run: dnf install --refresh -y which gcc gcc-c++ make cmake cmake-rpm-macros autoconf automake intltool rpm-build qt5-rpm-macros qt5-qtbase-devel qt5-qtsvg-devel gsettings-qt-devel glib2-devel qt5-qtx11extras-devel libmatekbd-devel libxklavier-devel kf5-kconfigwidgets-devel kf5-kconfig-devel qt5-qtdeclarative-devel dconf-devel redshift edid-decode libmatemixer-devel libqtxdg-devel qt5-qtmultimedia-devel libxml2-devel libkscreen-qt5-devel kf5-ki18n-devel libcanberra-devel libXi-devel mate-desktop-devel libxkbcommon-devel libxkbfile-devel qt5-linguist kf5-kwindowsystem-devel kf5-kguiaddons-devel kf5-kcoreaddons-devel boost-devel libxcb-devel xcb-util-devel
       - name: QMake configure & Make
         run: |
+          ln -s /usr/bin/lrelease-qt5 /usr/bin/lrelease;
           mkdir build;
           cd build;
           qmake-qt5 ..;
           make -j$(nproc);
-  ubuntu:
-    name: on Ubuntu 20.04
+
+  fedora-rawhide:
+    name: on Fedora Rawhide
     runs-on: ubuntu-20.04
-    container: docker.io/library/ubuntu:focal
+    container: docker.io/library/fedora:rawhide
+    steps:
+      - name: Checkout ukui-control-center source code
+        uses: actions/checkout@v2
+      - name: Install build dependencies
+        run: dnf install --refresh -y which gcc gcc-c++ make cmake cmake-rpm-macros autoconf automake intltool rpm-build qt5-rpm-macros qt5-qtbase-devel qt5-qtsvg-devel gsettings-qt-devel glib2-devel qt5-qtx11extras-devel libmatekbd-devel libxklavier-devel kf5-kconfigwidgets-devel kf5-kconfig-devel qt5-qtdeclarative-devel dconf-devel redshift edid-decode libmatemixer-devel libqtxdg-devel qt5-qtmultimedia-devel libxml2-devel libkscreen-qt5-devel kf5-ki18n-devel libcanberra-devel libXi-devel mate-desktop-devel libxkbcommon-devel libxkbfile-devel qt5-linguist kf5-kwindowsystem-devel kf5-kguiaddons-devel kf5-kcoreaddons-devel boost-devel libxcb-devel xcb-util-devel
+      - name: QMake configure & Make
+        run: |
+          ln -s /usr/bin/lrelease-qt5 /usr/bin/lrelease;
+          mkdir build;
+          cd build;
+          qmake-qt5 ..;
+          make -j$(nproc);
+
+  ubuntu-latest:
+    name: on Ubuntu Latest
+    runs-on: ubuntu-20.04
+    container: docker.io/library/ubuntu:latest
     env:
       DEBIAN_FRONTEND: noninteractive
     steps:
@@ -79,7 +97,7 @@ jobs:
       - name: Update apt repository
         run: apt-get update -y
       - name: Install build dependcies
-        run: apt-get install -y build-essential qt5-default qttools5-dev-tools pkg-kde-tools pkg-config libkf5widgetsaddons-dev libkf5config-dev libkf5configwidgets-dev libkf5screen-dev debhelper-compat libqt5svg5-dev libgsettings-qt-dev libglib2.0-dev libmatekbd-dev libqt5x11extras5-dev libxklavier-dev qtdeclarative5-dev libdconf-dev libmatemixer-dev libqt5xdg-dev qtmultimedia5-dev libxml2-dev libcanberra-dev libmate-desktop-dev libxkbcommon-dev libxkbfile-dev
+        run: apt-get install -y build-essential qt5-default qttools5-dev-tools pkg-kde-tools pkg-config libkf5widgetsaddons-dev libkf5config-dev libkf5configwidgets-dev libkf5screen-dev debhelper-compat libqt5svg5-dev libgsettings-qt-dev libglib2.0-dev libmatekbd-dev libqt5x11extras5-dev libxklavier-dev qtdeclarative5-dev libdconf-dev libmatemixer-dev libqt5xdg-dev qtmultimedia5-dev libxml2-dev libcanberra-dev libmate-desktop-dev libxkbcommon-dev libxkbfile-dev libkf5i18n-dev libkf5windowsystem-dev libkf5guiaddons-dev libkf5coreaddons-dev libboost-dev libxcb-xkb-dev
       - name: QMake configure & Make
         run: |
           mkdir build;

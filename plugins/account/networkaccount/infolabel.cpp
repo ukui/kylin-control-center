@@ -8,6 +8,8 @@ InfoLabel::InfoLabel(QWidget *parent) : QLabel(parent)
     m_toolTips = new Tooltips(this);
     m_textLabel = new QLabel(m_toolTips);
 
+    setFixedWidth(300);
+
     QHBoxLayout *worklayout = new QHBoxLayout;
     QHBoxLayout *layout = new QHBoxLayout;
 

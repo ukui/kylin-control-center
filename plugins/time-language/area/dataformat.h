@@ -44,7 +44,6 @@ Q_SIGNALS:
 private slots:
     void datetime_update_slot();
     void confirm_btn_slot();
-
 };
 
 #endif // DATAFORMAT_H
