@@ -85,7 +85,7 @@ private:
     QWidget             *m_nullwidgetContainer;
     QString             m_szCode = tr("Disconnected");
     QString             m_szConfPath;
-    QStringList         m_szItemlist = {"wallpaper","ukui-screensaver","ukui-menu","ukui-panel","ukui-panel2","mouse","touchpad","keyboard","shortcut","indicator-china-weather","kylin-video"};
+    QStringList         m_szItemlist = {"wallpaper","ukui-screensaver","ukui-menu","ukui-panel","ukui-panel2","mouse","touchpad","keyboard","shortcut","area","datetime","default-open","notice","indicator-china-weather","kylin-video"};
     MainDialog*   m_mainDialog;
     QWidget             *m_infoWidget;
     QHBoxLayout         *m_infoLayout;

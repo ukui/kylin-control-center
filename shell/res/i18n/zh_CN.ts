@@ -2038,32 +2038,52 @@ folder will be deleted!</source>
         <translation>任务栏</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="40"/>
+        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="41"/>
+        <source>Area</source>
+        <translation>语言和地区</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Weather</source>
         <translation>麒麟天气</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="40"/>
+        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Media</source>
         <translation>麒麟影音</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="40"/>
+        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
+        <source>Date/Time</source>
+        <translation>时间与日期</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
+        <source>Default Open</source>
+        <translation>默认打开方式</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
+        <source>Notice</source>
+        <translation>侧边栏</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="41"/>
         <source>Mouse</source>
         <translation>鼠标</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="40"/>
+        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="41"/>
         <source>TouchPad</source>
         <translation>触摸板</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="40"/>
+        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="41"/>
         <source>KeyBoard</source>
         <translation>键盘</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="40"/>
+        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="41"/>
         <source>ShortCut</source>
         <translation>快捷键</translation>
     </message>
@@ -2673,8 +2693,8 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="175"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="701"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="716"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="707"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="722"/>
         <source>Exit</source>
         <translation>退出登录</translation>
     </message>
@@ -2714,12 +2734,12 @@ folder will be deleted!</source>
         <translation>同步您账户的数据以及个性化设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="572"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="578"/>
         <source>This operation may cover your settings!</source>
         <translation>该操作可能覆盖您目前的快捷键！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="803"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="808"/>
         <source>Cloud ID desktop message</source>
         <translation>云账户消息</translation>
     </message>
@@ -2748,7 +2768,7 @@ folder will be deleted!</source>
         <translation type="vanished">同步失败，请检查您的网络连接或者登出再重试一次！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="778"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="783"/>
         <source>%1,</source>
         <translation>%1,</translation>
     </message>

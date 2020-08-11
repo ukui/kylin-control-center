@@ -92,7 +92,7 @@ void MainWidget::setret_logout(int ret) {
     //qDebug()<<ret<<"Coutner SatRieaf";
     if(ret == 0) {
         m_mainDialog->set_back();
-        m_bIsStopped = false;
+        m_bIsStopped = true;
     }
 }
 
@@ -370,7 +370,7 @@ void MainWidget::init_gui() {
     connect(m_exitCloud_btn,SIGNAL(clicked()),this,SLOT(on_login_out()));
     connect(m_editDialog,SIGNAL(account_changed()),this,SLOT(on_login_out()));
     connect(m_mainDialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
-    connect(m_mainDialog->get_login_submit(),&QPushButton::clicked, [this] () {
+    connect(m_mainDialog,&MainDialog::on_login_success, [this] () {
         m_cLoginTimer->setSingleShot(true);
         m_cLoginTimer->start(15000);
     });
@@ -385,8 +385,13 @@ void MainWidget::init_gui() {
         m_cRetry->stop();
     });
 
+    connect(m_mainDialog, &MainDialog::on_close_event, [this] () {
+        m_cLoginTimer->stop();
+        m_bIsStopped = true;
+    });
+
     connect(m_cLoginTimer,&QTimer::timeout,[this]() {
-        if(m_bIsStopped){
+        if(m_bIsStopped) {
             return ;
         }
 
@@ -499,6 +504,7 @@ void MainWidget::finished_load(int ret,QString uuid) {
     if(uuid != this->m_szUuid) {
         return ;
     }
+    m_bIsStopped = false;
     //qDebug()<<"wb222"<<ret;
     if (ret == 0) {
         emit doconf();
@@ -608,7 +614,7 @@ void MainWidget::on_login_out() {
     m_mainWidget->setCurrentWidget(m_nullWidget);
     __once__ = false;
     __run__ = false;
-    m_bIsStopped = false;
+    m_bIsStopped = true;
 }
 
 /* 修改密码打开处理事件 */
@@ -772,8 +778,7 @@ void MainWidget::get_key_info(QString info) {
         for(QString key : m_keyInfoList) {
             if(key != m_keyInfoList.last()) {
 
-                if(m_itemMap.value(key).isEmpty() == false)
-                {
+                if(m_itemMap.value(key).isEmpty() == false) {
                     m_itemList->get_item_by_name(m_itemMap.value(key))->set_change(-1,"Failed!");
                     keys.append(tr("%1,").arg(m_itemMap.value(key)));
                 }
