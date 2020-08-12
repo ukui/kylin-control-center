@@ -151,7 +151,7 @@ void Wallpaper::setupComponent(){
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(windowText);");
     });
-
+    //打开自定义颜色面板
     connect(colWgt, &HoverWidget::widgetClicked,[=](QString mname){
         Q_UNUSED(mname);
         colordialog = new ColorDialog();
@@ -169,8 +169,9 @@ void Wallpaper::setupComponent(){
     ui->picOptionsComBox->addItem(tr("spanned"), "spanned");
 
     //屏蔽背景放置方式无效
-    ui->picOptionsComBox->hide();
-    ui->picOptionsLabel->hide();
+    //ui->picOptionsComBox->hide();
+    //ui->picOptionsLabel->hide();
+    //ui->switchFrame_2->hide();
 
     //屏蔽纯色背景的确定按钮
     ui->cancelBtn->hide();
@@ -202,9 +203,9 @@ void Wallpaper::setupConnect(){
 
     pObject->moveToThread(pThread);
     connect(pThread, &QThread::started, pObject, &WorkerObject::run);
-    connect(pThread, &QThread::finished, this, [=]{
+//    connect(pThread, &QThread::finished, this, [=](){
 //        if (ui->formComBox->currentIndex() == PICTURE){
-            //设置当前壁纸放置方式
+//           设置当前壁纸放置方式
 //            if (wallpaperinfosMap.contains(filename)){
 //                QMap<QString, QString> currentwpMap = wallpaperinfosMap.value(filename);
 //                if (currentwpMap.contains("options")){
@@ -215,7 +216,12 @@ void Wallpaper::setupConnect(){
 //                }
 //            }
 //        }
+//    });
+    connect(pThread, &QThread::finished, this, [=](){
+
+
     });
+
     connect(pThread, &QThread::finished, pObject, &WorkerObject::deleteLater);
 
     pThread->start();
@@ -245,7 +251,6 @@ void Wallpaper::setupConnect(){
         button->setStyleSheet(btnQss);
 
         connect(button, &QPushButton::clicked, [=]{
-
             QString widgetQss = QString("QWidget{background: %1; border-radius: 6px;}").arg(color);
             ui->previewWidget->setStyleSheet(widgetQss);
 
@@ -269,9 +274,17 @@ void Wallpaper::setupConnect(){
         int currentPage = ui->formComBox->currentData(Qt::UserRole).toInt();
         ui->substackedWidget->setCurrentIndex(currentPage);
 
-        if (currentPage == PICTURE){
-
-        } else if (currentPage == COLOR){
+        if (currentPage == COLOR){
+            ui->picOptionsComBox->hide();
+            ui->picOptionsLabel->hide();
+            ui->switchFrame_2->hide();
+        } else if (currentPage == PICTURE){
+            //ui->picOptionsComBox->show();
+            //ui->picOptionsLabel->show();
+            //ui->switchFrame_2->show();
+            ui->picOptionsComBox->hide();
+            ui->picOptionsLabel->hide();
+            ui->switchFrame_2->hide();
         }
 
     });
@@ -358,9 +371,15 @@ void Wallpaper::showComponent(int index){
     if (PICTURE == index){ //图片
 //        ui->picOptionsComBox->show();
 //        ui->picOptionsLabel->show();
+        ui->picOptionsComBox->hide();
+        ui->picOptionsLabel->hide();
+        ui->switchFrame_2->hide();
     } else if (COLOR == index){ //纯色
 //        ui->picOptionsComBox->hide();
 //        ui->picOptionsLabel->hide();
+        ui->picOptionsComBox->hide();
+        ui->picOptionsLabel->hide();
+        ui->switchFrame_2->hide();
     } else { //幻灯片
 
     }
@@ -384,6 +403,7 @@ void Wallpaper::initPreviewStatus(){
     }
 }
 
+//自定义颜色面板选定颜色
 void Wallpaper::colorSelectedSlot(QColor color){
     qDebug() << "colorSelectedSlot" << color << color.name();
 
