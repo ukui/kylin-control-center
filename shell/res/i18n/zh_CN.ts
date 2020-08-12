@@ -2034,21 +2034,31 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="40"/>
+        <source>Avatar</source>
+        <translation>用户头像</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="41"/>
         <source>Tab</source>
         <translation>任务栏</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="41"/>
+        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Area</source>
         <translation>语言和地区</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
+        <source>Option</source>
+        <translation>登录选项</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
         <source>Weather</source>
         <translation>麒麟天气</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
+        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
         <source>Media</source>
         <translation>麒麟影音</translation>
     </message>
