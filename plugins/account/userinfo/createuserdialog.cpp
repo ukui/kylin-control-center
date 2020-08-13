@@ -20,6 +20,8 @@
 #include "createuserdialog.h"
 #include "ui_createuserdialog.h"
 
+#include "passwdcheckutil.h"
+
 #include <QDebug>
 #include <QDir>
 
@@ -92,6 +94,12 @@ void CreateUserDialog::initPwdChecked(){
         qDebug() << "Reading pwquality configuration file failed: " << pwquality_strerror(buf, sizeof(buf), ret, auxerror);
     } else {
         enablePwdQuality = true;
+    }
+
+    if (PasswdCheckUtil::getCurrentPamState()){
+        enablePwdQuality = true;
+    } else {
+        enablePwdQuality = false;
     }
 
 #else
@@ -270,13 +278,13 @@ void CreateUserDialog::pwdLegalityCheck(QString pwd){
         }
 #endif
     } else {
-        if (pwd.length() < PWD_LOW_LENGTH) {
-            pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
-        } else if (pwd.length() > PWD_HIGH_LENGTH) {
-            pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
-        } else {
-            pwdTip = "";
-        }
+//        if (pwd.length() < PWD_LOW_LENGTH) {
+//            pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
+//        } else if (pwd.length() > PWD_HIGH_LENGTH) {
+//            pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
+//        } else {
+//            pwdTip = "";
+//        }
     }
 
     //防止先输入确认密码，再输入密码后pwdsuretipLabel无法刷新

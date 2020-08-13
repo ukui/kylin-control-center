@@ -43,7 +43,8 @@ SOURCES += \
     changetypedialog.cpp \
     changefacedialog.cpp \
     deluserdialog.cpp \
-    createuserdialog.cpp
+    createuserdialog.cpp \
+    passwdcheckutil.cpp
 
 HEADERS += \
     changevaliddialog.h \
@@ -55,7 +56,8 @@ HEADERS += \
     changetypedialog.h \
     changefacedialog.h \
     deluserdialog.h \
-    createuserdialog.h
+    createuserdialog.h \
+    passwdcheckutil.h
 
 FORMS += \
     changevaliddialog.ui \

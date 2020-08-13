@@ -21,6 +21,7 @@
 #include "ui_changepwddialog.h"
 
 #include "elipsemaskwidget.h"
+#include "passwdcheckutil.h"
 
 #include <QStyledItemDelegate>
 
@@ -83,6 +84,12 @@ void ChangePwdDialog::initPwdChecked(){
     } else {
         enablePwdQuality = true;
     }
+
+    if (PasswdCheckUtil::getCurrentPamState())
+        enablePwdQuality = true;
+    else
+        enablePwdQuality = false;
+
 #else
     enablePwdQuality = false;
 #endif
@@ -214,13 +221,13 @@ void ChangePwdDialog::pwdLegalityCheck(QString pwd){
 #endif
 
     } else { //系统未开启pwdquality模块
-        if (pwd.length() < PWD_LOW_LENGTH) {
-            pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
-        } else if (pwd.length() > PWD_HIGH_LENGTH) {
-            pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
-        } else {
-            pwdTip = "";
-        }
+//        if (pwd.length() < PWD_LOW_LENGTH) {
+//            pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
+//        } else if (pwd.length() > PWD_HIGH_LENGTH) {
+//            pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
+//        } else {
+//            pwdTip = "";
+//        }
     }
 
 
