@@ -68,6 +68,7 @@ private:
 
     QButtonGroup * leftBtnGroup;
     QButtonGroup * leftMicBtnGroup; //
+    bool bIsFullScreen;
 
     QDir pluginsDir;
 //    QStringList modulesStringList;

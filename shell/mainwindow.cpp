@@ -156,9 +156,11 @@ MainWindow::MainWindow(QWidget *parent) :
 //    });
     connect(ui->maxBtn, &QPushButton::clicked, this, [=]{
         if (isMaximized()){
+            bIsFullScreen = false;
             showNormal();
             ui->maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
         } else {
+            bIsFullScreen = true;
             showMaximized();
             ui->maxBtn->setIcon(QIcon::fromTheme("window-restore-symbolic"));
         }
@@ -200,6 +202,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //加载左侧边栏一级菜单
     initLeftsideBar();
+
+    bIsFullScreen = false;
 
     //加载首页Widget
     homepageWidget = new HomePageWidget(this);
@@ -289,33 +293,38 @@ void MainWindow::paintEvent(QPaintEvent *event) {
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
-    rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 6, 6);
+    if(!bIsFullScreen) {
+        rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 6, 6);
 
-    // 画一个黑底
-    QPixmap pixmap(this->rect().size());
-    pixmap.fill(Qt::transparent);
-    QPainter pixmapPainter(&pixmap);
-    pixmapPainter.setRenderHint(QPainter::Antialiasing);
-    pixmapPainter.setPen(Qt::transparent);
-    pixmapPainter.setBrush(Qt::black);
-    pixmapPainter.drawPath(rectPath);
-    pixmapPainter.end();
+        // 画一个黑底
+        QPixmap pixmap(this->rect().size());
+        pixmap.fill(Qt::transparent);
+        QPainter pixmapPainter(&pixmap);
+        pixmapPainter.setRenderHint(QPainter::Antialiasing);
+        pixmapPainter.setPen(Qt::transparent);
+        pixmapPainter.setBrush(Qt::black);
+        pixmapPainter.setOpacity(0.65);
+        pixmapPainter.drawPath(rectPath);
+        pixmapPainter.end();
 
-    // 模糊这个黑底
-    QImage img = pixmap.toImage();
-    qt_blurImage(img, 5, false, false);
+        // 模糊这个黑底
+        QImage img = pixmap.toImage();
+        qt_blurImage(img, 5, false, false);
 
-    // 挖掉中心
-    pixmap = QPixmap::fromImage(img);
-    QPainter pixmapPainter2(&pixmap);
-    pixmapPainter2.setRenderHint(QPainter::Antialiasing);
-    pixmapPainter2.setCompositionMode(QPainter::CompositionMode_Clear);
-    pixmapPainter2.setPen(Qt::transparent);
-    pixmapPainter2.setBrush(Qt::transparent);
-    pixmapPainter2.drawPath(rectPath);
+        // 挖掉中心
+        pixmap = QPixmap::fromImage(img);
+        QPainter pixmapPainter2(&pixmap);
+        pixmapPainter2.setRenderHint(QPainter::Antialiasing);
+        pixmapPainter2.setCompositionMode(QPainter::CompositionMode_Clear);
+        pixmapPainter2.setPen(Qt::transparent);
+        pixmapPainter2.setBrush(Qt::transparent);
+        pixmapPainter2.drawPath(rectPath);
 
-    // 绘制阴影
-    p.drawPixmap(this->rect(), pixmap, pixmap.rect());
+        // 绘制阴影
+        p.drawPixmap(this->rect(), pixmap, pixmap.rect());
+    } else {
+        rectPath.addRoundedRect(this->rect(), 0, 0);
+    }
 
     // 绘制一个背景
     p.save();

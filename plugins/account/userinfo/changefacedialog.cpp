@@ -162,7 +162,8 @@ void ChangeFaceDialog::showLocalFaceDialog(){
 }
 
 void ChangeFaceDialog::paintEvent(QPaintEvent *event) {
-    Q_UNUSED(event);
+    Q_UNUSED(event)
+
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
@@ -175,12 +176,14 @@ void ChangeFaceDialog::paintEvent(QPaintEvent *event) {
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
     pixmapPainter.setBrush(Qt::black);
+    pixmapPainter.setOpacity(0.65);
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 
     // 模糊这个黑底
     QImage img = pixmap.toImage();
     qt_blurImage(img, 10, false, false);
+
     // 挖掉中心
     pixmap = QPixmap::fromImage(img);
     QPainter pixmapPainter2(&pixmap);
@@ -192,9 +195,9 @@ void ChangeFaceDialog::paintEvent(QPaintEvent *event) {
 
     // 绘制阴影
     p.drawPixmap(this->rect(), pixmap, pixmap.rect());
+
     // 绘制一个背景
     p.save();
     p.fillPath(rectPath,palette().color(QPalette::Base));
-
     p.restore();
 }

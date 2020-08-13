@@ -21,6 +21,8 @@
 #include <QDesktopWidget>
 #include <QApplication>
 
+extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
+
 EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
 {
     m_szUuid = QUuid::createUuid().toString();
@@ -428,39 +430,44 @@ void EditPassDialog::on_edit_code_finished(int req,QString uuid) {
 /* 窗口重绘，阴影设置 */
 void EditPassDialog::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event)
 
-    QPainter painter(this);
-    QColor m_defaultBackgroundColor = qRgb(0, 0, 0);
-    QPainterPath path1;
-    path1.setFillRule(Qt::WindingFill);
-    path1.addRoundedRect(10, 10, this->width() - 20, this->height() - 20, 6, 6);
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+    QPainterPath rectPath;
+    rectPath.addRoundedRect(this->rect().adjusted(10, 10, -10, -10), 6, 6);
 
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.fillPath(path1, QBrush(QColor(m_defaultBackgroundColor.red(),
-                                          m_defaultBackgroundColor.green(),
-                                          m_defaultBackgroundColor.blue())));
+    // 画一个黑底
+    QPixmap pixmap(this->rect().size());
+    pixmap.fill(Qt::transparent);
+    QPainter pixmapPainter(&pixmap);
+    pixmapPainter.setRenderHint(QPainter::Antialiasing);
+    pixmapPainter.setPen(Qt::transparent);
+    pixmapPainter.setBrush(Qt::black);
+    pixmapPainter.setOpacity(0.65);
+    pixmapPainter.drawPath(rectPath);
+    pixmapPainter.end();
 
-    QColor color(0, 0, 0, 15);
-    for (int i = 0; i < 6; i++)
-    {
-        QPainterPath path;
-        path.setFillRule(Qt::WindingFill);
-        path.addRoundedRect(10 - i, 10 - i, this->width() - (10 - i) * 2, this->height() - (10 - i) * 2, 6, 6);
-        color.setAlpha(120 - qSqrt(i) * 50);
-        painter.setPen(color);
-        painter.drawPath(path);
-    }
+    // 模糊这个黑底
+    QImage img = pixmap.toImage();
+    qt_blurImage(img, 10, false, false);
 
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.setBrush(QBrush(palette().color(QPalette::Base)));
-    painter.setPen(Qt::transparent);
-    QRect rect = this->rect();
-    rect.setX(10);
-    rect.setY(10);
-    rect.setWidth(rect.width() - 10);
-    rect.setHeight(rect.height() - 10);
-    // rect: 绘制区域  10 圆角弧度 6
-    painter.drawRoundedRect(rect, 6, 6);
+    // 挖掉中心
+    pixmap = QPixmap::fromImage(img);
+    QPainter pixmapPainter2(&pixmap);
+    pixmapPainter2.setRenderHint(QPainter::Antialiasing);
+    pixmapPainter2.setCompositionMode(QPainter::CompositionMode_Clear);
+    pixmapPainter2.setPen(Qt::transparent);
+    pixmapPainter2.setBrush(Qt::transparent);
+    pixmapPainter2.drawPath(rectPath);
+
+    // 绘制阴影
+    p.drawPixmap(this->rect(), pixmap, pixmap.rect());
+
+    // 绘制一个背景
+    p.save();
+    p.fillPath(rectPath,palette().color(QPalette::Base));
+    p.restore();
 }
 
 /*　控件聚焦失去焦点事件处理 */

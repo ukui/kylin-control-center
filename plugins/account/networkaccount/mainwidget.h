@@ -87,7 +87,8 @@ private:
     QString             m_szConfPath;
     QStringList         m_szItemlist = {"wallpaper","ukui-screensaver","avatar","ukui-menu","ukui-panel","ukui-panel2",
                                         "mouse","touchpad","keyboard","shortcut","area","datetime","default-open",
-                                        "notice","option","indicator-china-weather","kylin-video"};
+                                        "notice","option","peony","boot","power","editor","terminal",
+                                        "indicator-china-weather","kylin-video"};
     MainDialog*   m_mainDialog;
     QWidget             *m_infoWidget;
     QHBoxLayout         *m_infoLayout;

@@ -39,8 +39,8 @@ public:
 private:
     QStringList     m_szItemNameList = {tr("Walpaper"),tr("ScreenSaver"),tr("Avatar"),tr("Menu"),tr("Quick Start"),
                                         tr("Tab"),tr("Mouse"),tr("TouchPad"),tr("KeyBoard"),tr("ShortCut"),
-                                        tr("Area"),tr("Date/Time"),tr("Default Open"),tr("Notice"),tr("Option"),
-                                        tr("Weather"),tr("Media")};
+                                        tr("Area"),tr("Date/Time"),tr("Default Open"),tr("Notice"),tr("Option"),tr("Peony"),
+                                        tr("Boot"),tr("Power"),tr("Editor"),tr("Terminal"),tr("Weather"),tr("Media")};
     int             m_cItemCnt = 0;
     FrameItem    *m_itemWidget[30];
     QPoint          m_startPoint;
