@@ -364,8 +364,10 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             bool res = dblOnEdge(dynamic_cast<QMouseEvent*>(event));
             if (res) {
                 if (this->windowState() == Qt::WindowMaximized) {
+                    bIsFullScreen = false;
                     this->showNormal();
                 } else {
+                    bIsFullScreen = true;
                     this->showMaximized();
                 }
             }
