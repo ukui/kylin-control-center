@@ -102,6 +102,11 @@ void Power::plugin_delay_control(){
 
 }
 
+const QString Power::name() const {
+
+    return QStringLiteral("power");
+}
+
 void Power::isPowerSupply(){
     //ubuntukylin youker DBus interface
     QDBusInterface *brightnessInterface = new QDBusInterface("org.freedesktop.UPower",

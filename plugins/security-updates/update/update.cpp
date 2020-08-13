@@ -59,6 +59,11 @@ void Update::plugin_delay_control(){
 
 }
 
+const QString Update::name() const {
+
+    return QStringLiteral("update");
+}
+
 void Update::ui_init(){
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 

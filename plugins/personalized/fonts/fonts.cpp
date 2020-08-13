@@ -161,6 +161,11 @@ void Fonts::plugin_delay_control(){
 
 }
 
+const QString Fonts::name() const {
+
+    return QStringLiteral("fonts");
+}
+
 void Fonts::setupStylesheet(){
     ui->advancedBtn->setVisible(false);
     ui->advancedFrame->setVisible(false);

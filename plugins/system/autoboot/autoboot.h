@@ -65,6 +65,7 @@ public:
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
+    const QString name() const  Q_DECL_OVERRIDE;
 
     void initAddBtn();
     void initUI();

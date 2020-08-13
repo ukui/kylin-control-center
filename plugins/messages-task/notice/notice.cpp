@@ -89,6 +89,11 @@ void Notice::plugin_delay_control(){
 
 }
 
+const QString Notice::name() const {
+
+    return QStringLiteral("notice");
+}
+
 void Notice::setupComponent(){
     newfeatureSwitchBtn = new SwitchButton(pluginWidget);
     enableSwitchBtn = new SwitchButton(pluginWidget);

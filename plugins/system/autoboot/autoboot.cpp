@@ -119,6 +119,10 @@ void AutoBoot::plugin_delay_control(){
 
 }
 
+const QString AutoBoot::name() const {
+    return QStringLiteral("autoboot");
+}
+
 void AutoBoot::initAddBtn() {
     addWgt = new HoverWidget("");
     addWgt->setObjectName("addwgt");

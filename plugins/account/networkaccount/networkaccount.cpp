@@ -44,4 +44,9 @@ void networkaccount::plugin_delay_control(){
 
 }
 
+const QString networkaccount::name() const {
+
+    return QStringLiteral("networkaccount");
+}
+
 

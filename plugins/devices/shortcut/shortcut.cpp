@@ -131,6 +131,11 @@ void Shortcut::plugin_delay_control(){
 
 }
 
+const QString Shortcut::name() const {
+
+    return QStringLiteral("shortcut");
+}
+
 void Shortcut::setupComponent(){
 //    ui->addLabel->setPixmap(QPixmap("://img/plugins/printer/add.png"));
 

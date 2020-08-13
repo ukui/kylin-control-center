@@ -76,6 +76,11 @@ void Printer::plugin_delay_control(){
 
 }
 
+const QString Printer::name() const {
+
+    return QStringLiteral("printer");
+}
+
 void Printer::initComponent(){
 
 //    ui->addBtn->setIcon(QIcon("://img/plugins/printer/add.png"));

@@ -140,5 +140,6 @@
         <file>global.qss</file>
         <file>combox.qss</file>
         <file>plugins/update/update.png</file>
+        <file>dpinyin.dict</file>
     </qresource>
 </RCC>

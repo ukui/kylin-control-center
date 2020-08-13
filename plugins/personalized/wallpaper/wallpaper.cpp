@@ -94,6 +94,11 @@ QWidget *Wallpaper::get_plugin_ui(){
 void Wallpaper::plugin_delay_control(){
 }
 
+const QString Wallpaper::name() const {
+
+    return QStringLiteral("wallpaper");
+}
+
 void Wallpaper::setupComponent(){
 
 //    ui->browserLocalwpBtn->hide();

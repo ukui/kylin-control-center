@@ -112,6 +112,11 @@ void UserInfo::plugin_delay_control(){
 
 }
 
+const QString UserInfo::name() const {
+
+    return QStringLiteral("userinfo");
+}
+
 QString UserInfo::_accountTypeIntToString(int type){
     QString atype;
     if (type == STANDARDUSER)

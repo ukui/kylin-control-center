@@ -23,6 +23,7 @@
 #include "utils/functionselect.h"
 
 #include <QLabel>
+#include <QLocale>
 #include <QPushButton>
 #include <QButtonGroup>
 #include <QHBoxLayout>
@@ -52,22 +53,21 @@ extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int tran
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    m_searchWidget(nullptr)
+
 {
     ui->setupUi(this);
-    //初始化mixer
+    // 初始化mixer
     mate_mixer_init();
-    //设置初始大小
+    // 设置初始大小
     resize(QSize(820, 600));
-    //设置窗体无边框
+    // 设置窗体无边框
     setWindowFlags(Qt::FramelessWindowHint | Qt::Widget);
     this->installEventFilter(this);
     ui->closeBtn->setFixedSize(32,32);
-    //该设置去掉了窗体透明后的黑色背景
+    // 该设置去掉了窗体透明后的黑色背景
     setAttribute(Qt::WA_TranslucentBackground, true);
-    //将最外层窗体设置为透明
-
-//    setStyleSheet("QMainWindow#MainWindow{background-color: transparent;}");
 
     const QByteArray id("org.ukui.style");
     QGSettings * fontSetting = new QGSettings(id);
@@ -82,64 +82,10 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     });
 
-    //设置panel图标
-    QIcon panelicon;
-    if (QIcon::hasThemeIcon("ukui-control-center"))
-        panelicon = QIcon::fromTheme("ukui-control-center");
-//    else
-//        panelicon = QIcon("://applications-system.svg");
-    this->setWindowIcon(panelicon);
-    this->setWindowTitle(tr("ukcc"));
+    initStyleSheet();
 
-    ui->searchLineEdit->setVisible(false);
-    //中部内容区域
-    ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
-    //标题栏widget
-    ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background: palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-////    //左上角文字
-////    ui->mainLabel->setStyleSheet("QLabel#mainLabel{font-size: 18px; color: #40000000;}");
-
-    //左上角返回按钮
-    ui->backBtn->setProperty("useIconHighlightEffect", true);
-    ui->backBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->backBtn->setFlat(true);
-
-//    ui->backBtn->setStyleSheet("QPushButton#backBtn{background: #ffffff; border: none;}");
-//    //顶部搜索框
-//    ui->searchLineEdit->setStyleSheet("QLineEdit#searchLineEdit{background: #FFEDEDED; border: none; border-radius: 6px;}");
-    //右上角按钮stylesheet
-    ui->minBtn->setProperty("useIconHighlightEffect", true);
-    ui->minBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->minBtn->setFlat(true);
-    ui->maxBtn->setProperty("useIconHighlightEffect", true);
-    ui->maxBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->maxBtn->setFlat(true);
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
-    ui->closeBtn->installEventFilter(this);
-
-//    ui->minBtn->setStyleSheet("QPushButton#minBtn{background: #ffffff; border: none;}"
-//                              "QPushButton:hover:!pressed#minBtn{background: #FF3D6BE5; border-radius: 2px;}"
-//                              "QPushButton:hover:pressed#minBtn{background: #415FC4; border-radius: 2px;}");
-//    ui->maxBtn->setStyleSheet("QPushButton#maxBtn{background: #ffffff; border: none;}"
-//                              "QPushButton:hover:!pressed#maxBtn{background: #FF3D6BE5; border-radius: 2px;}"
-//                              "QPushButton:hover:pressed#maxBtn{background: #415FC4; border-radius: 2px;}");
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
-
-    //左侧一级菜单
-//    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background: #cccccc; border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
-    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
-
-    //设置左上角按钮图标
-    ui->backBtn->setIcon(QIcon("://img/titlebar/back.svg"));
-
-    //设置右上角按钮图标
-    ui->minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
-    ui->maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
-    ui->closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
-
+    m_searchWidget = new SearchWidget(this);
+    ui->titleLayout->addWidget(m_searchWidget, Qt::AlignCenter);
 
     //初始化功能列表数据
     FunctionSelect::initValue();
@@ -231,6 +177,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
         bootOptionsFilter(QApplication::arguments().at(1));
     }
+
 }
 
 MainWindow::~MainWindow()
@@ -455,6 +402,8 @@ void MainWindow::loadPlugins(){
 
             qDebug() << "Load Plugin :" << kvConverter->keycodeTokeyi18nstring(pluginInstance->get_plugin_type()) << "->" << pluginInstance->get_plugin_name() ;
 
+            m_searchWidget->addModulesName(pluginInstance->name(), pluginInstance->get_plugin_name(), pluginInstance->translationPath());
+
             int moduletypeInt = pluginInstance->get_plugin_type();
             if (!moduleIndexList.contains(moduletypeInt))
                 moduleIndexList.append(moduletypeInt);
@@ -464,6 +413,7 @@ void MainWindow::loadPlugins(){
                 qDebug() << fileName << "Load Failed: " << loader.errorString() << "\n";
         }
     }
+    m_searchWidget->setLanguage(QLocale::system().name());
 }
 
 void MainWindow::initLeftsideBar(){
@@ -698,7 +648,51 @@ bool MainWindow::dblOnEdge(QMouseEvent *event)
     return onTopEdges;
 }
 
-void MainWindow::setModuleBtnHightLight(int id){
+void MainWindow::initStyleSheet() {
+    // 设置panel图标
+    QIcon panelicon;
+    if (QIcon::hasThemeIcon("ukui-control-center"))
+        panelicon = QIcon::fromTheme("ukui-control-center");
+
+    this->setWindowIcon(panelicon);
+    this->setWindowTitle(tr("ukcc"));
+
+    // 中部内容区域
+    ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+    // 标题栏widget
+    ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background: palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+
+    // 左上角返回按钮
+    ui->backBtn->setProperty("useIconHighlightEffect", true);
+    ui->backBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->backBtn->setFlat(true);
+
+    ui->minBtn->setProperty("useIconHighlightEffect", true);
+    ui->minBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->minBtn->setFlat(true);
+    ui->maxBtn->setProperty("useIconHighlightEffect", true);
+    ui->maxBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->maxBtn->setFlat(true);
+    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->closeBtn->setFlat(true);
+    ui->closeBtn->installEventFilter(this);
+
+    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+
+    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
+
+    // 设置左上角按钮图标
+    ui->backBtn->setIcon(QIcon("://img/titlebar/back.svg"));
+
+    // 设置右上角按钮图标
+    ui->minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
+    ui->maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
+    ui->closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
+}
+
+void MainWindow::setModuleBtnHightLight(int id) {
     leftBtnGroup->button(id)->setChecked(true);
     leftMicBtnGroup->button(id)->setChecked(true);
 }

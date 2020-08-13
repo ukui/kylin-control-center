@@ -68,6 +68,11 @@ void DefaultApp::plugin_delay_control(){
 
 }
 
+const QString DefaultApp::name() const {
+
+    return QStringLiteral("defaultapp");
+}
+
 void DefaultApp::initUI(){
 //    ui->browserComBoBox->setView(new QListView());
 

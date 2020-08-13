@@ -116,6 +116,11 @@ void Proxy::plugin_delay_control(){
 
 }
 
+const QString Proxy::name() const {
+
+    return QStringLiteral("proxy");
+}
+
 void Proxy::setupStylesheet(){
 
 //    pluginWidget->setStyleSheet("background: #ffffff;");

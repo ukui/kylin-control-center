@@ -153,6 +153,11 @@ void MouseControl::plugin_delay_control(){
 
 }
 
+const QString MouseControl::name() const {
+
+    return QStringLiteral("mouse");
+}
+
 void MouseControl::setupComponent(){
 
 //    ui->title3Label->hide();

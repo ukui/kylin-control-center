@@ -121,6 +121,11 @@ void DateTime::plugin_delay_control(){
 
 }
 
+const QString DateTime::name() const {
+
+    return QStringLiteral("datetime");
+}
+
 void DateTime::component_init(){
     ui->titleLabel->setContentsMargins(0,0,0,16);
     ui->timeClockLable->setContentsMargins(0,0,0,16);

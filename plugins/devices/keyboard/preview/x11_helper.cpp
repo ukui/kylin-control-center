@@ -203,21 +203,22 @@ QList<LayoutUnit> X11Helper::getLayoutsList()
 
 bool X11Helper::setGroup(unsigned int group)
 {
-    qCDebug(KCM_KEYBOARD) << group;
-    xcb_void_cookie_t cookie;
-    cookie = xcb_xkb_latch_lock_state(QX11Info::connection(),
-        XCB_XKB_ID_USE_CORE_KBD,
-        0, 0,
-        1,
-        group,
-        0, 0, 0
-    );
-    xcb_generic_error_t *error = nullptr;
-    error = xcb_request_check(QX11Info::connection(), cookie);
-    if (error) {
-        qCDebug(KCM_KEYBOARD) << "Couldn't change the group" << error->error_code;
-        return false;
-    }
+//    qDebug() << "setGroup--------------->" << endl;
+//    qCDebug(KCM_KEYBOARD) << group;
+//    xcb_void_cookie_t cookie;
+//    cookie = xcb_xkb_latch_lock_state(QX11Info::connection(),
+//        XCB_XKB_ID_USE_CORE_KBD,
+//        0, 0,
+//        1,
+//        group,
+//        0, 0, 0
+//    );
+//    xcb_generic_error_t *error = nullptr;
+//    error = xcb_request_check(QX11Info::connection(), cookie);
+//    if (error) {
+//        qCDebug(KCM_KEYBOARD) << "Couldn't change the group" << error->error_code;
+//        return false;
+//    }
 
     return true;
 }

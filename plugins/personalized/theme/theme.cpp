@@ -182,6 +182,11 @@ void Theme::plugin_delay_control(){
 
 }
 
+const QString Theme::name() const {
+
+    return QStringLiteral("theme");
+}
+
 void Theme::setupSettings() {
     QString filename = QDir::homePath() + "/.config/ukui-kwinrc";
     kwinSettings = new QSettings(filename, QSettings::IniFormat, this);

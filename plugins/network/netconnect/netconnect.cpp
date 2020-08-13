@@ -106,6 +106,10 @@ void NetConnect::properties_changed_refresh(){
     多条信号并连续执行槽函数refreshed_signal_changed()并更改is_refreshed导致冲突*/
     QTimer::singleShot(1000, this, SLOT(reset_bool_is_refreshed()));
 }
+const QString NetConnect::name() const {
+
+    return QStringLiteral("netconnect");
+}
 
 void NetConnect::initComponent(){
 

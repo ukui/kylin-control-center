@@ -73,6 +73,10 @@ void About::plugin_delay_control(){
 
 }
 
+const QString About::name() const {
+    return QStringLiteral("about");
+}
+
 void About::_data_init(){
     QStringList infoList = computerinfo.split("\n\n");
     QString available;

@@ -72,6 +72,11 @@ void ExperiencePlan::plugin_delay_control(){
 
 }
 
+const QString ExperiencePlan::name() const{
+
+    return QStringLiteral("experienceplan");
+}
+
 void ExperiencePlan::setupComponent(){
     joinSwitchBtn = new SwitchButton(pluginWidget);
 

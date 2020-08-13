@@ -84,6 +84,11 @@ void Screenlock::plugin_delay_control(){
 
 }
 
+const QString Screenlock::name() const {
+
+    return QStringLiteral("screenlock");
+}
+
 void Screenlock::setupComponent(){
     QString filename = QDir::homePath() + "/.config/ukui/ukui-control-center.conf";
     lockSetting = new QSettings(filename, QSettings::IniFormat);

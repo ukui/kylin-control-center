@@ -103,6 +103,11 @@ void KeyboardControl::plugin_delay_control(){
 
 }
 
+const QString KeyboardControl::name() const {
+
+   return QStringLiteral("keyboard");
+}
+
 void KeyboardControl::setupStylesheet(){
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");

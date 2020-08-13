@@ -65,6 +65,11 @@ void Vpn::plugin_delay_control(){
 
 }
 
+const QString Vpn::name() const {
+
+    return QStringLiteral("vpn");
+}
+
 void Vpn::initComponent(){
 //    ui->addBtn->setIcon(QIcon("://img/plugins/vpn/add.png"));
 //    ui->addBtn->setIconSize(QSize(48, 48));

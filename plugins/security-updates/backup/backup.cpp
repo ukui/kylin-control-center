@@ -84,6 +84,11 @@ void Backup::plugin_delay_control(){
 
 }
 
+const QString Backup::name() const {
+
+    return QStringLiteral("backup");
+}
+
 void Backup::btnClicked(){
     QString cmd = "/usr/bin/deja-dup";
 

@@ -129,6 +129,11 @@ void Screensaver::plugin_delay_control(){
     initPreviewWidget();
 }
 
+const QString Screensaver::name() const {
+
+    return QStringLiteral("screensaver");
+}
+
 void Screensaver::initComponent(){
     if (QGSettings::isSchemaInstalled(SCREENSAVER_SCHEMA)) {
         const QByteArray id(SCREENSAVER_SCHEMA);

@@ -103,6 +103,11 @@ void Area::plugin_delay_control() {
 
 }
 
+const QString Area::name() const {
+    return QStringLiteral("area");
+
+}
+
 void Area::run_external_app_slot() {
     QString cmd = "gnome-language-selector";
 

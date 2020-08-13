@@ -122,6 +122,11 @@ void Desktop::plugin_delay_control(){
 
 }
 
+const QString Desktop::name() const {
+
+    return QStringLiteral("desktop");
+}
+
 void Desktop::initTranslation() {
     transMap.insert("blueman", "蓝牙");
     transMap.insert("fcitx", "输入法");

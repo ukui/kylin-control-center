@@ -128,6 +128,11 @@ void Touchpad::plugin_delay_control(){
 
 }
 
+const QString Touchpad::name() const {
+
+    return QStringLiteral("touchpad");
+}
+
 void Touchpad::setupComponent(){
     //
     enableBtn = new SwitchButton(pluginWidget);
