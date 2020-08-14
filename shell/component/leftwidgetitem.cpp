@@ -44,8 +44,8 @@ LeftWidgetItem::LeftWidgetItem(QWidget *parent) :
 
     textLabel = new QLabel(widget);
     QSizePolicy policy1 = textLabel->sizePolicy();
-    policy1.setHorizontalPolicy(QSizePolicy::Fixed);
-    policy1.setVerticalPolicy(QSizePolicy::Fixed);
+    policy1.setHorizontalPolicy(QSizePolicy::Fixed);    //垂直策略固定
+    policy1.setVerticalPolicy(QSizePolicy::Fixed);      //水平策略固定
     textLabel->setSizePolicy(policy1);
     textLabel->setScaledContents(true);
 
@@ -110,7 +110,8 @@ void LeftWidgetItem::setSelected(bool selected){
     if (selected) {
         widget->setStyleSheet("QWidget{background: #3D6BE5; border-radius: 4px;}");
     } else {
-        widget->setStyleSheet("QWidget{background: palette(base);}");
+        widget->setStyleSheet("QListWidget::Item:hover{background:#FF3D6BE5;border-radius: 4px;}");
+
     }
 }
 

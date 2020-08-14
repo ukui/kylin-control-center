@@ -128,7 +128,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
-    //左侧一级菜单
+    //左侧一级菜单Style
 //    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background: #cccccc; border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
     ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
 
@@ -200,7 +200,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //加载左侧边栏一级菜单
     initLeftsideBar();
-
     //加载首页Widget
     homepageWidget = new HomePageWidget(this);
     ui->stackedWidget->addWidget(homepageWidget);
@@ -454,7 +453,7 @@ void MainWindow::loadPlugins(){
         }
     }
 }
-
+//左侧一级菜单栏
 void MainWindow::initLeftsideBar(){
 
     leftBtnGroup = new QButtonGroup();
@@ -466,12 +465,17 @@ void MainWindow::initLeftsideBar(){
     connect(hBtn, &QPushButton::clicked, this, [=]{
         ui->stackedWidget->setCurrentIndex(0);
     });
-    hBtn->setStyleSheet("QPushButton#homepage{background: palette(button); border: none;}");
+
+    hBtn->setStyleSheet("QPushButton#homepage{background: palette(button); border: none;}"
+                        "QPushButton::hover#homepage{background: #FF3D6BE5;border-top-left-radius: 6px;border-bottom-left-radius: 6px;}");
 //    hBtn->setStyleSheet("QPushButton#homepage{background: palette(base);}");
     ui->leftsidebarVerLayout->addStretch();
     ui->leftsidebarVerLayout->addWidget(hBtn);
 
     QString locale = QLocale::system().name();
+//    for(int type=0;type < TOTAL;type++){
+
+//    }
     for(int type = 0; type < TOTALMODULES; type++){
         //循环构建左侧边栏一级菜单按钮
         if (moduleIndexList.contains(type)){
@@ -494,9 +498,10 @@ void MainWindow::initLeftsideBar(){
             //设置样式
 //            button->setStyleSheet("QPushButton::checked{background: palette(button); border: none; border-image: url('://img/primaryleftmenu/checked.png');}"
 //                                  "QPushButton::!checked{background: palette(button);border: none;}");
-            button->setStyleSheet("QPushButton::checked{background: palette(base); border-top-left-radius: 6px;border-bottom-left-radius: 6px;}"
-                                  "QPushButton::!checked{background: palette(button);border: none;}");
-
+           button->setStyleSheet("QPushButton::checked{background: palette(base); border-top-left-radius: 6px;border-bottom-left-radius: 6px;}"
+                                  "QPushButton::!checked{background: palette(button);border: none;}"
+                                 "QPushButton::hover{background: #FF3D6BE5; border-top-left-radius: 6px;border-bottom-left-radius: 6px;}");
+            //二级菜单出现方式
             connect(button, &QPushButton::clicked, this, [=]{
                 QPushButton * btn = dynamic_cast<QPushButton *>(QObject::sender());
 

@@ -31,8 +31,8 @@
 #include <QDebug>
 
 ModulePageWidget::ModulePageWidget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::ModulePageWidget)
+    QWidget(parent)
+    ,ui(new Ui::ModulePageWidget)
 {
     ui->setupUi(this);
 
@@ -54,11 +54,11 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
     //左侧二级菜单样式
     ui->leftStackedWidget->setStyleSheet("border: none;");
     //上侧二级菜单样式
-//    ui->topStackedWidget->setStyleSheet("border: none;");
+    //    ui->topStackedWidget->setStyleSheet("border: none;");
     //功能区域
-//    ui->scrollArea->setStyleSheet("#scrollArea{border: 0px solid;}");
+    //    ui->scrollArea->setStyleSheet("#scrollArea{border: 0px solid;}");
     ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//    ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    //    ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     //初始化记录标志位
     flagBit = true;
@@ -92,7 +92,6 @@ void ModulePageWidget::initUI(){
     for (int moduleIndex = 0; moduleIndex < TOTALMODULES; moduleIndex++){
         QListWidget * leftListWidget = new QListWidget;
         leftListWidget->setObjectName("leftWidget");
-        leftListWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
         leftListWidget->setAttribute(Qt::WA_DeleteOnClose);
         leftListWidget->setResizeMode(QListView::Adjust);
         leftListWidget->setFocusPolicy(Qt::NoFocus);
@@ -120,15 +119,12 @@ void ModulePageWidget::initUI(){
             LeftWidgetItem * leftWidgetItem = new LeftWidgetItem();
             leftWidgetItem->setAttribute(Qt::WA_DeleteOnClose);
             leftWidgetItem->setLabelText(single.namei18nString);
-
             leftWidgetItem->setLabelPixmap(QString("://img/secondaryleftmenu/%1.svg").arg(single.nameString), single.nameString, "default");
-
             QListWidgetItem * item = new QListWidgetItem(leftListWidget);
             item->setSizeHint(QSize(ui->leftStackedWidget->width(), 40)); //QSize(120, 40) spacing: 12px;
             leftListWidget->setItemWidget(item, leftWidgetItem);
 
             strItemsMap.insert(single.namei18nString, item);
-
             //填充上侧二级菜单
             QListWidgetItem * topitem = new QListWidgetItem(topListWidget);
             topitem->setSizeHint(QSize(60, 60));
