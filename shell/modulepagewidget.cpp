@@ -92,7 +92,7 @@ void ModulePageWidget::initUI(){
     for (int moduleIndex = 0; moduleIndex < TOTALMODULES; moduleIndex++){
         QListWidget * leftListWidget = new QListWidget;
         leftListWidget->setObjectName("leftWidget");
-        leftListWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
+//        leftListWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
         leftListWidget->setAttribute(Qt::WA_DeleteOnClose);
         leftListWidget->setResizeMode(QListView::Adjust);
         leftListWidget->setFocusPolicy(Qt::NoFocus);
