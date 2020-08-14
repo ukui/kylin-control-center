@@ -477,7 +477,8 @@ void MainWindow::initLeftsideBar(){
     connect(hBtn, &QPushButton::clicked, this, [=]{
         ui->stackedWidget->setCurrentIndex(0);
     });
-    hBtn->setStyleSheet("QPushButton#homepage{background: palette(button); border: none;}");
+    hBtn->setStyleSheet("QPushButton#homepage{background: palette(button); border: none;}"
+                        "QPushButton::hover#homepage{background: #FF3D6BE5;border-top-left-radius: 6px;border-bottom-left-radius: 6px;}");
 //    hBtn->setStyleSheet("QPushButton#homepage{background: palette(base);}");
     ui->leftsidebarVerLayout->addStretch();
     ui->leftsidebarVerLayout->addWidget(hBtn);
@@ -506,7 +507,8 @@ void MainWindow::initLeftsideBar(){
 //            button->setStyleSheet("QPushButton::checked{background: palette(button); border: none; border-image: url('://img/primaryleftmenu/checked.png');}"
 //                                  "QPushButton::!checked{background: palette(button);border: none;}");
             button->setStyleSheet("QPushButton::checked{background: palette(base); border-top-left-radius: 6px;border-bottom-left-radius: 6px;}"
-                                  "QPushButton::!checked{background: palette(button);border: none;}");
+                                   "QPushButton::!checked{background: palette(button);border: none;}"
+                                  "QPushButton::hover{background: #FF3D6BE5; border-top-left-radius: 6px;border-bottom-left-radius: 6px;}");
 
             connect(button, &QPushButton::clicked, this, [=]{
                 QPushButton * btn = dynamic_cast<QPushButton *>(QObject::sender());

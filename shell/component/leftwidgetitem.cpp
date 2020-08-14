@@ -110,7 +110,7 @@ void LeftWidgetItem::setSelected(bool selected){
     if (selected) {
         widget->setStyleSheet("QWidget{background: #3D6BE5; border-radius: 4px;}");
     } else {
-        widget->setStyleSheet("QWidget{background: palette(base);}");
+        widget->setStyleSheet("QListWidget::Item:hover{background:#FF3D6BE5;border-radius: 4px;}");
     }
 }
 
