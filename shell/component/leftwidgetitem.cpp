@@ -114,6 +114,7 @@ void LeftWidgetItem::setSelected(bool selected){
     }
 }
 
+
 QString LeftWidgetItem::text(){
     return textLabel->text();
 }
