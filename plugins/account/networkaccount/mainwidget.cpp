@@ -65,6 +65,7 @@ void MainWidget::setname(QString n) {
     if(m_szCode != "" && m_szCode !="201" && m_szCode != "203" && m_szCode != "401" && !m_bTokenValid) {
         m_infoTab->setText(tr("Your account：%1").arg(m_szCode));
         m_mainWidget->setCurrentWidget(m_widgetContainer);
+        setshow(m_mainWidget);
         m_bTokenValid = true;              //开启登录状态
 
         m_autoSyn->set_change(0,"0");
@@ -131,6 +132,8 @@ void MainWidget::setret_check(QString ret) {
         m_infoTab->setText(tr("Your account：%1").arg(ret));
         m_mainWidget->setCurrentWidget(m_widgetContainer);
 
+        setshow(m_mainWidget);
+
 
         handle_conf();
 
@@ -138,10 +141,12 @@ void MainWidget::setret_check(QString ret) {
     } else if((ret == "" || ret =="201" || ret == "203" || ret == "401" ) && m_bTokenValid == false){
         m_bTokenValid = true;
         m_mainWidget->setCurrentWidget(m_nullWidget);
+        setshow(m_mainWidget);
     } else if(!(ret == "" || ret =="201" || ret == "203" || ret == "401" ) && m_bTokenValid){
         m_infoTab->setText(tr("Your account：%1").arg(ret));
         m_szCode = ret;
         m_mainWidget->setCurrentWidget(m_widgetContainer);
+        setshow(m_mainWidget);
         QFile all_conf_file(QDir::homePath() + PATH);
         if(all_conf_file.exists() == false) {
             doconf();
@@ -221,6 +226,8 @@ void MainWidget::init_gui() {
     m_stackedWidget = new QStackedWidget(this);
     m_nullwidgetContainer = new QWidget(this);
     m_cRetry = new QTimer(this);
+
+    m_mainWidget->setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
 
     m_stackedWidget->addWidget(m_itemList);
     m_stackedWidget->addWidget(m_nullwidgetContainer);
@@ -612,6 +619,7 @@ void MainWidget::on_login_out() {
     m_keyInfoList.clear();
 
     m_mainWidget->setCurrentWidget(m_nullWidget);
+    setshow(m_mainWidget);
     __once__ = false;
     __run__ = false;
     m_bIsStopped = true;
