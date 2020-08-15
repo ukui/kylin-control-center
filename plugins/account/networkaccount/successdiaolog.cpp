@@ -50,7 +50,7 @@ SuccessDiaolog::SuccessDiaolog(QWidget *parent) : QWidget(parent)
 }
 
 /* 成功消息统一接收机制 */
-void SuccessDiaolog::set_mode_text(int mode) {
+void SuccessDiaolog::set_mode_text(const int &mode) {
     if(mode == 0) {
         m_textLabel->setText(tr("Sign up success!"));
         m_backloginBtn->setText(tr("Confirm"));

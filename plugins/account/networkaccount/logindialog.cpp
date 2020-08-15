@@ -188,11 +188,11 @@ void LoginDialog::set_window2() {
     startaction_2();
 }
 
-QString LoginDialog::get_user_name() {
+QString LoginDialog::get_user_name() const {
     return this->m_accountLineEdit->text();
 }
 
-QString LoginDialog::get_user_pass() {
+QString LoginDialog::get_user_pass() const {
     return this->m_passwordLineEdit->text();
 }
 
@@ -317,7 +317,7 @@ QPushButton* LoginDialog::get_user_mcode() {
     return m_sendMsgBtn;
 }
 
-void LoginDialog::set_code(QString codenum) {
+void LoginDialog::set_code(const QString &codenum) {
     m_szCode = codenum;
     emit code_changed();
 }
@@ -396,7 +396,7 @@ bool LoginDialog::login_account_thr_phone() {
     return false;
 }
 
-void LoginDialog::set_staus(bool ok) {
+void LoginDialog::set_staus(const bool &ok) {
     m_accountLogin_btn->setEnabled(ok);
     m_phoneLogin_btn->setEnabled(ok);
     m_passwordLineEdit->setEnabled(ok);

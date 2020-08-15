@@ -27,7 +27,7 @@ Blueeffect::Blueeffect(QWidget *parent) : QWidget(parent)
     hide();
 }
 
-void Blueeffect::settext(QString t) {
+void Blueeffect::settext(const QString &t) {
     m_textLabel->setText(t);
 }
 

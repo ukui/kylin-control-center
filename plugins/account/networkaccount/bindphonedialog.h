@@ -38,11 +38,11 @@ class BindPhoneDialog : public QWidget
 public:
     explicit BindPhoneDialog(QWidget *parent = nullptr);
     void    setclear();
-    void    set_code(QString m_countryCode);
+    void    set_code(const QString &m_countryCode);
     QPushButton *get_send_code();
     Tips  *get_tips();
-    QString get_phone();
-    QString get_code();
+    QString get_phone() const;
+    QString get_code() const;
     AreaCodeLineEdit* get_phone_lineedit();
     QLineEdit* get_code_lineedit();
     void set_staus(bool ok);

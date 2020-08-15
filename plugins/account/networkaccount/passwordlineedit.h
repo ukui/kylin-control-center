@@ -33,7 +33,7 @@ class PasswordLineEdit : public QLineEdit
     Q_OBJECT
 public:
     PasswordLineEdit(QWidget *parent = nullptr);
-    bool check();
+    bool check() const;
     QPushButton* get_visble();
 private:
     QPushButton *m_changeStatusBtn;

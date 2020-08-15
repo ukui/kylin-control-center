@@ -12,7 +12,7 @@ class Tips : public QWidget
 {
     Q_OBJECT
 public:
-    void set_text(const QString m_textLabel);
+    void set_text(const QString &m_textLabel);
     explicit Tips(QWidget *parent = nullptr);
     ~Tips();
 private:

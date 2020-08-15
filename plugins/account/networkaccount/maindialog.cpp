@@ -271,7 +271,7 @@ MainDialog::MainDialog(QWidget *parent) : QWidget(parent)
 
 /* 确认密码框如果遇到新密码或者注册密码改变，立即改变
  * 成空的状态，防止用户多余操作(舍弃）*/
-void MainDialog::cleanconfirm(QString str) {
+void MainDialog::cleanconfirm(const QString &str) {
     //qDebug()<<str;
     if(m_stackedWidget->currentWidget() == m_passDialog) {
         //m_passConfirmLineEdit->setText("");
@@ -336,7 +336,7 @@ void MainDialog::setshow(QWidget *widget) {
 
 /* 客户端回调函数集，一般处理异常出现的情况，成功一般
  * 不处理，除非是成功之后还要执行操作的 */
-void MainDialog::setret_reg(int ret) {
+void MainDialog::setret_reg(const int &ret) {
     if(ret != 0) {
         m_regDialog->get_valid_code()->setText("");
         m_regDialog->set_code(messagebox(ret));
@@ -347,7 +347,7 @@ void MainDialog::setret_reg(int ret) {
     }
 }
 
-void MainDialog::setret_login(int ret) {
+void MainDialog::setret_login(const int &ret) {
     if(ret != 0) {
         m_loginDialog->get_mcode_lineedit()->setText("");
         if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
@@ -369,7 +369,7 @@ void MainDialog::setret_login(int ret) {
     }
 }
 
-void MainDialog::setret_phone_login(int ret) {
+void MainDialog::setret_phone_login(const int &ret) {
     if(m_stackedWidget->currentWidget() != m_loginDialog && m_loginDialog->get_stack_widget()->currentIndex()) {
         return ;
     }
@@ -393,7 +393,7 @@ void MainDialog::setret_phone_login(int ret) {
     }
 }
 
-void MainDialog::setret_rest(int ret) {
+void MainDialog::setret_rest(const int &ret) {
     if(ret != 0) {
         m_passDialog->get_valid_code()->setText("");
         m_passDialog->set_code(messagebox(ret));
@@ -406,7 +406,7 @@ void MainDialog::setret_rest(int ret) {
     }
 }
 
-void MainDialog::setret_bind(int ret) {
+void MainDialog::setret_bind(const int &ret) {
     if(ret != 0) {
         m_BindDialog->get_code_lineedit()->setText("");
         m_BindDialog->set_code(messagebox(ret));
@@ -418,7 +418,7 @@ void MainDialog::setret_bind(int ret) {
     }
 }
 
-void MainDialog::setret_code_phone_login(int ret) {
+void MainDialog::setret_code_phone_login(const int &ret) {
     if(m_stackedWidget->currentWidget() != m_loginDialog && m_loginDialog->get_stack_widget()->currentIndex() != 1) {
         return ;
     }
@@ -434,7 +434,7 @@ void MainDialog::setret_code_phone_login(int ret) {
     }
 }
 
-void MainDialog::setret_code_user_bind(int ret) {
+void MainDialog::setret_code_user_bind(const int &ret) {
     if(m_stackedWidget->currentWidget() != m_BindDialog) {
         return ;
     }
@@ -449,7 +449,7 @@ void MainDialog::setret_code_user_bind(int ret) {
     }
 }
 
-void MainDialog::setret_code_phone_reg(int ret) {
+void MainDialog::setret_code_phone_reg(const int &ret) {
     if(m_stackedWidget->currentWidget() != m_regDialog) {
         return ;
     }
@@ -465,7 +465,7 @@ void MainDialog::setret_code_phone_reg(int ret) {
     }
 }
 
-void MainDialog::setret_code_user_pass(int ret) {
+void MainDialog::setret_code_user_pass(const int &ret) {
     if(m_stackedWidget->currentWidget() != m_passDialog) {
         return ;
     }
@@ -486,7 +486,7 @@ LoginDialog* MainDialog::get_dialog() {
 
 /* 错误消息提示盒子，所有服务器消息基本上来源于此，默认
  * 返回未知代码，显示错误以及代码编号 */
-QString MainDialog::messagebox(int code) {
+QString MainDialog::messagebox(const int &code) const {
     QString ret = tr("Error code:") + QString::number(code,10)+ tr("!");
     switch(code) {
     case 101:ret = tr("Internal error occurred!");break;
@@ -982,7 +982,7 @@ void MainDialog::on_timer_reg_out() {
 }
 
 /* 登录回调槽函数，登录回执消息后执行此处 */
-void MainDialog::on_login_finished(int ret,QString uuid) {
+void MainDialog::on_login_finished(const int &ret, const QString &uuid) {
     if(uuid != this->m_uuid) {
         //qDebug()<<uuid<<this->m_uuid;
         return ;
@@ -1031,7 +1031,7 @@ void MainDialog::on_login_finished(int ret,QString uuid) {
 }
 
 /* 手机绑定回调槽函数，手机绑定回执消息后执行此处 */
-void MainDialog::on_bind_finished(int ret,QString uuid) {
+void MainDialog::on_bind_finished(const int &ret, const QString &uuid) {
     if(uuid != this->m_uuid) {
         return ;
     }
@@ -1063,7 +1063,7 @@ void MainDialog::on_bind_finished(int ret,QString uuid) {
 }
 
 /* 注册回调槽函数，注册回执消息后执行此处 */
-void MainDialog::on_reg_finished(int ret,QString uuid) {
+void MainDialog::on_reg_finished(const int &ret, const QString &uuid) {
     if(this->m_uuid != uuid) {
         return ;
     }
@@ -1098,7 +1098,7 @@ void MainDialog::on_reg_finished(int ret,QString uuid) {
 }
 
 /* 忘记密码回调槽函数，忘记密码回执消息后执行此处 */
-void MainDialog::on_pass_finished(int ret,QString uuid) {
+void MainDialog::on_pass_finished(const int &ret,const QString &uuid) {
     if(uuid != this->m_uuid) {
         return ;
     }
@@ -1140,7 +1140,7 @@ void MainDialog::on_pass_finished(int ret,QString uuid) {
 }
 
 /* 手机号直接发送验证码回调函数，发送手机验证码回执消息后执行此处 */
-void MainDialog::on_get_mcode_by_phone(int ret,QString uuid) {
+void MainDialog::on_get_mcode_by_phone(const int &ret, const QString &uuid) {
     if(uuid != this->m_uuid) {
         return ;
     }
@@ -1198,7 +1198,7 @@ void MainDialog::on_get_mcode_by_phone(int ret,QString uuid) {
 }
 
 /* 根据用户名发送验证码回调函数，发送手机验证码回执消息后执行此处 */
-void MainDialog::on_get_mcode_by_name(int ret,QString uuid) {
+void MainDialog::on_get_mcode_by_name(const int &ret,const QString &uuid) {
     if(uuid != this->m_uuid) {
         return ;
     }
@@ -1522,7 +1522,7 @@ void MainDialog::set_clear() {
     setshow(m_baseWidget);
 }
 
-void MainDialog::set_staus(bool ok) {
+void MainDialog::set_staus(const bool &ok) {
     if(m_baseWidget->currentWidget() == m_containerWidget) {
         if(m_stackedWidget->currentWidget() == m_loginDialog) {
             m_loginDialog->set_staus(ok);

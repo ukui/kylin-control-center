@@ -56,8 +56,8 @@ public:
     void            setshow(QWidget *w);
     void            init_gui();
     void            handle_conf();
-    bool            judge_item(QString enable,int cur);
-    void            handle_write(int on,int id);
+    bool            judge_item(const QString &enable,const int &cur) const;
+    void            handle_write(const int &on,const int &id);
     void            showDesktopNotify(const QString &message);
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
@@ -116,27 +116,27 @@ public slots:
     void            on_login_out();
     void            on_login();
     void            open_cloud();
-    void            finished_load(int ret,QString m_szUuid);
-    void            on_switch_button(int on,int id);
-    void            on_auto_syn(int on,int id);
+    void            finished_load(const int &ret,const QString &m_szUuid);
+    void            on_switch_button(const int &on,const int &id);
+    void            on_auto_syn(const int &on,const int &id);
     void            download_files();
     void            push_files();
     void            download_over();
     void            push_over();
-    void            setret_oss(int ret);
-    void            setret_conf(int ret);
-    void            setret_change(int ret);
-    void            setret_logout(int ret);
-    void            setret_man(int ret);
-    void            setname(QString n);
-    void            setret_check(QString ret);
-    void            get_key_info(QString info);
+    void            setret_oss(const int &ret);
+    void            setret_conf(const int &ret);
+    void            setret_change(const int &ret);
+    void            setret_logout(const int &ret);
+    void            setret_man(const int &ret);
+    void            setname(const QString &n);
+    void            setret_check(const QString &ret);
+    void            get_key_info(const QString &info);
 signals:
-    void dooss(QString m_szUuid);
+    void dooss(const QString &m_szUuid);
     void doman();
     void dologout();
     void doconf();
-    void dochange(QString name,int flag);
+    void dochange(const QString &name,const int &flag);
     void docheck();
 };
 

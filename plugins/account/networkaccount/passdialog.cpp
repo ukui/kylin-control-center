@@ -115,7 +115,7 @@ PassDialog::PassDialog(QWidget *parent) : QWidget(parent)
 }
 
 /* 获取错误代码 */
-void PassDialog::set_code(QString codenum) {
+void PassDialog::set_code(const QString &codenum) {
     m_errorCode = codenum;
     emit code_changed();
 }
@@ -139,19 +139,19 @@ QPushButton* PassDialog::get_send_msg_btn() {
     return m_sendMsgBtn;
 }
 
-QString PassDialog::get_user_name() {
+QString PassDialog::get_user_name() const {
     return m_phoneLineEdit->text();
 }
 
-QString PassDialog::get_user_mcode() {
+QString PassDialog::get_user_mcode() const {
     return m_mcodeLineEdit->text();
 }
 
-QString PassDialog::get_user_confirm() {
+QString PassDialog::get_user_confirm() const {
     return m_confirmLineEdit->text();
 }
 
-QString PassDialog::get_user_newpass() {
+QString PassDialog::get_user_newpass() const {
     return m_passLineEdit->text();
 }
 
@@ -171,7 +171,7 @@ QLineEdit* PassDialog::get_valid_code() {
     return m_mcodeLineEdit;
 }
 
-void PassDialog::set_staus(bool ok) {
+void PassDialog::set_staus(const bool &ok) {
     m_passLineEdit->setEnabled(ok);
     m_confirmLineEdit->setEnabled(ok);
     m_phoneLineEdit->setEnabled(ok);

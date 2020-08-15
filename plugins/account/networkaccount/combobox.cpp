@@ -110,7 +110,7 @@ void ComboBox::closepopup(QListWidgetItem *item) {
 }
 
 /* 增加新的国家以及代码，不常用 */
-void ComboBox::addItem(QString country, QString code) {
+void ComboBox::addItem(const QString &country, const QString &code) {
     QListWidgetItem* widgetItem = new QListWidgetItem(m_listWidget);
     BoxItem *wgt = new BoxItem(this);
 

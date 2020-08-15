@@ -46,12 +46,12 @@ public:
     AreaCodeLineEdit* get_phone_user();
     PasswordLineEdit* get_reg_confirm();
     QPushButton* get_send_code();
-    QString     get_user_phone();
-    QString     get_user_account();
-    QString     get_user_passwd();
-    QString     get_user_mcode();
-    void        set_staus(bool ok);
-    void        set_code(QString codenum);
+    QString     get_user_phone() const;
+    QString     get_user_account() const;
+    QString     get_user_passwd() const;
+    QString     get_user_mcode() const;
+    void        set_staus(const bool &ok);
+    void        set_code(const QString &codenum);
     void        set_clear();
     Tips*     get_tips();
 public slots:

@@ -34,7 +34,7 @@ public:
     MCodeWidget(QWidget *parent = 0);
     ~MCodeWidget();
     QChar *get_verificate_code();
-    void set_change(int bIsOk);
+    void set_change(const int &bIsOk);
 protected:
     void mousePressEvent(QMouseEvent *ev);
     void paintEvent(QPaintEvent *event);

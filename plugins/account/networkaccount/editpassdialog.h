@@ -46,25 +46,25 @@ class EditPassDialog : public QWidget
 public:
     explicit        EditPassDialog(QWidget *parent = nullptr);
     int             m_szTimerNum = 60;
-    void            set_code(QString codenum);
+    void            set_code(const QString &codenum);
     void            set_client(DbusHandleClient *c,QThread *t);
     void            set_clear();
     Tips*         get_tips();
-    QString         messagebox(int codenum);
+    QString         messagebox(const int &codenum) const;
     void            setshow(QWidget *w);
     QString         m_szCode;
     bool            m_bIsUsed = false;
 public slots:
     void            on_edit_submit();
-    void            on_edit_submit_finished(int req,QString m_szUuid);
-    void            on_edit_code_finished(int req,QString m_szUuid);
+    void            on_edit_submit_finished(const int &req,const QString &m_szUuid);
+    void            on_edit_code_finished(const int &req,const QString &m_szUuid);
     void            on_timer_start();
     void            on_send_code();
     void            setstyleline();
     void            on_close();
-    void            setret_code(int ret);
-    void            setret_check(QString ret);
-    void            setret_edit(int ret);
+    void            setret_code(const int &ret);
+    void            setret_check(const QString &ret);
+    void            setret_edit(const int &ret);
 protected:
     void            paintEvent(QPaintEvent *event);
     bool            eventFilter(QObject *w,QEvent *e);
@@ -96,8 +96,8 @@ private:
 signals:
     void code_changed();
     void account_changed();
-    void docode(QString m_szCode,QString m_szUuid);
-    void doreset(QString a,QString b,QString c,QString m_szUuid);
+    void docode(const QString &szCode,const QString &szUuid);
+    void doreset(const QString &a,const QString &b,const QString &c,const QString &m_szUuid);
     void docheck();
     void dologout();
 };

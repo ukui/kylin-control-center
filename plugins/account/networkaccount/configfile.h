@@ -28,8 +28,8 @@ class ConfigFile
 public:
     ConfigFile(QString qstrfilename = "");
     virtual ~ConfigFile(void);
-    void Set(QString,QString,QVariant);
-    QVariant Get(QString,QString);
+    void Set(const QString &group,const QString &key,const QVariant &value);
+    QVariant Get(const QString &group, const QString &key) const;
 private:
     QString m_qstrFileName;
     QSettings *m_psetting;

@@ -56,15 +56,15 @@ public:
     Tips*         get_tips_pass();
     Tips*         get_tips_code();
     QLineEdit*      get_login_code();
-    QString         get_user_name();
-    QString         get_user_pass();
+    QString         get_user_name() const;
+    QString         get_user_pass() const;
     QPushButton*    get_user_mcode();
     QStackedWidget* get_stack_widget();
-    void            set_code(QString codenum);
+    void            set_code(const QString &codenum);
     MCodeWidget*   get_mcode_widget();
     QLineEdit*      get_mcode_lineedit();
     void            set_clear();
-    void            set_staus(bool ok);
+    void            set_staus(const bool &ok);
 public slots:
     void            set_window1();
     void            set_window2();

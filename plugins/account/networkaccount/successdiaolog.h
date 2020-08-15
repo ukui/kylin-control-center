@@ -36,7 +36,7 @@ public:
     QPushButton *m_backloginBtn;
     QLabel      *m_textLabel;
     QSvgWidget      *m_bkgWidget;
-    void     set_mode_text(int mode);
+    void     set_mode_text(const int &mode);
 private:
     QVBoxLayout *m_workLayout;
 signals:

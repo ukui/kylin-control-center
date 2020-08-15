@@ -12,7 +12,7 @@ class InfoLabel : public QLabel
     Q_OBJECT
 public:
     explicit InfoLabel(QWidget *parent = nullptr);
-    void setTipText(QString text);
+    void setTipText(const QString &text);
 
     void            leaveEvent(QEvent *e);
     void enterEvent(QEvent *e);

@@ -16,7 +16,7 @@ Tips::Tips(QWidget *parent) : QWidget(parent)
     hide();
 }
 
-void Tips::set_text(const QString text) {
+void Tips::set_text(const QString &text) {
     m_szContext = text;
     this->m_textLabel->setText(m_szContext);
 }

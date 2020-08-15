@@ -40,14 +40,14 @@ ConfigFile::~ConfigFile()
     m_psetting = 0;
 }
 
-void ConfigFile::Set(QString qstrnodename,QString qstrkeyname,QVariant qvarvalue)
+void ConfigFile::Set(const QString &qstrnodename,const QString &qstrkeyname,const QVariant &qvarvalue)
 {
 
     m_psetting->setValue(QString("/%1/%2").arg(qstrnodename).arg(qstrkeyname), qvarvalue);
     m_psetting->sync();
 }
 
-QVariant ConfigFile::Get(QString qstrnodename,QString qstrkeyname)
+QVariant ConfigFile::Get(const QString &qstrnodename,const QString &qstrkeyname) const
 {
     QVariant qvar = m_psetting->value(QString("/%1/%2").arg(qstrnodename).arg(qstrkeyname));
     return qvar;

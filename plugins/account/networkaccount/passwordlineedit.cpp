@@ -90,7 +90,7 @@ QPushButton* PasswordLineEdit::get_visble() {
 }
 
 /* 密码检测模块 */
-bool PasswordLineEdit::check() {
+bool PasswordLineEdit::check() const {
     bool uper = false;
     bool normal = false;
     bool number = false;

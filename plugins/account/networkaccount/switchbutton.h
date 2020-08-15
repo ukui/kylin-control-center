@@ -30,12 +30,12 @@ class SwitchButton : public QWidget
 public:
     explicit        SwitchButton(QWidget *parent = nullptr);
     ~SwitchButton();
-    void            set_swichbutton_val(int m_bIsOn);
-    int             get_swichbutton_val();
-    void            set_id(int m_buttonID);
-    int             get_id();
-    int             get_active();
-    void            set_active(bool ok);
+    void            set_swichbutton_val(const int &bIsOn);
+    int             get_swichbutton_val() const;
+    void            set_id(const int &buttonID);
+    int             get_id() const;
+    int             get_active() const;
+    void            set_active(const bool &ok);
 private:
     int             m_bIsActive = 1;
     int             m_bIsOn = 1;
@@ -48,7 +48,7 @@ private:
     void            paintEvent(QPaintEvent *event);
     void            mousePressEvent(QMouseEvent *event);
 signals:
-    void            status(int m_bIsOn,int m_buttonID);
+    void            status(const int &bIsOn,const int &buttonID);
 private slots:
     void startAnimation();
 };

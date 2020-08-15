@@ -82,7 +82,7 @@ QWidget* FrameItem::get_widget() {
 }
 
 /* 获取项目名字 */
-QString FrameItem::get_itemname() {
+QString FrameItem::get_itemname() const {
     return m_itemName->text();
 }
 
@@ -92,11 +92,11 @@ QHBoxLayout* FrameItem::get_layout() {
 }
 
 /* 设置项目名字 */
-void FrameItem::set_itemname(QString name) {
+void FrameItem::set_itemname(const QString &name) {
     m_itemName->setText(name);
 }
 
-void FrameItem::set_change(int status,QString code) {
+void FrameItem::set_change(const int &status,const QString &code) {
     if(status == 1) {
         m_stackedWidget->setCurrentWidget(m_run);
         bIsStart = true;
@@ -161,6 +161,6 @@ void FrameItem::make_itemoff() {
 }
 
 /* 让列表的SwitchButton可用或者不可用，调用一次就是取反 */
-void FrameItem::set_active(bool ok) {
+void FrameItem::set_active(const bool &ok) {
     m_switchBtn->set_active(ok);
 }
