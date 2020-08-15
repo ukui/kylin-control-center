@@ -72,6 +72,7 @@ public:
     void plugin_delay_control() Q_DECL_OVERRIDE;
     const QString name() const  Q_DECL_OVERRIDE;
 
+    void initSearchText();
     void setupComponent();
     void setupGSettings();
     void initNoticeStatus();

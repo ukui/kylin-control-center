@@ -99,6 +99,11 @@ Widget::Widget(QWidget *parent)
 
 
     QHBoxLayout *nightLayout = new QHBoxLayout(ui->nightframe);
+
+    //~ contents_path /display/unify output
+    ui->unifyLabel->setText(tr("unify output"));
+
+    //~ contents_path /display/night mode
     nightLabel = new QLabel(tr("night mode"));
     nightButton = new SwitchButton;
     nightLayout->addWidget(nightLabel);

@@ -63,9 +63,9 @@ public:
     void initUI();
     QStringList  readFile(QString filePath);
 
+    void initSearchText();
     void _call_dbus_get_computer_info();
     void _data_init();
-private:
     void setupDesktopComponent();
     void setupKernelCompenent();
     void setupVersionCompenent();

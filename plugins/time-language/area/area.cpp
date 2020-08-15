@@ -116,14 +116,17 @@ void Area::run_external_app_slot() {
 }
 
 void Area::initUI() {
+    //~ contents_path /area/current area
     ui->titleLabel->setText(tr("current area"));
     ui->countrylabel->setText(tr("display format area"));
+    //~ contents_path /area/format of area
     ui->title2Label->setText(tr("format of area"));
     ui->calendarlabel->setText(tr("calendar"));
     ui->weeklabel->setText(tr("first day of week"));
     ui->datelabel->setText(tr("date"));
     ui->timelabel->setText(tr("time"));
     ui->chgformButton->setText(tr("change format of data"));
+    //~ contents_path /area/first language
     ui->title3Label->setText(tr("first language"));
     ui->languagelabel->setText(tr("system language"));
 

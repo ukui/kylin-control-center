@@ -106,6 +106,7 @@ MouseControl::MouseControl()
     pluginName = tr("Mouse");
     pluginType = DEVICES;
 
+    initSearchText();
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
@@ -156,6 +157,25 @@ void MouseControl::plugin_delay_control(){
 const QString MouseControl::name() const {
 
     return QStringLiteral("mouse");
+}
+
+void MouseControl::initSearchText() {
+    //~ contents_path /mouse/Hand habit
+    ui->handLabel->setText(tr("Hand habit"));
+    //~ contents_path /mouse/Doubleclick  delay
+    ui->delayLabel->setText(tr("Doubleclick  delay"));
+    //~ contents_path /mouse/Speed
+    ui->speedLabel->setText(tr("Speed"));
+    //~ contents_path /mouse/Sensitivity
+    ui->senseLabel->setText(tr("Sensitivity"));
+    //~ contents_path /mouse/Visibility
+    ui->visLabel->setText(tr("Visibility"));
+    //~ contents_path /mouse/Pointer size
+    ui->sizeLabel->setText(tr("Pointer size"));
+    //~ contents_path /mouse/Enable flashing on text area
+    ui->flashLabel->setText(tr("Enable flashing on text area"));
+    //~ contents_path /mouse/Cursor speed
+    ui->cursorspdLabel->setText(tr("Cursor speed"));
 }
 
 void MouseControl::setupComponent(){

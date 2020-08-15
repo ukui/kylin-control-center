@@ -60,27 +60,11 @@ Touchpad::Touchpad()
     pluginName = tr("Touchpad");
     pluginType = DEVICES;
 
+    //~ contents_path /touchpad/Touchpad Settings
+    ui->titleLabel->setText(tr("Touchpad Settings"));
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-//    QString qss;
-//    QFile QssFile("://combox.qss");
-//    QssFile.open(QFile::ReadOnly);
-
-//    if (QssFile.isOpen()){
-//        qss = QLatin1String(QssFile.readAll());
-//        QssFile.close();
-//    }
-
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
     ui->scrollingTypeComBox->setView(new QListView());
-//    ui->scrollingTypeComBox->setStyleSheet(qss);
-
-//    ui->enableWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-//    ui->typingWidget->setStyleSheet("QWidget{background: #F4F4F4;}");
-//    ui->clickWidget->setStyleSheet("QWidget{background: #F4F4F4;}");
-//    ui->scrollingWidget->setStyleSheet("QWidget{background: #F4F4F4; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
-
     const QByteArray id(TOUCHPAD_SCHEMA);
 
     if (QGSettings::isSchemaInstalled(TOUCHPAD_SCHEMA)){
@@ -97,9 +81,6 @@ Touchpad::Touchpad()
             ui->typingFrame->hide();
         }
     }
-
-
-
 }
 
 Touchpad::~Touchpad()

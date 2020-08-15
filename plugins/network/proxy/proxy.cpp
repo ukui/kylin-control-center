@@ -62,6 +62,7 @@ Proxy::Proxy()
     const QByteArray iid(FTP_PROXY_SCHEMA);
     const QByteArray iiid(SOCKS_PROXY_SCHEMA);
 
+    initSearchText();
     setupStylesheet();
     setupComponent();
 
@@ -119,6 +120,13 @@ void Proxy::plugin_delay_control(){
 const QString Proxy::name() const {
 
     return QStringLiteral("proxy");
+}
+
+void Proxy::initSearchText() {
+    //~ contents_path /proxy/Auto proxy
+    ui->autoLabel->setText(tr("Auto proxy"));
+    //~ contents_path /proxy/Manual proxy
+    ui->manualLabel->setText(tr("Manual proxy"));
 }
 
 void Proxy::setupStylesheet(){

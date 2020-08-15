@@ -156,7 +156,7 @@
               <number>16</number>
              </property>
              <item>
-              <widget class="QLabel" name="label_2">
+              <widget class="QLabel" name="balanceLabel">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -266,7 +266,7 @@
               <number>16</number>
              </property>
              <item>
-              <widget class="QLabel" name="label_4">
+              <widget class="QLabel" name="saveLabel">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -384,7 +384,7 @@
                 <number>16</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_6">
+                <widget class="QLabel" name="customLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>

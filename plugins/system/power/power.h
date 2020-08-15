@@ -51,6 +51,7 @@ public:
     const QString name() const  Q_DECL_OVERRIDE;
 
 public:
+    void initSearText();
     void setupStylesheet();
     void setupComponent();
     void setupConnect();

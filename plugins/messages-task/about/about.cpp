@@ -45,6 +45,7 @@ About::About()
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     _data_init();
 
+    initSearchText();
     setupDesktopComponent();
     setupKernelCompenent();
     setupVersionCompenent();
@@ -277,6 +278,20 @@ QStringList About::readFile(QString filepath) {
         qWarning() << filepath << " not found"<<endl;
         return QStringList();
     }
+}
+
+void About::initSearchText() {
+
+    //~ contents_path /about/version
+    ui->versionLabel->setText(tr("version"));
+    //~ contents_path /about/Kernel
+    ui->kernalLabel->setText(tr("Kernel"));
+    //~ contents_path /about/CPU
+    ui->cpuLabel->setText(tr("CPU"));
+    //~ contents_path /about/Memory
+    ui->memoryLabel->setText(tr("Memory"));
+    //~ contents_path /about/Disk
+    ui->diskLabel->setText(tr("Disk"));
 }
 
 

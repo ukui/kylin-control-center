@@ -74,7 +74,6 @@ KeyboardControl::KeyboardControl()
 
         rebuildLayoutsComBox();
     }
-
 }
 
 KeyboardControl::~KeyboardControl()
@@ -109,6 +108,22 @@ const QString KeyboardControl::name() const {
 }
 
 void KeyboardControl::setupStylesheet(){
+
+    //~ contents_path /keyboard/Enable repeat key
+    ui->enableLabel->setText(tr("Enable repeat key"));
+    //~ contents_path /keyboard/Delay
+    ui->delayLabel->setText(tr("Delay"));
+    //~ contents_path /keyboard/Speed
+    ui->speedLabel->setText(tr("Speed"));
+    //~ contents_path /keyboard/Test repetition rate of the input character:
+    ui->repeatLabel->setText(tr("Test repetition rate of the input character:"));
+    //~ contents_path /keyboard/Tip of keyboard
+    ui->tipLabel->setText(tr("Tip of keyboard"));
+    //~ contents_path /keyboard/Keyboard layout
+    ui->layoutLabel->setText(tr("Keyboard layout"));
+    //~ contents_path /keyboard/reset default layout
+    ui->resetLabel->setText(tr("reset default layout"));
+
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 }

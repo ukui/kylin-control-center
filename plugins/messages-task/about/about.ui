@@ -114,7 +114,7 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout">
                <item>
-                <widget class="QLabel" name="label">
+                <widget class="QLabel" name="versionLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                    <horstretch>0</horstretch>
@@ -374,7 +374,7 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_12">
            <item>
-            <widget class="QLabel" name="disk">
+            <widget class="QLabel" name="diskLabel">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                <horstretch>0</horstretch>

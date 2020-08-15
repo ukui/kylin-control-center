@@ -296,7 +296,7 @@
         <item>
          <layout class="QHBoxLayout" name="unionLayout">
           <item>
-           <widget class="QLabel" name="label_2">
+           <widget class="QLabel" name="unifyLabel">
             <property name="text">
              <string>unify output</string>
             </property>

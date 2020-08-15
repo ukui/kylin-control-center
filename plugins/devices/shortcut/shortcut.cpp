@@ -80,22 +80,6 @@ Shortcut::Shortcut()
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-//    ui->generalListWidget->setStyleSheet("QListWidget#generalListWidget{background: #ffffff; border: none;}");
-
-//    ui->showBtn->setStyleSheet("QPushButton{background: #E9E9E9; border-radius: 4px;}"
-//                               "QPushButton:hover:!pressed{background: #3d6be5; border-radius: 4px;}"
-//                               "QPushButton:hover:pressed{background: #415FC4; border-radius: 4px;}");
-
-//    ui->resetBtn->setStyleSheet("QPushButton{background: #E9E9E9; border-radius: 4px;}"
-//                               "QPushButton:hover:!pressed{background: #3d6be5; border-radius: 4px;}"
-//                               "QPushButton:hover:pressed{background: #415FC4; border-radius: 4px;}");
-
-//    ui->customListWidget->setStyleSheet("QListWidget#customListWidget{background: #ffffff; border: none;}");
-
-//    ui->addWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-
     pKeyMap = new KeyMap;
     addDialog = new addShortcutDialog();
     showDialog = new ShowAllShortcut();
@@ -139,6 +123,12 @@ const QString Shortcut::name() const {
 void Shortcut::setupComponent(){
 //    ui->addLabel->setPixmap(QPixmap("://img/plugins/printer/add.png"));
 
+    //~ contents_path /shortcut/System Shortcut
+    ui->titleLabel->setText(tr("System Shortcut"));
+    //~ contents_path /shortcut/Custom Shortcut
+    ui->title2Label->setText(tr("Custom Shortcut"));
+
+
     ui->generalListWidget->setFocusPolicy(Qt::NoFocus);
     ui->generalListWidget->setSelectionMode(QAbstractItemView::NoSelection);
     ui->generalListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -161,6 +151,7 @@ void Shortcut::setupComponent(){
     QHBoxLayout *addLyt = new QHBoxLayout;
 
     QLabel * iconLabel = new QLabel();
+    //~ contents_path /shortcut/Add custom shortcut
     QLabel * textLabel = new QLabel(tr("Add custom shortcut"));
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);

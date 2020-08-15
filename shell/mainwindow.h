@@ -33,6 +33,7 @@
 #include "modulepagewidget.h"
 #include "searchwidget.h"
 
+class QLabel;
 class QPushButton;
 class QButtonGroup;
 class KeyValueConverter;
@@ -79,7 +80,14 @@ private:
     KeyValueConverter * kvConverter;
     SearchWidget * m_searchWidget;
 
+    QPushButton * backBtn;
+    QPushButton * minBtn;
+    QPushButton * maxBtn;
+    QPushButton * closeBtn;
+    QLabel      * titleLabel;
+
 private:
+    void initTileBar();
     void setBtnLayout(QPushButton * &pBtn);
     void loadPlugins();
     void initLeftsideBar();
@@ -99,6 +107,7 @@ private:
 public slots:
     void functionBtnClicked(QObject * plugin);
     void sltMessageReceived(const QString &msg);
+    void switchPage(QString moduleName);
 };
 
 #endif // MAINWINDOW_H

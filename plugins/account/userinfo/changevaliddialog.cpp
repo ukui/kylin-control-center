@@ -48,6 +48,10 @@ ChangeValidDialog::ChangeValidDialog(QString userName, QWidget *parent) :
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
+    ui->monthCombox->setMaxVisibleItems(3);
+    ui->yearCombox->setMaxVisibleItems(3);
+    ui->dayCombox->setMaxVisibleItems(3);
+
     ui->validFrame->setFrameShape(QFrame::Shape::Box);
 
     _getCurrentPwdStatus();

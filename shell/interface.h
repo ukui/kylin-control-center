@@ -118,7 +118,7 @@ public:
      * \return QString
      */
     virtual QString translationPath()const {
-        return QStringLiteral(":/shell/res/i18n/%1.ts");
+        return QStringLiteral(":/i18n/%1.ts");
     }
 };
 

@@ -91,6 +91,7 @@ Screensaver::Screensaver()
 
     process = new QProcess();
 
+    initSearchText();
     _acquireThemeinfoList();
     initComponent();
     initEnableBtnStatus();
@@ -132,6 +133,15 @@ void Screensaver::plugin_delay_control(){
 const QString Screensaver::name() const {
 
     return QStringLiteral("screensaver");
+}
+
+void Screensaver::initSearchText() {
+    //~ contents_path /screensaver/Enable screensaver
+    ui->enableLabel->setText(tr("Enable screensaver"));
+    //~ contents_path /screensaver/Enable screensaver
+    ui->enableLabel->setText(tr("Screensaver program"));
+    //~ contents_path /screensaver/idle time
+    ui->enableLabel->setText(tr("idle time"));
 }
 
 void Screensaver::initComponent(){

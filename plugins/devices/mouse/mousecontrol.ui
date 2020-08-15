@@ -109,7 +109,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_4">
+         <widget class="QLabel" name="handLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -196,7 +196,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_5">
+         <widget class="QLabel" name="slowLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -339,7 +339,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_20">
+         <widget class="QLabel" name="delayLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -530,7 +530,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="speedLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -676,7 +676,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_8">
+         <widget class="QLabel" name="senseLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -819,7 +819,7 @@
       <item>
        <layout class="QHBoxLayout" name="visibilityHorLayout">
         <item>
-         <widget class="QLabel" name="label_11">
+         <widget class="QLabel" name="visLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -897,7 +897,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
-         <widget class="QLabel" name="label_12">
+         <widget class="QLabel" name="sizeLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1026,7 +1026,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_19">
+         <widget class="QLabel" name="flashLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1258,7 +1258,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_16">
+         <widget class="QLabel" name="cursorspdLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>

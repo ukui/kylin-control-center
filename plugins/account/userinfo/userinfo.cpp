@@ -66,7 +66,7 @@ UserInfo::UserInfo()
     //获取系统全部用户信息，用户Uid大于等于1000的
     _acquireAllUsersInfo();
 
-
+    initSearchText();
     readCurrentPwdConf();
     initComponent();
     initAllUserStatus();
@@ -115,6 +115,19 @@ void UserInfo::plugin_delay_control(){
 const QString UserInfo::name() const {
 
     return QStringLiteral("userinfo");
+}
+
+void UserInfo::initSearchText() {
+    //~ contents_path /userinfo/Change pwd
+    ui->changePwdBtn->setText(tr("Change pwd"));
+    //~ contents_path /userinfo/Change type
+    ui->changeTypeBtn->setText(tr("Change type"));
+    //~ contents_path /userinfo/Change valid
+    ui->changeValidBtn->setText(tr("Change valid"));
+    //~ contents_path /userinfo/Login no passwd
+    ui->loginpwdLabel->setText(tr("Login no passwd"));
+    //~ contents_path /userinfo/enable autoLogin
+    ui->autologinLabel->setText(tr("enable autoLogin"));
 }
 
 QString UserInfo::_accountTypeIntToString(int type){

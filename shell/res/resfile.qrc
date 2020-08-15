@@ -141,5 +141,6 @@
         <file>combox.qss</file>
         <file>plugins/update/update.png</file>
         <file>dpinyin.dict</file>
+        <file>i18n/zh_CN.ts</file>
     </qresource>
 </RCC>

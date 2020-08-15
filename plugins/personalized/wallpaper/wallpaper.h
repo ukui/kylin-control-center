@@ -87,6 +87,7 @@ public:
     const QString name() const  Q_DECL_OVERRIDE;
 
 public:
+    void initSearchText();
     void setupComponent();
     void setupConnect();
     void initBgFormStatus();

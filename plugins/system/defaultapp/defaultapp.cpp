@@ -74,7 +74,20 @@ const QString DefaultApp::name() const {
 }
 
 void DefaultApp::initUI(){
-//    ui->browserComBoBox->setView(new QListView());
+
+    //~ contents_path /defaultapp/Browser
+    ui->browserLabel->setText(tr("Browser"));
+    //~ contents_path /defaultapp/Mail
+    ui->mailLabel->setText(tr("Mail"));
+    //~ contents_path /defaultapp/Image Viewer
+    ui->imageLabel->setText(tr("Image Viewer"));
+    //~ contents_path /defaultapp/Audio Player
+    ui->audioLabel->setText(tr("Audio Player"));
+    //~ contents_path /defaultapp/Video Player
+    ui->videoLabel->setText(tr("Video Player"));
+    //~ contents_path /defaultapp/Text Editor
+    ui->textLabel->setText(tr("Text Editor"));
+
 
     // BROWSER
     int browserindex = -1;
