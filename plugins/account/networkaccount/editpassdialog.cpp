@@ -230,7 +230,7 @@ void EditPassDialog::set_client(DbusHandleClient *c,QThread *t) {
 }
 
 /* DBUS客户端回调函数处理，处理异常 */
-void EditPassDialog::setret_code(const int &ret) {
+void EditPassDialog::setret_code(int ret) {
     if(ret != 0) {
         m_mcodeLineEdit->setText("");
         set_code(messagebox(ret));
@@ -241,14 +241,14 @@ void EditPassDialog::setret_code(const int &ret) {
     }
 }
 
-void EditPassDialog::setret_check(const QString &ret) {
+void EditPassDialog::setret_check(QString ret) {
     if (ret == "401" || ret == "201" || ret == "203" || ret == "") {
         close();
         emit dologout();
     }
 }
 
-void EditPassDialog::setret_edit(const int &ret) {
+void EditPassDialog::setret_edit(int ret) {
     if(ret == 0) {
     } else {
         set_code(messagebox(ret));
@@ -347,7 +347,7 @@ void EditPassDialog::on_timer_start() {
 }
 
 /* 修改密码成功后进行回调处理 */
-void EditPassDialog::on_edit_submit_finished(const int &req,const QString &uuid) {
+void EditPassDialog::on_edit_submit_finished(int req,QString uuid) {
     if(uuid != this->m_szUuid) {
         return ;
     }
@@ -407,7 +407,7 @@ void EditPassDialog::setshow(QWidget *widget) {
 }
 
 /* 验证码获取回调 */
-void EditPassDialog::on_edit_code_finished(const int &req,const QString &uuid) {
+void EditPassDialog::on_edit_code_finished(int req, QString uuid) {
     if(this->m_szUuid != uuid) {
         return ;
     }

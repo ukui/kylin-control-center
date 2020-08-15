@@ -68,7 +68,7 @@ BindPhoneDialog::BindPhoneDialog(QWidget *parent) : QWidget(parent)
     adjustSize();
 }
 
-void BindPhoneDialog::set_staus(bool ok) {
+void BindPhoneDialog::set_staus(const bool &ok) {
    m_phoneLineEdit->setEnabled(ok);
    m_mCodeLineEdit->setEnabled(ok);
    m_sendCode_btn->setEnabled(ok);

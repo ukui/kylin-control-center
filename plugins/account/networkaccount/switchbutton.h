@@ -48,7 +48,7 @@ private:
     void            paintEvent(QPaintEvent *event);
     void            mousePressEvent(QMouseEvent *event);
 signals:
-    void            status(const int &bIsOn,const int &buttonID);
+    void            status(int bIsOn,int buttonID);
 private slots:
     void startAnimation();
 };

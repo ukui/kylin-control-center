@@ -59,7 +59,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","backcall_key_info",this,SLOT(get_key_info(QString)));
 }
 /* 检测第一次登录，为用户添加名字 */
-void MainWidget::setname(const QString &n) {
+void MainWidget::setname(QString n) {
     //qDebug()<<n<<"2131231";
     m_szCode = n;
     if(m_szCode != "" && m_szCode !="201" && m_szCode != "203" && m_szCode != "401" && !m_bTokenValid) {
@@ -80,7 +80,7 @@ void MainWidget::setname(const QString &n) {
 }
 
 /* 客户端回调函数集 */
-void MainWidget::setret_oss(const int &ret) {
+void MainWidget::setret_oss(int ret) {
     if(ret == 0) {
         //qDebug()<<"init oss is 0";
     } else {
@@ -88,7 +88,7 @@ void MainWidget::setret_oss(const int &ret) {
     }
 }
 
-void MainWidget::setret_logout(const int &ret) {
+void MainWidget::setret_logout(int ret) {
     //do nothing
     //qDebug()<<ret<<"Coutner SatRieaf";
     if(ret == 0) {
@@ -97,7 +97,7 @@ void MainWidget::setret_logout(const int &ret) {
     }
 }
 
-void MainWidget::setret_conf(const int &ret) {
+void MainWidget::setret_conf(int ret) {
     //qDebug()<<ret<<"csacasca";
     if(ret == 0) {
         emit docheck();
@@ -113,14 +113,14 @@ void MainWidget::setret_conf(const int &ret) {
     }
 }
 
-void MainWidget::setret_man(const int &ret) {
+void MainWidget::setret_man(int ret) {
     if(ret == 0) {
         //emit doconf();
         //qDebug()<<"1111 manul";
     }
 }
 
-void MainWidget::setret_check(const QString &ret) {
+void MainWidget::setret_check(QString ret) {
     //qDebug()<<ret<<!ret_ok;
     if((ret == "" || ret =="201" || ret == "203" || ret == "401" ) && m_bTokenValid) {
         //qDebug()<<"checked"<<ret<<ret;
@@ -158,7 +158,7 @@ void MainWidget::setret_check(const QString &ret) {
     }
 }
 
-void MainWidget::setret_change(const int &ret) {
+void MainWidget::setret_change(int ret) {
     if(ret == 0) {
         //emit docheck();
     }
@@ -502,7 +502,7 @@ bool MainWidget::eventFilter(QObject *watched, QEvent *event) {
 }
 
 /* 登录成功处理事件 */
-void MainWidget::finished_load(const int &ret, const QString &uuid) {
+void MainWidget::finished_load(int ret, QString uuid) {
     //qDebug()<<"wb111"<<ret;
     if(ret != 0) {
         emit dologout();
@@ -573,7 +573,7 @@ void MainWidget::handle_write(const int &on,const int &id) {
 }
 
 /* 滑动按钮点击处理事件 */
-void MainWidget::on_switch_button(const int &on,const int &id) {
+void MainWidget::on_switch_button(int on,int id) {
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
@@ -589,7 +589,7 @@ void MainWidget::on_switch_button(const int &on,const int &id) {
 }
 
 /* 自动同步滑动按钮点击后改变功能状态 */
-void MainWidget::on_auto_syn(const int &on, const int &id) {
+void MainWidget::on_auto_syn(int on, int id) {
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
@@ -738,7 +738,7 @@ void MainWidget::push_over() {
     }
 }
 
-void MainWidget::get_key_info(const QString &info) {
+void MainWidget::get_key_info(QString info) {
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
