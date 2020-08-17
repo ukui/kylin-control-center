@@ -76,7 +76,7 @@ jobs:
       - name: Checkout ukui-control-center source code
         uses: actions/checkout@v2
       - name: Install build dependencies
-        run: dnf install --refresh -y which gcc gcc-c++ make cmake cmake-rpm-macros autoconf automake intltool rpm-build qt5-rpm-macros qt5-qtbase-devel qt5-qtsvg-devel gsettings-qt-devel glib2-devel qt5-qtx11extras-devel libmatekbd-devel libxklavier-devel kf5-kconfigwidgets-devel kf5-kconfig-devel qt5-qtdeclarative-devel dconf-devel redshift edid-decode libmatemixer-devel libqtxdg-devel qt5-qtmultimedia-devel libxml2-devel libkscreen-qt5-devel kf5-ki18n-devel libcanberra-devel libXi-devel mate-desktop-devel libxkbcommon-devel libxkbfile-devel qt5-linguist kf5-kwindowsystem-devel kf5-kguiaddons-devel kf5-kcoreaddons-devel boost-devel libxcb-devel xcb-util-devel
+        run: dnf install --refresh --nogpg -y which gcc gcc-c++ make cmake cmake-rpm-macros autoconf automake intltool rpm-build qt5-rpm-macros qt5-qtbase-devel qt5-qtsvg-devel gsettings-qt-devel glib2-devel qt5-qtx11extras-devel libmatekbd-devel libxklavier-devel kf5-kconfigwidgets-devel kf5-kconfig-devel qt5-qtdeclarative-devel dconf-devel redshift edid-decode libmatemixer-devel libqtxdg-devel qt5-qtmultimedia-devel libxml2-devel libkscreen-qt5-devel kf5-ki18n-devel libcanberra-devel libXi-devel mate-desktop-devel libxkbcommon-devel libxkbfile-devel qt5-linguist kf5-kwindowsystem-devel kf5-kguiaddons-devel kf5-kcoreaddons-devel boost-devel libxcb-devel xcb-util-devel
       - name: QMake configure & Make
         run: |
           ln -s /usr/bin/lrelease-qt5 /usr/bin/lrelease;
