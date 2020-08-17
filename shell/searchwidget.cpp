@@ -27,7 +27,6 @@ SearchWidget::SearchWidget(QWidget *parent)
     , m_bIsChinese(false)
     , m_searchValue("")
     , m_bIstextEdited(false)
-    , m_speechState(false)
 {
     m_model = new QStandardItemModel(this);
     m_completer = new ukCompleter(m_model, this);
@@ -39,8 +38,6 @@ SearchWidget::SearchWidget(QWidget *parent)
     m_completer->installEventFilter(this);
 
     connect(this, &QLineEdit::textEdited, this, [ = ] {
-        //m_bIstextEdited，　true : 用户输入　，　false : 直接调用setText
-        //text(). ""　：　表示使用清除按钮删除数据，发送的信号；　非空　：　表示用户输入数据发送的信号
         if (text() != "") {
             m_bIstextEdited = true;
         } else {
@@ -50,35 +47,27 @@ SearchWidget::SearchWidget(QWidget *parent)
 
     connect(this, &QLineEdit::textChanged, this, [ = ] {
         QString retValue = text();
-        if (false == m_speechState) {
-            //用户输入的时候，还是按直接设置setText流程运行(旧的流程)
-            //外部调用setText的时候，需要先对setText的内容进行解析，解析获取对应的存在数据
-            if (m_bIstextEdited) {
-                m_bIstextEdited = false;
-                //解决无法在已经输入数据前面输入数据,但是目前不清楚外部调用会出现什么问题,暂时注释代码
-    //            this->setText(transPinyinToChinese(retValue));
-                return ;
-            }
-
-            //避免输入单个字符，直接匹配到第一个完整字符(导致不能匹配正确的字符)
-            if ("" == retValue || m_searchValue.contains(retValue, Qt::CaseInsensitive)) {
-                m_searchValue = retValue;
-                return ;
-            }
-
-            retValue = transPinyinToChinese(text());
-
-            //拼音转化没找到，再搜索字符包含关联字符
-            if (retValue == text()) {
-                retValue = containTxtData(retValue);
-            }
-
-            m_searchValue = retValue;
-
-            //发送该信号，用于解决外部直接setText的时候，搜索的图标不消失的问题
-//            Q_EMIT focusChanged(true);
-            this->setText(retValue);
+        if (m_bIstextEdited) {
+            m_bIstextEdited = false;
+            return ;
         }
+
+        //避免输入单个字符，直接匹配到第一个完整字符(导致不能匹配正确的字符)
+        if ("" == retValue || m_searchValue.contains(retValue, Qt::CaseInsensitive)) {
+            m_searchValue = retValue;
+            return ;
+        }
+
+        retValue = transPinyinToChinese(text());
+
+        //拼音转化没找到，再搜索字符包含关联字符
+        if (retValue == text()) {
+            retValue = containTxtData(retValue);
+        }
+
+        m_searchValue = retValue;
+
+        this->setText(retValue);
     });
 
     connect(this, &QLineEdit::returnPressed, this, [ = ] {
@@ -102,13 +91,11 @@ SearchWidget::SearchWidget(QWidget *parent)
     connect(m_completer, SIGNAL(activated(QString)), this, SLOT(onCompleterActivated(QString)));
 }
 
-SearchWidget::~SearchWidget()
-{
+SearchWidget::~SearchWidget() {
 
 }
 
-bool SearchWidget::jumpContentPathWidget(QString path)
-{
+bool SearchWidget::jumpContentPathWidget(QString path) {
     qDebug() << Q_FUNC_INFO << path;
     bool bResult = false;
 
@@ -138,11 +125,7 @@ bool SearchWidget::jumpContentPathWidget(QString path)
     return bResult;
 }
 
-void SearchWidget::loadxml()
-{
-#if DEBUG_XML_SWITCH
-    qDebug() << " [SearchWidget] " << Q_FUNC_INFO;
-#endif
+void SearchWidget::loadxml() {
     if (!m_EnterNewPagelist.isEmpty()) {
         m_EnterNewPagelist.clear();
     }
@@ -194,35 +177,7 @@ void SearchWidget::loadxml()
         QXmlStreamReader xmlRead(&file);
         QStringRef dataName;
         QXmlStreamReader::TokenType type = QXmlStreamReader::Invalid;
-        /*
-            <message>
-                <source>Update Setting</source>
-                <translation>更新设置</translation>
-                <extra-contents_path>/update/Update Setting</extra-contents_path>
-        </message>
 
-        +::StartElement:  "message"
-
-            +::StartElement:  "source"
-                xmlRead.text :  "Update Setting"
-            -::EndElement:  "source"
-
-            +::StartElement:  "translation"
-                xmlRead.text :  "更新设置"
-            -::EndElement:  "translation"
-
-            +::StartElement:  "extra-contents_path"
-                xmlRead.text :  "/update/Update Setting"
-            -::EndElement:  "extra-contents_path"
-
-        -::EndElement:  "message"
-
-        //以上 <>  </> 一一对应,
-        //在xml的 <> 时进入 StartElement ,
-        //在xml 显示中间内容时进入 Characters,
-        //在xml的 </>时进入EndElement
-
-        */
         //遍历XML文件,读取每一行的xml数据都会
         //先进入StartElement读取出<>中的内容;
         //再进入Characters读取出中间数据部分;
@@ -232,16 +187,10 @@ void SearchWidget::loadxml()
 
             switch (type) {
             case QXmlStreamReader::StartElement:
-#if DEBUG_XML_SWITCH
-                qDebug() << " [SearchWidget] +::StartElement: " << xmlRead.name() << xmlRead.text();
-#endif
                 m_xmlExplain = xmlRead.name().toString();
                 break;
             case QXmlStreamReader::Characters:
                 if (!xmlRead.isWhitespace()) {
-#if DEBUG_XML_SWITCH
-                    qDebug() << " [SearchWidget]  xmlRead.text : " << xmlRead.text().toString();
-#endif
                     if (m_xmlExplain == XML_Source) { // get xml source date
 
                         m_searchBoxStruct.translateContent = xmlRead.text().toString();
@@ -249,10 +198,6 @@ void SearchWidget::loadxml()
                     } else if (m_xmlExplain == XML_Title) {
                         if (xmlRead.text().toString() != "") // translation not nullptr can set it
                             m_searchBoxStruct.translateContent = xmlRead.text().toString();
-#if DEBUG_XML_SWITCH
-                        qDebug() << " [SearchWidget] m_searchBoxStruct.translateContent : "
-                                 << m_searchBoxStruct.translateContent;
-#endif
                     } else if (m_xmlExplain == XML_Numerusform) {
                         if (xmlRead.text().toString() != "") // translation not nullptr can set it
                             m_searchBoxStruct.translateContent = xmlRead.text().toString();
@@ -273,11 +218,6 @@ void SearchWidget::loadxml()
 
                         // Add search result content
                         if (!m_bIsChinese) {
-//                            auto icon = m_iconMap.find(m_searchBoxStruct.fullPagePath.section('/', 1, 1));
-//                            if (icon == m_iconMap.end()) {
-//                                continue;
-//                            }
-
                             if ("" == m_searchBoxStruct.childPageName) {
                                 m_model->appendRow(new QStandardItem(
                                         QString("%1 --> %2")
@@ -324,8 +264,7 @@ void SearchWidget::loadxml()
 }
 
 //Follow display content to Analysis SearchBoxStruct data
-SearchWidget::SearchBoxStruct SearchWidget::getModuleBtnString(QString value)
-{
+SearchWidget::SearchBoxStruct SearchWidget::getModuleBtnString(QString value) {
     SearchBoxStruct data;
 
     data.translateContent = value.section('-', 0, 1).remove('-').trimmed();
@@ -345,8 +284,7 @@ SearchWidget::SearchBoxStruct SearchWidget::getModuleBtnString(QString value)
 }
 
 //tranlate the path name to tr("name")
-QString SearchWidget::getModulesName(QString name, bool state)
-{
+QString SearchWidget::getModulesName(QString name, bool state) {
     QString strResult = "";
 
     for (auto it : m_moduleNameList) {
@@ -366,8 +304,7 @@ QString SearchWidget::getModulesName(QString name, bool state)
     return strResult;
 }
 
-QString SearchWidget::removeDigital(QString input)
-{
+QString SearchWidget::removeDigital(QString input) {
     if ("" == input)
         return "";
 
@@ -385,8 +322,7 @@ QString SearchWidget::removeDigital(QString input)
     return value;
 }
 
-QString SearchWidget::transPinyinToChinese(QString pinyin)
-{
+QString SearchWidget::transPinyinToChinese(QString pinyin) {
     QString value = pinyin;
 
     //遍历"汉字-拼音"列表,将存在的"拼音"转换为"汉字"
@@ -400,8 +336,7 @@ QString SearchWidget::transPinyinToChinese(QString pinyin)
     return value;
 }
 
-QString SearchWidget::containTxtData(QString txt)
-{
+QString SearchWidget::containTxtData(QString txt) {
     QString value = txt;
 
     //遍历"汉字-拼音"列表,将存在的"拼音"转换为"汉字"
@@ -416,8 +351,7 @@ QString SearchWidget::containTxtData(QString txt)
     return value;
 }
 
-void SearchWidget::appendChineseData(SearchWidget::SearchBoxStruct data)
-{
+void SearchWidget::appendChineseData(SearchWidget::SearchBoxStruct data) {
     if ("" == data.childPageName) {
         //先添加使用appenRow添加Qt::EditRole数据(用于下拉框显示),然后添加Qt::UserRole数据(用于输入框搜索)
         //Qt::EditRole数据用于显示搜索到的结果(汉字)
@@ -480,11 +414,6 @@ void SearchWidget::appendChineseData(SearchWidget::SearchBoxStruct data)
                             .arg(removeDigital(Chinese2Pinyin(data.childPageName)))
                             .arg(removeDigital(Chinese2Pinyin(data.translateContent)));
 
-        //添加显示的汉字(用于拼音搜索显示)
-//        auto icon = m_iconMap.find(data.fullPagePath.section('/', 1, 1));
-//        if (icon == m_iconMap.end()) {
-//            return;
-//        }
         m_model->appendRow(new QStandardItem(/*icon.value(),*/ hanziTxt));
         //设置Qt::UserRole搜索的拼音(即搜索拼音会显示上面的汉字)
         m_model->setData(m_model->index(m_model->rowCount() - 1, 0), pinyinTxt, Qt::UserRole);
@@ -498,16 +427,14 @@ void SearchWidget::appendChineseData(SearchWidget::SearchBoxStruct data)
     }
 }
 
-void SearchWidget::clearSearchData()
-{
+void SearchWidget::clearSearchData() {
     m_searchBoxStruct.translateContent = "";
     m_searchBoxStruct.actualModuleName = "";
     m_searchBoxStruct.childPageName = "";
     m_searchBoxStruct.fullPagePath = "";
 }
 
-void SearchWidget::setLanguage(QString type)
-{
+void SearchWidget::setLanguage(QString type) {
     m_lang = type;
 
     if (type == "zh_CN" || type == "zh_HK" || type == "zh_TW") {
@@ -523,8 +450,7 @@ void SearchWidget::setLanguage(QString type)
 //save all modules moduleInteface name and actual moduleName
 //moduleName : moduleInteface name  (used to path module to translate searchName)
 //searchName : actual module
-void SearchWidget::addModulesName(QString moduleName, QString searchName, QString translation)
-{
+void SearchWidget::addModulesName(QString moduleName, QString searchName, QString translation) {
     QPair<QString, QString> data;
     data.first = moduleName;
     data.second = searchName;
@@ -534,35 +460,14 @@ void SearchWidget::addModulesName(QString moduleName, QString searchName, QStrin
         m_xmlFilePath.insert(translation);
     }
 
-
-#if DEBUG_XML_SWITCH
-    qDebug() << " [SearchWidget] moduleName : " << moduleName << " , searchName : " << searchName;
-#endif
 }
 
-void SearchWidget::addUnExsitData(QString module, QString datail)
-{
-    for (auto value : m_unexsitList) {
-        if (value.module == module)
-            return;
-    }
-
-    UnexsitStruct data;
-    data.module = module;
-    data.datail = datail;
-    m_unexsitList.append(data);
-
-    loadxml();
-}
-
-void SearchWidget::onCompleterActivated(QString value)
-{
+void SearchWidget::onCompleterActivated(QString value) {
     qDebug() << Q_FUNC_INFO << value;
     Q_EMIT returnPressed();
 }
 
-bool ukCompleter::eventFilter(QObject *o, QEvent *e)
-{
+bool ukCompleter::eventFilter(QObject *o, QEvent *e) {
     if (e->type() == QEvent::FocusOut) {
         return QCompleter::eventFilter(o, e);
     }

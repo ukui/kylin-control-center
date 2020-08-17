@@ -2851,17 +2851,22 @@ folder will be deleted!</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../mainwindow.cpp" line="332"/>
+        <location filename="../../mainwindow.cpp" line="325"/>
+        <source>Search</source>
+        <translation>请输入搜索内容</translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="338"/>
         <source>UKCC</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="675"/>
+        <location filename="../../mainwindow.cpp" line="681"/>
         <source>ukcc</source>
         <translation>控制面板</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="442"/>
+        <location filename="../../mainwindow.cpp" line="448"/>
         <source>HOME</source>
         <translation>首页</translation>
     </message>

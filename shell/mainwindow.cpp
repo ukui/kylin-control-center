@@ -333,6 +333,12 @@ void MainWindow::initTileBar() {
 
     ui->titleLayout->setContentsMargins(5, 0, 10, 0);
     m_searchWidget = new SearchWidget(this);
+    m_searchWidget->setPlaceholderText(tr("Search"));
+    m_searchWidget->setFocusPolicy(Qt::ClickFocus);
+    m_searchWidget->installEventFilter(this);
+
+
+
     ui->titleLayout->addWidget(m_searchWidget, Qt::AlignCenter);
     connect(m_searchWidget, &SearchWidget::notifyModuleSearch, this, &MainWindow::switchPage);
 
