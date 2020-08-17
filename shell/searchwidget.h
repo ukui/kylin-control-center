@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QList>
+#include <QFile>
+#include <QEvent>
 #include <QLocale>
 #include <QLineEdit>
 #include <QListView>

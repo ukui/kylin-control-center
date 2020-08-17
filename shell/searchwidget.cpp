@@ -473,7 +473,7 @@ bool ukCompleter::eventFilter(QObject *o, QEvent *e) {
     }
 
     if (e->type() == QEvent::KeyPress) {
-        QKeyEvent *ke = static_cast<QKeyEvent *>(e);
+        QKeyEvent *ke = dynamic_cast<QKeyEvent *>(e);
         QModelIndex keyIndex;
         switch (ke->key()) {
         case Qt::Key_Up: {
