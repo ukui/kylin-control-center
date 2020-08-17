@@ -140,7 +140,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
     ui->closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
 
-
     //初始化功能列表数据
     FunctionSelect::initValue();
 
@@ -182,7 +181,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    ui->leftsidebarWidget->setVisible(ui->stackedWidget->currentIndex());
     connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, [=](int index){
         //左侧边栏显示/不显示
-        ui->leftsidebarWidget->setVisible(index);
+        ui->leftsidebarWidget->setVisible(false);
         //左上角显示字符/返回按钮
         ui->backBtn->setVisible(index);
         ui->titleLabel->setHidden(index);
@@ -201,13 +200,14 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     //加载左侧边栏一级菜单
-    initLeftsideBar();
+//    initLeftsideBar();
 
+    initMenu();
     bIsFullScreen = false;
 
     //加载首页Widget
-    homepageWidget = new HomePageWidget(this);
-    ui->stackedWidget->addWidget(homepageWidget);
+//    homepageWidget = new HomePageWidget(this);
+//    ui->stackedWidget->addWidget(homepageWidget);
 
     //加载功能页Widget
     modulepageWidget = new ModulePageWidget(this);
@@ -339,26 +339,26 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             if (this->windowState() == Qt::WindowMaximized) {
                 QFont font = this->font();
                 int width = font.pointSize();
-                ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
-                for (int i = 0; i <= 9; i++) {
-                    QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
+//                ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
+//                for (int i = 0; i <= 9; i++) {
+//                    QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
 
-                    if (btn) {
-                        QLayout *layout = btn->layout();
-                        QLabel * tipLabel = static_cast<QLabel *>(layout->itemAt(1)->widget());
-                        tipLabel->setVisible(true);
-                    }
-                }
+//                    if (btn) {
+//                        QLayout *layout = btn->layout();
+//                        QLabel * tipLabel = static_cast<QLabel *>(layout->itemAt(1)->widget());
+//                        tipLabel->setVisible(true);
+//                    }
+//                }
             } else {
-                ui->leftsidebarWidget->setMaximumWidth(60);
-                for (int i = 0; i <= 9; i++) {
-                    QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
-                    if (btn) {
-                        QLayout *layout = btn->layout();
-                        QLabel * tipLabel = static_cast<QLabel *>(layout->itemAt(1)->widget());
-                        tipLabel->setVisible(false);
-                    }
-                }
+//                ui->leftsidebarWidget->setMaximumWidth(60);
+//                for (int i = 0; i <= 9; i++) {
+//                    QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
+//                    if (btn) {
+//                        QLayout *layout = btn->layout();
+//                        QLabel * tipLabel = static_cast<QLabel *>(layout->itemAt(1)->widget());
+//                        tipLabel->setVisible(false);
+//                    }
+//                }
             }
         } else if (event->type() == QEvent::MouseButtonDblClick) {
             bool res = dblOnEdge(dynamic_cast<QMouseEvent*>(event));
@@ -508,9 +508,10 @@ void MainWindow::initLeftsideBar(){
             button->setStyleSheet("QPushButton::checked{background: palette(base); border-top-left-radius: 6px;border-bottom-left-radius: 6px;}"
                                   "QPushButton::!checked{background: palette(button);border: none;}");
 
+//            button->setChecked(true);
+
             connect(button, &QPushButton::clicked, this, [=]{
                 QPushButton * btn = dynamic_cast<QPushButton *>(QObject::sender());
-
                 int selectedInt = leftBtnGroup->id(btn);
 
                 //获取一级菜单列表的第一项
@@ -520,10 +521,81 @@ void MainWindow::initLeftsideBar(){
                 for (FuncInfo tmpStruct : tmpList){
                     if (currentFuncMap.keys().contains(tmpStruct.namei18nString)){
                         modulepageWidget->switchPage(currentFuncMap.value(tmpStruct.namei18nString));
+//                        qDebug()<<"1";
                         break;
                     }
                 }
             });
+
+            ui->leftsidebarVerLayout->addWidget(button);
+        }
+    }
+
+    ui->leftsidebarVerLayout->addStretch();
+}
+
+
+void MainWindow::initMenu(){
+
+    leftBtnGroup = new QButtonGroup();
+    leftMicBtnGroup = new QButtonGroup();
+
+    //构建左侧边栏返回首页按钮
+    QPushButton * hBtn = buildLeftsideBtn("homepage",tr("HOME"));
+    hBtn->setObjectName("homepage");
+    connect(hBtn, &QPushButton::clicked, this, [=]{
+        ui->stackedWidget->setCurrentIndex(0);
+    });
+    hBtn->setStyleSheet("QPushButton#homepage{background: palette(button); border: none;}");
+//    hBtn->setStyleSheet("QPushButton#homepage{background: palette(base);}");
+    ui->leftsidebarVerLayout->addStretch();
+    ui->leftsidebarVerLayout->addWidget(hBtn);
+
+    QString locale = QLocale::system().name();
+    for(int type = 0; type < TOTALMODULES; type++){
+        //循环构建左侧边栏一级菜单按钮
+        if (moduleIndexList.contains(type)){
+            QString mnameString = kvConverter->keycodeTokeystring(type);
+            QString mnamei18nString  = kvConverter->keycodeTokeyi18nstring(type); //设置TEXT
+
+            QPushButton * button;
+            QString btnName = "btn" + QString::number(type + 1);
+            if ("zh_CN" == locale) {
+                button = buildLeftsideBtn(mnameString,mnamei18nString);
+                button->setToolTip(mnamei18nString);
+            } else {
+                button = buildLeftsideBtn(mnameString,mnameString);
+                button->setToolTip(mnameString);
+            }
+            button->setObjectName(btnName);
+            button->setCheckable(true);
+            leftBtnGroup->addButton(button, type);
+
+            //设置样式
+//            button->setStyleSheet("QPushButton::checked{background: palette(button); border: none; border-image: url('://img/primaryleftmenu/checked.png');}"
+//                                  "QPushButton::!checked{background: palette(button);border: none;}");
+            button->setStyleSheet("QPushButton::checked{background: palette(base); border-top-left-radius: 6px;border-bottom-left-radius: 6px;}"
+                                  "QPushButton::!checked{background: palette(button);border: none;}");
+
+//            button->setChecked(true);
+//            qDebug()<<"2";
+
+//            connect(button, &QPushButton::clicked, this, [=]{
+//                QPushButton * btn = dynamic_cast<QPushButton *>(QObject::sender());
+//                int selectedInt = leftBtnGroup->id(btn);
+
+//                //获取一级菜单列表的第一项
+//                QList<FuncInfo> tmpList = FunctionSelect::funcinfoList[selectedInt];
+//                QMap<QString, QObject *> currentFuncMap = modulesList[selectedInt];
+
+//                for (FuncInfo tmpStruct : tmpList){
+//                    if (currentFuncMap.keys().contains(tmpStruct.namei18nString)){
+//                        modulepageWidget->switchPage(currentFuncMap.value(tmpStruct.namei18nString));
+//                        qDebug()<<"2";
+//                        break;
+//                    }
+//                }
+//            });
 
             ui->leftsidebarVerLayout->addWidget(button);
         }

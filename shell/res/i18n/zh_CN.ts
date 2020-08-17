@@ -2231,12 +2231,12 @@ folder will be deleted!</source>
     <message>
         <location filename="../../utils/keyvalueconverter.cpp" line="61"/>
         <source>Datetime</source>
-        <translation>时间和日期</translation>
+        <translation>时间</translation>
     </message>
     <message>
         <location filename="../../utils/keyvalueconverter.cpp" line="64"/>
         <source>Update</source>
-        <translation>更新</translation>
+        <translation>更新和备份</translation>
     </message>
     <message>
         <location filename="../../utils/keyvalueconverter.cpp" line="67"/>

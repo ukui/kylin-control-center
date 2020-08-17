@@ -89,10 +89,35 @@ void ModulePageWidget::initUI(){
     ui->leftbarWidget->setSizePolicy(leftSizePolicy);
     ui->widget->setSizePolicy(rightSizePolicy);
 
+    QListWidget * leftListWidget = new QListWidget;
+
     for (int moduleIndex = 0; moduleIndex < TOTALMODULES; moduleIndex++){
-        QListWidget * leftListWidget = new QListWidget;
+        QString titleString = mkvConverter->keycodeTokeyi18nstring(moduleIndex);
+//        qDebug()<<"titleString: "<<titleString;
         leftListWidget->setObjectName("leftWidget");
-//        leftListWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
+        leftListWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
+
+        QListWidgetItem * titleItem = new QListWidgetItem();
+
+
+        titleItem->setText(titleString);
+        titleItem->setFlags((Qt::ItemFlag)0);
+//        titleItem->setBackground(QBrush(QColor(0,0,0)));
+//        titleItem->setTextColor(QColor(233,0,0));
+        titleItem->setBackground(QBrush(QColor(233,0,0)));
+//        leftListWidget->setStyleSheet("QListWidget::titleItem:hover{background:#FF3D6BE5;border-radius: 4px;}");
+        //widget->setStyleSheet("QListWidget::Item:hover{background:#FF3D6BE5;border-radius: 4px;}");
+
+        leftListWidget->addItem(titleItem);
+
+//        LeftWidgetItem * titleItem = new LeftWidgetItem(leftListWidget);
+//        titleItem->setLabelText(titleString);
+//        titleItem->textLabel->setAlignment(Qt::AlignLeft);
+//        QListWidgetItem * item = new QListWidgetItem(leftListWidget);
+//        item->setSizeHint(QSize(ui->leftStackedWidget->width(), 40));
+//        leftListWidget->setItemWidget(item, titleItem);
+
+//        QListWidget * leftListWidget = new QListWidget;
         leftListWidget->setAttribute(Qt::WA_DeleteOnClose);
         leftListWidget->setResizeMode(QListView::Adjust);
         leftListWidget->setFocusPolicy(Qt::NoFocus);
@@ -126,7 +151,6 @@ void ModulePageWidget::initUI(){
             QListWidgetItem * item = new QListWidgetItem(leftListWidget);
             item->setSizeHint(QSize(ui->leftStackedWidget->width(), 40)); //QSize(120, 40) spacing: 12px;
             leftListWidget->setItemWidget(item, leftWidgetItem);
-
             strItemsMap.insert(single.namei18nString, item);
 
             //填充上侧二级菜单
@@ -263,16 +287,15 @@ void ModulePageWidget::highlightItem(QString text){
 void ModulePageWidget::currentLeftitemChanged(QListWidgetItem *cur, QListWidgetItem *pre){
     //获取当前QListWidget
     QListWidget * currentLeftListWidget = dynamic_cast<QListWidget *>(ui->leftStackedWidget->currentWidget());
-
-
     if (pre != nullptr){
         LeftWidgetItem * preWidgetItem = dynamic_cast<LeftWidgetItem *>(currentLeftListWidget->itemWidget(pre));
         //取消高亮
+        LeftWidgetItem * curWidgetItem = dynamic_cast<LeftWidgetItem *>(currentLeftListWidget->itemWidget(cur));
+//        if(!pluginInstanceMap.contains(curWidgetItem->text()))return;
         preWidgetItem->setSelected(false);
         preWidgetItem->setLabelTextIsWhite(false);
         preWidgetItem->isSetLabelPixmapWhite(false);
     }
-
     LeftWidgetItem * curWidgetItem = dynamic_cast<LeftWidgetItem *>(currentLeftListWidget->itemWidget(cur));
     if (pluginInstanceMap.contains(curWidgetItem->text())){
         CommonInterface * pluginInstance = pluginInstanceMap[curWidgetItem->text()];
@@ -282,6 +305,6 @@ void ModulePageWidget::currentLeftitemChanged(QListWidgetItem *cur, QListWidgetI
         curWidgetItem->setLabelTextIsWhite(true);
         curWidgetItem->isSetLabelPixmapWhite(true);
     } else {
-        qDebug() << "plugin widget not fount!";
+//        qDebug() << "plugin widget not fount!";
     }
 }

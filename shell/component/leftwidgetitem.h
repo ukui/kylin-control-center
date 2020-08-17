@@ -43,6 +43,9 @@ public:
     void setSelected(bool selected);
 
     QString text();
+    QLabel * textLabel;
+    QLabel * iconLabel;
+
 
 private:
     // load svg picture
@@ -51,8 +54,8 @@ private:
     QPixmap drawSymbolicColoredPixmap(const QPixmap &source, QString cgcolor);
 
 private:
-    QLabel * iconLabel;
-    QLabel * textLabel;
+//    QLabel * iconLabel;
+//    QLabel * textLabel;
 
     QWidget * widget;
     QString icoName;
