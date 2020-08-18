@@ -22,6 +22,7 @@
 
 #include <QListWidgetItem>
 
+#include "delegate.h"
 #include "mainwindow.h"
 #include "interface.h"
 #include "utils/keyvalueconverter.h"
@@ -89,7 +90,8 @@ void ModulePageWidget::initUI(){
     ui->leftbarWidget->setSizePolicy(leftSizePolicy);
     ui->widget->setSizePolicy(rightSizePolicy);
 
-    QListWidget * leftListWidget = new QListWidget;
+    QListWidget * leftListWidget = new QListWidget(this);
+    leftListWidget->setItemDelegate(new Delegate(this));
 
     for (int moduleIndex = 0; moduleIndex < TOTALMODULES; moduleIndex++){
         QString titleString = mkvConverter->keycodeTokeyi18nstring(moduleIndex);
@@ -98,6 +100,7 @@ void ModulePageWidget::initUI(){
         leftListWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
 
         QListWidgetItem * titleItem = new QListWidgetItem();
+        titleItem->setData(Qt::UserRole, "title");
 
 
         titleItem->setText(titleString);

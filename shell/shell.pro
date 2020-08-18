@@ -59,6 +59,7 @@ DEPENDPATH += qtsingleapplication
 
 SOURCES += \
     customstyle.cpp \
+    delegate.cpp \
     main.cpp \
     mainwindow.cpp \
     framelessExtended/cursorposcalculator.cpp \
@@ -76,6 +77,7 @@ SOURCES += \
 
 HEADERS += \
     customstyle.h \
+    delegate.h \
     mainwindow.h \
     interface.h \
     framelessExtended/cursorposcalculator.h \
