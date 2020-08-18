@@ -133,6 +133,7 @@
         <file>secondaryleftmenu/SecurityCenter.svg</file>
         <file>secondaryleftmenu/SecurityCenterWhite.svg</file>
         <file>plugins/about/logoukui.svg</file>
+        <file>plugins/userinfo/notice.png</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

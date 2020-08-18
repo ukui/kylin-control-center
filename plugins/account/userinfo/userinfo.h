@@ -35,6 +35,7 @@
 #include "qtdbus/systemdbusdispatcher.h"
 #include "qtdbus/userdispatcher.h"
 
+#include "changegroupdialog.h"
 #include "changepwddialog.h"
 #include "changefacedialog.h"
 #include "changetypedialog.h"
@@ -150,6 +151,8 @@ public:
 
     void showChangeValidDialog(QString username);
 
+    void showChangeGroupDialog();
+
     void get_all_users();
     UserInfomation init_user_info(QString objpath);
     void setup_otherusers_ui();
@@ -161,6 +164,7 @@ public:
 
 
     void readCurrentPwdConf();
+    QStringList getUsersList();
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
