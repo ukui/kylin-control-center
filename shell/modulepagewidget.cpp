@@ -124,7 +124,7 @@ void ModulePageWidget::initUI(){
             leftWidgetItem->setLabelPixmap(QString("://img/secondaryleftmenu/%1.svg").arg(single.nameString), single.nameString, "default");
 
             QListWidgetItem * item = new QListWidgetItem(leftListWidget);
-            item->setSizeHint(QSize(ui->leftStackedWidget->width(), 40)); //QSize(120, 40) spacing: 12px;
+            item->setSizeHint(QSize(ui->leftbarWidget->width(),40)); //QSize(120, 40) spacing: 12px;
             leftListWidget->setItemWidget(item, leftWidgetItem);
 
             strItemsMap.insert(single.namei18nString, item);

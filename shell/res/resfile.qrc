@@ -65,7 +65,6 @@
         <file>secondaryleftmenu/Mouse.svg</file>
         <file>secondaryleftmenu/MouseWhite.svg</file>
         <file>secondaryleftmenu/Netconnect.svg</file>
-        <file>secondaryleftmenu/NetconnectWhite.svg</file>
         <file>secondaryleftmenu/Notice.svg</file>
         <file>secondaryleftmenu/NoticeWhite.svg</file>
         <file>secondaryleftmenu/Power.svg</file>
@@ -105,7 +104,6 @@
         <file>primaryleftmenu/datetime.svg</file>
         <file>titlebar/min.svg</file>
         <file>titlebar/back.svg</file>
-        <file>secondaryleftmenu/NetworkAccount.svg</file>
         <file>secondaryleftmenu/NetworkAccountWhite.svg</file>
         <file>plugins/netconnect/eth.svg</file>
         <file>plugins/netconnect/nonet.svg</file>
@@ -133,6 +131,8 @@
         <file>secondaryleftmenu/SecurityCenter.svg</file>
         <file>secondaryleftmenu/SecurityCenterWhite.svg</file>
         <file>plugins/about/logoukui.svg</file>
+        <file>secondaryleftmenu/Cloud Account.svg</file>
+        <file>secondaryleftmenu/Cloud AccountWhite.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>
