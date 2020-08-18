@@ -472,7 +472,7 @@
                   </sizepolicy>
                  </property>
                  <property name="text">
-                  <string>Test repetition rate of the input character:</string>
+                  <string>Input characters to test the repetition effect:</string>
                  </property>
                  <property name="scaledContents">
                   <bool>true</bool>
