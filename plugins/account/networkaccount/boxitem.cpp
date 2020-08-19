@@ -40,12 +40,12 @@ BoxItem::BoxItem(QWidget *parent) : QWidget(parent)
 }
 
 /* 设置国家名字 */
-void BoxItem::set_code(QString str) {
+void BoxItem::set_code(const QString &str) {
     m_countryCode->setText(str);
 }
 
 /* 设置国家代码 */
-void BoxItem::set_country_code(QString str) {
+void BoxItem::set_country_code(const QString &str) {
     m_countryName->setText(str);
 }
 

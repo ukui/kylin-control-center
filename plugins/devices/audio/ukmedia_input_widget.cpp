@@ -49,13 +49,16 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
 
     m_pInputLabel = new QLabel(tr("Input"),this);
     m_pInputLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    //~ contents_path /audio/Input Device
     m_pInputDeviceLabel = new QLabel(tr("Input Device"),m_pInputWidget);
     m_pInputDeviceCombobox = new QComboBox(m_pInputDeviceWidget);
 
+    //~ contents_path /audio/Volume
     m_pIpVolumeLabel = new QLabel(tr("Volume"),m_pVolumeWidget);
     m_pInputIconBtn = new UkuiButtonDrawSvg(m_pVolumeWidget);
     m_pIpVolumeSlider = new AudioSlider(m_pVolumeWidget);
     m_pIpVolumePercentLabel = new QLabel(m_pVolumeWidget);
+    //~ contents_path /audio/Input Level
     m_pInputLevelLabel = new QLabel(tr("Input Level"),m_pInputLevelWidget);
     m_pLowLevelLabel = new QLabel(tr("Low"),m_pInputLevelWidget);
     m_pInputLevelSlider = new AudioSlider(m_pInputLevelWidget);

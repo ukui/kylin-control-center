@@ -58,7 +58,7 @@ public:
     int             timerout_num_reg = 60;
     int             timerout_num_log = 60;
     int             timerout_num_bind = 60;
-    QString         messagebox(int code);
+    QString         messagebox(const int &code) const;
     void            set_client(DbusHandleClient *c,QThread *t);
     QPushButton    *get_login_submit();
     LoginDialog     *get_dialog();
@@ -66,7 +66,7 @@ public:
     void            set_clear();
     void            setshow(QWidget *w);
     bool            is_used = false;
-    void            set_staus(bool ok);
+    void            set_staus(const bool &ok);
     void            closedialog();
     void            setnormal();
     ~MainDialog();
@@ -179,10 +179,10 @@ signals:
     void dogetmcode_phone_reg(QString phonenumb,QString uuid);
     void dogetmcode_number_bind(QString username,QString uuid);
     void dogetmcode_number_pass(QString username,QString uuid);
-    void dorest(QString username, QString newpwd, QString mCode,QString uuid);
-    void doreg(QString username, QString pwd, QString phonenumb, QString mcode,QString uuid);
-    void dophonelogin(QString phone, QString mCode,QString uuid);
-    void dobind(QString username, QString pwd, QString phone, QString mCode,QString uuid);
+    void dorest(QString username,QString newpwd,QString mCode,QString uuid);
+    void doreg(QString username,QString pwd,QString phonenumb,QString mcode,QString uuid);
+    void dophonelogin(QString phone,QString mCode,QString uuid);
+    void dobind(QString username,QString pwd,QString phone,QString mCode,QString uuid);
 
 };
 

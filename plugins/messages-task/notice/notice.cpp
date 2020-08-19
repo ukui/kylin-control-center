@@ -54,6 +54,7 @@ Notice::Notice()
     ui->applistWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->applistWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    initSearchText();
     setupGSettings();
     setupComponent();
     initNoticeStatus();
@@ -87,6 +88,19 @@ QWidget * Notice::get_plugin_ui(){
 
 void Notice::plugin_delay_control(){
 
+}
+
+const QString Notice::name() const {
+
+    return QStringLiteral("notice");
+}
+
+void Notice::initSearchText() {
+
+    //~ contents_path /notice/Set the type of notice in the operation center
+    ui->noticeLabel->setText(tr("Set the type of notice in the operation center"));
+    //~ contents_path /notice/Notice Origin
+    ui->title2Label->setText(tr("Notice Origin"));
 }
 
 void Notice::setupComponent(){

@@ -31,7 +31,9 @@
 #include "interface.h"
 #include "homepagewidget.h"
 #include "modulepagewidget.h"
+#include "searchwidget.h"
 
+class QLabel;
 class QPushButton;
 class QButtonGroup;
 class KeyValueConverter;
@@ -76,8 +78,16 @@ private:
     QList<QMap<QString, QObject *>> modulesList;
 
     KeyValueConverter * kvConverter;
+    SearchWidget * m_searchWidget;
+
+    QPushButton * backBtn;
+    QPushButton * minBtn;
+    QPushButton * maxBtn;
+    QPushButton * closeBtn;
+    QLabel      * titleLabel;
 
 private:
+    void initTileBar();
     void setBtnLayout(QPushButton * &pBtn);
     void loadPlugins();
     void initLeftsideBar();
@@ -93,6 +103,7 @@ private:
     QPixmap drawSymbolicColoredPixmap(const QPixmap &source, QString color);
 
     bool dblOnEdge(QMouseEvent *event);
+    void initStyleSheet();
 
 public slots:
     void functionBtnClicked(QObject * plugin);
@@ -100,6 +111,7 @@ public slots:
 
 signals:
     void btnclicked();
+    void switchPage(QString moduleName);
 };
 
 #endif // MAINWINDOW_H

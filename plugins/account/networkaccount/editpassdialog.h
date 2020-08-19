@@ -46,17 +46,17 @@ class EditPassDialog : public QWidget
 public:
     explicit        EditPassDialog(QWidget *parent = nullptr);
     int             m_szTimerNum = 60;
-    void            set_code(QString codenum);
+    void            set_code(const QString &codenum);
     void            set_client(DbusHandleClient *c,QThread *t);
     void            set_clear();
     Tips*         get_tips();
-    QString         messagebox(int codenum);
+    QString         messagebox(const int &codenum) const;
     void            setshow(QWidget *w);
     QString         m_szCode;
     bool            m_bIsUsed = false;
 public slots:
     void            on_edit_submit();
-    void            on_edit_submit_finished(int req,QString m_szUuid);
+    void            on_edit_submit_finished(int req, QString m_szUuid);
     void            on_edit_code_finished(int req,QString m_szUuid);
     void            on_timer_start();
     void            on_send_code();
@@ -96,8 +96,8 @@ private:
 signals:
     void code_changed();
     void account_changed();
-    void docode(QString m_szCode,QString m_szUuid);
-    void doreset(QString a,QString b,QString c,QString m_szUuid);
+    void docode(QString szCode,QString szUuid);
+    void doreset(QString a,QString b,QString c,QString szUuid);
     void docheck();
     void dologout();
 };

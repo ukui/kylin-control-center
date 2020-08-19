@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network x11extras svg
+QT       += core gui network x11extras svg xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -67,6 +67,8 @@ SOURCES += \
     framelessExtended/widgethandlerealize.cpp \
     homepagewidget.cpp \
     modulepagewidget.cpp \
+    pinyin.cpp \
+    searchwidget.cpp \
     utils/keyvalueconverter.cpp \
     component/leftwidgetitem.cpp \
     component/clicklabel.cpp \
@@ -86,6 +88,8 @@ HEADERS += \
     framelessExtended/widgethandlerealize.h \
     homepagewidget.h \
     modulepagewidget.h \
+    pinyin.h \
+    searchwidget.h \
     utils/keyvalueconverter.h \
     component/leftwidgetitem.h \
     component/clicklabel.h \

@@ -53,6 +53,7 @@ Screenlock::Screenlock()
     const QByteArray id(SCREENLOCK_BG_SCHEMA);
     lSetting = new QGSettings(id);
 
+    initSearchText();
     setupComponent();
     setupConnect();
     initScreenlockStatus();
@@ -82,6 +83,18 @@ QWidget *Screenlock::get_plugin_ui(){
 
 void Screenlock::plugin_delay_control(){
 
+}
+
+const QString Screenlock::name() const {
+
+    return QStringLiteral("screenlock");
+}
+
+void Screenlock::initSearchText() {
+    //~ contents_path /screenlock/Show picture of screenlock on screenlogin
+    ui->loginpicLabel->setText(tr("Show picture of screenlock on screenlogin"));
+    //~ contents_path /screenlock/Lock screen when screensaver boot
+    ui->activepicLabel->setText(tr("Lock screen when screensaver boot"));
 }
 
 void Screenlock::setupComponent(){

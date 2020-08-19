@@ -102,6 +102,20 @@ void Power::plugin_delay_control(){
 
 }
 
+const QString Power::name() const {
+
+    return QStringLiteral("power");
+}
+
+void Power::initSearText() {
+    //~ contents_path /power/Balance (suggest)
+    ui->balanceLabel->setText(tr("Balance (suggest)"));
+    //~ contents_path /power/Saving
+    ui->saveLabel->setText(tr("Saving"));
+    //~ contents_path /power/Custom
+    ui->customLabel->setText(tr("Custom"));
+}
+
 void Power::isPowerSupply(){
     //ubuntukylin youker DBus interface
     QDBusInterface *brightnessInterface = new QDBusInterface("org.freedesktop.UPower",

@@ -37,15 +37,12 @@ Printer::Printer(){
     pluginName = tr("Printer");
     pluginType = DEVICES;
 
-//    ui->addFrame->installEventFilter(this);
-
+    //~ contents_path /printer/Add Printers And Scanners
+    ui->titleLabel->setText(tr("Add Printers And Scanners"));
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-//    ui->addWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
     ui->listWidget->setSpacing(0);
-//    ui->listWidget->setStyleSheet("QListWidget#listWidget{border: none;}");
 
 
     pTimer = new QTimer(this);
@@ -76,6 +73,11 @@ void Printer::plugin_delay_control(){
 
 }
 
+const QString Printer::name() const {
+
+    return QStringLiteral("printer");
+}
+
 void Printer::initComponent(){
 
 //    ui->addBtn->setIcon(QIcon("://img/plugins/printer/add.png"));
@@ -91,6 +93,7 @@ void Printer::initComponent(){
     QHBoxLayout *addLyt = new QHBoxLayout;
 
     QLabel * iconLabel = new QLabel();
+    //~ contents_path /printer/Add printers and scanners
     QLabel * textLabel = new QLabel(tr("Add printers and scanners"));
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);

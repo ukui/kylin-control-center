@@ -48,9 +48,6 @@ DateTime::DateTime()
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->timeClockLable->setStyleSheet("QLabel{color: palette(windowText);}");
 
-//    qDebug()<<"进入时间日期UI------------------》"<<endl;
-
-
     m_zoneinfo = new ZoneInfo;
     m_timezone = new TimeZoneChooser;
     m_itimer = new QTimer();
@@ -58,6 +55,7 @@ DateTime::DateTime()
     connect(m_itimer,SIGNAL(timeout()), this, SLOT(datetime_update_slot()));
 
     m_formTimeBtn = new SwitchButton;
+    //~ contents_path /datetime/24-hour clock
     m_formTimeLabel = new QLabel(tr("24-hour clock"));
 
 
@@ -121,50 +119,35 @@ void DateTime::plugin_delay_control(){
 
 }
 
+const QString DateTime::name() const {
+
+    return QStringLiteral("datetime");
+}
+
 void DateTime::component_init(){
     ui->titleLabel->setContentsMargins(0,0,0,16);
     ui->timeClockLable->setContentsMargins(0,0,0,16);
 
-//    ui->synsystimeBtn->setStyleSheet("QPushButton{background-color:#E9E9E9;border-radius:4px}"
-//                                   "QPushButton:hover{background-color: #3D6BE5;color:white;};border-radius:4px");
-
+    //~ contents_path /datetime/Sync system time
     ui->synsystimeBtn->setText(tr("Sync system time"));
-
-//    ui->chgtimebtn->setStyleSheet("QPushButton{background-color:#E5E7E9;border-radius:4px}"
-//                                   "QPushButton:hover{background-color: #3D6BE5;color:white;};border-radius:4px");
-
+    //~ contents_path /datetime/Change time
     ui->chgtimebtn->setText(tr("Change time"));
-
-//    ui->chgzonebtn->setStyleSheet("QPushButton{background-color:#E5E7E9;border-radius:4px}"
-//                                   "QPushButton:hover{background-color: #3D6BE5;color:white;};border-radius:4px");
+    //~ contents_path /datetime/Change time zone
     ui->chgzonebtn->setText(tr("Change time zone"));
 
-
     ui->chgLayout->setSpacing(16);
-
-//    ui->hourWidget->setStyleSheet("background-color:#E5E7E9;border-radius:6px");
-
-//    ui->syslabel->setStyleSheet("QLabel#syslabel{background: #3D6BE5;border-radius:4px;}");
     ui->syslabel->setVisible(false);
 
-//    ui->endlabel->setStyleSheet("QLabel#endlabel{background: #3D6BE5;border-radius:4px;}");
     ui->endlabel->setVisible(false);
-
-//    m_formTimeBtn->setChecked(false);
 
     QHBoxLayout *hourLayout = new QHBoxLayout(ui->hourFrame);
 
     hourLayout->addWidget(m_formTimeLabel);
     hourLayout->addWidget(m_formTimeBtn);
 
-
-//    ui->hourwidget->addWidget(formTimeLabel);
-
-
     QDateTime currentime = QDateTime::currentDateTime();
     QString timeAndWeek = currentime.toString("yyyy/MM/dd ddd");
     ui->dateLabel->setText(timeAndWeek);
-
 
     //因为ntpd和systemd的网络时间同步会有冲突，所以安装了ntp的话，禁止使用控制面板设置网络时间同步
     QFileInfo fileinfo("/usr/sbin/ntpd");

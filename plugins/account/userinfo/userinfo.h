@@ -35,6 +35,7 @@
 #include "qtdbus/systemdbusdispatcher.h"
 #include "qtdbus/userdispatcher.h"
 
+#include "changegroupdialog.h"
 #include "changepwddialog.h"
 #include "changefacedialog.h"
 #include "changetypedialog.h"
@@ -116,8 +117,10 @@ public:
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget *get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
+    const QString name() const  Q_DECL_OVERRIDE;
 
 public:
+    void initSearchText();
     void initComponent();
     void initAllUserStatus();
 
@@ -148,6 +151,8 @@ public:
 
     void showChangeValidDialog(QString username);
 
+    void showChangeGroupDialog();
+
     void get_all_users();
     UserInfomation init_user_info(QString objpath);
     void setup_otherusers_ui();
@@ -159,6 +164,7 @@ public:
 
 
     void readCurrentPwdConf();
+    QStringList getUsersList();
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);

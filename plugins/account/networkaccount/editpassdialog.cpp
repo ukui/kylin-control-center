@@ -259,7 +259,7 @@ void EditPassDialog::setret_edit(int ret) {
 }
 
 /* 设置错误提示代码 */
-void EditPassDialog::set_code(QString codenum) {
+void EditPassDialog::set_code(const QString &codenum) {
     m_codeStatus = codenum;
     emit code_changed();
 }
@@ -369,7 +369,7 @@ void EditPassDialog::on_edit_submit_finished(int req,QString uuid) {
 }
 
 /* 消息盒子 */
-QString EditPassDialog::messagebox(int code) {
+QString EditPassDialog::messagebox(const int &code) const {
     QString ret = tr("Error code:") + QString::number(code,10)+ tr("!");
     switch(code) {
     case 101:ret = tr("Internal error occurring!");break;
@@ -407,7 +407,7 @@ void EditPassDialog::setshow(QWidget *widget) {
 }
 
 /* 验证码获取回调 */
-void EditPassDialog::on_edit_code_finished(int req,QString uuid) {
+void EditPassDialog::on_edit_code_finished(int req, QString uuid) {
     if(this->m_szUuid != uuid) {
         return ;
     }

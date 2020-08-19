@@ -49,28 +49,13 @@ void centerToScreen(QWidget* widget) {
     widget->move(desk_x / 2 - x / 2 + desk_rect.left(), desk_y / 2 - y / 2 + desk_rect.top());
 }
 
-int getScreenWidth() {
-    Display *disp = XOpenDisplay(NULL);
-    Screen *scrn = DefaultScreenOfDisplay(disp);
-    if (NULL == scrn) {
-        return 0;
-    }
-    int width = scrn->width;
-
-    if (NULL != disp) {
-        XCloseDisplay(disp);
-    }
-    return width;
-}
-
 int main(int argc, char *argv[])
 {
-    if (getScreenWidth() > 2560) {
-        #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
-                QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-                QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-        #endif
-    }
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+#endif
 
     QtSingleApplication a(argc, argv);
 
@@ -79,14 +64,8 @@ int main(int argc, char *argv[])
         qDebug() << QObject::tr("ukui-control-center is already running!");
         return EXIT_SUCCESS;
     } else {
-        //加载国际化文件
-//        QString locale = QLocale::system().name();
-//        QTranslator translator;
-//        QString qm  = locale + ".qm";
-////        qDebug() << "locale is "<< qm <<endl;
-//        if (translator.load(qm, "://i18n/"))
-//            a.installTranslator(&translator);
 
+        // 加载国际化文件
         QTranslator translator;
         translator.load("/usr/share/ukui-control-center/shell/res/i18n/" + QLocale::system().name());
         a.installTranslator(&translator);

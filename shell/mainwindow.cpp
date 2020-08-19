@@ -23,6 +23,7 @@
 #include "utils/functionselect.h"
 
 #include <QLabel>
+#include <QLocale>
 #include <QPushButton>
 #include <QButtonGroup>
 #include <QHBoxLayout>
@@ -52,22 +53,22 @@ extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int tran
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    m_searchWidget(nullptr)
+
 {
     ui->setupUi(this);
-    //初始化mixer
+    initTileBar();
+    // 初始化mixer
     mate_mixer_init();
-    //设置初始大小
+    // 设置初始大小
     resize(QSize(820, 600));
-    //设置窗体无边框
+    // 设置窗体无边框
     setWindowFlags(Qt::FramelessWindowHint | Qt::Widget);
     this->installEventFilter(this);
-    ui->closeBtn->setFixedSize(32,32);
-    //该设置去掉了窗体透明后的黑色背景
+//    closeBtn->setFixedSize(32,32);
+    // 该设置去掉了窗体透明后的黑色背景
     setAttribute(Qt::WA_TranslucentBackground, true);
-    //将最外层窗体设置为透明
-
-//    setStyleSheet("QMainWindow#MainWindow{background-color: transparent;}");
 
     const QByteArray id("org.ukui.style");
     QGSettings * fontSetting = new QGSettings(id);
@@ -139,6 +140,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
     ui->maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
     ui->closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
+    initStyleSheet();
 
     //初始化功能列表数据
     FunctionSelect::initValue();
@@ -149,22 +151,22 @@ MainWindow::MainWindow(QWidget *parent) :
     //加载插件
     loadPlugins();
 
-    connect(ui->minBtn, SIGNAL(clicked()), this, SLOT(showMinimized()));
+    connect(minBtn, SIGNAL(clicked()), this, SLOT(showMinimized()));
 //    connect(ui->minBtn, &QPushButton::clicked, [=]{
 //        KWindowSystem::minimizeWindow(this->winId());
 //    });
-    connect(ui->maxBtn, &QPushButton::clicked, this, [=]{
+    connect(maxBtn, &QPushButton::clicked, this, [=]{
         if (isMaximized()){
             bIsFullScreen = false;
             showNormal();
-            ui->maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
+            maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
         } else {
             bIsFullScreen = true;
             showMaximized();
-            ui->maxBtn->setIcon(QIcon::fromTheme("window-restore-symbolic"));
+            maxBtn->setIcon(QIcon::fromTheme("window-restore-symbolic"));
         }
     });
-    connect(ui->closeBtn, &QPushButton::clicked, this, [=]{
+    connect(closeBtn, &QPushButton::clicked, this, [=]{
         close();
 //        qApp->quit();
     });
@@ -183,8 +185,8 @@ MainWindow::MainWindow(QWidget *parent) :
         //左侧边栏显示/不显示
         ui->leftsidebarWidget->setVisible(false);
         //左上角显示字符/返回按钮
-        ui->backBtn->setVisible(index);
-        ui->titleLabel->setHidden(index);
+        backBtn->setVisible(index);
+        titleLabel->setHidden(index);
 
         if (index){ //首页部分组件样式
             //中部内容区域
@@ -214,7 +216,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->stackedWidget->addWidget(modulepageWidget);
 
     //top left return button
-    connect(ui->backBtn, &QPushButton::clicked, this, [=]{
+    connect(backBtn, &QPushButton::clicked, this, [=]{
         FunctionSelect::popRecordValue();
 
         //if recordFuncStack is empty, it means there is no history record. So return to homepage
@@ -231,6 +233,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
         bootOptionsFilter(QApplication::arguments().at(1));
     }
+
 }
 
 MainWindow::~MainWindow()
@@ -278,6 +281,7 @@ void MainWindow::bootOptionsSwitch(int moduleNum, int funcNum){
 
     QList<FuncInfo> pFuncStructList = FunctionSelect::funcinfoList[moduleNum];
     QString funcStr = pFuncStructList.at(funcNum).namei18nString;
+    qDebug() << "moduleNum is" << moduleNum << " " << funcNum << " " << funcStr << endl;
 
     QMap<QString, QObject *> pluginsObjMap = modulesList.at(moduleNum);
 
@@ -373,14 +377,49 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             }
         }
     }
-    if(ui->closeBtn == watched) {
+    if(closeBtn == watched) {
         if(event->type() == QEvent::Enter) {
-            ui->closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"white"));
+            closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"white"));
         }else if(event->type() == QEvent::Leave) {
-            ui->closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
+            closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
         }
     }
     return QObject::eventFilter(watched, event);
+}
+
+void MainWindow::initTileBar() {
+
+    ui->titleLayout->setContentsMargins(5, 0, 10, 0);
+    m_searchWidget = new SearchWidget(this);
+    m_searchWidget->setPlaceholderText(tr("Search"));
+    m_searchWidget->setFocusPolicy(Qt::ClickFocus);
+    m_searchWidget->installEventFilter(this);
+
+
+
+    ui->titleLayout->addWidget(m_searchWidget, Qt::AlignCenter);
+    connect(m_searchWidget, &SearchWidget::notifyModuleSearch, this, &MainWindow::switchPage);
+
+    backBtn     = new QPushButton(this);
+    minBtn      = new QPushButton(this);
+    maxBtn      = new QPushButton(this);
+    closeBtn     = new QPushButton(this);
+    titleLabel  = new QLabel(tr("UKCC"), this);
+
+    backBtn->setFixedSize(32, 32);
+    minBtn->setFixedSize(32, 32);
+    maxBtn->setFixedSize(32, 32);
+    titleLabel->setFixedSize(32, 32);
+    m_searchWidget->setMinimumWidth(350);
+
+    ui->titleLayout->addWidget(titleLabel);
+    ui->titleLayout->addWidget(backBtn);
+    ui->titleLayout->addStretch();
+    ui->titleLayout->addWidget(m_searchWidget);
+    ui->titleLayout->addStretch();
+    ui->titleLayout->addWidget(minBtn);
+    ui->titleLayout->addWidget(maxBtn);
+    ui->titleLayout->addWidget(closeBtn);
 }
 
 void MainWindow::setBtnLayout(QPushButton * &pBtn){
@@ -455,6 +494,8 @@ void MainWindow::loadPlugins(){
 
             qDebug() << "Load Plugin :" << kvConverter->keycodeTokeyi18nstring(pluginInstance->get_plugin_type()) << "->" << pluginInstance->get_plugin_name() ;
 
+            m_searchWidget->addModulesName(pluginInstance->name(), pluginInstance->get_plugin_name(), pluginInstance->translationPath());
+
             int moduletypeInt = pluginInstance->get_plugin_type();
             if (!moduleIndexList.contains(moduletypeInt))
                 moduleIndexList.append(moduletypeInt);
@@ -464,6 +505,7 @@ void MainWindow::loadPlugins(){
                 qDebug() << fileName << "Load Failed: " << loader.errorString() << "\n";
         }
     }
+    m_searchWidget->setLanguage(QLocale::system().name());
 }
 
 void MainWindow::initLeftsideBar(){
@@ -770,7 +812,51 @@ bool MainWindow::dblOnEdge(QMouseEvent *event)
     return onTopEdges;
 }
 
-void MainWindow::setModuleBtnHightLight(int id){
+void MainWindow::initStyleSheet() {
+    // 设置panel图标
+    QIcon panelicon;
+    if (QIcon::hasThemeIcon("ukui-control-center"))
+        panelicon = QIcon::fromTheme("ukui-control-center");
+
+    this->setWindowIcon(panelicon);
+    this->setWindowTitle(tr("ukcc"));
+
+    // 中部内容区域
+    ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+    // 标题栏widget
+    ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background: palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+
+    // 左上角返回按钮
+    backBtn->setProperty("useIconHighlightEffect", true);
+    backBtn->setProperty("iconHighlightEffectMode", 1);
+    backBtn->setFlat(true);
+
+    minBtn->setProperty("useIconHighlightEffect", true);
+    minBtn->setProperty("iconHighlightEffectMode", 1);
+    minBtn->setFlat(true);
+    maxBtn->setProperty("useIconHighlightEffect", true);
+    maxBtn->setProperty("iconHighlightEffectMode", 1);
+    maxBtn->setFlat(true);
+    closeBtn->setProperty("useIconHighlightEffect", true);
+    closeBtn->setProperty("iconHighlightEffectMode", 1);
+    closeBtn->setFlat(true);
+    closeBtn->installEventFilter(this);
+
+    closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+
+    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
+
+    // 设置左上角按钮图标
+    backBtn->setIcon(QIcon("://img/titlebar/back.svg"));
+
+    // 设置右上角按钮图标
+    minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
+    maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
+    closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
+}
+
+void MainWindow::setModuleBtnHightLight(int id) {
     leftBtnGroup->button(id)->setChecked(true);
     leftMicBtnGroup->button(id)->setChecked(true);
 }
@@ -799,6 +885,18 @@ void MainWindow::sltMessageReceived(const QString &msg) {
     flags &= ~Qt::WindowStaysOnTopHint;
     setWindowFlags(flags);
     showNormal();
+}
+
+void MainWindow::switchPage(QString moduleName) {
+
+    for (int i = 0; i < modulesList.length(); i++) {
+        auto modules = modulesList.at(i);
+        //开始跳转
+        if (modules.keys().contains(moduleName)) {
+            ui->stackedWidget->setCurrentIndex(1);
+            modulepageWidget->switchPage(modules.value(moduleName));
+        }
+    }
 }
 
 const QPixmap MainWindow::renderSvg(const QIcon &icon, QString cgColor) {

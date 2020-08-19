@@ -121,6 +121,11 @@ void SecurityCenter::plugin_delay_control(){
 
 }
 
+const QString SecurityCenter::name() const {
+
+    return QStringLiteral("securitycenter");
+}
+
 void SecurityCenter::initComponent(){
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 

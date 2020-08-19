@@ -53,6 +53,7 @@ NetConnect::NetConnect():m_wifiList(new Wifi)
 
     ui->openWIifLayout->addWidget(wifiBtn);
 
+    initSearchText();
     initComponent();
 
 //    getNetList();
@@ -105,6 +106,17 @@ void NetConnect::properties_changed_refresh(){
     /*等待一段时间后把is_refreshed重置，等待是为了避免在dbus接收属性更改时收到
     多条信号并连续执行槽函数refreshed_signal_changed()并更改is_refreshed导致冲突*/
     QTimer::singleShot(1000, this, SLOT(reset_bool_is_refreshed()));
+}
+const QString NetConnect::name() const {
+
+    return QStringLiteral("netconnect");
+}
+
+void NetConnect::initSearchText() {
+    //~ contents_path /netconnect/Netconnect Status
+    ui->titleLabel->setText(tr("Netconnect Status"));
+    //~ contents_path /netconnect/open wifi
+    ui->openLabel->setText(tr("open wifi"));
 }
 
 void NetConnect::initComponent(){

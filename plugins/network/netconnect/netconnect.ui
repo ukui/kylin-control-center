@@ -162,7 +162,7 @@
       <item>
        <layout class="QHBoxLayout" name="openWIifLayout">
         <item>
-         <widget class="QLabel" name="open">
+         <widget class="QLabel" name="openLabel">
           <property name="minimumSize">
            <size>
             <width>118</width>

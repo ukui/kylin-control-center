@@ -37,19 +37,19 @@ class PassDialog : public QWidget
 public:
     explicit PassDialog(QWidget *parent = nullptr);
     QPushButton* get_send_msg_btn();
-    QString     get_user_name();
-    QString     get_user_newpass();
-    QString     get_user_confirm();
-    QString     get_user_mcode();
+    QString     get_user_name() const;
+    QString     get_user_newpass() const;
+    QString     get_user_confirm() const;
+    QString     get_user_mcode() const;
     QLineEdit*  get_reg_phone();
     PasswordLineEdit*  get_reg_pass();
     PasswordLineEdit*  get_reg_pass_confirm();
     QLineEdit*  get_valid_code();
-    void        set_code(QString codenum);
+    void        set_code(const QString &codenum);
     void        set_clear();
     Tips*     get_tips();
     QLabel*     get_passtips();
-    void        set_staus(bool ok);
+    void        set_staus(const bool &ok);
 public slots:
     void change_uppercase();
     void setstyleline();

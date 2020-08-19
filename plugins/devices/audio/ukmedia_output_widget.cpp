@@ -76,24 +76,29 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
 
     m_pOutputLabel = new QLabel(tr("Output"),this);
     m_pOutputLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    //~ contents_path /audio/Output Device
     m_pOutputDeviceLabel = new QLabel(tr("Output Device"),m_pOutputWidget);
     m_pOutputDeviceCombobox = new QComboBox(m_pOutputDeviceWidget);
+    //~ contents_path /audio/Master Volume
     m_pOpVolumeLabel = new QLabel(tr("Master Volume"),m_pMasterVolumeWidget);
     m_pOutputIconBtn = new UkuiButtonDrawSvg(m_pMasterVolumeWidget);
     m_pOpVolumeSlider = new AudioSlider(m_pMasterVolumeWidget);
     m_pOpVolumePercentLabel = new QLabel(m_pMasterVolumeWidget);
+    //~ contents_path /audio/Balance
     m_pOpBalanceLabel = new QLabel(tr("Balance"),m_pChannelBalanceWidget);
     m_pLeftBalanceLabel = new QLabel(tr("Left"),m_pChannelBalanceWidget);
     m_pOpBalanceSlider = new UkmediaVolumeSlider(m_pChannelBalanceWidget);
     m_pRightBalanceLabel = new QLabel(tr("Right"),m_pChannelBalanceWidget);
     m_pOutputPortLabel = new QLabel(tr("Connector"),m_pOutputPortWidget);
     m_pOutputPortCombobox = new QComboBox(m_pOutputPortWidget);
+    //~ contents_path /audio/Profile
     m_pProfileLabel = new QLabel(tr("Profile"),m_pProfileWidget);
     m_pProfileCombobox = new QComboBox(m_pProfileWidget);
     m_pProfileCombobox->setMinimumSize(50,32);
     m_pProfileCombobox->setMaximumSize(900,32);
     m_pselectWidget->setMinimumSize(550,50);
     m_pselectWidget->setMaximumSize(960,50);
+    //~ contents_path /audio/Card
     m_pSelectDeviceLabel = new QLabel(tr("Card"),m_pselectWidget);
     m_pSelectCombobox = new QComboBox(m_pselectWidget);
     m_pProfileLabel->setFixedSize(115,24);

@@ -110,7 +110,7 @@ Fonts::Fonts()
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
     settingsCreate = false;
-
+    initSearchText();
     setupStylesheet();
 
     const QByteArray styleID(STYLE_FONT_SCHEMA);
@@ -159,6 +159,21 @@ QWidget *Fonts::get_plugin_ui(){
 
 void Fonts::plugin_delay_control(){
 
+}
+
+const QString Fonts::name() const {
+
+    return QStringLiteral("fonts");
+}
+
+void Fonts::initSearchText() {
+
+    //~ contents_path /fonts/Font size
+    ui->fontSizeLabel->setText(tr("Font size"));
+    //~ contents_path /fonts/Fonts select
+    ui->fontSizeLabel->setText(tr("Fonts select"));
+    //~ contents_path /fonts/Monospace font
+    ui->fontSizeLabel->setText(tr("Monospace font"));
 }
 
 void Fonts::setupStylesheet(){

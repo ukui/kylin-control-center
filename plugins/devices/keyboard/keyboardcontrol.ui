@@ -148,7 +148,7 @@
                 <number>16</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_3">
+                <widget class="QLabel" name="enableLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -226,7 +226,7 @@
                 <number>16</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_4">
+                <widget class="QLabel" name="delayLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -266,33 +266,7 @@
                <item>
                 <widget class="QSlider" name="delayHorSlider">
                  <property name="styleSheet">
-                  <string notr="true">QSlider{
-    width: 178px;
-    height: 20px;
-}
-QSlider::groove:horizontal {
-    border: 0px solid #bbb;
-
-}
-QSlider::sub-page:horizontal {
-    background: #3D6BE5;
-    border-radius: 2px;
-    margin-top:8px;
-    margin-bottom:9px;
-}
-QSlider::add-page:horizontal {
-    background:  rgba(52,70,80,90%);
-    border: 0px solid #777;
-    border-radius: 2px;
-    margin-top:8px;
-    margin-bottom:9px;
-}
-QSlider::handle:horizontal {
-    width: 20px;
-    height: 20px;
-    background: #3D6BE5;
-    border-radius:10px;
-}</string>
+                  <string notr="true"/>
                  </property>
                  <property name="minimum">
                   <number>100</number>
@@ -371,7 +345,7 @@ QSlider::handle:horizontal {
                 <number>16</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_7">
+                <widget class="QLabel" name="speedLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -411,33 +385,7 @@ QSlider::handle:horizontal {
                <item>
                 <widget class="QSlider" name="speedHorSlider">
                  <property name="styleSheet">
-                  <string notr="true">QSlider{
-    width: 178px;
-    height: 20px;
-}
-QSlider::groove:horizontal {
-    border: 0px solid #bbb;
-
-}
-QSlider::sub-page:horizontal {
-    background: #3D6BE5;
-    border-radius: 2px;
-    margin-top:8px;
-    margin-bottom:9px;
-}
-QSlider::add-page:horizontal {
-    background:  rgba(52,70,80,90%);
-    border: 0px solid #777;
-    border-radius: 2px;
-    margin-top:8px;
-    margin-bottom:9px;
-}
-QSlider::handle:horizontal {
-    width: 20px;
-    height: 20px;
-    background: #3D6BE5;
-    border-radius:10px;
-}</string>
+                  <string notr="true"/>
                  </property>
                  <property name="minimum">
                   <number>10</number>
@@ -516,7 +464,7 @@ QSlider::handle:horizontal {
                 <number>16</number>
                </property>
                <item>
-                <widget class="QLabel" name="repeatLabel_3">
+                <widget class="QLabel" name="repeatLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -613,7 +561,7 @@ QSlider::handle:horizontal {
                 <number>16</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_11">
+                <widget class="QLabel" name="tipLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -688,7 +636,7 @@ QSlider::handle:horizontal {
                 <number>16</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_12">
+                <widget class="QLabel" name="numlockLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -808,7 +756,7 @@ QSlider::handle:horizontal {
                 <number>16</number>
                </property>
                <item>
-                <widget class="QLabel" name="layoutLabel_0">
+                <widget class="QLabel" name="layoutLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>

@@ -84,7 +84,7 @@ Desktop::Desktop()
         dSettings = new QGSettings(id);
     }
 
-
+    initSearchText();
     initTranslation();
     setupComponent();
     setupConnect();
@@ -120,6 +120,18 @@ QWidget *Desktop::get_plugin_ui(){
 
 void Desktop::plugin_delay_control(){
 
+}
+
+const QString Desktop::name() const {
+
+    return QStringLiteral("desktop");
+}
+
+void Desktop::initSearchText() {
+    //~ contents_path /desktop/Icon Show On Desktop
+    ui->titleLabel->setText(tr("Icon Show On Desktop"));
+    //~ contents_path /desktop/Tray icon
+    ui->title3Label->setText(tr("Tray icon"));
 }
 
 void Desktop::initTranslation() {

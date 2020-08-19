@@ -62,11 +62,12 @@ UserInfo::UserInfo()
     //构建System dbus调度对象
     sysdispatcher = new SystemDbusDispatcher;
 
+    ui->changeGroupBtn->hide();
 
     //获取系统全部用户信息，用户Uid大于等于1000的
     _acquireAllUsersInfo();
 
-
+    initSearchText();
     readCurrentPwdConf();
     initComponent();
     initAllUserStatus();
@@ -110,6 +111,24 @@ QWidget *UserInfo::get_plugin_ui(){
 
 void UserInfo::plugin_delay_control(){
 
+}
+
+const QString UserInfo::name() const {
+
+    return QStringLiteral("userinfo");
+}
+
+void UserInfo::initSearchText() {
+    //~ contents_path /userinfo/Change pwd
+    ui->changePwdBtn->setText(tr("Change pwd"));
+    //~ contents_path /userinfo/Change type
+    ui->changeTypeBtn->setText(tr("Change type"));
+    //~ contents_path /userinfo/Change valid
+    ui->changeValidBtn->setText(tr("Change valid"));
+    //~ contents_path /userinfo/Login no passwd
+    ui->loginpwdLabel->setText(tr("Login no passwd"));
+    //~ contents_path /userinfo/enable autoLogin
+    ui->autologinLabel->setText(tr("enable autoLogin"));
 }
 
 QString UserInfo::_accountTypeIntToString(int type){
@@ -426,6 +445,11 @@ void UserInfo::initComponent(){
 
     });
 
+    connect(ui->changeGroupBtn, &QPushButton::clicked, this, [=](bool checked){
+        Q_UNUSED(checked)
+        showChangeGroupDialog();
+    });
+
     //修改当前用户免密登录
     connect(nopwdSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
 
@@ -683,6 +707,15 @@ void UserInfo::showCreateUserDialog(){
     dialog->exec();
 }
 
+QStringList UserInfo::getUsersList()
+{
+    QStringList usersStringList;
+    for (QVariant tmp : allUserInfoMap.keys()){
+        usersStringList << tmp.toString();
+    }
+    return usersStringList;
+}
+
 void UserInfo::createUser(QString username, QString pwd, QString pin, int atype){
     Q_UNUSED(pin);
     sysdispatcher->create_user(username, "", atype);
@@ -756,6 +789,11 @@ void UserInfo::deleteUserDone(QString objpath){
 
     //重置其他用户ListWidget高度
     _resetListWidgetHeigh();
+}
+
+void UserInfo::showChangeGroupDialog(){
+    ChangeGroupDialog * dialog = new ChangeGroupDialog();
+    dialog->exec();
 }
 
 void UserInfo::showChangeValidDialog(QString username){

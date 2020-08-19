@@ -55,6 +55,7 @@ Wallpaper::Wallpaper()
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
     settingsCreate = false;
+    initSearchText();
     //初始化控件
     setupComponent();
     //初始化gsettings
@@ -92,6 +93,22 @@ QWidget *Wallpaper::get_plugin_ui(){
 }
 
 void Wallpaper::plugin_delay_control(){
+}
+
+const QString Wallpaper::name() const {
+
+    return QStringLiteral("wallpaper");
+}
+
+void Wallpaper::initSearchText() {
+    //~ contents_path /wallpaper/Picture options
+    ui->selectLabel->setText(tr("Picture options"));
+    //~ contents_path /wallpaper/Browser local wp
+    ui->browserLocalwpBtn->setText(tr("Browser local wp"));
+    //~ contents_path /wallpaper/Browser online wp
+    ui->browserOnlinewpBtn->setText(tr("Browser online wp"));
+    //~ contents_path /wallpaper/Reset to default
+    ui->resetBtn->setText(tr("Reset to default"));
 }
 
 void Wallpaper::setupComponent(){

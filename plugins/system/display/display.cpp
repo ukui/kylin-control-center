@@ -59,3 +59,8 @@ void DisplaySet::plugin_delay_control(){
 
 }
 
+const QString DisplaySet::name() const {
+
+    return QStringLiteral("display");
+}
+

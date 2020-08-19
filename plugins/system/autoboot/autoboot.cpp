@@ -66,25 +66,9 @@ AutoBoot::AutoBoot(){
 //    ui->addFrame->installEventFilter(this);
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
+    //~ contents_path /autoboot/Autoboot Settings
+    ui->titleLabel->setText(tr("Autoboot Settings"));
 
-
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-//    ui->addWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-
-//    ui->listWidget->setStyleSheet("QListWidget#listWidget{background: #ffffff; border: none;}"
-//                                  "");
-
-//    ui->addBtn->setIcon(QIcon("://img/plugins/autoboot/add.png"));
-//    ui->addBtn->setIconSize(QSize(48, 48));
-//    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
-
-
-
-//    ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-
-//    ui->listWidget->setSpacing(0);
 
     localconfigdir = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
     //初始化添加界面
@@ -117,6 +101,10 @@ QWidget *AutoBoot::get_plugin_ui(){
 
 void AutoBoot::plugin_delay_control(){
 
+}
+
+const QString AutoBoot::name() const {
+    return QStringLiteral("autoboot");
 }
 
 void AutoBoot::initAddBtn() {

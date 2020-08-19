@@ -122,6 +122,7 @@ Theme::Theme()
     if (QGSettings::isSchemaInstalled(iiid)) {
         personliseGsettings = new QGSettings(iiid);
     }
+    initSearchText();
     //设置组件
     setupComponent();
 
@@ -179,6 +180,25 @@ QWidget *Theme::get_plugin_ui(){
 }
 
 void Theme::plugin_delay_control(){
+
+}
+
+const QString Theme::name() const {
+
+    return QStringLiteral("theme");
+}
+
+void Theme::initSearchText() {
+    //~ contents_path /theme/Theme Mode
+    ui->titleLabel->setText(tr("Theme Mode"));
+    //~ contents_path /theme/Icon theme
+    ui->iconLabel->setText(tr("Icon theme"));
+    //~ contents_path /theme/Cursor theme
+    ui->cursorLabel->setText(tr("Cursor theme"));
+    //~ contents_path /theme/Performance mode
+    ui->perforLabel->setText(tr("Performance mode"));
+    //~ contents_path /theme/Transparency
+    ui->transparencyLabel->setText(tr("Transparency"));
 
 }
 

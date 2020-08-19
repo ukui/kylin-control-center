@@ -502,7 +502,7 @@ bool MainWidget::eventFilter(QObject *watched, QEvent *event) {
 }
 
 /* 登录成功处理事件 */
-void MainWidget::finished_load(int ret,QString uuid) {
+void MainWidget::finished_load(int ret, QString uuid) {
     //qDebug()<<"wb111"<<ret;
     if(ret != 0) {
         emit dologout();
@@ -552,7 +552,7 @@ void MainWidget::handle_conf() {
 }
 
 /* 判断功能是否开启 */
-bool MainWidget::judge_item(QString enable,int cur) {
+bool MainWidget::judge_item(const QString &enable,const int &cur) const {
     if(enable == "true") {
         m_itemList->get_item(cur)->make_itemon();
     } else {
@@ -562,7 +562,7 @@ bool MainWidget::judge_item(QString enable,int cur) {
 }
 
 /* 滑动按钮点击后改变功能状态 */
-void MainWidget::handle_write(int on, int id) {
+void MainWidget::handle_write(const int &on,const int &id) {
     char name[32];
     if(id == -1) {
         qstrcpy(name,"Auto-sync");
@@ -589,7 +589,7 @@ void MainWidget::on_switch_button(int on,int id) {
 }
 
 /* 自动同步滑动按钮点击后改变功能状态 */
-void MainWidget::on_auto_syn(int on,int id) {
+void MainWidget::on_auto_syn(int on, int id) {
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }

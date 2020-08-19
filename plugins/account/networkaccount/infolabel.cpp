@@ -36,7 +36,7 @@ void InfoLabel::enterEvent(QEvent *e) {
     return QLabel::enterEvent(e);
 }
 
-void InfoLabel::setTipText(QString text) {
+void InfoLabel::setTipText(const QString &text) {
     m_textLabel->setText(text);
     m_textLabel->adjustSize();
     m_toolTips->adjustSize();
