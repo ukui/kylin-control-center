@@ -62,6 +62,7 @@ UserInfo::UserInfo()
     //构建System dbus调度对象
     sysdispatcher = new SystemDbusDispatcher;
 
+    ui->changeGroupBtn->hide();
 
     //获取系统全部用户信息，用户Uid大于等于1000的
     _acquireAllUsersInfo();
@@ -444,6 +445,11 @@ void UserInfo::initComponent(){
 
     });
 
+    connect(ui->changeGroupBtn, &QPushButton::clicked, this, [=](bool checked){
+        Q_UNUSED(checked)
+        showChangeGroupDialog();
+    });
+
     //修改当前用户免密登录
     connect(nopwdSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
 
@@ -701,6 +707,15 @@ void UserInfo::showCreateUserDialog(){
     dialog->exec();
 }
 
+QStringList UserInfo::getUsersList()
+{
+    QStringList usersStringList;
+    for (QVariant tmp : allUserInfoMap.keys()){
+        usersStringList << tmp.toString();
+    }
+    return usersStringList;
+}
+
 void UserInfo::createUser(QString username, QString pwd, QString pin, int atype){
     Q_UNUSED(pin);
     sysdispatcher->create_user(username, "", atype);
@@ -774,6 +789,11 @@ void UserInfo::deleteUserDone(QString objpath){
 
     //重置其他用户ListWidget高度
     _resetListWidgetHeigh();
+}
+
+void UserInfo::showChangeGroupDialog(){
+    ChangeGroupDialog * dialog = new ChangeGroupDialog();
+    dialog->exec();
 }
 
 void UserInfo::showChangeValidDialog(QString username){
