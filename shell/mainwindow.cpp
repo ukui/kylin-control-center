@@ -19,6 +19,7 @@
  */
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "prescene.h"
 #include "utils/keyvalueconverter.h"
 #include "utils/functionselect.h"
 
@@ -55,131 +56,35 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_searchWidget(nullptr)
-
 {
-    ui->setupUi(this);
-    initTileBar();
     // 初始化mixer
     mate_mixer_init();
     // 设置初始大小
-    resize(QSize(820, 600));
+    resize(QSize(840, 600));
     // 设置窗体无边框
     setWindowFlags(Qt::FramelessWindowHint | Qt::Widget);
-    this->installEventFilter(this);
-//    closeBtn->setFixedSize(32,32);
-    // 该设置去掉了窗体透明后的黑色背景
     setAttribute(Qt::WA_TranslucentBackground, true);
 
-    const QByteArray id("org.ukui.style");
-    QGSettings * fontSetting = new QGSettings(id);
-    connect(fontSetting, &QGSettings::changed,[=](QString key){
-        if ("systemFont" == key || "systemFontSize" ==key) {
-            QFont font = this->font();
-            int width = font.pointSize();
-            for (auto widget : qApp->allWidgets()) {
-                widget->setFont(font);
-            }
-            ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
-        }
+    logoLabel  = new QLabel(tr("UKCC"), this);
+    PreScene *prescene = new PreScene(logoLabel, this->size());
+    prescene->setAttribute(Qt::WA_DeleteOnClose);
+    prescene->setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
+    prescene->raise();
+    this->setCentralWidget(prescene);
+
+    timer = new QTimer(this);
+    timer->stop();
+    connect(timer, &QTimer::timeout, this, [=]() {
+        initUI();
+        timer->stop();
+        prescene->close();
     });
-
-    initStyleSheet();
-
-    //初始化功能列表数据
-    FunctionSelect::initValue();
-
-    //构建枚举键值转换对象
-    kvConverter = new KeyValueConverter(); //继承QObject，No Delete
-
-    //加载插件
-    loadPlugins();
-
-    connect(minBtn, SIGNAL(clicked()), this, SLOT(showMinimized()));
-//    connect(ui->minBtn, &QPushButton::clicked, [=]{
-//        KWindowSystem::minimizeWindow(this->winId());
-//    });
-    connect(maxBtn, &QPushButton::clicked, this, [=]{
-        if (isMaximized()){
-            bIsFullScreen = false;
-            showNormal();
-            maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
-        } else {
-            bIsFullScreen = true;
-            showMaximized();
-            maxBtn->setIcon(QIcon::fromTheme("window-restore-symbolic"));
-        }
-    });
-    connect(closeBtn, &QPushButton::clicked, this, [=]{
-        close();
-//        qApp->quit();
-    });
-
-
-//    connect(ui->backBtn, &QPushButton::clicked, this, [=]{
-//        if (ui->stackedWidget->currentIndex())
-//            ui->stackedWidget->setCurrentIndex(0);
-//        else
-//            ui->stackedWidget->setCurrentIndex(1);
-//    });
-
-
-//    ui->leftsidebarWidget->setVisible(ui->stackedWidget->currentIndex());
-    connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, [=](int index){
-        //左侧边栏显示/不显示
-        ui->leftsidebarWidget->setVisible(index);
-        //左上角显示字符/返回按钮
-        backBtn->setVisible(index);
-        titleLabel->setHidden(index);
-
-        if (index){ //首页部分组件样式
-            //中部内容区域
-            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-right-radius: 6px;}");
-            //标题栏widget
-            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background:  palette(base); border-top-right-radius: 6px;}");
-        } else { //次页部分组件样式
-            //中部内容区域
-            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background:  palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
-            //标题栏widget
-            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background:  palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-        }
-    });
-
-    //加载左侧边栏一级菜单
-    initLeftsideBar();
-
-    bIsFullScreen = false;
-
-    //加载首页Widget
-    homepageWidget = new HomePageWidget(this);
-    ui->stackedWidget->addWidget(homepageWidget);
-
-    //加载功能页Widget
-    modulepageWidget = new ModulePageWidget(this);
-    ui->stackedWidget->addWidget(modulepageWidget);
-
-    //top left return button
-    connect(backBtn, &QPushButton::clicked, this, [=]{
-        FunctionSelect::popRecordValue();
-
-        //if recordFuncStack is empty, it means there is no history record. So return to homepage
-        if (FunctionSelect::recordFuncStack.length() < 1) {
-            ui->stackedWidget->setCurrentIndex(0);
-        } else {
-            QMap<QString, QObject *> pluginsObjMap = modulesList.at(FunctionSelect::recordFuncStack.last().type);
-            modulepageWidget->switchPage(pluginsObjMap.value(FunctionSelect::recordFuncStack.last().namei18nString), false);
-        }
-    });
-
-    //快捷参数
-    if (QApplication::arguments().length() > 1){
-
-        bootOptionsFilter(QApplication::arguments().at(1));
-    }
-
+    timer->start(200);
 }
 
 MainWindow::~MainWindow()
 {
+
     delete ui;
 }
 
@@ -327,6 +232,120 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
         }
     }
     return QObject::eventFilter(watched, event);
+}
+
+void MainWindow::initUI() {
+    ui->setupUi(this);
+
+    this->installEventFilter(this);
+
+    const QByteArray id("org.ukui.style");
+    QGSettings * fontSetting = new QGSettings(id);
+    connect(fontSetting, &QGSettings::changed,[=](QString key){
+        if ("systemFont" == key || "systemFontSize" ==key) {
+            QFont font = this->font();
+            int width = font.pointSize();
+            for (auto widget : qApp->allWidgets()) {
+                widget->setFont(font);
+            }
+            ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
+        }
+    });
+
+    initTileBar();
+    initStyleSheet();
+
+    //初始化功能列表数据
+    FunctionSelect::initValue();
+
+    //构建枚举键值转换对象
+    kvConverter = new KeyValueConverter(); //继承QObject，No Delete
+
+    //加载插件
+    loadPlugins();
+
+    connect(minBtn, SIGNAL(clicked()), this, SLOT(showMinimized()));
+//    connect(ui->minBtn, &QPushButton::clicked, [=]{
+//        KWindowSystem::minimizeWindow(this->winId());
+//    });
+    connect(maxBtn, &QPushButton::clicked, this, [=]{
+        if (isMaximized()){
+            bIsFullScreen = false;
+            showNormal();
+            maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
+        } else {
+            bIsFullScreen = true;
+            showMaximized();
+            maxBtn->setIcon(QIcon::fromTheme("window-restore-symbolic"));
+        }
+    });
+    connect(closeBtn, &QPushButton::clicked, this, [=]{
+        close();
+//        qApp->quit();
+    });
+
+
+//    connect(ui->backBtn, &QPushButton::clicked, this, [=]{
+//        if (ui->stackedWidget->currentIndex())
+//            ui->stackedWidget->setCurrentIndex(0);
+//        else
+//            ui->stackedWidget->setCurrentIndex(1);
+//    });
+
+
+//    ui->leftsidebarWidget->setVisible(ui->stackedWidget->currentIndex());
+    connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, [=](int index){
+        //左侧边栏显示/不显示
+        ui->leftsidebarWidget->setVisible(index);
+        //左上角显示字符/返回按钮
+        backBtn->setVisible(index);
+        titleLabel->setHidden(index);
+
+        if (index){ //首页部分组件样式
+            //中部内容区域
+            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-right-radius: 6px;}");
+            //标题栏widget
+            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background:  palette(base); border-top-right-radius: 6px;}");
+        } else { //次页部分组件样式
+            //中部内容区域
+            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background:  palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+            //标题栏widget
+            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background:  palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+        }
+    });
+
+    //加载左侧边栏一级菜单
+    initLeftsideBar();
+
+    bIsFullScreen = false;
+
+    //加载首页Widget
+    homepageWidget = new HomePageWidget(this);
+    ui->stackedWidget->addWidget(homepageWidget);
+
+    //加载功能页Widget
+    modulepageWidget = new ModulePageWidget(this);
+    ui->stackedWidget->addWidget(modulepageWidget);
+
+    //top left return button
+    connect(backBtn, &QPushButton::clicked, this, [=]{
+        FunctionSelect::popRecordValue();
+
+        //if recordFuncStack is empty, it means there is no history record. So return to homepage
+        if (FunctionSelect::recordFuncStack.length() < 1) {
+            ui->stackedWidget->setCurrentIndex(0);
+        } else {
+            QMap<QString, QObject *> pluginsObjMap = modulesList.at(FunctionSelect::recordFuncStack.last().type);
+            modulepageWidget->switchPage(pluginsObjMap.value(FunctionSelect::recordFuncStack.last().namei18nString), false);
+        }
+    });
+
+    //快捷参数
+    if (QApplication::arguments().length() > 1){
+
+        bootOptionsFilter(QApplication::arguments().at(1));
+    }
+
 }
 
 void MainWindow::initTileBar() {

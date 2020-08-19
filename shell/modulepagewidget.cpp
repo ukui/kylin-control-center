@@ -50,7 +50,7 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
 
 
     //
-    ui->mtitleLabel->setStyleSheet(tr("QLabel{font-size: 18px; color: palette(Shadow);}"));
+    ui->mtitleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(Shadow);}");
     //左侧二级菜单样式
     ui->leftStackedWidget->setStyleSheet("border: none;");
     //上侧二级菜单样式

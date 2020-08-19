@@ -67,6 +67,7 @@ SOURCES += \
     homepagewidget.cpp \
     modulepagewidget.cpp \
     pinyin.cpp \
+    prescene.cpp \
     searchwidget.cpp \
     utils/keyvalueconverter.cpp \
     component/leftwidgetitem.cpp \
@@ -87,6 +88,7 @@ HEADERS += \
     homepagewidget.h \
     modulepagewidget.h \
     pinyin.h \
+    prescene.h \
     searchwidget.h \
     utils/keyvalueconverter.h \
     component/leftwidgetitem.h \

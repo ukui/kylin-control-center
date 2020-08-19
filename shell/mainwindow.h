@@ -21,6 +21,7 @@
 #define MAINWINDOW_H
 
 #include <QDir>
+#include <QTimer>
 #include <QMainWindow>
 #include <QPaintEvent>
 #include <QShowEvent>
@@ -85,8 +86,11 @@ private:
     QPushButton * maxBtn;
     QPushButton * closeBtn;
     QLabel      * titleLabel;
+    QTimer      * timer;
+    QLabel      * logoLabel;
 
 private:
+    void initUI();
     void initTileBar();
     void setBtnLayout(QPushButton * &pBtn);
     void loadPlugins();
