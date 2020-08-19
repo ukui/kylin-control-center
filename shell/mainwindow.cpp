@@ -92,7 +92,6 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowIcon(panelicon);
     this->setWindowTitle(tr("ukcc"));
 
-    ui->searchLineEdit->setVisible(false);
     //中部内容区域
     ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
     //标题栏widget
@@ -101,24 +100,24 @@ MainWindow::MainWindow(QWidget *parent) :
 ////    ui->mainLabel->setStyleSheet("QLabel#mainLabel{font-size: 18px; color: #40000000;}");
 
     //左上角返回按钮
-    ui->backBtn->setProperty("useIconHighlightEffect", true);
-    ui->backBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->backBtn->setFlat(true);
+    backBtn->setProperty("useIconHighlightEffect", true);
+    backBtn->setProperty("iconHighlightEffectMode", 1);
+    backBtn->setFlat(true);
 
 //    ui->backBtn->setStyleSheet("QPushButton#backBtn{background: #ffffff; border: none;}");
 //    //顶部搜索框
 //    ui->searchLineEdit->setStyleSheet("QLineEdit#searchLineEdit{background: #FFEDEDED; border: none; border-radius: 6px;}");
     //右上角按钮stylesheet
-    ui->minBtn->setProperty("useIconHighlightEffect", true);
-    ui->minBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->minBtn->setFlat(true);
-    ui->maxBtn->setProperty("useIconHighlightEffect", true);
-    ui->maxBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->maxBtn->setFlat(true);
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
-    ui->closeBtn->installEventFilter(this);
+    minBtn->setProperty("useIconHighlightEffect", true);
+    minBtn->setProperty("iconHighlightEffectMode", 1);
+    minBtn->setFlat(true);
+    maxBtn->setProperty("useIconHighlightEffect", true);
+    maxBtn->setProperty("iconHighlightEffectMode", 1);
+    maxBtn->setFlat(true);
+    closeBtn->setProperty("useIconHighlightEffect", true);
+    closeBtn->setProperty("iconHighlightEffectMode", 1);
+    closeBtn->setFlat(true);
+    closeBtn->installEventFilter(this);
 
 //    ui->minBtn->setStyleSheet("QPushButton#minBtn{background: #ffffff; border: none;}"
 //                              "QPushButton:hover:!pressed#minBtn{background: #FF3D6BE5; border-radius: 2px;}"
@@ -126,7 +125,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    ui->maxBtn->setStyleSheet("QPushButton#maxBtn{background: #ffffff; border: none;}"
 //                              "QPushButton:hover:!pressed#maxBtn{background: #FF3D6BE5; border-radius: 2px;}"
 //                              "QPushButton:hover:pressed#maxBtn{background: #415FC4; border-radius: 2px;}");
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+    closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
     //左侧一级菜单
@@ -134,12 +133,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
 
     //设置左上角按钮图标
-    ui->backBtn->setIcon(QIcon("://img/titlebar/back.svg"));
+    backBtn->setIcon(QIcon("://img/titlebar/back.svg"));
 
     //设置右上角按钮图标
-    ui->minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
-    ui->maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
-    ui->closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
+    minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
+    maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
+    closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
     initStyleSheet();
 
     //初始化功能列表数据

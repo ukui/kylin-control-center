@@ -108,10 +108,10 @@ private:
 public slots:
     void functionBtnClicked(QObject * plugin);
     void sltMessageReceived(const QString &msg);
+    void switchPage(QString moduleName);
 
 signals:
     void btnclicked();
-    void switchPage(QString moduleName);
 };
 
 #endif // MAINWINDOW_H
