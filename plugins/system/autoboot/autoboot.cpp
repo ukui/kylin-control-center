@@ -268,8 +268,8 @@ void AutoBoot::initUI(){
         appgroupMultiMaps.insert(it.key(), button);
 
         QPushButton * dBtn = new QPushButton(widget);
-        dBtn->setFixedSize(QSize(32, 32));
-        dBtn->setText("Del");
+        dBtn->setFixedSize(QSize(64, 32));
+        dBtn->setText(tr("Delete"));
         dBtn->setHidden(true);
         connect(dBtn, &QPushButton::clicked, this, [=]{
             del_autoboot_realize(bname);
@@ -279,7 +279,7 @@ void AutoBoot::initUI(){
 //                            "QPushButton:hover:pressed{background: #E54A50; border-radius: 2px;}");
 
         QLabel * pLabel = new QLabel(widget);
-        pLabel->setFixedSize(QSize(32, 32));
+        pLabel->setFixedSize(QSize(64, 32));
         pLabel->setHidden(false);
 
         mainHLayout->addWidget(iconLabel);

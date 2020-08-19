@@ -46,7 +46,7 @@ DateTime::DateTime()
     pluginName = tr("Datetime");
     pluginType = DATETIME;
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->timeClockLable->setStyleSheet("QLabel{color: palette(windowText);}");
+    ui->timeClockLable->setStyleSheet("QLabel{font-size: 24x;color: palette(windowText);}");
 
     m_zoneinfo = new ZoneInfo;
     m_timezone = new TimeZoneChooser;
