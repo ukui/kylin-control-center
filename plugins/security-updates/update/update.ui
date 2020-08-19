@@ -155,7 +155,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>CheckUpdate</string>
+            <string>Check for updates</string>
            </property>
            <property name="flat">
             <bool>false</bool>

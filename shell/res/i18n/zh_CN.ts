@@ -175,12 +175,12 @@
     <name>AddAutoBoot</name>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="26"/>
-        <source>Add AutoBoot</source>
+        <source>Add Auto Boot</source>
         <translation>添加自启动程序</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="150"/>
-        <source>Add autoboot program</source>
+        <source>Add auto boot program</source>
         <translation>添加自启动程序</translation>
     </message>
     <message>
@@ -215,7 +215,7 @@
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="146"/>
-        <source>select autoboot desktop</source>
+        <source>select auto boot desktop</source>
         <translation>选择自启动程序</translation>
     </message>
 </context>
@@ -451,22 +451,22 @@
     <message>
         <location filename="../../../plugins/system/autoboot/autoboot.ui" line="93"/>
         <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="70"/>
-        <source>Autoboot Settings</source>
+        <source>Auto boot Settings</source>
         <translation>开机启动设置</translation>
         <extra-contents_path>/autoboot/Autoboot Settings</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="120"/>
-        <source>Add autoboot app </source>
+        <source>Add auto boot app </source>
         <translation>添加自启动程序 </translation>
     </message>
     <message>
-        <source>autoboot</source>
+        <source>auto boot</source>
         <translation type="vanished">开机启动</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="63"/>
-        <source>Autoboot</source>
+        <source>Auto boot</source>
         <translation>开机启动</translation>
     </message>
     <message>
@@ -1140,7 +1140,7 @@ change system settings</source>
     </message>
     <message>
         <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="42"/>
-        <source>Defaultapp</source>
+        <source>Default app</source>
         <translation>默认应用</translation>
     </message>
     <message>
@@ -3050,7 +3050,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.ui" line="38"/>
         <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="93"/>
-        <source>Netconnect Status</source>
+        <source>Connect Status</source>
         <translation>网络状态</translation>
         <extra-contents_path>/netconnect/Netconnect Status</extra-contents_path>
     </message>
@@ -3093,7 +3093,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="42"/>
-        <source>Netconnect</source>
+        <source>Connect</source>
         <translation>网络连接</translation>
     </message>
     <message>
@@ -3333,7 +3333,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="611"/>
-        <source>Change pc sleep time:</source>
+        <source>Change PC sleep time:</source>
         <translation>系统进入空闲状态并于此时间后挂起：</translation>
     </message>
     <message>
@@ -3592,7 +3592,7 @@ folder will be deleted!</source>
         <translation type="vanished">显示器</translation>
     </message>
     <message>
-        <source>defaultapp</source>
+        <source>default app</source>
         <translation type="vanished">默认应用</translation>
     </message>
     <message>
@@ -3600,7 +3600,7 @@ folder will be deleted!</source>
         <translation type="vanished">电源</translation>
     </message>
     <message>
-        <source>autoboot</source>
+        <source>auto boot</source>
         <translation type="vanished">开机启动</translation>
     </message>
     <message>
@@ -3653,7 +3653,7 @@ folder will be deleted!</source>
         <translation type="vanished">桌面</translation>
     </message>
     <message>
-        <source>netconnect</source>
+        <source>connect</source>
         <translation type="vanished">网络连接</translation>
     </message>
     <message>
@@ -3665,7 +3665,7 @@ folder will be deleted!</source>
         <translation type="vanished">代理</translation>
     </message>
     <message>
-        <source>userinfo</source>
+        <source>user info</source>
         <translation type="vanished">账户信息</translation>
     </message>
     <message>
@@ -3753,7 +3753,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="53"/>
-        <source>Defaultapp</source>
+        <source>Default app</source>
         <translation>默认应用</translation>
     </message>
     <message>
@@ -3763,7 +3763,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="58"/>
-        <source>Autoboot</source>
+        <source>Auto boot</source>
         <translation>开机启动</translation>
     </message>
     <message>
@@ -3823,7 +3823,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="125"/>
-        <source>Netconnect</source>
+        <source>Connect</source>
         <translation>网络连接</translation>
     </message>
     <message>
@@ -3838,7 +3838,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="144"/>
-        <source>Userinfo</source>
+        <source>User Info</source>
         <translation>账户信息</translation>
     </message>
     <message>
@@ -4977,19 +4977,19 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/update/update.ui" line="158"/>
-        <source>CheckUpdate</source>
+        <source>Check for updates</source>
         <translation>检测更新</translation>
     </message>
 </context>
 <context>
     <name>UserInfo</name>
     <message>
-        <source>userinfo</source>
+        <source>user info</source>
         <translation type="vanished">账户信息</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="57"/>
-        <source>Userinfo</source>
+        <source>User Info</source>
         <translation>账户信息</translation>
     </message>
     <message>

@@ -39,7 +39,7 @@ DefaultApp::DefaultApp(){
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
-    pluginName = tr("Defaultapp");
+    pluginName = tr("Default app");
     pluginType = SYSTEM;
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 

@@ -42,16 +42,12 @@
         <file>secondaryleftmenu/AreaWhite.svg</file>
         <file>secondaryleftmenu/Audio.svg</file>
         <file>secondaryleftmenu/AudioWhite.svg</file>
-        <file>secondaryleftmenu/Autoboot.svg</file>
-        <file>secondaryleftmenu/AutobootWhite.svg</file>
         <file>secondaryleftmenu/Background.svg</file>
         <file>secondaryleftmenu/BackgroundWhite.svg</file>
         <file>secondaryleftmenu/Backup.svg</file>
         <file>secondaryleftmenu/BackupWhite.svg</file>
         <file>secondaryleftmenu/Datetime.svg</file>
         <file>secondaryleftmenu/DatetimeWhite.svg</file>
-        <file>secondaryleftmenu/Defaultapp.svg</file>
-        <file>secondaryleftmenu/DefaultappWhite.svg</file>
         <file>secondaryleftmenu/Desktop.svg</file>
         <file>secondaryleftmenu/DesktopWhite.svg</file>
         <file>secondaryleftmenu/Display.svg</file>
@@ -64,8 +60,6 @@
         <file>secondaryleftmenu/KeyboardWhite.svg</file>
         <file>secondaryleftmenu/Mouse.svg</file>
         <file>secondaryleftmenu/MouseWhite.svg</file>
-        <file>secondaryleftmenu/Netconnect.svg</file>
-        <file>secondaryleftmenu/NetconnectWhite.svg</file>
         <file>secondaryleftmenu/Notice.svg</file>
         <file>secondaryleftmenu/NoticeWhite.svg</file>
         <file>secondaryleftmenu/Power.svg</file>
@@ -86,8 +80,6 @@
         <file>secondaryleftmenu/TouchpadWhite.svg</file>
         <file>secondaryleftmenu/Update.svg</file>
         <file>secondaryleftmenu/UpdateWhite.svg</file>
-        <file>secondaryleftmenu/Userinfo.svg</file>
-        <file>secondaryleftmenu/UserinfoWhite.svg</file>
         <file>secondaryleftmenu/VpnWhite.svg</file>
         <file>secondaryleftmenu/Vpn.svg</file>
         <file>titlebar/close.svg</file>
@@ -133,6 +125,19 @@
         <file>secondaryleftmenu/SecurityCenter.svg</file>
         <file>secondaryleftmenu/SecurityCenterWhite.svg</file>
         <file>plugins/about/logoukui.svg</file>
+<<<<<<< Updated upstream
+=======
+        <file>secondaryleftmenu/Cloud Account.svg</file>
+        <file>secondaryleftmenu/Cloud AccountWhite.svg</file>
+        <file>secondaryleftmenu/Default app.svg</file>
+        <file>secondaryleftmenu/Default appWhite.svg</file>
+        <file>secondaryleftmenu/Auto boot.svg</file>
+        <file>secondaryleftmenu/Auto bootWhite.svg</file>
+        <file>secondaryleftmenu/ConnectWhite.svg</file>
+        <file>secondaryleftmenu/Connect.svg</file>
+        <file>secondaryleftmenu/User Info.svg</file>
+        <file>secondaryleftmenu/User InfoWhite.svg</file>
+>>>>>>> Stashed changes
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

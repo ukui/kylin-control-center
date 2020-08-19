@@ -60,14 +60,14 @@ AutoBoot::AutoBoot(){
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
-    pluginName = tr("Autoboot");
+    pluginName = tr("Auto boot");
     pluginType = SYSTEM;
 
 //    ui->addFrame->installEventFilter(this);
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
     //~ contents_path /autoboot/Autoboot Settings
-    ui->titleLabel->setText(tr("Autoboot Settings"));
+    ui->titleLabel->setText(tr("Auto boot Settings"));
 
 
     localconfigdir = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
@@ -117,7 +117,7 @@ void AutoBoot::initAddBtn() {
     QHBoxLayout *addLyt = new QHBoxLayout;
 
     QLabel * iconLabel = new QLabel();
-    QLabel * textLabel = new QLabel(tr("Add autoboot app "));
+    QLabel * textLabel = new QLabel(tr("Add auto boot app "));
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);
     addLyt->addWidget(iconLabel);

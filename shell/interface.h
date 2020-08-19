@@ -65,7 +65,7 @@ enum PersonalizedIndex{
 };
 
 enum NetworkIndex{
-    NETCONNECT,
+    Connect,
     VPN,
     PROXY,
     TOTALNETFUNC,

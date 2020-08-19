@@ -147,7 +147,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>Add autoboot program</string>
+             <string>Add auto boot program</string>
             </property>
            </widget>
           </item>

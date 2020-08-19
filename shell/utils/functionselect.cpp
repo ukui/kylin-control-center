@@ -49,13 +49,13 @@ void FunctionSelect::initValue(){
     }
     systemList[DISPLAY].nameString = QString("Display");
     systemList[DISPLAY].namei18nString =  QObject::tr("Display");
-    systemList[DEFAULTAPP].nameString = QString("Defaultapp");
-    systemList[DEFAULTAPP].namei18nString =  QObject::tr("Defaultapp");
+    systemList[DEFAULTAPP].nameString = QString("Default app");
+    systemList[DEFAULTAPP].namei18nString =  QObject::tr("Default app");
     systemList[DEFAULTAPP].mainShow = false;
     systemList[POWER].nameString = QString("Power");
     systemList[POWER].namei18nString = QObject::tr("Power");
-    systemList[AUTOBOOT].nameString = QString("Autoboot");
-    systemList[AUTOBOOT].namei18nString = QObject::tr("Autoboot");
+    systemList[AUTOBOOT].nameString = QString("Auto boot");
+    systemList[AUTOBOOT].namei18nString = QObject::tr("Auto boot");
 
     funcinfoList.append(systemList);
 
@@ -121,8 +121,8 @@ void FunctionSelect::initValue(){
         funcStruct.mainShow = true;
         networkList.append(funcStruct);
     }
-    networkList[NETCONNECT].nameString = QString("Netconnect");
-    networkList[NETCONNECT].namei18nString = QObject::tr("Netconnect");
+    networkList[Connect].nameString = QString("Connect");
+    networkList[Connect].namei18nString = QObject::tr("Connect");
     networkList[VPN].nameString = QString("Vpn");
     networkList[VPN].namei18nString = QObject::tr("Vpn");
     networkList[PROXY].nameString = QString("Proxy");
@@ -140,10 +140,17 @@ void FunctionSelect::initValue(){
         accountList.append(funcStruct);
     }
 
+<<<<<<< Updated upstream
     accountList[USERINFO].nameString = QString("Userinfo");
     accountList[USERINFO].namei18nString = QObject::tr("Userinfo");
     accountList[NETWORKACCOUNT].nameString = QString("NetworkAccount");
     accountList[NETWORKACCOUNT].namei18nString = QObject::tr("NetworkAccount");
+=======
+    accountList[USERINFO].nameString = QString("User Info");
+    accountList[USERINFO].namei18nString = QObject::tr("User Info");
+    accountList[CloudAccount].nameString = QString("Cloud Account");
+    accountList[CloudAccount].namei18nString = QObject::tr("Cloud Account");
+>>>>>>> Stashed changes
 
     funcinfoList.append(accountList);
 

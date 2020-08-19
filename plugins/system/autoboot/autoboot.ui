@@ -90,7 +90,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Autoboot Settings</string>
+           <string>Auto Boot Settings</string>
           </property>
           <property name="scaledContents">
            <bool>true</bool>
