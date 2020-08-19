@@ -323,7 +323,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
         if(event->type() == QEvent::Enter) {
             closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"white"));
         }else if(event->type() == QEvent::Leave) {
-            closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
+            closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"black"));
         }
     }
     return QObject::eventFilter(watched, event);
@@ -725,7 +725,7 @@ void MainWindow::initStyleSheet() {
     // 设置右上角按钮图标
     minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
     maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
-    closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
+    closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"black"));
 }
 
 void MainWindow::setModuleBtnHightLight(int id) {
@@ -795,8 +795,8 @@ const QPixmap MainWindow::renderSvg(const QIcon &icon, QString cgColor) {
                     color.setRed(0);
                     color.setGreen(0);
                     color.setBlue(0);
-//                    color.setAlpha(0.1);
-                    color.setAlphaF(0.9);
+                    //color.setAlpha(0.1);
+                    color.setAlphaF(0.5);
                     img.setPixelColor(x, y, color);
                 } else if ("gray" == cgColor) {
                     color.setRed(152);
