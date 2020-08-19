@@ -398,7 +398,7 @@ void UserInfo::initComponent(){
 
     ui->addLyt->addWidget(addWgt);
 
-    nopwdSwitchBtn = new SwitchButton(ui->nopwdLoginFrame);
+    nopwdSwitchBtn = new SwitchButton(ui->nopwdLoginWidget);
     ui->nopwdHorLayout->addWidget(nopwdSwitchBtn);
 
     autoLoginSwitchBtn = new SwitchButton(ui->autoLoginFrame);
