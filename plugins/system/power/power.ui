@@ -608,7 +608,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>Change pc sleep time:</string>
+                  <string>Change PC sleep time:</string>
                  </property>
                  <property name="scaledContents">
                   <bool>false</bool>

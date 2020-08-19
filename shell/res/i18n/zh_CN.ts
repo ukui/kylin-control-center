@@ -175,12 +175,12 @@
     <name>AddAutoBoot</name>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="26"/>
-        <source>Add AutoBoot</source>
+        <source>Add Auto Boot</source>
         <translation>添加自启动程序</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="150"/>
-        <source>Add autoboot program</source>
+        <source>Add auto boot program</source>
         <translation>添加自启动程序</translation>
     </message>
     <message>
@@ -215,7 +215,7 @@
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="147"/>
-        <source>select autoboot desktop</source>
+        <source>select auto boot desktop</source>
         <translation>选择自启动程序</translation>
     </message>
 </context>
@@ -451,22 +451,22 @@
     <message>
         <location filename="../../../plugins/system/autoboot/autoboot.ui" line="93"/>
         <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="70"/>
-        <source>Autoboot Settings</source>
+        <source>Auto boot Settings</source>
         <translation>开机启动设置</translation>
         <extra-contents_path>/autoboot/Autoboot Settings</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="120"/>
-        <source>Add autoboot app </source>
+        <source>Add auto boot app </source>
         <translation>添加自启动程序 </translation>
     </message>
     <message>
-        <source>autoboot</source>
+        <source>auto boot</source>
         <translation type="vanished">开机启动</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="63"/>
-        <source>Autoboot</source>
+        <source>Auto boot</source>
         <translation>开机启动</translation>
     </message>
     <message>
@@ -491,13 +491,13 @@
         <extra-contents_path>/backup/Backup</extra-contents_path>
     </message>
     <message>
-        <source>Back up your files to other drives, and when the original files are lost, damaged, or deleted, you can restore them to ensure 
+        <source>Back up your files to other drives, and when the original files are lost, damaged, or deleted, you can restore them to ensure
 the integrity of your system.</source>
         <translation type="vanished">将您的文件备份到其他驱动器，当源文件丢失、受损或被删除时可以还原它们，保证系统的完整性。</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/backup/backup.ui" line="69"/>
-        <source>Back up your files to other drives, and when the original files are lost, damaged, or deleted, 
+        <source>Back up your files to other drives, and when the original files are lost, damaged, or deleted,
 you can restore them to ensure the integrity of your system.</source>
         <translation>将您的文件备份到其他驱动器，当源文件丢失、受损、删除时还原它们，保证系统的完整性。</translation>
     </message>
@@ -967,7 +967,7 @@ you can restore them to ensure the integrity of your system.</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="513"/>
-        <source>Standard users can use most software, but cannot install the software and 
+        <source>Standard users can use most software, but cannot install the software and
 change system settings</source>
         <translation>标准账户可以使用大多数软件，但是不能安装软件和更改系统配置</translation>
     </message>
@@ -1201,7 +1201,7 @@ change system settings</source>
     </message>
     <message>
         <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="42"/>
-        <source>Defaultapp</source>
+        <source>Default App</source>
         <translation>默认应用</translation>
     </message>
     <message>
@@ -1333,7 +1333,7 @@ change system settings</source>
     <message>
         <location filename="../../../plugins/account/userinfo/deluserdialog.ui" line="217"/>
         <source>Delete the user, belonging to the user&apos;s desktop,
-documents, favorites, music, pictures and video 
+documents, favorites, music, pictures and video
 folder will be deleted!</source>
         <translation>删除用户，用户所属的桌面、文档、收藏夹、音乐、图片和视频文件夹中的内容将全部被删除！</translation>
     </message>
@@ -2466,9 +2466,9 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/devices/keyboard/keyboardcontrol.ui" line="475"/>
         <location filename="../../../plugins/devices/keyboard/keyboardcontrol.cpp" line="119"/>
-        <source>Test repetition rate of the input character:</source>
+        <source>Input characters to test the repetition effect:</source>
         <translation>输入字符测试重复效果：</translation>
-        <extra-contents_path>/keyboard/Test repetition rate of the input character:</extra-contents_path>
+        <extra-contents_path>/keyboard/Input characters to test the repetition effect:</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/devices/keyboard/keyboardcontrol.ui" line="572"/>
@@ -3207,7 +3207,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.ui" line="38"/>
         <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="117"/>
-        <source>Netconnect Status</source>
+        <source>Connect Status</source>
         <translation>网络状态</translation>
         <extra-contents_path>/netconnect/Netconnect Status</extra-contents_path>
     </message>
@@ -3243,12 +3243,12 @@ folder will be deleted!</source>
         <translation type="vanished">更改网络设置</translation>
     </message>
     <message>
-        <source>netconnect</source>
+        <source>connect</source>
         <translation type="vanished">网络连接</translation>
     </message>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="44"/>
-        <source>Netconnect</source>
+        <source>Connect</source>
         <translation>网络连接</translation>
     </message>
     <message>
@@ -3488,7 +3488,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="611"/>
-        <source>Change pc sleep time:</source>
+        <source>Change PC sleep time:</source>
         <translation>系统进入空闲状态并于此时间后挂起：</translation>
     </message>
     <message>
@@ -3747,7 +3747,7 @@ folder will be deleted!</source>
         <translation type="vanished">显示器</translation>
     </message>
     <message>
-        <source>defaultapp</source>
+        <source>default app</source>
         <translation type="vanished">默认应用</translation>
     </message>
     <message>
@@ -3755,7 +3755,7 @@ folder will be deleted!</source>
         <translation type="vanished">电源</translation>
     </message>
     <message>
-        <source>autoboot</source>
+        <source>auto boot</source>
         <translation type="vanished">开机启动</translation>
     </message>
     <message>
@@ -3808,7 +3808,7 @@ folder will be deleted!</source>
         <translation type="vanished">桌面</translation>
     </message>
     <message>
-        <source>netconnect</source>
+        <source>connect</source>
         <translation type="vanished">网络连接</translation>
     </message>
     <message>
@@ -3820,7 +3820,7 @@ folder will be deleted!</source>
         <translation type="vanished">代理</translation>
     </message>
     <message>
-        <source>userinfo</source>
+        <source>user info</source>
         <translation type="vanished">账户信息</translation>
     </message>
     <message>
@@ -3908,7 +3908,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="53"/>
-        <source>Defaultapp</source>
+        <source>Default App</source>
         <translation>默认应用</translation>
     </message>
     <message>
@@ -3918,7 +3918,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="58"/>
-        <source>Autoboot</source>
+        <source>Auto boot</source>
         <translation>开机启动</translation>
     </message>
     <message>
@@ -3978,7 +3978,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="125"/>
-        <source>Netconnect</source>
+        <source>Connect</source>
         <translation>网络连接</translation>
     </message>
     <message>
@@ -3993,12 +3993,12 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="144"/>
-        <source>Userinfo</source>
+        <source>User Info</source>
         <translation>账户信息</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="146"/>
-        <source>NetworkAccount</source>
+        <source>Cloud Account</source>
         <translation>云账户</translation>
     </message>
     <message>
@@ -5132,19 +5132,19 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/update/update.ui" line="158"/>
-        <source>CheckUpdate</source>
+        <source>Check for updates</source>
         <translation>检测更新</translation>
     </message>
 </context>
 <context>
     <name>UserInfo</name>
     <message>
-        <source>userinfo</source>
+        <source>user info</source>
         <translation type="vanished">账户信息</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="58"/>
-        <source>Userinfo</source>
+        <source>User Info</source>
         <translation>账户信息</translation>
     </message>
     <message>
@@ -5660,7 +5660,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
     <name>networkaccount</name>
     <message>
         <location filename="../../../plugins/account/networkaccount/networkaccount.cpp" line="25"/>
-        <source>NetworkAccount</source>
+        <source>Cloud Account</source>
         <translation>云账户</translation>
     </message>
 </context>

@@ -41,7 +41,7 @@ NetConnect::NetConnect():m_wifiList(new Wifi)
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
-    pluginName = tr("Netconnect");
+    pluginName = tr("Connect");
     pluginType = NETWORK;
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
@@ -114,7 +114,7 @@ const QString NetConnect::name() const {
 
 void NetConnect::initSearchText() {
     //~ contents_path /netconnect/Netconnect Status
-    ui->titleLabel->setText(tr("Netconnect Status"));
+    ui->titleLabel->setText(tr("Connect Status"));
     //~ contents_path /netconnect/open wifi
     ui->openLabel->setText(tr("open wifi"));
 }
@@ -188,7 +188,6 @@ void NetConnect::initComponent(){
     wifiBtn->setEnabled(false);
 
     emit ui->RefreshBtn->clicked(true);
-    ui->verticalLayout_2->setContentsMargins(0,0,32,0);
 }
 
 void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){

@@ -116,7 +116,7 @@ void KeyboardControl::setupStylesheet(){
     //~ contents_path /keyboard/Speed
     ui->speedLabel->setText(tr("Speed"));
     //~ contents_path /keyboard/Test repetition rate of the input character:
-    ui->repeatLabel->setText(tr("Test repetition rate of the input character:"));
+    ui->repeatLabel->setText(tr("Input characters to test the repetition effect:"));
     //~ contents_path /keyboard/Tip of keyboard
     ui->tipLabel->setText(tr("Tip of keyboard"));
     //~ contents_path /keyboard/Keyboard layout
