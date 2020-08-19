@@ -711,9 +711,11 @@ void MainWindow::initStyleSheet() {
     closeBtn->setProperty("iconHighlightEffectMode", 1);
     closeBtn->setFlat(true);
     closeBtn->installEventFilter(this);
+    closeBtn->setObjectName("closeBtn");
 
-    closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+    closeBtn->setStyleSheet("QPushButton#closeBtn{border-radius: 4px;width:32px;height:32px;}"
+                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;width:32px;height:32px;}"
+                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;width:32px;height:32px;}");
 
     ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
 
@@ -770,7 +772,7 @@ void MainWindow::switchPage(QString moduleName) {
 }
 
 const QPixmap MainWindow::renderSvg(const QIcon &icon, QString cgColor) {
-    int size = 24;
+    int size = 16;
     const auto ratio = qApp->devicePixelRatio();
     if ( 2 == ratio) {
         size = 48;
