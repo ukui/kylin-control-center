@@ -192,7 +192,8 @@ void Fonts::setupComponent(){
         //字体
         ui->fontSelectComBox->addItem(font);
         //等宽字体
-        ui->monoSelectComBox->addItem(font);
+        if (font.contains("Mono"))
+            ui->monoSelectComBox->addItem(font);
         ////高级设置
         // gtk default
         ui->defaultFontComBox->addItem(font);
