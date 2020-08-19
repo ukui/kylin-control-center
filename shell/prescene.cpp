@@ -1,6 +1,7 @@
 #include "prescene.h"
 
 #include <QPainter>
+#include <QPainterPath>
 #include <QSvgRenderer>
 #include <QApplication>
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
