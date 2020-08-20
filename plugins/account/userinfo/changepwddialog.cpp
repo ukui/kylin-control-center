@@ -24,6 +24,7 @@
 #include "passwdcheckutil.h"
 
 #include <QStyledItemDelegate>
+#include <QGraphicsDropShadowEffect>
 
 #include <QDebug>
 
@@ -42,16 +43,32 @@ ChangePwdDialog::ChangePwdDialog(QWidget *parent) :
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+//    ui->frame->setStyleSheet(".QFrame{background:rgba(255,255,255,1); border:1px solid rgba(201,201,201,1); border-radius:16px;}");
+//    QGraphicsDropShadowEffect *frame_shadow = new QGraphicsDropShadowEffect(this);
+//    frame_shadow->setYOffset(0);
+//    frame_shadow->setColor("rgba(47,56,64,0.15)");
+//    frame_shadow->setBlurRadius(16);
+//    ui->frame->setGraphicsEffect(frame_shadow);
+    ui->widget_2->setStyleSheet(".QWidget{background:rgba(246,246,246,1);}");
+//    ui->titleLabel->setStyleSheet("QLabel{font-size: 14px; color: palette(windowText);}");
+//    ui->label_5->setStyleSheet("QLabel{font-size: 16px; color: palette(windowText);}");
+//    ui->pwdLabel->setStyleSheet("QLabel{font-size: 16px; color: palette(windowText);}");
+//    ui->pwdsureLabel->setStyleSheet("QLabel{font-size: 16px; color: palette(windowText);}");
+//    ui->pwdLineEdit->setStyleSheet("QLineEdit{border-radius:12px;background:rgba(245,245,245,1);}");
+//    ui->pwdsureLineEdit->setStyleSheet("QLineEdit{border-radius:12px;background:rgba(245,245,245,1);}");
+//    ui->pwdFrame->setStyleSheet("QFrame{border: 0px; border-radius:12px;background:rgba(235,235,235,1);}");
+//    ui->cancelPushBtn->setStyleSheet(ui->cancelPushBtn->styleSheet().append(QString("border-radius:12px;")));
+//    ui->confirmPushBtn->setStyleSheet("QPushButton{border-radius:12px;}");
+
+//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+//    ui->closeBtn->setFlat(true);
+//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
     ui->pwdFrame->setFrameShape(QFrame::Shape::Box);
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+//    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
     initPwdChecked();
     setupComponent();
@@ -97,8 +114,8 @@ void ChangePwdDialog::initPwdChecked(){
 
 void ChangePwdDialog::setupComponent(){
 
-    ElipseMaskWidget * cpMaskWidget = new ElipseMaskWidget(ui->faceLabel);
-    cpMaskWidget->setGeometry(0, 0, ui->faceLabel->width(), ui->faceLabel->height());
+//    ElipseMaskWidget * cpMaskWidget = new ElipseMaskWidget(ui->faceLabel);
+//    cpMaskWidget->setGeometry(0, 0, ui->faceLabel->width(), ui->faceLabel->height());
 
     ui->pwdtypeComboBox->setText(tr("General Pwd"));
 
@@ -112,9 +129,9 @@ void ChangePwdDialog::setupComponent(){
 }
 
 void ChangePwdDialog::setupConnect(){
-    connect(ui->closeBtn, &QPushButton::clicked, [=]{
-        close();
-    });
+//    connect(ui->closeBtn, &QPushButton::clicked, [=]{
+//        close();
+//    });
 
     connect(ui->pwdLineEdit, &QLineEdit::textChanged, [=](QString text){
         pwdLegalityCheck(text);
