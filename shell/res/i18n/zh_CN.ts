@@ -653,7 +653,7 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="obsolete">添加新用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="99"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="119"/>
         <source>Add user group</source>
         <translation>添加用户组</translation>
     </message>
@@ -1016,37 +1016,37 @@ change system settings</source>
         <translation type="vanished">密码长度需要小于%1个字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="388"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="391"/>
         <source>The user name cannot be empty</source>
         <translation>用户名不能为空</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="390"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="393"/>
         <source>The first character must be lowercase letters!</source>
         <translation>首字符必须为小写字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="393"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="396"/>
         <source>User name can not contain capital letters!</source>
         <translation>用户名不能包含大写字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="407"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="410"/>
         <source>The user name is already in use, please use a different one.</source>
         <translation>用户名已存在，请换用其他用户名。</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="412"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="415"/>
         <source>User name length need to less than %1 letters!</source>
         <translation>用户名长度需要小于%1个字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="414"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="417"/>
         <source>The user name can only be composed of letters, numbers and underline!</source>
         <translation>用户名只能由字母、数字以及下划线组成！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="419"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="422"/>
         <source>The username is configured, please change the username</source>
         <translation>用户配置已存在，请更换用户名</translation>
     </message>
@@ -3008,32 +3008,26 @@ folder will be deleted!</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../mainwindow.cpp" line="336"/>
+        <location filename="../../mainwindow.cpp" line="396"/>
         <source>Search</source>
         <translation>请输入搜索内容</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="349"/>
+        <location filename="../../mainwindow.cpp" line="399"/>
         <source>UKCC</source>
-        <translation>设置</translation>
+        <translation>控制面板</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="692"/>
+        <location filename="../../mainwindow.cpp" line="93"/>
+        <location filename="../../mainwindow.cpp" line="824"/>
         <source>ukcc</source>
         <translation>控制面板</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="459"/>
+        <location filename="../../mainwindow.cpp" line="519"/>
+        <location filename="../../mainwindow.cpp" line="588"/>
         <source>HOME</source>
         <translation>首页</translation>
-    </message>
-</context>
-<context>
-    <name>ModulePageWidget</name>
-    <message>
-        <location filename="../../modulepagewidget.cpp" line="53"/>
-        <source>QLabel{font-size: 18px; color: palette(Shadow);}</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4042,55 +4036,55 @@ folder will be deleted!</source>
         <translation>体验计划</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="261"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="260"/>
         <source>min length %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="271"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="270"/>
         <source>min digit num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="280"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="279"/>
         <source>min upper num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="289"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="288"/>
         <source>min lower num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="298"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="297"/>
         <source>min other num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="308"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="307"/>
         <source>min char class %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="317"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="316"/>
         <source>max repeat %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="326"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="325"/>
         <source>max class repeat %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="335"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="334"/>
         <source>max sequence %1
 </source>
         <translation type="unfinished"></translation>
@@ -5143,60 +5137,60 @@ folder will be deleted!</source>
         <translation type="vanished">账户信息</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="58"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="57"/>
         <source>Userinfo</source>
         <translation>账户信息</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="137"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="136"/>
         <source>standard user</source>
         <translation>标准用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="139"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="138"/>
         <source>administrator</source>
         <translation>管理员用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="141"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="140"/>
         <source>root</source>
         <translation>Root</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="655"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="654"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="41"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="38"/>
         <source>Current User</source>
         <translation>当前用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="214"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="123"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="637"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="181"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="122"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="636"/>
         <source>Change pwd</source>
         <translation>更改密码</translation>
         <extra-contents_path>/userinfo/Change pwd</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="279"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="125"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="627"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="246"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="124"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="626"/>
         <source>Change type</source>
         <translation>更改类型</translation>
         <extra-contents_path>/userinfo/Change type</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="344"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="127"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="311"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="126"/>
         <source>Change valid</source>
         <translation>密码时效</translation>
         <extra-contents_path>/userinfo/Change valid</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="409"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="376"/>
         <source>User group</source>
         <translation>用户组</translation>
     </message>
@@ -5205,31 +5199,31 @@ folder will be deleted!</source>
         <translation type="vanished">密码时效</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="477"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="129"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="465"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="128"/>
         <source>Login no passwd</source>
         <translation>免密登录</translation>
         <extra-contents_path>/userinfo/Login no passwd</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="559"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="131"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="562"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="130"/>
         <source>enable autoLogin</source>
         <translation>自动登录</translation>
         <extra-contents_path>/userinfo/enable autoLogin</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="637"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="647"/>
         <source>Currently in Live mode, please create a new user and log out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="674"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="684"/>
         <source>Other Users</source>
         <translation>其他用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="373"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="372"/>
         <source>Add new user</source>
         <translation>添加新用户</translation>
     </message>

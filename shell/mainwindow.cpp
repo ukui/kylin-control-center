@@ -68,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->installEventFilter(this);
 //    closeBtn->setFixedSize(32,32);
     // 该设置去掉了窗体透明后的黑色背景
-    setAttribute(Qt::WA_TranslucentBackground, true);
+//    setAttribute(Qt::WA_TranslucentBackground, true);
     const QByteArray id("org.ukui.style");
     QGSettings * fontSetting = new QGSettings(id);
     connect(fontSetting, &QGSettings::changed,[=](QString key){
@@ -297,10 +297,7 @@ void MainWindow::paintEvent(QPaintEvent *event) {
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
     if(!bIsFullScreen) {
-        QRect rect = this->rect();
-        rect.setWidth(rect.width()-0);
-        rect.setHeight(rect.height()-0);
-        rectPath.addRoundedRect(rect,16,16);
+        rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 6, 6);
 
         // 画一个黑底
         QPixmap pixmap(this->rect().size());
@@ -391,7 +388,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 
 void MainWindow::initTileBar() {
 
-    ui->titleLayout->setContentsMargins(300, 0, 10, 0);
+    ui->titleLayout->setContentsMargins(300, 12, 10, 0);
     m_searchWidget = new SearchWidget(this);
     m_searchWidget->setPlaceholderText(tr("Search"));
     m_searchWidget->setFocusPolicy(Qt::ClickFocus);

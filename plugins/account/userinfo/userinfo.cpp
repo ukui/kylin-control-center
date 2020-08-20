@@ -516,6 +516,8 @@ void UserInfo::initComponent(){
 
 void UserInfo::_resetListWidgetHeigh(){
     //设置其他用户控件的总高度
+    ui->listWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
     ui->listWidget->setFixedHeight((allUserInfoMap.count()) * ITEMHEIGH);
 }
 
@@ -583,7 +585,7 @@ void UserInfo::_refreshUserInfoUI(){
 void UserInfo::_buildWidgetForItem(UserInfomation user){
     HoverWidget * baseWidget = new HoverWidget(user.username);
     baseWidget->setMinimumSize(550,50);
-    baseWidget->setMaximumSize(960,50);
+    baseWidget->setMaximumSize(1524,50);
     baseWidget->setAttribute(Qt::WA_DeleteOnClose);
 
     QHBoxLayout * baseVerLayout = new QHBoxLayout(baseWidget);
@@ -684,6 +686,7 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
 
     QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
     item->setSizeHint(QSize(ui->listWidget->width() - 4, ITEMHEIGH));
+//    item->setSizeHint(QSize(QSizePolicy::Expanding, ITEMHEIGH));
     item->setData(Qt::UserRole, QVariant(user.objpath));
     ui->listWidget->setItemWidget(item, baseWidget);
 
