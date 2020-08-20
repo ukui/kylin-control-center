@@ -568,7 +568,7 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="99"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="119"/>
         <source>Add user group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -920,6 +920,14 @@ change system settings</source>
     <message>
         <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="419"/>
         <source>The username is configured, please change the username</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CustomLineEdit</name>
+    <message>
+        <location filename="../../../plugins/devices/shortcut/customlineedit.cpp" line="28"/>
+        <source>New Shortcut...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1784,7 +1792,7 @@ folder will be deleted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="296"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="297"/>
         <source>Thanks For Using The ukcc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2565,31 +2573,24 @@ folder will be deleted!</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../mainwindow.cpp" line="336"/>
+        <location filename="../../mainwindow.cpp" line="355"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="349"/>
+        <location filename="../../mainwindow.cpp" line="68"/>
+        <location filename="../../mainwindow.cpp" line="368"/>
         <source>UKCC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="692"/>
+        <location filename="../../mainwindow.cpp" line="711"/>
         <source>ukcc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="459"/>
+        <location filename="../../mainwindow.cpp" line="478"/>
         <source>HOME</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ModulePageWidget</name>
-    <message>
-        <location filename="../../modulepagewidget.cpp" line="53"/>
-        <source>QLabel{font-size: 18px; color: palette(Shadow);}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3247,7 +3248,7 @@ folder will be deleted!</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="359"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="360"/>
         <source>Update Shortcut</source>
         <translation type="unfinished"></translation>
     </message>
