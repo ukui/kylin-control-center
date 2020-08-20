@@ -310,7 +310,10 @@ void CreateUserDialog::paintEvent(QPaintEvent *event) {
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
-    rectPath.addRoundedRect(this->rect().adjusted(10, 10, -10, -10), 6, 6);
+    QRect rect = this->rect();
+    rect.setWidth(rect.width()-0);
+    rect.setHeight(rect.height()-0);
+    rectPath.addRoundedRect(rect,12,12);
     // 画一个黑底
     QPixmap pixmap(this->rect().size());
     pixmap.fill(Qt::transparent);

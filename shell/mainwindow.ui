@@ -122,6 +122,8 @@
      </layout>
     </item>
    </layout>
+   <zorder>leftsidebarWidget</zorder>
+   <zorder></zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

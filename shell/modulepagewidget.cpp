@@ -42,16 +42,16 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
     pmainWindow = (MainWindow *)parentWidget();
 
     //左侧Widget大小限定
-    ui->leftbarWidget->setMinimumWidth(160);
-    ui->leftbarWidget->setMaximumWidth(216);
+    ui->leftbarWidget->setMinimumWidth(300);
+    ui->leftbarWidget->setMaximumWidth(300);
 
     //右侧Widget大小限定(限制了最小宽度)
-    ui->widget->setMinimumWidth(650);
-    ui->widget->setMaximumWidth(1200);
+    ui->widget->setMinimumWidth(900);
+    ui->widget->setMaximumWidth(1620);
 
 
     //
-    ui->mtitleLabel->setStyleSheet(tr("QLabel{font-size: 18px; color: palette(Shadow);}"));
+//    ui->mtitleLabel->setStyleSheet(tr("QLabel{font-size: 18px; color: palette(Shadow);}"));
     //左侧二级菜单样式
     ui->leftStackedWidget->setStyleSheet("border: none;");
     //上侧二级菜单样式
@@ -89,10 +89,10 @@ void ModulePageWidget::initUI(){
 
     ui->leftbarWidget->setSizePolicy(leftSizePolicy);
     ui->widget->setSizePolicy(rightSizePolicy);
-
     QListWidget * leftListWidget = new QListWidget(this);
     leftListWidget->setItemDelegate(new Delegate(this));
-
+    leftListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    leftListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     for (int moduleIndex = 0; moduleIndex < TOTALMODULES; moduleIndex++){
         QString titleString = mkvConverter->keycodeTokeyi18nstring(moduleIndex);
 //        qDebug()<<"titleString: "<<titleString;
@@ -125,14 +125,14 @@ void ModulePageWidget::initUI(){
         leftListWidget->setResizeMode(QListView::Adjust);
         leftListWidget->setFocusPolicy(Qt::NoFocus);
         leftListWidget->setSelectionMode(QAbstractItemView::NoSelection);
-        leftListWidget->setSpacing(12);
+        leftListWidget->setSpacing(6);
         connect(leftListWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), this, SLOT(currentLeftitemChanged(QListWidgetItem*,QListWidgetItem*)));
         QListWidget * topListWidget = new QListWidget;
         topListWidget->setAttribute(Qt::WA_DeleteOnClose);
         topListWidget->setResizeMode(QListView::Adjust);
         topListWidget->setViewMode(QListView::IconMode);
         topListWidget->setMovement(QListView::Static);
-        topListWidget->setSpacing(0);
+        topListWidget->setSpacing(6);
 
         QMap<QString, QObject *> moduleMap;
         moduleMap = pmainWindow->exportModule(moduleIndex);
@@ -152,7 +152,7 @@ void ModulePageWidget::initUI(){
             leftWidgetItem->setLabelPixmap(QString("://img/secondaryleftmenu/%1.svg").arg(single.nameString), single.nameString, "default");
 
             QListWidgetItem * item = new QListWidgetItem(leftListWidget);
-            item->setSizeHint(QSize(ui->leftStackedWidget->width(), 40)); //QSize(120, 40) spacing: 12px;
+            item->setSizeHint(QSize(268,56)); //QSize(120, 40) spacing: 12px;
             leftListWidget->setItemWidget(item, leftWidgetItem);
             strItemsMap.insert(single.namei18nString, item);
 
@@ -206,7 +206,7 @@ void ModulePageWidget::initUI(){
     connect(ui->leftStackedWidget, &QStackedWidget::currentChanged, this, [=](int index){
         QString titleString = mkvConverter->keycodeTokeyi18nstring(index);
 
-        ui->mtitleLabel->setText(titleString);
+//        ui->mtitleLabel->setText(titleString);
         ui->mmtitleLabel->setText(titleString);
 
     });
@@ -220,12 +220,12 @@ void ModulePageWidget::switchPage(QObject *plugin, bool recorded){
     type = pluginInstance->get_plugin_type();
 
     //首次点击设置模块标题后续交给回调函数
-    if (ui->mtitleLabel->text().isEmpty() || ui->mmtitleLabel->text().isEmpty()){
-        QString titleString = mkvConverter->keycodeTokeyi18nstring(type);
+//    if (ui->mtitleLabel->text().isEmpty() || ui->mmtitleLabel->text().isEmpty()){
+//        QString titleString = mkvConverter->keycodeTokeyi18nstring(type);
 
-        ui->mtitleLabel->setText(titleString);
-        ui->mmtitleLabel->setText(titleString);
-    }
+//        ui->mtitleLabel->setText(titleString);
+//        ui->mmtitleLabel->setText(titleString);
+//    }
 
     //通过设置标志位确定是否记录打开历史
     flagBit = recorded;

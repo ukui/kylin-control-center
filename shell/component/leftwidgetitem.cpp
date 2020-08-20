@@ -30,11 +30,11 @@ LeftWidgetItem::LeftWidgetItem(QWidget *parent) :
 {
 //    this->setStyleSheet("background: none;");
     widget = new QWidget(this);
-//    widget->setFixedSize(120, 40);
+    widget->setFixedSize(268,56);
 //    widget->setStyleSheet("QWidget{background: #FFFFFF;}");
-    widget->setFixedHeight(40);
+//    widget->setFixedHeight(56);
 
-
+    //图标大小
     iconLabel = new QLabel(widget);
     QSizePolicy policy = iconLabel->sizePolicy();
     policy.setHorizontalPolicy(QSizePolicy::Fixed);

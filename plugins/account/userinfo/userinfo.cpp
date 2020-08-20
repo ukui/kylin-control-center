@@ -19,7 +19,6 @@
  */
 #include "userinfo.h"
 #include "ui_userinfo.h"
-
 #include <QDBusInterface>
 #include <QDBusConnection>
 #include <QDBusError>
@@ -46,7 +45,7 @@ extern "C" {
 
 
 #define DEFAULTFACE "/usr/share/ukui/faces/default.png"
-#define ITEMHEIGH 52
+#define ITEMHEIGH 68
 
 UserInfo::UserInfo()
 {
@@ -363,8 +362,8 @@ void UserInfo::initComponent(){
 
     addWgt = new HoverWidget("");
     addWgt->setObjectName("addwgt");
-    addWgt->setMinimumSize(QSize(580, 50));
-    addWgt->setMaximumSize(QSize(960, 50));
+    addWgt->setMinimumSize(QSize(804, 64));
+    addWgt->setMaximumSize(QSize(1524, 64));
     addWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
 
     QHBoxLayout *addLyt = new QHBoxLayout;
@@ -913,7 +912,6 @@ void UserInfo::showChangePwdDialog(QString username){
         qDebug() << "User Info Data Error When Change User type";
     }
 }
-
 
 void UserInfo::changeUserPwd(QString pwd, QString username){
     //上层已做判断，这里不去判断而直接获取
