@@ -227,7 +227,7 @@ void MainWidget::init_gui() {
     m_nullwidgetContainer = new QWidget(this);
     m_cRetry = new QTimer(this);
 
-    m_mainWidget->setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
+    //m_mainWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
     m_stackedWidget->addWidget(m_itemList);
     m_stackedWidget->addWidget(m_nullwidgetContainer);
@@ -380,6 +380,7 @@ void MainWidget::init_gui() {
     connect(m_mainDialog,&MainDialog::on_login_success, [this] () {
         m_cLoginTimer->setSingleShot(true);
         m_cLoginTimer->start(15000);
+        m_bIsStopped = false;
     });
 
     connect(m_mainDialog,&MainDialog::on_login_failed,[this] () {

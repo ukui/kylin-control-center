@@ -618,6 +618,15 @@ void Widget::writeConfigFile() {
     m_qsettings->sync();
 }
 
+void Widget::setcomBoxScale() {
+    int scale = 1;
+    QComboBox *scaleCombox = findChild<QComboBox*>(QString("scaleCombox"));
+    if (scaleCombox) {
+        scale = "100%" == scaleCombox->currentText() ? 1 : 2;
+    }
+    writeScale(scale);
+}
+
 void Widget::showNightWidget(bool judge) {
     if (judge) {
         ui->sunframe->setVisible(true);
@@ -880,6 +889,7 @@ void Widget::save()
     initScreenXml(countOutput);
     writeScreenXml(countOutput);
 #if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
+    setcomBoxScale();
 #else
     writeScale(static_cast<float>(this->screenScale));
 #endif
@@ -912,7 +922,6 @@ void Widget::save()
 }
 
 void Widget::scaleChangedSlot(int index) {
-    qDebug()<<"scale changed----------->"<<index<<endl;
     switch (index) {
     case 0:
         this->screenScale = 1;

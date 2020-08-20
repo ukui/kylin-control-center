@@ -245,6 +245,7 @@ void OutputConfig::initUi()
 
 
     scaleCombox = new QComboBox();
+    scaleCombox->setObjectName("scaleCombox");
 //    mRefreshRate->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     scaleCombox->setMinimumSize(402,30);
     scaleCombox->setMaximumSize(16777215,30);

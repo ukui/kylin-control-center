@@ -153,6 +153,7 @@ class Widget : public QWidget
     void writeScale(int scale);
     void initGSettings();
     void writeConfigFile();
+    void setcomBoxScale();
 
   private:
     Ui::DisplayWindow *ui;

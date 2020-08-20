@@ -479,6 +479,11 @@
         <source>Status</source>
         <translation>当前状态</translation>
     </message>
+    <message>
+        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="272"/>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
 </context>
 <context>
     <name>Backup</name>
@@ -653,7 +658,7 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="obsolete">添加新用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="99"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="119"/>
         <source>Add user group</source>
         <translation>添加用户组</translation>
     </message>
@@ -5221,7 +5226,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="637"/>
         <source>Currently in Live mode, please create a new user and log out</source>
-        <translation type="unfinished"></translation>
+        <translation>当前处于试用模式，请创建一个新用户并注销生效</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="674"/>
