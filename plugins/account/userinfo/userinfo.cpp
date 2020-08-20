@@ -684,7 +684,8 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     baseWidget->setLayout(baseVerLayout);
 
     QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
-    item->setSizeHint(QSize(ui->listWidget->width() - 4, ITEMHEIGH));
+//    item->setSizeHint(QSize(ui->listWidget->width() - 4, ITEMHEIGH));
+    item->setSizeHint(QSize(QSizePolicy::Expanding, ITEMHEIGH));
     item->setData(Qt::UserRole, QVariant(user.objpath));
     ui->listWidget->setItemWidget(item, baseWidget);
 
