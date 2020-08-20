@@ -22,7 +22,7 @@
 
 #include <QObject>
 #include <QtPlugin>
-
+#include <QProcess>
 #include <QThread>
 #include <QListWidget>
 

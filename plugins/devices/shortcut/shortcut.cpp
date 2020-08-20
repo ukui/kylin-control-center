@@ -503,19 +503,29 @@ void Shortcut::deleteCustomShortcut(QString path){
     if (path.isEmpty())
         return;
 
-    gboolean ret;
-    GError ** error = NULL;
+//    gboolean ret;
+//    GError ** error = NULL;
+    QProcess p(0);
+    QStringList args;
 
     char * fullpath = path.toLatin1().data();
+    QString cmd = "dconf";
 
-    DConfClient * client = dconf_client_new ();
+    args.append("reset");
+    args.append("-f");
+    args.append(fullpath);
+    p.execute(cmd,args);//command是要执行的命令,args是参数
+    qDebug()<<"wait for finish";
+    p.waitForFinished(-1);
+    qDebug()<<QString::fromLocal8Bit(p.readAllStandardError());
+//    DConfClient * client = dconf_client_new ();
 
-    ret = dconf_client_write_sync (client, fullpath, NULL, NULL, NULL, error);
+//    ret = dconf_client_write_sync (client, fullpath, NULL, NULL, NULL, error);
 
-    if (!ret)
-        qDebug() << "Delete Custom ShortCut Failed!";
+//    if (!ret)
+//        qDebug() << "Delete Custom ShortCut Failed!";
 
-    g_object_unref (client);
+//    g_object_unref (client);
 }
 
 void Shortcut::newBindingRequest(QList<int> keyCode){
