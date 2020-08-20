@@ -51,7 +51,7 @@ Notice::Notice()
     ui->lockscreenWidget->setVisible(false);
 
     ui->title2Label->setContentsMargins(0,0,0,16);
-    ui->applistWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    ui->applistWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->applistWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     initSearchText();

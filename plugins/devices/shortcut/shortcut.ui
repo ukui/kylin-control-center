@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string notr="true">Shortcut</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
    <property name="spacing">
     <number>8</number>
    </property>
@@ -43,7 +43,7 @@
        <height>16777215</height>
       </size>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -63,6 +63,9 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <property name="spacing">
          <number>16</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
         </property>
         <property name="bottomMargin">
          <number>10</number>
@@ -94,7 +97,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>8</height>
+            <height>13</height>
            </size>
           </property>
          </spacer>

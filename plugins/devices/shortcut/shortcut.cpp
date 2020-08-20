@@ -131,13 +131,13 @@ void Shortcut::setupComponent(){
 
     ui->generalListWidget->setFocusPolicy(Qt::NoFocus);
     ui->generalListWidget->setSelectionMode(QAbstractItemView::NoSelection);
-    ui->generalListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    ui->generalListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->generalListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->generalListWidget->setSpacing(1);
 
     ui->customListWidget->setFocusPolicy(Qt::NoFocus);
     ui->customListWidget->setSelectionMode(QAbstractItemView::NoSelection);
-    ui->customListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    ui->customListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->customListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->customListWidget->setSpacing(0);
 //    ui->customListWidget->setFixedHeight((showList.length() * ITEMHEIGH));
@@ -336,7 +336,7 @@ void Shortcut::appendGeneralItems(){
             });
 
             QListWidgetItem * item = new QListWidgetItem(ui->generalListWidget);
-            item->setSizeHint(QSize(ui->generalListWidget->width(), ITEMHEIGH));
+            item->setSizeHint(QSize(ui->generalListWidget->width() - 4, ITEMHEIGH));
             item->setData(Qt::UserRole, "");
             ui->generalListWidget->setItemWidget(item, singleWidget);
         }
@@ -371,7 +371,7 @@ void Shortcut::buildCustomItem(KeyEntry * nkeyEntry){
 
 
     QListWidgetItem * item = new QListWidgetItem(ui->customListWidget);
-    item->setSizeHint(QSize(ui->customListWidget->width(), ITEMHEIGH));
+    item->setSizeHint(QSize(ui->customListWidget->width() - 4, ITEMHEIGH));
     item->setData(Qt::UserRole, nkeyEntry->gsPath);
     ui->customListWidget->setItemWidget(item, singleWidget);
 
