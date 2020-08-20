@@ -21,7 +21,7 @@
 #include "ui_mainwindow.h"
 #include "utils/keyvalueconverter.h"
 #include "utils/functionselect.h"
-
+#include <QFont>
 #include <QLabel>
 #include <QLocale>
 #include <QPushButton>
@@ -297,7 +297,7 @@ void MainWindow::paintEvent(QPaintEvent *event) {
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
     if(!bIsFullScreen) {
-        rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 6, 6);
+        rectPath.addRoundedRect(this->rect().adjusted(0, 0, 0, 0), 0, 0);
 
         // 画一个黑底
         QPixmap pixmap(this->rect().size());
@@ -394,6 +394,7 @@ void MainWindow::initTileBar() {
     m_searchWidget->setFocusPolicy(Qt::ClickFocus);
     m_searchWidget->installEventFilter(this);
     titleLabel  = new QLabel(tr("UKCC"), this);
+    titleLabel->resize(80,32);
     ui->titleLayout->addWidget(m_searchWidget, Qt::AlignCenter);
     connect(m_searchWidget, &SearchWidget::notifyModuleSearch, this, &MainWindow::switchPage);
 
@@ -407,7 +408,8 @@ void MainWindow::initTileBar() {
     minBtn->setFixedSize(32, 32);
     maxBtn->setFixedSize(32, 32);
 
-    m_searchWidget->setMinimumWidth(350);
+    m_searchWidget->setMinimumWidth(248);
+    m_searchWidget->setMinimumHeight(48);
 
 //    ui->titleLayout->addWidget(titleLabel);
     titleLabel->setGeometry(rect().x()+32, rect().y()+20,80, 32);

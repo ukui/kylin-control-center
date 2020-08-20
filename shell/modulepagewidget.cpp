@@ -47,7 +47,7 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
 
     //右侧Widget大小限定(限制了最小宽度)
     ui->widget->setMinimumWidth(900);
-    ui->widget->setMaximumWidth(1620);
+    ui->widget->setMaximumWidth(16777215);
 
 
     //
