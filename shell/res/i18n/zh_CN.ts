@@ -2214,6 +2214,11 @@ folder will be deleted!</source>
         <translation>任务栏</translation>
     </message>
     <message>
+        <location filename="../../../plugins/account/networkaccount/itemlist.h" line="41"/>
+        <source>Themes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Area</source>
         <translation>语言和地区</translation>
