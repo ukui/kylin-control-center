@@ -292,7 +292,7 @@ void Shortcut::initFunctionStatus(){
     connect(pThread, &QThread::finished, this, [=]{
         //系统快捷键
         appendGeneralItems();
-        ui->generalListWidget->setFixedHeight(ui->generalListWidget->count() * ITEMHEIGH);
+        ui->generalListWidget->setFixedHeight((ui->generalListWidget->count() + 1) * ITEMHEIGH);
         initGeneralItemsStyle();
 
         //自定义快捷键
