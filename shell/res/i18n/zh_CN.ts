@@ -2216,7 +2216,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="41"/>
         <source>Themes</source>
-        <translation type="unfinished"></translation>
+        <translation>主题</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
