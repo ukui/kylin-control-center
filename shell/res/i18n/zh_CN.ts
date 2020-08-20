@@ -653,7 +653,7 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="obsolete">添加新用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="99"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="119"/>
         <source>Add user group</source>
         <translation>添加用户组</translation>
     </message>
@@ -2127,7 +2127,7 @@ folder will be deleted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="296"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="297"/>
         <source>Thanks For Using The ukcc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2206,7 +2206,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="40"/>
         <source>Avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>头像</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="41"/>
@@ -2216,32 +2216,32 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Area</source>
-        <translation type="unfinished">语言和地区</translation>
+        <translation>语言和地区</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Date/Time</source>
-        <translation type="unfinished"></translation>
+        <translation>时间与日期</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Default Open</source>
-        <translation type="unfinished"></translation>
+        <translation>默认打开方式</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Notice</source>
-        <translation type="unfinished">通知</translation>
+        <translation>侧边栏</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Option</source>
-        <translation type="unfinished"></translation>
+        <translation>登录选项</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Peony</source>
-        <translation type="unfinished"></translation>
+        <translation>文件管理器</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
@@ -2256,22 +2256,22 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
         <source>Boot</source>
-        <translation type="unfinished"></translation>
+        <translation>开机启动项</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
         <source>Power</source>
-        <translation type="unfinished">电源</translation>
+        <translation>电源</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
         <source>Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>文档编辑器</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
         <source>Terminal</source>
-        <translation type="unfinished"></translation>
+        <translation>终端</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="41"/>
@@ -3008,32 +3008,25 @@ folder will be deleted!</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../mainwindow.cpp" line="336"/>
+        <location filename="../../mainwindow.cpp" line="355"/>
         <source>Search</source>
         <translation>请输入搜索内容</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="349"/>
+        <location filename="../../mainwindow.cpp" line="68"/>
+        <location filename="../../mainwindow.cpp" line="368"/>
         <source>UKCC</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="692"/>
+        <location filename="../../mainwindow.cpp" line="711"/>
         <source>ukcc</source>
         <translation>控制面板</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="459"/>
+        <location filename="../../mainwindow.cpp" line="478"/>
         <source>HOME</source>
         <translation>首页</translation>
-    </message>
-</context>
-<context>
-    <name>ModulePageWidget</name>
-    <message>
-        <location filename="../../modulepagewidget.cpp" line="53"/>
-        <source>QLabel{font-size: 18px; color: palette(Shadow);}</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
