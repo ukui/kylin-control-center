@@ -138,7 +138,7 @@ void Shortcut::setupComponent(){
     ui->customListWidget->setFocusPolicy(Qt::NoFocus);
     ui->customListWidget->setSelectionMode(QAbstractItemView::NoSelection);
 //    ui->customListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->customListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    ui->customListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->customListWidget->setSpacing(0);
 //    ui->customListWidget->setFixedHeight((showList.length() * ITEMHEIGH));
 
@@ -297,7 +297,7 @@ void Shortcut::initFunctionStatus(){
 
         //自定义快捷键
         appendCustomItems();
-        ui->customListWidget->setFixedHeight(ui->customListWidget->count() * ITEMHEIGH);
+        ui->customListWidget->setFixedHeight((ui->customListWidget->count() + 1) * ITEMHEIGH);
         initCustomItemsStyle();
     });
     connect(pThread, &QThread::finished, pWorker, &GetShortcutWorker::deleteLater);
@@ -384,7 +384,7 @@ void Shortcut::buildCustomItem(KeyEntry * nkeyEntry){
 
         delete obItem;
 
-        ui->customListWidget->setFixedHeight(ui->customListWidget->count() * ITEMHEIGH);
+        ui->customListWidget->setFixedHeight((ui->customListWidget->count() + 1) * ITEMHEIGH);
 
         initCustomItemsStyle();
 
@@ -451,7 +451,7 @@ void Shortcut::createNewShortcut(QString path, QString name, QString exec){
         /*********刷新界面(添加)******/
         buildCustomItem(nKeyentry);
 
-        ui->customListWidget->setFixedHeight(ui->customListWidget->count() * ITEMHEIGH);
+        ui->customListWidget->setFixedHeight((ui->customListWidget->count() + 1) * ITEMHEIGH);
 
         initCustomItemsStyle();
         /******************/
@@ -507,7 +507,6 @@ void Shortcut::deleteCustomShortcut(QString path){
 //    GError ** error = NULL;
     QProcess p(0);
     QStringList args;
-
     char * fullpath = path.toLatin1().data();
     QString cmd = "dconf";
 
@@ -518,6 +517,8 @@ void Shortcut::deleteCustomShortcut(QString path){
     qDebug()<<"wait for finish";
     p.waitForFinished(-1);
     qDebug()<<QString::fromLocal8Bit(p.readAllStandardError());
+
+
 //    DConfClient * client = dconf_client_new ();
 
 //    ret = dconf_client_write_sync (client, fullpath, NULL, NULL, NULL, error);
