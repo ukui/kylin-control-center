@@ -13,7 +13,7 @@
   <property name="minimumSize">
    <size>
     <width>900</width>
-    <height>675</height>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -25,7 +25,7 @@
   <property name="windowTitle">
    <string notr="true">UserInfo</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <layout class="QVBoxLayout" name="verticalLayout_11">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_16">
      <item>
@@ -620,8 +620,6 @@
          </layout>
          <zorder></zorder>
          <zorder>line_2</zorder>
-         <zorder>horizontalSpacer</zorder>
-         <zorder>horizontalSpacer_6</zorder>
         </widget>
        </item>
        <item>
@@ -807,11 +805,54 @@
     </spacer>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_10">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <layout class="QHBoxLayout" name="horizontalLayout_10">
        <item>
-        <widget class="QListWidget" name="listWidget">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QListWidget" name="listWidget">
+           <property name="minimumSize">
+            <size>
+             <width>804</width>
+             <height>64</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="resizeMode">
+            <enum>QListView::Adjust</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_8">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QWidget" name="addUserWidget" native="true">
          <property name="minimumSize">
           <size>
            <width>804</width>
@@ -824,10 +865,37 @@
            <height>64</height>
           </size>
          </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="addLyt">
+            <property name="spacing">
+             <number>8</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
-        <spacer name="horizontalSpacer_8">
+        <spacer name="horizontalSpacer_6">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -836,7 +904,7 @@
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>40</width>
+           <width>48</width>
            <height>20</height>
           </size>
          </property>
@@ -847,104 +915,27 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_7">
-     <item>
-      <widget class="QWidget" name="addUserWidget" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>804</width>
-         <height>64</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>64</height>
-        </size>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <layout class="QHBoxLayout" name="addLyt">
-          <property name="spacing">
-           <number>8</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-         </layout>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_6">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Fixed</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>48</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
-   <item>
     <spacer name="verticalSpacer_7">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>20</width>
-       <height>50</height>
+       <width>17</width>
+       <height>13</height>
       </size>
      </property>
     </spacer>
    </item>
   </layout>
-  <zorder>titleLabel</zorder>
-  <zorder>liveFrame</zorder>
-  <zorder>listWidget</zorder>
   <zorder>verticalSpacer</zorder>
   <zorder>verticalSpacer_7</zorder>
-  <zorder>title2Label</zorder>
   <zorder>verticalSpacer_2</zorder>
   <zorder></zorder>
-  <zorder>horizontalSpacer_7</zorder>
-  <zorder>horizontalSpacer_8</zorder>
-  <zorder>horizontalSpacer_9</zorder>
-  <zorder>horizontalSpacer_10</zorder>
-  <zorder>horizontalSpacer_11</zorder>
-  <zorder>horizontalSpacer_12</zorder>
-  <zorder>horizontalSpacer_13</zorder>
-  <zorder>horizontalSpacer_6</zorder>
-  <zorder>horizontalSpacer_14</zorder>
-  <zorder>horizontalSpacer_15</zorder>
-  <zorder>horizontalSpacer_16</zorder>
   <zorder></zorder>
-  <zorder>addUserWidget</zorder>
-  <zorder>horizontalSpacer_6</zorder>
+  <zorder></zorder>
+  <zorder></zorder>
+  <zorder></zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

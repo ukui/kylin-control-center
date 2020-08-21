@@ -359,7 +359,7 @@ void UserInfo::initComponent(){
 //    QString filename = "/etc/lightdm/lightdm.conf";
 //    autoSettings = new QSettings(filename, QSettings::IniFormat);
 
-    ui->listWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
+    ui->listWidget->setStyleSheet("QListWidget::Item{background:palette(base);}");
 
     addWgt = new HoverWidget("");
     addWgt->setObjectName("addwgt");
@@ -517,7 +517,7 @@ void UserInfo::initComponent(){
 
 void UserInfo::_resetListWidgetHeigh(){
     //设置其他用户控件的总高度
-    ui->listWidget->setFixedHeight((allUserInfoMap.count()) * ITEMHEIGH);
+    ui->listWidget->setFixedHeight((allUserInfoMap.count() - 1) * (ITEMHEIGH + 2));
 }
 
 void UserInfo::initAllUserStatus(){
