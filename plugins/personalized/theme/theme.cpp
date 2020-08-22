@@ -267,12 +267,6 @@ void Theme::setupComponent(){
 
     ui->kwinFrame->setVisible(false);
     ui->transFrame->setVisible(true);
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
-    ui->transFrame->setVisible(false);
-    ui->effectFrame->setVisible(false);
-#else
-#endif
 }
 
 void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
@@ -344,15 +338,15 @@ void Theme::initThemeMode(){
         }
     });
 
-    //获取当前主题
+    // 获取当前主题
     QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
     qApp->setStyle(new InternalStyle(currentThemeMode));
-    //设置界面
-    for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
-        QVariant valueVariant = button->property("value");
-        if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode)
-            button->click();
-//            button->setChecked(true);
+    // 设置界面
+
+    if ("ukui-white" == currentThemeMode || "ukui-default" == currentThemeMode) {
+        ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
+    } else {
+        ui->themeModeBtnGroup->buttonClicked(ui->darkButton);
     }
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
@@ -569,6 +563,13 @@ void Theme::initConnection() {
         ui->transFrame->setVisible(checked);
         writeKwinSettings(checked, currentThemeMode);
     });
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
+    ui->transFrame->setVisible(false);
+    ui->effectFrame->setVisible(false);
+#else
+
+#endif
 }
 
 QStringList Theme::_getSystemCursorThemes(){

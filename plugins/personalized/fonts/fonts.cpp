@@ -172,8 +172,8 @@ void Fonts::initSearchText() {
     ui->fontSizeLabel->setText(tr("Font size"));
     //~ contents_path /fonts/Fonts select
     ui->fontSizeLabel->setText(tr("Fonts select"));
-    //~ contents_path /fonts/Monospace font
-    ui->fontSizeLabel->setText(tr("Monospace font"));
+    //~ contents_path /fonts/Font size
+    ui->fontSizeLabel->setText(tr("Font size"));
 }
 
 void Fonts::setupStylesheet(){

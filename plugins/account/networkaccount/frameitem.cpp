@@ -56,7 +56,7 @@ FrameItem::FrameItem(QWidget *parent) :QFrame(parent)
     m_hboxLayout->addWidget(m_stackedWidget,0,Qt::AlignRight);
     m_hboxLayout->addWidget(m_switchBtn,0,Qt::AlignRight);
     m_workLayout->addLayout(m_hboxLayout);
-    m_workLayout->setMargin(16);
+    m_workLayout->setContentsMargins(16,0,16,0);
     this->setAttribute(Qt::WA_StyledBackground,true);
     //widget->setStyleSheet("background-color: rgba(244,244,244,85%);border-radius:4px;");
     this->setLayout(m_workLayout);

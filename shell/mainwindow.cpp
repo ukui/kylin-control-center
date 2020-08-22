@@ -712,9 +712,6 @@ void MainWindow::initStyleSheet() {
     closeBtn->setFlat(true);
     closeBtn->installEventFilter(this);
 
-    closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
-
     ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
 
     // 设置左上角按钮图标
@@ -724,6 +721,10 @@ void MainWindow::initStyleSheet() {
     minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
     maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
     closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
+    closeBtn->setObjectName("closeBtn");
+    closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;width:32px;height:32px;}"
+                            "QPushButton#closeBtn{border-radius: 4px;width:32px;height:32px;}"
+                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;width:32px;height:32px;}");
 }
 
 void MainWindow::setModuleBtnHightLight(int id) {
@@ -770,7 +771,7 @@ void MainWindow::switchPage(QString moduleName) {
 }
 
 const QPixmap MainWindow::renderSvg(const QIcon &icon, QString cgColor) {
-    int size = 24;
+    int size = 16;
     const auto ratio = qApp->devicePixelRatio();
     if ( 2 == ratio) {
         size = 48;

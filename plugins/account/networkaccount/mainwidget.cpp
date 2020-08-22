@@ -370,7 +370,25 @@ void MainWidget::init_gui() {
         cItem ++;
     }
 
+    if(m_mainWidget->currentWidget() == m_nullWidget) {
+        setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
+    } else {
+        setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
+    }
+
     //连接信号
+    connect(m_mainWidget,&QStackedWidget::currentChanged,[this] (int index) {
+       if(m_mainWidget->widget(index) == m_nullWidget) {
+           setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
+           m_mainWidget->adjustSize();
+           adjustSize();
+       } else {
+           setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
+           m_mainWidget->adjustSize();
+           adjustSize();
+       }
+    });
+
     connect(m_autoSyn->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_auto_syn(int,int)));
     connect(m_login_btn,SIGNAL(clicked()),this,SLOT(on_login()));
     connect(m_openEditDialog_btn,SIGNAL(clicked()),this,SLOT(neweditdialog()));

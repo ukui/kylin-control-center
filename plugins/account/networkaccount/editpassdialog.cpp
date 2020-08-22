@@ -272,7 +272,7 @@ void EditPassDialog::setstyleline() {
 /* 验证码发送按钮处理 */
 void EditPassDialog::on_send_code() {
     char phone[32];
-    emit docheck();
+    //emit docheck();
     m_mcodeBtn->setEnabled(false);
     if(m_newPassLineEdit->check() == false){
         m_mcodeBtn->setEnabled(true);
