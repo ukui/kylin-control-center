@@ -2474,9 +2474,9 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/devices/keyboard/keyboardcontrol.ui" line="475"/>
         <location filename="../../../plugins/devices/keyboard/keyboardcontrol.cpp" line="119"/>
-        <source>Test repetition rate of the input character:</source>
+        <source>Input characters to test the repetition effect:</source>
         <translation>输入字符测试重复效果：</translation>
-        <extra-contents_path>/keyboard/Test repetition rate of the input character:</extra-contents_path>
+        <extra-contents_path>/keyboard/Input characters to test the repetition effect:</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/devices/keyboard/keyboardcontrol.ui" line="572"/>
@@ -3999,7 +3999,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="146"/>
-        <source>NetworkAccount</source>
+        <source>Cloud Account</source>
         <translation>云账户</translation>
     </message>
     <message>
@@ -5661,7 +5661,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
     <name>networkaccount</name>
     <message>
         <location filename="../../../plugins/account/networkaccount/networkaccount.cpp" line="25"/>
-        <source>NetworkAccount</source>
+        <source>Cloud Account</source>
         <translation>云账户</translation>
     </message>
 </context>
