@@ -398,7 +398,9 @@ void UserInfo::initComponent(){
 
     ui->addLyt->addWidget(addWgt);
 
-    nopwdSwitchBtn = new SwitchButton(ui->nopwdLoginFrame);
+    ui->nopwdHorLayout->setSpacing(0);
+    ui->nopwdHorLayout->setMargin(0);
+    nopwdSwitchBtn = new SwitchButton(ui->nopwdLoginWidget);
     ui->nopwdHorLayout->addWidget(nopwdSwitchBtn);
 
     autoLoginSwitchBtn = new SwitchButton(ui->autoLoginFrame);
@@ -587,6 +589,9 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     baseWidget->setMaximumSize(960,50);
     baseWidget->setAttribute(Qt::WA_DeleteOnClose);
 
+    ui->verticalLayout->setContentsMargins(14,0,16,0);
+    ui->currentUserFrame->setLayout(ui->verticalLayout);
+
     QHBoxLayout * baseVerLayout = new QHBoxLayout(baseWidget);
     baseVerLayout->setSpacing(0);
     baseVerLayout->setMargin(0);
@@ -676,7 +681,6 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     baseHorLayout->addWidget(widget);
     baseHorLayout->addWidget(delBtn, Qt::AlignVCenter);
     baseHorLayout->addSpacing(4);
-
 
     baseVerLayout->addLayout(baseHorLayout);
 //    baseVerLayout->addStretch();
