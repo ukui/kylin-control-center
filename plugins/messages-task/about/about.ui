@@ -179,6 +179,9 @@
                  <property name="text">
                   <string>Copyright 2009-2020 @ Kylinos All rights reserved</string>
                  </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
+                 </property>
                 </widget>
                </item>
               </layout>
@@ -270,6 +273,9 @@
             <widget class="QLabel" name="kernalContent">
              <property name="text">
               <string/>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
              </property>
             </widget>
            </item>

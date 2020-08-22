@@ -51,6 +51,19 @@ DisplayPerformanceDialog::DisplayPerformanceDialog(QWidget *parent) :
     ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
     ui->closeBtn->setFlat(true);
 
+    ui->label->setAlignment(Qt::AlignTop);
+    ui->label_2->setAlignment(Qt::AlignTop);
+    ui->label_3->setAlignment(Qt::AlignTop);
+    ui->label_4->setAlignment(Qt::AlignTop);
+    ui->label_5->setAlignment(Qt::AlignTop);
+    ui->label_6->setAlignment(Qt::AlignTop);
+//    ui->label->adjustSize();
+//    ui->label_2->adjustSize();
+//    ui->label_3->adjustSize();
+//    ui->label_4->adjustSize();
+//    ui->label_5->adjustSize();
+//    ui->label_6->adjustSize();
+
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 

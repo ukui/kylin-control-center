@@ -74,9 +74,13 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     //输入设备添加布局
     QHBoxLayout *m_pInputDeviceLayout = new QHBoxLayout(m_pInputDeviceWidget);
     m_pInputLabel->setFixedSize(83,24);
-    m_pInputDeviceCombobox->setMinimumSize(50,32);
+    m_pInputDeviceCombobox->setFixedHeight(32);
     m_pInputDeviceCombobox->setMaximumSize(900,32);
-    m_pInputDeviceLabel->setFixedSize(115,24);
+//    m_pInputDeviceLabel->setFixedSize(115,24);
+    m_pInputDeviceLabel->setFixedSize(150,32);
+//    m_pInputDeviceLabel->setMinimumSize(115, 0);
+
+//    m_pInputDeviceLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
     m_pInputDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     m_pInputDeviceLayout->addWidget(m_pInputDeviceLabel);
     m_pInputDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
@@ -87,7 +91,10 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pInputDeviceLayout->layout()->setContentsMargins(0,0,0,0);
     //主音量添加布局
     QHBoxLayout *m_pMasterLayout = new QHBoxLayout(m_pVolumeWidget);
-    m_pIpVolumeLabel->setFixedSize(115,24);
+//    m_pIpVolumeLabel->setFixedSize(115,24);
+    m_pIpVolumeLabel->setFixedSize(150,32);
+//    m_pIpVolumeLabel->setMinimumSize(115, 24);
+//    m_pIpVolumeLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     m_pInputIconBtn->setFixedSize(24,24);
     m_pIpVolumeSlider->setFixedHeight(20);
     m_pIpVolumePercentLabel->setFixedSize(40,24);
@@ -105,7 +112,10 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pVolumeWidget->layout()->setContentsMargins(0,0,0,0);
     //声道平衡添加布局
     QHBoxLayout *m_pSoundLayout = new QHBoxLayout(m_pInputLevelWidget);
-    m_pInputLevelLabel->setFixedSize(115,24);
+//    m_pInputLevelLabel->setFixedSize(115,24);
+    m_pInputLevelLabel->setFixedSize(150,32);
+//    m_pInputLevelLabel->setMinimumSize(115, 24);
+//    m_pInputLevelLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     m_pLowLevelLabel->setFixedSize(24,24);
     m_pInputLevelSlider->setFixedHeight(20);
     m_pHighLevelLabel->setFixedSize(36,24);
@@ -124,7 +134,8 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
 
     //连接器添加布局
     QHBoxLayout *pConnectLayout = new QHBoxLayout(m_pInputLevelWidget);
-    m_pInputPortLabel->setFixedSize(115,24);
+//    m_pInputPortLabel->setFixedSize(115,24);
+    m_pInputPortLabel->setFixedSize(150,32);
     m_pInputPortCombobox->setMinimumSize(50,32);
     m_pInputPortCombobox->setMaximumSize(900,32);
     pConnectLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));

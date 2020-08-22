@@ -370,7 +370,10 @@ void MainWindow::initTileBar() {
     backBtn->setFixedSize(32, 32);
     minBtn->setFixedSize(32, 32);
     maxBtn->setFixedSize(32, 32);
-    titleLabel->setFixedSize(32, 32);
+//    titleLabel->setFixedSize(32, 32);
+    titleLabel->setFixedHeight(32);
+    titleLabel->setMinimumWidth(32);
+    titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_searchWidget->setMinimumWidth(350);
 
     ui->titleLayout->addWidget(titleLabel);

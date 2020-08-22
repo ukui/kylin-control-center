@@ -623,7 +623,10 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     QString btnQss = QString("QPushButton{background: #ffffff; border-radius: 4px;}");
 
     QPushButton * typeBtn = new QPushButton(widget);
-    typeBtn->setFixedSize(88, 36);
+//    typeBtn->setFixedSize(88, 36);
+    typeBtn->setFixedHeight(36);
+    typeBtn->setMinimumWidth(88);
+    typeBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     typeBtn->setText(tr("Change type"));
 //    typeBtn->setStyleSheet(btnQss);
     connect(typeBtn, &QPushButton::clicked, this, [=](bool checked){
@@ -633,7 +636,10 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     typeBtn->hide();
 
     QPushButton * pwdBtn = new QPushButton(widget);
-    pwdBtn->setFixedSize(88, 36);
+//    pwdBtn->setFixedSize(88, 36);
+    pwdBtn->setFixedHeight(36);
+    pwdBtn->setMinimumWidth(88);
+    pwdBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     pwdBtn->setText(tr("Change pwd"));
 //    pwdBtn->setStyleSheet(btnQss);
     connect(pwdBtn, &QPushButton::clicked, this, [=](bool checked){

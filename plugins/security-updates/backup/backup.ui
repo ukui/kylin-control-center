@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>882</width>
+    <width>1041</width>
     <height>710</height>
    </rect>
   </property>
@@ -60,7 +60,7 @@
    <item>
     <widget class="QLabel" name="backupLabel">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -70,6 +70,9 @@
 you can restore them to ensure the integrity of your system.</string>
      </property>
      <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+     <property name="wordWrap">
       <bool>true</bool>
      </property>
     </widget>

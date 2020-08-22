@@ -50,6 +50,10 @@ Area::Area()
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
+    ui->countrylabel->adjustSize();
+    ui->languagelabel->adjustSize();
+    ui->formframe->adjustSize();
+
     const QByteArray id(PANEL_GSCHEMAL);
 
     if(QGSettings::isSchemaInstalled(id)) {

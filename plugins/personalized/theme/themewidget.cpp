@@ -125,10 +125,10 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, const QList<QPixmap> &listMa
 
     QLabel * nameLabel = new QLabel(this);
     QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
-    nameSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
+    nameSizePolicy.setHorizontalPolicy(QSizePolicy::Preferred);
     nameSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
     nameLabel->setSizePolicy(nameSizePolicy);
-    nameLabel->setFixedWidth(102);
+    nameLabel->setMinimumWidth(130);
     nameLabel->setText(name);
 
     QHBoxLayout * iconHorLayout = new QHBoxLayout;

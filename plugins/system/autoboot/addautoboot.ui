@@ -272,13 +272,13 @@
               <property name="minimumSize">
                <size>
                 <width>60</width>
-                <height>28</height>
+                <height>33</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>60</width>
-                <height>28</height>
+                <height>33</height>
                </size>
               </property>
               <property name="text">

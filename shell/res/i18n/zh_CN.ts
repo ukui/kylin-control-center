@@ -3439,7 +3439,7 @@ folder will be deleted!</source>
         <location filename="../../../plugins/system/power/power.ui" line="167"/>
         <location filename="../../../plugins/system/power/power.cpp" line="112"/>
         <source>Balance (suggest)</source>
-        <translation>平衡（推荐）</translation>
+        <translation>平衡(推荐)</translation>
         <extra-contents_path>/power/Balance (suggest)</extra-contents_path>
     </message>
     <message>

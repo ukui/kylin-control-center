@@ -10,6 +10,8 @@
 
 #include <QDebug>
 
+#include <QFontMetrics>
+
 
 BlockWidget::BlockWidget(){
     setFixedSize(QSize(260, 80));
@@ -29,10 +31,12 @@ void BlockWidget::initComponent(){
     logoLabel->setFixedSize(QSize(48, 48));
 
     QVBoxLayout * textHorLayout = new QVBoxLayout;
-    textHorLayout->setSpacing(6);
+    textHorLayout->setSpacing(10);
 
     titleLable = new QLabel;
     detailLabel = new QLabel;
+    detailLabel->setAlignment(Qt::AlignTop);
+    detailLabel->setFixedHeight(32);
 
     textHorLayout->addStretch();
     textHorLayout->addWidget(titleLable);
@@ -48,19 +52,50 @@ void BlockWidget::initComponent(){
 void BlockWidget::setupComponent(QString logo, QString title, QString detail, QString cmd){
     logoLabel->setPixmap(QPixmap(logo).scaled(logoLabel->size()));
     titleLable->setText(title);
-    detailLabel->setText(detail);
+//    detailLabel->setText(detail);
+//    detailLabel->adjustSize();
+    m_curIndex = 0;
+    m_showText = detail + "    ";
+    m_charWidth = fontMetrics().width("。");
+    m_labelWidth = m_charWidth * (m_showText.length() - 4);
+    this->detailLabel->installEventFilter(this);
+//    m_charWidth = fontMetrics().width("a") * 2;
     _cmd = cmd;
+}
+
+void BlockWidget::scrollLabel(){
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &BlockWidget::updateIndex);
+    timer->start(200);
+}
+
+void BlockWidget::updateIndex()
+{
+    m_curIndex++;
+    if (m_curIndex*m_charWidth > m_labelWidth){
+        m_curIndex = 0;
+    }
+    this->detailLabel->update();
 }
 
 void BlockWidget::enterEvent(QEvent *event){
     //style
-
+    m_charWidth = fontMetrics().width("。");
+    m_labelWidth = m_charWidth * m_showText.length();
+    scrollLabel();
+//    if(m_labelWidth > 200){
+//        scrollLabel();
+//    }else{
+//        qDebug()<<"Needn't to scroll";
+//    }
     QWidget::enterEvent(event);
 }
 
 void BlockWidget::leaveEvent(QEvent *event){
     //style
-
+    timer->stop();
+    m_curIndex = 0;
+    this->detailLabel->update();
     QWidget::leaveEvent(event);
 }
 
@@ -72,6 +107,27 @@ void BlockWidget::mousePressEvent(QMouseEvent *event){
     QWidget::mousePressEvent(event);
 }
 
+bool BlockWidget::eventFilter(QObject *watched, QEvent *event)
+{
+    if(watched == this->detailLabel && event->type() == QEvent::Paint && m_labelWidth > 280)
+    {
+        this->detailLabel->setText("");
+        showPaint(); //响应函数
+    }
+    else if(m_labelWidth <= 280){
+        this->detailLabel->setText(m_showText);
+    }
+    QWidget::eventFilter(watched,event);
+}
+
+//实现响应函数
+void BlockWidget::showPaint()
+{
+    QPainter painter(this->detailLabel);
+    painter.drawText(0, 20, m_showText.mid(m_curIndex));
+    painter.drawText(m_labelWidth - m_charWidth*m_curIndex, 20, m_showText.left(m_curIndex));
+}
+
 //子类化一个QWidget，为了能够使用样式表，则需要提供paintEvent事件。
 //这是因为QWidget的paintEvent()是空的，而样式表要通过paint被绘制到窗口中。
 void BlockWidget::paintEvent(QPaintEvent *event){
@@ -80,6 +136,9 @@ void BlockWidget::paintEvent(QPaintEvent *event){
     opt.init(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+//    qDebug()<<"Scroll!";
+////    painter.drawText(0, 30, m_showText.mid(m_curIndex));
+////    painter.drawText(this->detailLabel->width() - m_charWidth*m_curIndex, 30, m_showText.left(m_curIndex));
 }
 
 SecurityCenter::SecurityCenter()

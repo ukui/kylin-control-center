@@ -9,6 +9,8 @@
 
 #include <QLabel>
 
+#include <QTimer>
+
 #include "shell/interface.h"
 #include "FlowLayout/flowlayout.h"
 
@@ -34,15 +36,26 @@ public:
     QLabel * titleLable;
     QLabel * detailLabel;
 
+    int m_charWidth;
+    int m_curIndex;
+    int m_labelWidth;
+    QString m_showText;
+    QTimer *timer;
+    void scrollLabel();
+    void updateIndex();
+    void showPaint();
+
 protected:
     virtual void enterEvent(QEvent * event);
     virtual void leaveEvent(QEvent * event);
+    virtual bool eventFilter(QObject *watched, QEvent *event);
     virtual void paintEvent(QPaintEvent * event);
 
     virtual void mousePressEvent(QMouseEvent * event);
 
 Q_SIGNALS:
     void bwClicked(QString _cmd);
+    void indexChanged();
 
 };
 
@@ -70,7 +83,6 @@ public:
     void initComponent();
 
     void runExternalApp(QString cmd);
-
 private:
     Ui::SecurityCenter *ui;
 

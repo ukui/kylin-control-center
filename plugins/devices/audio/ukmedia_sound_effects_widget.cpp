@@ -85,13 +85,21 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pSettingSoundWidget->setMinimumSize(550,50);
     m_pSettingSoundWidget->setMaximumSize(960,50);
 
-    m_pSoundEffectLabel->setFixedSize(120,24);
-    m_pSoundThemeLabel->setFixedSize(115,24);
-    m_pShutdownlabel->setFixedSize(115,24);
-    m_pLagoutLabel->setFixedSize(115,24);
-    m_pWindowClosedLabel->setFixedSize(115,24);
-    m_pVolumeChangeLabel->setFixedSize(115,24);
-    m_pSettingSoundLabel->setFixedSize(115,24);
+//    m_pSoundEffectLabel->setFixedSize(115,24);
+//    m_pSoundThemeLabel->setFixedSize(115,24);
+//    m_pShutdownlabel->setFixedSize(115,24);
+//    m_pLagoutLabel->setFixedSize(115,24);
+//    m_pWindowClosedLabel->setFixedSize(115,24);
+//    m_pVolumeChangeLabel->setFixedSize(115,24);
+//    m_pSettingSoundLabel->setFixedSize(115,24);
+
+    m_pSoundEffectLabel->setFixedSize(150,32);
+    m_pSoundThemeLabel->setFixedSize(150,32);
+    m_pShutdownlabel->setFixedSize(150,32);
+    m_pLagoutLabel->setFixedSize(150,32);
+    m_pWindowClosedLabel->setFixedSize(150,32);
+    m_pVolumeChangeLabel->setFixedSize(150,32);
+    m_pSettingSoundLabel->setFixedSize(150,32);
 
     m_pSoundThemeCombobox->setMinimumSize(50,32);
     m_pSoundThemeCombobox->setMaximumSize(900,32);

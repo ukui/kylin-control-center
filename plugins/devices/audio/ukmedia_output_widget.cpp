@@ -101,7 +101,8 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     //~ contents_path /audio/Card
     m_pSelectDeviceLabel = new QLabel(tr("Card"),m_pselectWidget);
     m_pSelectCombobox = new QComboBox(m_pselectWidget);
-    m_pProfileLabel->setFixedSize(115,24);
+//    m_pProfileLabel->setFixedSize(115,24);
+    m_pProfileLabel->setFixedSize(150,32);
 
     m_pOpBalanceSlider->setStyle(new CustomStyle());
     m_pOpVolumeSlider->setOrientation(Qt::Horizontal);
@@ -110,11 +111,18 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pOutputIconBtn->setFocusPolicy(Qt::NoFocus);
     //输出设备添加布局
     QHBoxLayout *outputDeviceLayout = new QHBoxLayout(m_pOutputDeviceWidget);
-    m_pOutputLabel->setFixedSize(115,18);
+//    m_pOutputDeviceLabel->setFixedSize(115,24);
+    m_pOutputDeviceLabel->setFixedSize(150,32);
     m_pOutputDeviceCombobox->setMinimumSize(50,32);
     m_pOutputDeviceCombobox->setMaximumSize(900,32);
 
-    m_pOutputDeviceLabel->setFixedSize(115,24);
+//    m_pOutputDeviceLabel->setMinimumSize(115, 24);
+
+//    m_pOutputDeviceLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+//    if(m_pOutputDeviceLabel->width() < 115){
+//        qDebug()<<"m_pOutputDeviceLabel->width()<115";
+//        m_pOutputDeviceLabel->setFixedWidth(115);
+//    }
     outputDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     outputDeviceLayout->addWidget(m_pOutputDeviceLabel);
     outputDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
@@ -125,7 +133,10 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     outputDeviceLayout->layout()->setContentsMargins(0,0,0,0);
     //主音量添加布局
     QHBoxLayout *masterLayout = new QHBoxLayout(m_pMasterVolumeWidget);
-    m_pOpVolumeLabel->setFixedSize(115,24);
+//    m_pOpVolumeLabel->setFixedSize(115,24);
+    m_pOpVolumeLabel->setFixedSize(150,32);
+//    m_pOpVolumeLabel->setMinimumSize(115, 24);
+//    m_pOpVolumeLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     m_pOutputIconBtn->setFixedSize(24,24);
     m_pOpVolumeSlider->setFixedHeight(20);
     m_pOpVolumePercentLabel->setFixedSize(40,24);
@@ -143,7 +154,8 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pMasterVolumeWidget->layout()->setContentsMargins(0,0,0,0);
     //声道平衡添加布局
     QHBoxLayout *soundLayout = new QHBoxLayout(m_pChannelBalanceWidget);
-    m_pOpBalanceLabel->setFixedSize(115,24);
+//    m_pOpBalanceLabel->setFixedSize(115,24);
+    m_pOpBalanceLabel->setFixedSize(150,32);
     m_pLeftBalanceLabel->setFixedSize(24,24);
     m_pOpBalanceSlider->setFixedHeight(20);
     m_pRightBalanceLabel->setFixedSize(36,24);
@@ -164,7 +176,8 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pOutputPortCombobox->setMinimumSize(50,32);
     m_pOutputPortCombobox->setMaximumSize(900,32);
 
-    m_pOutputPortLabel->setFixedSize(115,24);
+//    m_pOutputPortLabel->setFixedSize(115,24);
+    m_pOutputPortLabel->setFixedSize(150,32);
     outputPortLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     outputPortLayout->addWidget(m_pOutputPortLabel);
     outputPortLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
@@ -176,7 +189,8 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
 
     //选择的设备布局
     QHBoxLayout *pSelectDeviceLayout = new QHBoxLayout();
-    m_pSelectDeviceLabel->setFixedSize(115,24);
+//    m_pSelectDeviceLabel->setFixedSize(115,24);
+    m_pSelectDeviceLabel->setFixedSize(150,32);
     m_pSelectCombobox->setMinimumSize(50,32);
     m_pSelectCombobox->setMaximumSize(900,32);
     pSelectDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
