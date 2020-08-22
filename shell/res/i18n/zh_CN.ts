@@ -2214,7 +2214,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="40"/>
         <source>Avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>头像</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="41"/>
@@ -2224,32 +2224,32 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Area</source>
-        <translation type="unfinished">语言和地区</translation>
+        <translation>语言和地区</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Date/Time</source>
-        <translation type="unfinished"></translation>
+        <translation>时间和日期</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Default Open</source>
-        <translation type="unfinished"></translation>
+        <translation>默认打开方式</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Notice</source>
-        <translation type="unfinished">通知</translation>
+        <translation>侧边栏</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Option</source>
-        <translation type="unfinished"></translation>
+        <translation>登录选项</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Peony</source>
-        <translation type="unfinished"></translation>
+        <translation>文件管理器</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
@@ -2264,22 +2264,22 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
         <source>Boot</source>
-        <translation type="unfinished"></translation>
+        <translation>开机启动项</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
         <source>Power</source>
-        <translation type="unfinished">电源</translation>
+        <translation>电源</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
         <source>Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>文本编辑器</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
         <source>Terminal</source>
-        <translation type="unfinished"></translation>
+        <translation>终端</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="41"/>
@@ -2473,6 +2473,10 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/keyboard/keyboardcontrol.ui" line="475"/>
+        <source>Input characters to test the repetition effect：</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../plugins/devices/keyboard/keyboardcontrol.cpp" line="119"/>
         <source>Input characters to test the repetition effect:</source>
         <translation>输入字符测试重复效果：</translation>
@@ -2832,7 +2836,7 @@ folder will be deleted!</source>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="741"/>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1046"/>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1508"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.h" line="56"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.h" line="58"/>
         <source>Sign in Cloud</source>
         <translation>登录云账户</translation>
     </message>
@@ -5471,32 +5475,32 @@ Common reasons are that the overall screen size is too big, or you enabled more 
         <translation></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="181"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="184"/>
         <source>Shortcut name</source>
         <translation>快捷键名称</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="246"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="249"/>
         <source>Shortcut exec</source>
         <translation>快捷键程序</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="294"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="300"/>
         <source>Open</source>
         <translation>浏览</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="376"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="382"/>
         <source>Invalid executable, please re-enter</source>
         <translation>无效的可执行程序，请重新选择</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="449"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="458"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="468"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="477"/>
         <source>Certain</source>
         <translation>确定</translation>
     </message>
