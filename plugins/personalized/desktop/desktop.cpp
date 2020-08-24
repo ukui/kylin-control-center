@@ -95,8 +95,8 @@ Desktop::Desktop()
 
 Desktop::~Desktop()
 {
+    clearContent();
     delete ui;
-
     if (!dSettings ){
         delete dSettings;
     }
@@ -366,15 +366,23 @@ void Desktop::initTraySettings() {
     QIcon icon;
 
     QList<char *> trayList = listExistsCustomDesktopPath();
-//    qDebug()<<"path is------------->"<<trayList.length()<<endl;
+
+
     for (int i = 0; i < trayList.length(); i++) {
         const QByteArray id(TRAY_SCHEMA);
         QGSettings * traySettings = nullptr;
         QString path = QString("%1%2").arg(TRAY_SCHEMA_PATH).arg(QString(trayList.at(i)));;
 
-
         if (QGSettings::isSchemaInstalled(id)) {
             traySettings = new QGSettings(id, path.toLatin1().data());
+
+            connect(traySettings, &QGSettings::changed, this, [=] (const QString &key){
+                if(key==TRAY_ACTION_KEY) {
+                    rebuildTray();
+                    qDebug() << "the key is--->" << traySettings->get(TRAY_NAME_KEY) << endl;
+
+                }
+            });
             vecGsettings->append(traySettings);
             QStringList keys = traySettings->keys();
 
@@ -398,5 +406,21 @@ void Desktop::initTraySettings() {
             }
         }
     }
+}
+
+void Desktop::clearContent() {
+    if (ui->trayVBoxLayout->layout() != NULL) {
+        QLayoutItem* item;
+        while ((item = ui->trayVBoxLayout->layout()->takeAt( 0 )) != NULL )
+        {
+            delete item->widget();
+            delete item;
+        }
+    }
+}
+
+void Desktop::rebuildTray() {
+    clearContent();
+    initTraySettings();
 }
 

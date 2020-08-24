@@ -61,6 +61,7 @@ public:
     void initLockingStatus();
     void initTrayStatus(QString name, QIcon icon, QGSettings *gsettings);
     void initTraySettings();
+    void clearContent();
 
 private:
     Ui::Desktop *ui;
@@ -87,6 +88,8 @@ private:
 
     QGSettings * dSettings;
 
+private slots:
+    void rebuildTray();
 };
 
 #endif // DESKTOP_H
