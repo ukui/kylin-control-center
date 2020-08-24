@@ -93,6 +93,8 @@ void MainWidget::setret_logout(int ret) {
     //qDebug()<<ret<<"Coutner SatRieaf";
     if(ret == 0) {
         m_mainDialog->set_back();
+        showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry for login!"));
+        m_mainWidget->setCurrentWidget(m_nullWidget);
         m_bIsStopped = true;
     }
 }
@@ -439,7 +441,7 @@ void MainWidget::init_gui() {
     });
 
     //All.conf的
-    QString all_conf_path = QDir::homePath() + "/.cache/kylinssoclient/";
+    QString all_conf_path = QDir::homePath() + QString(PATH).remove("/All.conf");
     m_fsWatcher.addPath(all_conf_path);
 
     connect(&m_fsWatcher,&QFileSystemWatcher::directoryChanged,[this] () {
@@ -463,7 +465,13 @@ void MainWidget::init_gui() {
                    m_itemList->get_item(i)->set_change(0,"0");
                }
            }
-           m_cRetry->start(1000);
+           QFile file(QDir::homePath() + PATH);
+
+           if(file.exists() == false) {
+                emit doconf();
+           }  else {
+                m_cRetry->start(2000);
+           }
 
        } else {
            m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
