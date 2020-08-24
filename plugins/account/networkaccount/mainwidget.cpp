@@ -93,7 +93,6 @@ void MainWidget::setret_logout(int ret) {
     //qDebug()<<ret<<"Coutner SatRieaf";
     if(ret == 0) {
         m_mainDialog->set_back();
-        showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry for login!"));
         m_mainWidget->setCurrentWidget(m_nullWidget);
         m_bIsStopped = true;
     }
@@ -532,6 +531,7 @@ bool MainWidget::eventFilter(QObject *watched, QEvent *event) {
 void MainWidget::finished_load(int ret, QString uuid) {
     //qDebug()<<"wb111"<<ret;
     if(ret != 0) {
+        showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry for login!"));
         emit dologout();
     }
     //qDebug()<<uuid<<this->m_szUuid;
