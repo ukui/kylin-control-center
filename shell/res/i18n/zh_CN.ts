@@ -5383,39 +5383,49 @@ folder will be deleted!</source>
         <translation>适合宽度</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="503"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="542"/>
-        <source>select custom wallpaper file</source>
-        <translation>选择自定义壁纸文件</translation>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="497"/>
+        <source>Wallpaper files(*.jpg *.jpeg *.bmp *.dib *.png *.jfif *.jpe *.gif *.tif *.tiff *.wdp)</source>
+        <translation>图片文件(*.jpg *.jpeg *.bmp *.dib *.png *.jfif *.jpe *.gif *.tif *.tiff *.wdp)</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="497"/>
+        <source>allFiles(*.*)</source>
+        <translation>所有文件(*.*)</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="504"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="543"/>
-        <source>Select</source>
-        <translation>选择</translation>
+        <source>select custom wallpaper file</source>
+        <translation>选择自定义壁纸文件</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="505"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="544"/>
-        <source>Position: </source>
-        <translation>位置： </translation>
+        <source>Select</source>
+        <translation>选择</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="506"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="545"/>
-        <source>FileName: </source>
-        <translation>文件名： </translation>
+        <source>Position: </source>
+        <translation>位置： </translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="507"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="546"/>
+        <source>FileName: </source>
+        <translation>文件名： </translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="508"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="547"/>
         <source>FileType: </source>
         <translation>文件类型： </translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="639"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="508"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="547"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="509"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="548"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
