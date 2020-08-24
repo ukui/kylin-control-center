@@ -32,15 +32,6 @@ ChangtimeDialog::ChangtimeDialog(bool hour,QWidget *parent) :m_isEFHour(hour),
     QDialog(parent),
     ui(new Ui::changtimedialog)
 {
-
-//    QFile QssFile("://combox.qss");
-//    QssFile.open(QFile::ReadOnly);
-
-//    if (QssFile.isOpen()){
-//        qss = QLatin1String(QssFile.readAll());
-//        QssFile.close();
-//    }
-
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);

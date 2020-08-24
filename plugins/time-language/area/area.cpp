@@ -58,6 +58,11 @@ Area::Area()
 
     if(QGSettings::isSchemaInstalled(id)) {
         m_gsettings = new QGSettings(id);
+        connect(m_gsettings, &QGSettings::changed, this, [=](QString key) {
+           if ("hoursystem" == key) {
+               initFormatData();
+           }
+        });
     }
 
     unsigned int uid = getuid();
@@ -89,6 +94,7 @@ Area::~Area()
 {
     delete ui;
     delete m_itimer;
+    delete m_gsettings;
 }
 
 QString Area::get_plugin_name() {

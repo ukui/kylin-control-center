@@ -60,7 +60,6 @@ extern "C" {
 #include <gio/gio.h>
 }
 
-
 #define TZ_DATA_FILE "/usr/share/zoneinfo/zoneUtc"
 #define DEFAULT_TZ "Asia/Shanghai"
 
@@ -98,13 +97,11 @@ private:
 
     QGSettings * m_formatsettings  = nullptr;
 
-
     QDBusInterface *m_datetimeiface = nullptr;
     QDBusInterface *m_datetimeiproperties = nullptr;
 
     QMap<QString, int> tzindexMapEn;
     QMap<QString, int> tzindexMapCN;
-
 
     SwitchButton *m_formTimeBtn = nullptr;
     QLabel *m_formTimeLabel = nullptr;
@@ -123,7 +120,7 @@ private slots:
     void changetime_slot();
     void changezone_slot();
     void changezone_slot(QString );
-    void time_format_clicked_slot(bool);
+    void time_format_clicked_slot(bool, bool);
     void rsync_with_network_slot();
     void showendLabel();
     void hidendLabel();
@@ -132,7 +129,6 @@ private:
     void loadHour();
     void connectGSetting();
     QString getLocalTimezoneName(QString timezone, QString locale);
-
 };
 
 #endif // DATETIME_H

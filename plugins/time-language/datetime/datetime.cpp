@@ -35,12 +35,10 @@ const char kDefaultLocale[] = "en_US.UTF-8";
 #define TIME_FORMAT_KEY "hoursystem"
 #define DATE_KEY "date"
 
-DateTime::DateTime()
-{
+DateTime::DateTime() {
     ui = new Ui::DateTime;
     pluginWidget = new QWidget;
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-//    pluginWidget->setStyleSheet("background: #ffffff;");
     ui->setupUi(pluginWidget);
 
     pluginName = tr("Datetime");
@@ -58,12 +56,16 @@ DateTime::DateTime()
     //~ contents_path /datetime/24-hour clock
     m_formTimeLabel = new QLabel(tr("24-hour clock"));
 
-
-    //初始化gsettings
+    // 初始化gsettings
     const QByteArray id(FORMAT_SCHEMA);
     if(QGSettings::isSchemaInstalled(id)) {
         const QByteArray id(FORMAT_SCHEMA);
         m_formatsettings = new QGSettings(id);
+        connect(m_formatsettings, &QGSettings::changed, this, [=](QString key) {
+            QString hourFormat = m_formatsettings->get(TIME_FORMAT_KEY).toString();
+            bool status = ("24" == hourFormat ? false : true);
+            time_format_clicked_slot(status, true);
+        });
     }
     connectGSetting();
     //初始化dbus
@@ -75,17 +77,16 @@ DateTime::DateTime()
     m_datetimeiproperties = new QDBusInterface("org.freedesktop.timedate1",
                                              "/org/freedesktop/timedate1",
                                              "org.freedesktop.DBus.Properties",
-                                             QDBusConnection::systemBus());    
-
-
+                                             QDBusConnection::systemBus());
     component_init();
     status_init();
 
     connect(ui->chgtimebtn,SIGNAL(clicked()),this,SLOT(changetime_slot()));
     connect(ui->chgzonebtn,SIGNAL(clicked()),this,SLOT(changezone_slot()));
-    connect(m_formTimeBtn, SIGNAL(checkedChanged(bool)),this,SLOT(time_format_clicked_slot(bool)));
+    connect(m_formTimeBtn, &SwitchButton::checkedChanged, this, [=](bool status) {
+        time_format_clicked_slot(status, false);
+    });
     connect(m_timezone, &TimeZoneChooser::confirmed, this, [this] (const QString &timezone) {
-//        qDebug()<<"timezone is---------->"<<timezone<<endl;
         changezone_slot(timezone);
         m_timezone->hide();
         const QString locale = QLocale::system().name();
@@ -95,23 +96,22 @@ DateTime::DateTime()
     connect(ui->synsystimeBtn,SIGNAL(clicked()),this,SLOT(rsync_with_network_slot()));
 }
 
-DateTime::~DateTime()
-{
+DateTime::~DateTime() {
     delete ui;
     delete m_formatsettings;
     delete m_datetimeiface;
     delete m_datetimeiproperties;
 }
 
-QString DateTime::get_plugin_name(){
+QString DateTime::get_plugin_name() {
     return pluginName;
 }
 
-int DateTime::get_plugin_type(){
+int DateTime::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *DateTime::get_plugin_ui(){
+QWidget *DateTime::get_plugin_ui() {
     return pluginWidget;
 }
 
@@ -124,7 +124,7 @@ const QString DateTime::name() const {
     return QStringLiteral("datetime");
 }
 
-void DateTime::component_init(){
+void DateTime::component_init() {
     ui->titleLabel->setContentsMargins(0,0,0,16);
     ui->timeClockLable->setContentsMargins(0,0,0,16);
 
@@ -151,7 +151,7 @@ void DateTime::component_init(){
 
     //因为ntpd和systemd的网络时间同步会有冲突，所以安装了ntp的话，禁止使用控制面板设置网络时间同步
     QFileInfo fileinfo("/usr/sbin/ntpd");
-    if (fileinfo.exists()){
+    if (fileinfo.exists()) {
         ui->synsystimeBtn->setVisible(false);
     }
 
@@ -170,16 +170,15 @@ void DateTime::component_init(){
         }
     }
     tzfile.close();
-
 }
 
-void DateTime::status_init(){
+void DateTime::status_init() {
 
     //时区
     const QString locale = QLocale::system().name();
     QDBusReply<QVariant> tz = m_datetimeiproperties->call("Get", "org.freedesktop.timedate1", "Timezone");
     QMap<QString, int>::iterator it = tzindexMapEn.find(tz.value().toString());
-    if(it != tzindexMapEn.end()){
+    if(it != tzindexMapEn.end()) {
         for(QMap<QString,int>::iterator itc = tzindexMapCN.begin();itc!=tzindexMapCN.end();itc++)
         {
             if(itc.value() == it.value()){
@@ -191,7 +190,6 @@ void DateTime::status_init(){
         QMap<QString, int>::iterator defaultit =  tzindexMapEn.find(DEFAULT_TZ);
         ui->timezoneLabel->setText(getLocalTimezoneName(defaultit.key(), locale));
     }
-
 
     loadHour();
 }
@@ -205,7 +203,7 @@ bool DateTime::fileIsExits(const QString &filepath) {
     }
 }
 
-void DateTime::datetime_update_slot(){
+void DateTime::datetime_update_slot() {
     QString dateformat;
     if(m_formatsettings) {
         QStringList keys = m_formatsettings->keys();
@@ -237,19 +235,16 @@ void DateTime::datetime_update_slot(){
 
 }
 
-void DateTime::changetime_slot(){
+void DateTime::changetime_slot() {
     ChangtimeDialog *dialog = new ChangtimeDialog(m_formTimeBtn->isChecked());
     dialog->setWindowTitle(tr("change time"));
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     m_itimer->stop();
     m_itimer->start();
     dialog->exec();
-
 }
 
-
-void DateTime::changezone_slot(){
-//    qDebug()<<"changezone_slot------->"<<endl;
+void DateTime::changezone_slot() {
 
     QDesktopWidget* m = QApplication::desktop();
     QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
@@ -264,17 +259,17 @@ void DateTime::changezone_slot(){
     m_timezone->setMarkedTimeZoneSlot(m_zoneinfo->getCurrentTimzone());
 }
 
-void DateTime::changezone_slot(QString zone){
+void DateTime::changezone_slot(QString zone) {
     m_datetimeiface->call("SetTimezone", zone, true);
 }
 
-void DateTime::time_format_clicked_slot(bool flag){    
-    if (!m_formatsettings){
+void DateTime::time_format_clicked_slot(bool flag, bool outChange) {
+    if (!m_formatsettings) {
         qDebug()<<"org.ukui.control-center.panel.plugins not installed"<<endl;
         return;
     }
     QStringList keys = m_formatsettings->keys();
-    if (keys.contains("hoursystem")) {
+    if (keys.contains("hoursystem") && !outChange) {
         if(flag == true) {
             m_formatsettings->set(TIME_FORMAT_KEY, "24");
         } else {
@@ -286,7 +281,7 @@ void DateTime::time_format_clicked_slot(bool flag){
     m_itimer->start(1000);
 }
 
-void DateTime::showendLabel(){
+void DateTime::showendLabel() {
     ui->syslabel->setVisible(false);
     if(ui->syslabel->isVisible()){
         ui->endlabel->setVisible(false);
@@ -296,11 +291,11 @@ void DateTime::showendLabel(){
     QTimer::singleShot(2*1000,this,SLOT(hidendLabel()));
 }
 
-void DateTime::hidendLabel(){
+void DateTime::hidendLabel() {
     ui->endlabel->setVisible(false);
 }
 
-void DateTime::rsync_with_network_slot(){
+void DateTime::rsync_with_network_slot() {
 //    qDebug()<<"TODO------> sleep waies?"<<endl;
 
     m_datetimeiface->call("SetNTP", true, true);
