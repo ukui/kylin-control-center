@@ -18,41 +18,56 @@
  *
  */
 
-#ifndef DELGROUPDIALOG_H
-#define DELGROUPDIALOG_H
+#ifndef EDITGROUPDIALOG_H
+#define EDITGROUPDIALOG_H
 
 #include <QDialog>
-#include <QPixmap>
-#include <QDebug>
 #include <QPainter>
 #include <QPainterPath>
+#include <QCheckBox>
+#include <QIntValidator>
+#include <QRegExpValidator>
+#include <QLineEdit>
+#include <QListWidget>
 
+class UserInfo;
 namespace Ui {
-class DelGroupDialog;
+class EditGroupDialog;
 }
 
-class DelGroupDialog : public QDialog
+class EditGroupDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DelGroupDialog(QString groupName, QWidget *parent = nullptr);
-    ~DelGroupDialog();
+    explicit EditGroupDialog(QString usergroup, QString groupid, QWidget *parent = nullptr);
+    ~EditGroupDialog();
 
 public:
-    void setupInit();
-    void signalsBind();
-    void setNoticeText(QString txt);
-    QPushButton * delBtnComponent();
-
-public:
-    QPushButton *pDelBtn;
+    void limitInput();
+    void getUsersList(QString usergroup);
+    void refreshCertainBtnStatus();
+    QLineEdit * lineNameComponent();
+    QLineEdit * lineIdComponent();
+    QListWidget * listWidgetComponent();
 
 protected:
     void paintEvent(QPaintEvent *event);
 
 private:
-    Ui::DelGroupDialog *ui;
+    Ui::EditGroupDialog *ui;
+
+    bool _nameHasModified;
+    bool _idHasModified;
+    bool _boxModified;
+    QString userGroup;
+    QString groupId;
+
+    void setupInit();
+    void signalsBind();
+
+signals:
+    void needRefresh();
 };
 
-#endif // DELGROUPDIALOG_H
+#endif // EDITGROUPDIALOG_H

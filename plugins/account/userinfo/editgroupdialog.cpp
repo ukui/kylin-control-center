@@ -18,32 +18,35 @@
  *
  */
 
-#include "creategroupdialog.h"
-#include "ui_creategroupdialog.h"
+#include "editgroupdialog.h"
+#include "ui_editgroupdialog.h"
 #include "userinfo.h"
 #include "changegroupdialog.h"
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
-CreateGroupDialog::CreateGroupDialog(QWidget *parent) :
+EditGroupDialog::EditGroupDialog(QString usergroup, QString groupid, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::CreateGroupDialog),
+    ui(new Ui::EditGroupDialog),
     _nameHasModified(false),
     _idHasModified(false),
-    _boxModified(false)
+    _boxModified(false),
+    userGroup(usergroup),
+    groupId(groupid)
 {
     ui->setupUi(this);
+    qDebug() << "new EditGroupDialog" << userGroup << groupId;
     setupInit();
-    getUsersList();
+    getUsersList(userGroup);
     signalsBind();
 }
 
-CreateGroupDialog::~CreateGroupDialog()
+EditGroupDialog::~EditGroupDialog()
 {
     delete ui;
 }
 
-void CreateGroupDialog::limitInput()
+void EditGroupDialog::limitInput()
 {
     QIntValidator *intValidator = new QIntValidator;
     //QRegExp rx("^[a-zA-z]+$");// 首字符为字母
@@ -59,19 +62,21 @@ void CreateGroupDialog::limitInput()
     //ui->lineEdit_name->setMaxLength(4);
 }
 
-void CreateGroupDialog::refreshCertainBtnStatus(){
+void EditGroupDialog::refreshCertainBtnStatus(){
     if (ui->lineEdit_name->text().isEmpty() ||
             ui->lineEdit_id->text().isEmpty())
         ui->certainBtn->setEnabled(false);
     else
-        ui->certainBtn->setEnabled(_nameHasModified || _idHasModified);
+        ui->certainBtn->setEnabled(_nameHasModified || _idHasModified || _boxModified);
 }
 
-void CreateGroupDialog::getUsersList()
+void EditGroupDialog::getUsersList(QString usergroup)
 {
     UserInfo * userinfo = new UserInfo;
     QStringList usersList = userinfo->getUsersList();
-    qDebug() << "CreateGroupDialog::getUsersList" << usersList.at(0) << usersList.at(1);
+    qDebug() << "EditGroupDialog::getUsersList";
+    QStringList usergroupList = usergroup.split(",");
+
     for(int i = 0; i < usersList.size(); i++){
         QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
         item->setSizeHint(QSize(ui->listWidget->width(), 36));
@@ -79,35 +84,39 @@ void CreateGroupDialog::getUsersList()
         QCheckBox * box = new QCheckBox(usersList.at(i));
         ui->listWidget->addItem(item);
         ui->listWidget->setItemWidget(item, box);
+
+        for (int j = 0; j < usergroupList.size(); j ++){
+            if(usergroupList.at(j) == usersList.at(i)){
+                box->setChecked(true);
+            }
+        }
+
+
         connect(box, &QCheckBox::clicked, this, [=](bool checked){
-            qDebug() << "checkbox clicked" << checked;
+            Q_UNUSED(checked);
+            qDebug() << "checkbox clicked";
             _boxModified = true;
             refreshCertainBtnStatus();
         });
     }
 }
 
-QPushButton *CreateGroupDialog::certainBtnComponent()
-{
-    return ui->certainBtn;
-}
-
-QLineEdit *CreateGroupDialog::lineNameComponent()
+QLineEdit *EditGroupDialog::lineNameComponent()
 {
     return ui->lineEdit_name;
 }
 
-QLineEdit *CreateGroupDialog::lineIdComponent()
+QLineEdit *EditGroupDialog::lineIdComponent()
 {
     return ui->lineEdit_id;
 }
 
-QListWidget *CreateGroupDialog::listWidgetComponent()
+QListWidget *EditGroupDialog::listWidgetComponent()
 {
     return ui->listWidget;
 }
 
-void CreateGroupDialog::signalsBind()
+void EditGroupDialog::signalsBind()
 {
     connect(ui->closeBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
@@ -117,14 +126,18 @@ void CreateGroupDialog::signalsBind()
         close();
     });
     connect(ui->lineEdit_name,&QLineEdit::textChanged,[=](QString txt){
-        Q_UNUSED(txt);
         refreshCertainBtnStatus();
     });
     connect(ui->lineEdit_id,&QLineEdit::textChanged,[=](QString txt){
-        Q_UNUSED(txt);
         refreshCertainBtnStatus();
     });
     connect(ui->lineEdit_id, &QLineEdit::textEdited,[=](){
+//        if(ui->lineEdit_id->text() != groupId){
+//            qDebug() << "ui->lineEdit_id->text() != groupId";
+//            _idHasModified = true;
+//        } else {
+//            _idHasModified = false;
+//        }
         ChangeGroupDialog *cgDialog = new ChangeGroupDialog;
         for (int j = 0; j < cgDialog->value->size(); j++){
             if(ui->lineEdit_id->text() == cgDialog->value->at(j)->groupid){
@@ -136,66 +149,65 @@ void CreateGroupDialog::signalsBind()
         _idHasModified = true;
     });
     connect(ui->lineEdit_name, &QLineEdit::textEdited,[=](){
-        ChangeGroupDialog *cgDialog = new ChangeGroupDialog;
-        for (int j = 0; j < cgDialog->value->size(); j++){
-            if(ui->lineEdit_id->text() == cgDialog->value->at(j)->groupname){
-                _nameHasModified = false;
-                delete cgDialog;
-                return;
-            }
-        }
         _nameHasModified = true;
     });
     connect(ui->certainBtn, &QPushButton::clicked, this, [=](){
-//        ChangeGroupDialog *cgDialog = new ChangeGroupDialog;
-//        for (int i = 0; i < ui->listWidget->count(); i++){
-//            QListWidgetItem *item = ui->listWidget->item(i);
-//            QCheckBox *box = static_cast<QCheckBox *> (ui->listWidget->itemWidget(item));
-//            if(box->isChecked()){
-//                QDBusReply<bool> reply = cgDialog->serviceInterface->call("addUserToGroup",
-//                                                ui->lineEdit_name->text(),"",box->text());
-//                if (reply.isValid()){
-//                    // use the returned value
-//                    qDebug() << "addUserToGroupget call value" << reply.value();
-//                } else {
-//                    // call failed. Show an error condition.
-//                    qDebug() << "addUserToGroup call failed" << reply.error();
-//                }
-//            } else {
-//                QDBusReply<bool> reply = cgDialog->serviceInterface->call("delUserFromGroup",
-//                                                ui->lineEdit_name->text(),"",box->text());
-//                if (reply.isValid()){
-//                    // use the returned value
-//                    qDebug() << "delUserFromGroup get call value" << reply.value();
-//                } else {
-//                    // call failed. Show an error condition.
-//                    qDebug() << "delUserFromGroup call failed" << reply.error();
-//                }
-//            }
-//        }
-//        for (int j = 0; j < cgDialog->value->size(); j++){
-//            if(ui->lineEdit_id->text() == cgDialog->value->at(j)->groupid){
-//                QMessageBox invalid(QMessageBox::Question, "Tips", "Invalid Id!");
-//                invalid.setIcon(QMessageBox::Warning);
-//                invalid.setStandardButtons(QMessageBox::Ok);
-//                invalid.setButtonText(QMessageBox::Ok, QString("OK"));
-//                invalid.exec();
-//                return;
-//            }
-//            if(ui->lineEdit_name->text() == cgDialog->value->at(j)->groupname){
-//                QMessageBox invalid(QMessageBox::Question, "Tips", "Invalid Group Name!");
-//                invalid.setIcon(QMessageBox::Warning);
-//                invalid.setStandardButtons(QMessageBox::Ok);
-//                invalid.setButtonText(QMessageBox::Ok, QString("OK"));
-//                invalid.exec();
-//                return;
-//            }
-//        }
-//        close();
+        ChangeGroupDialog *cgDialog = new ChangeGroupDialog;
+        for (int i = 0; i < ui->listWidget->count(); i++){
+            if(_idHasModified){
+                for (int j = 0; j < cgDialog->value->size(); j++){
+                    if(ui->lineEdit_id->text() == cgDialog->value->at(j)->groupid){
+                        QMessageBox invalid(QMessageBox::Question, "Tips", "Invalid Id!");
+                        invalid.setIcon(QMessageBox::Warning);
+                        invalid.setStandardButtons(QMessageBox::Ok);
+                        invalid.setButtonText(QMessageBox::Ok, QString("OK"));
+                        invalid.exec();
+                        return;
+                    }
+                }
+            }
+            QListWidgetItem *item = ui->listWidget->item(i);
+            QCheckBox *box = static_cast<QCheckBox *> (ui->listWidget->itemWidget(item));
+
+            QDBusReply<bool> reply = cgDialog->serviceInterface->call("set",
+                                            ui->lineEdit_name->text(),ui->lineEdit_id->text());
+            if (reply.isValid()){
+                // use the returned value
+                qDebug() << "set get call value" << reply.value();
+            } else {
+                // call failed. Show an error condition.
+                qDebug() << "set call failed" << reply.error();
+            }
+
+            if(box->isChecked()){
+                QDBusReply<bool> reply = cgDialog->serviceInterface->call("addUserToGroup",
+                                                ui->lineEdit_name->text(),box->text());
+                if (reply.isValid()){
+                    // use the returned value
+                    qDebug() << "addUserToGroup get call value" << reply.value();
+                } else {
+                    // call failed. Show an error condition.
+                    qDebug() << "addUserToGroup call failed" << reply.error();
+                }
+            } else {
+                QDBusReply<bool> reply = cgDialog->serviceInterface->call("delUserFromGroup",
+                                                ui->lineEdit_name->text(),box->text());
+                if (reply.isValid()){
+                    // use the returned value
+                    qDebug() << "delUserFromGroup get call value" << reply.value();
+                } else {
+                    // call failed. Show an error condition.
+                    qDebug() << "delUserFromGroup call failed" << reply.error();
+                }
+            }
+        }
+        emit needRefresh();
+        delete cgDialog;
+        close();
     });
 }
 
-void CreateGroupDialog::setupInit()
+void EditGroupDialog::setupInit()
 {
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
@@ -215,6 +227,7 @@ void CreateGroupDialog::setupInit()
     ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 //    ui->listWidget->setSpacing(5);
+    ui->lineEdit_name->setEnabled(false);
     ui->lineEdit_name->setStyleSheet("QLineEdit{background:#EEEEEE;}");
     ui->lineEdit_id->setStyleSheet("QLineEdit{background:#EEEEEE;}");
     ui->listWidget->setStyleSheet("QListWidget{background:#EEEEEE; border-radius: 4px;}"
@@ -228,7 +241,7 @@ void CreateGroupDialog::setupInit()
     //
 }
 
-void CreateGroupDialog::paintEvent(QPaintEvent *event) {
+void EditGroupDialog::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event);
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);

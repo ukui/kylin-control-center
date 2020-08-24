@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CreateGroupDialog</class>
- <widget class="QDialog" name="CreateGroupDialog">
+ <class>EditGroupDialog</class>
+ <widget class="QDialog" name="EditGroupDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -9,6 +9,18 @@
     <width>390</width>
     <height>523</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>390</width>
+    <height>523</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>390</width>
+    <height>523</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -90,6 +102,9 @@
          <height>36</height>
         </size>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="text">
         <string>Certain</string>
        </property>
@@ -97,7 +112,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="layoutWidget_2">
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -150,7 +165,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="layoutWidget_3">
     <property name="geometry">
      <rect>
       <x>-10</x>
@@ -178,7 +193,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Add New Group</string>
+        <string>Edit User Group</string>
        </property>
       </widget>
      </item>

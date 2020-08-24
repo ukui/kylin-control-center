@@ -644,12 +644,12 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.ui" line="119"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.ui" line="122"/>
         <source>User Group Settings</source>
         <translation>用户组设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.ui" line="149"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.ui" line="152"/>
         <source>User groups available in the system</source>
         <translation>系统中可用的用户组</translation>
     </message>
@@ -658,7 +658,7 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="obsolete">添加新用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="119"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="200"/>
         <source>Add user group</source>
         <translation>添加用户组</translation>
     </message>
@@ -901,32 +901,44 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="115"/>
+        <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="181"/>
         <source>Add New Group</source>
         <translation>添加用户组</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="144"/>
-        <source>Group Name</source>
+        <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="213"/>
+        <source>Name</source>
         <translation>组名</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="182"/>
-        <source>Group Id</source>
+        <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="260"/>
+        <source>Id</source>
         <translation>组ID</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="234"/>
-        <source>Group Members</source>
+        <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="321"/>
+        <source>Members</source>
         <translation>组成员</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="344"/>
+        <source>Group Name</source>
+        <translation type="vanished">组名</translation>
+    </message>
+    <message>
+        <source>Group Id</source>
+        <translation type="vanished">组ID</translation>
+    </message>
+    <message>
+        <source>Group Members</source>
+        <translation type="vanished">组成员</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="75"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="363"/>
+        <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="94"/>
         <source>Certain</source>
         <translation>确定</translation>
     </message>
@@ -1321,24 +1333,29 @@ change system settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/delgroupdialog.ui" line="38"/>
-        <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <source>Are you sure to delete this group, 
+which will make some file components 
+in the file system invalid!</source>
+        <translation type="vanished">确定删除此用户组? 这将使得文件系统\n中的某些文件组件ID无效!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/delgroupdialog.ui" line="82"/>
+        <location filename="../../../plugins/account/userinfo/delgroupdialog.ui" line="243"/>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/delgroupdialog.ui" line="221"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/delgroupdialog.ui" line="104"/>
         <source>RemoveFile</source>
-        <translation type="unfinished">删除文件</translation>
+        <translation type="obsolete">删除文件</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/delgroupdialog.ui" line="145"/>
+        <location filename="../../../plugins/account/userinfo/delgroupdialog.ui" line="141"/>
         <source>Remind</source>
-        <translation type="unfinished"></translation>
+        <translation>提醒</translation>
     </message>
 </context>
 <context>
@@ -1794,6 +1811,44 @@ folder will be deleted!</source>
         <location filename="../../../plugins/system/display/display.ui" line="857"/>
         <source>apply</source>
         <translation>应用</translation>
+    </message>
+</context>
+<context>
+    <name>EditGroupDialog</name>
+    <message>
+        <location filename="../../../plugins/account/userinfo/editgroupdialog.ui" line="26"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/editgroupdialog.ui" line="87"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/editgroupdialog.ui" line="109"/>
+        <source>Certain</source>
+        <translation>确定</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/editgroupdialog.ui" line="196"/>
+        <source>Edit User Group</source>
+        <translation>编辑用户组</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/editgroupdialog.ui" line="228"/>
+        <source>Name</source>
+        <translation>组名</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/editgroupdialog.ui" line="275"/>
+        <source>Id</source>
+        <translation>组ID</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/editgroupdialog.ui" line="336"/>
+        <source>Members</source>
+        <translation>组成员</translation>
     </message>
 </context>
 <context>
@@ -4188,6 +4243,13 @@ folder will be deleted!</source>
     <message>
         <location filename="../../main.cpp" line="64"/>
         <source>ukui-control-center is already running!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/delgroupdialog.cpp" line="34"/>
+        <source>Are you sure to delete &quot;%1&quot; group, 
+which will make some file components 
+in the file system invalid!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

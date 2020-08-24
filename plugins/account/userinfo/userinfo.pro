@@ -39,6 +39,7 @@ SOURCES += \
     creategroupdialog.cpp \
     definegroupitem.cpp \
     delgroupdialog.cpp \
+    editgroupdialog.cpp \
     elipsemaskwidget.cpp \
     userinfo.cpp \
     qtdbus/systemdbusdispatcher.cpp \
@@ -56,6 +57,7 @@ HEADERS += \
     creategroupdialog.h \
     definegroupitem.h \
     delgroupdialog.h \
+    editgroupdialog.h \
     elipsemaskwidget.h \
     userinfo.h \
     qtdbus/systemdbusdispatcher.h \
@@ -72,6 +74,7 @@ FORMS += \
     changevaliddialog.ui \
     creategroupdialog.ui \
     delgroupdialog.ui \
+    editgroupdialog.ui \
     userinfo.ui \
     changepwddialog.ui \
     changetypedialog.ui \

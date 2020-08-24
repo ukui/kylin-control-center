@@ -122,13 +122,20 @@ void DefineGroupItem::setShortcutName(QString newName){
     pLabel->setText(newName);
 }
 
-void DefineGroupItem::mousePressEvent(QMouseEvent *e){
-    if (e->button() == Qt::LeftButton && _deleteable && _editable){
+void DefineGroupItem::enterEvent(QEvent *event)
+{
+    Q_UNUSED(event);
+    if (_deleteable && _editable){
         pEditBtn->show();
         pDelBtn->show();
     }
+}
 
-    QWidget::mousePressEvent(e);
+void DefineGroupItem::leaveEvent(QEvent *event)
+{
+    Q_UNUSED(event);
+    pEditBtn->hide();
+    pDelBtn->hide();
 }
 
 void DefineGroupItem::mouseDoubleClickEvent(QMouseEvent *e){

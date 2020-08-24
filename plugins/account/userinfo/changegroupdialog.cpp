@@ -22,8 +22,9 @@
 #include "ui_changegroupdialog.h"
 #include "definegroupitem.h"
 #include "ImageUtil/imageutil.h"
-//#include "group_manager_client.h"
 #include "creategroupdialog.h"
+#include "editgroupdialog.h"
+#include "delgroupdialog.h"
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
@@ -41,31 +42,117 @@ ChangeGroupDialog::~ChangeGroupDialog()
     delete ui;
 }
 
-void ChangeGroupDialog::showCreateGroupDialog()
+void ChangeGroupDialog::connectToServer()
 {
-    CreateGroupDialog *dialog = new CreateGroupDialog;
-    dialog->exec();
-
+    serviceInterface = new QDBusInterface("org.ukui.groupmanager",
+                                          "/org/ukui/groupmanager",
+                                          "org.ukui.groupmanager.interface",
+                                          QDBusConnection::systemBus());
+    if (!serviceInterface->isValid())
+    {
+        qDebug() << "fail to connect to service";
+        qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
+        exit(1);
+    }
+    // 将以后所有DBus调用的超时设置为 milliseconds
+    serviceInterface->setTimeout(2147483647); // -1 为默认的25s超时
 }
 
 void ChangeGroupDialog::loadGroupInfo()
 {
-//    group_manager_client demo;
-//    demo.value = demo.get_group_info();
-//    qDebug() << "load group info" << demo.value->at(0)->groupname << demo.value->at(0)->groupid;
-    //设置ListWidget是否可以自动排序,默认是false
-    //list_widget->setSortingEnabled(true);
+    qDebug() << "loadGroupInfo";
+    //check_permission();
+    QDBusMessage msg = serviceInterface->call("get");
+    if(msg.type() == QDBusMessage::ErrorMessage) {
+        printf("get group info fail.\n");
+    }
+    QDBusArgument argument = msg.arguments().at(0).value<QDBusArgument>();
+    QList<QVariant> infos;
+    argument >> infos;
+    qDebug() << "info size :" << infos.size() << argument.currentType();
+
+    value = new QList<custom_struct *>();
+    for (int i = 0; i < infos.size(); i++)
+    {
+        custom_struct *dbus_struct = new custom_struct;
+        infos.at(i).value<QDBusArgument>() >> *dbus_struct;
+        value->push_back(dbus_struct);
+    }
 }
+
+void ChangeGroupDialog::refreshList()
+{
+    qDebug() << "refresh list";
+    int count = ui->listWidget->count();
+    for(int i = count; i >= 0; i--){
+        QListWidgetItem *item = ui->listWidget->item(i);
+        ui->listWidget->takeItem(i);
+        ui->listWidget->removeItemWidget(item);
+        delete item;
+    }
+    loadGroupInfo();
+    loadAllGroup();
+}
+
+void ChangeGroupDialog::loadAllGroup()
+{
+    for(int i = 0; i < value->size(); i++){
+        DefineGroupItem * singleWidget = new DefineGroupItem(value->at(i)->groupname);
+        singleWidget->setDeleteable(true);
+        singleWidget->setUpdateable(true);
+        singleWidget->setEditable(true);
+        singleWidget->setFrameShape(QFrame::Shape::Box);
+        singleWidget->setProperty("userData", true);
+
+        QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
+        item->setSizeHint(QSize(ui->listWidget->width() - 5, 50));
+        item->setData(Qt::UserRole, "");
+        ui->listWidget->setItemWidget(item, singleWidget);
+
+        QPushButton *itemDelBtn = singleWidget->delBtnComponent();
+        QPushButton *itemEditBtn = singleWidget->editBtnComponent();
+
+        connect(itemDelBtn, &QPushButton::clicked, [=](){
+            DelGroupDialog *delDialog = new DelGroupDialog(value->at(i)->groupname);
+            QPushButton *delBtn = delDialog->delBtnComponent();
+            connect(delBtn, &QPushButton::clicked, [=](){
+                QDBusReply<bool> reply = serviceInterface->call("del",value->at(i)->groupname);
+                if (reply.isValid()){
+                    // use the returned value
+                    qDebug() << "get call value" << reply.value();
+                    qDebug() << "current index" << ui->listWidget->currentIndex();
+                    ui->listWidget->removeItemWidget(item);
+                    delete item;
+                    ui->listWidget->scrollTo(ui->listWidget->currentIndex());                    
+                    delDialog->close();
+                } else {
+                    // call failed. Show an error condition.
+                    qDebug() << "call failed" << reply.error();
+                }
+                refreshList();
+            });
+            delDialog->exec();
+        });
+        connect(itemEditBtn, &QPushButton::clicked, [=](){
+            EditGroupDialog *editDialog = new EditGroupDialog(value->at(i)->usergroup,value->at(i)->groupid);
+            connect(editDialog, &EditGroupDialog::needRefresh, this, &ChangeGroupDialog::needRefreshSlot);
+            QLineEdit *lineName = editDialog->lineNameComponent();
+            QLineEdit *lineId = editDialog->lineIdComponent();
+            lineName->setText(value->at(i)->groupname);
+            lineId->setText(value->at(i)->groupid);
+            editDialog->exec();
+        });
+    }
+//    ui->listWidget->setSortingEnabled(true);
+}
+
+
 
 void ChangeGroupDialog::setupInit()
 {
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
-
-    initNewGroupBtn();
-
-    loadGroupInfo();
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
@@ -82,20 +169,13 @@ void ChangeGroupDialog::setupInit()
     ui->listWidget->setFocusPolicy(Qt::NoFocus);
     ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);
     ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setSpacing(1);
 
-    DefineGroupItem * singleWidget = new DefineGroupItem("aaa");
-    singleWidget->setDeleteable(true);
-    singleWidget->setUpdateable(true);
-    singleWidget->setEditable(true);
-    singleWidget->setFrameShape(QFrame::Shape::Box);
-    singleWidget->setProperty("userData", true);
-
-    QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
-    item->setSizeHint(QSize(ui->listWidget->width() - 5, 50));
-    item->setData(Qt::UserRole, "");
-    ui->listWidget->setItemWidget(item, singleWidget);
+    connectToServer();
+    initNewGroupBtn();
+    loadGroupInfo();
+    loadAllGroup();
 }
 
 void ChangeGroupDialog::signalsBind()
@@ -103,6 +183,7 @@ void ChangeGroupDialog::signalsBind()
     connect(ui->closeBtn, &QPushButton::clicked, [=]{
         close();
     });
+
 }
 
 void ChangeGroupDialog::initNewGroupBtn()
@@ -125,61 +206,87 @@ void ChangeGroupDialog::initNewGroupBtn()
     addWgt->setLayout(addLyt);
 
     // 悬浮改变Widget状态
-    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname){
+    connect(addWgt, &HoverWidget::enterWidget, this, [=](){
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(base);");
 
     });
     // 还原状态
-    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname){
+    connect(addWgt, &HoverWidget::leaveWidget, this, [=](){
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(windowText);");
     });
 
-    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
-        showCreateGroupDialog();
+    connect(addWgt, &HoverWidget::widgetClicked, this, [=](){
+        CreateGroupDialog *dialog = new CreateGroupDialog();
+        QPushButton *certainBtn = dialog->certainBtnComponent();
+        QLineEdit *lineId = dialog->lineIdComponent();
+        QLineEdit *lineName = dialog->lineNameComponent();
+        QListWidget *cglist = dialog->listWidgetComponent();
+
+        connect(certainBtn, &QPushButton::clicked, this, [=](){
+            for (int j = 0; j < value->size(); j++){
+                if(lineId->text() == value->at(j)->groupid){
+                    QMessageBox invalid(QMessageBox::Question, "Tips", "Invalid Id!");
+                    invalid.setIcon(QMessageBox::Warning);
+                    invalid.setStandardButtons(QMessageBox::Ok);
+                    invalid.setButtonText(QMessageBox::Ok, QString("OK"));
+                    invalid.exec();
+                    return;
+                }
+                if(lineName->text() == value->at(j)->groupname){
+                    QMessageBox invalid(QMessageBox::Question, "Tips", "Invalid Group Name!");
+                    invalid.setIcon(QMessageBox::Warning);
+                    invalid.setStandardButtons(QMessageBox::Ok);
+                    invalid.setButtonText(QMessageBox::Ok, QString("OK"));
+                    invalid.exec();
+                    return;
+                }
+            }
+
+            QDBusReply<bool> reply = serviceInterface->call("add",lineName->text(),lineId->text());
+            if (reply.isValid()){
+                // use the returned value
+                qDebug() << "get call value" << reply.value();
+            } else {
+                // call failed. Show an error condition.
+                qDebug() << "call failed" << reply.error();
+            }
+
+            for (int i = 0; i < cglist->count(); i++){
+                QListWidgetItem *item = cglist->item(i);
+                QCheckBox *box = static_cast<QCheckBox *> (cglist->itemWidget(item));
+                if(box->isChecked()){
+                    QDBusReply<bool> reply = serviceInterface->call("addUserToGroup",
+                                                    lineName->text(),box->text());
+                    if (reply.isValid()){
+                        // use the returned value
+                        qDebug() << "addUserToGroupget call value" << reply.value() << lineName->text() << box->text();
+                    } else {
+                        // call failed. Show an error condition.
+                        qDebug() << "addUserToGroup call failed" << reply.error();
+                    }
+                } else {
+                    QDBusReply<bool> reply = serviceInterface->call("delUserFromGroup",
+                                                    lineId->text(),box->text());
+                    if (reply.isValid()){
+                        // use the returned value
+                        qDebug() << "delUserFromGroup get call value" << reply.value() << lineName->text() << box->text();;
+                    } else {
+                        // call failed. Show an error condition.
+                        qDebug() << "delUserFromGroup call failed" << reply.error() << lineName->text() << box->text();;
+                    }
+                }
+            }
+            refreshList();
+            ui->listWidget->scrollToBottom();
+            dialog->close();
+        });
+        dialog->exec();
     });
     ui->addLyt->addWidget(addWgt);
-}
-
-void ChangeGroupDialog::initGeneralItemsStyle(){
-    initItemsStyle(ui->listWidget);
-}
-
-void ChangeGroupDialog::initItemsStyle(QListWidget *listWidget){
-    int total = listWidget->count();
-    for (int row = 0; row < total; row++){
-        QString style;
-        QString subStyle;
-        if (1 == total){ //总数为1
-            style = "QWidget{background: #F4F4F4; border: none; border-radius: 6px;}";
-            subStyle = "background: #F4F4F4; border: none; border-radius: 4px;";
-        } else if (0 == row && (row % 2 == 0)){ //首位
-            style = "QWidget{background: #F4F4F4; border: none; border-top-left-radius: 6px; border-top-right-radius: 6px;}";
-            subStyle = "background: #F4F4F4; border: none; border-radius: 4px;";
-        } else if (total - 1 == row){ //末位
-            if (0 == row % 2){
-                style = "QWidget{background: #F4F4F4; border: none; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}";
-                subStyle = "background: #F4F4F4; border: none; border-radius: 4px;";
-            } else {
-                style = "QWidget{background: #EEEEEE; border: none; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}";
-                subStyle = "background: #EEEEEE; border: none; border-radius: 4px;";
-            }
-        } else if (row % 2 == 0){
-            style = "QWidget{background: #F4F4F4; border: none;}";
-            subStyle = "background: #F4F4F4; border: none; border-radius: 4px;";
-        } else if (row % 2 != 0){
-            style = "QWidget{background: #EEEEEE; border: none;}";
-            subStyle = "background: #EEEEEE; border: none; border-radius: 4px;";
-        }
-
-        QWidget * widget = listWidget->itemWidget(listWidget->item(row));
-        DefineGroupItem * pShortcutItem = dynamic_cast<DefineGroupItem *>(widget);
-//        pShortcutItem->widgetComponent()->setStyleSheet(style);
-//        pShortcutItem->btnComponent()->setStyleSheet(subStyle);
-    }
 }
 
 void ChangeGroupDialog::paintEvent(QPaintEvent * event){
@@ -220,4 +327,9 @@ void ChangeGroupDialog::paintEvent(QPaintEvent * event){
     p.save();
     p.fillPath(rectPath,palette().color(QPalette::Base));
     p.restore();
+}
+
+void ChangeGroupDialog::needRefreshSlot()
+{
+    refreshList();
 }

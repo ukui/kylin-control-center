@@ -27,6 +27,8 @@
 #include <QCheckBox>
 #include <QIntValidator>
 #include <QRegExpValidator>
+#include <QLineEdit>
+#include <QListWidget>
 
 class UserInfo;
 namespace Ui {
@@ -45,12 +47,20 @@ public:
     void limitInput();
     void getUsersList();
     void refreshCertainBtnStatus();
+    QPushButton * certainBtnComponent();
+    QLineEdit * lineNameComponent();
+    QLineEdit * lineIdComponent();
+    QListWidget * listWidgetComponent();
 
 protected:
     void paintEvent(QPaintEvent *event);
 
 private:
     Ui::CreateGroupDialog *ui;
+
+    bool _nameHasModified;
+    bool _idHasModified;
+    bool _boxModified;
 
     void setupInit();
     void signalsBind();

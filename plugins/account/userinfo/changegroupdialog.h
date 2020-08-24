@@ -26,16 +26,40 @@
 #include <QPainterPath>
 #include <QListWidget>
 #include <QDebug>
+#include <QPushButton>
+#include <QDBusInterface>
+#include <QDBusArgument>
+#include <QDBusReply>
+#include <QMessageBox>
 
 #include "HoverWidget/hoverwidget.h"
 
-//struct custom_struct
-//{
-//    QString groupname;
-//    QString passphrase;
-//    QString groupid;
-//    QString usergroup;
-//};
+struct custom_struct
+{
+    QString groupname;
+    QString passphrase;
+    QString groupid;
+    QString usergroup;
+
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const custom_struct&mystruct)
+    {
+        argument.beginStructure();
+        argument << mystruct.groupname << mystruct.passphrase << mystruct.groupid << mystruct.usergroup;
+        argument.endStructure();
+        return argument;
+    }
+
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, custom_struct&mystruct)
+    {
+        argument.beginStructure();
+        argument >> mystruct.groupname >> mystruct.passphrase >> mystruct.groupid >> mystruct.usergroup;
+        argument.endStructure();
+        return argument;
+    }
+
+};
+
+Q_DECLARE_METATYPE(custom_struct)
 
 namespace Ui {
 class ChangeGroupDialog;
@@ -50,11 +74,15 @@ public:
     ~ChangeGroupDialog();
 
 public:
-    void initGeneralItemsStyle();
-    void initItemsStyle(QListWidget * listWidget);
+    void connectToServer();
     void initNewGroupBtn();
     void loadGroupInfo();
-    void showCreateGroupDialog();
+    void loadAllGroup();
+    void refreshList();
+
+public:
+    QDBusInterface *serviceInterface;
+    QList<custom_struct *>  *value;
 
 protected:
     void paintEvent(QPaintEvent * event);
@@ -63,12 +91,12 @@ private:
     Ui::ChangeGroupDialog *ui;
 
     HoverWidget *addWgt;
-    //QList<custom_struct *>  *value;
 
     void setupInit();
     void signalsBind();
 
-
+private slots:
+    void needRefreshSlot();
 };
 
 #endif // CHANGEGROUPDIALOG_H
