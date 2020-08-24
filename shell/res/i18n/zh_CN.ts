@@ -2927,56 +2927,56 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="66"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="134"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="148"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="133"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="147"/>
         <source>Your account：%1</source>
         <translation>您的云账户：%1</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="96"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="534"/>
         <source>Unauthorized device or OSS falied.
 Please retry for login!</source>
         <translation>该设备已经不可靠或者OSS初始化失败，请登录重试！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="182"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="181"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="742"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="757"/>
         <source>Exit</source>
         <translation>退出登录</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="193"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="192"/>
         <source>Sync</source>
         <translation>同步中</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="221"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="220"/>
         <source>Sign in</source>
         <translation>登录</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="243"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="242"/>
         <source>Stop sync</source>
         <translation>结束同步</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="257"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="256"/>
         <source>Sync your settings</source>
         <translation>同步您的设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="261"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="260"/>
         <source>Your account:%1</source>
         <translation>您的云账户：%1</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="272"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="271"/>
         <source>Auto sync</source>
         <translation>自动同步</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="336"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="335"/>
         <source>Synchronize your personalized settings and data</source>
         <translation>同步您账户的数据以及个性化设置</translation>
     </message>
@@ -5389,39 +5389,49 @@ Please retry for login!</source>
         <translation>适合宽度</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="503"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="542"/>
-        <source>select custom wallpaper file</source>
-        <translation>选择自定义壁纸文件</translation>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="497"/>
+        <source>Wallpaper files(*.jpg *.jpeg *.bmp *.dib *.png *.jfif *.jpe *.gif *.tif *.tiff *.wdp)</source>
+        <translation>图片文件(*.jpg *.jpeg *.bmp *.dib *.png *.jfif *.jpe *.gif *.tif *.tiff *.wdp)</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="497"/>
+        <source>allFiles(*.*)</source>
+        <translation>所有文件(*.*)</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="504"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="543"/>
-        <source>Select</source>
-        <translation>选择</translation>
+        <source>select custom wallpaper file</source>
+        <translation>选择自定义壁纸文件</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="505"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="544"/>
-        <source>Position: </source>
-        <translation>位置： </translation>
+        <source>Select</source>
+        <translation>选择</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="506"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="545"/>
-        <source>FileName: </source>
-        <translation>文件名： </translation>
+        <source>Position: </source>
+        <translation>位置： </translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="507"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="546"/>
+        <source>FileName: </source>
+        <translation>文件名： </translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="508"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="547"/>
         <source>FileType: </source>
         <translation>文件类型： </translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="639"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="508"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="547"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="509"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="548"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
