@@ -26,6 +26,7 @@
 #include <QDBusReply>
 
 #include <QDebug>
+#include <QDir>
 
 #include "SwitchButton/switchbutton.h"
 #include "ImageUtil/imageutil.h"
@@ -74,7 +75,6 @@ UserInfo::UserInfo()
     //设置界面用户信息
     _refreshUserInfoUI();
 
-
 //    pwdSignalMapper = new QSignalMapper(this);
 //    faceSignalMapper = new QSignalMapper(this);
 //    typeSignalMapper = new QSignalMapper(this);
@@ -88,7 +88,6 @@ UserInfo::UserInfo()
 //    get_all_users();
 //    ui_component_init();
 //    ui_status_init();
-
 }
 
 UserInfo::~UserInfo()
@@ -560,6 +559,14 @@ void UserInfo::_refreshUserInfoUI(){
 //            ui->currentUserFaceLabel->setScaledContents(true);
             ui->currentUserFaceLabel->setPixmap(iconPixmap);
 
+            QDir historyDir;
+            historyDir.setPath(QString("/home/%1").arg(user.username));
+            if(!historyDir.exists(QString("/home/%1/.historyfaces").arg(user.username))) {
+                historyDir.mkpath(QString("/home/%1/.historyfaces").arg(user.username));
+            } else {
+//                qDebug()<<QString("/home/%1/.historyfaces/").arg(user.username)<<" Exist!";
+            }
+
             //设置用户名
             ui->userNameLabel->setText(user.username);
             //设置用户类型
@@ -855,6 +862,7 @@ void UserInfo::showChangeFaceDialog(QString username){
     UserInfomation user = (UserInfomation)(allUserInfoMap.find(username).value());
 
     ChangeFaceDialog * dialog = new ChangeFaceDialog;
+    dialog->setHistoryFacesPath(QString("/home/%1/.historyfaces").arg(user.username));
     dialog->setFace(user.iconfile);
     dialog->setUsername(user.username);
     dialog->setAccountType(_accountTypeIntToString(user.accounttype));
@@ -886,7 +894,6 @@ void UserInfo::changeUserFace(QString facefile, QString username){
     QString cmd = QString("cp %1 /home/%2/.face").arg(facefile).arg(user.username);
 
     QDBusReply<QString> reply =  sysinterface->call("systemRun", QVariant(cmd));
-
 
     //重新获取全部用户QMap
     _acquireAllUsersInfo();

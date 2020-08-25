@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>378</width>
+    <width>389</width>
     <height>530</height>
    </rect>
   </property>
@@ -343,41 +343,25 @@
            </spacer>
           </item>
           <item>
-           <widget class="QScrollArea" name="historyFacesWidget">
+           <widget class="QWidget" name="historyFacesWidget" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
             <property name="minimumSize">
              <size>
-              <width>0</width>
+              <width>330</width>
               <height>70</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>16777215</width>
+              <width>330</width>
               <height>70</height>
              </size>
             </property>
-            <property name="verticalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
-            </property>
-            <property name="widgetResizable">
-             <bool>true</bool>
-            </property>
-            <widget class="QWidget" name="scrollAreaWidgetContents">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>315</width>
-               <height>66</height>
-              </rect>
-             </property>
-            </widget>
            </widget>
           </item>
           <item>

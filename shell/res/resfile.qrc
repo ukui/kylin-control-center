@@ -137,6 +137,7 @@
         <file>plugins/userinfo/pwdEncrypted.png</file>
         <file>plugins/userinfo/pwdUnscramble.png</file>
         <file>plugins/userinfo/close.svg</file>
+        <file>plugins/userinfo/delete.png</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>
