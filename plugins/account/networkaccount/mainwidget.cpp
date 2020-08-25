@@ -531,8 +531,10 @@ bool MainWidget::eventFilter(QObject *watched, QEvent *event) {
 void MainWidget::finished_load(int ret, QString uuid) {
     //qDebug()<<"wb111"<<ret;
     if(ret != 0) {
-        showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry for login!"));
-        emit dologout();
+        if(m_mainWidget->currentWidget() != m_nullWidget) {
+            showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry for login!"));
+            emit dologout();
+        }
     }
     //qDebug()<<uuid<<this->m_szUuid;
     if(uuid != this->m_szUuid) {
