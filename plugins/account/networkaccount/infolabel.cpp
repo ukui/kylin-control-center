@@ -8,23 +8,24 @@ InfoLabel::InfoLabel(QWidget *parent) : QLabel(parent)
     m_toolTips = new Tooltips(this);
     m_textLabel = new QLabel(m_toolTips);
 
-    setFixedWidth(300);
+    //setFixedWidth(300);
 
     QHBoxLayout *worklayout = new QHBoxLayout;
     QHBoxLayout *layout = new QHBoxLayout;
 
 
-    layout->addWidget(m_textLabel);
+    layout->addWidget(m_textLabel,0,Qt::AlignCenter);
 
 
     m_toolTips->setLayout(layout);
 
-    worklayout->addWidget(m_toolTips);
+    worklayout->addWidget(m_toolTips,0,Qt::AlignHCenter);
 
     setPixmap(m_svgHandler->loadSvgColor(":/new/image/_.svg","default",16));
     m_toolTips->adjustSize();
 
     setLayout(worklayout);
+    setAlignment(Qt::AlignCenter);
 }
 
 void InfoLabel::enterEvent(QEvent *e) {

@@ -128,7 +128,7 @@ void FrameItem::set_change(const int &status,const QString &code) {
         }
         m_stackedWidget->setCurrentWidget(m_errorStatusLabel);
     }
-    m_stackedWidget->adjustSize();
+    //m_stackedWidget->adjustSize();
 }
 
 /* 让SwitchButton播放打开动画 */
