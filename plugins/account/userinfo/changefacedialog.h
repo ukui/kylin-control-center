@@ -62,6 +62,9 @@ public:
 
     QMap<QString, QListWidgetItem *> delitemMap;
 
+    QString confirmFile;
+    void loadHistoryFaces();
+
 protected:
     void paintEvent(QPaintEvent *);
 

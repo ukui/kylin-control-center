@@ -47,25 +47,32 @@ ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
+    //分割线，其颜色应由主题控制，此处设置样式仅为预览布局效果
+    ui->line_1->setStyleSheet(".QWidget{background: rgba(66,77,89,1); ipacity: 0.1;}");
+    ui->line_2->setStyleSheet(".QWidget{background: rgba(66,77,89,1); ipacity: 0.1;}");
+
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
 //    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
 
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
-    ElipseMaskWidget * cfMaskWidget = new ElipseMaskWidget(ui->faceLabel);
-//    cfMaskWidget->setBgColor("#F4F4F4");
-    cfMaskWidget->setGeometry(0, 0, ui->faceLabel->width(), ui->faceLabel->height());
+//    ElipseMaskWidget * cfMaskWidget = new ElipseMaskWidget(ui->faceLabel);
+////    cfMaskWidget->setBgColor("#F4F4F4");
+//    cfMaskWidget->setGeometry(0, 0, ui->faceLabel->width(), ui->faceLabel->height());
 
     loadSystemFaces();
-
+    loadHistoryFaces();
 
     connect(ui->closeBtn, &QPushButton::clicked, [=]{
         close();
     });
-    connect(ui->customfaceBtn, &QPushButton::clicked, [=]{
-        showLocalFaceDialog();
+    connect(ui->cancelBtn, &QPushButton::clicked, [=]{
+        close();
     });
+//    connect(ui->customfaceBtn, &QPushButton::clicked, [=]{
+//        showLocalFaceDialog();
+//    });
 }
 
 ChangeFaceDialog::~ChangeFaceDialog()
@@ -74,6 +81,8 @@ ChangeFaceDialog::~ChangeFaceDialog()
 }
 
 void ChangeFaceDialog::loadSystemFaces(){
+
+    ui->facesWidget->setContentsMargins(4,0,0,0);
 
     FlowLayout * facesFlowLayout = new FlowLayout(ui->facesWidget);
     ui->facesWidget->setLayout(facesFlowLayout);
@@ -91,7 +100,7 @@ void ChangeFaceDialog::loadSystemFaces(){
 
         QPushButton * button = new QPushButton;
         button->setAttribute(Qt::WA_DeleteOnClose);
-        button->setFixedSize(QSize(48, 48));
+        button->setFixedSize(QSize(56, 56));
 //        button->setStyleSheet("QPushButton{border: none;}");
 
         QHBoxLayout * mainHorLayout = new QHBoxLayout(button);
@@ -108,12 +117,38 @@ void ChangeFaceDialog::loadSystemFaces(){
         connect(button, &QPushButton::clicked, [=]{
             //show dialog更新头像
             setFace(fullface);
-
-            emit face_file_send(fullface, ui->usernameLabel->text());
+            confirmFile = fullface;
+//            emit face_file_send(fullface, ui->usernameLabel->text());
+        });
+        connect(ui->confirmBtn, &QPushButton::clicked, [=]{
+//            qDebug()<<confirmFile;
+            if(confirmFile != "")emit face_file_send(confirmFile, ui->usernameLabel->text());
         });
 
         facesFlowLayout->addWidget(button);
     }
+}
+
+void ChangeFaceDialog::loadHistoryFaces(){
+
+    ui->historyFacesWidget->setContentsMargins(4,0,0,0);
+
+    FlowLayout * historyFacesFlowLayout = new FlowLayout(ui->historyFacesWidget);
+    ui->historyFacesWidget->setLayout(historyFacesFlowLayout);
+
+    /*此处应由从本地读取历史头像列表的代码，
+    本地头像可删除，需在上层添加删除按钮，此按钮仅在选中或悬停于某历史头像时显示
+    两按钮重叠，删除按钮位于上层*/
+
+    //添加本地头像按钮
+    QPushButton * addBtn = new QPushButton;
+    addBtn->setAttribute(Qt::WA_DeleteOnClose);
+    addBtn->setFixedSize(QSize(56, 56));
+    addBtn->setIcon(QIcon("://img/titlebar/add.svg"));
+    historyFacesFlowLayout->addWidget(addBtn);
+    connect(addBtn, &QPushButton::clicked, this, [=]{
+        showLocalFaceDialog();
+    });
 }
 
 void ChangeFaceDialog::setFace(QString iconfile){
@@ -159,6 +194,8 @@ void ChangeFaceDialog::showLocalFaceDialog(){
 
     setFace(selectedfile);
     emit face_file_send(selectedfile, ui->usernameLabel->text());
+
+    /*此处应加入添加本地头像后，将此头像copy到历史头像文件夹，并将其加入历史头像widget内*/
 }
 
 void ChangeFaceDialog::paintEvent(QPaintEvent *event) {

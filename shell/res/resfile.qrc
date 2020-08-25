@@ -134,6 +134,9 @@
         <file>secondaryleftmenu/SecurityCenterWhite.svg</file>
         <file>plugins/about/logoukui.svg</file>
         <file>plugins/userinfo/notice.png</file>
+        <file>plugins/userinfo/pwdEncrypted.png</file>
+        <file>plugins/userinfo/pwdUnscramble.png</file>
+        <file>plugins/userinfo/close.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

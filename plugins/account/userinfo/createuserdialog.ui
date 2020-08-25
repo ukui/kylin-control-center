@@ -6,20 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>660</height>
+    <width>369</width>
+    <height>637</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
-    <height>660</height>
+    <width>369</width>
+    <height>637</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>400</width>
-    <height>660</height>
+    <width>369</width>
+    <height>637</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -33,16 +39,134 @@
     <number>0</number>
    </property>
    <property name="topMargin">
-    <number>8</number>
+    <number>9</number>
    </property>
    <property name="rightMargin">
-    <number>8</number>
+    <number>9</number>
    </property>
    <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
+    <widget class="QWidget" name="widget_4" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>48</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>48</height>
+      </size>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="leftMargin">
+         <number>24</number>
+        </property>
+        <property name="topMargin">
+         <number>3</number>
+        </property>
+        <property name="rightMargin">
+         <number>24</number>
+        </property>
+        <property name="bottomMargin">
+         <number>12</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="titleLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Add New Account</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="closeBtn">
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>360</width>
+       <height>580</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>360</width>
+       <height>580</height>
+      </size>
+     </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
@@ -66,81 +190,39 @@
        <number>0</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>24</number>
+        </property>
         <property name="topMargin">
-         <number>8</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>8</number>
+         <number>24</number>
+        </property>
+        <property name="bottomMargin">
+         <number>24</number>
         </property>
         <item>
-         <spacer name="horizontalSpacer_2">
+         <spacer name="verticalSpacer">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>40</width>
-            <height>20</height>
+            <width>20</width>
+            <height>40</height>
            </size>
           </property>
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="closeBtn">
-          <property name="minimumSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_7">
-        <property name="spacing">
-         <number>24</number>
-        </property>
-        <property name="leftMargin">
-         <number>32</number>
-        </property>
-        <property name="topMargin">
-         <number>16</number>
-        </property>
-        <property name="rightMargin">
-         <number>32</number>
-        </property>
-        <property name="bottomMargin">
-         <number>48</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="titleLabel">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Add New Account</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <property name="spacing">
-           <number>0</number>
+           <number>24</number>
           </property>
           <item>
            <widget class="QWidget" name="widget_3" native="true">
@@ -158,7 +240,7 @@
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_10">
              <property name="spacing">
-              <number>8</number>
+              <number>0</number>
              </property>
              <property name="leftMargin">
               <number>0</number>
@@ -170,7 +252,7 @@
               <number>0</number>
              </property>
              <property name="bottomMargin">
-              <number>10</number>
+              <number>0</number>
              </property>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -178,42 +260,17 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_2">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>104</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>104</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>UserName</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QLineEdit" name="usernameLineEdit">
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
-                   <height>33</height>
+                   <height>48</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
-                   <height>33</height>
+                   <height>48</height>
                   </size>
                  </property>
                 </widget>
@@ -221,52 +278,35 @@
               </layout>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_11">
-               <property name="spacing">
-                <number>0</number>
+              <widget class="QLabel" name="tipLabel_3">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
                </property>
-               <item>
-                <widget class="QLabel" name="label_3">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>104</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>104</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>PwdType</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="pwdTypeComBox">
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>33</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>33</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-              </layout>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Noto Sans CJK SC</family>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
              </item>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_12">
@@ -274,42 +314,17 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_4">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>104</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>104</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Password</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QLineEdit" name="pwdLineEdit">
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
-                   <height>33</height>
+                   <height>48</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
-                   <height>33</height>
+                   <height>48</height>
                   </size>
                  </property>
                 </widget>
@@ -317,47 +332,53 @@
               </layout>
              </item>
              <item>
+              <widget class="QLabel" name="tipLabel_2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Noto Sans CJK SC</family>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
               <layout class="QHBoxLayout" name="horizontalLayout_13">
                <property name="spacing">
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_5">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>104</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>104</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>PasswordSure</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QLineEdit" name="pwdsureLineEdit">
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
-                   <height>33</height>
+                   <height>48</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
-                   <height>33</height>
+                   <height>48</height>
                   </size>
                  </property>
                 </widget>
@@ -369,13 +390,36 @@
                <property name="spacing">
                 <number>0</number>
                </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>16</number>
+               </property>
                <item>
                 <widget class="QLabel" name="tipLabel">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <pointsize>10</pointsize>
+                  </font>
                  </property>
                  <property name="text">
                   <string/>
@@ -390,48 +434,35 @@
          </layout>
         </item>
         <item>
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>8</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_6">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Account Type</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <layout class="QVBoxLayout" name="verticalLayout_9">
+          <property name="spacing">
+           <number>8</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_6">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Account Type</string>
+            </property>
+           </widget>
+          </item>
           <item>
            <widget class="QWidget" name="widget" native="true">
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>90</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
               <width>16777215</width>
-              <height>80</height>
+              <height>90</height>
              </size>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -486,7 +517,13 @@
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_5">
                  <property name="spacing">
-                  <number>12</number>
+                  <number>4</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>8</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>8</number>
                  </property>
                  <item>
                   <widget class="QLabel" name="label_7">
@@ -495,6 +532,11 @@
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
                    </property>
                    <property name="text">
                     <string>standard user</string>
@@ -513,6 +555,9 @@
                     <string>Standard users can use most software, but cannot install the software and 
 change system settings</string>
                    </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                 </layout>
@@ -527,13 +572,13 @@ change system settings</string>
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>90</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
               <width>16777215</width>
-              <height>80</height>
+              <height>90</height>
              </size>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -588,7 +633,13 @@ change system settings</string>
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_6">
                  <property name="spacing">
-                  <number>12</number>
+                  <number>4</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>8</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>8</number>
                  </property>
                  <item>
                   <widget class="QLabel" name="label_9">
@@ -597,6 +648,11 @@ change system settings</string>
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
                    </property>
                    <property name="text">
                     <string>administrator</string>
@@ -614,6 +670,9 @@ change system settings</string>
                    <property name="text">
                     <string>Administrators can make any changes they need</string>
                    </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                 </layout>
@@ -626,17 +685,14 @@ change system settings</string>
          </layout>
         </item>
         <item>
-         <spacer name="verticalSpacer">
+         <spacer name="verticalSpacer_3">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>24</height>
+            <height>40</height>
            </size>
           </property>
          </spacer>
@@ -646,6 +702,25 @@ change system settings</string>
           <property name="spacing">
            <number>16</number>
           </property>
+          <item>
+           <widget class="QPushButton" name="cancelBtn">
+            <property name="minimumSize">
+             <size>
+              <width>144</width>
+              <height>48</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>144</width>
+              <height>48</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Cancel</string>
+            </property>
+           </widget>
+          </item>
           <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
@@ -660,36 +735,17 @@ change system settings</string>
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="cancelBtn">
-            <property name="minimumSize">
-             <size>
-              <width>120</width>
-              <height>36</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>120</width>
-              <height>36</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Cancel</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QPushButton" name="confirmBtn">
             <property name="minimumSize">
              <size>
-              <width>120</width>
-              <height>36</height>
+              <width>144</width>
+              <height>48</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>120</width>
-              <height>36</height>
+              <width>144</width>
+              <height>48</height>
              </size>
             </property>
             <property name="text">
