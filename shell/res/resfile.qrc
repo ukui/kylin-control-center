@@ -138,6 +138,9 @@
         <file>plugins/userinfo/pwdUnscramble.png</file>
         <file>plugins/userinfo/close.svg</file>
         <file>plugins/userinfo/delete.png</file>
+        <file>plugins/userinfo/type.svg</file>
+        <file>plugins/userinfo/password.svg</file>
+        <file>plugins/userinfo/deluser.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>
