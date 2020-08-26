@@ -79,13 +79,12 @@ private:
 
     KeyValueConverter * kvConverter;
     SearchWidget * m_searchWidget;
-
     QPushButton * backBtn;
     QPushButton * minBtn;
     QPushButton * maxBtn;
     QPushButton * closeBtn;
     QLabel      * titleLabel;
-
+    QLabel      *icon;
 private:
     void initTileBar();
     void setBtnLayout(QPushButton * &pBtn);
