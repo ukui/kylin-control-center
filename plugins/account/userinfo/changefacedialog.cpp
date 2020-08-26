@@ -48,9 +48,9 @@ ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
-    //分割线，其颜色应由主题控制，此处设置样式仅为预览布局效果
-    ui->line_1->setStyleSheet(".QWidget{background: rgba(66,77,89,1); ipacity: 0.1;}");
-    ui->line_2->setStyleSheet(".QWidget{background: rgba(66,77,89,1); ipacity: 0.1;}");
+//    //分割线，其颜色应由主题控制，此处设置样式仅为预览布局效果
+//    ui->line_1->setStyleSheet(".QWidget{background: rgba(66,77,89,1); ipacity: 0.1;}");
+//    ui->line_2->setStyleSheet(".QWidget{background: rgba(66,77,89,1); ipacity: 0.1;}");
 
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
 //    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
