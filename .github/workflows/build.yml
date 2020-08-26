@@ -3,12 +3,10 @@ name: Check build
 on:
   push:
     branches:
-      - master
       - dev-unity
 
   pull_request:
     branches:
-      - master
       - dev-unity
 
   schedule:
