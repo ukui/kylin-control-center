@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - master
+      - dev-unity
 
   pull_request:
     branches:
       - master
+      - dev-unity
 
   schedule:
     - cron: '0 0 * * *'
