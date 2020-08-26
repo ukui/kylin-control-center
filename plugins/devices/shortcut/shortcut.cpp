@@ -89,6 +89,7 @@ Shortcut::Shortcut()
     setupComponent();
     setupConnect();
     initFunctionStatus();
+    connectToServer();
 }
 
 Shortcut::~Shortcut()
@@ -118,6 +119,23 @@ void Shortcut::plugin_delay_control(){
 const QString Shortcut::name() const {
 
     return QStringLiteral("shortcut");
+}
+
+void Shortcut::connectToServer(){
+    cloudInterface = new QDBusInterface("org.kylinssoclient.dbus",
+                                          "/org/kylinssoclient/path",
+                                          "org.freedesktop.kylinssoclient.interface",
+                                          QDBusConnection::sessionBus());
+    if (!cloudInterface->isValid())
+    {
+        qDebug() << "fail to connect to service";
+        qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
+        exit(1);
+    }
+//    QDBusConnection::sessionBus().connect(cloudInterface, SIGNAL(shortcutChanged()), this, SLOT(shortcutChangedSlot()));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "shortcutChanged", this, SLOT(shortcutChangedSlot()));
+    // 将以后所有DBus调用的超时设置为 milliseconds
+    cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时
 }
 
 void Shortcut::setupComponent(){
@@ -742,6 +760,13 @@ bool Shortcut::keyIsForbidden(QString key){
             return true;
     }
     return false;
+}
+
+void Shortcut::shortcutChangedSlot(){
+    qDebug() << "receive cloud service signal";
+    appendCustomItems();
+    ui->customListWidget->setFixedHeight((ui->customListWidget->count() + 1) * ITEMHEIGH);
+    initCustomItemsStyle();
 }
 
 //bool Shortcut::eventFilter(QObject *watched, QEvent *event){
