@@ -25,6 +25,7 @@
 
 #include <QDebug>
 #include <QMessageBox>
+#include <QFile>
 
 #define FACEPATH "/usr/share/ukui/faces/"
 
@@ -146,7 +147,7 @@ void ChangeFaceDialog::loadHistoryFaces(){
     //给每个历史头像创建组件
     for(int i = historyCount; i > 0; i--){
         QString historyface = QString("%1/%2.face").arg(historyFacesPath).arg(i);
-        qDebug()<<"load:"<<historyface;
+//        qDebug()<<"load:"<<historyface;
         QPushButton * button = new QPushButton;
         button->setAttribute(Qt::WA_DeleteOnClose);
         button->setFixedSize(QSize(56, 56));
@@ -275,8 +276,8 @@ void ChangeFaceDialog::showLocalFaceDialog(){
 
     QString selectedfile;
     selectedfile = fd.selectedFiles().first();;
-    QString fileurl = fd.selectedUrls().first().toEncoded();
-    QString filepath = fileurl.right(fileurl.length() - 7);
+//    QString fileurl = fd.selectedUrls().first().toEncoded();
+//    QString filepath = fileurl.right(fileurl.length() - 7);
 
     QFile pic(selectedfile);
     int size = pic.size();
@@ -314,8 +315,13 @@ void ChangeFaceDialog::showLocalFaceDialog(){
         cmd = QString("mv %1/4.face %1/3.face").arg(historyFacesPath);
         sysinterface->call("systemRun", QVariant(cmd));
     }
-    QString cp_cmd = QString("cp %1 %2/%3.face").arg(filepath).arg(historyFacesPath).arg(historyCount);
-    sysinterface->call("systemRun", QVariant(cp_cmd));
+//    QString cp_cmd = QString("cp %1 %2/%3.face").arg(selectedfile).arg(historyFacesPath).arg(historyCount);
+//    qDebug()<<cp_cmd;
+//    qDebug()<<QVariant(cp_cmd);
+//    sysinterface->call("systemRun", QVariant(cp_cmd));
+    //由于systemRun方法传输的指令不支持中文路径，换用QFile的copy方法执行文件拷贝
+    QFile *cp_file = new QFile();
+    cp_file->copy(selectedfile, QString("%2/%3.face").arg(historyFacesPath).arg(historyCount));
     loadHistoryFaces();
 }
 
