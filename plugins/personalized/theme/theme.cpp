@@ -33,6 +33,7 @@
 #include <QDebug>
 #include <QtDBus/QDBusConnection>
 #include <QtConcurrent>
+#include <QStyleFactory>
 /**
  * GTK主题
  */
@@ -329,25 +330,39 @@ void Theme::initThemeMode(){
             //获取当前主题
             QString currentThemeMode = qtSettings->get(key).toString();
             writeKwinSettings(true, currentThemeMode);
-            for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
-                QVariant valueVariant = button->property("value");
-                if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode) {
-                    button->click();
+
+            if (currentThemeMode == "ukui-default" || currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-white"
+                    || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-light" || currentThemeMode == "ukui") {
+                if (currentThemeMode == "ukui-light" || currentThemeMode == "ukui-white" || currentThemeMode == "ukui") {
+                    currentThemeMode = "ukui-light";
+                    ui->defaultButton->setChecked(true);
+                } else if (currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black") {
+                    currentThemeMode = "ukui-dark";
+                    ui->darkButton->click();
+                } else if (currentThemeMode == "ukui-default") {
+                    ui->defaultButton->click();
+                }
+
+                qApp->setStyle(new InternalStyle("ukui"));
+//                foreach (auto widget, qApp->allWidgets()) {
+//                    widget->repaint();
+//                }
+                return;
+            }
+
+            for (auto keys : QStyleFactory::keys()) {
+                if (currentThemeMode.toLower() == keys.toLower()) {
+                    qApp->setStyle(new QProxyStyle(currentThemeMode));
+//                    foreach (auto widget, qApp->allWidgets()) {
+//                        widget->repaint();
+//                    }
+                    return;
                 }
             }
+
+            qApp->setStyle(new QProxyStyle("fusion"));
         }
     });
-
-    // 获取当前主题
-    QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-    qApp->setStyle(new InternalStyle(currentThemeMode));
-    // 设置界面
-
-    if ("ukui-white" == currentThemeMode || "ukui-default" == currentThemeMode) {
-        ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
-    } else {
-        ui->themeModeBtnGroup->buttonClicked(ui->darkButton);
-    }
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->themeModeBtnGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked), [=](QAbstractButton * button){
@@ -358,16 +373,14 @@ void Theme::initThemeMode(){
         QString themeMode = button->property("value").toString();
         QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
 
-
-        qApp->setStyle(new InternalStyle(themeMode));
         if (QString::compare(currentThemeMode, themeMode)){
             QString tmpMode;
             if ("ukui-dark" == themeMode) {
-                tmpMode = "ukui-black";
+                tmpMode = "ukui-dark";
             } else {
-                tmpMode = "ukui-white";
+                tmpMode = "ukui-default";
             }
-            gtkSettings->set(MODE_GTK_KEY, tmpMode);
+            gtkSettings->set(MODE_GTK_KEY, themeMode);
 
             QtConcurrent::run([=](){
                 qtSettings->set(MODE_QT_KEY, themeMode);
@@ -375,6 +388,26 @@ void Theme::initThemeMode(){
             writeKwinSettings(true, themeMode);
         }
     });
+
+    // 获取当前主题
+    QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
+    if (currentThemeMode == "ukui-default" || currentThemeMode == "ukui-light" || currentThemeMode == "ukui-white" || currentThemeMode == "ukui") {
+        qApp->setStyle(new InternalStyle("ukui"));
+        ui->defaultButton->click();
+        return;
+    } else if (currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black") {
+        qApp->setStyle(new InternalStyle("ukui"));
+        ui->darkButton->click();
+        return;
+    }
+
+    for (auto keys : QStyleFactory::keys()) {
+        if (currentThemeMode.toLower() == keys.toLower()) {
+            qApp->setStyle(new QProxyStyle(currentThemeMode));
+            return;
+        }
+    }
+    qApp->setStyle(new QProxyStyle("fusion"));
 }
 
 void Theme::initIconTheme(){
