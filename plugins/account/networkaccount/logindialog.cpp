@@ -94,7 +94,7 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
     m_accountLineEdit->setMinimumSize(338,36);
     m_accountLineEdit->setTextMargins(12,0,0,0);
     m_accountLineEdit->setFocusPolicy(Qt::StrongFocus);
-    m_accountLineEdit->setPlaceholderText(tr("Your account here"));
+    m_accountLineEdit->setPlaceholderText(tr("Your account/phone here"));
 
     //account_phone->setStyleSheet("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);}"
     //                             "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"

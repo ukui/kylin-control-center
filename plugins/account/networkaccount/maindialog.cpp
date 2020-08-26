@@ -990,6 +990,7 @@ void MainDialog::on_login_finished(int ret, QString uuid) {
     //qDebug()<<ret;
     //无手机号码绑定，进入手机号码绑定页面
     if(ret == 119) {
+        emit on_login_failed();
         set_back();
         m_blueEffect->stop();
         m_titleLable->setText(tr("Binding Phone"));
@@ -1555,9 +1556,13 @@ void MainDialog::setnormal() {
     set_staus(true);
     m_blueEffect->stop();
     m_submitBtn->setText(tr("Sign in"));
-    m_loginDialog->set_code(messagebox(108));
-    m_loginDialog->get_mcode_widget()->set_change(1);
-    m_loginTips->show();
+    if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
+        m_loginDialog->set_code(messagebox(108));
+        m_loginDialog->get_mcode_widget()->set_change(1);
+        m_loginTips->show();
+    } else {
+        m_loginCodeStatusTips->show();
+    }
     setshow(m_stackedWidget);
 
 }
