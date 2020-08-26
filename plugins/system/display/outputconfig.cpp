@@ -243,32 +243,29 @@ void OutputConfig::initUi()
             this, &OutputConfig::slotRefreshRateChanged);
 
 
-
     scaleCombox = new QComboBox();
     scaleCombox->setObjectName("scaleCombox");
 //    mRefreshRate->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     scaleCombox->setMinimumSize(402,30);
     scaleCombox->setMaximumSize(16777215,30);
 
-
-
     int maxReslu = mResolution->getMaxResolution().width();
 
-#if QT_VERSION < QT_VERSION_CHECK(5,7,0)
+//#if QT_VERSION < QT_VERSION_CHECK(5,7,0)
     if (maxReslu >= 2000) {
         scaleCombox->addItem(tr("200%"));
     } else {
         scaleCombox->addItem(tr("100%"));
     }
-#else
-    scaleCombox->addItem(tr("100%"));
-    if (maxReslu >= 2000 && maxReslu <= 3800) {
-        scaleCombox->addItem(tr("200%"));
-    } else if (maxReslu >= 3800 || maxReslu >= 4000) {
-        scaleCombox->addItem(tr("200%"));
-        scaleCombox->addItem(tr("300%"));
-    }
-#endif
+//#else
+//    scaleCombox->addItem(tr("100%"));
+//    if (maxReslu >= 2000 && maxReslu <= 3800) {
+//        scaleCombox->addItem(tr("200%"));
+//    } else if (maxReslu >= 3800 || maxReslu >= 4000) {
+//        scaleCombox->addItem(tr("200%"));
+//        scaleCombox->addItem(tr("300%"));
+//    }
+//#endif
 
     QLabel *scaleLabel = new QLabel();
 
@@ -294,16 +291,16 @@ void OutputConfig::initUi()
     vbox->addWidget(scaleFrame);
 
     int scale = getScreenScale();
-#if QT_VERSION < QT_VERSION_CHECK(5,7,0)
+//#if QT_VERSION < QT_VERSION_CHECK(5,7,0)
 
-#else
+//#else
     scaleCombox->setCurrentIndex(0);
     if (scale <= scaleCombox->count() && scale > 0) {
 //        qDebug()<<"scale is----->"<<scale<<endl;
         scaleCombox->setCurrentIndex(scale - 1);
     }
     slotScaleChanged(scale - 1);
-#endif
+//#endif
 
     connect(scaleCombox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated),
             this, &OutputConfig::slotScaleChanged);

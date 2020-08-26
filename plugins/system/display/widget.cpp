@@ -345,7 +345,6 @@ void Widget::slotFocusedOutputChanged(QMLOutput *output)
     if (index == -1 || index == ui->primaryCombo->currentIndex()) {
         return;
     }
-    //qDebug()<<"下拉框id----->"<<index<<endl;
     ui->primaryCombo->setCurrentIndex(index);
 }
 
@@ -622,7 +621,7 @@ void Widget::setcomBoxScale() {
     int scale = 1;
     QComboBox *scaleCombox = findChild<QComboBox*>(QString("scaleCombox"));
     if (scaleCombox) {
-        scale = "100%" == scaleCombox->currentText() ? 1 : 2;
+        scale = ("100%" == scaleCombox->currentText() ? 1 : 2);
     }
     writeScale(scale);
 }
@@ -870,7 +869,6 @@ void Widget::save()
     }
 
     if (!atLeastOneEnabledOutput ) {
-        qDebug()<<"atLeastOneEnabledOutput---->"<<connectedScreen<<endl;
         KMessageBox::error(this,tr("please insure at least one output!"),
                            tr("Warning"),KMessageBox::Notify);
         closeScreenButton->setChecked(true);
@@ -888,11 +886,11 @@ void Widget::save()
 //    int scale = static_cast<int>(this->scaleRet());
     initScreenXml(countOutput);
     writeScreenXml(countOutput);
-#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
-    setcomBoxScale();
-#else
+//#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
+//    setcomBoxScale();
+//#else
     writeScale(static_cast<float>(this->screenScale));
-#endif
+//#endif
     writeConfigFile();
     setNightMode(nightButton->isChecked());
 
