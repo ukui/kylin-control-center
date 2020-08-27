@@ -133,7 +133,7 @@ void MainWidget::setret_check(QString ret) {
         m_infoTab->setText(tr("Your account：%1").arg(ret));
         m_mainWidget->setCurrentWidget(m_widgetContainer);
 
-        setshow(m_mainWidget);
+        //setshow(m_mainWidget);
 
 
         handle_conf();
@@ -142,12 +142,12 @@ void MainWidget::setret_check(QString ret) {
     } else if((ret == "" || ret =="201" || ret == "203" || ret == "401" ) && m_bTokenValid == false){
         m_bTokenValid = true;
         m_mainWidget->setCurrentWidget(m_nullWidget);
-        setshow(m_mainWidget);
+       // setshow(m_mainWidget);
     } else if(!(ret == "" || ret =="201" || ret == "203" || ret == "401" ) && m_bTokenValid){
         m_infoTab->setText(tr("Your account：%1").arg(ret));
         m_szCode = ret;
         m_mainWidget->setCurrentWidget(m_widgetContainer);
-        setshow(m_mainWidget);
+       // setshow(m_mainWidget);
         QFile all_conf_file(QDir::homePath() + PATH);
         if(all_conf_file.exists() == false) {
             doconf();
@@ -286,7 +286,8 @@ void MainWidget::init_gui() {
 
 
     m_infoWidget->setFixedHeight(36);
-    m_itemList->setMinimumWidth(550);
+    m_mainWidget->setMinimumWidth(550);
+    m_widgetContainer->setMinimumWidth(550);
     m_welcomeImage->setFixedSize(96,96);
 
 //    gif->setMinimumSize(120,36);
