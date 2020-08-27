@@ -455,6 +455,7 @@ void MainWidget::init_gui() {
     connect(m_autoSyn->get_swbtn(),&SwitchButton::status,[=] (int on,int id) {
        if(on == 1) {
 
+           setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
            m_stackedWidget->setCurrentWidget(m_itemList);
            m_keyInfoList.clear();
            __once__ = false;
@@ -474,6 +475,7 @@ void MainWidget::init_gui() {
            }
 
        } else {
+           setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
            m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
        }
     });
