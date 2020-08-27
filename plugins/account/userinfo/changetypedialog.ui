@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>378</width>
+    <width>387</width>
     <height>500</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>378</width>
+    <width>387</width>
     <height>500</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>378</width>
+    <width>387</width>
     <height>500</height>
    </size>
   </property>
@@ -30,7 +30,7 @@
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>0</number>
+    <number>9</number>
    </property>
    <property name="topMargin">
     <number>9</number>
@@ -39,10 +39,31 @@
     <number>9</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>9</number>
    </property>
    <item>
-    <widget class="QWidget" name="widget_3" native="true">
+    <widget class="QFrame" name="frame_3">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>48</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>48</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
        <number>0</number>
@@ -78,6 +99,11 @@
         </property>
         <item>
          <widget class="QLabel" name="titleLabel">
+          <property name="font">
+           <font>
+            <pointsize>13</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>Change Account Type</string>
           </property>
@@ -162,7 +188,7 @@
          <number>0</number>
         </property>
         <property name="leftMargin">
-         <number>32</number>
+         <number>24</number>
         </property>
         <property name="topMargin">
          <number>0</number>
