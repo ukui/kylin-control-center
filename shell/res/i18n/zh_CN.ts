@@ -2807,7 +2807,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="499"/>
         <source>Timeout!</source>
-        <translation>登录超时！</translation>
+        <translation>登录超时，请重新输入验证码登录！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="500"/>
