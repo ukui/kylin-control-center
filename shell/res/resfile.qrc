@@ -135,6 +135,13 @@
         <file>plugins/about/logoukui.svg</file>
         <file>plugins/userinfo/notice.png</file>
         <file>dropArrow/Logo.png</file>
+        <file>plugins/userinfo/pwdEncrypted.png</file>
+        <file>plugins/userinfo/pwdUnscramble.png</file>
+        <file>plugins/userinfo/close.svg</file>
+        <file>plugins/userinfo/delete.png</file>
+        <file>plugins/userinfo/type.svg</file>
+        <file>plugins/userinfo/password.svg</file>
+        <file>plugins/userinfo/deluser.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

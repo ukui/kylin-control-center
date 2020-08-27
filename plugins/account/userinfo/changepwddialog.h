@@ -23,7 +23,8 @@
 #include <QDialog>
 #include <QPainter>
 #include <QPainterPath>
-
+#include <QHBoxLayout>
+#include <QPushButton>
 
 #ifdef ENABLEPQ
 extern "C" {
@@ -71,7 +72,12 @@ private:
     Ui::ChangePwdDialog *ui;
     QString nameTip;
     QString pwdTip;
+    QString pwdTip_2;
     QString pwdSureTip;
+    QHBoxLayout * pwdLineEditHLayout;
+    QHBoxLayout * pwdsureLineEditHLayout;
+    QPushButton * showPwdBtn;
+    QPushButton * showSurePwdBtn;
 
     bool enablePwdQuality;
 

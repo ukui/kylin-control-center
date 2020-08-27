@@ -27,6 +27,9 @@
 #include <QFileDialog>
 #include <QPainter>
 #include <QPainterPath>
+#include <QDBusInterface>
+#include <QDBusReply>
+#include <FlowLayout/flowlayout.h>
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -55,12 +58,20 @@ public:
     void setFace(QString iconfile);
     void setUsername(QString username);
     void setAccountType(QString atype);
+    void setHistoryFacesPath(QString path);
 
     void loadSystemFaces();
 
     void showLocalFaceDialog();
 
     QMap<QString, QListWidgetItem *> delitemMap;
+
+    QString confirmFile;
+    void loadHistoryFaces();
+    QString historyFacesPath;
+    QDBusInterface * sysinterface;
+    int historyCount;
+    FlowLayout * historyFacesFlowLayout;
 
 protected:
     void paintEvent(QPaintEvent *);
