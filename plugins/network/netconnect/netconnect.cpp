@@ -41,7 +41,7 @@ NetConnect::NetConnect():m_wifiList(new Wifi)
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
-    pluginName = tr("Netconnect");
+    pluginName = tr("Connect");
     pluginType = NETWORK;
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");

@@ -55,7 +55,7 @@ UserInfo::UserInfo()
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
-    pluginName = tr("Userinfo");
+    pluginName = tr("User Info");
     pluginType = ACCOUNT;
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
