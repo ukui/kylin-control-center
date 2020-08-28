@@ -322,9 +322,18 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
     button->setLayout(baseVerLayout);
 }
 
-void Theme::initThemeMode(){
+void Theme::initThemeMode() {
+    // 获取当前主题
+    QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
+    if ("ukui-white" == currentThemeMode || "ukui-default" == currentThemeMode || "ukui ukui-light" == currentThemeMode) {
+        ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
+    } else {
+        ui->themeModeBtnGroup->buttonClicked(ui->darkButton);
+    }
+    qApp->setStyle(new InternalStyle("ukui"));
+
     //监听主题改变
-    connect(qtSettings, &QGSettings::changed, this, [=](const QString &key){
+    connect(qtSettings, &QGSettings::changed, this, [=](const QString &key) {
         if (key == "styleName") {
             //获取当前主题
             QString currentThemeMode = qtSettings->get(key).toString();
@@ -335,29 +344,19 @@ void Theme::initThemeMode(){
                     button->click();
                 }
             }
+            qApp->setStyle(new InternalStyle("ukui"));
         }
     });
 
-    // 获取当前主题
-    QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-    qApp->setStyle(new InternalStyle(currentThemeMode));
-    // 设置界面
-
-    if ("ukui-white" == currentThemeMode || "ukui-default" == currentThemeMode) {
-        ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
-    } else {
-        ui->themeModeBtnGroup->buttonClicked(ui->darkButton);
-    }
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->themeModeBtnGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked), [=](QAbstractButton * button){
 #else
     connect(ui->themeModeBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this, [=](QAbstractButton * button){
 #endif
-//        //设置主题
+       // 设置主题
         QString themeMode = button->property("value").toString();
         QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-
 
         qApp->setStyle(new InternalStyle(themeMode));
         if (QString::compare(currentThemeMode, themeMode)){

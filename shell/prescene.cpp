@@ -19,7 +19,7 @@ PreScene::PreScene(QLabel *label, QSize size, QWidget *parent) : titleLabel(labe
     logoLabel = new QLabel(this);
     logoLabel->setFixedSize(200,200);
     logoLabel->setPixmap(loadSvg(":/img/titlebar/ukui-control-center.svg"));
-    m_logoLayout->setContentsMargins(0, 160, 0, 0);
+    m_logoLayout->setContentsMargins(70, 160, 0, 0);
     m_logoLayout->addWidget(logoLabel);
 
     m_hlayout = new QHBoxLayout;

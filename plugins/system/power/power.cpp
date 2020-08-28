@@ -116,7 +116,7 @@ void Power::initSearText() {
     ui->customLabel->setText(tr("Custom"));
 }
 
-void Power::isPowerSupply(){
+void Power::isPowerSupply() {
     //ubuntukylin youker DBus interface
     QDBusInterface *brightnessInterface = new QDBusInterface("org.freedesktop.UPower",
                                      "/org/freedesktop/UPower/devices/DisplayDevice",
@@ -129,32 +129,23 @@ void Power::isPowerSupply(){
 
     QDBusReply<QVariant> briginfo;
     briginfo  = brightnessInterface ->call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
-    if (!briginfo.isValid()) {
+
+    if (!briginfo.value().toBool()) {
         qDebug()<<"brightness info is invalid"<<endl;
+        isExitsPower = false ;
         ui->batteryBtn->setVisible(false);
+        ui->closeLidFrame->setVisible(false);
+        ui->title2Label->setVisible(false);
+        ui->iconFrame->setVisible(false);
     } else {
         qDebug() << "brightness info is valid";
+        isExitsPower = true ;
         bool status = briginfo.value().toBool();
         ui->batteryBtn->setVisible(status);
     }
 }
 
 void Power::setupStylesheet(){
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-//    ui->balanceWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->savingWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->customWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-//    ui->custom1Widget->setStyleSheet("QWidget{background: #F4F4F4;}");
-//    ui->custom2Widget->setStyleSheet("QWidget{background: #F4F4F4;}"
-//                                     "QWidget#custom2Widget{border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
-
-//    ui->acBtn->setStyleSheet("QPushButton#acBtn:checked{background: #3D6BE5; border-radius: 4px; color: #ffffff;}"
-//                             "QPushButton#acBtn:!checked{background: #ffffff; border-radius: 4px;}");
-//    ui->batteryBtn->setStyleSheet("QPushButton#batteryBtn:checked{background: #3D6BE5; border-radius: 4px; color: #ffffff;}"
-//                                  "QPushButton#batteryBtn:!checked{background: #ffffff; border-radius: 4px; color: #000000;}");
-
-//    ui->iconWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
 }
 
@@ -479,7 +470,7 @@ void Power::refreshUI(){
 //        ui->custom2Widget->setEnabled(true);
         ui->custom1Frame->show();
         ui->custom2Frame->show();
-        ui->closeLidFrame->show();
+        ui->closeLidFrame->setVisible(isExitsPower);
 //        ui->customWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
     }
 }

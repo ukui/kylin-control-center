@@ -121,7 +121,7 @@ void NetConnect::initSearchText() {
 
 void NetConnect::initComponent(){
 
-    ui->RefreshBtn->hide();
+//    ui->RefreshBtn->hide();
 
     //把判断列表是否已刷新的bool值初始化为true
     this->is_refreshed = true;
@@ -164,7 +164,8 @@ void NetConnect::initComponent(){
 //        clearContent();
 //        ui->waitLabel->setVisible(true);
 //        ui->statuswaitLabel->setVisible(true);
-//        ui->RefreshBtn->setEnabled(false);
+        ui->RefreshBtn->setText(tr("Refreshing..."));
+        ui->RefreshBtn->setEnabled(false);
         wifiBtn->setEnabled(false);
         QTimer::singleShot(1*1000,this,SLOT(getNetList()));
     });
@@ -176,6 +177,7 @@ void NetConnect::initComponent(){
 //        clearContent();
 //        ui->waitLabel->setVisible(true);
 //        ui->statuswaitLabel->setVisible(true);
+        ui->RefreshBtn->setText(tr("Refreshing..."));
         ui->RefreshBtn->setEnabled(false);
         wifiBtn->setEnabled(false);
 
@@ -302,6 +304,7 @@ void NetConnect::getNetList() {
         bool wifiSt = getwifiisEnable();
         wifiBtn->setEnabled(wifiSt);
         ui->RefreshBtn->setEnabled(true);
+        ui->RefreshBtn->setText(tr("Refresh"));
 
 //        ui->waitLabel->setVisible(false);
 //        ui->statuswaitLabel->setVisible(false);

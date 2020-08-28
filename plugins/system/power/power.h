@@ -66,10 +66,8 @@ public:
 private:
     Ui::Power *ui;
 
-private:
     QWidget * pluginWidget;
 
-private:
     QGSettings * settings;
 
     QString pluginName;
@@ -83,8 +81,8 @@ private:
     QStringList buttonStringList;
     QStringList iconShowList;
 
-private:
     bool settingsCreate;
+    bool isExitsPower;
 };
 
 #endif // POWER_H

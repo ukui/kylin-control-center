@@ -1495,7 +1495,7 @@ void Widget::initUiComponent() {
 
     QDBusReply<QVariant> briginfo;
     briginfo  = brightnessInterface ->call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
-    if (!briginfo.isValid()) {
+    if (!briginfo.value().toBool()) {
         qDebug()<<"brightness info is invalid"<<endl;
         ui->brightnessframe->setVisible(false);
     } else {
