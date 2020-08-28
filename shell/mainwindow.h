@@ -32,12 +32,13 @@
 #include "homepagewidget.h"
 #include "modulepagewidget.h"
 #include "searchwidget.h"
-
+class BorderShadowEffect;
 class QLabel;
 class QPushButton;
 class QButtonGroup;
 class KeyValueConverter;
-
+class QWidgetResizeHandler;
+class QStackedWidget;
 namespace Ui {
 class MainWindow;
 }
@@ -58,13 +59,15 @@ public:
     void bootOptionsSwitch(int moduleNum, int funcNum);
 
 protected:
+    void validBorder();
     void paintEvent(QPaintEvent *);
     bool eventFilter(QObject *watched, QEvent *event);
-
+//    QRect sideBarRect();
 private:
     Ui::MainWindow *ui;
 
 private:
+    BorderShadowEffect *m_effect;
     HomePageWidget * homepageWidget;
     ModulePageWidget * modulepageWidget;
 

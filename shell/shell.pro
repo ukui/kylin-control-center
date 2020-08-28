@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network x11extras svg xml
+QT       += core gui network x11extras svg xml  KWindowSystem
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -58,6 +58,7 @@ INCLUDEPATH += qtsingleapplication
 DEPENDPATH += qtsingleapplication
 
 SOURCES += \
+    border_shadow_effect.cpp \
     customstyle.cpp \
     delegate.cpp \
     main.cpp \
@@ -78,6 +79,7 @@ SOURCES += \
     qtsingleapplication/qtlocalpeer.cpp
 
 HEADERS += \
+    border_shadow_effect.h \
     customstyle.h \
     delegate.h \
     mainwindow.h \

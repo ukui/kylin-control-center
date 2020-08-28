@@ -18,9 +18,11 @@
  *
  */
 #include "mainwindow.h"
+#include <QWidget>
 #include "ui_mainwindow.h"
+#include "border_shadow_effect.h"
 #include "utils/keyvalueconverter.h"
-
+#include <QLinearGradient>
 #include "utils/functionselect.h"
 #include <QFont>
 #include <QLabel>
@@ -36,6 +38,8 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QGSettings>
+#include <KWindowEffects>
+
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
  **/
@@ -57,6 +61,10 @@ MainWindow::MainWindow(QWidget *parent) :
     m_searchWidget(nullptr)
 
 {
+    m_effect = new BorderShadowEffect(this);
+    m_effect->setPadding(10);
+    m_effect->setBorderRadius(16);
+    m_effect->setBlurRadius(16);
     ui->setupUi(this);
     initTileBar();
     // 初始化mixer
@@ -292,13 +300,85 @@ void MainWindow::bootOptionsSwitch(int moduleNum, int funcNum){
 }
 
 void MainWindow::paintEvent(QPaintEvent *event) {
-    Q_UNUSED(event);
+    validBorder();
+    QColor color = this->palette().window().color();
+    QColor colorBase = this->palette().base().color();
+
+    int R1 = color.red();
+    int G1 = color.green();
+    int B1 = color.blue();
+    qreal a1 = 0.3;
+
+    int R2 = colorBase.red();
+    int G2 = colorBase.green();
+    int B2 = colorBase.blue();
+    qreal a2 = 1;
+
+    qreal a = 1 - (1 - a1)*(1 - a2);
+
+    qreal R = (a1*R1 + (1 - a1)*a2*R2) / a;
+    qreal G = (a1*G1 + (1 - a1)*a2*G2) / a;
+    qreal B = (a1*B1 + (1 - a1)*a2*B2) / a;
+
+    colorBase.setRed(R);
+    colorBase.setGreen(G);
+    colorBase.setBlue(B);
+
+
+    colorBase.setAlphaF(0.75);
+
+    if (qApp->property("blurEnable").isValid()) {
+        bool blurEnable = qApp->property("blurEnable").toBool();
+        if (!blurEnable) {
+            colorBase.setAlphaF(1);
+        }
+    } else {
+        colorBase.setAlphaF(1);
+    }
+
+    QPainterPath sidebarPath;
+    sidebarPath.setFillRule(Qt::FillRule::WindingFill);
+    QPainterPath deletePath;
+    QPainterPath tmpPath;
+    tmpPath.addRoundedRect(rect().adjusted(4, 4, -4, -4),16,16);
+    deletePath.addRoundedRect(rect().adjusted(330, 4, 0, -4), 16, 16);
+
+    sidebarPath = tmpPath - deletePath;
+    m_effect->m_transparent_path.addRect(0,0,0,0);
+    m_effect->setTransParentPath(sidebarPath);
+    m_effect->setTransParentAreaBg(colorBase);
+
+    //color.setAlphaF(0.5);
+    m_effect->setWindowBackground(color);
     QPainter p(this);
-    p.setRenderHint(QPainter::Antialiasing);
-    QPainterPath rectPath;
-    if(!bIsFullScreen) {
-        rectPath.addRoundedRect(this->rect().adjusted(4, 4, -4, -4), 16, 16);
-        // 画一个黑底
+
+    m_effect->drawWindowShadowManually(&p, this->rect(),true);
+    QMainWindow::paintEvent(event);
+    p.save();
+//    p.fillPath(rectPath,QColor(0,0,0));
+    p.restore();
+}
+void MainWindow::validBorder(){
+    if (this->isMaximized()) {
+        QPainter p(this);
+        p.setRenderHint(QPainter::Antialiasing);
+        QPainterPath rectPath;
+        rectPath.addRoundedRect(this->rect(), 0, 0);
+            p.save();
+        //    p.fillPath(rectPath,QColor(0,0,0));
+            p.restore();
+        setContentsMargins(0, 0, 0, 0);
+        m_effect->setPadding(0);
+//        setProperty("blurRegion", QVariant());
+        KWindowEffects::enableBlurBehind(this->winId(), true);
+
+    } else {
+        QPainter p(this);
+        p.setRenderHint(QPainter::Antialiasing);
+        QPainterPath rectPath;
+        rectPath.addRoundedRect(this->rect().adjusted(6, 6, -6, -6), 16, 16);
+
+//        // 画一个黑底
         QPixmap pixmap(this->rect().size());
         pixmap.fill(Qt::transparent);
         QPainter pixmapPainter(&pixmap);
@@ -324,15 +404,22 @@ void MainWindow::paintEvent(QPaintEvent *event) {
 
         // 绘制阴影
         p.drawPixmap(this->rect(), pixmap, pixmap.rect());
-    } else {
-        rectPath.addRoundedRect(this->rect(), 0, 0);
+        p.save();
+    //    p.fillPath(rectPath,QColor(0,0,0));
+        p.restore();
+
+        setContentsMargins(4, 4, 4, 4);
+        m_effect->setPadding(4);
+
+        QPainterPath path;
+        auto rect = this->rect();
+        rect.adjust(4, 4, -4, -4);
+        path.addRoundedRect(rect, 6, 6);
+        setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
+        //use KWindowEffects
+        KWindowEffects::enableBlurBehind(this->winId(), true, QRegion(path.toFillPolygon().toPolygon()));
     }
 
-    // 绘制一个背景
-    p.save();
-    p.fillPath(rectPath,palette().color(QPalette::Base));
-//    p.fillPath(rectPath,QColor(0,0,0));
-    p.restore();
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
@@ -385,6 +472,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     return QObject::eventFilter(watched, event);
 }
 
+
 void MainWindow::initTileBar() {
 
     ui->titleLayout->setContentsMargins(300, 2, 10, 0);
@@ -395,7 +483,7 @@ void MainWindow::initTileBar() {
     titleLabel  = new QLabel(tr("UKCC"), this);
     icon =new QLabel(this);
     icon->setPixmap(QString("://img/dropArrow/Logo.png"));
-    icon->setStyleSheet("boder-radius:4px;");
+    icon->setStyleSheet("border-radius:4px;");
     icon->resize(32,32);
     titleLabel->resize(80,32);
     ui->titleLayout->addWidget(m_searchWidget, Qt::AlignCenter);
@@ -417,8 +505,8 @@ void MainWindow::initTileBar() {
     m_searchWidget->setMaximumHeight(40);
 
 //    ui->titleLayout->addWidget(titleLabel);
-    icon->setGeometry(rect().x()+26, rect().y()+8,32, 32);
-    titleLabel->setGeometry(rect().x()+56, rect().y()+12.01,64, 24);
+    icon->setGeometry(rect().x()+26, rect().y()+21,32, 32);
+    titleLabel->setGeometry(rect().x()+56, rect().y()+25.01,64, 24);
     icon->setParent(this);
     titleLabel->setParent(this);
     ui->titleLayout->addWidget(backBtn);
