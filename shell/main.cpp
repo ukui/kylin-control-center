@@ -83,6 +83,7 @@ int main(int argc, char *argv[])
         QCommandLineOption desktopRoleOption("d", "Go to desktop settings page");
         QCommandLineOption audioRoleOption("s", "Go to audio settings page");
         QCommandLineOption noticeRoleOption("n", "Go to notice settings page");
+        QCommandLineOption vpnRoleOption("v", "Go to vpn settings page");
 
         parser.addHelpOption();
         parser.addVersionOption();
@@ -95,6 +96,7 @@ int main(int argc, char *argv[])
         parser.addOption(desktopRoleOption);
         parser.addOption(audioRoleOption);
         parser.addOption(noticeRoleOption);
+        parser.addOption(vpnRoleOption);
         parser.process(a);
 
         MainWindow * w = new MainWindow;

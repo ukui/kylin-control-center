@@ -124,8 +124,8 @@ void Wallpaper::setupComponent(){
 //    ui->formComBox->addItem(formList.at(2), SLIDESHOW);
 
     //预览遮罩
-    MaskWidget * maskWidget = new MaskWidget(ui->previewLabel);
-    maskWidget->setGeometry(0, 0, ui->previewLabel->width(), ui->previewLabel->height());
+//    MaskWidget * maskWidget = new MaskWidget(ui->previewLabel);
+//    maskWidget->setGeometry(0, 0, ui->previewLabel->width(), ui->previewLabel->height());
 
     ///图片背景
     picFlowLayout = new FlowLayout(ui->picListWidget);

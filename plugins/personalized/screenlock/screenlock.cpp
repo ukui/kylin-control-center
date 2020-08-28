@@ -204,8 +204,8 @@ void Screenlock::initScreenlockStatus(){
     ui->previewLabel->setPixmap(QPixmap(bgStr).scaled(ui->previewLabel->size()));
 
     // 遮罩
-    MaskWidget * maskWidget = new MaskWidget(ui->previewLabel);
-    maskWidget->setGeometry(0, 0, ui->previewLabel->width(), ui->previewLabel->height());
+//    MaskWidget * maskWidget = new MaskWidget(ui->previewLabel);
+//    maskWidget->setGeometry(0, 0, ui->previewLabel->width(), ui->previewLabel->height());
 
     // 使用线程解析本地壁纸文件；获取壁纸单元
     pThread = new QThread;

@@ -82,14 +82,14 @@
       <widget class="QWidget" name="previewWidget" native="true">
        <property name="minimumSize">
         <size>
-         <width>400</width>
-         <height>222</height>
+         <width>300</width>
+         <height>180</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>400</width>
-         <height>222</height>
+         <width>300</width>
+         <height>180</height>
         </size>
        </property>
       </widget>

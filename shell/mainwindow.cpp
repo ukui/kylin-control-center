@@ -121,6 +121,9 @@ void MainWindow::bootOptionsFilter(QString opt){
     } else if (opt == "-n") {
         // notice module
         bootOptionsSwitch(NOTICEANDTASKS, NOTICE);
+    } else if (opt == "-v") {
+        // notice module
+        bootOptionsSwitch(NETWORK, VPN);
     }
 }
 
