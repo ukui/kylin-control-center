@@ -149,6 +149,39 @@ MainWindow::MainWindow(QWidget *parent) :
     closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
     initStyleSheet();
 
+    QGSettings * tablet_mode =  new QGSettings("org.ukui.SettingsDaemon.plugins.tablet-mode", QByteArray(),this);
+    is_tablet_mode = tablet_mode->get("tablet-mode").toBool();
+    if(is_tablet_mode){
+        minBtn->hide();
+        maxBtn->hide();
+        closeBtn->hide();
+    }
+
+    connect(tablet_mode, &QGSettings::changed, this, [=](){
+        is_tablet_mode = tablet_mode->get("tablet-mode").toBool();
+        if(is_tablet_mode){
+            minBtn->hide();
+            maxBtn->hide();
+            closeBtn->hide();
+        } else {
+            minBtn->show();
+            maxBtn->show();
+            closeBtn->show();
+        }
+    });
+
+//    g_signal_connect (tablet_mode, "changed", G_CALLBACK (), this);
+//        is_tablet_mode = g_settings_get_boolean(tablet_mode, "tablet-mode");
+//        if(is_tablet_mode){
+//            minBtn->hide();
+//            maxBtn->hide();
+//            closeBtn->hide();
+//        } else {
+//            minBtn->show();
+//            maxBtn->show();
+//            closeBtn->show();
+//        }
+
     //初始化功能列表数据
     FunctionSelect::initValue();
 

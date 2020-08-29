@@ -65,6 +65,7 @@ protected:
 //    QRect sideBarRect();
 private:
     Ui::MainWindow *ui;
+    bool is_tablet_mode;
 
 private:
     BorderShadowEffect *m_effect;
