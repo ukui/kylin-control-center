@@ -1716,7 +1716,7 @@ folder will be deleted!</source>
         <translation type="vanished">显示器</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.cpp" line="32"/>
+        <location filename="../../../plugins/system/display/display.cpp" line="31"/>
         <source>Display</source>
         <translation>显示器</translation>
     </message>
@@ -3301,6 +3301,7 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.ui" line="123"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="307"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
@@ -3331,12 +3332,18 @@ Please retry for login!</source>
         <translation>网络连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="241"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="167"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="180"/>
+        <source>Refreshing...</source>
+        <translation>刷新中...</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="243"/>
         <source>connected</source>
         <translation>已连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="243"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="245"/>
         <source>No network</source>
         <translation>无网络链接</translation>
     </message>
@@ -3440,30 +3447,28 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/system/display/outputconfig.cpp" line="261"/>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="264"/>
         <source>100%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="259"/>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="266"/>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="268"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="263"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="265"/>
         <source>200%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="269"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="266"/>
         <source>300%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="276"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="273"/>
         <source>screen zoom</source>
         <translation>缩放屏幕</translation>
         <extra-contents_path>/display/screen zoom</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="366"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="363"/>
         <source>%1 Hz</source>
         <translation></translation>
     </message>
@@ -5521,34 +5526,34 @@ in the file system invalid!</source>
         <extra-contents_path>/display/night mode</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="537"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="536"/>
         <source>Some applications need to be logouted to take effect</source>
         <translation>应用程序需要注销才能生效</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="874"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="872"/>
         <source>please insure at least one output!</source>
         <translation>请确保至少开启一个屏幕!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="875"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="883"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="873"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="881"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="882"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="880"/>
         <source>Morning time should be earlier than evening time!</source>
         <translation>早晨时刻应早于晚上的时刻!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="902"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="900"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation>抱歉，配置不能应用.</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="903"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="901"/>
         <source>@title:window</source>
         <comment>Unsupported Configuration</comment>
         <translation>窗口</translation>
