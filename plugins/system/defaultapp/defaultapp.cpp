@@ -146,8 +146,12 @@ void DefaultApp::initUI(){
     // IMAGE
     int imageindex = -1;
     QString currentimage(getDefaultAppId(IMAGETYPE));
-
+    QStringList browserList;
     AppList * imagelist = getAppIdList(IMAGETYPE);
+
+    for(int i = 0; i < ui->browserComBoBox->count(); i++){
+        browserList << ui->browserComBoBox->itemText(i);
+    }
     if (imagelist){
         for (int i = 0; imagelist[i].appid != NULL; i++){
             QString single(imagelist[i].appid);
@@ -159,12 +163,17 @@ void DefaultApp::initUI(){
             if (QIcon::hasThemeIcon(QString(iconname)))
                 appicon = QIcon::fromTheme(QString(iconname));
 
-            ui->imageComBoBox->addItem(appicon, appname, single);
-            if (currentimage == single)
-                imageindex = i;
-            free(imagelist[i].appid);
+            if(!browserList.contains(appname)){
+                ui->imageComBoBox->addItem(appicon, appname, single);
+                free(imagelist[i].appid);
+            }
         }
         free(imagelist);
+    }
+    for(int i = 0; i < ui->imageComBoBox->count(); i++){
+        if(currentimage == ui->imageComBoBox->itemData(i)){
+            imageindex = i;
+        }
     }
     ui->imageComBoBox->setCurrentIndex(imageindex);
     imageComBoBox_changed_cb(imageindex);
