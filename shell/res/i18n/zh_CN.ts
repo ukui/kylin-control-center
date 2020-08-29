@@ -465,8 +465,12 @@
         <translation type="vanished">开机启动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="63"/>
         <source>Autoboot</source>
+        <translation type="vanished">开机启动</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="63"/>
+        <source>Auto Boot</source>
         <translation>开机启动</translation>
     </message>
     <message>
@@ -888,7 +892,7 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/colordialog.cpp" line="89"/>
+        <location filename="../../../plugins/personalized/wallpaper/colordialog.cpp" line="90"/>
         <source>Custom color</source>
         <translation>自定颜色</translation>
     </message>
@@ -1225,44 +1229,48 @@ change system settings</source>
         <translation type="vanished">默认应用</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="42"/>
         <source>Defaultapp</source>
+        <translation type="vanished">默认应用</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="42"/>
+        <source>Default App</source>
         <translation>默认应用</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="79"/>
         <source>Browser</source>
-        <translation type="unfinished">浏览器</translation>
+        <translation>浏览器</translation>
         <extra-contents_path>/defaultapp/Browser</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="81"/>
         <source>Mail</source>
-        <translation type="unfinished">电子邮件</translation>
+        <translation>电子邮件</translation>
         <extra-contents_path>/defaultapp/Mail</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="83"/>
         <source>Image Viewer</source>
-        <translation type="unfinished">图像查看器</translation>
+        <translation>图像查看器</translation>
         <extra-contents_path>/defaultapp/Image Viewer</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="85"/>
         <source>Audio Player</source>
-        <translation type="unfinished">音频播放器</translation>
+        <translation>音频播放器</translation>
         <extra-contents_path>/defaultapp/Audio Player</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="87"/>
         <source>Video Player</source>
-        <translation type="unfinished">视频播放器</translation>
+        <translation>视频播放器</translation>
         <extra-contents_path>/defaultapp/Video Player</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="89"/>
         <source>Text Editor</source>
-        <translation type="unfinished">文档编辑器</translation>
+        <translation>文档编辑器</translation>
         <extra-contents_path>/defaultapp/Text Editor</extra-contents_path>
     </message>
 </context>
@@ -2807,7 +2815,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="499"/>
         <source>Timeout!</source>
-        <translation>登录超时！</translation>
+        <translation>登录超时，请重新输入验证码登录！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="500"/>
@@ -2992,15 +3000,15 @@ folder will be deleted!</source>
         <translation>您的云账户：%1</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="535"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="538"/>
         <source>Unauthorized device or OSS falied.
 Please retry for login!</source>
         <translation>该设备已经不可靠或者OSS初始化失败，请登录重试！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="181"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="744"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="759"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="747"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="762"/>
         <source>Exit</source>
         <translation>退出登录</translation>
     </message>
@@ -3035,17 +3043,17 @@ Please retry for login!</source>
         <translation>自动同步</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="335"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="336"/>
         <source>Synchronize your personalized settings and data</source>
         <translation>同步您账户的数据以及个性化设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="614"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="617"/>
         <source>This operation may cover your settings!</source>
         <translation>该操作可能覆盖您目前的快捷键！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="845"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="848"/>
         <source>Cloud ID desktop message</source>
         <translation>云账户消息</translation>
     </message>
@@ -3074,7 +3082,7 @@ Please retry for login!</source>
         <translation type="vanished">同步失败，请检查您的网络连接或者登出再重试一次！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="820"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="823"/>
         <source>%1,</source>
         <translation>%1,</translation>
     </message>
@@ -3327,9 +3335,8 @@ Please retry for login!</source>
         <translation type="vanished">网络连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="44"/>
         <source>Netconnect</source>
-        <translation>网络连接</translation>
+        <translation type="vanished">网络连接</translation>
     </message>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="167"/>
@@ -3348,8 +3355,9 @@ Please retry for login!</source>
         <translation>无网络链接</translation>
     </message>
     <message>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="44"/>
         <source>Connect</source>
-        <translation type="vanished">已连接</translation>
+        <translation>网络连接</translation>
     </message>
     <message>
         <source>Disconnect</source>
@@ -3572,13 +3580,21 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="611"/>
-        <source>Change pc sleep time:</source>
+        <source>Change PC sleep time:</source>
         <translation>系统进入空闲状态并于此时间后挂起：</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="713"/>
-        <source>Change dp close time:</source>
+        <source>Change DP close time:</source>
         <translation>系统进入空闲状态并于此时间后关闭显示器：</translation>
+    </message>
+    <message>
+        <source>Change pc sleep time:</source>
+        <translation type="vanished">系统进入空闲状态并于此时间后挂起：</translation>
+    </message>
+    <message>
+        <source>Change dp close time:</source>
+        <translation type="vanished">系统进入空闲状态并于此时间后关闭显示器：</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="818"/>
@@ -3977,7 +3993,7 @@ Please retry for login!</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="360"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="378"/>
         <source>Update Shortcut</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3991,9 +4007,8 @@ Please retry for login!</source>
         <translation>显示器</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="53"/>
         <source>Defaultapp</source>
-        <translation>默认应用</translation>
+        <translation type="vanished">默认应用</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="56"/>
@@ -4001,8 +4016,17 @@ Please retry for login!</source>
         <translation>电源</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="58"/>
         <source>Autoboot</source>
+        <translation type="vanished">开机启动</translation>
+    </message>
+    <message>
+        <location filename="../../utils/functionselect.cpp" line="53"/>
+        <source>Default App</source>
+        <translation>默认应用</translation>
+    </message>
+    <message>
+        <location filename="../../utils/functionselect.cpp" line="58"/>
+        <source>Auto Boot</source>
         <translation>开机启动</translation>
     </message>
     <message>
@@ -4062,8 +4086,17 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="125"/>
-        <source>Netconnect</source>
+        <source>Connect</source>
         <translation>网络连接</translation>
+    </message>
+    <message>
+        <location filename="../../utils/functionselect.cpp" line="144"/>
+        <source>User Info</source>
+        <translation>账户信息</translation>
+    </message>
+    <message>
+        <source>Netconnect</source>
+        <translation type="vanished">网络连接</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="127"/>
@@ -4076,9 +4109,8 @@ Please retry for login!</source>
         <translation>代理</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="144"/>
         <source>Userinfo</source>
-        <translation>账户信息</translation>
+        <translation type="vanished">账户信息</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="146"/>
@@ -4188,72 +4220,72 @@ Please retry for login!</source>
     <message>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="206"/>
         <source>Year</source>
-        <translation type="unfinished"></translation>
+        <translation>年</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="224"/>
         <source>Jan</source>
-        <translation type="unfinished"></translation>
+        <translation>一月</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="225"/>
         <source>Feb</source>
-        <translation type="unfinished"></translation>
+        <translation>二月</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="226"/>
         <source>Mar</source>
-        <translation type="unfinished"></translation>
+        <translation>三月</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="227"/>
         <source>Apr</source>
-        <translation type="unfinished"></translation>
+        <translation>四月</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="228"/>
         <source>May</source>
-        <translation type="unfinished"></translation>
+        <translation>五月</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="229"/>
         <source>Jun</source>
-        <translation type="unfinished"></translation>
+        <translation>六月</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="230"/>
         <source>Jul</source>
-        <translation type="unfinished"></translation>
+        <translation>七月</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="231"/>
         <source>Aug</source>
-        <translation type="unfinished"></translation>
+        <translation>八月</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="232"/>
         <source>Sep</source>
-        <translation type="unfinished"></translation>
+        <translation>九月</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="233"/>
         <source>Oct</source>
-        <translation type="unfinished"></translation>
+        <translation>十月</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="234"/>
         <source>Nov</source>
-        <translation type="unfinished"></translation>
+        <translation>十一月</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="235"/>
         <source>Dec</source>
-        <translation type="unfinished"></translation>
+        <translation>十二月</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="256"/>
         <source>Day</source>
-        <translation type="unfinished"></translation>
+        <translation>日</translation>
     </message>
     <message>
         <location filename="../../main.cpp" line="64"/>
@@ -4617,7 +4649,7 @@ in the file system invalid!</source>
     <name>Shortcut</name>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="79"/>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="127"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="145"/>
         <source>System Shortcut</source>
         <translation>系统快捷键</translation>
         <extra-contents_path>/shortcut/System Shortcut</extra-contents_path>
@@ -4629,13 +4661,13 @@ in the file system invalid!</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="185"/>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="129"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="147"/>
         <source>Custom Shortcut</source>
         <translation>自定义快捷键</translation>
         <extra-contents_path>/shortcut/Custom Shortcut</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="155"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="173"/>
         <source>Add custom shortcut</source>
         <translation>添加自定义快捷键</translation>
         <extra-contents_path>/shortcut/Add custom shortcut</extra-contents_path>
@@ -5223,8 +5255,12 @@ in the file system invalid!</source>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/update/update.ui" line="155"/>
-        <source>CheckUpdate</source>
+        <source>Check for updates</source>
         <translation>检测更新</translation>
+    </message>
+    <message>
+        <source>CheckUpdate</source>
+        <translation type="vanished">检测更新</translation>
     </message>
 </context>
 <context>
@@ -5234,8 +5270,12 @@ in the file system invalid!</source>
         <translation type="vanished">账户信息</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="58"/>
         <source>Userinfo</source>
+        <translation type="vanished">账户信息</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="58"/>
+        <source>User Info</source>
         <translation>账户信息</translation>
     </message>
     <message>

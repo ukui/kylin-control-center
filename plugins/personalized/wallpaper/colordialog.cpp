@@ -20,6 +20,7 @@
 #include "colordialog.h"
 #include "ui_colordialog.h"
 #include "colorsquare.h"
+#include "MaskWidget/maskwidget.h"
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
@@ -93,6 +94,9 @@ void ColorDialog::setupInit()
     QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     colorSquare->setSizePolicy(sizePolicy);
     ui->horizontalLayout_2->addWidget(colorSquare);
+    // 遮罩
+    MaskWidget * maskWidget = new MaskWidget(colorSquare);
+    maskWidget->setGeometry(0, 0, colorSquare->width(), colorSquare->height());
 
     // 垂直渐变滑动条
     gradientSlider = new GradientSlider(this);

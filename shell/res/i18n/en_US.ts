@@ -397,7 +397,7 @@
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="63"/>
-        <source>Autoboot</source>
+        <source>Auto Boot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -768,7 +768,7 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/colordialog.cpp" line="89"/>
+        <location filename="../../../plugins/personalized/wallpaper/colordialog.cpp" line="90"/>
         <source>Custom color</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1078,7 +1078,7 @@ change system settings</source>
     <name>DefaultApp</name>
     <message>
         <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="42"/>
-        <source>Defaultapp</source>
+        <source>Default App</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2559,8 +2559,8 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="181"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="744"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="759"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="747"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="762"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2595,28 +2595,28 @@ folder will be deleted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="335"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="336"/>
         <source>Synchronize your personalized settings and data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="535"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="538"/>
         <source>Unauthorized device or OSS falied.
 Please retry for login!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="614"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="617"/>
         <source>This operation may cover your settings!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="820"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="823"/>
         <source>%1,</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="845"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="848"/>
         <source>Cloud ID desktop message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2843,7 +2843,7 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="44"/>
-        <source>Netconnect</source>
+        <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3070,12 +3070,12 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="611"/>
-        <source>Change pc sleep time:</source>
+        <source>Change PC sleep time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="713"/>
-        <source>Change dp close time:</source>
+        <source>Change DP close time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3309,7 +3309,7 @@ Please retry for login!</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="360"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="378"/>
         <source>Update Shortcut</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3475,18 +3475,18 @@ Please retry for login!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="53"/>
-        <source>Defaultapp</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../utils/functionselect.cpp" line="56"/>
         <source>Power</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../utils/functionselect.cpp" line="53"/>
+        <source>Default App</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../utils/functionselect.cpp" line="58"/>
-        <source>Autoboot</source>
+        <source>Auto Boot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3551,7 +3551,12 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="125"/>
-        <source>Netconnect</source>
+        <source>Connect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../utils/functionselect.cpp" line="144"/>
+        <source>User Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3562,11 +3567,6 @@ Please retry for login!</source>
     <message>
         <location filename="../../utils/functionselect.cpp" line="129"/>
         <source>Proxy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../utils/functionselect.cpp" line="144"/>
-        <source>Userinfo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3920,7 +3920,7 @@ in the file system invalid!</source>
     <name>Shortcut</name>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="79"/>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="127"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="145"/>
         <source>System Shortcut</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/shortcut/System Shortcut</extra-contents_path>
@@ -3937,7 +3937,7 @@ in the file system invalid!</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="185"/>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="129"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="147"/>
         <source>Custom Shortcut</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/shortcut/Custom Shortcut</extra-contents_path>
@@ -3948,7 +3948,7 @@ in the file system invalid!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="155"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="173"/>
         <source>Add custom shortcut</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/shortcut/Add custom shortcut</extra-contents_path>
@@ -4391,7 +4391,7 @@ in the file system invalid!</source>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/update/update.ui" line="155"/>
-        <source>CheckUpdate</source>
+        <source>Check for updates</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4456,7 +4456,7 @@ in the file system invalid!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="58"/>
-        <source>Userinfo</source>
+        <source>User Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

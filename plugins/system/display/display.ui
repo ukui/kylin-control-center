@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>945</width>
-    <height>919</height>
+    <height>925</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -131,7 +131,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>120</width>
+            <width>150</width>
             <height>30</height>
            </size>
           </property>
@@ -892,7 +892,7 @@ QSlider::handle:horizontal {
   <customwidget>
    <class>QQuickWidget</class>
    <extends>QWidget</extends>
-   <header>QtQuickWidgets/QQuickWidget</header>
+   <header location="global">QtQuickWidgets/QQuickWidget</header>
   </customwidget>
  </customwidgets>
  <resources/>

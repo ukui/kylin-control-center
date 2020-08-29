@@ -60,7 +60,7 @@ AutoBoot::AutoBoot(){
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
-    pluginName = tr("Autoboot");
+    pluginName = tr("Auto Boot");
     pluginType = SYSTEM;
 
 //    ui->addFrame->installEventFilter(this);

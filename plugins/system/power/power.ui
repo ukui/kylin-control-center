@@ -608,7 +608,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>Change pc sleep time:</string>
+                  <string>Change PC sleep time:</string>
                  </property>
                  <property name="scaledContents">
                   <bool>false</bool>
@@ -710,7 +710,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>Change dp close time:</string>
+                  <string>Change DP close time:</string>
                  </property>
                  <property name="scaledContents">
                   <bool>false</bool>
@@ -1150,7 +1150,7 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="powerModeBtnGroup"/>
   <buttongroup name="powerTypeBtnGroup"/>
+  <buttongroup name="powerModeBtnGroup"/>
  </buttongroups>
 </ui>

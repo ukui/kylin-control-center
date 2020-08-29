@@ -25,6 +25,7 @@
 #include <QProcess>
 #include <QThread>
 #include <QListWidget>
+#include <QDBusInterface>
 
 #include "shell/interface.h"
 
@@ -93,6 +94,7 @@ public:
 
     QString getBindingName(QList<int> keyCode);
     bool keyIsForbidden(QString key);
+    void connectToServer();
 
 public:
     QStringList showList;
@@ -118,6 +120,10 @@ private:
 
     addShortcutDialog * addDialog;
     ShowAllShortcut * showDialog;
+    QDBusInterface *cloudInterface;
+
+private slots:
+    void shortcutChangedSlot();
 
 Q_SIGNALS:
     void hideDelBtn();
