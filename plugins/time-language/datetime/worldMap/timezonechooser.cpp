@@ -26,9 +26,9 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
     setAttribute(Qt::WA_StyledBackground,true);
 
     this->setObjectName("MapFrame");
-//    this->setStyleSheet("QFrame#MapFrame{background-color: rgb(22, 24, 26);border-radius:4px}");
+    this->setStyleSheet("QFrame#MapFrame{background-color: rgb(22, 24, 26);border-radius:4px}");
 
-    closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+    closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
     closeBtn->setFlat(true);
     closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
@@ -167,20 +167,20 @@ bool TimeZoneChooser::eventFilter(QObject* obj, QEvent *event) {
     return false;
 }
 
-void TimeZoneChooser::paintEvent(QPaintEvent *e)
-{
-    QStyleOption opt;
-    opt.init(this);
-    QPainter p(this);
-    p.setBrush(QBrush(QColor(22, 24, 26)));
-    p.setPen(QColor(22, 24, 26));
-    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-    p.drawRoundedRect(opt.rect,6,6);
-    QPainterPath path;
-//    setProperty("blurRegion",QRegion(path.toFillPolygon().toPolygon()));
-    style()->drawPrimitive(QStyle::PE_Frame, &opt, &p, this);
+//void TimeZoneChooser::paintEvent(QPaintEvent *e)
+//{
+//    QStyleOption opt;
+//    opt.init(this);
+//    QPainter p(this);
+//    p.setBrush(QBrush(QColor(22, 24, 26)));
+//    p.setPen(QColor(22, 24, 26));
+//    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+//    p.drawRoundedRect(opt.rect,6,6);
+//    QPainterPath path;
+////    setProperty("blurRegion",QRegion(path.toFillPolygon().toPolygon()));
+//    style()->drawPrimitive(QStyle::PE_Frame, &opt, &p, this);
 
-}
+//}
 //获取适合屏幕的地图大小
 QSize TimeZoneChooser::getFitSize(){
     const QDesktopWidget *desktop = QApplication::desktop();
