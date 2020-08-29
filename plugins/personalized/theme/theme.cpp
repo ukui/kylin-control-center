@@ -112,6 +112,9 @@ Theme::Theme()
     pluginType = PERSONALIZED;
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->iconLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->cursorLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->effectLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
     settingsCreate = false;
 

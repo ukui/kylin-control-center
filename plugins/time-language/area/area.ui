@@ -55,6 +55,22 @@
     </widget>
    </item>
    <item>
+    <spacer name="verticalSpacer_4">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>12</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
     <widget class="QFrame" name="languageframe_2">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -162,7 +178,7 @@
       <number>32</number>
      </property>
      <property name="bottomMargin">
-      <number>16</number>
+      <number>12</number>
      </property>
      <item>
       <widget class="QLabel" name="title2Label">
@@ -429,7 +445,7 @@
       <number>9</number>
      </property>
      <property name="bottomMargin">
-      <number>6</number>
+      <number>12</number>
      </property>
      <item>
       <widget class="QLabel" name="title3Label">

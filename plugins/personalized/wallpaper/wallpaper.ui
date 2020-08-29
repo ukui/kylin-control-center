@@ -74,7 +74,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <property name="spacing">
-         <number>24</number>
+         <number>16</number>
         </property>
         <property name="bottomMargin">
          <number>10</number>
@@ -105,6 +105,9 @@
             <width>16777215</width>
             <height>180</height>
            </size>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
           </property>
           <widget class="QWidget" name="pPicturePage">
            <layout class="QHBoxLayout" name="horizontalLayout_8">

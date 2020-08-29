@@ -109,6 +109,7 @@ MouseControl::MouseControl()
     initSearchText();
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
     //初始化鼠标设置GSettings
     const QByteArray id(MOUSE_SCHEMA);
