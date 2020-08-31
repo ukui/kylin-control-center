@@ -592,15 +592,16 @@ QString MainDialog::replace_blank(QString &str) {
     QString ret = "";
     bool first = false;
     for(QChar c : str) {
-        if(c != " " && !first) {
+        if(c != ' ' && !first) {
             str.push_front(c);
             first = true;
         } else if(first) {
             str.push_front(c);
         }
     }
+    first = false;
     for(QChar c : filter) {
-        if(c != " " && !first) {
+        if(c != ' ' && !first) {
             ret.push_front(c);
             first = true;
         } else if(first) {
