@@ -65,7 +65,7 @@ void MainWidget::setname(QString n) {
     if(m_szCode != "" && m_szCode !="201" && m_szCode != "203" && m_szCode != "401" && !m_bTokenValid) {
         m_infoTab->setText(tr("Your account：%1").arg(m_szCode));
         m_mainWidget->setCurrentWidget(m_widgetContainer);
-        setshow(m_mainWidget);
+        //setshow(m_mainWidget);
         m_bTokenValid = true;              //开启登录状态
 
         m_autoSyn->set_change(0,"0");
