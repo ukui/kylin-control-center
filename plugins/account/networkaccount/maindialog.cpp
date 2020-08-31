@@ -587,6 +587,29 @@ void MainDialog::on_login_btn() {
     }
 }
 
+QString MainDialog::replace_blank(QString &str) {
+    QString filter = "";
+    QString ret = "";
+    bool first = false;
+    for(QChar c : str) {
+        if(c != " " && !first) {
+            str.push_front(c);
+            first = true;
+        } else if(first) {
+            str.push_front(c);
+        }
+    }
+    for(QChar c : filter) {
+        if(c != " " && !first) {
+            ret.push_front(c);
+            first = true;
+        } else if(first) {
+            ret.push_front(c);
+        }
+    }
+    return ret;
+}
+
 /* 2.注册逻辑处理槽函数 */
 void MainDialog::on_reg_btn() {
     m_baseWidget->setEnabled(false);
@@ -609,6 +632,18 @@ void MainDialog::on_reg_btn() {
         passwd = m_regDialog->get_user_passwd();
         mcode = m_regDialog->get_user_mcode();
         confirm = m_regDialog->get_reg_confirm()->text();
+        if(account.startsWith(" ") || account.endsWith(" ")) {
+            replace_blank(account);
+        }
+
+        if(passwd.startsWith(" ") || passwd.endsWith(" ")) {
+            replace_blank(passwd);
+        }
+
+        if(confirm.startsWith(" ") || confirm.endsWith(" ")) {
+            replace_blank(confirm);
+        }
+
         if(confirm != passwd) {
             m_baseWidget->setEnabled(true);
             m_passDialog->set_code(tr("Please check your password!"));
@@ -820,6 +855,8 @@ void MainDialog::on_send_code_reg() {
     QString phone;
     m_regDialog->get_send_code()->setEnabled(false);
     if( m_regDialog->get_user_account() == "" || m_regDialog->get_user_phone() == "") {
+        m_regTips->hide();
+        m_regDialog->get_user_tip()->hide();
         m_regDialog->get_valid_code()->setText("");
         m_regDialog->set_code(messagebox(-1));
         m_errorRegTips->show();
@@ -828,6 +865,8 @@ void MainDialog::on_send_code_reg() {
         return ;
     }
     if(m_regDialog->get_reg_pass()->check() == false) {
+        m_regTips->hide();
+        m_regDialog->get_user_tip()->hide();
         m_regDialog->get_send_code()->setEnabled(true);
         m_regDialog->get_valid_code()->setText("");
         m_regDialog->set_code(tr("At least 6 bit, include letters and digt"));
@@ -836,6 +875,8 @@ void MainDialog::on_send_code_reg() {
         return ;
     }
     if(m_regDialog->get_reg_confirm()->text() != m_regDialog->get_reg_pass()->text()) {
+        m_regTips->hide();
+        m_regDialog->get_user_tip()->hide();
         m_regDialog->get_send_code()->setEnabled(true);
         m_regDialog->get_valid_code()->setText("");
         m_regDialog->set_code(tr("Please confirm your password!"));
@@ -847,6 +888,8 @@ void MainDialog::on_send_code_reg() {
         phone = m_regDialog->get_user_phone();
         emit dogetmcode_phone_reg(phone,m_uuid);
     } else {
+        m_regTips->hide();
+        m_regDialog->get_user_tip()->hide();
         m_regDialog->get_send_code()->setEnabled(true);
         m_regDialog->get_valid_code()->setText("");
         m_regDialog->set_code(messagebox(-1));
@@ -1158,6 +1201,8 @@ void MainDialog::on_get_mcode_by_phone(int ret, QString uuid) {
             }
             setshow(m_stackedWidget);
         } else if(m_stackedWidget->currentWidget() == m_regDialog) {
+            m_regTips->hide();
+            m_regDialog->get_user_tip()->hide();
             m_regDialog->get_send_code()->setEnabled(true);
             m_regDialog->get_valid_code()->setText("");
             m_regDialog->set_code(messagebox(ret));
@@ -1220,6 +1265,8 @@ void MainDialog::on_get_mcode_by_name(int ret,QString uuid) {
             }
             setshow(m_stackedWidget);
         } else if(m_stackedWidget->currentWidget() == m_regDialog) {
+            m_regTips->hide();
+            m_regDialog->get_user_tip()->hide();
             m_regDialog->get_send_code()->setEnabled(true);
             m_regDialog->get_valid_code()->setText("");
             m_regDialog->set_code(messagebox(ret));

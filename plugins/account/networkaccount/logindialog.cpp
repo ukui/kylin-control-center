@@ -152,7 +152,7 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
  * Setting the page of login that use password way. */ 
 void LoginDialog::startaction_1() {
     if(m_stackedWidget->currentIndex() == 0) {
-        set_clear();
+        //set_clear();
         m_accountLineEdit->setFocus();
         m_accountLineEdit->setText("");
         m_accountLineEdit->setMaxLength(11);
@@ -198,7 +198,7 @@ QString LoginDialog::get_user_pass() const {
 
 void LoginDialog::startaction_2() {
     if(m_stackedWidget->currentIndex() == 1) {
-        set_clear();
+       // set_clear();
         m_accountLineEdit->setFocus();
         QRegExp regx("^[a-zA-Z0-9_@.-]+$");
         m_accountLineEdit->setMaxLength(30);
@@ -219,7 +219,7 @@ void LoginDialog::startaction_2() {
         m_accountLogin_btn->setFocusPolicy(Qt::NoFocus);
         m_phoneLogin_btn->setFocusPolicy(Qt::NoFocus);
         m_stackedWidget->setCurrentIndex(0);
-        m_accountLineEdit->setPlaceholderText(tr("Your account here"));
+        m_accountLineEdit->setPlaceholderText(tr("Your account/phone here"));
     }
 }
 

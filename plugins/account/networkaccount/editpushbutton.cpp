@@ -45,8 +45,8 @@ EditPushButton::EditPushButton(QWidget *parent) : QPushButton(parent)
 void EditPushButton::enterEvent(QEvent *e) {
 
     QPoint pos;
-    pos.setX(this->mapToGlobal(QPoint(0, 0)).x() + 26);
-    pos.setY(this->mapToGlobal(QPoint(0, 0)).y() + 26);
+    pos.setX(this->mapToGlobal(QPoint(0, 0)).x() + 34);
+    pos.setY(this->mapToGlobal(QPoint(0, 0)).y() + 34);
     m_toolTips->move(pos);
     m_toolTips->show();
     return QPushButton::enterEvent(e);

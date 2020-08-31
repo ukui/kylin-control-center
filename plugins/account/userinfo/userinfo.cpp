@@ -591,6 +591,7 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
 
     ui->verticalLayout->setContentsMargins(14,0,16,0);
     ui->currentUserFrame->setLayout(ui->verticalLayout);
+    ui->currentUserFrame->adjustSize();
 
     QHBoxLayout * baseVerLayout = new QHBoxLayout(baseWidget);
     baseVerLayout->setSpacing(0);

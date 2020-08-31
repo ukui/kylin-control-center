@@ -27,6 +27,7 @@
 #include <QHBoxLayout>
 #include <QRegExpValidator>
 #include "svghandler.h"
+#include "visblebutton.h"
 
 class PasswordLineEdit : public QLineEdit
 {
@@ -34,9 +35,9 @@ class PasswordLineEdit : public QLineEdit
 public:
     PasswordLineEdit(QWidget *parent = nullptr);
     bool check() const;
-    QPushButton* get_visble();
+    VisbleButton* get_visble();
 private:
-    QPushButton *m_changeStatusBtn;
+    VisbleButton *m_changeStatusBtn;
     SVGHandler *m_svgHandler;
     QHBoxLayout *m_workLayout;
 signals:

@@ -50,7 +50,8 @@ SOURCES += \
     svghandler.cpp \
     switchbutton.cpp \
     tips.cpp \
-    tooltips.cpp
+    tooltips.cpp \
+    visblebutton.cpp
 
 HEADERS += \
     areacodelineedit.h \
@@ -78,7 +79,8 @@ HEADERS += \
     svghandler.h \
     switchbutton.h \
     tips.h \
-    tooltips.h
+    tooltips.h \
+    visblebutton.h
 
 FORMS += \
 

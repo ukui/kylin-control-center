@@ -9,77 +9,77 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="137"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="140"/>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="286"/>
         <source>version</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/about/version</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="144"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="147"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="180"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="183"/>
         <source>Copyright 2009-2020 @ Kylinos All rights reserved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="268"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="271"/>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="288"/>
         <source>Kernel</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/about/Kernel</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="307"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="310"/>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="290"/>
         <source>CPU</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/about/CPU</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="355"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="358"/>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="292"/>
         <source>Memory</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/about/Memory</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="403"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="406"/>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="294"/>
         <source>Disk</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/about/Disk</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="457"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="460"/>
         <source>Desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="487"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="490"/>
         <source>User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="533"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="536"/>
         <source>Active Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="563"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="566"/>
         <source>Service serial number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="599"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="602"/>
         <source>Active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="629"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="632"/>
         <source>Trial version disclaimer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -224,69 +224,69 @@
         <extra-contents_path>/area/current area</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.ui" line="111"/>
+        <location filename="../../../plugins/time-language/area/area.ui" line="127"/>
         <source>Area showing time currency format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.ui" line="182"/>
+        <location filename="../../../plugins/time-language/area/area.ui" line="198"/>
         <source>Regional format data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.ui" line="254"/>
+        <location filename="../../../plugins/time-language/area/area.ui" line="270"/>
         <location filename="../../../plugins/time-language/area/area.cpp" line="134"/>
         <source>calendar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.ui" line="267"/>
+        <location filename="../../../plugins/time-language/area/area.ui" line="283"/>
         <location filename="../../../plugins/time-language/area/area.cpp" line="218"/>
         <source>lunar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.ui" line="296"/>
+        <location filename="../../../plugins/time-language/area/area.ui" line="312"/>
         <source>First day of the week</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.ui" line="303"/>
+        <location filename="../../../plugins/time-language/area/area.ui" line="319"/>
         <location filename="../../../plugins/time-language/area/area.cpp" line="225"/>
         <source>monday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.ui" line="332"/>
+        <location filename="../../../plugins/time-language/area/area.ui" line="348"/>
         <location filename="../../../plugins/time-language/area/area.cpp" line="136"/>
         <source>date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.ui" line="339"/>
+        <location filename="../../../plugins/time-language/area/area.ui" line="355"/>
         <source>2019/12/17</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.ui" line="368"/>
+        <location filename="../../../plugins/time-language/area/area.ui" line="384"/>
         <location filename="../../../plugins/time-language/area/area.cpp" line="137"/>
         <source>time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.ui" line="375"/>
+        <location filename="../../../plugins/time-language/area/area.ui" line="391"/>
         <source>9:52</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.ui" line="404"/>
+        <location filename="../../../plugins/time-language/area/area.ui" line="420"/>
         <location filename="../../../plugins/time-language/area/area.cpp" line="138"/>
         <source>change format of data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.ui" line="449"/>
-        <location filename="../../../plugins/time-language/area/area.ui" line="527"/>
+        <location filename="../../../plugins/time-language/area/area.ui" line="465"/>
+        <location filename="../../../plugins/time-language/area/area.ui" line="543"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1235,42 +1235,42 @@ folder will be deleted!</source>
         <extra-contents_path>/desktop/Icon Show On Desktop</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="144"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="128"/>
         <source>Computerdesktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="235"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="219"/>
         <source>Trashdesktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="326"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="310"/>
         <source>Homedesktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="417"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="401"/>
         <source>Volumedesktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="508"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="492"/>
         <source>Networkdesktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="543"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="527"/>
         <source>Set Start Menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="602"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="586"/>
         <source>Always use the start menu in full screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="633"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.ui" line="617"/>
         <source>Icon Lock on Menu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1732,13 +1732,13 @@ folder will be deleted!</source>
 <context>
     <name>Fonts</name>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="38"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="44"/>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="107"/>
         <source>Fonts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="123"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="129"/>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="172"/>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="176"/>
         <source>Font size</source>
@@ -1746,45 +1746,45 @@ folder will be deleted!</source>
         <extra-contents_path>/fonts/Font size</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="189"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="195"/>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="174"/>
         <source>Fonts select</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/fonts/Fonts select</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="258"/>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="695"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="264"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="701"/>
         <source>Monospace font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="306"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="312"/>
         <source>Reset to default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="361"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="367"/>
         <source>Advanced settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="459"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="465"/>
         <source>Gtk default font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="577"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="583"/>
         <source>Document font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="813"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="819"/>
         <source>titlebar font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="916"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="922"/>
         <source>Select text sample that looks clearest</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2272,12 +2272,8 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/logindialog.cpp" line="97"/>
-        <source>Your account/phone here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../plugins/account/networkaccount/logindialog.cpp" line="222"/>
-        <source>Your account here</source>
+        <source>Your account/phone here</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2309,23 +2305,23 @@ folder will be deleted!</source>
     <name>MainDialog</name>
     <message>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="30"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="765"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1017"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1043"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1078"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1117"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1547"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1558"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1592"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="800"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1060"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1086"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1121"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1160"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1594"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1605"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1639"/>
         <source>Sign in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="31"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="764"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1048"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1087"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1128"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="799"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1091"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1130"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1171"/>
         <source>Sign up</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2457,93 +2453,93 @@ folder will be deleted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="614"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="621"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="668"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="649"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="656"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="703"/>
         <source>Please check your password!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="661"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="833"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="903"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="696"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="872"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="946"/>
         <source>At least 6 bit, include letters and digt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="724"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="741"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1047"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1509"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="759"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="776"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1090"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1556"/>
         <location filename="../../../plugins/account/networkaccount/maindialog.h" line="56"/>
         <source>Sign in Cloud</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="780"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="815"/>
         <source>Forget</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="782"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="817"/>
         <source>Set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="783"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="804"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="998"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="818"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="839"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1041"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="802"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="837"/>
         <source>Create Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="805"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="840"/>
         <source>Sign up now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="841"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="911"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="882"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="954"/>
         <source>Please confirm your password!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="935"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="948"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="961"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="974"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="978"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="991"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1004"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1017"/>
         <source>Resend ( %1 )</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="940"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="953"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="983"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="996"/>
         <source>Get phone code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="966"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="979"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1045"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1077"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1116"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1574"/>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1587"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1009"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1022"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1088"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1120"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1159"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1621"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1634"/>
         <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="996"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1039"/>
         <source>Binding Phone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="999"/>
+        <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1042"/>
         <source>Bind now</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2629,23 +2625,23 @@ Please retry for login!</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../mainwindow.cpp" line="355"/>
+        <location filename="../../mainwindow.cpp" line="358"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../mainwindow.cpp" line="68"/>
-        <location filename="../../mainwindow.cpp" line="368"/>
+        <location filename="../../mainwindow.cpp" line="371"/>
         <source>UKCC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="481"/>
+        <location filename="../../mainwindow.cpp" line="484"/>
         <source>HOME</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="714"/>
+        <location filename="../../mainwindow.cpp" line="717"/>
         <source>ukcc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2659,7 +2655,7 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="132"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="164"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="165"/>
         <source>Hand habit</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/mouse/Hand habit</extra-contents_path>
@@ -2671,21 +2667,21 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="257"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="617"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1405"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="633"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1421"/>
         <source>Slow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="301"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="667"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1358"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="683"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1374"/>
         <source>Fast</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="375"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="166"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="167"/>
         <source>Doubleclick  delay</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/mouse/Doubleclick  delay</extra-contents_path>
@@ -2706,73 +2702,73 @@ Please retry for login!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="579"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="168"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="595"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="169"/>
         <source>Speed</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/mouse/Speed</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="738"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="170"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="754"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="171"/>
         <source>Sensitivity</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/mouse/Sensitivity</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="776"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="792"/>
         <source>Low</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="826"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="842"/>
         <source>High</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="894"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="172"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="910"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="173"/>
         <source>Visibility</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/mouse/Visibility</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="972"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="174"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="988"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="175"/>
         <source>Pointer size</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/mouse/Pointer size</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1022"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1038"/>
         <source>Cursor Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1089"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="176"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1105"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="177"/>
         <source>Enable flashing on text area</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/mouse/Enable flashing on text area</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1170"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1186"/>
         <source>Cursor weight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1195"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1211"/>
         <source>Thin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1230"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1246"/>
         <source>Coarse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1333"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="178"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1349"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="179"/>
         <source>Cursor speed</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/mouse/Cursor speed</extra-contents_path>
@@ -2783,27 +2779,27 @@ Please retry for login!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="188"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="189"/>
         <source>Lefthand</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="189"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="190"/>
         <source>Righthand</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="200"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="201"/>
         <source>Default(Recommended)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="201"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="202"/>
         <source>Medium</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="202"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="203"/>
         <source>Large</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2818,25 +2814,25 @@ Please retry for login!</source>
         <extra-contents_path>/netconnect/Netconnect Status</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="100"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="116"/>
         <source>Available Network</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="123"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="139"/>
         <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="307"/>
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="173"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="189"/>
         <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="119"/>
         <source>open wifi</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/netconnect/open wifi</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="221"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="237"/>
         <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="50"/>
         <source>Network settings</source>
         <translation type="unfinished"></translation>
@@ -2866,34 +2862,34 @@ Please retry for login!</source>
 <context>
     <name>Notice</name>
     <message>
-        <location filename="../../../plugins/messages-task/notice/notice.ui" line="59"/>
+        <location filename="../../../plugins/messages-task/notice/notice.ui" line="62"/>
         <source>Notice Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/notice.ui" line="72"/>
+        <location filename="../../../plugins/messages-task/notice/notice.ui" line="91"/>
         <location filename="../../../plugins/messages-task/notice/notice.cpp" line="101"/>
         <source>Set the type of notice in the operation center</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/notice/Set the type of notice in the operation center</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/notice.ui" line="134"/>
+        <location filename="../../../plugins/messages-task/notice/notice.ui" line="153"/>
         <source>Show new feature ater system upgrade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/notice.ui" line="209"/>
+        <location filename="../../../plugins/messages-task/notice/notice.ui" line="228"/>
         <source>Get notifications from the app</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/notice.ui" line="281"/>
+        <location filename="../../../plugins/messages-task/notice/notice.ui" line="300"/>
         <source>Show notifications on the lock screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/notice.ui" line="330"/>
+        <location filename="../../../plugins/messages-task/notice/notice.ui" line="349"/>
         <location filename="../../../plugins/messages-task/notice/notice.cpp" line="103"/>
         <source>Notice Origin</source>
         <translation type="unfinished"></translation>
@@ -3109,98 +3105,98 @@ Please retry for login!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="168"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="180"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="200"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="159"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="191"/>
         <source>never</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="168"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="180"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="200"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="159"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="191"/>
         <source>10 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="168"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="180"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="200"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="159"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="191"/>
         <source>20 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="168"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="180"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="159"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
         <source>30 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="168"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="180"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="159"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
         <source>60 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="168"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="180"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="159"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
         <source>120 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="168"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="159"/>
         <source>300 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="180"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="200"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="191"/>
         <source>1 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="180"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="200"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="191"/>
         <source>5 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="192"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="183"/>
         <source>nothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="192"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="183"/>
         <source>blank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="192"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="183"/>
         <source>suspend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="192"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="183"/>
         <source>hibernate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="192"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="183"/>
         <source>shutdown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="217"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="208"/>
         <source>always</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="217"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="208"/>
         <source>present</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="217"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="208"/>
         <source>charge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3314,22 +3310,22 @@ Please retry for login!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="594"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="596"/>
         <source>basic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="596"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="598"/>
         <source>classical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="598"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="600"/>
         <source>default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="600"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="602"/>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="173"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
@@ -3688,41 +3684,41 @@ in the file system invalid!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="148"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="151"/>
         <source>Screenlock Set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="202"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="205"/>
         <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="95"/>
         <source>Show picture of screenlock on screenlogin</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/screenlock/Show picture of screenlock on screenlogin</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="274"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="277"/>
         <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="97"/>
         <source>Lock screen when screensaver boot</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/screenlock/Lock screen when screensaver boot</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="346"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="349"/>
         <source>Lock screen delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="380"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="383"/>
         <source>Select screenlock background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="423"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="426"/>
         <source>Browser online wp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="442"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="445"/>
         <source>Browser local wp</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4013,51 +4009,51 @@ in the file system invalid!</source>
     <name>Theme</name>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="73"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="193"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="196"/>
         <source>Theme Mode</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/theme/Theme Mode</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="273"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="195"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="198"/>
         <source>Icon theme</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/theme/Icon theme</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.ui" line="330"/>
+        <location filename="../../../plugins/personalized/theme/theme.ui" line="346"/>
         <source>Control theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.ui" line="405"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="197"/>
+        <location filename="../../../plugins/personalized/theme/theme.ui" line="421"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="200"/>
         <source>Cursor theme</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/theme/Cursor theme</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.ui" line="462"/>
+        <location filename="../../../plugins/personalized/theme/theme.ui" line="494"/>
         <source>Effect setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.ui" line="525"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="199"/>
+        <location filename="../../../plugins/personalized/theme/theme.ui" line="573"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="202"/>
         <source>Performance mode</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/theme/Performance mode</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.ui" line="597"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="201"/>
+        <location filename="../../../plugins/personalized/theme/theme.ui" line="645"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="204"/>
         <source>Transparency</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/theme/Transparency</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.ui" line="705"/>
+        <location filename="../../../plugins/personalized/theme/theme.ui" line="753"/>
         <source>Reset to default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4067,17 +4063,17 @@ in the file system invalid!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="240"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="243"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="241"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="244"/>
         <source>Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="242"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="245"/>
         <source>Dark</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4398,59 +4394,59 @@ in the file system invalid!</source>
 <context>
     <name>UserInfo</name>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="41"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="47"/>
         <source>Current User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="214"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="220"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="123"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="648"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="649"/>
         <source>Change pwd</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Change pwd</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="279"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="285"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="125"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="635"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="636"/>
         <source>Change type</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Change type</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="344"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="350"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="127"/>
         <source>Change valid</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Change valid</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="409"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="415"/>
         <source>User group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="474"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="480"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="129"/>
         <source>Login no passwd</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Login no passwd</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="556"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="562"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="131"/>
         <source>enable autoLogin</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/enable autoLogin</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="634"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="640"/>
         <source>Currently in Live mode, please create a new user and log out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="671"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="677"/>
         <source>Other Users</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4480,7 +4476,7 @@ in the file system invalid!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="666"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="667"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4512,47 +4508,47 @@ in the file system invalid!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="277"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="280"/>
         <source>Select from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="358"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="361"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="105"/>
         <source>Picture options</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/wallpaper/Picture options</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="461"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="464"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="109"/>
         <source>Browser online wp</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/wallpaper/Browser online wp</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="480"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="483"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="107"/>
         <source>Browser local wp</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/wallpaper/Browser local wp</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="512"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="515"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="111"/>
         <source>Reset to default</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/wallpaper/Reset to default</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="639"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="642"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="509"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="548"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="658"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="661"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>

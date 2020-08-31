@@ -518,8 +518,8 @@ bool MainWidget::eventFilter(QObject *watched, QEvent *event) {
     if(watched == m_exitCloud_btn) {
         if(event->type() == QEvent::Enter && m_syncTooltips->isHidden() == true && m_exitCloud_btn->property("on") == true) {
             QPoint pos;
-            pos.setX(m_exitCloud_btn->mapToGlobal(QPoint(0, 0)).x() + 26);
-            pos.setY(m_exitCloud_btn->mapToGlobal(QPoint(0, 0)).y() + 26);
+            pos.setX(m_exitCloud_btn->mapToGlobal(QPoint(0, 0)).x() + 34);
+            pos.setY(m_exitCloud_btn->mapToGlobal(QPoint(0, 0)).y() + 34);
             m_syncTooltips->move(pos);
             m_syncTooltips->show();
         }

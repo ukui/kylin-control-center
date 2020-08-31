@@ -22,30 +22,27 @@
 PasswordLineEdit::PasswordLineEdit(QWidget *parent) : QLineEdit(parent)
 {
     setEchoMode(QLineEdit::Password);
-    m_changeStatusBtn = new QPushButton(this);
+    m_changeStatusBtn = new VisbleButton(this);
     m_workLayout = new QHBoxLayout;
     m_svgHandler = new SVGHandler(this);
 
     m_changeStatusBtn->setCursor(Qt::PointingHandCursor);
-    m_changeStatusBtn->setCheckable(true);
-    m_changeStatusBtn->setFlat(true);
     m_changeStatusBtn->setFixedSize(32,32);
     QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/invisible.svg");
-    m_changeStatusBtn->setIcon(pixmap);
-    connect(m_changeStatusBtn,&QPushButton::toggled,[this] (bool checked) {
+    m_changeStatusBtn->setPixmap(pixmap);
+    connect(m_changeStatusBtn,&VisbleButton::toggled,[this] (bool checked) {
         if(checked) {
             setEchoMode(QLineEdit::Normal);
             QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/visible.svg");
-            m_changeStatusBtn->setIcon(pixmap);
+            m_changeStatusBtn->setPixmap(pixmap);
         } else {
             setEchoMode(QLineEdit::Password);
             QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/invisible.svg");
-            m_changeStatusBtn->setIcon(pixmap);
+            m_changeStatusBtn->setPixmap(pixmap);
         }
     }); //点击后可见或者不可见
-    m_changeStatusBtn->setStyleSheet("QPushButton{width:  16px;height: 16px;qproperty-flat: true;"
-    "margin-right: 8px;border: none;border-width: 0;"
-    "background: transparent;}");
+    m_changeStatusBtn->setStyleSheet("QLabel{width:  16px;height: 16px;"
+    "margin-right: 8px;border: none;border-width: 0;}");
 
     m_workLayout->addStretch();
     m_workLayout->addWidget(m_changeStatusBtn);
@@ -85,7 +82,7 @@ PasswordLineEdit::PasswordLineEdit(QWidget *parent) : QLineEdit(parent)
 }
 
 /* 获取密码显示按钮 */
-QPushButton* PasswordLineEdit::get_visble() {
+VisbleButton* PasswordLineEdit::get_visble() {
     return m_changeStatusBtn;
 }
 

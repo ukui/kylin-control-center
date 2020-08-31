@@ -61,6 +61,7 @@ public:
     QString         messagebox(const int &code) const;
     void            set_client(DbusHandleClient *c,QThread *t);
     QPushButton    *get_login_submit();
+    QString replace_blank(QString &str);
     LoginDialog     *get_dialog();
     bool            retok = true;
     void            set_clear();
