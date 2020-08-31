@@ -449,7 +449,7 @@ void MainWindow::validBorder(){
         p.drawPixmap(this->rect(), pixmap, pixmap.rect());
         p.save();
         p.restore();
-
+//        setContentsMargins(4, 4, 4, 4);
         m_effect->setPadding(4);
 
         QPainterPath path;
