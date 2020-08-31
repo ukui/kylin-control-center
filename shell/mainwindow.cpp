@@ -441,7 +441,7 @@ void MainWindow::validBorder(){
     //    p.fillPath(rectPath,QColor(0,0,0));
         p.restore();
 
-        setContentsMargins(4, 4, 4, 4);
+//        setContentsMargins(4, 4, 4, 4);
         m_effect->setPadding(4);
 
         QPainterPath path;
