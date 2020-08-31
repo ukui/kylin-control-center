@@ -764,6 +764,10 @@ bool Shortcut::keyIsForbidden(QString key){
 
 void Shortcut::shortcutChangedSlot(){
     qDebug() << "receive cloud service signal";
+    for(int i = 0; i < ui->customListWidget->count(); i++){
+        QListWidgetItem * obItem =  ui->customListWidget->takeItem(i);
+        delete obItem;
+    }
     appendCustomItems();
     ui->customListWidget->setFixedHeight((ui->customListWidget->count() + 1) * ITEMHEIGH);
     initCustomItemsStyle();
