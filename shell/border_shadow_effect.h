@@ -39,8 +39,7 @@ public:
 
     void setTransParentPath(const QPainterPath &path);
     void setTransParentAreaBg(const QColor &transparentBg);
-
-    void drawWindowShadowManually(QPainter *painter, const QRect &windowRect, bool fakeShadow = false);
+    void drawWindowShadowManually(QPainter *painter, const QRect &windowRect, bool fakeShadow = false,bool isMax = false);
 public:
     QPainterPath m_transparent_path;
 protected:
@@ -56,7 +55,6 @@ private:
 
     QImage m_cache_shadow;
     bool m_force_update_cache = false;
-
 
     QColor m_transparent_bg = QColor(255, 255, 255, 127);
 };

@@ -373,22 +373,34 @@ void MainWindow::paintEvent(QPaintEvent *event) {
     sidebarPath.setFillRule(Qt::FillRule::WindingFill);
     QPainterPath deletePath;
     QPainterPath tmpPath;
-    tmpPath.addRoundedRect(rect().adjusted(4, 4, -4, -4),16,16);
-    deletePath.addRoundedRect(rect().adjusted(330, 4, 0, -4), 16, 16);
 
-    sidebarPath = tmpPath - deletePath;
-    m_effect->m_transparent_path.addRect(0,0,0,0);
-    m_effect->setTransParentPath(sidebarPath);
-    m_effect->setTransParentAreaBg(colorBase);
+
 
     //color.setAlphaF(0.5);
     m_effect->setWindowBackground(color);
     QPainter p(this);
+    if(!this->isMaximized()){
+        tmpPath.addRoundedRect(rect().adjusted(4, 4, -4, -4),16,16);
+        deletePath.addRoundedRect(rect().adjusted(330, 4, 0, -4), 16, 16);
 
-    m_effect->drawWindowShadowManually(&p, this->rect(),true);
+        sidebarPath = tmpPath - deletePath;
+        m_effect->m_transparent_path.addRect(0,0,0,0);
+        m_effect->setTransParentPath(sidebarPath);
+        m_effect->setTransParentAreaBg(colorBase);
+        m_effect->drawWindowShadowManually(&p, this->rect(),true,false);
+    }
+    else{
+        tmpPath.addRoundedRect(rect().adjusted( 0, 4, -10,0),0,0);
+        deletePath.addRoundedRect(rect().adjusted(330, 4, 0, -4), 16, 16);
+
+        sidebarPath = tmpPath - deletePath;
+        m_effect->m_transparent_path.addRect(0,0,0,0);
+        m_effect->setTransParentPath(sidebarPath);
+        m_effect->setTransParentAreaBg(colorBase);
+        m_effect->drawWindowShadowManually(&p, this->rect(),true,true);
+    }
     QMainWindow::paintEvent(event);
     p.save();
-//    p.fillPath(rectPath,QColor(0,0,0));
     p.restore();
 }
 void MainWindow::validBorder(){
@@ -398,11 +410,9 @@ void MainWindow::validBorder(){
         QPainterPath rectPath;
         rectPath.addRoundedRect(this->rect(), 0, 0);
             p.save();
-        //    p.fillPath(rectPath,QColor(0,0,0));
             p.restore();
         setContentsMargins(0, 0, 0, 0);
         m_effect->setPadding(0);
-//        setProperty("blurRegion", QVariant());
         KWindowEffects::enableBlurBehind(this->winId(), true);
 
     } else {
@@ -438,16 +448,14 @@ void MainWindow::validBorder(){
         // 绘制阴影
         p.drawPixmap(this->rect(), pixmap, pixmap.rect());
         p.save();
-    //    p.fillPath(rectPath,QColor(0,0,0));
         p.restore();
 
-        setContentsMargins(4, 4, 4, 4);
         m_effect->setPadding(4);
 
         QPainterPath path;
         auto rect = this->rect();
         rect.adjust(4, 4, -4, -4);
-        path.addRoundedRect(rect, 6, 6);
+        path.addRoundedRect(rect, 16, 16);
         setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
         //use KWindowEffects
         KWindowEffects::enableBlurBehind(this->winId(), true, QRegion(path.toFillPolygon().toPolygon()));
@@ -461,6 +469,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             if (this->windowState() == Qt::WindowMaximized) {
                 QFont font = this->font();
                 int width = font.pointSize();
+                maxBtn->setIcon(QIcon::fromTheme("window-restore-symbolic"));
 //                ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
 //                for (int i = 0; i <= 9; i++) {
 //                    QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
@@ -472,6 +481,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 //                    }
 //                }
             } else {
+                maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
 //                ui->leftsidebarWidget->setMaximumWidth(60);
 //                for (int i = 0; i <= 9; i++) {
 //                    QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());

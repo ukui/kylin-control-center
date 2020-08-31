@@ -108,10 +108,10 @@ void LeftWidgetItem::setLabelTextIsWhite(bool selected) {
 
 void LeftWidgetItem::setSelected(bool selected){
     if (selected) {
-        widget->setStyleSheet("QWidget{background: #3D6BE5; border-radius: 4px;}");
+        widget->setStyleSheet("QWidget{background: #2FB3E8; border-radius: 8px;}");
     } else {
 //        widget->setStyleSheet("QListWidget::Item:hover{background:#FF3D6BE5;border-radius: 4px;}");
-        widget->setStyleSheet("QWidget{background: transparent; border-radius: 4px;}");
+        widget->setStyleSheet("QWidget{background: transparent; border-radius: 8px;}");
     }
 }
 
