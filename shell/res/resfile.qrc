@@ -135,6 +135,7 @@
         <file>plugins/userinfo/notice.png</file>
         <file>secondaryleftmenu/Cloud Account.svg</file>
         <file>secondaryleftmenu/Cloud AccountWhite.svg</file>
+        <file>plugins/netconnect/wifi5.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>
