@@ -109,10 +109,6 @@
         <file>secondaryleftmenu/NetworkAccountWhite.svg</file>
         <file>plugins/netconnect/eth.svg</file>
         <file>plugins/netconnect/nonet.svg</file>
-        <file>plugins/netconnect/wifi1.svg</file>
-        <file>plugins/netconnect/wifi2.svg</file>
-        <file>plugins/netconnect/wifi3.svg</file>
-        <file>plugins/netconnect/wifi4.svg</file>
         <file>plugins/securitycenter/kysec.png</file>
         <file>plugins/securitycenter/kysecHover.png</file>
         <file>plugins/securitycenter/net.png</file>
@@ -142,6 +138,12 @@
         <file>plugins/userinfo/type.svg</file>
         <file>plugins/userinfo/password.svg</file>
         <file>plugins/userinfo/deluser.svg</file>
+        <file>plugins/netconnect/addnet.svg</file>
+        <file>plugins/netconnect/wifi1.svg</file>
+        <file>plugins/netconnect/wifi2.svg</file>
+        <file>plugins/netconnect/wifi3.svg</file>
+        <file>plugins/netconnect/wifi4.svg</file>
+        <file>plugins/netconnect/wifi5.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

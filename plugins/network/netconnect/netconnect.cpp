@@ -47,11 +47,12 @@ NetConnect::NetConnect():m_wifiList(new Wifi)
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-    ui->detailBtn->setText(tr("Network settings"));
+//    ui->detailBtn->setText(tr("Network settings"));
 
     wifiBtn = new SwitchButton(pluginWidget);
 
     ui->openWIifLayout->addWidget(wifiBtn);
+    ui->openWifiFrame->setAutoFillBackground(false);
 
     initSearchText();
     initComponent();
@@ -189,6 +190,27 @@ void NetConnect::initComponent(){
 
     emit ui->RefreshBtn->clicked(true);
     ui->verticalLayout_2->setContentsMargins(0,0,32,0);
+    QHBoxLayout * addLyt = new QHBoxLayout(ui->detailBtn);
+    nameLabel = new QLabel;
+    iconLabel = new QLabel;
+    iconLabel->setFixedSize(24,24);
+    iconLabel->setPixmap(QPixmap("://img/plugins/netconnect/addnet.svg"));
+    nameLabel->setText(tr("Network settings"));
+    addLyt->addWidget(nameLabel);
+    addLyt->addStretch();
+    addLyt->addWidget(iconLabel);
+    addLyt->setContentsMargins(48, 0, 16, 0);
+    ui->detailBtn->setLayout(addLyt);
+    ui->detailBtn->setStyleSheet("QPushButton{border: 0px;}");
+    ui->detailBtn->setAutoFillBackground(false);
+    connect(ui->detailBtn, &QPushButton::pressed, this, [=]{
+        ui->detailBtn->setAutoFillBackground(true);
+        ui->detailBtn->setStyleSheet("QPushButton{background: palette(button); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+    });
+    connect(ui->detailBtn, &QPushButton::released, this, [=]{
+        ui->detailBtn->setStyleSheet("QPushButton{border: 0px;}");
+        ui->detailBtn->setAutoFillBackground(false);
+    });
 }
 
 void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){
@@ -204,14 +226,14 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){
     devFrame->setFrameShape(QFrame::Shape::Box);
     devFrame->setMinimumWidth(550);
     devFrame->setMaximumWidth(960);
-    devFrame->setMinimumHeight(50);
-    devFrame->setMaximumHeight(50);
+    devFrame->setMinimumHeight(64);
+    devFrame->setMaximumHeight(64);
 
 //  devFrame->setFixedHeight(50);
 //  devFrame->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
     QHBoxLayout * devHorLayout = new QHBoxLayout(devFrame);
     devHorLayout->setSpacing(8);
-    devHorLayout->setContentsMargins(16, 0, 0, 0);
+    devHorLayout->setContentsMargins(16, 0, 16, 0);
 
     QLabel * iconLabel = new QLabel(devFrame);
     QSizePolicy iconSizePolicy = iconLabel->sizePolicy();
@@ -246,8 +268,9 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){
 
     devHorLayout->addWidget(iconLabel);
     devHorLayout->addWidget(nameLabel);
-    devHorLayout->addWidget(statusLabel);
+//    devHorLayout->addWidget(statusLabel);
     devHorLayout->addStretch();
+    devHorLayout->addWidget(statusLabel);
 
     devFrame->setLayout(devHorLayout);
 
@@ -320,20 +343,21 @@ void NetConnect::rebuildAvailComponent(QString iconPath, QString netName){
 
     QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);
     baseVerLayout->setSpacing(0);
-    baseVerLayout->setContentsMargins(0, 0, 0, 2);
+    baseVerLayout->setContentsMargins(0, 0, 0, 0);
 
     QFrame * devFrame = new QFrame(baseWidget);
-    devFrame->setFrameShape(QFrame::Shape::Box);
+//    devFrame->setFrameShape(QFrame::Shape::Box);
+    devFrame->setAutoFillBackground(false);
     devFrame->setMinimumWidth(550);
     devFrame->setMaximumWidth(960);
-    devFrame->setMinimumHeight(50);
-    devFrame->setMaximumHeight(50);
+    devFrame->setMinimumHeight(56);
+    devFrame->setMaximumHeight(56);
 
 //        devFrame->setFixedHeight(50);
 //    devFrame->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
     QHBoxLayout * devHorLayout = new QHBoxLayout(devFrame);
     devHorLayout->setSpacing(8);
-    devHorLayout->setContentsMargins(16, 0, 0, 0);
+    devHorLayout->setContentsMargins(48, 0, 16, 0);
 
     QLabel * iconLabel = new QLabel(devFrame);
     QSizePolicy iconSizePolicy = iconLabel->sizePolicy();
@@ -359,10 +383,12 @@ void NetConnect::rebuildAvailComponent(QString iconPath, QString netName){
 //    statusLabel->setScaledContents(true);
 //    statusLabel->setText(netName);
 
-    devHorLayout->addWidget(iconLabel);
+//    devHorLayout->addWidget(iconLabel);
     devHorLayout->addWidget(nameLabel);
-//    devHorLayout->addWidget(statusLabel);
     devHorLayout->addStretch();
+    devHorLayout->addWidget(iconLabel);
+//    devHorLayout->addWidget(statusLabel);
+//    devHorLayout->addStretch();
 
     devFrame->setLayout(devHorLayout);
 
@@ -532,6 +558,7 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
         QMap<QString, int>::iterator iter = this->connectedWifi.begin();
         QString iconamePah = ":/img/plugins/netconnect/wifi" + QString::number(iter.value())+".svg";
 //        qDebug()<<"name is=------------>"<<iter.key();
+//        qDebug()<<iter.key()<<": "<<iter.value();
         rebuildNetStatusComponent(iconamePah , iter.key());
     }
     if (!this->actLanName.isEmpty()){
@@ -646,5 +673,3 @@ void NetConnect::wifiSwitchSlot(bool signal){
 
     QTimer::singleShot(2*1000,this,SLOT(getNetList()));
 }
-
-

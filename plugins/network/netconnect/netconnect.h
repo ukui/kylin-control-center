@@ -37,6 +37,7 @@
 #include <QListWidgetItem>
 #include <HoverWidget/hoverwidget.h>
 #include <QMap>
+#include <QLabel>
 
 #include "wifi.h"
 #include "netconnectwork.h"
@@ -93,6 +94,9 @@ public:
     bool getwifiisEnable();
 
     bool is_refreshed;
+
+    QLabel * nameLabel;
+    QLabel * iconLabel;
 
 private:
     Ui::NetConnect *ui;
