@@ -55,7 +55,7 @@ private:
 
     QImage m_cache_shadow;
     bool m_force_update_cache = false;
-
+    bool is_tablet_mode;
     QColor m_transparent_bg = QColor(255, 255, 255, 127);
 };
 

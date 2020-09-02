@@ -3,7 +3,7 @@
 #include <QWidget>
 #include <QDebug>
 #include <QRect>
-
+#include <QGSettings>
 //qt's global function
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
@@ -70,17 +70,70 @@ void BorderShadowEffect::drawWindowShadowManually(QPainter *painter, const QRect
         auto bgPath = contentPath - m_transparent_path;
         painter->fillPath(bgPath, m_window_bg);
         painter->fillPath(m_transparent_path, m_transparent_bg);
-    }
-    else{
+    } else {
         contentPath.addRoundedRect(contentRect, 0, 0);
         auto targetPath = sourcePath - contentPath;
         auto bgPath = contentPath - m_transparent_path;
         painter->fillPath(bgPath, m_window_bg);
         painter->fillPath(m_transparent_path, m_transparent_bg);
+
     }
-    //qDebug()<<contentPath;
+    //毛玻璃效果监听平板模式切换
+    //    QGSettings * tablet_mode =  new QGSettings("org.ukui.SettingsDaemon.plugins.tablet-mode", QByteArray(),this);
+    //    is_tablet_mode = tablet_mode->get("tablet-mode").toBool();
+    //    if(is_tablet_mode){
+    //        if (fakeShadow) {
+    //            painter->save();
+    //            auto color = m_shadow_color;
+    //            color.setAlphaF(0.2);
+    //            painter->setPen(color);
+    //            painter->setBrush(Qt::white);
+    //            painter->drawPath(contentPath);
+    //            //        auto color_1 = m_shadow_color;
+    //            //        color_1.setAlphaF(0);
+    //            //        painter->setPen(color_1);
+    //            //        painter->setBrush(QColor("#F6F6F6"));
+    //            //        painter->drawPath(contentPath - m_transparent_path);
+    //            painter->restore();
+    //            return;
+    //        }
 
-
+    //        connect(tablet_mode, &QGSettings::changed, this, [=](){
+    //            is_tablet_mode = tablet_mode->get("tablet-mode").toBool();
+    //            if(is_tablet_mode){
+    //                if (fakeShadow) {
+    //                    painter->save();
+    //                    auto color = m_shadow_color;
+    //                    color.setAlphaF(0.2);
+    //                    painter->setPen(color);
+    //                    painter->setBrush(Qt::white);
+    //                    painter->drawPath(contentPath);
+    //                    //        auto color_1 = m_shadow_color;
+    //                    //        color_1.setAlphaF(0);
+    //                    //        painter->setPen(color_1);
+    //                    //        painter->setBrush(QColor("#F6F6F6"));
+    //                    //        painter->drawPath(contentPath - m_transparent_path);
+    //                    painter->restore();
+    //                    return;
+    //                }
+    //            } else {
+    //                if (fakeShadow) {
+    //                    painter->save();
+    //                    auto color = m_shadow_color;
+    //                    color.setAlphaF(0.2);
+    //                    painter->setPen(color);
+    //                    painter->setBrush(Qt::transparent);
+    //                    painter->drawPath(contentPath);
+    //                    //        auto color_1 = m_shadow_color;
+    //                    //        color_1.setAlphaF(0);
+    //                    //        painter->setPen(color_1);
+    //                    //        painter->setBrush(QColor("#F6F6F6"));
+    //                    //        painter->drawPath(contentPath - m_transparent_path);
+    //                    painter->restore();
+    //                    return;
+    //                }
+    //            }
+    //        });
     if (fakeShadow) {
         painter->save();
         auto color = m_shadow_color;
@@ -88,6 +141,12 @@ void BorderShadowEffect::drawWindowShadowManually(QPainter *painter, const QRect
         painter->setPen(color);
         painter->setBrush(Qt::transparent);
         painter->drawPath(contentPath);
+        //        右侧功能界面背景颜色
+        //        auto color_1 = m_shadow_color;
+        //        color_1.setAlphaF(0);
+        //        painter->setPen(color_1);
+        //        painter->setBrush(QColor("#F6F6F6"));
+        //        painter->drawPath(contentPath - m_transparent_path);
         painter->restore();
         return;
     }
@@ -119,7 +178,6 @@ void BorderShadowEffect::drawWindowShadowManually(QPainter *painter, const QRect
         }
     }
 }
-
 void BorderShadowEffect::draw(QPainter *painter)
 {
     //draw window bg;
