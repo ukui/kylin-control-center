@@ -48,7 +48,7 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     m_phoneLineEdit->setFocusPolicy(Qt::StrongFocus);
 
 
-    m_accountLineEdit->setMaxLength(16);
+    m_accountLineEdit->setMaxLength(30);
     m_phoneLineEdit->setMaxLength(11);
     m_passLineEdit->setPlaceholderText(tr("Your password here"));
     m_passLineEdit->setEchoMode(QLineEdit::Password);
@@ -209,10 +209,12 @@ void RegDialog::set_clear() {
         m_errorTips->hide();
     }
     m_passLineEdit->get_visble()->setChecked(false);
+    m_confirmLineEdit->get_visble()->setChecked(false);
     m_passLineEdit->setText("");
     m_accountLineEdit->setText("");
     m_phoneLineEdit->setText("");
     m_mcodeLineEdit->setText("");
+    m_confirmLineEdit->setText("");
 }
 
 Tips* RegDialog::get_tips() {

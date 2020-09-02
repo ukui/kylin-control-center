@@ -14,6 +14,9 @@ int DbusHandleClient::registered(QString username, QString pwd, QString phonenum
                                                           "/org/kylinssoclient/path",
                                                           "org.freedesktop.kylinssoclient.interface",
                                                           "registered");
+    username.trimmed();
+    pwd.trimmed();
+    phonenumb.trimmed();
     message<<username<<pwd<<phonenumb<<mcode<<uuid;
     //发送消息
     QDBusMessage response = QDBusConnection::sessionBus().call(message);
@@ -41,6 +44,8 @@ int DbusHandleClient::login(QString username, QString pwd,QString uuid) {
                                                           "/org/kylinssoclient/path",
                                                           "org.freedesktop.kylinssoclient.interface",
                                                           "login");
+    username.trimmed();
+    pwd.trimmed();
     message<<username<<pwd<<uuid;
     //发送消息
     QDBusMessage response = QDBusConnection::sessionBus().call(message);
@@ -50,6 +55,7 @@ int DbusHandleClient::login(QString username, QString pwd,QString uuid) {
         //从返回参数获取返回值
         QString value = response.arguments().takeFirst().toString();
         re = value.toInt();
+        qDebug()<<"logint ret" <<re;
     }
     else
     {
@@ -68,6 +74,7 @@ int DbusHandleClient::get_mcode_by_phone(QString phonenumb,QString uuid) {
                                                           "/org/kylinssoclient/path",
                                                           "org.freedesktop.kylinssoclient.interface",
                                                           "get_mcode_by_phone");
+    phonenumb.trimmed();
     message<<phonenumb<<uuid;
     //发送消息
     QDBusMessage response = QDBusConnection::sessionBus().call(message);
@@ -84,6 +91,7 @@ int DbusHandleClient::get_mcode_by_phone(QString phonenumb,QString uuid) {
     }
     emit finished_ret_code_log(re);
     emit finished_ret_code_reg(re);
+    emit finished_ret_code_bind(re);
     return re;
 }
 
@@ -96,6 +104,7 @@ int DbusHandleClient::get_mcode_by_username(QString username,QString uuid) {
                                                           "/org/kylinssoclient/path",
                                                           "org.freedesktop.kylinssoclient.interface",
                                                           "get_mcode_by_username");
+    username.trimmed();
     message<<username<<uuid;
     //发送消息
     QDBusMessage response = QDBusConnection::sessionBus().call(message);
@@ -111,7 +120,6 @@ int DbusHandleClient::get_mcode_by_username(QString username,QString uuid) {
         //qDebug() << "value method called failed!";
     }
     emit finished_ret_code_pass(re);
-    emit finished_ret_code_bind(re);
     return re;
 }
 
@@ -124,6 +132,8 @@ int DbusHandleClient::user_resetpwd(QString username, QString newpwd, QString mC
                                                           "/org/kylinssoclient/path",
                                                           "org.freedesktop.kylinssoclient.interface",
                                                           "user_resetpwd");
+    username.trimmed();
+    newpwd.trimmed();
     message<<username<<newpwd<<mCode<<uuid;
     //qDebug()<<message;
     //发送消息
@@ -152,6 +162,7 @@ int DbusHandleClient::user_phone_login(QString phone, QString mCode,QString uuid
                                                           "/org/kylinssoclient/path",
                                                           "org.freedesktop.kylinssoclient.interface",
                                                           "user_phone_login");
+    phone.trimmed();
     message<<phone<<mCode<<uuid;
     //发送消息
     QDBusMessage response = QDBusConnection::sessionBus().call(message);
@@ -255,6 +266,9 @@ int DbusHandleClient::bindPhone(QString username, QString pwd, QString phone, QS
                                                           "/org/kylinssoclient/path",
                                                           "org.freedesktop.kylinssoclient.interface",
                                                           "bindPhone");
+    username.trimmed();
+    pwd.trimmed();
+    phone.trimmed();
     message<<username<<pwd<<phone<<mCode<<uuid;
     //发送消息
     QDBusMessage response = QDBusConnection::sessionBus().call(message);

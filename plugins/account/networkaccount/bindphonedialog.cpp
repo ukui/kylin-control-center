@@ -38,7 +38,7 @@ BindPhoneDialog::BindPhoneDialog(QWidget *parent) : QWidget(parent)
     //valid_code->setStyleSheet(str);
     //phone->setStyleSheet(str);
     m_mCodeLineEdit->setPlaceholderText(tr("Your code here"));
-    m_sendCode_btn->setText(tr("Get phone code"));
+    m_sendCode_btn->setText(tr("Get"));
     //send_code->setStyleSheet("QPushButton{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(0,0,0,0.85);} "
     //                         "QPushButton:hover{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}"
     //                         "QPushButton:click{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}");

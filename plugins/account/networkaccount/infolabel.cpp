@@ -19,13 +19,12 @@ InfoLabel::InfoLabel(QWidget *parent) : QLabel(parent)
 
     m_toolTips->setLayout(layout);
 
-    worklayout->addWidget(m_toolTips,0,Qt::AlignHCenter);
+    worklayout->addWidget(m_toolTips,0,Qt::AlignCenter);
 
     setPixmap(m_svgHandler->loadSvgColor(":/new/image/_.svg","default",16));
     m_toolTips->adjustSize();
 
     setLayout(worklayout);
-    setAlignment(Qt::AlignCenter);
 }
 
 void InfoLabel::enterEvent(QEvent *e) {

@@ -22,4 +22,6 @@ void VisbleButton::mousePressEvent(QMouseEvent *event) {
 
 void VisbleButton::setChecked(bool checked) {
     status = checked;
+    emit clicked(status);
+    emit toggled(status);
 }

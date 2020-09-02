@@ -11,7 +11,7 @@ PreScene::PreScene(QLabel *label, QSize size, QWidget *parent) : titleLabel(labe
 {
     this->setFixedSize(m_size);
     this->setObjectName("prescene");
-    this->setStyleSheet("QWidget#prescene{background:  palette(base); border-radius: 6px;}");
+    this->setStyleSheet("PreScene#prescene{background:  palette(base); border-radius: 6px;}");
     m_vlayout = new QVBoxLayout;
     m_logoLayout = new QHBoxLayout;
 

@@ -152,9 +152,9 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
  * Setting the page of login that use password way. */ 
 void LoginDialog::startaction_1() {
     if(m_stackedWidget->currentIndex() == 0) {
-        //set_clear();
+        set_clear();
         m_accountLineEdit->setFocus();
-        m_accountLineEdit->setText("");
+        //m_accountLineEdit->setText("");
         m_accountLineEdit->setMaxLength(11);
         QRegExp regx("^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$");
         QValidator *validator = new QRegExpValidator(regx, m_accountLineEdit );
@@ -198,7 +198,7 @@ QString LoginDialog::get_user_pass() const {
 
 void LoginDialog::startaction_2() {
     if(m_stackedWidget->currentIndex() == 1) {
-       // set_clear();
+        set_clear();
         m_accountLineEdit->setFocus();
         QRegExp regx("^[a-zA-Z0-9_@.-]+$");
         m_accountLineEdit->setMaxLength(30);
@@ -418,7 +418,7 @@ void LoginDialog::set_clear() {
     }
     m_passwordLineEdit->get_visble()->setChecked(false);
     m_passwordLineEdit->setText("");
-    m_accountLineEdit->setText("");
     m_mcodePhoneLineEdit->setText("");
     m_mcodeNormalLineEdit->setText("");
 }
+

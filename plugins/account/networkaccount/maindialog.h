@@ -47,17 +47,15 @@
 #include "tips.h"
 #include "svghandler.h"
 #include "blueeffect.h"
+#include <QDialog>
 
-class MainDialog : public QWidget
+class MainDialog : public QDialog
 {
     Q_OBJECT
 public:
     explicit        MainDialog(QWidget *parent = nullptr);
     QString         status = tr("Sign in Cloud");
     int             timerout_num = 60;
-    int             timerout_num_reg = 60;
-    int             timerout_num_log = 60;
-    int             timerout_num_bind = 60;
     QString         messagebox(const int &code) const;
     void            set_client(DbusHandleClient *c,QThread *t);
     QPushButton    *get_login_submit();
@@ -90,9 +88,6 @@ public slots:
     void on_send_code_reg();
     void on_send_code_log();
     void on_send_code_bind();
-    void on_timer_reg_out();
-    void on_timer_log_out();
-    void on_timer_bind_out();
     void on_close();
     void on_bind_finished(int ret,QString m_uuid);
     void on_bind_btn();
@@ -152,10 +147,7 @@ private:
     QPushButton     *m_forgetpassBtn;
     QPushButton     *m_forgetpassSendBtn;
     QString         *m_szPassName;
-    QTimer          *m_cPassTimer;
-    QTimer          *m_cRegTimer;
-    QTimer          *m_cLogTimer;
-    QTimer          *m_cBindTimer;
+    QTimer          *m_timer;
     DbusHandleClient   *m_dbusClient;
     QWidget         *m_containerWidget;
     QStackedWidget  *m_baseWidget;
@@ -169,6 +161,9 @@ private:
     QString         m_uuid;
     SVGHandler *m_svgHandler;
     QHBoxLayout    *m_animateLayout;
+
+    QString        m_PhoneLogin;
+    QString        m_NameLogin;
 
 signals:
     void on_close_event();
