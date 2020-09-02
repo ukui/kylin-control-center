@@ -265,13 +265,17 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){
     } else {
         statusLabel->setText(tr("No network"));
     }
-
+    QLabel * circleLabel = new QLabel();
+    circleLabel->setFixedSize(8, 8);
+    circleLabel->setStyleSheet("QLabel{border-radius: 4px; background-color: #49E17B;}");
 
     devHorLayout->addWidget(iconLabel);
     devHorLayout->addWidget(nameLabel);
 //    devHorLayout->addWidget(statusLabel);
     devHorLayout->addStretch();
+    devHorLayout->addWidget(circleLabel);
     devHorLayout->addWidget(statusLabel);
+    devHorLayout->setSpacing(8);
 
     devFrame->setLayout(devHorLayout);
 
