@@ -544,7 +544,7 @@ void MainDialog::on_login_btn() {
         emit on_login_failed();
         return ;
     }
-    if(m_loginDialog->get_user_name().length() < 11) {
+    if(m_loginDialog->get_user_name().length() < 11 && m_loginDialog->get_stack_widget()->currentIndex() == 1) {
         m_baseWidget->setEnabled(true);
         m_loginDialog->set_code(tr("Please check your phone!"));
         m_loginTips->show();
