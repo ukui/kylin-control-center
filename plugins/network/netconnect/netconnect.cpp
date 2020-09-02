@@ -199,7 +199,7 @@ void NetConnect::initComponent(){
     addLyt->addWidget(nameLabel);
     addLyt->addStretch();
     addLyt->addWidget(iconLabel);
-    addLyt->setContentsMargins(48, 0, 16, 0);
+    addLyt->setContentsMargins(48, 0, 32, 0);
     ui->detailBtn->setLayout(addLyt);
     ui->detailBtn->setStyleSheet("QPushButton{border: 0px;}");
     ui->detailBtn->setAutoFillBackground(false);
@@ -225,7 +225,8 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){
     QFrame * devFrame = new QFrame(baseWidget);
     devFrame->setFrameShape(QFrame::Shape::Box);
     devFrame->setMinimumWidth(550);
-    devFrame->setMaximumWidth(960);
+//    devFrame->setMaximumWidth(960);
+    devFrame->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     devFrame->setMinimumHeight(64);
     devFrame->setMaximumHeight(64);
 
@@ -349,7 +350,8 @@ void NetConnect::rebuildAvailComponent(QString iconPath, QString netName){
 //    devFrame->setFrameShape(QFrame::Shape::Box);
     devFrame->setAutoFillBackground(false);
     devFrame->setMinimumWidth(550);
-    devFrame->setMaximumWidth(960);
+//    devFrame->setMaximumWidth(960);
+    devFrame->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     devFrame->setMinimumHeight(56);
     devFrame->setMaximumHeight(56);
 
@@ -357,7 +359,7 @@ void NetConnect::rebuildAvailComponent(QString iconPath, QString netName){
 //    devFrame->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
     QHBoxLayout * devHorLayout = new QHBoxLayout(devFrame);
     devHorLayout->setSpacing(8);
-    devHorLayout->setContentsMargins(48, 0, 16, 0);
+    devHorLayout->setContentsMargins(48, 0, 32, 0);
 
     QLabel * iconLabel = new QLabel(devFrame);
     QSizePolicy iconSizePolicy = iconLabel->sizePolicy();
