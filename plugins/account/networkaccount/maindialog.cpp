@@ -608,10 +608,10 @@ QString MainDialog::replace_blank(QString &str) {
     bool first = false;
     for(QChar c : str) {
         if(c != ' ' && !first) {
-            str.push_front(c);
+            filter.push_front(c);
             first = true;
         } else if(first) {
-            str.push_front(c);
+            filter.push_front(c);
         }
     }
     for(QChar c : filter) {
