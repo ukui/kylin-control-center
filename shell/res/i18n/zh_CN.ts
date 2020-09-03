@@ -2948,7 +2948,7 @@ folder will be deleted!</source>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="923"/>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1020"/>
         <source>Please confirm your password!</source>
-        <translation>请确认您的密码是有效的！</translation>
+        <translation>两次密码输入不一致！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1047"/>

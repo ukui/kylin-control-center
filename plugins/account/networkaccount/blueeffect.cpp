@@ -8,7 +8,7 @@ Blueeffect::Blueeffect(QWidget *parent) : QWidget(parent)
     m_svgHandler = new SVGHandler(this);
     m_workLayout = new QHBoxLayout;
 
-    this->setStyleSheet("ql_animation_label{background-color:#3D6BE5;border-radius:4px;}");
+    this->setStyleSheet("Blueeffect{background-color:#3D6BE5;border-radius:4px;}");
     m_textLabel->setStyleSheet("font-size:14px;color:#ffffff;background:transparent;");
     m_iconLabel->setStyleSheet("background:transparent;");
     m_iconLabel->setFixedSize(24,24);
