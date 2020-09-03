@@ -354,7 +354,6 @@ void MainDialog::setret_reg(int ret) {
 
 void MainDialog::setret_login(int ret) {
     if(ret != 0) {
-        qDebug() << "csacascaacsasca" << ret;
         m_loginDialog->get_mcode_lineedit()->setText("");
         if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
             m_loginDialog->set_code(messagebox(ret));
@@ -879,6 +878,8 @@ void MainDialog::on_send_code_reg() {
     m_regDialog->get_send_code()->setEnabled(false);
     if(m_regDialog->get_phone_user()->text().length() < 11) {
         m_baseWidget->setEnabled(true);
+        m_regTips->hide();
+        m_regDialog->get_user_tip()->hide();
         m_regDialog->set_code(tr("Please check your phone!"));
         m_errorRegTips->show();
         setshow(m_stackedWidget);
@@ -999,14 +1000,6 @@ void MainDialog::on_send_code_bind() {
 void MainDialog::on_send_code() {
     QString name;
     m_passDialog->get_send_msg_btn()->setEnabled(false);
-    if(m_passDialog->get_reg_phone()->text().length() < 11) {
-        m_baseWidget->setEnabled(true);
-        m_passDialog->get_send_msg_btn()->setEnabled(true);
-        m_passDialog->set_code(tr("Please check your phone!"));
-        m_errorPassTips->show();
-        setshow(m_stackedWidget);
-        return ;
-    }
     if(m_passDialog->get_reg_pass()->check() == false) {
         m_passDialog->get_valid_code()->setText("");
         m_passDialog->set_code(tr("Please make sure your password is safety!"));
@@ -1641,6 +1634,7 @@ void MainDialog::setnormal() {
         m_loginDialog->get_mcode_widget()->set_change(1);
         m_loginTips->show();
     } else {
+        m_loginDialog->set_code(messagebox(108));
         m_loginCodeStatusTips->show();
     }
     setshow(m_stackedWidget);

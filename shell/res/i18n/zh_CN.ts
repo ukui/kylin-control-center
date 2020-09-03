@@ -4343,7 +4343,7 @@ in the file system invalid!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="60"/>
         <source>This operation is permanent</source>
-        <translation>设置后不可更改，最高25位</translation>
+        <translation type="unfinished">设置后不可更改，最高30位</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="63"/>

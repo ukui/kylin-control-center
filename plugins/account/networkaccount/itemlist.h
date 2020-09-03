@@ -37,8 +37,8 @@ public:
     FrameItem*   get_item(const int &cur);
     FrameItem*   get_item_by_name(const QString &name);
 private:
-    QStringList     m_szItemNameList = {tr("Walpaper"),tr("ScreenSaver"),tr("Avatar"),tr("Menu"),tr("Quick Start"),
-                                        tr("Themes"),tr("Tab"),tr("Mouse"),tr("TouchPad"),tr("KeyBoard"),tr("ShortCut"),
+    QStringList     m_szItemNameList = {tr("Walpaper"),tr("ScreenSaver"),tr("Avatar"),tr("Menu"),tr("Tab"),tr("Quick Start"),
+                                        tr("Themes"),tr("Mouse"),tr("TouchPad"),tr("KeyBoard"),tr("ShortCut"),
                                         tr("Area"),tr("Date/Time"),tr("Default Open"),tr("Notice"),tr("Option"),tr("Peony"),
                                         tr("Boot"),tr("Power"),tr("Editor"),tr("Terminal"),tr("Weather"),tr("Media")};
     int             m_cItemCnt = 0;
