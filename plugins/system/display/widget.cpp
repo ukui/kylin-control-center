@@ -154,6 +154,7 @@ Widget::Widget(QWidget *parent)
     //主屏确认按钮
     connect(ui->mainScreenButton, SIGNAL(clicked()),
             this, SLOT(primaryButtonEnable()));
+    //ui->mainScreenButton->setFocusPolicy(Qt::NoFocus);
     mControlPanel = new ControlPanel(this);
     connect(mControlPanel, &ControlPanel::changed, this, &Widget::changed);
     connect(mControlPanel, &ControlPanel::scaleChanged, this, &Widget::scaleChangedSlot);
@@ -965,12 +966,13 @@ void Widget::primaryButtonEnable(){
         return;
     }
     int index  = ui->primaryCombo->currentIndex();    ;
-    ui->mainScreenButton->setEnabled(false);
+    ui->mainScreenButton->setEnabled(false);//连接外显后点击设置为主屏后会发生页面自动向下跳，注释掉没有这个问题
     const KScreen::OutputPtr newPrimary = mConfig->output(ui->primaryCombo->itemData(index).toInt());
    // qDebug()<<"按下主屏按钮---->"<<newPrimary<<"index ----"<<index<<endl;
     mConfig->setPrimaryOutput(newPrimary);
 
     Q_EMIT changed();
+   // return;
 }
 
 void Widget::checkOutputScreen(bool judge){

@@ -61,15 +61,11 @@ ChangeTypeDialog::~ChangeTypeDialog()
 
 void ChangeTypeDialog::setupComonpent(){
 
-//    ElipseMaskWidget * ctMaskWidget = new ElipseMaskWidget(ui->faceLabel);
-//    ctMaskWidget->setGeometry(0, 0, ui->faceLabel->width(), ui->faceLabel->height());
+    ElipseMaskWidget * ctMaskWidget = new ElipseMaskWidget(ui->faceLabel);
+    ctMaskWidget->setGeometry(0, 0, ui->faceLabel->width(), ui->faceLabel->height());
 
     ui->buttonGroup->setId(ui->standardRadioButton, 0);
     ui->buttonGroup->setId(ui->adminRadioButton, 1);
-
-    //给选项卡加背景色，此部分样式应由主题控制，此处只为预览样式改进效果
-    ui->widget->setStyleSheet(".QWidget{background: rgba(245,245,245,1); border-radius: 8px;}");
-    ui->widget_2->setStyleSheet(".QWidget{background: rgba(245,245,245,1); border-radius: 8px;}");
 
     ui->confirmPushBtn->setEnabled(false);
 

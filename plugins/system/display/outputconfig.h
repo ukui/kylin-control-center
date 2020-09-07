@@ -38,12 +38,15 @@ class OutputConfig : public QWidget
     //拿取配置
     void initConfig(const KScreen::ConfigPtr &config);
     QStringList readFile(const QString& filepath);
-
+ public Q_SLOTS:
+    //unidiedoutputconfig使用
+    void slotRotationChanged(int index);
+    void slotScaleChanged(int index);
   protected Q_SLOTS:
     void slotResolutionChanged(const QSize &size);
-    void slotRotationChanged(int index);
+   // void slotRotationChanged(int index);
     void slotRefreshRateChanged(int index);
-    void slotScaleChanged(int index);
+   // void slotScaleChanged(int index);
 
   Q_SIGNALS:
     void changed();

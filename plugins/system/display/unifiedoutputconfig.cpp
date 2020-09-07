@@ -69,8 +69,8 @@ void UnifiedOutputConfig::initUi()
 //    vbox->addWidget(mTitle);
 
  //   setTitle(i18n("统一输出"));
-    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-
+    //setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+     vbox->setSpacing(2);//间距问题与outputconfig相同
 
     //vbox->addStretch(0);
 
@@ -193,6 +193,74 @@ void UnifiedOutputConfig::initUi()
     freshFrame->setMaximumSize(960,50);
 
     mRefreshRate->setEnabled(false);
+
+
+    //缩放
+       //================================================
+       scaleCombox = new QComboBox();
+   //    mRefreshRate->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
+       scaleCombox->setMinimumSize(402,30);
+       scaleCombox->setMaximumSize(16777215,30);
+
+
+
+       int maxReslu = mResolution->getMaxResolution().width();
+
+   #if QT_VERSION < QT_VERSION_CHECK(5,7,0)
+       if (maxReslu >= 2000) {
+           scaleCombox->addItem(tr("200%"));
+       } else {
+           scaleCombox->addItem(tr("100%"));
+       }
+   #else
+       scaleCombox->addItem(tr("100%"));
+       if (maxReslu >= 2000 && maxReslu <= 3800) {
+           scaleCombox->addItem(tr("200%"));
+       } else if (maxReslu >= 3800 || maxReslu >= 4000) {
+           scaleCombox->addItem(tr("200%"));
+           scaleCombox->addItem(tr("300%"));
+       }
+   #endif
+
+       QLabel *scaleLabel = new QLabel();
+
+       //~ contents_path /display/screen zoom
+       scaleLabel->setText(tr("screen zoom"));
+       scaleLabel->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
+       scaleLabel->setMinimumSize(118,30);
+       scaleLabel->setMaximumSize(118,30);
+
+       QHBoxLayout *scaleLayout = new QHBoxLayout();
+       scaleLayout->addWidget(scaleLabel);
+       scaleLayout->addWidget(scaleCombox);
+   //    freshLayout->addStretch();
+
+       QFrame *scaleFrame = new QFrame(this);
+       scaleFrame->setFrameShape(QFrame::Shape::Box);
+       scaleFrame->setLayout(scaleLayout);
+   //    scaleWidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
+
+       scaleFrame->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
+       scaleFrame->setMinimumSize(550,50);
+       scaleFrame->setMaximumSize(960,50);
+       vbox->addWidget(scaleFrame);
+
+       int scale = getScreenScale();
+   #if QT_VERSION < QT_VERSION_CHECK(5,7,0)
+
+   #else
+       scaleCombox->setCurrentIndex(0);
+       if (scale <= scaleCombox->count() && scale > 0) {
+   //        qDebug()<<"scale is----->"<<scale<<endl;
+           scaleCombox->setCurrentIndex(scale - 1);
+       }
+       slotScaleChanged(scale - 1);
+   #endif
+
+       connect(scaleCombox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated),
+               this, &OutputConfig::slotScaleChanged);
+
+       //========================================
 }
 
 KScreen::OutputPtr UnifiedOutputConfig::createFakeOutput()

@@ -25,7 +25,6 @@
 
 #include <QDebug>
 #include <QMessageBox>
-#include <QFile>
 
 #define FACEPATH "/usr/share/ukui/faces/"
 
@@ -48,36 +47,25 @@ ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
-//    //分割线，其颜色应由主题控制，此处设置样式仅为预览布局效果
-//    ui->line_1->setStyleSheet(".QWidget{background: rgba(66,77,89,1); ipacity: 0.1;}");
-//    ui->line_2->setStyleSheet(".QWidget{background: rgba(66,77,89,1); ipacity: 0.1;}");
-
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
 //    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
 
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
-    ui->historyFacesWidget->setContentsMargins(4,0,0,0);
-
-    historyFacesFlowLayout = new FlowLayout(ui->historyFacesWidget);
-    ui->historyFacesWidget->setLayout(historyFacesFlowLayout);
-
-//    ElipseMaskWidget * cfMaskWidget = new ElipseMaskWidget(ui->faceLabel);
-////    cfMaskWidget->setBgColor("#F4F4F4");
-//    cfMaskWidget->setGeometry(0, 0, ui->faceLabel->width(), ui->faceLabel->height());
+    ElipseMaskWidget * cfMaskWidget = new ElipseMaskWidget(ui->faceLabel);
+//    cfMaskWidget->setBgColor("#F4F4F4");
+    cfMaskWidget->setGeometry(0, 0, ui->faceLabel->width(), ui->faceLabel->height());
 
     loadSystemFaces();
+
 
     connect(ui->closeBtn, &QPushButton::clicked, [=]{
         close();
     });
-    connect(ui->cancelBtn, &QPushButton::clicked, [=]{
-        close();
+    connect(ui->customfaceBtn, &QPushButton::clicked, [=]{
+        showLocalFaceDialog();
     });
-//    connect(ui->customfaceBtn, &QPushButton::clicked, [=]{
-//        showLocalFaceDialog();
-//    });
 }
 
 ChangeFaceDialog::~ChangeFaceDialog()
@@ -86,8 +74,6 @@ ChangeFaceDialog::~ChangeFaceDialog()
 }
 
 void ChangeFaceDialog::loadSystemFaces(){
-
-    ui->facesWidget->setContentsMargins(4,0,0,0);
 
     FlowLayout * facesFlowLayout = new FlowLayout(ui->facesWidget);
     ui->facesWidget->setLayout(facesFlowLayout);
@@ -105,7 +91,7 @@ void ChangeFaceDialog::loadSystemFaces(){
 
         QPushButton * button = new QPushButton;
         button->setAttribute(Qt::WA_DeleteOnClose);
-        button->setFixedSize(QSize(56, 56));
+        button->setFixedSize(QSize(48, 48));
 //        button->setStyleSheet("QPushButton{border: none;}");
 
         QHBoxLayout * mainHorLayout = new QHBoxLayout(button);
@@ -122,103 +108,12 @@ void ChangeFaceDialog::loadSystemFaces(){
         connect(button, &QPushButton::clicked, [=]{
             //show dialog更新头像
             setFace(fullface);
-            confirmFile = fullface;
-//            emit face_file_send(fullface, ui->usernameLabel->text());
-        });
-        connect(ui->confirmBtn, &QPushButton::clicked, [=]{
-//            qDebug()<<confirmFile;
-            if(confirmFile != "")emit face_file_send(confirmFile, ui->usernameLabel->text());
+
+            emit face_file_send(fullface, ui->usernameLabel->text());
         });
 
         facesFlowLayout->addWidget(button);
     }
-}
-
-void ChangeFaceDialog::loadHistoryFaces(){
-    if (historyFacesFlowLayout->layout() != NULL) {
-        QLayoutItem* item;
-        while ((item = historyFacesFlowLayout->layout()->takeAt( 0 )) != NULL )
-        {
-            delete item->widget();
-            delete item;
-        }
-//        delete ui->availableLayout->layout();
-    }
-    //给每个历史头像创建组件
-    for(int i = historyCount; i > 0; i--){
-        QString historyface = QString("%1/%2.face").arg(historyFacesPath).arg(i);
-//        qDebug()<<"load:"<<historyface;
-        QPushButton * button = new QPushButton;
-        button->setAttribute(Qt::WA_DeleteOnClose);
-        button->setFixedSize(QSize(56, 56));
-//        button->setStyleSheet("QPushButton{border: none;}");
-
-        QHBoxLayout * mainHorLayout = new QHBoxLayout(button);
-        mainHorLayout->setSpacing(0);
-        mainHorLayout->setMargin(0);
-        QLabel * iconLabel = new QLabel(button);
-        iconLabel->setScaledContents(true);
-        iconLabel->setPixmap(QPixmap(historyface));
-//        ElipseMaskWidget * cpMaskWidget = new ElipseMaskWidget(button);
-//        cpMaskWidget->setGeometry(0, 0, 56, 56);
-        QPushButton * delBtn = new QPushButton;
-        delBtn->setFixedSize(16,16);
-//        delBtn->setIcon(QIcon(":/img/plugins/userinfo/delete.png"));
-        QHBoxLayout * delBtnLayout = new QHBoxLayout(iconLabel);
-        delBtnLayout->setSpacing(0);
-
-        QHBoxLayout * delBtnHorLayout = new QHBoxLayout(button);
-        delBtnHorLayout->setSpacing(0);
-        delBtnHorLayout->setMargin(0);
-        QLabel * delBtnLabel = new QLabel(delBtn);
-        delBtnLabel->setScaledContents(true);
-        delBtnLabel->setPixmap(QPixmap(":/img/plugins/userinfo/delete.png"));
-
-        connect(delBtn, &QPushButton::clicked, this, [=]{
-            sysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
-                                             "/",
-                                             "com.control.center.interface",
-                                             QDBusConnection::systemBus());
-
-            if (!sysinterface->isValid()){
-                qCritical() << "Create Client Interface Failed When Copy Face File: " << QDBusConnection::systemBus().lastError();
-                return;
-            }
-            QString cmd = QString("rm %1/%2.face").arg(historyFacesPath).arg(i);
-            historyCount--;
-            sysinterface->call("systemRun", QVariant(cmd));
-            for(int j = i + 1; j <= 4; j++){
-                qDebug()<<j<<" to "<<j-1;
-                cmd = QString("mv %1/%2.face %1/%3.face").arg(historyFacesPath).arg(j).arg(j-1);
-                sysinterface->call("systemRun", QVariant(cmd));
-            }
-            loadHistoryFaces();
-        });
-
-        delBtnLayout->addStretch();
-        delBtnLayout->addWidget(delBtn);
-        delBtnLayout->setContentsMargins(0,0,0,50);
-
-        mainHorLayout->addWidget(iconLabel);
-        iconLabel->setLayout(delBtnLayout);
-
-        button->setLayout(mainHorLayout);
-        historyFacesFlowLayout->addWidget(button);
-        connect(button, &QPushButton::clicked, this, [=]{
-            setFace(historyface);
-            confirmFile = historyface;
-        });
-    }
-
-    //添加本地头像按钮
-    QPushButton * addBtn = new QPushButton;
-    addBtn->setAttribute(Qt::WA_DeleteOnClose);
-    addBtn->setFixedSize(QSize(56, 56));
-    addBtn->setIcon(QIcon("://img/titlebar/add.svg"));
-    historyFacesFlowLayout->addWidget(addBtn);
-    connect(addBtn, &QPushButton::clicked, this, [=]{
-        showLocalFaceDialog();
-    });
 }
 
 void ChangeFaceDialog::setFace(QString iconfile){
@@ -231,29 +126,6 @@ void ChangeFaceDialog::setUsername(QString username){
 
 void ChangeFaceDialog::setAccountType(QString atype){
     ui->typeLabel->setText(atype);
-}
-
-void ChangeFaceDialog::setHistoryFacesPath(QString path){
-    historyFacesPath = path;
-    QDir historyFacesDir;
-    historyFacesDir.setPath(historyFacesPath);
-    if (historyFacesDir.exists("4.face")){
-        qDebug()<<"4 hisotry faces";
-        historyCount = 4;
-    } else if(historyFacesDir.exists("3.face")) {
-        qDebug()<<"3 hisotry faces";
-        historyCount = 3;
-    } else if(historyFacesDir.exists("2.face")) {
-        qDebug()<<"2 hisotry faces";
-        historyCount = 2;
-    } else if(historyFacesDir.exists("1.face")) {
-        qDebug()<<"1 hisotry faces";
-        historyCount = 1;
-    } else {
-        qDebug()<<"0 hisotry faces";
-        historyCount = 0;
-    }
-    loadHistoryFaces();
 }
 
 void ChangeFaceDialog::showLocalFaceDialog(){
@@ -275,9 +147,7 @@ void ChangeFaceDialog::showLocalFaceDialog(){
         return;
 
     QString selectedfile;
-    selectedfile = fd.selectedFiles().first();;
-//    QString fileurl = fd.selectedUrls().first().toEncoded();
-//    QString filepath = fileurl.right(fileurl.length() - 7);
+    selectedfile = fd.selectedFiles().first();
 
     QFile pic(selectedfile);
     int size = pic.size();
@@ -288,41 +158,7 @@ void ChangeFaceDialog::showLocalFaceDialog(){
     }
 
     setFace(selectedfile);
-    confirmFile = selectedfile;
     emit face_file_send(selectedfile, ui->usernameLabel->text());
-
-    //添加本地头像后，将此头像copy到历史头像文件夹，再自动刷新历史头像列表
-    sysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
-                                     "/",
-                                     "com.control.center.interface",
-                                     QDBusConnection::systemBus());
-
-    if (!sysinterface->isValid()){
-        qCritical() << "Create Client Interface Failed When Copy Face File: " << QDBusConnection::systemBus().lastError();
-        return;
-    }
-
-    if(historyCount < 4){
-        historyCount ++;
-    } else {
-        //删除最早添加的1.face文件，把2、3、4重命名为1、2、3，
-        QString cmd = QString("rm %1/1.face").arg(historyFacesPath);
-        sysinterface->call("systemRun", QVariant(cmd));
-        cmd = QString("mv %1/2.face %1/1.face").arg(historyFacesPath);
-        sysinterface->call("systemRun", QVariant(cmd));
-        cmd = QString("mv %1/3.face %1/2.face").arg(historyFacesPath);
-        sysinterface->call("systemRun", QVariant(cmd));
-        cmd = QString("mv %1/4.face %1/3.face").arg(historyFacesPath);
-        sysinterface->call("systemRun", QVariant(cmd));
-    }
-//    QString cp_cmd = QString("cp %1 %2/%3.face").arg(selectedfile).arg(historyFacesPath).arg(historyCount);
-//    qDebug()<<cp_cmd;
-//    qDebug()<<QVariant(cp_cmd);
-//    sysinterface->call("systemRun", QVariant(cp_cmd));
-    //由于systemRun方法传输的指令不支持中文路径，换用QFile的copy方法执行文件拷贝
-    QFile *cp_file = new QFile();
-    cp_file->copy(selectedfile, QString("%2/%3.face").arg(historyFacesPath).arg(historyCount));
-    loadHistoryFaces();
 }
 
 void ChangeFaceDialog::paintEvent(QPaintEvent *event) {

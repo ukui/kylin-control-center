@@ -214,13 +214,44 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     connect(m_pSoundWidget->m_pVolumeChangeCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(volumeChangedComboboxChangeSlot(int)));
     connect(m_pSoundWidget->m_pSettingSoundCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(settingMenuComboboxChangedSlot(int)));
 //    connect(m_pOutputWidget->m_pProfileCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(profileComboboxChangedSlot(int)));
-
 //    connect(m_pOutputWidget->m_pSelectCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(selectComboboxChangedSlot(int)));
+    connect(m_pOutputWidget->m_pOutputIconBtn,&UkuiButtonDrawSvg::clicked,this,&UkmediaMainWidget::outputbuttonclicked);
 
     //输入等级
     ukuiInputLevelSetProperty(this);
 }
+/*
+    输出主音量图标按钮点击
+*/
+void UkmediaMainWidget::outputbuttonclicked()
+{
+     int slidervalue=getOutputVolume();//获取滑块的值
+      //获取当前静音的状态(this);
+      MateMixerStream *m_Stream;
+      MateMixerStreamControl *m_pControl = nullptr;
+      m_Stream = mate_mixer_context_get_default_output_stream (this->m_pContext);
+      if (m_Stream != nullptr)
+       {
+          m_pControl = mate_mixer_stream_get_default_control (m_Stream);
+       }
+      bool status = mate_mixer_stream_control_get_mute(m_pControl);
 
+      //判断音量
+         if(status)
+         {  if(slidervalue!=0)
+             {
+                 outputWidgetSliderChangedSlot(slidervalue);
+             }
+         }
+         else
+         {
+             //调成静音
+             status = true;
+             mate_mixer_stream_control_set_mute(m_pControl,status);
+            // mate_mixer_stream_control_set_volume(m_pControl,0);
+             outputVolumeDarkThemeImage(slidervalue,status);
+         }
+}
 /*
     初始化combobox的值
 */

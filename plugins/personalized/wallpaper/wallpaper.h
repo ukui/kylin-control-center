@@ -144,6 +144,9 @@ public slots:
 public slots:
     void add_custom_wallpaper();
     void del_wallpaper();
+private slots:
+    void on_formComBox_activated(const QString &arg1);
+    void on_formComBox_currentTextChanged(const QString &arg1);
 };
 
 #endif // WALLPAPER_H

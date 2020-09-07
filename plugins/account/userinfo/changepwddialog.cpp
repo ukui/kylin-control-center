@@ -49,10 +49,7 @@ ChangePwdDialog::ChangePwdDialog(QWidget *parent) :
 //    frame_shadow->setColor("rgba(47,56,64,0.15)");
 //    frame_shadow->setBlurRadius(16);
 //    ui->frame->setGraphicsEffect(frame_shadow);
-
-//    顶边栏样式，此控件样式应由主题控制
-//    ui->topWidget->setStyleSheet(".QWidget{background:rgba(246,246,246,1);}");
-
+    ui->widget_2->setStyleSheet(".QWidget{background:rgba(246,246,246,1);}");
 //    ui->titleLabel->setStyleSheet("QLabel{font-size: 14px; color: palette(windowText);}");
 //    ui->label_5->setStyleSheet("QLabel{font-size: 16px; color: palette(windowText);}");
 //    ui->pwdLabel->setStyleSheet("QLabel{font-size: 16px; color: palette(windowText);}");
@@ -63,15 +60,15 @@ ChangePwdDialog::ChangePwdDialog(QWidget *parent) :
 //    ui->cancelPushBtn->setStyleSheet(ui->cancelPushBtn->styleSheet().append(QString("border-radius:12px;")));
 //    ui->confirmPushBtn->setStyleSheet("QPushButton{border-radius:12px;}");
 
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+//    ui->closeBtn->setFlat(true);
+//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
     ui->pwdFrame->setFrameShape(QFrame::Shape::Box);
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+//    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
     initPwdChecked();
     setupComponent();
@@ -128,56 +125,13 @@ void ChangePwdDialog::setupComponent(){
     ui->pwdLineEdit->setPlaceholderText(tr("New Password"));
     ui->pwdsureLineEdit->setPlaceholderText(tr("New Password Identify"));
 
-    ui->pwdLineEdit->setTextMargins(16,0,32,0);
-    ui->pwdsureLineEdit->setTextMargins(16,0,32,0);
-    pwdLineEditHLayout = new QHBoxLayout();
-    pwdsureLineEditHLayout = new QHBoxLayout();
-
-    showPwdBtn = new QPushButton();
-    showPwdBtn->setFixedSize(QSize(16, 16));
-
-    pwdLineEditHLayout->addStretch();
-    pwdLineEditHLayout->addWidget(showPwdBtn);
-    pwdLineEditHLayout->setContentsMargins(0,0,16,0);
-    ui->pwdLineEdit->setLayout(pwdLineEditHLayout);
-
-    showSurePwdBtn = new QPushButton();
-    showSurePwdBtn->setFixedSize(QSize(16, 16));
-
-    pwdsureLineEditHLayout->addStretch();
-    pwdsureLineEditHLayout->addWidget(showSurePwdBtn);
-    pwdsureLineEditHLayout->setContentsMargins(0,0,16,0);
-    ui->pwdsureLineEdit->setLayout(pwdsureLineEditHLayout);
-
-    showPwdBtn->setCursor(QCursor(Qt::ArrowCursor));
-    showSurePwdBtn->setCursor(QCursor(Qt::ArrowCursor));
-
-    showPwdBtn->setStyleSheet("QPushButton{border-image: url(:/img/plugins/userinfo/pwdEncrypted.png);}"
-                              "QPushButton:pressed{border-image: url(:/img/plugins/userinfo/pwdUnscramble.png);}");
-    showSurePwdBtn->setStyleSheet("QPushButton{border-image: url(:/img/plugins/userinfo/pwdEncrypted.png);}"
-                              "QPushButton:pressed{border-image: url(:/img/plugins/userinfo/pwdUnscramble.png);}");
-
-    connect(showPwdBtn, &QPushButton::pressed, this, [=]{
-        ui->pwdLineEdit->setEchoMode(QLineEdit::Normal);
-    });
-    connect(showPwdBtn, &QPushButton::released, this, [=]{
-        ui->pwdLineEdit->setEchoMode(QLineEdit::Password);
-        ui->pwdLineEdit->setFocus();
-    });
-    connect(showSurePwdBtn, &QPushButton::pressed, this, [=]{
-        ui->pwdsureLineEdit->setEchoMode(QLineEdit::Normal);
-    });
-    connect(showSurePwdBtn, &QPushButton::released, this, [=]{
-        ui->pwdsureLineEdit->setEchoMode(QLineEdit::Password);
-        ui->pwdsureLineEdit->setFocus();
-    });
     refreshConfirmBtnStatus();
 }
 
 void ChangePwdDialog::setupConnect(){
-    connect(ui->closeBtn, &QPushButton::clicked, [=]{
-        close();
-    });
+//    connect(ui->closeBtn, &QPushButton::clicked, [=]{
+//        close();
+//    });
 
     connect(ui->pwdLineEdit, &QLineEdit::textChanged, [=](QString text){
         pwdLegalityCheck(text);
@@ -285,16 +239,16 @@ void ChangePwdDialog::pwdLegalityCheck(QString pwd){
 #endif
 
     } else { //系统未开启pwdquality模块
-        if (pwd.length() < PWD_LOW_LENGTH) {
-            if (pwd.length() == 0) pwdTip_2 = "";
-            else pwdTip_2 = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
-        } else if (pwd.length() > PWD_HIGH_LENGTH) {
-            pwdTip_2 = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
-        } else {
-            pwdTip_2 = "";
-        }
-    };
-    ui->tipLabel_2->setText(pwdTip_2);
+//        if (pwd.length() < PWD_LOW_LENGTH) {
+//            pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
+//        } else if (pwd.length() > PWD_HIGH_LENGTH) {
+//            pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
+//        } else {
+//            pwdTip = "";
+//        }
+    }
+
+
 
     //防止先输入确认密码，再输入密码后pwdsuretipLabel无法刷新
     if (!ui->pwdsureLineEdit->text().isEmpty()){
@@ -318,7 +272,7 @@ void ChangePwdDialog::refreshConfirmBtnStatus(){
     if (!ui->tipLabel->text().isEmpty() || \
             ui->pwdLineEdit->text().isEmpty() || ui->pwdLineEdit->text() == tr("New Password") || \
             ui->pwdsureLineEdit->text().isEmpty() || ui->pwdsureLineEdit->text() == tr("New Password Identify") ||
-            !nameTip.isEmpty() || !pwdTip.isEmpty() || !pwdSureTip.isEmpty() || !pwdTip_2.isEmpty())
+            !nameTip.isEmpty() || !pwdTip.isEmpty() || !pwdSureTip.isEmpty())
         ui->confirmPushBtn->setEnabled(false);
     else
         ui->confirmPushBtn->setEnabled(true);

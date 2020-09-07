@@ -655,7 +655,7 @@ sisteminizin bütünlüğünü sağlamak için bunları geri yükleyebilirsiniz.
         <translation type="obsolete">Yeni Kullanıcı Ekle</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="119"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="99"/>
         <source>Add user group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -663,66 +663,67 @@ sisteminizin bütünlüğünü sağlamak için bunları geri yükleyebilirsiniz.
 <context>
     <name>ChangePwdDialog</name>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="110"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="147"/>
         <source>Change Pwd</source>
         <translation>Parola Değiştir</translation>
     </message>
     <message>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="295"/>
         <source>Pwd type</source>
-        <translation type="vanished">Parola türü</translation>
+        <translation>Parola türü</translation>
     </message>
     <message>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="376"/>
         <source>New pwd</source>
-        <translation type="vanished">Yeni parola</translation>
+        <translation>Yeni parola</translation>
     </message>
     <message>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="421"/>
         <source>New pwd sure</source>
-        <translation type="vanished">Yeniden Parola</translation>
+        <translation>Yeniden Parola</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="551"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="530"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="591"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="552"/>
         <source>Confirm</source>
         <translation>Onayla</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="123"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="103"/>
         <source>General Pwd</source>
         <translation>Genel Parola</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="128"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="319"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="108"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="256"/>
         <source>New Password</source>
         <translation>Yeni Parola</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="129"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="320"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="109"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="257"/>
         <source>New Password Identify</source>
         <translation>Yeni Parola Tanımlama</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="290"/>
         <source>Password length needs to more than %1 character!</source>
-        <translation>Şifre uzunluğu %1 karakterden fazla olmalı!</translation>
+        <translation type="vanished">Şifre uzunluğu %1 karakterden fazla olmalı!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="292"/>
         <source>Password length needs to less than %1 character!</source>
-        <translation>Şifre uzunluğu %1 karakterden az olmalı!</translation>
+        <translation type="vanished">Şifre uzunluğu %1 karakterden az olmalı!</translation>
     </message>
     <message>
         <source>Password length needs to more than 5 character!</source>
         <translation type="vanished">Şifre uzunluğu 5 karakterden fazla olmalıdır!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="187"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="304"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="124"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="241"/>
         <source>Inconsistency with pwd</source>
         <translation>Parola ile tutarsızlık</translation>
     </message>
@@ -730,42 +731,42 @@ sisteminizin bütünlüğünü sağlamak için bunları geri yükleyebilirsiniz.
 <context>
     <name>ChangeTypeDialog</name>
     <message>
-        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="202"/>
+        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="157"/>
         <source>Make sure that there is at least one administrator on the computer</source>
         <translation>Bilgisayarda en az bir yönetici olduğundan emin olun</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="414"/>
+        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="369"/>
         <source>Standard users can use most software, but cannot install software and change system settings</source>
         <translation>Standart kullanıcılar çoğu yazılımı kullanabilir, ancak yazılım yükleyemez ve sistem ayarlarını değiştiremez</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="189"/>
+        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="144"/>
         <source>Change Account Type</source>
         <translation>Hesap Türünü Değiştir</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="401"/>
+        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="356"/>
         <source>standard user</source>
         <translation>Standart kullanıcı</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="518"/>
+        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="486"/>
         <source>administrator</source>
         <translation>Yönetici</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="531"/>
+        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="499"/>
         <source>Administrators can make any changes they need</source>
         <translation>Yöneticiler istedikleri değişiklikleri yapabilir</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="591"/>
+        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="572"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="613"/>
+        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="594"/>
         <source>Confirm</source>
         <translation>Onayla</translation>
     </message>
@@ -1018,37 +1019,37 @@ sistem ayarlarını değiştir</translation>
         <translation type="vanished">Şifre uzunluğu %1 karakterden az olmalı!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="391"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="388"/>
         <source>The user name cannot be empty</source>
         <translation>Kullanıcı adı boş olamaz</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="393"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="390"/>
         <source>The first character must be lowercase letters!</source>
         <translation>İlk karakter küçük harf olmalıdır!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="396"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="393"/>
         <source>User name can not contain capital letters!</source>
         <translation>Kullanıcı adı büyük harf içeremez!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="410"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="407"/>
         <source>The user name is already in use, please use a different one.</source>
         <translation>Kullanıcı adı zaten kullanılıyor, lütfen farklı bir ad kullanın.</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="415"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="412"/>
         <source>User name length need to less than %1 letters!</source>
         <translation>Kullanıcı adı uzunluğu %1 harften az olmalı!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="417"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="414"/>
         <source>The user name can only be composed of letters, numbers and underline!</source>
         <translation>Kullanıcı adı sadece harf, rakam ve altı çizili olabilir!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="422"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="419"/>
         <source>The username is configured, please change the username</source>
         <translation>Kullanıcı adı yapılandırıldı, lütfen kullanıcı adını değiştirin</translation>
     </message>
@@ -3010,26 +3011,32 @@ folder will be deleted!</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../mainwindow.cpp" line="393"/>
+        <location filename="../../mainwindow.cpp" line="336"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="396"/>
+        <location filename="../../mainwindow.cpp" line="349"/>
         <source>UKCC</source>
         <translation>Denetim Merkezi</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="93"/>
-        <location filename="../../mainwindow.cpp" line="823"/>
+        <location filename="../../mainwindow.cpp" line="692"/>
         <source>ukcc</source>
         <translation>Denetim Merkezi</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="518"/>
-        <location filename="../../mainwindow.cpp" line="587"/>
+        <location filename="../../mainwindow.cpp" line="459"/>
         <source>HOME</source>
         <translation>GİRİŞ</translation>
+    </message>
+</context>
+<context>
+    <name>ModulePageWidget</name>
+    <message>
+        <location filename="../../modulepagewidget.cpp" line="53"/>
+        <source>QLabel{font-size: 18px; color: palette(Shadow);}</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -3889,7 +3896,7 @@ folder will be deleted!</source>
         <translation>Bilinmeyen</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="360"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="359"/>
         <source>Update Shortcut</source>
         <translation>Kısayoları Güncelle</translation>
     </message>
@@ -4522,19 +4529,19 @@ folder will be deleted!</source>
 <context>
     <name>Shortcut</name>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="82"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="79"/>
         <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="127"/>
         <source>System Shortcut</source>
         <translation>Sistem Kısayolları</translation>
         <extra-contents_path>/shortcut/System Shortcut</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="125"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="122"/>
         <source>Show all shortcut</source>
         <translation>Tüm Kısayolları Göster</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="188"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="185"/>
         <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="129"/>
         <source>Custom Shortcut</source>
         <translation>Özel Kısayollar</translation>
@@ -4547,7 +4554,7 @@ folder will be deleted!</source>
         <extra-contents_path>/shortcut/Add custom shortcut</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="157"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="154"/>
         <source>Reset default</source>
         <translation>Varsayılana Sıfırla</translation>
     </message>
@@ -5165,12 +5172,12 @@ folder will be deleted!</source>
         <translation>Sil</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="48"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="41"/>
         <source>Current User</source>
         <translation>Mevcut Kullanıcı</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="212"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="214"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="123"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="637"/>
         <source>Change pwd</source>
@@ -5178,7 +5185,7 @@ folder will be deleted!</source>
         <extra-contents_path>/userinfo/Change pwd</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="277"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="279"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="125"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="627"/>
         <source>Change type</source>
@@ -5186,14 +5193,14 @@ folder will be deleted!</source>
         <extra-contents_path>/userinfo/Change type</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="342"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="344"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="127"/>
         <source>Change valid</source>
         <translation>Geçerli olanı değiştir</translation>
         <extra-contents_path>/userinfo/Change valid</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="407"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="409"/>
         <source>User group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5202,26 +5209,26 @@ folder will be deleted!</source>
         <translation type="vanished">Geçerli Değişiklik</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="496"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="477"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="129"/>
         <source>Login no passwd</source>
         <translation>Şifresiz giriş</translation>
         <extra-contents_path>/userinfo/Login no passwd</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="593"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="559"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="131"/>
         <source>enable autoLogin</source>
         <translation>Otomatik giriş</translation>
         <extra-contents_path>/userinfo/enable autoLogin</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="706"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="637"/>
         <source>Currently in Live mode, please create a new user and log out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="767"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="674"/>
         <source>Other Users</source>
         <translation>Diğer Kullanıcılar</translation>
     </message>

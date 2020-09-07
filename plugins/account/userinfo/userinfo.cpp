@@ -26,8 +26,6 @@
 #include <QDBusReply>
 
 #include <QDebug>
-#include <QDir>
-#include <QFrame>
 
 #include "SwitchButton/switchbutton.h"
 #include "ImageUtil/imageutil.h"
@@ -48,7 +46,7 @@ extern "C" {
 
 
 #define DEFAULTFACE "/usr/share/ukui/faces/default.png"
-#define ITEMHEIGH 72
+#define ITEMHEIGH 52
 
 UserInfo::UserInfo()
 {
@@ -65,7 +63,6 @@ UserInfo::UserInfo()
     sysdispatcher = new SystemDbusDispatcher;
 
     ui->changeGroupBtn->hide();
-    ui->changeValidBtn->hide();
 
     //获取系统全部用户信息，用户Uid大于等于1000的
     _acquireAllUsersInfo();
@@ -76,6 +73,7 @@ UserInfo::UserInfo()
     initAllUserStatus();
     //设置界面用户信息
     _refreshUserInfoUI();
+
 
 //    pwdSignalMapper = new QSignalMapper(this);
 //    faceSignalMapper = new QSignalMapper(this);
@@ -90,6 +88,7 @@ UserInfo::UserInfo()
 //    get_all_users();
 //    ui_component_init();
 //    ui_status_init();
+
 }
 
 UserInfo::~UserInfo()
@@ -121,10 +120,8 @@ const QString UserInfo::name() const {
 
 void UserInfo::initSearchText() {
     //~ contents_path /userinfo/Change pwd
-    ui->changePwdBtn->setIcon(QIcon(":/img/plugins/userinfo/password.svg"));
     ui->changePwdBtn->setText(tr("Change pwd"));
     //~ contents_path /userinfo/Change type
-    ui->changeTypeBtn->setIcon(QIcon(":/img/plugins/userinfo/type.svg"));
     ui->changeTypeBtn->setText(tr("Change type"));
     //~ contents_path /userinfo/Change valid
     ui->changeValidBtn->setText(tr("Change valid"));
@@ -563,14 +560,6 @@ void UserInfo::_refreshUserInfoUI(){
 //            ui->currentUserFaceLabel->setScaledContents(true);
             ui->currentUserFaceLabel->setPixmap(iconPixmap);
 
-            QDir historyDir;
-            historyDir.setPath(QString("/home/%1").arg(user.username));
-            if(!historyDir.exists(QString("/home/%1/.historyfaces").arg(user.username))) {
-                historyDir.mkpath(QString("/home/%1/.historyfaces").arg(user.username));
-            } else {
-//                qDebug()<<QString("/home/%1/.historyfaces/").arg(user.username)<<" Exist!";
-            }
-
             //设置用户名
             ui->userNameLabel->setText(user.username);
             //设置用户类型
@@ -608,7 +597,7 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
 
     QFrame * widget = new QFrame(baseWidget);
     widget->setFrameShape(QFrame::Shape::Box);
-    widget->setFixedHeight(64);
+    widget->setFixedHeight(50);
 
     QHBoxLayout * mainHorLayout = new QHBoxLayout(widget);
     mainHorLayout->setSpacing(16);
@@ -616,19 +605,9 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
 
     QPushButton * faceBtn = new QPushButton(widget);
     faceBtn->setObjectName("faceBtn");
-    faceBtn->setFixedSize(40, 40);
-//    faceBtn->setIcon(QIcon(user.iconfile));
-//    faceBtn->setIconSize(faceBtn->size());
-    QHBoxLayout * faceBtnHorLayout = new QHBoxLayout(faceBtn);
-    faceBtnHorLayout->setSpacing(0);
-    faceBtnHorLayout->setMargin(0);
-    QLabel * iconLabel = new QLabel(faceBtn);
-    iconLabel->setScaledContents(true);
-    iconLabel->setPixmap(QPixmap(user.iconfile));
-    ElipseMaskWidget * faceElipseMaskWidget = new ElipseMaskWidget(faceBtn);
-    faceElipseMaskWidget->setGeometry(0, 0, faceBtn->width(), faceBtn->height());
-    faceBtnHorLayout->addWidget(iconLabel);
-    faceBtn->setLayout(faceBtnHorLayout);
+    faceBtn->setFixedSize(32, 32);
+    faceBtn->setIcon(QIcon(user.iconfile));
+    faceBtn->setIconSize(faceBtn->size());
     connect(faceBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
         showChangeFaceDialog(user.username);
@@ -644,9 +623,8 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     QString btnQss = QString("QPushButton{background: #ffffff; border-radius: 4px;}");
 
     QPushButton * typeBtn = new QPushButton(widget);
-    typeBtn->setFixedSize(64, 64);
-//    typeBtn->setText(tr("Change type"));
-    typeBtn->setIcon(QIcon(":/img/plugins/userinfo/type.svg"));
+    typeBtn->setFixedSize(88, 36);
+    typeBtn->setText(tr("Change type"));
 //    typeBtn->setStyleSheet(btnQss);
     connect(typeBtn, &QPushButton::clicked, this, [=](bool checked){
         Q_UNUSED(checked)
@@ -655,9 +633,8 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     typeBtn->hide();
 
     QPushButton * pwdBtn = new QPushButton(widget);
-    pwdBtn->setFixedSize(64, 64);
-//    pwdBtn->setText(tr("Change pwd"));
-    pwdBtn->setIcon(QIcon(":/img/plugins/userinfo/password.svg"));
+    pwdBtn->setFixedSize(88, 36);
+    pwdBtn->setText(tr("Change pwd"));
 //    pwdBtn->setStyleSheet(btnQss);
     connect(pwdBtn, &QPushButton::clicked, this, [=](bool checked){
         Q_UNUSED(checked)
@@ -665,22 +642,17 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     });
     pwdBtn->hide();
 
-    QFrame * line = new QFrame;
-    line->setFrameShape(QFrame::VLine);
-    line->setFixedSize(4, 12);
-
     mainHorLayout->addWidget(faceBtn);
     mainHorLayout->addWidget(nameLabel);
-    mainHorLayout->addStretch(); 
-//    mainHorLayout->addWidget(pwdBtn);
-//    mainHorLayout->addWidget(typeBtn);
-    mainHorLayout->addWidget(line);
+    mainHorLayout->addStretch();
+    mainHorLayout->addWidget(typeBtn);
+    mainHorLayout->addWidget(pwdBtn);
+
     widget->setLayout(mainHorLayout);
 
     QPushButton * delBtn = new QPushButton(baseWidget);
-    delBtn->setFixedSize(64, 64);
-//    delBtn->setText(tr("Delete"));
-    delBtn->setIcon(QIcon(":/img/plugins/userinfo/deluser.svg"));
+    delBtn->setFixedSize(60, 36);
+    delBtn->setText(tr("Delete"));
 //    delBtn->setStyleSheet("QPushButton{background: #FA6056; border-radius: 4px}");
     delBtn->hide();
     connect(delBtn, &QPushButton::clicked, this, [=](bool checked){
@@ -690,25 +662,20 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
 
     connect(baseWidget, &HoverWidget::enterWidget, this, [=](QString name){
         Q_UNUSED(name)
-        line->hide();
         typeBtn->show();
         pwdBtn->show();
         delBtn->show();
     });
     connect(baseWidget, &HoverWidget::leaveWidget, this, [=](QString name){
         Q_UNUSED(name)
-        line->show();
         typeBtn->hide();
         pwdBtn->hide();
         delBtn->hide();
     });
 
     baseHorLayout->addWidget(widget);
-    baseHorLayout->addWidget(pwdBtn, Qt::AlignVCenter);
-    baseHorLayout->addWidget(typeBtn, Qt::AlignVCenter);
     baseHorLayout->addWidget(delBtn, Qt::AlignVCenter);
-//    baseHorLayout->addSpacing(4);
-    baseHorLayout->setSpacing(8);
+    baseHorLayout->addSpacing(4);
 
 
     baseVerLayout->addLayout(baseHorLayout);
@@ -888,7 +855,6 @@ void UserInfo::showChangeFaceDialog(QString username){
     UserInfomation user = (UserInfomation)(allUserInfoMap.find(username).value());
 
     ChangeFaceDialog * dialog = new ChangeFaceDialog;
-    dialog->setHistoryFacesPath(QString("/home/%1/.historyfaces").arg(user.username));
     dialog->setFace(user.iconfile);
     dialog->setUsername(user.username);
     dialog->setAccountType(_accountTypeIntToString(user.accounttype));
@@ -920,6 +886,7 @@ void UserInfo::changeUserFace(QString facefile, QString username){
     QString cmd = QString("cp %1 /home/%2/.face").arg(facefile).arg(user.username);
 
     QDBusReply<QString> reply =  sysinterface->call("systemRun", QVariant(cmd));
+
 
     //重新获取全部用户QMap
     _acquireAllUsersInfo();

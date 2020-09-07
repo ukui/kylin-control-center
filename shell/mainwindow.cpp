@@ -18,11 +18,8 @@
  *
  */
 #include "mainwindow.h"
-#include <QWidget>
 #include "ui_mainwindow.h"
-#include "border_shadow_effect.h"
 #include "utils/keyvalueconverter.h"
-#include <QLinearGradient>
 #include "utils/functionselect.h"
 #include <QFont>
 #include <QLabel>
@@ -38,7 +35,6 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QGSettings>
-#include <KWindowEffects>
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -61,10 +57,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_searchWidget(nullptr)
 
 {
-    m_effect = new BorderShadowEffect(this);
-    m_effect->setPadding(10);
-    m_effect->setBorderRadius(16);
-    m_effect->setBlurRadius(16);
     ui->setupUi(this);
     initTileBar();
     // 初始化mixer
@@ -76,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->installEventFilter(this);
 //    closeBtn->setFixedSize(32,32);
     // 该设置去掉了窗体透明后的黑色背景
-    setAttribute(Qt::WA_TranslucentBackground, true);
+//    setAttribute(Qt::WA_TranslucentBackground, true);
     const QByteArray id("org.ukui.style");
     QGSettings * fontSetting = new QGSettings(id);
     connect(fontSetting, &QGSettings::changed,[=](QString key){
@@ -101,9 +93,9 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowTitle(tr("ukcc"));
 
     //中部内容区域
-//    ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+    ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
     //标题栏widget
-//    ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background: palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+    ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background: palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
 ////    //左上角文字
 ////    ui->mainLabel->setStyleSheet("QLabel#mainLabel{font-size: 18px; color: #40000000;}");
 
@@ -138,7 +130,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //左侧一级菜单
 //    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background: #cccccc; border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
-//    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
+    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
 
     //设置左上角按钮图标
     backBtn->setIcon(QIcon("://img/titlebar/back.svg"));
@@ -148,39 +140,6 @@ MainWindow::MainWindow(QWidget *parent) :
     maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
     closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
     initStyleSheet();
-
-    QGSettings * tablet_mode =  new QGSettings("org.ukui.SettingsDaemon.plugins.tablet-mode", QByteArray(),this);
-    is_tablet_mode = tablet_mode->get("tablet-mode").toBool();
-    if(is_tablet_mode){
-        minBtn->hide();
-        maxBtn->hide();
-        closeBtn->hide();
-    }
-
-    connect(tablet_mode, &QGSettings::changed, this, [=](){
-        is_tablet_mode = tablet_mode->get("tablet-mode").toBool();
-        if(is_tablet_mode){
-            minBtn->hide();
-            maxBtn->hide();
-            closeBtn->hide();
-        } else {
-            minBtn->show();
-            maxBtn->show();
-            closeBtn->show();
-        }
-    });
-
-//    g_signal_connect (tablet_mode, "changed", G_CALLBACK (), this);
-//        is_tablet_mode = g_settings_get_boolean(tablet_mode, "tablet-mode");
-//        if(is_tablet_mode){
-//            minBtn->hide();
-//            maxBtn->hide();
-//            closeBtn->hide();
-//        } else {
-//            minBtn->show();
-//            maxBtn->show();
-//            closeBtn->show();
-//        }
 
     //初始化功能列表数据
     FunctionSelect::initValue();
@@ -230,14 +189,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
         if (index){ //首页部分组件样式
             //中部内容区域
-//            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-right-radius: 6px;}");
+            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-right-radius: 6px;}");
             //标题栏widget
             ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background:  palette(base); border-top-right-radius: 6px;}");
         } else { //次页部分组件样式
             //中部内容区域
-//            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background:  palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background:  palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
             //标题栏widget
-//            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background:  palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background:  palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
         }
     });
 
@@ -333,108 +292,27 @@ void MainWindow::bootOptionsSwitch(int moduleNum, int funcNum){
 }
 
 void MainWindow::paintEvent(QPaintEvent *event) {
-    validBorder();
-    QColor color = this->palette().window().color();
-    QColor colorBase = this->palette().base().color();
-
-    int R1 = color.red();
-    int G1 = color.green();
-    int B1 = color.blue();
-    qreal a1 = 0.3;
-
-    int R2 = colorBase.red();
-    int G2 = colorBase.green();
-    int B2 = colorBase.blue();
-    qreal a2 = 1;
-
-    qreal a = 1 - (1 - a1)*(1 - a2);
-
-    qreal R = (a1*R1 + (1 - a1)*a2*R2) / a;
-    qreal G = (a1*G1 + (1 - a1)*a2*G2) / a;
-    qreal B = (a1*B1 + (1 - a1)*a2*B2) / a;
-
-    colorBase.setRed(R);
-    colorBase.setGreen(G);
-    colorBase.setBlue(B);
-
-
-    colorBase.setAlphaF(0.75);
-
-    if (qApp->property("blurEnable").isValid()) {
-        bool blurEnable = qApp->property("blurEnable").toBool();
-        if (!blurEnable) {
-            colorBase.setAlphaF(1);
-        }
-    } else {
-        colorBase.setAlphaF(1);
-    }
-
-    QPainterPath sidebarPath;
-    sidebarPath.setFillRule(Qt::FillRule::WindingFill);
-    QPainterPath deletePath;
-    QPainterPath tmpPath;
-
-
-
-    //color.setAlphaF(0.5);
-    m_effect->setWindowBackground(color);
+    Q_UNUSED(event);
     QPainter p(this);
-    if(!this->isMaximized()){
-        tmpPath.addRoundedRect(rect().adjusted(4, 4, -4, -4),16,16);
-        deletePath.addRoundedRect(rect().adjusted(330, 4, 0, -4), 16, 16);
+    p.setRenderHint(QPainter::Antialiasing);
+    QPainterPath rectPath;
+    if(!bIsFullScreen) {
+        rectPath.addRoundedRect(this->rect().adjusted(0, 0, 0, 0), 0, 0);
 
-        sidebarPath = tmpPath - deletePath;
-        m_effect->m_transparent_path.addRect(0,0,0,0);
-        m_effect->setTransParentPath(sidebarPath);
-        m_effect->setTransParentAreaBg(colorBase);
-        m_effect->drawWindowShadowManually(&p, this->rect(),true,false);
-    }
-    else{
-        tmpPath.addRoundedRect(rect().adjusted( 0, 4, -10,0),0,0);
-        deletePath.addRoundedRect(rect().adjusted(330, 4, 0, -4), 16, 16);
-
-        sidebarPath = tmpPath - deletePath;
-        m_effect->m_transparent_path.addRect(0,0,0,0);
-        m_effect->setTransParentPath(sidebarPath);
-        m_effect->setTransParentAreaBg(colorBase);
-        m_effect->drawWindowShadowManually(&p, this->rect(),true,true);
-    }
-    QMainWindow::paintEvent(event);
-    p.save();
-    p.restore();
-}
-void MainWindow::validBorder(){
-    if (this->isMaximized()) {
-        QPainter p(this);
-        p.setRenderHint(QPainter::Antialiasing);
-        QPainterPath rectPath;
-        rectPath.addRoundedRect(this->rect(), 0, 0);
-            p.save();
-            p.restore();
-        setContentsMargins(0, 0, 0, 0);
-        m_effect->setPadding(0);
-        KWindowEffects::enableBlurBehind(this->winId(), true);
-
-    } else {
-        QPainter p(this);
-        p.setRenderHint(QPainter::Antialiasing);
-        QPainterPath rectPath;
-        rectPath.addRoundedRect(this->rect().adjusted(6, 6, -6, -6), 16, 16);
-
-//        // 画一个黑底
+        // 画一个黑底
         QPixmap pixmap(this->rect().size());
         pixmap.fill(Qt::transparent);
         QPainter pixmapPainter(&pixmap);
         pixmapPainter.setRenderHint(QPainter::Antialiasing);
         pixmapPainter.setPen(Qt::transparent);
         pixmapPainter.setBrush(Qt::black);
-        pixmapPainter.setOpacity(1);
+        pixmapPainter.setOpacity(0.65);
         pixmapPainter.drawPath(rectPath);
         pixmapPainter.end();
 
         // 模糊这个黑底
         QImage img = pixmap.toImage();
-        qt_blurImage(img, 7, false, false);
+        qt_blurImage(img, 5, false, false);
 
         // 挖掉中心
         pixmap = QPixmap::fromImage(img);
@@ -447,20 +325,15 @@ void MainWindow::validBorder(){
 
         // 绘制阴影
         p.drawPixmap(this->rect(), pixmap, pixmap.rect());
-        p.save();
-        p.restore();
-//        setContentsMargins(4, 4, 4, 4);
-        m_effect->setPadding(4);
-
-        QPainterPath path;
-        auto rect = this->rect();
-        rect.adjust(4, 4, -4, -4);
-        path.addRoundedRect(rect, 16, 16);
-        setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
-        //use KWindowEffects
-        KWindowEffects::enableBlurBehind(this->winId(), true, QRegion(path.toFillPolygon().toPolygon()));
+    } else {
+        rectPath.addRoundedRect(this->rect(), 0, 0);
     }
 
+    // 绘制一个背景
+    p.save();
+    p.fillPath(rectPath,palette().color(QPalette::Base));
+//    p.fillPath(rectPath,QColor(0,0,0));
+    p.restore();
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
@@ -469,7 +342,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             if (this->windowState() == Qt::WindowMaximized) {
                 QFont font = this->font();
                 int width = font.pointSize();
-                maxBtn->setIcon(QIcon::fromTheme("window-restore-symbolic"));
 //                ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
 //                for (int i = 0; i <= 9; i++) {
 //                    QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
@@ -481,7 +353,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 //                    }
 //                }
             } else {
-                maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
 //                ui->leftsidebarWidget->setMaximumWidth(60);
 //                for (int i = 0; i <= 9; i++) {
 //                    QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
@@ -515,19 +386,14 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     return QObject::eventFilter(watched, event);
 }
 
-
 void MainWindow::initTileBar() {
 
-    ui->titleLayout->setContentsMargins(300, 2, 10, 0);
+    ui->titleLayout->setContentsMargins(300, 12, 10, 0);
     m_searchWidget = new SearchWidget(this);
     m_searchWidget->setPlaceholderText(tr("Search"));
     m_searchWidget->setFocusPolicy(Qt::ClickFocus);
     m_searchWidget->installEventFilter(this);
     titleLabel  = new QLabel(tr("UKCC"), this);
-    icon =new QLabel(this);
-    icon->setPixmap(QString("://img/dropArrow/Logo.png"));
-    icon->setStyleSheet("border-radius:4px;");
-    icon->resize(32,32);
     titleLabel->resize(80,32);
     ui->titleLayout->addWidget(m_searchWidget, Qt::AlignCenter);
     connect(m_searchWidget, &SearchWidget::notifyModuleSearch, this, &MainWindow::switchPage);
@@ -542,15 +408,11 @@ void MainWindow::initTileBar() {
     minBtn->setFixedSize(32, 32);
     maxBtn->setFixedSize(32, 32);
 
-    m_searchWidget->setMinimumWidth(320);
-    m_searchWidget->setMinimumHeight(40);
-    m_searchWidget->setMaximumWidth(496);
-    m_searchWidget->setMaximumHeight(40);
+    m_searchWidget->setMinimumWidth(248);
+    m_searchWidget->setMinimumHeight(48);
 
 //    ui->titleLayout->addWidget(titleLabel);
-    icon->setGeometry(rect().x()+26, rect().y()+21,32, 32);
-    titleLabel->setGeometry(rect().x()+56, rect().y()+25.01,64, 24);
-    icon->setParent(this);
+    titleLabel->setGeometry(rect().x()+32, rect().y()+20,80, 32);
     titleLabel->setParent(this);
     ui->titleLayout->addWidget(backBtn);
     ui->titleLayout->addStretch();
@@ -961,9 +823,9 @@ void MainWindow::initStyleSheet() {
     this->setWindowTitle(tr("ukcc"));
 
     // 中部内容区域
-//    ui->stackedWidget->setStyleSheet("QStackedWidget#widget{background: palette(base); border-bottom-left-radius: 16px; border-bottom-right-radius: 16px;}");
+    ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
     // 标题栏widget
-//    ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background: palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+    ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background: palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
 
     // 左上角返回按钮
     backBtn->setProperty("useIconHighlightEffect", true);
@@ -984,7 +846,7 @@ void MainWindow::initStyleSheet() {
     closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
-//    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 16px; border-bottom-left-radius: 16px;}");
+    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
 
     // 设置左上角按钮图标
     backBtn->setIcon(QIcon("://img/titlebar/back.svg"));

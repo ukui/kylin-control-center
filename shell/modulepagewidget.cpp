@@ -49,9 +49,11 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
     ui->widget->setMinimumWidth(900);
     ui->widget->setMaximumWidth(16777215);
 
+
+    //
 //    ui->mtitleLabel->setStyleSheet(tr("QLabel{font-size: 18px; color: palette(Shadow);}"));
     //左侧二级菜单样式
-    ui->leftStackedWidget->setStyleSheet("border: none;background-color:transparent");
+    ui->leftStackedWidget->setStyleSheet("border: none;");
     //上侧二级菜单样式
 //    ui->topStackedWidget->setStyleSheet("border: none;");
     //功能区域
@@ -95,7 +97,7 @@ void ModulePageWidget::initUI(){
         QString titleString = mkvConverter->keycodeTokeyi18nstring(moduleIndex);
 //        qDebug()<<"titleString: "<<titleString;
         leftListWidget->setObjectName("leftWidget");
-        leftListWidget->setStyleSheet("QListWidget::Item:hover{background:transparent;}");
+        leftListWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
 
         QListWidgetItem * titleItem = new QListWidgetItem();
         titleItem->setData(Qt::UserRole, "title");
@@ -104,7 +106,7 @@ void ModulePageWidget::initUI(){
         titleItem->setText(titleString);
         titleItem->setFlags((Qt::ItemFlag)0);
 //        titleItem->setBackground(QBrush(QColor(0,0,0)));
-        titleItem->setTextColor(QColor(0,0,0));
+//        titleItem->setTextColor(QColor(233,0,0));
         titleItem->setBackground(QBrush(QColor(233,0,0)));
 //        leftListWidget->setStyleSheet("QListWidget::titleItem:hover{background:#FF3D6BE5;border-radius: 4px;}");
         //widget->setStyleSheet("QListWidget::Item:hover{background:#FF3D6BE5;border-radius: 4px;}");

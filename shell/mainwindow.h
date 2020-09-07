@@ -32,13 +32,12 @@
 #include "homepagewidget.h"
 #include "modulepagewidget.h"
 #include "searchwidget.h"
-class BorderShadowEffect;
+
 class QLabel;
 class QPushButton;
 class QButtonGroup;
 class KeyValueConverter;
-class QWidgetResizeHandler;
-class QStackedWidget;
+
 namespace Ui {
 class MainWindow;
 }
@@ -59,16 +58,13 @@ public:
     void bootOptionsSwitch(int moduleNum, int funcNum);
 
 protected:
-    void validBorder();
     void paintEvent(QPaintEvent *);
     bool eventFilter(QObject *watched, QEvent *event);
-//    QRect sideBarRect();
-private:
-    Ui::MainWindow *ui;
-    bool is_tablet_mode;
 
 private:
-    BorderShadowEffect *m_effect;
+    Ui::MainWindow *ui;
+
+private:
     HomePageWidget * homepageWidget;
     ModulePageWidget * modulepageWidget;
 
@@ -83,12 +79,13 @@ private:
 
     KeyValueConverter * kvConverter;
     SearchWidget * m_searchWidget;
+
     QPushButton * backBtn;
     QPushButton * minBtn;
     QPushButton * maxBtn;
     QPushButton * closeBtn;
     QLabel      * titleLabel;
-    QLabel      *icon;
+
 private:
     void initTileBar();
     void setBtnLayout(QPushButton * &pBtn);

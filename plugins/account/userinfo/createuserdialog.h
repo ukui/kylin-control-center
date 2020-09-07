@@ -27,8 +27,6 @@
 #include <QKeyEvent>
 #include <QFile>
 #include <QStyledItemDelegate>
-#include <QHBoxLayout>
-#include <QPushButton>
 
 #ifdef ENABLEPQ
 extern "C" {
@@ -65,11 +63,6 @@ public:
     bool nameTraverse(QString username);
 
     void initPwdChecked();
-
-    QHBoxLayout * pwdLineEditHLayout;
-    QHBoxLayout * pwdsureLineEditHLayout;
-    QPushButton * showPwdBtn;
-    QPushButton * showSurePwdBtn;
 
 protected:
     void paintEvent(QPaintEvent *);

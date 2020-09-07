@@ -52,7 +52,7 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
 
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
-//    ui->tipLabel->setAlignment(Qt::AlignCenter);
+    ui->tipLabel->setAlignment(Qt::AlignCenter);
 
     ui->label_8->adjustSize();
     ui->label_8->setWordWrap(true);
@@ -113,9 +113,6 @@ void CreateUserDialog::setupComonpent(){
     pwdTip = "";
     pwdSureTip = "";
 
-    //给选项卡加背景色，此部分样式应由主题控制，此处只为预览样式改进效果
-    ui->widget->setStyleSheet(".QWidget{background: rgba(245,245,245,1); border-radius: 8px;}");
-    ui->widget_2->setStyleSheet(".QWidget{background: rgba(245,245,245,1); border-radius: 8px;}");
 
     ui->pwdLineEdit->setEchoMode(QLineEdit::Password);
     ui->pwdsureLineEdit->setEchoMode(QLineEdit::Password);
@@ -140,56 +137,10 @@ void CreateUserDialog::setupComonpent(){
     ui->usernameLineEdit->setPlaceholderText(tr("UserName"));
     ui->pwdLineEdit->setPlaceholderText(tr("Password"));
     ui->pwdsureLineEdit->setPlaceholderText(tr("Password Identify"));
-
-    ui->usernameLineEdit->setTextMargins(16,0,32,0);
-    ui->pwdLineEdit->setTextMargins(16,0,32,0);
-    ui->pwdsureLineEdit->setTextMargins(16,0,32,0);
-
-    pwdLineEditHLayout = new QHBoxLayout();
-    pwdsureLineEditHLayout = new QHBoxLayout();
-
-    showPwdBtn = new QPushButton();
-    showPwdBtn->setFixedSize(QSize(16, 16));
-
-    pwdLineEditHLayout->addStretch();
-    pwdLineEditHLayout->addWidget(showPwdBtn);
-    pwdLineEditHLayout->setContentsMargins(0,0,16,0);
-    ui->pwdLineEdit->setLayout(pwdLineEditHLayout);
-
-    showSurePwdBtn = new QPushButton();
-    showSurePwdBtn->setFixedSize(QSize(16, 16));
-
-    pwdsureLineEditHLayout->addStretch();
-    pwdsureLineEditHLayout->addWidget(showSurePwdBtn);
-    pwdsureLineEditHLayout->setContentsMargins(0,0,16,0);
-    ui->pwdsureLineEdit->setLayout(pwdsureLineEditHLayout);
-
-    showPwdBtn->setCursor(QCursor(Qt::ArrowCursor));
-    showSurePwdBtn->setCursor(QCursor(Qt::ArrowCursor));
-
-    showPwdBtn->setStyleSheet("QPushButton{border-image: url(:/img/plugins/userinfo/pwdEncrypted.png);}"
-                              "QPushButton:pressed{border-image: url(:/img/plugins/userinfo/pwdUnscramble.png);}");
-    showSurePwdBtn->setStyleSheet("QPushButton{border-image: url(:/img/plugins/userinfo/pwdEncrypted.png);}"
-                              "QPushButton:pressed{border-image: url(:/img/plugins/userinfo/pwdUnscramble.png);}");
-
-    connect(showPwdBtn, &QPushButton::pressed, this, [=]{
-        ui->pwdLineEdit->setEchoMode(QLineEdit::Normal);
-    });
-    connect(showPwdBtn, &QPushButton::released, this, [=]{
-        ui->pwdLineEdit->setEchoMode(QLineEdit::Password);
-        ui->pwdLineEdit->setFocus();
-    });
-    connect(showSurePwdBtn, &QPushButton::pressed, this, [=]{
-        ui->pwdsureLineEdit->setEchoMode(QLineEdit::Normal);
-    });
-    connect(showSurePwdBtn, &QPushButton::released, this, [=]{
-        ui->pwdsureLineEdit->setEchoMode(QLineEdit::Password);
-        ui->pwdsureLineEdit->setFocus();
-    });
 //    ui->pinLineEdit->setPlaceholderText(tr("PIN Code"));
 //    ui->pinsureLineEdit->setPlaceholderText(tr("PIN Code Identify"));
 
-//    ui->pwdTypeComBox->addItem(tr("General Password"));
+    ui->pwdTypeComBox->addItem(tr("General Password"));
 
 //    //给radiobtn设置id，id即accoutnType，方便直接返回id值
     ui->buttonGroup->setId(ui->standardRadioBtn, 0);
@@ -227,9 +178,9 @@ void CreateUserDialog::setupConnect(){
         }
 
         ui->tipLabel->setText(pwdSureTip);
-//        if (pwdSureTip.isEmpty()){
-//            pwdTip.isEmpty() ? ui->tipLabel->setText(nameTip) : ui->tipLabel->setText(pwdTip);
-//        }
+        if (pwdSureTip.isEmpty()){
+            pwdTip.isEmpty() ? ui->tipLabel->setText(nameTip) : ui->tipLabel->setText(pwdTip);
+        }
 
         refreshConfirmBtnStatus();
     });
@@ -245,16 +196,13 @@ void CreateUserDialog::setupConnect(){
         QString uName, pwd, pin;
 
         uName = ui->usernameLineEdit->text();
-//        if (ui->pwdTypeComBox->currentIndex() == 0){
-//            pwd = ui->pwdLineEdit->text();
-//            pin = "";
-//        } else {
-//            pwd = "";
-//            pin = ui->pwdLineEdit->text();
-//        }
-        pwd = ui->pwdLineEdit->text();
-        pin = "";
-
+        if (ui->pwdTypeComBox->currentIndex() == 0){
+            pwd = ui->pwdLineEdit->text();
+            pin = "";
+        } else {
+            pwd = "";
+            pin = ui->pwdLineEdit->text();
+        }
         emit newUserWillCreate(uName, pwd, pin, ui->buttonGroup->checkedId());
 
     });
@@ -330,13 +278,13 @@ void CreateUserDialog::pwdLegalityCheck(QString pwd){
         }
 #endif
     } else {
-        if (pwd.length() < PWD_LOW_LENGTH) {
-            pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
-        } else if (pwd.length() > PWD_HIGH_LENGTH) {
-            pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
-        } else {
-            pwdTip = "";
-        }
+//        if (pwd.length() < PWD_LOW_LENGTH) {
+//            pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
+//        } else if (pwd.length() > PWD_HIGH_LENGTH) {
+//            pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
+//        } else {
+//            pwdTip = "";
+//        }
     }
 
     //防止先输入确认密码，再输入密码后pwdsuretipLabel无法刷新
@@ -348,10 +296,10 @@ void CreateUserDialog::pwdLegalityCheck(QString pwd){
         }
     }
 
-    ui->tipLabel_2->setText(pwdTip);
-//    if (pwdTip.isEmpty()){
-//        pwdSureTip.isEmpty() ? ui->tipLabel->setText(nameTip) : ui->tipLabel->setText(pwdSureTip);
-//    }
+    ui->tipLabel->setText(pwdTip);
+    if (pwdTip.isEmpty()){
+        pwdSureTip.isEmpty() ? ui->tipLabel->setText(nameTip) : ui->tipLabel->setText(pwdSureTip);
+    }
 
     refreshConfirmBtnStatus();
 }
@@ -474,11 +422,11 @@ void CreateUserDialog::nameLegalityCheck(QString username){
          nameTip = tr("The username is configured, please change the username");
      }
 
-    ui->tipLabel_3->setText(nameTip);
+    ui->tipLabel->setText(nameTip);
 
-//    if (nameTip.isEmpty()){
-//        pwdTip.isEmpty() ? ui->tipLabel->setText(pwdSureTip) : ui->tipLabel->setText(pwdTip);
-//    }
+    if (nameTip.isEmpty()){
+        pwdTip.isEmpty() ? ui->tipLabel->setText(pwdSureTip) : ui->tipLabel->setText(pwdTip);
+    }
 
     refreshConfirmBtnStatus();
 }
