@@ -70,7 +70,7 @@ Screensaver::Screensaver()
 
 //    pluginWidget->setStyleSheet("background: #ffffff;");
 
-    ui->previewWidget->setStyleSheet("#previewWidget{background: black; border-radius: 6px;}");
+    ui->previewWidget->setStyleSheet("#previewWidget{background: black;}");
     ui->previewWidget->setAutoFillBackground(true);
 
 //    mPreviewWidget = new PreviewWidget;
