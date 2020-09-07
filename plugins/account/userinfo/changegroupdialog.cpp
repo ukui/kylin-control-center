@@ -52,7 +52,7 @@ void ChangeGroupDialog::connectToServer()
     {
         qDebug() << "fail to connect to service";
         qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
-        exit(1);
+        return;
     }
     // 将以后所有DBus调用的超时设置为 milliseconds
     serviceInterface->setTimeout(2147483647); // -1 为默认的25s超时

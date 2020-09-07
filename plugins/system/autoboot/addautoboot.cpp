@@ -145,7 +145,8 @@ void AddAutoBoot::open_desktop_dir_slots(){
     fd.setNameFilter(filters);
     fd.setFileMode(QFileDialog::ExistingFile);
     fd.setWindowTitle(tr("select autoboot desktop"));
-    fd.setLabelText(QFileDialog::Accept, "Select");
+    fd.setLabelText(QFileDialog::Accept, tr("Select"));
+    fd.setLabelText(QFileDialog::Reject, tr("Cancel"));
 
     if (fd.exec() != QDialog::Accepted)
         return;
