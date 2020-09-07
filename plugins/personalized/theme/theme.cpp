@@ -574,6 +574,7 @@ void Theme::initConnection() {
 #if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
     ui->transFrame->setVisible(false);
     ui->effectFrame->setVisible(false);
+    ui->effectLabel->setVisible(false);
 #else
 
 #endif
