@@ -36,7 +36,9 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QGSettings>
-
+#define QueryLineEditBackground "#FFFFFF" //搜索框背景
+#define QueryLineEditClickedBackground "#FFFFFF" //搜索框背景选中
+#define QueryLineEditClickedBorder "rgba(61, 107, 229, 1)" //搜索框背景选中边框
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
  **/
@@ -183,7 +185,7 @@ void MainWindow::paintEvent(QPaintEvent *event) {
     // 绘制一个背景
     p.save();
     p.fillPath(rectPath,palette().color(QPalette::Base));
-//    p.fillPath(rectPath,QColor(0,0,0));
+    //    p.fillPath(rectPath,QColor(0,0,0));
     p.restore();
 }
 
@@ -234,6 +236,57 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
         }
     }
+    if(watched==m_searchWidget)
+    {
+        if(event->type()==QEvent::FocusIn)
+        {
+            char style[200];
+            sprintf(style, "SearchWidget{border:1px solid %s;background-color:#F6F6F6;border-radius:8px;color:#000000;}",
+                    QueryLineEditClickedBorder,QueryLineEditClickedBackground);
+            m_searchWidget->setStyleSheet(style);
+            if(!m_searchWidget->text().isEmpty())
+            {
+            } else
+            {
+                m_animation->stop();
+                m_animation->setStartValue(QRect((320-(m_queryIcon->width()+m_queryText->width()+10))/2,0,
+                                                 m_queryIcon->width()+m_queryText->width()+10,32));
+                m_animation->setEndValue(QRect(0,0,
+                                               m_queryIcon->width()+5,32));
+                m_animation->setEasingCurve(QEasingCurve::OutQuad);
+                m_animation->start();
+                m_searchWidget->setTextMargins(30,1,0,1);
+            }
+            m_isSearching=true;
+        }
+        else if(event->type()==QEvent::FocusOut)
+        {
+            m_searchKeyWords.clear();
+            if(m_searchWidget->text().isEmpty())
+            {
+                if(m_isSearching)
+                {
+                    char style[100];
+                    sprintf(style, "SearchWidget{border:0px;background-color:#F6F6F6;border-radius:8px;}",QueryLineEditBackground);
+                    m_animation->stop();
+                    m_searchWidget->setStyleSheet(style);
+                    m_queryText->adjustSize();
+                    m_animation->setStartValue(QRect(0,0,
+                                                     m_queryIcon->width()+5,32));
+                    m_animation->setEndValue(QRect((320-(m_queryIcon->width()+m_queryText->width()+10))/2,0,
+                                                   m_queryIcon->width()+m_queryText->width()+10,32));
+                    m_animation->setEasingCurve(QEasingCurve::InQuad);
+                    m_animation->start();
+                }
+            } else {
+                char style[100];
+                sprintf(style, "QLineEdit{border:1px;background-color:#F6F6F6;border-radius:8px;color:#000000;}",
+                        QueryLineEditBackground);
+                m_searchWidget->setStyleSheet(style);
+            }
+            m_isSearching=false;
+        }
+    }
     return QObject::eventFilter(watched, event);
 }
 
@@ -241,7 +294,6 @@ void MainWindow::initUI() {
     ui->setupUi(this);
 
     this->installEventFilter(this);
-
     const QByteArray id("org.ukui.style");
     QGSettings * fontSetting = new QGSettings(id);
     connect(fontSetting, &QGSettings::changed,[=](QString key){
@@ -257,7 +309,10 @@ void MainWindow::initUI() {
 
     initTileBar();
     initStyleSheet();
-
+    //设置搜索框内label的位置
+    m_queryWid->setGeometry(QRect((m_searchWidget->width()-(m_queryIcon->width()+m_queryText->width()+10))/2,0,
+                                  m_queryIcon->width()+m_queryText->width()+15,32));
+    m_queryWid->show();
     //初始化功能列表数据
     FunctionSelect::initValue();
 
@@ -268,9 +323,9 @@ void MainWindow::initUI() {
     loadPlugins();
 
     connect(minBtn, SIGNAL(clicked()), this, SLOT(showMinimized()));
-//    connect(ui->minBtn, &QPushButton::clicked, [=]{
-//        KWindowSystem::minimizeWindow(this->winId());
-//    });
+    //    connect(ui->minBtn, &QPushButton::clicked, [=]{
+    //        KWindowSystem::minimizeWindow(this->winId());
+    //    });
     connect(maxBtn, &QPushButton::clicked, this, [=]{
         if (isMaximized()){
             bIsFullScreen = false;
@@ -284,19 +339,19 @@ void MainWindow::initUI() {
     });
     connect(closeBtn, &QPushButton::clicked, this, [=]{
         close();
-//        qApp->quit();
+        //        qApp->quit();
     });
 
 
-//    connect(ui->backBtn, &QPushButton::clicked, this, [=]{
-//        if (ui->stackedWidget->currentIndex())
-//            ui->stackedWidget->setCurrentIndex(0);
-//        else
-//            ui->stackedWidget->setCurrentIndex(1);
-//    });
+    //    connect(ui->backBtn, &QPushButton::clicked, this, [=]{
+    //        if (ui->stackedWidget->currentIndex())
+    //            ui->stackedWidget->setCurrentIndex(0);
+    //        else
+    //            ui->stackedWidget->setCurrentIndex(1);
+    //    });
 
 
-//    ui->leftsidebarWidget->setVisible(ui->stackedWidget->currentIndex());
+    //    ui->leftsidebarWidget->setVisible(ui->stackedWidget->currentIndex());
     connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, [=](int index){
         //左侧边栏显示/不显示
         ui->leftsidebarWidget->setVisible(index);
@@ -352,16 +407,46 @@ void MainWindow::initUI() {
 }
 
 void MainWindow::initTileBar() {
-
-    ui->titleLayout->setContentsMargins(5, 0, 10, 0);
     m_searchWidget = new SearchWidget(this);
-    m_searchWidget->setPlaceholderText(tr("Search"));
+    char style[100];
+    sprintf(style, "SearchWidget{border:0px;background-color:#F6F6F6;border-radius:8px;}",
+            QueryLineEditBackground);
+    m_searchWidget->setStyleSheet(style);
     m_searchWidget->setFocusPolicy(Qt::ClickFocus);
     m_searchWidget->installEventFilter(this);
 
+    m_queryWid=new QWidget;
+    m_queryWid->setParent(m_searchWidget);
+    m_queryWid->setFocusPolicy(Qt::NoFocus);
+    m_queryWid->setStyleSheet("border:0px;background:transparent");
 
+    QHBoxLayout* queryWidLayout=new QHBoxLayout;
+    queryWidLayout->setContentsMargins(4,4,0,0);
+    queryWidLayout->setAlignment(Qt::AlignJustify);
+    queryWidLayout->setSpacing(5);
+    m_queryWid->setLayout(queryWidLayout);
 
-    ui->titleLayout->addWidget(m_searchWidget, Qt::AlignCenter);
+    QPixmap pixmap=loadSvg(QString("://img/dropArrow/search.svg"),"default");
+    m_queryIcon=new QLabel;
+    m_queryIcon->setStyleSheet("background:transparent");
+    m_queryIcon->setFixedSize(pixmap.size());
+    m_queryIcon->setPixmap(pixmap);
+
+    m_queryText=new QLabel;
+    m_queryText->setText(tr("Search"));
+    m_queryText->setStyleSheet("background:transparent;color:#626c6e;");
+    m_queryText->adjustSize();
+
+    queryWidLayout->addStretch();
+    queryWidLayout->addWidget(m_queryIcon);
+    queryWidLayout->addWidget(m_queryText);
+    queryWidLayout->addStretch();
+
+    m_searchWidget->setContextMenuPolicy(Qt::NoContextMenu);
+    m_animation= new QPropertyAnimation(m_queryWid,"geometry");
+    m_animation->setDuration(100);
+    ui->titleLayout->addWidget(m_searchWidget,Qt::AlignCenter);
+    connect(m_animation,&QPropertyAnimation::finished,this,&MainWindow::animationFinishedSlot);
     connect(m_searchWidget, &SearchWidget::notifyModuleSearch, this, &MainWindow::switchPage);
 
     backBtn     = new QPushButton(this);
@@ -373,12 +458,12 @@ void MainWindow::initTileBar() {
     backBtn->setFixedSize(32, 32);
     minBtn->setFixedSize(32, 32);
     maxBtn->setFixedSize(32, 32);
-//    titleLabel->setFixedSize(32, 32);
+    //    titleLabel->setFixedSize(32, 32);
     titleLabel->setFixedHeight(32);
     titleLabel->setMinimumWidth(32);
     titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_searchWidget->setMinimumWidth(350);
-
+    m_searchWidget->setMinimumHeight(40);
     ui->titleLayout->addWidget(titleLabel);
     ui->titleLayout->addWidget(backBtn);
     ui->titleLayout->addStretch();
@@ -388,7 +473,30 @@ void MainWindow::initTileBar() {
     ui->titleLayout->addWidget(maxBtn);
     ui->titleLayout->addWidget(closeBtn);
 }
-
+void MainWindow::animationFinishedSlot()
+{
+    if(m_isSearching)
+    {
+        m_queryWid->layout()->removeWidget(m_queryText);
+        m_queryText->setParent(nullptr);
+        m_searchWidget->setTextMargins(30,1,0,1);
+        if(!m_searchKeyWords.isEmpty())
+        {
+            m_searchWidget->setText(m_searchKeyWords);
+            m_searchKeyWords.clear();
+        }
+    } else
+        m_queryWid->layout()->addWidget(m_queryText);
+}
+void MainWindow::setLineEditFocus(QString arg){
+    if(!m_searchWidget->hasFocus())
+    {
+        m_searchKeyWords=arg;
+        m_searchWidget->setFocus();
+        if(!m_searchWidget->text().isEmpty())
+            m_searchWidget->setText(arg);
+    }
+}
 void MainWindow::setBtnLayout(QPushButton * &pBtn){
     QLabel * imgLabel = new QLabel(pBtn);
     QSizePolicy imgLabelPolicy = imgLabel->sizePolicy();
@@ -444,7 +552,7 @@ void MainWindow::loadPlugins(){
 
         //屏保功能依赖ukui-session-manager
         if ((!g_file_test(screensaverFile, G_FILE_TEST_EXISTS) ||
-                !g_file_test(sessionFile, G_FILE_TEST_EXISTS)) &&
+             !g_file_test(sessionFile, G_FILE_TEST_EXISTS)) &&
                 (fileName == "libscreensaver.so" || fileName == "libscreenlock.so"))
             continue;
 
@@ -487,7 +595,7 @@ void MainWindow::initLeftsideBar(){
         ui->stackedWidget->setCurrentIndex(0);
     });
     hBtn->setStyleSheet("QPushButton#homepage{background: palette(button); border: none;}");
-//    hBtn->setStyleSheet("QPushButton#homepage{background: palette(base);}");
+    //    hBtn->setStyleSheet("QPushButton#homepage{background: palette(base);}");
     ui->leftsidebarVerLayout->addStretch();
     ui->leftsidebarVerLayout->addWidget(hBtn);
 
@@ -512,8 +620,8 @@ void MainWindow::initLeftsideBar(){
             leftBtnGroup->addButton(button, type);
 
             //设置样式
-//            button->setStyleSheet("QPushButton::checked{background: palette(button); border: none; border-image: url('://img/primaryleftmenu/checked.png');}"
-//                                  "QPushButton::!checked{background: palette(button);border: none;}");
+            //            button->setStyleSheet("QPushButton::checked{background: palette(button); border: none; border-image: url('://img/primaryleftmenu/checked.png');}"
+            //                                  "QPushButton::!checked{background: palette(button);border: none;}");
             button->setStyleSheet("QPushButton::checked{background: palette(base); border-top-left-radius: 6px;border-bottom-left-radius: 6px;}"
                                   "QPushButton::!checked{background: palette(button);border: none;}");
 
@@ -548,7 +656,7 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName){
     QPushButton * leftsidebarBtn = new QPushButton();
     leftsidebarBtn->setAttribute(Qt::WA_DeleteOnClose);
     leftsidebarBtn->setCheckable(true);
-//    leftsidebarBtn->setFixedSize(QSize(60, 56)); //Widget Width 60
+    //    leftsidebarBtn->setFixedSize(QSize(60, 56)); //Widget Width 60
     leftsidebarBtn->setFixedHeight(56);
 
     QPushButton * iconBtn = new QPushButton(leftsidebarBtn);
@@ -574,14 +682,14 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName){
     leftMicBtnGroup->addButton(iconBtn, itype);
 
     connect(iconBtn, &QPushButton::toggled, this, [=] (bool checked){
-       QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
-       QPixmap pix;
-       if (checked) {
-           pix = loadSvg(path, "blue");
-       } else {
-           pix = loadSvg(path, "default");
-       }
-       iconBtn->setIcon(pix);
+        QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
+        QPixmap pix;
+        if (checked) {
+            pix = loadSvg(path, "blue");
+        } else {
+            pix = loadSvg(path, "default");
+        }
+        iconBtn->setIcon(pix);
     });
 
     connect(iconBtn, &QPushButton::clicked, leftsidebarBtn, &QPushButton::click);
@@ -673,7 +781,7 @@ QPixmap MainWindow::drawSymbolicColoredPixmap(const QPixmap &source, QString cgC
                     color.setRed(0);
                     color.setGreen(0);
                     color.setBlue(0);
-//                    color.setAlpha(0.1);
+                    //                    color.setAlpha(0.1);
                     color.setAlphaF(0.9);
                     img.setPixelColor(x, y, color);
                 } else if ("gray" == cgColor) {
@@ -703,7 +811,7 @@ bool MainWindow::dblOnEdge(QMouseEvent *event)
     int frameY = this->y();
 
     bool onTopEdges = (globalMouseY >= frameY &&
-                  globalMouseY <= frameY + dbWitdth);
+                       globalMouseY <= frameY + dbWitdth);
     return onTopEdges;
 }
 
@@ -749,7 +857,7 @@ void MainWindow::initStyleSheet() {
     closeBtn->setObjectName("closeBtn");
     closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;width:32px;height:32px;}"
                             "QPushButton#closeBtn{border-radius: 4px;width:32px;height:32px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;width:32px;height:32px;}");
+                            "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;width:32px;height:32px;}");
 }
 
 void MainWindow::setModuleBtnHightLight(int id) {
@@ -819,7 +927,7 @@ const QPixmap MainWindow::renderSvg(const QIcon &icon, QString cgColor) {
                     color.setRed(0);
                     color.setGreen(0);
                     color.setBlue(0);
-//                    color.setAlpha(0.1);
+                    //                    color.setAlpha(0.1);
                     color.setAlphaF(0.9);
                     img.setPixelColor(x, y, color);
                 } else if ("gray" == cgColor) {
