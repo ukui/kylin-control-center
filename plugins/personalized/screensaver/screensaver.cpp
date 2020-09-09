@@ -35,6 +35,10 @@
 #define SESSION_SCHEMA "org.ukui.session"
 #define IDLE_DELAY_KEY "idle-delay"
 
+#define BACKGROUND_SCHEMA "org.mate.background"
+
+const QString BACK_FILENAME_KEY = "pictureFilename";
+
 #define IDLEMIN 1
 #define IDLEMAX 120
 #define IDLESTEP 1
@@ -107,10 +111,7 @@ Screensaver::~Screensaver()
 {
     delete ui;
     delete process;
-    process = nullptr;    
-    if (!screenlock_settings) {
-        delete screenlock_settings;
-    }
+    process = nullptr;
 }
 
 QString Screensaver::get_plugin_name(){
@@ -147,7 +148,7 @@ void Screensaver::initSearchText() {
 void Screensaver::initComponent(){
     if (QGSettings::isSchemaInstalled(SCREENSAVER_SCHEMA)) {
         const QByteArray id(SCREENSAVER_SCHEMA);
-        screenlock_settings = new QGSettings(id);
+        screenlock_settings = new QGSettings(id, QByteArray(), this);
 
         connect(screenlock_settings, &QGSettings::changed, [=](QString key) {
             if (key == "lockEnabled") {
@@ -159,12 +160,23 @@ void Screensaver::initComponent(){
         });
     }
 
-    if(QGSettings::isSchemaInstalled(SESSION_SCHEMA)) {
+
+    if (QGSettings::isSchemaInstalled(SESSION_SCHEMA)) {
         qSessionSetting = new QGSettings(SESSION_SCHEMA, QByteArray(), this);
     }
 
-    if(QGSettings::isSchemaInstalled(SCREENSAVER_SCHEMA)) {
+    if (QGSettings::isSchemaInstalled(SCREENSAVER_SCHEMA)) {
         qScreenSaverSetting = new QGSettings(SCREENSAVER_SCHEMA, QByteArray(), this);
+    }
+
+    if (QGSettings::isSchemaInstalled(BACKGROUND_SCHEMA)) {
+        qBgSetting = new QGSettings(BACKGROUND_SCHEMA, QByteArray(), this);
+
+        connect(qBgSetting, &QGSettings::changed, this, [=](const QString key) {
+            if (BACK_FILENAME_KEY == key) {
+                themesComboxChanged(0);
+            }
+        });
     }
 
     screensaver_bin = "/usr/lib/ukui-screensaver/ukui-screensaver-default";
@@ -258,6 +270,8 @@ void Screensaver::initComponent(){
     });
 
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(themesComboxChanged(int)));
+
+
 
 
     connect(ui->previewWidget, &QWidget::destroyed, this, [=]{

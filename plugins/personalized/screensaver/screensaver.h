@@ -144,6 +144,7 @@ private:
     QGSettings * screenlock_settings = nullptr;
     QGSettings * qSessionSetting = nullptr;
     QGSettings * qScreenSaverSetting = nullptr;
+    QGSettings * qBgSetting = nullptr;
 
     QProcess   * process;
 
