@@ -249,10 +249,10 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             } else
             {
                 m_animation->stop();
-                m_animation->setStartValue(QRect((320-(m_queryIcon->width()+m_queryText->width()+10))/2,0,
-                                                 m_queryIcon->width()+m_queryText->width()+10,32));
+                m_animation->setStartValue(QRect((m_searchWidget->width()-(m_queryIcon->width()+m_queryText->width()+10))/2,0,
+                                                 m_queryIcon->width()+m_queryText->width()+10,35));
                 m_animation->setEndValue(QRect(0,0,
-                                               m_queryIcon->width()+5,32));
+                                               m_queryIcon->width()+5,35));
                 m_animation->setEasingCurve(QEasingCurve::OutQuad);
                 m_animation->start();
                 m_searchWidget->setTextMargins(30,1,0,1);
@@ -272,9 +272,9 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
                     m_searchWidget->setStyleSheet(style);
                     m_queryText->adjustSize();
                     m_animation->setStartValue(QRect(0,0,
-                                                     m_queryIcon->width()+5,32));
-                    m_animation->setEndValue(QRect((320-(m_queryIcon->width()+m_queryText->width()+10))/2,0,
-                                                   m_queryIcon->width()+m_queryText->width()+10,32));
+                                                     m_queryIcon->width()+5,35));
+                    m_animation->setEndValue(QRect((m_searchWidget->width()-(m_queryIcon->width()+m_queryText->width()+10))/2,0,
+                                                   m_queryIcon->width()+m_queryText->width()+10,35));
                     m_animation->setEasingCurve(QEasingCurve::InQuad);
                     m_animation->start();
                 }
@@ -310,8 +310,8 @@ void MainWindow::initUI() {
     initTileBar();
     initStyleSheet();
     //设置搜索框内label的位置
-    m_queryWid->setGeometry(QRect((m_searchWidget->width()-(m_queryIcon->width()+m_queryText->width()+10))/2,0,
-                                  m_queryIcon->width()+m_queryText->width()+15,32));
+    m_queryWid->setGeometry(QRect((m_searchWidget->width()-(m_queryIcon->width()+m_queryText->width()+20))/2,0,
+                                  m_queryIcon->width()+m_queryText->width()+15,35));
     m_queryWid->show();
     //初始化功能列表数据
     FunctionSelect::initValue();
@@ -463,6 +463,7 @@ void MainWindow::initTileBar() {
     titleLabel->setMinimumWidth(32);
     titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_searchWidget->setMinimumWidth(350);
+    m_searchWidget->setMaximumWidth(380);
     m_searchWidget->setMinimumHeight(40);
     ui->titleLayout->addWidget(titleLabel);
     ui->titleLayout->addWidget(backBtn);
