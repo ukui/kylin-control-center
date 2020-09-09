@@ -420,10 +420,10 @@
                    <widget class="QComboBox" name="yearCombox"/>
                   </item>
                   <item>
-                   <widget class="QComboBox" name="dayCombox"/>
+                   <widget class="QComboBox" name="monthCombox"/>
                   </item>
                   <item>
-                   <widget class="QComboBox" name="monthCombox"/>
+                   <widget class="QComboBox" name="dayCombox"/>
                   </item>
                  </layout>
                 </widget>
