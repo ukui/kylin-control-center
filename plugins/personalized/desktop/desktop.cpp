@@ -95,8 +95,8 @@ Desktop::Desktop()
 
 Desktop::~Desktop()
 {
-    clearContent();
     delete ui;
+    clearContent();
     if (!dSettings ){
         delete dSettings;
     }
@@ -157,7 +157,6 @@ void Desktop::initTranslation() {
     disList<<"ukui-sidebar"<<"kylin-nm"<<"ukui-volume-control-applet-qt"<<"update-notifier"<<"software-update-available"
           <<"blueman-tray"<<"ukui-power-manager"<<"ukui-settings-daemon"<<"blueman-applet"
          <<"ErrorApplication"<<"livepatch";
-
 }
 
 void Desktop::setupComponent(){
@@ -203,7 +202,6 @@ void Desktop::setupComponent(){
 
     menuSettingSwitchBtn = new SwitchButton(pluginWidget);
     ui->menuSettingHorLayout->addWidget(menuSettingSwitchBtn);
-
 }
 
 void Desktop::setupConnect(){
@@ -218,20 +216,23 @@ void Desktop::setupConnect(){
         if (keys.contains("menufullScreen")) {
             dSettings->set(MENU_FULL_SCREEN_KEY, checked);
         }
-
     });
-    connect(menuComputerSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+
+    connect(menuComputerSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         dSettings->set(COMPUTER_LOCK_KEY, checked);
     });
-    connect(menuFilesystemSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+
+    connect(menuFilesystemSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         if (keys.contains("personalIconLocking")) {
             dSettings->set(PERSONAL_LOCK_KEY, checked);
         }
     });
-    connect(menuSettingSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+
+    connect(menuSettingSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         dSettings->set(SETTINGS_LOCK_KEY, checked);
     });
-    connect(menuTrashSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+
+    connect(menuTrashSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         dSettings->set(TRASH_LOCK_KEY, checked);
     });
 }
@@ -283,12 +284,14 @@ void Desktop::initLockingStatus(){
 }
 
 void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
+    nameList.append(name);
     const QString locale = QLocale::system().name();
 
     QVBoxLayout * baseVerLayout = new QVBoxLayout();
     baseVerLayout->setSpacing(1);
 
     QFrame * devFrame = new QFrame();
+    devFrame->setObjectName(name);
     devFrame->setFrameShape(QFrame::Shape::Box);
     devFrame->setMinimumWidth(550);
     devFrame->setMaximumWidth(960);
@@ -338,7 +341,14 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     baseVerLayout->addWidget(devFrame);
     baseVerLayout->addStretch();
 
-    ui->trayVBoxLayout->addWidget(devFrame);
+//    ui->trayVBoxLayout->addWidget(devFrame);
+
+    QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
+
+    item->setSizeHint(QSize(QSizePolicy::Fixed, 50));
+    item->setFlags(Qt::ItemFlag::ItemIsSelectable);
+    item->setData(Qt::UserRole, QVariant(name));
+    ui->listWidget->setItemWidget(item, devFrame);
 
     QString status = gsettings->get(TRAY_ACTION_KEY).toString();
     if ("tray" == status) {
@@ -358,15 +368,16 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     });
 }
 
-
 void Desktop::initTraySettings() {
     QString action;
     QString name;
     int winID;
-    QIcon icon;
 
     QList<char *> trayList = listExistsCustomDesktopPath();
 
+    int itemCount  = 0;
+    ui->listWidget->setSpacing(1);
+    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     for (int i = 0; i < trayList.length(); i++) {
         const QByteArray id(TRAY_SCHEMA);
@@ -376,11 +387,17 @@ void Desktop::initTraySettings() {
         if (QGSettings::isSchemaInstalled(id)) {
             traySettings = new QGSettings(id, path.toLatin1().data());
 
-            connect(traySettings, &QGSettings::changed, this, [=] (const QString &key){
-                if(key==TRAY_ACTION_KEY) {
-                    rebuildTray();
-                    qDebug() << "the key is--->" << traySettings->get(TRAY_NAME_KEY) << endl;
+            connect(traySettings, &QGSettings::changed, this, [=] (const QString &key) {
 
+                QString status = traySettings->get(key).toString();
+                if ("action" == key) {
+                    QString status = traySettings->get(key).toString();
+                    QString itemName = traySettings->get(TRAY_NAME_KEY).toString();
+                    if ("freeze" == status) {
+                        removeTrayItem(itemName);
+                    } else if(!nameList.contains(itemName)) {
+                        addTrayItem(traySettings);
+                    }
                 }
             });
             vecGsettings->append(traySettings);
@@ -393,7 +410,6 @@ void Desktop::initTraySettings() {
                 winID = traySettings->get(TRAY_BINDING_KEY).toInt();
 //                show(winID);
             }
-//            qDebug()<<"name is-------------->"<<action<<" "<<name<<endl;
 
             if (!("" == name || "freeze" == action || disList.contains(name))){
                 QIcon icon;
@@ -402,25 +418,52 @@ void Desktop::initTraySettings() {
                 } else {
                     icon = QIcon::fromTheme("application-x-desktop");
                 }
+                itemCount++;
                 initTrayStatus(name, icon, traySettings);
             }
         }
     }
+    ui->listWidget->setFixedHeight(itemCount * 50);
 }
 
+// TODO: double free?
 void Desktop::clearContent() {
-    if (ui->trayVBoxLayout->layout() != NULL) {
-        QLayoutItem* item;
-        while ((item = ui->trayVBoxLayout->layout()->takeAt( 0 )) != NULL )
-        {
-            delete item->widget();
-            delete item;
+
+}
+
+void Desktop::removeTrayItem(QString itemName) {
+
+    for (int i = 0; i < ui->listWidget->count(); i++) {
+        QListWidgetItem * item = ui->listWidget->item(i);
+        QString value = item->data(Qt::UserRole).toString();
+        qDebug () << " item data: " << ui->listWidget->count() << value;
+        if (value == itemName) {
+            ui->listWidget->takeItem(i);
+            break;
+        }
+    }
+
+    for (int i = 0; i < nameList.length(); i++) {
+        if (nameList.at(i) == itemName) {
+            nameList.removeAt(i);
+            break;
         }
     }
 }
 
-void Desktop::rebuildTray() {
-    clearContent();
-    initTraySettings();
+void Desktop::addTrayItem(QGSettings * trayGSetting) {
+
+    QString name   = trayGSetting->get(TRAY_NAME_KEY).toString();
+    QString action = trayGSetting->get(TRAY_ACTION_KEY).toString();
+
+    if (!("" == name || "freeze" == action || disList.contains(name))){
+        QIcon icon;
+        if (!iconMap[name].isEmpty()) {
+            icon = QIcon::fromTheme(iconMap[name]);
+        } else {
+            icon = QIcon::fromTheme("application-x-desktop");
+        }
+        initTrayStatus(name, icon, trayGSetting);
+    }
 }
 

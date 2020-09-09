@@ -73,6 +73,7 @@ private:
     QMap<QString, QString> transMap; // transaltion Map
     QMap<QString, QString> iconMap;
     QStringList disList;
+    QStringList nameList;
 
     SwitchButton * deskComputerSwitchBtn;
     SwitchButton * deskTrashSwitchBtn;
@@ -89,7 +90,8 @@ private:
     QGSettings * dSettings;
 
 private slots:
-    void rebuildTray();
+    void removeTrayItem(QString itemName);
+    void addTrayItem(QGSettings * trayGSetting);
 };
 
 #endif // DESKTOP_H
