@@ -415,7 +415,7 @@ void Wallpaper::initPreviewStatus(){
     //设置纯色背景的预览效果
     QString color = bgsettings->get(PRIMARY).toString();
     if (!color.isEmpty()){
-        QString widgetQss = QString("QWidget{background: %1; border-radius: 6px;}").arg(color);
+        QString widgetQss = QString("QWidget{background: %1;}").arg(color);
         ui->previewWidget->setStyleSheet(widgetQss);
     }
 }
@@ -424,7 +424,7 @@ void Wallpaper::initPreviewStatus(){
 void Wallpaper::colorSelectedSlot(QColor color){
     qDebug() << "colorSelectedSlot" << color << color.name();
 
-    QString widgetQss = QString("QWidget{background: %1; border-radius: 6px;}").arg(color.name());
+    QString widgetQss = QString("QWidget{background: %1;}").arg(color.name());
     ui->previewWidget->setStyleSheet(widgetQss);
 
     ///设置系统纯色背景
