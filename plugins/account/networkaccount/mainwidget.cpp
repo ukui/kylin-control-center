@@ -399,8 +399,8 @@ void MainWidget::init_gui() {
     connect(m_mainDialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
     connect(m_mainDialog,&MainDialog::on_login_success, [this] () {
         m_cLoginTimer->setSingleShot(true);
-        m_cLoginTimer->start(15000);
-        m_bIsStopped = false;
+        m_cLoginTimer->setInterval(15000);
+        m_cLoginTimer->start();
     });
 
     connect(m_mainDialog,&MainDialog::on_login_failed,[this] () {

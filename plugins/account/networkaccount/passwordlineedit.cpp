@@ -28,16 +28,16 @@ PasswordLineEdit::PasswordLineEdit(QWidget *parent) : QLineEdit(parent)
 
     m_changeStatusBtn->setCursor(Qt::PointingHandCursor);
     m_changeStatusBtn->setFixedSize(32,32);
-    QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/invisible.svg");
+    QPixmap pixmap = m_svgHandler->loadSvgColor(":/new/image/invisible.svg","gray",16);
     m_changeStatusBtn->setPixmap(pixmap);
     connect(m_changeStatusBtn,&VisbleButton::toggled,[this] (bool checked) {
         if(checked) {
             setEchoMode(QLineEdit::Normal);
-            QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/visible.svg");
+            QPixmap pixmap = m_svgHandler->loadSvgColor(":/new/image/visible.svg","gray",16);
             m_changeStatusBtn->setPixmap(pixmap);
         } else {
             setEchoMode(QLineEdit::Password);
-            QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/invisible.svg");
+            QPixmap pixmap = m_svgHandler->loadSvgColor(":/new/image/invisible.svg","gray",16);
             m_changeStatusBtn->setPixmap(pixmap);
         }
     }); //点击后可见或者不可见
