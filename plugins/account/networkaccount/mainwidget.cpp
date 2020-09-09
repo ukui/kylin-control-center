@@ -401,6 +401,7 @@ void MainWidget::init_gui() {
         m_cLoginTimer->setSingleShot(true);
         m_cLoginTimer->setInterval(15000);
         m_cLoginTimer->start();
+        m_bIsStopped = false;       
     });
 
     connect(m_mainDialog,&MainDialog::on_login_failed,[this] () {
