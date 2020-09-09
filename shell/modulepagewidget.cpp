@@ -98,6 +98,7 @@ void ModulePageWidget::initUI(){
         leftListWidget->setFocusPolicy(Qt::NoFocus);
         leftListWidget->setSelectionMode(QAbstractItemView::NoSelection);
         leftListWidget->setSpacing(12);
+        leftListWidget->setMinimumWidth(169);
         connect(leftListWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), this, SLOT(currentLeftitemChanged(QListWidgetItem*,QListWidgetItem*)));
         QListWidget * topListWidget = new QListWidget;
         topListWidget->setAttribute(Qt::WA_DeleteOnClose);
