@@ -42,6 +42,11 @@
 #define SETTINGS_LOCK_KEY "settings-icon-locking"
 #define TRASH_LOCK_KEY "trash-icon-locking"
 
+const QString kComputerLock = "computerIconLocking";
+const QString kPersonalLock = "personalIconLocking";
+const QString kSettingsLock = "settingsIconLocking";
+const QString kTrashLock    = "trashIconLocking";
+
 Desktop::Desktop()
 {
     ui = new Ui::Desktop;
@@ -223,7 +228,7 @@ void Desktop::setupConnect(){
     });
 
     connect(menuFilesystemSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
-        if (keys.contains("personalIconLocking")) {
+        if (keys.contains(kPersonalLock, Qt::CaseInsensitive)) {
             dSettings->set(PERSONAL_LOCK_KEY, checked);
         }
     });
@@ -234,6 +239,19 @@ void Desktop::setupConnect(){
 
     connect(menuTrashSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         dSettings->set(TRASH_LOCK_KEY, checked);
+    });
+
+    connect(dSettings, &QGSettings::changed, this, [=](const QString key) {
+       bool status = dSettings->get(key).toBool();
+       if (kComputerLock == key) {
+           menuComputerSwitchBtn->setChecked(status);
+       } else if (kPersonalLock == key) {
+           menuFilesystemSwitchBtn->setChecked(status);
+       } else if (kSettingsLock == key) {
+           menuSettingSwitchBtn->setChecked(status);
+       } else if (kTrashLock == key) {
+           menuTrashSwitchBtn->setChecked(status);
+       }
     });
 }
 

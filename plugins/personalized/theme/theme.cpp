@@ -24,8 +24,6 @@
 
 #include "SwitchButton/switchbutton.h"
 
-#include "themewidget.h"
-#include "widgetgroup.h"
 #include "cursor/xcursortheme.h"
 
 #include "../../../shell/customstyle.h"
@@ -74,10 +72,10 @@
 #define PERSONALSIE_TRAN_KEY "transparency"
 #define PERSONALSIE_BLURRY_KEY "blurry"
 
-const QString defCursor = "DMZ-White";
-const int transparency = 95;
-
-const QStringList effectList {"blur", "kwin4_effect_translucency", "kwin4_effect_maximize", "zoom"};
+const int         kTransparency = 95;
+const QString     kDefCursor    = "DMZ-White";
+const QStringList kEffectList {"blur", "kwin4_effect_translucency",
+                               "kwin4_effect_maximize", "zoom"};
 
 namespace {
 
@@ -103,8 +101,7 @@ namespace {
     const int numCursors = 9;     // The number of cursors from the above list to be previewed
 }
 
-Theme::Theme()
-{
+Theme::Theme() {
     ui = new Ui::Theme;
     pluginWidget = new QWidget;
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
@@ -135,7 +132,7 @@ Theme::Theme()
     setupSettings();
 
     if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(idd)
-            && QGSettings::isSchemaInstalled(iid)){
+            && QGSettings::isSchemaInstalled(iid)) {
         gtkSettings = new QGSettings(id);
         qtSettings = new QGSettings(idd);
         curSettings = new QGSettings(iid);
@@ -150,11 +147,9 @@ Theme::Theme()
     } else {
         qCritical() << THEME_GTK_SCHEMA << "or" << THEME_QT_SCHEMA << "or" << CURSOR_THEME_SCHEMA << "not installed\n";
     }
-
 }
 
-Theme::~Theme()
-{
+Theme::~Theme() {
     delete ui;
     if (settingsCreate){
         delete gtkSettings;
@@ -172,19 +167,19 @@ Theme::~Theme()
     }
 }
 
-QString Theme::get_plugin_name(){
+QString Theme::get_plugin_name() {
     return pluginName;
 }
 
-int Theme::get_plugin_type(){
+int Theme::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *Theme::get_plugin_ui(){
+QWidget *Theme::get_plugin_ui() {
     return pluginWidget;
 }
 
-void Theme::plugin_delay_control(){
+void Theme::plugin_delay_control() {
 
 }
 
@@ -234,7 +229,7 @@ void Theme::setupSettings() {
     }
 }
 
-void Theme::setupComponent(){
+void Theme::setupComponent() {
 
     ui->lightButton->hide();
     //隐藏现阶段不支持功能
@@ -254,15 +249,15 @@ void Theme::setupComponent(){
     ui->tranSlider->setPageStep(5);
 
     ui->tranSlider->setValue(static_cast<int>(personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble() * 100));
-    ui->tranLabel->setText(QString::number(static_cast<double>(ui->tranSlider->value())/100.0));
+    ui->tranLabel->setText(QString::number(static_cast<double>(ui->tranSlider->value()) / 100.0));
     connect(ui->tranSlider, &QSlider::valueChanged, [=](int value){
-        if(i!=(static_cast<int>(value)/5)/20.0){
+        if ( i != (static_cast<int>(value) / 5) / 20.0 ) {
             ui->tranSlider->setSingleStep(5);
-            personliseGsettings->set(PERSONALSIE_TRAN_KEY,(static_cast<int>(value)/5)/20.0);
+            personliseGsettings->set(PERSONALSIE_TRAN_KEY,(static_cast<int>(value) / 5) / 20.0);
             qtSettings->set(THEME_TRAN_KEY, value);
             qtSettings->set(PEONY_TRAN_KEY, value);
-            ui->tranLabel->setText(QString::number((static_cast<int>(value)/5)/20.0));
-            i=(static_cast<int>(value)/5)/20.0;
+            ui->tranLabel->setText(QString::number((static_cast<int>(value) / 5) / 20.0));
+            i = (static_cast<int>(value) / 5) / 20.0;
         }
     });
     setupControlTheme();
@@ -277,7 +272,7 @@ void Theme::setupComponent(){
     ui->transFrame->setVisible(true);
 }
 
-void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
+void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon) {
     //设置默认按钮
 //    button->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
 
@@ -384,7 +379,7 @@ void Theme::initThemeMode() {
     });
 }
 
-void Theme::initIconTheme(){
+void Theme::initIconTheme() {
     //获取当前图标主题(以QT为准，后续可以对比GTK两个值)
     QString currentIconTheme = qtSettings->get(ICON_QT_KEY).toString();
 
@@ -418,6 +413,8 @@ void Theme::initIconTheme(){
             }
 
             ThemeWidget * widget = new ThemeWidget(QSize(48, 48), dullTranslation(themedir.section("-", -1, -1, QString::SectionSkipEmpty)), showIconsList);
+            m_iconVec.push_back(widget);
+            m_iconVec.push_back(widget);
 //            widget->setFrameShape(QFrame::Shape::Box);
             widget->setValue(themedir);
             //加入Layout
@@ -434,9 +431,22 @@ void Theme::initIconTheme(){
             }
         }
     }
+
+    connect(qtSettings, &QGSettings::changed, this, [=](const QString key) {
+        QString iconValue = qtSettings->get(key).toString();
+        for (ThemeWidget * cursorWidget : m_iconVec) {
+            if (!cursorWidget->selectedLabel->isHidden()) {
+                cursorWidget->setSelectedStatus(false);
+            }
+
+            if (iconValue == cursorWidget->getValue()) {
+                cursorWidget->setSelectedStatus(true);
+            }
+        }
+    });
 }
 
-void Theme::setupControlTheme(){
+void Theme::setupControlTheme() {
     QStringList colorStringList;
     colorStringList << QString("#3D6BE5");
     colorStringList << QString("#FA6C63");
@@ -449,7 +459,7 @@ void Theme::setupControlTheme(){
 
     QButtonGroup * colorBtnGroup = new QButtonGroup();
 
-    for (QString color : colorStringList){
+    for (QString color : colorStringList) {
 
         QPushButton * button = new QPushButton(ui->controlWidget);
         button->setFixedSize(QSize(48, 48));
@@ -491,7 +501,7 @@ void Theme::setupControlTheme(){
     }
 }
 
-void Theme::initCursorTheme(){
+void Theme::initCursorTheme() {
 
     QStringList cursorThemes = _getSystemCursorThemes();
 //    qDebug() << cursorThemes;
@@ -523,7 +533,7 @@ void Theme::initCursorTheme(){
 
     });
 
-    for (QString cursor : cursorThemes){
+    for (QString cursor : cursorThemes) {
 
         QList<QPixmap> cursorVec;
         QString path = CURSORS_THEMES_PATH + cursor;
@@ -536,6 +546,7 @@ void Theme::initCursorTheme(){
         }
 
         ThemeWidget * widget  = new ThemeWidget(QSize(24, 24), cursor, cursorVec);
+        m_cursorVec.push_back(widget);
 //        widget->setFrameShape(QFrame::Shape::Box);
         widget->setValue(cursor);
 
@@ -546,17 +557,31 @@ void Theme::initCursorTheme(){
         cursorThemeWidgetGroup->addWidget(widget);
 
         //初始化指针主题选中界面
-        if (currentCursorTheme == cursor || (currentCursorTheme.isEmpty() && cursor == defCursor)){
+        if (currentCursorTheme == cursor || (currentCursorTheme.isEmpty() && cursor == kDefCursor)){
             cursorThemeWidgetGroup->setCurrentWidget(widget);
             widget->setSelectedStatus(true);
         } else {
             widget->setSelectedStatus(false);
         }
-
     }
+
+
+    connect(curSettings, &QGSettings::changed, this, [=](const QString key) {
+        QString cursorValue = curSettings->get(key).toString();
+
+        for (ThemeWidget * cursorWidget : m_cursorVec) {
+            if (!cursorWidget->selectedLabel->isHidden()) {
+                cursorWidget->setSelectedStatus(false);
+            }
+
+            if (cursorValue == cursorWidget->getValue()) {
+                cursorWidget->setSelectedStatus(true);
+            }
+        }
+    });
 }
 
-void Theme::initEffectSettings(){
+void Theme::initEffectSettings() {
 //    ui->effectLabel->hide();
 //    ui->effectWidget->hide();
 }
@@ -580,7 +605,7 @@ void Theme::initConnection() {
 #endif
 }
 
-QStringList Theme::_getSystemCursorThemes(){
+QStringList Theme::_getSystemCursorThemes() {
     QStringList themes;
     QDir themesDir(CURSORS_THEMES_PATH);
 
@@ -597,12 +622,12 @@ QStringList Theme::_getSystemCursorThemes(){
     return themes;
 }
 
-QString Theme::dullTranslation(QString str){
-    if (!QString::compare(str, "basic")){
+QString Theme::dullTranslation(QString str) {
+    if (!QString::compare(str, "basic")) {
         return QObject::tr("basic");
-    } else if (!QString::compare(str, "classical")){
+    } else if (!QString::compare(str, "classical")) {
         return QObject::tr("classical");
-    } else if (!QString::compare(str, "default")){
+    } else if (!QString::compare(str, "default")) {
         return QObject::tr("default");
     } else
         return QObject::tr("Unknown");
@@ -618,7 +643,7 @@ void Theme::resetBtnClickSlot() {
 //    emit ui->defaultButton->clicked();
     emit ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
 
-    ui->tranSlider->setValue(transparency);
+    ui->tranSlider->setValue(kTransparency);
 
 //    ui->defaultButton->setChecked(true);
 
@@ -632,7 +657,7 @@ void Theme::resetBtnClickSlot() {
     qtSettings->reset(PEONY_TRAN_KEY);
     gtkSettings->reset(ICON_GTK_KEY);
 
-    ui->tranSlider->setValue(transparency);
+    ui->tranSlider->setValue(kTransparency);
 
     clearLayout(ui->iconThemeVerLayout->layout(), true);
     clearLayout(ui->cursorVerLayout->layout(), true);
@@ -654,12 +679,12 @@ void Theme::writeKwinSettings(bool change, QString theme, bool effect) {
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
 
 #else
-        for (int i = 0; i < effectList.length(); i++) {
+        for (int i = 0; i < kEffectList.length(); i++) {
             QDBusMessage message = QDBusMessage::createMethodCall("org.ukui.KWin",
                                                        "/Effects",
                                                        "org.ukui.kwin.Effects",
                                                        "unloadEffect");
-            message << effectList.at(i);
+            message << kEffectList.at(i);
             QDBusConnection::sessionBus().send(message);
 
         }
@@ -675,13 +700,13 @@ void Theme::writeKwinSettings(bool change, QString theme, bool effect) {
 
 #else
         // 开启模糊特效：
-        for (int i = 0; i < effectList.length(); i++) {
+        for (int i = 0; i < kEffectList.length(); i++) {
 
             QDBusMessage message = QDBusMessage::createMethodCall("org.ukui.KWin",
                                                                   "/Effects",
                                                                   "org.ukui.kwin.Effects",
                                                                   "loadEffect");
-            message << effectList.at(i);
+            message << kEffectList.at(i);
             QDBusConnection::sessionBus().send(message);
         }
 #endif
@@ -693,7 +718,7 @@ void Theme::writeKwinSettings(bool change, QString theme, bool effect) {
     QString th = "";
     if ("ukui-default" == theme) {
         th = "0";
-    } else if ("ukui-dark" == theme){
+    } else if ("ukui-dark" == theme) {
         th = "1";
     }
 
@@ -702,25 +727,20 @@ void Theme::writeKwinSettings(bool change, QString theme, bool effect) {
     themeSettings->endGroup();
 
     themeSettings->sync();
-
-
 }
 
-void Theme::clearLayout(QLayout* mlayout, bool deleteWidgets)
-{
-    if ( mlayout->layout() != NULL )
-    {
+void Theme::clearLayout(QLayout* mlayout, bool deleteWidgets) {
+    Q_UNUSED(deleteWidgets)
+    if ( mlayout->layout() != NULL ) {
         QLayoutItem* item;
-        while ( ( item = mlayout->layout()->takeAt( 0 ) ) != NULL )
-        {
+        while ( ( item = mlayout->layout()->takeAt( 0 ) ) != NULL ) {
             delete item->widget();
             delete item;
         }
     }
 }
 
-double Theme::convertToTran(const int value)
-{
+double Theme::convertToTran(const int value) {
     switch (value) {
     case 1:
         return 0.2;
@@ -743,17 +763,16 @@ double Theme::convertToTran(const int value)
     }
 }
 
-int Theme::tranConvertToSlider(const double value)
-{
+int Theme::tranConvertToSlider(const double value) {
     if (0.2 ==  value) {
         return 1;
-    } else if (0.4 ==  value){
+    } else if (0.4 ==  value) {
         return 2;
-    } else if (0.6 ==  value){
+    } else if (0.6 ==  value) {
         return 3;
-    } else if (0.8 ==  value){
+    } else if (0.8 ==  value) {
         return 4;
-    } else if (1.0 ==  value){
+    } else if (1.0 ==  value) {
         return 5;
     } else {
         return 5;

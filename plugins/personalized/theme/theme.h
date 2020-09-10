@@ -29,13 +29,14 @@
 
 #include "shell/interface.h"
 #include "commonComponent/Uslider/uslider.h"
+#include "themewidget.h"
+#include "widgetgroup.h"
 
 #include <QDir>
 #include <QSettings>
 #include <QtDBus/QDBusMessage>
 #include <QGSettings>
 #include <QtDBus/QtDBus>
-
 
 class QPushButton;
 class SwitchButton;
@@ -106,6 +107,9 @@ private:
     bool settingsCreate;
 //    Uslider * uslider;
 //    Uslider * kwinSlider;
+
+    QVector<ThemeWidget *> m_iconVec;
+    QVector<ThemeWidget *> m_cursorVec;
 
 private slots:
     void resetBtnClickSlot();
