@@ -3018,15 +3018,15 @@ folder will be deleted!</source>
         <translation>您的云账户：%1</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="544"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="545"/>
         <source>Unauthorized device or OSS falied.
 Please retry for login!</source>
         <translation>OSS访问失败，请检查您的网络后再登录！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="181"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="753"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="768"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="754"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="769"/>
         <source>Exit</source>
         <translation>退出登录</translation>
     </message>
@@ -3066,12 +3066,12 @@ Please retry for login!</source>
         <translation>同步您账户的数据以及个性化设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="623"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="624"/>
         <source>This operation may cover your settings!</source>
         <translation>该操作可能覆盖您目前的快捷键！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="854"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="855"/>
         <source>Cloud ID desktop message</source>
         <translation>云账户消息</translation>
     </message>
@@ -3100,7 +3100,7 @@ Please retry for login!</source>
         <translation type="vanished">同步失败，请检查您的网络连接或者登出再重试一次！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="829"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="830"/>
         <source>%1,</source>
         <translation>%1,</translation>
     </message>
@@ -3817,34 +3817,34 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/network/proxy/proxy.ui" line="481"/>
-        <location filename="../../../plugins/network/proxy/proxy.ui" line="664"/>
-        <location filename="../../../plugins/network/proxy/proxy.ui" line="812"/>
-        <location filename="../../../plugins/network/proxy/proxy.ui" line="960"/>
+        <location filename="../../../plugins/network/proxy/proxy.ui" line="648"/>
+        <location filename="../../../plugins/network/proxy/proxy.ui" line="796"/>
+        <location filename="../../../plugins/network/proxy/proxy.ui" line="944"/>
         <source>Port</source>
         <translation>端口</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/proxy/proxy.ui" line="532"/>
+        <location filename="../../../plugins/network/proxy/proxy.ui" line="516"/>
         <source>Cetification</source>
         <translation>认证</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/proxy/proxy.ui" line="619"/>
+        <location filename="../../../plugins/network/proxy/proxy.ui" line="603"/>
         <source>Https Proxy</source>
         <translation>HTTPS代理</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/proxy/proxy.ui" line="767"/>
+        <location filename="../../../plugins/network/proxy/proxy.ui" line="751"/>
         <source>Ftp Proxy</source>
         <translation>FTP代理</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/proxy/proxy.ui" line="915"/>
+        <location filename="../../../plugins/network/proxy/proxy.ui" line="899"/>
         <source>Socks Proxy</source>
         <translation>SOCKS代理</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/proxy/proxy.ui" line="1057"/>
+        <location filename="../../../plugins/network/proxy/proxy.ui" line="1041"/>
         <source>List of ignored hosts. more than one entry, please separate with english semicolon(;)</source>
         <translation>忽略的主机列表，请使用英文分号（；）</translation>
     </message>
@@ -3990,22 +3990,22 @@ Please retry for login!</source>
         <translation type="vanished">默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="601"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="602"/>
         <source>basic</source>
         <translation>基础</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="603"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="604"/>
         <source>classical</source>
         <translation>经典</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="605"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="606"/>
         <source>default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="607"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="608"/>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="173"/>
         <source>Unknown</source>
         <translation>未知</translation>
@@ -4113,6 +4113,11 @@ Please retry for login!</source>
         <translation>账户信息</translation>
     </message>
     <message>
+        <location filename="../../utils/functionselect.cpp" line="178"/>
+        <source>Security Center</source>
+        <translation>安全中心</translation>
+    </message>
+    <message>
         <source>Netconnect</source>
         <translation type="vanished">网络连接</translation>
     </message>
@@ -4146,9 +4151,8 @@ Please retry for login!</source>
         <translation>语言和地区</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="178"/>
         <source>SecurityCenter</source>
-        <translation>安全中心</translation>
+        <translation type="vanished">安全中心</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="180"/>
@@ -4495,27 +4499,27 @@ in the file system invalid!</source>
     <name>Screensaver</name>
     <message>
         <location filename="../../../plugins/personalized/screensaver/screensaver.ui" line="53"/>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="66"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="70"/>
         <source>Screensaver</source>
         <translation>屏保</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screensaver/screensaver.ui" line="184"/>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="140"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="141"/>
         <source>Enable screensaver</source>
         <translation>开启屏保</translation>
         <extra-contents_path>/screensaver/Enable screensaver</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screensaver/screensaver.ui" line="258"/>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="142"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="143"/>
         <source>Screensaver program</source>
         <translation>屏幕保护程序</translation>
         <extra-contents_path>/screensaver/Enable screensaver</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screensaver/screensaver.ui" line="370"/>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="144"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="145"/>
         <source>idle time</source>
         <translation>等待时间</translation>
         <extra-contents_path>/screensaver/idle time</extra-contents_path>
@@ -4534,12 +4538,12 @@ in the file system invalid!</source>
         <translation type="vanished">屏保</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="183"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="195"/>
         <source>Default_ukui</source>
         <translation>默认屏保</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="184"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="196"/>
         <source>Blank_Only</source>
         <translation>黑屏</translation>
     </message>
@@ -4552,42 +4556,42 @@ in the file system invalid!</source>
         <translation type="vanished">从不</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="195"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="207"/>
         <source>5m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="195"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="207"/>
         <source>10m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="195"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="207"/>
         <source>30m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="195"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="207"/>
         <source>45m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="195"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="207"/>
         <source>1m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="196"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="208"/>
         <source>1h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="196"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="208"/>
         <source>1.5h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="196"/>
+        <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="208"/>
         <source>3h</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4603,7 +4607,6 @@ in the file system invalid!</source>
     <name>SecurityCenter</name>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.ui" line="14"/>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="151"/>
         <source>SecurityCenter</source>
         <translation>安全中心</translation>
     </message>
@@ -4621,6 +4624,11 @@ in the file system invalid!</source>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.ui" line="113"/>
         <source>Run Security Center</source>
         <translation>打开安全中心</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="151"/>
+        <source>Security Center</source>
+        <translation>安全中心</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="198"/>

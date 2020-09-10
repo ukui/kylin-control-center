@@ -148,7 +148,7 @@ SecurityCenter::SecurityCenter()
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
-    pluginName = tr("SecurityCenter");
+    pluginName = tr("Security Center");
     pluginType = UPDATE;
 
     initComponent();
