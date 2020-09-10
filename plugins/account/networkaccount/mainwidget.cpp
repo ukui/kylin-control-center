@@ -92,7 +92,7 @@ void MainWidget::setret_logout(int ret) {
     //do nothing
     //qDebug()<<ret<<"Coutner SatRieaf";
     if(ret == 0) {
-        m_mainDialog->set_back();
+        //m_mainDialog->set_back();
         m_mainWidget->setCurrentWidget(m_nullWidget);
         m_bIsStopped = true;
     }
@@ -102,8 +102,8 @@ void MainWidget::setret_conf(int ret) {
     //qDebug()<<ret<<"csacasca";
     if(ret == 0) {
         emit docheck();
-        m_mainDialog->closedialog();
-
+        //m_mainDialog->closedialog();
+        emit closedialog();
         m_cSyncDelay->start(1000);
         //QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     } else {
@@ -181,9 +181,7 @@ void MainWidget::init_gui() {
     m_exitCloud_btn = new QPushButton(tr("Exit"),this);//退出按钮
     m_workLayout = new QVBoxLayout;//业务逻辑布局
     //qDebug()<<"222222";
-    m_mainDialog = new MainDialog;//登录窗口
-    //qDebug()<<"111111";
-    m_editDialog = new EditPassDialog;//修改密码窗口
+    //qDebug()<<"111111";;
     //qDebug()<<"000000";
     m_infoLayout = new QHBoxLayout;//信息框布局
     //gif = new QLabel(exit_page);//同步动画
@@ -201,10 +199,6 @@ void MainWidget::init_gui() {
     m_cLoginTimer = new QTimer(this);
     m_cLoginTimer->stop();
 
-    m_editDialog->hide();
-    m_mainDialog->hide();
-    m_editDialog->set_client(m_dbusClient,thread);//安装客户端通信
-    m_mainDialog->set_client(m_dbusClient,thread);
     QVBoxLayout *VBox_tab = new QVBoxLayout;
     QHBoxLayout *HBox_tab_sub = new QHBoxLayout;
     QHBoxLayout *HBox_tab_btn_sub = new QHBoxLayout;
@@ -396,42 +390,6 @@ void MainWidget::init_gui() {
     connect(m_openEditDialog_btn,SIGNAL(clicked()),this,SLOT(neweditdialog()));
     connect(m_exitCloud_btn,SIGNAL(clicked()),this,SLOT(on_login_out()));
     connect(m_editDialog,SIGNAL(account_changed()),this,SLOT(on_login_out()));
-    connect(m_mainDialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
-    connect(m_mainDialog,&MainDialog::on_login_success, [this] () {
-        m_cLoginTimer->setSingleShot(true);
-        m_cLoginTimer->setInterval(15000);
-        m_cLoginTimer->start();
-        m_bIsStopped = false;       
-    });
-
-    connect(m_mainDialog,&MainDialog::on_login_failed,[this] () {
-           m_cLoginTimer->stop();
-           m_bIsStopped = true;
-    });
-
-    connect(m_cRetry,&QTimer::timeout, [this] () {
-        emit doman();
-        m_cRetry->stop();
-    });
-
-    connect(m_mainDialog, &MainDialog::on_close_event, [this] () {
-        m_cLoginTimer->stop();
-        m_bIsStopped = true;
-    });
-
-    connect(m_cLoginTimer,&QTimer::timeout,[this]() {
-        m_cLoginTimer->stop();
-        if(m_bIsStopped) {
-            return ;
-        }
-
-        if(m_mainWidget->currentWidget()  == m_widgetContainer) {
-            
-        } else if (m_mainWidget->currentWidget() == m_nullWidget) {
-            m_mainDialog->setnormal();
-            emit dologout();
-        }
-    });
     for(int btncnt = 0;btncnt < m_itemList->get_list().size();btncnt ++) {
         connect(m_itemList->get_item(btncnt)->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_switch_button(int,int)));
     }
@@ -439,6 +397,7 @@ void MainWidget::init_gui() {
     connect(m_cSyncDelay,&QTimer::timeout,[=] () {
         emit doman();
         m_cSyncDelay->stop();
+        m_bIsStopped = true;
     });
 
     //All.conf的
@@ -498,10 +457,50 @@ void MainWidget::init_gui() {
 
 /* 打开登录框处理事件 */
 void MainWidget::on_login() {
-    m_editDialog->m_bIsUsed = false;
+    m_mainDialog = new MainDialog;
+    m_mainDialog->setAttribute(Qt::WA_DeleteOnClose);
+    //m_editDialog->m_bIsUsed = false;
+    m_mainDialog->set_client(m_dbusClient,thread);
     m_mainDialog->is_used = true;
     m_mainDialog->set_clear();
     //qDebug()<<"login";
+    connect(this,&MainWidget::closedialog,[this] () {
+        m_mainDialog->on_close();
+    });
+    connect(m_mainDialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
+    connect(m_mainDialog,&MainDialog::on_login_success, [this] () {
+        m_cLoginTimer->setSingleShot(true);
+        m_cLoginTimer->setInterval(15000);
+        m_cLoginTimer->start();
+        m_bIsStopped = false;
+    });
+    connect(m_mainDialog,&MainDialog::on_login_failed,[this] () {
+        m_cLoginTimer->stop();
+        m_bIsStopped = true;
+    });
+
+    connect(m_cRetry,&QTimer::timeout, [this] () {
+        emit doman();
+        m_cRetry->stop();
+    });
+
+    connect(m_mainDialog, &MainDialog::on_close_event, [this] () {
+        m_cLoginTimer->stop();
+        m_bIsStopped = true;
+    });
+
+    connect(m_cLoginTimer,&QTimer::timeout,[this]() {
+        m_cLoginTimer->stop();
+        if(m_bIsStopped) {
+            return ;
+        }
+
+        if(m_mainWidget->currentWidget()  == m_widgetContainer) {
+        } else if (m_mainWidget->currentWidget() == m_nullWidget) {
+            m_mainDialog->setnormal();
+            emit dologout();
+        }
+    });
     m_mainDialog->show();
 }
 
@@ -646,13 +645,8 @@ void MainWidget::on_login_out() {
     m_dbusClient->m_bFirstAttempt = true;
     //qDebug()<< "wb777";
     emit dologout();
-    if(m_editDialog->isVisible() == true) {
-        m_editDialog->close();
-    }
     //qDebug()<<"1213131";
     m_szCode = "";
-    m_mainDialog->set_clear();
-    m_editDialog->set_clear();
     m_autoSyn->set_change(0,"0");
     m_autoSyn->set_active(true);
     m_keyInfoList.clear();
@@ -667,10 +661,14 @@ void MainWidget::on_login_out() {
 /* 修改密码打开处理事件 */
 void MainWidget::neweditdialog() {
     //emit docheck();
+    m_editDialog = new EditPassDialog;
+    m_editDialog->setAttribute(Qt::WA_DeleteOnClose);
+    m_editDialog->set_client(m_dbusClient,thread);
     m_editDialog->m_bIsUsed = true;
-    m_mainDialog->is_used = false;
+    //m_mainDialog->is_used = false;
     m_editDialog->set_clear();
     m_editDialog->m_szCode  = m_szCode;
+    connect(m_editDialog,SIGNAL(account_changed()),this,SLOT(on_login_out()));
     m_editDialog->show();
     m_editDialog->raise();
 }
@@ -865,8 +863,6 @@ MainWidget::~MainWidget() {
 
     m_fsWatcher.removePath(QDir::homePath() + "/.cache/kylinssoclient/");
     delete m_itemList;
-    delete m_mainDialog;
-    delete m_editDialog;
     delete m_dbusClient;
     delete m_welcomeImage;
     if(thread)
