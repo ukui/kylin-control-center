@@ -420,16 +420,16 @@ void MainWidget::init_gui() {
     });
 
     connect(m_cLoginTimer,&QTimer::timeout,[this]() {
+        m_cLoginTimer->stop();
         if(m_bIsStopped) {
             return ;
         }
 
         if(m_mainWidget->currentWidget()  == m_widgetContainer) {
-            m_cLoginTimer->stop();
+            
         } else if (m_mainWidget->currentWidget() == m_nullWidget) {
             m_mainDialog->setnormal();
             emit dologout();
-            m_cLoginTimer->stop();
         }
     });
     for(int btncnt = 0;btncnt < m_itemList->get_list().size();btncnt ++) {
