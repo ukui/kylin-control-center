@@ -28,7 +28,7 @@
 #include <QMoveEvent>
 #include <QHideEvent>
 #include <QPainter>
-
+#include <QPropertyAnimation>
 #include "interface.h"
 #include "homepagewidget.h"
 #include "modulepagewidget.h"
@@ -57,6 +57,7 @@ public:
 
     void bootOptionsFilter(QString opt);
     void bootOptionsSwitch(int moduleNum, int funcNum);
+    void setLineEditFocus(QString arg);
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -88,7 +89,12 @@ private:
     QLabel      * titleLabel;
     QTimer      * timer;
     QLabel      * logoLabel;
-
+    QLabel            *m_queryIcon;
+    QLabel            *m_queryText=nullptr;
+    QPropertyAnimation *m_animation=nullptr;
+    QWidget           *m_queryWid=nullptr;
+    bool              m_isSearching;
+    QString           m_searchKeyWords;
 private:
     void initUI();
     void initTileBar();
@@ -112,6 +118,7 @@ public slots:
     void functionBtnClicked(QObject * plugin);
     void sltMessageReceived(const QString &msg);
     void switchPage(QString moduleName);
+    void animationFinishedSlot();
 };
 
 #endif // MAINWINDOW_H
