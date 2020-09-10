@@ -94,7 +94,8 @@ void ShowAllShortcut::buildComponent(QMap<QString, QMap<QString, QString> > shor
 
     QWidget * baseWidget = new QWidget;
     baseWidget->setAttribute(Qt::WA_DeleteOnClose);
-    baseWidget->setFixedWidth(ui->scrollArea->width());
+//    baseWidget->setFixedWidth(ui->scrollArea->width());
+    baseWidget->setFixedWidth(ui->scrollArea->width() - 4);
     baseWidget->setStyleSheet("QWidget{background: palette(base);/* border-radius: 6px;*/ }");
 
     QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);

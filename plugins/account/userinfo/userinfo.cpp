@@ -774,8 +774,8 @@ void UserInfo::deleteUser(bool removefile, QString username){
     UserInfomation user = (UserInfomation)(allUserInfoMap.find(username).value());
 
     // hidden the item when click delete user button
-    QListWidgetItem *item =  otherUserItemMap.find(user.objpath).value();
-    ui->listWidget->setItemHidden(item, true);
+//    QListWidgetItem *item =  otherUserItemMap.find(user.objpath).value();
+//    ui->listWidget->setItemHidden(item, true);
 
     sysdispatcher->delete_user(user.uid, removefile);
 }
