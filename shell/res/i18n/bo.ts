@@ -3315,7 +3315,12 @@ Please retry for login!</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="378"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="209"/>
+        <source>Add Shortcut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="379"/>
         <source>Update Shortcut</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3957,6 +3962,12 @@ in the file system invalid!</source>
         <source>Add custom shortcut</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/shortcut/Add custom shortcut</extra-contents_path>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="465"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="514"/>
+        <source>disable</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="77"/>
@@ -4734,6 +4745,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="458"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.cpp" line="188"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>

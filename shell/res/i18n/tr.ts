@@ -4010,13 +4010,14 @@ Lütfen giriş için tekrar deneyin!</translation>
         <translation>Bilinmeyen</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="378"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="379"/>
         <source>Update Shortcut</source>
         <translation>Kısayoları Güncelle</translation>
     </message>
     <message>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="209"/>
         <source>Add Shortcut</source>
-        <translation type="vanished">Kısayol Ekle</translation>
+        <translation>Kısayol Ekle</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="51"/>
@@ -4703,6 +4704,12 @@ dosya sisteminde geçersiz!</translation>
         <source>Add custom shortcut</source>
         <translation>Özel Kısayol Ekle</translation>
         <extra-contents_path>/shortcut/Add custom shortcut</extra-contents_path>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="465"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="514"/>
+        <source>disable</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="154"/>
@@ -5665,6 +5672,7 @@ Genel nedenler, toplam ekran boyutunun çok büyük olması veya GPU&apos;nuz ta
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="458"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.cpp" line="188"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>

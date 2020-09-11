@@ -4011,13 +4011,14 @@ Please retry for login!</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="378"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="379"/>
         <source>Update Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>更新快捷键</translation>
     </message>
     <message>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="209"/>
         <source>Add Shortcut</source>
-        <translation type="vanished">添加快捷键</translation>
+        <translation>添加快捷键</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="51"/>
@@ -4697,6 +4698,12 @@ in the file system invalid!</source>
         <source>Add custom shortcut</source>
         <translation>添加自定义快捷键</translation>
         <extra-contents_path>/shortcut/Add custom shortcut</extra-contents_path>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="465"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="514"/>
+        <source>disable</source>
+        <translation>无效</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="154"/>
@@ -5658,6 +5665,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="458"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.cpp" line="188"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
