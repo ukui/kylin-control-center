@@ -136,6 +136,7 @@
         <file>secondaryleftmenu/Cloud Account.svg</file>
         <file>secondaryleftmenu/Cloud AccountWhite.svg</file>
         <file>plugins/netconnect/wifi5.svg</file>
+        <file>dropArrow/search.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>
