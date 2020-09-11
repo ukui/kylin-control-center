@@ -4005,7 +4005,7 @@ Please retry for login!</source>
         <translation>经典</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="634"/>        
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="634"/>
         <source>default</source>
         <translation>默认</translation>
     </message>
