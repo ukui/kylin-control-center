@@ -4005,7 +4005,7 @@ Please retry for login!</source>
         <translation>经典</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="634"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="634"/>        
         <source>default</source>
         <translation>默认</translation>
     </message>
@@ -4016,13 +4016,14 @@ Please retry for login!</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="378"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="379"/>
         <source>Update Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>更新快捷键</translation>
     </message>
     <message>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="209"/>
         <source>Add Shortcut</source>
-        <translation type="vanished">添加快捷键</translation>
+        <translation>添加快捷键</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="51"/>
@@ -4118,6 +4119,11 @@ Please retry for login!</source>
         <translation>账户信息</translation>
     </message>
     <message>
+        <location filename="../../utils/functionselect.cpp" line="178"/>
+        <source>Security Center</source>
+        <translation>安全中心</translation>
+    </message>
+    <message>
         <source>Netconnect</source>
         <translation type="vanished">网络连接</translation>
     </message>
@@ -4151,9 +4157,8 @@ Please retry for login!</source>
         <translation>语言和地区</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="178"/>
         <source>SecurityCenter</source>
-        <translation>安全中心</translation>
+        <translation type="vanished">安全中心</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="180"/>
@@ -4608,7 +4613,6 @@ in the file system invalid!</source>
     <name>SecurityCenter</name>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.ui" line="14"/>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="151"/>
         <source>SecurityCenter</source>
         <translation>安全中心</translation>
     </message>
@@ -4626,6 +4630,11 @@ in the file system invalid!</source>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.ui" line="113"/>
         <source>Run Security Center</source>
         <translation>打开安全中心</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="151"/>
+        <source>Security Center</source>
+        <translation>安全中心</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="198"/>
@@ -4694,6 +4703,12 @@ in the file system invalid!</source>
         <source>Add custom shortcut</source>
         <translation>添加自定义快捷键</translation>
         <extra-contents_path>/shortcut/Add custom shortcut</extra-contents_path>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="465"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="514"/>
+        <source>disable</source>
+        <translation>无效</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="154"/>
@@ -5655,6 +5670,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="458"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.cpp" line="188"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>

@@ -206,6 +206,7 @@ void Shortcut::setupComponent(){
 void Shortcut::setupConnect(){
 
     connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
+        addDialog->setTitleText(QObject::tr("Add Shortcut"));
         addDialog->exec();
     });
 
@@ -461,7 +462,7 @@ void Shortcut::createNewShortcut(QString path, QString name, QString exec){
         KeyEntry * nKeyentry = new KeyEntry;
         nKeyentry->gsPath = availablepath;
         nKeyentry->nameStr = name;
-        nKeyentry->bindingStr = DEFAULT_BINDING;
+        nKeyentry->bindingStr = tr("disable");
         nKeyentry->actionStr = exec;
 
         customEntries.append(nKeyentry);
@@ -510,7 +511,7 @@ void Shortcut::createNewShortcut(QString path, QString name, QString exec){
     const QByteArray idd(availablepath.toLatin1().data());
     QGSettings * settings = new QGSettings(id, idd);
 
-    settings->set(BINDING_KEY, DEFAULT_BINDING);
+    settings->set(BINDING_KEY, tr("disable"));
     settings->set(NAME_KEY, name);
     settings->set(ACTION_KEY, exec);
 
