@@ -87,10 +87,14 @@ SearchWidget::SearchWidget(QWidget *parent)
             }
         }
     });
-
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+    connect(m_completer, static_cast<void(QCompleter::*)(const QString &)>(&QCompleter::activated),
+            [=](const QString &text) {
+#else
     //鼠标点击后直接页面跳转(https://doc.qt.io/qt-5/qcompleter.html#activated-1)
     connect(m_completer, QOverload<const QString &>::of(&QCompleter::activated),
-        [=](const QString &text) {
+            [=](const QString &text) {
+#endif
         Q_UNUSED(text);
         Q_EMIT returnPressed();
     });

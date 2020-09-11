@@ -66,6 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // 设置窗体无边框
     setWindowFlags(Qt::FramelessWindowHint | Qt::Widget);
     setAttribute(Qt::WA_TranslucentBackground, true);
+    bIsFullScreen = false;
 
     logoLabel  = new QLabel(tr("UKCC"), this);
     PreScene *prescene = new PreScene(logoLabel, this->size());
