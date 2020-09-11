@@ -138,6 +138,7 @@ signals:
     void doconf();
     void dochange(QString name,int flag);
     void docheck();
+    void closedialog();
 };
 
 #endif // CONFIG_LIST_WIDGET_H
