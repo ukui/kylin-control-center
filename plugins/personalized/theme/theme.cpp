@@ -591,6 +591,9 @@ void Theme::initConnection() {
     connect(ui->resetBtn, &QPushButton::clicked, this, &Theme::resetBtnClickSlot);
 
     connect(effectSwitchBtn, &SwitchButton::checkedChanged, [this](bool checked) {
+        if (!checked) {
+            ui->tranSlider->setValue(100);
+        }
         QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
         ui->transFrame->setVisible(checked);
         writeKwinSettings(checked, currentThemeMode, true);
