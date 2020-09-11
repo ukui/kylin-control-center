@@ -1747,12 +1747,12 @@ folder will be deleted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="101"/>
+        <location filename="../../../plugins/system/display/display.ui" line="127"/>
         <source>monitor</source>
         <translation>显示器</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="144"/>
+        <location filename="../../../plugins/system/display/display.ui" line="170"/>
         <source>set as home screen</source>
         <translation>设为主屏</translation>
     </message>
@@ -1761,72 +1761,77 @@ folder will be deleted!</source>
         <translation type="vanished">关闭显示器</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="301"/>
+        <location filename="../../../plugins/system/display/display.ui" line="327"/>
         <source>unify output</source>
         <translation>统一输出</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="205"/>
+        <location filename="../../../plugins/system/display/display.ui" line="231"/>
         <source>open monitor</source>
         <translation>打开显示器</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="259"/>
+        <location filename="../../../plugins/system/display/display.ui" line="32"/>
+        <source>Display</source>
+        <translation>显示器</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/display/display.ui" line="285"/>
         <source>Advanced</source>
         <translation>高级显示</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="360"/>
+        <location filename="../../../plugins/system/display/display.ui" line="386"/>
         <source>screen brightness adjustment</source>
         <translation>调整屏幕亮度</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="367"/>
+        <location filename="../../../plugins/system/display/display.ui" line="393"/>
         <source>dark</source>
         <translation>暗</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="390"/>
+        <location filename="../../../plugins/system/display/display.ui" line="416"/>
         <source>bright</source>
         <translation>亮</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="458"/>
+        <location filename="../../../plugins/system/display/display.ui" line="484"/>
         <source>follow the sunrise and sunset(17:55-05:04)</source>
         <translation>跟随日出日落（17:55-05:04）</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="522"/>
+        <location filename="../../../plugins/system/display/display.ui" line="548"/>
         <source>custom time</source>
         <translation>自定义时间</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="586"/>
+        <location filename="../../../plugins/system/display/display.ui" line="612"/>
         <source>opening time</source>
         <translation>开启时间</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="669"/>
+        <location filename="../../../plugins/system/display/display.ui" line="695"/>
         <source>closing time</source>
         <translation>关闭时间</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="764"/>
+        <location filename="../../../plugins/system/display/display.ui" line="790"/>
         <source>color temperature</source>
         <translation>色温</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="771"/>
+        <location filename="../../../plugins/system/display/display.ui" line="797"/>
         <source>warm</source>
         <translation>暖</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="820"/>
+        <location filename="../../../plugins/system/display/display.ui" line="846"/>
         <source>cold</source>
         <translation>冷</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/display.ui" line="857"/>
+        <location filename="../../../plugins/system/display/display.ui" line="883"/>
         <source>apply</source>
         <translation>应用</translation>
     </message>
@@ -3018,60 +3023,60 @@ folder will be deleted!</source>
         <translation>您的云账户：%1</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="545"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="543"/>
         <source>Unauthorized device or OSS falied.
 Please retry for login!</source>
         <translation>OSS访问失败，请检查您的网络后再登录！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="181"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="754"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="769"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="751"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="766"/>
         <source>Exit</source>
         <translation>退出登录</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="192"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="190"/>
         <source>Sync</source>
         <translation>同步中</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="220"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="214"/>
         <source>Sign in</source>
         <translation>登录</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="242"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="236"/>
         <source>Stop sync</source>
         <translation>结束同步</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="256"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="250"/>
         <source>Sync your settings</source>
         <translation>同步您的设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="260"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="254"/>
         <source>Your account:%1</source>
         <translation>您的云账户：%1</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="271"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="265"/>
         <source>Auto sync</source>
         <translation>自动同步</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="336"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="330"/>
         <source>Synchronize your personalized settings and data</source>
         <translation>同步您账户的数据以及个性化设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="624"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="622"/>
         <source>This operation may cover your settings!</source>
         <translation>该操作可能覆盖您目前的快捷键！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="855"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="852"/>
         <source>Cloud ID desktop message</source>
         <translation>云账户消息</translation>
     </message>
@@ -3100,7 +3105,7 @@ Please retry for login!</source>
         <translation type="vanished">同步失败，请检查您的网络连接或者登出再重试一次！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="830"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="827"/>
         <source>%1,</source>
         <translation>%1,</translation>
     </message>
@@ -3120,23 +3125,23 @@ Please retry for login!</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../mainwindow.cpp" line="437"/>
+        <location filename="../../mainwindow.cpp" line="431"/>
         <source>Search</source>
         <translation type="unfinished">搜索</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="70"/>
-        <location filename="../../mainwindow.cpp" line="459"/>
+        <location filename="../../mainwindow.cpp" line="71"/>
+        <location filename="../../mainwindow.cpp" line="453"/>
         <source>UKCC</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="832"/>
+        <location filename="../../mainwindow.cpp" line="823"/>
         <source>ukcc</source>
         <translation>控制面板</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="599"/>
+        <location filename="../../mainwindow.cpp" line="590"/>
         <source>HOME</source>
         <translation>首页</translation>
     </message>
@@ -3736,7 +3741,7 @@ Please retry for login!</source>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="208"/>
         <source>always</source>
-        <translation>总是显示</translation>
+        <translation>显示电源图标在托盘栏</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="208"/>
@@ -3990,22 +3995,22 @@ Please retry for login!</source>
         <translation type="vanished">默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="602"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="605"/>
         <source>basic</source>
         <translation>基础</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="604"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="607"/>
         <source>classical</source>
         <translation>经典</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="606"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="609"/>
         <source>default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="608"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="611"/>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="173"/>
         <source>Unknown</source>
         <translation>未知</translation>
@@ -4741,8 +4746,8 @@ in the file system invalid!</source>
         <translation>快捷键</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/showallshortcut.cpp" line="109"/>
-        <location filename="../../../plugins/devices/shortcut/showallshortcut.cpp" line="157"/>
+        <location filename="../../../plugins/devices/shortcut/showallshortcut.cpp" line="110"/>
+        <location filename="../../../plugins/devices/shortcut/showallshortcut.cpp" line="158"/>
         <source>Desktop</source>
         <translation>桌面</translation>
     </message>
@@ -4894,7 +4899,7 @@ in the file system invalid!</source>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/worldMap/timezonechooser.cpp" line="47"/>
-        <location filename="../../../plugins/time-language/datetime/worldMap/timezonechooser.cpp" line="151"/>
+        <location filename="../../../plugins/time-language/datetime/worldMap/timezonechooser.cpp" line="157"/>
         <source>change timezone</source>
         <translation>修改系统时区</translation>
     </message>
@@ -5587,46 +5592,46 @@ in the file system invalid!</source>
         <translation type="vanished">屏幕缩放 </translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="104"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="105"/>
         <source>unify output</source>
         <translation type="unfinished">统一输出</translation>
         <extra-contents_path>/display/unify output</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="107"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="108"/>
         <source>night mode</source>
         <translation>夜间模式</translation>
         <extra-contents_path>/display/night mode</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="536"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="537"/>
         <source>Some applications need to be logouted to take effect</source>
         <translation>应用程序需要注销才能生效</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="874"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="875"/>
         <source>please insure at least one output!</source>
         <translation>请确保至少开启一个屏幕!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="875"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="883"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="876"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="884"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="882"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="883"/>
         <source>Morning time should be earlier than evening time!</source>
         <translation>早晨时刻应早于晚上的时刻!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="902"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="903"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation>抱歉，配置不能应用.</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="903"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="904"/>
         <source>@title:window</source>
         <comment>Unsupported Configuration</comment>
         <translation>窗口</translation>

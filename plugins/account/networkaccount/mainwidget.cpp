@@ -389,7 +389,6 @@ void MainWidget::init_gui() {
     connect(m_login_btn,SIGNAL(clicked()),this,SLOT(on_login()));
     connect(m_openEditDialog_btn,SIGNAL(clicked()),this,SLOT(neweditdialog()));
     connect(m_exitCloud_btn,SIGNAL(clicked()),this,SLOT(on_login_out()));
-    connect(m_editDialog,SIGNAL(account_changed()),this,SLOT(on_login_out()));
     for(int btncnt = 0;btncnt < m_itemList->get_list().size();btncnt ++) {
         connect(m_itemList->get_item(btncnt)->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_switch_button(int,int)));
     }
