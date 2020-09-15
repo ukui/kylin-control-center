@@ -353,7 +353,7 @@ void MainDialog::setret_reg(int ret) {
 }
 
 void MainDialog::setret_login(int ret) {
-    qDebug() << "ssssssssssssssss";
+    //qDebug() << "ssssssssssssssss";
     if(ret != 0) {
         m_loginDialog->get_mcode_lineedit()->setText("");
         if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
@@ -371,7 +371,7 @@ void MainDialog::setret_login(int ret) {
         }
         return ;
     } else {
-        qDebug() << ret;
+        //qDebug() << ret;
     }
 }
 
@@ -1068,12 +1068,12 @@ void MainDialog::on_timer_timeout() {
 
 /* 登录回调槽函数，登录回执消息后执行此处 */
 void MainDialog::on_login_finished(int ret, QString uuid) {
-    qDebug() << "ssssssssssssssss2";
+    //qDebug() << "ssssssssssssssss2";
     if(uuid != this->m_uuid) {
         //qDebug()<<uuid<<this->m_uuid;
         return ;
     }
-    qDebug()<<ret;
+    //qDebug()<<ret;
     //无手机号码绑定，进入手机号码绑定页面
     if(ret == 119) {
         emit on_login_failed();
@@ -1097,7 +1097,7 @@ void MainDialog::on_login_finished(int ret, QString uuid) {
         //m_submitBtn->setText(tr("Sign in"));
         emit on_login_success(); //发送成功登录信号给主页面
     } else {
-        qDebug() << "cscacacasca";
+        //qDebug() << "cscacacasca";
         emit on_login_failed();
         set_back();
         m_blueEffect->stop();             //登录失败，执行此处，关闭登录执行过程效果，并打印错误消息
@@ -1156,7 +1156,7 @@ void MainDialog::on_reg_finished(int ret, QString uuid) {
         return ;
     }
     m_baseWidget->setEnabled(true);
-    qDebug()<<ret;
+   // qDebug()<<ret;
     if(ret == 0) {
         timerout_num= 0;
         m_timer->stop();
@@ -1232,7 +1232,7 @@ void MainDialog::on_get_mcode_by_phone(int ret, QString uuid) {
     if(uuid != this->m_uuid) {
         return ;
     }
-    qDebug() << ret;
+    //qDebug() << ret;
     if(ret != 0) {
         if(m_stackedWidget->currentWidget() == m_loginDialog) {
             m_loginDialog->get_user_mcode()->setEnabled(true);
@@ -1646,7 +1646,7 @@ void MainDialog::setnormal() {
 
 /* 关闭按钮触发处理 */
 void MainDialog::on_close() {
-    qDebug()<<"yes  ssss";
+    //qDebug()<<"yes  ssss";
     m_forgetpassSendBtn->setEnabled(true);
     m_forgetpassSendBtn->setText(tr("Send"));
     m_baseWidget->setEnabled(true);

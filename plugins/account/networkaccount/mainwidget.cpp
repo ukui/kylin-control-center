@@ -61,7 +61,6 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
 }
 /* 检测第一次登录，为用户添加名字 */
 void MainWidget::setname(QString n) {
-    qDebug()<<n<<"2131231";
     m_szCode = n;
     if(m_szCode != "" && m_szCode !="201" && m_szCode != "203" && m_szCode != "401" && !m_bTokenValid) {
         m_infoTab->setText(tr("Your account：%1").arg(m_szCode));
@@ -99,7 +98,7 @@ void MainWidget::setret_logout(int ret) {
 }
 
 void MainWidget::setret_conf(int ret) {
-    qDebug()<<ret<<"csacasca";
+    //qDebug()<<ret<<"csacasca";
     if(ret == 0) {
         emit docheck();
         emit closedialog();
@@ -122,7 +121,7 @@ void MainWidget::setret_man(int ret) {
 }
 
 void MainWidget::setret_check(QString ret) {
-    qDebug()<<ret<<"!ret_ok;";
+    //qDebug()<<ret<<"!ret_ok;";
     if((ret == "" || ret =="201" || ret == "203" || ret == "401" ) && m_bTokenValid) {
         //qDebug()<<"checked"<<ret<<ret;
         emit dologout();
@@ -465,7 +464,7 @@ void MainWidget::on_login() {
     m_mainDialog->set_client(m_dbusClient,thread);
     m_mainDialog->is_used = true;
     m_mainDialog->set_clear();
-    qDebug()<<"login";
+    //qDebug()<<"login";
 
     connect(m_mainDialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
     connect(m_mainDialog,&MainDialog::on_login_success, [this] () {
@@ -618,7 +617,7 @@ void MainWidget::on_switch_button(int on,int id) {
     if(!m_bAutoSyn) {
         return ;
     }
-    qDebug() << id;
+    //qDebug() << id;
     if(on == 0 && m_exitCloud_btn->property("on") == true) {
         m_itemList->get_item(id)->make_itemon();
         return ;
