@@ -19,8 +19,6 @@ ControlPanel::ControlPanel(QWidget *parent)
 //    this->setStyleSheet("border: 1px solid #ff0000");
     mLayout = new QVBoxLayout(this);
     mLayout->setContentsMargins(0,0,0,0);
-
-
 }
 
 ControlPanel::~ControlPanel()
@@ -46,7 +44,6 @@ void ControlPanel::setConfig(const KScreen::ConfigPtr &config)
             this, &ControlPanel::removeOutput);
 
     for (const KScreen::OutputPtr &output : mConfig->outputs()) {
-        //qDebug()<<"output is----->"<<output<<endl;
         addOutput(output);
     }
 }

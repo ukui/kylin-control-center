@@ -122,17 +122,12 @@ void OutputConfig::initUi()
     resLabel->setMaximumSize(118,30);
 
     QHBoxLayout *resLayout = new QHBoxLayout();
-    //resLayout->setContentsMargins(0,5,0,5);
     resLayout->addWidget(resLabel);
     resLayout->addWidget(mResolution);
-//    resLayout->addStretch();
-
 
     QFrame *resFrame = new QFrame(this);
     resFrame->setFrameShape(QFrame::Shape::Box);
     resFrame->setLayout(resLayout);
-//    resWidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-//    mResolution->setStyleSheet("background-color:#F8F9F9");
 
     resFrame->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     resFrame->setMinimumSize(552,50);
@@ -145,14 +140,9 @@ void OutputConfig::initUi()
 
     //方向下拉框
     mRotation = new QComboBox();
-
-//    mRotation->setFont(ft);
     mRotation->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     mRotation->setMinimumSize(402,30);
     mRotation->setMaximumSize(16777215,30);
-//    mRotation->setStyleSheet(qss);
-//    mRotation->setItemDelegate(itemDelege);
-
 
     QLabel *rotateLabel = new QLabel();
     // ~contents_path /display/orientation
@@ -165,15 +155,12 @@ void OutputConfig::initUi()
     QHBoxLayout *rotateLayout = new QHBoxLayout();
     rotateLayout->addWidget(rotateLabel);
 
-
     rotateLayout->addWidget(mRotation);
 //    rotateLayout->addStretch();
 
     QFrame *rotateFrame = new QFrame(this);
     rotateFrame->setFrameShape(QFrame::Shape::Box);
     rotateFrame->setLayout(rotateLayout);
-//    rotateWidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-//    mRotation->setStyleSheet("background-color:#F8F9F9");
 
     rotateFrame->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     rotateFrame->setMinimumSize(550,50);
@@ -205,18 +192,12 @@ void OutputConfig::initUi()
 
     //刷新率下拉框
     mRefreshRate = new QComboBox();
-//    mRefreshRate->setFont(ft);
-//    mRefreshRate->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     mRefreshRate->setMinimumSize(402,30);
     mRefreshRate->setMaximumSize(16777215,30);
-//    mRefreshRate->setStyleSheet(qss);
-//    mRefreshRate->setItemDelegate(itemDelege);
-//    mRefreshRate->setMaxVisibleItems(5);
 
     QLabel *freshLabel = new QLabel();
     // ~contents_path /display/refresh rate
     freshLabel->setText(tr("refresh rate"));
-//    freshLabel->setFont(ft);
     freshLabel->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     freshLabel->setMinimumSize(118,30);
     freshLabel->setMaximumSize(118,30);
@@ -224,12 +205,10 @@ void OutputConfig::initUi()
     QHBoxLayout *freshLayout = new QHBoxLayout();
     freshLayout->addWidget(freshLabel);
     freshLayout->addWidget(mRefreshRate);
-//    freshLayout->addStretch();
 
     QFrame *freshFrame = new QFrame(this);
     freshFrame->setFrameShape(QFrame::Shape::Box);
     freshFrame->setLayout(freshLayout);
-//    freshWidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
 
     freshFrame->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     freshFrame->setMinimumSize(550,50);
@@ -245,7 +224,6 @@ void OutputConfig::initUi()
 
     scaleCombox = new QComboBox();
     scaleCombox->setObjectName("scaleCombox");
-//    mRefreshRate->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     scaleCombox->setMinimumSize(402,30);
     scaleCombox->setMaximumSize(16777215,30);
 
@@ -283,7 +261,6 @@ void OutputConfig::initUi()
     QFrame *scaleFrame = new QFrame(this);
     scaleFrame->setFrameShape(QFrame::Shape::Box);
     scaleFrame->setLayout(scaleLayout);
-//    scaleWidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
 
     scaleFrame->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     scaleFrame->setMinimumSize(550,50);
@@ -364,7 +341,7 @@ void OutputConfig::slotResolutionChanged(const QSize &size)
         // If selected refresh rate is other then what we consider the "Auto" value
         // - that is it's not the highest resolution - then select it, otherwise
         // we stick with "Auto"
-        if (mode == selectedMode && i > 1) {
+        if (mode == selectedMode && mRefreshRate->count() > 1) {
             // i + 1 since 0 is auto
             mRefreshRate->setCurrentIndex(i + 1);
         }
