@@ -80,7 +80,6 @@ public:
     bool setVideoPlayersDefaultProgram(char * appid);
     bool setTextEditorsDefautlProgram(char * appid);
 
-
 private:
     char    * getDefaultAppId(const char * contentType);
     AppList * getAppIdList(const char * contentType);
@@ -102,6 +101,8 @@ public slots:
     void audioComBoBox_changed_cb(int index);
     void videoComBoBox_changed_cb(int index);
     void textComBoBox_changed_cb(int index);
+
+    void resetDefaultApp();
 };
 
 #endif // DEFAULTAPP_H

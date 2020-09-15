@@ -33,7 +33,7 @@
 
 #define DESKTOPPATH "/usr/share/applications/"
 
-DefaultApp::DefaultApp(){  
+DefaultApp::DefaultApp() {
     ui = new Ui::DefaultAppWindow;
     pluginWidget = new QWidget;
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
@@ -45,26 +45,26 @@ DefaultApp::DefaultApp(){
 
     initUI();
 
-//    ui->resetPushBtn->hide();
+    connect(ui->ResetBtn, SIGNAL(clicked(bool)), this, SLOT(resetDefaultApp()));
 }
 
-DefaultApp::~DefaultApp(){
+DefaultApp::~DefaultApp() {
     delete ui;
 }
 
-QString DefaultApp::get_plugin_name(){
+QString DefaultApp::get_plugin_name() {
     return pluginName;
 }
 
-int DefaultApp::get_plugin_type(){
+int DefaultApp::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *DefaultApp::get_plugin_ui(){
+QWidget *DefaultApp::get_plugin_ui() {
     return pluginWidget;
 }
 
-void DefaultApp::plugin_delay_control(){
+void DefaultApp::plugin_delay_control() {
 
 }
 
@@ -73,7 +73,7 @@ const QString DefaultApp::name() const {
     return QStringLiteral("defaultapp");
 }
 
-void DefaultApp::initUI(){
+void DefaultApp::initUI() {
 
     //~ contents_path /defaultapp/Browser
     ui->browserLabel->setText(tr("Browser"));
@@ -93,8 +93,8 @@ void DefaultApp::initUI(){
     int browserindex = -1;
     QString currentbrowser(getDefaultAppId(BROWSERTYPE)); //获取当前
     AppList * list = getAppIdList(BROWSERTYPE); //获取可选列表
-    if (list){
-        for (int i = 0; list[i].appid != NULL; i++){
+    if (list) {
+        for (int i = 0; list[i].appid != NULL; i++) {
             QString single(list[i].appid);
             QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
             GDesktopAppInfo * browserinfo = g_desktop_app_info_new_from_filename(ba.constData());
@@ -121,8 +121,8 @@ void DefaultApp::initUI(){
     QString currentmail(getDefaultAppId(MAILTYPE));
 
     AppList * maillist = getAppIdList(MAILTYPE);
-    if (maillist){
-        for (int i = 0; maillist[i].appid != NULL; i++){
+    if (maillist) {
+        for (int i = 0; maillist[i].appid != NULL; i++) {
             QString single(maillist[i].appid);
             QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
             GDesktopAppInfo * mailinfo = g_desktop_app_info_new_from_filename(ba.constData());
@@ -149,11 +149,11 @@ void DefaultApp::initUI(){
     QStringList browserList;
     AppList * imagelist = getAppIdList(IMAGETYPE);
 
-    for(int i = 0; i < ui->browserComBoBox->count(); i++){
+    for(int i = 0; i < ui->browserComBoBox->count(); i++) {
         browserList << ui->browserComBoBox->itemText(i);
     }
-    if (imagelist){
-        for (int i = 0; imagelist[i].appid != NULL; i++){
+    if (imagelist) {
+        for (int i = 0; imagelist[i].appid != NULL; i++) {
             QString single(imagelist[i].appid);
             QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
             GDesktopAppInfo * imageinfo = g_desktop_app_info_new_from_filename(ba.constData());
@@ -170,8 +170,8 @@ void DefaultApp::initUI(){
         }
         free(imagelist);
     }
-    for(int i = 0; i < ui->imageComBoBox->count(); i++){
-        if(currentimage == ui->imageComBoBox->itemData(i)){
+    for(int i = 0; i < ui->imageComBoBox->count(); i++) {
+        if(currentimage == ui->imageComBoBox->itemData(i)) {
             imageindex = i;
         }
     }
@@ -184,8 +184,8 @@ void DefaultApp::initUI(){
     QString currentaudio(getDefaultAppId(AUDIOTYPE));
 
     AppList * audiolist = getAppIdList(AUDIOTYPE);
-    if (audiolist){
-        for (int i = 0; audiolist[i].appid != NULL; i++){
+    if (audiolist) {
+        for (int i = 0; audiolist[i].appid != NULL; i++) {
             QString single(audiolist[i].appid);
             QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
             GDesktopAppInfo * audioinfo = g_desktop_app_info_new_from_filename(ba.constData());
@@ -211,8 +211,8 @@ void DefaultApp::initUI(){
     QString currentvideo(getDefaultAppId(VIDEOTYPE));
 
     AppList * videolist = getAppIdList(VIDEOTYPE);
-    if (videolist){
-        for (int i = 0; videolist[i].appid != NULL; i++){
+    if (videolist) {
+        for (int i = 0; videolist[i].appid != NULL; i++) {
             QString single(videolist[i].appid);
             QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
             GDesktopAppInfo * videoinfo = g_desktop_app_info_new_from_filename(ba.constData());
@@ -239,7 +239,7 @@ void DefaultApp::initUI(){
 
     AppList * textlist = getAppIdList(TEXTTYPE);
     if (textlist){
-        for (int i = 0; textlist[i].appid != NULL; i++){
+        for (int i = 0; textlist[i].appid != NULL; i++) {
             QString single(textlist[i].appid);
             QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
             GDesktopAppInfo * textinfo = g_desktop_app_info_new_from_filename(ba.constData());
@@ -261,78 +261,81 @@ void DefaultApp::initUI(){
     connect(ui->textComBoBox, SIGNAL(currentIndexChanged(int)), this, SLOT(textComBoBox_changed_cb(int)));
 }
 
-void DefaultApp::browserComBoBox_changed_cb(int index){
+void DefaultApp::browserComBoBox_changed_cb(int index) {
 //    QString appid = ui->browserComBoBox->currentData().toString();
     QString appid = ui->browserComBoBox->itemData(index).toString();
-    if (appid == "add"){
+    if (appid == "add") {
 //        AddAppDialog * dialog = new AddAppDialog();
 //        dialog->show();
         qDebug() << "add clicked";
-    }
-    else{
+    } else {
         QByteArray ba = appid.toUtf8(); // QString to char *
         setWebBrowsersDefaultProgram(ba.data());
     }
 }
 
-void DefaultApp::mailComBoBox_changed_cb(int index){
+void DefaultApp::mailComBoBox_changed_cb(int index) {
     QString appid = ui->mailComBoBox->itemData(index).toString();
     if (appid == "add"){
         qDebug() << "add clicked";
-    }
-    else{
+    } else {
         QByteArray ba = appid.toUtf8(); // QString to char *
         setMailReadersDefaultProgram(ba.data());
     }
 }
 
-void DefaultApp::imageComBoBox_changed_cb(int index){
+void DefaultApp::imageComBoBox_changed_cb(int index) {
     QString appid = ui->imageComBoBox->itemData(index).toString();
     if (appid == "add"){
         qDebug() << "add clicked";
-    }
-    else{
+    } else {
         QByteArray ba = appid.toUtf8(); // QString to char *
         setImageViewersDefaultProgram(ba.data());
     }
 }
 
-void DefaultApp::audioComBoBox_changed_cb(int  index){
+void DefaultApp::audioComBoBox_changed_cb(int  index) {
     qDebug() << "this is audio:" << endl;
 
     QString appid = ui->audioComBoBox->itemData(index).toString();
     if (appid == "add"){
         qDebug() << "add clicked";
-    }
-    else{
+    } else {
         QByteArray ba = appid.toUtf8(); // QString to char *
         setAudioPlayersDefaultProgram(ba.data());
     }
 }
 
-void DefaultApp::videoComBoBox_changed_cb(int index){
+void DefaultApp::videoComBoBox_changed_cb(int index) {
     QString appid = ui->videoComBoBox->itemData(index).toString();
-    if (appid == "add"){
+    if (appid == "add") {
         qDebug() << "add clicked";
-    }
-    else{
+    } else {
         QByteArray ba = appid.toUtf8(); // QString to char *
         setVideoPlayersDefaultProgram(ba.data());
     }
 }
 
-void DefaultApp::textComBoBox_changed_cb(int index){
+void DefaultApp::textComBoBox_changed_cb(int index) {
     QString appid = ui->textComBoBox->itemData(index).toString();
     if (appid == "add"){
         qDebug() << "add clicked";
-    }
-    else{
+    } else {
         QByteArray ba = appid.toUtf8(); // QString to char *
         setTextEditorsDefautlProgram(ba.data());
     }
 }
 
-char * DefaultApp::getDefaultAppId(const char * contentType){
+void DefaultApp::resetDefaultApp() {
+    ui->browserComBoBox->setCurrentIndex(0);
+    ui->mailComBoBox->setCurrentIndex(0);
+    ui->imageComBoBox->setCurrentIndex(0);
+    ui->audioComBoBox->setCurrentIndex(0);
+    ui->videoComBoBox->setCurrentIndex(0);
+    ui->textComBoBox->setCurrentIndex(0);
+}
+
+char * DefaultApp::getDefaultAppId(const char * contentType) {
     GAppInfo * app = g_app_info_get_default_for_type(contentType, false);
     if(app != NULL){
         const char * id = g_app_info_get_id(app);
@@ -349,7 +352,7 @@ char * DefaultApp::getDefaultAppId(const char * contentType){
     }
 }
 
-AppList * DefaultApp::getAppIdList(const char *contentType){
+AppList * DefaultApp::getAppIdList(const char *contentType) {
     Appinfo *appinfo = _getAppList(contentType);
     if(appinfo != NULL){
         int i = 0;
@@ -358,9 +361,9 @@ AppList * DefaultApp::getAppIdList(const char *contentType){
         AppList *list = (AppList *)malloc(sizeof(AppList)*(i+1));
         int count = i;
         int index = 0;
-        for(gint j = 0;appinfo[j].item != NULL;j++){
+        for(gint j = 0;appinfo[j].item != NULL;j++) {
             const char *id = g_app_info_get_id(appinfo[j].item);
-            if(id != NULL){
+            if (id != NULL) {
                 int len = strlen(id);
                 list[index].appid = (char *)malloc(sizeof(char)*(len+1));
                 strcpy(list[index].appid,id);
@@ -378,17 +381,17 @@ AppList * DefaultApp::getAppIdList(const char *contentType){
     }
 }
 
-Appinfo * DefaultApp::_getAppList(const char *contentType){
+Appinfo * DefaultApp::_getAppList(const char *contentType) {
     GList *applist;
     applist = g_app_info_get_all_for_type(contentType);
     GAppInfo * item;
 
-    if(applist != NULL){
+    if (applist != NULL) {
         int len = g_list_length(applist);
         Appinfo * appinfo=(Appinfo *)malloc(sizeof(Appinfo)*(len+1));
 
         //获取应用列表
-        for (int index=0; index < len; index++){
+        for (int index=0; index < len; index++) {
             item = (GAppInfo*) g_list_nth_data(applist, index);
             appinfo[index].item=item;
         }
@@ -400,15 +403,15 @@ Appinfo * DefaultApp::_getAppList(const char *contentType){
     }
 }
 
-bool DefaultApp::setWebBrowsersDefaultProgram(char * appid){
+bool DefaultApp::setWebBrowsersDefaultProgram(char * appid) {
     const char * content_type = "x-scheme-handler/http";
     Appinfo * appinfo = _getAppList(content_type);
     bool judge = false;
-    if(appinfo != NULL){
-        for(int i = 0; appinfo[i].item != NULL; i++){
+    if (appinfo != NULL) {
+        for(int i = 0; appinfo[i].item != NULL; i++) {
             const char *id = g_app_info_get_id(appinfo[i].item);
             int result = strcmp(id,appid);
-            if(0 == result){
+            if (0 == result) {
                 GAppInfo *appitem=appinfo[i].item;
                 gboolean ret1=g_app_info_set_as_default_for_type(appitem, "x-scheme-handler/http", NULL);
                 gboolean ret2=g_app_info_set_as_default_for_type(appitem, "x-scheme-handler/https", NULL);
@@ -424,16 +427,16 @@ bool DefaultApp::setWebBrowsersDefaultProgram(char * appid){
     return judge;
 }
 
-bool DefaultApp::setMailReadersDefaultProgram(char *appid){
+bool DefaultApp::setMailReadersDefaultProgram(char *appid) {
     const char *content_type="x-scheme-handler/mailto";
     Appinfo *appinfo=_getAppList(content_type);
 
     bool judge = false;
-    if(appinfo != NULL){
-        for(int i = 0; appinfo[i].item != NULL; i++){
+    if (appinfo != NULL) {
+        for (int i = 0; appinfo[i].item != NULL; i++) {
             const char * id = g_app_info_get_id(appinfo[i].item);
             int result=strcmp(id,appid);
-            if(0 == result){
+            if (0 == result) {
                 GAppInfo *appitem=appinfo[i].item;
                 gboolean ret1=g_app_info_set_as_default_for_type(appitem, "x-scheme-handler/mailto", NULL);
                 gboolean ret2=g_app_info_set_as_default_for_type(appitem, "application/x-extension-eml", NULL);
@@ -448,16 +451,16 @@ bool DefaultApp::setMailReadersDefaultProgram(char *appid){
     return judge;
 }
 
-bool DefaultApp::setImageViewersDefaultProgram(char *appid){
+bool DefaultApp::setImageViewersDefaultProgram(char *appid) {
     const char *content_type="image/png";
     Appinfo *appinfo = _getAppList(content_type);
 
     bool judge = false;
-    if(appinfo != NULL){
-        for(int i=0;appinfo[i].item!=NULL;i++){
+    if (appinfo != NULL) {
+        for (int i=0;appinfo[i].item!=NULL;i++){
             const char *id = g_app_info_get_id(appinfo[i].item);
             int result = strcmp(id, appid);
-            if(0 == result){
+            if (0 == result) {
                 GAppInfo *appitem=appinfo[i].item;
                 gboolean ret1 = g_app_info_set_as_default_for_type(appitem, "image/bmp", NULL);
                 gboolean ret2 = g_app_info_set_as_default_for_type(appitem, "image/gif", NULL);
@@ -475,16 +478,16 @@ bool DefaultApp::setImageViewersDefaultProgram(char *appid){
     return judge;
 }
 
-bool DefaultApp::setVideoPlayersDefaultProgram(char *appid){
+bool DefaultApp::setVideoPlayersDefaultProgram(char *appid) {
     const char *content_type = "video/x-ogm+ogg";
     Appinfo * appinfo = _getAppList(content_type);
 
     bool judge = false;
-    if(appinfo != NULL){
-        for(int i = 0; appinfo[i].item != NULL; i++){
+    if (appinfo != NULL) {
+        for(int i = 0; appinfo[i].item != NULL; i++) {
             const char *id = g_app_info_get_id(appinfo[i].item);
             int result = strcmp(id,appid);
-            if(0 == result){
+            if (0 == result) {
                 GAppInfo *appitem = appinfo[i].item;
                 gboolean ret1 = g_app_info_set_as_default_for_type(appitem, "video/mp4", NULL);
                 gboolean ret2 = g_app_info_set_as_default_for_type(appitem, "video/mpeg", NULL);
@@ -497,7 +500,7 @@ bool DefaultApp::setVideoPlayersDefaultProgram(char *appid){
                 gboolean ret9 = g_app_info_set_as_default_for_type(appitem, "video/x-matroska", NULL);
                 gboolean ret10 = g_app_info_set_as_default_for_type(appitem, "video/x-mpeg", NULL);
                 gboolean ret11 = g_app_info_set_as_default_for_type(appitem, "video/x-ogm+ogg", NULL);
-                if(ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8 && ret9 && ret10 && ret11)
+                if (ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8 && ret9 && ret10 && ret11)
                     judge=true;
                 break;
             }
@@ -507,17 +510,16 @@ bool DefaultApp::setVideoPlayersDefaultProgram(char *appid){
     return judge;
 }
 
-bool DefaultApp::setAudioPlayersDefaultProgram(char *appid){
+bool DefaultApp::setAudioPlayersDefaultProgram(char *appid) {
     const char *content_type = "audio/x-vorbis+ogg";
     Appinfo * appinfo = _getAppList(content_type);
 
     bool judge = false;
-    if(appinfo != NULL){
-        for(int i = 0; appinfo[i].item != NULL ;i++){
+    if (appinfo != NULL) {
+        for(int i = 0; appinfo[i].item != NULL ;i++) {
             const char *id = g_app_info_get_id(appinfo[i].item);
             int result = strcmp(id,appid);
-            if(0 == result)
-            {
+            if (0 == result) {
                 GAppInfo *appitem=appinfo[i].item;
                 gboolean ret1 = g_app_info_set_as_default_for_type(appitem, "audio/mpeg", NULL);
                 gboolean ret2 = g_app_info_set_as_default_for_type(appitem, "audio/x-mpegurl", NULL);
@@ -542,16 +544,16 @@ bool DefaultApp::setAudioPlayersDefaultProgram(char *appid){
     return judge;
 }
 
-bool DefaultApp::setTextEditorsDefautlProgram(char *appid){
+bool DefaultApp::setTextEditorsDefautlProgram(char *appid) {
     const char * content_type = "text/plain";
     Appinfo * appinfo = _getAppList(content_type);
 
     bool judge = false;
-    if(appinfo != NULL){
-        for(int i = 0; appinfo[i].item != NULL; i++){
+    if (appinfo != NULL) {
+        for (int i = 0; appinfo[i].item != NULL; i++) {
             const char * id = g_app_info_get_id(appinfo[i].item);
             int result = strcmp(id,appid);
-            if(0 == result){
+            if (0 == result) {
                 GAppInfo *appitem = appinfo[i].item;
                 gboolean ret1 = g_app_info_set_as_default_for_type(appitem, "text/plain", NULL);
                 if(ret1)

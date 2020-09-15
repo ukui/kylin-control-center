@@ -436,7 +436,6 @@ void Desktop::removeTrayItem(QString itemName) {
     for (int i = 0; i < ui->listWidget->count(); i++) {
         QListWidgetItem * item = ui->listWidget->item(i);
         QString value = item->data(Qt::UserRole).toString();
-        qDebug () << " item data: " << ui->listWidget->count() << value;
         if (value == itemName) {
             ui->listWidget->takeItem(i);
             break;

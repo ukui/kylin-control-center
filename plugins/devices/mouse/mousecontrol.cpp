@@ -79,7 +79,6 @@ MyLabel::MyLabel(){
     if (QGSettings::isSchemaInstalled(id)){
         mSettings = new QGSettings(id);
     }
-
 }
 
 MyLabel::~MyLabel(){
@@ -110,6 +109,7 @@ MouseControl::MouseControl()
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->sensitivityFrame->setVisible(false);
 
     //初始化鼠标设置GSettings
     const QByteArray id(MOUSE_SCHEMA);
