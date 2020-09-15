@@ -138,6 +138,7 @@ signals:
     void doconf();
     void dochange(QString name,int flag);
     void docheck();
+    void dosingle(QString key);
     void closedialog();
 };
 

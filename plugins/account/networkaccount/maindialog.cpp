@@ -73,7 +73,7 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
 
     m_titleLable->setText(status);
     m_titleLable->adjustSize();
-    //setFocusPolicy(Qt::NoFocus);
+    setFocusPolicy(Qt::NoFocus);
     m_loginDialog->setContentsMargins(0,0,0,0);
     //title->setGeometry(31 + sizeoff,48 + sizeoff,160,24);
     m_titleLable->setStyleSheet("font-size: 24px;font-weight:500;");
@@ -353,6 +353,7 @@ void MainDialog::setret_reg(int ret) {
 }
 
 void MainDialog::setret_login(int ret) {
+    qDebug() << "ssssssssssssssss";
     if(ret != 0) {
         m_loginDialog->get_mcode_lineedit()->setText("");
         if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
@@ -1067,6 +1068,7 @@ void MainDialog::on_timer_timeout() {
 
 /* 登录回调槽函数，登录回执消息后执行此处 */
 void MainDialog::on_login_finished(int ret, QString uuid) {
+    qDebug() << "ssssssssssssssss2";
     if(uuid != this->m_uuid) {
         //qDebug()<<uuid<<this->m_uuid;
         return ;
@@ -1230,6 +1232,7 @@ void MainDialog::on_get_mcode_by_phone(int ret, QString uuid) {
     if(uuid != this->m_uuid) {
         return ;
     }
+    qDebug() << ret;
     if(ret != 0) {
         if(m_stackedWidget->currentWidget() == m_loginDialog) {
             m_loginDialog->get_user_mcode()->setEnabled(true);
@@ -1593,7 +1596,7 @@ void MainDialog::set_clear() {
         emit m_regBtn->clicked();
     }
     m_loginDialog->set_window2();
-    m_delBtn->raise();
+    //m_delBtn->raise();
 }
 
 void MainDialog::set_staus(const bool &ok) {
@@ -1643,7 +1646,7 @@ void MainDialog::setnormal() {
 
 /* 关闭按钮触发处理 */
 void MainDialog::on_close() {
-    //qDebug()<<"yes";
+    qDebug()<<"yes  ssss";
     m_forgetpassSendBtn->setEnabled(true);
     m_forgetpassSendBtn->setText(tr("Send"));
     m_baseWidget->setEnabled(true);
@@ -1655,7 +1658,6 @@ void MainDialog::on_close() {
     m_NameLogin = "";
     m_loginDialog->get_mcode_widget()->set_change(1);
     back_login_btn();
-    set_clear();
     close();
 }
 

@@ -33,6 +33,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     connect(this,SIGNAL(doman()),m_dbusClient,SLOT(manual_sync()));
     connect(this,SIGNAL(dochange(QString,int)),m_dbusClient,SLOT(change_conf_value(QString,int)));
     connect(this,SIGNAL(dologout()),m_dbusClient,SLOT(logout()));
+    connect(this,SIGNAL(dosingle(QString)),m_dbusClient,SLOT(single_sync(QString)));
     connect(m_dbusClient,SIGNAL(finished_oss(int)),this,SLOT(setret_oss(int)));
     connect(m_dbusClient,SIGNAL(finished_check_oss(QString)),this,SLOT(setname(QString)));
     connect(m_dbusClient,SIGNAL(finished_check(QString)),this,SLOT(setret_check(QString)));
@@ -60,14 +61,13 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
 }
 /* 检测第一次登录，为用户添加名字 */
 void MainWidget::setname(QString n) {
-    //qDebug()<<n<<"2131231";
+    qDebug()<<n<<"2131231";
     m_szCode = n;
     if(m_szCode != "" && m_szCode !="201" && m_szCode != "203" && m_szCode != "401" && !m_bTokenValid) {
         m_infoTab->setText(tr("Your account：%1").arg(m_szCode));
         m_mainWidget->setCurrentWidget(m_widgetContainer);
         //setshow(m_mainWidget);
         m_bTokenValid = true;              //开启登录状态
-
         m_autoSyn->set_change(0,"0");
 
         for(int i = 0;i < m_szItemlist.size();i ++) {
@@ -99,11 +99,11 @@ void MainWidget::setret_logout(int ret) {
 }
 
 void MainWidget::setret_conf(int ret) {
-    //qDebug()<<ret<<"csacasca";
+    qDebug()<<ret<<"csacasca";
     if(ret == 0) {
         emit docheck();
-        //m_mainDialog->closedialog();
         emit closedialog();
+        //m_mainDialog->closedialog();
         m_cSyncDelay->start(1000);
         //QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     } else {
@@ -122,7 +122,7 @@ void MainWidget::setret_man(int ret) {
 }
 
 void MainWidget::setret_check(QString ret) {
-    //qDebug()<<ret<<!ret_ok;
+    qDebug()<<ret<<"!ret_ok;";
     if((ret == "" || ret =="201" || ret == "203" || ret == "401" ) && m_bTokenValid) {
         //qDebug()<<"checked"<<ret<<ret;
         emit dologout();
@@ -150,7 +150,7 @@ void MainWidget::setret_check(QString ret) {
        // setshow(m_mainWidget);
         QFile all_conf_file(QDir::homePath() + PATH);
         if(all_conf_file.exists() == false) {
-            doconf();
+          //  doconf();
         } else {
             handle_conf();
         }
@@ -410,6 +410,10 @@ void MainWidget::init_gui() {
         }
     });
 
+    connect(this,&MainWidget::closedialog,[this] () {
+          m_mainDialog->on_close();
+    });
+
     connect(m_stackedWidget, &QStackedWidget::currentChanged, [this] (int index) {
         if(m_stackedWidget->currentWidget() == m_itemList) {
             setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
@@ -417,7 +421,6 @@ void MainWidget::init_gui() {
             setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
         }
     });
-
 
     connect(m_autoSyn->get_swbtn(),&SwitchButton::status,[=] (int on,int id) {
        if(on == 1) {
@@ -435,7 +438,7 @@ void MainWidget::init_gui() {
            QFile file(QDir::homePath() + PATH);
 
            if(file.exists() == false) {
-                emit doconf();
+               // emit doconf();
            }  else {
                 m_cRetry->start(2000);
            }
@@ -462,10 +465,8 @@ void MainWidget::on_login() {
     m_mainDialog->set_client(m_dbusClient,thread);
     m_mainDialog->is_used = true;
     m_mainDialog->set_clear();
-    //qDebug()<<"login";
-    connect(this,&MainWidget::closedialog,[this] () {
-        m_mainDialog->on_close();
-    });
+    qDebug()<<"login";
+
     connect(m_mainDialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
     connect(m_mainDialog,&MainDialog::on_login_success, [this] () {
         m_cLoginTimer->setSingleShot(true);
@@ -500,7 +501,7 @@ void MainWidget::on_login() {
             emit dologout();
         }
     });
-    m_mainDialog->show();
+    m_mainDialog->exec();
 }
 
 /* 登录过程处理事件 */
@@ -616,6 +617,13 @@ void MainWidget::on_switch_button(int on,int id) {
     }
     if(!m_bAutoSyn) {
         return ;
+    }
+    qDebug() << id;
+    if(on == 0 && m_exitCloud_btn->property("on") == true) {
+        m_itemList->get_item(id)->make_itemon();
+        return ;
+    } else if(on == 1){
+        emit dosingle(m_szItemlist.at(id));
     }
 
     if(m_szItemlist.at(id) == "shortcut" && on == 1) {

@@ -27,6 +27,7 @@ public slots:
     // ----------- 云相关 -----------------
     int init_oss(QString uuid);  // 登录后，初始化云服务
     int manual_sync();  // 手动同步
+    int single_sync(const QString &key);
 private:
 
 signals:
@@ -58,6 +59,7 @@ signals:
     void finished_man(int ret);
     void finished_change(int ret);
     void finished_logout(int ret);
+    void finished_single(int ret);
 
 };
 
