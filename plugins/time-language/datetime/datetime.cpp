@@ -173,24 +173,10 @@ void DateTime::component_init() {
 }
 
 void DateTime::status_init() {
-
     //时区
     const QString locale = QLocale::system().name();
     QDBusReply<QVariant> tz = m_datetimeiproperties->call("Get", "org.freedesktop.timedate1", "Timezone");
-    QMap<QString, int>::iterator it = tzindexMapEn.find(tz.value().toString());
-    if(it != tzindexMapEn.end()) {
-        for(QMap<QString,int>::iterator itc = tzindexMapCN.begin();itc!=tzindexMapCN.end();itc++)
-        {
-            if(itc.value() == it.value()){
-                ui->timezoneLabel->setText(getLocalTimezoneName(itc.key(), locale));
-                break;
-            }
-        }
-    } else {
-        QMap<QString, int>::iterator defaultit =  tzindexMapEn.find(DEFAULT_TZ);
-        ui->timezoneLabel->setText(getLocalTimezoneName(defaultit.key(), locale));
-    }
-
+    ui->timezoneLabel->setText(getLocalTimezoneName(tz.value().toString(), locale));
     loadHour();
 }
 
@@ -342,6 +328,7 @@ void DateTime::connectGSetting() {
 }
 
 QString DateTime::getLocalTimezoneName(QString timezone, QString locale) {
+
     (void) setlocale(LC_ALL, QString(locale + ".UTF-8").toStdString().c_str());
     const QString local_name(dgettext(kTimezoneDomain,
                                       timezone.toStdString().c_str()));

@@ -39,26 +39,6 @@ AddAutoBoot::AddAutoBoot(QWidget *parent) :
 
     selectFile = "";
 
-//    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
-
-//    //关闭按钮在右上角，窗体radius 6px，所以按钮只得6px
-//    ui->closeBtn->setStyleSheet("QPushButton#closeBtn{background: #ffffff; border: none; border-radius: 6px;}"
-//                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}"
-//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}");
-
-//    QString lineEditQss = QString("QLineEdit{background: #E9E9E9; border: none; border-radius: 4px;}");
-//    ui->nameLineEdit->setStyleSheet(lineEditQss);
-//    ui->execLineEdit->setStyleSheet(lineEditQss);
-//    ui->commentLineEdit->setStyleSheet(lineEditQss);
-
-//    QString btnQss = QString("QPushButton{background: #E9E9E9; border-radius: 4px;}"
-//                             "QPushButton:checked{background: #3d6be5; border-radius: 4px;}"
-//                             "QPushButton:hover:!pressed{background: #3d6be5; border-radius: 4px;}"
-//                             "QPushButton:hover:pressed{background: #415FC4; border-radius: 4px;}");
-
-//    ui->cancelBtn->setStyleSheet(btnQss);
-//    ui->certainBtn->setStyleSheet(btnQss);
-
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
     ui->closeBtn->setProperty("useIconHighlightEffect", true);
     ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
@@ -172,12 +152,15 @@ void AddAutoBoot::open_desktop_dir_slots(){
     comment = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
     exec = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_EXEC, NULL);
 
-//    if (ui->nameLineEdit->text().isEmpty())
+    if (ui->nameLineEdit->text().isEmpty()) {
         ui->nameLineEdit->setText(QString(name));
-//    if (ui->execLineEdit->text().isEmpty())
+    }
+    if (ui->execLineEdit->text().isEmpty()) {
         ui->execLineEdit->setText(QString(exec));
-//    if (ui->commentLineEdit->text().isEmpty())
+    }
+    if (ui->commentLineEdit->text().isEmpty()) {
         ui->commentLineEdit->setText(QString(comment));
+    }
 
     g_key_file_free(keyfile);
 }
