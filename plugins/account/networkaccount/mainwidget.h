@@ -97,6 +97,7 @@ private:
     bool                m_bTokenValid = false;
     QTimer              *m_cLoginTimer;
     QTimer              *m_cSyncDelay;
+    QTimer              *m_singleDelay;
     QString             m_szUuid;
     QTimer              *m_cRetry;
     QFileSystemWatcher m_fsWatcher;
@@ -106,6 +107,7 @@ private:
     QHBoxLayout     *m_animateLayout;
     QHBoxLayout     *m_tipsLayout;
     QMap<QString,QString> m_itemMap;
+    QString         m_key;
     QStringList     m_keyInfoList;
     bool            __once__ = false;
     bool            __run__ = false;

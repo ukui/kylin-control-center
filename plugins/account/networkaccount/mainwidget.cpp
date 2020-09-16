@@ -213,6 +213,8 @@ void MainWidget::init_gui() {
     m_login_btn  = new QPushButton(tr("Sign in"),this);
     m_cSyncDelay = new QTimer(this);
     m_cSyncDelay->stop();
+    m_singleDelay = new QTimer(this);
+    m_singleDelay->stop();
     m_svgHandler = new SVGHandler(this);
     m_syncTooltips = new Tooltips(m_exitCloud_btn);
     m_syncTipsText = new QLabel(m_syncTooltips);
@@ -353,6 +355,8 @@ void MainWidget::init_gui() {
     m_vboxLayout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
     this->setLayout(m_vboxLayout);
 
+    m_key = "";
+
 
     m_exitCloud_btn->setFocusPolicy(Qt::NoFocus);
     QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/edit.svg");
@@ -445,6 +449,11 @@ void MainWidget::init_gui() {
        } else {
            m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
        }
+    });
+    connect(m_singleDelay,&QTimer::timeout,[this] () {
+        if(m_key != "") {
+            emit dosingle(m_key);
+        }
     });
     //
     setMaximumWidth(960);
@@ -621,8 +630,12 @@ void MainWidget::on_switch_button(int on,int id) {
     if(on == 0 && m_exitCloud_btn->property("on") == true) {
         m_itemList->get_item(id)->make_itemon();
         return ;
-    } else if(on == 1){
-        emit dosingle(m_szItemlist.at(id));
+    } else if(on == 1 && m_exitCloud_btn->property("on") == false){
+        m_key = m_szItemlist.at(id);
+
+        m_singleDelay->setInterval(1500);
+        m_singleDelay->setSingleShot(true);
+        m_singleDelay->start();
     }
 
     if(m_szItemlist.at(id) == "shortcut" && on == 1) {
