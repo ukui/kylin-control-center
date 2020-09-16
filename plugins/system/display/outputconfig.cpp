@@ -331,8 +331,8 @@ void OutputConfig::slotResolutionChanged(const QSize &size)
 
     // Don't remove the first "Auto" item - prevents ugly flicker of the combobox
     // when changing resolution
-    for (int i = 1; i < mRefreshRate->count(); ++i) {
-        mRefreshRate->removeItem(i);
+    for (int i = mRefreshRate->count(); i >=2; --i) {
+        mRefreshRate->removeItem(i - 1);
     }
 
     for (int i = 0, total = modes.count(); i < total; ++i) {
@@ -370,6 +370,7 @@ void OutputConfig::slotRefreshRateChanged(int index)
     } else {
         modeId = mRefreshRate->itemData(index).toString();
     }
+    qDebug()  << "modeId is:" << modeId << endl;
     mOutput->setCurrentModeId(modeId);
 
     Q_EMIT changed();
