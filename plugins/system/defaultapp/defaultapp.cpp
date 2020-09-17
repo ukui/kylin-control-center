@@ -532,8 +532,13 @@ bool DefaultApp::setAudioPlayersDefaultProgram(char *appid) {
                 gboolean ret9 = g_app_info_set_as_default_for_type(appitem, "audio/acc", NULL);
                 gboolean ret10 = g_app_info_set_as_default_for_type(appitem, "audio/aac", NULL);
                 gboolean ret11 = g_app_info_set_as_default_for_type(appitem, "audio/mp4", NULL);
-                if(ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8 && ret9 && ret10 && ret11) {
-                    qDebug()<<"set succes in default app----->"<<endl;
+                gboolean ret12 = g_app_info_set_as_default_for_type(appitem, "audio/x-m4r", NULL);
+                gboolean ret13 = g_app_info_set_as_default_for_type(appitem, "audio/midi", NULL);
+                gboolean ret14 = g_app_info_set_as_default_for_type(appitem, "audio/mp2", NULL);
+                gboolean ret15 = g_app_info_set_as_default_for_type(appitem, "audio/x-wavpack", NULL);
+                gboolean ret16 = g_app_info_set_as_default_for_type(appitem, "audio/x-ape", NULL);
+                if(ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8 && ret9 && ret10 &&
+                   ret11 && ret12 && ret13 && ret14 && ret15 && ret16) {
                     judge=true;
                 }
                 break;
