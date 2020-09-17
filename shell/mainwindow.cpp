@@ -239,16 +239,16 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     }
     if(watched==m_searchWidget) {
         if(event->type()==QEvent::FocusIn) {
-            char style[200];
-            sprintf(style, "SearchWidget{border:1px solid %s;background-color:#F6F6F6;border-radius:8px;color:#000000;}",
-                    QueryLineEditClickedBorder,QueryLineEditClickedBackground);
-            m_searchWidget->setStyleSheet(style);
+//            char style[200];
+//            sprintf(style, "SearchWidget{border:1px solid %s;background-color:palette(base);border-radius:8px;color:#000000;}",
+//                    QueryLineEditClickedBorder,QueryLineEditClickedBackground);
+//            m_searchWidget->setStyleSheet(style);
             if(m_searchWidget->text().isEmpty()) {
                 m_animation->stop();
                 m_animation->setStartValue(QRect((320-(m_queryIcon->width()+m_queryText->width()+10))/2,0,
-                                                 m_queryIcon->width()+m_queryText->width()+10,40));
+                                                 m_queryIcon->width()+m_queryText->width()+10,(m_searchWidget->height()+36)/2));
                 m_animation->setEndValue(QRect(0,0,
-                                               m_queryIcon->width()+5,40));
+                                               m_queryIcon->width()+5,(m_searchWidget->height()+36)/2));
                 m_animation->setEasingCurve(QEasingCurve::OutQuad);
                 m_animation->start();
                 m_searchWidget->setTextMargins(30,1,0,1);
@@ -258,23 +258,23 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             m_searchKeyWords.clear();
             if(m_searchWidget->text().isEmpty()) {
                 if(m_isSearching) {
-                    char style[100];
-                    sprintf(style, "SearchWidget{border:0px;background-color:#F6F6F6;border-radius:8px;}",QueryLineEditBackground);
-                    m_animation->stop();
-                    m_searchWidget->setStyleSheet(style);
+//                    char style[100];
+//                    sprintf(style, "SearchWidget{border:0px;background-color:palette(base);border-radius:8px;}",QueryLineEditBackground);
+//                    m_animation->stop();
+//                    m_searchWidget->setStyleSheet(style);
                     m_queryText->adjustSize();
                     m_animation->setStartValue(QRect(0,0,
-                                                     m_queryIcon->width()+5,40));
+                                                     m_queryIcon->width()+5,(m_searchWidget->height()+36)/2));
                     m_animation->setEndValue(QRect((320-(m_queryIcon->width()+m_queryText->width()+10))/2,0,
-                                                   m_queryIcon->width()+m_queryText->width()+10,40));
+                                                   m_queryIcon->width()+m_queryText->width()+10,(m_searchWidget->height()+36)/2));
                     m_animation->setEasingCurve(QEasingCurve::InQuad);
                     m_animation->start();
                 }
             } else {
-                char style[100];
-                sprintf(style, "SearchWidget{border:1px;background-color:#F6F6F6;border-radius:8px;color:#000000;}",
-                        QueryLineEditBackground);
-                m_searchWidget->setStyleSheet(style);
+//                char style[100];
+//                sprintf(style, "SearchWidget{border:1px;background-color:palette(base);border-radius:8px;color:#000000;}",
+//                        QueryLineEditBackground);
+//                m_searchWidget->setStyleSheet(style);
             }
             m_isSearching=false;
         }
@@ -301,8 +301,8 @@ void MainWindow::initUI() {
     });
 
     initTileBar();
-    m_queryWid->setGeometry(QRect((m_searchWidget->width()-(m_queryIcon->width()+m_queryText->width()+10))/2,0,
-                                  m_queryIcon->width()+m_queryText->width()+25,40));
+    m_queryWid->setGeometry(QRect((320-(m_queryIcon->width()+m_queryText->width()+10))/2,0,
+                                        m_queryIcon->width()+m_queryText->width()+10,(m_searchWidget->height()+36)/2));
     m_queryWid->show();
     initStyleSheet();
 
@@ -403,17 +403,17 @@ void MainWindow::initTileBar() {
 
     ui->titleLayout->setContentsMargins(5, 0, 10, 0);
     m_searchWidget = new SearchWidget(this);
-    char style[100];
-    sprintf(style, "SearchWidget{border:0px;background-color:#F6F6F6;border-radius:8px;}",
-            QueryLineEditBackground);
-    m_searchWidget->setStyleSheet(style);
+//    char style[100];
+//    sprintf(style, "SearchWidget{border:0px;background-color:palette(base);border-radius:8px;}",
+//            QueryLineEditBackground);
+//    m_searchWidget->setStyleSheet(style);
     m_searchWidget->setFocusPolicy(Qt::ClickFocus);
     m_searchWidget->installEventFilter(this);
 
     m_queryWid=new QWidget;
     m_queryWid->setParent(m_searchWidget);
     m_queryWid->setFocusPolicy(Qt::NoFocus);
-    m_queryWid->setStyleSheet("border:0px;background:transparent");
+//    m_queryWid->setStyleSheet("border:0px;background:transparent");
 
     QHBoxLayout* queryWidLayout=new QHBoxLayout;
     queryWidLayout->setContentsMargins(4,4,0,0);
@@ -460,8 +460,9 @@ void MainWindow::initTileBar() {
     titleLabel->setMinimumWidth(32);
     titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_searchWidget->setMinimumWidth(350);
-    m_searchWidget->setMaximumWidth(380);
     m_searchWidget->setMinimumHeight(40);
+    m_searchWidget->setMaximumWidth(350);
+    m_searchWidget->setMaximumHeight(40);
 
     ui->titleLayout->addWidget(titleLabel);
     ui->titleLayout->addWidget(backBtn);
