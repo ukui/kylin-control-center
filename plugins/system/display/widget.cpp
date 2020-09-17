@@ -131,7 +131,7 @@ Widget::Widget(QWidget *parent)
     }
 
     initTemptSlider();
-    initConfigFile();
+    initConfigFile(false, false);
     initUiComponent();
     initNightStatus();
     initBrightnessUI();
@@ -579,10 +579,18 @@ void Widget::writeScale(int scale) {
 void Widget::initGSettings() {
     QByteArray id(UKUI_CONTORLCENTER_PANEL_SCHEMAS);
     if(QGSettings::isSchemaInstalled(id)) {
-        m_gsettings = new QGSettings(id)        ;
+        m_gsettings = new QGSettings(id, QByteArray(), this);
     } else {
-        return ;
+        qDebug() << Q_FUNC_INFO << "org.ukui.control-center.panel.plugins not install";
+        return;
     }
+
+    connect(m_gsettings, &QGSettings::changed, this, [=](QString key) {
+        if (static_cast<QString>(NIGHT_MODE_KEY) == key) {
+            bool status =  m_gsettings->get(key).toBool();
+            initConfigFile(true, status);
+        }
+    });
 }
 
 void Widget::writeConfigFile() {
@@ -1078,7 +1086,7 @@ void Widget::initTemptSlider() {
     }
 }
 
-void Widget::initConfigFile() {
+void Widget::initConfigFile(bool changed, bool status) {
     QString filename = QDir::homePath() + "/.config/redshift.conf";
     m_qsettings = new QSettings(filename, QSettings::IniFormat);
 
@@ -1132,6 +1140,10 @@ void Widget::initConfigFile() {
     }
 
     m_qsettings->endGroup();
+
+    if (changed) {
+        nightButton->setChecked(status);
+    }
 }
 
 void Widget::writeScreenXml(int count){

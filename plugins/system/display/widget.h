@@ -79,7 +79,6 @@ class Widget : public QWidget
     void initBrightnessUI();
     QString getScreenName(QString name = "");
     void initTemptSlider();
-    void initConfigFile();
     void writeScreenXml(int count);
     // 初始化屏幕配置文件
     void initScreenXml(int count);
@@ -102,6 +101,8 @@ class Widget : public QWidget
     void redShiftValidChanged(const bool isValid) const;
 
   private Q_SLOTS:
+    void initConfigFile(bool changed, bool status);
+
     void slotFocusedOutputChanged(QMLOutput *output);
 
     void slotOutputEnabledChanged();

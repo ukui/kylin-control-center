@@ -348,40 +348,22 @@ void Theme::initThemeMode() {
             writeKwinSettings(true, currentThemeMode);
             for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
                 QVariant valueVariant = button->property("value");
+                if ("ukui-black" == currentThemeMode) {
+                    currentThemeMode = "ukui-dark";
+                } else if("ukui-white" == currentThemeMode) {
+                    currentThemeMode = "ukui-default";
+                }
                 if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode) {
+                    disconnect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeButtonClicked(QAbstractButton*)));
                     button->click();
+                    connect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeButtonClicked(QAbstractButton*)));
                 }
             }
             qApp->setStyle(new InternalStyle("ukui"));
         }
     });
 
-
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    connect(ui->themeModeBtnGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked), [=](QAbstractButton * button){
-#else
-    connect(ui->themeModeBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this, [=](QAbstractButton * button){
-#endif
-       // 设置主题
-        QString themeMode = button->property("value").toString();
-        QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-
-        qApp->setStyle(new InternalStyle(themeMode));
-        if (QString::compare(currentThemeMode, themeMode)){
-            QString tmpMode;
-            if ("ukui-dark" == themeMode) {
-                tmpMode = "ukui-black";
-            } else {
-                tmpMode = "ukui-white";
-            }
-            gtkSettings->set(MODE_GTK_KEY, tmpMode);
-
-            QtConcurrent::run([=](){
-                qtSettings->set(MODE_QT_KEY, themeMode);
-            });
-            writeKwinSettings(true, themeMode);
-        }
-    });
+    connect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeButtonClicked(QAbstractButton*)));
 }
 
 void Theme::initIconTheme(){
@@ -707,6 +689,28 @@ void Theme::writeKwinSettings(bool change, QString theme, bool effect) {
     themeSettings->sync();
 
 
+}
+
+void Theme::themeButtonClicked(QAbstractButton *button) {
+    // 设置主题
+     QString themeMode = button->property("value").toString();
+     QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
+
+     qApp->setStyle(new InternalStyle(themeMode));
+     if (QString::compare(currentThemeMode, themeMode)){
+         QString tmpMode;
+         if ("ukui-dark" == themeMode) {
+             tmpMode = "ukui-black";
+         } else {
+             tmpMode = "ukui-white";
+         }
+         gtkSettings->set(MODE_GTK_KEY, tmpMode);
+
+         QtConcurrent::run([=](){
+             qtSettings->set(MODE_QT_KEY, themeMode);
+         });
+         writeKwinSettings(true, themeMode);
+     }
 }
 
 void Theme::clearLayout(QLayout* mlayout, bool deleteWidgets)

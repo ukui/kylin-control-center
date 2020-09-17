@@ -35,6 +35,7 @@
 #include <QtDBus/QDBusMessage>
 #include <QGSettings>
 #include <QtDBus/QtDBus>
+#include <QAbstractButton>
 
 
 class QPushButton;
@@ -111,6 +112,8 @@ private slots:
     void resetBtnClickSlot();
     // write the kwin's configuration
     void writeKwinSettings(bool change, QString theme, bool effect = false);
+
+    void themeButtonClicked(QAbstractButton *button);
 
 };
 
