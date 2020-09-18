@@ -59,13 +59,11 @@ public:
     void plugin_delay_control() Q_DECL_OVERRIDE;
     const QString name() const  Q_DECL_OVERRIDE;
 
-public:
+private:
     void initUI();
     QStringList  readFile(QString filePath);
 
     void initSearchText();
-    void _call_dbus_get_computer_info();
-    void _data_init();
     void setupDesktopComponent();
     void setupKernelCompenent();
     void setupVersionCompenent();
@@ -86,7 +84,6 @@ private:
     QMap<QString, QString> infoMap;
 
 private slots:
-//    void call_finished_slot(QDBusPendingCallWatcher * call);
     void runActiveWindow();
     void showPdf();
 };
