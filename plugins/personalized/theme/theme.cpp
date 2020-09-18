@@ -213,10 +213,15 @@ void Theme::setupSettings() {
 
     QString themefile = QDir::homePath() + "/.config/kdeglobals";
     themeSettings = new QSettings(themefile, QSettings::IniFormat, this);
+    QStringList keys = kwinSettings->allKeys();
 
     kwinSettings->beginGroup("Plugins");
 
     bool kwin = kwinSettings->value("blurEnabled", kwin).toBool();
+
+    if (!keys.contains("blurEnabled")) {
+        kwin = true;
+    }
 
     kwinSettings->endGroup();
 
