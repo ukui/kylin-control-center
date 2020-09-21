@@ -118,37 +118,34 @@ void About::setupKernelCompenent() {
     QDBusReply<QMap<QString, QVariant>> diskinfo;
     diskinfo  = youkerInterface ->call("get_harddisk_info");
     if (!diskinfo.isValid()) {
-        qDebug()<<"diskinfo is invalid"<<endl;
+        qDebug() << "diskinfo is invalid" << endl;
     } else {
         QMap<QString, QVariant> res = diskinfo.value();
         diskSize = res["DiskCapacity"].toString();
         if (diskSize.contains("<1_1>")) {
             int index = diskSize.indexOf("<1_1>");
             QString disk1 = diskSize.left(index);
-            QString disk2 = diskSize.mid(index + 5, diskSize.length() - index - 5);
-            diskSize = tr("Disk One:") + disk1 + " " + tr("Disk Two:")+disk2;
+            diskSize = tr("Disk:") + disk1;
         }
     }
 
     QDBusReply<QMap<QString, QVariant>> cpuinfo;
     cpuinfo  = youkerInterface ->call("get_cpu_info");
     if (!diskinfo.isValid()) {
-        qDebug()<<"cpuinfo is invalid"<<endl;
+        qDebug() << "cpuinfo is invalid" << endl;
     } else {
         QMap<QString, QVariant> res = cpuinfo.value();
         cpuType = res["CpuVersion"].toString();
     }
 
-    MemoryEntry * memoryInfo = new MemoryEntry;
-    QStringList memory = memoryInfo->totalMemory();
+    MemoryEntry memoryInfo;
+    QStringList memory = memoryInfo.totalMemory();
     memorySize = memorySize + memory.at(0) + "(" + memory.at(1) + tr(" available") + ")";
 
     ui->cpuContent->setText(cpuType);
     ui->diskContent->setText(diskSize);
     ui->kernalContent->setText(kernal);
     ui->memoryContent->setText(memorySize);
-
-    qDebug()<<"cpuType and "<<cpuType<<" "<<diskSize<<" "<<kernal<<" "<<memorySize<<endl;
 }
 
 void About::setupVersionCompenent() {
