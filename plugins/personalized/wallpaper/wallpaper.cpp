@@ -101,8 +101,8 @@ const QString Wallpaper::name() const {
 }
 
 void Wallpaper::initSearchText() {
-    //~ contents_path /wallpaper/Picture options
-    ui->selectLabel->setText(tr("Picture options"));
+    //~ contents_path /wallpaper/Select from
+    ui->selectLabel->setText(tr("Select from"));
     //~ contents_path /wallpaper/Browser local wp
     ui->browserLocalwpBtn->setText(tr("Browser local wp"));
     //~ contents_path /wallpaper/Browser online wp

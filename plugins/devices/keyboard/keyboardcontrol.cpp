@@ -203,6 +203,11 @@ void KeyboardControl::setupConnect(){
 
     connect(ui->resetBtn, &QPushButton::clicked, this, [=] {
         kbdsettings->reset(KBD_LAYOUTS_KEY);
+        if ("zh_CN" == QLocale::system().name()) {
+            kbdsettings->set(KBD_LAYOUTS_KEY, "cn");
+        } else {
+            kbdsettings->set(KBD_LAYOUTS_KEY, "us");
+        }
     });
 
     connect(kbdsettings, &QGSettings::changed, [=](QString key) {
