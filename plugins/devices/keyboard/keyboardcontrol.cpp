@@ -122,7 +122,7 @@ void KeyboardControl::setupStylesheet(){
     //~ contents_path /keyboard/Keyboard layout
     ui->layoutLabel->setText(tr("Keyboard layout"));
     //~ contents_path /keyboard/reset default layout
-    ui->resetLabel->setText(tr("reset default layout"));
+//    ui->resetLabel->setText(tr("reset default layout"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
