@@ -33,6 +33,7 @@ addShortcutDialog::addShortcutDialog(QWidget *parent) :
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
+    setWindowTitle(tr("Add custom shortcut"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->closeBtn->setProperty("useIconHighlightEffect", true);
@@ -41,25 +42,6 @@ addShortcutDialog::addShortcutDialog(QWidget *parent) :
 
     ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
                                 "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
-
-//    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
-
-    //关闭按钮在右上角，窗体radius 6px，所以按钮只得6px
-//    ui->closeBtn->setStyleSheet("QPushButton#closeBtn{background: #ffffff; border: none; border-radius: 6px;}"
-//                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}"
-//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}");
-
-//    QString lineEditQss = QString("QLineEdit{background: #E9E9E9; border: none; border-radius: 4px;}");
-//    ui->nameLineEdit->setStyleSheet(lineEditQss);
-//    ui->execLineEdit->setStyleSheet(lineEditQss);
-
-//    QString btnQss = QString("QPushButton{background: #E9E9E9; border-radius: 4px;}"
-//                             "QPushButton:checked{background: #3d6be5; border-radius: 4px;}"
-//                             "QPushButton:hover:!pressed{background: #3d6be5; border-radius: 4px;}"
-//                             "QPushButton:hover:pressed{background: #415FC4; border-radius: 4px;}");
-
-//    ui->cancelBtn->setStyleSheet(btnQss);
-//    ui->certainBtn->setStyleSheet(btnQss);
 
     ui->closeBtn->setIcon(QIcon(QPixmap("://img/titlebar/close.svg")));
     ui->noteLabel->setPixmap(QPixmap("://img/plugins/shortcut/note.png"));

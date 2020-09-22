@@ -692,8 +692,6 @@ void Theme::writeKwinSettings(bool change, QString theme, bool effect) {
     themeSettings->endGroup();
 
     themeSettings->sync();
-
-
 }
 
 void Theme::themeButtonClicked(QAbstractButton *button) {

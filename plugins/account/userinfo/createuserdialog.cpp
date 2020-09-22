@@ -39,11 +39,11 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
     ui(new Ui::CreateUserDialog),
     usersStringList(userlist)
 {
-//    installEventFilter(this);
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
+    setWindowTitle(tr("Add new user"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->closeBtn->setProperty("useIconHighlightEffect", true);
