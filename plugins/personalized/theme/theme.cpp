@@ -359,16 +359,16 @@ void Theme::initThemeMode() {
                     currentThemeMode = "ukui-default";
                 }
                 if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode) {
-                    disconnect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeButtonClicked(QAbstractButton*)));
+                    disconnect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeBtnClickSlot(QAbstractButton*)));
                     button->click();
-                    connect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeButtonClicked(QAbstractButton*)));
+                    connect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeBtnClickSlot(QAbstractButton*)));
                 }
             }
             qApp->setStyle(new InternalStyle("ukui"));
         }
     });
 
-    connect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeButtonClicked(QAbstractButton*)));
+    connect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeBtnClickSlot(QAbstractButton*)));
 }
 
 void Theme::initIconTheme(){
@@ -694,7 +694,7 @@ void Theme::writeKwinSettings(bool change, QString theme, bool effect) {
     themeSettings->sync();
 }
 
-void Theme::themeButtonClicked(QAbstractButton *button) {
+void Theme::themeBtnClickSlot(QAbstractButton *button) {
     // 设置主题
      QString themeMode = button->property("value").toString();
      QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
