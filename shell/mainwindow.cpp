@@ -234,7 +234,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
         if(event->type() == QEvent::Enter) {
             closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"white"));
         }else if(event->type() == QEvent::Leave) {
-            closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
+            closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"gray"));
         }
     }
     if(watched==m_searchWidget) {
