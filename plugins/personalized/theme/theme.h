@@ -88,7 +88,7 @@ private:
 
 private slots:
     void resetBtnClickSlot();
-    void themeButtonClicked(QAbstractButton *button);
+    void themeBtnClickSlot(QAbstractButton *button);
 
 private:
     Ui::Theme *ui;
