@@ -80,7 +80,7 @@ void GetShortcutWorker::run(){
 
         //保存桌面快捷键
         QString key = QString(dkeys[i]); QString value = QString(str);
-        if (value != ""){
+        if (value != "" && !value.contains("XF86")){
             generalShortcutGenerate(KEYBINDINGS_DESKTOP_SCHEMA, key, value);
         }
     }
