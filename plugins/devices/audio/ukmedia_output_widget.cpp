@@ -61,8 +61,8 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pOutputPortWidget->setFrameShape(QFrame::Shape::Box);
 
     //设置大小
-    m_pOutputWidget->setMinimumSize(550,203);
-    m_pOutputWidget->setMaximumSize(960,203);
+    m_pOutputWidget->setMinimumSize(550,254);
+    m_pOutputWidget->setMaximumSize(960,254);
     m_pOutputDeviceWidget->setMinimumSize(550,50);
     m_pOutputDeviceWidget->setMaximumSize(960,50);
     m_pMasterVolumeWidget->setMinimumSize(550,50);
@@ -101,7 +101,7 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     //~ contents_path /audio/Card
     m_pSelectDeviceLabel = new QLabel(tr("Card"),m_pselectWidget);
     m_pSelectCombobox = new QComboBox(m_pselectWidget);
-//    m_pProfileLabel->setFixedSize(115,24);
+    m_pProfileLabel->setFixedSize(115,24);
     m_pProfileLabel->setFixedSize(150,32);
 
     m_pOpBalanceSlider->setStyle(new CustomStyle());
@@ -213,13 +213,13 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     profileLayout->setSpacing(0);
     m_pProfileWidget->setLayout(profileLayout);
     profileLayout->layout()->setContentsMargins(0,0,0,0);
-    m_pProfileWidget->setVisible(false);
+//    m_pProfileWidget->setVisible(false);
     //进行整体布局
     m_pVlayout = new QVBoxLayout(m_pOutputWidget);
     m_pVlayout->addWidget(m_pOutputDeviceWidget);
     m_pVlayout->addWidget(m_pMasterVolumeWidget);
     m_pVlayout->addWidget(m_pselectWidget);
-//    m_pVlayout->addWidget(m_pProfileWidget);
+    m_pVlayout->addWidget(m_pProfileWidget);
     m_pVlayout->addWidget(m_pChannelBalanceWidget);
     m_pVlayout->setSpacing(1);
 
@@ -275,8 +275,8 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
 
 void UkmediaOutputWidget::outputWidgetAddPort()
 {
-    m_pOutputWidget->setMinimumSize(550,254);
-    m_pOutputWidget->setMaximumSize(960,254);
+    m_pOutputWidget->setMinimumSize(550,305);
+    m_pOutputWidget->setMaximumSize(960,305);
     m_pVlayout->insertWidget(3,m_pOutputPortWidget);
     m_pOutputPortWidget->show();
 }
@@ -284,8 +284,8 @@ void UkmediaOutputWidget::outputWidgetAddPort()
 void UkmediaOutputWidget::outputWidgetRemovePort()
 {
 //    m_pVlayout->addSpacing(1);
-    m_pOutputWidget->setMinimumSize(550,203);
-    m_pOutputWidget->setMaximumSize(960,203);
+    m_pOutputWidget->setMinimumSize(550,254);
+    m_pOutputWidget->setMaximumSize(960,254);
     m_pVlayout->removeWidget(m_pOutputPortWidget);
     m_pOutputPortWidget->hide();
 }
