@@ -716,28 +716,6 @@ void Theme::themeBtnClickSlot(QAbstractButton *button) {
      }
 }
 
-void Theme::themeButtonClicked(QAbstractButton *button) {
-    // 设置主题
-     QString themeMode = button->property("value").toString();
-     QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-
-     qApp->setStyle(new InternalStyle(themeMode));
-     if (QString::compare(currentThemeMode, themeMode)){
-         QString tmpMode;
-         if ("ukui-dark" == themeMode) {
-             tmpMode = "ukui-black";
-         } else {
-             tmpMode = "ukui-white";
-         }
-         gtkSettings->set(MODE_GTK_KEY, tmpMode);
-
-         QtConcurrent::run([=](){
-             qtSettings->set(MODE_QT_KEY, themeMode);
-         });
-         writeKwinSettings(true, themeMode);
-     }
-}
-
 void Theme::clearLayout(QLayout* mlayout, bool deleteWidgets)
 {
     if ( mlayout->layout() != NULL )
