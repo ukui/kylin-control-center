@@ -718,11 +718,10 @@ void Theme::themeButtonClicked(QAbstractButton *button) {
 
 void Theme::clearLayout(QLayout* mlayout, bool deleteWidgets)
 {
-    if ( mlayout->layout() != NULL )
-    {
+    Q_UNUSED(deleteWidgets);
+    if ( mlayout->layout() != NULL ) {
         QLayoutItem* item;
-        while ( ( item = mlayout->layout()->takeAt( 0 ) ) != NULL )
-        {
+        while ( ( item = mlayout->layout()->takeAt( 0 ) ) != NULL ) {
             delete item->widget();
             delete item;
         }

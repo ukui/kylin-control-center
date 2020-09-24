@@ -93,8 +93,7 @@ Desktop::Desktop()
     initTraySettings();
 }
 
-Desktop::~Desktop()
-{
+Desktop::~Desktop() {
     delete ui;
     clearContent();
     if (!dSettings ){
@@ -106,19 +105,19 @@ Desktop::~Desktop()
     }
 }
 
-QString Desktop::get_plugin_name(){
+QString Desktop::get_plugin_name() {
     return pluginName;
 }
 
-int Desktop::get_plugin_type(){
+int Desktop::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *Desktop::get_plugin_ui(){
+QWidget *Desktop::get_plugin_ui() {
     return pluginWidget;
 }
 
-void Desktop::plugin_delay_control(){
+void Desktop::plugin_delay_control() {
 
 }
 
@@ -144,6 +143,7 @@ void Desktop::initTranslation() {
     transMap.insert("ukui-volume-control-applet-qt", "音量控制");
     transMap.insert("ukui-sidebar", "侧边栏");
     transMap.insert("ukui-power-manager-tray", "电源管理");
+    transMap.insert("kylin-video", "麒麟影音");
 
     iconMap.insert("ukui-volume-control-applet-qt", "audio-card");
     iconMap.insert("kylin-nm", "network-workgroup");
@@ -159,7 +159,7 @@ void Desktop::initTranslation() {
          <<"ErrorApplication"<<"livepatch";
 }
 
-void Desktop::setupComponent(){
+void Desktop::setupComponent() {
 
     ui->deskComputerLabel->setPixmap(QPixmap("://img/plugins/desktop/computer.png"));
     ui->deskHomeLabel->setPixmap(QPixmap("://img/plugins/desktop/homefolder.png"));
@@ -187,7 +187,6 @@ void Desktop::setupComponent(){
     ui->menuSettingsLabel->setPixmap(QPixmap::fromImage(QIcon::fromTheme("ukui-control-center").pixmap(32,32).toImage()));
     ui->menuTrashLabel->setPixmap(QPixmap::fromImage(QIcon::fromTheme("user-trash").pixmap(32,32).toImage()));
 
-
     fullMenuSwitchBtn = new SwitchButton(pluginWidget);
     ui->fullScreenMenuLayout->addWidget(fullMenuSwitchBtn);
 
@@ -204,7 +203,7 @@ void Desktop::setupComponent(){
     ui->menuSettingHorLayout->addWidget(menuSettingSwitchBtn);
 }
 
-void Desktop::setupConnect(){
+void Desktop::setupConnect() {
     QStringList keys = dSettings->keys();
     connect(deskComputerSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(COMPUTER_VISIBLE_KEY, checked);});
     connect(deskTrashSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(TRASH_VISIBLE_KEY, checked);});
@@ -212,7 +211,7 @@ void Desktop::setupConnect(){
     connect(deskVolumeSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(VOLUMES_VISIBLE_KEY, checked);});
     connect(deskNetworkSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(NETWORK_VISIBLE_KEY, checked);});
 
-    connect(fullMenuSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+    connect(fullMenuSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         if (keys.contains("menufullScreen")) {
             dSettings->set(MENU_FULL_SCREEN_KEY, checked);
         }

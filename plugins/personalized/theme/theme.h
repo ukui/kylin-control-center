@@ -37,7 +37,6 @@
 #include <QtDBus/QtDBus>
 #include <QAbstractButton>
 
-
 class QPushButton;
 class SwitchButton;
 class QGSettings;
@@ -84,6 +83,12 @@ private:
     void clearLayout(QLayout* mlayout, bool deleteWidgets);
     double convertToTran(const int value);
     int tranConvertToSlider(const double value);
+    // write the kwin's configuration
+    void writeKwinSettings(bool change, QString theme, bool effect = false);
+
+private slots:
+    void resetBtnClickSlot();
+    void themeButtonClicked(QAbstractButton *button);
 
 private:
     Ui::Theme *ui;
@@ -105,16 +110,6 @@ private:
     WidgetGroup * iconThemeWidgetGroup;
 
     bool settingsCreate;
-//    Uslider * uslider;
-//    Uslider * kwinSlider;
-
-private slots:
-    void resetBtnClickSlot();
-    // write the kwin's configuration
-    void writeKwinSettings(bool change, QString theme, bool effect = false);
-
-    void themeButtonClicked(QAbstractButton *button);
-
 };
 
 #endif // THEME_H
