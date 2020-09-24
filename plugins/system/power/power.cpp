@@ -314,7 +314,7 @@ void Power::setupConnect() {
 #endif
 
         Q_UNUSED(index)
-        int idleDarken = ui->darkenCombo->currentData(Qt::UserRole).toInt();
+        int idleDarken = ui->darkenCombo->currentData(Qt::UserRole).toInt() * 60;
         settings->set(IDLE_DIM_TIME_KEY, idleDarken);
     });
 }
@@ -404,7 +404,7 @@ void Power::initCustomPlanStatus() {
         ui->closeLidCombo->setCurrentIndex(ui->closeLidCombo->findData(batlid));
 
         //变暗
-        int darkentime = settings->get(IDLE_DIM_TIME_KEY).toInt();
+        int darkentime = settings->get(IDLE_DIM_TIME_KEY).toInt() / FIXES;
         ui->darkenCombo->setCurrentIndex(ui->darkenCombo->findData(darkentime));
         ui->darkenFrame->show();
     }
