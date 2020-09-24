@@ -1,3 +1,4 @@
+
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  *
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
@@ -216,8 +217,8 @@ private Q_SLOTS:
     void windowClosedComboboxChangedSlot(int index);
     void volumeChangedComboboxChangeSlot(int index);
     void settingMenuComboboxChangedSlot(int index);
-//    void profileComboboxChangedSlot(int index);
-//    void selectComboboxChangedSlot(int index);
+    void profileComboboxChangedSlot(int index);
+    void selectComboboxChangedSlot(int index);
 private:
     UkmediaInputWidget *m_pInputWidget;
     UkmediaOutputWidget *m_pOutputWidget;
