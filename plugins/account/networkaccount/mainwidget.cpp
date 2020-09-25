@@ -379,6 +379,7 @@ void MainWidget::init_gui() {
     connect(m_mainWidget,&QStackedWidget::currentChanged,[this] (int index) {
        if(m_mainWidget->widget(index) == m_nullWidget) {
            setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
+           download_over();
            m_mainWidget->adjustSize();
            adjustSize();
        } else {
