@@ -241,11 +241,11 @@ void QMLScreen::qmlOutputMoved(QMLOutput *qmlOutput)
 
     updateCornerOutputs();
 
-    if((qmlOutput->x() + qmlOutput->width()) > 550){
+    if((qmlOutput->x() + qmlOutput->width()) > 550) {
 //        qDebug()<<qmlOutput->x();
         qmlOutput->setPosition(QPointF(550 - qmlOutput->width(), qmlOutput->y()));
     }
-    if((qmlOutput->y() + qmlOutput->height()) > 190){
+    if((qmlOutput->y() + qmlOutput->height()) > 190) {
 //        qDebug()<<qmlOutput->y();
         qmlOutput->setPosition(QPointF(qmlOutput->x(), 190 - qmlOutput->height()));
     }
