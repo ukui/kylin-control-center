@@ -21,6 +21,7 @@
 #include <QTextStream>
 #include <QDebug>
 #include <QProcess>
+#include <QFile>
 
 #include "custom_struct.h"
 
