@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# 关闭服务
+systemctl disable ukui-group-manager.service
+systemctl  stop   ukui-group-manager.service
+

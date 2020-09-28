@@ -1,0 +1,32 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="org.ukui.groupmanager.interface">
+    <method name="get">
+      <arg type="av" direction="out"/>
+    </method>
+    <method name="add">
+      <arg type="b" direction="out"/>
+      <arg name="groupName" type="s" direction="in"/>
+      <arg name="groupId" type="s" direction="in"/>
+    </method>
+    <method name="set">
+      <arg type="b" direction="out"/>
+      <arg name="groupName" type="s" direction="in"/>
+      <arg name="groupId" type="s" direction="in"/>
+    </method>
+    <method name="del">
+      <arg type="b" direction="out"/>
+      <arg name="groupName" type="s" direction="in"/>
+    </method>
+    <method name="addUserToGroup">
+      <arg type="b" direction="out"/>
+      <arg name="groupName" type="s" direction="in"/>
+      <arg name="userName" type="s" direction="in"/>
+    </method>
+    <method name="delUserFromGroup">
+      <arg type="b" direction="out"/>
+      <arg name="groupName" type="s" direction="in"/>
+      <arg name="userName" type="s" direction="in"/>
+    </method>
+  </interface>
+</node>

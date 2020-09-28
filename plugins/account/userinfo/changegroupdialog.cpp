@@ -69,7 +69,6 @@ void ChangeGroupDialog::loadGroupInfo()
     QDBusArgument argument = msg.arguments().at(0).value<QDBusArgument>();
     QList<QVariant> infos;
     argument >> infos;
-    qDebug() << "info size :" << infos.size() << argument.currentType();
 
     value = new QList<custom_struct *>();
     for (int i = 0; i < infos.size(); i++)
@@ -120,7 +119,7 @@ void ChangeGroupDialog::loadAllGroup()
                 if (reply.isValid()){
                     // use the returned value
                     qDebug() << "get call value" << reply.value();
-                    qDebug() << "current index" << ui->listWidget->currentIndex();
+//                    qDebug() << "current index" << ui->listWidget->currentIndex();
                     ui->listWidget->removeItemWidget(item);
                     delete item;
                     ui->listWidget->scrollTo(ui->listWidget->currentIndex());                    
@@ -145,8 +144,6 @@ void ChangeGroupDialog::loadAllGroup()
     }
 //    ui->listWidget->setSortingEnabled(true);
 }
-
-
 
 void ChangeGroupDialog::setupInit()
 {
@@ -183,7 +180,6 @@ void ChangeGroupDialog::signalsBind()
     connect(ui->closeBtn, &QPushButton::clicked, [=]{
         close();
     });
-
 }
 
 void ChangeGroupDialog::initNewGroupBtn()

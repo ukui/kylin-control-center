@@ -30,7 +30,8 @@ CreateGroupDialog::CreateGroupDialog(QWidget *parent) :
     ui(new Ui::CreateGroupDialog),
     _nameHasModified(false),
     _idHasModified(false),
-    _boxModified(false)
+    _boxModified(false),
+    cgDialog(new ChangeGroupDialog)
 {
     ui->setupUi(this);
     setupInit();
@@ -40,6 +41,7 @@ CreateGroupDialog::CreateGroupDialog(QWidget *parent) :
 
 CreateGroupDialog::~CreateGroupDialog()
 {
+    delete cgDialog;
     delete ui;
 }
 
@@ -69,9 +71,10 @@ void CreateGroupDialog::refreshCertainBtnStatus(){
 
 void CreateGroupDialog::getUsersList()
 {
+    qDebug() << "当前文件 :" << __FILE__ << "当前函数 :" << __FUNCTION__ << "当前行号 :" << __LINE__;
     UserInfo * userinfo = new UserInfo;
     QStringList usersList = userinfo->getUsersList();
-    qDebug() << "CreateGroupDialog::getUsersList" << usersList.at(0) << usersList.at(1);
+//    qDebug() << "CreateGroupDialog::getUsersList" << usersList.at(0) << usersList.at(1);
     for(int i = 0; i < usersList.size(); i++){
         QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
         item->setSizeHint(QSize(ui->listWidget->width(), 36));
@@ -125,29 +128,25 @@ void CreateGroupDialog::signalsBind()
         refreshCertainBtnStatus();
     });
     connect(ui->lineEdit_id, &QLineEdit::textEdited,[=](){
-        ChangeGroupDialog *cgDialog = new ChangeGroupDialog;
         for (int j = 0; j < cgDialog->value->size(); j++){
             if(ui->lineEdit_id->text() == cgDialog->value->at(j)->groupid){
                 _idHasModified = false;
-                delete cgDialog;
                 return;
             }
         }
         _idHasModified = true;
     });
     connect(ui->lineEdit_name, &QLineEdit::textEdited,[=](){
-        ChangeGroupDialog *cgDialog = new ChangeGroupDialog;
         for (int j = 0; j < cgDialog->value->size(); j++){
             if(ui->lineEdit_id->text() == cgDialog->value->at(j)->groupname){
                 _nameHasModified = false;
-                delete cgDialog;
                 return;
             }
         }
         _nameHasModified = true;
     });
-    connect(ui->certainBtn, &QPushButton::clicked, this, [=](){
-//        ChangeGroupDialog *cgDialog = new ChangeGroupDialog;
+//    connect(ui->certainBtn, &QPushButton::clicked, this, [=](){
+//        qDebug() << "当前文件 :" << __FILE__ << "当前函数 :" << __FUNCTION__ << "当前行号 :" << __LINE__;
 //        for (int i = 0; i < ui->listWidget->count(); i++){
 //            QListWidgetItem *item = ui->listWidget->item(i);
 //            QCheckBox *box = static_cast<QCheckBox *> (ui->listWidget->itemWidget(item));
@@ -192,7 +191,7 @@ void CreateGroupDialog::signalsBind()
 //            }
 //        }
 //        close();
-    });
+//    });
 }
 
 void CreateGroupDialog::setupInit()
@@ -225,7 +224,6 @@ void CreateGroupDialog::setupInit()
     refreshCertainBtnStatus();
     // 限制组名输入规则
     limitInput();
-    //
 }
 
 void CreateGroupDialog::paintEvent(QPaintEvent *event) {

@@ -32,7 +32,8 @@ EditGroupDialog::EditGroupDialog(QString usergroup, QString groupid, QWidget *pa
     _idHasModified(false),
     _boxModified(false),
     userGroup(usergroup),
-    groupId(groupid)
+    groupId(groupid),
+    cgDialog(new ChangeGroupDialog)
 {
     ui->setupUi(this);
     qDebug() << "new EditGroupDialog" << userGroup << groupId;
@@ -43,6 +44,7 @@ EditGroupDialog::EditGroupDialog(QString usergroup, QString groupid, QWidget *pa
 
 EditGroupDialog::~EditGroupDialog()
 {
+    delete cgDialog;
     delete ui;
 }
 
@@ -138,7 +140,6 @@ void EditGroupDialog::signalsBind()
 //        } else {
 //            _idHasModified = false;
 //        }
-        ChangeGroupDialog *cgDialog = new ChangeGroupDialog;
         for (int j = 0; j < cgDialog->value->size(); j++){
             if(ui->lineEdit_id->text() == cgDialog->value->at(j)->groupid){
                 _idHasModified = false;

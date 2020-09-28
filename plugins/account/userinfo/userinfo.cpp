@@ -63,7 +63,7 @@ UserInfo::UserInfo()
     //构建System dbus调度对象
     sysdispatcher = new SystemDbusDispatcher;
 
-    ui->changeGroupBtn->hide();
+//    ui->changeGroupBtn->hide();
 
     //获取系统全部用户信息，用户Uid大于等于1000的
     _acquireAllUsersInfo();
@@ -803,8 +803,10 @@ void UserInfo::deleteUserDone(QString objpath){
 }
 
 void UserInfo::showChangeGroupDialog(){
+//    qDebug() << "当前函数 :" << __FUNCTION__ << "当前行号 :" << __LINE__ << QDateTime::currentDateTime();
     ChangeGroupDialog * dialog = new ChangeGroupDialog();
     dialog->exec();
+//    qDebug() << "当前函数 :" << __FUNCTION__ << "当前行号 :" << __LINE__ << QDateTime::currentDateTime();
 }
 
 void UserInfo::showChangeValidDialog(QString username){

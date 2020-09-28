@@ -31,6 +31,7 @@
 #include <QDBusArgument>
 #include <QDBusReply>
 #include <QMessageBox>
+#include <QDateTime>
 
 #include "HoverWidget/hoverwidget.h"
 
