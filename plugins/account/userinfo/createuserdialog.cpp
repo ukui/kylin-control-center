@@ -285,6 +285,11 @@ void CreateUserDialog::pwdLegalityCheck(QString pwd){
 //        } else {
 //            pwdTip = "";
 //        }
+        foreach (QChar ch, pwd){
+            if (int(ch.toLatin1() <= 0 || int(ch.toLatin1()) > 127)){
+                pwdTip = "Contains illegal characters!";
+            }
+        }
     }
 
     //防止先输入确认密码，再输入密码后pwdsuretipLabel无法刷新

@@ -230,6 +230,11 @@ void ChangePwdDialog::pwdLegalityCheck(QString pwd){
 //        } else {
 //            pwdTip = "";
 //        }
+        foreach (QChar ch, pwd){
+            if (int(ch.toLatin1() <= 0 || int(ch.toLatin1()) > 127)){
+                pwdTip = "Contains illegal characters!";
+            }
+        }
     }
 
 

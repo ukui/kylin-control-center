@@ -673,6 +673,13 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
 
     connect(baseWidget, &HoverWidget::enterWidget, this, [=](QString name){
         Q_UNUSED(name)
+
+        //不允许删除最后一个管理员
+        if (user.accounttype > 0 && adminnum == 1){
+            delBtn->setEnabled(false);
+        } else {
+            delBtn->setEnabled(true);
+        }
         typeBtn->show();
         pwdBtn->show();
         delBtn->show();
