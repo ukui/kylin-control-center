@@ -66,6 +66,8 @@ public:
     void rebuild_listwidget();
     void preview();
 
+    void installedNoSame();
+
 protected:
     void paintEvent(QPaintEvent * event);
 

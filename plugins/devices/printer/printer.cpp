@@ -41,9 +41,10 @@ Printer::Printer(){
     ui->titleLabel->setText(tr("Add Printers And Scanners"));
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-
     ui->listWidget->setSpacing(0);
-
+    //禁用选中效果
+    ui->listWidget->setFocusPolicy(Qt::NoFocus);
+    ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);
 
     pTimer = new QTimer(this);
     pTimer->setInterval(1000);
