@@ -526,7 +526,7 @@ void Wallpaper::showLocalWpDialog(){
 
     // TODO: chinese and space support
 //    if (g_file_test(selectedfile.toLatin1().data(), G_FILE_TEST_EXISTS)) {
-        bgsettings->set(FILENAME, QVariant(bgfile));
+    bgsettings->set(FILENAME, selectedfile);
 //    } else {
 //        bgsettings->reset(FILENAME);
 //    }
