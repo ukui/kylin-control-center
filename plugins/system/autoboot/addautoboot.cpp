@@ -152,15 +152,15 @@ void AddAutoBoot::open_desktop_dir_slots(){
     comment = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
     exec = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_EXEC, NULL);
 
-    if (ui->nameLineEdit->text().isEmpty()) {
+//    if (ui->nameLineEdit->text().isEmpty()) {
         ui->nameLineEdit->setText(QString(name));
-    }
-    if (ui->execLineEdit->text().isEmpty()) {
+//    }
+//    if (ui->execLineEdit->text().isEmpty()) {
         ui->execLineEdit->setText(QString(exec));
-    }
-    if (ui->commentLineEdit->text().isEmpty()) {
+//    }
+//    if (ui->commentLineEdit->text().isEmpty()) {
         ui->commentLineEdit->setText(QString(comment));
-    }
+//    }
 
     g_key_file_free(keyfile);
 }
