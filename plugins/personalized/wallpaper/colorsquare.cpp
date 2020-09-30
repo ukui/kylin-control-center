@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
+
 #include "colorsquare.h"
 
 ColorSquare::ColorSquare(QWidget *parent) :
@@ -137,8 +138,8 @@ void ColorSquare::paintEvent(QPaintEvent *)
     painter.setBrush(Qt::NoBrush);
     double maxDist = nSquareWidth;
     // 绘制圆形光标
-    painter.drawEllipse(QPointF(colorX*maxDist,
-                                colorY*maxDist),
+    painter.drawEllipse(QPointF(sat*maxDist,
+                                val*maxDist),
                         selectorWidth, selectorWidth);
 }
 
