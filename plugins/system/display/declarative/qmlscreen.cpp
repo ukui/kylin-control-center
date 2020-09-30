@@ -245,9 +245,9 @@ void QMLScreen::qmlOutputMoved(QMLOutput *qmlOutput)
 //        qDebug()<<qmlOutput->x();
         qmlOutput->setPosition(QPointF(550 - qmlOutput->width(), qmlOutput->y()));
     }
-    if ((qmlOutput->y() + qmlOutput->height()) > 190) {
+    if ((qmlOutput->y() + qmlOutput->height()) > 250) {
 //        qDebug()<<qmlOutput->y();
-        qmlOutput->setPosition(QPointF(qmlOutput->x(), 190 - qmlOutput->height()));
+        qmlOutput->setPosition(QPointF(qmlOutput->x(), 250 - qmlOutput->height()));
     }
 
     if (m_leftmost) {
