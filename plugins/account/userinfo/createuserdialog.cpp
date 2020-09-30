@@ -285,9 +285,18 @@ void CreateUserDialog::pwdLegalityCheck(QString pwd){
 //        } else {
 //            pwdTip = "";
 //        }
+        const char *s = pwd.toUtf8().data();
+        while (*s && *s >= '0' && *s <= '9') {
+            s++;
+        }
+        if (!bool(*s)) {
+            pwdTip = tr("Password cannot be made up entirely by Numbers!");
+        } else {
+            pwdTip = "";
+        }
         foreach (QChar ch, pwd){
             if (int(ch.toLatin1() <= 0 || int(ch.toLatin1()) > 127)){
-                pwdTip = "Contains illegal characters!";
+                pwdTip = tr("Contains illegal characters!");
             }
         }
     }

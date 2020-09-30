@@ -232,7 +232,7 @@ void ChangePwdDialog::pwdLegalityCheck(QString pwd){
 //        }
         foreach (QChar ch, pwd){
             if (int(ch.toLatin1() <= 0 || int(ch.toLatin1()) > 127)){
-                pwdTip = "Contains illegal characters!";
+                pwdTip = tr("Contains illegal characters!");
             }
         }
     }
