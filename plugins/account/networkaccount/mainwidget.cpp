@@ -202,9 +202,9 @@ void MainWidget::init_gui() {
     QHBoxLayout *HBox_tab_sub = new QHBoxLayout;
     QHBoxLayout *HBox_tab_btn_sub = new QHBoxLayout;
 
-    QString btns = "QPushButton {font-size:14px;background: #E7E7E7;color:rgba(0,0,0,0.85);border-radius: 4px;}"
-                   "QPushButton:hover{font-size:14px;color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}"
-                   "QPushButton:click{font-size:14px;color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}";
+    QString btns = "QPushButton {background: #E7E7E7;color:rgba(0,0,0,0.85);border-radius: 4px;}"
+                   "QPushButton:hover{color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}"
+                   "QPushButton:click{color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}";
 
     m_nullWidget = new QWidget(this);
     m_welcomeLayout = new QVBoxLayout;
@@ -222,6 +222,7 @@ void MainWidget::init_gui() {
     m_stackedWidget = new QStackedWidget(this);
     m_nullwidgetContainer = new QWidget(this);
     m_cRetry = new QTimer(this);
+    m_syncTimeLabel = new QLabel(this);
 
     //m_mainWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
@@ -253,7 +254,7 @@ void MainWidget::init_gui() {
 
 
     m_infoTab->setText(tr("Your account:%1").arg(m_szCode));
-    m_infoTab->setStyleSheet("font-size:14px;");
+    m_infoTab->setStyleSheet("");
     //    status->setText(syn[0]);
     //    status->setProperty("objectName","status");  //give object a name
     //    status->setStyleSheet(qss_btn_str);
@@ -314,13 +315,19 @@ void MainWidget::init_gui() {
     m_infoTabWidget->setContentsMargins(0,0,0,0);
     m_widgetContainer->setMinimumWidth(550);
 
+    ConfigFile files;
 
+    m_syncTimeLabel->setText(tr(QString("The latest time sync is:" + files.Get("Auto-sync","time").toString()).toStdString().c_str()));
+
+    m_syncTimeLabel->setContentsMargins(20,0,0,0);
 
     m_workLayout->addWidget(m_infoTabWidget);
     m_workLayout->setSpacing(0);
     m_workLayout->setContentsMargins(1,0,1,0);
     m_workLayout->addSpacing(16);
     m_workLayout->addWidget(m_autoSyn->get_widget());
+    m_workLayout->addSpacing(16);
+    m_workLayout->addWidget(m_syncTimeLabel);
     m_workLayout->addSpacing(16);
     m_workLayout->addWidget(m_stackedWidget);
     m_widgetContainer->setLayout(m_workLayout);
@@ -363,6 +370,17 @@ void MainWidget::init_gui() {
     m_openEditDialog_btn->setIcon(pixmap);
 
     int cItem = 0;
+    QProcess proc;
+    QStringList options;
+    options << "-c" << "ps -ef|grep kylin-sso-client";
+    proc.start("/bin/bash",options);
+    proc.waitForFinished();
+    QString ifn = proc.readAll();
+
+
+    if(ifn.contains("kylin-sso-client -auto")) {
+        download_files();
+    }
 
     for(QString key : m_szItemlist) {
         m_itemMap.insert(key,m_itemList->get_item(cItem)->get_itemname());
@@ -408,6 +426,7 @@ void MainWidget::init_gui() {
     m_fsWatcher.addPath(all_conf_path);
 
     connect(&m_fsWatcher,&QFileSystemWatcher::directoryChanged,[this] () {
+        m_syncTimeLabel->setText(tr("The latest time sync is: ") + ConfigFile().Get("Auto-sync","time").toString().toStdString().c_str());
         QFile conf(QDir::homePath()+ "/.cache/kylinssoclient/All.conf");
         if(conf.exists() == true) {
             handle_conf();
@@ -548,7 +567,7 @@ bool MainWidget::eventFilter(QObject *watched, QEvent *event) {
 /* 登录成功处理事件 */
 void MainWidget::finished_load(int ret, QString uuid) {
     //qDebug()<<"wb111"<<ret;
-    if(ret != 0) {
+    if(ret == 303) {
         if(m_mainWidget->currentWidget() != m_nullWidget) {
             showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry for login!"));
             emit dologout();
@@ -634,7 +653,7 @@ void MainWidget::on_switch_button(int on,int id) {
     } else if(on == 1 && m_exitCloud_btn->property("on") == false){
         m_key = m_szItemlist.at(id);
 
-        m_singleDelay->setInterval(1500);
+        m_singleDelay->setInterval(1000);
         m_singleDelay->setSingleShot(true);
         m_singleDelay->start();
     }
@@ -726,6 +745,7 @@ void MainWidget::download_files() {
         m_exitCloud_btn->update();
         m_exitCloud_btn->setText("");
         m_blueEffect_sync->startmoive();
+        //showDesktopNotify("同步开始");
     }
 
 
@@ -754,6 +774,7 @@ void MainWidget::push_files() {
         m_exitCloud_btn->style()->polish(m_exitCloud_btn);
         m_exitCloud_btn->update();
         m_blueEffect_sync->startmoive();
+       // showDesktopNotify("同步开始");
     }
 
 
@@ -766,7 +787,6 @@ void MainWidget::push_files() {
 
 void MainWidget::download_over() {
     //emit docheck();
-
     if(m_exitCloud_btn->property("on") == true) {
         m_blueEffect_sync->stop();
         m_exitCloud_btn->setText(tr("Exit"));
@@ -774,10 +794,14 @@ void MainWidget::download_over() {
         m_exitCloud_btn->style()->unpolish(m_exitCloud_btn);
         m_exitCloud_btn->style()->polish(m_exitCloud_btn);
         m_exitCloud_btn->update();
+        //showDesktopNotify("同步结束");
     }
     if(__once__ == false) {
+        m_syncTimeLabel->setText(tr("The latest time sync is: ") + ConfigFile().Get("Auto-sync","time").toString().toStdString().c_str());
+
         m_autoSyn->set_change(0,"0");
     }
+
 }
 
 void MainWidget::push_over() {
@@ -789,13 +813,17 @@ void MainWidget::push_over() {
         m_exitCloud_btn->style()->unpolish(m_exitCloud_btn);
         m_exitCloud_btn->style()->polish(m_exitCloud_btn);
         m_exitCloud_btn->update();
+        //showDesktopNotify("同步结束");
     }
+    ConfigFile files;
     if(__once__ == false) {
+        m_syncTimeLabel->setText(tr("The latest time sync is: ") + ConfigFile().Get("Auto-sync","time").toString().toStdString().c_str());
         m_autoSyn->set_change(0,"0");
     }
 }
 
 void MainWidget::get_key_info(QString info) {
+    qDebug() << info;
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
@@ -849,6 +877,10 @@ void MainWidget::get_key_info(QString info) {
                 }
             }
         }
+
+        if(keys != "")
+            //showDesktopNotify("同步这些项目失败：" + keys);
+
         m_autoSyn->make_itemoff();
         for(int i = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(false);
@@ -877,6 +909,7 @@ void MainWidget::showDesktopNotify(const QString &message)
     <<(int)-1;
     iface.callWithArgumentList(QDBus::AutoDetect,"Notify",args);
 }
+
 
 /* 析构函数 */
 MainWidget::~MainWidget() {

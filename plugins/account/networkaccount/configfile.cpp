@@ -19,12 +19,13 @@
  */
 #include "configfile.h"
 #include <QDebug>
+#include <QDir>
 
 ConfigFile::ConfigFile(QString qstrfilename)
 {
     if (qstrfilename.isEmpty())
     {
-        m_qstrFileName = "/kylinssoclient/All.conf";
+        m_qstrFileName = QDir::homePath() + "/.cache/kylinssoclient/All.conf";
     }
     else
     {

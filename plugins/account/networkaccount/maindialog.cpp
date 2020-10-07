@@ -98,12 +98,12 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     m_delBtn->setGeometry(this->width() - 46,14,30,30);
     m_delBtn->setFocusPolicy(Qt::NoFocus);
 
-    m_submitBtn->setStyleSheet("QPushButton {font-size:14px;background-color: #3D6BE5;border-radius: 4px;color:rgba(255,255,255,0.85);}"
-                                "QPushButton:hover {font-size:14px;background-color: #415FC4;border-radius: 4px;position:relative;color:rgba(255,255,255,0.85);}"
-                                "QPushButton:click {font-size:14px;background-color: #415FC4;border-radius: 4px;postion:realative;color:rgba(255,255,255,0.85);}");
-    m_regBtn->setStyleSheet("QPushButton{font-size:14px;background: transparent;border-radius: 4px;} "
-                                    "QPushButton:hover{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
-                                    "QPushButton:click{font-size:14px;background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
+    m_submitBtn->setStyleSheet("QPushButton {background-color: #3D6BE5;border-radius: 4px;color:rgba(255,255,255,0.85);}"
+                                "QPushButton:hover {background-color: #415FC4;border-radius: 4px;position:relative;color:rgba(255,255,255,0.85);}"
+                                "QPushButton:click {background-color: #415FC4;border-radius: 4px;postion:realative;color:rgba(255,255,255,0.85);}");
+    m_regBtn->setStyleSheet("QPushButton{background: transparent;border-radius: 4px;} "
+                                    "QPushButton:hover{background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
+                                    "QPushButton:click{background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
 
     m_delBtn->setFlat(true);
     QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete.svg");
@@ -120,7 +120,7 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     //主窗口布局样式设置
     //setStyleSheet("Dialog_login_reg{border-radius:6px;}");
     setAttribute(Qt::WA_TranslucentBackground, true);
-    setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog | Qt::Tool);
     setModal(true);
 
     m_workLayout->setSpacing(0);
@@ -547,12 +547,13 @@ void MainDialog::on_login_btn() {
     if(m_loginDialog->get_user_name().length() < 11 && m_loginDialog->get_stack_widget()->currentIndex() == 1) {
         m_baseWidget->setEnabled(true);
         m_loginDialog->set_code(tr("Please check your phone!"));
-        m_loginTips->show();
+        m_loginCodeStatusTips->show();
         set_staus(true);
         setshow(m_stackedWidget);
         emit on_login_failed();
         return ;
     }
+
     //如果信息正确可提交，执行此处
     if(m_loginDialog->get_user_name() != "" &&
         m_loginDialog->get_user_pass() != "" &&
@@ -785,6 +786,7 @@ void MainDialog::back_normal() {
 
     //设置注册时候的账号密码为登录账号密码，然后执行登录逻辑
     if(m_bAutoLogin == true) {
+        m_loginDialog->get_stack_widget()->setCurrentIndex(0);
         m_loginDialog->get_login_pass()->setText(m_szRegPass);
         m_loginDialog->get_user_edit()->setText(m_szRegAccount);
         m_submitBtn->click();
@@ -1124,12 +1126,15 @@ void MainDialog::on_bind_finished(int ret, QString uuid) {
         return ;
     }
     m_baseWidget->setEnabled(true);
+
+    timerout_num = 60;
+    m_timer->stop();
+    m_BindDialog->get_send_code()->setEnabled(true);
+    m_BindDialog->get_send_code()->setText(tr("Send"));
     if(ret == 0) {
         timerout_num = 0;
         m_timer->stop();
         m_submitBtn->setText(tr("Sign in"));
-        m_BindDialog->get_send_code()->setEnabled(true);
-        m_BindDialog->get_send_code()->setText(tr("Send"));
         m_BindDialog->setclear();
         m_titleLable->setText(tr("Sign in Cloud"));
         m_regBtn->setText(tr("Sign up"));
@@ -1156,12 +1161,11 @@ void MainDialog::on_reg_finished(int ret, QString uuid) {
         return ;
     }
     m_baseWidget->setEnabled(true);
-   // qDebug()<<ret;
+    timerout_num= 60;
+    m_timer->stop();
+    m_regSendCodeBtn->setEnabled(true);
+    m_regSendCodeBtn->setText(tr("Send"));
     if(ret == 0) {
-        timerout_num= 0;
-        m_timer->stop();
-        m_regSendCodeBtn->setEnabled(true);
-        m_regSendCodeBtn->setText(tr("Send"));
         m_submitBtn->setText(tr("Sign in"));
         m_regDialog->get_reg_pass()->clear();
         m_regDialog->get_reg_user()->clear();
@@ -1194,26 +1198,24 @@ void MainDialog::on_pass_finished(int ret,QString uuid) {
         return ;
     }
     m_baseWidget->setEnabled(true);
+    timerout_num = 60 ;
+    m_timer->stop();
+
+    m_forgetpassBtn->setEnabled(true);
+    m_forgetpassBtn->setText(tr("Send"));
     if(ret == 0) {
-        //qDebug()<<"cascascascascascascascascascascasca";
-        timerout_num = 0;
-        m_timer->stop();
-        //qDebug()<<"wb11";
-        m_forgetpassBtn->setEnabled(true);
-        m_forgetpassBtn->setText(tr("Send"));
         m_submitBtn->setText(tr("Sign in"));
-        //qDebug()<<"wb22";
+
         m_passDialog->get_reg_pass()->clear();
         m_passDialog->get_reg_phone()->clear();
         m_passDialog->get_reg_pass_confirm()->clear();
         m_passDialog->get_valid_code()->clear();
-        //qDebug()<<"wb33";
+
         m_baseWidget->setCurrentWidget(m_successDialog);
         m_delBtn->hide();
         m_successDialog->set_mode_text(1);
-        //qDebug()<<"wb44";
+
         m_regBtn->setText(tr("Sign up"));
-        //qDebug()<<"wb55";
         disconnect(m_submitBtn,SIGNAL(clicked()),this,SLOT(on_pass_btn()));
         connect(m_submitBtn,SIGNAL(clicked()),this,SLOT(on_login_btn()));
         disconnect(m_regBtn,SIGNAL(clicked()),this,SLOT(back_login_btn()));
@@ -1646,7 +1648,6 @@ void MainDialog::setnormal() {
 
 /* 关闭按钮触发处理 */
 void MainDialog::on_close() {
-    //qDebug()<<"yes  ssss";
     m_forgetpassSendBtn->setEnabled(true);
     m_forgetpassSendBtn->setText(tr("Send"));
     m_baseWidget->setEnabled(true);

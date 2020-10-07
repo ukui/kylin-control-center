@@ -18,6 +18,7 @@ InfoLabel::InfoLabel(QWidget *parent) : QLabel(parent)
 
 
     m_toolTips->setLayout(layout);
+    m_toolTips->setFixedWidth(200);
 
     worklayout->addWidget(m_toolTips,0,Qt::AlignCenter);
 

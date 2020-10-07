@@ -23,7 +23,7 @@
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
-EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
+EditPassDialog::EditPassDialog(QWidget *parent) : QDialog(parent)
 {
     m_szUuid = QUuid::createUuid().toString();
     //内存分配
@@ -64,7 +64,6 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     m_confirmBtn->setText(tr("Confirm"));
     m_passConfirm->setPlaceholderText(tr("Confirm your new password"));
     m_passTips->setText(tr("At least 6 bit, include letters and digt"));
-    m_passTips->setStyleSheet("font-size:14px;");
     m_passTips->setFixedHeight(16);
     m_mcodeLineEdit->setMaxLength(4);
     m_stackedWidget->setCurrentWidget(m_workWidget);
@@ -77,8 +76,11 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
     //account->setFixedSize(338,36);
     m_newPassLineEdit->setFixedSize(338,36);
     m_passConfirm->setFixedSize(338,36);
-    m_mcodeLineEdit->setFixedSize(120,34);
-    m_mcodeBtn->setFixedSize(198,34);
+    m_mcodeLineEdit->setFixedSize(120,36);
+    m_mcodeBtn->setMaximumSize(205,36);
+    m_mcodeBtn->setMinimumSize(198,36);
+    m_mcodeBtn->resize(198,36);
+
     m_cancelBtn->setFixedSize(120,36);
     m_confirmBtn->setFixedSize(120,36);
     setFixedSize(420,446);
@@ -92,15 +94,15 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
                      "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
                      "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}";
     QString labelss = "font-size: 24px;";
-    QString confirmbtnss = "QPushButton {font-size:14px;background-color: #3D6BE5;border-radius: 4px;color:rgba(255,255,255,0.85);}"
-                           "QPushButton:hover {font-size:14px;background-color: #415FC4;border-radius: 4px;position:relative;color:rgba(255,255,255,0.85);}"
-                           "QPushButton:click {font-size:14px;background-color: #415FC4;border-radius: 4px;postion:realative;color:rgba(255,255,255,0.85);}";
-    QString btnss = "QPushButton {font-size:14px;background: #F4F4F4;color:rgba(0,0,0,0.85);border-radius: 4px;}"
-                    "QPushButton:hover{font-size:14px;color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}"
-                    "QPushButton:click{font-size:14px;color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}";
-    QString btns = "QPushButton {font-size:14px;background: #E7E7E7;color:rgba(0,0,0,0.85);border-radius: 4px;}"
-                    "QPushButton:hover{font-size:14px;color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}"
-                    "QPushButton:click{font-size:14px;color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}";
+    QString confirmbtnss = "QPushButton {background-color: #3D6BE5;border-radius: 4px;color:rgba(255,255,255,0.85);}"
+                           "QPushButton:hover {background-color: #415FC4;border-radius: 4px;position:relative;color:rgba(255,255,255,0.85);}"
+                           "QPushButton:click {background-color: #415FC4;border-radius: 4px;postion:realative;color:rgba(255,255,255,0.85);}";
+    QString btnss = "QPushButton {background: #F4F4F4;color:rgba(0,0,0,0.85);border-radius: 4px;}"
+                    "QPushButton:hover{color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}"
+                    "QPushButton:click{color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}";
+    QString btns = "QPushButton {background: #E7E7E7;color:rgba(0,0,0,0.85);border-radius: 4px;}"
+                    "QPushButton:hover{color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}"
+                    "QPushButton:click{color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}";
     QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete.svg");
     m_delBtn->setIcon(pixmap);
     m_delBtn->setStyleSheet("QPushButton{background:transparent;border-radius:4px;}"
@@ -126,9 +128,9 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
 
     //布局设置
     //account->setTextMargins(16,0,0,0);
-    m_newPassLineEdit->setTextMargins(12,0,0,0);
+    //m_newPassLineEdit->setTextMargins(12,0,0,0);
     m_mcodeLineEdit->setTextMargins(12,0,0,0);
-    m_passConfirm->setTextMargins(12,0,0,0);
+    //m_passConfirm->setTextMargins(12,0,0,0);
     m_wokrLayout->addWidget(m_title,0,Qt::AlignLeft);
     m_wokrLayout->setContentsMargins(41,55,41,36);
     m_wokrLayout->addSpacing(20);
@@ -193,7 +195,8 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QWidget(parent)
    // setStyleSheet("EditPassDialog{border-radius:6px;}");
     setAttribute(Qt::WA_TranslucentBackground, true);
     setWindowFlags(Qt::FramelessWindowHint);
-    setWindowModality(Qt::ApplicationModal);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog | Qt::Tool);
+    setModal(true);
     m_delBtn->raise();
     m_cancelBtn->setFocusPolicy(Qt::NoFocus);
     m_mcodeBtn->setFocusPolicy(Qt::NoFocus);

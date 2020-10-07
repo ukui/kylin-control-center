@@ -27,7 +27,6 @@ FrameItem::FrameItem(QWidget *parent) :QFrame(parent)
 
     this->setFrameShape(QFrame::Shape::Box);
     m_itemName = new QLabel(this);
-    m_itemName->setStyleSheet("font-size: 14px;");
     m_switchBtn = new SwitchButton(this);
     m_workLayout = new QHBoxLayout;
     m_workLayout->addWidget(m_itemName);
