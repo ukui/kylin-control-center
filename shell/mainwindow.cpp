@@ -199,7 +199,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             if (this->windowState() == Qt::WindowMaximized) {
                 QFont font = this->font();
                 int width = font.pointSize();
-                ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
+                qDebug() << "the width is" << width;
+                ui->leftsidebarWidget->setMaximumWidth(width * 10 +25);
                 for (int i = 0; i <= 9; i++) {
                     QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
 
@@ -595,7 +596,7 @@ void MainWindow::initLeftsideBar(){
     leftMicBtnGroup = new QButtonGroup();
 
     //构建左侧边栏返回首页按钮
-    QPushButton * hBtn = buildLeftsideBtn("homepage",tr("HOME"));
+    QPushButton * hBtn = buildLeftsideBtn("homepage",tr("Home"));
     hBtn->setObjectName("homepage");
     connect(hBtn, &QPushButton::clicked, this, [=]{
         ui->stackedWidget->setCurrentIndex(0);
@@ -614,13 +615,9 @@ void MainWindow::initLeftsideBar(){
 
             QPushButton * button;
             QString btnName = "btn" + QString::number(type + 1);
-            if ("zh_CN" == locale) {
-                button = buildLeftsideBtn(mnameString,mnamei18nString);
-                button->setToolTip(mnamei18nString);
-            } else {
-                button = buildLeftsideBtn(mnameString,mnameString);
-                button->setToolTip(mnameString);
-            }
+            button = buildLeftsideBtn(mnameString,mnamei18nString);
+            button->setToolTip(mnamei18nString);
+
             button->setObjectName(btnName);
             button->setCheckable(true);
             leftBtnGroup->addButton(button, type);
