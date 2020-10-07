@@ -112,6 +112,7 @@ private:
     bool            __once__ = false;
     bool            __run__ = false;
     bool            m_bIsStopped = false;
+    QLabel          *m_syncTimeLabel;
 
 public slots:
     void            neweditdialog();

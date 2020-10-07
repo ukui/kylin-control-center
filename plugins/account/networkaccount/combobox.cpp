@@ -49,11 +49,11 @@ ComboBox::ComboBox(QWidget *parent) : QWidget(parent)
     m_pushButton->setFocusPolicy(Qt::NoFocus);
 
     //Style
-    //lineedit->setStyleSheet("QLineEdit{border:none;font-size:14px;}");
+    //lineedit->setStyleSheet("QLineEdit{border:none;}");
     QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/arrow_down.svg");
     m_pushButton->setIcon(pixmap);
     m_pushButton->setStyleSheet("QPushButton{"
-                              "background-repeat:no-repeat;background-position :center;font-size:14px;background-color:transparent;border:none}");
+                              "background-repeat:no-repeat;background-position :center;background-color:transparent;border:none}");
     m_listWidget->setStyleSheet("QListView{border:1px solid #CFCFCF;border-color:#F4F4F4;border-radius:4px;}"
                               "QListView::item{background: #FFF;border-radius:4px;}"
                               "QListView::item:selected{background: #ffffffff;}"

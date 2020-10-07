@@ -39,14 +39,18 @@ BindPhoneDialog::BindPhoneDialog(QWidget *parent) : QWidget(parent)
     //phone->setStyleSheet(str);
     m_mCodeLineEdit->setPlaceholderText(tr("Your code here"));
     m_sendCode_btn->setText(tr("Get"));
-    //send_code->setStyleSheet("QPushButton{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(0,0,0,0.85);} "
-    //                         "QPushButton:hover{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}"
-    //                         "QPushButton:click{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}");
+    //send_code->setStyleSheet("QPushButton{background-color:#F4F4F4;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(0,0,0,0.85);} "
+    //                         "QPushButton:hover{background-color:#F4F4F4;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}"
+    //                         "QPushButton:click{background-color:#F4F4F4;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}");
 
 
     m_phoneLineEdit->setFixedSize(QSize(338,36));
     m_mCodeLineEdit->setFixedSize(120,36);
-    m_sendCode_btn->setFixedSize(198,36);
+
+    m_sendCode_btn->setMinimumSize(198,36);
+    m_sendCode_btn->setMaximumSize(205,36);
+    m_sendCode_btn->resize(198,36);
+
     m_vboxLayout->setMargin(0);
     m_vboxLayout->setSpacing(8);
     m_vboxLayout->setAlignment(Qt::AlignTop);

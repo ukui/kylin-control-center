@@ -23,10 +23,10 @@ BoxItem::BoxItem(QWidget *parent) : QWidget(parent)
 {
     m_countryCode= new QLabel(this);
     m_countryName = new QLabel(this);
-    m_countryCode->setStyleSheet("QLabel{color:rgba(0,0,0,0.85);font-size:14px}"
-                      "QLabel:hover{color:#FFFFFF;font-size:14px}");
-    m_countryName->setStyleSheet("QLabel{color:rgba(0,0,0,0.65);font-size:14px}"
-                      "QLabel:hover{color:#FFFFFF;font-size:14px}");
+    m_countryCode->setStyleSheet("QLabel{color:rgba(0,0,0,0.85);}"
+                      "QLabel:hover{color:#FFFFFF}");
+    m_countryName->setStyleSheet("QLabel{color:rgba(0,0,0,0.65);}"
+                      "QLabel:hover{color:#FFFFFF;}");
     QHBoxLayout *layout = new QHBoxLayout;
     m_countryCode->setObjectName("code");
     m_countryName->setObjectName("country");

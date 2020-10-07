@@ -18,6 +18,7 @@
  *
  */
 #include "tooltips.h"
+extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
 Tooltips::Tooltips(QWidget *parent) : QWidget(parent)
 {
@@ -35,35 +36,42 @@ Tooltips::Tooltips(QWidget *parent) : QWidget(parent)
 void Tooltips::paintEvent(QPaintEvent *event)
 {
 
-    QPainter painter(this);
-    QColor m_defaultBackgroundColor = qRgb(0, 0, 0);
-    QPainterPath path1;
-    path1.setFillRule(Qt::WindingFill);
-    path1.addRoundedRect(m_postionX, m_postionY, this->width() - (m_postionX * 2), this->height() - (m_postionY * 2), m_borderRadius, m_borderRadius);
+    Q_UNUSED(event)
 
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.fillPath(path1, QBrush(QColor(m_defaultBackgroundColor.red(),
-                                          m_defaultBackgroundColor.green(),
-                                          m_defaultBackgroundColor.blue())));
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+    QPainterPath rectPath;
+    rectPath.addRoundedRect(this->rect().adjusted(6, 6, -6, -6), 4, 4);
 
-    QColor color(0, 0, 0, m_alphaValue);
-    for (int i = 0; i < 5; i++)
-    {
-        QPainterPath path;
-        path.setFillRule(Qt::WindingFill);
-        path.addRoundedRect(m_postionX - i, m_postionY - i, this->width() - (m_postionX - i) * 2, this->height() - (m_postionY - i) * 2, m_borderRadius, m_borderRadius);
-        color.setAlpha(80 - qSqrt(i) * 40);
-        painter.setPen(color);
-        painter.drawPath(path);
-    }
+    // 画一个黑底
+    QPixmap pixmap(this->rect().size());
+    pixmap.fill(Qt::transparent);
+    QPainter pixmapPainter(&pixmap);
+    pixmapPainter.setRenderHint(QPainter::Antialiasing);
+    pixmapPainter.setPen(Qt::transparent);
+    pixmapPainter.setBrush(Qt::black);
+    pixmapPainter.setOpacity(0.65);
+    pixmapPainter.drawPath(rectPath);
+    pixmapPainter.end();
 
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.setBrush(QBrush(palette().color(QPalette::Base)));
-    painter.setPen(Qt::transparent);
-    QRect rect = this->rect();
-    rect.setX(m_postionX);
-    rect.setY(m_postionY);
-    rect.setWidth(rect.width() - m_postionY);
-    rect.setHeight(rect.height() - m_postionX);
-    painter.drawRoundedRect(rect, m_borderRadius, m_borderRadius);
+    // 模糊这个黑底
+    QImage img = pixmap.toImage();
+    qt_blurImage(img, 10, false, false);
+
+    // 挖掉中心
+    pixmap = QPixmap::fromImage(img);
+    QPainter pixmapPainter2(&pixmap);
+    pixmapPainter2.setRenderHint(QPainter::Antialiasing);
+    pixmapPainter2.setCompositionMode(QPainter::CompositionMode_Clear);
+    pixmapPainter2.setPen(Qt::transparent);
+    pixmapPainter2.setBrush(Qt::transparent);
+    pixmapPainter2.drawPath(rectPath);
+
+    // 绘制阴影
+    p.drawPixmap(this->rect(), pixmap, pixmap.rect());
+
+    // 绘制一个背景
+    p.save();
+    p.fillPath(rectPath,palette().color(QPalette::Base));
+    p.restore();
 }

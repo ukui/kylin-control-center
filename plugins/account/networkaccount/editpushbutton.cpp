@@ -29,7 +29,6 @@ EditPushButton::EditPushButton(QWidget *parent) : QPushButton(parent)
     m_toolTips->setStyleSheet("QWidget{border-radius:4px;}");
 
     m_resetLabel->setText(tr("Reset"));
-    m_resetLabel->setStyleSheet("QLabel{font-size:14px;}");
 
     m_workLayout->addWidget(m_resetLabel,0,Qt::AlignCenter);
     m_workLayout->setMargin(0);

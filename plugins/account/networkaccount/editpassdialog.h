@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QWidget>
+#include <QDialog>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QLabel>
@@ -40,7 +41,7 @@
 #include "tips.h"
 #include "svghandler.h"
 
-class EditPassDialog : public QWidget
+class EditPassDialog : public QDialog
 {
     Q_OBJECT
 public:
