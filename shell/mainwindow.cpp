@@ -40,6 +40,11 @@
 #define QueryLineEditClickedBackground "#FFFFFF" //搜索框背景选中
 #define QueryLineEditClickedBorder "rgba(61, 107, 229, 1)" //搜索框背景选中边框
 
+#ifdef WITHKYSEC
+#include <kysec/libkysec.h>
+#include <kysec/status.h>
+#endif
+
 const QByteArray kVinoSchemas    = "org.gnome.Vino";
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
@@ -538,6 +543,16 @@ void MainWindow::loadPlugins(){
 
     bool isExistCloud  = isExitsCloudAccount();
     foreach (QString fileName, pluginsDir.entryList(QDir::Files)){
+        //三权分立开启
+#ifdef WITHKYSEC
+        if (!kysec_is_disabled() && kysec_get_3adm_status() && (getuid() || geteuid())){
+            //时间和日期 | 用户账户 | 电源管理 |网络连接 |网络代理
+            if (fileName.contains("datetime") || fileName.contains("userinfo") || fileName.contains("power") || \
+                    fileName.contains("netconnect") || fileName.contains("proxy"))
+                continue;
+        }
+#endif
+
         if (!fileName.endsWith(".so"))
             continue;
         if (fileName == "libexperienceplan.so")
