@@ -3171,7 +3171,7 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../mainwindow.cpp" line="598"/>
-        <source>HOME</source>
+        <source>Home</source>
         <translation>首页</translation>
     </message>
 </context>
