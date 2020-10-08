@@ -229,24 +229,15 @@ void OutputConfig::initUi()
 
     int maxReslu = mResolution->getMaxResolution().width();
 
-//#if QT_VERSION < QT_VERSION_CHECK(5,7,0)
-//    if (maxReslu >= 2000) {
-//        scaleCombox->addItem(tr("200%"));
-//    } else {
-//        scaleCombox->addItem(tr("100%"));
-//    }
-//#else
     scaleCombox->addItem(tr("100%"));
-    if (maxReslu >= 2000 && maxReslu <= 3800) {
+    if (maxReslu >= 2000) {
         scaleCombox->addItem(tr("200%"));
-    } else if (maxReslu >= 3800 || maxReslu >= 4000) {
-        scaleCombox->addItem(tr("200%"));
+    }
+    if (maxReslu >= 3800) {
         scaleCombox->addItem(tr("300%"));
     }
-//#endif
 
     QLabel *scaleLabel = new QLabel();
-
     //~ contents_path /display/screen zoom
     scaleLabel->setText(tr("screen zoom"));
     scaleLabel->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
