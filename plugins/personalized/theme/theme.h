@@ -113,7 +113,7 @@ private slots:
     // write the kwin's configuration
     void writeKwinSettings(bool change, QString theme, bool effect = false);
 
-    void themeButtonClicked(QAbstractButton *button);
+    void themeBtnClickSlot(QAbstractButton *button);
 
 };
 

@@ -315,14 +315,11 @@ void OutputConfig::slotResolutionChanged(const QSize &size)
         return;
     }
 
-    KScreen::ModePtr selectedMode;
+    KScreen::ModePtr selectedMode  = mOutput->currentMode();
     QList<KScreen::ModePtr> modes;
     Q_FOREACH (const KScreen::ModePtr &mode, mOutput->modes()) {
         if (mode->size() == size) {
             modes << mode;
-            if (!selectedMode || selectedMode->refreshRate() < mode->refreshRate()) {
-                selectedMode = mode;
-            }
         }
     }
 
@@ -331,7 +328,7 @@ void OutputConfig::slotResolutionChanged(const QSize &size)
 
     // Don't remove the first "Auto" item - prevents ugly flicker of the combobox
     // when changing resolution
-    for (int i = mRefreshRate->count(); i >=2; --i) {
+    for (int i = mRefreshRate->count(); i >= 2; --i) {
         mRefreshRate->removeItem(i - 1);
     }
 

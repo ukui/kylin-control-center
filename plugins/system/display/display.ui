@@ -54,31 +54,43 @@
      <property name="minimumSize">
       <size>
        <width>550</width>
-       <height>200</height>
+       <height>250</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>960</width>
-       <height>200</height>
+       <height>250</height>
       </size>
      </property>
      <property name="frameShape">
       <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QQuickWidget" name="quickWidget">
         <property name="minimumSize">
          <size>
           <width>550</width>
-          <height>200</height>
+          <height>250</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>550</width>
-          <height>200</height>
+          <height>250</height>
          </size>
         </property>
        </widget>

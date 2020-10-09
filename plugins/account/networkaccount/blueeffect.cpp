@@ -9,7 +9,7 @@ Blueeffect::Blueeffect(QWidget *parent) : QWidget(parent)
     m_workLayout = new QHBoxLayout;
 
     this->setStyleSheet("Blueeffect{background-color:#3D6BE5;border-radius:4px;}");
-    m_textLabel->setStyleSheet("font-size:14px;color:#ffffff;background:transparent;");
+    m_textLabel->setStyleSheet("color:#ffffff;background:transparent;");
     m_iconLabel->setStyleSheet("background:transparent;");
     m_iconLabel->setFixedSize(24,24);
     m_workLayout->setSpacing(8);

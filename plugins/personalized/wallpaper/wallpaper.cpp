@@ -101,8 +101,8 @@ const QString Wallpaper::name() const {
 }
 
 void Wallpaper::initSearchText() {
-    //~ contents_path /wallpaper/Picture options
-    ui->selectLabel->setText(tr("Picture options"));
+    //~ contents_path /wallpaper/Select from
+    ui->selectLabel->setText(tr("Select from"));
     //~ contents_path /wallpaper/Browser local wp
     ui->browserLocalwpBtn->setText(tr("Browser local wp"));
     //~ contents_path /wallpaper/Browser online wp
@@ -526,7 +526,7 @@ void Wallpaper::showLocalWpDialog(){
 
     // TODO: chinese and space support
 //    if (g_file_test(selectedfile.toLatin1().data(), G_FILE_TEST_EXISTS)) {
-        bgsettings->set(FILENAME, QVariant(bgfile));
+    bgsettings->set(FILENAME, selectedfile);
 //    } else {
 //        bgsettings->reset(FILENAME);
 //    }

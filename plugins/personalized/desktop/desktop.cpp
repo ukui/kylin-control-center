@@ -144,6 +144,7 @@ void Desktop::initTranslation() {
     transMap.insert("ukui-volume-control-applet-qt", "音量控制");
     transMap.insert("ukui-sidebar", "侧边栏");
     transMap.insert("ukui-power-manager-tray", "电源管理");
+    transMap.insert("kylin-video", "麒麟影音");
 
     iconMap.insert("ukui-volume-control-applet-qt", "audio-card");
     iconMap.insert("kylin-nm", "network-workgroup");

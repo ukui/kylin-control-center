@@ -122,7 +122,7 @@ void KeyboardControl::setupStylesheet(){
     //~ contents_path /keyboard/Keyboard layout
     ui->layoutLabel->setText(tr("Keyboard layout"));
     //~ contents_path /keyboard/reset default layout
-    ui->resetLabel->setText(tr("reset default layout"));
+//    ui->resetLabel->setText(tr("reset default layout"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
@@ -203,6 +203,11 @@ void KeyboardControl::setupConnect(){
 
     connect(ui->resetBtn, &QPushButton::clicked, this, [=] {
         kbdsettings->reset(KBD_LAYOUTS_KEY);
+        if ("zh_CN" == QLocale::system().name()) {
+            kbdsettings->set(KBD_LAYOUTS_KEY, "cn");
+        } else {
+            kbdsettings->set(KBD_LAYOUTS_KEY, "us");
+        }
     });
 
     connect(kbdsettings, &QGSettings::changed, [=](QString key) {

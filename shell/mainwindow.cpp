@@ -39,6 +39,9 @@
 #define QueryLineEditBackground "#FFFFFF" //搜索框背景
 #define QueryLineEditClickedBackground "#FFFFFF" //搜索框背景选中
 #define QueryLineEditClickedBorder "rgba(61, 107, 229, 1)" //搜索框背景选中边框
+
+const QByteArray kVinoSchemas    = "org.gnome.Vino";
+
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
  **/
@@ -196,7 +199,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             if (this->windowState() == Qt::WindowMaximized) {
                 QFont font = this->font();
                 int width = font.pointSize();
-                ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
+                qDebug() << "the width is" << width;
+                ui->leftsidebarWidget->setMaximumWidth(width * 10 +25);
                 for (int i = 0; i <= 9; i++) {
                     QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
 
@@ -234,7 +238,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
         if(event->type() == QEvent::Enter) {
             closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"white"));
         }else if(event->type() == QEvent::Leave) {
-            closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
+            closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"gray"));
         }
     }
     if(watched==m_searchWidget) {
@@ -542,6 +546,10 @@ void MainWindow::loadPlugins(){
             continue;
         }
 
+        if (!QGSettings::isSchemaInstalled(kVinoSchemas) && "libvino.so" == fileName) {
+            continue;
+        }
+
         qDebug() << "Scan Plugin: " << fileName;
 
         //ukui-session-manager
@@ -588,7 +596,7 @@ void MainWindow::initLeftsideBar(){
     leftMicBtnGroup = new QButtonGroup();
 
     //构建左侧边栏返回首页按钮
-    QPushButton * hBtn = buildLeftsideBtn("homepage",tr("HOME"));
+    QPushButton * hBtn = buildLeftsideBtn("homepage",tr("Home"));
     hBtn->setObjectName("homepage");
     connect(hBtn, &QPushButton::clicked, this, [=]{
         ui->stackedWidget->setCurrentIndex(0);
@@ -607,13 +615,9 @@ void MainWindow::initLeftsideBar(){
 
             QPushButton * button;
             QString btnName = "btn" + QString::number(type + 1);
-            if ("zh_CN" == locale) {
-                button = buildLeftsideBtn(mnameString,mnamei18nString);
-                button->setToolTip(mnamei18nString);
-            } else {
-                button = buildLeftsideBtn(mnameString,mnameString);
-                button->setToolTip(mnameString);
-            }
+            button = buildLeftsideBtn(mnameString,mnamei18nString);
+            button->setToolTip(mnamei18nString);
+
             button->setObjectName(btnName);
             button->setCheckable(true);
             leftBtnGroup->addButton(button, type);
@@ -852,7 +856,7 @@ void MainWindow::initStyleSheet() {
     // 设置右上角按钮图标
     minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
     maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
-    closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"default"));
+    closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"gray"));
     closeBtn->setObjectName("closeBtn");
     closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;width:32px;height:32px;}"
                             "QPushButton#closeBtn{border-radius: 4px;width:32px;height:32px;}"

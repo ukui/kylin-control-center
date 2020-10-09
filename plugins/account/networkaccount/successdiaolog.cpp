@@ -34,9 +34,9 @@ SuccessDiaolog::SuccessDiaolog(QWidget *parent) : QWidget(parent)
 
     m_backloginBtn->setFixedSize(338,36);
     m_backloginBtn->setText(tr("Reback sign in"));
-    m_backloginBtn->setStyleSheet("QPushButton {font-size:14px;background-color: #3D6BE5;border-radius: 4px;color:rgba(255,255,255,0.85);}"
-                              "QPushButton:hover {font-size:14px;background-color: #415FC4;border-radius: 4px;position:relative;color:rgba(255,255,255,0.85);}"
-                              "QPushButton:click {font-size:14px;background-color: #415FC4;border-radius: 4px;postion:realative;color:rgba(255,255,255,0.85);}");
+    m_backloginBtn->setStyleSheet("QPushButton {background-color: #3D6BE5;border-radius: 4px;color:rgba(255,255,255,0.85);}"
+                              "QPushButton:hover {background-color: #415FC4;border-radius: 4px;position:relative;color:rgba(255,255,255,0.85);}"
+                              "QPushButton:click {background-color: #415FC4;border-radius: 4px;postion:realative;color:rgba(255,255,255,0.85);}");
     m_backloginBtn->setContentsMargins(0,16,0,0);
 
     m_workLayout->setContentsMargins(41,100,41,110);

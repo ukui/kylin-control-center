@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QStyleOptionSlider>
 #include <QDebug>
+#include <QPalette>
 
 
 Uslider::Uslider(QStringList list) : scaleList(list), QSlider(Qt::Horizontal)
@@ -18,7 +19,7 @@ void Uslider::paintEvent(QPaintEvent *e)
     QSlider::paintEvent(e);
 
     auto painter = new QPainter(this);
-    painter->setPen(QPen(Qt::black));
+    painter->setBrush(QBrush(QColor(QPalette::Base)));
 
     auto rect = this->geometry();
 

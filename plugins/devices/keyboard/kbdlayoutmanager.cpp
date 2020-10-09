@@ -119,6 +119,7 @@ void KbdLayoutManager::setupComponent(){
     rebuildVariantCombo();
 
     rebuild_listwidget();
+
 }
 
 void KbdLayoutManager::setupConnect(){
@@ -143,6 +144,16 @@ void KbdLayoutManager::setupConnect(){
         rebuildVariantCombo();
     });
 
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+    connect(ui->variantComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
+#else
+    connect(ui->variantComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
+#endif
+        Q_UNUSED(index)
+        if (index != -1)
+            installedNoSame();
+    });
+
     connect(ui->installBtn, &QPushButton::clicked, this, [=]{
         QString layout = ui->variantComboBox->currentData().toString();
 
@@ -154,6 +165,16 @@ void KbdLayoutManager::setupConnect(){
     });
 
     connect(ui->PreBtn, &QPushButton::clicked, this, &KbdLayoutManager::preview);
+}
+
+void KbdLayoutManager::installedNoSame(){
+
+    //最多4个布局，来自GTK控制面板，原因未知
+    QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
+    if (layouts.length() < MAXNUM  && !layouts.contains(ui->variantComboBox->currentData(Qt::UserRole).toString()))
+        ui->installBtn->setEnabled(true);
+    else
+        ui->installBtn->setEnabled(false);
 }
 
 void KbdLayoutManager::rebuildSelectListWidget(){
@@ -196,20 +217,20 @@ void KbdLayoutManager::rebuildVariantCombo(){
     ui->variantComboBox->clear();
     for (QString name : availablelayoutsList){
        QString desc = kbd_get_description_by_id(const_cast<const char *>(name.toLatin1().data()));
+       ui->variantComboBox->blockSignals(true);
        ui->variantComboBox->addItem(desc, name);
+       ui->variantComboBox->blockSignals(false);
     }
+
+    installedNoSame();
 }
 
 void KbdLayoutManager::rebuild_listwidget(){
-    //最多4个布局，来自GTK控制面板，原因未知
-    QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
-    if (layouts.length() >= MAXNUM)
-        ui->installBtn->setEnabled(false);
-    else
-        ui->installBtn->setEnabled(true);
+    installedNoSame();
 
     ui->listWidget->clear();
 
+    QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
     for (QString layout : layouts){
         QString desc = kbd_get_description_by_id(const_cast<const char *>(layout.toLatin1().data()));
 
@@ -247,6 +268,11 @@ void KbdLayoutManager::rebuild_listwidget(){
         ui->listWidget->setItemWidget(item, layoutWidget);
     }
 
+    if (!ui->listWidget->count()) {
+        ui->installedFrame->setVisible(false);
+    } else {
+        ui->installedFrame->setVisible(true);
+    }
 }
 
 void KbdLayoutManager::preview()
@@ -266,8 +292,10 @@ void KbdLayoutManager::preview()
 
     KeyboardPainter* layoutPreview = new KeyboardPainter();
 
+
     qDebug() << " layoutID:"  << layoutID << "variantID:" << variantID <<endl;
     layoutPreview->generateKeyboardLayout(layoutID, variantID, "pc104", "");
+    layoutPreview->setWindowTitle(tr("Keyboard Preview"));
     layoutPreview->setModal(true);
     layoutPreview->exec();
 }

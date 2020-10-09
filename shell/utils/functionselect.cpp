@@ -119,7 +119,7 @@ void FunctionSelect::initValue(){
         funcStruct.type = NETWORK;
         funcStruct.index = i;
         funcStruct.mainShow = true;
-        networkList.append(funcStruct);
+        networkList.append(funcStruct);        
     }
     networkList[NETCONNECT].nameString = QString("Netconnect");
     networkList[NETCONNECT].namei18nString = QObject::tr("Connect");
@@ -127,6 +127,9 @@ void FunctionSelect::initValue(){
     networkList[VPN].namei18nString = QObject::tr("Vpn");
     networkList[PROXY].nameString = QString("Proxy");
     networkList[PROXY].namei18nString = QObject::tr("Proxy");
+    networkList[VINO].nameString = QString("Vino");
+    networkList[VINO].namei18nString = QObject::tr("Vino");
+    networkList[VINO].mainShow = false;
 
     funcinfoList.append(networkList);
 

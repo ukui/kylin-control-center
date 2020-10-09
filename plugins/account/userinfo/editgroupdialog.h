@@ -31,6 +31,7 @@
 #include <QListWidget>
 
 class UserInfo;
+class ChangeGroupDialog;
 namespace Ui {
 class EditGroupDialog;
 }
@@ -56,7 +57,7 @@ protected:
 
 private:
     Ui::EditGroupDialog *ui;
-
+    ChangeGroupDialog *cgDialog = nullptr;
     bool _nameHasModified;
     bool _idHasModified;
     bool _boxModified;

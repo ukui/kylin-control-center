@@ -68,6 +68,7 @@ enum NetworkIndex{
     NETCONNECT,
     VPN,
     PROXY,
+    VINO,
     TOTALNETFUNC,
 };
 

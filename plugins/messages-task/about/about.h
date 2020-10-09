@@ -31,11 +31,7 @@
 #include <QSysInfo>
 #include <QLabel>
 #include <QStringList>
-
-#define MANUFACTURER "Manufacturer"
-#define VERSION "Version"
-#define PRODUCTNAME "Product Name"
-#define SERIALNUMBER "Serial Number"
+#include <QSharedPointer>
 
 #include "shell/interface.h"
 
@@ -64,6 +60,7 @@ private:
     QStringList  readFile(QString filePath);
 
     void initSearchText();
+    void initActiveDbus();
     void setupDesktopComponent();
     void setupKernelCompenent();
     void setupVersionCompenent();
@@ -82,10 +79,12 @@ private:
 
     QString computerinfo;
     QMap<QString, QString> infoMap;
+    QSharedPointer<QDBusInterface> activeInterface;
 
 private slots:
     void runActiveWindow();
     void showPdf();
+    void activeSlot(int activeSignal);
 };
 
 #endif // ABOUT_H

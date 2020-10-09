@@ -259,15 +259,15 @@ void Theme::setupComponent(){
     ui->tranSlider->setPageStep(5);
 
     ui->tranSlider->setValue(static_cast<int>(personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble() * 100));
-    ui->tranLabel->setText(QString::number(static_cast<double>(ui->tranSlider->value())/100.0));
-    connect(ui->tranSlider, &QSlider::valueChanged, [=](int value){
-        if(i!=(static_cast<int>(value)/5)/20.0){
+    ui->tranLabel->setText(QString::number(ui->tranSlider->value()) + "%");
+    connect(ui->tranSlider, &QSlider::sliderReleased, [=](){
+        if (i != (static_cast<int>(ui->tranSlider->value())/5)/20.0) {
             ui->tranSlider->setSingleStep(5);
-            personliseGsettings->set(PERSONALSIE_TRAN_KEY,(static_cast<int>(value)/5)/20.0);
-            qtSettings->set(THEME_TRAN_KEY, value);
-            qtSettings->set(PEONY_TRAN_KEY, value);
-            ui->tranLabel->setText(QString::number((static_cast<int>(value)/5)/20.0));
-            i=(static_cast<int>(value)/5)/20.0;
+            personliseGsettings->set(PERSONALSIE_TRAN_KEY,(static_cast<int>(ui->tranSlider->value())/5)/20.0);
+            qtSettings->set(THEME_TRAN_KEY, ui->tranSlider->value());
+            qtSettings->set(PEONY_TRAN_KEY, ui->tranSlider->value());
+            ui->tranLabel->setText(QString::number(ui->tranSlider->value()) + "%");
+            i = (static_cast<int>(ui->tranSlider->value())/5)/20.0;
         }
     });
     setupControlTheme();
@@ -359,16 +359,16 @@ void Theme::initThemeMode() {
                     currentThemeMode = "ukui-default";
                 }
                 if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode) {
-                    disconnect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeButtonClicked(QAbstractButton*)));
+                    disconnect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeBtnClickSlot(QAbstractButton*)));
                     button->click();
-                    connect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeButtonClicked(QAbstractButton*)));
+                    connect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeBtnClickSlot(QAbstractButton*)));
                 }
             }
             qApp->setStyle(new InternalStyle("ukui"));
         }
     });
 
-    connect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeButtonClicked(QAbstractButton*)));
+    connect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeBtnClickSlot(QAbstractButton*)));
 }
 
 void Theme::initIconTheme(){
@@ -692,11 +692,9 @@ void Theme::writeKwinSettings(bool change, QString theme, bool effect) {
     themeSettings->endGroup();
 
     themeSettings->sync();
-
-
 }
 
-void Theme::themeButtonClicked(QAbstractButton *button) {
+void Theme::themeBtnClickSlot(QAbstractButton *button) {
     // 设置主题
      QString themeMode = button->property("value").toString();
      QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();

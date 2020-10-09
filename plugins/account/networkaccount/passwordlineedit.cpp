@@ -78,6 +78,8 @@ PasswordLineEdit::PasswordLineEdit(QWidget *parent) : QLineEdit(parent)
     });
     m_changeStatusBtn->setFocusPolicy(Qt::NoFocus);
     setLayout(m_workLayout);
+    setMaxLength(30);
+    setTextMargins(12,0,28,0);
 
 }
 

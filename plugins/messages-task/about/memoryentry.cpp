@@ -8,6 +8,7 @@
 #include <KFormat>
 #include <QDebug>
 #include <QObject>
+#include <QtAlgorithms>
 
 #ifdef Q_OS_LINUX
 #include <sys/sysinfo.h>
@@ -49,6 +50,9 @@ QStringList MemoryEntry::totalMemory()
     if (totalRam > 0) {
         QString total =  KFormat().formatByteSize(totalRam, 0);
         QString available = KFormat().formatByteSize(totalRam, 1);
+        if (total.toDouble() > available.toDouble()) {
+            qSwap(total, available);
+        }
         res << total << available;
         return res;
     }

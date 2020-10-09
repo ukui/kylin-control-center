@@ -13,10 +13,10 @@ AppDetail::AppDetail(QString Name,QString key, QGSettings *gsettings, QWidget *p
     QDialog(parent),appKey(key),m_gsettings(gsettings), appName(Name),
     ui(new Ui::AppDetail)
 {
-//    qDebug()<<"name is------>"<<keys<<endl;
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
+    setWindowTitle(appName);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->closeBtn->setProperty("useIconHighlightEffect", true);

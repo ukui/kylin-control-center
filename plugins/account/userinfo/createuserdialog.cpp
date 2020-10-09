@@ -39,11 +39,11 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
     ui(new Ui::CreateUserDialog),
     usersStringList(userlist)
 {
-//    installEventFilter(this);
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
+    setWindowTitle(tr("Add new user"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->closeBtn->setProperty("useIconHighlightEffect", true);
@@ -285,6 +285,20 @@ void CreateUserDialog::pwdLegalityCheck(QString pwd){
 //        } else {
 //            pwdTip = "";
 //        }
+        const char *s = pwd.toUtf8().data();
+        while (*s && *s >= '0' && *s <= '9') {
+            s++;
+        }
+        if (!bool(*s)) {
+            pwdTip = tr("Password cannot be made up entirely by Numbers!");
+        } else {
+            pwdTip = "";
+        }
+        foreach (QChar ch, pwd){
+            if (int(ch.toLatin1() <= 0 || int(ch.toLatin1()) > 127)){
+                pwdTip = tr("Contains illegal characters!");
+            }
+        }
     }
 
     //防止先输入确认密码，再输入密码后pwdsuretipLabel无法刷新

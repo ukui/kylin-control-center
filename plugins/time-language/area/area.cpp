@@ -321,17 +321,17 @@ QStringList Area::getUserDefaultLanguage() {
     QString language;
     QStringList filestr;
     QStringList result;
-    QString fname = getenv("HOME");
-    fname += "/.pam_environment";
+//    QString fname = getenv("HOME");
+//    fname += "/.pam_environment";
 
-    filestr = this->readFile(fname);
-    QRegExp re("LANGUAGE(\t+DEFAULT)?=(.*)$");
-    for(int i = 0; i < filestr.length(); i++) {
-        while((pos = re.indexIn(filestr.at(i), pos)) != -1) {
-            language = re.cap(2);
-            pos += re.matchedLength();
-        }
-    }
+//    filestr = this->readFile(fname);
+//    QRegExp re("LANGUAGE(\t+DEFAULT)?=(.*)$");
+//    for(int i = 0; i < filestr.length(); i++) {
+//        while((pos = re.indexIn(filestr.at(i), pos)) != -1) {
+//            language = re.cap(2);
+//            pos += re.matchedLength();
+//        }
+//    }
 
     QDBusInterface * iproperty = new QDBusInterface("org.freedesktop.Accounts",
                                             objpath,
@@ -341,8 +341,10 @@ QStringList Area::getUserDefaultLanguage() {
     if (reply.isValid()){
         QMap<QString, QVariant> propertyMap;
         propertyMap = reply.value();
-        formats = propertyMap.find("FormatsLocale").value().toString();
-        if(language.isEmpty()) {
+        if (propertyMap.keys().contains("FormatsLocale")) {
+            formats = propertyMap.find("FormatsLocale").value().toString();
+        }
+        if(language.isEmpty() && propertyMap.keys().contains("Language")) {
             language = propertyMap.find("Language").value().toString();
         }
     } else {

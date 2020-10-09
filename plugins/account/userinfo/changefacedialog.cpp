@@ -129,7 +129,7 @@ void ChangeFaceDialog::setAccountType(QString atype){
 }
 
 void ChangeFaceDialog::showLocalFaceDialog(){
-    QString filters = "Face files(*.png *.jpg *.svg)";
+    QString filters = "Face files(*.jpg *.jpeg *.png *.svg)";
     QFileDialog fd;
     fd.setDirectory(QString(const_cast<char *>(g_get_user_special_dir(G_USER_DIRECTORY_PICTURES))));
     fd.setAcceptMode(QFileDialog::AcceptOpen);

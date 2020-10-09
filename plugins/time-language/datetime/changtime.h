@@ -52,8 +52,7 @@ namespace Ui {
 class changtimedialog;
 }
 
-class ChangtimeDialog : public QDialog
-{
+class ChangtimeDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -75,15 +74,11 @@ private:
     QGSettings * m_formatsettings = nullptr;
     QDBusInterface *m_datetimeInterface = nullptr;
     bool m_isEFHour; //24小时制
-    QString qss;        
-
 
 private slots:
     void datetimeUpdateSlot();
     void dayUpdateSlot();
     void changtimeApplySlot();
-
-
 };
 
 #endif // CHANGTIME_H

@@ -27,6 +27,7 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
 
     this->setObjectName("MapFrame");
     this->setStyleSheet("QFrame#MapFrame{background-color: rgb(22, 24, 26);border-radius:4px}");
+    this->setWindowTitle(tr("Change time zone"));
 
     closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
     closeBtn->setFlat(true);

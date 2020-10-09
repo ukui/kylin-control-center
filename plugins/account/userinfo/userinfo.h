@@ -184,7 +184,6 @@ private:
     SystemDbusDispatcher * sysdispatcher;
     QSettings * autoSettings = nullptr;
 
-
 private:
     bool getAutomaticLogin(QString username);
 

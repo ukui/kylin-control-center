@@ -63,7 +63,7 @@ UserInfo::UserInfo()
     //构建System dbus调度对象
     sysdispatcher = new SystemDbusDispatcher;
 
-    ui->changeGroupBtn->hide();
+//    ui->changeGroupBtn->hide();
 
     //获取系统全部用户信息，用户Uid大于等于1000的
     _acquireAllUsersInfo();
@@ -673,6 +673,13 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
 
     connect(baseWidget, &HoverWidget::enterWidget, this, [=](QString name){
         Q_UNUSED(name)
+
+        //不允许删除最后一个管理员
+        if (user.accounttype > 0 && adminnum == 1){
+            delBtn->setEnabled(false);
+        } else {
+            delBtn->setEnabled(true);
+        }
         typeBtn->show();
         pwdBtn->show();
         delBtn->show();
@@ -803,8 +810,10 @@ void UserInfo::deleteUserDone(QString objpath){
 }
 
 void UserInfo::showChangeGroupDialog(){
+//    qDebug() << "当前函数 :" << __FUNCTION__ << "当前行号 :" << __LINE__ << QDateTime::currentDateTime();
     ChangeGroupDialog * dialog = new ChangeGroupDialog();
     dialog->exec();
+//    qDebug() << "当前函数 :" << __FUNCTION__ << "当前行号 :" << __LINE__ << QDateTime::currentDateTime();
 }
 
 void UserInfo::showChangeValidDialog(QString username){

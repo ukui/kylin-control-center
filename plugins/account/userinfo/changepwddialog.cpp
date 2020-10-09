@@ -41,6 +41,7 @@ ChangePwdDialog::ChangePwdDialog(QWidget *parent) :
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
+    setWindowTitle(tr("Change pwd"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->closeBtn->setProperty("useIconHighlightEffect", true);
@@ -229,6 +230,11 @@ void ChangePwdDialog::pwdLegalityCheck(QString pwd){
 //        } else {
 //            pwdTip = "";
 //        }
+        foreach (QChar ch, pwd){
+            if (int(ch.toLatin1() <= 0 || int(ch.toLatin1()) > 127)){
+                pwdTip = tr("Contains illegal characters!");
+            }
+        }
     }
 
 
