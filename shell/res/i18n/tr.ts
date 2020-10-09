@@ -217,7 +217,7 @@
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="128"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Seç</translation>
     </message>
 </context>
 <context>
@@ -321,7 +321,7 @@
     <message>
         <location filename="../../../plugins/time-language/area/area.cpp" line="143"/>
         <source>US</source>
-        <translation>US</translation>
+        <translation>ABD</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.cpp" line="133"/>
@@ -467,7 +467,7 @@
     </message>
     <message>
         <source>Autoboot</source>
-        <translation type="vanished">Oto başlat</translation>
+        <translation type="vanished">Oto. başlat</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="63"/>
@@ -731,7 +731,7 @@ sisteminizin bütünlüğünü sağlamak için bunları geri yükleyebilirsiniz.
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="235"/>
         <source>Contains illegal characters!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Uygun olmayan karakterler içeriyor!</translation>
     </message>
     <message>
         <source>Password length needs to more than %1 character!</source>
@@ -919,7 +919,7 @@ sisteminizin bütünlüğünü sağlamak için bunları geri yükleyebilirsiniz.
     <message>
         <location filename="../../../plugins/personalized/wallpaper/colordialog.cpp" line="90"/>
         <source>Custom color</source>
-        <translation></translation>
+        <translation>Özel renk</translation>
     </message>
 </context>
 <context>
@@ -942,7 +942,7 @@ sisteminizin bütünlüğünü sağlamak için bunları geri yükleyebilirsiniz.
     <message>
         <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="260"/>
         <source>Id</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Id</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="321"/>
@@ -1070,12 +1070,12 @@ sistem ayarlarını değiştir</translation>
     <message>
         <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="293"/>
         <source>Password cannot be made up entirely by Numbers!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Parola tamamen Sayılarla oluşturulamaz!</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="299"/>
         <source>Contains illegal characters!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Uygun olmayan karakterler içeriyor!</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="402"/>
@@ -1904,7 +1904,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/userinfo/editgroupdialog.ui" line="275"/>
         <source>Id</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Id</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/editgroupdialog.ui" line="336"/>
@@ -2379,7 +2379,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
         <source>Boot</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Boot</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
@@ -2389,7 +2389,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
         <source>Editor</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Düzenleyici</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
@@ -2465,7 +2465,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/devices/keyboard/kbdlayoutmanager.cpp" line="298"/>
         <source>Keyboard Preview</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Klavye Önizleme</translation>
     </message>
 </context>
 <context>
@@ -2947,7 +2947,7 @@ folder will be deleted!</source>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="956"/>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="983"/>
         <source>Please check your phone!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lütfen telefonunuzu kontrol edin!</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="673"/>
@@ -3041,7 +3041,7 @@ folder will be deleted!</source>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="917"/>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1008"/>
         <source>Please make sure your password is safety!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lütfen şifrenizin güvenli olduğundan emin olun!</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1087"/>
@@ -3117,7 +3117,7 @@ Lütfen giriş için tekrar deneyin!</translation>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="800"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="820"/>
         <source>The latest time sync is: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">En son zaman senkronizasyonu: </translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="662"/>
@@ -4174,7 +4174,7 @@ Lütfen giriş için tekrar deneyin!</translation>
     <message>
         <location filename="../../utils/functionselect.cpp" line="181"/>
         <source>Security Center</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Güvenlik Merkezi</translation>
     </message>
     <message>
         <source>Netconnect</source>
@@ -4739,7 +4739,7 @@ dosya sisteminde geçersiz!</translation>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="151"/>
         <source>Security Center</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Güvenlik Merkezi</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="198"/>
@@ -4787,27 +4787,27 @@ dosya sisteminde geçersiz!</translation>
     <message>
         <location filename="../../../plugins/network/vino/sharemain.cpp" line="41"/>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Paylaş</translation>
     </message>
     <message>
         <location filename="../../../plugins/network/vino/sharemain.cpp" line="52"/>
         <source>Allow others to view your desktop</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Başkalarının masaüstünüzü görüntülemesine izin verin</translation>
     </message>
     <message>
         <location filename="../../../plugins/network/vino/sharemain.cpp" line="59"/>
         <source>Security</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Güvenlik</translation>
     </message>
     <message>
         <location filename="../../../plugins/network/vino/sharemain.cpp" line="69"/>
         <source>You must confirm every visit for this machine</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bu makine için her ziyareti onaylamalısınız</translation>
     </message>
     <message>
         <location filename="../../../plugins/network/vino/sharemain.cpp" line="84"/>
         <source>Require user to enter this password: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kullanıcının bu şifreyi girmesini zorunlu kılın: </translation>
     </message>
 </context>
 <context>
@@ -4841,7 +4841,7 @@ dosya sisteminde geçersiz!</translation>
         <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="465"/>
         <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="514"/>
         <source>disable</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kapalı</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="154"/>
