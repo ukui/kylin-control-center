@@ -94,7 +94,7 @@ Widget::Widget(QWidget *parent)
     closeScreenButton = new SwitchButton;
     ui->showScreenLayout->addWidget(closeScreenButton);
 
-    m_unifybutton = new SwitchButton;
+    m_unifybutton = new SwitchButton(this);
 //    m_unifybutton->setEnabled(false);
     ui->unionLayout->addWidget(m_unifybutton);
 
@@ -153,8 +153,7 @@ Widget::Widget(QWidget *parent)
     connect(ui->primaryCombo, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this, &Widget::mainScreenButtonSelect);
     //主屏确认按钮
-    connect(ui->mainScreenButton, SIGNAL(clicked()),
-            this, SLOT(primaryButtonEnable()));
+    connect(ui->mainScreenButton, SIGNAL(clicked(bool)), this, SLOT(primaryButtonEnable(bool)));
     mControlPanel = new ControlPanel(this);
     connect(mControlPanel, &ControlPanel::changed, this, &Widget::changed);
     connect(mControlPanel, &ControlPanel::scaleChanged, this, &Widget::scaleChangedSlot);
@@ -263,7 +262,7 @@ void Widget::setConfig(const KScreen::ConfigPtr &config)
         if (!mScreen->outputs().isEmpty()) {
             mScreen->setActiveOutput(mScreen->outputs().at(0));
             //选择一个主屏幕，避免闪退现象
-            primaryButtonEnable();
+            primaryButtonEnable(true);
         }
     }
     slotOutputEnabledChanged();
@@ -980,15 +979,15 @@ void Widget::mainScreenButtonSelect(int index){
 }
 
 
-//设置主屏按钮
-void Widget::primaryButtonEnable(){
+// 设置主屏按钮
+void Widget::primaryButtonEnable(bool status) {
+    Q_UNUSED(status);
     if (!mConfig) {
         return;
     }
     int index  = ui->primaryCombo->currentIndex();    ;
     ui->mainScreenButton->setEnabled(false);
     const KScreen::OutputPtr newPrimary = mConfig->output(ui->primaryCombo->itemData(index).toInt());
-   // qDebug()<<"按下主屏按钮---->"<<newPrimary<<"index ----"<<index<<endl;
     mConfig->setPrimaryOutput(newPrimary);
 
     Q_EMIT changed();
@@ -1003,7 +1002,6 @@ void Widget::checkOutputScreen(bool judge){
 //   qDebug()<<"newPrimary---------->"<<newPrimary<<endl;
 
    KScreen::OutputPtr  mainScreen=  mConfig->primaryOutput();
-//   qDebug()<<"mainScreen is------------>"<<mainScreen<<endl;
    if (!mainScreen) {
        mConfig->setPrimaryOutput(newPrimary);
    }

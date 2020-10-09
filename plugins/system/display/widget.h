@@ -123,7 +123,7 @@ class Widget : public QWidget
     void showCustomWiget(int index);
 
     // 按钮选择主屏确认按钮
-    void primaryButtonEnable();
+    void primaryButtonEnable(bool);
     // 是否禁用设置主屏按钮
     void mainScreenButtonSelect(int index);
     // 是否禁用屏幕
