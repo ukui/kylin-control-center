@@ -116,14 +116,14 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pInputLevelLabel->setFixedSize(150,32);
 //    m_pInputLevelLabel->setMinimumSize(115, 24);
 //    m_pInputLevelLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    m_pLowLevelLabel->setFixedSize(24,24);
+    m_pLowLevelLabel->setFixedSize(32,24);
     m_pInputLevelSlider->setFixedHeight(20);
-    m_pHighLevelLabel->setFixedSize(36,24);
+    m_pHighLevelLabel->setFixedSize(40,24);
     m_pSoundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     m_pSoundLayout->addWidget(m_pInputLevelLabel);
     m_pSoundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     m_pSoundLayout->addWidget(m_pLowLevelLabel);
-    m_pSoundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    m_pSoundLayout->addItem(new QSpacerItem(8,20,QSizePolicy::Fixed));
     m_pSoundLayout->addWidget(m_pInputLevelSlider);
     m_pSoundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     m_pSoundLayout->addWidget(m_pHighLevelLabel);

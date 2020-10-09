@@ -156,14 +156,14 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     QHBoxLayout *soundLayout = new QHBoxLayout(m_pChannelBalanceWidget);
 //    m_pOpBalanceLabel->setFixedSize(115,24);
     m_pOpBalanceLabel->setFixedSize(150,32);
-    m_pLeftBalanceLabel->setFixedSize(24,24);
+    m_pLeftBalanceLabel->setFixedSize(32,24);
     m_pOpBalanceSlider->setFixedHeight(20);
-    m_pRightBalanceLabel->setFixedSize(36,24);
+    m_pRightBalanceLabel->setFixedSize(40,24);
     soundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     soundLayout->addWidget(m_pOpBalanceLabel);
     soundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     soundLayout->addWidget(m_pLeftBalanceLabel);
-    soundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    soundLayout->addItem(new QSpacerItem(8,20,QSizePolicy::Fixed));
     soundLayout->addWidget(m_pOpBalanceSlider);
     soundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     soundLayout->addWidget(m_pRightBalanceLabel);
