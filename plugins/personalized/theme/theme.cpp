@@ -75,6 +75,7 @@
 #define PERSONALSIE_BLURRY_KEY "blurry"
 
 const QString defCursor = "DMZ-White";
+const QString UbuntuVesionEnhance = "Ubuntu 20.04.1 LTS";
 const int transparency = 95;
 
 const QStringList effectList {"blur", "kwin4_effect_translucency", "kwin4_effect_maximize", "zoom"};
@@ -241,13 +242,13 @@ void Theme::setupSettings() {
 
 void Theme::setupComponent(){
 
-    ui->lightButton->hide();
+    ui->lightButton->setVisible(getSystemVersion());
     //隐藏现阶段不支持功能
     ui->controlLabel->hide();
     ui->controlWidget->hide();
 
     ui->defaultButton->setProperty("value", "ukui-default");
-//    ui->lightButton->setProperty("value", "ukui-default");
+    ui->lightButton->setProperty("value", "ukui-light");
     ui->darkButton->setProperty("value", "ukui-dark");
 
     buildThemeModeBtn(ui->defaultButton, tr("Default"), "default");
@@ -338,10 +339,12 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
 void Theme::initThemeMode() {
     // 获取当前主题
     QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-    if ("ukui-white" == currentThemeMode || "ukui-default" == currentThemeMode || "ukui ukui-light" == currentThemeMode) {
+    if ("ukui-white" == currentThemeMode || "ukui-default" == currentThemeMode) {
         ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
-    } else {
+    } else if ("ukui-dark" == currentThemeMode){
         ui->themeModeBtnGroup->buttonClicked(ui->darkButton);
+    } else {
+        ui->themeModeBtnGroup->buttonClicked(ui->lightButton);
     }
     qApp->setStyle(new InternalStyle("ukui"));
 
@@ -585,6 +588,48 @@ QStringList Theme::_getSystemCursorThemes(){
         }
     }
     return themes;
+}
+
+bool Theme::getSystemVersion() {
+    QString versionPath = "/etc/os-release";
+    QStringList osRes =  readFile(versionPath);
+    QString version;
+
+    for (QString str : osRes) {
+        if (str.contains("PRETTY_NAME=")) {
+            int index = str.indexOf("PRETTY_NAME=");
+            int startIndex = index + 13;
+            int length = str.length() - startIndex - 1;
+            version = str.mid(startIndex, length);
+        }
+    }
+    if (UbuntuVesionEnhance == version) {
+        return true;
+    }
+    return false;
+}
+
+QStringList Theme::readFile(QString filepath)
+{
+    QStringList fileCont;
+    QFile file(filepath);
+    if (file.exists()) {
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            qWarning() << "ReadFile() failed to open" << filepath;
+            return QStringList();
+        }
+        QTextStream textStream(&file);
+        while (!textStream.atEnd()) {
+            QString line= textStream.readLine();
+            line.remove('\n');
+            fileCont<<line;
+        }
+        file.close();
+        return fileCont;
+    } else {
+        qWarning() << filepath << " not found"<<endl;
+        return QStringList();
+    }
 }
 
 QString Theme::dullTranslation(QString str){

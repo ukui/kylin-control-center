@@ -84,6 +84,8 @@ private:
     void clearLayout(QLayout* mlayout, bool deleteWidgets);
     double convertToTran(const int value);
     int tranConvertToSlider(const double value);
+    bool getSystemVersion();
+    QStringList readFile(QString filepath);
 
 private:
     Ui::Theme *ui;
