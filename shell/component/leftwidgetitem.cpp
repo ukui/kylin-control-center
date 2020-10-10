@@ -28,19 +28,10 @@
 LeftWidgetItem::LeftWidgetItem(QWidget *parent) :
     QWidget(parent)
 {
-//    this->setStyleSheet("background: none;");
     widget = new QWidget(this);
-//    widget->setFixedSize(120, 40);
-//    widget->setStyleSheet("QWidget{background: #FFFFFF;}");
     widget->setFixedHeight(40);
 
-
     iconLabel = new QLabel(widget);
-    QSizePolicy policy = iconLabel->sizePolicy();
-    policy.setHorizontalPolicy(QSizePolicy::Fixed);
-    policy.setVerticalPolicy(QSizePolicy::Fixed);
-    iconLabel->setSizePolicy(policy);
-    iconLabel->setFixedSize(24, 24);
 
     textLabel = new QLabel(widget);
     QSizePolicy policy1 = textLabel->sizePolicy();
@@ -48,7 +39,6 @@ LeftWidgetItem::LeftWidgetItem(QWidget *parent) :
     policy1.setVerticalPolicy(QSizePolicy::Fixed);
     textLabel->setSizePolicy(policy1);
     textLabel->setScaledContents(true);
-
 
     QHBoxLayout * mainlayout = new QHBoxLayout(widget);
     mainlayout->setSpacing(8);
@@ -78,6 +68,7 @@ void LeftWidgetItem::setLabelPixmap(QString filename, QString icoName, QString c
     this->icoName = icoName;
 
     QPixmap pix = loadSvg(filename, color);
+    iconLabel->setFixedSize(pix.size());
     iconLabel->setPixmap(pix);
 }
 
