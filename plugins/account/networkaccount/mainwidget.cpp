@@ -317,7 +317,7 @@ void MainWidget::init_gui() {
 
     ConfigFile files;
 
-    m_syncTimeLabel->setText(tr(QString("The latest time sync is:" + files.Get("Auto-sync","time").toString()).toStdString().c_str()));
+    m_syncTimeLabel->setText(tr("The latest time sync is: ") + ConfigFile().Get("Auto-sync","time").toString().toStdString().c_str());
 
     m_syncTimeLabel->setContentsMargins(20,0,0,0);
 
@@ -420,6 +420,11 @@ void MainWidget::init_gui() {
         m_cSyncDelay->stop();
         m_bIsStopped = true;
     });
+    connect(m_cRetry,&QTimer::timeout, [this] () {
+        qDebug() << "okk";
+        emit doman();
+        m_cRetry->stop();
+    });
 
     //All.conf的
     QString all_conf_path = QDir::homePath() + QString(PATH).remove("/All.conf");
@@ -505,11 +510,6 @@ void MainWidget::on_login() {
     connect(m_mainDialog,&MainDialog::on_login_failed,[this] () {
         m_cLoginTimer->stop();
         m_bIsStopped = true;
-    });
-
-    connect(m_cRetry,&QTimer::timeout, [this] () {
-        emit doman();
-        m_cRetry->stop();
     });
 
     connect(m_mainDialog, &MainDialog::on_close_event, [this] () {
@@ -643,18 +643,19 @@ void MainWidget::on_switch_button(int on,int id) {
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
-    if(!m_bAutoSyn) {
-        return ;
-    }
     //qDebug() << id;
-    if(on == 0 && m_exitCloud_btn->property("on") == true) {
-        m_itemList->get_item(id)->make_itemon();
+    if( m_exitCloud_btn->property("on") == true || !m_bAutoSyn) {
+        if(m_itemList->get_item(id)->get_swbtn()->get_swichbutton_val() == 1)
+            m_itemList->get_item(id)->make_itemoff();
+        else {
+            m_itemList->get_item(id)->make_itemon();
+        }
         return ;
-    } else if(on == 1 && m_exitCloud_btn->property("on") == false){
+    } else if(on == 1 && m_exitCloud_btn->property("on") == false && m_bAutoSyn){
         m_key = m_szItemlist.at(id);
-
-        m_singleDelay->setInterval(1000);
+        m_singleDelay->setInterval(300);
         m_singleDelay->setSingleShot(true);
+        m_bAutoSyn = false;
         m_singleDelay->start();
     }
 
@@ -794,6 +795,7 @@ void MainWidget::download_over() {
         m_exitCloud_btn->style()->unpolish(m_exitCloud_btn);
         m_exitCloud_btn->style()->polish(m_exitCloud_btn);
         m_exitCloud_btn->update();
+        m_bAutoSyn = true;
         //showDesktopNotify("同步结束");
     }
     if(__once__ == false) {
@@ -813,6 +815,7 @@ void MainWidget::push_over() {
         m_exitCloud_btn->style()->unpolish(m_exitCloud_btn);
         m_exitCloud_btn->style()->polish(m_exitCloud_btn);
         m_exitCloud_btn->update();
+        m_bAutoSyn = true;
         //showDesktopNotify("同步结束");
     }
     ConfigFile files;
@@ -878,7 +881,7 @@ void MainWidget::get_key_info(QString info) {
             }
         }
 
-        if(keys != "")
+        //if(keys != "")
             //showDesktopNotify("同步这些项目失败：" + keys);
 
         m_autoSyn->make_itemoff();

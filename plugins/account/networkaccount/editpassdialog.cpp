@@ -64,7 +64,7 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QDialog(parent)
     m_confirmBtn->setText(tr("Confirm"));
     m_passConfirm->setPlaceholderText(tr("Confirm your new password"));
     m_passTips->setText(tr("At least 6 bit, include letters and digt"));
-    m_passTips->setFixedHeight(16);
+    //m_passTips->setFixedHeight(16);
     m_mcodeLineEdit->setMaxLength(4);
     m_stackedWidget->setCurrentWidget(m_workWidget);
 
