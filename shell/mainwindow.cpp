@@ -366,13 +366,9 @@ void MainWindow::initUI() {
         if (index){ //首页部分组件样式
             //中部内容区域
             ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-right-radius: 6px;}");
-            //标题栏widget
-            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background:  palette(base); border-top-right-radius: 6px;}");
         } else { //次页部分组件样式
             //中部内容区域
             ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background:  palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
-            //标题栏widget
-            ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background:  palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
         }
     });
 
@@ -412,7 +408,7 @@ void MainWindow::initUI() {
 
 void MainWindow::initTileBar() {
 
-    ui->titleLayout->setContentsMargins(5, 0, 10, 0);
+    ui->titleLayout->setContentsMargins(9, 9, 9, 0);
     m_searchWidget = new SearchWidget(this);
 //    char style[100];
 //    sprintf(style, "SearchWidget{border:0px;background-color:palette(base);border-radius:8px;}",
@@ -432,7 +428,7 @@ void MainWindow::initTileBar() {
     queryWidLayout->setSpacing(0);
     m_queryWid->setLayout(queryWidLayout);
 
-    QPixmap pixmap=loadSvg(QString("://img/dropArrow/search.svg"),"default");
+    QPixmap pixmap=loadSvg(QString("://img/dropArrow/search.svg"),"gray");
     m_queryIcon=new QLabel;
     m_queryIcon->setStyleSheet("background:transparent");
     m_queryIcon->setFixedSize(pixmap.size());
@@ -475,6 +471,7 @@ void MainWindow::initTileBar() {
     m_searchWidget->setMaximumWidth(350);
     m_searchWidget->setMaximumHeight(40);
 
+    ui->titleLayout->addSpacing(9);
     ui->titleLayout->addWidget(titleLabel);
     ui->titleLayout->addWidget(backBtn);
     ui->titleLayout->addStretch();
@@ -846,8 +843,6 @@ void MainWindow::initStyleSheet() {
 
     // 中部内容区域
     ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
-    // 标题栏widget
-    ui->titlebarWidget->setStyleSheet("QWidget#titlebarWidget{background: palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
 
     // 左上角返回按钮
     backBtn->setProperty("useIconHighlightEffect", true);

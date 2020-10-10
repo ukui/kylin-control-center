@@ -647,6 +647,13 @@
               </widget>
              </item>
              <item>
+              <widget class="QLabel" name="lowLabel">
+               <property name="text">
+                <string>Low</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QSlider" name="tranSlider">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
@@ -654,9 +661,9 @@
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="tranLabel">
+              <widget class="QLabel" name="label">
                <property name="text">
-                <string/>
+                <string>High</string>
                </property>
               </widget>
              </item>

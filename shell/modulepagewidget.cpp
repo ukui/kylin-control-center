@@ -118,7 +118,7 @@ void ModulePageWidget::initUI(){
                 continue;
 
             //填充左侧二级菜单
-            LeftWidgetItem * leftWidgetItem = new LeftWidgetItem();
+            LeftWidgetItem * leftWidgetItem = new LeftWidgetItem(this);
             leftWidgetItem->setAttribute(Qt::WA_DeleteOnClose);
             leftWidgetItem->setLabelText(single.namei18nString);
 

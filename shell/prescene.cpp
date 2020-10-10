@@ -23,7 +23,7 @@ PreScene::PreScene(QLabel *label, QSize size, QWidget *parent) : titleLabel(labe
     m_logoLayout->addWidget(logoLabel);
 
     m_hlayout = new QHBoxLayout;
-    m_hlayout->setContentsMargins(21, 7, 0, 0);
+    m_hlayout->setContentsMargins(9, 9, 9, 0);
     m_hlayout->addWidget(titleLabel);
     titlebar->setLayout(m_hlayout);
 

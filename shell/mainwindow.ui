@@ -86,27 +86,9 @@
       </property>
       <item>
        <layout class="QHBoxLayout" name="titleLayout">
-        <item>
-         <widget class="QWidget" name="titlebarWidget" native="true">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>52</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>52</height>
-           </size>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
-           <property name="topMargin">
-            <number>9</number>
-           </property>
-          </layout>
-         </widget>
-        </item>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
        </layout>
       </item>
       <item>

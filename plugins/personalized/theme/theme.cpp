@@ -75,7 +75,7 @@
 #define PERSONALSIE_BLURRY_KEY "blurry"
 
 const QString defCursor = "DMZ-White";
-const QString UbuntuVesionEnhance = "Ubuntu 20.04.1 LTS";
+const QString UbuntuVesionEnhance = "Ubuntu Groovy Gorilla (development branch)";
 const int transparency = 95;
 
 const QStringList effectList {"blur", "kwin4_effect_translucency", "kwin4_effect_maximize", "zoom"};
@@ -260,15 +260,12 @@ void Theme::setupComponent(){
     ui->tranSlider->setPageStep(5);
 
     ui->tranSlider->setValue(static_cast<int>(personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble() * 100));
-    ui->tranLabel->setText(QString::number(ui->tranSlider->value()) + "%");
     connect(ui->tranSlider, &QSlider::sliderReleased, [=](){
         if (i != (static_cast<int>(ui->tranSlider->value())/5)/20.0) {
             ui->tranSlider->setSingleStep(5);
             personliseGsettings->set(PERSONALSIE_TRAN_KEY,(static_cast<int>(ui->tranSlider->value())/5)/20.0);
             qtSettings->set(THEME_TRAN_KEY, ui->tranSlider->value());
             qtSettings->set(PEONY_TRAN_KEY, ui->tranSlider->value());
-            ui->tranLabel->setText(QString::number(ui->tranSlider->value()) + "%");
-            i = (static_cast<int>(ui->tranSlider->value())/5)/20.0;
         }
     });
     setupControlTheme();
@@ -397,6 +394,9 @@ void Theme::initIconTheme(){
     foreach (QString themedir, themesDir.entryList(QDir::Dirs)) {
         if (themedir.startsWith("ukui-icon-theme-")){
             QDir appsDir = QDir(ICONTHEMEPATH + themedir + "/48x48/apps/");
+            if ("ukui-icon-theme-basic" == themedir) {
+                continue;
+            }
             appsDir.setFilter(QDir::Files | QDir::NoSymLinks);
             QStringList appIconsList = appsDir.entryList();
 
