@@ -260,46 +260,49 @@ void CreateUserDialog::refreshConfirmBtnStatus(){
 
 
 void CreateUserDialog::pwdLegalityCheck(QString pwd){
-    if (enablePwdQuality){
-#ifdef ENABLEPQ
-        void * auxerror;
-        int ret;
-        const char * msg;
-        char buf[256];
 
-        QByteArray ba = pwd.toLatin1();
-
-        ret = pwquality_check(settings, ba.data(), NULL, NULL, &auxerror);
-        if (ret < 0 && pwd.length() > 0){
-            msg = pwquality_strerror(buf, sizeof(buf), ret, auxerror);
-            pwdTip = QString(msg);
-        } else {
-            pwdTip = "";
-        }
-#endif
+    if (!checkCharLegitimacy(pwd)){
+        pwdTip = tr("Contains illegal characters!");
     } else {
-//        if (pwd.length() < PWD_LOW_LENGTH) {
-//            pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
-//        } else if (pwd.length() > PWD_HIGH_LENGTH) {
-//            pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
-//        } else {
-//            pwdTip = "";
-//        }
-        const char *s = pwd.toUtf8().data();
-        while (*s && *s >= '0' && *s <= '9') {
-            s++;
-        }
-        if (!bool(*s)) {
-            pwdTip = tr("Password cannot be made up entirely by Numbers!");
-        } else {
-            pwdTip = "";
-        }
-        foreach (QChar ch, pwd){
-            if (int(ch.toLatin1() <= 0 || int(ch.toLatin1()) > 127)){
-                pwdTip = tr("Contains illegal characters!");
+        if (enablePwdQuality){
+    #ifdef ENABLEPQ
+            void * auxerror;
+            int ret;
+            const char * msg;
+            char buf[256];
+
+            QByteArray ba = pwd.toLatin1();
+
+            ret = pwquality_check(settings, ba.data(), NULL, NULL, &auxerror);
+            if (ret < 0 && pwd.length() > 0){
+                msg = pwquality_strerror(buf, sizeof(buf), ret, auxerror);
+                pwdTip = QString(msg);
+            } else {
+                pwdTip = "";
             }
+    #endif
+        } else {
+    //        if (pwd.length() < PWD_LOW_LENGTH) {
+    //            pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
+    //        } else if (pwd.length() > PWD_HIGH_LENGTH) {
+    //            pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
+    //        } else {
+    //            pwdTip = "";
+    //        }
+    //        const char *s = pwd.toUtf8().data();
+    //        while (*s && *s >= '0' && *s <= '9') {
+    //            s++;
+    //        }
+    //        if (!bool(*s)) {
+    //            pwdTip = tr("Password cannot be made up entirely by Numbers!");
+    //        } else {
+    //            pwdTip = "";
+    //        }
+            pwdTip = "";
         }
     }
+
+
 
     //防止先输入确认密码，再输入密码后pwdsuretipLabel无法刷新
     if (!ui->pwdsureLineEdit->text().isEmpty()){
@@ -316,6 +319,16 @@ void CreateUserDialog::pwdLegalityCheck(QString pwd){
     }
 
     refreshConfirmBtnStatus();
+}
+
+bool CreateUserDialog::checkCharLegitimacy(QString password){
+    //密码不能包含非标准字符
+    foreach (QChar ch, password){
+        if (int(ch.toLatin1() <= 0 || int(ch.toLatin1()) > 127)){
+            return false;
+        }
+    }
+    return true;
 }
 
 

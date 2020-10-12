@@ -24,7 +24,6 @@
 #include <QPainter>
 #include <QPainterPath>
 
-
 #ifdef ENABLEPQ
 extern "C" {
 
@@ -47,7 +46,7 @@ class ChangePwdDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ChangePwdDialog(QWidget *parent = 0);
+    explicit ChangePwdDialog(bool _isCurrentUser, QWidget *parent = 0);
     ~ChangePwdDialog();
 
 public:
@@ -62,6 +61,13 @@ public:
     void setPwdType(QString type);
     void setAccountType(QString text);
 
+public:
+    static QString curPwdTip;
+    static void setCurPwdTip();
+    void helpEmitSignal();
+
+    bool isCurrentUser;
+
 protected:
     void paintEvent(QPaintEvent *);
 
@@ -69,7 +75,10 @@ private slots:
     void pwdLegalityCheck(QString pwd);
 private:
     Ui::ChangePwdDialog *ui;
-    QString nameTip;
+
+    bool checkCharLegitimacy(QString password);
+    bool checkOtherPasswd(QString name, QString pwd);
+
     QString pwdTip;
     QString pwdSureTip;
 
@@ -81,6 +90,7 @@ private:
 
 Q_SIGNALS:
     void passwd_send(QString pwd, QString username);
+    void pwdCheckOver();
 };
 
 #endif // CHANGEPWDDIALOG_H

@@ -27,14 +27,39 @@
 
 #include <QDebug>
 
+/* qt会将glib里的signals成员识别为宏，所以取消该宏
+ * 后面如果用到signals时，使用Q_SIGNALS代替即可
+ **/
+#ifdef signals
+#undef signals
+#endif
+
+extern "C" {
+#include <glib.h>
+#include <gio/gio.h>
+
+}
+
+#include "run-passwd.h"
+
 #define PWD_LOW_LENGTH 6
 #define PWD_HIGH_LENGTH 20
 
+QString ChangePwdDialog::curPwdTip = "";
+
+ChangePwdDialog * cpdGlobalObj = new ChangePwdDialog(false);
+
+PasswdHandler * passwd_handler = NULL;
+
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
-ChangePwdDialog::ChangePwdDialog(QWidget *parent) :
+static void chpasswd_cb(PasswdHandler * passwd_handler, GError * error, gpointer user_data);
+static void auth_cb(PasswdHandler * passwd_handler, GError * error, gpointer user_data);
+
+ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ChangePwdDialog)
+    ui(new Ui::ChangePwdDialog),
+    isCurrentUser(_isCurrentUser)
 {
     ui->setupUi(this);
 
@@ -54,6 +79,77 @@ ChangePwdDialog::ChangePwdDialog(QWidget *parent) :
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
+//    isCurrentUser = true;
+
+    //初始化passwd对象
+    if (isCurrentUser){
+        passwd_handler = passwd_init();
+        connect(ui->curPwdLineEdit, &QLineEdit::editingFinished, [=]{
+
+            if (isCurrentUser){
+                if (!ui->curPwdLineEdit->text().isEmpty()){
+                    curPwdTip = tr("Cur pwd checking!");
+                    cpdGlobalObj->helpEmitSignal();
+
+                    std::string str1 = ui->curPwdLineEdit->text().toStdString();
+                    const char * old_passwd = str1.c_str();
+                    passwd_authenticate(passwd_handler, old_passwd, auth_cb, NULL);
+                } else {
+                    curPwdTip = "";
+                    cpdGlobalObj->helpEmitSignal();
+                }
+            }
+        });
+    } else {
+        connect(ui->curPwdLineEdit, &QLineEdit::editingFinished, [=]{
+
+            if (checkOtherPasswd(ui->usernameLabel->text(), ui->curPwdLineEdit->text())){
+                curPwdTip = "";
+            } else {
+                curPwdTip = QObject::tr("Pwd input error, re-enter!");
+            }
+            cpdGlobalObj->helpEmitSignal();
+
+        });
+
+    }
+
+    connect(cpdGlobalObj, &ChangePwdDialog::pwdCheckOver, this, [=]{
+
+        ui->tipLabel->setText(curPwdTip);
+        if (curPwdTip.isEmpty()){
+            pwdTip.isEmpty() ? ui->tipLabel->setText(pwdTip) : ui->tipLabel->setText(pwdSureTip);
+        }
+
+        refreshConfirmBtnStatus();
+    });
+
+    if (isCurrentUser){
+        connect(ui->confirmPushBtn, &QPushButton::clicked, [=]{
+            this->accept();
+            std::string str2 = ui->pwdLineEdit->text().toStdString();
+            const char * passwd = str2.c_str();
+            passwd_change_password(passwd_handler, passwd, chpasswd_cb, NULL);
+        });
+    } else {
+        connect(ui->confirmPushBtn, &QPushButton::clicked, [=]{
+            this->accept();
+            emit (ui->pwdLineEdit->text(), ui->usernameLabel->text());
+
+        });
+    }
+//    connect(ui->confirmPushBtn, &QPushButton::clicked, [=]{
+//        this->accept();
+//        if (_isCurrentUser){//当前用户使用passwd修改密码，免除polikit验证
+//            qDebug() << "is Current";
+//            std::string str2 = ui->pwdLineEdit->text().toStdString();
+//            const char * passwd = str2.c_str();
+//            passwd_change_password(passwd_handler, passwd, chpasswd_cb, NULL);
+//        } else {
+//            emit (ui->pwdLineEdit->text(), ui->usernameLabel->text());
+//        }
+//    });
+
     initPwdChecked();
     setupComponent();
     setupConnect();
@@ -62,6 +158,30 @@ ChangePwdDialog::ChangePwdDialog(QWidget *parent) :
 ChangePwdDialog::~ChangePwdDialog()
 {
     delete ui;
+//    delete cpdGlobalObj;
+
+}
+
+bool ChangePwdDialog::checkOtherPasswd(QString name, QString pwd){
+    FILE * stream;
+    char command[128];
+    char output[128];
+
+    QByteArray ba1 = name.toLatin1();
+    QByteArray ba2 = pwd.toLatin1();
+
+    sprintf(command, "/usr/bin/checkuserpwd %s %s", ba1.data(), ba2.data());
+
+    if ((stream = popen(command, "r")) == NULL){
+        return false;
+    }
+
+    if (fread(output, sizeof(char), 128, stream) > 0){
+        pclose(stream);
+        return true;
+    }
+    pclose(stream);
+    return false;
 }
 
 void ChangePwdDialog::initPwdChecked(){
@@ -103,9 +223,11 @@ void ChangePwdDialog::setupComponent(){
 
     ui->pwdtypeComboBox->setText(tr("General Pwd"));
 
+    ui->curPwdLineEdit->setEchoMode(QLineEdit::Password);
     ui->pwdLineEdit->setEchoMode(QLineEdit::Password);
     ui->pwdsureLineEdit->setEchoMode(QLineEdit::Password);
 
+    ui->curPwdLineEdit->setPlaceholderText(tr("Current Password"));
     ui->pwdLineEdit->setPlaceholderText(tr("New Password"));
     ui->pwdsureLineEdit->setPlaceholderText(tr("New Password Identify"));
 
@@ -129,7 +251,7 @@ void ChangePwdDialog::setupConnect(){
 
         ui->tipLabel->setText(pwdSureTip);
         if (pwdSureTip.isEmpty()){
-            pwdTip.isEmpty() ? ui->tipLabel->setText(nameTip) : ui->tipLabel->setText(pwdTip);
+            pwdTip.isEmpty() ? ui->tipLabel->setText(curPwdTip) : ui->tipLabel->setText(pwdTip);
         }
 
         refreshConfirmBtnStatus();
@@ -137,10 +259,6 @@ void ChangePwdDialog::setupConnect(){
 
     connect(ui->cancelPushBtn, &QPushButton::clicked, [=]{
         reject();
-    });
-    connect(ui->confirmPushBtn, &QPushButton::clicked, [=]{
-        this->accept();
-        emit passwd_send(ui->pwdLineEdit->text(), ui->usernameLabel->text());
     });
 }
 
@@ -204,40 +322,34 @@ void ChangePwdDialog::paintEvent(QPaintEvent *event) {
 }
 
 void ChangePwdDialog::pwdLegalityCheck(QString pwd){
-    if (enablePwdQuality){
+    //
+    if (!checkCharLegitimacy(pwd)){
+        pwdTip = tr("Contains illegal characters!");
+    } else if (QString::compare(ui->pwdLineEdit->text(), ui->curPwdLineEdit->text()) == 0){
+        pwdTip = tr("Same with old pwd");
+    } else {
+        if (enablePwdQuality){
 #ifdef ENABLEPQ
-        void * auxerror;
-        int ret;
-        const char * msg;
-        char buf[256];
+            void * auxerror;
+            int ret;
+            const char * msg;
+            char buf[256];
 
-        QByteArray ba = pwd.toLatin1();
+            QByteArray ba = pwd.toLatin1();
 
-        ret = pwquality_check(settings, ba.data(), NULL, NULL, &auxerror);
-        if (ret < 0 && pwd.length() > 0){
-            msg = pwquality_strerror(buf, sizeof(buf), ret, auxerror);
-            pwdTip = QString(msg);
-        } else {
-            pwdTip = "";
-        }
+            ret = pwquality_check(settings, ba.data(), NULL, NULL, &auxerror);
+            if (ret < 0 && pwd.length() > 0){
+                msg = pwquality_strerror(buf, sizeof(buf), ret, auxerror);
+                pwdTip = QString(msg);
+            } else {
+                pwdTip = "";
+            }
 #endif
 
-    } else { //系统未开启pwdquality模块
-//        if (pwd.length() < PWD_LOW_LENGTH) {
-//            pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
-//        } else if (pwd.length() > PWD_HIGH_LENGTH) {
-//            pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
-//        } else {
-//            pwdTip = "";
-//        }
-        foreach (QChar ch, pwd){
-            if (int(ch.toLatin1() <= 0 || int(ch.toLatin1()) > 127)){
-                pwdTip = tr("Contains illegal characters!");
-            }
+        } else { //系统未开启pwdquality模块
+            pwdTip = "";
         }
     }
-
-
 
     //防止先输入确认密码，再输入密码后pwdsuretipLabel无法刷新
     if (!ui->pwdsureLineEdit->text().isEmpty()){
@@ -250,19 +362,47 @@ void ChangePwdDialog::pwdLegalityCheck(QString pwd){
 
     ui->tipLabel->setText(pwdTip);
     if (pwdTip.isEmpty()){
-        pwdSureTip.isEmpty() ? ui->tipLabel->setText(nameTip) : ui->tipLabel->setText(pwdSureTip);
+        pwdSureTip.isEmpty() ? ui->tipLabel->setText(curPwdTip) : ui->tipLabel->setText(pwdSureTip);
     }
 
     refreshConfirmBtnStatus();
 }
 
+bool ChangePwdDialog::checkCharLegitimacy(QString password){
+    foreach (QChar ch, password){
+        if (int(ch.toLatin1() <= 0 || int(ch.toLatin1()) > 127)){
+            return false;
+        }
+    }
+    return true;
+}
+
 
 void ChangePwdDialog::refreshConfirmBtnStatus(){
     if (!ui->tipLabel->text().isEmpty() || \
+            ui->curPwdLineEdit->text().isEmpty() || ui->curPwdLineEdit->text() == tr("Current Password") || \
             ui->pwdLineEdit->text().isEmpty() || ui->pwdLineEdit->text() == tr("New Password") || \
             ui->pwdsureLineEdit->text().isEmpty() || ui->pwdsureLineEdit->text() == tr("New Password Identify") ||
-            !nameTip.isEmpty() || !pwdTip.isEmpty() || !pwdSureTip.isEmpty())
+            !curPwdTip.isEmpty() || !pwdTip.isEmpty() || !pwdSureTip.isEmpty())
         ui->confirmPushBtn->setEnabled(false);
     else
         ui->confirmPushBtn->setEnabled(true);
+}
+
+void ChangePwdDialog::helpEmitSignal(){
+    emit this->pwdCheckOver();
+}
+
+void ChangePwdDialog::setCurPwdTip(){
+    cpdGlobalObj->helpEmitSignal();
+}
+
+static void chpasswd_cb(PasswdHandler *passwd_handler, GError *error, gpointer user_data){
+//    g_warning("error code: '%d'", error->code);
+//    passwd_destroy(passwd_handler);
+}
+
+static void auth_cb(PasswdHandler *passwd_handler, GError *error, gpointer user_data){
+    ChangePwdDialog::curPwdTip = error ? QObject::tr("Pwd input error, re-enter!") : "";
+    ChangePwdDialog::setCurPwdTip();
 }

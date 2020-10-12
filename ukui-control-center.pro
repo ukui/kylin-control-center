@@ -3,6 +3,7 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 SUBDIRS = \
+    checkUserPwd \
     registeredQDbus \
     plugins\
     shell \

@@ -44,7 +44,6 @@ extern "C" {
 #include <gio/gio.h>
 }
 
-
 #define DEFAULTFACE "/usr/share/ukui/faces/default.png"
 #define ITEMHEIGH 52
 
@@ -917,10 +916,10 @@ void UserInfo::changeUserFace(QString facefile, QString username){
 }
 
 void UserInfo::showChangePwdDialog(QString username){
+
     if (allUserInfoMap.keys().contains(username)){
         UserInfomation user = allUserInfoMap.value(username);
-
-        ChangePwdDialog * dialog = new ChangePwdDialog;
+        ChangePwdDialog * dialog = new ChangePwdDialog(user.current);
         dialog->setFace(user.iconfile);
         dialog->setUsername(user.username);
         dialog->setAccountType(_accountTypeIntToString(user.accounttype));
