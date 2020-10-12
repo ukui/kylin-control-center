@@ -26,6 +26,11 @@
 
 #include <QDebug>
 #include <QPushButton>
+#include <QFileInfo>
+#include <QFile>
+#include <QProcess>
+#include <QSettings>
+#include <QTextCodec>
 
 //#define DESKTOP_SCHEMA "org.ukui.peony.desktop"
 #define DESKTOP_SCHEMA "org.ukui.control-center.desktop"
@@ -83,7 +88,7 @@ Desktop::Desktop()
     if (QGSettings::isSchemaInstalled(id)) {
         dSettings = new QGSettings(id);
     }
-
+    cmd = QSharedPointer<QProcess>(new QProcess());
     initSearchText();
     initTranslation();
     setupComponent();
@@ -160,7 +165,7 @@ void Desktop::initTranslation() {
          <<"ErrorApplication"<<"livepatch";
 }
 
-void Desktop::setupComponent(){
+void Desktop::setupComponent() {
 
     ui->deskComputerLabel->setPixmap(QPixmap("://img/plugins/desktop/computer.png"));
     ui->deskHomeLabel->setPixmap(QPixmap("://img/plugins/desktop/homefolder.png"));
@@ -322,11 +327,7 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     nameSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
     nameLabel->setSizePolicy(nameSizePolicy);
     nameLabel->setScaledContents(true);
-    if ("zh_CN" == locale && transMap.contains(name)) {
-        nameLabel->setText(transMap.value(name));
-    } else {
-        nameLabel->setText(name);
-    }
+    nameLabel->setText(desktopConver(name));
 
     SwitchButton *appSwitch = new SwitchButton();
     if (disList.contains(name)) {
@@ -432,6 +433,42 @@ void Desktop::clearContent() {
 
 }
 
+QString Desktop::desktopConver(QString processName) {
+
+    if (isFileExist("/etc/xdg/autostart/"+processName+".desktop") ||
+            isFileExist("/usr/share/applications/"+processName+".desktop")) {
+        QString autoName =  desktopToName("/etc/xdg/autostart/"+processName+".desktop");
+        QString appName = desktopToName("/usr/share/applications/"+processName+".desktop");
+        if (autoName != "") {
+            return autoName;
+        } else if (appName != "") {
+            return appName;
+        }
+    } else {
+        connect(cmd.get(), &QProcess::readyReadStandardOutput, this, [&]() {
+            QString cmdName = readOuputSlot();
+            if (!cmdName.isEmpty()){
+                processName = cmdName;
+            }
+        });
+        // 异常处理
+        connect(cmd.get() , SIGNAL(readyReadStandardError()) , this , SLOT(readErrorSlot()));
+
+        QString inputCmd = QString("grep -nr %1 /usr/share/applications/  /etc/xdg/autostart/\n").arg(processName);
+        cmd->start(inputCmd);
+        cmd->waitForFinished(-1);
+    }
+    return processName;
+}
+
+bool Desktop::isFileExist(QString fullFileName) {
+    QFileInfo fileInfo(fullFileName);
+    if (fileInfo.isFile()) {
+        return true;
+    }
+    return false;
+}
+
 void Desktop::removeTrayItem(QString itemName) {
 
     for (int i = 0; i < ui->listWidget->count(); i++) {
@@ -465,5 +502,47 @@ void Desktop::addTrayItem(QGSettings * trayGSetting) {
         }
         initTrayStatus(name, icon, trayGSetting);
     }
+}
+
+QString Desktop::desktopToName(QString desktopfile) {
+    const QString locale = QLocale::system().name();
+    const QString localeName = "Name[" + locale +"]";
+    QSettings desktopSettings(desktopfile, QSettings::IniFormat);
+
+    desktopSettings.setIniCodec(QTextCodec::codecForName("UTF-8"));
+    desktopSettings.beginGroup("Desktop Entry");
+
+    QString desktopName = desktopSettings.value(localeName, "").toString();
+
+    desktopSettings.endGroup();
+    return desktopName;
+}
+
+QString Desktop::readOuputSlot() {
+    QString name;
+
+    QFile file("/tmp/desktopprocess.txt");
+    QString output=cmd->readAllStandardOutput().data();
+    // 打开文件，不存在则创建
+    file.open(QIODevice::ReadWrite | QIODevice::Text);
+    file.write(output.toUtf8());
+    file.close();
+
+    file.open(QIODevice::ReadWrite | QIODevice::Text);
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        QString str(line);
+        if(str.contains(".desktop:") && str.contains(":Exec")){
+            str=str.section(".desktop",0,0)+".desktop";
+            name = desktopToName(str);
+        }
+    }
+    file.close();
+    file.remove();
+    return name;
+}
+
+void Desktop::readErrorSlot() {
+    qWarning() << "read desktop file name failed";
 }
 

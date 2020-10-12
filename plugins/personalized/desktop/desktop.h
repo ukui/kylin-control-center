@@ -27,6 +27,7 @@
 #include <QVector>
 #include <QPushButton>
 #include <QMap>
+#include <QProcess>
 
 #include "shell/interface.h"
 
@@ -64,6 +65,10 @@ public:
     void clearContent();
 
 private:
+    QString desktopConver(QString processName);
+    bool isFileExist(QString fullFileName);
+
+private:
     Ui::Desktop *ui;
 
     int pluginType;
@@ -89,9 +94,15 @@ private:
 
     QGSettings * dSettings;
 
+//    QProcess * cmd;
+    QSharedPointer<QProcess> cmd;
+
 private slots:
     void removeTrayItem(QString itemName);
     void addTrayItem(QGSettings * trayGSetting);
+    QString desktopToName(QString desktopfile);
+    QString readOuputSlot();
+    void readErrorSlot();
 };
 
 #endif // DESKTOP_H
