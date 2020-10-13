@@ -366,9 +366,13 @@ void MainWindow::initUI() {
         if (index){ //首页部分组件样式
             //中部内容区域
             ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-right-radius: 6px;}");
+            // 标题栏
+            ui->titleWdiget->setStyleSheet("QWidget#titleWdiget{background-color: palette(base); border-top-right-radius: 6px;}");
         } else { //次页部分组件样式
             //中部内容区域
             ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background:  palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+            // 标题栏
+            ui->titleWdiget->setStyleSheet("QWidget#titleWdiget{background-color: palette(base);border-top-left-radius: 6px; border-top-right-radius: 6px;}");
         }
     });
 
