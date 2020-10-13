@@ -1,7 +1,7 @@
 <schemalist gettext-domain="ukui-control-center">
   <schema id="org.ukui.control-center.personalise" path="/org/ukui/control-center/personalise/">
     <key type="d" name="transparency">
-      <default>0.95</default>
+      <default>0.75</default>
       <summary>Control the transparency of all components</summary>
       <description>Control the transparency of all components</description>
     </key>
@@ -9,6 +9,11 @@
       <default>3</default>
       <summary>Control the frosted glass effect of the component</summary>
       <description>1- Low effect;2-Middle effect;3-High effect</description>
+    </key>
+    <key type="b" name="effect">
+      <default>true</default>
+      <summary>Control panel special effects transmit signal</summary>
+      <description>ture:Special effects open; false: Special effects off</description>
     </key>
   </schema>
 </schemalist>

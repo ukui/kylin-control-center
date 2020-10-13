@@ -140,17 +140,6 @@ void Desktop::initSearchText() {
 }
 
 void Desktop::initTranslation() {
-    transMap.insert("blueman", "蓝牙");
-    transMap.insert("fcitx", "输入法");
-    transMap.insert("indicator-china-weather", "麒麟天气");
-    transMap.insert("explorer.exe", "微信");
-    transMap.insert("ukui-flash-disk", "U盘管理工具");
-    transMap.insert("kylin-nm", "网络工具");
-    transMap.insert("ukui-volume-control-applet-qt", "音量控制");
-    transMap.insert("ukui-sidebar", "侧边栏");
-    transMap.insert("ukui-power-manager-tray", "电源管理");
-    transMap.insert("kylin-video", "麒麟影音");
-
     iconMap.insert("ukui-volume-control-applet-qt", "audio-card");
     iconMap.insert("kylin-nm", "network-workgroup");
     iconMap.insert("indicator-china-weather", "indicator-china-weather");
@@ -159,6 +148,7 @@ void Desktop::initTranslation() {
     iconMap.insert("fcitx", "fcitx");
     iconMap.insert("blueman", "preferences-system-bluetooth");
     iconMap.insert("kylin-video", "kylin-video");
+    iconMap.insert("kylin-screenshoot", "kylin-screenshoot");
 
     disList<<"ukui-sidebar"<<"kylin-nm"<<"ukui-volume-control-applet-qt"<<"update-notifier"<<"software-update-available"
           <<"blueman-tray"<<"ukui-power-manager"<<"ukui-settings-daemon"<<"blueman-applet"

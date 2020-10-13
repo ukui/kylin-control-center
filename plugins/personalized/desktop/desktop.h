@@ -94,7 +94,6 @@ private:
 
     QGSettings * dSettings;
 
-//    QProcess * cmd;
     QSharedPointer<QProcess> cmd;
 
 private slots:
