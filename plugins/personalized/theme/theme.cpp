@@ -70,9 +70,10 @@
 /**
  * 透明度设置
  */
-#define PERSONALSIE_SCHEMA "org.ukui.control-center.personalise"
-#define PERSONALSIE_TRAN_KEY "transparency"
+#define PERSONALSIE_SCHEMA     "org.ukui.control-center.personalise"
+#define PERSONALSIE_TRAN_KEY   "transparency"
 #define PERSONALSIE_BLURRY_KEY "blurry"
+#define PERSONALSIE_EFFECT_KEY "effect"
 
 const QString defCursor = "DMZ-White";
 const QString UbuntuVesionEnhance = "Ubuntu Groovy Gorilla (development branch)";
@@ -558,6 +559,8 @@ void Theme::initConnection() {
         if (!checked) {
             personliseGsettings->set(PERSONALSIE_TRAN_KEY, 1.0);
         }
+        // 提供给外部监听特效接口
+        personliseGsettings->set(PERSONALSIE_EFFECT_KEY, checked);
         QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
         ui->transFrame->setVisible(checked);
         writeKwinSettings(checked, currentThemeMode, true);

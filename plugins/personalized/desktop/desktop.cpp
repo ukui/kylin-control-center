@@ -149,6 +149,7 @@ void Desktop::initTranslation() {
     iconMap.insert("blueman", "preferences-system-bluetooth");
     iconMap.insert("kylin-video", "kylin-video");
     iconMap.insert("kylin-screenshoot", "kylin-screenshoot");
+    iconMap.insert("Onboard", "onboard");
 
     disList<<"ukui-sidebar"<<"kylin-nm"<<"ukui-volume-control-applet-qt"<<"update-notifier"<<"software-update-available"
           <<"blueman-tray"<<"ukui-power-manager"<<"ukui-settings-daemon"<<"blueman-applet"
@@ -208,7 +209,7 @@ void Desktop::setupConnect(){
     connect(deskVolumeSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(VOLUMES_VISIBLE_KEY, checked);});
     connect(deskNetworkSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(NETWORK_VISIBLE_KEY, checked);});
 
-    connect(fullMenuSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+    connect(fullMenuSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         if (keys.contains("menufullScreen")) {
             dSettings->set(MENU_FULL_SCREEN_KEY, checked);
         }
@@ -233,7 +234,7 @@ void Desktop::setupConnect(){
     });
 }
 
-void Desktop::initVisibleStatus(){
+void Desktop::initVisibleStatus() {
     deskComputerSwitchBtn->blockSignals(true);
     deskHomeSwitchBtn->blockSignals(true);
     deskTrashSwitchBtn->blockSignals(true);
@@ -253,7 +254,7 @@ void Desktop::initVisibleStatus(){
     deskNetworkSwitchBtn->blockSignals(false);
 }
 
-void Desktop::initLockingStatus(){
+void Desktop::initLockingStatus() {
     menuComputerSwitchBtn->blockSignals(true);
     menuFilesystemSwitchBtn->blockSignals(true);
     menuSettingSwitchBtn->blockSignals(true);
@@ -286,7 +287,7 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     QVBoxLayout * baseVerLayout = new QVBoxLayout();
     baseVerLayout->setSpacing(1);
 
-    QFrame * devFrame = new QFrame();
+    QFrame * devFrame = new QFrame(pluginWidget);
     devFrame->setObjectName(name);
     devFrame->setFrameShape(QFrame::Shape::Box);
     devFrame->setMinimumWidth(550);
@@ -298,7 +299,7 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     devHorLayout->setSpacing(8);
     devHorLayout->setContentsMargins(16, 0, 16, 0);
 
-    QPushButton * iconBtn = new QPushButton();
+    QPushButton * iconBtn = new QPushButton(pluginWidget);
 
     iconBtn->setStyleSheet("QPushButton{background-color:transparent;border-radius:4px}"
                                        "QPushButton:hover{background-color: transparent ;color:transparent;}");
@@ -311,7 +312,7 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     iconBtn->setIconSize(QSize(32, 32));
     iconBtn->setIcon(icon);
 
-    QLabel * nameLabel = new QLabel();
+    QLabel * nameLabel = new QLabel(pluginWidget);
     QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
     nameSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
     nameSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
@@ -319,7 +320,7 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     nameLabel->setScaledContents(true);
     nameLabel->setText(desktopConver(name));
 
-    SwitchButton *appSwitch = new SwitchButton();
+    SwitchButton *appSwitch = new SwitchButton(pluginWidget);
     if (disList.contains(name)) {
         appSwitch->setEnabled(false);
     }
@@ -377,7 +378,7 @@ void Desktop::initTraySettings() {
         QString path = QString("%1%2").arg(TRAY_SCHEMA_PATH).arg(QString(trayList.at(i)));;
 
         if (QGSettings::isSchemaInstalled(id)) {
-            traySettings = new QGSettings(id, path.toLatin1().data());
+            traySettings = new QGSettings(id, path.toLatin1().data(), pluginWidget);
 
             connect(traySettings, &QGSettings::changed, this, [=] (const QString &key) {
 
@@ -425,7 +426,7 @@ void Desktop::clearContent() {
 
 QString Desktop::desktopConver(QString processName) {
 
-    if (isFileExist("/etc/xdg/autostart/"+processName+".desktop") ||
+    if (isFileExist("/etc/xdg/autostart/"+processName + ".desktop") ||
             isFileExist("/usr/share/applications/"+processName+".desktop")) {
         QString autoName =  desktopToName("/etc/xdg/autostart/"+processName+".desktop");
         QString appName = desktopToName("/usr/share/applications/"+processName+".desktop");
@@ -434,7 +435,17 @@ QString Desktop::desktopConver(QString processName) {
         } else if (appName != "") {
             return appName;
         }
+    } else if (isFileExist("/etc/xdg/autostart/" + processName.toLower() + ".desktop") ||
+               isFileExist("/usr/share/applications/" + processName.toLower() + ".desktop")){
+        QString autoName =  desktopToName("/etc/xdg/autostart/" + processName.toLower() + ".desktop");
+        QString appName = desktopToName("/usr/share/applications/" + processName.toLower() + ".desktop");
+        if (autoName != "") {
+            return autoName;
+        } else if (appName != "") {
+            return appName;
+        }
     } else {
+
         connect(cmd.get(), &QProcess::readyReadStandardOutput, this, [&]() {
             QString cmdName = readOuputSlot();
             if (!cmdName.isEmpty()){
@@ -510,9 +521,11 @@ QString Desktop::desktopToName(QString desktopfile) {
 
 QString Desktop::readOuputSlot() {
     QString name;
+    QString str;
 
     QFile file("/tmp/desktopprocess.txt");
     QString output=cmd->readAllStandardOutput().data();
+
     // 打开文件，不存在则创建
     file.open(QIODevice::ReadWrite | QIODevice::Text);
     file.write(output.toUtf8());
@@ -521,9 +534,9 @@ QString Desktop::readOuputSlot() {
     file.open(QIODevice::ReadWrite | QIODevice::Text);
     while (!file.atEnd()) {
         QByteArray line = file.readLine();
-        QString str(line);
+        str = line;
         if(str.contains(".desktop:") && str.contains(":Exec")){
-            str=str.section(".desktop",0,0)+".desktop";
+            str = str.section(".desktop", 0, 0)+".desktop";
             name = desktopToName(str);
         }
     }
