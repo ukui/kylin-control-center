@@ -31,9 +31,12 @@
 const char kTimezoneDomain[] = "installer-timezones";
 const char kDefaultLocale[] = "en_US.UTF-8";
 
-#define FORMAT_SCHEMA "org.ukui.control-center.panel.plugins"
+const QString kcnBj = "北京";
+const QString kenBj = "Asia/Beijing";
+
+#define FORMAT_SCHEMA   "org.ukui.control-center.panel.plugins"
 #define TIME_FORMAT_KEY "hoursystem"
-#define DATE_KEY "date"
+#define DATE_KEY        "date"
 
 DateTime::DateTime() {
     ui = new Ui::DateTime;
@@ -340,6 +343,15 @@ QString DateTime::getLocalTimezoneName(QString timezone, QString locale) {
 
     // Reset locale.
     (void) setlocale(LC_ALL, kDefaultLocale);
+
+
+    if ("Asia/Shanghai" == timezone) {
+        if (QLocale::system().name() == "zh_CN") {
+            return kcnBj;
+        } else {
+            return kenBj;
+        }
+    }
 
     return (index > -1) ? local_name.mid(index + 1) : local_name;
 }

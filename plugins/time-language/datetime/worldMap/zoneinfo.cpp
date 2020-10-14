@@ -11,6 +11,9 @@ const char kTimezoneDomain[] = "installer-timezones";
 
 const char kDefaultLocale[] = "en_US.UTF-8";
 
+const QString kcnBj = "北京";
+const QString kenBj = "Asia/Beijing";
+
 QString ZoneInfo::readRile(const QString& filepath) {
     QFile file(filepath);
     if(file.exists()) {
@@ -62,8 +65,17 @@ ZoneinfoList ZoneInfo::getzoneInforList() {
                 }
 //                qDebug()<<"coordinate----->"<<coordinate<<endl;
                 Q_ASSERT(index > -1);
-                double latitude = convertoPos(coordinate.left(index),2);
-                double longtitude = convertoPos(coordinate.mid(index),3);
+
+                double latitude = convertoPos(coordinate.left(index), 2);
+                double longtitude = convertoPos(coordinate.mid(index), 3);
+                if ("+3114" == coordinate.left(index)) {
+                    latitude = convertoPos("+3992", 2);
+                }
+
+                if ("+12128" == coordinate.mid(index)) {
+                    longtitude = convertoPos("+11646", 3);
+                }
+
 
                 ZoneInfo_ zoneinfo_ = {details.at(0), details.at(2), latitude, longtitude,0.0};
                 list.append(zoneinfo_);
@@ -102,6 +114,15 @@ QString ZoneInfo::getLocalTimezoneName(QString timezone, QString locale) {
 
     // Reset locale.
     (void) setlocale(LC_ALL, kDefaultLocale);
+
+
+    if ("Asia/Shanghai" == timezone) {
+        if (QLocale::system().name() == "zh_CN") {
+            return kcnBj;
+        } else {
+            return kenBj;
+        }
+    }
 
     return (index > -1) ? local_name.mid(index + 1) : local_name;
 }
