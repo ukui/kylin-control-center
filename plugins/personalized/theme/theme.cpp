@@ -77,7 +77,7 @@
 
 const QString defCursor = "DMZ-White";
 const QString UbuntuVesionEnhance = "Ubuntu Groovy Gorilla (development branch)";
-const int transparency = 95;
+const int transparency = 75;
 
 const QStringList effectList {"blur", "kwin4_effect_translucency", "kwin4_effect_maximize", "zoom"};
 
@@ -648,16 +648,7 @@ QString Theme::dullTranslation(QString str){
 // reset all of themes, include cursor, icon,and etc...
 void Theme::resetBtnClickSlot() {
 
-    // reset theme(because MODE_QT_KEY's default is null, use "SET" to reset default key )
-//    QString theme = "ukui-default";
-//    qtSettings->set(MODE_QT_KEY, theme);
-//    gtkSettings->set(MODE_GTK_KEY, theme);
-//    emit ui->defaultButton->clicked();
     emit ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
-
-    ui->tranSlider->setValue(transparency);
-
-//    ui->defaultButton->setChecked(true);
 
     // reset cursor default theme
     QString cursorTheme = "DMZ-White";
@@ -669,6 +660,7 @@ void Theme::resetBtnClickSlot() {
     qtSettings->reset(PEONY_TRAN_KEY);
     gtkSettings->reset(ICON_GTK_KEY);
 
+    personliseGsettings->reset(PERSONALSIE_TRAN_KEY);
     ui->tranSlider->setValue(transparency);
 
     clearLayout(ui->iconThemeVerLayout->layout(), true);
