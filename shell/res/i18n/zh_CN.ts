@@ -625,14 +625,18 @@ you can restore them to ensure the integrity of your system.</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="156"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="157"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="156"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="157"/>
+        <source>The avatar is larger than 1M, please choose again</source>
+        <translation>警告，头像大于1M请重新选择</translation>
+    </message>
+    <message>
         <source>The avatar is larger than 2M, please choose again</source>
-        <translation>警告，头像大于2M请重新选择</translation>
+        <translation type="vanished">警告，头像大于2M请重新选择</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changefacedialog.ui" line="138"/>
@@ -1438,7 +1442,7 @@ folder will be deleted!</source>
     <name>Desktop</name>
     <message>
         <location filename="../../../plugins/personalized/desktop/desktop.ui" line="50"/>
-        <location filename="../../../plugins/personalized/desktop/desktop.cpp" line="135"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.cpp" line="137"/>
         <source>Icon Show On Desktop</source>
         <translation>显示在桌面的图标</translation>
         <extra-contents_path>/desktop/Icon Show On Desktop</extra-contents_path>
@@ -1500,7 +1504,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/desktop/desktop.ui" line="1019"/>
-        <location filename="../../../plugins/personalized/desktop/desktop.cpp" line="137"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.cpp" line="139"/>
         <source>Tray icon</source>
         <translation>显示在托盘上的图标</translation>
         <extra-contents_path>/desktop/Tray icon</extra-contents_path>
@@ -1523,7 +1527,7 @@ folder will be deleted!</source>
         <translation type="vanished">桌面</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/desktop/desktop.cpp" line="55"/>
+        <location filename="../../../plugins/personalized/desktop/desktop.cpp" line="57"/>
         <source>Desktop</source>
         <translation>桌面</translation>
     </message>
@@ -3074,8 +3078,8 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="180"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="792"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="811"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="793"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="813"/>
         <source>Exit</source>
         <translation>退出登录</translation>
     </message>
@@ -3115,19 +3119,20 @@ Please retry for login!</source>
         <translation>同步您账户的数据以及个性化设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="429"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="800"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="820"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="320"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="434"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="802"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="823"/>
         <source>The latest time sync is: </source>
         <translation>上次同步时间为: </translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="662"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="663"/>
         <source>This operation may cover your settings!</source>
         <translation>该操作可能覆盖您目前的快捷键！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="905"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="908"/>
         <source>Cloud ID desktop message</source>
         <translation>云账户消息</translation>
     </message>
@@ -3156,7 +3161,7 @@ Please retry for login!</source>
         <translation type="vanished">同步失败，请检查您的网络连接或者登出再重试一次！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="876"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="879"/>
         <source>%1,</source>
         <translation>%1,</translation>
     </message>
@@ -3176,23 +3181,23 @@ Please retry for login!</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../mainwindow.cpp" line="438"/>
+        <location filename="../../mainwindow.cpp" line="442"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
         <location filename="../../mainwindow.cpp" line="79"/>
-        <location filename="../../mainwindow.cpp" line="460"/>
+        <location filename="../../mainwindow.cpp" line="464"/>
         <source>UKCC</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="842"/>
+        <location filename="../../mainwindow.cpp" line="846"/>
         <source>ukcc</source>
         <translation>控制面板</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="613"/>
+        <location filename="../../mainwindow.cpp" line="617"/>
         <source>Home</source>
         <translation>首页</translation>
     </message>
@@ -4372,7 +4377,7 @@ Please retry for login!</source>
     <message>
         <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="33"/>
         <source>Novermber</source>
-        <translation>十二月</translation>
+        <translation>十一月</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="33"/>
