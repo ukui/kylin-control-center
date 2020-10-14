@@ -12,11 +12,7 @@ ControlPanel::ControlPanel(QWidget *parent)
     : QFrame(parent)
     , mUnifiedOutputCfg(nullptr)
 {
-//    setMinimumSize(553,150);
-//    setMaximumSize(16777215,150);
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-//    setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
-//    this->setStyleSheet("border: 1px solid #ff0000");
     mLayout = new QVBoxLayout(this);
     mLayout->setContentsMargins(0,0,0,0);
 }

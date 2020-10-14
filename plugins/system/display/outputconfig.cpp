@@ -79,33 +79,6 @@ void OutputConfig::initUi()
     vbox->setContentsMargins(0,0,0,0);
     vbox->setSpacing(2);
 
-    //注释显示器上方标签
-
-//    mTitle = new QLabel(this);
-//    mTitle->setAlignment(Qt::AlignHCenter);
-//    vbox->addWidget(mTitle);
-  //  setTitle(Utils::outputName(mOutput));
-
-    //QFormLayout *formLayout = new QFormLayout();
-
-
-
-//    mEnabled = new QCheckBox(i18n("已启用"), this);
-//    //mEnabled->setVisible(false);
-//    mEnabled->setChecked(mOutput->isEnabled());
-//    qDebug()<<"是否开启---->mEnable"<<mOutput<<endl;
-//    connect(mEnabled, &QCheckBox::clicked,
-//            this, [=](bool checked) {
-//                  //qDebug()<<"显示屏为---->mEnable"<<mOutput<<endl;
-//                  mOutput->setEnabled(checked);
-//                  qDebug() << "上层勾选---->"<<mOutput.data() << mOutput->name() << mOutput->isEnabled();
-//                  Q_EMIT changed();
-//            });
-//    formLayout->addRow(i18n("显示:"), mEnabled);
-
-//    mMonitor = new QComboBox(this);
-//    formLayout->addRow(i18n("主显示器"),mMonitor);
-
     //分辨率下拉框
     mResolution = new ResolutionSlider(mOutput, this);
 //    mResolution->setFont(ft);
@@ -176,19 +149,6 @@ void OutputConfig::initUi()
 
     //formLayout->addRow(rotateLabel, mRotation);
     vbox->addWidget(rotateFrame);
-
-    //缩放暂时用不到
-//    if (!mShowScaleOption) {
-//        mScale = new QComboBox(this);
-//        mScale->addItem(i18nc("Scale multiplier, show everything at 1 times normal scale", "1x"), 1);
-//        mScale->addItem(i18nc("Scale multiplier, show everything at 2 times normal scale", "2x"), 2);
-//        connect(mScale, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated),
-//                this, &OutputConfig::slotScaleChanged);
-//        mScale->setCurrentIndex(mScale->findData(mOutput->scale()));
-//        formLayout->addRow(i18n("缩放:"), mScale);
-//        formLayout->addItem(new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Minimum));
-//    }
-
 
     //刷新率下拉框
     mRefreshRate = new QComboBox();
