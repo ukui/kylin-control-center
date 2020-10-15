@@ -21,6 +21,7 @@
 #include "ui_addautoboot.h"
 
 #include <QDebug>
+#include <QFileInfo>
 
 //#define DESKTOPPATH "/etc/xdg/autostart/"
 #define DESKTOPPATH "/usr/share/applications/"
@@ -29,29 +30,17 @@ extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int tran
 
 AddAutoBoot::AddAutoBoot(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::AddAutoBoot)
-{
+    ui(new Ui::AddAutoBoot) {
+
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
 
     initStyle();
-
-    connect(ui->openBtn, SIGNAL(clicked(bool)), this, SLOT(open_desktop_dir_slots()));
-    connect(ui->cancelBtn, SIGNAL(clicked(bool)), this, SLOT(close()));
-    connect(ui->cancelBtn, &QPushButton::clicked, [=]{
-        resetBeforeClose();
-    });
-    connect(ui->certainBtn, &QPushButton::clicked, this, [=]{
-        emit autoboot_adding_signals(selectFile, ui->nameLineEdit->text(), ui->execLineEdit->text(), ui->commentLineEdit->text());
-        resetBeforeClose();
-    });
-    connect(ui->closeBtn, &QPushButton::clicked, [=]{
-        resetBeforeClose();
-    });
+    initConnection();
 }
 
-void AddAutoBoot::resetBeforeClose(){
+void AddAutoBoot::resetBeforeClose() {
     ui->nameLineEdit->setText(QString());
     ui->commentLineEdit->setText(QString());
     ui->execLineEdit->setText(QString());
@@ -96,8 +85,6 @@ void AddAutoBoot::paintEvent(QPaintEvent *event) {
     p.save();
     p.fillPath(rectPath,palette().color(QPalette::Base));
     p.restore();
-
-
 }
 
 void AddAutoBoot::initStyle() {
@@ -116,14 +103,36 @@ void AddAutoBoot::initStyle() {
     ui->nameLineEdit->setPlaceholderText(tr("Program name"));
     ui->execLineEdit->setPlaceholderText(tr("Program exec"));
     ui->commentLineEdit->setPlaceholderText(tr("Program comment"));
+
+    ui->hintLabel->setText(tr("desktop file not exist"));
+    ui->hintLabel->setAlignment(Qt::AlignCenter);
+    ui->hintLabel->setStyleSheet("color:red;");
+    ui->certainBtn->setEnabled(false);
 }
 
-AddAutoBoot::~AddAutoBoot()
-{
+void AddAutoBoot::initConnection() {
+
+    connect(ui->openBtn, SIGNAL(clicked(bool)), this, SLOT(open_desktop_dir_slots()));
+    connect(ui->cancelBtn, SIGNAL(clicked(bool)), this, SLOT(close()));
+    connect(ui->execLineEdit, SIGNAL(textEdited(QString)), this, SLOT(execLinEditSlot(QString)));
+
+    connect(ui->cancelBtn, &QPushButton::clicked, [=] {
+        resetBeforeClose();
+    });
+    connect(ui->certainBtn, &QPushButton::clicked, this, [=] {
+        emit autoboot_adding_signals(selectFile, ui->nameLineEdit->text(), mDesktopExec, ui->commentLineEdit->text(), mDesktopIcon);
+        resetBeforeClose();
+    });
+    connect(ui->closeBtn, &QPushButton::clicked, [=] {
+        resetBeforeClose();
+    });
+}
+
+AddAutoBoot::~AddAutoBoot() {
     delete ui;
 }
 
-void AddAutoBoot::open_desktop_dir_slots(){
+void AddAutoBoot::open_desktop_dir_slots() {
     QString filters = "Desktop files(*.desktop)";
     QFileDialog fd;
     fd.setDirectory(DESKTOPPATH);
@@ -147,7 +156,7 @@ void AddAutoBoot::open_desktop_dir_slots(){
 
     //解析desktop文件
     GKeyFile * keyfile;
-    char *name, * comment, * exec;
+    char *name, * comment;
 
     keyfile = g_key_file_new();
     if (!g_key_file_load_from_file(keyfile, ba.data(), G_KEY_FILE_NONE, NULL)){
@@ -157,17 +166,51 @@ void AddAutoBoot::open_desktop_dir_slots(){
 
     name = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NAME, NULL, NULL);
     comment = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
-    exec = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_EXEC, NULL);
+    mDesktopExec = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_EXEC, NULL);
+    mDesktopIcon = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, NULL);
 
-//    if (ui->nameLineEdit->text().isEmpty()) {
-        ui->nameLineEdit->setText(QString(name));
-//    }
-//    if (ui->execLineEdit->text().isEmpty()) {
-        ui->execLineEdit->setText(QString(exec));
-//    }
-//    if (ui->commentLineEdit->text().isEmpty()) {
-        ui->commentLineEdit->setText(QString(comment));
-//    }
+    ui->nameLineEdit->setText(QString(name));
+    ui->execLineEdit->setText(QString(selectedfile));
+    ui->commentLineEdit->setText(QString(comment));
 
     g_key_file_free(keyfile);
+}
+
+void AddAutoBoot::execLinEditSlot(const QString &fileName) {
+
+    selectFile = fileName;
+    QFileInfo fileInfo(fileName);
+    if (!fileInfo.isFile()) {
+        ui->hintLabel->setText(tr("desktop file not exist"));
+        ui->hintLabel->setAlignment(Qt::AlignCenter);
+        ui->hintLabel->setStyleSheet("color:red;");
+        ui->certainBtn->setEnabled(false);
+    } else {
+        ui->hintLabel->clear();
+        ui->certainBtn->setEnabled(true);
+
+        QByteArray ba;
+        ba = fileName.toUtf8();
+
+        //解析desktop文件
+        GKeyFile * keyfile;
+        char *name, * comment;
+
+        keyfile = g_key_file_new();
+        if (!g_key_file_load_from_file(keyfile, ba.data(), G_KEY_FILE_NONE, NULL)){
+            g_key_file_free (keyfile);
+            return;
+        }
+
+        name = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NAME, NULL, NULL);
+        mDesktopExec = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_EXEC, NULL);
+        mDesktopIcon = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, NULL);
+        comment = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
+
+        ui->nameLineEdit->setText(QString(name));
+        ui->execLineEdit->setText(QString(fileName));
+        ui->commentLineEdit->setText(QString(comment));
+
+        g_key_file_free(keyfile);
+    }
 }

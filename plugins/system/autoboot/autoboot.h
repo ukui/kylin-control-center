@@ -32,25 +32,6 @@ namespace Ui {
 class AutoBoot;
 }
 
-//typedef struct _AutoApp{
-
-//    QString bname;
-//    QString path;
-
-//    bool enable;
-//    bool no_display;
-//    bool shown;
-//    bool hidden;
-
-//    QString name;
-//    QString comment;
-//    QPixmap pixmap;
-//    QString exec;
-//    QString description;
-
-//    int xdg_position;
-//}AutoApp;
-
 class AutoBoot : public QObject, CommonInterface
 {
     Q_OBJECT
@@ -67,14 +48,14 @@ public:
     void plugin_delay_control() Q_DECL_OVERRIDE;
     const QString name() const  Q_DECL_OVERRIDE;
 
+
+private:
     void initAddBtn();
+    void initStyle();
     void initUI();
+    void initConnection();
     void update_app_status();
     void del_autoboot_realize(QString bname);
-
-protected:
-//    bool eventFilter(QObject *watched, QEvent *event);
-
 
 private:
     Ui::AutoBoot *ui;
@@ -109,7 +90,7 @@ private:
 
 public slots:
     void checkbox_changed_cb(QString bname);
-    void add_autoboot_realize_slot(QString path, QString name, QString exec, QString comment);
+    void add_autoboot_realize_slot(QString path, QString name, QString exec, QString comment, QString icon);
 };
 
 #endif // AUTOBOOT_H
