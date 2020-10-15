@@ -35,18 +35,7 @@ AddAutoBoot::AddAutoBoot(QWidget *parent) :
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    selectFile = "";
-
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
-
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
-
+    initStyle();
 
     connect(ui->openBtn, SIGNAL(clicked(bool)), this, SLOT(open_desktop_dir_slots()));
     connect(ui->cancelBtn, SIGNAL(clicked(bool)), this, SLOT(close()));
@@ -109,6 +98,24 @@ void AddAutoBoot::paintEvent(QPaintEvent *event) {
     p.restore();
 
 
+}
+
+void AddAutoBoot::initStyle() {
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+    selectFile = "";
+
+    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    ui->closeBtn->setFlat(true);
+
+    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+
+    ui->nameLineEdit->setPlaceholderText(tr("Program name"));
+    ui->execLineEdit->setPlaceholderText(tr("Program exec"));
+    ui->commentLineEdit->setPlaceholderText(tr("Program comment"));
 }
 
 AddAutoBoot::~AddAutoBoot()

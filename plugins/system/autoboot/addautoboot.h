@@ -58,9 +58,10 @@ protected:
 
 private:
     Ui::AddAutoBoot *ui;
+    QString selectFile;
 
 private:
-    QString selectFile;
+    void initStyle();
 
 private slots:
     void open_desktop_dir_slots();
