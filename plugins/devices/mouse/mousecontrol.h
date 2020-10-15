@@ -23,15 +23,12 @@
 #include <QObject>
 #include <QtPlugin>
 #include <QListView>
-
 #include <QX11Info>
 #include <QGSettings>
 #include <QStyledItemDelegate>
-
 #include <QProcess>
-
-
 #include <QLabel>
+#include <QStringList>
 
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
@@ -40,7 +37,7 @@ namespace Ui {
 class MouseControl;
 }
 
-class MyLabel : public QLabel{
+class MyLabel : public QLabel {
     Q_OBJECT
 public:
     MyLabel();
@@ -70,13 +67,12 @@ public:
     const QString name() const  Q_DECL_OVERRIDE;
 
     void initSearchText();
+    void initStyle();
     void setupComponent();
     void initHandHabitStatus();
     void initPointerStatus();
     void initCursorStatus();
     void initWheelStatus();
-    int _get_mouse_mid_speed();
-    void _set_mouse_mid_speed(int value);
 
 private slots:
     void mouseSizeChange();
@@ -97,6 +93,8 @@ private:
     QString leftStr;
     QString rightStr;
     QString pluginName;
+
+    QStringList mouseKeys;
 };
 
 #endif // MOUSECONTROL_H
