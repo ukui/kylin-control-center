@@ -471,11 +471,6 @@ void UkmediaMainWidget::addStream (UkmediaMainWidget *m_pWidget, MateMixerStream
             updateOutputSettings(m_pWidget,m_pControl);
             ukuiBarSetStream (m_pWidget, m_pStream);
         }
-
-        if (m_pStream == m_pOutput) {
-            updateOutputSettings(m_pWidget,m_pControl);
-            ukuiBarSetStream (m_pWidget, m_pStream);
-        }
         m_pName  = mate_mixer_stream_get_name (m_pStream);
         m_pLabel = mate_mixer_stream_get_label (m_pStream);
         m_pWidget->m_pOutputStreamList->append(m_pName);
@@ -1261,8 +1256,26 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
     MateMixerDirection direction;
     MateMixerStream *m_pStream = mate_mixer_stream_control_get_stream(m_pControl);
 
+    //拔插耳机时设置输出端口名
     if (MATE_MIXER_IS_STREAM(m_pStream)) {
-
+        MateMixerStream *stream = mate_mixer_stream_control_get_stream(m_pControl);
+        /* Enable the port selector if the stream has one */
+        MateMixerSwitch *portSwitch = findStreamPortSwitch (m_pWidget,stream);
+        if (portSwitch != nullptr) {
+            const GList *options;
+            options = mate_mixer_switch_list_options(MATE_MIXER_SWITCH(portSwitch));
+            while (options != nullptr) {
+                MateMixerSwitchOption *opt = MATE_MIXER_SWITCH_OPTION(options->data);
+                QString label = mate_mixer_switch_option_get_label(opt);
+                QString name = mate_mixer_switch_option_get_name(opt);
+                m_pWidget->m_pOutputPortList->append(name);
+                m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->addItem(label);
+                options = options->next;
+            }
+        }
+        MateMixerSwitchOption *option = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(portSwitch));
+        QString label = mate_mixer_switch_option_get_label(option);
+        m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(label);
         qDebug() << "get stream correct" << mate_mixer_stream_control_get_label(m_pControl) << mate_mixer_stream_get_label(m_pStream);
     }
     else {
@@ -1328,6 +1341,7 @@ void UkmediaMainWidget::onBalanceValueChanged (MateMixerStreamControl *m_pContro
 */
 void UkmediaMainWidget::updateOutputSettings (UkmediaMainWidget *m_pWidget,MateMixerStreamControl *m_pControl)
 {
+    qDebug() << "update output settings";
     g_debug("update output settings");
     MateMixerStreamControlFlags flags;
     if (m_pControl == nullptr) {
@@ -1362,15 +1376,13 @@ void UkmediaMainWidget::updateOutputSettings (UkmediaMainWidget *m_pWidget,MateM
             m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->addItem(label);
             options = options->next;
         }
-        MateMixerSwitchOption *option = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(portSwitch));
-        QString label = mate_mixer_switch_option_get_label(option);
-//        m_pWidget->m_pInputWidget->m_pInputPortWidget->show();
-//        m_pWidget->m_pInputWidget->setMinimumSize(550,200);
-//        m_pWidget->m_pInputWidget->setMaximumSize(960,200);
-        m_pWidget->m_pOutputWidget->outputWidgetAddPort();
-        m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(label);
-        connect(m_pWidget->m_pOutputWidget->m_pOutputPortCombobox,SIGNAL(currentIndexChanged(int)),m_pWidget,SLOT(outputPortComboxChangedSlot(int)));
     }
+    MateMixerSwitchOption *option = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(portSwitch));
+    QString label = mate_mixer_switch_option_get_label(option);
+    m_pWidget->m_pOutputWidget->outputWidgetAddPort();
+    m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(label);
+    qDebug() << "当前输出端口为:" <<label;
+    connect(m_pWidget->m_pOutputWidget->m_pOutputPortCombobox,SIGNAL(currentIndexChanged(int)),m_pWidget,SLOT(outputPortComboxChangedSlot(int)));
     connect(m_pWidget->m_pOutputWidget->m_pOpBalanceSlider,&QSlider::valueChanged,[=](int volume){
         gdouble value = volume/100.0;
         mate_mixer_stream_control_set_balance(m_pControl,value);
