@@ -145,53 +145,6 @@ void CreateGroupDialog::signalsBind()
         }
         _nameHasModified = true;
     });
-//    connect(ui->certainBtn, &QPushButton::clicked, this, [=](){
-//        qDebug() << "当前文件 :" << __FILE__ << "当前函数 :" << __FUNCTION__ << "当前行号 :" << __LINE__;
-//        for (int i = 0; i < ui->listWidget->count(); i++){
-//            QListWidgetItem *item = ui->listWidget->item(i);
-//            QCheckBox *box = static_cast<QCheckBox *> (ui->listWidget->itemWidget(item));
-//            if(box->isChecked()){
-//                QDBusReply<bool> reply = cgDialog->serviceInterface->call("addUserToGroup",
-//                                                ui->lineEdit_name->text(),"",box->text());
-//                if (reply.isValid()){
-//                    // use the returned value
-//                    qDebug() << "addUserToGroupget call value" << reply.value();
-//                } else {
-//                    // call failed. Show an error condition.
-//                    qDebug() << "addUserToGroup call failed" << reply.error();
-//                }
-//            } else {
-//                QDBusReply<bool> reply = cgDialog->serviceInterface->call("delUserFromGroup",
-//                                                ui->lineEdit_name->text(),"",box->text());
-//                if (reply.isValid()){
-//                    // use the returned value
-//                    qDebug() << "delUserFromGroup get call value" << reply.value();
-//                } else {
-//                    // call failed. Show an error condition.
-//                    qDebug() << "delUserFromGroup call failed" << reply.error();
-//                }
-//            }
-//        }
-//        for (int j = 0; j < cgDialog->value->size(); j++){
-//            if(ui->lineEdit_id->text() == cgDialog->value->at(j)->groupid){
-//                QMessageBox invalid(QMessageBox::Question, "Tips", "Invalid Id!");
-//                invalid.setIcon(QMessageBox::Warning);
-//                invalid.setStandardButtons(QMessageBox::Ok);
-//                invalid.setButtonText(QMessageBox::Ok, QString("OK"));
-//                invalid.exec();
-//                return;
-//            }
-//            if(ui->lineEdit_name->text() == cgDialog->value->at(j)->groupname){
-//                QMessageBox invalid(QMessageBox::Question, "Tips", "Invalid Group Name!");
-//                invalid.setIcon(QMessageBox::Warning);
-//                invalid.setStandardButtons(QMessageBox::Ok);
-//                invalid.setButtonText(QMessageBox::Ok, QString("OK"));
-//                invalid.exec();
-//                return;
-//            }
-//        }
-//        close();
-//    });
 }
 
 void CreateGroupDialog::setupInit()

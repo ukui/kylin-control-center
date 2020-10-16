@@ -143,7 +143,6 @@ void EditGroupDialog::signalsBind()
         for (int j = 0; j < cgDialog->value->size(); j++){
             if(ui->lineEdit_id->text() == cgDialog->value->at(j)->groupid){
                 _idHasModified = false;
-                delete cgDialog;
                 return;
             }
         }
@@ -158,10 +157,10 @@ void EditGroupDialog::signalsBind()
             if(_idHasModified){
                 for (int j = 0; j < cgDialog->value->size(); j++){
                     if(ui->lineEdit_id->text() == cgDialog->value->at(j)->groupid){
-                        QMessageBox invalid(QMessageBox::Question, "Tips", "Invalid Id!");
+                        QMessageBox invalid(QMessageBox::Question, tr("Tips"), tr("Invalid Id!"));
                         invalid.setIcon(QMessageBox::Warning);
                         invalid.setStandardButtons(QMessageBox::Ok);
-                        invalid.setButtonText(QMessageBox::Ok, QString("OK"));
+                        invalid.setButtonText(QMessageBox::Ok, QString(tr("OK")));
                         invalid.exec();
                         return;
                     }

@@ -675,6 +675,28 @@ you can restore them to ensure the integrity of your system.</source>
         <source>Add user group</source>
         <translation>添加用户组</translation>
     </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="228"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="236"/>
+        <source>Tips</source>
+        <translation>提示</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="228"/>
+        <source>Invalid Id!</source>
+        <translation>无效组ID!</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="231"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="239"/>
+        <source>OK</source>
+        <translation>确定</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="236"/>
+        <source>Invalid Group Name!</source>
+        <translation>无效组名!</translation>
+    </message>
 </context>
 <context>
     <name>ChangePwdDialog</name>
@@ -689,51 +711,72 @@ you can restore them to ensure the integrity of your system.</source>
         <translation>密码类型</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="382"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="376"/>
+        <source>Cur pwd</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="408"/>
         <source>New pwd</source>
         <translation>新密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="427"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="453"/>
         <source>New pwd sure</source>
         <translation>新密码确认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="520"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="546"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="542"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="568"/>
         <source>Confirm</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="44"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="69"/>
         <source>Change pwd</source>
         <translation>更改密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="104"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="91"/>
+        <source>Cur pwd checking!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="224"/>
         <source>General Pwd</source>
         <translation>通用密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="109"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="262"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="230"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="383"/>
+        <source>Current Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="231"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="384"/>
         <source>New Password</source>
         <translation>新密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="110"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="263"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="232"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="385"/>
         <source>New Password Identify</source>
         <translation>新密码确认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="235"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="327"/>
         <source>Contains illegal characters!</source>
         <translation type="unfinished">含有非法字符！</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="329"/>
+        <source>Same with old pwd</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Password length needs to more than %1 character!</source>
@@ -748,8 +791,8 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="vanished">密码长度需要大于5个字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="125"/>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="247"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="359"/>
         <source>Inconsistency with pwd</source>
         <translation>与新密码不同</translation>
     </message>
@@ -1051,7 +1094,7 @@ change system settings</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="175"/>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="309"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="312"/>
         <source>Inconsistency with pwd</source>
         <translation>和密码不一致</translation>
     </message>
@@ -1069,47 +1112,46 @@ change system settings</source>
         <translation>添加新用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="293"/>
         <source>Password cannot be made up entirely by Numbers!</source>
-        <translation type="unfinished">密码复杂度过低！</translation>
+        <translation type="obsolete">密码复杂度过低！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="299"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="265"/>
         <source>Contains illegal characters!</source>
         <translation type="unfinished">含有非法字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="402"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="415"/>
         <source>The user name cannot be empty</source>
         <translation>用户名不能为空</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="404"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="417"/>
         <source>The first character must be lowercase letters!</source>
         <translation>首字符必须为小写字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="407"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="420"/>
         <source>User name can not contain capital letters!</source>
         <translation>用户名不能包含大写字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="421"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="434"/>
         <source>The user name is already in use, please use a different one.</source>
         <translation>用户名已存在，请换用其他用户名。</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="426"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="439"/>
         <source>User name length need to less than %1 letters!</source>
         <translation>用户名长度需要小于%1个字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="428"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="441"/>
         <source>The user name can only be composed of letters, numbers and underline!</source>
         <translation>用户名只能由字母、数字以及下划线组成！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="433"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="446"/>
         <source>The username is configured, please change the username</source>
         <translation>用户配置已存在，请更换用户名</translation>
     </message>
@@ -1219,21 +1261,21 @@ change system settings</source>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="185"/>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="132"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="135"/>
         <source>Sync system time</source>
         <translation>同步系统时间</translation>
         <extra-contents_path>/datetime/Sync system time</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="204"/>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="134"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="137"/>
         <source>Change time</source>
         <translation>手动更改时间</translation>
         <extra-contents_path>/datetime/Change time</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="223"/>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="136"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="139"/>
         <source>Change time zone</source>
         <translation>更改时区</translation>
         <extra-contents_path>/datetime/Change time zone</extra-contents_path>
@@ -1248,18 +1290,18 @@ change system settings</source>
         <translation type="vanished">时间和日期</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="44"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="47"/>
         <source>Datetime</source>
         <translation>时间和日期</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="57"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="60"/>
         <source>24-hour clock</source>
         <translation>24小时制</translation>
         <extra-contents_path>/datetime/24-hour clock</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="226"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="229"/>
         <source>change time</source>
         <translation>更改时间</translation>
     </message>
@@ -1411,6 +1453,14 @@ in the file system invalid!</source>
         <location filename="../../../plugins/account/userinfo/delgroupdialog.ui" line="141"/>
         <source>Remind</source>
         <translation>提醒</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/delgroupdialog.cpp" line="34"/>
+        <source>Are you sure to delete &quot;%1&quot; group, 
+which will make some file components 
+in the file system invalid!</source>
+        <translation>确定删除&quot;%1&quot;组,这将使得文件系统
+中的某些文件组件ID无效!</translation>
     </message>
 </context>
 <context>
@@ -1909,6 +1959,21 @@ folder will be deleted!</source>
         <location filename="../../../plugins/account/userinfo/editgroupdialog.ui" line="336"/>
         <source>Members</source>
         <translation>组成员</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/editgroupdialog.cpp" line="160"/>
+        <source>Tips</source>
+        <translation>提示</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/editgroupdialog.cpp" line="160"/>
+        <source>Invalid Id!</source>
+        <translation>无效组ID!</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/editgroupdialog.cpp" line="163"/>
+        <source>OK</source>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
@@ -3492,69 +3557,69 @@ Please retry for login!</source>
 <context>
     <name>OutputConfig</name>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="119"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="92"/>
         <source>resolution</source>
         <translation>分辨率</translation>
         <extra-contents_path>/display/resolution</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="149"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="122"/>
         <source>orientation</source>
         <translation>方向</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="169"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="142"/>
         <source>arrow-up</source>
         <translation>不旋转</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="170"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="143"/>
         <source>90° arrow-right</source>
         <translation>90° 顺时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="171"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="144"/>
         <source>arrow-down</source>
         <translation>上下颠倒</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="172"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="145"/>
         <source>90° arrow-left</source>
         <translation>90° 逆时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="200"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="160"/>
         <source>refresh rate</source>
         <translation>刷新率</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="217"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="177"/>
         <source>auto</source>
         <translation>自动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="232"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="192"/>
         <source>100%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="234"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="194"/>
         <source>200%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="237"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="197"/>
         <source>300%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="242"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="202"/>
         <source>screen zoom</source>
         <translation>缩放屏幕</translation>
         <extra-contents_path>/display/screen zoom</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="330"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="290"/>
         <source>%1 Hz</source>
         <translation></translation>
     </message>
@@ -4049,22 +4114,22 @@ Please retry for login!</source>
         <translation type="vanished">默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="637"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="639"/>
         <source>basic</source>
         <translation>基础</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="639"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="641"/>
         <source>classical</source>
         <translation>经典</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="641"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="643"/>
         <source>default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="643"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="645"/>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="174"/>
         <source>Unknown</source>
         <translation>未知</translation>
@@ -4245,55 +4310,55 @@ Please retry for login!</source>
         <translation>体验计划</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="262"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="261"/>
         <source>min length %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="272"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="271"/>
         <source>min digit num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="281"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="280"/>
         <source>min upper num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="290"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="289"/>
         <source>min lower num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="299"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="298"/>
         <source>min other num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="309"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="308"/>
         <source>min char class %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="318"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="317"/>
         <source>max repeat %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="327"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="326"/>
         <source>max class repeat %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="336"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="335"/>
         <source>max sequence %1
 </source>
         <translation type="unfinished"></translation>
@@ -4422,10 +4487,9 @@ Please retry for login!</source>
         <translation>控制面板已运行!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/delgroupdialog.cpp" line="34"/>
-        <source>Are you sure to delete &quot;%1&quot; group, 
-which will make some file components 
-in the file system invalid!</source>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="109"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="406"/>
+        <source>Pwd input error, re-enter!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4926,28 +4990,28 @@ in the file system invalid!</source>
     <name>Theme</name>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="73"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="199"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="200"/>
         <source>Theme Mode</source>
         <translation>主题模式</translation>
         <extra-contents_path>/theme/Theme Mode</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="114"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="115"/>
         <source>Theme</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="254"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="255"/>
         <source>Default</source>
         <translation>系统默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="255"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="256"/>
         <source>Light</source>
         <translation>浅色模式</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="256"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="257"/>
         <source>Dark</source>
         <translation>深色模式</translation>
     </message>
@@ -4957,7 +5021,7 @@ in the file system invalid!</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="273"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="201"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="202"/>
         <source>Icon theme</source>
         <translation>图标主题</translation>
         <extra-contents_path>/theme/Icon theme</extra-contents_path>
@@ -4969,7 +5033,7 @@ in the file system invalid!</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="421"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="203"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="204"/>
         <source>Cursor theme</source>
         <translation>光标主题</translation>
         <extra-contents_path>/theme/Cursor theme</extra-contents_path>
@@ -4981,7 +5045,7 @@ in the file system invalid!</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="645"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="207"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="208"/>
         <source>Transparency</source>
         <translation>透明度</translation>
         <extra-contents_path>/theme/Transparency</extra-contents_path>
@@ -4992,7 +5056,7 @@ in the file system invalid!</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="573"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="205"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="206"/>
         <source>Performance mode</source>
         <translation>特效模式</translation>
         <extra-contents_path>/theme/Performance mode</extra-contents_path>
@@ -5453,27 +5517,27 @@ in the file system invalid!</source>
         <translation type="vanished">账户信息</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="58"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="57"/>
         <source>User Info</source>
         <translation>账户信息</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="138"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="137"/>
         <source>standard user</source>
         <translation>标准用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="140"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="139"/>
         <source>administrator</source>
         <translation>管理员用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="142"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="141"/>
         <source>root</source>
         <translation>Root</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="666"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="665"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
@@ -5484,23 +5548,23 @@ in the file system invalid!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="219"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="124"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="648"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="123"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="647"/>
         <source>Change pwd</source>
         <translation>更改密码</translation>
         <extra-contents_path>/userinfo/Change pwd</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="284"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="126"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="635"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="125"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="634"/>
         <source>Change type</source>
         <translation>更改类型</translation>
         <extra-contents_path>/userinfo/Change type</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="349"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="128"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="127"/>
         <source>Change valid</source>
         <translation>密码时效</translation>
         <extra-contents_path>/userinfo/Change valid</extra-contents_path>
@@ -5516,14 +5580,14 @@ in the file system invalid!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="526"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="130"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="129"/>
         <source>Login no passwd</source>
         <translation>免密登录</translation>
         <extra-contents_path>/userinfo/Login no passwd</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="604"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="132"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="131"/>
         <source>enable autoLogin</source>
         <translation>自动登录</translation>
         <extra-contents_path>/userinfo/enable autoLogin</extra-contents_path>
@@ -5539,7 +5603,7 @@ in the file system invalid!</source>
         <translation>其他用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="374"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="373"/>
         <source>Add new user</source>
         <translation>添加新用户</translation>
     </message>

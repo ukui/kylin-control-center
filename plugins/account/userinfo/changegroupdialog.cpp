@@ -225,18 +225,18 @@ void ChangeGroupDialog::initNewGroupBtn()
         connect(certainBtn, &QPushButton::clicked, this, [=](){
             for (int j = 0; j < value->size(); j++){
                 if(lineId->text() == value->at(j)->groupid){
-                    QMessageBox invalid(QMessageBox::Question, "Tips", "Invalid Id!");
+                    QMessageBox invalid(QMessageBox::Question, tr("Tips"), tr("Invalid Id!"));
                     invalid.setIcon(QMessageBox::Warning);
                     invalid.setStandardButtons(QMessageBox::Ok);
-                    invalid.setButtonText(QMessageBox::Ok, QString("OK"));
+                    invalid.setButtonText(QMessageBox::Ok, QString(tr("OK")));
                     invalid.exec();
                     return;
                 }
                 if(lineName->text() == value->at(j)->groupname){
-                    QMessageBox invalid(QMessageBox::Question, "Tips", "Invalid Group Name!");
+                    QMessageBox invalid(QMessageBox::Question, tr("Tips"), tr("Invalid Group Name!"));
                     invalid.setIcon(QMessageBox::Warning);
                     invalid.setStandardButtons(QMessageBox::Ok);
-                    invalid.setButtonText(QMessageBox::Ok, QString("OK"));
+                    invalid.setButtonText(QMessageBox::Ok, QString(tr("OK")));
                     invalid.exec();
                     return;
                 }

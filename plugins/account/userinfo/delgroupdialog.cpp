@@ -31,7 +31,7 @@ DelGroupDialog::DelGroupDialog(QString groupName, QWidget *parent) :
 
     ui->labelPic->setPixmap(QPixmap("://img/plugins/userinfo/notice.png"));
     //ui->labelText->setText(QObject::tr("确定删除 \"%1\" 组, 这将使得文件系统\n中的某些文件组件ID无效!").arg(groupName));
-    ui->labelText->setText(QObject::tr("Are you sure to delete \"%1\" group, \nwhich will make some file components \nin the file system invalid!").arg(groupName));
+    ui->labelText->setText(tr("Are you sure to delete \"%1\" group, \nwhich will make some file components \nin the file system invalid!").arg(groupName));
     setupInit();
     signalsBind();
 }
