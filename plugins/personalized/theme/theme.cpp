@@ -213,8 +213,6 @@ void Theme::setupSettings() {
     QString filename = QDir::homePath() + "/.config/ukui-kwinrc";
     kwinSettings = new QSettings(filename, QSettings::IniFormat, this);
 
-    QString themefile = QDir::homePath() + "/.config/kdeglobals";
-    themeSettings = new QSettings(themefile, QSettings::IniFormat, this);
     QStringList keys = kwinSettings->allKeys();
 
     kwinSettings->beginGroup("Plugins");
@@ -351,7 +349,6 @@ void Theme::initThemeMode() {
         if (key == "styleName") {
             //获取当前主题
             QString currentThemeMode = qtSettings->get(key).toString();
-            writeKwinSettings(true, currentThemeMode);
             for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
                 QVariant valueVariant = button->property("value");
                 if ("ukui-black" == currentThemeMode) {
@@ -690,7 +687,6 @@ void Theme::writeKwinSettings(bool change, QString theme, bool effect) {
                                                        "unloadEffect");
             message << effectList.at(i);
             QDBusConnection::sessionBus().send(message);
-
         }
 #endif
     } else {
@@ -716,21 +712,7 @@ void Theme::writeKwinSettings(bool change, QString theme, bool effect) {
 #endif
 
     }
-
     kwinSettings->sync();
-
-    QString th = "";
-    if ("ukui-default" == theme) {
-        th = "0";
-    } else if ("ukui-dark" == theme){
-        th = "1";
-    }
-
-    themeSettings->beginGroup("Theme");
-    themeSettings->setValue("Style", th);
-    themeSettings->endGroup();
-
-    themeSettings->sync();
 }
 
 void Theme::themeBtnClickSlot(QAbstractButton *button) {
@@ -751,7 +733,6 @@ void Theme::themeBtnClickSlot(QAbstractButton *button) {
          QtConcurrent::run([=](){
              qtSettings->set(MODE_QT_KEY, themeMode);
          });
-         writeKwinSettings(true, themeMode);
      }
 }
 
