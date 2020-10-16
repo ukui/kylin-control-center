@@ -22,7 +22,6 @@
 
 #include "kylin_network_interface.h"
 
-
 #include <QGSettings>
 #include <QProcess>
 #include <QTimer>
@@ -30,10 +29,15 @@
 #include <QDBusReply>
 #include <QDir>
 #include <QDebug>
+#include <QtAlgorithms>
 
-#define ITEMHEIGH 50
-
+#define ITEMHEIGH           50
 #define CONTROL_CENTER_WIFI "org.ukui.control-center.wifi.switch"
+
+bool sortByVal(const QPair<QString, int> &l, const QPair<QString, int> &r) {
+    return (l.second > r.second);
+}
+
 NetConnect::NetConnect():m_wifiList(new Wifi)
 {
     ui = new Ui::NetConnect;
@@ -86,14 +90,12 @@ void NetConnect::plugin_delay_control(){
 }
 
 void NetConnect::refreshed_signal_changed() {
-    //qDebug() << "is_refreshed: "<<this->is_refreshed;
-    //仅接收属性更改发出的第一个信号并更改is_refreshed状态
+    // 仅接收属性更改发出的第一个信号并更改is_refreshed状态
     if(is_refreshed){
         emit refresh();
         this->is_refreshed = false;
     }
     else return;
-    //qDebug() << "is_refreshed: "<<this->is_refreshed;
 }
 
 //把判断列表是否已刷新的bool值is_refreshed重置为true
@@ -140,12 +142,10 @@ void NetConnect::initComponent(){
 
     const QByteArray id(CONTROL_CENTER_WIFI);
     if(QGSettings::isSchemaInstalled(id)) {
-//        qDebug()<<"isSchemaInstalled"<<endl;
         m_gsettings = new QGSettings(id);
 
         //  监听key的value是否发生了变化
         connect(m_gsettings, &QGSettings::changed, this, [=] (const QString &key) {
-//            qDebug()<<"status changed ------------>"<<endl;
             if (key == "switchor") {
                 bool judge = getSwitchStatus(key);
                 wifiBtn->setChecked(judge);
@@ -194,7 +194,7 @@ void NetConnect::initComponent(){
 }
 
 void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){
-    ////构建Widget
+    // 构建Widget
     QWidget * baseWidget = new QWidget();
     baseWidget->setAttribute(Qt::WA_DeleteOnClose);
 
@@ -209,8 +209,6 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){
     devFrame->setMinimumHeight(50);
     devFrame->setMaximumHeight(50);
 
-//  devFrame->setFixedHeight(50);
-//  devFrame->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
     QHBoxLayout * devHorLayout = new QHBoxLayout(devFrame);
     devHorLayout->setSpacing(8);
     devHorLayout->setContentsMargins(16, 0, 0, 0);
@@ -245,7 +243,6 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){
         statusLabel->setText(tr("No network"));
     }
 
-
     devHorLayout->addWidget(iconLabel);
     devHorLayout->addWidget(nameLabel);
     devHorLayout->addWidget(statusLabel);
@@ -262,7 +259,6 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){
 }
 
 void NetConnect::getNetList() {
-//    qDebug() << "getNetList start" <<endl;
 
     bool wifiSt = getwifiisEnable();
     if (!wifiSt) {
@@ -278,14 +274,21 @@ void NetConnect::getNetList() {
         this->TwifiList = list;
         getWifiListDone(this->TwifiList, this->TlanList);
         QMap<QString, int>::iterator iter = this->wifiList.begin();
+        QVector<QPair<QString, int>> vec;
         QString iconamePah;
+
         while(iter != this->wifiList.end()) {
+
+            vec.push_back(qMakePair(iter.key(), iter.value()));
+            iter++;
+        }
+        qSort(vec.begin(), vec.end(), sortByVal);
+        for (int i = 0; i < vec.size(); i++) {
             if (!wifiBtn->isChecked()){
                 break;
             }
-            iconamePah= ":/img/plugins/netconnect/wifi" + QString::number(iter.value())+".svg";
-            rebuildAvailComponent(iconamePah , iter.key());
-            iter++;
+            iconamePah= ":/img/plugins/netconnect/wifi" + QString::number(vec[i].second)+".svg";
+            rebuildAvailComponent(iconamePah , vec[i].first);
         }
 
         for(int i = 0; i < this->lanList.length(); i++) {        ;
@@ -305,14 +308,10 @@ void NetConnect::getNetList() {
         wifiBtn->setEnabled(wifiSt);
         ui->RefreshBtn->setEnabled(true);
         ui->RefreshBtn->setText(tr("Refresh"));
-
-//        ui->waitLabel->setVisible(false);
-//        ui->statuswaitLabel->setVisible(false);
     });
     connect(pThread, &QThread::finished, pNetWorker, &NetconnectWork::deleteLater);
     pThread->start();
 
-//    qDebug() << "getNetList end" <<endl;
 }
 
 void NetConnect::rebuildAvailComponent(QString iconPath, QString netName){
@@ -455,16 +454,13 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
             }
             index ++;
         }
-//        qDebug()<<"now wifi is----->"<<actWifiName<<endl;
 
         // 填充可用网络列表
         QString headLine = getwifislist.at(0);
         headLine = headLine.trimmed();
-        int indexRate = headLine.indexOf("SIGNAL");
         int indexName = headLine.indexOf("SSID");
 
         QStringList wnames;
-        int count = 0;
         for(int i = 1; i < getwifislist.size(); i ++) {
             QString line = getwifislist.at(i);
             QString wsignal = line.mid(0, indexName).trimmed();
@@ -493,7 +489,6 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
         lanList.clear();
         connectedLan.clear();
 
-//        qDebug()<<"the net type is----->"<<actLan[0].type<<endl;
         int indexLan = 0;
         while(act[indexLan].con_name != NULL){
             if (QString(act[indexLan].type) == "ethernet" || QString(act[indexLan].type) == "802-3-ethernet"){
@@ -502,7 +497,6 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
             }
             indexLan ++;
         }
-//        qDebug()<<"actLanName is-------->"<<this->actLanName<<endl;
 
         // 填充可用网络列表
         QString headLine = getlanList.at(0);
@@ -518,7 +512,6 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
             indexName = headLine.indexOf("NAME");
     }
 
-    //    qDebug()<<"getlanList-------------->"<<getlanList<<endl;
         for(int i =1 ;i < getlanList.length(); i++)
         {
             QString line = getlanList.at(i);
@@ -528,19 +521,16 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
                 this->lanList << nname;
             }
         }
-//        qDebug()<<"lanList is-------------->"<<lanList<<endl;
     }
 
     if (!this->connectedWifi.isEmpty()){
         QMap<QString, int>::iterator iter = this->connectedWifi.begin();
         QString iconamePah = ":/img/plugins/netconnect/wifi" + QString::number(iter.value())+".svg";
-//        qDebug()<<"name is=------------>"<<iter.key();
         rebuildNetStatusComponent(iconamePah , iter.key());
     }
     if (!this->actLanName.isEmpty()){
         QString lanIconamePah= ":/img/plugins/netconnect/eth.svg";
         rebuildNetStatusComponent(lanIconamePah, this->actLanName);
-//        qDebug()<<"name is=------------>"<<this->actLanName;
     }
 
     if (this->connectedWifi.isEmpty() && this->actLanName.isEmpty())  {
@@ -549,7 +539,6 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
 }
 
 bool NetConnect::getSwitchStatus(QString key){
-//    qDebug()<<"key is------------->"<<key<<endl;
     if (!m_gsettings) {
         return true;
     }
@@ -560,6 +549,8 @@ bool NetConnect::getSwitchStatus(QString key){
     bool res = m_gsettings->get(key).toBool();
     return res;
 }
+
+
 
 bool NetConnect::getInitStatus()
 {
@@ -615,7 +606,6 @@ void NetConnect::clearContent()
 //get wifi's strength
 int NetConnect::setSignal(QString lv) {
     int signal = lv.toInt();
-//    qDebug()<<"signal is---------->"<<lv<<endl;
     int signalLv;
 
     if(signal > 75){
