@@ -6,9 +6,7 @@
 #include <QtPlugin>
 
 #include <QMouseEvent>
-
 #include <QLabel>
-
 #include <QTimer>
 
 #include "shell/interface.h"

@@ -58,7 +58,7 @@ void BlockWidget::setupComponent(QString logo, QString title, QString detail, QS
     m_showText = detail + "    ";
     m_charWidth = fontMetrics().width("。");
     m_labelWidth = m_charWidth * (m_showText.length() - 4);
-    this->detailLabel->installEventFilter(this);
+//    this->detailLabel->installEventFilter(this);
 //    m_charWidth = fontMetrics().width("a") * 2;
     _cmd = cmd;
 }
