@@ -36,6 +36,15 @@ UserDispatcher::UserDispatcher(QString objpath, QObject *parent) :
                                      objpath,
                                      "org.freedesktop.DBus.Properties",
                                      QDBusConnection::systemBus());
+
+    iproperty = new QDBusInterface("org.freedesktop.Accounts",
+                                   objpath,
+                                   "org.freedesktop.DBus.Properties",
+                                   QDBusConnection::systemBus(), this);
+
+    iproperty->connection().connect("org.freedesktop.Accounts",objpath, "org.freedesktop.DBus.Properties", "PropertiesChanged",
+                                    this, SLOT(propertyChanged(QString, QMap<QString, QVariant>, QStringList)));
+
 }
 
 UserDispatcher::~UserDispatcher()
@@ -72,6 +81,12 @@ QString UserDispatcher::make_crypted (const gchar *plain){
 
     return QString(result);
 
+}
+
+void UserDispatcher::propertyChanged(QString property, QMap<QString, QVariant> propertyMap, QStringList propertyList) {
+    if (propertyMap.keys().contains("IconFile")) {
+        qDebug() << "icon changed-->" << propertyMap.value("IconFile").toString();
+    }
 }
 
 QString UserDispatcher::change_user_pwd(QString pwd, QString hint){
