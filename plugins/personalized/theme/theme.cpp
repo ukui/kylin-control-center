@@ -76,7 +76,7 @@
 #define PERSONALSIE_EFFECT_KEY "effect"
 
 const QString defCursor = "DMZ-White";
-const QString UbuntuVesionEnhance = "Ubuntu Groovy Gorilla (development branch)";
+const QString UbuntuVesionEnhance = "20.10";
 const int transparency = 75;
 
 const QStringList effectList {"blur", "kwin4_effect_translucency", "kwin4_effect_maximize", "zoom"};
@@ -595,9 +595,9 @@ bool Theme::getSystemVersion() {
     QString version;
 
     for (QString str : osRes) {
-        if (str.contains("PRETTY_NAME=")) {
-            int index = str.indexOf("PRETTY_NAME=");
-            int startIndex = index + 13;
+        if (str.contains("VERSION_ID=")) {
+            int index = str.indexOf("VERSION_ID=");
+            int startIndex = index + 12;
             int length = str.length() - startIndex - 1;
             version = str.mid(startIndex, length);
         }
