@@ -90,9 +90,9 @@ private:
     QTimer      * timer;
     QLabel      * logoLabel;
     QLabel            *m_queryIcon;
-    QLabel            *m_queryText=nullptr;
-    QPropertyAnimation *m_animation=nullptr;
-    QWidget           *m_queryWid=nullptr;
+    QLabel            *m_queryText  = nullptr;
+    QPropertyAnimation *m_animation = nullptr;
+    QWidget           *m_queryWid   = nullptr;
     bool              m_isSearching;
     QString           m_searchKeyWords;
 private:

@@ -95,11 +95,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-
     delete ui;
 }
 
-void MainWindow::bootOptionsFilter(QString opt){
+void MainWindow::bootOptionsFilter(QString opt) {
     if (opt == "-m") {
         //显示器
         bootOptionsSwitch(SYSTEM, DISPLAY);
@@ -158,7 +157,7 @@ void MainWindow::paintEvent(QPaintEvent *event) {
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
-    if(!bIsFullScreen) {
+    if (!bIsFullScreen) {
         rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 6, 6);
 
         // 画一个黑底
@@ -299,7 +298,7 @@ void MainWindow::initUI() {
     this->installEventFilter(this);
 
     const QByteArray id("org.ukui.style");
-    QGSettings * fontSetting = new QGSettings(id);
+    QGSettings * fontSetting = new QGSettings(id, QByteArray(), this);
     connect(fontSetting, &QGSettings::changed,[=](QString key) {
         if ("systemFont" == key || "systemFontSize" ==key) {
             QFont font = this->font();
@@ -327,11 +326,8 @@ void MainWindow::initUI() {
     loadPlugins();
 
     connect(minBtn, SIGNAL(clicked()), this, SLOT(showMinimized()));
-    //    connect(ui->minBtn, &QPushButton::clicked, [=]{
-    //        KWindowSystem::minimizeWindow(this->winId());
-    //    });
-    connect(maxBtn, &QPushButton::clicked, this, [=]{
-        if (isMaximized()){
+    connect(maxBtn, &QPushButton::clicked, this, [=] {
+        if (isMaximized()) {
             bIsFullScreen = false;
             showNormal();
             maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
@@ -341,19 +337,9 @@ void MainWindow::initUI() {
             maxBtn->setIcon(QIcon::fromTheme("window-restore-symbolic"));
         }
     });
-    connect(closeBtn, &QPushButton::clicked, this, [=]{
+    connect(closeBtn, &QPushButton::clicked, this, [=] {
         close();
-        //        qApp->quit();
     });
-
-
-    //    connect(ui->backBtn, &QPushButton::clicked, this, [=]{
-    //        if (ui->stackedWidget->currentIndex())
-    //            ui->stackedWidget->setCurrentIndex(0);
-    //        else
-    //            ui->stackedWidget->setCurrentIndex(1);
-    //    });
-
 
     //    ui->leftsidebarWidget->setVisible(ui->stackedWidget->currentIndex());
     connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, [=](int index){
@@ -402,12 +388,10 @@ void MainWindow::initUI() {
         }
     });
 
-    //快捷参数
-    if (QApplication::arguments().length() > 1){
-
+    // 快捷参数
+    if (QApplication::arguments().length() > 1) {
         bootOptionsFilter(QApplication::arguments().at(1));
     }
-
 }
 
 void MainWindow::initTileBar() {
@@ -426,22 +410,21 @@ void MainWindow::initTileBar() {
     m_queryWid->setFocusPolicy(Qt::NoFocus);
 //    m_queryWid->setStyleSheet("border:0px;background:transparent");
 
-    QHBoxLayout* queryWidLayout=new QHBoxLayout;
+    QHBoxLayout* queryWidLayout = new QHBoxLayout;
     queryWidLayout->setContentsMargins(4,4,0,0);
     queryWidLayout->setAlignment(Qt::AlignJustify);
     queryWidLayout->setSpacing(0);
     m_queryWid->setLayout(queryWidLayout);
 
     QPixmap pixmap=loadSvg(QString("://img/dropArrow/search.svg"),"gray");
-    m_queryIcon=new QLabel;
+    m_queryIcon=new QLabel(this);
     m_queryIcon->setStyleSheet("background:transparent");
     m_queryIcon->setFixedSize(pixmap.size());
     m_queryIcon->setPixmap(pixmap);
 
-    m_queryText=new QLabel;
+    m_queryText=new QLabel(this);
     m_queryText->setText(tr("Search"));
     m_queryText->setStyleSheet("background:transparent;color:#626c6e;");
-    m_queryText->adjustSize();
 
     queryWidLayout->addStretch();
     queryWidLayout->addWidget(m_queryIcon);
