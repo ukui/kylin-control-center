@@ -283,7 +283,6 @@ void UkmediaOutputWidget::outputWidgetAddPort()
 
 void UkmediaOutputWidget::outputWidgetRemovePort()
 {
-//    m_pVlayout->addSpacing(1);
     m_pOutputWidget->setMinimumSize(550,254);
     m_pOutputWidget->setMaximumSize(960,254);
     m_pVlayout->removeWidget(m_pOutputPortWidget);

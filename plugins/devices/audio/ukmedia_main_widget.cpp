@@ -457,8 +457,12 @@ void UkmediaMainWidget::addStream (UkmediaMainWidget *m_pWidget, MateMixerStream
         }
         m_pName  = mate_mixer_stream_get_name (m_pStream);
         m_pLabel = mate_mixer_stream_get_label (m_pStream);
-        m_pWidget->m_pInputStreamList->append(m_pName);
-        m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->addItem(m_pLabel);
+        QString deviceName = m_pName;
+        if (!deviceName.contains("monitor",Qt::CaseInsensitive)) {
+            m_pWidget->m_pInputStreamList->append(m_pName);
+            m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->addItem(m_pLabel);
+        }
+
     }
     else if (direction == MATE_MIXER_DIRECTION_OUTPUT) {
         MateMixerStream        *m_pOutput;
@@ -1354,7 +1358,7 @@ void UkmediaMainWidget::updateOutputSettings (UkmediaMainWidget *m_pWidget,MateM
         return;
     }
     if(m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->count() != 0 || m_pWidget->m_pOutputPortList->count() != 0) {
-        qDebug() << "下拉框的大小为:" << m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->count();
+        qDebug() << "下拉框的大小为:" << m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->count() ;
         m_pWidget->m_pOutputPortList->clear();
         m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->clear();
         m_pWidget->m_pOutputWidget->outputWidgetRemovePort();
@@ -1385,9 +1389,11 @@ void UkmediaMainWidget::updateOutputSettings (UkmediaMainWidget *m_pWidget,MateM
     }
     MateMixerSwitchOption *option = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(portSwitch));
     QString label = mate_mixer_switch_option_get_label(option);
-    m_pWidget->m_pOutputWidget->outputWidgetAddPort();
-    m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(label);
-    qDebug() << "当前输出端口为:" <<label;
+    if (m_pWidget->m_pOutputPortList->count() > 0) {
+        m_pWidget->m_pOutputWidget->outputWidgetAddPort();
+        m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(label);
+        qDebug() << "当前输出端口为:" <<label << m_pWidget->m_pOutputPortList->count();
+    }
     connect(m_pWidget->m_pOutputWidget->m_pOutputPortCombobox,SIGNAL(currentIndexChanged(int)),m_pWidget,SLOT(outputPortComboxChangedSlot(int)));
     connect(m_pWidget->m_pOutputWidget->m_pOpBalanceSlider,&QSlider::valueChanged,[=](int volume){
         gdouble value = volume/100.0;
@@ -2067,7 +2073,6 @@ void UkmediaMainWidget::selectComboboxChangedSlot(int index)
     m_pOutputWidget->m_pProfileCombobox->clear();
     m_pProfileNameList->clear();
     while (switches != nullptr) {
-        qDebug() << "^^^^^^^^^^^^^^^^^^^^^^^^^";
         MateMixerDeviceSwitch *swtch = MATE_MIXER_DEVICE_SWITCH (switches->data);
         const GList *options;
         options = mate_mixer_switch_list_options ( MATE_MIXER_SWITCH(swtch));
@@ -2079,24 +2084,16 @@ void UkmediaMainWidget::selectComboboxChangedSlot(int index)
             MateMixerSwitchOption *option = MATE_MIXER_SWITCH_OPTION (options->data);
             profileLabel = mate_mixer_switch_option_get_label (option);
             profileName = mate_mixer_switch_option_get_name(option);
-//            if (!m_pProfileNameList->contains(profileName)) {
-
-                m_pProfileNameList->append(profileName);
-                m_pOutputWidget->m_pProfileCombobox->addItem(profileLabel);
-
-//            }
-//                qDebug() << "profile name:" << profileName << "profile label :" << profileLabel;
+            m_pProfileNameList->append(profileName);
+            m_pOutputWidget->m_pProfileCombobox->addItem(profileLabel);
             /* Select the currently active option of the switch */
             options = options->next;
-            qDebug() << "更新声卡配置文件:" << deviceStr << profileLabel;
+//            qDebug() << "更新声卡配置文件:" << deviceStr << profileLabel;
         }
         switches = switches->next;
     }
     if (setProfileLabel != nullptr)
         m_pOutputWidget->m_pProfileCombobox->setCurrentText(setProfileLabel);
-//    MateMixerSwitchOption *opt = mate_mixer_switch_get_option(m_pSwitch,deviceStr.toLocal8Bit().data());
-//    qDebug() << "combox " << name << mate_mixer_switch_option_get_name(opt);
-//    mate_mixer_switch_set_active_option(m_pSwitch,opt);
 }
 
 /*
@@ -2444,15 +2441,21 @@ void UkmediaMainWidget::updateInputSettings (UkmediaMainWidget *m_pWidget,MateMi
     MateMixerStream            *stream;
     MateMixerStreamControlFlags flags;
     MateMixerSwitch            *portSwitch;
+    qDebug() << "更新输入设置---------------------";
+    /* Get the control currently associated with the input slider */
+    if (m_pControl == nullptr)
+        return;
+    /* Get owning stream of the control */
+    qDebug() << "control name is :" << mate_mixer_stream_control_get_label(m_pControl);
+    stream = mate_mixer_stream_control_get_stream (m_pControl);
+    if (G_UNLIKELY (stream == nullptr))
+        return;
 
     if(m_pWidget->m_pInputWidget->m_pInputPortCombobox->count() != 0 || m_pWidget->m_pInputPortList->count() != 0) {
         m_pWidget->m_pInputPortList->clear();
         m_pWidget->m_pInputWidget->m_pInputPortCombobox->clear();
         m_pWidget->m_pInputWidget->inputWidgetRemovePort();
     }
-    /* Get the control currently associated with the input slider */
-    if (m_pControl == nullptr)
-        return;
 
     flags = mate_mixer_stream_control_get_flags (m_pControl);
 
@@ -2464,11 +2467,6 @@ void UkmediaMainWidget::updateInputSettings (UkmediaMainWidget *m_pWidget,MateMi
                           m_pWidget);
     }
 
-    /* Get owning stream of the control */
-    qDebug() << "control name is :" << mate_mixer_stream_control_get_label(m_pControl);
-    stream = mate_mixer_stream_control_get_stream (m_pControl);
-    if (G_UNLIKELY (stream == nullptr))
-        return;
     /* Enable the port selector if the stream has one */
     portSwitch = findStreamPortSwitch (m_pWidget,stream);
     if (portSwitch != nullptr) {
@@ -2484,9 +2482,11 @@ void UkmediaMainWidget::updateInputSettings (UkmediaMainWidget *m_pWidget,MateMi
         }
         MateMixerSwitchOption *option = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(portSwitch));
         QString label = mate_mixer_switch_option_get_label(option);
-//        qDebug() << "设置组合框当前值为:" << label;
-        m_pWidget->m_pInputWidget->inputWidgetAddPort();
-        m_pWidget->m_pInputWidget->m_pInputPortCombobox->setCurrentText(label);
+        if (m_pWidget->m_pInputPortList->count() > 0) {
+            qDebug() << "设置输入端口当前值为:" << label;
+            m_pWidget->m_pInputWidget->inputWidgetAddPort();
+            m_pWidget->m_pInputWidget->m_pInputPortCombobox->setCurrentText(label);
+        }
         connect(m_pWidget->m_pInputWidget->m_pInputPortCombobox,SIGNAL(currentIndexChanged(int)),m_pWidget,SLOT(inputPortComboxChangedSlot(int)));
     }
 
