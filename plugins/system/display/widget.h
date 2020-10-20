@@ -131,7 +131,7 @@ class Widget : public QWidget
     // 设置屏幕亮度
     void setBrightnessScreen(int brightnessValue);
     // 设置亮度滑块数值
-    void setBrightnesSldierValue(QString screeName);
+    void setBrightnesSldierValue();
     // 设置夜间模式
     void setNightMode(const bool nightMode);
     // redshitf是否合法

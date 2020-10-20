@@ -24,9 +24,8 @@
 #include <QStandardPaths>
 #include <QComboBox>
 #include <QQuickWidget>
+#include <QMessageBox>
 
-#include <KAboutData>
-#include <KMessageBox>
 #include <KF5/KScreen/kscreen/output.h>
 #include <KF5/KScreen/kscreen/edid.h>
 #include <KF5/KScreen/kscreen/mode.h>
@@ -55,9 +54,6 @@ extern "C" {
 
 #define FONT_RENDERING_DPI               "org.ukui.SettingsDaemon.plugins.xsettings"
 #define SCALE_KEY                        "scaling-factor"
-
-#define DPI_SCHEMAS                      "org.ukui.font-rendering"
-#define DPI_KEY                          "dpi"
 
 #define MOUSE_SIZE_SCHEMAS               "org.ukui.peripherals-mouse"
 #define CURSOR_SIZE_KEY                  "cursor-size"
@@ -95,7 +91,6 @@ Widget::Widget(QWidget *parent)
     ui->showScreenLayout->addWidget(closeScreenButton);
 
     m_unifybutton = new SwitchButton(this);
-//    m_unifybutton->setEnabled(false);
     ui->unionLayout->addWidget(m_unifybutton);
 
 
@@ -136,8 +131,6 @@ Widget::Widget(QWidget *parent)
     initNightStatus();
     initBrightnessUI();
 
-//    nightButton->setVisible(this->m_redshiftIsValid);
-
 #if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
     ui->nightframe->setVisible(false);
 #else
@@ -173,14 +166,13 @@ Widget::Widget(QWidget *parent)
        }
     });
 
-    connect(ui->advancedBtn, &QPushButton::clicked, this, [=]{
+    connect(ui->advancedBtn, &QPushButton::clicked, this, [=] {
         DisplayPerformanceDialog * dialog = new DisplayPerformanceDialog;
         dialog->exec();
     });
 
     connect(m_unifybutton,&SwitchButton::checkedChanged,
             [this]{
-//                  if(checked)
                     slotUnifyOutputs();
             });
 
@@ -199,14 +191,12 @@ Widget::Widget(QWidget *parent)
     loadQml();
 }
 
-Widget::~Widget()
-{
+Widget::~Widget() {
     clearOutputIdentifiers();
     delete ui;
 }
 
-bool Widget::eventFilter(QObject* object, QEvent* event)
-{
+bool Widget::eventFilter(QObject* object, QEvent* event) {
     if (event->type() == QEvent::Resize) {
         if (mOutputIdentifiers.contains(qobject_cast<QQuickView*>(object))) {
             QResizeEvent *e = static_cast<QResizeEvent*>(event);
@@ -221,8 +211,7 @@ bool Widget::eventFilter(QObject* object, QEvent* event)
 }
 
 
-void Widget::setConfig(const KScreen::ConfigPtr &config)
-{
+void Widget::setConfig(const KScreen::ConfigPtr &config) {
     if (mConfig) {
         KScreen::ConfigMonitor::instance()->removeConfig(mConfig);
         for (const KScreen::OutputPtr &output : mConfig->outputs()) {
@@ -245,10 +234,7 @@ void Widget::setConfig(const KScreen::ConfigPtr &config)
     // 上面屏幕拿取配置
     mScreen->setConfig(mConfig);
     mControlPanel->setConfig(mConfig);
-//    ui->unifyButton->setEnabled(mConfig->outputs().count() > 1);
     m_unifybutton->setEnabled(mConfig->outputs().count() > 1);
-
-    //ui->scaleAllOutputsButton->setVisible(!mConfig->supportedFeatures().testFlag(KScreen::Config::Feature::PerOutputScaling));
 
     for (const KScreen::OutputPtr &output : mConfig->outputs()) {
         outputAdded(output);
@@ -268,13 +254,11 @@ void Widget::setConfig(const KScreen::ConfigPtr &config)
     slotOutputEnabledChanged();
 }
 
-KScreen::ConfigPtr Widget::currentConfig() const
-{
+KScreen::ConfigPtr Widget::currentConfig() const {
     return mConfig;
 }
 
-void Widget::loadQml()
-{
+void Widget::loadQml() {
     qmlRegisterType<QMLOutput>("org.kde.kscreen", 1, 0, "QMLOutput");
     qmlRegisterType<QMLScreen>("org.kde.kscreen", 1, 0, "QMLScreen");
 
@@ -293,9 +277,7 @@ void Widget::loadQml()
             this, &Widget::slotFocusedOutputChanged);
 }
 
-void Widget::resetPrimaryCombo()
-{
-    //qDebug()<<"resetPrimaryCombo----->"<<endl;
+void Widget::resetPrimaryCombo() {
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
 
 #else
@@ -307,7 +289,6 @@ void Widget::resetPrimaryCombo()
     // Don't emit currentIndexChanged when resetting
     bool blocked = ui->primaryCombo->blockSignals(true);
     ui->primaryCombo->clear();
-    //ui->primaryCombo->addItem(i18n("无主显示输出"));
     ui->primaryCombo->blockSignals(blocked);
 
     if (!mConfig) {
@@ -319,8 +300,7 @@ void Widget::resetPrimaryCombo()
     }
 }
 
-void Widget::addOutputToPrimaryCombo(const KScreen::OutputPtr &output)
-{
+void Widget::addOutputToPrimaryCombo(const KScreen::OutputPtr &output) {
     // 注释后让他显示全部屏幕下拉框
     if (!output->isConnected()) {
         return;
@@ -335,8 +315,7 @@ void Widget::addOutputToPrimaryCombo(const KScreen::OutputPtr &output)
 }
 
 //这里从屏幕点击来读取输出
-void Widget::slotFocusedOutputChanged(QMLOutput *output)
-{
+void Widget::slotFocusedOutputChanged(QMLOutput *output) {
     mControlPanel->activateOutput(output->outputPtr());
 
     //读取屏幕点击选择下拉框
@@ -348,15 +327,12 @@ void Widget::slotFocusedOutputChanged(QMLOutput *output)
     ui->primaryCombo->setCurrentIndex(index);
 }
 
-void Widget::slotFocusedOutputChangedNoParam()
-{
-    //qDebug()<<"slotFocusedOutputChangedNoParam-------->"<<res<<endl;
+void Widget::slotFocusedOutputChangedNoParam() {
     mControlPanel->activateOutput(res);
 }
 
 
-void Widget::slotOutputEnabledChanged()
-{
+void Widget::slotOutputEnabledChanged() {
     // 这里为点击禁用屏幕输出后的改变
     resetPrimaryCombo();
     int enabledOutputsCount = 0;
@@ -372,15 +348,12 @@ void Widget::slotOutputEnabledChanged()
     m_unifybutton->setEnabled(enabledOutputsCount > 1);
 }
 
-void Widget::slotOutputConnectedChanged()
-{
+void Widget::slotOutputConnectedChanged() {
     resetPrimaryCombo();
 }
 
-void Widget::slotUnifyOutputs()
-{
+void Widget::slotUnifyOutputs() {
     QMLOutput *base = mScreen->primaryOutput();
-    //qDebug()<<"primaryOutput---->"<<base<<endl;
     QList<int> clones;
 
     if (!base) {
@@ -406,9 +379,7 @@ void Widget::slotUnifyOutputs()
         while (it != screens.end()) {
 
             KScreen::OutputPtr screen= it.value();
-//            qDebug()<<"screens is-------->"<<screen<<endl;
             if (screen->isPrimary()) {
-
                 secPoint = QPoint(screen->size().width(),0);
             }
             it++;
@@ -437,7 +408,7 @@ void Widget::slotUnifyOutputs()
         // Clone the current config, so that we can restore it in case user
         // breaks the cloning
         qDebug()<<"点击统一输出---->"<<endl;
-        //保存之前的配置
+        // 保存之前的配置
         mPrevConfig = mConfig->clone();
 
         for (QMLOutput *output: mScreen->outputs()) {
@@ -476,24 +447,19 @@ void Widget::slotUnifyOutputs()
 
         mScreen->updateOutputsPlacement();
 
-
         //关闭开关
 //        ui->checkBox->setEnabled(false);
         closeScreenButton->setEnabled(false);
         ui->primaryCombo->setEnabled(false);
         ui->mainScreenButton->setEnabled(false);
 
-        //qDebug()<<"输出---->"<<base->outputPtr()<<endl;
         mControlPanel->setUnifiedOutput(base->outputPtr());
-
-//        ui->unifyButton->setText(tr("取消统一输出"));
     }
     Q_EMIT changed();
 }
 
 // FIXME: Copy-pasted from KDED's Serializer::findOutput()
-KScreen::OutputPtr Widget::findOutput(const KScreen::ConfigPtr &config, const QVariantMap &info)
-{
+KScreen::OutputPtr Widget::findOutput(const KScreen::ConfigPtr &config, const QVariantMap &info) {
     KScreen::OutputList outputs = config->outputs();
     Q_FOREACH(const KScreen::OutputPtr &output, outputs) {
         if (!output->isConnected()) {
@@ -536,7 +502,7 @@ KScreen::OutputPtr Widget::findOutput(const KScreen::ConfigPtr &config, const QV
 
 void Widget::writeScale(int scale) {
     if (isScaleChanged) {
-        KMessageBox::information(this,tr("Some applications need to be logouted to take effect"));
+        QMessageBox::information(this, tr("Information"), tr("Some applications need to be logouted to take effect"));
     } else {
         return;
     }
@@ -544,15 +510,11 @@ void Widget::writeScale(int scale) {
     int cursize;
     QGSettings * dpiSettings;
     QGSettings * cursorSettings;
-    QGSettings * fontSettings;
     QByteArray id(FONT_RENDERING_DPI);
     QByteArray iid(MOUSE_SIZE_SCHEMAS);
-    QByteArray iiid(DPI_SCHEMAS);
-    if (QGSettings::isSchemaInstalled(FONT_RENDERING_DPI) && QGSettings::isSchemaInstalled(MOUSE_SIZE_SCHEMAS)
-            && QGSettings::isSchemaInstalled(DPI_SCHEMAS)) {
-        dpiSettings = new QGSettings(id);
-        cursorSettings = new QGSettings(iid);
-        fontSettings = new QGSettings(iiid);
+    if (QGSettings::isSchemaInstalled(FONT_RENDERING_DPI) && QGSettings::isSchemaInstalled(MOUSE_SIZE_SCHEMAS)) {
+        dpiSettings = new QGSettings(id, QByteArray());
+        cursorSettings = new QGSettings(iid, QByteArray());
 
         if (1 == scale)  {
             cursize = 24;
@@ -567,7 +529,6 @@ void Widget::writeScale(int scale) {
 
         QStringList keys = dpiSettings->keys();
         if (keys.contains("scalingFactor")) {
-            fontSettings->set(DPI_KEY, 96);
             dpiSettings->set(SCALE_KEY, scale);
         }
         cursorSettings->set(CURSOR_SIZE_KEY, cursize);
@@ -643,13 +604,11 @@ void Widget::showNightWidget(bool judge) {
     if (judge) {
         ui->sunframe->setVisible(true);
         ui->customframe->setVisible(true);
-//        ui->temptwidget->setVisible(true);
         ui->temptframe->setVisible(true);
     } else {
         ui->sunframe->setVisible(false);
         ui->customframe->setVisible(false);
 
-//        ui->temptwidget->setVisible(false);
         ui->temptframe->setVisible(false);
     }
 
@@ -670,15 +629,13 @@ void Widget::showCustomWiget(int index) {
     }
 }
 
-void Widget::clearOutputIdentifiers()
-{
+void Widget::clearOutputIdentifiers() {
     mOutputTimer->stop();
     qDeleteAll(mOutputIdentifiers);
     mOutputIdentifiers.clear();
 }
 
-void Widget::outputAdded(const KScreen::OutputPtr &output)
-{
+void Widget::outputAdded(const KScreen::OutputPtr &output) {
     connect(output.data(), &KScreen::Output::isConnectedChanged,
             this, &Widget::slotOutputConnectedChanged);
     connect(output.data(), &KScreen::Output::isEnabledChanged,
@@ -689,8 +646,7 @@ void Widget::outputAdded(const KScreen::OutputPtr &output)
     addOutputToPrimaryCombo(output);
 }
 
-void Widget::outputRemoved(int outputId)
-{
+void Widget::outputRemoved(int outputId) {
     KScreen::OutputPtr output = mConfig->output(outputId);
     if (!output.isNull()) {
         output->disconnect(this);
@@ -712,7 +668,6 @@ void Widget::outputRemoved(int outputId)
 }
 
 void Widget::primaryOutputSelected(int index) {
-    //qDebug()<<"选中主显示器--->"<<index<<endl;
     if (!mConfig) {
         return;
     }
@@ -736,15 +691,13 @@ void Widget::primaryOutputChanged(const KScreen::OutputPtr &output) {
     ui->primaryCombo->setCurrentIndex(index);
 }
 
-void Widget::slotIdentifyButtonClicked(bool checked)
-{
+void Widget::slotIdentifyButtonClicked(bool checked) {
     Q_UNUSED(checked);
     connect(new KScreen::GetConfigOperation(), &KScreen::GetConfigOperation::finished,
             this, &Widget::slotIdentifyOutputs);
 }
 
-void Widget::slotIdentifyOutputs(KScreen::ConfigOperation *op)
-{
+void Widget::slotIdentifyOutputs(KScreen::ConfigOperation *op) {
     if (op->hasError()) {
         return;
     }
@@ -814,8 +767,7 @@ void Widget::slotIdentifyOutputs(KScreen::ConfigOperation *op)
 }
 
 
-void Widget::save()
-{
+void Widget::save() {
     if (!this) {
         return;
     }
@@ -882,34 +834,26 @@ void Widget::save()
     }
 
     if (!atLeastOneEnabledOutput ) {
-        KMessageBox::error(this,tr("please insure at least one output!"),
-                           tr("Warning"),KMessageBox::Notify);
+        QMessageBox::warning(this, tr("Warning"), tr("please insure at least one output!"));
         closeScreenButton->setChecked(true);
         return ;
     } else if( ((ui->opHourCom->currentIndex() < ui->clHourCom->currentIndex()) ||
                (ui->opHourCom->currentIndex() == ui->clHourCom->currentIndex()  &&
                 ui->opMinCom->currentIndex() <= ui->clMinCom->currentIndex()))  &&
                CUSTOM == singleButton->checkedId() && nightButton->isChecked()) {
-        KMessageBox::error(this,tr("Morning time should be earlier than evening time!"),
-                           tr("Warning"),KMessageBox::Notify);
+        QMessageBox::warning(this, tr("Warning"), tr("Morning time should be earlier than evening time!"));
         closeScreenButton->setChecked(true);
         return ;
     }
 
-//    int scale = static_cast<int>(this->scaleRet());
     initScreenXml(countOutput);
     writeScreenXml(countOutput);
-//#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
-//    setcomBoxScale();
-//#else
     writeScale(this->screenScale);
-//#endif
     writeConfigFile();
     setNightMode(nightButton->isChecked());
 
-
     if (!KScreen::Config::canBeApplied(config)) {
-        KMessageBox::information(this,
+        QMessageBox::information(this,
             tr("Sorry, your configuration could not be applied.\nCommon reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU."),
                  tr("@title:window", "Unsupported Configuration"));
         return;
@@ -950,32 +894,22 @@ void Widget::scaleChangedSlot(int index) {
     isScaleChanged = true;
 }
 
-
-//是否禁用主屏按钮
-void Widget::mainScreenButtonSelect(int index){
-    //qDebug()<<"index is----->"<<index<<" "<<mConfig->primaryOutput()<<endl;
+// 是否禁用主屏按钮
+void Widget::mainScreenButtonSelect(int index) {
     if (!mConfig) {
         return;
     }
 
     const KScreen::OutputPtr newPrimary = mConfig->output(ui->primaryCombo->itemData(index).toInt());
-    //qDebug()<<"newPrimary----->"<<newPrimary<<" "<< index<<endl;
     if (newPrimary == mConfig->primaryOutput()) {
         ui->mainScreenButton->setEnabled(false);
-    }else{
+    } else {
         ui->mainScreenButton->setEnabled(true);
     }
-//    if(index == 0){
-//        ui->mainScreenButton->setEnabled(false);
-//        ui->checkBox->setEnabled(false);
-//        return ;
-//    }
     // 设置是否勾选
-//   ui->checkBox->setEnabled(true);
     closeScreenButton->setEnabled(true);
-//   ui->checkBox->setChecked(newPrimary->isEnabled());
     closeScreenButton->setChecked(newPrimary->isEnabled());
-   mControlPanel->activateOutput(newPrimary);
+    mControlPanel->activateOutput(newPrimary);
 }
 
 
@@ -985,7 +919,7 @@ void Widget::primaryButtonEnable(bool status) {
     if (!mConfig) {
         return;
     }
-    int index  = ui->primaryCombo->currentIndex();    ;
+    int index  = ui->primaryCombo->currentIndex();
     ui->mainScreenButton->setEnabled(false);
     const KScreen::OutputPtr newPrimary = mConfig->output(ui->primaryCombo->itemData(index).toInt());
     mConfig->setPrimaryOutput(newPrimary);
@@ -993,13 +927,9 @@ void Widget::primaryButtonEnable(bool status) {
     Q_EMIT changed();
 }
 
-void Widget::checkOutputScreen(bool judge){
-//   qDebug()<<"is enable screen---->"<<judge<<endl;
+void Widget::checkOutputScreen(bool judge) {
    int index  = ui->primaryCombo->currentIndex();
    const KScreen::OutputPtr newPrimary = mConfig->output(ui->primaryCombo->itemData(index).toInt());
-//   if(ui->primaryCombo->count()<=1&&judge ==false)
-//       return ;
-//   qDebug()<<"newPrimary---------->"<<newPrimary<<endl;
 
    KScreen::OutputPtr  mainScreen=  mConfig->primaryOutput();
    if (!mainScreen) {
@@ -1011,16 +941,11 @@ void Widget::checkOutputScreen(bool judge){
 }
 
 //亮度调节UI
-void Widget::initBrightnessUI(){
-    //亮度调节
-//    ui->brightnesswidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-
-    ui->brightnessSlider->setRange(0.2*100,100);
+void Widget::initBrightnessUI() {
+    ui->brightnessSlider->setRange(0.2*100, 100);
     ui->brightnessSlider->setTracking(true);
 
-    QString screenName = getScreenName();
-
-    setBrightnesSldierValue(screenName);
+    setBrightnesSldierValue();
 
     connect(ui->brightnessSlider,&QSlider::valueChanged,
             this,&Widget::setBrightnessScreen);
@@ -1030,15 +955,7 @@ void Widget::initBrightnessUI(){
 }
 
 
-QString Widget::getScreenName(QString screenname){
-    if("" == screenname )
-        screenname = ui->primaryCombo->currentText();
-    int startPos = screenname.indexOf('(');
-    int endPos = screenname.indexOf(')');
-    return screenname.mid(startPos+1,endPos-startPos-1);
-}
-
-void Widget::setBrightnessScreen(int index){
+void Widget::setBrightnessScreen(int index) {
     QGSettings *powerSettings;
     if (QGSettings::isSchemaInstalled(POWER_SCHMES)) {
         QByteArray id(POWER_SCHMES);
@@ -1054,8 +971,7 @@ void Widget::setBrightnessScreen(int index){
 }
 
 //滑块改变
-void Widget::setBrightnesSldierValue(QString name){
-    Q_UNUSED(name)
+void Widget::setBrightnesSldierValue() {
     QGSettings *powerSettings;
     int value = 99;
     if (QGSettings::isSchemaInstalled(POWER_SCHMES)) {
@@ -1073,7 +989,7 @@ void Widget::setBrightnesSldierValue(QString name){
 }
 
 void Widget::initTemptSlider() {
-    ui->temptSlider->setRange(1.1*1000,6500);
+    ui->temptSlider->setRange(1.1*1000, 6500);
     ui->temptSlider->setTracking(true);
 
     for (int i = 0; i < 24; i++) {
@@ -1113,14 +1029,12 @@ void Widget::initConfigFile(bool changed, bool status) {
         ui->clMinCom->setCurrentIndex(clmin.toInt());
     }
 
-
     if ("" != temptValue) {
         int value = temptValue.toInt();
         ui->temptSlider->setValue(value);
     }
 
     m_qsettings->endGroup();
-
 
     m_qsettings->beginGroup("switch");;
 
@@ -1129,7 +1043,6 @@ void Widget::initConfigFile(bool changed, bool status) {
     bool sunjudge = m_qsettings->value("sunjudge", sunjudge).toBool();
     bool manualjudge = m_qsettings->value("manualjudge", manualjudge).toBool();
 
-//    qDebug()<<"unionjudge is-------->"<<unionjudge<<endl;
     m_unifybutton->setChecked(unionjudge);
     nightButton->setChecked(nightjudge);
 
@@ -1147,16 +1060,15 @@ void Widget::initConfigFile(bool changed, bool status) {
     }
 }
 
-void Widget::writeScreenXml(int count){
+void Widget::writeScreenXml(int count) {
     Q_UNUSED(count)
 
     QString homePath = getenv("HOME");
     QString monitorFile = homePath+"/.config/monitors.xml";
-    //qDebug()<<monitorFile<<endl;
     QFile file(monitorFile);
     QDomDocument doc;
 
-    if (!file.open(QIODevice::ReadOnly)){
+    if (!file.open(QIODevice::ReadOnly)) {
         qDebug()<<"open file failed"<<endl;
         return ;
     }
@@ -1170,23 +1082,11 @@ void Widget::writeScreenXml(int count){
     // 关闭文件
     file.close();
 
-    // 获得doc的第一个结点
-    QDomElement rootElem = doc.documentElement();
-    QDomNode firstNode = doc.firstChild();
-
-    if(firstNode.isElement()){
-       // qDebug()<<"attr--->"<<endl;
-         QDomElement felm = firstNode.toElement();
-//         qDebug() << (felm.tagName())
-//             << (felm.attribute("version"));
-    }
-
     // 返回根元素
     QDomElement docElem = doc.documentElement();
     // 返回根节点的第一个子结点
     QDomNode n = docElem.firstChild();
     if(n.isElement()){
-//        qDebug() <<"  "<< qPrintable(n.toElement().tagName());
     }
     // 如果结点不为空，则转到下一个节点
     while(!n.isNull())
@@ -1203,7 +1103,7 @@ void Widget::writeScreenXml(int count){
             for(int i=0; i<list.count(); i++)
             {
                 QDomNode node = list.at(i);
-                    if(node.isElement()){
+                    if (node.isElement()) {
 
                         QDomNodeList e2 = node.childNodes();
                         if (node.toElement().tagName() == "clone") {
@@ -1211,7 +1111,7 @@ void Widget::writeScreenXml(int count){
                              qDebug() << "    "<< (node.toElement().tagName())
                                       <<(node.toElement().text());
 
-                        }else if("output" == node.toElement().tagName()
+                        } else if("output" == node.toElement().tagName()
                             &&inputXml[i-1].outputName == node.toElement().attribute("name")
                             &&inputXml[i-1].isEnable
                             &&e2.count() > 3){
@@ -1219,49 +1119,49 @@ void Widget::writeScreenXml(int count){
 //                            qDebug()<<"e2  count is---->"<<e2.count()<<endl;
                             qDebug() << "    "<< (node.toElement().tagName())
                                     <<(node.toElement().attribute("name"));
-                            for(int j=0;j<e2.count();j++){
+                            for (int j=0; j<e2.count(); j++) {
                                 QDomNode node2 = e2.at(j);
-                                if(node2.toElement().tagName() == "width"){
+                                if (node2.toElement().tagName() == "width") {
                                     node2.toElement().firstChild().setNodeValue(inputXml[i-1].widthValue);
                                     qDebug() << "         "<< node2.toElement().tagName()
                                              <<node2.toElement().text();
-                                }else if(node2.toElement().tagName() == "height"){
+                                } else if(node2.toElement().tagName() == "height") {
                                     node2.toElement().firstChild().setNodeValue(inputXml[i-1].heightValue);
                                     qDebug() << "         "<< node2.toElement().tagName()
                                              <<node2.toElement().text();
-                                }else if(node2.toElement().tagName() == "rate"){
+                                } else if(node2.toElement().tagName() == "rate") {
                                     node2.toElement().firstChild().setNodeValue(inputXml[i-1].rateValue);
                                     qDebug() << "         "<< node2.toElement().tagName()
                                              <<node2.toElement().text();
-                                }else if(node2.toElement().tagName() == "x"){
+                                } else if(node2.toElement().tagName() == "x") {
                                     node2.toElement().firstChild().setNodeValue(inputXml[i-1].posxValue);
                                     qDebug() << "         "<< node2.toElement().tagName()
                                              <<node2.toElement().text();
-                                }else if(node2.toElement().tagName() == "y"){
+                                } else if(node2.toElement().tagName() == "y") {
                                     node2.toElement().firstChild().setNodeValue(inputXml[i-1].posyValue);
                                     qDebug() << "         "<< node2.toElement().tagName()
                                              <<node2.toElement().text();
-                                }else if(node2.toElement().tagName() == "rotation"){
+                                } else if(node2.toElement().tagName() == "rotation") {
                                     node2.toElement().firstChild().setNodeValue(inputXml[i-1].rotationValue);
                                     qDebug() << "         "<< node2.toElement().tagName()
                                              <<node2.toElement().text();
-                                }else if(node2.toElement().tagName() == "primary"){
+                                } else if(node2.toElement().tagName() == "primary") {
                                     node2.toElement().firstChild().setNodeValue(inputXml[i-1].isPrimary);
                                     qDebug() << "         "<< node2.toElement().tagName()
                                              <<node2.toElement().text();
                                 }
                             }
-                         }else if("output" == node.toElement().tagName()
+                         } else if ("output" == node.toElement().tagName()
                                    &&inputXml[i-1].outputName == node.toElement().attribute("name")
                                    &&!inputXml[i-1].isEnable
                                    &&e2.count() > 3) {
-                            for(; e2.count()>3;){
+                            for (; e2.count() > 3; ) {
                                 QDomNode node2 = e2.at(2);
                                 qDebug() << "         "<< node2.toElement().tagName()
                                          <<node2.toElement().text();
                                 node.removeChild(e2.at(3));
                             }
-                         }else if ("output" == node.toElement().tagName()
+                         } else if ("output" == node.toElement().tagName()
                                    &&inputXml[i-1].outputName == node.toElement().attribute("name")
                                    &&inputXml[i-1].isEnable
                                    &&e2.count() <= 3){
@@ -1312,7 +1212,7 @@ void Widget::writeScreenXml(int count){
                             primary.appendChild(primarytext);
                             node.appendChild(primary);
 
-                         }else if (node.toElement().tagName() == "clone") {
+                         } else if (node.toElement().tagName() == "clone") {
                             node.toElement().firstChild().setNodeValue(inputXml[i-1].isClone);
                             qDebug() << "    "<< (node.toElement().tagName())
                                      <<(node.toElement().text());
@@ -1324,7 +1224,7 @@ void Widget::writeScreenXml(int count){
         n = n.nextSibling();
     }
 
-    if(!file.open(QFile::WriteOnly | QFile::Truncate)){
+    if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
         qDebug()<<"save file failed"<<endl;
         return ;
     }
@@ -1335,14 +1235,12 @@ void Widget::writeScreenXml(int count){
 }
 
 
-void Widget::initScreenXml(int count){
+void Widget::initScreenXml(int count) {
     QString homePath = getenv("HOME");
     QString monitorFile = homePath+"/.config/monitors.xml";
-    //qDebug()<<monitorFile<<endl;
     QFile file(monitorFile);
-    QDomDocument doc;
 
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qDebug()<<"open file failed"<<endl;
         return ;
     }
@@ -1398,13 +1296,13 @@ void Widget::getEdidInfo(QString monitorName,xmlFile *xml) {
         }
     }
 
-    for (i = 0; outputs[i] != NULL; i++){
+    for (i = 0; outputs[i] != NULL; i++) {
         MateRROutputInfo *output = outputs[i];
-        if (g_list_find (justTurnedOn, GINT_TO_POINTER (i)))  {
+        if (g_list_find (justTurnedOn, GINT_TO_POINTER (i))) {
             continue;
         }
 
-        if (mate_rr_output_info_is_active (output)){
+        if (mate_rr_output_info_is_active (output)) {
             g_assert (mate_rr_output_info_is_connected (output));
             char *name = mate_rr_output_info_get_name(output);;
             unsigned int product = mate_rr_output_info_get_product(output);
@@ -1441,7 +1339,7 @@ void Widget::getEdidInfo(QString monitorName,xmlFile *xml) {
     g_object_unref (config);
 }
 
-void Widget::setNightMode(const bool nightMode){
+void Widget::setNightMode(const bool nightMode) {
     QProcess process;
     QString cmd;
     QString serverCmd;
@@ -1461,7 +1359,7 @@ void Widget::setNightMode(const bool nightMode){
 }
 
 
-void Widget::updateNightStatus(){
+void Widget::updateNightStatus() {
     QProcess *process = new QProcess;
 
     connect(process, &QProcess::readyRead, this, [=] {
@@ -1492,25 +1390,23 @@ void Widget::initUiComponent() {
     singleButton->setId(ui->sunradioBtn, SUN);
     singleButton->setId(ui->customradioBtn, CUSTOM);
 
-
     MODE value = ui->customradioBtn->isChecked() == SUN ? SUN : CUSTOM;
     showNightWidget(nightButton->isChecked());
     if (nightButton->isChecked()) {
         showCustomWiget(value);
     }
 
-    //ubuntukylin youker DBus interface
-    QDBusInterface *brightnessInterface = new QDBusInterface("org.freedesktop.UPower",
+    QDBusInterface brightnessInterface("org.freedesktop.UPower",
                                      "/org/freedesktop/UPower/devices/DisplayDevice",
                                      "org.freedesktop.DBus.Properties",
                                      QDBusConnection::systemBus());
-    if (!brightnessInterface->isValid()) {
+    if (!brightnessInterface.isValid()) {
         qDebug() << "Create UPower Interface Failed : " << QDBusConnection::systemBus().lastError();
         return;
     }
 
     QDBusReply<QVariant> briginfo;
-    briginfo  = brightnessInterface ->call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
+    briginfo  = brightnessInterface.call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
     if (!briginfo.value().toBool()) {
         qDebug()<<"brightness info is invalid"<<endl;
         ui->brightnessframe->setVisible(false);
