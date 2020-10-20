@@ -462,7 +462,10 @@ void UkmediaMainWidget::addStream (UkmediaMainWidget *m_pWidget, MateMixerStream
             m_pWidget->m_pInputStreamList->append(m_pName);
             m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->addItem(m_pLabel);
         }
-
+        if (deviceName.contains("auto_null.monitor",Qt::CaseInsensitive)) {
+            m_pWidget->m_pInputStreamList->append(m_pName);
+            m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->addItem(m_pLabel);
+        }
     }
     else if (direction == MATE_MIXER_DIRECTION_OUTPUT) {
         MateMixerStream        *m_pOutput;
