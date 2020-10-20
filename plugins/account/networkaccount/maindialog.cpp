@@ -108,10 +108,6 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
 //    m_delBtn->setFlat(true);
 //    QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete.svg");
     m_delBtn->setIcon(QIcon(":/new/image/delete.svg"));
-    m_delBtn->setStyleSheet("QPushButton{border-radius:4px;}"
-                           "QPushButton:hover{background-color:#F86457;"
-                           "border-radius:4px}"
-                           "QPushButton:click{background-color:#E44C50;border-radius:4px}");
 
 //    m_delBtn->installEventFilter(this);
 
