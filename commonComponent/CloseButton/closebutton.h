@@ -20,6 +20,9 @@ public:
     QPixmap drawSymbolicColoredPixmap(const QPixmap &source, QString color);
     void setIcon(const QIcon &icon);
     void setIconSize(int size);
+    void setBkg(const QColor &color);
+    void setHoverIn(const QString &hoverIn);
+    void setHoverOut(const QString &hoverOut);
 
     ~CloseButton();
 protected:
@@ -36,6 +39,10 @@ private:
     bool m_bIsPressed;
     QColor m_colorBkg;
     int m_cSize;
+    bool m_settedBkg;
+    QColor m_customBkg;
+    QString m_szHoverOut;
+    QString m_szHoverIn;
 
 Q_SIGNALS:
     void clicked(bool checked = true);

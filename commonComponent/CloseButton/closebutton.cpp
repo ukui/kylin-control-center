@@ -38,12 +38,15 @@ CloseButton::CloseButton(QWidget *parent, const QString &filePath, const QString
     //Initial componentss
     m_bIsChecked = false;
     m_bIsPressed = false;
+    m_settedBkg = false;
+    m_szHoverIn = "white";
+    m_szHoverOut = "gray";
     m_cSize = 16;
     m_colorBkg = palette().color(QPalette::Base);
     setAlignment(Qt::AlignCenter);
 
     if(m_icon != nullptr) {
-        setPixmap(renderSvg(*m_icon,"gray"));
+        setPixmap(renderSvg(*m_icon,m_szHoverOut));
     }
 }
 
@@ -133,11 +136,11 @@ QPixmap CloseButton::drawSymbolicColoredPixmap(const QPixmap &source, QString cg
 void CloseButton::enterEvent(QEvent *event) {
     Q_UNUSED(event);
     if(m_hoverIcon == nullptr && m_icon != nullptr)
-        setPixmap(renderSvg(*m_icon,"white"));
+        setPixmap(renderSvg(*m_icon,m_szHoverIn));
     else if(m_hoverIcon != nullptr && m_icon != nullptr)
         setPixmap(m_hoverIcon->pixmap(m_cSize,m_cSize));
     else if(m_customIcon != nullptr)
-        setPixmap(renderSvg(*m_customIcon,"white"));
+        setPixmap(renderSvg(*m_customIcon,m_szHoverIn));
     m_colorBkg = QColor("#FA6056");
 }
 
@@ -162,11 +165,11 @@ void CloseButton::mouseReleaseEvent(QMouseEvent *event) {
 
 void CloseButton::leaveEvent(QEvent *event) {
     Q_UNUSED(event);
-    m_colorBkg = palette().color(QPalette::Base);
+    m_colorBkg = m_customBkg.isValid() ? m_customBkg : palette().color(QPalette::Base);
     if(m_icon != nullptr)
-        setPixmap(renderSvg(*m_icon,"gray"));
+        setPixmap(renderSvg(*m_icon,m_szHoverOut));
     else if(m_customIcon != nullptr)
-        setPixmap(renderSvg(*m_customIcon,"gray"));
+        setPixmap(renderSvg(*m_customIcon,m_szHoverOut));
 
 }
 
@@ -187,7 +190,33 @@ void CloseButton::setIconSize(int size) {
 
 void CloseButton::setIcon(const QIcon &icon) {
     m_customIcon = new QIcon(icon);
-    setPixmap(renderSvg(*m_customIcon,"gray"));
+    setPixmap(renderSvg(*m_customIcon,m_szHoverOut));
+}
+
+void CloseButton::setBkg(const QColor &color) {
+    m_settedBkg = true;
+    m_customBkg = color;
+    m_colorBkg = m_customBkg;
+    if(m_icon != nullptr) {
+        setPixmap(renderSvg(*m_icon,m_szHoverOut));
+    } else if(m_customIcon != nullptr) {
+        setPixmap(renderSvg(*m_customIcon,m_szHoverOut));
+    }
+}
+
+void CloseButton::setHoverIn(const QString &hoverIn) {
+    m_szHoverIn = hoverIn;
+    update();
+}
+
+void CloseButton::setHoverOut(const QString &hoverOut) {
+    m_szHoverOut = hoverOut;
+    if(m_icon != nullptr) {
+        setPixmap(renderSvg(*m_icon,m_szHoverOut));
+    } else if(m_customIcon != nullptr) {
+        setPixmap(renderSvg(*m_customIcon,m_szHoverOut));
+    }
+    update();
 }
 
 CloseButton::~CloseButton() {

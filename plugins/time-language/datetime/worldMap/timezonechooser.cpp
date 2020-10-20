@@ -25,6 +25,9 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint| Qt::Tool);//无边框
     setAttribute(Qt::WA_StyledBackground,true);
 
+    closeBtn->setFixedSize(32,32);
+    closeBtn->setHoverOut("white");
+    closeBtn->setBkg(QColor(22,24,26));
     this->setObjectName("MapFrame");
     this->setStyleSheet("QFrame#MapFrame{background-color: rgb(22, 24, 26);border-radius:4px}");
     this->setWindowTitle(tr("Change time zone"));
