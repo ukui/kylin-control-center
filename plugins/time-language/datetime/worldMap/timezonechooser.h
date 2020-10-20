@@ -2,6 +2,7 @@
 #define TIMEZONECHOOSER_H
 
 #include "timezonemap.h"
+#include "CloseButton/closebutton.h"
 
 #include <QFrame>
 #include <QMap>
@@ -44,7 +45,7 @@ private:
     QLabel      *m_title;
     QPushButton *m_cancelBtn;
     QPushButton *m_confirmBtn;
-    QPushButton *closeBtn;
+    CloseButton *closeBtn;
 
 };
 

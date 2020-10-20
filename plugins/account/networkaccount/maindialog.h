@@ -48,6 +48,7 @@
 #include "svghandler.h"
 #include "blueeffect.h"
 #include <QDialog>
+#include "CloseButton/closebutton.h"
 
 class MainDialog : public QDialog
 {
@@ -120,7 +121,7 @@ private:
     QVBoxLayout     *m_workLayout;
     QHBoxLayout     *m_subLayout;
     QPoint          m_startPoint;
-    QPushButton     *m_delBtn;
+    CloseButton     *m_delBtn;
     PassDialog      *m_passDialog;
     RegDialog       *m_regDialog;
     QLabel          *m_accountTips;

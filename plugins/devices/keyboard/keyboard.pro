@@ -7,6 +7,7 @@
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
+include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
 include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
 
 QT       += widgets x11extras KWindowSystem xml KGuiAddons KCoreAddons concurrent KConfigCore KConfigGui KI18n

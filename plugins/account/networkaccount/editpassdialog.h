@@ -40,6 +40,7 @@
 #include <QtDBus/QtDBus>
 #include "tips.h"
 #include "svghandler.h"
+#include "CloseButton/closebutton.h"
 
 class EditPassDialog : public QDialog
 {
@@ -71,7 +72,7 @@ protected:
     bool            eventFilter(QObject *w,QEvent *e);
 private:
     QLabel          *m_title;
-    QPushButton     *m_delBtn;
+    CloseButton     *m_delBtn;
     PasswordLineEdit       *m_newPassLineEdit;
     QLineEdit       *m_mcodeLineEdit;
     QPushButton     *m_mcodeBtn;

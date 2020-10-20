@@ -22,6 +22,7 @@
 
 #include <QDialog>
 #include <QPainter>
+#include <QPushButton>
 
 namespace Ui {
 class ShowAllShortcut;

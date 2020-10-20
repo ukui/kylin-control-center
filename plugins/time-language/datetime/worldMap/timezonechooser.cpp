@@ -16,9 +16,9 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
     m_map = new TimezoneMap(this);
     m_map->show();
     m_zoneinfo = new ZoneInfo;
-    m_searchInput = new QLineEdit;
-    m_title = new QLabel;
-    closeBtn = new QPushButton;
+    m_searchInput = new QLineEdit(this);
+    m_title = new QLabel(this);
+    closeBtn = new CloseButton(this,"window-close-symbolic");
     m_cancelBtn = new QPushButton(tr("Cancel"));
     m_confirmBtn = new QPushButton(tr("Confirm"));
 
@@ -29,10 +29,10 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
     this->setStyleSheet("QFrame#MapFrame{background-color: rgb(22, 24, 26);border-radius:4px}");
     this->setWindowTitle(tr("Change time zone"));
 
-    closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
-    closeBtn->setFlat(true);
-    closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+//    closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
+//    closeBtn->setFlat(true);
+//    closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
     m_searchInput->setMinimumSize(560,40);
     m_searchInput->setMaximumSize(560,40);
@@ -92,7 +92,7 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
         emit this->cancelled();
     });
 
-    connect(closeBtn, &QPushButton::clicked, this, [this] {
+    connect(closeBtn, &CloseButton::clicked, this, [this] {
         hide();
         emit cancelled();
     });

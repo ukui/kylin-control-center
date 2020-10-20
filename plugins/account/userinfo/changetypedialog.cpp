@@ -19,6 +19,7 @@
  */
 #include "changetypedialog.h"
 #include "ui_changetypedialog.h"
+#include "CloseButton/closebutton.h"
 
 #include "elipsemaskwidget.h"
 
@@ -37,11 +38,11 @@ ChangeTypeDialog::ChangeTypeDialog(QWidget *parent) :
     setWindowTitle(tr("Change type"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+//    ui->closeBtn->setFlat(true);
+//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
 //    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
@@ -70,7 +71,7 @@ void ChangeTypeDialog::setupComonpent(){
 
     ui->confirmPushBtn->setEnabled(false);
 
-    connect(ui->closeBtn, &QPushButton::clicked, [=]{
+    connect(ui->closeBtn, &CloseButton::clicked, [=]{
         close();
     });
     connect(ui->cancelPushBtn, &QPushButton::clicked, [=](bool checked){

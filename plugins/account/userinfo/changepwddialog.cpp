@@ -27,6 +27,8 @@
 
 #include <QDebug>
 
+#include "CloseButton/closebutton.h"
+
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
  **/
@@ -69,11 +71,11 @@ ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QWidget *parent) :
     setWindowTitle(tr("Change pwd"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+//    ui->closeBtn->setFlat(true);
+//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
     ui->pwdFrame->setFrameShape(QFrame::Shape::Box);
 
@@ -235,7 +237,7 @@ void ChangePwdDialog::setupComponent(){
 }
 
 void ChangePwdDialog::setupConnect(){
-    connect(ui->closeBtn, &QPushButton::clicked, [=]{
+    connect(ui->closeBtn, &CloseButton::clicked, [=]{
         close();
     });
 

@@ -19,6 +19,7 @@
  */
 #include "changtime.h"
 #include "ui_changtime.h"
+#include "CloseButton/closebutton.h"
 
 #include <QDebug>
 #include <QStringList>
@@ -41,14 +42,14 @@ ChangtimeDialog::ChangtimeDialog(bool hour,QWidget *parent) :m_isEFHour(hour),
     setAttribute(Qt::WA_TranslucentBackground);
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
+//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+//    ui->closeBtn->setFlat(true);
 
     //关闭按钮在右上角，窗体radius 6px，所以按钮只得6px
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
     m_datetimeInterface = new QDBusInterface("org.freedesktop.timedate1",
                                        "/org/freedesktop/timedate1",
                                        "org.freedesktop.timedate1",
@@ -66,7 +67,7 @@ ChangtimeDialog::ChangtimeDialog(bool hour,QWidget *parent) :m_isEFHour(hour),
     connect(ui->yearcomboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(dayUpdateSlot()));
     connect(ui->cancelButton,SIGNAL(clicked()),this,SLOT(close()));
     connect(ui->confirmButton,SIGNAL(clicked()),this,SLOT(changtimeApplySlot()));
-    connect(ui->closeBtn, &QPushButton::clicked, [=](bool checked){
+    connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
         close();
     });

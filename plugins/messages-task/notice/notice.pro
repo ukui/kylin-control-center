@@ -4,6 +4,7 @@ QT       += widgets
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
 
 TEMPLATE = lib
 CONFIG += plugin

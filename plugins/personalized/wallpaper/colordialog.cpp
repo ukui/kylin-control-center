@@ -21,6 +21,7 @@
 #include "ui_colordialog.h"
 #include "colorsquare.h"
 #include "MaskWidget/maskwidget.h"
+#include "CloseButton/closebutton.h"
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
@@ -172,8 +173,8 @@ void ColorDialog::setupInit()
 
     // CloseBtn
     ui->closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
     //取消按钮默认主题灰色背景
     QPalette palette = ui->closeBtn->palette();
     QColor ColorPlaceholderText(255,255,255,0);
@@ -191,7 +192,7 @@ void ColorDialog::setupInit()
 void ColorDialog::signalsBind()
 {
     qDebug() << "signals bind";
-    connect(ui->closeBtn, &QPushButton::clicked, [=](bool checked){
+    connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
         close();
     });

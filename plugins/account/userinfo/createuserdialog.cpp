@@ -19,6 +19,7 @@
  */
 #include "createuserdialog.h"
 #include "ui_createuserdialog.h"
+#include "CloseButton/closebutton.h"
 
 #include "passwdcheckutil.h"
 
@@ -46,12 +47,12 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
     setWindowTitle(tr("Add new user"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
+//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+//    ui->closeBtn->setFlat(true);
 
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
     ui->tipLabel->setAlignment(Qt::AlignCenter);
 
     ui->label_8->adjustSize();
@@ -157,7 +158,7 @@ void CreateUserDialog::setupComonpent(){
 
 void CreateUserDialog::setupConnect(){
 
-    connect(ui->closeBtn, &QPushButton::clicked, [=](bool checked){
+    connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
         close();
     });

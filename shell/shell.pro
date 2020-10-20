@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../env.pri)
 
+
 DEFINES += PLUGIN_INSTALL_DIRS='\\"$${PLUGIN_INSTALL_DIRS}\\"'
 
 LIBS += -L$$[QT_INSTALL_LIBS] -lX11 -lgsettings-qt
@@ -46,6 +47,7 @@ mo.path = /usr/share/locale/zh_CN/LC_MESSAGES/
 
 target.source += $$TARGET
 target.path = /usr/bin
+
 
 INSTALLS +=  \
             target \

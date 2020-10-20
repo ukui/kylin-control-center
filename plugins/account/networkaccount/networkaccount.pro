@@ -10,7 +10,10 @@ TARGET = $$qtLibraryTarget(networkaccount)
 DESTDIR = ../..
 target.path = $${PLUGIN_INSTALL_DIRS}
 
+include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
+
 INCLUDEPATH += \
+    $$PROJECT_COMPONENTSOURCE \
     $$PROJECT_ROOTDIR \
 
 # The following define makes your compiler emit warnings if you use

@@ -22,6 +22,7 @@
 #include "ui_creategroupdialog.h"
 #include "userinfo.h"
 #include "changegroupdialog.h"
+#include "CloseButton/closebutton.h"
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
@@ -112,7 +113,7 @@ QListWidget *CreateGroupDialog::listWidgetComponent()
 
 void CreateGroupDialog::signalsBind()
 {
-    connect(ui->closeBtn, &QPushButton::clicked, [=](bool checked){
+    connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
         close();
     });
@@ -154,12 +155,12 @@ void CreateGroupDialog::setupInit()
     setAttribute(Qt::WA_DeleteOnClose);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
+//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+//    ui->closeBtn->setFlat(true);
 
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
     ui->listWidget->setFocusPolicy(Qt::NoFocus);

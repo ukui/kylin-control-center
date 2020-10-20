@@ -34,6 +34,7 @@
 #include "modulepagewidget.h"
 #include "searchwidget.h"
 
+
 class QLabel;
 class QPushButton;
 class QButtonGroup;

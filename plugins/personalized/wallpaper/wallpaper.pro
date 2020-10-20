@@ -8,6 +8,7 @@ include($$PROJECT_COMPONENTSOURCE/flowlayout.pri)
 include($$PROJECT_COMPONENTSOURCE/maskwidget.pri)
 include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
 include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
+include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
 
 QT       += widgets xml dbus
 

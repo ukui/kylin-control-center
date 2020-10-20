@@ -22,6 +22,7 @@
 
 #include "FlowLayout/flowlayout.h"
 #include "elipsemaskwidget.h"
+#include "CloseButton/closebutton.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -40,12 +41,12 @@ ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
     setAttribute(Qt::WA_DeleteOnClose);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
+    //ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    //ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    //ui->closeBtn->setFlat(true);
 
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+    //ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+    //                            "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
 //    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
@@ -60,7 +61,7 @@ ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
     loadSystemFaces();
 
 
-    connect(ui->closeBtn, &QPushButton::clicked, [=]{
+    connect(ui->closeBtn, &CloseButton::clicked, [=]{
         close();
     });
     connect(ui->customfaceBtn, &QPushButton::clicked, [=]{

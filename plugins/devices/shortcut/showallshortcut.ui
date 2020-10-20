@@ -52,7 +52,15 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>496</width>
+      <height>598</height>
+     </rect>
+    </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="spacing">
       <number>0</number>
@@ -85,7 +93,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="closeBtn">
+        <widget class="CloseButton" name="closeBtn">
          <property name="minimumSize">
           <size>
            <width>32</width>
@@ -195,8 +203,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>428</width>
-            <height>398</height>
+            <width>426</width>
+            <height>396</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -225,6 +233,13 @@
    </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CloseButton</class>
+   <extends>QPushButton</extends>
+   <header location="global">CloseButton/closebutton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

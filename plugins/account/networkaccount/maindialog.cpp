@@ -40,7 +40,7 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     m_stackedWidget = new QStackedWidget(this);   //用于切换业务逻辑操作页面（包括登录，注册，绑定，忘记密码）
     m_workLayout = new QVBoxLayout;           //业务界面主体布局
     m_subLayout = new QHBoxLayout;           //切换登录模式按钮布局
-    m_delBtn = new QPushButton(this);        //关闭按钮
+    m_delBtn = new CloseButton(this);        //关闭按钮
     m_timer = new QTimer(this);
     m_successDialog = new SuccessDiaolog(this);        //注册成功页面
     QHBoxLayout *hbox = new QHBoxLayout;    //整体布局
@@ -96,7 +96,7 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     m_delBtn->setMaximumSize(30,30);
     m_delBtn->setMinimumSize(30,30);
     m_delBtn->setGeometry(this->width() - 46,14,30,30);
-    m_delBtn->setFocusPolicy(Qt::NoFocus);
+//    m_delBtn->setFocusPolicy(Qt::NoFocus);
 
     m_submitBtn->setStyleSheet("QPushButton {background-color: #3D6BE5;border-radius: 4px;color:rgba(255,255,255,0.85);}"
                                 "QPushButton:hover {background-color: #415FC4;border-radius: 4px;position:relative;color:rgba(255,255,255,0.85);}"
@@ -105,15 +105,15 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
                                     "QPushButton:hover{background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
                                     "QPushButton:click{background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
 
-    m_delBtn->setFlat(true);
-    QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete.svg");
-    m_delBtn->setIcon(pixmap);
+//    m_delBtn->setFlat(true);
+//    QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete.svg");
+    m_delBtn->setIcon(QIcon(":/new/image/delete.svg"));
     m_delBtn->setStyleSheet("QPushButton{border-radius:4px;}"
                            "QPushButton:hover{background-color:#F86457;"
                            "border-radius:4px}"
                            "QPushButton:click{background-color:#E44C50;border-radius:4px}");
 
-    m_delBtn->installEventFilter(this);
+//    m_delBtn->installEventFilter(this);
 
     m_stackedWidget->setCurrentWidget(m_loginDialog);
 
@@ -1380,16 +1380,16 @@ void MainDialog::paintEvent(QPaintEvent *event)
 /* 子控件事件过滤，主要针对获得或者失去焦点时捕捉 */
 bool MainDialog::eventFilter(QObject *w, QEvent *e) {
 
-    if(w == m_delBtn) {
-        if(e->type() == QEvent::Enter) {
-            QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete_click.svg");
-            m_delBtn->setIcon(pixmap);
-        }
-        if(e->type() == QEvent::Leave) {
-            QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete.svg");
-            m_delBtn->setIcon(pixmap);
-        }
-    }
+//    if(w == m_delBtn) {
+//        if(e->type() == QEvent::Enter) {
+//            QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete_click.svg");
+//            m_delBtn->setIcon(pixmap);
+//        }
+//        if(e->type() == QEvent::Leave) {
+//            QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete.svg");
+//            m_delBtn->setIcon(pixmap);
+//        }
+//    }
     //手机绑定的四个控件捕捉
     if(m_stackedWidget->currentWidget() == m_BindDialog) {
         if(w == m_BindDialog->get_code_lineedit()) {

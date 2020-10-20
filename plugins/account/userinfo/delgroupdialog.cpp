@@ -20,6 +20,7 @@
 
 #include "delgroupdialog.h"
 #include "ui_delgroupdialog.h"
+#include "CloseButton/closebutton.h"
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
@@ -46,7 +47,7 @@ void DelGroupDialog::signalsBind()
     connect(ui->cancelBtn,&QPushButton::clicked,[=](){
         close();
     });
-    connect(ui->closeBtn,&QPushButton::clicked,[=](){
+    connect(ui->closeBtn,&CloseButton::clicked,[=](){
         close();
     });
 }
@@ -57,12 +58,12 @@ void DelGroupDialog::setupInit()
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
+//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+//    ui->closeBtn->setFlat(true);
 
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
 }

@@ -87,7 +87,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="closeBtn">
+         <widget class="CloseButton" name="closeBtn">
           <property name="minimumSize">
            <size>
             <width>32</width>
@@ -706,6 +706,13 @@ change system settings</string>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CloseButton</class>
+   <extends>QPushButton</extends>
+   <header location="global">CloseButton/closebutton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
  <buttongroups>

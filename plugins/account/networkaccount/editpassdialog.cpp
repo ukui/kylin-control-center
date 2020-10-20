@@ -29,7 +29,7 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QDialog(parent)
     //内存分配
     m_stackedWidget = new QStackedWidget(this);     //切换成功页面与业务逻辑页面
     m_title = new QLabel(this);                   //标题
-    m_delBtn = new QPushButton(this);            //关闭按钮，定点摆放
+    m_delBtn = new CloseButton(this);            //关闭按钮，定点摆放
     //account = new ql_lineedit_pass(this);
     m_newPassLineEdit = new PasswordLineEdit(this);       //新密码框
     m_passConfirm = new PasswordLineEdit(this);  //确认密码框
@@ -88,7 +88,6 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QDialog(parent)
     m_successDialog->setFixedSize(420,446);
 
     m_delBtn->setGeometry(this->width() - 46,14,30,30);
-    m_delBtn->setFlat(true);
     //设置样式表
     QString liness = "QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
                      "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
@@ -103,13 +102,12 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QDialog(parent)
     QString btns = "QPushButton {background: #E7E7E7;color:rgba(0,0,0,0.85);border-radius: 4px;}"
                     "QPushButton:hover{color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}"
                     "QPushButton:click{color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}";
-    QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete.svg");
-    m_delBtn->setIcon(pixmap);
-    m_delBtn->setStyleSheet("QPushButton{background:transparent;border-radius:4px;}"
-                           "QPushButton:hover{background:transparent;background-color:#F86457;"
-                           "border-radius:4px}"
-                           "QPushButton:click{background:transparent;background-color:#E44C50;border-radius:4px}");
-    m_delBtn->installEventFilter(this);
+    m_delBtn->setIcon(QIcon(":/new/image/delete.svg"));
+//    m_delBtn->setStyleSheet("QPushButton{background:transparent;border-radius:4px;}"
+//                           "QPushButton:hover{background:transparent;background-color:#F86457;"
+//                           "border-radius:4px}"
+//                           "QPushButton:click{background:transparent;background-color:#E44C50;border-radius:4px}");
+    //m_delBtn->installEventFilter(this);
     m_title->setStyleSheet(labelss);
     //account->setStyleSheet(liness);
     //newpass->setStyleSheet(liness);
@@ -118,7 +116,7 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QDialog(parent)
     //get_code->setStyleSheet(btnss);
     //cancel->setStyleSheet(btns);
     m_confirmBtn->setStyleSheet(confirmbtnss);
-    m_delBtn->setFocusPolicy(Qt::NoFocus);
+   // m_delBtn->setFocusPolicy(Qt::NoFocus);
 
     m_mcodeLineEdit->setMaxLength(4);
     m_successDialog->set_mode_text(1);
@@ -483,16 +481,16 @@ bool EditPassDialog::eventFilter(QObject *w, QEvent *e) {
 
 //        }
 //    }
-    if(w == m_delBtn) {
-        if(e->type() == QEvent::Enter) {
-            QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete_click.svg");
-            m_delBtn->setIcon(pixmap);
-        }
-        if(e->type() == QEvent::Leave) {
-            QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete.svg");
-            m_delBtn->setIcon(pixmap);
-        }
-    }
+//    if(w == m_delBtn) {
+//        if(e->type() == QEvent::Enter) {
+//            QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete_click.svg");
+//            m_delBtn->setIcon(pixmap);
+//        }
+//        if(e->type() == QEvent::Leave) {
+//            QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete.svg");
+//            m_delBtn->setIcon(pixmap);
+//        }
+//    }
     if(w == m_newPassLineEdit) {
         if (e->type() == QEvent::FocusIn && !m_Tips->isHidden()) {
             m_Tips->hide();

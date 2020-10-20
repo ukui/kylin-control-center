@@ -140,7 +140,7 @@
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="closeBtn">
+              <widget class="CloseButton" name="closeBtn">
                <property name="minimumSize">
                 <size>
                  <width>32</width>
@@ -230,7 +230,7 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>-31</y>
+                <y>0</y>
                 <width>501</width>
                 <height>538</height>
                </rect>
@@ -782,16 +782,6 @@
                 </layout>
                </item>
               </layout>
-              <zorder>automaticTipFrame</zorder>
-              <zorder>performanceTipFrame</zorder>
-              <zorder>compatibleTipFrame</zorder>
-              <zorder></zorder>
-              <zorder></zorder>
-              <zorder></zorder>
-              <zorder>performanceTipFrame</zorder>
-              <zorder></zorder>
-              <zorder>performanceFrame</zorder>
-              <zorder></zorder>
               <zorder></zorder>
               <zorder></zorder>
               <zorder></zorder>
@@ -799,9 +789,6 @@
             </widget>
            </item>
           </layout>
-          <zorder></zorder>
-          <zorder>titleLabel</zorder>
-          <zorder>scrollArea</zorder>
          </widget>
         </item>
        </layout>
@@ -811,6 +798,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CloseButton</class>
+   <extends>QPushButton</extends>
+   <header location="global">CloseButton/closebutton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
  <buttongroups>

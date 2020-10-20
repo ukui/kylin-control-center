@@ -90,7 +90,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="closeBtn">
+         <widget class="CloseButton" name="closeBtn">
           <property name="minimumSize">
            <size>
             <width>32</width>
@@ -261,7 +261,7 @@
              <x>0</x>
              <y>0</y>
              <width>468</width>
-             <height>263</height>
+             <height>234</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout">
@@ -486,8 +486,6 @@
              </widget>
             </item>
            </layout>
-           <zorder></zorder>
-           <zorder></zorder>
            <zorder>widget_2</zorder>
            <zorder>widget</zorder>
           </widget>
@@ -561,6 +559,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CloseButton</class>
+   <extends>QPushButton</extends>
+   <header location="global">CloseButton/closebutton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
  <buttongroups>
