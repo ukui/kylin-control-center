@@ -60,6 +60,7 @@ HEADERS += \
     delgroupdialog.h \
     editgroupdialog.h \
     elipsemaskwidget.h \
+    loginedusers.h \
     run-passwd.h \
     userinfo.h \
     qtdbus/systemdbusdispatcher.h \

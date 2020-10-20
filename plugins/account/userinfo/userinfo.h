@@ -23,9 +23,6 @@
 #include <QObject>
 #include <QtPlugin>
 
-//#include <QToolButton>
-//#include <QMenu>
-//#include <QAction>
 #include <QSignalMapper>
 #include <QMouseEvent>
 #include <QSettings>
@@ -124,6 +121,7 @@ public:
     void initComponent();
     void initAllUserStatus();
 
+    QStringList getLoginedUsers();
     void _acquireAllUsersInfo();
     UserInfomation _acquireUserInfo(QString objpath);
     QString _accountTypeIntToString(int type);
@@ -162,7 +160,6 @@ public:
     QString accounttype_enum_to_string(int id);
     QString login_status_bool_to_string(bool status);
 
-
     void readCurrentPwdConf();
     QStringList getUsersList();
 
@@ -177,23 +174,14 @@ private:
     QWidget * pluginWidget;
     HoverWidget *addWgt;
 
-private:
     SwitchButton * nopwdSwitchBtn;
     SwitchButton * autoLoginSwitchBtn;
 
     SystemDbusDispatcher * sysdispatcher;
     QSettings * autoSettings = nullptr;
 
-private:
-    bool getAutomaticLogin(QString username);
-
-private:
     QMap<QString, UserInfomation> allUserInfoMap;
     QMap<QString, QListWidgetItem *> otherUserItemMap;
-
-    int adminnum;
-
-    QString _newUserPwd;
 
 //    QMap<QString, QToolButton *> otherbtnMap;
     QMap<QString, QListWidgetItem *> otherItemMap;
@@ -207,11 +195,14 @@ private:
     QSize itemSize;
     QSize btnSize;
 
-
     QString pwdcreate;
+    QString _newUserPwd;
+
+    QStringList m_loginedUser;
 
     QDBusInterface * sysinterface;
 
+    int adminnum;
     bool enablePwdQuality;
 
 #ifdef ENABLEPQ
@@ -221,6 +212,9 @@ private:
     PwdQualityOption pwdOption;
 
     QString pwdMsg;
+
+private:
+    bool getAutomaticLogin(QString username);
 
 private slots:
 //    void show_change_pwd_dialog_slot(QString username);

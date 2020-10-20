@@ -24,13 +24,17 @@
 #include <QDBusConnection>
 #include <QDBusError>
 #include <QDBusReply>
-
+#include <QDBusMetaType>
+#include <QDBusMessage>
+#include <QDBusObjectPath>
 #include <QDebug>
+#include <QMessageBox>
 
 #include "SwitchButton/switchbutton.h"
 #include "ImageUtil/imageutil.h"
 #include "elipsemaskwidget.h"
 #include "passwdcheckutil.h"
+#include "loginedusers.h"
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -59,21 +63,18 @@ UserInfo::UserInfo()
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-    //构建System dbus调度对象
-    sysdispatcher = new SystemDbusDispatcher;
+    // 构建System dbus调度对象
+    sysdispatcher = new SystemDbusDispatcher(this);
 
-//    ui->changeGroupBtn->hide();
-
-    //获取系统全部用户信息，用户Uid大于等于1000的
+    // 获取系统全部用户信息，用户Uid大于等于1000的
     _acquireAllUsersInfo();
 
     initSearchText();
     readCurrentPwdConf();
     initComponent();
     initAllUserStatus();
-    //设置界面用户信息
+    // 设置界面用户信息
     _refreshUserInfoUI();
-
 
 //    pwdSignalMapper = new QSignalMapper(this);
 //    faceSignalMapper = new QSignalMapper(this);
@@ -197,7 +198,6 @@ UserInfomation UserInfo::_acquireUserInfo(QString objpath){
             //获取免密登录状态
             QDBusReply<QString> noPwdres;
             noPwdres  = tmpSysinterface ->call("getNoPwdLoginStatus");
-            //const QString &tmp=noPwdres;
             if(!noPwdres.isValid()){
                 qDebug()<<"获取tmpSysinterface状态不合法---->"<< noPwdres.error();
             }
@@ -542,6 +542,54 @@ void UserInfo::initAllUserStatus(){
     }
 }
 
+QStringList UserInfo::getLoginedUsers() {
+    m_loginedUser.clear();
+    qRegisterMetaType<LoginedUsers>("LoginedUsers");
+    qDBusRegisterMetaType<LoginedUsers>();
+    QDBusInterface loginInterface("org.freedesktop.login1",
+                                  "/org/freedesktop/login1",
+                                  "org.freedesktop.login1.Manager",
+                                  QDBusConnection::systemBus());
+
+    if (loginInterface.isValid()) {
+        qDebug() << "create interface sucess";
+    }
+
+    QDBusMessage result = loginInterface.call("ListUsers");
+    QList<QVariant> outArgs = result.arguments();
+    QVariant first = outArgs.at(0);
+    QDBusArgument dbvFirst = first.value<QDBusArgument>();
+    QVariant vFirst = dbvFirst.asVariant();
+    const QDBusArgument &dbusArgs = vFirst.value<QDBusArgument>();
+
+    QVector<LoginedUsers> loginedUsers;
+
+    dbusArgs.beginArray();
+    while (!dbusArgs.atEnd()) {
+        LoginedUsers user;
+        dbusArgs >> user;
+        loginedUsers.push_back(user);
+    }
+    dbusArgs.endArray();
+
+    for (LoginedUsers user : loginedUsers) {
+
+        QDBusInterface userPertyInterface("org.freedesktop.login1",
+                                          user.objpath.path(),
+                                          "org.freedesktop.DBus.Properties",
+                                          QDBusConnection::systemBus());
+
+        QDBusReply<QVariant> reply = userPertyInterface.call("Get", "org.freedesktop.login1.User", "State");
+        if (reply.isValid()) {
+            QString status = reply.value().toString();
+            if ("closing" != status) {
+                m_loginedUser.append(user.userName);
+            }
+        }
+    }
+    return m_loginedUser;
+}
+
 void UserInfo::_refreshUserInfoUI(){
     QMap<QString, UserInfomation>::iterator it = allUserInfoMap.begin();
     for (; it != allUserInfoMap.end(); it++){
@@ -762,6 +810,12 @@ void UserInfo::createUserDone(QString objpath){
 }
 
 void UserInfo::showDeleteUserDialog(QString username){
+
+    QStringList loginedusers = getLoginedUsers();
+    if (loginedusers.contains(username)) {
+        QMessageBox::warning(pluginWidget, tr("Warning"), tr("The user is logged in, please delete the user after logging out"));
+        return;
+    }
     UserInfomation user = (UserInfomation)(allUserInfoMap.find(username).value());
 
     DelUserDialog * dialog = new DelUserDialog;
