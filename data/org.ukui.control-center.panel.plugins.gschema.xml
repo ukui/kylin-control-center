@@ -30,5 +30,10 @@
             <summary>ukui-control-center sets the night mode status so that ukui-panel can get the status</summary>
             <description></description>
         </key>
+        <key name="themebynight" type="b">
+            <default>false</default>
+            <summary>ukui-control-center  theme changes follow with the night mode</summary>
+            <description></description>
+        </key>
     </schema>
 </schemalist>

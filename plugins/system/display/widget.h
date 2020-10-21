@@ -77,6 +77,7 @@ class Widget : public QWidget
     void slotFocusedOutputChangedNoParam();
     // 亮度调节UI
     void initBrightnessUI();
+    void initConnection();
     QString getScreenName(QString name = "");
     void initTemptSlider();
     void writeScreenXml(int count);
@@ -122,6 +123,8 @@ class Widget : public QWidget
     void showNightWidget(bool judge);
     void showCustomWiget(int index);
 
+    void slotThemeChanged(bool judge);
+
     // 按钮选择主屏确认按钮
     void primaryButtonEnable(bool);
     // 是否禁用设置主屏按钮
@@ -155,6 +158,7 @@ class Widget : public QWidget
     void initGSettings();
     void writeConfigFile();
     void setcomBoxScale();
+    void initNightUI();
 
   private:
     Ui::DisplayWindow *ui;
@@ -186,9 +190,10 @@ class Widget : public QWidget
     // xml文件
     xmlFile inputXml[100];
 
-    SwitchButton *nightButton = nullptr;
-    SwitchButton *closeScreenButton = nullptr;
-    SwitchButton *m_unifybutton = nullptr;
+    SwitchButton *mNightButton = nullptr;
+    SwitchButton *mCloseScreenButton = nullptr;
+    SwitchButton *mUnifyButton = nullptr;
+    SwitchButton *mThemeButton = nullptr;
     QLabel *nightLabel = nullptr;
 
     // 是否为夜间模式

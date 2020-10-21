@@ -51,6 +51,7 @@ extern "C" {
 
 #define UKUI_CONTORLCENTER_PANEL_SCHEMAS "org.ukui.control-center.panel.plugins"
 #define NIGHT_MODE_KEY                   "nightmodestatus"
+#define THEME_NIGHT_KEY                  "themebynight"
 
 #define FONT_RENDERING_DPI               "org.ukui.SettingsDaemon.plugins.xsettings"
 #define SCALE_KEY                        "scaling-factor"
@@ -87,24 +88,13 @@ Widget::Widget(QWidget *parent)
 
     ui->quickWidget->setContentsMargins(0,0,0,9);
 
-    closeScreenButton = new SwitchButton;
-    ui->showScreenLayout->addWidget(closeScreenButton);
+    mCloseScreenButton = new SwitchButton(this);
+    ui->showScreenLayout->addWidget(mCloseScreenButton);
 
-    m_unifybutton = new SwitchButton(this);
-    ui->unionLayout->addWidget(m_unifybutton);
+    mUnifyButton = new SwitchButton(this);
+    ui->unionLayout->addWidget(mUnifyButton);
 
-
-    QHBoxLayout *nightLayout = new QHBoxLayout(ui->nightframe);
-
-    //~ contents_path /display/unify output
-    ui->unifyLabel->setText(tr("unify output"));
-
-    //~ contents_path /display/night mode
-    nightLabel = new QLabel(tr("night mode"));
-    nightButton = new SwitchButton;
-    nightLayout->addWidget(nightLabel);
-    nightLayout->addStretch();
-    nightLayout->addWidget(nightButton);
+    initNightUI();
 
     QProcess * process = new QProcess;
     process->start("lsb_release -r");
@@ -125,6 +115,7 @@ Widget::Widget(QWidget *parent)
         ui->advancedHorLayout->setContentsMargins(9, 0, 9, 0);
     }
 
+    initGSettings();
     initTemptSlider();
     initConfigFile(false, false);
     initUiComponent();
@@ -137,57 +128,10 @@ Widget::Widget(QWidget *parent)
     ui->nightframe->setVisible(this->m_redshiftIsValid);
 #endif
 
-    nightButton->setChecked(this->m_isNightMode);
-    showNightWidget(nightButton->isChecked());
+    mNightButton->setChecked(this->m_isNightMode);
+    showNightWidget(mNightButton->isChecked());
 
-    connect(nightButton,SIGNAL(checkedChanged(bool)),this,SLOT(showNightWidget(bool)));
-    connect(singleButton, SIGNAL(buttonClicked(int)), this, SLOT(showCustomWiget(int)));
-    //是否禁用主显示器确认按钮
-    connect(ui->primaryCombo, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this, &Widget::mainScreenButtonSelect);
-    //主屏确认按钮
-    connect(ui->mainScreenButton, SIGNAL(clicked(bool)), this, SLOT(primaryButtonEnable(bool)));
-    mControlPanel = new ControlPanel(this);
-    connect(mControlPanel, &ControlPanel::changed, this, &Widget::changed);
-    connect(mControlPanel, &ControlPanel::scaleChanged, this, &Widget::scaleChangedSlot);
-
-    ui->controlPanelLayout->addWidget(mControlPanel);
-
-//    connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(save()));
-    // TODO: Find out why adjusting the screen orientation does not take effect
-    connect(ui->applyButton, &QPushButton::clicked, this, [=](){
-       save();
-       if (oriApply) {
-           QTimer::singleShot(1000, this,
-               [this] () {
-                  save();
-               }
-           );
-       }
-    });
-
-    connect(ui->advancedBtn, &QPushButton::clicked, this, [=] {
-        DisplayPerformanceDialog * dialog = new DisplayPerformanceDialog;
-        dialog->exec();
-    });
-
-    connect(m_unifybutton,&SwitchButton::checkedChanged,
-            [this]{
-                    slotUnifyOutputs();
-            });
-
-    //TODO----->bug
-//    ui->showMonitorwidget->setVisible(false);
-    connect(closeScreenButton,&SwitchButton::checkedChanged,
-            this,[=](bool checked){
-                checkOutputScreen(checked);
-        });
-
-    mOutputTimer = new QTimer(this);
-    connect(mOutputTimer, &QTimer::timeout,
-            this, &Widget::clearOutputIdentifiers);
-
-    initGSettings();
+    initConnection();
     loadQml();
 }
 
@@ -234,7 +178,7 @@ void Widget::setConfig(const KScreen::ConfigPtr &config) {
     // 上面屏幕拿取配置
     mScreen->setConfig(mConfig);
     mControlPanel->setConfig(mConfig);
-    m_unifybutton->setEnabled(mConfig->outputs().count() > 1);
+    mUnifyButton->setEnabled(mConfig->outputs().count() > 1);
 
     for (const KScreen::OutputPtr &output : mConfig->outputs()) {
         outputAdded(output);
@@ -345,7 +289,7 @@ void Widget::slotOutputEnabledChanged() {
         }
     }
 //    ui->unifyButton->setEnabled(enabledOutputsCount > 1);
-    m_unifybutton->setEnabled(enabledOutputsCount > 1);
+    mUnifyButton->setEnabled(enabledOutputsCount > 1);
 }
 
 void Widget::slotOutputConnectedChanged() {
@@ -369,7 +313,7 @@ void Widget::slotUnifyOutputs() {
         }
     }
 
-    if (base->isCloneMode() && !m_unifybutton->isChecked()) {
+    if (base->isCloneMode() && !mUnifyButton->isChecked()) {
         qDebug()<<"取消clone------------>"<<endl;
 
         QPoint secPoint;
@@ -401,10 +345,10 @@ void Widget::slotUnifyOutputs() {
         ui->primaryCombo->setEnabled(true);
         //开启开关
 //        ui->checkBox->setEnabled(true);
-        closeScreenButton->setEnabled(true);
+        mCloseScreenButton->setEnabled(true);
         ui->primaryCombo->setEnabled(true);
 //        ui->unifyButton->setText(tr("统一输出"));
-    } else if (!base->isCloneMode() && m_unifybutton->isChecked()){
+    } else if (!base->isCloneMode() && mUnifyButton->isChecked()){
         // Clone the current config, so that we can restore it in case user
         // breaks the cloning
         qDebug()<<"点击统一输出---->"<<endl;
@@ -449,7 +393,7 @@ void Widget::slotUnifyOutputs() {
 
         //关闭开关
 //        ui->checkBox->setEnabled(false);
-        closeScreenButton->setEnabled(false);
+        mCloseScreenButton->setEnabled(false);
         ui->primaryCombo->setEnabled(false);
         ui->mainScreenButton->setEnabled(false);
 
@@ -543,6 +487,7 @@ void Widget::initGSettings() {
     QByteArray id(UKUI_CONTORLCENTER_PANEL_SCHEMAS);
     if(QGSettings::isSchemaInstalled(id)) {
         m_gsettings = new QGSettings(id, QByteArray(), this);
+        mThemeButton->setChecked(m_gsettings->get(THEME_NIGHT_KEY).toBool());
     } else {
         qDebug() << Q_FUNC_INFO << "org.ukui.control-center.panel.plugins not install";
         return;
@@ -554,12 +499,13 @@ void Widget::initGSettings() {
             initConfigFile(true, status);
         }
     });
+
 }
 
 void Widget::writeConfigFile() {
 
     if (m_gsettings) {
-        m_gsettings->set(NIGHT_MODE_KEY, nightButton->isChecked());
+        m_gsettings->set(NIGHT_MODE_KEY, mNightButton->isChecked());
     }
 
     m_qsettings->beginGroup("redshift");
@@ -581,11 +527,11 @@ void Widget::writeConfigFile() {
     m_qsettings->endGroup();
 
     m_qsettings->beginGroup("switch");
-    m_qsettings->setValue("unionswitch", m_unifybutton->isChecked());
-    m_qsettings->setValue("nightjudge", nightButton->isChecked());
+    m_qsettings->setValue("unionswitch", mUnifyButton->isChecked());
+    m_qsettings->setValue("nightjudge", mNightButton->isChecked());
     m_qsettings->setValue("sunjudge", ui->sunradioBtn->isChecked());
     m_qsettings->setValue("manualjudge", ui->customradioBtn->isChecked());
-    m_qsettings->setValue("nightStatus", nightButton->isChecked());
+    m_qsettings->setValue("nightStatus", mNightButton->isChecked());
 
     m_qsettings->endGroup();
     m_qsettings->sync();
@@ -600,16 +546,36 @@ void Widget::setcomBoxScale() {
     writeScale(scale);
 }
 
+void Widget::initNightUI() {
+    //~ contents_path /display/unify output
+    ui->unifyLabel->setText(tr("unify output"));
+
+    QHBoxLayout *nightLayout = new QHBoxLayout(ui->nightframe);
+    //~ contents_path /display/night mode
+    nightLabel = new QLabel(tr("night mode"), this);
+    mNightButton = new SwitchButton(this);
+    nightLayout->addWidget(nightLabel);
+    nightLayout->addStretch();
+    nightLayout->addWidget(mNightButton);
+
+    QHBoxLayout *themeLayout = new QHBoxLayout(ui->themeFrame);
+    mThemeButton = new SwitchButton(this);
+    themeLayout->addWidget(new QLabel(tr("Theme follow night mode")));
+    themeLayout->addStretch();
+    themeLayout->addWidget(mThemeButton);
+}
+
 void Widget::showNightWidget(bool judge) {
     if (judge) {
         ui->sunframe->setVisible(true);
         ui->customframe->setVisible(true);
         ui->temptframe->setVisible(true);
+        ui->themeFrame->setVisible(true);
     } else {
         ui->sunframe->setVisible(false);
         ui->customframe->setVisible(false);
-
         ui->temptframe->setVisible(false);
+        ui->themeFrame->setVisible(false);
     }
 
    if (judge && ui->customradioBtn->isChecked()) {
@@ -627,6 +593,10 @@ void Widget::showCustomWiget(int index) {
         ui->opframe->setVisible(true);;
         ui->clsframe->setVisible(true);
     }
+}
+
+void Widget::slotThemeChanged(bool judge) {
+    m_gsettings->set(THEME_NIGHT_KEY, judge);
 }
 
 void Widget::clearOutputIdentifiers() {
@@ -835,14 +805,14 @@ void Widget::save() {
 
     if (!atLeastOneEnabledOutput ) {
         QMessageBox::warning(this, tr("Warning"), tr("please insure at least one output!"));
-        closeScreenButton->setChecked(true);
+        mCloseScreenButton->setChecked(true);
         return ;
     } else if( ((ui->opHourCom->currentIndex() < ui->clHourCom->currentIndex()) ||
                (ui->opHourCom->currentIndex() == ui->clHourCom->currentIndex()  &&
                 ui->opMinCom->currentIndex() <= ui->clMinCom->currentIndex()))  &&
-               CUSTOM == singleButton->checkedId() && nightButton->isChecked()) {
+               CUSTOM == singleButton->checkedId() && mNightButton->isChecked()) {
         QMessageBox::warning(this, tr("Warning"), tr("Morning time should be earlier than evening time!"));
-        closeScreenButton->setChecked(true);
+        mCloseScreenButton->setChecked(true);
         return ;
     }
 
@@ -850,7 +820,7 @@ void Widget::save() {
     writeScreenXml(countOutput);
     writeScale(this->screenScale);
     writeConfigFile();
-    setNightMode(nightButton->isChecked());
+    setNightMode(mNightButton->isChecked());
 
     if (!KScreen::Config::canBeApplied(config)) {
         QMessageBox::information(this,
@@ -907,8 +877,8 @@ void Widget::mainScreenButtonSelect(int index) {
         ui->mainScreenButton->setEnabled(true);
     }
     // 设置是否勾选
-    closeScreenButton->setEnabled(true);
-    closeScreenButton->setChecked(newPrimary->isEnabled());
+    mCloseScreenButton->setEnabled(true);
+    mCloseScreenButton->setChecked(newPrimary->isEnabled());
     mControlPanel->activateOutput(newPrimary);
 }
 
@@ -952,6 +922,56 @@ void Widget::initBrightnessUI() {
 
     connect(ui->primaryCombo, &QComboBox::currentTextChanged,
             this, &Widget::setBrightnesSldierValue);
+}
+
+void Widget::initConnection() {
+    connect(mNightButton,SIGNAL(checkedChanged(bool)),this,SLOT(showNightWidget(bool)));
+    connect(mThemeButton,SIGNAL(checkedChanged(bool)),this,SLOT(slotThemeChanged(bool)));
+    connect(singleButton, SIGNAL(buttonClicked(int)), this, SLOT(showCustomWiget(int)));
+    //是否禁用主显示器确认按钮
+    connect(ui->primaryCombo, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this, &Widget::mainScreenButtonSelect);
+    //主屏确认按钮
+    connect(ui->mainScreenButton, SIGNAL(clicked(bool)), this, SLOT(primaryButtonEnable(bool)));
+    mControlPanel = new ControlPanel(this);
+    connect(mControlPanel, &ControlPanel::changed, this, &Widget::changed);
+    connect(mControlPanel, &ControlPanel::scaleChanged, this, &Widget::scaleChangedSlot);
+
+    ui->controlPanelLayout->addWidget(mControlPanel);
+
+//    connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(save()));
+    // TODO: Find out why adjusting the screen orientation does not take effect
+    connect(ui->applyButton, &QPushButton::clicked, this, [=](){
+       save();
+       if (oriApply) {
+           QTimer::singleShot(1000, this,
+               [this] () {
+                  save();
+               }
+           );
+       }
+    });
+
+    connect(ui->advancedBtn, &QPushButton::clicked, this, [=] {
+        DisplayPerformanceDialog * dialog = new DisplayPerformanceDialog;
+        dialog->exec();
+    });
+
+    connect(mUnifyButton,&SwitchButton::checkedChanged,
+            [this]{
+                    slotUnifyOutputs();
+            });
+
+    //TODO----->bug
+//    ui->showMonitorwidget->setVisible(false);
+    connect(mCloseScreenButton,&SwitchButton::checkedChanged,
+            this,[=](bool checked){
+                checkOutputScreen(checked);
+        });
+
+    mOutputTimer = new QTimer(this);
+    connect(mOutputTimer, &QTimer::timeout,
+            this, &Widget::clearOutputIdentifiers);
 }
 
 
@@ -1043,8 +1063,8 @@ void Widget::initConfigFile(bool changed, bool status) {
     bool sunjudge = m_qsettings->value("sunjudge", sunjudge).toBool();
     bool manualjudge = m_qsettings->value("manualjudge", manualjudge).toBool();
 
-    m_unifybutton->setChecked(unionjudge);
-    nightButton->setChecked(nightjudge);
+    mUnifyButton->setChecked(unionjudge);
+    mNightButton->setChecked(nightjudge);
 
     if (!(sunjudge && manualjudge)) {
         ui->sunradioBtn->setChecked(sunjudge);
@@ -1056,7 +1076,7 @@ void Widget::initConfigFile(bool changed, bool status) {
     m_qsettings->endGroup();
 
     if (changed) {
-        nightButton->setChecked(status);
+        mNightButton->setChecked(status);
     }
 }
 
@@ -1356,6 +1376,15 @@ void Widget::setNightMode(const bool nightMode) {
 
     process.startDetached("systemctl", QStringList() << "--user" << cmd << "redshift.service");
     updateNightStatus();
+
+    QGSettings theme("org.ukui.style");
+    if (nightMode && mThemeButton->isChecked()) {
+        theme.set("style-name", "ukui-dark");
+    } else if (nightMode && !mThemeButton->isChecked()) {
+        theme.set("style-name", "ukui-default");
+    } else if (!nightMode) {
+        theme.set("style-name", "ukui-default");
+    }
 }
 
 
@@ -1391,8 +1420,8 @@ void Widget::initUiComponent() {
     singleButton->setId(ui->customradioBtn, CUSTOM);
 
     MODE value = ui->customradioBtn->isChecked() == SUN ? SUN : CUSTOM;
-    showNightWidget(nightButton->isChecked());
-    if (nightButton->isChecked()) {
+    showNightWidget(mNightButton->isChecked());
+    if (mNightButton->isChecked()) {
         showCustomWiget(value);
     }
 

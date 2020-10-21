@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>945</width>
-    <height>963</height>
+    <height>1013</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -462,6 +462,25 @@
       </widget>
      </item>
      <item>
+      <widget class="QFrame" name="themeFrame">
+       <property name="minimumSize">
+        <size>
+         <width>550</width>
+         <height>50</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>960</width>
+         <height>50</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QFrame" name="sunframe">
        <property name="minimumSize">
         <size>
@@ -822,33 +841,7 @@
              </sizepolicy>
             </property>
             <property name="styleSheet">
-             <string notr="true">QSlider{
-    width: 178px;
-    height: 20px;
-}
-QSlider::groove:horizontal {
-    border: 0px solid #bbb;
-
-}
-QSlider::sub-page:horizontal {
-    background: #3D6BE5;
-    border-radius: 2px;
-    margin-top:8px;
-    margin-bottom:9px;
-}
-QSlider::add-page:horizontal {
-    background:  rgba(52,70,80,90%);
-    border: 0px solid #777;
-    border-radius: 2px;
-    margin-top:8px;
-    margin-bottom:9px;
-}
-QSlider::handle:horizontal {
-    width: 20px;
-    height: 20px;
-    background: #3D6BE5;
-    border-radius:10px;
-}</string>
+             <string notr="true"/>
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
