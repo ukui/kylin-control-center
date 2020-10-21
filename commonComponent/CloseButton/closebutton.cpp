@@ -12,10 +12,14 @@
 #include <QApplication>
 #include <QDebug>
 
+#define THEME_QT_SCHEMA "org.ukui.style"
+#define THEME_GTK_SCHEMA "org.mate.interface"
+
 CloseButton::CloseButton(QWidget *parent, const QString &filePath, const QString &hoverPath) : QLabel(parent)
 {
 
     //Allocation
+
     if(filePath != "" && filePath != "window-close-symbolic")
         m_icon = new QIcon(filePath);
     else if(filePath == "window-close-symbolic"){
@@ -39,13 +43,38 @@ CloseButton::CloseButton(QWidget *parent, const QString &filePath, const QString
     m_bIsPressed = false;
     m_settedBkg = false;
     m_szHoverIn = "white";
-    m_szHoverOut = "gray";
+    m_szHoverOut = "default";
     m_cSize = 16;
     m_colorBkg = palette().color(QPalette::Base);
     setAlignment(Qt::AlignCenter);
 
     if(m_icon != nullptr) {
         setPixmap(renderSvg(*m_icon,m_szHoverOut));
+    }
+    if(QGSettings::isSchemaInstalled(THEME_GTK_SCHEMA) && QGSettings::isSchemaInstalled(THEME_QT_SCHEMA)) {
+        QByteArray qtThemeID(THEME_QT_SCHEMA);
+        QByteArray gtkThemeID(THEME_GTK_SCHEMA);
+
+        m_gtkThemeSetting = new QGSettings(gtkThemeID,QByteArray(),this);
+        m_qtThemeSetting = new QGSettings(qtThemeID,QByteArray(),this);
+
+        QString style = m_qtThemeSetting->get("styleName").toString();
+        if(style == "ukui-dark") {
+            m_szHoverOut = "white";
+        } else {
+            m_szHoverOut = "default";
+        }
+
+        connect(m_qtThemeSetting,&QGSettings::changed, [this] (const QString &key) {
+            QString style = m_qtThemeSetting->get("styleName").toString();
+            if(key == "styleName") {
+                if(style == "ukui-dark") {
+                    m_szHoverOut = "white";
+                } else {
+                    m_szHoverOut = "default";
+                }
+            }
+        });
     }
 }
 
@@ -74,7 +103,7 @@ const QPixmap CloseButton::renderSvg(const QIcon &icon, QString cgColor) {
                     color.setGreen(0);
                     color.setBlue(0);
                     //                    color.setAlpha(0.1);
-                    color.setAlphaF(0.9);
+                    color.setAlphaF(0.12);
                     img.setPixelColor(x, y, color);
                 } else if ("gray" == cgColor) {
                     color.setRed(152);
@@ -210,7 +239,6 @@ void CloseButton::setHoverIn(const QString &hoverIn) {
 
 void CloseButton::setHoverOut(const QString &hoverOut) {
     m_szHoverOut = hoverOut;
-    qDebug() << hoverOut;
     if(m_icon != nullptr) {
         setPixmap(renderSvg(*m_icon,m_szHoverOut));
     } else if(m_customIcon != nullptr) {

@@ -7,6 +7,7 @@
 #include <QPainter>
 #include <QIcon>
 #include <QMouseEvent>
+#include <QGSettings/QGSettings>
 
 class CloseButton : public QLabel
 {
@@ -43,6 +44,8 @@ private:
     QColor m_customBkg;
     QString m_szHoverOut;
     QString m_szHoverIn;
+    QGSettings *m_qtThemeSetting;
+    QGSettings *m_gtkThemeSetting;
 
 Q_SIGNALS:
     void clicked(bool checked = true);
