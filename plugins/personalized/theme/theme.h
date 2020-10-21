@@ -23,13 +23,8 @@
 #include <QObject>
 #include <QtPlugin>
 #include <QLayout>
-
 #include <QMap>
 #include <QDir>
-
-#include "shell/interface.h"
-#include "commonComponent/Uslider/uslider.h"
-
 #include <QDir>
 #include <QSettings>
 #include <QtDBus/QDBusMessage>
@@ -37,6 +32,10 @@
 #include <QtDBus/QtDBus>
 #include <QAbstractButton>
 
+#include "shell/interface.h"
+#include "commonComponent/Uslider/uslider.h"
+#include "themewidget.h"
+#include "widgetgroup.h"
 
 class QPushButton;
 class SwitchButton;
@@ -54,6 +53,31 @@ class Theme : public QObject, CommonInterface
     Q_INTERFACES(CommonInterface)
 
 public:
+    enum ThemeType { ICON, CURSOR};
+
+private:
+    Ui::Theme *ui;
+
+    QString pluginName;
+    int pluginType;
+    QWidget *pluginWidget;
+
+    QGSettings *gtkSettings;
+    QGSettings *qtSettings;
+    QGSettings *curSettings;
+    QSettings  *kwinSettings;
+    QSettings  *themeSettings;
+    QGSettings *kwinGsettings =  nullptr;
+    QGSettings *personliseGsettings = nullptr;
+
+    SwitchButton *effectSwitchBtn;
+
+    bool settingsCreate;
+
+    WidgetGroup *cursorThemeWidgetGroup;
+    WidgetGroup *iconThemeWidgetGroup;
+
+public:
     Theme();
     ~Theme();
     double i=0;
@@ -63,7 +87,6 @@ public:
     void plugin_delay_control() Q_DECL_OVERRIDE;
     const QString name() const  Q_DECL_OVERRIDE;
 
-public:
     void initSearchText();
     void setupSettings();
     void setupComponent();
@@ -81,34 +104,11 @@ public:
     QStringList _getSystemCursorThemes();
 
 private:
-    void clearLayout(QLayout* mlayout, bool deleteWidgets);
+    void setCheckStatus(QLayout* mlayout, QString checkName, ThemeType type);
     double convertToTran(const int value);
     int tranConvertToSlider(const double value);
     bool getSystemVersion();
     QStringList readFile(QString filepath);
-
-private:
-    Ui::Theme *ui;
-
-    QString pluginName;
-    int pluginType;
-    QWidget * pluginWidget;
-
-    QGSettings * gtkSettings;
-    QGSettings * qtSettings;
-    QGSettings * curSettings;
-    QSettings  * kwinSettings;
-    QSettings  * themeSettings;
-    QGSettings * kwinGsettings =  nullptr;
-    QGSettings * personliseGsettings = nullptr;
-
-    SwitchButton * effectSwitchBtn;
-
-    WidgetGroup * iconThemeWidgetGroup;
-
-    bool settingsCreate;
-//    Uslider * uslider;
-//    Uslider * kwinSlider;
 
 private slots:
     void resetBtnClickSlot();
@@ -116,7 +116,6 @@ private slots:
     void writeKwinSettings(bool change, QString theme, bool effect = false);
 
     void themeBtnClickSlot(QAbstractButton *button);
-
 };
 
 #endif // THEME_H

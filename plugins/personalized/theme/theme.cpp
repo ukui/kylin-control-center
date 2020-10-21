@@ -21,40 +21,32 @@
 #include "ui_theme.h"
 
 #include <QGSettings>
-
-#include "SwitchButton/switchbutton.h"
-
-#include "themewidget.h"
-#include "widgetgroup.h"
-#include "cursor/xcursortheme.h"
-
-#include "../../../shell/customstyle.h"
-
 #include <QDebug>
 #include <QtDBus/QDBusConnection>
 #include <QtConcurrent>
-/**
- * GTK主题
- */
+
+#include "SwitchButton/switchbutton.h"
+#include "cursor/xcursortheme.h"
+#include "../../../shell/customstyle.h"
+
+
+// GTK主题
 #define THEME_GTK_SCHEMA "org.mate.interface"
 #define MODE_GTK_KEY "gtk-theme"
-/* GTK图标主题 */
+
+// GTK图标主题
 #define ICON_GTK_KEY "icon-theme"
 
-/**
- * QT主题
- */
+// QT主题
 #define THEME_QT_SCHEMA "org.ukui.style"
 #define MODE_QT_KEY "style-name"
 #define THEME_TRAN_KEY "menu-transparency"
 #define PEONY_TRAN_KEY "peony-side-bar-transparency"
 
-/* QT图标主题 */
+// QT图标主题
 #define ICON_QT_KEY "icon-theme-name"
 
-/**
- * 窗口管理器Marco主题
- */
+// 窗口管理器Marco主题
 #define MARCO_SCHEMA "org.gnome.desktop.wm.preferences"
 #define MARCO_THEME_KEY "theme"
 
@@ -67,9 +59,7 @@
 
 #define ICONWIDGETHEIGH 74
 
-/**
- * 透明度设置
- */
+// 透明度设置
 #define PERSONALSIE_SCHEMA     "org.ukui.control-center.personalise"
 #define PERSONALSIE_TRAN_KEY   "transparency"
 #define PERSONALSIE_BLURRY_KEY "blurry"
@@ -281,7 +271,6 @@ void Theme::setupComponent(){
 
 void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
     //设置默认按钮
-//    button->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
 
     QVBoxLayout * baseVerLayout = new QVBoxLayout(button);
     baseVerLayout->setSpacing(8);
@@ -374,7 +363,7 @@ void Theme::initIconTheme(){
     QString currentIconTheme = qtSettings->get(ICON_QT_KEY).toString();
 
     //构建图标主题Widget Group，方便更新选中/非选中状态
-    WidgetGroup * iconThemeWidgetGroup = new WidgetGroup;
+    iconThemeWidgetGroup = new WidgetGroup;
     connect(iconThemeWidgetGroup, &WidgetGroup::widgetChanged, [=](ThemeWidget * preWidget, ThemeWidget * curWidget){
         if (preWidget)
             preWidget->setSelectedStatus(false);
@@ -406,12 +395,12 @@ void Theme::initIconTheme(){
             }
 
             ThemeWidget * widget = new ThemeWidget(QSize(48, 48), dullTranslation(themedir.section("-", -1, -1, QString::SectionSkipEmpty)), showIconsList);
-//            widget->setFrameShape(QFrame::Shape::Box);
             widget->setValue(themedir);
-            //加入Layout
+
+            // 加入Layout
             ui->iconThemeVerLayout->addWidget(widget);
 
-            //加入WidgetGround实现获取点击前Widget
+            // 加入WidgetGround实现获取点击前Widget
             iconThemeWidgetGroup->addWidget(widget);
 
             if (themedir == currentIconTheme){
@@ -482,13 +471,12 @@ void Theme::setupControlTheme(){
 void Theme::initCursorTheme(){
 
     QStringList cursorThemes = _getSystemCursorThemes();
-//    qDebug() << cursorThemes;
 
     //获取当前指针主题
     QString currentCursorTheme;
     currentCursorTheme = curSettings->get(CURSOR_THEME_KEY).toString();
 
-    WidgetGroup * cursorThemeWidgetGroup = new WidgetGroup;
+    cursorThemeWidgetGroup = new WidgetGroup;
     connect(cursorThemeWidgetGroup, &WidgetGroup::widgetChanged, [=](ThemeWidget * preWidget, ThemeWidget * curWidget){
         if (preWidget)
             preWidget->setSelectedStatus(false);
@@ -524,7 +512,6 @@ void Theme::initCursorTheme(){
         }
 
         ThemeWidget * widget  = new ThemeWidget(QSize(24, 24), cursor, cursorVec);
-//        widget->setFrameShape(QFrame::Shape::Box);
         widget->setValue(cursor);
 
         //加入Layout
@@ -540,11 +527,10 @@ void Theme::initCursorTheme(){
         } else {
             widget->setSelectedStatus(false);
         }
-
     }
 }
 
-void Theme::initEffectSettings(){
+void Theme::initEffectSettings() {
 
 }
 
@@ -572,7 +558,7 @@ void Theme::initConnection() {
 #endif
 }
 
-QStringList Theme::_getSystemCursorThemes(){
+QStringList Theme::_getSystemCursorThemes() {
     QStringList themes;
     QDir themesDir(CURSORS_THEMES_PATH);
 
@@ -608,8 +594,7 @@ bool Theme::getSystemVersion() {
     return false;
 }
 
-QStringList Theme::readFile(QString filepath)
-{
+QStringList Theme::readFile(QString filepath) {
     QStringList fileCont;
     QFile file(filepath);
     if (file.exists()) {
@@ -631,7 +616,7 @@ QStringList Theme::readFile(QString filepath)
     }
 }
 
-QString Theme::dullTranslation(QString str){
+QString Theme::dullTranslation(QString str) {
     if (!QString::compare(str, "basic")){
         return QObject::tr("basic");
     } else if (!QString::compare(str, "classical")){
@@ -656,19 +641,19 @@ void Theme::resetBtnClickSlot() {
     qtSettings->reset(THEME_TRAN_KEY);
     qtSettings->reset(PEONY_TRAN_KEY);
     gtkSettings->reset(ICON_GTK_KEY);
-
     personliseGsettings->reset(PERSONALSIE_TRAN_KEY);
+
     ui->tranSlider->setValue(transparency);
 
-    clearLayout(ui->iconThemeVerLayout->layout(), true);
-    clearLayout(ui->cursorVerLayout->layout(), true);
+    QString icoName = qtSettings->get(ICON_QT_KEY).toString();
 
-    initThemeMode();
-    initIconTheme();
-    initCursorTheme();
+    setCheckStatus(ui->iconThemeVerLayout, icoName, ICON);
+    setCheckStatus(ui->cursorVerLayout, cursorTheme, CURSOR);
 }
 
 void Theme::writeKwinSettings(bool change, QString theme, bool effect) {
+    Q_UNUSED(theme);
+    Q_UNUSED(effect);
 
     if (!change) {
         kwinSettings->beginGroup("Plugins");
@@ -736,21 +721,27 @@ void Theme::themeBtnClickSlot(QAbstractButton *button) {
      }
 }
 
-void Theme::clearLayout(QLayout* mlayout, bool deleteWidgets)
-{
-    if ( mlayout->layout() != NULL )
-    {
-        QLayoutItem* item;
-        while ( ( item = mlayout->layout()->takeAt( 0 ) ) != NULL )
-        {
-            delete item->widget();
-            delete item;
+void Theme::setCheckStatus(QLayout *mlayout, QString checkName, ThemeType type) {
+    QLayoutItem *item;
+    if (mlayout->layout() != NULL ) {
+        int size = mlayout->layout()->count();
+        for (int i = 0; i < size; i++) {
+            item = mlayout->layout()->itemAt(i);
+            ThemeWidget *themeWdt = static_cast<ThemeWidget *>(item->widget());
+            themeWdt->setSelectedStatus(false);
+            if (themeWdt->getValue() == checkName) {
+                themeWdt->setSelectedStatus(true);
+                if (type == ICON) {
+                    iconThemeWidgetGroup->setCurrentWidget(themeWdt);
+                } else {
+                    cursorThemeWidgetGroup->setCurrentWidget(themeWdt);
+                }
+            }
         }
     }
 }
 
-double Theme::convertToTran(const int value)
-{
+double Theme::convertToTran(const int value) {
     switch (value) {
     case 1:
         return 0.2;
@@ -773,17 +764,16 @@ double Theme::convertToTran(const int value)
     }
 }
 
-int Theme::tranConvertToSlider(const double value)
-{
+int Theme::tranConvertToSlider(const double value) {
     if (0.2 ==  value) {
         return 1;
-    } else if (0.4 ==  value){
+    } else if (0.4 ==  value) {
         return 2;
-    } else if (0.6 ==  value){
+    } else if (0.6 ==  value) {
         return 3;
-    } else if (0.8 ==  value){
+    } else if (0.8 ==  value) {
         return 4;
-    } else if (1.0 ==  value){
+    } else if (1.0 ==  value) {
         return 5;
     } else {
         return 5;
