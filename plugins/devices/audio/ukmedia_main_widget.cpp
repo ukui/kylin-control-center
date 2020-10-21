@@ -148,6 +148,9 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
 //    点击输入设备
     connect(m_pInputWidget->m_pInputDeviceCombobox,SIGNAL(currentIndexChanged(QString)),this,SLOT(inputDeviceComboxIndexChangedSlot(QString)));
 
+    connect(m_pInputWidget->m_pInputIconBtn,SIGNAL(clicked()),this,SLOT(inputMuteButtonSlot()));
+    connect(m_pOutputWidget->m_pOutputIconBtn,SIGNAL(clicked()),this,SLOT(outputMuteButtonSlot()));
+
     g_signal_connect (G_OBJECT (m_pContext),
                      "notify::state",
                      G_CALLBACK (onContextStateNotify),
@@ -2097,6 +2100,50 @@ void UkmediaMainWidget::selectComboboxChangedSlot(int index)
     }
     if (setProfileLabel != nullptr)
         m_pOutputWidget->m_pProfileCombobox->setCurrentText(setProfileLabel);
+}
+
+/*
+    点击输入音量按钮静音
+*/
+void UkmediaMainWidget::inputMuteButtonSlot()
+{
+    MateMixerStreamControl *pControl;
+    MateMixerStream *pStream = mate_mixer_context_get_default_input_stream(m_pContext);
+    if (pStream != nullptr)
+        pControl = mate_mixer_stream_get_default_control(pStream);
+    int volume = int(mate_mixer_stream_control_get_volume(pControl));
+    volume = int(volume*100/65536.0 + 0.5);
+    bool status = mate_mixer_stream_control_get_mute(pControl);
+    if (status) {
+        status = false;
+        mate_mixer_stream_control_set_mute(pControl,status);
+    }
+    else {
+        status =true;
+        mate_mixer_stream_control_set_mute(pControl,status);
+    }
+}
+
+/*
+    点击输出音量按钮静音
+*/
+void UkmediaMainWidget::outputMuteButtonSlot()
+{
+    MateMixerStreamControl *pControl;
+    MateMixerStream *pStream = mate_mixer_context_get_default_output_stream(m_pContext);
+    if (pStream != nullptr)
+        pControl = mate_mixer_stream_get_default_control(pStream);
+    int volume = int(mate_mixer_stream_control_get_volume(pControl));
+    volume = int(volume*100/65536.0 + 0.5);
+    bool status = mate_mixer_stream_control_get_mute(pControl);
+    if (status) {
+        status = false;
+        mate_mixer_stream_control_set_mute(pControl,status);
+    }
+    else {
+        status =true;
+        mate_mixer_stream_control_set_mute(pControl,status);
+    }
 }
 
 /*
