@@ -10,11 +10,10 @@
 
 #include "closebutton.h"
 #include <QApplication>
+#include <QDebug>
 
 CloseButton::CloseButton(QWidget *parent, const QString &filePath, const QString &hoverPath) : QLabel(parent)
 {
-
-
 
     //Allocation
     if(filePath != "" && filePath != "window-close-symbolic")
@@ -31,8 +30,8 @@ CloseButton::CloseButton(QWidget *parent, const QString &filePath, const QString
         m_hoverIcon = nullptr;
 
     //Properties
-    setProperty("useIconHighlightEffect", true);
-    setProperty("iconHighlightEffectMode", 1);
+    //setProperty("useIconHighlightEffect", true);
+    //setProperty("iconHighlightEffectMode", 1);
     setFocusPolicy(Qt::NoFocus);
 
     //Initial componentss
@@ -211,6 +210,7 @@ void CloseButton::setHoverIn(const QString &hoverIn) {
 
 void CloseButton::setHoverOut(const QString &hoverOut) {
     m_szHoverOut = hoverOut;
+    qDebug() << hoverOut;
     if(m_icon != nullptr) {
         setPixmap(renderSvg(*m_icon,m_szHoverOut));
     } else if(m_customIcon != nullptr) {
