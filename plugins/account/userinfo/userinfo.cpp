@@ -152,6 +152,19 @@ void UserInfo::_acquireAllUsersInfo(){
     //初始化管理员数目为0
     adminnum = 0;
 
+    //root
+    if (!getuid()){
+        UserInfomation root;
+        root.username = g_get_user_name();
+        root.current = true;
+        root.logined = true;
+        root.autologin = false;
+        root.uid = 0;
+        root.accounttype = ADMINISTRATOR;
+        root.iconfile = DEFAULTFACE;
+        allUserInfoMap.insert(root.username, root);
+    }
+
     for (QString objectpath : objectpaths){
         UserInfomation user;
         user = _acquireUserInfo(objectpath);
@@ -344,6 +357,14 @@ void UserInfo::readCurrentPwdConf(){
 }
 
 void UserInfo::initComponent(){
+
+    //root需要屏蔽部分功能
+    if (!getuid()){
+        ui->changeTypeBtn->setEnabled(false);
+        ui->changeGroupBtn->setEnabled(false);
+        ui->autoLoginFrame->setVisible(false);
+        ui->autoLoginFrame_2->setVisible(false);
+    }
     //样式表
 //    pluginWidget->setStyleSheet("background: #ffffff;");
 
@@ -420,7 +441,8 @@ void UserInfo::initComponent(){
 //    ui->addBtn->setIconSize(ui->addBtn->size());
 //    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
 
-    ui->currentUserFaceLabel->installEventFilter(this);
+    if (getuid())
+        ui->currentUserFaceLabel->installEventFilter(this);
 //    ui->addUserFrame->installEventFilter(this);
 
     //修改当前用户密码的回调
@@ -432,12 +454,13 @@ void UserInfo::initComponent(){
     });
 
     //修改当前用户类型的回调
-    connect(ui->changeTypeBtn, &QPushButton::clicked, this, [=](bool checked){
-        Q_UNUSED(checked)
-        UserInfomation user = allUserInfoMap.value(g_get_user_name());
+    if (getuid())
+        connect(ui->changeTypeBtn, &QPushButton::clicked, this, [=](bool checked){
+            Q_UNUSED(checked)
+            UserInfomation user = allUserInfoMap.value(g_get_user_name());
 
-        showChangeTypeDialog(user.username);
-    });
+            showChangeTypeDialog(user.username);
+        });
 
     connect(ui->changeValidBtn, &QPushButton::clicked, this, [=](bool checked){
         Q_UNUSED(checked)
@@ -447,58 +470,61 @@ void UserInfo::initComponent(){
 
     });
 
-    connect(ui->changeGroupBtn, &QPushButton::clicked, this, [=](bool checked){
-        Q_UNUSED(checked)
-        showChangeGroupDialog();
-    });
+    if (getuid())
+        connect(ui->changeGroupBtn, &QPushButton::clicked, this, [=](bool checked){
+            Q_UNUSED(checked)
+            showChangeGroupDialog();
+        });
 
     //修改当前用户免密登录
-    connect(nopwdSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+    if (getuid())
+        connect(nopwdSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
 
-        UserInfomation user = allUserInfoMap.value(g_get_user_name());
-        //免密登录状态改变
+            UserInfomation user = allUserInfoMap.value(g_get_user_name());
+            //免密登录状态改变
 
-        QDBusInterface * tmpSysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
-                                                              "/",
-                                                              "com.control.center.interface",
-                                                              QDBusConnection::systemBus());
+            QDBusInterface * tmpSysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
+                                                                  "/",
+                                                                  "com.control.center.interface",
+                                                                  QDBusConnection::systemBus());
 
-        if (!tmpSysinterface->isValid()){
-            qCritical() << "Create Client Interface Failed When execute gpasswd: " << QDBusConnection::systemBus().lastError();
-            return;
-        }
-        tmpSysinterface->call("setNoPwdLoginStatus", checked, user.username);
+            if (!tmpSysinterface->isValid()){
+                qCritical() << "Create Client Interface Failed When execute gpasswd: " << QDBusConnection::systemBus().lastError();
+                return;
+            }
+            tmpSysinterface->call("setNoPwdLoginStatus", checked, user.username);
 
-        delete tmpSysinterface;
+            delete tmpSysinterface;
 
-    });
+        });
 
     //修改当前用户自动登录
-    connect(autoLoginSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
-        UserInfomation user = allUserInfoMap.value(g_get_user_name());
+    if (getuid())
+        connect(autoLoginSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+            UserInfomation user = allUserInfoMap.value(g_get_user_name());
 
 
-        UserDispatcher * userdispatcher  = new UserDispatcher(user.objpath);
+            UserDispatcher * userdispatcher  = new UserDispatcher(user.objpath);
 
 
-//        bool status = userdispatcher->get_autoLogin_status();
+            //        bool status = userdispatcher->get_autoLogin_status();
 
-        bool status = this->getAutomaticLogin(user.username);
+            bool status = this->getAutomaticLogin(user.username);
 
 
-        if ((checked != status)) {
-            if (checked) {
-                userdispatcher->change_user_autologin(user.username);
-            } else {
-                userdispatcher->change_user_autologin("");
+            if ((checked != status)) {
+                if (checked) {
+                    userdispatcher->change_user_autologin(user.username);
+                } else {
+                    userdispatcher->change_user_autologin("");
+                }
             }
-        }
 
-//        bool lstStatus = userdispatcher->get_autoLogin_status();
+            //        bool lstStatus = userdispatcher->get_autoLogin_status();
 
-//        bool lstStatus = this->getAutomaticLogin(user.username);
-//        autoLoginSwitchBtn->setChecked(lstStatus);
-    });
+            //        bool lstStatus = this->getAutomaticLogin(user.username);
+            //        autoLoginSwitchBtn->setChecked(lstStatus);
+        });
 
     //成功删除用户的回调
     connect(sysdispatcher, &SystemDbusDispatcher::deleteuserdone, this, [=](QString objPath){
@@ -977,6 +1003,8 @@ void UserInfo::showChangePwdDialog(QString username){
         dialog->setFace(user.iconfile);
         dialog->setUsername(user.username);
         dialog->setAccountType(_accountTypeIntToString(user.accounttype));
+        if (!getuid() && user.current)
+            dialog->haveCurrentPwdEdit(false);
         connect(dialog, &ChangePwdDialog::passwd_send, this, [=](QString pwd, QString userName){
             changeUserPwd(pwd, userName);
         });

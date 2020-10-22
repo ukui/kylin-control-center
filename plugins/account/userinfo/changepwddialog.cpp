@@ -136,7 +136,7 @@ ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QWidget *parent) :
     } else {
         connect(ui->confirmPushBtn, &QPushButton::clicked, [=]{
             this->accept();
-            emit (ui->pwdLineEdit->text(), ui->usernameLabel->text());
+            emit passwd_send(ui->pwdLineEdit->text(), ui->usernameLabel->text());
 
         });
     }
@@ -281,6 +281,11 @@ void ChangePwdDialog::setAccountType(QString aType){
     ui->aTypeLabel->setText(aType);
 }
 
+void ChangePwdDialog::haveCurrentPwdEdit(bool have){
+    ui->curPwdLineEdit->setVisible(have);
+    ui->label->setVisible(have);
+}
+
 void ChangePwdDialog::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event)
 
@@ -381,14 +386,24 @@ bool ChangePwdDialog::checkCharLegitimacy(QString password){
 
 
 void ChangePwdDialog::refreshConfirmBtnStatus(){
-    if (!ui->tipLabel->text().isEmpty() || \
-            ui->curPwdLineEdit->text().isEmpty() || ui->curPwdLineEdit->text() == tr("Current Password") || \
-            ui->pwdLineEdit->text().isEmpty() || ui->pwdLineEdit->text() == tr("New Password") || \
-            ui->pwdsureLineEdit->text().isEmpty() || ui->pwdsureLineEdit->text() == tr("New Password Identify") ||
-            !curPwdTip.isEmpty() || !pwdTip.isEmpty() || !pwdSureTip.isEmpty())
-        ui->confirmPushBtn->setEnabled(false);
-    else
-        ui->confirmPushBtn->setEnabled(true);
+    if (getuid()){
+        if (!ui->tipLabel->text().isEmpty() || \
+                ui->curPwdLineEdit->text().isEmpty() || ui->curPwdLineEdit->text() == tr("Current Password") || \
+                ui->pwdLineEdit->text().isEmpty() || ui->pwdLineEdit->text() == tr("New Password") || \
+                ui->pwdsureLineEdit->text().isEmpty() || ui->pwdsureLineEdit->text() == tr("New Password Identify") ||
+                !curPwdTip.isEmpty() || !pwdTip.isEmpty() || !pwdSureTip.isEmpty())
+            ui->confirmPushBtn->setEnabled(false);
+        else
+            ui->confirmPushBtn->setEnabled(true);
+    } else {
+        if (!ui->tipLabel->text().isEmpty() || \
+                ui->pwdLineEdit->text().isEmpty() || ui->pwdLineEdit->text() == tr("New Password") || \
+                ui->pwdsureLineEdit->text().isEmpty() || ui->pwdsureLineEdit->text() == tr("New Password Identify") ||
+                !curPwdTip.isEmpty() || !pwdTip.isEmpty() || !pwdSureTip.isEmpty())
+            ui->confirmPushBtn->setEnabled(false);
+        else
+            ui->confirmPushBtn->setEnabled(true);
+    }
 }
 
 void ChangePwdDialog::helpEmitSignal(){

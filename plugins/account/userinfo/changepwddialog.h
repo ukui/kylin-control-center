@@ -60,6 +60,7 @@ public:
     void setUsername(QString username);
     void setPwdType(QString type);
     void setAccountType(QString text);
+    void haveCurrentPwdEdit(bool have);
 
 public:
     static QString curPwdTip;
