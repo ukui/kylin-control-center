@@ -129,6 +129,9 @@ void MainWindow::bootOptionsFilter(QString opt) {
     } else if (opt == "-g") {
         // VPN module
         bootOptionsSwitch(NETWORK, VPN);
+    } else if (opt == "-k") {
+        // keyboard module
+        bootOptionsSwitch(DEVICES, KEYBOARD);
     }
 }
 

@@ -265,6 +265,10 @@ void KbdLayoutManager::rebuild_listwidget(){
         item->setSizeHint(QSize(ui->listWidget->width(), 50));
 
         layoutLabel->setText(desc);
+        QFontMetrics fontWidth(layoutLabel->font());
+        QString elideNote = fontWidth.elidedText(desc, Qt::ElideRight, 100);
+        layoutLabel->setText(elideNote);
+        layoutLabel->setToolTip(desc);
         ui->listWidget->addItem(item);
         ui->listWidget->setItemWidget(item, layoutWidget);
     }
