@@ -18,42 +18,25 @@
  *
  */
 #include "mainwindow.h"
-#include <QApplication>
-#include "framelessExtended/framelesshandle.h"
-#include "customstyle.h"
 
+#include <QApplication>
 #include <QtSingleApplication>
 #include <QTranslator>
-#include <fcntl.h>
-#include <syslog.h>
 #include <QObject>
-#include <QDesktopWidget>
-#include <QCommandLineOption>
-#include <QCommandLineParser>
-#include <QTimer>
 #include <QDebug>
 #include <QGSettings>
 #include <QSharedPointer>
 #include <memory>
-#include <X11/Xlib.h>
+#include <QCommandLineParser>
 
-void centerToScreen(QWidget* widget) {
-    if (!widget)
-      return;
-    QDesktopWidget* m = QApplication::desktop();
-    QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
-    int desk_x = desk_rect.width();
-    int desk_y = desk_rect.height();
-    int x = widget->width();
-    int y = widget->height();
-    widget->move(desk_x / 2 - x / 2 + desk_rect.left(), desk_y / 2 - y / 2 + desk_rect.top());
-}
+#include "framelessExtended/framelesshandle.h"
+#include "customstyle.h"
+#include "utils/utils.h"
 
 int main(int argc, char *argv[])
 {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-
     QtSingleApplication a(argc, argv);
 
     if (a.isRunning()) {
@@ -61,45 +44,26 @@ int main(int argc, char *argv[])
         qDebug() << QObject::tr("ukui-control-center is already running!");
         return EXIT_SUCCESS;
     } else {
-
         // 加载国际化文件
         QTranslator translator;
         translator.load("/usr/share/ukui-control-center/shell/res/i18n/" + QLocale::system().name());
         a.installTranslator(&translator);
 
-        //命令行参数
+        // 命令行参数
         QCoreApplication::setApplicationName("ukui-control-center");
         QCoreApplication::setApplicationVersion("2.0");
-        QCommandLineParser parser;
-        QCommandLineOption monitorRoleOption("m", "Go to monitor settings page");
-        QCommandLineOption backgroundRoleOption("b", "Go to background settings page");
-        QCommandLineOption userinfoRoleOption("u", "Go to userinfo settings page");
-        QCommandLineOption aboutRoleOption("a", "Go to about settings page");
-        QCommandLineOption powerRoleOption("p", "Go to power settings page");
-        QCommandLineOption datetimeRoleOption("t", "Go to datetime settings page");
-        QCommandLineOption desktopRoleOption("d", "Go to desktop settings page");
-        QCommandLineOption audioRoleOption("s", "Go to audio settings page");
-        QCommandLineOption noticeRoleOption("n", "Go to notice settings page");
-        QCommandLineOption vpnRoleOption("g", "Go to vpn settings page");
-        QCommandLineOption keyboardRoleOption("k", "Go to keyboard settings page");
 
-        parser.addHelpOption();
-        parser.addVersionOption();
-        parser.addOption(monitorRoleOption);
-        parser.addOption(backgroundRoleOption);
-        parser.addOption(userinfoRoleOption);
-        parser.addOption(aboutRoleOption);
-        parser.addOption(powerRoleOption);
-        parser.addOption(datetimeRoleOption);
-        parser.addOption(desktopRoleOption);
-        parser.addOption(audioRoleOption);
-        parser.addOption(noticeRoleOption);
-        parser.addOption(vpnRoleOption);
-        parser.addOption(keyboardRoleOption);
+        QCommandLineParser parser;
+        Utils::setCLIName(parser);
+        parser.parse(a.arguments());
         parser.process(a);
 
+        if (parser.isSet(QStringLiteral("autoboot"))) {
+            qDebug() << "this is parser autoboot";
+        }
+
         MainWindow * w = new MainWindow;
-        centerToScreen(w);
+        Utils::centerToScreen(w);
         w->setAttribute(Qt::WA_DeleteOnClose);
 
         a.setActivationWindow(w);

@@ -77,7 +77,8 @@ SOURCES += \
     utils/functionselect.cpp \
     component/hoverwidget.cpp \
     qtsingleapplication/qtsingleapplication.cpp \
-    qtsingleapplication/qtlocalpeer.cpp
+    qtsingleapplication/qtlocalpeer.cpp \
+    utils/utils.cpp
 
 HEADERS += \
     customstyle.h \
@@ -99,7 +100,8 @@ HEADERS += \
     component/hoverwidget.h \
     qtsingleapplication/qtsingleapplication_copy.h \
     qtsingleapplication/qtsingleapplication.h \
-    qtsingleapplication/qtlocalpeer.h
+    qtsingleapplication/qtlocalpeer.h \
+    utils/utils.h
 
 FORMS += \
     mainwindow.ui \

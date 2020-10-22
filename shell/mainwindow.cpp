@@ -99,39 +99,60 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::bootOptionsFilter(QString opt) {
-    if (opt == "-m") {
-        //显示器
+    if (opt == "--display") {
         bootOptionsSwitch(SYSTEM, DISPLAY);
-    } else if (opt == "-b") {
-        //背景
-        bootOptionsSwitch(PERSONALIZED, BACKGROUND);
-    } else if (opt == "-d") {
-        // 桌面
-        bootOptionsSwitch(PERSONALIZED, DESKTOP);
-    } else if (opt == "-u") {
-        // 账户
-        bootOptionsSwitch(ACCOUNT, USERINFO);
-    } else if (opt == "-a") {
-        //关于
-        bootOptionsSwitch(NOTICEANDTASKS, ABOUT);
-    } else if (opt == "-p") {
-        //电源
+    } else if (opt == "--defaultapp") {
+        bootOptionsSwitch(SYSTEM, DEFAULTAPP);
+    } else if (opt == "--power") {
         bootOptionsSwitch(SYSTEM, POWER);
-    } else if (opt == "-t") {
-        // Datetime moudle
-        bootOptionsSwitch(DATETIME, DAT);
-    } else if (opt == "-s") {
-        // Audio module
-        bootOptionsSwitch(DEVICES, AUDIO);
-    } else if (opt == "-n") {
-        // notice module
-        bootOptionsSwitch(NOTICEANDTASKS, NOTICE);
-    } else if (opt == "-g") {
-        // VPN module
-        bootOptionsSwitch(NETWORK, VPN);
-    } else if (opt == "-k") {
-        // keyboard module
+    } else if (opt == "--autoboot") {
+        bootOptionsSwitch(SYSTEM, AUTOBOOT);
+    } else if (opt == "--printer") {
+        bootOptionsSwitch(DEVICES, PRINTER);
+    } else if (opt == "--mouse") {
+        bootOptionsSwitch(DEVICES, MOUSE);
+    } else if (opt == "--touchpad") {
+        bootOptionsSwitch(DEVICES, TOUCHPAD);
+    } else if (opt == "--keyboard") {
         bootOptionsSwitch(DEVICES, KEYBOARD);
+    } else if (opt == "--shortcut") {
+        bootOptionsSwitch(DEVICES, SHORTCUT);
+    } else if (opt == "--audio") {
+        bootOptionsSwitch(DEVICES, AUDIO);
+    } else if (opt == "--background") {
+        bootOptionsSwitch(PERSONALIZED, BACKGROUND);
+    } else if (opt == "--theme") {
+        bootOptionsSwitch(PERSONALIZED, THEME);
+    } else if (opt == "--screenlock") {
+        bootOptionsSwitch(PERSONALIZED, SCREENLOCK);
+    } else if (opt == "--screensaver") {
+        bootOptionsSwitch(PERSONALIZED, SCREENSAVER);
+    } else if (opt == "--fonts") {
+        bootOptionsSwitch(PERSONALIZED, FONTS);
+    } else if (opt == "--desktop") {
+        bootOptionsSwitch(PERSONALIZED, DESKTOP);
+    } else if (opt == "--netconnect") {
+        bootOptionsSwitch(NETWORK, NETCONNECT);
+    } else if (opt == "--vpn") {
+        bootOptionsSwitch(NETWORK, VPN);
+    } else if (opt == "--proxy") {
+        bootOptionsSwitch(NETWORK, PROXY);
+    } else if (opt == "--userinfo") {
+        bootOptionsSwitch(ACCOUNT, USERINFO);
+    } else if (opt == "--cloudaccount") {
+        bootOptionsSwitch(ACCOUNT, NETWORKACCOUNT);
+    }  else if (opt == "--datetime") {
+        bootOptionsSwitch(DATETIME, DAT);
+    }  else if (opt == "--area") {
+        bootOptionsSwitch(DATETIME, AREA);
+    } else if (opt == "--update") {
+        bootOptionsSwitch(UPDATE, UPDATES);
+    } else if (opt == "--backup") {
+        bootOptionsSwitch(UPDATE, BACKUP);
+    } else if (opt == "--notice") {
+        bootOptionsSwitch(NOTICEANDTASKS, NOTICE);
+    } else if (opt == "--about") {
+        bootOptionsSwitch(NOTICEANDTASKS, ABOUT);
     }
 }
 
