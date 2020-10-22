@@ -174,6 +174,7 @@ void AddAutoBoot::open_desktop_dir_slots() {
     ui->execLineEdit->setText(QString(selectedfile));
     ui->commentLineEdit->setText(QString(comment));
 
+    emit ui->execLineEdit->textEdited(QString(selectedfile));
     g_key_file_free(keyfile);
 }
 
