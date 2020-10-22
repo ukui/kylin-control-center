@@ -1058,19 +1058,22 @@ void Widget::initConfigFile(bool changed, bool status) {
 
     m_qsettings->beginGroup("switch");;
 
-    bool unionjudge = m_qsettings->value("unionswitch", unionjudge).toBool();
-    bool nightjudge = m_qsettings->value("nightjudge", nightjudge).toBool();
-    bool sunjudge = m_qsettings->value("sunjudge", sunjudge).toBool();
-    bool manualjudge = m_qsettings->value("manualjudge", manualjudge).toBool();
+    bool sunjudge    = false;
+    bool manualjudge = false;
+    bool unionjudge  = m_qsettings->value("unionswitch", unionjudge).toBool();
+    bool nightjudge  = m_qsettings->value("nightjudge", nightjudge).toBool();
+    manualjudge      = m_qsettings->value("manualjudge", manualjudge).toBool();
+    sunjudge         = m_qsettings->value("sunjudge", sunjudge).toBool();
 
     mUnifyButton->setChecked(unionjudge);
     mNightButton->setChecked(nightjudge);
 
-    if (!(sunjudge && manualjudge)) {
+    if (sunjudge || manualjudge) {
         ui->sunradioBtn->setChecked(sunjudge);
         ui->customradioBtn->setChecked(manualjudge);
     } else {
-        ui->sunradioBtn->setCheckable(true);
+        ui->sunradioBtn->setChecked(true);
+        ui->temptSlider->setValue(3500);
     }
 
     m_qsettings->endGroup();
