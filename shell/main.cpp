@@ -55,7 +55,6 @@ int main(int argc, char *argv[])
 
         QCommandLineParser parser;
         Utils::setCLIName(parser);
-        parser.parse(a.arguments());
         parser.process(a);
 
         if (parser.isSet(QStringLiteral("autoboot"))) {

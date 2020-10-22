@@ -14,9 +14,9 @@ void Utils::centerToScreen(QWidget* widget) {
 
 void Utils::setCLIName(QCommandLineParser &parser) {
 
-    QCommandLineOption monitorRoleOption("display", QObject::tr("Go to monitor settings page"));
+    QCommandLineOption monitorRoleOption(QStringList() << "m" << "display", QObject::tr("Go to monitor settings page"));
     QCommandLineOption defaultRoleOption("defaultapp", QObject::tr("Go to defaultapp settings page"));
-    QCommandLineOption powerRoleOption("power", QObject::tr("Go to power settings page"));
+    QCommandLineOption powerRoleOption(QStringList() << "p" << "power", QObject::tr("Go to power settings page"));
     QCommandLineOption autobootRoleOption("autoboot", QObject::tr("Go to autoboot settings page"));
 
     QCommandLineOption printerRoleOption("printer", QObject::tr("Go to printer settings page"));
@@ -24,30 +24,30 @@ void Utils::setCLIName(QCommandLineParser &parser) {
     QCommandLineOption touchpadRoleOption("touchpad", QObject::tr("Go to touchpad settings page"));
     QCommandLineOption keyboardRoleOption("keyboard", QObject::tr("Go to keyboard settings page"));
     QCommandLineOption shortcutRoleOption("shortcut", QObject::tr("Go to shortcut settings page"));
-    QCommandLineOption audioRoleOption("audio", QObject::tr("Go to audio settings page"));
+    QCommandLineOption audioRoleOption(QStringList() << "s" << "audio", QObject::tr("Go to audio settings page"));
 
-    QCommandLineOption backgroundRoleOption("background", QObject::tr("Go to background settings page"));
+    QCommandLineOption backgroundRoleOption(QStringList() << "-m" << "background", QObject::tr("Go to background settings page"));
     QCommandLineOption themeRoleOption("theme", QObject::tr("Go to theme settings page"));
     QCommandLineOption screenlockRoleOption("screenlock", QObject::tr("Go to screenlock settings page"));
     QCommandLineOption screensaverRoleOption("screensaver", QObject::tr("Go to screensaver settings page"));
     QCommandLineOption fontsRoleOption("fonts", QObject::tr("Go to fonts settings page"));
-    QCommandLineOption desktopRoleOption("desktop", QObject::tr("Go to desktop settings page"));
+    QCommandLineOption desktopRoleOption(QStringList() << "d" << "desktop", QObject::tr("Go to desktop settings page"));
 
     QCommandLineOption netconnectRoleOption("netconnect", QObject::tr("Go to netconnect settings page"));
-    QCommandLineOption vpnRoleOption("vpn", QObject::tr("Go to vpn settings page"));
+    QCommandLineOption vpnRoleOption(QStringList() << "g" << "vpn", QObject::tr("Go to vpn settings page"));
     QCommandLineOption proxyRoleOption("proxy", QObject::tr("Go to proxy settings page"));
 
-    QCommandLineOption userinfoRoleOption("userinfo", QObject::tr("Go to userinfo settings page"));
+    QCommandLineOption userinfoRoleOption(QStringList() << "u" << "userinfo", QObject::tr("Go to userinfo settings page"));
     QCommandLineOption cloudaccountRoleOption("cloudaccount", QObject::tr("Go to cloudaccount settings page"));
 
-    QCommandLineOption datetimeRoleOption("datetime", QObject::tr("Go to datetime settings page"));
+    QCommandLineOption datetimeRoleOption(QStringList() << "t" << "datetime", QObject::tr("Go to datetime settings page"));
     QCommandLineOption areaRoleOption("area", QObject::tr("Go to area settings page"));
 
     QCommandLineOption updateRoleOption("update", QObject::tr("Go to update settings page"));
     QCommandLineOption backupRoleOption("backup", QObject::tr("Go to backup settings page"));
 
-    QCommandLineOption noticeRoleOption("notice", QObject::tr("Go to notice settings page"));
-    QCommandLineOption aboutRoleOption("about", QObject::tr("Go to about settings page"));
+    QCommandLineOption noticeRoleOption(QStringList() << "n" << "notice", QObject::tr("Go to notice settings page"));
+    QCommandLineOption aboutRoleOption(QStringList() << "a" << "about", QObject::tr("Go to about settings page"));
 
     parser.addHelpOption();
     parser.addVersionOption();

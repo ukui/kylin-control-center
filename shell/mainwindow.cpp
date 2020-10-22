@@ -99,11 +99,11 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::bootOptionsFilter(QString opt) {
-    if (opt == "--display") {
+    if (opt == "--display" || opt == "-m") {
         bootOptionsSwitch(SYSTEM, DISPLAY);
     } else if (opt == "--defaultapp") {
         bootOptionsSwitch(SYSTEM, DEFAULTAPP);
-    } else if (opt == "--power") {
+    } else if (opt == "--power" || opt == "-p") {
         bootOptionsSwitch(SYSTEM, POWER);
     } else if (opt == "--autoboot") {
         bootOptionsSwitch(SYSTEM, AUTOBOOT);
@@ -117,9 +117,9 @@ void MainWindow::bootOptionsFilter(QString opt) {
         bootOptionsSwitch(DEVICES, KEYBOARD);
     } else if (opt == "--shortcut") {
         bootOptionsSwitch(DEVICES, SHORTCUT);
-    } else if (opt == "--audio") {
+    } else if (opt == "--audio" || opt == "-s") {
         bootOptionsSwitch(DEVICES, AUDIO);
-    } else if (opt == "--background") {
+    } else if (opt == "--background" || opt == "-b") {
         bootOptionsSwitch(PERSONALIZED, BACKGROUND);
     } else if (opt == "--theme") {
         bootOptionsSwitch(PERSONALIZED, THEME);
@@ -133,15 +133,15 @@ void MainWindow::bootOptionsFilter(QString opt) {
         bootOptionsSwitch(PERSONALIZED, DESKTOP);
     } else if (opt == "--netconnect") {
         bootOptionsSwitch(NETWORK, NETCONNECT);
-    } else if (opt == "--vpn") {
+    } else if (opt == "--vpn" || opt == "-g") {
         bootOptionsSwitch(NETWORK, VPN);
     } else if (opt == "--proxy") {
         bootOptionsSwitch(NETWORK, PROXY);
-    } else if (opt == "--userinfo") {
+    } else if (opt == "--userinfo" || opt == "-u") {
         bootOptionsSwitch(ACCOUNT, USERINFO);
     } else if (opt == "--cloudaccount") {
         bootOptionsSwitch(ACCOUNT, NETWORKACCOUNT);
-    }  else if (opt == "--datetime") {
+    }  else if (opt == "--datetime" || opt == "-t") {
         bootOptionsSwitch(DATETIME, DAT);
     }  else if (opt == "--area") {
         bootOptionsSwitch(DATETIME, AREA);
@@ -149,9 +149,9 @@ void MainWindow::bootOptionsFilter(QString opt) {
         bootOptionsSwitch(UPDATE, UPDATES);
     } else if (opt == "--backup") {
         bootOptionsSwitch(UPDATE, BACKUP);
-    } else if (opt == "--notice") {
+    } else if (opt == "--notice" || opt == "-n") {
         bootOptionsSwitch(NOTICEANDTASKS, NOTICE);
-    } else if (opt == "--about") {
+    } else if (opt == "--about" || opt == "-a") {
         bootOptionsSwitch(NOTICEANDTASKS, ABOUT);
     }
 }
