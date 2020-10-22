@@ -28,9 +28,9 @@
 #include <QDebug>
 #include <QStorageInfo>
 
-const QString TYPEVERSION = "Kylin V10";
-const QString UbuntuVesion = "Ubuntu 20.04 LTS";
-const QString UbuntuVesionEnhance = "Ubuntu 20.04.1 LTS";
+const QString vTen        = "v10";
+const QString vTenEnhance = "v10.1";
+const QString vFour       = "v4";
 
 About::About() {
     ui = new Ui::About;
@@ -76,14 +76,14 @@ const QString About::name() const {
 }
 
 void About::setupDesktopComponent() {
-    //获取当前桌面环境
+    // 获取当前桌面环境
     QString dEnv;
     foreach (dEnv, QProcess::systemEnvironment()) {
         if (dEnv.startsWith("XDG_CURRENT_DESKTOP"))
             break;
     }
 
-    //设置当前桌面环境信息
+    // 设置当前桌面环境信息
     if (!dEnv.isEmpty()) {
         QString desktop = dEnv.section("=", -1, -1);
         ui->desktopContent->setText(desktop);
@@ -152,28 +152,35 @@ void About::setupKernelCompenent() {
 void About::setupVersionCompenent() {
     QString versionPath = "/etc/os-release";
     QStringList osRes =  readFile(versionPath);
+    QString versionID;
     QString version;
 
     for (QString str : osRes) {
-        if (str.contains("PRETTY_NAME=")) {
-            int index = str.indexOf("PRETTY_NAME=");
-            int startIndex = index + 13;
-            int length = str.length() - startIndex - 1;
-            version = str.mid(startIndex, length);
+        if (str.contains("VERSION_ID=")) {
+            QRegExp rx("VERSION_ID=\"(.*)\"$");
+            int pos = rx.indexIn(str);
+            if (pos > -1) {
+                versionID = rx.cap(1);
+            }
+        }
+        if (str.contains("VERSION=")) {
+            QRegExp rx("VERSION=\"(.*)\"$");
+            int pos = rx.indexIn(str);
+            if (pos > -1) {
+                version = rx.cap(1);
+            }
         }
     }
-    if (UbuntuVesion == version) {
-        version = "UbuntuKylin 20.04 LTS";
-    } else if (UbuntuVesionEnhance == version) {
-        version = "UbuntuKylin 20.04.1 LTS";
-    }
+
     ui->versionContent->setText(version);
-    if (version == "Kylin V10" || version == "Kylin V10.1" || "Kylin V4" == version) {
+    if (!versionID.compare(vTen, Qt::CaseInsensitive) ||
+            !versionID.compare(vTenEnhance, Qt::CaseInsensitive) ||
+            !versionID.compare(vFour, Qt::CaseInsensitive)) {
+
         ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/galaxyUnicorn.png"));
     } else {
         ui->activeFrame->setVisible(false);
         ui->trialButton->setVisible(false);
-        //设置桌面环境LOGO
         ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/logoukui.svg"));
     }
 }

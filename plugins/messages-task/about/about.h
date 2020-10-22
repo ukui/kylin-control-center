@@ -22,12 +22,10 @@
 
 #include <QObject>
 #include <QtPlugin>
-
 #include <QDBusInterface>
 #include <QDBusConnection>
 #include <QDBusError>
 #include <QDBusReply>
-
 #include <QSysInfo>
 #include <QLabel>
 #include <QStringList>
