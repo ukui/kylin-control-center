@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="140"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="246"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="253"/>
         <source>version</source>
         <translation>版本</translation>
         <extra-contents_path>/about/version</extra-contents_path>
@@ -27,28 +27,28 @@
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="271"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="248"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="255"/>
         <source>Kernel</source>
         <translation>内核</translation>
         <extra-contents_path>/about/Kernel</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="310"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="250"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="257"/>
         <source>CPU</source>
         <translation>CPU</translation>
         <extra-contents_path>/about/CPU</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="358"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="252"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="259"/>
         <source>Memory</source>
         <translation>内存</translation>
         <extra-contents_path>/about/Memory</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="406"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="254"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="261"/>
         <source>Disk</source>
         <translation>硬盘</translation>
         <extra-contents_path>/about/Disk</extra-contents_path>
@@ -107,12 +107,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="210"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="217"/>
         <source>Inactivated</source>
         <translation>未激活</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="212"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="219"/>
         <source>Activated</source>
         <translation>已激活</translation>
     </message>
@@ -3260,23 +3260,23 @@ Please retry for login!</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../mainwindow.cpp" line="421"/>
+        <location filename="../../mainwindow.cpp" line="445"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
         <location filename="../../mainwindow.cpp" line="79"/>
-        <location filename="../../mainwindow.cpp" line="442"/>
+        <location filename="../../mainwindow.cpp" line="466"/>
         <source>UKCC</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="824"/>
+        <location filename="../../mainwindow.cpp" line="848"/>
         <source>ukcc</source>
         <translation>控制面板</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="595"/>
+        <location filename="../../mainwindow.cpp" line="619"/>
         <source>Home</source>
         <translation>首页</translation>
     </message>
@@ -4128,23 +4128,23 @@ Please retry for login!</source>
         <translation type="vanished">默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="636"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="621"/>
         <source>basic</source>
         <translation>基础</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="638"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="623"/>
         <source>classical</source>
         <translation>经典</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="640"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="625"/>
         <source>default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="642"/>
-        <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="175"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="627"/>
+        <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="174"/>
         <source>Unknown</source>
         <translation>未知</translation>
     </message>
@@ -4496,7 +4496,7 @@ Please retry for login!</source>
         <translation type="vanished">日</translation>
     </message>
     <message>
-        <location filename="../../main.cpp" line="61"/>
+        <location filename="../../main.cpp" line="44"/>
         <source>ukui-control-center is already running!</source>
         <translation>控制面板已运行!</translation>
     </message>
@@ -4505,6 +4505,141 @@ Please retry for login!</source>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="408"/>
         <source>Pwd input error, re-enter!</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="17"/>
+        <source>Go to monitor settings page</source>
+        <translation>管理和配置显示和监视器</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="18"/>
+        <source>Go to defaultapp settings page</source>
+        <translation>选择默认应用</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="22"/>
+        <source>Go to printer settings page</source>
+        <translation>打印机管理</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="23"/>
+        <source>Go to mouse settings page</source>
+        <translation>配置鼠标选项</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="24"/>
+        <source>Go to touchpad settings page</source>
+        <translation>触摸板管理</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="25"/>
+        <source>Go to keyboard settings page</source>
+        <translation>键盘设置</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="26"/>
+        <source>Go to shortcut settings page</source>
+        <translation>配置快捷键</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="29"/>
+        <source>Go to background settings page</source>
+        <translation>配置桌面壁纸</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="30"/>
+        <source>Go to theme settings page</source>
+        <translation>配置主题</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="31"/>
+        <source>Go to screenlock settings page</source>
+        <translation>锁屏设置</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="32"/>
+        <source>Go to screensaver settings page</source>
+        <translation>屏保设置</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="33"/>
+        <source>Go to fonts settings page</source>
+        <translation>配置用户字体</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="36"/>
+        <source>Go to netconnect settings page</source>
+        <translation>网络连接</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="38"/>
+        <source>Go to proxy settings page</source>
+        <translation>代理设置</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="40"/>
+        <source>Go to userinfo settings page</source>
+        <translation>管理用户信息</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="41"/>
+        <source>Go to cloudaccount settings page</source>
+        <translation>配置您的网络账户</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="44"/>
+        <source>Go to area settings page</source>
+        <translation>语言和地区</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="46"/>
+        <source>Go to update settings page</source>
+        <translation>更新管理</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="47"/>
+        <source>Go to backup settings page</source>
+        <translation>备份管理</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="50"/>
+        <source>Go to about settings page</source>
+        <translation>此系统的信息</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="19"/>
+        <source>Go to power settings page</source>
+        <translation>配置电源管理</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="43"/>
+        <source>Go to datetime settings page</source>
+        <translation>管理日期和时间</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="34"/>
+        <source>Go to desktop settings page</source>
+        <translation>配置托盘，开始菜单图标</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="27"/>
+        <source>Go to audio settings page</source>
+        <translation>音量设置</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="49"/>
+        <source>Go to notice settings page</source>
+        <translation>通知管理模块</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="37"/>
+        <source>Go to vpn settings page</source>
+        <translation>VPN模块</translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="20"/>
+        <source>Go to autoboot settings page</source>
+        <translation>自动启动的应用程序</translation>
     </message>
 </context>
 <context>
@@ -5004,28 +5139,28 @@ Please retry for login!</source>
     <name>Theme</name>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="73"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="200"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="190"/>
         <source>Theme Mode</source>
         <translation>主题模式</translation>
         <extra-contents_path>/theme/Theme Mode</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="115"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="105"/>
         <source>Theme</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="253"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="243"/>
         <source>Default</source>
         <translation>系统默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="254"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="244"/>
         <source>Light</source>
         <translation>浅色模式</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="255"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="245"/>
         <source>Dark</source>
         <translation>深色模式</translation>
     </message>
@@ -5035,7 +5170,7 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="273"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="202"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="192"/>
         <source>Icon theme</source>
         <translation>图标主题</translation>
         <extra-contents_path>/theme/Icon theme</extra-contents_path>
@@ -5047,7 +5182,7 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="421"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="204"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="194"/>
         <source>Cursor theme</source>
         <translation>光标主题</translation>
         <extra-contents_path>/theme/Cursor theme</extra-contents_path>
@@ -5059,7 +5194,7 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="645"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="208"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="198"/>
         <source>Transparency</source>
         <translation>透明度</translation>
         <extra-contents_path>/theme/Transparency</extra-contents_path>
@@ -5070,7 +5205,7 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="573"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="206"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="196"/>
         <source>Performance mode</source>
         <translation>特效模式</translation>
         <extra-contents_path>/theme/Performance mode</extra-contents_path>
@@ -5830,51 +5965,56 @@ Please retry for login!</source>
         <translation type="vanished">屏幕缩放 </translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="100"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="551"/>
         <source>unify output</source>
         <translation>统一输出</translation>
         <extra-contents_path>/display/unify output</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="103"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="555"/>
         <source>night mode</source>
         <translation>夜间模式</translation>
         <extra-contents_path>/display/night mode</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="505"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="449"/>
         <source>Some applications need to be logouted to take effect</source>
         <translation>应用程序需要注销才能生效</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="505"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="449"/>
         <source>Information</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="837"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="563"/>
+        <source>Theme follow night mode</source>
+        <translation>主题跟随夜间模式变化</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/display/widget.cpp" line="807"/>
         <source>please insure at least one output!</source>
         <translation>请确保至少开启一个屏幕!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="837"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="844"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="807"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="814"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="844"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="814"/>
         <source>Morning time should be earlier than evening time!</source>
         <translation>早晨时刻应早于晚上的时刻!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="857"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="827"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation>抱歉，配置不能应用.</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="858"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="828"/>
         <source>@title:window</source>
         <comment>Unsupported Configuration</comment>
         <translation>窗口</translation>
