@@ -583,29 +583,29 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="197"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="202"/>
         <source>Add user group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="229"/>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="237"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="234"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="242"/>
         <source>Tips</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="229"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="234"/>
         <source>Invalid Id!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="232"/>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="240"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="237"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="245"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="237"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="242"/>
         <source>Invalid Group Name!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -664,35 +664,37 @@ you can restore them to ensure the integrity of your system.</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="232"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="385"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="391"/>
         <source>Current Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="233"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="386"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="392"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="400"/>
         <source>New Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="234"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="387"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="393"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="401"/>
         <source>New Password Identify</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="249"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="361"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="366"/>
         <source>Inconsistency with pwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="329"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="334"/>
         <source>Contains illegal characters!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="331"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="336"/>
         <source>Same with old pwd</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1286,10 +1288,8 @@ change system settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/delgroupdialog.cpp" line="35"/>
-        <source>Are you sure to delete &quot;%1&quot; group, 
-which will make some file components 
-in the file system invalid!</source>
+        <location filename="../../../plugins/account/userinfo/delgroupdialog.cpp" line="65"/>
+        <source>Are you sure to delete the group, which will make some file components in the file system invalid!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2139,7 +2139,7 @@ folder will be deleted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/keyboard/kbdlayoutmanager.cpp" line="299"/>
+        <location filename="../../../plugins/devices/keyboard/kbdlayoutmanager.cpp" line="303"/>
         <source>Keyboard Preview</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2753,23 +2753,23 @@ Please retry for login!</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../mainwindow.cpp" line="421"/>
+        <location filename="../../mainwindow.cpp" line="424"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="595"/>
+        <location filename="../../mainwindow.cpp" line="598"/>
         <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../mainwindow.cpp" line="79"/>
-        <location filename="../../mainwindow.cpp" line="442"/>
+        <location filename="../../mainwindow.cpp" line="445"/>
         <source>UKCC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="824"/>
+        <location filename="../../mainwindow.cpp" line="827"/>
         <source>ukcc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3528,55 +3528,55 @@ Please retry for login!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="261"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="274"/>
         <source>min length %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="271"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="284"/>
         <source>min digit num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="280"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="293"/>
         <source>min upper num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="289"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="302"/>
         <source>min lower num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="298"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="311"/>
         <source>min other num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="308"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="321"/>
         <source>min char class %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="317"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="330"/>
         <source>max repeat %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="326"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="339"/>
         <source>max class repeat %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="335"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="348"/>
         <source>max sequence %1
 </source>
         <translation type="unfinished"></translation>
@@ -3738,7 +3738,7 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="111"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="408"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="423"/>
         <source>Pwd input error, re-enter!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4389,12 +4389,12 @@ Please retry for login!</source>
 <context>
     <name>UkmediaMainWidget</name>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="341"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="344"/>
         <source>sound error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="341"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="344"/>
         <source>load sound failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4584,7 +4584,7 @@ Please retry for login!</source>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="219"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="124"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="695"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="721"/>
         <source>Change pwd</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Change pwd</extra-contents_path>
@@ -4592,7 +4592,7 @@ Please retry for login!</source>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="284"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="126"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="682"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="708"/>
         <source>Change type</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Change type</extra-contents_path>
@@ -4654,22 +4654,22 @@ Please retry for login!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="373"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="394"/>
         <source>Add new user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="713"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="739"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="816"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="842"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="816"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="842"/>
         <source>The user is logged in, please delete the user after logging out</source>
         <translation type="unfinished"></translation>
     </message>
