@@ -98,9 +98,14 @@ void ChangeGroupDialog::loadAllGroup()
 {
     for(int i = 0; i < value->size(); i++){
         DefineGroupItem * singleWidget = new DefineGroupItem(value->at(i)->groupname);
-        singleWidget->setDeleteable(true);
-        singleWidget->setUpdateable(true);
-        singleWidget->setEditable(true);
+        if(value->at(i)->groupname == "root"){
+            singleWidget->setDeleteable(false);
+            singleWidget->setEditable(false);
+        } else{
+            singleWidget->setDeleteable(true);
+            singleWidget->setUpdateable(true);
+            singleWidget->setEditable(true);
+        }
         singleWidget->setFrameShape(QFrame::Shape::Box);
         singleWidget->setProperty("userData", true);
 

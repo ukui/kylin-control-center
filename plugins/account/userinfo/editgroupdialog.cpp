@@ -53,7 +53,7 @@ void EditGroupDialog::limitInput()
 {
     QIntValidator *intValidator = new QIntValidator;
     //QRegExp rx("^[a-zA-z]+$");// 首字符为字母
-    QRegExp rx("[a-zA-z]{40}");
+    QRegExp rx("[a-zA-z]{32}");
     QRegExpValidator *regValidator = new QRegExpValidator(rx);
     //intValidator->setRange(0, 65535);
     intValidator->setBottom(0);
