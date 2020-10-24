@@ -29,6 +29,8 @@
 #include <memory>
 #include <QCommandLineParser>
 
+#include <stdlib.h>
+
 #include "framelessExtended/framelesshandle.h"
 #include "customstyle.h"
 #include "utils/utils.h"
@@ -37,7 +39,9 @@ int main(int argc, char *argv[])
 {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    QtSingleApplication a(argc, argv);
+
+    QString id = QString(QLatin1String(getenv("DISPLAY")));
+    QtSingleApplication a(id, argc, argv);
 
     if (a.isRunning()) {
         a.sendMessage(QApplication::arguments().length() > 1 ? QApplication::arguments().at(1) : a.applicationFilePath());
