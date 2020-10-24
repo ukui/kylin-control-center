@@ -245,17 +245,12 @@ void Theme::setupComponent(){
     buildThemeModeBtn(ui->darkButton, tr("Dark"), "dark");
 
     ui->tranSlider->setRange(35, 100);
-    ui->tranSlider->setTickInterval(5);
-    ui->tranSlider->setPageStep(5);
 
-    ui->tranSlider->setValue(static_cast<int>(personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble() * 100));
-    connect(ui->tranSlider, &QSlider::sliderPressed, [=]() {
-        if (i != (static_cast<int>(ui->tranSlider->value())/5)/20.0) {
-            ui->tranSlider->setSingleStep(5);
-            personliseGsettings->set(PERSONALSIE_TRAN_KEY,(static_cast<int>(ui->tranSlider->value())/5)/20.0);
-            qtSettings->set(THEME_TRAN_KEY, ui->tranSlider->value());
-            qtSettings->set(PEONY_TRAN_KEY, ui->tranSlider->value());
-        }
+    ui->tranSlider->setValue(static_cast<int>(personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble() * 100.0));
+    connect(ui->tranSlider, &QSlider::sliderReleased, this, [=]() {
+        personliseGsettings->set(PERSONALSIE_TRAN_KEY,(static_cast<int>(ui->tranSlider->value()) / 100.0));
+        qtSettings->set(THEME_TRAN_KEY, ui->tranSlider->value());
+        qtSettings->set(PEONY_TRAN_KEY, ui->tranSlider->value());
     });
     setupControlTheme();
 //    ui->effectLabel->hide();
