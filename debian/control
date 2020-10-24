@@ -46,6 +46,7 @@ Depends: ${shlibs:Depends},
          qml-module-qtgraphicaleffects,
          qml-module-qtquick-controls,
          qt5-image-formats-plugins,
+         dconf-cli,
 Recommends: redshift
 Suggests: gsettings-desktop-schemas,
           mate-desktop-common,
