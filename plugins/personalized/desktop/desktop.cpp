@@ -416,7 +416,7 @@ void Desktop::initTraySettings() {
             }
         }
     }
-    ui->listWidget->setFixedHeight(itemCount * 50);
+    ui->listWidget->setFixedHeight(itemCount * 55);
 }
 
 // TODO: double free?
