@@ -36,26 +36,24 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //设置父窗口对象
+    // 设置父窗口对象
     this->setParent(parent);
     pmainWindow = (MainWindow *)parentWidget();
 
-    //左侧Widget大小限定
+    // 左侧Widget大小限定
     ui->leftbarWidget->setMinimumWidth(160);
     ui->leftbarWidget->setMaximumWidth(216);
 
-    //右侧Widget大小限定(限制了最小宽度)
+    // 右侧Widget大小限定(限制了最小宽度)
     ui->widget->setMinimumWidth(650);
     ui->widget->setMaximumWidth(1200);
 
-
-    //
     ui->mtitleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(Shadow);}");
-    //左侧二级菜单样式
+    // 左侧二级菜单样式
     ui->leftStackedWidget->setStyleSheet("border: none;");
-    //上侧二级菜单样式
+    // 上侧二级菜单样式
 //    ui->topStackedWidget->setStyleSheet("border: none;");
-    //功能区域
+    // 功能区域
 //    ui->scrollArea->setStyleSheet("#scrollArea{border: 0px solid;}");
     ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 //    ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -63,14 +61,12 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
     //初始化记录标志位
     flagBit = true;
 
-
     //构建枚举键值转换对象
     mkvConverter = new KeyValueConverter(); //继承QObject，No Delete
 
     ui->topsideWidget->hide();
 
     initUI();
-
 }
 
 ModulePageWidget::~ModulePageWidget()

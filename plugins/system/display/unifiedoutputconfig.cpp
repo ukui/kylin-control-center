@@ -174,8 +174,6 @@ void UnifiedOutputConfig::initUi()
     freshLabel->setMaximumSize(118,30);
 
     mRefreshRate->addItem(tr("auto"), -1);
-    mRefreshRate->addItem(tr("aa"), -1);
-
 
     QHBoxLayout *freshLayout = new QHBoxLayout();
     freshLayout->addWidget(freshLabel);
