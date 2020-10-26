@@ -145,6 +145,12 @@ QString UserInfo::_accountTypeIntToString(int type){
 }
 
 void UserInfo::_acquireAllUsersInfo(){
+
+    mUserName = qgetenv("USER");
+    if (mUserName.isEmpty()) {
+        mUserName = qgetenv("USERNAME");
+    }
+
     QStringList objectpaths = sysdispatcher->list_cached_users();
 
     //初始化用户信息QMap
@@ -180,6 +186,7 @@ void UserInfo::_acquireAllUsersInfo(){
         ui->autoLoginFrame->setVisible(true);
         ui->liveFrame->setVisible(false);
     }
+    initUserPropertyConnection(objectpaths);
 }
 
 UserInfomation UserInfo::_acquireUserInfo(QString objpath){
@@ -199,24 +206,10 @@ UserInfomation UserInfo::_acquireUserInfo(QString objpath){
         QMap<QString, QVariant> propertyMap;
         propertyMap = reply.value();
         user.username = propertyMap.find("UserName").value().toString();
-        if (user.username == QString(g_get_user_name())){
+        if (user.username == QString(g_get_user_name())) {
             user.current = true;
             user.logined = true;
-
-            //获取当前用户免密登录属性
-            QDBusInterface *tmpSysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
-                                             "/",
-                                             "com.control.center.interface",
-                                             QDBusConnection::systemBus());
-            //获取免密登录状态
-            QDBusReply<QString> noPwdres;
-            noPwdres  = tmpSysinterface ->call("getNoPwdLoginStatus");
-            if(!noPwdres.isValid()){
-                qDebug()<<"获取tmpSysinterface状态不合法---->"<< noPwdres.error();
-            }
-            delete tmpSysinterface;
-
-            user.noPwdLogin = noPwdres.value().contains(user.username) ? true : false;
+            user.noPwdLogin = getNoPwdStatus();
         }
         user.accounttype = propertyMap.find("AccountType").value().toInt();
         if (user.accounttype == ADMINISTRATOR)
@@ -872,6 +865,23 @@ void UserInfo::delete_user_slot(bool removefile, QString username){
     sysdispatcher->delete_user(user.uid, removefile);
 }
 
+void UserInfo::pwdAndAutoChangedSlot(QString key) {
+    if ("option" == key) {
+        autoLoginSwitchBtn->setChecked(getAutomaticLogin(mUserName));
+        nopwdSwitchBtn->setChecked(getNoPwdStatus());
+    }
+}
+
+void UserInfo::propertyChangedSlot(QString property, QMap<QString, QVariant> propertyMap, QStringList propertyList) {
+    Q_UNUSED(property);
+    Q_UNUSED(propertyList);
+    if (propertyMap.keys().contains("IconFile")) {
+        QString iconFile = propertyMap.value("IconFile").toString();
+        QPixmap iconPixmap = QPixmap(iconFile).scaled(ui->currentUserFaceLabel->size());
+        ui->currentUserFaceLabel->setPixmap(iconPixmap);
+    }
+}
+
 void UserInfo::deleteUserDone(QString objpath){
     QListWidgetItem * item = otherUserItemMap.value(objpath);
 
@@ -1056,4 +1066,34 @@ bool UserInfo::getAutomaticLogin(QString username) {
     autoSettings->endGroup();
 
     return autoUser == username ? true : false;
+}
+
+bool UserInfo::getNoPwdStatus() {
+    // 获取当前用户免密登录属性
+    QDBusInterface tmpSysinterface("com.control.center.qt.systemdbus",
+                                     "/",
+                                     "com.control.center.interface",
+                                     QDBusConnection::systemBus());
+    // 获取免密登录状态
+    QDBusReply<QString> noPwdres;
+    noPwdres  = tmpSysinterface.call("getNoPwdLoginStatus");
+    if (!noPwdres.isValid()) {
+        qDebug() << noPwdres.error();
+    }
+    return (noPwdres.value().contains(mUserName) ? true : false);
+}
+
+void UserInfo::initUserPropertyConnection(const QStringList &objPath) {
+
+    foreach (QString userPath, objPath) {
+        QDBusInterface iproperty("org.freedesktop.Accounts",
+                                 userPath,
+                                 "org.freedesktop.DBus.Properties",
+                                 QDBusConnection::systemBus());
+
+        iproperty.connection().connect("org.freedesktop.Accounts", userPath, "org.freedesktop.DBus.Properties", "PropertiesChanged",
+                                        this, SLOT(propertyChangedSlot(QString, QMap<QString, QVariant>, QStringList)));
+    }
+
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface", "keyChanged", this, SLOT(pwdAndAutoChangedSlot(QString)));
 }

@@ -36,15 +36,6 @@ UserDispatcher::UserDispatcher(QString objpath, QObject *parent) :
                                      objpath,
                                      "org.freedesktop.DBus.Properties",
                                      QDBusConnection::systemBus());
-
-    iproperty = new QDBusInterface("org.freedesktop.Accounts",
-                                   objpath,
-                                   "org.freedesktop.DBus.Properties",
-                                   QDBusConnection::systemBus(), this);
-
-    iproperty->connection().connect("org.freedesktop.Accounts",objpath, "org.freedesktop.DBus.Properties", "PropertiesChanged",
-                                    this, SLOT(propertyChanged(QString, QMap<QString, QVariant>, QStringList)));
-
 }
 
 UserDispatcher::~UserDispatcher()
@@ -53,7 +44,7 @@ UserDispatcher::~UserDispatcher()
     useriface = NULL;
 }
 
-/*来自gtk控制面板的加密代码*/
+// 来自gtk控制面板的加密代码
 QString UserDispatcher::make_crypted (const gchar *plain){
     GString *salt;
     gchar *result;
@@ -81,12 +72,6 @@ QString UserDispatcher::make_crypted (const gchar *plain){
 
     return QString(result);
 
-}
-
-void UserDispatcher::propertyChanged(QString property, QMap<QString, QVariant> propertyMap, QStringList propertyList) {
-    if (propertyMap.keys().contains("IconFile")) {
-        qDebug() << "icon changed-->" << propertyMap.value("IconFile").toString();
-    }
 }
 
 QString UserDispatcher::change_user_pwd(QString pwd, QString hint){
@@ -126,6 +111,5 @@ void UserDispatcher::change_user_autologin(QString username){
 
 bool UserDispatcher::get_autoLogin_status() {
     QDBusReply<QVariant> reply = userPropert->call("Get", "org.freedesktop.Accounts.User", "AutomaticLogin");
-//    qDebug()<<"the status is------>"<<reply.value().toBool()<<endl;
     return reply.value().toBool();
 }

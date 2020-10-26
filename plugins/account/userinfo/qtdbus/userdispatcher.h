@@ -63,12 +63,8 @@ private:
 
     UserInfo * pUserInfo;
 
-    /***加密,来自gtk控制面板***/
+    // 加密,来自gtk控制面板
     QString make_crypted(const gchar * plain);
-    /*****/
-
-private slots:
-    void propertyChanged(QString, QMap<QString, QVariant>, QStringList);
 };
 
 #endif // USERDISPATCHER_H
