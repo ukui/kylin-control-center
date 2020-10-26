@@ -99,12 +99,12 @@
     <message>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="129"/>
         <source>Disk:</source>
-        <translation type="unfinished"></translation>
+        <translation>硬盘:</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="144"/>
         <source> available</source>
-        <translation type="unfinished"></translation>
+        <translation>可用</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="217"/>
@@ -722,7 +722,7 @@ you can restore them to ensure the integrity of your system.</source>
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="376"/>
         <source>Cur pwd</source>
-        <translation type="unfinished"></translation>
+        <translation>当前密码</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="408"/>
@@ -752,7 +752,7 @@ you can restore them to ensure the integrity of your system.</source>
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="93"/>
         <source>Cur pwd checking!</source>
-        <translation type="unfinished"></translation>
+        <translation>当前密码检查!</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="226"/>
@@ -763,7 +763,7 @@ you can restore them to ensure the integrity of your system.</source>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="232"/>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="391"/>
         <source>Current Password</source>
-        <translation type="unfinished"></translation>
+        <translation>当前密码</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="233"/>
@@ -782,12 +782,12 @@ you can restore them to ensure the integrity of your system.</source>
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="334"/>
         <source>Contains illegal characters!</source>
-        <translation type="unfinished">含有非法字符！</translation>
+        <translation>含有非法字符！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="336"/>
         <source>Same with old pwd</source>
-        <translation type="unfinished"></translation>
+        <translation>与旧密码相同</translation>
     </message>
     <message>
         <source>Password length needs to more than %1 character!</source>
@@ -1129,7 +1129,7 @@ change system settings</source>
     <message>
         <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="266"/>
         <source>Contains illegal characters!</source>
-        <translation type="unfinished">含有非法字符！</translation>
+        <translation>含有非法字符！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="416"/>
@@ -2553,7 +2553,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/devices/keyboard/kbdlayoutmanager.cpp" line="303"/>
         <source>Keyboard Preview</source>
-        <translation type="unfinished">布局预览</translation>
+        <translation>布局预览</translation>
     </message>
 </context>
 <context>
@@ -2682,7 +2682,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/devices/keyboard/keyboardcontrol.ui" line="475"/>
         <source>Input characters to test the repetition effect：</source>
-        <translation type="unfinished"></translation>
+        <translation>输入字符测试重复效果：</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/keyboard/keyboardcontrol.cpp" line="119"/>
@@ -4134,22 +4134,22 @@ Please retry for login!</source>
         <translation type="vanished">默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="621"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="616"/>
         <source>basic</source>
         <translation>基础</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="623"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="618"/>
         <source>classical</source>
         <translation>经典</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="625"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="620"/>
         <source>default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="627"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="622"/>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="175"/>
         <source>Unknown</source>
         <translation>未知</translation>
@@ -4502,7 +4502,7 @@ Please retry for login!</source>
         <translation type="vanished">日</translation>
     </message>
     <message>
-        <location filename="../../main.cpp" line="44"/>
+        <location filename="../../main.cpp" line="48"/>
         <source>ukui-control-center is already running!</source>
         <translation>控制面板已运行!</translation>
     </message>
@@ -4510,7 +4510,7 @@ Please retry for login!</source>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="111"/>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="423"/>
         <source>Pwd input error, re-enter!</source>
-        <translation type="unfinished"></translation>
+        <translation>密码输入错误,重新输入!</translation>
     </message>
     <message>
         <location filename="../../utils/utils.cpp" line="17"/>
@@ -4744,12 +4744,12 @@ Please retry for login!</source>
         <translation>选择锁屏背景</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="426"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="433"/>
         <source>Browser online wp</source>
         <translation>浏览线上壁纸</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="445"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="452"/>
         <source>Browser local wp</source>
         <translation>浏览本地壁纸</translation>
     </message>
@@ -5825,21 +5825,21 @@ Please retry for login!</source>
         <translation>图片放置方式</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="483"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="490"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="107"/>
         <source>Browser local wp</source>
         <translation>浏览本地壁纸</translation>
         <extra-contents_path>/wallpaper/Browser local wp</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="515"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="522"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="111"/>
         <source>Reset to default</source>
         <translation>恢复默认设置</translation>
         <extra-contents_path>/wallpaper/Reset to default</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="464"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="471"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="109"/>
         <source>Browser online wp</source>
         <translation>浏览线上壁纸</translation>
@@ -5850,7 +5850,7 @@ Please retry for login!</source>
         <translation type="vanished">恢复默认壁纸</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="661"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="668"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
@@ -5957,7 +5957,7 @@ Please retry for login!</source>
         <translation>文件类型： </translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="642"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="649"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="509"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="548"/>
         <source>Cancel</source>
