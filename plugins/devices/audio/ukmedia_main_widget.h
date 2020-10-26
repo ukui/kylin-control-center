@@ -44,6 +44,7 @@ extern "C" {
 #include <QApplication>
 #include <QDomDocument>
 #include <QGSettings>
+#include <QAudioInput>
 
 #define UKUI_THEME_SETTING "org.ukui.style"
 #define UKUI_THEME_NAME "style-name"
