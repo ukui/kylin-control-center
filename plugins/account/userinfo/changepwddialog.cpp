@@ -71,13 +71,9 @@ ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QWidget *parent) :
     setWindowTitle(tr("Change pwd"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-//    ui->closeBtn->setFlat(true);
-//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
-
     ui->pwdFrame->setFrameShape(QFrame::Shape::Box);
+    ui->tipLabel->setAlignment(Qt::AlignCenter);
+    ui->tipLabel->setStyleSheet("color:red;");
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
