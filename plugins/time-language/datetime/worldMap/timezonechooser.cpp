@@ -11,6 +11,9 @@
 #include <QHBoxLayout>
 #include <QPainter>
 #include <QPainterPath>
+
+#include "ImageUtil/imageutil.h"
+
 TimeZoneChooser::TimeZoneChooser():QFrame ()
 {
     m_map = new TimezoneMap(this);
@@ -18,38 +21,28 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
     m_zoneinfo = new ZoneInfo;
     m_searchInput = new QLineEdit(this);
     m_title = new QLabel(this);
-    closeBtn = new CloseButton(this,"window-close-symbolic");
+    m_closeBtn = new QPushButton(this);
     m_cancelBtn = new QPushButton(tr("Cancel"));
     m_confirmBtn = new QPushButton(tr("Confirm"));
 
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint| Qt::Tool);//无边框
     setAttribute(Qt::WA_StyledBackground,true);
 
-    closeBtn->setFixedSize(32,32);
-    closeBtn->setHoverOut("white");
-    closeBtn->setBkg(QColor(22,24,26));
     this->setObjectName("MapFrame");
     this->setStyleSheet("QFrame#MapFrame{background-color: rgb(22, 24, 26);border-radius:4px}");
     this->setWindowTitle(tr("Change time zone"));
 
-//    closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
-//    closeBtn->setFlat(true);
-//    closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+    QIcon icon = QIcon::fromTheme("window-close-symbolic");
+    m_closeBtn->setIcon(ImageUtil::drawSymbolicColoredPixmap(icon.pixmap(32, 32),"white"));
+    m_closeBtn->setFlat(true);
 
     m_searchInput->setMinimumSize(560,40);
     m_searchInput->setMaximumSize(560,40);
     m_searchInput->setMinimumHeight(40);
-//    m_searchInput->setStyleSheet("background-color: rgb(229, 240, 250 )");
-//    m_cancelBtn->setStyleSheet("background-color: rgb(229, 240, 250 )");
-//    m_confirmBtn->setStyleSheet("background-color: rgb(229, 240, 250 )");
 
-/*    m_title->setMinimumWidth(179);
-    m_title->setMinimumHeight(29);*/;
     m_title->setObjectName("titleLabel");
     m_title->setStyleSheet("color: rgb(229, 240, 250 )");
     m_title->setText(tr("change timezone"));
-
 
     initSize();
 
@@ -57,7 +50,7 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
     wbLayout->setMargin(6);
     wbLayout->setSpacing(0);
     wbLayout->addStretch();
-    wbLayout->addWidget(closeBtn);
+    wbLayout->addWidget(m_closeBtn);
 
     QHBoxLayout *btnlayout = new QHBoxLayout;
     btnlayout->addStretch();
@@ -95,7 +88,7 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
         emit this->cancelled();
     });
 
-    connect(closeBtn, &CloseButton::clicked, this, [this] {
+    connect(m_closeBtn, &QPushButton::clicked, this, [this] {
         hide();
         emit cancelled();
     });

@@ -22,6 +22,7 @@
 #include "prescene.h"
 #include "utils/keyvalueconverter.h"
 #include "utils/functionselect.h"
+#include "../commonComponent/ImageUtil/imageutil.h"
 
 #include <QLabel>
 #include <QLocale>
@@ -261,9 +262,9 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     }
     if(closeBtn == watched) {
         if(event->type() == QEvent::Enter) {
-            closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"white"));
+            closeBtn->setIcon(ImageUtil::drawSymbolicColoredPixmap(QIcon::fromTheme("window-close-symbolic").pixmap(32, 32),"white"));
         }else if(event->type() == QEvent::Leave) {
-            closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"gray"));
+            closeBtn->setIcon(ImageUtil::drawSymbolicColoredPixmap(QIcon::fromTheme("window-close-symbolic").pixmap(32, 32),"gray"));
         }
     }
     if(watched==m_searchWidget) {
@@ -435,13 +436,13 @@ void MainWindow::initTileBar() {
     queryWidLayout->setSpacing(0);
     m_queryWid->setLayout(queryWidLayout);
 
-    QPixmap pixmap=loadSvg(QString("://img/dropArrow/search.svg"),"gray");
-    m_queryIcon=new QLabel(this);
+    QPixmap pixmap = ImageUtil::loadSvg(QString("://img/dropArrow/search.svg"),"gray");
+    m_queryIcon = new QLabel(this);
     m_queryIcon->setStyleSheet("background:transparent");
     m_queryIcon->setFixedSize(pixmap.size());
     m_queryIcon->setPixmap(pixmap);
 
-    m_queryText=new QLabel(this);
+    m_queryText = new QLabel(this);
     m_queryText->setText(tr("Search"));
     m_queryText->setStyleSheet("background:transparent;color:#626c6e;");
 
@@ -692,7 +693,7 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName){
     QString iconBtnQss = QString("QPushButton:checked{background: palette(base); border: none;}"
                                  "QPushButton:!checked{background: palette(button); border: none;}");
     QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
-    QPixmap pix = loadSvg(path, "default");
+    QPixmap pix = ImageUtil::loadSvg(path, "default");
     //单独设置HomePage按钮样式
     if (iname == "homepage") {
         iconBtn->setFlat(true);
@@ -708,9 +709,9 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName){
         QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
         QPixmap pix;
         if (checked) {
-            pix = loadSvg(path, "blue");
+            pix = ImageUtil::loadSvg(path, "blue");
         } else {
-            pix = loadSvg(path, "default");
+            pix = ImageUtil::loadSvg(path, "default");
         }
         iconBtn->setIcon(pix);
     });
@@ -722,9 +723,9 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName){
         QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
         QPixmap pix;
         if (checked) {
-            pix = loadSvg(path, "blue");
+            pix = ImageUtil::loadSvg(path, "blue");
         } else {
-            pix = loadSvg(path, "default");
+            pix = ImageUtil::loadSvg(path, "default");
         }
         iconBtn->setIcon(pix);
     });
@@ -764,66 +765,6 @@ bool MainWindow::isExitsCloudAccount() {
         }
     }
     return false;
-}
-
-const QPixmap MainWindow::loadSvg(const QString &fileName, QString color)
-{
-    int size = 24;
-    const auto ratio = qApp->devicePixelRatio();
-    if ( 2 == ratio) {
-        size = 48;
-    } else if (3 == ratio) {
-        size = 96;
-    }
-    QPixmap pixmap(size, size);
-    QSvgRenderer renderer(fileName);
-    pixmap.fill(Qt::transparent);
-
-    QPainter painter;
-    painter.begin(&pixmap);
-    renderer.render(&painter);
-    painter.end();
-
-    pixmap.setDevicePixelRatio(ratio);
-    return drawSymbolicColoredPixmap(pixmap, color);
-}
-
-QPixmap MainWindow::drawSymbolicColoredPixmap(const QPixmap &source, QString cgColor)
-{
-    QImage img = source.toImage();
-    for (int x = 0; x < img.width(); x++) {
-        for (int y = 0; y < img.height(); y++) {
-            auto color = img.pixelColor(x, y);
-            if (color.alpha() > 0) {
-                if ("white" == cgColor) {
-                    color.setRed(255);
-                    color.setGreen(255);
-                    color.setBlue(255);
-                    img.setPixelColor(x, y, color);
-                } else if ("black" == cgColor) {
-                    color.setRed(0);
-                    color.setGreen(0);
-                    color.setBlue(0);
-                    //                    color.setAlpha(0.1);
-                    color.setAlphaF(0.9);
-                    img.setPixelColor(x, y, color);
-                } else if ("gray" == cgColor) {
-                    color.setRed(152);
-                    color.setGreen(163);
-                    color.setBlue(164);
-                    img.setPixelColor(x, y, color);
-                } else if ("blue" == cgColor){
-                    color.setRed(61);
-                    color.setGreen(107);
-                    color.setBlue(229);
-                    img.setPixelColor(x, y, color);
-                } else {
-                    return source;
-                }
-            }
-        }
-    }
-    return QPixmap::fromImage(img);
 }
 
 bool MainWindow::dblOnEdge(QMouseEvent *event)
@@ -874,7 +815,7 @@ void MainWindow::initStyleSheet() {
     // 设置右上角按钮图标
     minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
     maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
-    closeBtn->setIcon(renderSvg(QIcon::fromTheme("window-close-symbolic"),"gray"));
+    closeBtn->setIcon(ImageUtil::drawSymbolicColoredPixmap(QIcon::fromTheme("window-close-symbolic").pixmap(32, 32),"gray"));
     closeBtn->setObjectName("closeBtn");
     closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;width:32px;height:32px;}"
                             "QPushButton#closeBtn{border-radius: 4px;width:32px;height:32px;}"
@@ -922,50 +863,4 @@ void MainWindow::switchPage(QString moduleName) {
             modulepageWidget->switchPage(modules.value(moduleName));
         }
     }
-}
-
-const QPixmap MainWindow::renderSvg(const QIcon &icon, QString cgColor) {
-    int size = 16;
-    const auto ratio = qApp->devicePixelRatio();
-    if ( 2 == ratio) {
-        size = 48;
-    } else if (3 == ratio) {
-        size = 96;
-    }
-    QPixmap iconPixmap = icon.pixmap(size,size);
-    iconPixmap.setDevicePixelRatio(ratio);
-    QImage img = iconPixmap.toImage();
-    for (int x = 0; x < img.width(); x++) {
-        for (int y = 0; y < img.height(); y++) {
-            auto color = img.pixelColor(x, y);
-            if (color.alpha() > 0) {
-                if ("white" == cgColor) {
-                    color.setRed(255);
-                    color.setGreen(255);
-                    color.setBlue(255);
-                    img.setPixelColor(x, y, color);
-                } else if ("black" == cgColor) {
-                    color.setRed(0);
-                    color.setGreen(0);
-                    color.setBlue(0);
-                    //                    color.setAlpha(0.1);
-                    color.setAlphaF(0.9);
-                    img.setPixelColor(x, y, color);
-                } else if ("gray" == cgColor) {
-                    color.setRed(152);
-                    color.setGreen(163);
-                    color.setBlue(164);
-                    img.setPixelColor(x, y, color);
-                } else if ("blue" == cgColor){
-                    color.setRed(61);
-                    color.setGreen(107);
-                    color.setBlue(229);
-                    img.setPixelColor(x, y, color);
-                } else {
-                    return iconPixmap;
-                }
-            }
-        }
-    }
-    return QPixmap::fromImage(img);
 }

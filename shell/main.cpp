@@ -59,11 +59,7 @@ int main(int argc, char *argv[])
 
         QCommandLineParser parser;
         Utils::setCLIName(parser);
-        parser.process(a);
-
-        if (parser.isSet(QStringLiteral("autoboot"))) {
-            qDebug() << "this is parser autoboot";
-        }
+//        parser.process(a);
 
         MainWindow * w = new MainWindow;
         Utils::centerToScreen(w);

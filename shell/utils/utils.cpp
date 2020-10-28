@@ -26,7 +26,7 @@ void Utils::setCLIName(QCommandLineParser &parser) {
     QCommandLineOption shortcutRoleOption("shortcut", QObject::tr("Go to shortcut settings page"));
     QCommandLineOption audioRoleOption(QStringList() << "s" << "audio", QObject::tr("Go to audio settings page"));
 
-    QCommandLineOption backgroundRoleOption(QStringList() << "-m" << "background", QObject::tr("Go to background settings page"));
+    QCommandLineOption backgroundRoleOption(QStringList() << "b" << "background", QObject::tr("Go to background settings page"));
     QCommandLineOption themeRoleOption("theme", QObject::tr("Go to theme settings page"));
     QCommandLineOption screenlockRoleOption("screenlock", QObject::tr("Go to screenlock settings page"));
     QCommandLineOption screensaverRoleOption("screensaver", QObject::tr("Go to screensaver settings page"));
