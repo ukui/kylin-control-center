@@ -40,7 +40,6 @@ Area::Area()
     ui = new Ui::Area;
     pluginWidget = new QWidget;
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-//    pluginWidget->setStyleSheet("background: #ffffff;");
     ui->setupUi(pluginWidget);
 
     pluginName = tr("Area");
@@ -57,11 +56,12 @@ Area::Area()
     const QByteArray id(PANEL_GSCHEMAL);
 
     if(QGSettings::isSchemaInstalled(id)) {
-        m_gsettings = new QGSettings(id);
+        m_gsettings = new QGSettings(id, QByteArray(), pluginWidget);
         connect(m_gsettings, &QGSettings::changed, this, [=](QString key) {
-           if ("hoursystem" == key) {
-               initFormatData();
-           }
+            mDateFormat = m_gsettings->get(DATE_FORMATE_KEY).toString();
+            if ("hoursystem" == key) {
+                initFormatData();
+            }
         });
     }
 
@@ -94,7 +94,6 @@ Area::~Area()
 {
     delete ui;
     delete m_itimer;
-    delete m_gsettings;
 }
 
 QString Area::get_plugin_name() {
@@ -229,8 +228,7 @@ void Area::initFormatData() {
 
     QDateTime current = QDateTime::currentDateTime();
     QString currentsecStr  ;
-    QString dateFormat = m_gsettings->get(DATE_FORMATE_KEY).toString();
-    if ("cn" == dateFormat) {
+    if ("cn" == mDateFormat) {
        currentsecStr = current.toString("yyyy/MM/dd ");;
     } else {
        currentsecStr = current.toString("yyyy-MM-dd ");
@@ -276,6 +274,14 @@ void Area::datetime_update_slot() {
         timeStr = current.toString("AP hh: mm : ss");
     }
     ui->timelabelshow->setText(timeStr);
+
+    QString currentsecStr;
+    if ("cn" == mDateFormat) {
+       currentsecStr = current.toString("yyyy/MM/dd ");;
+    } else {
+       currentsecStr = current.toString("yyyy-MM-dd ");
+    }
+    ui->datelabelshow->setText(currentsecStr);
 }
 
 void Area::add_lan_btn_slot() {

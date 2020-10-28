@@ -83,6 +83,7 @@ private:
     QString objpath;
     QString pluginName;
     QString hourformat;
+    QString mDateFormat;
 
     QWidget * pluginWidget;
 
