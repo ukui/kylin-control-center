@@ -32,6 +32,8 @@
 #include <QDBusReply>
 #include <QMessageBox>
 #include <QDateTime>
+#include <QCoreApplication>
+#include <polkit-qt5-1/polkitqt1-authority.h>
 
 #include "HoverWidget/hoverwidget.h"
 
@@ -79,6 +81,7 @@ public:
     void initNewGroupBtn();
     void loadGroupInfo();
     void loadAllGroup();
+    bool polkit();
     void refreshList();
 
 public:

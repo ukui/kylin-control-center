@@ -36,6 +36,10 @@ systemd_service.path = /usr/lib/systemd/system
 systemd_service.files += conf/ukui-group-manager.service
 INSTALLS += systemd_service
 
+polkit.path = /usr/share/polkit-1/actions/
+polkit.files += conf/org.ukui.groupmanager.policy
+INSTALLS += polkit
+
 
 
 
