@@ -2061,12 +2061,12 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="339"/>
         <source>Resend(</source>
-        <translation>重新发送（</translation>
+        <translation>重新发送(</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="339"/>
         <source>)</source>
-        <translation>）</translation>
+        <translation>)</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="345"/>
@@ -3099,7 +3099,7 @@ folder will be deleted!</source>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1043"/>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1046"/>
         <source>Resend ( %1 )</source>
-        <translation>重新发送（%1）</translation>
+        <translation>重新发送(%1)</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="1053"/>
