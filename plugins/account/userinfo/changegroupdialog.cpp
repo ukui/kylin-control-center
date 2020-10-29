@@ -94,6 +94,24 @@ void ChangeGroupDialog::refreshList()
     loadAllGroup();
 }
 
+bool ChangeGroupDialog::polkit()
+{
+    PolkitQt1::Authority::Result result;
+    //PolkitQt1::SystemBusNameSubject subject(message().service());
+
+    result = PolkitQt1::Authority::instance()->checkAuthorizationSync(
+                "org.ukui.groupmanager.action",
+                PolkitQt1::UnixProcessSubject(QCoreApplication::applicationPid()),
+                PolkitQt1::Authority::AllowUserInteraction);
+    if (result == PolkitQt1::Authority::Yes) { //认证通过
+        qDebug() << QString("operation authorized");
+        return true;
+    } else {
+        qDebug() << QString("not authorized");
+        return false;
+    }
+}
+
 void ChangeGroupDialog::loadAllGroup()
 {
     for(int i = 0; i < value->size(); i++){
@@ -118,34 +136,43 @@ void ChangeGroupDialog::loadAllGroup()
         QPushButton *itemEditBtn = singleWidget->editBtnComponent();
 
         connect(itemDelBtn, &QPushButton::clicked, [=](){
-            DelGroupDialog *delDialog = new DelGroupDialog(value->at(i)->groupname);
-            QPushButton *delBtn = delDialog->delBtnComponent();
-            connect(delBtn, &QPushButton::clicked, [=](){
-                QDBusReply<bool> reply = serviceInterface->call("del",value->at(i)->groupname);
-                if (reply.isValid()){
-                    // use the returned value
-                    qDebug() << "get call value" << reply.value();
-//                    qDebug() << "current index" << ui->listWidget->currentIndex();
-                    ui->listWidget->removeItemWidget(item);
-                    delete item;
-                    ui->listWidget->scrollTo(ui->listWidget->currentIndex());                    
-                    delDialog->close();
-                } else {
-                    // call failed. Show an error condition.
-                    qDebug() << "call failed" << reply.error();
-                }
-                refreshList();
-            });
-            delDialog->exec();
+            bool reply = polkit();
+            qDebug() << "call polkit " << reply;
+            if(reply){
+                DelGroupDialog *delDialog = new DelGroupDialog(value->at(i)->groupname);
+                QPushButton *delBtn = delDialog->delBtnComponent();
+                connect(delBtn, &QPushButton::clicked, [=](){
+                    QDBusReply<bool> reply = serviceInterface->call("del",value->at(i)->groupname);
+                    if (reply.isValid()){
+                        // use the returned value
+                        qDebug() << "get call value" << reply.value();
+    //                    qDebug() << "current index" << ui->listWidget->currentIndex();
+                        ui->listWidget->removeItemWidget(item);
+                        delete item;
+                        ui->listWidget->scrollTo(ui->listWidget->currentIndex());
+                        delDialog->close();
+                    } else {
+                        // call failed. Show an error condition.
+                        qDebug() << "call failed" << reply.error();
+                    }
+                    refreshList();
+                });
+                delDialog->exec();
+            }
         });
         connect(itemEditBtn, &QPushButton::clicked, [=](){
-            EditGroupDialog *editDialog = new EditGroupDialog(value->at(i)->usergroup,value->at(i)->groupid);
-            connect(editDialog, &EditGroupDialog::needRefresh, this, &ChangeGroupDialog::needRefreshSlot);
-            QLineEdit *lineName = editDialog->lineNameComponent();
-            QLineEdit *lineId = editDialog->lineIdComponent();
-            lineName->setText(value->at(i)->groupname);
-            lineId->setText(value->at(i)->groupid);
-            editDialog->exec();
+            bool reply = polkit();
+            qDebug() << "call polkit " << reply;
+            if(reply){
+                EditGroupDialog *editDialog = new EditGroupDialog(value->at(i)->usergroup,value->at(i)->groupid);
+                connect(editDialog, &EditGroupDialog::needRefresh, this, &ChangeGroupDialog::needRefreshSlot);
+                QLineEdit *lineName = editDialog->lineNameComponent();
+                QLineEdit *lineId = editDialog->lineIdComponent();
+                lineName->setText(value->at(i)->groupname);
+                lineId->setText(value->at(i)->groupid);
+                editDialog->exec();
+            }
+
         });
     }
 //    ui->listWidget->setSortingEnabled(true);
@@ -222,71 +249,75 @@ void ChangeGroupDialog::initNewGroupBtn()
     });
 
     connect(addWgt, &HoverWidget::widgetClicked, this, [=](){
-        CreateGroupDialog *dialog = new CreateGroupDialog();
-        QPushButton *certainBtn = dialog->certainBtnComponent();
-        QLineEdit *lineId = dialog->lineIdComponent();
-        QLineEdit *lineName = dialog->lineNameComponent();
-        QListWidget *cglist = dialog->listWidgetComponent();
+        bool reply = polkit();
+        qDebug() << "call polkit " << reply;
+        if(reply){
+            CreateGroupDialog *dialog = new CreateGroupDialog();
+            QPushButton *certainBtn = dialog->certainBtnComponent();
+            QLineEdit *lineId = dialog->lineIdComponent();
+            QLineEdit *lineName = dialog->lineNameComponent();
+            QListWidget *cglist = dialog->listWidgetComponent();
 
-        connect(certainBtn, &QPushButton::clicked, this, [=](){
-            for (int j = 0; j < value->size(); j++){
-                if(lineId->text() == value->at(j)->groupid){
-                    QMessageBox invalid(QMessageBox::Question, tr("Tips"), tr("Invalid Id!"));
-                    invalid.setIcon(QMessageBox::Warning);
-                    invalid.setStandardButtons(QMessageBox::Ok);
-                    invalid.setButtonText(QMessageBox::Ok, QString(tr("OK")));
-                    invalid.exec();
-                    return;
-                }
-                if(lineName->text() == value->at(j)->groupname){
-                    QMessageBox invalid(QMessageBox::Question, tr("Tips"), tr("Invalid Group Name!"));
-                    invalid.setIcon(QMessageBox::Warning);
-                    invalid.setStandardButtons(QMessageBox::Ok);
-                    invalid.setButtonText(QMessageBox::Ok, QString(tr("OK")));
-                    invalid.exec();
-                    return;
-                }
-            }
-
-            QDBusReply<bool> reply = serviceInterface->call("add",lineName->text(),lineId->text());
-            if (reply.isValid()){
-                // use the returned value
-                qDebug() << "get call value" << reply.value();
-            } else {
-                // call failed. Show an error condition.
-                qDebug() << "call failed" << reply.error();
-            }
-
-            for (int i = 0; i < cglist->count(); i++){
-                QListWidgetItem *item = cglist->item(i);
-                QCheckBox *box = static_cast<QCheckBox *> (cglist->itemWidget(item));
-                if(box->isChecked()){
-                    QDBusReply<bool> reply = serviceInterface->call("addUserToGroup",
-                                                    lineName->text(),box->text());
-                    if (reply.isValid()){
-                        // use the returned value
-                        qDebug() << "addUserToGroupget call value" << reply.value() << lineName->text() << box->text();
-                    } else {
-                        // call failed. Show an error condition.
-                        qDebug() << "addUserToGroup call failed" << reply.error();
+            connect(certainBtn, &QPushButton::clicked, this, [=](){
+                for (int j = 0; j < value->size(); j++){
+                    if(lineId->text() == value->at(j)->groupid){
+                        QMessageBox invalid(QMessageBox::Question, tr("Tips"), tr("Invalid Id!"));
+                        invalid.setIcon(QMessageBox::Warning);
+                        invalid.setStandardButtons(QMessageBox::Ok);
+                        invalid.setButtonText(QMessageBox::Ok, QString(tr("OK")));
+                        invalid.exec();
+                        return;
                     }
+                    if(lineName->text() == value->at(j)->groupname){
+                        QMessageBox invalid(QMessageBox::Question, tr("Tips"), tr("Invalid Group Name!"));
+                        invalid.setIcon(QMessageBox::Warning);
+                        invalid.setStandardButtons(QMessageBox::Ok);
+                        invalid.setButtonText(QMessageBox::Ok, QString(tr("OK")));
+                        invalid.exec();
+                        return;
+                    }
+                }
+
+                QDBusReply<bool> reply = serviceInterface->call("add",lineName->text(),lineId->text());
+                if (reply.isValid()){
+                    // use the returned value
+                    qDebug() << "get call value" << reply.value();
                 } else {
-                    QDBusReply<bool> reply = serviceInterface->call("delUserFromGroup",
-                                                    lineId->text(),box->text());
-                    if (reply.isValid()){
-                        // use the returned value
-                        qDebug() << "delUserFromGroup get call value" << reply.value() << lineName->text() << box->text();;
+                    // call failed. Show an error condition.
+                    qDebug() << "call failed" << reply.error();
+                }
+
+                for (int i = 0; i < cglist->count(); i++){
+                    QListWidgetItem *item = cglist->item(i);
+                    QCheckBox *box = static_cast<QCheckBox *> (cglist->itemWidget(item));
+                    if(box->isChecked()){
+                        QDBusReply<bool> reply = serviceInterface->call("addUserToGroup",
+                                                        lineName->text(),box->text());
+                        if (reply.isValid()){
+                            // use the returned value
+                            qDebug() << "addUserToGroupget call value" << reply.value() << lineName->text() << box->text();
+                        } else {
+                            // call failed. Show an error condition.
+                            qDebug() << "addUserToGroup call failed" << reply.error();
+                        }
                     } else {
-                        // call failed. Show an error condition.
-                        qDebug() << "delUserFromGroup call failed" << reply.error() << lineName->text() << box->text();;
+                        QDBusReply<bool> reply = serviceInterface->call("delUserFromGroup",
+                                                        lineId->text(),box->text());
+                        if (reply.isValid()){
+                            // use the returned value
+                            qDebug() << "delUserFromGroup get call value" << reply.value() << lineName->text() << box->text();;
+                        } else {
+                            // call failed. Show an error condition.
+                            qDebug() << "delUserFromGroup call failed" << reply.error() << lineName->text() << box->text();;
+                        }
                     }
                 }
-            }
-            refreshList();
-            ui->listWidget->scrollToBottom();
-            dialog->close();
-        });
-        dialog->exec();
+                refreshList();
+                ui->listWidget->scrollToBottom();
+                dialog->close();
+            });
+            dialog->exec();
+        }
     });
     ui->addLyt->addWidget(addWgt);
 }
