@@ -105,7 +105,6 @@ void AddAutoBoot::initStyle() {
     ui->execLineEdit->setPlaceholderText(tr("Program exec"));
     ui->commentLineEdit->setPlaceholderText(tr("Program comment"));
 
-    ui->hintLabel->setText(tr("desktop file not exist"));
     ui->hintLabel->setAlignment(Qt::AlignCenter);
     ui->hintLabel->setStyleSheet("color:red;");
     ui->certainBtn->setEnabled(false);
@@ -182,12 +181,7 @@ void AddAutoBoot::execLinEditSlot(const QString &fileName) {
 
     selectFile = fileName;
     QFileInfo fileInfo(fileName);
-    if (!fileInfo.isFile()) {
-        ui->hintLabel->setText(tr("desktop file not exist"));
-        ui->hintLabel->setAlignment(Qt::AlignCenter);
-        ui->hintLabel->setStyleSheet("color:red;");
-        ui->certainBtn->setEnabled(false);
-    } else {
+    if (fileInfo.isFile() && fileName.endsWith("desktop")) {
         ui->hintLabel->clear();
         ui->certainBtn->setEnabled(true);
 
@@ -214,5 +208,10 @@ void AddAutoBoot::execLinEditSlot(const QString &fileName) {
         ui->commentLineEdit->setText(QString(comment));
 
         g_key_file_free(keyfile);
+    } else {
+        ui->hintLabel->setText(tr("desktop file not exist"));
+        ui->hintLabel->setAlignment(Qt::AlignCenter);
+        ui->hintLabel->setStyleSheet("color:red;");
+        ui->certainBtn->setEnabled(false);
     }
 }
