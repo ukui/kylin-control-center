@@ -130,7 +130,7 @@ void MainWindow::bootOptionsFilter(QString opt) {
         bootOptionsSwitch(PERSONALIZED, SCREENSAVER);
     } else if (opt == "--fonts") {
         bootOptionsSwitch(PERSONALIZED, FONTS);
-    } else if (opt == "--desktop") {
+    } else if (opt == "--desktop" || opt == "-d") {
         bootOptionsSwitch(PERSONALIZED, DESKTOP);
     } else if (opt == "--netconnect") {
         bootOptionsSwitch(NETWORK, NETCONNECT);

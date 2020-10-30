@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
         QCommandLineParser parser;
         Utils::setCLIName(parser);
-//        parser.process(a);
+        parser.process(a);
 
         MainWindow * w = new MainWindow;
         Utils::centerToScreen(w);
