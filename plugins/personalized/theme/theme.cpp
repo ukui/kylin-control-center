@@ -70,6 +70,7 @@ const QString UbuntuVesionEnhance = "20.10";
 const int transparency = 75;
 
 const QStringList effectList {"blur", "kwin4_effect_translucency", "kwin4_effect_maximize", "zoom"};
+const QStringList kIconsList {"blueman", "disk-burner", "firefox", "kylin-video", "kylin-assistant", "kylin-scanner", "kylin-ipmsg"};
 
 namespace {
 
@@ -196,7 +197,6 @@ void Theme::initSearchText() {
     ui->perforLabel->setText(tr("Performance mode"));
     //~ contents_path /theme/Transparency
     ui->transparencyLabel->setText(tr("Transparency"));
-
 }
 
 void Theme::setupSettings() {
@@ -375,7 +375,9 @@ void Theme::initIconTheme(){
 
     foreach (QString themedir, themesDir.entryList(QDir::Dirs)) {
         if (themedir.startsWith("ukui-icon-theme-")){
+
             QDir appsDir = QDir(ICONTHEMEPATH + themedir + "/48x48/apps/");
+
             if ("ukui-icon-theme-basic" == themedir) {
                 continue;
             }
@@ -383,10 +385,8 @@ void Theme::initIconTheme(){
             QStringList appIconsList = appsDir.entryList();
 
             QStringList showIconsList;
-            for (int i = 0; i < appIconsList.size(); i++){
-                if (i%64 == 0 && i < 6 * 64){
-                    showIconsList.append(appsDir.path() + "/" + appIconsList.at(i));
-                }
+            for (int i = 0; i < kIconsList.size(); i++) {
+                showIconsList.append(appsDir.path() + "/" + kIconsList.at(i));
             }
 
             ThemeWidget * widget = new ThemeWidget(QSize(48, 48), dullTranslation(themedir.section("-", -1, -1, QString::SectionSkipEmpty)), showIconsList);

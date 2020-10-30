@@ -224,7 +224,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
                 QFont font = this->font();
                 int width = font.pointSize();
                 maxBtn->setIcon(QIcon::fromTheme("window-restore-symbolic"));
-                qDebug() << "the width is" << width;
                 ui->leftsidebarWidget->setMaximumWidth(width * 10 +25);
                 for (int i = 0; i <= 9; i++) {
                     QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
