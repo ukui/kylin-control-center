@@ -30,6 +30,7 @@ public:
     virtual ~ConfigFile(void);
     void Set(const QString &group,const QString &key,const QVariant &value);
     QVariant Get(const QString &group, const QString &key) const;
+    QString GetPath() const;
 private:
     QString m_qstrFileName;
     QSettings *m_psetting;

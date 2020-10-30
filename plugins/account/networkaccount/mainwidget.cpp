@@ -27,6 +27,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     thread  = new QThread();            //为创建的客户端做异步处理
     m_dbusClient->moveToThread(thread);
     m_szUuid = QUuid::createUuid().toString();
+    m_configFile = new ConfigFile();
     connect(this,SIGNAL(dooss(QString)),m_dbusClient,SLOT(init_oss(QString)));
     connect(this,SIGNAL(docheck()),m_dbusClient,SLOT(check_login()));
     connect(this,SIGNAL(doconf()),m_dbusClient,SLOT(init_conf()));
@@ -147,7 +148,7 @@ void MainWidget::setret_check(QString ret) {
         m_szCode = ret;
         m_mainWidget->setCurrentWidget(m_widgetContainer);
        // setshow(m_mainWidget);
-        QFile all_conf_file(QDir::homePath() + PATH);
+        QFile all_conf_file(ConfigFile(m_szConfPath).GetPath());
         if(all_conf_file.exists() == false) {
           //  doconf();
         } else {
@@ -167,7 +168,7 @@ void MainWidget::setret_change(int ret) {
 /* 初始化GUI */
 void MainWidget::init_gui() {
     //Allocator
-    m_szConfPath = QDir::homePath() + "/.cache/kylinssoclient/All.conf"; //All.conf文件地址
+    m_szConfPath = ConfigFile().GetPath(); //All.conf文件地址
     m_vboxLayout = new QVBoxLayout;//整体布局
     m_infoTabWidget = new QWidget(this);//用户信息窗口
     m_widgetContainer = new QWidget(this);//业务逻辑窗口，包括用户信息以及同步
@@ -315,9 +316,7 @@ void MainWidget::init_gui() {
     m_infoTabWidget->setContentsMargins(0,0,0,0);
     m_widgetContainer->setMinimumWidth(550);
 
-    ConfigFile files;
-
-    m_syncTimeLabel->setText(tr("The latest time sync is: ") + ConfigFile().Get("Auto-sync","time").toString().toStdString().c_str());
+    m_syncTimeLabel->setText(tr("The latest time sync is: ") + ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
 
     m_syncTimeLabel->setContentsMargins(20,0,0,0);
 
@@ -431,8 +430,8 @@ void MainWidget::init_gui() {
     m_fsWatcher.addPath(all_conf_path);
 
     connect(&m_fsWatcher,&QFileSystemWatcher::directoryChanged,[this] () {
-        m_syncTimeLabel->setText(tr("The latest time sync is: ") + ConfigFile().Get("Auto-sync","time").toString().toStdString().c_str());
-        QFile conf(QDir::homePath()+ "/.cache/kylinssoclient/All.conf");
+        m_syncTimeLabel->setText(tr("The latest time sync is: ") + ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
+        QFile conf(ConfigFile(m_szConfPath).GetPath());
         if(conf.exists() == true) {
             handle_conf();
         }
@@ -463,7 +462,7 @@ void MainWidget::init_gui() {
                    m_itemList->get_item(i)->set_change(0,"0");
                }
            }
-           QFile file(QDir::homePath() + PATH);
+           QFile file(ConfigFile(m_szConfPath).GetPath());
 
            if(file.exists() == false) {
                // emit doconf();
@@ -643,7 +642,6 @@ void MainWidget::on_switch_button(int on,int id) {
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
-    //qDebug() << id;
     if( m_exitCloud_btn->property("on") == true || !m_bAutoSyn) {
         if(m_itemList->get_item(id)->get_swbtn()->get_swichbutton_val() == 1)
             m_itemList->get_item(id)->make_itemoff();
@@ -799,7 +797,7 @@ void MainWidget::download_over() {
         //showDesktopNotify("同步结束");
     }
     if(__once__ == false) {
-        m_syncTimeLabel->setText(tr("The latest time sync is: ") + ConfigFile().Get("Auto-sync","time").toString().toStdString().c_str());
+        m_syncTimeLabel->setText(tr("The latest time sync is: ") + ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
 
         m_autoSyn->set_change(0,"0");
     }
@@ -820,7 +818,7 @@ void MainWidget::push_over() {
     }
     ConfigFile files;
     if(__once__ == false) {
-        m_syncTimeLabel->setText(tr("The latest time sync is: ") + ConfigFile().Get("Auto-sync","time").toString().toStdString().c_str());
+        m_syncTimeLabel->setText(tr("The latest time sync is: ") + ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
         m_autoSyn->set_change(0,"0");
     }
 }
@@ -921,6 +919,7 @@ MainWidget::~MainWidget() {
     delete m_itemList;
     delete m_dbusClient;
     delete m_welcomeImage;
+    delete m_configFile;
     if(thread)
     {
         thread->quit();

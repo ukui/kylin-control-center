@@ -19,19 +19,26 @@
  */
 #include "configfile.h"
 #include <QDebug>
+#include <QProcess>
 #include <QDir>
 
 ConfigFile::ConfigFile(QString qstrfilename)
 {
     if (qstrfilename.isEmpty())
     {
-        m_qstrFileName = QDir::homePath() + "/.cache/kylinssoclient/All.conf";
+        QProcess proc;
+        proc.start("lsb_release -r");
+        proc.waitForFinished();
+
+        QByteArrayList releaseList = proc.readAll().split('\t');
+        QByteArray ar = releaseList.at(1);
+        QString path = QDir::homePath()  + "/.cache/kylinssoclient/All-" + ar.replace("\n","") + ".conf";
+        m_qstrFileName = path;
     }
     else
     {
         m_qstrFileName = qstrfilename;
     }
-
     m_psetting = new QSettings(m_qstrFileName, QSettings::IniFormat);
 }
 
@@ -39,6 +46,10 @@ ConfigFile::~ConfigFile()
 {
     delete m_psetting;
     m_psetting = 0;
+}
+
+QString ConfigFile::GetPath() const {
+    return m_qstrFileName;
 }
 
 void ConfigFile::Set(const QString &qstrnodename,const QString &qstrkeyname,const QVariant &qvarvalue)
