@@ -40,7 +40,7 @@ jobs:
       - name: Update apt repository
         run: apt-get update -y
       - name: Install build dependcies
-        run: apt-get install -y build-essential qt5-default qttools5-dev-tools pkg-kde-tools pkg-config libkf5widgetsaddons-dev libkf5config-dev libkf5configwidgets-dev libkf5screen-dev debhelper-compat libqt5svg5-dev libgsettings-qt-dev libglib2.0-dev libmatekbd-dev libqt5x11extras5-dev libxklavier-dev qtdeclarative5-dev libdconf-dev libmatemixer-dev libqt5xdg-dev qtmultimedia5-dev libxml2-dev libcanberra-dev libmate-desktop-dev libxkbcommon-dev libxkbfile-dev libkf5i18n-dev libkf5windowsystem-dev libkf5guiaddons-dev libkf5coreaddons-dev libboost-dev libxcb-xkb-dev
+        run: apt-get install -y build-essential qt5-default qttools5-dev-tools pkg-kde-tools pkg-config libkf5widgetsaddons-dev libkf5config-dev libkf5configwidgets-dev libkf5screen-dev debhelper-compat libqt5svg5-dev libgsettings-qt-dev libglib2.0-dev libmatekbd-dev libqt5x11extras5-dev libxklavier-dev qtdeclarative5-dev libdconf-dev libmatemixer-dev libqt5xdg-dev qtmultimedia5-dev libxml2-dev libcanberra-dev libmate-desktop-dev libxkbcommon-dev libxkbfile-dev libkf5i18n-dev libkf5windowsystem-dev libkf5guiaddons-dev libkf5coreaddons-dev libboost-dev libxcb-xkb-dev libpolkit-qt5-1-dev
       - name: QMake configure & Make
         run: |
           mkdir build;
@@ -56,7 +56,7 @@ jobs:
       - name: Checkout ukui-control-center source code
         uses: actions/checkout@v2
       - name: Install build dependencies
-        run: dnf install --refresh -y which gcc gcc-c++ make cmake cmake-rpm-macros autoconf automake intltool rpm-build qt5-rpm-macros qt5-qtbase-devel qt5-qtsvg-devel gsettings-qt-devel glib2-devel qt5-qtx11extras-devel libmatekbd-devel libxklavier-devel kf5-kconfigwidgets-devel kf5-kconfig-devel qt5-qtdeclarative-devel dconf-devel redshift edid-decode libmatemixer-devel libqtxdg-devel qt5-qtmultimedia-devel libxml2-devel libkscreen-qt5-devel kf5-ki18n-devel libcanberra-devel libXi-devel mate-desktop-devel libxkbcommon-devel libxkbfile-devel qt5-linguist kf5-kwindowsystem-devel kf5-kguiaddons-devel kf5-kcoreaddons-devel boost-devel libxcb-devel xcb-util-devel
+        run: dnf install --refresh -y which gcc gcc-c++ make cmake cmake-rpm-macros autoconf automake intltool rpm-build qt5-rpm-macros qt5-qtbase-devel qt5-qtsvg-devel gsettings-qt-devel glib2-devel qt5-qtx11extras-devel libmatekbd-devel libxklavier-devel kf5-kconfigwidgets-devel kf5-kconfig-devel qt5-qtdeclarative-devel dconf-devel redshift edid-decode libmatemixer-devel libqtxdg-devel qt5-qtmultimedia-devel libxml2-devel libkscreen-qt5-devel kf5-ki18n-devel libcanberra-devel libXi-devel mate-desktop-devel libxkbcommon-devel libxkbfile-devel qt5-linguist kf5-kwindowsystem-devel kf5-kguiaddons-devel kf5-kcoreaddons-devel boost-devel libxcb-devel xcb-util-devel polkit-qt5-1-devel
       - name: QMake configure & Make
         run: |
           ln -s /usr/bin/lrelease-qt5 /usr/bin/lrelease;
@@ -73,7 +73,7 @@ jobs:
       - name: Checkout ukui-control-center source code
         uses: actions/checkout@v2
       - name: Install build dependencies
-        run: dnf install --refresh --nogpg -y which gcc gcc-c++ make cmake cmake-rpm-macros autoconf automake intltool rpm-build qt5-rpm-macros qt5-qtbase-devel qt5-qtsvg-devel gsettings-qt-devel glib2-devel qt5-qtx11extras-devel libmatekbd-devel libxklavier-devel kf5-kconfigwidgets-devel kf5-kconfig-devel qt5-qtdeclarative-devel dconf-devel redshift edid-decode libmatemixer-devel libqtxdg-devel qt5-qtmultimedia-devel libxml2-devel libkscreen-qt5-devel kf5-ki18n-devel libcanberra-devel libXi-devel mate-desktop-devel libxkbcommon-devel libxkbfile-devel qt5-linguist kf5-kwindowsystem-devel kf5-kguiaddons-devel kf5-kcoreaddons-devel boost-devel libxcb-devel xcb-util-devel
+        run: dnf install --refresh --nogpg -y which gcc gcc-c++ make cmake cmake-rpm-macros autoconf automake intltool rpm-build qt5-rpm-macros qt5-qtbase-devel qt5-qtsvg-devel gsettings-qt-devel glib2-devel qt5-qtx11extras-devel libmatekbd-devel libxklavier-devel kf5-kconfigwidgets-devel kf5-kconfig-devel qt5-qtdeclarative-devel dconf-devel redshift edid-decode libmatemixer-devel libqtxdg-devel qt5-qtmultimedia-devel libxml2-devel libkscreen-qt5-devel kf5-ki18n-devel libcanberra-devel libXi-devel mate-desktop-devel libxkbcommon-devel libxkbfile-devel qt5-linguist kf5-kwindowsystem-devel kf5-kguiaddons-devel kf5-kcoreaddons-devel boost-devel libxcb-devel xcb-util-devel polkit-qt5-1-devel
       - name: QMake configure & Make
         run: |
           ln -s /usr/bin/lrelease-qt5 /usr/bin/lrelease;
@@ -94,7 +94,7 @@ jobs:
       - name: Update apt repository
         run: apt-get update -y
       - name: Install build dependcies
-        run: apt-get install -y build-essential qt5-default qttools5-dev-tools pkg-kde-tools pkg-config libkf5widgetsaddons-dev libkf5config-dev libkf5configwidgets-dev libkf5screen-dev debhelper-compat libqt5svg5-dev libgsettings-qt-dev libglib2.0-dev libmatekbd-dev libqt5x11extras5-dev libxklavier-dev qtdeclarative5-dev libdconf-dev libmatemixer-dev libqt5xdg-dev qtmultimedia5-dev libxml2-dev libcanberra-dev libmate-desktop-dev libxkbcommon-dev libxkbfile-dev libkf5i18n-dev libkf5windowsystem-dev libkf5guiaddons-dev libkf5coreaddons-dev libboost-dev libxcb-xkb-dev
+        run: apt-get install -y build-essential qt5-default qttools5-dev-tools pkg-kde-tools pkg-config libkf5widgetsaddons-dev libkf5config-dev libkf5configwidgets-dev libkf5screen-dev debhelper-compat libqt5svg5-dev libgsettings-qt-dev libglib2.0-dev libmatekbd-dev libqt5x11extras5-dev libxklavier-dev qtdeclarative5-dev libdconf-dev libmatemixer-dev libqt5xdg-dev qtmultimedia5-dev libxml2-dev libcanberra-dev libmate-desktop-dev libxkbcommon-dev libxkbfile-dev libkf5i18n-dev libkf5windowsystem-dev libkf5guiaddons-dev libkf5coreaddons-dev libboost-dev libxcb-xkb-dev libpolkit-qt5-1-dev
       - name: QMake configure & Make
         run: |
           mkdir build;

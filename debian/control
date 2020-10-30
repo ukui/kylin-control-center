@@ -33,6 +33,7 @@ Build-Depends: debhelper-compat (= 12),
                libboost-dev,
                qttools5-dev-tools,
                libxcb-xkb-dev,
+               libpolkit-qt5-1-dev,
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Homepage: https://github.com/ukui/ukui-control-center
