@@ -147,6 +147,7 @@ class Widget : public QWidget
   public Q_SLOTS:
     void save();
     void scaleChangedSlot(int index);
+    void changedSlot();
 
   private:
     void loadQml();
@@ -159,6 +160,8 @@ class Widget : public QWidget
     void writeConfigFile();
     void setcomBoxScale();
     void initNightUI();
+    // 是否恢复应用之前的配置
+    bool isRestoreConfig();
 
   private:
     Ui::DisplayWindow *ui;
@@ -196,13 +199,6 @@ class Widget : public QWidget
     SwitchButton *mThemeButton = nullptr;
     QLabel *nightLabel = nullptr;
 
-    // 是否为夜间模式
-    bool m_isNightMode = false;
-    bool m_redshiftIsValid = false;
-
-    // profile文件内容
-    QStringList proRes;
-
     Slider *slider;
     QGSettings *m_gsettings = nullptr;
     QGSettings *scaleGSettings = nullptr;
@@ -210,8 +206,13 @@ class Widget : public QWidget
     QButtonGroup *singleButton;
 
     int screenScale = 1;
+    // 是否为夜间模式
+    bool m_isNightMode = false;
+    bool m_redshiftIsValid = false;
     bool isScaleChanged = false;
     bool oriApply;
+    bool mConfigChanged = false;
+
 };
 
 #endif // WIDGET_H
