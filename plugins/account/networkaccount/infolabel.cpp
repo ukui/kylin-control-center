@@ -14,16 +14,26 @@ InfoLabel::InfoLabel(QWidget *parent) : QLabel(parent)
     QHBoxLayout *layout = new QHBoxLayout;
 
 
-    layout->addWidget(m_textLabel,0,Qt::AlignCenter);
+    layout->addWidget(m_textLabel,0,Qt::AlignVCenter);
 
 
     m_toolTips->setLayout(layout);
-    m_toolTips->setFixedWidth(200);
+    m_toolTips->setFixedWidth(225);
+    m_toolTips->setMinimumHeight(44);
+    m_toolTips->setMaximumHeight(500);
 
-    worklayout->addWidget(m_toolTips,0,Qt::AlignCenter);
+    m_textLabel->setMaximumHeight(480);
+    setWordWrap(true);
+
+    worklayout->addWidget(m_toolTips,0,Qt::AlignVCenter);
 
     setPixmap(m_svgHandler->loadSvgColor(":/new/image/_.svg","default",16));
     m_toolTips->adjustSize();
+
+    setAlignment(Qt::AlignVCenter);
+
+    m_textLabel->setWordWrap(true);
+    m_textLabel->setAlignment(Qt::AlignTop);
 
     setLayout(worklayout);
 }
@@ -33,6 +43,7 @@ void InfoLabel::enterEvent(QEvent *e) {
     pos.setX(this->mapToGlobal(QPoint(0, 0)).x() + 26);
     pos.setY(this->mapToGlobal(QPoint(0, 0)).y() + 26);
     m_toolTips->move(pos);
+    m_toolTips->adjustSize();
     m_toolTips->show();
     return QLabel::enterEvent(e);
 }

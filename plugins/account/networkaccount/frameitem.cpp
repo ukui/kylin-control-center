@@ -55,11 +55,12 @@ FrameItem::FrameItem(QWidget *parent) :QFrame(parent)
     m_hboxLayout->addWidget(m_stackedWidget,0,Qt::AlignRight);
     m_hboxLayout->addWidget(m_switchBtn,0,Qt::AlignRight);
     m_workLayout->addLayout(m_hboxLayout);
+    m_workLayout->setAlignment(Qt::AlignVCenter);
     m_workLayout->setContentsMargins(16,0,16,0);
     this->setAttribute(Qt::WA_StyledBackground,true);
     //widget->setStyleSheet("background-color: rgba(244,244,244,85%);border-radius:4px;");
     this->setLayout(m_workLayout);
-
+    m_stackedWidget->setFixedHeight(50);
     m_stackedWidget->adjustSize();
 
 
@@ -127,7 +128,7 @@ void FrameItem::set_change(const int &status,const QString &code) {
         }
         m_stackedWidget->setCurrentWidget(m_errorStatusLabel);
     }
-    //m_stackedWidget->adjustSize();
+    m_stackedWidget->adjustSize();
 }
 
 /* 让SwitchButton播放打开动画 */
