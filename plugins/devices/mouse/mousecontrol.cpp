@@ -59,7 +59,9 @@ extern "C" {
 #define CURSOR_BLINK_KEY      "cursor-blink"
 #define CURSOR_BLINK_TIME_KEY "cursor-blink-time"
 
-MyLabel::MyLabel(){
+#define THEME_SCHEMA                       "org.ukui.style"
+
+MyLabel::MyLabel() {
 
     setAttribute(Qt::WA_DeleteOnClose);
 
@@ -75,16 +77,15 @@ MyLabel::MyLabel(){
 
     const QByteArray id(MOUSE_SCHEMA);
     if (QGSettings::isSchemaInstalled(id)){
-        mSettings = new QGSettings(id);
+        mSettings = new QGSettings(id, QByteArray(), this);
     }
 }
 
-MyLabel::~MyLabel(){
-    if (QGSettings::isSchemaInstalled(MOUSE_SCHEMA))
-        delete mSettings;
+MyLabel::~MyLabel() {
+
 }
 
-void MyLabel::mouseDoubleClickEvent(QMouseEvent *event){
+void MyLabel::mouseDoubleClickEvent(QMouseEvent *event) {
     Q_UNUSED(event);
     int delay = mSettings->get(DOUBLE_CLICK_KEY).toInt();
     setPixmap(QPixmap(":/img/plugins/mouse/double-click-on.png"));
@@ -94,8 +95,7 @@ void MyLabel::mouseDoubleClickEvent(QMouseEvent *event){
 }
 
 
-MouseControl::MouseControl()
-{
+MouseControl::MouseControl() {
     ui = new Ui::MouseControl;
     pluginWidget = new QWidget;
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
@@ -111,12 +111,14 @@ MouseControl::MouseControl()
     const QByteArray id(MOUSE_SCHEMA);
     const QByteArray sessionId(SESSION_SCHEMA);
     const QByteArray idd(DESKTOP_SCHEMA);
+    const QByteArray themeId(THEME_SCHEMA);
     if (QGSettings::isSchemaInstalled(sessionId) &&
             QGSettings::isSchemaInstalled(id) &&
-            QGSettings::isSchemaInstalled(DESKTOP_SCHEMA)) {
-        sesstionSetttings = new QGSettings(sessionId);
-        settings = new QGSettings(id);
-        desktopSettings = new QGSettings(idd);
+            QGSettings::isSchemaInstalled(idd)) {
+        sesstionSetttings = new QGSettings(sessionId, QByteArray(), this);
+        settings = new QGSettings(id, QByteArray(), this);
+        desktopSettings = new QGSettings(idd, QByteArray(), this);
+        mThemeSettings = new QGSettings(themeId, QByteArray(), this);
 
         mouseKeys = settings->keys();
 
@@ -131,11 +133,6 @@ MouseControl::MouseControl()
 
 MouseControl::~MouseControl() {
     delete ui;
-    if (QGSettings::isSchemaInstalled(MOUSE_SCHEMA) && QGSettings::isSchemaInstalled(SESSION_SCHEMA)) {
-        delete settings;
-        delete sesstionSetttings;
-        delete desktopSettings;
-    }
 }
 
 QString MouseControl::get_plugin_name() {
@@ -245,7 +242,14 @@ void MouseControl::setupComponent() {
     connect(ui->pointerSizeComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &MouseControl::mouseSizeChange);
 
     connect(flashingBtn, &SwitchButton::checkedChanged, [=](bool checked) {
+        ui->cursorSpeedFrame->setVisible(checked);
         desktopSettings->set(CURSOR_BLINK_KEY, checked);
+        mThemeSettings->set(CURSOR_BLINK_KEY, checked);
+        if (!checked) {
+            mThemeSettings->set(CURSOR_BLINK_TIME_KEY, 0);
+        } else {
+            mThemeSettings->set(CURSOR_BLINK_TIME_KEY, ui->cursorSpeedSlider->value());
+        }
     });
 
     connect(ui->midHorSlider, &QSlider::sliderReleased, [=] {
@@ -254,6 +258,7 @@ void MouseControl::setupComponent() {
 
     connect(ui->cursorSpeedSlider, &QSlider::sliderReleased, [=] {
         desktopSettings->set(CURSOR_BLINK_TIME_KEY, ui->cursorSpeedSlider->value());
+        mThemeSettings->set(CURSOR_BLINK_TIME_KEY, ui->cursorSpeedSlider->value());
     });
 
 }
@@ -280,7 +285,7 @@ void MouseControl::initPointerStatus() {
     int mouse_threshold =  settings->get(THRESHOLD_KEY).toInt();
 
     //当从接口获取的是-1,则代表系统默认值，真实值需要从底层获取
-    if (mouse_threshold == -1 || static_cast<int>(mouse_acceleration) == -1){
+    if (mouse_threshold == -1 || static_cast<int>(mouse_acceleration) == -1) {
         // speed sensitivity
         int accel_numerator, accel_denominator, threshold;  //当加速值和灵敏度为系统默认的-1时，从底层获取到默认的具体值
 
@@ -316,6 +321,7 @@ void MouseControl::initPointerStatus() {
 void MouseControl::initCursorStatus() {
     flashingBtn->blockSignals(true);
     flashingBtn->setChecked(desktopSettings->get(CURSOR_BLINK_KEY).toBool());
+    ui->cursorSpeedFrame->setVisible(desktopSettings->get(CURSOR_BLINK_KEY).toBool());
     flashingBtn->blockSignals(false);
 
     ui->cursorSpeedSlider->blockSignals(true);
@@ -360,5 +366,4 @@ void MouseControl::mouseSizeChange() {
     message.setArguments(args);
     QDBusConnection::sessionBus().send(message);
 #endif
-
 }

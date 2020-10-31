@@ -84,9 +84,10 @@ private:
     SwitchButton * visiblityBtn;
     SwitchButton * flashingBtn;
 
-    QGSettings * settings;
-    QGSettings * sesstionSetttings;
-    QGSettings * desktopSettings;
+    QGSettings *settings;
+    QGSettings *sesstionSetttings;
+    QGSettings *desktopSettings;
+    QGSettings *mThemeSettings;
 
     int pluginType;
 
