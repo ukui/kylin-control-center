@@ -473,6 +473,7 @@ bool AutoBoot::_delete_autoapp(QString bname){
     initUI();
 
     g_free(dstpath);
+    g_free(keyfile);
     return true;
 }
 
