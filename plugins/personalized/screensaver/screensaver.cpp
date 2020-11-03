@@ -127,10 +127,10 @@ const QString Screensaver::name() const {
 void Screensaver::initSearchText() {
     //~ contents_path /screensaver/Enable screensaver
     ui->enableLabel->setText(tr("Enable screensaver"));
-    //~ contents_path /screensaver/Enable screensaver
-    ui->enableLabel->setText(tr("Screensaver program"));
+    //~ contents_path /screensaver/Screensaver program
+    ui->programLabel->setText(tr("Screensaver program"));
     //~ contents_path /screensaver/idle time
-    ui->enableLabel->setText(tr("idle time"));
+    ui->idleLabel->setText(tr("idle time"));
 }
 
 void Screensaver::initComponent() {

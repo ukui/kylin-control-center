@@ -285,18 +285,8 @@ void DateTime::hidendLabel() {
 }
 
 void DateTime::rsync_with_network_slot() {
-//    qDebug()<<"TODO------> sleep waies?"<<endl;
 
     m_datetimeiface->call("SetNTP", true, true);
-
-//    QMovie *loadgif = new QMovie(":/sys.gif");
-//    loadgif->start();
-//    ui->syslabel->setVisible(true);
-//    ui->syslabel->setMovie(loadgif);
-//    ui->syslabel->setScaledContents(true);
-//    ui->syslabel->setStyleSheet("QLabel#syslabel{border-radius:4px;}");
-
-//    QTimer::singleShot(2*1000,this,SLOT(showendLabel()));
 }
 
 void DateTime::loadHour() {

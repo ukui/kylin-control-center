@@ -59,7 +59,7 @@ extern "C" {
 #define CURSOR_BLINK_KEY      "cursor-blink"
 #define CURSOR_BLINK_TIME_KEY "cursor-blink-time"
 
-#define THEME_SCHEMA                       "org.ukui.style"
+#define THEME_SCHEMA          "org.ukui.style"
 
 MyLabel::MyLabel() {
 
