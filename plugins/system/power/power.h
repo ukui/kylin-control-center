@@ -58,15 +58,16 @@ public:
     void resetCustomPlanStatus();
     void initPowerOtherStatus();
     void isPowerSupply();
-
     void refreshUI();
+    int  getIdleTime();
 
 private:
     Ui::Power *ui;
 
     QWidget * pluginWidget;
 
-    QGSettings * settings;
+    QGSettings *settings;
+    QGSettings *sessionSetting;
 
     QString pluginName;
     int pluginType;
@@ -81,6 +82,9 @@ private:
 
     bool settingsCreate;
     bool isExitsPower;
+
+private slots:
+    void setIdleTime(int idleTime);
 };
 
 #endif // POWER_H
