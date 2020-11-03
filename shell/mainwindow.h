@@ -58,7 +58,6 @@ public:
 
     void bootOptionsFilter(QString opt);
     void bootOptionsSwitch(int moduleNum, int funcNum);
-    void setLineEditFocus(QString arg);
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -76,7 +75,6 @@ private:
     bool bIsFullScreen;
 
     QDir pluginsDir;
-//    QStringList modulesStringList;
     QList<int> moduleIndexList;
     QList<QMap<QString, QObject *>> modulesList;
 
