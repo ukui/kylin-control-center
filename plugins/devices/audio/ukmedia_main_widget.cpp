@@ -1273,11 +1273,12 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
     MateMixerDirection direction;
     MateMixerStream *m_pStream = mate_mixer_stream_control_get_stream(m_pControl);
 
+    MateMixerSwitch *portSwitch;
     //拔插耳机时设置输出端口名
     if (MATE_MIXER_IS_STREAM(m_pStream)) {
         MateMixerStream *stream = mate_mixer_stream_control_get_stream(m_pControl);
         /* Enable the port selector if the stream has one */
-        MateMixerSwitch *portSwitch = findStreamPortSwitch (m_pWidget,stream);
+         portSwitch = findStreamPortSwitch (m_pWidget,stream);
         if (portSwitch != nullptr) {
             const GList *options;
             options = mate_mixer_switch_list_options(MATE_MIXER_SWITCH(portSwitch));
@@ -1292,16 +1293,19 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
                 options = options->next;
             }
         }
-        MateMixerSwitchOption *option = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(portSwitch));
-        QString label = mate_mixer_switch_option_get_label(option);
-        m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(label);
-        qDebug() << "get stream correct" << mate_mixer_stream_control_get_label(m_pControl) << mate_mixer_stream_get_label(m_pStream) <<label;
     }
     else {
         m_pStream = m_pWidget->m_pStream;
         direction = mate_mixer_stream_get_direction(MATE_MIXER_STREAM(m_pStream));
         if (direction == MATE_MIXER_DIRECTION_OUTPUT) {
 //            mate_mixer_context_set_default_output_stream(m_pWidget->m_pContext,m_pStream);
+            if (portSwitch!= nullptr) {
+                MateMixerSwitchOption *option = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(portSwitch));
+                QString label = mate_mixer_switch_option_get_label(option);
+                m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(label);
+                qDebug() << "get stream correct" << mate_mixer_stream_control_get_label(m_pControl) << mate_mixer_stream_get_label(m_pStream) <<label;
+
+            }
             setOutputStream(m_pWidget,m_pStream);
             qDebug() << "从control 获取的stream不为output stream" << mate_mixer_stream_get_label(m_pStream);
         }
