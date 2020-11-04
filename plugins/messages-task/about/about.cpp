@@ -46,7 +46,6 @@ About::About() {
     initSearchText();
     initActiveDbus();
     setupDesktopComponent();
-    setupKernelCompenent();
     setupVersionCompenent();
     setupSerialComponent();
 }
@@ -68,7 +67,7 @@ QWidget *About::get_plugin_ui() {
 }
 
 void About::plugin_delay_control() {
-
+    setupKernelCompenent();
 }
 
 const QString About::name() const {
@@ -103,35 +102,31 @@ void About::setupKernelCompenent() {
     QString memorySize;
     QString cpuType;
 
-    //ubuntukylin youker DBus interface
-    QDBusInterface *youkerInterface;
-    for (int i = 0; i < 2; i++) {
-        youkerInterface = new QDBusInterface("com.kylin.assistant.systemdaemon",
-                                             "/com/kylin/assistant/systemdaemon",
-                                             "com.kylin.assistant.systemdaemon",
-                                             QDBusConnection::systemBus(), this);
-    }
-    if (!youkerInterface->isValid()) {
+    QDBusInterface youkerInterface("com.kylin.assistant.systemdaemon",
+                                   "/com/kylin/assistant/systemdaemon",
+                                   "com.kylin.assistant.systemdaemon",
+                                   QDBusConnection::systemBus());
+    if (!youkerInterface.isValid()) {
         qCritical() << "Create youker Interface Failed When Get Computer info: " << QDBusConnection::systemBus().lastError();
         return;
     }
 
     QDBusReply<QMap<QString, QVariant>> diskinfo;
-    diskinfo  = youkerInterface ->call("get_harddisk_info");
+    diskinfo  = youkerInterface.call("get_harddisk_info");
     if (!diskinfo.isValid()) {
         qDebug() << "diskinfo is invalid" << endl;
     } else {
         QMap<QString, QVariant> res = diskinfo.value();
         diskSize = res["DiskCapacity"].toString();
-        if (diskSize.contains("<1_1>")) {
-            int index = diskSize.indexOf("<1_1>");
-            QString disk1 = diskSize.left(index);
-            diskSize = tr("Disk:") + disk1;
+        QStringList diskList = diskSize.split("<1_1>");
+        diskSize.clear();
+        for (int i = 0; i < diskList.length(); i++) {
+            diskSize += tr("Disk") + QString::number(i+1) + ":" +diskList.at(i) + " ";
         }
     }
 
     QDBusReply<QMap<QString, QVariant>> cpuinfo;
-    cpuinfo  = youkerInterface ->call("get_cpu_info");
+    cpuinfo  = youkerInterface.call("get_cpu_info");
     if (!diskinfo.isValid()) {
         qDebug() << "cpuinfo is invalid" << endl;
     } else {
