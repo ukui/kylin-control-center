@@ -223,21 +223,30 @@ void ChangeValidDialog::setupMonthCombo(){
 
     int year = ui->yearCombox->currentData().toInt();
     if (year > 0){
-        ui->monthCombox->addItem(/*QObject::tr("Jan")*/"1", 1);
-        ui->monthCombox->addItem(/*QObject::tr("Feb")*/"2", 2);
-        ui->monthCombox->addItem(/*QObject::tr("Mar")*/"3", 3);
-        ui->monthCombox->addItem(/*QObject::tr("Apr")*/"4", 4);
-        ui->monthCombox->addItem(/*QObject::tr("May")*/"5", 5);
-        ui->monthCombox->addItem(/*QObject::tr("Jun")*/"6", 6);
-        ui->monthCombox->addItem(/*QObject::tr("Jul")*/"7", 7);
-        ui->monthCombox->addItem(/*QObject::tr("Aug")*/"8", 8);
-        ui->monthCombox->addItem(/*QObject::tr("Sep")*/"9", 9);
-        ui->monthCombox->addItem(/*QObject::tr("Oct")*/"10", 10);
-        ui->monthCombox->addItem(/*QObject::tr("Nov")*/"11", 11);
-        ui->monthCombox->addItem(/*QObject::tr("Dec")*/"12", 12);
+        QDate begin = QDate::currentDate().addDays(1);
+
+        if (year == begin.year()){
+            for (int i = begin.month(); i < 13; i++){
+                ui->monthCombox->addItem(QString::number(i), i);
+            }
+        } else {
+            for (int i = 1; i < 13; i++){
+                ui->monthCombox->addItem(QString::number(i), i);
+            }
+        }
+//        ui->monthCombox->addItem(/*QObject::tr("Jan")*/"1", 1);
+//        ui->monthCombox->addItem(/*QObject::tr("Feb")*/"2", 2);
+//        ui->monthCombox->addItem(/*QObject::tr("Mar")*/"3", 3);
+//        ui->monthCombox->addItem(/*QObject::tr("Apr")*/"4", 4);
+//        ui->monthCombox->addItem(/*QObject::tr("May")*/"5", 5);
+//        ui->monthCombox->addItem(/*QObject::tr("Jun")*/"6", 6);
+//        ui->monthCombox->addItem(/*QObject::tr("Jul")*/"7", 7);
+//        ui->monthCombox->addItem(/*QObject::tr("Aug")*/"8", 8);
+//        ui->monthCombox->addItem(/*QObject::tr("Sep")*/"9", 9);
+//        ui->monthCombox->addItem(/*QObject::tr("Oct")*/"10", 10);
+//        ui->monthCombox->addItem(/*QObject::tr("Nov")*/"11", 11);
+//        ui->monthCombox->addItem(/*QObject::tr("Dec")*/"12", 12);
     }
-
-
 
     ui->monthCombox->blockSignals(false);
 }
@@ -253,10 +262,19 @@ void ChangeValidDialog::setupDayCombo(){
         int month = ui->monthCombox->currentData().toInt();
         if (month){
             QDate selected = QDate(year, month, 1);
+            QDate begin = QDate::currentDate().addDays(1);
             int days = selected.daysInMonth();
-            for (int d = 1; d <= days; d++){
-                ui->dayCombox->addItem(QString::number(d)/*+QObject::tr("Day")*/, d);
+
+            if (year == begin.year() && month == begin.month()){
+                for (int d = begin.day(); d <= days; d++){
+                    ui->dayCombox->addItem(QString::number(d)/*+QObject::tr("Day")*/, d);
+                }
+            } else {
+                for (int d = 1; d <= days; d++){
+                    ui->dayCombox->addItem(QString::number(d)/*+QObject::tr("Day")*/, d);
+                }
             }
+
         }
     } else {
 

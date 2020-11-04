@@ -166,9 +166,14 @@ bool ChangePwdDialog::checkOtherPasswd(QString name, QString pwd){
     char output[128];
 
     QByteArray ba1 = name.toLatin1();
-    QByteArray ba2 = pwd.toLatin1();
 
-    sprintf(command, "/usr/bin/checkuserpwd %s %s", ba1.data(), ba2.data());
+    //
+    if (pwd.contains("'")){
+        sprintf(command, "/usr/bin/checkuserpwd %s \"%s\"", ba1.data(), pwd.toLatin1().data());
+    } else {
+
+        sprintf(command, "/usr/bin/checkuserpwd %s '%s'", ba1.data(), pwd.toLatin1().data());
+    }
 
     if ((stream = popen(command, "r")) == NULL){
         return false;
