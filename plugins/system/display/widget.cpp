@@ -1415,8 +1415,6 @@ void Widget::setNightMode(const bool nightMode) {
         theme.set("style-name", "ukui-dark");
     } else if (nightMode && !mThemeButton->isChecked()) {
         theme.set("style-name", "ukui-default");
-    } else if (!nightMode) {
-        theme.set("style-name", "ukui-default");
     }
 }
 
