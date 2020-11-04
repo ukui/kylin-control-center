@@ -491,6 +491,15 @@ void Widget::initGSettings() {
         }
     });
 
+    QByteArray powerId(POWER_SCHMES);
+    if (QGSettings::isSchemaInstalled(POWER_SCHMES)) {
+        mPowerGSettings = new QGSettings(powerId, QByteArray(), this);
+        connect(mPowerGSettings, &QGSettings::changed, this, [=](QString key) {
+            if ("brightnessAc" == key || "brightnessBat") {
+                ui->brightnessSlider->setValue(mPowerGSettings->get(key).toInt());
+            }
+        });
+    }
 }
 
 void Widget::writeConfigFile() {
@@ -966,9 +975,6 @@ void Widget::initBrightnessUI() {
 
     connect(ui->brightnessSlider,&QSlider::valueChanged,
             this,&Widget::setBrightnessScreen);
-
-    connect(ui->primaryCombo, &QComboBox::currentTextChanged,
-            this, &Widget::setBrightnesSldierValue);
 }
 
 void Widget::initConnection() {
@@ -1021,36 +1027,14 @@ void Widget::initConnection() {
 }
 
 
-void Widget::setBrightnessScreen(int index) {
-    QGSettings *powerSettings;
-    if (QGSettings::isSchemaInstalled(POWER_SCHMES)) {
-        QByteArray id(POWER_SCHMES);
-        powerSettings = new QGSettings(id);
-        QStringList keys = powerSettings->keys();
-        if (keys.contains("brightnessAc")) {
-            powerSettings->set(POWER_KEY, index);
-        }
-    }
-    if (!powerSettings) {
-        delete powerSettings;
-    }
+void Widget::setBrightnessScreen(int value) {
+    mPowerGSettings->set(POWER_KEY, value);
 }
 
 //滑块改变
 void Widget::setBrightnesSldierValue() {
-    QGSettings *powerSettings;
     int value = 99;
-    if (QGSettings::isSchemaInstalled(POWER_SCHMES)) {
-        QByteArray id(POWER_SCHMES);
-        powerSettings = new QGSettings(id);
-        QStringList keys = powerSettings->keys();
-        if (keys.contains("brightnessAc")) {
-            value = powerSettings->get(POWER_KEY).toInt();
-        }
-    }
-    if (!powerSettings) {
-        delete powerSettings;
-    }
+    value = mPowerGSettings->get(POWER_KEY).toInt();
     ui->brightnessSlider->setValue(value);
 }
 
