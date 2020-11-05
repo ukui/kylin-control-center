@@ -322,28 +322,15 @@ QStringList Area::readFile(const QString& filepath) {
 }
 
 QStringList Area::getUserDefaultLanguage() {
-    int pos = 0;
     QString formats;
     QString language;
-    QStringList filestr;
     QStringList result;
-//    QString fname = getenv("HOME");
-//    fname += "/.pam_environment";
 
-//    filestr = this->readFile(fname);
-//    QRegExp re("LANGUAGE(\t+DEFAULT)?=(.*)$");
-//    for(int i = 0; i < filestr.length(); i++) {
-//        while((pos = re.indexIn(filestr.at(i), pos)) != -1) {
-//            language = re.cap(2);
-//            pos += re.matchedLength();
-//        }
-//    }
-
-    QDBusInterface * iproperty = new QDBusInterface("org.freedesktop.Accounts",
-                                            objpath,
-                                            "org.freedesktop.DBus.Properties",
-                                            QDBusConnection::systemBus());
-    QDBusReply<QMap<QString, QVariant> > reply = iproperty->call("GetAll", "org.freedesktop.Accounts.User");
+    QDBusInterface iproperty("org.freedesktop.Accounts",
+                             objpath,
+                             "org.freedesktop.DBus.Properties",
+                             QDBusConnection::systemBus());
+    QDBusReply<QMap<QString, QVariant> > reply = iproperty.call("GetAll", "org.freedesktop.Accounts.User");
     if (reply.isValid()){
         QMap<QString, QVariant> propertyMap;
         propertyMap = reply.value();

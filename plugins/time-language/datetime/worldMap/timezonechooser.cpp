@@ -14,7 +14,7 @@
 
 #include "ImageUtil/imageutil.h"
 
-TimeZoneChooser::TimeZoneChooser():QFrame ()
+TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
 {
     m_map = new TimezoneMap(this);
     m_map->show();

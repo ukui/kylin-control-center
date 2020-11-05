@@ -50,8 +50,8 @@ DateTime::DateTime() {
     ui->timeClockLable->setStyleSheet("QLabel{font-size: 24px; color: palette(windowText);}");
 
     m_zoneinfo = new ZoneInfo;
-    m_timezone = new TimeZoneChooser;
-    m_itimer = new QTimer();
+    m_timezone = new TimeZoneChooser(pluginWidget);
+    m_itimer = new QTimer(this);
     m_itimer->start(1000);
     connect(m_itimer,SIGNAL(timeout()), this, SLOT(datetime_update_slot()));
 
@@ -63,7 +63,7 @@ DateTime::DateTime() {
     const QByteArray id(FORMAT_SCHEMA);
     if(QGSettings::isSchemaInstalled(id)) {
         const QByteArray id(FORMAT_SCHEMA);
-        m_formatsettings = new QGSettings(id);
+        m_formatsettings = new QGSettings(id, QByteArray(), this);
         connect(m_formatsettings, &QGSettings::changed, this, [=](QString key) {
             QString hourFormat = m_formatsettings->get(TIME_FORMAT_KEY).toString();
             bool status = ("24" == hourFormat ? false : true);
@@ -75,12 +75,12 @@ DateTime::DateTime() {
     m_datetimeiface = new QDBusInterface("org.freedesktop.timedate1",
                                        "/org/freedesktop/timedate1",
                                        "org.freedesktop.timedate1",
-                                       QDBusConnection::systemBus());
+                                       QDBusConnection::systemBus(), this);
 
     m_datetimeiproperties = new QDBusInterface("org.freedesktop.timedate1",
                                              "/org/freedesktop/timedate1",
                                              "org.freedesktop.DBus.Properties",
-                                             QDBusConnection::systemBus());
+                                             QDBusConnection::systemBus(), this);
     component_init();
     status_init();
 
@@ -101,9 +101,6 @@ DateTime::DateTime() {
 
 DateTime::~DateTime() {
     delete ui;
-    delete m_formatsettings;
-    delete m_datetimeiface;
-    delete m_datetimeiproperties;
 }
 
 QString DateTime::get_plugin_name() {
@@ -118,7 +115,7 @@ QWidget *DateTime::get_plugin_ui() {
     return pluginWidget;
 }
 
-void DateTime::plugin_delay_control(){
+void DateTime::plugin_delay_control() {
 
 }
 
@@ -159,12 +156,11 @@ void DateTime::component_init() {
     }
 
     QFile tzfile("://zoneUtc");
-    if(!tzfile.open(QIODevice::ReadOnly | QIODevice::Text)){
+    if (!tzfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
          qDebug("TZ File Open Failed");
     } else {
         QTextStream txt(&tzfile);
         int index = 0;
-        qDebug()<<"TODO------->language problem"<<endl;
         while (!tzfile.atEnd()) {
             QStringList lineList = txt.readLine().split("\t");
             tzindexMapEn.insert(lineList.at(0),index);
@@ -203,7 +199,6 @@ void DateTime::datetime_update_slot() {
 
     //当前时间    
     current = QDateTime::currentDateTime();
-//    qDebug()<<"current time is-------->"<<current<<endl;
 
     QString currentsecStr ;
     if(m_formTimeBtn->isChecked()){
@@ -218,10 +213,8 @@ void DateTime::datetime_update_slot() {
        timeAndWeek = current.toString("yyyy-MM-dd ddd");
     }
 
-//    qDebug()<<"year is----------->"<<timeAndWeek<<endl;
     ui->dateLabel->setText(timeAndWeek);
     ui->timeClockLable->setText(currentsecStr);
-
 }
 
 void DateTime::changetime_slot() {
@@ -243,6 +236,7 @@ void DateTime::changezone_slot() {
     int y = m_timezone->height();
     m_timezone->move(desk_x / 2 - x / 2 + desk_rect.left(), desk_y / 2 - y / 2 + desk_rect.top());
 
+    m_timezone->setWindowModality(Qt::ApplicationModal);
     m_timezone->show();
 
     m_timezone->setMarkedTimeZoneSlot(m_zoneinfo->getCurrentTimzone());
@@ -272,9 +266,9 @@ void DateTime::time_format_clicked_slot(bool flag, bool outChange) {
 
 void DateTime::showendLabel() {
     ui->syslabel->setVisible(false);
-    if(ui->syslabel->isVisible()){
+    if(ui->syslabel->isVisible()) {
         ui->endlabel->setVisible(false);
-    }else {
+    } else {
         ui->endlabel->setVisible(true);
     }
     QTimer::singleShot(2*1000,this,SLOT(hidendLabel()));
@@ -308,7 +302,6 @@ void DateTime::loadHour() {
 
 void DateTime::connectGSetting() {
     connect(m_formatsettings, &QGSettings::changed, this, [=] (const QString &key) {
-//            qDebug()<<"status changed ------------>"<<endl;
         if (key == "hoursystem") {
             QString value = m_formatsettings->get(TIME_FORMAT_KEY).toString();
             bool checked = (value == "24" ? true : false);
@@ -333,7 +326,6 @@ QString DateTime::getLocalTimezoneName(QString timezone, QString locale) {
 
     // Reset locale.
     (void) setlocale(LC_ALL, kDefaultLocale);
-
 
     if ("Asia/Shanghai" == timezone) {
         if (QLocale::system().name() == "zh_CN") {
