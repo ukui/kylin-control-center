@@ -126,8 +126,7 @@ void Printer::refreshPrinterDev(){
 
     ui->listWidget->clear();
 
-//    QStringList printer = QPrinterInfo::availablePrinterNames();
-    QStringList printer {"test"};
+    QStringList printer = QPrinterInfo::availablePrinterNames();
 
     for (int num = 0; num < printer.count(); num++) {
         QIcon icon("://img/plugins/printer/printer.png");
