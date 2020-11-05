@@ -51,11 +51,7 @@ public:
 
 public:
     void initComponent();
-
     void runExternalApp();
-
-private:
-//    bool eventFilter(QObject *watched, QEvent *event);
 
 private:
     Ui::Printer *ui;
