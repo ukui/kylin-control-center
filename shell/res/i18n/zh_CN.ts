@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="140"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="253"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="248"/>
         <source>version</source>
         <translation>版本</translation>
         <extra-contents_path>/about/version</extra-contents_path>
@@ -27,28 +27,29 @@
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="271"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="255"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="250"/>
         <source>Kernel</source>
         <translation>内核</translation>
         <extra-contents_path>/about/Kernel</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="310"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="257"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="252"/>
         <source>CPU</source>
         <translation>CPU</translation>
         <extra-contents_path>/about/CPU</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="358"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="259"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="254"/>
         <source>Memory</source>
         <translation>内存</translation>
         <extra-contents_path>/about/Memory</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="406"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="261"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="124"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="256"/>
         <source>Disk</source>
         <translation>硬盘</translation>
         <extra-contents_path>/about/Disk</extra-contents_path>
@@ -97,22 +98,21 @@
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="129"/>
         <source>Disk:</source>
-        <translation>硬盘:</translation>
+        <translation type="vanished">硬盘:</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="144"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="139"/>
         <source> available</source>
         <translation>可用</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="217"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="212"/>
         <source>Inactivated</source>
         <translation>未激活</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="219"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="214"/>
         <source>Activated</source>
         <translation>已激活</translation>
     </message>
@@ -662,7 +662,7 @@ you can restore them to ensure the integrity of your system.</source>
     <message>
         <location filename="../../../plugins/account/userinfo/changegroupdialog.ui" line="26"/>
         <source>Dialog</source>
-        <translation type="unfinished">更改时间</translation>
+        <translation>用户组</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changegroupdialog.ui" line="122"/>
@@ -679,29 +679,34 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="obsolete">添加新用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="229"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="183"/>
+        <source>User group</source>
+        <translation>用户组</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="230"/>
         <source>Add user group</source>
         <translation>添加用户组</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="264"/>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="272"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="265"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="273"/>
         <source>Tips</source>
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="264"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="265"/>
         <source>Invalid Id!</source>
         <translation>无效组ID!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="267"/>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="275"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="268"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="276"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="272"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="273"/>
         <source>Invalid Group Name!</source>
         <translation>无效组名!</translation>
     </message>
@@ -754,37 +759,37 @@ you can restore them to ensure the integrity of your system.</source>
         <translation>当前密码检查!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="222"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="227"/>
         <source>General Pwd</source>
         <translation>通用密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="228"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="387"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="233"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="392"/>
         <source>Current Password</source>
         <translation>当前密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="229"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="388"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="396"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="234"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="393"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="401"/>
         <source>New Password</source>
         <translation>新密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="230"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="389"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="397"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="235"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="394"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="402"/>
         <source>New Password Identify</source>
         <translation>新密码确认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="330"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="335"/>
         <source>Contains illegal characters!</source>
         <translation>含有非法字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="332"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="337"/>
         <source>Same with old pwd</source>
         <translation>与旧密码相同</translation>
     </message>
@@ -801,8 +806,8 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="vanished">密码长度需要大于5个字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="245"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="362"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="250"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="367"/>
         <source>Inconsistency with pwd</source>
         <translation>与新密码不同</translation>
     </message>
@@ -919,22 +924,22 @@ you can restore them to ensure the integrity of your system.</source>
 <context>
     <name>ChangtimeDialog</name>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="179"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="172"/>
         <source>day</source>
         <translation>日期</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="176"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="169"/>
         <source>time</source>
         <translation>时间</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="177"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="170"/>
         <source>year</source>
         <translation>年份</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="178"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="171"/>
         <source>month</source>
         <translation>月份</translation>
     </message>
@@ -1271,21 +1276,21 @@ change system settings</source>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="185"/>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="135"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="132"/>
         <source>Sync system time</source>
         <translation>同步系统时间</translation>
         <extra-contents_path>/datetime/Sync system time</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="204"/>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="137"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="134"/>
         <source>Change time</source>
         <translation>手动更改时间</translation>
         <extra-contents_path>/datetime/Change time</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="223"/>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="139"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="136"/>
         <source>Change time zone</source>
         <translation>更改时区</translation>
         <extra-contents_path>/datetime/Change time zone</extra-contents_path>
@@ -1311,7 +1316,7 @@ change system settings</source>
         <extra-contents_path>/datetime/24-hour clock</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="229"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="222"/>
         <source>change time</source>
         <translation>更改时间</translation>
     </message>
@@ -3265,23 +3270,23 @@ Please retry for login!</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../mainwindow.cpp" line="444"/>
+        <location filename="../../mainwindow.cpp" line="427"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
         <location filename="../../mainwindow.cpp" line="80"/>
-        <location filename="../../mainwindow.cpp" line="465"/>
+        <location filename="../../mainwindow.cpp" line="445"/>
         <source>UKCC</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="787"/>
+        <location filename="../../mainwindow.cpp" line="755"/>
         <source>ukcc</source>
         <translation>控制面板</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="618"/>
+        <location filename="../../mainwindow.cpp" line="588"/>
         <source>Home</source>
         <translation>首页</translation>
     </message>
@@ -3925,7 +3930,7 @@ Please retry for login!</source>
         <extra-contents_path>/printer/Add Printers And Scanners</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/printer/printer.cpp" line="97"/>
+        <location filename="../../../plugins/devices/printer/printer.cpp" line="92"/>
         <source>Add printers and scanners</source>
         <translation>添加打印机和扫描仪</translation>
     </message>
@@ -4523,13 +4528,13 @@ Please retry for login!</source>
         <translation type="vanished">日</translation>
     </message>
     <message>
-        <location filename="../../main.cpp" line="48"/>
+        <location filename="../../main.cpp" line="52"/>
         <source>ukui-control-center is already running!</source>
         <translation>控制面板已运行!</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="107"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="419"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="424"/>
         <source>Pwd input error, re-enter!</source>
         <translation>密码输入错误,重新输入!</translation>
     </message>
@@ -5987,13 +5992,13 @@ Please retry for login!</source>
         <translation type="vanished">屏幕缩放 </translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="542"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="551"/>
         <source>unify output</source>
         <translation>统一输出</translation>
         <extra-contents_path>/display/unify output</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="546"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="555"/>
         <source>night mode</source>
         <translation>夜间模式</translation>
         <extra-contents_path>/display/night mode</extra-contents_path>
@@ -6009,61 +6014,61 @@ Please retry for login!</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="554"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="563"/>
         <source>Theme follow night mode</source>
         <translation>主题跟随夜间模式变化</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="564"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="573"/>
         <source>Hint</source>
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="565"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="574"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display
 If something goes wrong, the settings will be restored after 10 seconds</source>
         <translation>修改分辨率或刷新率后，由于显示设备与显卡存在兼容性问题，有可能显示不正常或者无法显示．如果出现异常，系统将在10秒后还原设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="569"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="578"/>
         <source>Save Config</source>
         <translation>保存当前配置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="570"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="579"/>
         <source>Restore Config</source>
         <translation>恢复之前配置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="578"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="587"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display 
 If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation>修改分辨率或刷新率后，由于显示设备与显卡存在兼容性问题，有可能显示不正常或者无法显示．如果出现异常，系统将在%1秒后还原设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="840"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="849"/>
         <source>please insure at least one output!</source>
         <translation>请确保至少开启一个屏幕!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="840"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="847"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="849"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="856"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="847"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="856"/>
         <source>Morning time should be earlier than evening time!</source>
         <translation>早晨时刻应早于晚上的时刻!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="858"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="867"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation>抱歉，配置不能应用.</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="859"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="868"/>
         <source>@title:window</source>
         <comment>Unsupported Configuration</comment>
         <translation>窗口</translation>

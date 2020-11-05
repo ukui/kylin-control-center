@@ -180,6 +180,7 @@ void ChangeGroupDialog::loadAllGroup()
 
 void ChangeGroupDialog::setupInit()
 {
+    setWindowTitle(tr("User group"));
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
