@@ -105,6 +105,7 @@ PassDialog::PassDialog(QWidget *parent) : QWidget(parent)
 
     adjustSize();
 
+    m_passwordTips->setFixedWidth(330);
     m_errorTips->hide();
     m_passwordTips->hide();
     m_passwordTips->setAttribute(Qt::WA_DontShowOnScreen);

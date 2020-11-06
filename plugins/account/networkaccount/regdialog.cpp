@@ -43,6 +43,7 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     m_accountLineEdit->setFixedSize(QSize(338,36));
     m_passLineEdit->setFixedSize(QSize(338,36));
     m_mcodeLineEdit->setFixedSize(QSize(192,36));
+    m_passTips->setFixedWidth(330);
    // m_sendMsgBtn->setFixedSize(QSize(130,36));
 
     m_sendMsgBtn->setMaximumSize(136,36);

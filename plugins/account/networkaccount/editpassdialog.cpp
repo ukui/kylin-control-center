@@ -166,6 +166,7 @@ EditPassDialog::EditPassDialog(QWidget *parent) : QDialog(parent)
     m_Tips->setAttribute(Qt::WA_DontShowOnScreen);
     m_passTips->hide();
     m_passTips->setAttribute(Qt::WA_DontShowOnScreen);
+    m_passTips->setFixedWidth(330);
 
     //account->installEventFilter(this);
     m_passConfirm->installEventFilter(this);
