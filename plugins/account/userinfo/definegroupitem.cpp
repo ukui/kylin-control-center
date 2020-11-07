@@ -58,7 +58,7 @@ DefineGroupItem::DefineGroupItem(QString groupName)
     btnSizePolicy.setVerticalPolicy(QSizePolicy::Expanding);
     pEditBtn->setSizePolicy(btnSizePolicy);
 
-    pDelBtn = new QPushButton(this);
+    pDelBtn = new QPushButton();
     pDelBtn->setText(tr("Delete"));
     pDelBtn->setFixedSize(60,36);
     pDelBtn->hide();
@@ -72,9 +72,9 @@ DefineGroupItem::DefineGroupItem(QString groupName)
     QBrush brush;
     brush.setColor(ColorPlaceholderText);
     palette.setBrush(QPalette::Button, Qt::white);
-    //palette.setBrush(QPalette::ButtonText, brush);
-    pEditBtn->setPalette(palette);
-    pDelBtn->setPalette(palette);
+    palette.setBrush(QPalette::ButtonText, brush);
+//    pEditBtn->setPalette(palette);
+//    pDelBtn->setPalette(palette);
 
     mainHorLayout->addWidget(pLabel);
 

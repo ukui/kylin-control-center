@@ -24,6 +24,7 @@
 
 QList<QList<FuncInfo>> FunctionSelect::funcinfoList;
 QStack<RecordFunc> FunctionSelect::recordFuncStack;
+QHash<QString, bool> FunctionSelect::moduleHash;
 
 //FuncInfo FunctionSelect::displayStruct;
 
@@ -37,6 +38,7 @@ FunctionSelect::~FunctionSelect()
 }
 
 void FunctionSelect::initValue(){
+    initModulesHideStaus();
 
     //system
     QList<FuncInfo> systemList;
@@ -45,6 +47,7 @@ void FunctionSelect::initValue(){
         funcStruct.type = SYSTEM;
         funcStruct.index = i;
         funcStruct.mainShow = true;
+        funcStruct.hide = false;
         systemList.append(funcStruct);
     }
     systemList[DISPLAY].nameString = QString("Display");
@@ -204,6 +207,26 @@ void FunctionSelect::initValue(){
     natList[EXPERIENCEPLAN].namei18nString = QObject::tr("Experienceplan");
 
     funcinfoList.append(natList);
+
+
+}
+
+void FunctionSelect::initModulesHideStaus() {
+    QString filename = QDir::homePath() + "/.config/ukui-control-center-hide.conf";
+    QSettings moduleSet(filename, QSettings::IniFormat);
+
+    QStringList keys = moduleSet.childGroups();
+    qDebug() << "the keies is" << keys;
+    foreach (QString key, keys) {
+        moduleSet.beginGroup(key);
+        QStringList childkeys =  moduleSet.childKeys();
+
+        foreach (QString moduleKey, childkeys) {
+//            modul
+        }
+
+    }
+
 }
 
 void FunctionSelect::pushRecordValue(int type, QString name){
@@ -220,4 +243,8 @@ void FunctionSelect::pushRecordValue(int type, QString name){
 
 void FunctionSelect::popRecordValue(){
     recordFuncStack.pop();
+}
+
+bool FunctionSelect::getModuleHideStatus(const QString &moudleName) {
+    return false;
 }

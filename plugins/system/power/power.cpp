@@ -124,10 +124,10 @@ void Power::isPowerSupply() {
     if (!briginfo.value().toBool()) {
         qDebug()<<"brightness info is invalid"<<endl;
         isExitsPower = false ;
-        ui->batteryBtn->setVisible(false);
-        ui->closeLidFrame->setVisible(false);
-        ui->title2Label->setVisible(false);
-        ui->iconFrame->setVisible(false);
+//        ui->batteryBtn->setVisible(false);
+//        ui->closeLidFrame->setVisible(false);
+//        ui->title2Label->setVisible(false);
+//        ui->iconFrame->setVisible(false);
     } else {
         qDebug() << "brightness info is valid";
         isExitsPower = true ;
@@ -218,6 +218,7 @@ void Power::setupConnect() {
         refreshUI();
 
         if (id == BALANCE) {
+            qDebug() << "this is balance";
             // 设置显示器关闭
             settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_BALANCE);
             settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_BALANCE);

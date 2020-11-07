@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=com.control.center.qt.sessiondbus
+Exec=/usr/bin/ukui-control-center-session

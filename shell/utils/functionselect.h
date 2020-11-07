@@ -22,15 +22,19 @@
 
 #include <QList>
 #include <QStack>
-//#include <QStringList>
+#include <QStringList>
 #include <QObject>
-
+#include <QHash>
+#include <QString>
+#include <QSettings>
+#include <QDir>
 
 typedef struct _FuncInfo
 {
     int type;
     int index;
     bool mainShow;
+    bool hide;
     QString nameString;
     QString namei18nString;
 }FuncInfo;
@@ -54,12 +58,17 @@ public:
 public:
     static QList<QList<FuncInfo>> funcinfoList;
     static QStack<RecordFunc> recordFuncStack;
+    static QHash<QString, bool> moduleHash;
 
 //    static FuncInfo displayStruct;
 
     static void initValue();
+    static void initModulesHideStaus();
     static void pushRecordValue(int type, QString name);
     static void popRecordValue();
+
+private:
+    bool getModuleHideStatus(const QString &moudleName);
 };
 
 #endif // FUNCTIONSELECT_H
