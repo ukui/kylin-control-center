@@ -114,6 +114,8 @@ private:
     bool            m_bIsStopped = false;
     QLabel          *m_syncTimeLabel;
     ConfigFile      *m_configFile;
+    int             m_indexChanged;
+    int             m_statusChanged;
 
 public slots:
     void            neweditdialog();

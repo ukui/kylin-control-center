@@ -161,7 +161,15 @@ void MainWidget::setret_check(QString ret) {
 
 void MainWidget::setret_change(int ret) {
     if(ret == 0) {
-        //emit docheck();
+        // We will do nothing here
+    } else {
+        if(m_statusChanged == 1) {
+            m_itemList->get_item(m_indexChanged)->make_itemoff();
+            ConfigFile().Set(m_szItemlist.at(m_indexChanged),"enable",false);
+        } else {
+            m_itemList->get_item(m_indexChanged)->make_itemon();
+            ConfigFile().Set(m_szItemlist.at(m_indexChanged),"enable",true);
+        }
     }
 }
 
@@ -634,6 +642,8 @@ void MainWidget::handle_write(const int &on,const int &id) {
     } else {
         qstrcpy(name,m_szItemlist[id].toStdString().c_str());
     }
+    m_statusChanged = on;
+    m_indexChanged = id;
     emit dochange(name,on);
 }
 
