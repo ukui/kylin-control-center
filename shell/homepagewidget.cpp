@@ -25,7 +25,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QListWidget>
-
+#include <QDBusInterface>
 #include <QDebug>
 
 #include "mainwindow.h"
@@ -33,6 +33,7 @@
 #include "component/clicklabel.h"
 #include "utils/functionselect.h"
 #include "component/hoverwidget.h"
+#include "./utils/utils.h"
 
 HomePageWidget::HomePageWidget(QWidget *parent) :
     QWidget(parent),
@@ -61,7 +62,8 @@ void HomePageWidget::initUI(){
     ui->listWidget->setFocusPolicy(Qt::NoFocus);
     ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);
 
-//    ui->listWidget->setGridSize(QSize(360, 100));
+
+    mModuleMap = Utils::getModuleHideStatus();
 
     //构建枚举键值转换对象
     KeyValueConverter * kvConverter = new KeyValueConverter(); //继承QObject，No Delete
@@ -80,10 +82,13 @@ void HomePageWidget::initUI(){
         QString modulenameString = kvConverter->keycodeTokeystring(moduleIndex).toLower();
         QString modulenamei18nString = kvConverter->keycodeTokeyi18nstring(moduleIndex);
 
-        if (moduleIndex < 7) {
-            continue;
+        qDebug() << "the moudle name is:" << modulenamei18nString << modulenameString << mModuleMap;
+
+        if (mModuleMap.keys().contains(modulenameString)) {
+            if (!mModuleMap[modulenameString].toBool()) {
+                continue;
+            }
         }
-        qDebug() << "the moudle name is:" << modulenamei18nString << modulenameString;
 
         //构建首页8个模块
         //基础Widget
@@ -159,6 +164,12 @@ void HomePageWidget::initUI(){
             //跳过不在首页显示的功能
             if (!single.mainShow)
                 continue;
+
+            if (mModuleMap.keys().contains(single.nameString.toLower())) {
+                if (!mModuleMap[single.nameString.toLower()].toBool()) {
+                    continue;
+                }
+            }
 
             ClickLabel * label = new ClickLabel(single.namei18nString, widget);
             label->setStyleSheet("color: palette(Shadow);");

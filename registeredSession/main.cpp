@@ -3,34 +3,28 @@
 #include <QDBusError>
 #include <QDebug>
 
-#include "sessiondbusregister.h"
-#include "./conf/SessionAdaptor.h"
+#include "ukccsessionserver.h"
+#include "session_adaptor.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
     app.setOrganizationName("Kylin Team");
-    app.setApplicationName("ukcc-serriosn-service");
+    app.setApplicationName("ukcc-session-service");
 
-    SessionDbusRegister service;
-    new SessionAdaptor(&service);
+    ukccSessionServer service;
+    new InterfaceAdaptor(&service);
 
     QDBusConnection sessionBus = QDBusConnection::sessionBus();
-    if (!sessionBus.registerService("com.control.center.qt.sessiondbus")){
+    if (!sessionBus.registerService("org.ukui.ukcc.session")){
         qCritical() << "QDbus register service failed reason:" << sessionBus.lastError();
         exit(1);
     }
 
-    if (!sessionBus.registerObject("/com/control/center/qt/sessiondbus",
-                                   &service,
-                                   QDBusConnection::ExportAllSlots |
-                                   QDBusConnection::ExportAllSignals)) {
+    if (!sessionBus.registerObject("/", &service)) {
         qCritical() << "QDbus register object failed reason:" << sessionBus.lastError();
         exit(2);
-    }           
-
-//    SessionDbusRegister *dbus = new SessionDbusRegister;
-//    dbus->getModuleHideStatus();
+    }
 
     return app.exec();
 }

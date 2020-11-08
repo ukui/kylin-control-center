@@ -1,5 +1,10 @@
 #include "utils.h"
 
+#include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusReply>
+#include <QtDBus/QDBusConnection>
+#include <QDebug>
+
 void Utils::centerToScreen(QWidget* widget) {
     if (!widget)
       return;
@@ -85,4 +90,17 @@ void Utils::setCLIName(QCommandLineParser &parser) {
 
     parser.addOption(noticeRoleOption);
     parser.addOption(aboutRoleOption);
+}
+
+QVariantMap Utils::getModuleHideStatus() {
+    QDBusInterface m_interface( "org.ukui.ukcc.session",
+                                "/",
+                                "org.ukui.ukcc.session.interface",
+                                QDBusConnection::sessionBus());
+
+    QDBusReply<QVariantMap> obj_reply = m_interface.call("getModuleHideStatus");
+    if (!obj_reply.isValid()) {
+        qDebug()<<"execute dbus method getModuleHideStatus failed";
+    }
+    return obj_reply.value();
 }
