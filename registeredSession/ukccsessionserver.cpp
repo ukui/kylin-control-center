@@ -43,24 +43,26 @@ void ukccSessionServer::initModuleStatus(const QString &fileName) {
     JsonObject systemObj;
     systemObj["system"] = true;
     systemObj["display"] = true;
+    systemObj["defaultapp"] = true;
     systemObj["power"] = true;
     systemObj["autoboot"] = true;
     totalObj["system"] = systemObj;
 
     JsonObject deviceObj;
-    deviceObj["device"] = true;
+    deviceObj["devices"] = true;
     deviceObj["printer"] = true;
     deviceObj["mouse"] = true;
     deviceObj["touchpad"] = true;
     deviceObj["keyboard"] = true;
     deviceObj["shortcut"] = true;
     deviceObj["audio"] = true;
-    totalObj["device"] = deviceObj;
+    totalObj["devices"] = deviceObj;
 
     JsonObject personlizeObj;
     personlizeObj["personalized"] = true;
     personlizeObj["background"] = true;
     personlizeObj["theme"] = true;
+    personlizeObj["screenlock"] = true;
     personlizeObj["fonts"] = true;
     personlizeObj["screensaver"] = true;
     personlizeObj["desktop"] = true;
@@ -97,8 +99,8 @@ void ukccSessionServer::initModuleStatus(const QString &fileName) {
     noticeandtasksObj["noticeandtasks"] = true;
     noticeandtasksObj["notice"] = true;
     noticeandtasksObj["about"] = true;
-    noticeandtasksObj["experiencepaln"] = true;
-    totalObj["noticeandtasks"] = updateObj;
+    noticeandtasksObj["experienceplan"] = true;
+    totalObj["noticeandtasks"] = noticeandtasksObj;
 
     file.write(QtJson::serialize(totalObj));
     file.close();
