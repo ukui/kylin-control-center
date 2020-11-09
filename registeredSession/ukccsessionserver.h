@@ -26,10 +26,12 @@ public:
 private:
     QString readFile(const QString &filename);
     QMap<QString, QVariant> getJsonInfo(const JsonObject &result, const QStringList &keies);
+    void initModuleStatus(const QString &fileName);
 
 public slots:
     void exitService();
     QVariantMap getModuleHideStatus();
+    QString     getModuleConfFile();
 };
 
 #endif // UKCCSESSIONSERVER_H

@@ -29,6 +29,8 @@
 #include <QHideEvent>
 #include <QPainter>
 #include <QPropertyAnimation>
+#include <QVariantMap>
+
 #include "interface.h"
 #include "homepagewidget.h"
 #include "modulepagewidget.h"
@@ -94,6 +96,8 @@ private:
     QWidget           *m_queryWid   = nullptr;
     bool              m_isSearching;
     QString           m_searchKeyWords;
+    QVariantMap       m_ModuleMap;
+
 private:
     void initUI();
     void initTileBar();

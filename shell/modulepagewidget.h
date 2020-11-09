@@ -22,6 +22,7 @@
 
 #include <QWidget>
 #include <QMap>
+#include <QVariantMap>
 
 class MainWindow;
 class CommonInterface;
@@ -48,6 +49,9 @@ public:
     void highlightItem(QString text);
 
 private:
+    void getModuleStatus();
+
+private:
     Ui::ModulePageWidget *ui;
 
 private:
@@ -55,9 +59,12 @@ private:
 
     KeyValueConverter * mkvConverter;
 
+    QVariantMap mModuleMap;
+
 private:
     QMap<QString, CommonInterface*> pluginInstanceMap;
-    QMultiMap<QString, QListWidgetItem*> strItemsMap;//存储功能名与二级菜单item的Map,为了实现高亮
+    // 存储功能名与二级菜单item的Map,为了实现高亮
+    QMultiMap<QString, QListWidgetItem*> strItemsMap;
 
     bool flagBit;
 

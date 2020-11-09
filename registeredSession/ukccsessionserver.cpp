@@ -12,7 +12,9 @@ QString ukccSessionServer::readFile(const QString &filename)
         return QString();
     } else {
         QTextStream in(&f);
-        return in.readAll();
+        QString res = in.readAll();
+        f.close();
+        return res;
     }
 }
 
@@ -29,6 +31,80 @@ QMap<QString, QVariant> ukccSessionServer::getJsonInfo(const QtJson::JsonObject 
         }
     }
     return moduleMap;
+}
+
+void ukccSessionServer::initModuleStatus(const QString &fileName) {
+
+    QFile file(fileName);
+    if(!file.open(QIODevice::ReadWrite)) {
+        qDebug() << "File open error";
+        return;
+    }
+
+    JsonObject totalObj;
+
+    JsonObject systemObj;
+    systemObj["system"] = true;
+    systemObj["display"] = true;
+    systemObj["power"] = true;
+    systemObj["autoboot"] = true;
+    totalObj["system"] = systemObj;
+
+    JsonObject deviceObj;
+    deviceObj["device"] = true;
+    deviceObj["printer"] = true;
+    deviceObj["mouse"] = true;
+    deviceObj["touchpad"] = true;
+    deviceObj["keyboard"] = true;
+    deviceObj["shortcut"] = true;
+    deviceObj["audio"] = true;
+    totalObj["device"] = deviceObj;
+
+    JsonObject personlizeObj;
+    personlizeObj["personalized"] = true;
+    personlizeObj["background"] = true;
+    personlizeObj["theme"] = true;
+    personlizeObj["fonts"] = true;
+    personlizeObj["screensaver"] = true;
+    personlizeObj["desktop"] = true;
+    totalObj["personalized"] = personlizeObj;
+
+    JsonObject networkObj;
+    networkObj["network"] = true;
+    networkObj["netconnect"] = true;
+    networkObj["vpn"] = true;
+    networkObj["proxy"] = true;
+    networkObj["vino"] = true;
+    totalObj["network"] = networkObj;
+
+    JsonObject accountObj;
+    accountObj["account"] = true;
+    accountObj["userinfo"] = true;
+    accountObj["networkaccount"] = true;
+    totalObj["account"] = accountObj;
+
+    JsonObject datetimeObj;
+    datetimeObj["datetime"] = true;
+    datetimeObj["dat"] = true;
+    datetimeObj["area"] = true;
+    totalObj["datetime"] = datetimeObj;
+
+    JsonObject updateObj;
+    updateObj["update"] = true;
+    updateObj["sercuritycenter"] = true;
+    updateObj["updates"] = true;
+    updateObj["backup"] = true;
+    totalObj["update"] = updateObj;
+
+    JsonObject noticeandtasksObj;
+    noticeandtasksObj["noticeandtasks"] = true;
+    noticeandtasksObj["notice"] = true;
+    noticeandtasksObj["about"] = true;
+    noticeandtasksObj["experiencepaln"] = true;
+    totalObj["noticeandtasks"] = updateObj;
+
+    file.write(QtJson::serialize(totalObj));
+    file.close();
 }
 
 void ukccSessionServer::exitService()
@@ -48,6 +124,7 @@ QVariantMap ukccSessionServer::getModuleHideStatus()
     QString json = readFile(filename);
     if (json.isEmpty()) {
         qWarning("Could not read JSON file!");
+        initModuleStatus(filename);
         return moduleRes;
     }
 
@@ -58,4 +135,14 @@ QVariantMap ukccSessionServer::getModuleHideStatus()
         return moduleRes;
     }
     return getJsonInfo(result, result.keys());
+}
+
+QString ukccSessionServer::getModuleConfFile() {
+    QString name = qgetenv("USER");
+    if (name.isEmpty()) {
+        name = qgetenv("USERNAME");
+    }
+    QString filename = QDir::homePath() + "/.config/ukui-control-center-hide.json";
+
+    return filename;
 }

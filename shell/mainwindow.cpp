@@ -22,6 +22,7 @@
 #include "prescene.h"
 #include "utils/keyvalueconverter.h"
 #include "utils/functionselect.h"
+#include "utils/utils.h"
 #include "../commonComponent/ImageUtil/imageutil.h"
 
 #include <QLabel>
@@ -37,9 +38,10 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QGSettings>
-#define QueryLineEditBackground "#FFFFFF" //搜索框背景
+
+#define QueryLineEditBackground        "#FFFFFF" //搜索框背景
 #define QueryLineEditClickedBackground "#FFFFFF" //搜索框背景选中
-#define QueryLineEditClickedBorder "rgba(61, 107, 229, 1)" //搜索框背景选中边框
+#define QueryLineEditClickedBorder     "rgba(61, 107, 229, 1)" //搜索框背景选中边框
 
 #ifdef WITHKYSEC
 #include <kysec/libkysec.h>
@@ -299,6 +301,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 
 void MainWindow::initUI() {
     ui->setupUi(this);
+
+    m_ModuleMap = Utils::getModuleHideStatus();
 
     this->installEventFilter(this);
 
@@ -601,9 +605,10 @@ void MainWindow::initLeftsideBar(){
             QString mnameString = kvConverter->keycodeTokeystring(type);
             QString mnamei18nString  = kvConverter->keycodeTokeyi18nstring(type); //设置TEXT
 
-            qDebug() << "the mnameString is:" << mnameString;
-            if (type < 2) {
-//                continue;
+            if (m_ModuleMap.keys().contains(mnameString.toLower())) {
+                if (!m_ModuleMap[mnameString.toLower()].toBool()) {
+                    continue;
+                }
             }
 
             QPushButton * button;
