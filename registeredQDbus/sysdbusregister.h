@@ -23,15 +23,8 @@
 #include <QObject>
 #include <QCoreApplication>
 #include <QProcess>
+
 #include <QFile>
-#include <QTextStream>
-#include <QMap>
-#include <QDir>
-
-#include "json.h"
-
-using QtJson::JsonObject;
-using QtJson::JsonArray;
 
 class SysdbusRegister : public QObject
 {
@@ -67,11 +60,6 @@ public slots:
     //设置自动登录状态
     Q_SCRIPTABLE void setAutoLoginStatus(QString username);
 
-    Q_SCRIPTABLE QMap<QString, QVariant> getModuleHideStatus();
-
-private:
-    QString readFile(const QString &filename);
-    QMap<QString, QVariant> getJsonInfo(const JsonObject &result, const QStringList &keies);
 };
 
 #endif // SYSDBUSREGISTER_H

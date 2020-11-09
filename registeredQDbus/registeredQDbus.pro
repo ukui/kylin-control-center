@@ -24,10 +24,8 @@ INSTALLS += \
     inst2 \
 
 HEADERS += \
-    json.h \
     sysdbusregister.h
 
 SOURCES += \
-    json.cpp \
     main.cpp \
     sysdbusregister.cpp

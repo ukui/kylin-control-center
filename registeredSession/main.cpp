@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     new InterfaceAdaptor(&service);
 
     QDBusConnection sessionBus = QDBusConnection::sessionBus();
-    if (!sessionBus.registerService("org.ukui.ukcc.session")){
+    if (!sessionBus.registerService("org.ukui.ukcc.session")) {
         qCritical() << "QDbus register service failed reason:" << sessionBus.lastError();
         exit(1);
     }

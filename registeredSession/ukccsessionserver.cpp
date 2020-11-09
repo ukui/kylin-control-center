@@ -1,12 +1,10 @@
 #include "ukccsessionserver.h"
 
-ukccSessionServer::ukccSessionServer()
-{
+ukccSessionServer::ukccSessionServer() {
 
 }
 
-QString ukccSessionServer::readFile(const QString &filename)
-{
+QString ukccSessionServer::readFile(const QString &filename) {
     QFile f(filename);
     if (!f.open(QFile::ReadOnly | QFile::Text)) {
         return QString();
@@ -18,8 +16,7 @@ QString ukccSessionServer::readFile(const QString &filename)
     }
 }
 
-QMap<QString, QVariant> ukccSessionServer::getJsonInfo(const QtJson::JsonObject &result, const QStringList &keys)
-{
+QMap<QString, QVariant> ukccSessionServer::getJsonInfo(const QtJson::JsonObject &result, const QStringList &keys) {
     QVariantMap moduleMap;
 
     for (int i = 0; i < keys.length(); i++) {
@@ -107,13 +104,11 @@ void ukccSessionServer::initModuleStatus(const QString &fileName) {
     file.close();
 }
 
-void ukccSessionServer::exitService()
-{
+void ukccSessionServer::exitService() {
     qApp->exit();
 }
 
-QVariantMap ukccSessionServer::getModuleHideStatus()
-{
+QVariantMap ukccSessionServer::getModuleHideStatus() {
     QVariantMap moduleRes;
     QString name = qgetenv("USER");
     if (name.isEmpty()) {

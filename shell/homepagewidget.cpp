@@ -82,8 +82,6 @@ void HomePageWidget::initUI(){
         QString modulenameString = kvConverter->keycodeTokeystring(moduleIndex).toLower();
         QString modulenamei18nString = kvConverter->keycodeTokeyi18nstring(moduleIndex);
 
-        qDebug() << "the moudle name is:" << modulenamei18nString << modulenameString << mModuleMap;
-
         if (mModuleMap.keys().contains(modulenameString)) {
             if (!mModuleMap[modulenameString].toBool()) {
                 continue;
