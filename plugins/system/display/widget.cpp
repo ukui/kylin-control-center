@@ -444,13 +444,11 @@ void Widget::writeScale(int scale) {
     }
     isScaleChanged = false;
     int cursize;
-    QGSettings * dpiSettings;
-    QGSettings * cursorSettings;
     QByteArray id(FONT_RENDERING_DPI);
     QByteArray iid(MOUSE_SIZE_SCHEMAS);
     if (QGSettings::isSchemaInstalled(FONT_RENDERING_DPI) && QGSettings::isSchemaInstalled(MOUSE_SIZE_SCHEMAS)) {
-        dpiSettings = new QGSettings(id, QByteArray());
-        cursorSettings = new QGSettings(iid, QByteArray());
+        QGSettings dpiSettings(id);
+        QGSettings cursorSettings(iid);
 
         if (1 == scale)  {
             cursize = 24;
@@ -463,14 +461,11 @@ void Widget::writeScale(int scale) {
             cursize = 24;
         }
 
-        QStringList keys = dpiSettings->keys();
+        QStringList keys = dpiSettings.keys();
         if (keys.contains("scalingFactor")) {
-            dpiSettings->set(SCALE_KEY, scale);
+            dpiSettings.set(SCALE_KEY, scale);
         }
-        cursorSettings->set(CURSOR_SIZE_KEY, cursize);
-
-        delete dpiSettings;
-        delete cursorSettings;
+        cursorSettings.set(CURSOR_SIZE_KEY, cursize);
     }
 }
 
@@ -989,6 +984,7 @@ void Widget::initConnection() {
     mControlPanel = new ControlPanel(this);
     connect(mControlPanel, &ControlPanel::changed, this, &Widget::changed);
     connect(this, &Widget::changed, this, &Widget::changedSlot);
+    connect(mControlPanel, &ControlPanel::scaleChanged, this, &Widget::scaleChangedSlot);
 
     ui->controlPanelLayout->addWidget(mControlPanel);
 

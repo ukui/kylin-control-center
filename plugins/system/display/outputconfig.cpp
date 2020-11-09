@@ -193,9 +193,6 @@ void OutputConfig::initUi()
     if (maxReslu >= 2000) {
         scaleCombox->addItem(tr("200%"));
     }
-    if (maxReslu >= 3800) {
-        scaleCombox->addItem(tr("300%"));
-    }
 
     QLabel *scaleLabel = new QLabel();
     //~ contents_path /display/screen zoom
@@ -207,7 +204,6 @@ void OutputConfig::initUi()
     QHBoxLayout *scaleLayout = new QHBoxLayout();
     scaleLayout->addWidget(scaleLabel);
     scaleLayout->addWidget(scaleCombox);
-//    freshLayout->addStretch();
 
     QFrame *scaleFrame = new QFrame(this);
     scaleFrame->setFrameShape(QFrame::Shape::Box);
@@ -219,29 +215,24 @@ void OutputConfig::initUi()
     vbox->addWidget(scaleFrame);
 
     int scale = getScreenScale();
-//#if QT_VERSION < QT_VERSION_CHECK(5,7,0)
 
-//#else
     scaleCombox->setCurrentIndex(0);
     if (scale <= scaleCombox->count() && scale > 0) {
-//        qDebug()<<"scale is----->"<<scale<<endl;
         scaleCombox->setCurrentIndex(scale - 1);
     }
     slotScaleChanged(scale - 1);
-//#endif
 
     connect(scaleCombox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated),
             this, &OutputConfig::slotScaleChanged);
 }
 
 int OutputConfig::getScreenScale() {
-    QGSettings * dpiSettings;
     QByteArray id(SCALE_SCHEMAS);
     int scale = 1;
     if (QGSettings::isSchemaInstalled(SCALE_SCHEMAS)) {
-        dpiSettings = new QGSettings(id);
-        if (dpiSettings->keys().contains("scalingFactor")) {
-            scale = dpiSettings->get(SCALE_KEY).toInt();
+        QGSettings dpiSettings(id);
+        if (dpiSettings.keys().contains("scalingFactor")) {
+            scale = dpiSettings.get(SCALE_KEY).toInt();
         }
     }
     return scale;
