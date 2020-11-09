@@ -85,7 +85,7 @@ addShortcutDialog::addShortcutDialog(QWidget *parent) :
         close();
     });
     connect(ui->certainBtn, &QPushButton::clicked, [=]{
-        emit shortcutInfoSignal(gsPath, ui->nameLineEdit->text(), ui->execLineEdit->text());
+        emit shortcutInfoSignal(gsPath, ui->nameLineEdit->text(), selectedfile);
 
         close();
     });
@@ -173,7 +173,6 @@ void addShortcutDialog::openProgramFileDialog(){
     if (fd.exec() != QDialog::Accepted)
         return;
 
-    QString selectedfile;
     selectedfile = fd.selectedFiles().first();
 
     QString exec = selectedfile.section("/", -1, -1);
