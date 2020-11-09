@@ -987,7 +987,7 @@ you can restore them to ensure the integrity of your system.</source>
     <message>
         <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished">更改时间</translation>
+        <translation>添加用户组</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="181"/>
@@ -1030,6 +1030,11 @@ you can restore them to ensure the integrity of your system.</source>
         <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="94"/>
         <source>Certain</source>
         <translation>确定</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/creategroupdialog.cpp" line="153"/>
+        <source>Add user group</source>
+        <translation>添加用户组</translation>
     </message>
 </context>
 <context>
@@ -1442,7 +1447,7 @@ change system settings</source>
     <message>
         <location filename="../../../plugins/account/userinfo/delgroupdialog.ui" line="26"/>
         <source>Dialog</source>
-        <translation type="unfinished">更改时间</translation>
+        <translation>删除用户组</translation>
     </message>
     <message>
         <source>Are you sure to delete this group, 
@@ -1477,7 +1482,12 @@ in the file system invalid!</source>
 中的某些文件组件ID无效!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/delgroupdialog.cpp" line="65"/>
+        <location filename="../../../plugins/account/userinfo/delgroupdialog.cpp" line="53"/>
+        <source>Delete user group</source>
+        <translation>删除用户组</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/delgroupdialog.cpp" line="66"/>
         <source>Are you sure to delete the group, which will make some file components in the file system invalid!</source>
         <translation>确定删除该用户组，这将使得文件系统中的某些文件组件ID无效！</translation>
     </message>
@@ -1947,7 +1957,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/userinfo/editgroupdialog.ui" line="26"/>
         <source>Dialog</source>
-        <translation type="unfinished">更改时间</translation>
+        <translation>编辑用户组</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/editgroupdialog.ui" line="87"/>
@@ -1993,6 +2003,11 @@ folder will be deleted!</source>
         <location filename="../../../plugins/account/userinfo/editgroupdialog.cpp" line="164"/>
         <source>OK</source>
         <translation>确定</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/editgroupdialog.cpp" line="213"/>
+        <source>Edit user group</source>
+        <translation>编辑用户组</translation>
     </message>
 </context>
 <context>
@@ -2046,35 +2061,35 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="66"/>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="190"/>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="281"/>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="320"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="191"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="282"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="321"/>
         <source>At least 6 bit, include letters and digt</source>
         <translation>至少六位，包含大小写字母、数字</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="187"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="188"/>
         <source>Your password is valid!</source>
         <translation>您的密码是有效的！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="327"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="328"/>
         <source>Please check your password!</source>
         <translation>两次密码设置不一致！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="339"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="340"/>
         <source>Resend(</source>
         <translation>重新发送(</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="339"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="340"/>
         <source>)</source>
         <translation>)</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="345"/>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="542"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="346"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="543"/>
         <source>Send</source>
         <translation>发送验证码</translation>
     </message>
@@ -2083,109 +2098,109 @@ folder will be deleted!</source>
         <translation type="vanished">成功！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="364"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="365"/>
         <source>Reback sign in</source>
         <translation>重新登录</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="374"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="375"/>
         <source>Error code:</source>
         <translation>错误代码：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="374"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="375"/>
         <source>!</source>
         <translation>！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="376"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="377"/>
         <source>Internal error occurring!</source>
         <translation>服务器错误！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="377"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="378"/>
         <source>Failed to sign up!</source>
         <translation>注册失败!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="378"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="379"/>
         <source>Failed attempt to return value!</source>
         <translation>尝试获取返回值失败！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="379"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="380"/>
         <source>Check your connection!</source>
         <translation>登录失败或网络异常！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="380"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="381"/>
         <source>Failed to get by phone!</source>
         <translation>手机获取验证码失败！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="381"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="382"/>
         <source>Failed to get by user!</source>
         <translation>用户名获取验证码失败！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="382"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="383"/>
         <source>Failed to reset password!</source>
         <translation>重置密码失败！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="383"/>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="386"/>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="395"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="384"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="387"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="396"/>
         <source>Please check your information!</source>
         <translation>缺少必要信息！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="384"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="385"/>
         <source>Please check your account!</source>
         <translation>账户或密码错误！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="385"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="386"/>
         <source>Failed due to server error!</source>
         <translation>服务器错误！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="387"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="388"/>
         <source>User existing!</source>
         <translation>用户名已存在！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="388"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="389"/>
         <source>Phone number already in used!</source>
         <translation>手机号码已被使用！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="389"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="390"/>
         <source>Please check your format!</source>
         <translation>手机号码格式错误！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="390"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="391"/>
         <source>Your are reach the limit!</source>
         <translation>该手机当日接收短信次数达到上限！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="391"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="392"/>
         <source>Please check your phone number!</source>
         <translation>手机号码其他错误！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="392"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="393"/>
         <source>Please check your code!</source>
         <translation>手机验证码错误！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="393"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="394"/>
         <source>Account doesn&apos;t exist!</source>
         <translation>用户名不存在！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="394"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="395"/>
         <source>Sending code error occurring!</source>
         <translation>发送验证码异常！</translation>
     </message>
@@ -3677,12 +3692,12 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="78"/>
-        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="115"/>
+        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="116"/>
         <source>At least 6 bit, include letters and digt</source>
         <translation>至少六位，包含大小写字母、数字</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="112"/>
+        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="113"/>
         <source>Your password is valid!</source>
         <translation>您的密码是有效的！</translation>
     </message>
@@ -4682,38 +4697,38 @@ Please retry for login!</source>
         <translation>获取验证码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="58"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="59"/>
         <source>Your password here</source>
         <translation>输入密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="61"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="62"/>
         <source>Your account here</source>
         <translation>请输入用户名</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="62"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="63"/>
         <source>Confirm your password</source>
         <translation>确认密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="63"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="64"/>
         <source>Your code here</source>
         <translation>输入验证码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="65"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="66"/>
         <source>This operation is permanent</source>
         <translation type="unfinished">设置后不可更改，最高30位</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="68"/>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="132"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="69"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="133"/>
         <source>At least 6 bit, include letters and digt</source>
         <translation>至少六位，包含大小写字母、数字</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="129"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="130"/>
         <source>Your password is valid!</source>
         <translation>您的密码是有效的！</translation>
     </message>

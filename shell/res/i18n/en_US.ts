@@ -883,6 +883,11 @@ you can restore them to ensure the integrity of your system.</source>
         <source>Certain</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/creategroupdialog.cpp" line="153"/>
+        <source>Add user group</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateUserDialog</name>
@@ -1288,7 +1293,12 @@ change system settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/delgroupdialog.cpp" line="65"/>
+        <location filename="../../../plugins/account/userinfo/delgroupdialog.cpp" line="53"/>
+        <source>Delete user group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/delgroupdialog.cpp" line="66"/>
         <source>Are you sure to delete the group, which will make some file components in the file system invalid!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1626,6 +1636,11 @@ folder will be deleted!</source>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/editgroupdialog.cpp" line="213"/>
+        <source>Edit user group</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditPassDialog</name>
@@ -1666,142 +1681,142 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="66"/>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="190"/>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="281"/>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="320"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="191"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="282"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="321"/>
         <source>At least 6 bit, include letters and digt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="187"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="188"/>
         <source>Your password is valid!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="327"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="328"/>
         <source>Please check your password!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="339"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="340"/>
         <source>Resend(</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="339"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="340"/>
         <source>)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="345"/>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="542"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="346"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="543"/>
         <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="364"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="365"/>
         <source>Reback sign in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="374"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="375"/>
         <source>Error code:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="374"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="375"/>
         <source>!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="376"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="377"/>
         <source>Internal error occurring!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="377"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="378"/>
         <source>Failed to sign up!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="378"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="379"/>
         <source>Failed attempt to return value!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="379"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="380"/>
         <source>Check your connection!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="380"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="381"/>
         <source>Failed to get by phone!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="381"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="382"/>
         <source>Failed to get by user!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="382"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="383"/>
         <source>Failed to reset password!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="383"/>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="386"/>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="395"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="384"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="387"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="396"/>
         <source>Please check your information!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="384"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="385"/>
         <source>Please check your account!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="385"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="386"/>
         <source>Failed due to server error!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="387"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="388"/>
         <source>User existing!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="388"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="389"/>
         <source>Phone number already in used!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="389"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="390"/>
         <source>Please check your format!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="390"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="391"/>
         <source>Your are reach the limit!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="391"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="392"/>
         <source>Please check your phone number!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="392"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="393"/>
         <source>Please check your code!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="393"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="394"/>
         <source>Account doesn&apos;t exist!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="394"/>
+        <location filename="../../../plugins/account/networkaccount/editpassdialog.cpp" line="395"/>
         <source>Sending code error occurring!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3128,12 +3143,12 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="78"/>
-        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="115"/>
+        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="116"/>
         <source>At least 6 bit, include letters and digt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="112"/>
+        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="113"/>
         <source>Your password is valid!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3900,38 +3915,38 @@ Please retry for login!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="58"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="59"/>
         <source>Your password here</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="61"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="62"/>
         <source>Your account here</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="62"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="63"/>
         <source>Confirm your password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="63"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="64"/>
         <source>Your code here</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="65"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="66"/>
         <source>This operation is permanent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="68"/>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="132"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="69"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="133"/>
         <source>At least 6 bit, include letters and digt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="129"/>
+        <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="130"/>
         <source>Your password is valid!</source>
         <translation type="unfinished"></translation>
     </message>

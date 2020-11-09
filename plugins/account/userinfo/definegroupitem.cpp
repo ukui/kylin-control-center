@@ -67,14 +67,14 @@ DefineGroupItem::DefineGroupItem(QString groupName)
     btnSizePolicy2.setVerticalPolicy(QSizePolicy::Expanding);
     pDelBtn->setSizePolicy(btnSizePolicy2);
 
-    QPalette palette = pEditBtn->palette();
-    QColor ColorPlaceholderText(255,255,255,0);
-    QBrush brush;
-    brush.setColor(ColorPlaceholderText);
-    palette.setBrush(QPalette::Button, Qt::white);
-    //palette.setBrush(QPalette::ButtonText, brush);
-    pEditBtn->setPalette(palette);
-    pDelBtn->setPalette(palette);
+//    QPalette palette = pEditBtn->palette();
+//    QColor ColorPlaceholderText(255,255,255,0);
+//    QBrush brush;
+//    brush.setColor(ColorPlaceholderText);
+//    palette.setBrush(QPalette::Button, Qt::white);
+//    //palette.setBrush(QPalette::ButtonText, brush);
+//    pEditBtn->setPalette(palette);
+//    pDelBtn->setPalette(palette);
 
     mainHorLayout->addWidget(pLabel);
 

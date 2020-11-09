@@ -150,6 +150,7 @@ void CreateGroupDialog::signalsBind()
 
 void CreateGroupDialog::setupInit()
 {
+    setWindowTitle(tr("Add user group"));
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -168,10 +169,13 @@ void CreateGroupDialog::setupInit()
     ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 //    ui->listWidget->setSpacing(5);
-    ui->lineEdit_name->setStyleSheet("QLineEdit{background:#EEEEEE;}");
-    ui->lineEdit_id->setStyleSheet("QLineEdit{background:#EEEEEE;}");
-    ui->listWidget->setStyleSheet("QListWidget{background:#EEEEEE; border-radius: 4px;}"
-                                  "QListWidget::Item:hover{background:#FFE1E1E1}"
+//    ui->lineEdit_name->setStyleSheet("QLineEdit{background:#EEEEEE;}");
+//    ui->lineEdit_id->setStyleSheet("QLineEdit{background:#EEEEEE;}");
+//    ui->listWidget->setStyleSheet("QListWidget{background:#EEEEEE; border-radius: 4px;}"
+//                                  "QListWidget::Item:hover{background:#FFE1E1E1}"
+//                                  "QListWidget::Item{padding-left:20px;}");
+
+    ui->listWidget->setStyleSheet("QListWidget{border-radius: 4px;}"
                                   "QListWidget::Item{padding-left:20px;}");
 
     // 设置确认按钮
