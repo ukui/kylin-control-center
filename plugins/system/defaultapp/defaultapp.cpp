@@ -500,7 +500,11 @@ bool DefaultApp::setVideoPlayersDefaultProgram(char *appid) {
                 gboolean ret9 = g_app_info_set_as_default_for_type(appitem, "video/x-matroska", NULL);
                 gboolean ret10 = g_app_info_set_as_default_for_type(appitem, "video/x-mpeg", NULL);
                 gboolean ret11 = g_app_info_set_as_default_for_type(appitem, "video/x-ogm+ogg", NULL);
-                if (ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8 && ret9 && ret10 && ret11)
+                gboolean ret12 = g_app_info_set_as_default_for_type(appitem, "video/rm", NULL);
+                gboolean ret13 = g_app_info_set_as_default_for_type(appitem, "video/3pg", NULL);
+                gboolean ret14 = g_app_info_set_as_default_for_type(appitem, "video/asf", NULL);
+                if (ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8 && ret9 && ret10 && ret11 && \
+                        ret12 && ret13 && ret14)
                     judge=true;
                 break;
             }
@@ -537,8 +541,12 @@ bool DefaultApp::setAudioPlayersDefaultProgram(char *appid) {
                 gboolean ret14 = g_app_info_set_as_default_for_type(appitem, "audio/mp2", NULL);
                 gboolean ret15 = g_app_info_set_as_default_for_type(appitem, "audio/x-wavpack", NULL);
                 gboolean ret16 = g_app_info_set_as_default_for_type(appitem, "audio/x-ape", NULL);
+                gboolean ret17 = g_app_info_set_as_default_for_type(appitem, "audio/x-mmf", NULL);
+                gboolean ret18 = g_app_info_set_as_default_for_type(appitem, "audio/mp3", NULL);
+                gboolean ret19 = g_app_info_set_as_default_for_type(appitem, "audio/flac", NULL);
+                gboolean ret20 = g_app_info_set_as_default_for_type(appitem, "audio/wma", NULL);
                 if(ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8 && ret9 && ret10 &&
-                   ret11 && ret12 && ret13 && ret14 && ret15 && ret16) {
+                   ret11 && ret12 && ret13 && ret14 && ret15 && ret16 && ret17 && ret18 && ret19 && ret20) {
                     judge=true;
                 }
                 break;

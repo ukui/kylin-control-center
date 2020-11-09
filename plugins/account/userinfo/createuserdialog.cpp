@@ -422,18 +422,18 @@ void CreateUserDialog::nameLegalityCheck(QString username){
     }
     else if (nameTraverse(username))
         if (username.length() > 0 && username.length() < USER_LENGTH){
-            /*
-             * 此处代码需要优化
-             */
-//            back = false;
-//            QString cmd = QString("getent group %1").arg(username);
-//            process = new QProcess(this);
-//            connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(name_conflict_group_slot()));
-//            process->start(cmd);
+
+            QString cmd = QString("getent group %1").arg(username);
+            QProcess process(this);
+            process.start(cmd);
+            process.waitForFinished();
+            QString output = process.readAllStandardOutput();
 
             if (usersStringList.contains(username)){
                 nameTip = tr("The user name is already in use, please use a different one.");
-            } else {
+            } else if (!output.isEmpty()) {
+                nameTip = tr("The name corresponds to the group already exists.");
+            }else {
                 nameTip = "";
             }
         } else {
