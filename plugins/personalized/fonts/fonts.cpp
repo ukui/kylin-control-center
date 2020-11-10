@@ -21,7 +21,7 @@
 #include "ui_fonts.h"
 
 #include <QLabel>
-
+#include <QStringList>
 #include <QDebug>
 
 #define N 3
@@ -52,6 +52,8 @@
 #define RGBA_ORDER_KEY          "rgba-order" //LCD屏幕上次像素的顺序；仅在反锯齿设为"rgba"时有用
 #define DPI_KEY                 "dpi" //将字体尺寸转换为像素值时所用的分辨率，以每英寸点数为单位
 
+QList<int> defaultsizeList = {6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72};
+const QString kErrorFont = "Noto Serif Tibetan";
 /*
   设置字体，每套字体包括5个部件，应用程序字体、文档字体、等宽字体、桌面字体和窗口标题字体。
   字体设置为预设值，每套字体除大小不固定，其他字体类别固定。
@@ -94,8 +96,6 @@ struct FontEffects {
 };
 
 Q_DECLARE_METATYPE(FontEffects)
-
-QList<int> defaultsizeList = {6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72};
 
 Fonts::Fonts()
 {
@@ -203,13 +203,16 @@ void Fonts::setupComponent(){
     //导入系统字体列表
     QStringList fontfamiles = fontdb.families();
     for (QString font : fontfamiles){
-        ////通用设置
-        //字体
-        ui->fontSelectComBox->addItem(font);
+
+        if (!font.startsWith(kErrorFont, Qt::CaseInsensitive)) {
+            //字体
+            ui->fontSelectComBox->addItem(font);
+        }
+
         //等宽字体
         if (font.contains("Mono"))
             ui->monoSelectComBox->addItem(font);
-        ////高级设置
+        //高级设置
         // gtk default
         ui->defaultFontComBox->addItem(font);
         //doc font
