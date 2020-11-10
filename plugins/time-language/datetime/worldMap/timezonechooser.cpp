@@ -106,10 +106,12 @@ TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
     });
 
     QTimer::singleShot(0, [this] {
-
-//        qDebug()<<"single slot-------->"<<endl;
         QStringList completions;
+        completions << "Asia/Beijing";
         for (QString timezone : QTimeZone::availableTimeZoneIds()) {
+            if ("Asia/Shanghai" == timezone) {
+                continue;
+            }
             completions << timezone;
 
             const QString locale = QLocale::system().name();
@@ -122,6 +124,7 @@ TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
         QCompleter *completer = new QCompleter(completions, m_searchInput);
         completer->setCompletionMode(QCompleter::PopupCompletion);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
+        completer->setFilterMode(Qt::MatchContains);
 
         m_searchInput->setCompleter(completer);
 

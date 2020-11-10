@@ -495,6 +495,15 @@ void Theme::initCursorTheme(){
 #if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
 
 #else
+        QString filename = QDir::homePath() + "/.config/kcminputrc";
+        QSettings *mouseSettings = new QSettings(filename, QSettings::IniFormat);
+
+        mouseSettings->beginGroup("Mouse");
+        mouseSettings->setValue("cursorTheme", value);
+        mouseSettings->endGroup();
+
+        delete mouseSettings;
+
         QDBusMessage message = QDBusMessage::createSignal("/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange");
         QList<QVariant> args;
         args.append(5);
@@ -502,7 +511,6 @@ void Theme::initCursorTheme(){
         message.setArguments(args);
         QDBusConnection::sessionBus().send(message);
 #endif
-
     });
 
     for (QString cursor : cursorThemes){
