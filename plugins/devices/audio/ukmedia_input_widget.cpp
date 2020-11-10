@@ -153,41 +153,6 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     this->setLayout(m_pVlayout1);
     this->layout()->setContentsMargins(0,0,0,0);
 
-    //设置样式
-    m_pIpVolumeSlider->setStyleSheet("QSlider::groove:horizontal {"
-                                  "border: 0px solid #bbb; }"
-                                  "QSlider::sub-page:horizontal {"
-                                  "background: #3D6BE5;border-radius: 2px;"
-                                  "margin-top:8px;margin-bottom:9px;}"
-                                  "QSlider::add-page:horizontal {"
-                                  "background:  rgba(52,70,80,90%);"
-                                  "border: 0px solid #777;"
-                                  "border-radius: 2px;"
-                                  "margin-top:8px;"
-                                  "margin-bottom:9px;}"
-                                  "QSlider::handle:horizontal {"
-                                  "width: 20px;"
-                                  "height: 20px;"
-                                  "background: rgb(61,107,229);"
-                                  "border-radius:10px;}");
-    m_pInputLevelSlider->setStyleSheet("QSlider::groove:horizontal {"
-                                   "border: 0px solid #bbb; }"
-                                   "QSlider::sub-page:horizontal {"
-                                   "background: #3D6BE5;border-radius: 2px;"
-                                   "margin-top:8px;margin-bottom:9px;}"
-                                   "QSlider::add-page:horizontal {"
-                                   "background:  rgba(52,70,80,90%);"
-                                   "border: 0px solid #777;"
-                                   "border-radius: 2px;"
-                                   "margin-top:8px;"
-                                   "margin-bottom:9px;}"
-                                   "QSlider::handle:horizontal {"
-                                   "width: 20px;"
-                                   "height: 20px;"
-                                   "background: rgb(61,107,229);"
-                                   "border-radius:10px;}");
-
-
 }
 
 void UkmediaInputWidget::inputWidgetAddPort()

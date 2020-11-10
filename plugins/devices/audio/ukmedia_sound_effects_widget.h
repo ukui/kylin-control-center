@@ -24,8 +24,10 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QMessageBox>
+#include <QHBoxLayout>
 #include <QStyledItemDelegate>
 #include "switchbutton.h"
+#include "ukui_custom_style.h"
 
 class UkuiMessageBox : public QMessageBox
 {
@@ -49,6 +51,7 @@ private:
     QFrame *m_pShutDownWidget;
     QFrame *m_pLagoutWidget;
     QFrame *m_pAlertSoundSwitchWidget;
+    QFrame *m_pAlertSoundVolumeWidget;
     QFrame *m_pWindowClosedWidget;
     QFrame *m_pVolumeChangeWidget;
     QFrame *m_pSettingSoundWidget;
@@ -60,6 +63,8 @@ private:
     QLabel *m_pShutdownlabel;
     QLabel *m_pLagoutLabel;
     QLabel *m_pAlertSoundSwitchLabel;
+    QLabel *m_pAlertSoundLabel;
+    QLabel *m_pAlertVolumeLabel;
     QLabel *m_pWindowClosedLabel;
     QLabel *m_pVolumeChangeLabel;
     QLabel *m_pSettingSoundLabel;
@@ -70,8 +75,11 @@ private:
     QComboBox *m_pWindowClosedCombobox;
     QComboBox *m_pVolumeChangeCombobox;
     QComboBox *m_pSettingSoundCombobox;
+    QVBoxLayout *m_pSoundLayout;
     SwitchButton *m_pBootButton;
     SwitchButton *m_pAlertSoundSwitchButton;
+    UkmediaVolumeSlider *m_pAlertSlider;
+    UkuiButtonDrawSvg *m_pAlertIconBtn;
 };
 
 #endif // UKMEDIASOUNDEFFECTSWIDGET_H

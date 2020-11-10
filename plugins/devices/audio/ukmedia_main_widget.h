@@ -99,6 +99,11 @@ public:
     static int caProplistMergeAp(ca_proplist *p, va_list ap);
     static int caPlayForWidget(UkmediaMainWidget *w, uint32_t id, ...);
     static int caProplistSetForWidget(ca_proplist *p, UkmediaMainWidget *widget);
+
+    QPixmap drawDarkColoredPixmap(const QPixmap &source);
+    QPixmap drawLightColoredPixmap(const QPixmap &source);
+    void alertIconButtonSetIcon(bool state,int value);
+    void createAlertSound(UkmediaMainWidget *w);
     void inputVolumeDarkThemeImage(int value,bool status);
     void outputVolumeDarkThemeImage(int value,bool status);
     int getInputVolume();
@@ -222,6 +227,8 @@ private Q_SLOTS:
     void selectComboboxChangedSlot(int index);
     void inputMuteButtonSlot();
     void outputMuteButtonSlot();
+    void alertVolumeSliderChangedSlot(int value);
+    void alertSoundVolumeChangedSlot();
 private:
     UkmediaInputWidget *m_pInputWidget;
     UkmediaOutputWidget *m_pOutputWidget;
@@ -234,6 +241,7 @@ private:
     MateMixerStreamControl *m_pOutputBarStreamControl;
     MateMixerStreamControl *m_pInputBarStreamControl;
     MateMixerStreamControl *m_pControl;
+    MateMixerStreamControl *m_pMediaRoleControl;
     MateMixerStream *m_pStream;
     MateMixerDevice *m_pDevice;
     MateMixerSwitch *m_pSwitch;

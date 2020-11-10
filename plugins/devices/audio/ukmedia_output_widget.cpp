@@ -87,7 +87,7 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     //~ contents_path /audio/Balance
     m_pOpBalanceLabel = new QLabel(tr("Balance"),m_pChannelBalanceWidget);
     m_pLeftBalanceLabel = new QLabel(tr("Left"),m_pChannelBalanceWidget);
-    m_pOpBalanceSlider = new UkmediaVolumeSlider(m_pChannelBalanceWidget);
+    m_pOpBalanceSlider = new UkmediaVolumeSlider(m_pChannelBalanceWidget,true);
     m_pRightBalanceLabel = new QLabel(tr("Right"),m_pChannelBalanceWidget);
     m_pOutputPortLabel = new QLabel(tr("Connector"),m_pOutputPortWidget);
     m_pOutputPortCombobox = new QComboBox(m_pOutputPortWidget);
@@ -104,7 +104,6 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pProfileLabel->setFixedSize(115,24);
     m_pProfileLabel->setFixedSize(150,32);
 
-    m_pOpBalanceSlider->setStyle(new CustomStyle());
     m_pOpVolumeSlider->setOrientation(Qt::Horizontal);
     m_pOpBalanceSlider->setOrientation(Qt::Horizontal);
     m_pOpVolumeSlider->setRange(0,100);
@@ -116,13 +115,6 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pOutputDeviceCombobox->setMinimumSize(50,32);
     m_pOutputDeviceCombobox->setMaximumSize(900,32);
 
-//    m_pOutputDeviceLabel->setMinimumSize(115, 24);
-
-//    m_pOutputDeviceLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-//    if(m_pOutputDeviceLabel->width() < 115){
-//        qDebug()<<"m_pOutputDeviceLabel->width()<115";
-//        m_pOutputDeviceLabel->setFixedWidth(115);
-//    }
     outputDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     outputDeviceLayout->addWidget(m_pOutputDeviceLabel);
     outputDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
@@ -133,10 +125,7 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     outputDeviceLayout->layout()->setContentsMargins(0,0,0,0);
     //主音量添加布局
     QHBoxLayout *masterLayout = new QHBoxLayout(m_pMasterVolumeWidget);
-//    m_pOpVolumeLabel->setFixedSize(115,24);
     m_pOpVolumeLabel->setFixedSize(150,32);
-//    m_pOpVolumeLabel->setMinimumSize(115, 24);
-//    m_pOpVolumeLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     m_pOutputIconBtn->setFixedSize(24,24);
     m_pOpVolumeSlider->setFixedHeight(20);
     m_pOpVolumePercentLabel->setFixedSize(40,24);
@@ -154,7 +143,6 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pMasterVolumeWidget->layout()->setContentsMargins(0,0,0,0);
     //声道平衡添加布局
     QHBoxLayout *soundLayout = new QHBoxLayout(m_pChannelBalanceWidget);
-//    m_pOpBalanceLabel->setFixedSize(115,24);
     m_pOpBalanceLabel->setFixedSize(150,32);
     m_pLeftBalanceLabel->setFixedSize(32,24);
     m_pOpBalanceSlider->setFixedHeight(20);
@@ -175,8 +163,6 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     QHBoxLayout *outputPortLayout = new QHBoxLayout(m_pOutputPortWidget);
     m_pOutputPortCombobox->setMinimumSize(50,32);
     m_pOutputPortCombobox->setMaximumSize(900,32);
-
-//    m_pOutputPortLabel->setFixedSize(115,24);
     m_pOutputPortLabel->setFixedSize(150,32);
     outputPortLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     outputPortLayout->addWidget(m_pOutputPortLabel);
@@ -189,7 +175,6 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
 
     //选择的设备布局
     QHBoxLayout *pSelectDeviceLayout = new QHBoxLayout();
-//    m_pSelectDeviceLabel->setFixedSize(115,24);
     m_pSelectDeviceLabel->setFixedSize(150,32);
     m_pSelectCombobox->setMinimumSize(50,32);
     m_pSelectCombobox->setMaximumSize(900,32);
@@ -213,7 +198,6 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     profileLayout->setSpacing(0);
     m_pProfileWidget->setLayout(profileLayout);
     profileLayout->layout()->setContentsMargins(0,0,0,0);
-//    m_pProfileWidget->setVisible(false);
     //进行整体布局
     m_pVlayout = new QVBoxLayout(m_pOutputWidget);
     m_pVlayout->addWidget(m_pOutputDeviceWidget);
@@ -239,38 +223,6 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     //设置样式
     m_pOutputLabel->setObjectName("m_pOutputLabel");
 
-    m_pOpVolumeSlider->setStyleSheet("QSlider::groove:horizontal {"
-                                  "border: 0px solid #bbb; }"
-                                  "QSlider::sub-page:horizontal {"
-                                  "background: #3D6BE5;border-radius: 2px;"
-                                  "margin-top:8px;margin-bottom:9px;}"
-                                  "QSlider::add-page:horizontal {"
-                                  "background:  rgba(52,70,80,90%);"
-                                  "border: 0px solid #777;"
-                                  "border-radius: 2px;"
-                                  "margin-top:8px;"
-                                  "margin-bottom:9px;}"
-                                  "QSlider::handle:horizontal {"
-                                  "width: 20px;"
-                                  "height: 20px;"
-                                  "background: #3D6BE5;"
-                                  "border-radius:10px;}");
-    m_pOpBalanceSlider->setStyleSheet("QSlider::groove:horizontal {"
-                                   "border: 0px solid #bbb; }"
-                                   "QSlider::sub-page:horizontal {"
-                                   "background: #3D6BE5;border-radius: 2px;"
-                                   "margin-top:8px;margin-bottom:9px;}"
-                                   "QSlider::add-page:horizontal {"
-                                   "background:  rgba(52,70,80,90%);"
-                                   "border: 0px solid #777;"
-                                   "border-radius: 2px;"
-                                   "margin-top:8px;"
-                                   "margin-bottom:9px;}"
-                                   "QSlider::handle:horizontal {"
-                                   "width: 20px;"
-                                   "height: 20px;"
-                                   "background: rgb(61,107,229);"
-                                   "border-radius:10px;}");
 }
 
 void UkmediaOutputWidget::outputWidgetAddPort()

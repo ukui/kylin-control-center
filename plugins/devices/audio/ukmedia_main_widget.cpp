@@ -27,6 +27,7 @@
 #include <QListView>
 #include <QScrollBar>
 #include <QGSettings>
+#include <QPixmap>
 #include <qmath.h>
 #define MATE_DESKTOP_USE_UNSTABLE_API
 #define VERSION "1.12.1"
@@ -194,6 +195,14 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     }
     bool status = g_settings_get_boolean(m_pSoundSettings, EVENT_SOUNDS_KEY);
     m_pSoundWidget->m_pAlertSoundSwitchButton->setChecked(status);
+    if (status) {
+        m_pSoundWidget->m_pSoundLayout->insertWidget(5,m_pSoundWidget->m_pAlertSoundVolumeWidget);
+    }
+    else {
+        m_pSoundWidget->m_pAlertSoundVolumeWidget->hide();
+    }
+
+    connect(m_pSoundWidget->m_pAlertIconBtn,SIGNAL(clicked()),this,SLOT(alertSoundVolumeChangedSlot()));
     connect(m_pSoundWidget->m_pBootButton,SIGNAL(checkedChanged(bool)),this,SLOT(bootButtonSwitchChangedSlot(bool)));
     connect(m_pSoundWidget->m_pAlertSoundSwitchButton,SIGNAL(checkedChanged(bool)),this,SLOT(alertSoundButtonSwitchChangedSlot(bool)));
     //输出音量控制
@@ -203,6 +212,7 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     connect(m_pInputWidget->m_pIpVolumeSlider,SIGNAL(valueChanged(int)),this,SLOT(inputWidgetSliderChangedSlot(int)));
 
     //点击报警音量时播放报警声音
+    connect(m_pSoundWidget->m_pAlertSlider,SIGNAL(valueChanged(int)),this,SLOT(alertVolumeSliderChangedSlot(int)));
     connect(m_pSoundWidget->m_pShutdownCombobox,SIGNAL(currentIndexChanged(int)),this,SLOT(comboxIndexChangedSlot(int)));
     connect(m_pSoundWidget->m_pLagoutCombobox ,SIGNAL(currentIndexChanged(int)),this,SLOT(comboxIndexChangedSlot(int)));
     connect(m_pSoundWidget->m_pSoundThemeCombobox,SIGNAL(currentIndexChanged(int)),this,SLOT(themeComboxIndexChangedSlot(int)));
@@ -217,6 +227,123 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
 
     //输入等级
     ukuiInputLevelSetProperty(this);
+}
+
+QPixmap UkmediaMainWidget::drawDarkColoredPixmap(const QPixmap &source)
+{
+//    QColor currentcolor=HighLightEffect::getCurrentSymbolicColor();
+    QColor gray(255,255,255);
+    QImage img = source.toImage();
+    for (int x = 0; x < img.width(); x++) {
+        for (int y = 0; y < img.height(); y++) {
+            auto color = img.pixelColor(x, y);
+            if (color.alpha() > 0) {
+                if (qAbs(color.red()-gray.red())<20 && qAbs(color.green()-gray.green())<20 && qAbs(color.blue()-gray.blue())<20) {
+                    color.setRed(0);
+                    color.setGreen(0);
+                    color.setBlue(0);
+                    img.setPixelColor(x, y, color);
+                }
+                else {
+                    color.setRed(0);
+                    color.setGreen(0);
+                    color.setBlue(0);
+                    img.setPixelColor(x, y, color);
+                }
+            }
+        }
+    }
+    return QPixmap::fromImage(img);
+}
+
+QPixmap UkmediaMainWidget::drawLightColoredPixmap(const QPixmap &source)
+{
+//    QColor currentcolor=HighLightEffect::getCurrentSymbolicColor();
+    QColor gray(255,255,255);
+    QColor standard (0,0,0);
+    QImage img = source.toImage();
+    for (int x = 0; x < img.width(); x++) {
+        for (int y = 0; y < img.height(); y++) {
+            auto color = img.pixelColor(x, y);
+            if (color.alpha() > 0) {
+                if (qAbs(color.red()-gray.red())<20 && qAbs(color.green()-gray.green())<20 && qAbs(color.blue()-gray.blue())<20) {
+                    color.setRed(255);
+                    color.setGreen(255);
+                    color.setBlue(255);
+                    img.setPixelColor(x, y, color);
+                }
+                else {
+                    color.setRed(255);
+                    color.setGreen(255);
+                    color.setBlue(255);
+                    img.setPixelColor(x, y, color);
+                }
+            }
+        }
+    }
+    return QPixmap::fromImage(img);
+}
+
+void UkmediaMainWidget::alertIconButtonSetIcon(bool state,int value)
+{
+    QImage image;
+    QColor color = QColor(0,0,0,216);
+    if (mThemeName == UKUI_THEME_WHITE) {
+        color = QColor(0,0,0,216);
+    }
+    else if (mThemeName == UKUI_THEME_BLACK) {
+        color = QColor(255,255,255,216);
+    }
+    m_pSoundWidget->m_pAlertIconBtn->mColor = color;
+    if (state) {
+        image  = QImage("/usr/share/ukui-media/img/audio-volume-muted.svg");
+        m_pSoundWidget->m_pAlertIconBtn->mImage = image;
+    }
+    else if (value <= 0) {
+        image  = QImage("/usr/share/ukui-media/img/audio-volume-muted.svg");
+        m_pSoundWidget->m_pAlertIconBtn->mImage = image;
+    }
+    else if (value > 0 && value <= 33) {
+        image = QImage("/usr/share/ukui-media/img/audio-volume-low.svg");
+        m_pSoundWidget->m_pAlertIconBtn->mImage = image;
+    }
+    else if (value >33 && value <= 66) {
+        image = QImage("/usr/share/ukui-media/img/audio-volume-medium.svg");
+        m_pSoundWidget->m_pAlertIconBtn->mImage = image;
+    }
+    else {
+        image = QImage("/usr/share/ukui-media/img/audio-volume-high.svg");
+        m_pSoundWidget->m_pAlertIconBtn->mImage = image;
+    }
+
+}
+
+void UkmediaMainWidget::createAlertSound(UkmediaMainWidget *pWidget)
+{
+    const GList   *list;
+
+    /* Find an event role stored control */
+    list = mate_mixer_context_list_stored_controls (pWidget->m_pContext);
+    while (list != NULL) {
+        MateMixerStreamControl *control = MATE_MIXER_STREAM_CONTROL (list->data);
+        MateMixerStreamControlMediaRole media_role;
+        MateMixerStream *stream = mate_mixer_stream_control_get_stream(control);
+        media_role = mate_mixer_stream_control_get_media_role (control);
+        if (media_role == MATE_MIXER_STREAM_CONTROL_MEDIA_ROLE_EVENT) {
+            pWidget->m_pMediaRoleControl = control;
+            //初始化提示音量的值
+            int volume = mate_mixer_stream_control_get_volume(m_pMediaRoleControl);
+            volume = int(volume*100/65536.0+0.5);
+            pWidget->m_pSoundWidget->m_pAlertSlider->setValue(volume);
+            pWidget->m_pSoundWidget->m_pAlertVolumeLabel->setText(QString::number(volume).append("%"));
+            qDebug() << "media role 1: " << mate_mixer_stream_control_get_name(control) <<"提示音量值为:" <<volume;
+            ukuiBarSetStream(pWidget,stream);
+            break;
+        }
+
+        list = list->next;
+    }
+
 }
 
 /*
@@ -288,6 +415,15 @@ void UkmediaMainWidget::bootButtonSwitchChangedSlot(bool status)
 void UkmediaMainWidget::alertSoundButtonSwitchChangedSlot(bool status)
 {
     g_settings_set_boolean (m_pSoundSettings, EVENT_SOUNDS_KEY, status);
+    if (status == true) {
+//        if (m_pSoundWidget->m_pSoundLayout->c)
+        m_pSoundWidget->m_pAlertSoundVolumeWidget->show();
+        m_pSoundWidget->m_pSoundLayout->insertWidget(5,m_pSoundWidget->m_pAlertSoundVolumeWidget);
+    }
+    else {
+        m_pSoundWidget->m_pAlertSoundVolumeWidget->hide();
+        m_pSoundWidget->m_pSoundLayout->removeWidget(m_pSoundWidget->m_pAlertSoundVolumeWidget);
+    }
 }
 
 void UkmediaMainWidget::bootMusicSettingsChanged()
@@ -318,6 +454,7 @@ void UkmediaMainWidget::ukuiThemeChangedSlot(const QString &themeStr)
     inputVolumeDarkThemeImage(nInputValue,inputStatus);
     outputVolumeDarkThemeImage(nOutputValue,outputStatus);
     m_pOutputWidget->m_pOutputIconBtn->repaint();
+    m_pSoundWidget->m_pAlertIconBtn->repaint();
     m_pInputWidget->m_pInputIconBtn->repaint();
 }
 
@@ -340,7 +477,7 @@ void UkmediaMainWidget::onContextStateNotify (MateMixerContext *m_pContext,GPara
         UkuiMessageBox::critical(m_pWidget,tr("sound error"),tr("load sound failed"),UkuiMessageBox::Yes | UkuiMessageBox::No,UkuiMessageBox::Yes);
         g_debug(" mate mixer state failed");
     }
-
+    m_pWidget->createAlertSound(m_pWidget);
     //    点击输出设备
     connect(m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox,SIGNAL(currentIndexChanged(QString)),m_pWidget,SLOT(outputDeviceComboxIndexChangedSlot(QString)));
     //    点击输入设备
@@ -358,7 +495,7 @@ void UkmediaMainWidget::onContextStoredControlAdded(MateMixerContext *m_pContext
     m_pControl = MATE_MIXER_STREAM_CONTROL (mate_mixer_context_get_stored_control (m_pContext, m_pName));
     if (G_UNLIKELY (m_pControl == nullptr))
         return;
-
+    qDebug() << "on context stored control add" << mate_mixer_stream_control_get_name(m_pControl);
     mediaRole = mate_mixer_stream_control_get_media_role (m_pControl);
     if (mediaRole == MATE_MIXER_STREAM_CONTROL_MEDIA_ROLE_EVENT)
         ukuiBarSetStreamControl (m_pWidget,MATE_MIXER_DIRECTION_UNKNOWN, m_pControl);
@@ -465,13 +602,16 @@ void UkmediaMainWidget::addStream (UkmediaMainWidget *m_pWidget, MateMixerStream
         m_pName  = mate_mixer_stream_get_name (m_pStream);
         m_pLabel = mate_mixer_stream_get_label (m_pStream);
         QString deviceName = m_pName;
-        if (!deviceName.contains("monitor",Qt::CaseInsensitive)) {
+        qDebug() << "device name ***" << deviceName << m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->count();
+        if (m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->count() == 0) {
             m_pWidget->m_pInputStreamList->append(m_pName);
             m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->addItem(m_pLabel);
         }
-        if (deviceName.contains("auto_null.monitor",Qt::CaseInsensitive)) {
-            m_pWidget->m_pInputStreamList->append(m_pName);
-            m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->addItem(m_pLabel);
+        else {
+            if (!deviceName.contains("monitor",Qt::CaseInsensitive)) {
+                m_pWidget->m_pInputStreamList->append(m_pName);
+                m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->addItem(m_pLabel);
+            }
         }
     }
     else if (direction == MATE_MIXER_DIRECTION_OUTPUT) {
@@ -538,7 +678,6 @@ void UkmediaMainWidget::addApplicationControl (UkmediaMainWidget *m_pWidget, Mat
     const gchar *m_pAppIcon;
     appnum++;
     mediaRole = mate_mixer_stream_control_get_media_role (m_pControl);
-
     /* Add stream to the applications page, but make sure the stream qualifies
      * for the inclusion */
     m_pInfo = mate_mixer_stream_control_get_app_info (m_pControl);
@@ -1258,6 +1397,7 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
 {
     Q_UNUSED(pspec);
     g_debug("on stream control volume notify");
+    qDebug() << "volume notify";
     MateMixerStreamControlFlags flags;
     guint volume = 0;
     QString decscription;
@@ -2428,6 +2568,33 @@ void UkmediaMainWidget::inputWidgetSliderChangedSlot(int value)
     percent.append("%");
     m_pInputWidget->m_pInputIconBtn->repaint();
     m_pInputWidget->m_pIpVolumePercentLabel->setText(percent);
+}
+
+/*
+    设置提示音大小的值
+*/
+void UkmediaMainWidget::alertVolumeSliderChangedSlot(int value)
+{
+    if (m_pMediaRoleControl != nullptr) {
+        mate_mixer_stream_control_set_volume(m_pMediaRoleControl,value*65535/100);
+        this->m_pSoundWidget->m_pAlertVolumeLabel->setText(QString::number(value).append("%"));
+
+        alertIconButtonSetIcon(false,value);
+        m_pSoundWidget->m_pAlertIconBtn->repaint();
+    }
+}
+
+/*
+    提示音静音设置
+*/
+void UkmediaMainWidget::alertSoundVolumeChangedSlot()
+{
+    bool states = mate_mixer_stream_control_get_mute(m_pMediaRoleControl);
+    int volume = m_pSoundWidget->m_pAlertSlider->value();
+
+    mate_mixer_stream_control_set_mute(m_pMediaRoleControl,!states);
+    alertIconButtonSetIcon(!states,volume);
+    m_pSoundWidget->m_pAlertIconBtn->repaint();
 }
 
 void UkmediaMainWidget::inputPortComboxChangedSlot(int index)

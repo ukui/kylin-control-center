@@ -24,17 +24,30 @@
 #include <QPushButton>
 #include <QImage>
 #include <QSlider>
+#include <QLabel>
 
 static QColor symbolic_color = Qt::gray;
+
+class UkuiMediaSliderTipLabel:public QLabel
+{
+  public:
+    UkuiMediaSliderTipLabel();
+    ~UkuiMediaSliderTipLabel();
+protected:
+    void paintEvent(QPaintEvent*);
+};
 
 class UkmediaVolumeSlider : public QSlider
 {
     Q_OBJECT
 public:
-    UkmediaVolumeSlider(QWidget *parent = nullptr);
+//    UkmediaVolumeSlider(QWidget *parent = nullptr);
+    UkmediaVolumeSlider(QWidget *parent = nullptr,bool needTip = false);
     void initStyleOption(QStyleOptionSlider *option);
     ~UkmediaVolumeSlider();
-
+private:
+    UkuiMediaSliderTipLabel *m_pTiplabel;
+    bool state = false;
 Q_SIGNALS:
     void silderPressedSignal(int);
 
@@ -46,7 +59,12 @@ protected:
 //        m_displayLabel->move((this->width()-m_displayLabel->width())*this->value()/(this->maximum()-this->minimum()),3);
         QSlider::mouseMoveEvent(e);
     }
+    void leaveEvent(QEvent *e);
+
+    void enterEvent(QEvent *e);
+    void paintEvent(QPaintEvent *e);
 };
+
 
 class UkuiButtonDrawSvg:public QPushButton
 {
