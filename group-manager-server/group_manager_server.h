@@ -34,7 +34,8 @@ public:
     explicit group_manager_server();
 
 public slots:
-    QVariantList get();
+    QVariantList getGroup();
+    QVariantList getPasswd();
     bool add(QString groupName, QString groupId);
     bool set(QString groupName, QString groupId);
     bool del(QString groupName);

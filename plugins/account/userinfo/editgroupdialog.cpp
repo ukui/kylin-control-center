@@ -26,7 +26,7 @@
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
-EditGroupDialog::EditGroupDialog(QString usergroup, QString groupid, QWidget *parent) :
+EditGroupDialog::EditGroupDialog(QString usergroup, QString groupid, QString groupname, bool idSetEnable, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::EditGroupDialog),
     _nameHasModified(false),
@@ -34,11 +34,12 @@ EditGroupDialog::EditGroupDialog(QString usergroup, QString groupid, QWidget *pa
     _boxModified(false),
     userGroup(usergroup),
     groupId(groupid),
+    groupName(groupname),
     cgDialog(new ChangeGroupDialog)
 {
     ui->setupUi(this);
-    qDebug() << "new EditGroupDialog" << userGroup << groupId;
     setupInit();
+    idSetEnabled(idSetEnable);
     getUsersList(userGroup);
     signalsBind();
 }
@@ -87,13 +88,16 @@ void EditGroupDialog::getUsersList(QString usergroup)
         QCheckBox * box = new QCheckBox(usersList.at(i));
         ui->listWidget->addItem(item);
         ui->listWidget->setItemWidget(item, box);
-
-        for (int j = 0; j < usergroupList.size(); j ++){
-            if(usergroupList.at(j) == usersList.at(i)){
-                box->setChecked(true);
+        if(usersList.at(i) == groupName){
+            box->setChecked(true);
+            box->setDisabled(true);
+        } else{
+            for (int j = 0; j < usergroupList.size(); j ++){
+                if(usergroupList.at(j) == usersList.at(i)){
+                    box->setChecked(true);
+                }
             }
         }
-
 
         connect(box, &QCheckBox::clicked, this, [=](bool checked){
             Q_UNUSED(checked);
@@ -102,6 +106,16 @@ void EditGroupDialog::getUsersList(QString usergroup)
             refreshCertainBtnStatus();
         });
     }
+}
+
+void EditGroupDialog::idSetEnabled(bool idSetEnable)
+{
+    ui->lineEdit_id->setEnabled(idSetEnable);
+}
+
+void EditGroupDialog::nameSetEnabled()
+{
+    ui->lineEdit_name->setEnabled(false);
 }
 
 QLineEdit *EditGroupDialog::lineNameComponent()
@@ -135,14 +149,8 @@ void EditGroupDialog::signalsBind()
         refreshCertainBtnStatus();
     });
     connect(ui->lineEdit_id, &QLineEdit::textEdited,[=](){
-//        if(ui->lineEdit_id->text() != groupId){
-//            qDebug() << "ui->lineEdit_id->text() != groupId";
-//            _idHasModified = true;
-//        } else {
-//            _idHasModified = false;
-//        }
-        for (int j = 0; j < cgDialog->value->size(); j++){
-            if(ui->lineEdit_id->text() == cgDialog->value->at(j)->groupid){
+        for (int j = 0; j < cgDialog->groupList->size(); j++){
+            if(ui->lineEdit_id->text() == cgDialog->groupList->at(j)->groupid){
                 _idHasModified = false;
                 return;
             }
@@ -156,8 +164,8 @@ void EditGroupDialog::signalsBind()
         ChangeGroupDialog *cgDialog = new ChangeGroupDialog;
         for (int i = 0; i < ui->listWidget->count(); i++){
             if(_idHasModified){
-                for (int j = 0; j < cgDialog->value->size(); j++){
-                    if(ui->lineEdit_id->text() == cgDialog->value->at(j)->groupid){
+                for (int j = 0; j < cgDialog->groupList->size(); j++){
+                    if(ui->lineEdit_id->text() == cgDialog->groupList->at(j)->groupid){
                         QMessageBox invalid(QMessageBox::Question, tr("Tips"), tr("Invalid Id!"));
                         invalid.setIcon(QMessageBox::Warning);
                         invalid.setStandardButtons(QMessageBox::Ok);
@@ -228,8 +236,7 @@ void EditGroupDialog::setupInit()
     ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);
     ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//    ui->listWidget->setSpacing(5);
-    ui->lineEdit_name->setEnabled(false);
+
 //    ui->lineEdit_name->setStyleSheet("QLineEdit{background:#EEEEEE;}");
 //    ui->lineEdit_id->setStyleSheet("QLineEdit{background:#EEEEEE;}");
 //    ui->listWidget->setStyleSheet("QListWidget{background:#EEEEEE; border-radius: 4px;}"
@@ -243,6 +250,7 @@ void EditGroupDialog::setupInit()
     refreshCertainBtnStatus();
     // 限制组名输入规则
     limitInput();
+    nameSetEnabled();
 }
 
 void EditGroupDialog::paintEvent(QPaintEvent *event) {

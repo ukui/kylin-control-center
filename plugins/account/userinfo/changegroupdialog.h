@@ -80,13 +80,15 @@ public:
     void connectToServer();
     void initNewGroupBtn();
     void loadGroupInfo();
+    void loadPasswdInfo();
     void loadAllGroup();
     bool polkit();
     void refreshList();
 
 public:
     QDBusInterface *serviceInterface;
-    QList<custom_struct *>  *value;
+    QList<custom_struct *>  *groupList;
+    QList<custom_struct *>  *passwdList;
 
 protected:
     void paintEvent(QPaintEvent * event);

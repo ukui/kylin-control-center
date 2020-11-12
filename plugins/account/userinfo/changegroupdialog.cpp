@@ -62,8 +62,7 @@ void ChangeGroupDialog::connectToServer()
 void ChangeGroupDialog::loadGroupInfo()
 {
     qDebug() << "loadGroupInfo";
-    //check_permission();
-    QDBusMessage msg = serviceInterface->call("get");
+    QDBusMessage msg = serviceInterface->call("getGroup");
     if(msg.type() == QDBusMessage::ErrorMessage) {
         printf("get group info fail.\n");
     }
@@ -71,12 +70,31 @@ void ChangeGroupDialog::loadGroupInfo()
     QList<QVariant> infos;
     argument >> infos;
 
-    value = new QList<custom_struct *>();
+    groupList = new QList<custom_struct *>();
     for (int i = 0; i < infos.size(); i++)
     {
         custom_struct *dbus_struct = new custom_struct;
         infos.at(i).value<QDBusArgument>() >> *dbus_struct;
-        value->push_back(dbus_struct);
+        groupList->push_back(dbus_struct);
+    }
+}
+
+void ChangeGroupDialog::loadPasswdInfo()
+{
+    qDebug() << "loadPasswdInfo";
+    QDBusMessage msg = serviceInterface->call("getPasswd");
+    if(msg.type() == QDBusMessage::ErrorMessage) {
+        printf("get passwd info fail.\n");
+    }
+    QDBusArgument argument = msg.arguments().at(0).value<QDBusArgument>();
+    QList<QVariant> infos;
+    argument >> infos;
+
+    passwdList = new QList<custom_struct *>();
+    for (int i = 0; i < infos.size(); i++){
+        custom_struct *dbus_struct = new custom_struct;
+        infos.at(i).value<QDBusArgument>() >> *dbus_struct;
+        passwdList->push_back(dbus_struct);
     }
 }
 
@@ -114,15 +132,18 @@ bool ChangeGroupDialog::polkit()
 
 void ChangeGroupDialog::loadAllGroup()
 {
-    for(int i = 0; i < value->size(); i++){
-        DefineGroupItem * singleWidget = new DefineGroupItem(value->at(i)->groupname);
-        if(value->at(i)->groupname == "root"){
-            singleWidget->setDeleteable(false);
-            singleWidget->setEditable(false);
-        } else{
-            singleWidget->setDeleteable(true);
-            singleWidget->setUpdateable(true);
-            singleWidget->setEditable(true);
+    for(int i = 0; i < groupList->size(); i++){
+        bool idSetEnable = true;
+        DefineGroupItem * singleWidget = new DefineGroupItem(groupList->at(i)->groupname);
+        singleWidget->setDeleteable(true);
+        singleWidget->setUpdateable(true);
+        singleWidget->setEditable(true);
+
+        for(int j = 0; j < passwdList->size(); j++){
+            if(passwdList->at(j)->groupid == groupList->at(i)->groupid){
+                singleWidget->setDeleteable(false);
+                idSetEnable = false;
+            }
         }
         singleWidget->setFrameShape(QFrame::Shape::Box);
         singleWidget->setProperty("userData", true);
@@ -139,10 +160,10 @@ void ChangeGroupDialog::loadAllGroup()
             bool reply = polkit();
             qDebug() << "call polkit " << reply;
             if(reply){
-                DelGroupDialog *delDialog = new DelGroupDialog(value->at(i)->groupname);
+                DelGroupDialog *delDialog = new DelGroupDialog(groupList->at(i)->groupname);
                 QPushButton *delBtn = delDialog->delBtnComponent();
                 connect(delBtn, &QPushButton::clicked, [=](){
-                    QDBusReply<bool> reply = serviceInterface->call("del",value->at(i)->groupname);
+                    QDBusReply<bool> reply = serviceInterface->call("del",groupList->at(i)->groupname);
                     if (reply.isValid()){
                         // use the returned value
                         qDebug() << "get call value" << reply.value();
@@ -164,12 +185,13 @@ void ChangeGroupDialog::loadAllGroup()
             bool reply = polkit();
             qDebug() << "call polkit " << reply;
             if(reply){
-                EditGroupDialog *editDialog = new EditGroupDialog(value->at(i)->usergroup,value->at(i)->groupid);
+                EditGroupDialog *editDialog = new EditGroupDialog(groupList->at(i)->usergroup,groupList->at(i)->groupid,
+                                                  groupList->at(i)->groupname, idSetEnable);
                 connect(editDialog, &EditGroupDialog::needRefresh, this, &ChangeGroupDialog::needRefreshSlot);
                 QLineEdit *lineName = editDialog->lineNameComponent();
                 QLineEdit *lineId = editDialog->lineIdComponent();
-                lineName->setText(value->at(i)->groupname);
-                lineId->setText(value->at(i)->groupid);
+                lineName->setText(groupList->at(i)->groupname);
+                lineId->setText(groupList->at(i)->groupid);
                 editDialog->exec();
             }
 
@@ -206,6 +228,7 @@ void ChangeGroupDialog::setupInit()
     connectToServer();
     initNewGroupBtn();
     loadGroupInfo();
+    loadPasswdInfo();
     loadAllGroup();
 }
 
@@ -260,8 +283,8 @@ void ChangeGroupDialog::initNewGroupBtn()
             QListWidget *cglist = dialog->listWidgetComponent();
 
             connect(certainBtn, &QPushButton::clicked, this, [=](){
-                for (int j = 0; j < value->size(); j++){
-                    if(lineId->text() == value->at(j)->groupid){
+                for (int j = 0; j < groupList->size(); j++){
+                    if(lineId->text() == groupList->at(j)->groupid){
                         QMessageBox invalid(QMessageBox::Question, tr("Tips"), tr("Invalid Id!"));
                         invalid.setIcon(QMessageBox::Warning);
                         invalid.setStandardButtons(QMessageBox::Ok);
@@ -269,7 +292,7 @@ void ChangeGroupDialog::initNewGroupBtn()
                         invalid.exec();
                         return;
                     }
-                    if(lineName->text() == value->at(j)->groupname){
+                    if(lineName->text() == groupList->at(j)->groupname){
                         QMessageBox invalid(QMessageBox::Question, tr("Tips"), tr("Invalid Group Name!"));
                         invalid.setIcon(QMessageBox::Warning);
                         invalid.setStandardButtons(QMessageBox::Ok);

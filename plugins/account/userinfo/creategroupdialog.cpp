@@ -129,8 +129,8 @@ void CreateGroupDialog::signalsBind()
         refreshCertainBtnStatus();
     });
     connect(ui->lineEdit_id, &QLineEdit::textEdited,[=](){
-        for (int j = 0; j < cgDialog->value->size(); j++){
-            if(ui->lineEdit_id->text() == cgDialog->value->at(j)->groupid){
+        for (int j = 0; j < cgDialog->groupList->size(); j++){
+            if(ui->lineEdit_id->text() == cgDialog->groupList->at(j)->groupid){
                 _idHasModified = false;
                 return;
             }
@@ -138,8 +138,8 @@ void CreateGroupDialog::signalsBind()
         _idHasModified = true;
     });
     connect(ui->lineEdit_name, &QLineEdit::textEdited,[=](){
-        for (int j = 0; j < cgDialog->value->size(); j++){
-            if(ui->lineEdit_id->text() == cgDialog->value->at(j)->groupname){
+        for (int j = 0; j < cgDialog->groupList->size(); j++){
+            if(ui->lineEdit_id->text() == cgDialog->groupList->at(j)->groupname){
                 _nameHasModified = false;
                 return;
             }

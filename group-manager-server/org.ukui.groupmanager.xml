@@ -1,7 +1,10 @@
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
   <interface name="org.ukui.groupmanager.interface">
-    <method name="get">
+    <method name="getGroup">
+      <arg type="av" direction="out"/>
+    </method>
+    <method name="getPasswd">
       <arg type="av" direction="out"/>
     </method>
     <method name="add">

@@ -125,8 +125,12 @@ void DefineGroupItem::setShortcutName(QString newName){
 void DefineGroupItem::enterEvent(QEvent *event)
 {
     Q_UNUSED(event);
-    if (_deleteable && _editable){
+    if(_deleteable && _editable){
+        pDelBtn->show();
         pEditBtn->show();
+    }else if(_editable){
+        pEditBtn->show();
+    }else if(_deleteable){
         pDelBtn->show();
     }
 }

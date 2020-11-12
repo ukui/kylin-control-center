@@ -26,7 +26,7 @@ group_manager_server::group_manager_server()
 }
 
 // 解析组文件
-QVariantList group_manager_server::get()
+QVariantList group_manager_server::getGroup()
 {
     const QString fileName = "/etc/group";
     QFile groupFile(fileName);
@@ -49,10 +49,44 @@ QVariantList group_manager_server::get()
     while(!line.isNull()){
         QStringList lineList = line.split(":");
         line = in.readLine();
-        demo[lineCount].groupname      = lineList.at(0);
-        demo[lineCount].passphrase    = lineList.at(1);
-        demo[lineCount].groupid = lineList.at(2);
-        demo[lineCount].usergroup = lineList.at(3);
+        demo[lineCount].groupname   = lineList.at(0);
+        demo[lineCount].passphrase  = lineList.at(1);
+        demo[lineCount].groupid     = lineList.at(2);
+        demo[lineCount].usergroup   = lineList.at(3);
+        cnt = QVariant::fromValue(demo[lineCount]);
+        value << cnt;
+        lineCount ++;
+    }
+    return value;
+}
+
+// 解析passwd文件
+QVariantList group_manager_server::getPasswd()
+{
+    const QString fileName = "/etc/passwd";
+    QFile passwdFile(fileName);
+
+    QVariantList value;
+    QVariant cnt;
+    int lineCount = 1;
+
+    if(!passwdFile.exists()){
+        printf("/etc/passwd file not exist \n");
+    }
+    if(!passwdFile.open(QIODevice::ReadOnly | QIODevice::Text)){
+        printf("open /etc/passwd fail \n");
+    }
+
+    QTextStream in(&passwdFile);
+    QString line = in.readLine();
+    struct custom_struct demo[200];
+
+    while(!line.isNull()){
+        QStringList lineList = line.split(":");
+        line = in.readLine();
+        demo[lineCount].groupname   = lineList.at(0);
+        demo[lineCount].passphrase  = lineList.at(1);
+        demo[lineCount].groupid     = lineList.at(3);
         cnt = QVariant::fromValue(demo[lineCount]);
         value << cnt;
         lineCount ++;

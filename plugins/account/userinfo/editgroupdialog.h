@@ -41,7 +41,7 @@ class EditGroupDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit EditGroupDialog(QString usergroup, QString groupid, QWidget *parent = nullptr);
+    explicit EditGroupDialog(QString, QString, QString, bool, QWidget *parent = nullptr);
     ~EditGroupDialog();
 
 public:
@@ -51,6 +51,8 @@ public:
     QLineEdit * lineNameComponent();
     QLineEdit * lineIdComponent();
     QListWidget * listWidgetComponent();
+    void idSetEnabled(bool );
+    void nameSetEnabled();
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -63,6 +65,7 @@ private:
     bool _boxModified;
     QString userGroup;
     QString groupId;
+    QString groupName;
 
     void setupInit();
     void signalsBind();
