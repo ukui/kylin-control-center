@@ -10,6 +10,7 @@
 #include <QDBusConnection>
 #include <QDBusError>
 #include <QDBusReply>
+#include <QStringList>
 
 #include <KF5/KScreen/kscreen/config.h>
 
@@ -186,33 +187,39 @@ class Widget : public QWidget
     QList<QQuickView*> mOutputIdentifiers;
     QTimer *mOutputTimer = nullptr;
 
-    bool m_blockChanges = false;
-
     // 亮度配置文件位置
     QString brightnessFile = nullptr;
+
+    QStringList mPowerKeys;
+
     // xml文件
     xmlFile inputXml[100];
 
-    SwitchButton *mNightButton = nullptr;
+    SwitchButton *mNightButton       = nullptr;
     SwitchButton *mCloseScreenButton = nullptr;
-    SwitchButton *mUnifyButton = nullptr;
-    SwitchButton *mThemeButton = nullptr;
-    QLabel *nightLabel = nullptr;
+    SwitchButton *mUnifyButton       = nullptr;
+    SwitchButton *mThemeButton       = nullptr;
+
+    QLabel *nightLabel               = nullptr;
 
     Slider *slider;
-    QGSettings *m_gsettings = nullptr;
-    QGSettings *scaleGSettings = nullptr;
+
+    QGSettings *mGsettings     = nullptr;
+    QGSettings *scaleGSettings  = nullptr;
     QGSettings *mPowerGSettings = nullptr;
-    QSettings *m_qsettings = nullptr;
+    QSettings  *mQsettings      = nullptr;
+
     QButtonGroup *singleButton;
 
     int screenScale = 1;
     // 是否为夜间模式
-    bool m_isNightMode = false;
-    bool m_redshiftIsValid = false;
-    bool isScaleChanged = false;
-    bool oriApply;
-    bool mConfigChanged = false;
+    bool mIsNightMode     = false;
+    bool mRedshiftIsValid = false;
+    bool mIsScaleChanged  = false;
+    bool mOriApply;
+    bool mConfigChanged   = false;
+    bool mOnBattery       = false;
+    bool m_blockChanges = false;
 
 };
 
