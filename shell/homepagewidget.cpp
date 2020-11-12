@@ -25,7 +25,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QListWidget>
-
+#include <QDBusInterface>
 #include <QDebug>
 
 #include "mainwindow.h"
@@ -33,6 +33,7 @@
 #include "component/clicklabel.h"
 #include "utils/functionselect.h"
 #include "component/hoverwidget.h"
+#include "./utils/utils.h"
 
 HomePageWidget::HomePageWidget(QWidget *parent) :
     QWidget(parent),
@@ -61,7 +62,8 @@ void HomePageWidget::initUI(){
     ui->listWidget->setFocusPolicy(Qt::NoFocus);
     ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);
 
-//    ui->listWidget->setGridSize(QSize(360, 100));
+
+    mModuleMap = Utils::getModuleHideStatus();
 
     //构建枚举键值转换对象
     KeyValueConverter * kvConverter = new KeyValueConverter(); //继承QObject，No Delete
@@ -71,7 +73,7 @@ void HomePageWidget::initUI(){
 
     QSignalMapper * moduleSignalMapper = new QSignalMapper(this);
 
-    for (int moduleIndex = 0; moduleIndex < TOTALMODULES; moduleIndex++){
+    for (int moduleIndex = 0; moduleIndex < TOTALMODULES; moduleIndex++) {
         //获取插件QMap
         QMap<QString, QObject *> moduleMap;
         moduleMap = pmainWindow->exportModule(moduleIndex);
@@ -80,13 +82,17 @@ void HomePageWidget::initUI(){
         QString modulenameString = kvConverter->keycodeTokeystring(moduleIndex).toLower();
         QString modulenamei18nString = kvConverter->keycodeTokeyi18nstring(moduleIndex);
 
-        ////构建首页8个模块
+        if (mModuleMap.keys().contains(modulenameString)) {
+            if (!mModuleMap[modulenameString].toBool()) {
+                continue;
+            }
+        }
+
+        //构建首页8个模块
         //基础Widget
         QWidget * baseWidget = new QWidget;
         baseWidget->setAttribute(Qt::WA_DeleteOnClose);
         baseWidget->setObjectName("itemBaseWidget");
-//        baseWidget->setStyleSheet("QWidget#itemBaseWidget{border: 1px solid #3D68E5;}");
-        //解决在20.04悬浮颜色问题
         baseWidget->setStyleSheet("QWidget#itemBaseWidget{background: palette(base);}");
         //baseWidget 的顶级布局
         QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);
@@ -119,7 +125,6 @@ void HomePageWidget::initUI(){
                     break;
                 }
             }
-
         });
 
         QHBoxLayout * mainHorLayout = new QHBoxLayout(widget);
@@ -144,7 +149,6 @@ void HomePageWidget::initUI(){
         titleLabel->setObjectName("mptitleLabel");
         titleLabel->setText(modulenamei18nString);
 
-//        titleLabel->setStyleSheet("QLabel{font-size: 16px; color: palette(windowText);}");
         QHBoxLayout * funcHorLayout = new QHBoxLayout();
 
         //循环填充模块下属功能
@@ -153,16 +157,20 @@ void HomePageWidget::initUI(){
             FuncInfo single = tmpList.at(funcIndex);
             //跳过插件不存在的功能项
             if (!moduleMap.contains(single.namei18nString)){
-//                qDebug() << single.namei18nString << "plugin object not found";
                 continue;
             }
             //跳过不在首页显示的功能
             if (!single.mainShow)
                 continue;
 
+            if (mModuleMap.keys().contains(single.nameString.toLower())) {
+                if (!mModuleMap[single.nameString.toLower()].toBool()) {
+                    continue;
+                }
+            }
+
             ClickLabel * label = new ClickLabel(single.namei18nString, widget);
             label->setStyleSheet("color: palette(Shadow);");
-//            palette().color(QPalette::Text)
 
             connect(label, SIGNAL(clicked()), moduleSignalMapper, SLOT(map()));
             moduleSignalMapper->setMapping(label, moduleMap[single.namei18nString]);
@@ -191,6 +199,7 @@ void HomePageWidget::initUI(){
 
         //悬浮改变Widget状态
         connect(widget, &ResHoverWidget::enterWidget, this, [=](QString mname){
+            Q_UNUSED(mname)
             ResHoverWidget * w = dynamic_cast<ResHoverWidget *>(QObject::sender());
             QPixmap cgPix = loadSvg(path, WHITE);
             logoLabel->setPixmap(cgPix);
@@ -199,12 +208,13 @@ void HomePageWidget::initUI(){
 
 
             QList<ClickLabel *> clabelList = w->findChildren<ClickLabel *>();
-            for (ClickLabel * tmpLabel : clabelList){
+            for (ClickLabel * tmpLabel : clabelList) {
                 tmpLabel->setStyleSheet("color: palette(base);");
             }
         });
         //还原状态
-        connect(widget, &ResHoverWidget::leaveWidget, this, [=](QString mname){
+        connect(widget, &ResHoverWidget::leaveWidget, this, [=](QString mname) {
+            Q_UNUSED(mname)
             ResHoverWidget * w = dynamic_cast<ResHoverWidget *>(QObject::sender());
             QPixmap cgPix = loadSvg(path, BLUE);
             logoLabel->setPixmap(cgPix);

@@ -987,7 +987,7 @@ you can restore them to ensure the integrity of your system.</source>
     <message>
         <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished">更改时间</translation>
+        <translation>添加用户组</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="181"/>
@@ -1030,6 +1030,11 @@ you can restore them to ensure the integrity of your system.</source>
         <location filename="../../../plugins/account/userinfo/creategroupdialog.ui" line="94"/>
         <source>Certain</source>
         <translation>确定</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/creategroupdialog.cpp" line="153"/>
+        <source>Add user group</source>
+        <translation>添加用户组</translation>
     </message>
 </context>
 <context>
@@ -1442,7 +1447,7 @@ change system settings</source>
     <message>
         <location filename="../../../plugins/account/userinfo/delgroupdialog.ui" line="26"/>
         <source>Dialog</source>
-        <translation type="unfinished">更改时间</translation>
+        <translation>删除用户组</translation>
     </message>
     <message>
         <source>Are you sure to delete this group, 
@@ -1477,7 +1482,12 @@ in the file system invalid!</source>
 中的某些文件组件ID无效!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/delgroupdialog.cpp" line="65"/>
+        <location filename="../../../plugins/account/userinfo/delgroupdialog.cpp" line="53"/>
+        <source>Delete user group</source>
+        <translation>删除用户组</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/delgroupdialog.cpp" line="66"/>
         <source>Are you sure to delete the group, which will make some file components in the file system invalid!</source>
         <translation>确定删除该用户组，这将使得文件系统中的某些文件组件ID无效！</translation>
     </message>
@@ -1947,7 +1957,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/userinfo/editgroupdialog.ui" line="26"/>
         <source>Dialog</source>
-        <translation type="unfinished">更改时间</translation>
+        <translation>编辑用户组</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/editgroupdialog.ui" line="87"/>
@@ -1993,6 +2003,11 @@ folder will be deleted!</source>
         <location filename="../../../plugins/account/userinfo/editgroupdialog.cpp" line="164"/>
         <source>OK</source>
         <translation>确定</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/editgroupdialog.cpp" line="213"/>
+        <source>Edit user group</source>
+        <translation>编辑用户组</translation>
     </message>
 </context>
 <context>

@@ -210,6 +210,7 @@ void EditGroupDialog::signalsBind()
 
 void EditGroupDialog::setupInit()
 {
+    setWindowTitle(tr("Edit user group"));
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -229,17 +230,19 @@ void EditGroupDialog::setupInit()
     ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 //    ui->listWidget->setSpacing(5);
     ui->lineEdit_name->setEnabled(false);
-    ui->lineEdit_name->setStyleSheet("QLineEdit{background:#EEEEEE;}");
-    ui->lineEdit_id->setStyleSheet("QLineEdit{background:#EEEEEE;}");
-    ui->listWidget->setStyleSheet("QListWidget{background:#EEEEEE; border-radius: 4px;}"
-                                  "QListWidget::Item:hover{background:#FFE1E1E1}"
+//    ui->lineEdit_name->setStyleSheet("QLineEdit{background:#EEEEEE;}");
+//    ui->lineEdit_id->setStyleSheet("QLineEdit{background:#EEEEEE;}");
+//    ui->listWidget->setStyleSheet("QListWidget{background:#EEEEEE; border-radius: 4px;}"
+//                                  "QListWidget::Item:hover{background:#FFE1E1E1}"
+//                                  "QListWidget::Item{padding-left:20px;}");
+
+    ui->listWidget->setStyleSheet("QListWidget{border-radius: 4px;}"
                                   "QListWidget::Item{padding-left:20px;}");
 
     // 设置确认按钮
     refreshCertainBtnStatus();
     // 限制组名输入规则
     limitInput();
-    //
 }
 
 void EditGroupDialog::paintEvent(QPaintEvent *event) {

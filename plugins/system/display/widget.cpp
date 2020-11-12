@@ -474,7 +474,9 @@ void Widget::initGSettings() {
     QByteArray id(UKUI_CONTORLCENTER_PANEL_SCHEMAS);
     if(QGSettings::isSchemaInstalled(id)) {
         mGsettings = new QGSettings(id, QByteArray(), this);
-        mThemeButton->setChecked(mGsettings->get(THEME_NIGHT_KEY).toBool());
+        if (mGsettings->keys().contains(THEME_NIGHT_KEY)) {
+            mThemeButton->setChecked(mGsettings->get(THEME_NIGHT_KEY).toBool());
+        }
     } else {
         qDebug() << Q_FUNC_INFO << "org.ukui.control-center.panel.plugins not install";
         return;
@@ -635,7 +637,9 @@ void Widget::showCustomWiget(int index) {
 }
 
 void Widget::slotThemeChanged(bool judge) {
-    mGsettings->set(THEME_NIGHT_KEY, judge);
+    if (mGsettings->keys().contains(THEME_NIGHT_KEY)) {
+        mGsettings->set(THEME_NIGHT_KEY, judge);
+    }
 }
 
 void Widget::clearOutputIdentifiers() {

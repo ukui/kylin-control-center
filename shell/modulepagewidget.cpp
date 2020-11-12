@@ -21,14 +21,14 @@
 #include "ui_modulepagewidget.h"
 
 #include <QListWidgetItem>
+#include <QDebug>
 
 #include "mainwindow.h"
 #include "interface.h"
 #include "utils/keyvalueconverter.h"
 #include "utils/functionselect.h"
+#include "utils/utils.h"
 #include "component/leftwidgetitem.h"
-
-#include <QDebug>
 
 ModulePageWidget::ModulePageWidget(QWidget *parent) :
     QWidget(parent),
@@ -53,8 +53,6 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
     ui->leftStackedWidget->setStyleSheet("border: none;");
     // 上侧二级菜单样式
 //    ui->topStackedWidget->setStyleSheet("border: none;");
-    // 功能区域
-//    ui->scrollArea->setStyleSheet("#scrollArea{border: 0px solid;}");
     ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 //    ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -66,6 +64,7 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
 
     ui->topsideWidget->hide();
 
+    getModuleStatus();
     initUI();
 }
 
@@ -74,7 +73,7 @@ ModulePageWidget::~ModulePageWidget()
     delete ui;
 }
 
-void ModulePageWidget::initUI(){
+void ModulePageWidget::initUI() {
     //设置伸缩策略
     QSizePolicy leftSizePolicy = ui->leftbarWidget->sizePolicy();
     QSizePolicy rightSizePolicy = ui->widget->sizePolicy();
@@ -88,7 +87,6 @@ void ModulePageWidget::initUI(){
     for (int moduleIndex = 0; moduleIndex < TOTALMODULES; moduleIndex++){
         QListWidget * leftListWidget = new QListWidget;
         leftListWidget->setObjectName("leftWidget");
-//        leftListWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
         leftListWidget->setAttribute(Qt::WA_DeleteOnClose);
         leftListWidget->setResizeMode(QListView::Adjust);
         leftListWidget->setFocusPolicy(Qt::NoFocus);
@@ -112,6 +110,12 @@ void ModulePageWidget::initUI(){
             //跳过插件不存在的功能项
             if (!moduleMap.contains(single.namei18nString))
                 continue;
+
+            if (mModuleMap.keys().contains(single.nameString.toLower())) {
+                if (!mModuleMap[single.nameString.toLower()].toBool()) {
+                    continue;
+                }
+            }
 
             //填充左侧二级菜单
             LeftWidgetItem * leftWidgetItem = new LeftWidgetItem(this);
@@ -256,6 +260,10 @@ void ModulePageWidget::highlightItem(QString text){
     //高亮上侧二级菜单
     QListWidget * toptmpListWidget = dynamic_cast<QListWidget *>(ui->topStackedWidget->currentWidget());
     toptmpListWidget->setCurrentItem(currentItemList.at(0)); //QMultiMap 后添加的value在前面
+}
+
+void ModulePageWidget::getModuleStatus() {
+    mModuleMap = Utils::getModuleHideStatus();
 }
 
 void ModulePageWidget::currentLeftitemChanged(QListWidgetItem *cur, QListWidgetItem *pre){

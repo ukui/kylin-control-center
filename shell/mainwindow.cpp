@@ -22,6 +22,7 @@
 #include "prescene.h"
 #include "utils/keyvalueconverter.h"
 #include "utils/functionselect.h"
+#include "utils/utils.h"
 #include "../commonComponent/ImageUtil/imageutil.h"
 
 #include <QLabel>
@@ -37,9 +38,10 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QGSettings>
-#define QueryLineEditBackground "#FFFFFF" //搜索框背景
+
+#define QueryLineEditBackground        "#FFFFFF" //搜索框背景
 #define QueryLineEditClickedBackground "#FFFFFF" //搜索框背景选中
-#define QueryLineEditClickedBorder "rgba(61, 107, 229, 1)" //搜索框背景选中边框
+#define QueryLineEditClickedBorder     "rgba(61, 107, 229, 1)" //搜索框背景选中边框
 
 #ifdef WITHKYSEC
 #include <kysec/libkysec.h>
@@ -219,14 +221,14 @@ void MainWindow::paintEvent(QPaintEvent *event) {
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     if (this == watched) {
         if (event->type() == QEvent::WindowStateChange) {
+            int count = ui->leftsidebarVerLayout->count();
             if (this->windowState() == Qt::WindowMaximized) {
                 QFont font = this->font();
                 int width = font.pointSize();
                 maxBtn->setIcon(QIcon::fromTheme("window-restore-symbolic"));
                 ui->leftsidebarWidget->setMaximumWidth(width * 10 +25);
-                for (int i = 0; i <= 9; i++) {
+                for (int i = 0; i < count; i++) {
                     QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
-
                     if (btn) {
                         QLayout *layout = btn->layout();
                         QLabel * tipLabel = static_cast<QLabel *>(layout->itemAt(1)->widget());
@@ -236,7 +238,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             } else {
                 maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
                 ui->leftsidebarWidget->setMaximumWidth(60);
-                for (int i = 0; i <= 9; i++) {
+                for (int i = 0; i < count; i++) {
                     QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
                     if (btn) {
                         QLayout *layout = btn->layout();
@@ -299,6 +301,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 
 void MainWindow::initUI() {
     ui->setupUi(this);
+
+    m_ModuleMap = Utils::getModuleHideStatus();
 
     this->installEventFilter(this);
 
@@ -601,6 +605,12 @@ void MainWindow::initLeftsideBar(){
             QString mnameString = kvConverter->keycodeTokeystring(type);
             QString mnamei18nString  = kvConverter->keycodeTokeyi18nstring(type); //设置TEXT
 
+            if (m_ModuleMap.keys().contains(mnameString.toLower())) {
+                if (!m_ModuleMap[mnameString.toLower()].toBool()) {
+                    continue;
+                }
+            }
+
             QPushButton * button;
             QString btnName = "btn" + QString::number(type + 1);
             button = buildLeftsideBtn(mnameString,mnamei18nString);
@@ -610,9 +620,6 @@ void MainWindow::initLeftsideBar(){
             button->setCheckable(true);
             leftBtnGroup->addButton(button, type);
 
-            //设置样式
-            //            button->setStyleSheet("QPushButton::checked{background: palette(button); border: none; border-image: url('://img/primaryleftmenu/checked.png');}"
-            //                                  "QPushButton::!checked{background: palette(button);border: none;}");
             button->setStyleSheet("QPushButton::checked{background: palette(base); border-top-left-radius: 6px;border-bottom-left-radius: 6px;}"
                                   "QPushButton::!checked{background: palette(button);border: none;}");
 

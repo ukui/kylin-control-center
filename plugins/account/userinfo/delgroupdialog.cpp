@@ -50,6 +50,7 @@ void DelGroupDialog::signalsBind()
 
 void DelGroupDialog::setupInit()
 {
+    setWindowTitle(tr("Delete user group"));
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);

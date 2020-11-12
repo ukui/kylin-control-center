@@ -119,7 +119,7 @@ void FunctionSelect::initValue(){
         funcStruct.type = NETWORK;
         funcStruct.index = i;
         funcStruct.mainShow = true;
-        networkList.append(funcStruct);        
+        networkList.append(funcStruct);
     }
     networkList[NETCONNECT].nameString = QString("Netconnect");
     networkList[NETCONNECT].namei18nString = QObject::tr("Connect");

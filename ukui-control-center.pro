@@ -6,6 +6,7 @@ SUBDIRS = \
     checkUserPwd \
     registeredQDbus \
     plugins\
+    registeredSession \
     shell \
     group-manager-server \
 #    tastenbrett \

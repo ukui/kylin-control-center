@@ -255,7 +255,7 @@ void Theme::setupComponent(){
     buildThemeModeBtn(ui->lightButton, tr("Light"), "light");
     buildThemeModeBtn(ui->darkButton, tr("Dark"), "dark");
 
-    ui->tranSlider->setRange(35, 100);
+    ui->tranSlider->setRange(35, 90);
 
     ui->tranSlider->setValue(static_cast<int>(personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble() * 100.0));
     connect(ui->tranSlider, &QSlider::sliderReleased, this, [=]() {
@@ -554,7 +554,10 @@ void Theme::initConnection() {
 
     connect(effectSwitchBtn, &SwitchButton::checkedChanged, [this](bool checked) {
         if (!checked) {
-            personliseGsettings->set(PERSONALSIE_TRAN_KEY, 1.0);
+            personliseGsettings->set(PERSONALSIE_TRAN_KEY, 0.9);
+            qtSettings->set(THEME_TRAN_KEY, 90);
+            qtSettings->set(PEONY_TRAN_KEY, 90);
+            ui->tranSlider->setValue(90);
         }
         // 提供给外部监听特效接口
         personliseGsettings->set(PERSONALSIE_EFFECT_KEY, checked);
