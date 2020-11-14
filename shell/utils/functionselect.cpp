@@ -160,8 +160,8 @@ void FunctionSelect::initValue(){
         datetimeList.append(funcStruct);
     }
 
-    datetimeList[DAT].nameString = QString("Datetime");
-    datetimeList[DAT].namei18nString = QObject::tr("Datetime");
+    datetimeList[DAT].nameString = QString("Dat");
+    datetimeList[DAT].namei18nString = QObject::tr("Dat");
     datetimeList[AREA].nameString = QString("Area");
     datetimeList[AREA].namei18nString = QObject::tr("Area");
 

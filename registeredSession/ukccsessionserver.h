@@ -24,14 +24,18 @@ public:
     explicit ukccSessionServer();
 
 private:
-    QString readFile(const QString &filename);
-    QMap<QString, QVariant> getJsonInfo(const JsonObject &result, const QStringList &keies);
-    void initModuleStatus(const QString &fileName);
+    QMap<QString, QVariant> getJsonInfo(const  QString &confFile);
+
+
+Q_SIGNALS:
+    void configChanged();
 
 public slots:
     void exitService();
+    void        ReloadSecurityConfig();
     QVariantMap getModuleHideStatus();
-    QString     getModuleConfFile();
+    QString     GetSecurityConfigPath();
+
 };
 
 #endif // UKCCSESSIONSERVER_H

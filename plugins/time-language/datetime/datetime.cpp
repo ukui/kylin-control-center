@@ -44,7 +44,7 @@ DateTime::DateTime() {
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
-    pluginName = tr("Datetime");
+    pluginName = tr("Dat");
     pluginType = DATETIME;
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->timeClockLable->setStyleSheet("QLabel{font-size: 24px; color: palette(windowText);}");
