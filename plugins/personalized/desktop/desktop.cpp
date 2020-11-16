@@ -31,6 +31,7 @@
 #include <QProcess>
 #include <QSettings>
 #include <QTextCodec>
+#include <QtDBus/QDBusConnection>
 
 //#define DESKTOP_SCHEMA "org.ukui.peony.desktop"
 #define DESKTOP_SCHEMA "org.ukui.control-center.desktop"
@@ -232,6 +233,17 @@ void Desktop::setupConnect(){
     connect(menuTrashSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         dSettings->set(TRASH_LOCK_KEY, checked);
     });
+
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"),
+                                          QString("org.freedesktop.kylinssoclient.interface"),
+                                          "keyChanged", this, SLOT(slotCloudAccout(QString)));
+}
+
+void Desktop::slotCloudAccout(const QString &key) {
+    if(key == "ukui-menu") {
+        initVisibleStatus();
+        initLockingStatus();
+    }
 }
 
 void Desktop::initVisibleStatus() {

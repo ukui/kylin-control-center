@@ -102,6 +102,7 @@ private slots:
     QString desktopToName(QString desktopfile);
     QString readOuputSlot();
     void readErrorSlot();
+    void slotCloudAccout(const QString &key);
 };
 
 #endif // DESKTOP_H
