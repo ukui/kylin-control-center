@@ -649,7 +649,7 @@
              <item>
               <widget class="QLabel" name="lowLabel">
                <property name="text">
-                <string>Low</string>
+                <string/>
                </property>
               </widget>
              </item>
@@ -661,9 +661,9 @@
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label">
+              <widget class="QLabel" name="highlabel">
                <property name="text">
-                <string>High</string>
+                <string/>
                </property>
               </widget>
              </item>

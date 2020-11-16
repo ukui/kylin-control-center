@@ -139,6 +139,8 @@
         <file>dropArrow/search.svg</file>
         <file>secondaryleftmenu/Vino.svg</file>
         <file>secondaryleftmenu/VinoWhite.svg</file>
+        <file>plugins/theme/opacitylow.svg</file>
+        <file>plugins/theme/opacityhigh.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

@@ -242,6 +242,9 @@ void Theme::setupSettings() {
 
 void Theme::setupComponent(){
 
+    ui->lowLabel->setPixmap(QPixmap("://img/plugins/theme/opacitylow.svg"));
+    ui->highlabel->setPixmap(QPixmap("://img/plugins/theme/opacityhigh.svg"));
+
     ui->lightButton->setVisible(getSystemVersion());
     //隐藏现阶段不支持功能
     ui->controlLabel->hide();
