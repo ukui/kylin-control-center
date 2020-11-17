@@ -367,6 +367,20 @@ void Theme::initThemeMode() {
         }
     });
 
+    connect(gtkSettings,&QGSettings::changed,this,[=] (const QString &key) {
+       if(key == "iconTheme") {
+           QString icoName = qtSettings->get(ICON_QT_KEY).toString();
+           setCheckStatus(ui->iconThemeVerLayout, icoName, ICON);
+       }
+    });
+
+    connect(curSettings,&QGSettings::changed,this,[=](const QString &key) {
+       if(key == "cursorTheme") {
+            QString cursorTheme = curSettings->get(CURSOR_THEME_KEY).toString();
+            setCheckStatus(ui->cursorVerLayout, cursorTheme, CURSOR);
+       }
+    });
+
     connect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeBtnClickSlot(QAbstractButton*)));
 }
 
