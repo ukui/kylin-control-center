@@ -497,7 +497,7 @@ void Widget::initGSettings() {
         mPowerGSettings = new QGSettings(powerId, QByteArray(), this);
         mPowerKeys = mPowerGSettings->keys();
         connect(mPowerGSettings, &QGSettings::changed, this, [=](QString key) {
-            if ("brightnessAc" == key || "brightnessBat") {
+            if ("brightnessAc" == key || "brightnessBat" == key) {
                 ui->brightnessSlider->setValue(mPowerGSettings->get(key).toInt());
             }
         });
