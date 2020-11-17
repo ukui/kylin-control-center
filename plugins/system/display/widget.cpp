@@ -450,10 +450,8 @@ void Widget::writeScale(int scale) {
     }
     mIsScaleChanged = false;
     int cursize;
-    QByteArray id(FONT_RENDERING_DPI);
     QByteArray iid(MOUSE_SIZE_SCHEMAS);
-    if (QGSettings::isSchemaInstalled(FONT_RENDERING_DPI) && QGSettings::isSchemaInstalled(MOUSE_SIZE_SCHEMAS)) {
-        QGSettings dpiSettings(id);
+    if (QGSettings::isSchemaInstalled(MOUSE_SIZE_SCHEMAS)) {
         QGSettings cursorSettings(iid);
 
         if (1 == scale)  {
@@ -467,9 +465,9 @@ void Widget::writeScale(int scale) {
             cursize = 24;
         }
 
-        QStringList keys = dpiSettings.keys();
+        QStringList keys = scaleGSettings->keys();
         if (keys.contains("scalingFactor")) {
-            dpiSettings.set(SCALE_KEY, scale);
+            scaleGSettings->set(SCALE_KEY, scale);
         }
         cursorSettings.set(CURSOR_SIZE_KEY, cursize);
     }
@@ -495,7 +493,7 @@ void Widget::initGSettings() {
     });
 
     QByteArray powerId(POWER_SCHMES);
-    if (QGSettings::isSchemaInstalled(POWER_SCHMES)) {
+    if (QGSettings::isSchemaInstalled(powerId)) {
         mPowerGSettings = new QGSettings(powerId, QByteArray(), this);
         mPowerKeys = mPowerGSettings->keys();
         connect(mPowerGSettings, &QGSettings::changed, this, [=](QString key) {
@@ -503,6 +501,11 @@ void Widget::initGSettings() {
                 ui->brightnessSlider->setValue(mPowerGSettings->get(key).toInt());
             }
         });
+    }
+
+    QByteArray scaleId(FONT_RENDERING_DPI);
+    if (QGSettings::isSchemaInstalled(scaleId)) {
+        scaleGSettings = new QGSettings(scaleId, QByteArray(), this);
     }
 }
 
@@ -938,7 +941,11 @@ void Widget::scaleChangedSlot(int index) {
         this->screenScale = 1;
         break;
     }
-    mIsScaleChanged = true;
+    if (scaleGSettings->get(SCALE_KEY).toInt() != this->screenScale) {
+        mIsScaleChanged = true;
+    } else {
+        mIsScaleChanged = false;
+    }
 }
 
 void Widget::changedSlot() {

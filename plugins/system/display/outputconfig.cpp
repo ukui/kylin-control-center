@@ -55,23 +55,11 @@ void OutputConfig::initUi()
                 }
             });
 
-//    connect(mOutput.data(), &KScreen::Output::isEnabledChanged,
-//            this, [=]() {
-//                mEnabled->setChecked(mOutput->isEnabled());
-//            });
-
     connect(mOutput.data(), &KScreen::Output::rotationChanged,
             this, [=]() {
                 const int index = mRotation->findData(mOutput->rotation());
                 mRotation->setCurrentIndex(index);
             });
-
-//    connect(mOutput.data(), &KScreen::Output::scaleChanged,
-//            this, [=]() {
-//                const int index = mScale->findData(mOutput->scale());
-//                mScale->setCurrentIndex(index);
-//            });
-
 
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
@@ -112,15 +100,14 @@ void OutputConfig::initUi()
             this, &OutputConfig::slotResolutionChanged);
 
     //方向下拉框
-    mRotation = new QComboBox();
+    mRotation = new QComboBox(this);
     mRotation->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     mRotation->setMinimumSize(402,30);
     mRotation->setMaximumSize(16777215,30);
 
-    QLabel *rotateLabel = new QLabel();
+    QLabel *rotateLabel = new QLabel(this);
     // ~contents_path /display/orientation
     rotateLabel->setText(tr("orientation"));
-//    rotateLabel->setFont(ft);
     rotateLabel->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     rotateLabel->setMinimumSize(118,30);
     rotateLabel->setMaximumSize(118,30);
@@ -129,7 +116,6 @@ void OutputConfig::initUi()
     rotateLayout->addWidget(rotateLabel);
 
     rotateLayout->addWidget(mRotation);
-//    rotateLayout->addStretch();
 
     QFrame *rotateFrame = new QFrame(this);
     rotateFrame->setFrameShape(QFrame::Shape::Box);
@@ -147,15 +133,14 @@ void OutputConfig::initUi()
             this, &OutputConfig::slotRotationChanged);
     mRotation->setCurrentIndex(mRotation->findData(mOutput->rotation()));
 
-    //formLayout->addRow(rotateLabel, mRotation);
     vbox->addWidget(rotateFrame);
 
     //刷新率下拉框
-    mRefreshRate = new QComboBox();
+    mRefreshRate = new QComboBox(this);
     mRefreshRate->setMinimumSize(402,30);
     mRefreshRate->setMaximumSize(16777215,30);
 
-    QLabel *freshLabel = new QLabel();
+    QLabel *freshLabel = new QLabel(this);
     // ~contents_path /display/refresh rate
     freshLabel->setText(tr("refresh rate"));
     freshLabel->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
@@ -181,8 +166,7 @@ void OutputConfig::initUi()
     connect(mRefreshRate, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated),
             this, &OutputConfig::slotRefreshRateChanged);
 
-
-    scaleCombox = new QComboBox();
+    scaleCombox = new QComboBox(this);
     scaleCombox->setObjectName("scaleCombox");
     scaleCombox->setMinimumSize(402,30);
     scaleCombox->setMaximumSize(16777215,30);
@@ -190,11 +174,11 @@ void OutputConfig::initUi()
     int maxReslu = mResolution->getMaxResolution().width();
 
     scaleCombox->addItem(tr("100%"));
-    if (maxReslu >= 2000) {
+//    if (maxReslu >= 2000) {
         scaleCombox->addItem(tr("200%"));
-    }
+//    }
 
-    QLabel *scaleLabel = new QLabel();
+    QLabel *scaleLabel = new QLabel(this);
     //~ contents_path /display/screen zoom
     scaleLabel->setText(tr("screen zoom"));
     scaleLabel->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
@@ -222,7 +206,7 @@ void OutputConfig::initUi()
     }
     slotScaleChanged(scale - 1);
 
-    connect(scaleCombox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated),
+    connect(scaleCombox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this, &OutputConfig::slotScaleChanged);
 }
 
@@ -319,8 +303,6 @@ void OutputConfig::slotRefreshRateChanged(int index)
 
 void OutputConfig::slotScaleChanged(int index)
 {
-//    auto scale = mScale->itemData(index).toInt();
-//    mOutput->setScale(scale);
     Q_EMIT scaleChanged(index);
 }
 
