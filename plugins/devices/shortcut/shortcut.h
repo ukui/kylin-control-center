@@ -121,6 +121,7 @@ private:
     addShortcutDialog * addDialog;
     ShowAllShortcut * showDialog;
     QDBusInterface *cloudInterface;
+    bool isCloudService;
 
 private slots:
     void shortcutChangedSlot();

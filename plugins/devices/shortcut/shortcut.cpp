@@ -83,6 +83,7 @@ Shortcut::Shortcut()
     pKeyMap = new KeyMap;
     addDialog = new addShortcutDialog();
     showDialog = new ShowAllShortcut();
+    isCloudService = false;
 
     showList << "terminal" << "screenshot" << "area-screenshot" << "peony-qt" << "logout" << "screensaver";
 
@@ -281,15 +282,17 @@ void Shortcut::initFunctionStatus(){
     //使用线程获取快捷键
     pThread = new QThread;
     pWorker = new GetShortcutWorker;
-    connect(pWorker, &GetShortcutWorker::generalShortcutGenerate, this, [=](QString schema, QString key, QString value){
-        //qDebug() << "general shortcut" << schema << key << value;
-        KeyEntry * generalKeyEntry = new KeyEntry;
-        generalKeyEntry->gsSchema = schema;
-        generalKeyEntry->keyStr = key;
-        generalKeyEntry->valueStr = value;
-        generalEntries.append(generalKeyEntry);
+    if(isCloudService == false) {
+        connect(pWorker, &GetShortcutWorker::generalShortcutGenerate, this, [=](QString schema, QString key, QString value){
+            //qDebug() << "general shortcut" << schema << key << value;
+            KeyEntry * generalKeyEntry = new KeyEntry;
+            generalKeyEntry->gsSchema = schema;
+            generalKeyEntry->keyStr = key;
+            generalKeyEntry->valueStr = value;
+            generalEntries.append(generalKeyEntry);
 
-    });
+        });
+    }
     connect(pWorker, &GetShortcutWorker::customShortcutGenerate, this, [=](QString path, QString name, QString binding, QString action){
         //qDebug() << "custom shortcut" << path << name << binding;
         KeyEntry * customKeyEntry = new KeyEntry;
@@ -310,14 +313,17 @@ void Shortcut::initFunctionStatus(){
     connect(pThread, &QThread::started, pWorker, &GetShortcutWorker::run);
     connect(pThread, &QThread::finished, this, [=]{
         //系统快捷键
-        appendGeneralItems();
-        ui->generalListWidget->setFixedHeight((ui->generalListWidget->count() + 1) * ITEMHEIGH);
-        initGeneralItemsStyle();
+        if(isCloudService == false) {
+            appendGeneralItems();
+            ui->generalListWidget->setFixedHeight((ui->generalListWidget->count() + 1) * ITEMHEIGH);
+            initGeneralItemsStyle();
+        }
 
         //自定义快捷键
         appendCustomItems();
         ui->customListWidget->setFixedHeight((ui->customListWidget->count() + 1) * ITEMHEIGH);
         initCustomItemsStyle();
+        isCloudService = false;
     });
     connect(pThread, &QThread::finished, pWorker, &GetShortcutWorker::deleteLater);
 
@@ -769,9 +775,8 @@ void Shortcut::shortcutChangedSlot(){
         QListWidgetItem * obItem =  ui->customListWidget->takeItem(i);
         delete obItem;
     }
-    appendCustomItems();
-    ui->customListWidget->setFixedHeight((ui->customListWidget->count() + 1) * ITEMHEIGH);
-    initCustomItemsStyle();
+    isCloudService = true;
+    initFunctionStatus();
 }
 
 //bool Shortcut::eventFilter(QObject *watched, QEvent *event){
