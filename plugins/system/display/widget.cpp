@@ -186,6 +186,7 @@ void Widget::setConfig(const KScreen::ConfigPtr &config) {
     mScreen->setConfig(mConfig);
     mControlPanel->setConfig(mConfig);
     mUnifyButton->setEnabled(mConfig->outputs().count() > 1);
+    ui->unionframe->setVisible(mConfig->outputs().count() > 1);
 
     for (const KScreen::OutputPtr &output : mConfig->outputs()) {
         outputAdded(output);
@@ -296,6 +297,7 @@ void Widget::slotOutputEnabledChanged() {
         }
     }
     mUnifyButton->setEnabled(enabledOutputsCount > 1);
+    ui->unionframe->setVisible(enabledOutputsCount > 1);
 }
 
 void Widget::slotOutputConnectedChanged() {
