@@ -212,13 +212,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             }
         }
     }
-    if(closeBtn == watched) {
-        if(event->type() == QEvent::Enter) {
-            closeBtn->setIcon(ImageUtil::drawSymbolicColoredPixmap(QIcon::fromTheme("window-close-symbolic").pixmap(32, 32),"white"));
-        }else if(event->type() == QEvent::Leave) {
-            closeBtn->setIcon(ImageUtil::drawSymbolicColoredPixmap(QIcon::fromTheme("window-close-symbolic").pixmap(32, 32),"gray"));
-        }
-    }
     if (watched==m_searchWidget) {
         if (event->type()==QEvent::FocusIn) {
             if (m_searchWidget->text().isEmpty()) {
@@ -717,17 +710,16 @@ void MainWindow::initStyleSheet() {
     backBtn->setProperty("iconHighlightEffectMode", 1);
     backBtn->setFlat(true);
 
-    minBtn->setProperty("useIconHighlightEffect", true);
-    minBtn->setProperty("iconHighlightEffectMode", 1);
+    minBtn->setProperty("useIconHighlightEffect", 0x2);
+    minBtn->setProperty("isWindowButton", 0x01);
     minBtn->setFlat(true);
-    maxBtn->setProperty("useIconHighlightEffect", true);
-    maxBtn->setProperty("iconHighlightEffectMode", 1);
+    maxBtn->setProperty("useIconHighlightEffect", 0x2);
+    maxBtn->setProperty("isWindowButton", 0x1);
     maxBtn->setFlat(true);
-    closeBtn->setProperty("useIconHighlightEffect", true);
-    closeBtn->setProperty("iconHighlightEffectMode", 1);
-    closeBtn->setFlat(true);
-    closeBtn->installEventFilter(this);
 
+    closeBtn->setProperty("isWindowButton", 0x02);
+    closeBtn->setProperty("useIconHighlightEffect", 0x08);
+    closeBtn->setFlat(true);
     ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 12px; border-bottom-left-radius: 12px;}");
 
     // 设置左上角按钮图标
@@ -736,11 +728,7 @@ void MainWindow::initStyleSheet() {
     // 设置右上角按钮图标
     minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
     maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
-    closeBtn->setIcon(ImageUtil::drawSymbolicColoredPixmap(QIcon::fromTheme("window-close-symbolic").pixmap(32, 32),"gray"));
-    closeBtn->setObjectName("closeBtn");
-    closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;width:32px;height:32px;}"
-                            "QPushButton#closeBtn{border-radius: 4px;width:32px;height:32px;}"
-                            "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;width:32px;height:32px;}");
+    closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
 }
 
 void MainWindow::setModuleBtnHightLight(int id) {
