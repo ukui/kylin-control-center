@@ -14,6 +14,9 @@
 
 #include "ImageUtil/imageutil.h"
 
+const QString kcnBj = "北京";
+const QString kenBj = "Asia/Beijing";
+
 TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
 {
     m_map = new TimezoneMap(this);
@@ -107,7 +110,9 @@ TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
 
     QTimer::singleShot(0, [this] {
         QStringList completions;
-        completions << "Asia/Beijing";
+        completions << kenBj;
+        completions << kcnBj;
+        m_zoneCompletion[kcnBj] = kenBj;
         for (QString timezone : QTimeZone::availableTimeZoneIds()) {
             if ("Asia/Shanghai" == timezone) {
                 continue;
