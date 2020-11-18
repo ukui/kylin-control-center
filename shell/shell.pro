@@ -78,7 +78,8 @@ SOURCES += \
     component/hoverwidget.cpp \
     qtsingleapplication/qtsingleapplication.cpp \
     qtsingleapplication/qtlocalpeer.cpp \
-    utils/utils.cpp
+    utils/utils.cpp \
+    utils/xatom-helper.cpp
 
 HEADERS += \
     customstyle.h \
@@ -101,7 +102,8 @@ HEADERS += \
     qtsingleapplication/qtsingleapplication_copy.h \
     qtsingleapplication/qtsingleapplication.h \
     qtsingleapplication/qtlocalpeer.h \
-    utils/utils.h
+    utils/utils.h \
+    utils/xatom-helper.h
 
 FORMS += \
     mainwindow.ui \

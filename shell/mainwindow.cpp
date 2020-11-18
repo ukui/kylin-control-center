@@ -75,9 +75,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // 设置初始大小
     resize(QSize(840, 600));
     // 设置窗体无边框
-    setWindowFlags(Qt::FramelessWindowHint | Qt::Widget);
     setAttribute(Qt::WA_TranslucentBackground, true);
-    bIsFullScreen = false;
 
     logoLabel  = new QLabel(tr("UKCC"), this);
     PreScene *prescene = new PreScene(logoLabel, this->size());
@@ -174,50 +172,6 @@ void MainWindow::bootOptionsSwitch(int moduleNum, int funcNum){
     }
 }
 
-void MainWindow::paintEvent(QPaintEvent *event) {
-    Q_UNUSED(event);
-    QPainter p(this);
-    p.setRenderHint(QPainter::Antialiasing);
-    QPainterPath rectPath;
-    if (!bIsFullScreen) {
-        rectPath.addRoundedRect(this->rect().adjusted(1, 1, -1, -1), 6, 6);
-
-        // 画一个黑底
-        QPixmap pixmap(this->rect().size());
-        pixmap.fill(Qt::transparent);
-        QPainter pixmapPainter(&pixmap);
-        pixmapPainter.setRenderHint(QPainter::Antialiasing);
-        pixmapPainter.setPen(Qt::transparent);
-        pixmapPainter.setBrush(Qt::black);
-        pixmapPainter.setOpacity(0.65);
-        pixmapPainter.drawPath(rectPath);
-        pixmapPainter.end();
-
-        // 模糊这个黑底
-        QImage img = pixmap.toImage();
-        qt_blurImage(img, 5, false, false);
-
-        // 挖掉中心
-        pixmap = QPixmap::fromImage(img);
-        QPainter pixmapPainter2(&pixmap);
-        pixmapPainter2.setRenderHint(QPainter::Antialiasing);
-        pixmapPainter2.setCompositionMode(QPainter::CompositionMode_Clear);
-        pixmapPainter2.setPen(Qt::transparent);
-        pixmapPainter2.setBrush(Qt::transparent);
-        pixmapPainter2.drawPath(rectPath);
-
-        // 绘制阴影
-        p.drawPixmap(this->rect(), pixmap, pixmap.rect());
-    } else {
-        rectPath.addRoundedRect(this->rect(), 0, 0);
-    }
-
-    // 绘制一个背景
-    p.save();
-    p.fillPath(rectPath,palette().color(QPalette::Base));
-    p.restore();
-}
-
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     if (this == watched) {
         if (event->type() == QEvent::WindowStateChange) {
@@ -251,10 +205,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             bool res = dblOnEdge(dynamic_cast<QMouseEvent*>(event));
             if (res) {
                 if (this->windowState() == Qt::WindowMaximized) {
-                    bIsFullScreen = false;
                     this->showNormal();
                 } else {
-                    bIsFullScreen = true;
                     this->showMaximized();
                 }
             }
@@ -337,11 +289,9 @@ void MainWindow::initUI() {
     connect(minBtn, SIGNAL(clicked()), this, SLOT(showMinimized()));
     connect(maxBtn, &QPushButton::clicked, this, [=] {
         if (isMaximized()) {
-            bIsFullScreen = false;
             showNormal();
             maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
         } else {
-            bIsFullScreen = true;
             showMaximized();
             maxBtn->setIcon(QIcon::fromTheme("window-restore-symbolic"));
         }
@@ -360,21 +310,19 @@ void MainWindow::initUI() {
 
         if (index){ //首页部分组件样式
             //中部内容区域
-            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-right-radius: 6px;}");
+            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-right-radius: 12px;}");
             // 标题栏
-            ui->titleWdiget->setStyleSheet("QWidget#titleWdiget{background-color: palette(base); border-top-right-radius: 6px;}");
+            ui->titleWdiget->setStyleSheet("QWidget#titleWdiget{background-color: palette(base); border-top-right-radius: 12px;}");
         } else { //次页部分组件样式
             //中部内容区域
-            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background:  palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+            ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background:  palette(base); border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;}");
             // 标题栏
-            ui->titleWdiget->setStyleSheet("QWidget#titleWdiget{background-color: palette(base);border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+            ui->titleWdiget->setStyleSheet("QWidget#titleWdiget{background-color: palette(base);border-top-left-radius: 12px; border-top-right-radius: 12px;}");
         }
     });
 
     //加载左侧边栏一级菜单
     initLeftsideBar();
-
-    bIsFullScreen = false;
 
     //加载首页Widget
     homepageWidget = new HomePageWidget(this);
@@ -620,7 +568,7 @@ void MainWindow::initLeftsideBar(){
             button->setCheckable(true);
             leftBtnGroup->addButton(button, type);
 
-            button->setStyleSheet("QPushButton::checked{background: palette(base); border-top-left-radius: 6px;border-bottom-left-radius: 6px;}"
+            button->setStyleSheet("QPushButton::checked{background: palette(base); border-top-left-radius: 12px;border-bottom-left-radius: 12px;}"
                                   "QPushButton::!checked{background: palette(button);border: none;}");
 
             connect(button, &QPushButton::clicked, this, [=]{
@@ -762,7 +710,7 @@ void MainWindow::initStyleSheet() {
     this->setWindowTitle(tr("ukcc"));
 
     // 中部内容区域
-    ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+    ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;}");
 
     // 左上角返回按钮
     backBtn->setProperty("useIconHighlightEffect", true);
@@ -780,7 +728,7 @@ void MainWindow::initStyleSheet() {
     closeBtn->setFlat(true);
     closeBtn->installEventFilter(this);
 
-    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
+    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 12px; border-bottom-left-radius: 12px;}");
 
     // 设置左上角按钮图标
     backBtn->setIcon(QIcon("://img/titlebar/back.svg"));

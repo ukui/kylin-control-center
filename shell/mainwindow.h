@@ -62,7 +62,6 @@ public:
     void bootOptionsSwitch(int moduleNum, int funcNum);
 
 protected:
-    void paintEvent(QPaintEvent *);
     bool eventFilter(QObject *watched, QEvent *event);
 
 private:
@@ -74,7 +73,6 @@ private:
 
     QButtonGroup * leftBtnGroup;
     QButtonGroup * leftMicBtnGroup; //
-    bool bIsFullScreen;
 
     QDir pluginsDir;
     QList<int> moduleIndexList;
