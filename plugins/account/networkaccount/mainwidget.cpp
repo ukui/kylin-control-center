@@ -27,7 +27,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     thread  = new QThread();            //为创建的客户端做异步处理
     m_dbusClient->moveToThread(thread);
     m_szUuid = QUuid::createUuid().toString();
-    m_configFile = new ConfigFile();
+    //m_configFile = new ConfigFile();
     connect(this,SIGNAL(dooss(QString)),m_dbusClient,SLOT(init_oss(QString)));
     connect(this,SIGNAL(docheck()),m_dbusClient,SLOT(check_login()));
     connect(this,SIGNAL(doconf()),m_dbusClient,SLOT(init_conf()));
@@ -104,7 +104,6 @@ void MainWidget::setret_conf(int ret) {
         emit docheck();
         emit closedialog();
         //m_mainDialog->closedialog();
-        m_cSyncDelay->start(1000);
         //QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     } else {
         QProcess p;
@@ -204,9 +203,6 @@ void MainWidget::init_gui() {
     m_animateLayout->setAlignment(Qt::AlignCenter);
     m_exitCloud_btn->setLayout(m_animateLayout);
 
-    m_cLoginTimer = new QTimer(this);
-    m_cLoginTimer->stop();
-
     QVBoxLayout *VBox_tab = new QVBoxLayout;
     QHBoxLayout *HBox_tab_sub = new QHBoxLayout;
     QHBoxLayout *HBox_tab_btn_sub = new QHBoxLayout;
@@ -220,18 +216,14 @@ void MainWidget::init_gui() {
     m_welcomeImage = new QSvgWidget(":/new/image/96_color.svg");
     m_welcomeMsg = new QLabel(this);
     m_login_btn  = new QPushButton(tr("Sign in"),this);
-    m_cSyncDelay = new QTimer(this);
-    m_cSyncDelay->stop();
-    m_singleDelay = new QTimer(this);
-    m_singleDelay->stop();
     m_svgHandler = new SVGHandler(this);
     m_syncTooltips = new Tooltips(m_exitCloud_btn);
     m_syncTipsText = new QLabel(m_syncTooltips);
     m_tipsLayout = new QHBoxLayout;
     m_stackedWidget = new QStackedWidget(this);
     m_nullwidgetContainer = new QWidget(this);
-    m_cRetry = new QTimer(this);
     m_syncTimeLabel = new QLabel(this);
+    m_cLoginTimer = new QTimer(this);
 
     //m_mainWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
@@ -272,7 +264,6 @@ void MainWidget::init_gui() {
     //    status->style()->polish(status);
     //    status->update();
     //gif->setStyleSheet("border-radius:4px;border:none;");
-
     m_autoSyn->set_itemname(tr("Auto sync"));
     m_autoSyn->make_itemon();
     m_autoSyn->get_swbtn()->set_id(m_szItemlist.size());
@@ -376,23 +367,30 @@ void MainWidget::init_gui() {
     QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/edit.svg");
     m_openEditDialog_btn->setIcon(pixmap);
 
-    int cItem = 0;
-    QProcess proc;
-    QStringList options;
-    options << "-c" << "ps -ef|grep kylin-sso-client";
-    proc.start("/bin/bash",options);
-    proc.waitForFinished();
-    QString ifn = proc.readAll();
+
+    QtConcurrent::run([=] () {
+        for(int btncnt = 0;btncnt < m_itemList->get_list().size();btncnt ++) {
+            connect(m_itemList->get_item(btncnt)->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_switch_button(int,int)));
+        }
+        int cItem = 0;
 
 
-    if(ifn.contains("kylin-sso-client -auto")) {
-        download_files();
-    }
+        for(QString key : m_szItemlist) {
+            m_itemMap.insert(key,m_itemList->get_item(cItem)->get_itemname());
+            cItem ++;
+        }
 
-    for(QString key : m_szItemlist) {
-        m_itemMap.insert(key,m_itemList->get_item(cItem)->get_itemname());
-        cItem ++;
-    }
+        QProcess proc;
+        QStringList options;
+        options << "-c" << "ps -ef|grep kylin-sso-client";
+        proc.start("/bin/bash",options);
+        proc.waitForFinished();
+        QString ifn = proc.readAll();
+
+        if(ifn.contains("/usr/bin/kylin-sso-client")) {
+            emit isRunning();
+        }
+    });
 
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
@@ -418,19 +416,9 @@ void MainWidget::init_gui() {
     connect(m_login_btn,SIGNAL(clicked()),this,SLOT(on_login()));
     connect(m_openEditDialog_btn,SIGNAL(clicked()),this,SLOT(neweditdialog()));
     connect(m_exitCloud_btn,SIGNAL(clicked()),this,SLOT(on_login_out()));
-    for(int btncnt = 0;btncnt < m_itemList->get_list().size();btncnt ++) {
-        connect(m_itemList->get_item(btncnt)->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_switch_button(int,int)));
-    }
 
-    connect(m_cSyncDelay,&QTimer::timeout,[=] () {
-        emit doman();
-        m_cSyncDelay->stop();
-        m_bIsStopped = true;
-    });
-    connect(m_cRetry,&QTimer::timeout, [this] () {
-        qDebug() << "okk";
-        emit doman();
-        m_cRetry->stop();
+    connect(this,&MainWidget::isRunning,this,[=] {
+        download_files();
     });
 
     //All.conf的
@@ -447,6 +435,9 @@ void MainWidget::init_gui() {
 
     connect(this,&MainWidget::closedialog,[this] () {
           m_mainDialog->on_close();
+          QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
+          emit doman();
+
     });
 
     connect(m_stackedWidget, &QStackedWidget::currentChanged, [this] (int index) {
@@ -475,17 +466,13 @@ void MainWidget::init_gui() {
            if(file.exists() == false) {
                // emit doconf();
            }  else {
-                m_cRetry->start(2000);
+               QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
+               emit doman();
            }
 
        } else {
            m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
        }
-    });
-    connect(m_singleDelay,&QTimer::timeout,[this] () {
-        if(m_key != "") {
-            emit dosingle(m_key);
-        }
     });
     //
     setMaximumWidth(960);
@@ -661,10 +648,14 @@ void MainWidget::on_switch_button(int on,int id) {
         return ;
     } else if(on == 1 && m_exitCloud_btn->property("on") == false && m_bAutoSyn){
         m_key = m_szItemlist.at(id);
-        m_singleDelay->setInterval(300);
-        m_singleDelay->setSingleShot(true);
+
         m_bAutoSyn = false;
-        m_singleDelay->start();
+
+        if(m_key != "") {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
+            emit dosingle(m_key);
+        }
+
     }
 
     if(m_szItemlist.at(id) == "shortcut" && on == 1) {
@@ -929,7 +920,6 @@ MainWidget::~MainWidget() {
     delete m_itemList;
     delete m_dbusClient;
     delete m_welcomeImage;
-    delete m_configFile;
     if(thread)
     {
         thread->quit();

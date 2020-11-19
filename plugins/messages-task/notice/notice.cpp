@@ -266,6 +266,27 @@ void Notice::initOriNoticeStatus() {
             changeAppstatus(checked, appname, appSwitch);
         });
 
+        connect(nSetting,&QGSettings::changed,this,[=] (const QString &key) {
+           if(key == "enableNotice") {
+               enableSwitchBtn->blockSignals(true);
+               bool checked = nSetting->get(ENABLE_NOTICE_KEY).toBool();
+               bool judge = settings->get(MESSAGES_KEY).toBool();
+               enableSwitchBtn->setChecked(checked);
+               setHiddenNoticeApp(checked);
+               appSwitch->setChecked(judge);
+               //changeAppstatus(checked, appname, appSwitch);
+               enableSwitchBtn->blockSignals(false);
+           } else if(key == "showNewFeature") {
+               newfeatureSwitchBtn->blockSignals(true);
+               newfeatureSwitchBtn->setChecked(nSetting->get(NEW_FEATURE_KEY).toBool());
+               newfeatureSwitchBtn->blockSignals(false);
+           } else if(key == "showOnLockscreen") {
+               lockscreenSwitchBtn->blockSignals(true);
+               lockscreenSwitchBtn->setChecked(nSetting->get(SHOWON_LOCKSCREEN_KEY).toBool());
+               lockscreenSwitchBtn->blockSignals(false);
+           }
+        });
+
         connect(appSwitch, &SwitchButton::checkedChanged, [=](bool checked) {
             settings->set(MESSAGES_KEY, checked);
         });
