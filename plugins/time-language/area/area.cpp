@@ -79,6 +79,7 @@ Area::Area()
 
     initUI();
     initComponent();
+    connectToServer();
 
     connect(m_itimer,SIGNAL(timeout()), this, SLOT(datetime_update_slot()));
     connect(ui->langcomboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(change_language_slot(int)));
@@ -114,7 +115,7 @@ void Area::connectToServer(){
         return;
     }
 //    QDBusConnection::sessionBus().connect(cloudInterface, SIGNAL(shortcutChanged()), this, SLOT(shortcutChangedSlot()));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "keyChanged", this, SLOT(cloudChangedSlot()));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "keyChanged", this, SLOT(cloudChangedSlot(QString)));
     // 将以后所有DBus调用的超时设置为 milliseconds
     cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时
 }

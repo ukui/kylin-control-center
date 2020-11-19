@@ -19,12 +19,16 @@ Blueeffect::Blueeffect(QWidget *parent) : QWidget(parent)
     m_workLayout->addWidget(m_iconLabel);
     setLayout(m_workLayout);
     m_cTimer->stop();
-    connect(m_cTimer,&QTimer::timeout, [this] () {
+    connect(m_cTimer,&QTimer::timeout, this,[=] () {
         QPixmap pixmap = m_svgHandler->loadSvgColor(QString(":/new/image/loading1%1.svg").arg(m_cCnt),"white",16);
         m_iconLabel->setPixmap(pixmap);
         m_cCnt = (m_cCnt + 9) % 8;
     });
     hide();
+}
+
+Blueeffect::~Blueeffect(){
+    m_cTimer->stop();
 }
 
 void Blueeffect::settext(const QString &t) {
