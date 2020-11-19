@@ -49,7 +49,6 @@ public:
     void plugin_delay_control() Q_DECL_OVERRIDE;
     const QString name() const  Q_DECL_OVERRIDE;
 
-
 private:
     void initAddBtn();
     void initStyle();
@@ -58,6 +57,20 @@ private:
     void update_app_status();
     void del_autoboot_realize(QString bname);
     void connectToServer();
+
+    void _walk_config_dirs();
+    AutoApp _app_new(const char * path);
+    gboolean _key_file_get_boolean(GKeyFile * keyfile, const gchar * key, gboolean defaultvalue);
+    gboolean _key_file_get_shown(GKeyFile * keyfile, const char * currentdesktop);
+    bool _stop_autoapp(QString bname);
+    bool _delete_autoapp(QString bname);
+    bool _enable_autoapp(QString bname, bool status);
+    bool _delete_local_autoapp(QString bname);
+    gboolean _key_file_to_file(GKeyFile * keyfile, const gchar * path);
+    bool _copy_desktop_file_to_local(QString bname);
+
+    void clearAutoItem();
+
 
 private:
     Ui::AutoBoot *ui;
@@ -78,18 +91,7 @@ private:
 
     HoverWidget *addWgt;
 
-    void _walk_config_dirs();
-    AutoApp _app_new(const char * path);
-    gboolean _key_file_get_boolean(GKeyFile * keyfile, const gchar * key, gboolean defaultvalue);
-    gboolean _key_file_get_shown(GKeyFile * keyfile, const char * currentdesktop);
-    bool _stop_autoapp(QString bname);
-    bool _delete_autoapp(QString bname);
-    bool _enable_autoapp(QString bname, bool status);
-    bool _delete_local_autoapp(QString bname);
-    gboolean _key_file_to_file(GKeyFile * keyfile, const gchar * path);
-    bool _copy_desktop_file_to_local(QString bname);
-
-    void clearAutoItem();
+    bool mFirstLoad;
 
 public slots:
     void checkbox_changed_cb(QString bname);

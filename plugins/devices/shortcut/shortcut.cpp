@@ -67,38 +67,20 @@ QStringList forbiddenKeys = {
 QList<KeyEntry *> generalEntries;
 QList<KeyEntry *> customEntries;
 
-Shortcut::Shortcut()
+Shortcut::Shortcut() : mFirstLoad(true)
 {
-    ui = new Ui::Shortcut;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("Shortcut");
     pluginType = DEVICES;
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    pKeyMap = new KeyMap;
-    addDialog = new addShortcutDialog();
-    showDialog = new ShowAllShortcut();
-    isCloudService = false;
-
-    showList << "terminal" << "screenshot" << "area-screenshot" << "peony-qt" << "logout" << "screensaver";
-
-    setupComponent();
-    setupConnect();
-    initFunctionStatus();
-    connectToServer();
 }
 
 Shortcut::~Shortcut()
 {
-    delete ui;
-    delete pKeyMap;
-    delete addDialog;
-    delete showDialog;
+    if (!mFirstLoad) {
+        delete ui;
+        delete pKeyMap;
+        delete addDialog;
+        delete showDialog;
+    }
 }
 
 QString Shortcut::get_plugin_name(){
@@ -110,6 +92,29 @@ int Shortcut::get_plugin_type(){
 }
 
 QWidget *Shortcut::get_plugin_ui(){
+    if (mFirstLoad) {
+        mFirstLoad = false;
+
+        ui = new Ui::Shortcut;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        pKeyMap = new KeyMap;
+        addDialog = new addShortcutDialog();
+        showDialog = new ShowAllShortcut();
+
+        isCloudService = false;
+        showList << "terminal" << "screenshot" << "area-screenshot" << "peony-qt" << "logout" << "screensaver";
+
+        setupComponent();
+        setupConnect();
+        initFunctionStatus();
+        connectToServer();
+    }
     return pluginWidget;
 }
 

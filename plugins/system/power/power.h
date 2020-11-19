@@ -82,7 +82,7 @@ private:
 
     bool settingsCreate;
     bool isExitsPower;
-
+    bool mFirstLoad;
 private slots:
     void setIdleTime(int idleTime);
 };

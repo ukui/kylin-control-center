@@ -51,66 +51,57 @@ extern "C" {
 #define DEFAULTFACE "/usr/share/ukui/faces/default.png"
 #define ITEMHEIGH 52
 
-UserInfo::UserInfo()
+UserInfo::UserInfo() : mFirstLoad(true)
 {
-    ui = new Ui::UserInfo;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("User Info");
     pluginType = ACCOUNT;
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    // 构建System dbus调度对象
-    sysdispatcher = new SystemDbusDispatcher(this);
-
-    // 获取系统全部用户信息，用户Uid大于等于1000的
-    _acquireAllUsersInfo();
-
-    initSearchText();
-    readCurrentPwdConf();
-    initComponent();
-    initAllUserStatus();
-    // 设置界面用户信息
-    _refreshUserInfoUI();
-
-//    pwdSignalMapper = new QSignalMapper(this);
-//    faceSignalMapper = new QSignalMapper(this);
-//    typeSignalMapper = new QSignalMapper(this);
-//    delSignalMapper = new QSignalMapper(this);
-
-//    faceSize = QSize(64, 64);
-//    itemSize = QSize(230, 106); //?需要比btnsize大多少？否则显示不全
-//    btnSize = QSize(222, 92);
-
-
-//    get_all_users();
-//    ui_component_init();
-//    ui_status_init();
-
 }
 
 UserInfo::~UserInfo()
 {
-    delete ui;
-    delete autoSettings;
+    if (!mFirstLoad) {
+        delete ui;
+        delete autoSettings;
+    }
 }
 
-QString UserInfo::get_plugin_name(){
+QString UserInfo::get_plugin_name() {
     return pluginName;
 }
 
-int UserInfo::get_plugin_type(){
+int UserInfo::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *UserInfo::get_plugin_ui(){
+QWidget *UserInfo::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+
+        ui = new Ui::UserInfo;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        // 构建System dbus调度对象
+        sysdispatcher = new SystemDbusDispatcher(this);
+
+        // 获取系统全部用户信息，用户Uid大于等于1000的
+        _acquireAllUsersInfo();
+
+        initSearchText();
+        readCurrentPwdConf();
+        initComponent();
+        initAllUserStatus();
+        // 设置界面用户信息
+        _refreshUserInfoUI();
+    }
     return pluginWidget;
 }
 
-void UserInfo::plugin_delay_control(){
+void UserInfo::plugin_delay_control() {
 
 }
 

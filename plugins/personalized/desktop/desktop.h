@@ -96,6 +96,8 @@ private:
 
     QSharedPointer<QProcess> cmd;
 
+    bool mFirstLoad;
+
 private slots:
     void removeTrayItem(QString itemName);
     void addTrayItem(QGSettings * trayGSetting);

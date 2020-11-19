@@ -95,6 +95,8 @@ private:
     FlowLayout * flowLayout;
 
     BuildPicUnitsWorker * pWorker;
+
+    bool mFirstLoad;
 public Q_SLOTS:
     void keyChangedSlot(const QString &key);
 };

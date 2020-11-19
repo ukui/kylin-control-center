@@ -97,67 +97,71 @@ struct FontEffects {
 
 Q_DECLARE_METATYPE(FontEffects)
 
-Fonts::Fonts()
+Fonts::Fonts() : mFirstLoad(true)
 {
-    ui = new Ui::Fonts;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("Fonts");
     pluginType = PERSONALIZED;
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    settingsCreate = false;
-    initSearchText();
-    setupStylesheet();
-
-    const QByteArray styleID(STYLE_FONT_SCHEMA);
-    const QByteArray id(INTERFACE_SCHEMA);
-    const QByteArray idd(MARCO_SCHEMA);
-    const QByteArray iid(FONT_RENDER_SCHEMA);
-
-    if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(iid) && QGSettings::isSchemaInstalled(idd) &&
-            QGSettings::isSchemaInstalled(styleID)) {
-        settingsCreate = true;
-        marcosettings = new QGSettings(idd);
-        ifsettings = new QGSettings(id);
-        rendersettings = new QGSettings(iid);
-        stylesettings = new QGSettings(styleID);
-
-        _getDefaultFontinfo();
-        setupComponent();
-        setupConnect();
-        initFontStatus();
-    }
 }
 
 Fonts::~Fonts()
 {
-    delete ui;
-    if (settingsCreate){
-        delete ifsettings;
-        delete marcosettings;
-    //    delete peonysettings;
-        delete rendersettings;
-        delete stylesettings;
+    if (!mFirstLoad) {
+        delete ui;
+        if (settingsCreate){
+            delete ifsettings;
+            delete marcosettings;
+            delete rendersettings;
+            delete stylesettings;
+        }
     }
 }
 
-QString Fonts::get_plugin_name(){
+QString Fonts::get_plugin_name() {
     return pluginName;
 }
 
-int Fonts::get_plugin_type(){
+int Fonts::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *Fonts::get_plugin_ui(){
+QWidget *Fonts::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+
+        ui = new Ui::Fonts;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        settingsCreate = false;
+        initSearchText();
+        setupStylesheet();
+
+        const QByteArray styleID(STYLE_FONT_SCHEMA);
+        const QByteArray id(INTERFACE_SCHEMA);
+        const QByteArray idd(MARCO_SCHEMA);
+        const QByteArray iid(FONT_RENDER_SCHEMA);
+
+        if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(iid) && QGSettings::isSchemaInstalled(idd) &&
+                QGSettings::isSchemaInstalled(styleID)) {
+            settingsCreate = true;
+            marcosettings = new QGSettings(idd);
+            ifsettings = new QGSettings(id);
+            rendersettings = new QGSettings(iid);
+            stylesettings = new QGSettings(styleID);
+
+            _getDefaultFontinfo();
+            setupComponent();
+            setupConnect();
+            initFontStatus();
+        }
+    }
     return pluginWidget;
 }
 
-void Fonts::plugin_delay_control(){
+void Fonts::plugin_delay_control() {
 
 }
 

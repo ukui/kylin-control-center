@@ -30,41 +30,17 @@
 
 #define DESKTOPPATH           "/usr/share/applications/"
 
-Notice::Notice()
+Notice::Notice() : mFirstLoad(true)
 {
-    ui = new Ui::Notice;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    appsName<<"ukui-power-statistics";/* <<"kylin-video"<<"kylin-assistant"; */
-    appsKey<<"电源管理器";             /*  <<"麒麟影音"<<"麒麟助手"; */
-
-    ui->setupUi(pluginWidget);
-
-    vecGsettins = new QVector<QGSettings*>();
     pluginName = tr("Notice");
     pluginType = NOTICEANDTASKS;
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    ui->newfeatureWidget->setVisible(false);
-    ui->lockscreenWidget->setVisible(false);
-
-    ui->title2Label->setContentsMargins(0,0,0,16);
-//    ui->applistWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->applistWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-    initSearchText();
-    setupGSettings();
-    setupComponent();
-    initNoticeStatus();
-    initOriNoticeStatus();
-//    setHiddenNoticeApp(enableSwitchBtn->isChecked());
 }
 
 Notice::~Notice()
 {
-    delete ui;
+    if (!mFirstLoad) {
+        delete ui;
+    }
     if (!vecGsettins) {
         qDeleteAll(*vecGsettins);
         vecGsettins->clear();
@@ -84,6 +60,34 @@ int Notice::get_plugin_type() {
 }
 
 QWidget * Notice::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+        ui = new Ui::Notice;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        appsName<<"ukui-power-statistics";
+        appsKey<<"电源管理器";
+
+        ui->setupUi(pluginWidget);
+
+        mFirstLoad = false;
+        vecGsettins = new QVector<QGSettings*>();
+
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        ui->newfeatureWidget->setVisible(false);
+        ui->lockscreenWidget->setVisible(false);
+
+        ui->title2Label->setContentsMargins(0,0,0,16);
+        ui->applistWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+        initSearchText();
+        setupGSettings();
+        setupComponent();
+        initNoticeStatus();
+        initOriNoticeStatus();
+    }
     return pluginWidget;
 }
 

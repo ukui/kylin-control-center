@@ -47,13 +47,13 @@ public:
     void plugin_delay_control() Q_DECL_OVERRIDE;
     const QString name() const  Q_DECL_OVERRIDE;
 
-
 private:
     Ui::DisplayWindow * ui;
     QString pluginName;
     int pluginType;
     Widget * pluginWidget;
 
+    bool mFirstLoad;
 };
 
 #endif // DISPLAYSET_H

@@ -80,6 +80,7 @@ private:
     HoverWidget * addWgt;
 
     bool settingsCreate;
+    bool mFirstLoad;
 };
 
 #endif // KEYBOARDCONTROL_H

@@ -79,6 +79,8 @@ private:
     QMap<QString, QString> infoMap;
     QSharedPointer<QDBusInterface> activeInterface;
 
+    bool mFirstLoad;
+
 private slots:
     void runActiveWindow();
     void showPdf();

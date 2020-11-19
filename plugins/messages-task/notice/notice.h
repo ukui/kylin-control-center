@@ -91,5 +91,7 @@ private:
     QStringList appsName;
     QStringList appsKey;
     QVector<QGSettings*> *vecGsettins;
+
+    bool mFirstLoad;
 };
 #endif // NOTICE_H

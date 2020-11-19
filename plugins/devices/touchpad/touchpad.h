@@ -69,6 +69,8 @@ private:
     SwitchButton * clickBtn;
 
     QGSettings * tpsettings;
+
+    bool mFirstLoad;
 };
 
 #endif // TOUCHPAD_H

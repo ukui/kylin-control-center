@@ -45,37 +45,16 @@ const int COMPUTER_BALANCE  = 30 * 60;
 const int DISPLAY_SAVING    = 20 * 60;
 const int COMPUTER_SAVING   = 2 * 60 * 60;
 
-Power::Power() {
-    ui = new Ui::Power;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
+Power::Power() : mFirstLoad(true)
+{
     pluginName = tr("Power");
     pluginType = SYSTEM;
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    const QByteArray id(POWERMANAGER_SCHEMA);
-    const QByteArray sessionId(SESSION_SCHEMA);
-
-    setupComponent();
-    isPowerSupply();
-    if (QGSettings::isSchemaInstalled(id)) {
-        settings = new QGSettings(id, QByteArray(), this);
-        sessionSetting = new QGSettings(sessionId, QByteArray(), this);
-        initModeStatus();
-        setupConnect();
-        initPowerOtherStatus();
-        setIdleTime(sessionSetting->get(IDLE_DELAY_KEY).toInt());
-    } else {
-        qCritical() << POWERMANAGER_SCHEMA << "not installed!\n";
-    }
 }
 
 Power::~Power() {
-    delete ui;
+    if (!mFirstLoad) {
+        delete ui;
+    }
 }
 
 QString Power::get_plugin_name() {
@@ -87,6 +66,31 @@ int Power::get_plugin_type() {
 }
 
 QWidget * Power::get_plugin_ui() {
+    if (mFirstLoad) {
+        ui = new Ui::Power;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        const QByteArray id(POWERMANAGER_SCHEMA);
+        const QByteArray sessionId(SESSION_SCHEMA);
+
+        setupComponent();
+        isPowerSupply();
+        if (QGSettings::isSchemaInstalled(id)) {
+            settings = new QGSettings(id, QByteArray(), this);
+            sessionSetting = new QGSettings(sessionId, QByteArray(), this);
+            initModeStatus();
+            setupConnect();
+            initPowerOtherStatus();
+            setIdleTime(sessionSetting->get(IDLE_DELAY_KEY).toInt());
+        } else {
+            qCritical() << POWERMANAGER_SCHEMA << "not installed!\n";
+        }
+    }
     return pluginWidget;
 }
 
@@ -122,14 +126,12 @@ void Power::isPowerSupply() {
     briginfo  = brightnessInterface ->call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
 
     if (!briginfo.value().toBool()) {
-        qDebug()<<"brightness info is invalid"<<endl;
         isExitsPower = false ;
         ui->batteryBtn->setVisible(false);
         ui->closeLidFrame->setVisible(false);
         ui->title2Label->setVisible(false);
         ui->iconFrame->setVisible(false);
     } else {
-        qDebug() << "brightness info is valid";
         isExitsPower = true ;
         bool status = briginfo.value().toBool();
         ui->batteryBtn->setVisible(status);

@@ -28,33 +28,16 @@
 
 #define ITEMFIXEDHEIGH 58
 
-Printer::Printer() {
-    ui = new Ui::Printer;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
+Printer::Printer() : mFirstLoad(true)
+{
     pluginName = tr("Printer");
     pluginType = DEVICES;
-
-    //~ contents_path /printer/Add Printers And Scanners
-    ui->titleLabel->setText(tr("Add Printers And Scanners"));
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-//    ui->listWidget->setSpacing(0);
-    //禁用选中效果
-    ui->listWidget->setFocusPolicy(Qt::NoFocus);
-    ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);
-
-    pTimer = new QTimer(this);
-    pTimer->setInterval(1000);
-    connect(pTimer, SIGNAL(timeout()), this, SLOT(refreshPrinterDev()));
-
-    initComponent();
 }
 
 Printer::~Printer() {
-    delete ui;
+    if (!mFirstLoad) {
+        delete ui;
+    }
 }
 
 QString Printer::get_plugin_name() {
@@ -66,6 +49,27 @@ int Printer::get_plugin_type() {
 }
 
 QWidget *Printer::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+        ui = new Ui::Printer;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        //~ contents_path /printer/Add Printers And Scanners
+        ui->titleLabel->setText(tr("Add Printers And Scanners"));
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        //禁用选中效果
+        ui->listWidget->setFocusPolicy(Qt::NoFocus);
+        ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);
+
+        pTimer = new QTimer(this);
+        pTimer->setInterval(1000);
+        connect(pTimer, SIGNAL(timeout()), this, SLOT(refreshPrinterDev()));
+
+        initComponent();
+    }
     return pluginWidget;
 }
 

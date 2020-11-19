@@ -123,6 +123,8 @@ private:
     QDBusInterface *cloudInterface;
     bool isCloudService;
 
+    bool mFirstLoad;
+
 private slots:
     void shortcutChangedSlot();
 

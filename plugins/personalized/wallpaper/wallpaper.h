@@ -133,8 +133,8 @@ private:
 
     QMap<QString, QListWidgetItem*> picWpItemMap;
 
-private:
     bool settingsCreate;
+    bool mFirstLoad;
 
 public slots:
     void resetDefaultWallpaperSlot();

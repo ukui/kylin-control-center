@@ -38,54 +38,53 @@ bool sortByVal(const QPair<QString, int> &l, const QPair<QString, int> &r) {
     return (l.second > r.second);
 }
 
-NetConnect::NetConnect():m_wifiList(new Wifi)
+NetConnect::NetConnect() : m_wifiList(new Wifi), mFirstLoad(true)
 {
-    ui = new Ui::NetConnect;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("Connect");
     pluginType = NETWORK;
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    ui->detailBtn->setText(tr("Network settings"));
-
-    wifiBtn = new SwitchButton(pluginWidget);
-
-    ui->openWIifLayout->addWidget(wifiBtn);
-
-    initSearchText();
-    initComponent();
-
-//    getNetList();
 }
 
 NetConnect::~NetConnect()
 {
-    delete ui;
-    delete m_gsettings;
-    // TODO: A segment error will be reported after delete
-//    if (wifiBtn) {
-//        delete wifiBtn;
-//    }
+    if (!mFirstLoad) {
+        delete ui;
+        delete m_gsettings;
+    }
 }
 
-QString NetConnect::get_plugin_name(){
+QString NetConnect::get_plugin_name() {
     return pluginName;
 }
 
-int NetConnect::get_plugin_type(){
+int NetConnect::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *NetConnect::get_plugin_ui(){
+QWidget *NetConnect::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+
+        ui = new Ui::NetConnect;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        ui->detailBtn->setText(tr("Network settings"));
+
+        wifiBtn = new SwitchButton(pluginWidget);
+
+        ui->openWIifLayout->addWidget(wifiBtn);
+
+        initSearchText();
+        initComponent();
+    }
     return pluginWidget;
 }
 
-void NetConnect::plugin_delay_control(){
+void NetConnect::plugin_delay_control() {
 
 }
 

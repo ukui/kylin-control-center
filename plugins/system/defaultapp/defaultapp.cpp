@@ -33,25 +33,16 @@
 
 #define DESKTOPPATH "/usr/share/applications/"
 
-DefaultApp::DefaultApp() {
-    ui = new Ui::DefaultAppWindow;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
+DefaultApp::DefaultApp() : mFirstLoad(true)
+{
     pluginName = tr("Default App");
     pluginType = SYSTEM;
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    bIsCloudService = false;
-    initUI();
-
-    connectToServer();
-    connect(ui->ResetBtn, SIGNAL(clicked(bool)), this, SLOT(resetDefaultApp()));
 }
 
 DefaultApp::~DefaultApp() {
-    delete ui;
+    if (!mFirstLoad) {
+        delete ui;
+    }
 }
 
 QString DefaultApp::get_plugin_name() {
@@ -63,6 +54,23 @@ int DefaultApp::get_plugin_type() {
 }
 
 QWidget *DefaultApp::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+
+        ui = new Ui::DefaultAppWindow;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        bIsCloudService = false;
+        connectToServer();
+
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        initUI();
+
+        connect(ui->ResetBtn, SIGNAL(clicked(bool)), this, SLOT(resetDefaultApp()));
+    }
     return pluginWidget;
 }
 

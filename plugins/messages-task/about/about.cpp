@@ -32,26 +32,16 @@ const QString vTen        = "v10";
 const QString vTenEnhance = "v10.1";
 const QString vFour       = "v4";
 
-About::About() {
-    ui = new Ui::About;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
+About::About() : mFirstLoad(true)
+{
     pluginName = tr("About");
     pluginType = NOTICEANDTASKS;
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    initSearchText();
-    initActiveDbus();
-    setupDesktopComponent();
-    setupVersionCompenent();
-    setupSerialComponent();
 }
 
 About::~About() {
-    delete ui;
+    if (!mFirstLoad) {
+        delete ui;
+    }
 }
 
 QString About::get_plugin_name() {
@@ -63,11 +53,29 @@ int About::get_plugin_type() {
 }
 
 QWidget *About::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+
+        ui = new Ui::About;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        initSearchText();
+        initActiveDbus();
+        setupDesktopComponent();
+        setupVersionCompenent();
+        setupSerialComponent();
+        setupKernelCompenent();
+    }
+
     return pluginWidget;
 }
 
 void About::plugin_delay_control() {
-    setupKernelCompenent();
+
 }
 
 const QString About::name() const {

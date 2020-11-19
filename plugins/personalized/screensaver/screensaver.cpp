@@ -60,46 +60,18 @@ void PreviewWidget::paintEvent(QPaintEvent *e){
 }
 
 
-Screensaver::Screensaver()
+Screensaver::Screensaver() : mFirstLoad(true)
 {
-    ui = new Ui::Screensaver;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("Screensaver");
     pluginType = PERSONALIZED;
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-    ui->previewWidget->setStyleSheet("#previewWidget{background: black;}");
-    ui->previewWidget->setAutoFillBackground(true);
-
-//    mPreviewWidget = new PreviewWidget;
-//    mPreviewWidget->resize(400,222);
-//    QBoxLayout *mPreviewLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-//    mPreviewLayout->addWidget(mPreviewWidget);
-//    ui->previewWidget->setLayout(mPreviewLayout);
-    process = new QProcess();
-
-    initSearchText();
-    _acquireThemeinfoList();
-    initComponent();
-    initEnableBtnStatus();
-    initThemeStatus();
-    initIdleSliderStatus();
-
-//    init_theme_info_map();
-//    component_init();
-//    status_init();
 }
 
 Screensaver::~Screensaver() {
-    delete ui;
-    delete process;
-    process = nullptr;
+    if (!mFirstLoad) {
+        delete ui;
+        delete process;
+        process = nullptr;
+    }
 }
 
 QString Screensaver::get_plugin_name() {
@@ -111,6 +83,27 @@ int Screensaver::get_plugin_type() {
 }
 
 QWidget *Screensaver::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+
+        ui = new Ui::Screensaver;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        ui->previewWidget->setStyleSheet("#previewWidget{background: black;}");
+        ui->previewWidget->setAutoFillBackground(true);
+
+        process = new QProcess();
+
+        initSearchText();
+        _acquireThemeinfoList();
+        initComponent();
+        initEnableBtnStatus();
+        initThemeStatus();
+        initIdleSliderStatus();
+    }
     return pluginWidget;
 }
 

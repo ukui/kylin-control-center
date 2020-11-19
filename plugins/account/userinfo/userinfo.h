@@ -205,6 +205,7 @@ private:
 
     int adminnum;
     bool enablePwdQuality;
+    bool mFirstLoad;
 
 #ifdef ENABLEPQ
     pwquality_settings_t * pwdconf;

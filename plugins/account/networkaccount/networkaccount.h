@@ -47,10 +47,10 @@ public:
     void initComponent();
 
 private:
-    //    Ui::networkaccount *ui;
     QString pluginName;
     int pluginType;
     QWidget * pluginWidget;
+    bool mFirstLoad;
 };
 
 #endif // NETWORKACCOUNT_H

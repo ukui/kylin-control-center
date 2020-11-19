@@ -160,6 +160,8 @@ private:
 
     QDBusInterface *m_cloudInterface;
 
+    bool mFirstLoad;
+
 private:
     SSThemeInfo _info_new(const char * path);
     void init_theme_info_map();

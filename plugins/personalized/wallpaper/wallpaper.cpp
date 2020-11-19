@@ -42,53 +42,57 @@ enum{
 #define COLORITEMWIDTH 56
 #define COLORITEMHEIGH 56
 
-Wallpaper::Wallpaper()
+Wallpaper::Wallpaper() : mFirstLoad(true)
 {
-    ui = new Ui::Wallpaper;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("Background");
     pluginType = PERSONALIZED;
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    settingsCreate = false;
-    initSearchText();
-    //初始化控件
-    setupComponent();
-    //初始化gsettings
-    const QByteArray id(BACKGROUND);
-    if (QGSettings::isSchemaInstalled(id)){
-        settingsCreate = true;
-
-        bgsettings = new QGSettings(id);
-        setupConnect();
-        initBgFormStatus();
-    }
-    //构建xmlhandle对象
-    xmlhandleObj = new XmlHandle();
 }
 
 Wallpaper::~Wallpaper()
 {
-    delete ui;
-    if (settingsCreate){
-        delete bgsettings;
+    if (!mFirstLoad) {
+        delete ui;
+        if (settingsCreate){
+            delete bgsettings;
+        }
+        delete xmlhandleObj;
     }
-    delete xmlhandleObj;
 }
 
-QString Wallpaper::get_plugin_name(){
+QString Wallpaper::get_plugin_name() {
     return pluginName;
 }
 
-int Wallpaper::get_plugin_type(){
+int Wallpaper::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *Wallpaper::get_plugin_ui(){
+QWidget *Wallpaper::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+
+        ui = new Ui::Wallpaper;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        settingsCreate = false;
+        initSearchText();
+        //初始化控件
+        setupComponent();
+        //初始化gsettings
+        const QByteArray id(BACKGROUND);
+        if (QGSettings::isSchemaInstalled(id)){
+            settingsCreate = true;
+
+            bgsettings = new QGSettings(id);
+            setupConnect();
+            initBgFormStatus();
+        }
+        //构建xmlhandle对象
+        xmlhandleObj = new XmlHandle();
+    }
     return pluginWidget;
 }
 

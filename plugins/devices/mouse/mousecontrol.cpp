@@ -95,44 +95,16 @@ void MyLabel::mouseDoubleClickEvent(QMouseEvent *event) {
 }
 
 
-MouseControl::MouseControl() {
-    ui = new Ui::MouseControl;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
+MouseControl::MouseControl() : mFirstLoad(true)
+{
     pluginName = tr("Mouse");
     pluginType = DEVICES;
-
-    initSearchText();
-    initStyle();
-
-    //初始化鼠标设置GSettings
-    const QByteArray id(MOUSE_SCHEMA);
-    const QByteArray sessionId(SESSION_SCHEMA);
-    const QByteArray idd(DESKTOP_SCHEMA);
-    const QByteArray themeId(THEME_SCHEMA);
-    if (QGSettings::isSchemaInstalled(sessionId) &&
-            QGSettings::isSchemaInstalled(id) &&
-            QGSettings::isSchemaInstalled(idd)) {
-        sesstionSetttings = new QGSettings(sessionId, QByteArray(), this);
-        settings = new QGSettings(id, QByteArray(), this);
-        desktopSettings = new QGSettings(idd, QByteArray(), this);
-        mThemeSettings = new QGSettings(themeId, QByteArray(), this);
-
-        mouseKeys = settings->keys();
-
-        setupComponent();
-
-        initHandHabitStatus();
-        initPointerStatus();
-        initCursorStatus();
-        initWheelStatus();
-    }
 }
 
 MouseControl::~MouseControl() {
-    delete ui;
+    if (!mFirstLoad) {
+        delete ui;
+    }
 }
 
 QString MouseControl::get_plugin_name() {
@@ -144,6 +116,39 @@ int MouseControl::get_plugin_type() {
 }
 
 QWidget *MouseControl::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+        ui = new Ui::MouseControl;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        initSearchText();
+        initStyle();
+
+        //初始化鼠标设置GSettings
+        const QByteArray id(MOUSE_SCHEMA);
+        const QByteArray sessionId(SESSION_SCHEMA);
+        const QByteArray idd(DESKTOP_SCHEMA);
+        const QByteArray themeId(THEME_SCHEMA);
+        if (QGSettings::isSchemaInstalled(sessionId) &&
+                QGSettings::isSchemaInstalled(id) &&
+                QGSettings::isSchemaInstalled(idd)) {
+            sesstionSetttings = new QGSettings(sessionId, QByteArray(), this);
+            settings = new QGSettings(id, QByteArray(), this);
+            desktopSettings = new QGSettings(idd, QByteArray(), this);
+            mThemeSettings = new QGSettings(themeId, QByteArray(), this);
+
+            mouseKeys = settings->keys();
+
+            setupComponent();
+
+            initHandHabitStatus();
+            initPointerStatus();
+            initCursorStatus();
+            initWheelStatus();
+        }
+    }
     return pluginWidget;
 }
 

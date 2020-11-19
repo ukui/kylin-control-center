@@ -59,9 +59,9 @@ private:
     int pluginType;
     QWidget * pluginWidget;
     HoverWidget * addWgt;
-
-private:
     QTimer * pTimer;
+
+    bool mFirstLoad;
 
 public slots:
     void refreshPrinterDev();

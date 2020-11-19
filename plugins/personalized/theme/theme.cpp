@@ -29,7 +29,6 @@
 #include "cursor/xcursortheme.h"
 #include "../../../shell/customstyle.h"
 
-
 // GTK主题
 #define THEME_GTK_SCHEMA "org.mate.interface"
 #define MODE_GTK_KEY "gtk-theme"
@@ -103,79 +102,41 @@ Theme::Theme()
     ui = new Ui::Theme;
     pluginWidget = new QWidget;
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("Theme");
     pluginType = PERSONALIZED;
-
+    ui->setupUi(pluginWidget);
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->iconLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->cursorLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->effectLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-    settingsCreate = false;
-
-    const QByteArray id(THEME_GTK_SCHEMA);
-    const QByteArray idd(THEME_QT_SCHEMA);
-    const QByteArray iid(CURSOR_THEME_SCHEMA);
-    const QByteArray iiid(PERSONALSIE_SCHEMA);
-    if (QGSettings::isSchemaInstalled(iiid)) {
-        personliseGsettings = new QGSettings(iiid);
-    }
+    setupGSettings();
     initSearchText();
+
     //设置组件
     setupComponent();
-
     // init kwin settings
     setupSettings();
-
-    if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(idd)
-            && QGSettings::isSchemaInstalled(iid)){
-        gtkSettings = new QGSettings(id);
-        qtSettings = new QGSettings(idd);
-        curSettings = new QGSettings(iid);
-
-        settingsCreate = true;
-
-        initThemeMode();
-        initIconTheme();
-        initCursorTheme();
-//        initEffectSettings();
-        initConnection();
-    } else {
-        qCritical() << THEME_GTK_SCHEMA << "or" << THEME_QT_SCHEMA << "or" << CURSOR_THEME_SCHEMA << "not installed\n";
-    }
-
+    initThemeMode();
+    initIconTheme();
+    initCursorTheme();
+    initConnection();
 }
 
 Theme::~Theme()
 {
     delete ui;
-    if (settingsCreate){
-        delete gtkSettings;
-        delete qtSettings;
-        delete curSettings;
-    }
-    if (kwinSettings ){
-        delete kwinSettings;
-    }
-    if (kwinGsettings) {
-        delete kwinGsettings;
-    }
-    if (personliseGsettings) {
-        delete personliseGsettings;
-    }
 }
 
-QString Theme::get_plugin_name(){
+QString Theme::get_plugin_name() {
     return pluginName;
 }
 
-int Theme::get_plugin_type(){
+int Theme::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *Theme::get_plugin_ui(){
+QWidget *Theme::get_plugin_ui() {
     return pluginWidget;
 }
 
@@ -343,6 +304,7 @@ void Theme::initThemeMode() {
     } else {
         ui->themeModeBtnGroup->buttonClicked(ui->lightButton);
     }
+
     qApp->setStyle(new InternalStyle("ukui"));
 
     //监听主题改变
@@ -384,7 +346,7 @@ void Theme::initThemeMode() {
     connect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeBtnClickSlot(QAbstractButton*)));
 }
 
-void Theme::initIconTheme(){
+void Theme::initIconTheme() {
     //获取当前图标主题(以QT为准，后续可以对比GTK两个值)
     QString currentIconTheme = qtSettings->get(ICON_QT_KEY).toString();
 
@@ -502,7 +464,7 @@ void Theme::initCursorTheme(){
     QString currentCursorTheme;
     currentCursorTheme = curSettings->get(CURSOR_THEME_KEY).toString();
 
-    cursorThemeWidgetGroup = new WidgetGroup;
+    cursorThemeWidgetGroup = new WidgetGroup(this);
     connect(cursorThemeWidgetGroup, &WidgetGroup::widgetChanged, [=](ThemeWidget * preWidget, ThemeWidget * curWidget){
         if (preWidget)
             preWidget->setSelectedStatus(false);
@@ -651,6 +613,17 @@ QStringList Theme::readFile(QString filepath) {
         qWarning() << filepath << " not found"<<endl;
         return QStringList();
     }
+}
+
+void Theme::setupGSettings() {
+    const QByteArray id(THEME_GTK_SCHEMA);
+    const QByteArray idd(THEME_QT_SCHEMA);
+    const QByteArray iid(CURSOR_THEME_SCHEMA);
+    const QByteArray iiid(PERSONALSIE_SCHEMA);
+    gtkSettings = new QGSettings(id, QByteArray(), this);
+    qtSettings = new QGSettings(idd, QByteArray(), this);
+    curSettings = new QGSettings(iid, QByteArray(), this);
+    personliseGsettings = new QGSettings(iiid, QByteArray(), this);
 }
 
 QString Theme::dullTranslation(QString str) {

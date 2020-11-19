@@ -26,35 +26,36 @@
 #include <KF5/KScreen/kscreen/output.h>
 #include <QDebug>
 
-DisplaySet::DisplaySet(){
-    pluginWidget = new Widget;
+DisplaySet::DisplaySet() : mFirstLoad(true)
+{
     pluginName = tr("Display");
-    QObject::connect(new KScreen::GetConfigOperation(), &KScreen::GetConfigOperation::finished,
-                     [&](KScreen::ConfigOperation *op) {
-                        pluginWidget->setConfig(qobject_cast<KScreen::GetConfigOperation*>(op)->config());
-                    });
-
     pluginType = SYSTEM;
-
 }
 
-DisplaySet::~DisplaySet(){
-
+DisplaySet::~DisplaySet() {
 }
 
-QWidget *DisplaySet::get_plugin_ui(){
+QWidget *DisplaySet::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+        pluginWidget = new Widget;
+        QObject::connect(new KScreen::GetConfigOperation(), &KScreen::GetConfigOperation::finished,
+                         [&](KScreen::ConfigOperation *op) {
+            pluginWidget->setConfig(qobject_cast<KScreen::GetConfigOperation*>(op)->config());
+        });
+    }
     return pluginWidget;
 }
 
-QString DisplaySet::get_plugin_name(){
+QString DisplaySet::get_plugin_name() {
     return pluginName;
 }
 
-int DisplaySet::get_plugin_type(){
+int DisplaySet::get_plugin_type() {
     return pluginType;
 }
 
-void DisplaySet::plugin_delay_control(){
+void DisplaySet::plugin_delay_control() {
 
 }
 

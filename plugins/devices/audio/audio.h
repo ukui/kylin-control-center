@@ -54,6 +54,7 @@ private:
     int pluginType;    
 
     UkmediaMainWidget *pluginWidget;
+    bool mFirstLoad;
 };
 
 #endif // AUDIO_H

@@ -109,6 +109,7 @@ private:
     int tranConvertToSlider(const double value);
     bool getSystemVersion();
     QStringList readFile(QString filepath);
+    void setupGSettings();
 
 private slots:
     void resetBtnClickSlot();

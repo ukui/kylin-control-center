@@ -36,69 +36,73 @@
 #define CC_KEYBOARD_OSD_SCHEMA "org.ukui.control-center.osd"
 #define CC_KEYBOARD_OSD_KEY "show-lock-tip"
 
-KeyboardControl::KeyboardControl()
+KeyboardControl::KeyboardControl() : mFirstLoad(true)
 {
-    ui = new Ui::KeyboardControl;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("Keyboard");
     pluginType = DEVICES;
-
-    settingsCreate = false;
-
-    setupStylesheet();
-    setupComponent();
-
-    // 初始化键盘通用设置GSettings
-    const QByteArray id(KEYBOARD_SCHEMA);
-    // 初始化键盘布局GSettings
-    const QByteArray idd(KBD_LAYOUTS_SCHEMA);
-    // 初始化按键提示GSettings
-    const QByteArray iid(CC_KEYBOARD_OSD_SCHEMA);
-    // 控制面板自带GSettings，不再判断是否安装
-    osdSettings = new QGSettings(iid);
-
-    if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(idd)){
-        settingsCreate = true;
-
-        kbdsettings = new QGSettings(idd);
-        settings = new QGSettings(id);
-
-        //构建布局管理器对象
-        layoutmanagerObj = new KbdLayoutManager();
-
-        setupConnect();
-        initGeneralStatus();
-
-        rebuildLayoutsComBox();
-    }
 }
 
 KeyboardControl::~KeyboardControl()
 {
-    delete ui;
-    if (settingsCreate){
-        delete kbdsettings;
-        delete settings;
+    if (!mFirstLoad) {
+        delete ui;
+        if (settingsCreate) {
+            delete kbdsettings;
+            delete settings;
+        }
     }
-
 }
 
-QString KeyboardControl::get_plugin_name(){
+QString KeyboardControl::get_plugin_name() {
     return pluginName;
 }
 
-int KeyboardControl::get_plugin_type(){
+int KeyboardControl::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *KeyboardControl::get_plugin_ui(){
+QWidget *KeyboardControl::get_plugin_ui() {
+    if (mFirstLoad) {
+        ui = new Ui::KeyboardControl;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        mFirstLoad = false;
+        settingsCreate = false;
+
+        setupStylesheet();
+        setupComponent();
+
+        // 初始化键盘通用设置GSettings
+        const QByteArray id(KEYBOARD_SCHEMA);
+        // 初始化键盘布局GSettings
+        const QByteArray idd(KBD_LAYOUTS_SCHEMA);
+        // 初始化按键提示GSettings
+        const QByteArray iid(CC_KEYBOARD_OSD_SCHEMA);
+        // 控制面板自带GSettings，不再判断是否安装
+        osdSettings = new QGSettings(iid);
+
+        if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(idd)){
+            settingsCreate = true;
+
+            kbdsettings = new QGSettings(idd);
+            settings = new QGSettings(id);
+
+            //构建布局管理器对象
+            layoutmanagerObj = new KbdLayoutManager();
+
+            setupConnect();
+            initGeneralStatus();
+
+            rebuildLayoutsComBox();
+        }
+
+    }
     return pluginWidget;
 }
 
-void KeyboardControl::plugin_delay_control(){
+void KeyboardControl::plugin_delay_control() {
 
 }
 

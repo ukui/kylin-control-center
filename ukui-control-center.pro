@@ -32,3 +32,9 @@ qm_files.path = $${PREFIX}/share/ukui-control-center/shell/res/i18n/
 qm_files.files = shell/res/i18n/*.qm
 
 INSTALLS += qm_files
+
+HEADERS += \
+    shell/utils/xatom-helper.h
+
+SOURCES += \
+    shell/utils/xatom-helper.cpp

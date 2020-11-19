@@ -116,6 +116,7 @@ public Q_SLOTS:
 
 private:
     bool settingsCreate;
+    bool mFirstLoad;
     QGSettings * stylesettings;
     Uslider * uslider;
 };

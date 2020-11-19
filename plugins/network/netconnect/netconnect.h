@@ -92,8 +92,6 @@ public:
 
     bool getwifiisEnable();
 
-    bool is_refreshed;
-
 private:
     Ui::NetConnect *ui;
 
@@ -117,6 +115,9 @@ private:
     QStringList TlanList;
 
     QString actLanName;
+
+    bool is_refreshed;
+    bool mFirstLoad;
 
 private:
 

@@ -50,47 +50,20 @@ bool _supportsXinputDevices();
 XDevice* _deviceIsTouchpad (XDeviceInfo * deviceinfo);
 bool _deviceHasProperty (XDevice * device, const char * property_name);
 
-Touchpad::Touchpad()
+Touchpad::Touchpad() : mFirstLoad(true)
 {
-    ui = new Ui::Touchpad;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("Touchpad");
     pluginType = DEVICES;
-
-    //~ contents_path /touchpad/Touchpad Settings
-    ui->titleLabel->setText(tr("Touchpad Settings"));
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    ui->scrollingTypeComBox->setView(new QListView());
-    const QByteArray id(TOUCHPAD_SCHEMA);
-
-    if (QGSettings::isSchemaInstalled(TOUCHPAD_SCHEMA)){
-        tpsettings = new QGSettings(id);
-        setupComponent();
-        if (findSynaptics()){
-            qDebug() << "Touch Devices Available";
-            ui->tipLabel->hide();
-            initTouchpadStatus();
-        } else {
-            ui->clickFrame->hide();
-            ui->enableFrame->hide();
-            ui->scrollingFrame->hide();
-            ui->typingFrame->hide();
-        }
-    }
 }
 
 Touchpad::~Touchpad()
 {
-    delete ui;
-    if (QGSettings::isSchemaInstalled(TOUCHPAD_SCHEMA)){
-        delete tpsettings;
+    if (!mFirstLoad) {
+        delete ui;
+        if (QGSettings::isSchemaInstalled(TOUCHPAD_SCHEMA)){
+            delete tpsettings;
+        }
     }
-
-
 }
 
 QString Touchpad::get_plugin_name(){
@@ -102,6 +75,36 @@ int Touchpad::get_plugin_type(){
 }
 
 QWidget *Touchpad::get_plugin_ui(){
+    if (mFirstLoad) {
+        mFirstLoad = false;
+
+        ui = new Ui::Touchpad;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        //~ contents_path /touchpad/Touchpad Settings
+        ui->titleLabel->setText(tr("Touchpad Settings"));
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        ui->scrollingTypeComBox->setView(new QListView());
+        const QByteArray id(TOUCHPAD_SCHEMA);
+
+        if (QGSettings::isSchemaInstalled(TOUCHPAD_SCHEMA)){
+            tpsettings = new QGSettings(id);
+            setupComponent();
+            if (findSynaptics()){
+                qDebug() << "Touch Devices Available";
+                ui->tipLabel->hide();
+                initTouchpadStatus();
+            } else {
+                ui->clickFrame->hide();
+                ui->enableFrame->hide();
+                ui->scrollingFrame->hide();
+                ui->typingFrame->hide();
+            }
+        }
+    }
     return pluginWidget;
 }
 

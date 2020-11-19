@@ -49,33 +49,17 @@ extern "C" {
 #define ITEMHEIGHT 62
 #define HEADHEIGHT 38
 
-
-//struct SaveData : QObjectUserData {
-//    QString bname;
-//};
-
-AutoBoot::AutoBoot() {
-    ui = new Ui::AutoBoot;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
+AutoBoot::AutoBoot() : mFirstLoad(true)
+{
     pluginName = tr("Auto Boot");
     pluginType = SYSTEM;
-    connectToServer();
-    initStyle();
-    localconfigdir = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
-    //初始化添加界面
-    dialog = new AddAutoBoot();
-
-    initAddBtn();
-    initUI();
-    initConnection();
 }
 
 AutoBoot::~AutoBoot() {
-    delete ui;
-    g_free(localconfigdir);
+    if (!mFirstLoad) {
+        delete ui;
+        g_free(localconfigdir);
+    }
 }
 
 QString AutoBoot::get_plugin_name() {
@@ -87,6 +71,24 @@ int AutoBoot::get_plugin_type() {
 }
 
 QWidget *AutoBoot::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+
+        ui = new Ui::AutoBoot;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        connectToServer();
+        initStyle();
+        localconfigdir = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
+        //初始化添加界面
+        dialog = new AddAutoBoot();
+
+        initAddBtn();
+        initUI();
+        initConnection();
+    }
     return pluginWidget;
 }
 
@@ -99,7 +101,7 @@ const QString AutoBoot::name() const {
 }
 
 void AutoBoot::initAddBtn() {
-    addWgt = new HoverWidget("");
+    addWgt = new HoverWidget("", pluginWidget);
     addWgt->setObjectName("addwgt");
     addWgt->setMinimumSize(QSize(580, 50));
     addWgt->setMaximumSize(QSize(960, 50));
@@ -107,8 +109,8 @@ void AutoBoot::initAddBtn() {
 
     QHBoxLayout *addLyt = new QHBoxLayout;
 
-    QLabel * iconLabel = new QLabel();
-    QLabel * textLabel = new QLabel(tr("Add autoboot app "));
+    QLabel * iconLabel = new QLabel(pluginWidget);
+    QLabel * textLabel = new QLabel(tr("Add autoboot app "), pluginWidget);
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);
     addLyt->addWidget(iconLabel);
@@ -155,7 +157,7 @@ void AutoBoot::initUI() {
     int num = statusMaps.count();
 
     //构建行头基础Widget
-    QFrame * headbaseFrame = new QFrame;
+    QFrame * headbaseFrame = new QFrame(pluginWidget);
     headbaseFrame->setMinimumWidth(550);
     headbaseFrame->setMaximumWidth(960);
     headbaseFrame->setFrameShape(QFrame::Shape::Box);
@@ -166,7 +168,7 @@ void AutoBoot::initUI() {
     headbaseVerLayout->setContentsMargins(0, 0, 0, 2);
 
     //构建行头
-    QWidget * headWidget = new QWidget;
+    QWidget * headWidget = new QWidget(pluginWidget);
     headWidget->setMinimumWidth(550);
     headWidget->setMaximumWidth(960);
 
@@ -206,7 +208,7 @@ void AutoBoot::initUI() {
         QString bname = it.value().bname;
         QString appName = it.value().name;
 
-        QFrame * baseWidget = new QFrame;
+        QFrame * baseWidget = new QFrame(pluginWidget);
         baseWidget->setMinimumWidth(550);
         baseWidget->setMaximumWidth(960);
         baseWidget->setFrameShape(QFrame::Shape::Box);
@@ -237,7 +239,7 @@ void AutoBoot::initUI() {
         textLabel->setFixedWidth(250);
         textLabel->setText(appName);
 
-        SwitchButton * button = new SwitchButton();
+        SwitchButton * button = new SwitchButton(widget);
         button->setAttribute(Qt::WA_DeleteOnClose);
         button->setChecked(!it.value().hidden);
         connect(button, SIGNAL(checkedChanged(bool)), checkSignalMapper, SLOT(map()));

@@ -36,49 +36,54 @@
 #define MATE_BACKGROUND_SCHEMAS "org.mate.background"
 #define FILENAME                "picture-filename"
 
-Screenlock::Screenlock()
+Screenlock::Screenlock() : mFirstLoad(true)
 {
-    ui = new Ui::Screenlock;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("Screenlock");
     pluginType = PERSONALIZED;
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title1Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    const QByteArray id(SCREENLOCK_BG_SCHEMA);
-    lSetting = new QGSettings(id);
-
-    connectToServer();
-    initSearchText();
-    setupComponent();
-    setupConnect();
-    initScreenlockStatus();
-
-    lockbgSize = QSize(400, 240);
 }
 
 Screenlock::~Screenlock()
 {
-    delete ui;
-    delete lSetting;
-    delete lockSetting;
-    delete lockLoginSettings;
+    if (!mFirstLoad) {
+        delete ui;
+        delete lSetting;
+        delete lockSetting;
+        delete lockLoginSettings;
+    }
 }
 
-QString Screenlock::get_plugin_name(){
+QString Screenlock::get_plugin_name() {
     return pluginName;
 }
 
-int Screenlock::get_plugin_type(){
+int Screenlock::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *Screenlock::get_plugin_ui(){
+QWidget *Screenlock::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+
+        ui = new Ui::Screenlock;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->title1Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        const QByteArray id(SCREENLOCK_BG_SCHEMA);
+        lSetting = new QGSettings(id);
+
+        connectToServer();
+        initSearchText();
+        setupComponent();
+        setupConnect();
+        initScreenlockStatus();
+
+        lockbgSize = QSize(400, 240);
+    }
     return pluginWidget;
 }
 

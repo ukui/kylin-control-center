@@ -96,6 +96,8 @@ private:
     QString pluginName;
 
     QStringList mouseKeys;
+
+    bool mFirstLoad;
 };
 
 #endif // MOUSECONTROL_H

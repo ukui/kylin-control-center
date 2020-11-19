@@ -48,79 +48,84 @@
 #define SETTINGS_LOCK_KEY "settings-icon-locking"
 #define TRASH_LOCK_KEY "trash-icon-locking"
 
-Desktop::Desktop()
+Desktop::Desktop() : mFirstLoad(true)
 {
-    ui = new Ui::Desktop;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("Desktop");
     pluginType = PERSONALIZED;
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->menuLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    ui->titleLabel->setVisible(false);
-//    ui->title2Label->setVisible(false);
-
-    ui->deskComputerFrame->setVisible(false);
-    ui->deskTrashFrame->setVisible(false);
-    ui->deskHomeFrame->setVisible(false);
-    ui->deskVolumeFrame->setVisible(false);
-    ui->deskNetworkFrame->setVisible(false);
-
-    ui->titleLabel->setVisible(false);
-//    ui->title2Label->setVisible(false);
-
-    ui->deskComputerFrame->setVisible(false);
-    ui->deskTrashFrame->setVisible(false);
-    ui->deskHomeFrame->setVisible(false);
-    ui->deskVolumeFrame->setVisible(false);
-    ui->deskNetworkFrame->setVisible(false);
-
-    ui->title2Label->hide();
-    ui->fullScreenMenuFrame->setVisible(false);
-
-    vecGsettings = new QVector<QGSettings*>();
-    const QByteArray id(DESKTOP_SCHEMA);
-    if (QGSettings::isSchemaInstalled(id)) {
-        dSettings = new QGSettings(id);
-    }
-    cmd = QSharedPointer<QProcess>(new QProcess());
-    initSearchText();
-    initTranslation();
-    setupComponent();
-    setupConnect();
-    initVisibleStatus();
-    initLockingStatus();
-    initTraySettings();
 }
 
 Desktop::~Desktop()
 {
-    delete ui;
-    clearContent();
-    if (!dSettings ){
-        delete dSettings;
-    }
+    if (!mFirstLoad) {
+        delete ui;
+        clearContent();
+        if (!dSettings ){
+            delete dSettings;
+        }
 
-    if (!vecGsettings) {
-        delete vecGsettings;
+        if (!vecGsettings) {
+            delete vecGsettings;
+        }
     }
 }
 
-QString Desktop::get_plugin_name(){
+QString Desktop::get_plugin_name() {
     return pluginName;
 }
 
-int Desktop::get_plugin_type(){
+int Desktop::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *Desktop::get_plugin_ui(){
+QWidget *Desktop::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+
+        ui = new Ui::Desktop;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->menuLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        ui->titleLabel->setVisible(false);
+    //    ui->title2Label->setVisible(false);
+
+        ui->deskComputerFrame->setVisible(false);
+        ui->deskTrashFrame->setVisible(false);
+        ui->deskHomeFrame->setVisible(false);
+        ui->deskVolumeFrame->setVisible(false);
+        ui->deskNetworkFrame->setVisible(false);
+
+        ui->titleLabel->setVisible(false);
+    //    ui->title2Label->setVisible(false);
+
+        ui->deskComputerFrame->setVisible(false);
+        ui->deskTrashFrame->setVisible(false);
+        ui->deskHomeFrame->setVisible(false);
+        ui->deskVolumeFrame->setVisible(false);
+        ui->deskNetworkFrame->setVisible(false);
+
+        ui->title2Label->hide();
+        ui->fullScreenMenuFrame->setVisible(false);
+
+        vecGsettings = new QVector<QGSettings*>();
+        const QByteArray id(DESKTOP_SCHEMA);
+        if (QGSettings::isSchemaInstalled(id)) {
+            dSettings = new QGSettings(id);
+        }
+        cmd = QSharedPointer<QProcess>(new QProcess());
+        initSearchText();
+        initTranslation();
+        setupComponent();
+        setupConnect();
+        initVisibleStatus();
+        initLockingStatus();
+        initTraySettings();
+    }
     return pluginWidget;
 }
 
