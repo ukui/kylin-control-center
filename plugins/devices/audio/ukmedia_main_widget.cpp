@@ -168,6 +168,12 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
                              "changed",
                              G_CALLBACK (onKeyChanged),
                              this);
+    //连接到pulseaudio
+    pa_glib_mainloop *m = pa_glib_mainloop_new(g_main_context_default());
+    api = pa_glib_mainloop_get_api(m);
+
+    role = "sink-input-by-media-role:event";
+
     setupThemeSelector(this);
     updateTheme(this);
     //报警声音,从指定路径获取报警声音文件
@@ -344,6 +350,7 @@ void UkmediaMainWidget::createAlertSound(UkmediaMainWidget *pWidget)
         list = list->next;
     }
 
+    connect_to_pulse(this);
 }
 
 /*
@@ -735,6 +742,7 @@ void UkmediaMainWidget::onStreamControlAdded (MateMixerStream *m_pStream,const g
     g_debug("on stream control added");
     MateMixerStreamControl    *m_pControl;
     MateMixerStreamControlRole role;
+
     m_pControl = mate_mixer_stream_get_control (m_pStream, m_pName);
     if G_UNLIKELY (m_pControl == nullptr)
         return;
@@ -810,6 +818,7 @@ void UkmediaMainWidget::setContext(UkmediaMainWidget *m_pWidget,MateMixerContext
                     "notify::default-output-stream",
                     G_CALLBACK (onContextDefaultOutputStreamNotify),
                     m_pWidget);
+
 
     g_signal_connect (G_OBJECT (m_pContext),
                     "stored-control-added",
@@ -955,6 +964,7 @@ void UkmediaMainWidget::onContextDefaultInputStreamNotify (MateMixerContext *m_p
     if (index < 0)
         return;
     m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->setCurrentIndex(index);
+    qDebug() << "on context default input stream notify" <<deviceName;
     updateIconInput(m_pWidget);
 
     setInputStream(m_pWidget, m_pStream);
@@ -1040,8 +1050,8 @@ void UkmediaMainWidget::onContextDefaultOutputStreamNotify (MateMixerContext *m_
     MateMixerStream *m_pStream;
     m_pStream = mate_mixer_context_get_default_output_stream (m_pContext);
 
+    qDebug() << "on context default output steam notify:" << mate_mixer_stream_get_name(m_pStream);
     if (m_pStream == nullptr) {
-        qDebug() << "on context default output steam notify:" << "stream is null";
         //当输出流更改异常时，使用默认的输入流，不应该发生这种情况
         m_pStream = m_pWidget->m_pOutputStream;
     }
@@ -1536,7 +1546,7 @@ void UkmediaMainWidget::updateOutputSettings (UkmediaMainWidget *m_pWidget,MateM
             MateMixerSwitchOption *opt = MATE_MIXER_SWITCH_OPTION(options->data);
             QString label = mate_mixer_switch_option_get_label(opt);
             QString name = mate_mixer_switch_option_get_name(opt);
-//            qDebug() << "opt label******: "<< label << "opt name :" << mate_mixer_switch_option_get_name(opt);
+            qDebug() << "opt label******: "<< label << "opt name :" << mate_mixer_switch_option_get_name(opt);
             if (!m_pWidget->m_pOutputPortList->contains(name)) {
                 qDebug() << "设置组合框当前值为:" << label << outputPortLabel;
                 m_pWidget->m_pOutputPortList->append(name);
@@ -1556,6 +1566,7 @@ void UkmediaMainWidget::updateOutputSettings (UkmediaMainWidget *m_pWidget,MateM
         gdouble value = volume/100.0;
         mate_mixer_stream_control_set_balance(m_pControl,value);
     });
+    m_pWidget->updateProfileOption();
 }
 
 void UkmediaMainWidget::onKeyChanged (GSettings *settings,gchar *key,UkmediaMainWidget *m_pWidget)
@@ -2197,7 +2208,7 @@ void UkmediaMainWidget::profileComboboxChangedSlot(int index)
     int devIndex = m_pOutputWidget->m_pSelectCombobox->currentIndex();
     QString deviceStr = m_pDeviceNameList->at(devIndex);
     QByteArray bba = deviceStr.toLatin1();
-    qDebug() << "device name" << m_pDeviceNameList->at(devIndex);
+//    qDebug() << "device name" << m_pDeviceNameList->at(devIndex);
     const gchar * deviceName = bba.data();
     if (m_pSwitch == nullptr)
         qDebug() << "switch is null ===============";
@@ -2231,15 +2242,18 @@ void UkmediaMainWidget::selectComboboxChangedSlot(int index)
     while (switches != nullptr) {
         MateMixerDeviceSwitch *swtch = MATE_MIXER_DEVICE_SWITCH (switches->data);
         const GList *options;
-        options = mate_mixer_switch_list_options ( MATE_MIXER_SWITCH(swtch));
-        activeOption = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(swtch));
+//        options = mate_mixer_switch_list_options ( MATE_MIXER_SWITCH(swtch));
+        MateMixerSwitch *swtch1 = findDeviceProfileSwitch(this,pDevice);
+        options = mate_mixer_switch_list_options(swtch1);
+//        activeOption = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(swtch));
+        activeOption = mate_mixer_switch_get_active_option(swtch1);
         setProfileLabel  = mate_mixer_switch_option_get_label(activeOption) ;
-//        qDebug() << "获取活跃option name============ :" <<setProfileLabel;
 
         while (options != NULL) {
             MateMixerSwitchOption *option = MATE_MIXER_SWITCH_OPTION (options->data);
             profileLabel = mate_mixer_switch_option_get_label (option);
             profileName = mate_mixer_switch_option_get_name(option);
+            qDebug() <<"添加配置文件 ============ :" <<profileLabel;
             m_pProfileNameList->append(profileName);
             m_pOutputWidget->m_pProfileCombobox->addItem(profileLabel);
             /* Select the currently active option of the switch */
@@ -2249,7 +2263,7 @@ void UkmediaMainWidget::selectComboboxChangedSlot(int index)
     }
     if (setProfileLabel != nullptr)
         m_pOutputWidget->m_pProfileCombobox->setCurrentText(setProfileLabel);
-    qDebug() << "设置声卡配置文件为:" << setProfileLabel;
+//    qDebug() << "设置声卡配置文件为:" << setProfileLabel;
 }
 
 /*
@@ -2581,6 +2595,12 @@ void UkmediaMainWidget::alertVolumeSliderChangedSlot(int value)
 
         alertIconButtonSetIcon(false,value);
         m_pSoundWidget->m_pAlertIconBtn->repaint();
+    }
+    else {
+        volume.channels = 1;
+        volume.values[0] = value*65536/100;
+        info.volume = volume;
+        updateRole(info);
     }
 }
 
@@ -3341,6 +3361,46 @@ gchar * UkmediaMainWidget::deviceStatus (MateMixerDevice *device)
     return outputs_str;
 }
 
+void UkmediaMainWidget::updateProfileOption()
+{
+    int index = m_pOutputWidget->m_pSelectCombobox->currentIndex();
+    if (index < 0)
+        return;
+    QString deviceStr = m_pDeviceNameList->at(index);
+    QByteArray ba = deviceStr.toLatin1();
+    const gchar *deviceName = ba.data();
+    const gchar *profileLabel = nullptr;
+    const gchar *profileName = nullptr;
+    const gchar *setProfileLabel = nullptr;
+    MateMixerSwitchOption *activeOption;
+    MateMixerDevice *pDevice = mate_mixer_context_get_device(m_pContext,deviceName);
+    const GList *switches;
+    switches = mate_mixer_device_list_switches (MATE_MIXER_DEVICE(pDevice));
+    m_pOutputWidget->m_pProfileCombobox->clear();
+    m_pProfileNameList->clear();
+    while (switches != nullptr) {
+        MateMixerDeviceSwitch *swtch = MATE_MIXER_DEVICE_SWITCH (switches->data);
+        const GList *options;
+        options = mate_mixer_switch_list_options ( MATE_MIXER_SWITCH(swtch));
+        activeOption = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(swtch));
+        setProfileLabel  = mate_mixer_switch_option_get_label(activeOption) ;
+
+        while (options != NULL) {
+            MateMixerSwitchOption *option = MATE_MIXER_SWITCH_OPTION (options->data);
+            profileLabel = mate_mixer_switch_option_get_label (option);
+            profileName = mate_mixer_switch_option_get_name(option);
+            qDebug() <<"添加流的配置文件 ============ :" <<profileLabel;
+            m_pProfileNameList->append(profileName);
+            m_pOutputWidget->m_pProfileCombobox->addItem(profileLabel);
+            /* Select the currently active option of the switch */
+            options = options->next;
+        }
+        switches = switches->next;
+    }
+//    if (setProfileLabel != nullptr)
+//        m_pOutputWidget->m_pProfileCombobox->setCurrentText(setProfileLabel);
+}
+
 void UkmediaMainWidget::updateDeviceInfo (UkmediaMainWidget *w, MateMixerDevice *device)
 {
     const gchar     *label;
@@ -3372,7 +3432,176 @@ void UkmediaMainWidget::onDeviceProfileActiveOptionNotify (MateMixerDeviceSwitch
     device = mate_mixer_device_switch_get_device (swtch);
     qDebug() << "device profile active option notify ********************device name :" << mate_mixer_device_get_name(device);
     updateDeviceInfo (w, device);
-//    delete settings;
+}
+
+void UkmediaMainWidget::setConnectingMessage(const char *string) {
+    QByteArray markup = "<i>";
+    if (!string)
+        markup += tr("Establishing connection to PulseAudio. Please wait...").toUtf8().constData();
+    else
+        markup += string;
+    markup += "</i>";
+}
+
+gboolean UkmediaMainWidget::connect_to_pulse(gpointer userdata)
+{
+    UkmediaMainWidget *w = static_cast<UkmediaMainWidget*>(userdata);
+
+    pa_proplist *proplist = pa_proplist_new();
+    pa_proplist_sets(proplist, PA_PROP_APPLICATION_NAME, QObject::tr("PulseAudio Volume Control").toUtf8().constData());
+    pa_proplist_sets(proplist, PA_PROP_APPLICATION_ID, "org.PulseAudio.pavucontrol");
+    pa_proplist_sets(proplist, PA_PROP_APPLICATION_ICON_NAME, "audio-card");
+    pa_proplist_sets(proplist, PA_PROP_APPLICATION_VERSION, "PACKAGE_VERSION");
+
+    context = pa_context_new_with_proplist(api, nullptr, proplist);
+    g_assert(context);
+
+    pa_proplist_free(proplist);
+
+    pa_context_set_state_callback(context, context_state_callback, w);
+    qDebug() << "connrct pulse";
+    if (pa_context_connect(context, nullptr, PA_CONTEXT_NOFAIL, nullptr) < 0) {
+        if (pa_context_errno(context) == PA_ERR_INVALID) {
+            w->setConnectingMessage(QObject::tr("Connection to PulseAudio failed. Automatic retry in 5s\n\n"
+                "In this case this is likely because PULSE_SERVER in the Environment/X11 Root Window Properties\n"
+                "or default-server in client.conf is misconfigured.\n"
+                "This situation can also arrise when PulseAudio crashed and left stale details in the X11 Root Window.\n"
+                "If this is the case, then PulseAudio should autospawn again, or if this is not configured you should\n"
+                "run start-pulseaudio-x11 manually.").toUtf8().constData());
+        }
+    }
+
+    return false;
+}
+
+void UkmediaMainWidget::createEventRole()
+{
+    pa_channel_map cm = {
+        1, { PA_CHANNEL_POSITION_MONO }
+    };
+    channelMap = cm;
+    executeVolumeUpdate(false);
+}
+
+void UkmediaMainWidget::context_state_callback(pa_context *c, void *userdata) {
+    UkmediaMainWidget *w = static_cast<UkmediaMainWidget*>(userdata);
+    g_assert(c);
+
+    switch (pa_context_get_state(c)) {
+        case PA_CONTEXT_UNCONNECTED:
+        case PA_CONTEXT_CONNECTING:
+        case PA_CONTEXT_AUTHORIZING:
+        case PA_CONTEXT_SETTING_NAME:
+            break;
+
+        case PA_CONTEXT_READY: {
+            pa_operation *o;
+            qDebug() <<"context ready ---";
+
+            /* Create event widget immediately so it's first in the list */
+            w->createEventRole();
+            if (!(o = pa_context_subscribe(c, (pa_subscription_mask_t)
+                                           (PA_SUBSCRIPTION_MASK_SINK|
+                                            PA_SUBSCRIPTION_MASK_SOURCE|
+                                            PA_SUBSCRIPTION_MASK_SINK_INPUT|
+                                            PA_SUBSCRIPTION_MASK_SOURCE_OUTPUT|
+                                            PA_SUBSCRIPTION_MASK_CLIENT|
+                                            PA_SUBSCRIPTION_MASK_SERVER|
+                                            PA_SUBSCRIPTION_MASK_CARD), nullptr, nullptr))) {
+                w->show_error(QObject::tr("pa_context_subscribe() failed").toUtf8().constData());
+                return;
+            }
+            pa_operation_unref(o);
+
+            /* These calls are not always supported */
+            if ((o = pa_ext_stream_restore_read(c, ext_stream_restore_read_cb, w))) {
+                pa_operation_unref(o);
+
+                if ((o = pa_ext_stream_restore_subscribe(c, 1, nullptr, nullptr)))
+                    pa_operation_unref(o);
+
+            } else
+                g_debug(QObject::tr("Failed to initialize stream_restore extension: %s").toUtf8().constData(), pa_strerror(pa_context_errno(w->context)));
+            break;
+        }
+        case PA_CONTEXT_TERMINATED:
+        default:
+            qApp->quit();
+            return;
+    }
+}
+
+void UkmediaMainWidget::ext_stream_restore_subscribe_cb(pa_context *c, void *userdata)
+{
+    UkmediaMainWidget *w = static_cast<UkmediaMainWidget*>(userdata);
+    pa_operation *o;
+    if (!(o = pa_ext_stream_restore_read(c, w->ext_stream_restore_read_cb, w))) {
+        w->show_error(QObject::tr("pa_ext_stream_restore_read() failed").toUtf8().constData());
+        return;
+    }
+
+    pa_operation_unref(o);
+}
+
+void UkmediaMainWidget::ext_stream_restore_read_cb(pa_context *,const pa_ext_stream_restore_info *i,int eol,void *userdata)
+{
+    UkmediaMainWidget *w = static_cast<UkmediaMainWidget*>(userdata);
+
+    if (eol < 0) {
+//        w->deleteEventRoleWidget();
+        return;
+    }
+
+    if (eol > 0) {
+        qDebug() << "Failed to initialize stream_restore extension";
+        return;
+    }
+
+    w->updateRole(*i);
+}
+
+void UkmediaMainWidget::executeVolumeUpdate(bool isMuted)
+{
+    info.name = role;
+    info.channel_map.channels = 1;
+    info.channel_map.map[0] = PA_CHANNEL_POSITION_MONO;
+    volume.channels = 1;
+    volume.values[0] = m_pSoundWidget->m_pAlertSlider->value()*65536/100;
+    info.volume = volume;
+    qDebug() <<"executeVolumeUpdate"  << m_pSoundWidget->m_pAlertSlider->value();
+    info.device = device == "" ? nullptr : device.constData();
+    info.mute = isMuted;
+
+    pa_operation* o;
+    if (!(o = pa_ext_stream_restore_write(get_context(), PA_UPDATE_REPLACE, &info, 1, true, nullptr, nullptr))) {
+        show_error(tr("pa_ext_stream_restore_write() failed").toUtf8().constData());
+        return;
+    }
+    pa_operation_unref(o);
+}
+
+
+
+void UkmediaMainWidget::show_error(const char *txt) {
+    char buf[256];
+
+    snprintf(buf, sizeof(buf), "%s: %s", txt, pa_strerror(pa_context_errno(context)));
+
+    QMessageBox::critical(nullptr, QObject::tr("Error"), QString::fromUtf8(buf));
+//    qApp->quit();
+    QApplication::quit();
+}
+
+pa_context* UkmediaMainWidget::get_context()
+{
+    return context;
+}
+
+void UkmediaMainWidget::updateRole(const pa_ext_stream_restore_info &info)
+{
+    if (strcmp(info.name, "sink-input-by-media-role:event") != 0)
+        return;
+    createEventRole();
 }
 
 UkmediaMainWidget::~UkmediaMainWidget()

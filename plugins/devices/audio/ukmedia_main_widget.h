@@ -37,6 +37,11 @@
 extern "C" {
 #include <dconf/dconf.h>
 #include <canberra.h>
+#include <glib/gmain.h>
+#include <pulse/ext-stream-restore.h>
+#include <pulse/glib-mainloop.h>
+#include <pulse/error.h>
+#include <pulse/subscribe.h>
 }
 #include <utime.h>
 #include <a.out.h>
@@ -102,6 +107,7 @@ public:
 
     QPixmap drawDarkColoredPixmap(const QPixmap &source);
     QPixmap drawLightColoredPixmap(const QPixmap &source);
+    void updateProfileOption();
     void alertIconButtonSetIcon(bool state,int value);
     void createAlertSound(UkmediaMainWidget *w);
     void inputVolumeDarkThemeImage(int value,bool status);
@@ -203,6 +209,18 @@ public:
     static void onDeviceProfileActiveOptionNotify (MateMixerDeviceSwitch *swtch,GParamSpec *pspec,UkmediaMainWidget *w);
     static gchar *deviceStatus (MateMixerDevice *device);
     static void updateDeviceInfo (UkmediaMainWidget *w, MateMixerDevice *device);
+
+    //为一些不能更改提示音音量的机器做一些初始化操作
+    void executeVolumeUpdate(bool status);
+    pa_context* get_context(void);
+    void show_error(const char *txt);
+    static void context_state_callback(pa_context *c, void *userdata);
+    gboolean connect_to_pulse(gpointer userdata);
+    void setConnectingMessage(const char *string);
+    void createEventRole();
+    void updateRole(const pa_ext_stream_restore_info &info);
+    static void ext_stream_restore_read_cb(pa_context *,const pa_ext_stream_restore_info *i,int eol,void *userdata);
+    static void ext_stream_restore_subscribe_cb(pa_context *c, void *userdata);
 Q_SIGNALS:
     void appVolumeChangedSignal(bool is_mute,int volume,const QString app_name);
 
@@ -277,6 +295,14 @@ private:
     QString mThemeName;
     bool m_hasMusic;
     bool firstEnterSystem = true;
+
+    QByteArray role;
+    QByteArray device;
+    pa_channel_map channelMap;
+    pa_cvolume volume;
+    pa_context* context ;
+    pa_mainloop_api* api;
+    pa_ext_stream_restore_info info;
 };
 
 #endif // WIDGET_H
