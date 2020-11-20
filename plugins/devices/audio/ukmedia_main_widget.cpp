@@ -342,7 +342,7 @@ void UkmediaMainWidget::createAlertSound(UkmediaMainWidget *pWidget)
             volume = int(volume*100/65536.0+0.5);
             pWidget->m_pSoundWidget->m_pAlertSlider->setValue(volume);
             pWidget->m_pSoundWidget->m_pAlertVolumeLabel->setText(QString::number(volume).append("%"));
-            qDebug() << "media role 1: " << mate_mixer_stream_control_get_name(control) <<"提示音量值为:" <<volume;
+            qDebug() << "media role : " << mate_mixer_stream_control_get_name(control) <<"提示音量值为:" <<volume;
             ukuiBarSetStream(pWidget,stream);
             break;
         }
@@ -592,7 +592,6 @@ void UkmediaMainWidget::addStream (UkmediaMainWidget *m_pWidget, MateMixerStream
         MateMixerSwitchOption *opt = mate_mixer_switch_get_active_option(swt);
         const char *name = mate_mixer_switch_option_get_name(opt);
         const char *label = mate_mixer_switch_option_get_label(opt);
-//        qDebug() << "opt name:" << name << "opt label:" << label;
         m_pWidget->m_pDeviceStr = name;
         switchList = switchList->next;
     }
@@ -634,8 +633,12 @@ void UkmediaMainWidget::addStream (UkmediaMainWidget *m_pWidget, MateMixerStream
         }
         m_pName  = mate_mixer_stream_get_name (m_pStream);
         m_pLabel = mate_mixer_stream_get_label (m_pStream);
-        m_pWidget->m_pOutputStreamList->append(m_pName);
-        m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->addItem(m_pLabel);
+        qDebug() << "输出设备名为:" <<m_pName;
+        if (!strstr(m_pName,".echo-cancel")) {
+            m_pWidget->m_pOutputStreamList->append(m_pName);
+            m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->addItem(m_pLabel);
+        }
+
     }
     m_pControls = mate_mixer_stream_list_controls (m_pStream);
     while (m_pControls != nullptr) {
@@ -902,6 +905,7 @@ void UkmediaMainWidget::addDevice (UkmediaMainWidget *m_pWidget, MateMixerDevice
     m_pWidget->m_pDevice = pDevice;
     pName  = mate_mixer_device_get_name (pDevice);
     pLabel = mate_mixer_device_get_label(pDevice);
+
     if (m_pWidget->m_pDeviceNameList->contains(pName) == false) {
         m_pWidget->m_pDeviceNameList->append(pName);
         m_pWidget->m_pOutputWidget->m_pSelectCombobox->addItem(pLabel);
@@ -1566,7 +1570,7 @@ void UkmediaMainWidget::updateOutputSettings (UkmediaMainWidget *m_pWidget,MateM
         gdouble value = volume/100.0;
         mate_mixer_stream_control_set_balance(m_pControl,value);
     });
-    m_pWidget->updateProfileOption();
+//    m_pWidget->updateProfileOption();
 }
 
 void UkmediaMainWidget::onKeyChanged (GSettings *settings,gchar *key,UkmediaMainWidget *m_pWidget)
@@ -3459,7 +3463,6 @@ gboolean UkmediaMainWidget::connect_to_pulse(gpointer userdata)
     pa_proplist_free(proplist);
 
     pa_context_set_state_callback(context, context_state_callback, w);
-    qDebug() << "connrct pulse";
     if (pa_context_connect(context, nullptr, PA_CONTEXT_NOFAIL, nullptr) < 0) {
         if (pa_context_errno(context) == PA_ERR_INVALID) {
             w->setConnectingMessage(QObject::tr("Connection to PulseAudio failed. Automatic retry in 5s\n\n"
@@ -3496,7 +3499,6 @@ void UkmediaMainWidget::context_state_callback(pa_context *c, void *userdata) {
 
         case PA_CONTEXT_READY: {
             pa_operation *o;
-            qDebug() <<"context ready ---";
 
             /* Create event widget immediately so it's first in the list */
             w->createEventRole();
