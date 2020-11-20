@@ -315,6 +315,7 @@ void Fonts::setupConnect(){
 //        else
 //            ui->fontSizeSlider->setSliderPosition(ui->fontSizeSlider->singleStep() * setup);
 //    });
+    connectToServer();
     connect(uslider, &QSlider::valueChanged, [=](int value){
         int size = sliderConvertToSize(value);
         //获取当前字体信息
@@ -712,4 +713,27 @@ void Fonts::resetDefault(){
 
     //更新全部状态
     initFontStatus();
+}
+
+void Fonts::connectToServer(){
+    m_cloudInterface = new QDBusInterface("org.kylinssoclient.dbus",
+                                          "/org/kylinssoclient/path",
+                                          "org.freedesktop.kylinssoclient.interface",
+                                          QDBusConnection::sessionBus());
+    if (!m_cloudInterface->isValid())
+    {
+        qDebug() << "fail to connect to service";
+        qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
+        return;
+    }
+//    QDBusConnection::sessionBus().connect(cloudInterface, SIGNAL(shortcutChanged()), this, SLOT(shortcutChangedSlot()));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "keyChanged", this, SLOT(keyChangedSlot(QString)));
+    // 将以后所有DBus调用的超时设置为 milliseconds
+    m_cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时
+}
+
+void Fonts::keyChangedSlot(const QString &key) {
+    if(key == "font") {
+        initFontStatus();
+    }
 }

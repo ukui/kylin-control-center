@@ -30,6 +30,7 @@
 #include <QPaintEvent>
 #include <QShowEvent>
 #include <QMoveEvent>
+#include <QtDBus>
 #include <QHideEvent>
 
 #include "shell/interface.h"
@@ -122,6 +123,7 @@ public:
 private:
     int convertToLocktime(const int value);
     int lockConvertToSlider(const int value);
+    void connectToServer();
 
 private:
     Ui::Screensaver *ui;
@@ -156,6 +158,8 @@ private:
 
     Uslider    * uslider;
 
+    QDBusInterface *m_cloudInterface;
+
 private:
     SSThemeInfo _info_new(const char * path);
     void init_theme_info_map();
@@ -167,6 +171,7 @@ private slots:
     void lockbtn_changed_slot(bool status);
     void slider_released_slot();
     void kill_screensaver_preview();
+    void keyChangedSlot(const QString &key);
 
 Q_SIGNALS:
     void kill_signals();

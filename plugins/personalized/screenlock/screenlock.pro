@@ -10,7 +10,7 @@ include($$PROJECT_COMPONENTSOURCE/flowlayout.pri)
 include($$PROJECT_COMPONENTSOURCE/maskwidget.pri)
 include($$PROJECT_COMPONENTSOURCE/uslider.pri)
 
-QT       += widgets xml
+QT       += widgets xml dbus
 
 TEMPLATE = lib
 CONFIG += plugin

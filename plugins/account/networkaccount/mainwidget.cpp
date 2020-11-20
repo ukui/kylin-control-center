@@ -825,7 +825,7 @@ void MainWidget::push_over() {
 }
 
 void MainWidget::get_key_info(QString info) {
-    qDebug() << info;
+    //qDebug() << info;
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }

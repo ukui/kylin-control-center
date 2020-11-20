@@ -25,6 +25,8 @@
 #include <QComboBox>
 #include <QIcon>
 #include <QStyledItemDelegate>
+#include <QtDBus>
+#include <QtConcurrent>
 
 #include "shell/interface.h"
 
@@ -80,6 +82,8 @@ public:
     bool setVideoPlayersDefaultProgram(char * appid);
     bool setTextEditorsDefautlProgram(char * appid);
 
+    void connectToServer();
+
 private:
     char    * getDefaultAppId(const char * contentType);
     AppList * getAppIdList(const char * contentType);
@@ -91,8 +95,9 @@ private:
     QWidget * pluginWidget;
 
     QString pluginName;
-
+    bool bIsCloudService;
     int pluginType;
+    QDBusInterface *m_cloudInterface;
 
 public slots:
     void browserComBoBox_changed_cb(int index);
@@ -101,8 +106,10 @@ public slots:
     void audioComBoBox_changed_cb(int index);
     void videoComBoBox_changed_cb(int index);
     void textComBoBox_changed_cb(int index);
-
+    void keyChangedSlot(const QString &key);
     void resetDefaultApp();
+Q_SIGNALS:
+    void appInitDone(const QIcon &icon,const QString &appname,const QString &single,int index,const QString &type);
 };
 
 #endif // DEFAULTAPP_H

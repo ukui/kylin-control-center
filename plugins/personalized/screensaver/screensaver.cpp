@@ -238,6 +238,7 @@ void Screensaver::initComponent() {
         g_settings_set_int(session_settings, IDLE_DELAY_KEY, value);
         g_object_unref(session_settings);
     });
+    connectToServer();
 
     connect(qSessionSetting, &QGSettings::changed, this,[=](const QString& key) {
        if ("idleDelay" == key) {
@@ -808,4 +809,27 @@ void Screensaver::init_theme_info_map() {
         g_free (desktopfilepath);
     }
     g_dir_close(dir);
+}
+
+void Screensaver::connectToServer(){
+    m_cloudInterface = new QDBusInterface("org.kylinssoclient.dbus",
+                                          "/org/kylinssoclient/path",
+                                          "org.freedesktop.kylinssoclient.interface",
+                                          QDBusConnection::sessionBus());
+    if (!m_cloudInterface->isValid())
+    {
+        qDebug() << "fail to connect to service";
+        qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
+        return;
+    }
+//    QDBusConnection::sessionBus().connect(cloudInterface, SIGNAL(shortcutChanged()), this, SLOT(shortcutChangedSlot()));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "keyChanged", this, SLOT(keyChangedSlot(QString)));
+    // 将以后所有DBus调用的超时设置为 milliseconds
+    m_cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时
+}
+
+void Screensaver::keyChangedSlot(const QString &key) {
+    if(key == "ukui-screensaver") {
+        initThemeStatus();
+    }
 }
