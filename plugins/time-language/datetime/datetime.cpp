@@ -70,6 +70,7 @@ DateTime::DateTime() {
             time_format_clicked_slot(status, true);
         });
     }
+    connectToServer();
     connectGSetting();
     //初始化dbus
     m_datetimeiface = new QDBusInterface("org.freedesktop.timedate1",
@@ -177,6 +178,29 @@ void DateTime::status_init() {
     QDBusReply<QVariant> tz = m_datetimeiproperties->call("Get", "org.freedesktop.timedate1", "Timezone");
     ui->timezoneLabel->setText(getLocalTimezoneName(tz.value().toString(), locale));
     loadHour();
+}
+
+void DateTime::connectToServer(){
+    m_cloudInterface = new QDBusInterface("org.kylinssoclient.dbus",
+                                          "/org/kylinssoclient/path",
+                                          "org.freedesktop.kylinssoclient.interface",
+                                          QDBusConnection::sessionBus());
+    if (!m_cloudInterface->isValid())
+    {
+        qDebug() << "fail to connect to service";
+        qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
+        return;
+    }
+//    QDBusConnection::sessionBus().connect(cloudInterface, SIGNAL(shortcutChanged()), this, SLOT(shortcutChangedSlot()));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "keyChanged", this, SLOT(keyChangedSlot(QString)));
+    // 将以后所有DBus调用的超时设置为 milliseconds
+    m_cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时
+}
+
+void DateTime::keyChangedSlot(const QString &key) {
+    if(key == "datetime") {
+        status_init();
+    }
 }
 
 bool DateTime::fileIsExits(const QString &filepath) {

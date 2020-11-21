@@ -27,6 +27,7 @@
 #include <QThread>
 #include <QGSettings>
 #include <QSettings>
+#include <QtDBus>
 
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
@@ -66,6 +67,7 @@ private:
     int lockConvertToSlider(const int value);
     void setLockBackground(bool status);
     bool getLockStatus();
+    void connectToServer();
 
 private:
     Ui::Screenlock *ui;
@@ -87,9 +89,14 @@ private:
 
     QThread * pThread;
 
+    QDBusInterface *m_cloudInterface;
+    bool bIsCloudService;
+
     FlowLayout * flowLayout;
 
     BuildPicUnitsWorker * pWorker;
+public Q_SLOTS:
+    void keyChangedSlot(const QString &key);
 };
 
 #endif // SCREENLOCK_H

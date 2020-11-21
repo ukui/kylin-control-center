@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 include(../../../env.pri)
-QT            += widgets
+QT            += widgets dbus concurrent
 TEMPLATE = lib
 CONFIG        += plugin
 

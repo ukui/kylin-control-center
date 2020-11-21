@@ -81,6 +81,7 @@ public:
 
     void component_init();
     void status_init();
+    void connectToServer();
 
     bool fileIsExits(const QString& filepath);
 
@@ -95,6 +96,7 @@ private:
 
     QDBusInterface *m_datetimeiface = nullptr;
     QDBusInterface *m_datetimeiproperties = nullptr;
+    QDBusInterface *m_cloudInterface;
 
     QMap<QString, int> tzindexMapEn;
     QMap<QString, int> tzindexMapCN;
@@ -120,6 +122,7 @@ private slots:
     void rsync_with_network_slot();
     void showendLabel();
     void hidendLabel();
+    void keyChangedSlot(const QString &key);
 
 private:
     void loadHour();

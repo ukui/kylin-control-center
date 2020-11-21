@@ -36,6 +36,7 @@
 #include <QListView>
 
 
+
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
  **/
@@ -74,6 +75,7 @@ private:
     void initUI();
     void initComponent();
     QStringList getUserDefaultLanguage();
+    void connectToServer();
 
 private:
     Ui::Area *ui;
@@ -91,6 +93,7 @@ private:
     QGSettings     *m_gsettings = nullptr;
     QTimer         *m_itimer    = nullptr;
     HoverWidget    *addWgt;
+    QDBusInterface *cloudInterface;
 
 private slots:
     void initFormatData();
@@ -100,6 +103,7 @@ private slots:
     void datetime_update_slot();
     void add_lan_btn_slot();
     void changeform_slot();
+    void cloudChangedSlot(const QString &key);
 };
 
 #endif // AREA_H

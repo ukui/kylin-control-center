@@ -53,6 +53,7 @@ Screenlock::Screenlock()
     const QByteArray id(SCREENLOCK_BG_SCHEMA);
     lSetting = new QGSettings(id);
 
+    connectToServer();
     initSearchText();
     setupComponent();
     setupConnect();
@@ -339,7 +340,39 @@ void Screenlock::setLockBackground(bool status)
 bool Screenlock::getLockStatus()
 {
     lockSetting->beginGroup("ScreenLock");
+    lockSetting->sync();
     bool status = lockSetting->value("lockStatus").toBool();
     lockSetting->endGroup();
     return  status;
+}
+
+void Screenlock::connectToServer(){
+    m_cloudInterface = new QDBusInterface("org.kylinssoclient.dbus",
+                                          "/org/kylinssoclient/path",
+                                          "org.freedesktop.kylinssoclient.interface",
+                                          QDBusConnection::sessionBus());
+    if (!m_cloudInterface->isValid())
+    {
+        qDebug() << "fail to connect to service";
+        qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
+        return;
+    }
+//    QDBusConnection::sessionBus().connect(cloudInterface, SIGNAL(shortcutChanged()), this, SLOT(shortcutChangedSlot()));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "keyChanged", this, SLOT(keyChangedSlot(QString)));
+    // 将以后所有DBus调用的超时设置为 milliseconds
+    m_cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时
+}
+
+void Screenlock::keyChangedSlot(const QString &key) {
+    if(key == "ukui-screensaver") {
+        if(!bIsCloudService)
+            bIsCloudService = true;
+        initScreenlockStatus();
+        QStringList keys =  lSetting->keys();
+        if (keys.contains("lockEnabled")) {
+            bool status = lSetting->get(SCREENLOCK_LOCK_KEY).toBool();
+            lockSwitchBtn->setChecked(status);
+        }
+        loginbgSwitchBtn->setChecked(getLockStatus());
+    }
 }

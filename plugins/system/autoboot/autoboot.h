@@ -27,6 +27,7 @@
 #include "datadefined.h"
 #include "addautoboot.h"
 #include "HoverWidget/hoverwidget.h"
+#include <QtDBus>
 
 namespace Ui {
 class AutoBoot;
@@ -56,6 +57,7 @@ private:
     void initConnection();
     void update_app_status();
     void del_autoboot_realize(QString bname);
+    void connectToServer();
 
 private:
     Ui::AutoBoot *ui;
@@ -65,6 +67,7 @@ private:
     QWidget * pluginWidget;
 
     AddAutoBoot * dialog;
+    QDBusInterface *m_cloudInterface;
 
     QMap<QString, AutoApp> appMaps;
     QMap<QString, AutoApp> localappMaps;
@@ -90,6 +93,7 @@ private:
 
 public slots:
     void checkbox_changed_cb(QString bname);
+    void keyChangedSlot(const QString &key);
     void add_autoboot_realize_slot(QString path, QString name, QString exec, QString comment, QString icon);
 };
 

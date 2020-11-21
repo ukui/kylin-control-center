@@ -27,6 +27,7 @@
 #include <QFontDatabase>
 #include <QGSettings>
 #include <QStyledItemDelegate>
+#include <QtDBus>
 
 #include "shell/interface.h"
 #include "Uslider/uslider.h"
@@ -87,6 +88,8 @@ public:
     int fontConvertToSlider(const int size) const;
     int sliderConvertToSize(const int value) const;
 
+    void connectToServer();
+
 private:
     Ui::Fonts *ui;
 
@@ -106,7 +109,10 @@ private:
     QStringList peonyfontStrList;
     QStringList titlebarfontStrList;
 
+    QDBusInterface *m_cloudInterface;
     QFontDatabase fontdb;
+public Q_SLOTS:
+    void keyChangedSlot(const QString &key);
 
 private:
     bool settingsCreate;

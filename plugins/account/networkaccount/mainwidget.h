@@ -96,10 +96,7 @@ private:
     bool                m_bAutoSyn = true;
     bool                m_bTokenValid = false;
     QTimer              *m_cLoginTimer;
-    QTimer              *m_cSyncDelay;
-    QTimer              *m_singleDelay;
     QString             m_szUuid;
-    QTimer              *m_cRetry;
     QFileSystemWatcher m_fsWatcher;
     SVGHandler *m_svgHandler;
     Tooltips       *m_syncTooltips;
@@ -146,6 +143,7 @@ signals:
     void docheck();
     void dosingle(QString key);
     void closedialog();
+    void isRunning();
 };
 
 #endif // CONFIG_LIST_WIDGET_H

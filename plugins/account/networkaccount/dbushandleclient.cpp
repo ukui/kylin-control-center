@@ -55,7 +55,7 @@ int DbusHandleClient::login(QString username, QString pwd,QString uuid) {
         //从返回参数获取返回值
         QString value = response.arguments().takeFirst().toString();
         re = value.toInt();
-        qDebug()<<"logint ret" <<re;
+        //qDebug()<<"logint ret" <<re;
     }
     else
     {

@@ -195,6 +195,25 @@ void KeyboardControl::setupConnect(){
         settings->set(RATE_KEY, value);
     });
 
+    connect(settings,&QGSettings::changed,this,[=](const QString &key) {
+       if(key == "rate") {
+           ui->speedHorSlider->setValue(settings->get(RATE_KEY).toInt());
+       } else if(key == "repeat") {
+           keySwitchBtn->setChecked(settings->get(REPEAT_KEY).toBool());
+           setKeyboardVisible(keySwitchBtn->isChecked());
+       } else if(key == "delay") {
+           ui->delayHorSlider->setValue(settings->get(DELAY_KEY).toInt());
+       }
+    });
+
+    connect(osdSettings,&QGSettings::changed,this,[=](const QString &key) {
+       if(key == "showLockTip") {
+           tipKeyboardSwitchBtn->blockSignals(true);
+           tipKeyboardSwitchBtn->setChecked(osdSettings->get(CC_KEYBOARD_OSD_KEY).toBool());
+           tipKeyboardSwitchBtn->blockSignals(false);
+       }
+    });
+
     connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname) {
         Q_UNUSED(mname);
         KbdLayoutManager * templayoutManager = new KbdLayoutManager;
