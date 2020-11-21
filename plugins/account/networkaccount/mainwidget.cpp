@@ -106,10 +106,12 @@ void MainWidget::setret_conf(int ret) {
         //m_mainDialog->closedialog();
         //QFuture<void> res1 = QtConcurrent::run(this, &config_list_widget::handle_conf);
     } else {
-        QProcess p;
-        p.start("killall kylin-sso-client");
-        p.waitForFinished();
-        emit dologout();
+        QtConcurrent::run([=] () {
+            QProcess p;
+            p.start("killall kylin-sso-client");
+            p.waitForFinished();
+            emit dologout();
+        });
     }
 }
 
