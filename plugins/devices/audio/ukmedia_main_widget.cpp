@@ -108,9 +108,11 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     eventList->append("window-close");
     eventList->append("system-setting");
     eventList->append("volume-changed");
+    eventList->append("alert-sound");
     eventIdNameList->append("dialog-warning");
     eventIdNameList->append("bell");
     eventIdNameList->append("audio-volume-change");
+    eventIdNameList->append("drip");
 
     for (int i=0;i<eventList->count();i++) {
 //        getValue();
@@ -219,7 +221,7 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
 
     //点击报警音量时播放报警声音
     connect(m_pSoundWidget->m_pAlertSlider,SIGNAL(valueChanged(int)),this,SLOT(alertVolumeSliderChangedSlot(int)));
-    connect(m_pSoundWidget->m_pShutdownCombobox,SIGNAL(currentIndexChanged(int)),this,SLOT(comboxIndexChangedSlot(int)));
+    connect(m_pSoundWidget->m_pAlertSoundCombobox,SIGNAL(currentIndexChanged(int)),this,SLOT(comboxIndexChangedSlot(int)));
     connect(m_pSoundWidget->m_pLagoutCombobox ,SIGNAL(currentIndexChanged(int)),this,SLOT(comboxIndexChangedSlot(int)));
     connect(m_pSoundWidget->m_pSoundThemeCombobox,SIGNAL(currentIndexChanged(int)),this,SLOT(themeComboxIndexChangedSlot(int)));
     connect(m_pInputWidget->m_pInputLevelSlider,SIGNAL(valueChanged(int)),this,SLOT(inputLevelValueChangedSlot()));
@@ -377,8 +379,14 @@ void UkmediaMainWidget::comboboxCurrentTextInit()
                 QString str = m_pSoundList->at(i);
                 if (str.contains(filenameStr,Qt::CaseSensitive)) {
                     index = i;
+                    qDebug() << "str ==========" << str << filenameStr <<m_pSoundNameList->at(index) ;
                     break;
                 }
+            }
+            if (nameStr == "alert-sound") {
+                QString displayName = m_pSoundNameList->at(index);
+                m_pSoundWidget->m_pAlertSoundCombobox->setCurrentText(displayName);
+                continue;
             }
             if (nameStr == "window-close") {
                 QString displayName = m_pSoundNameList->at(index);
@@ -1970,7 +1978,7 @@ void UkmediaMainWidget::populateModelFromNode (UkmediaMainWidget *m_pWidget,xmlN
     if (filename != nullptr && name != nullptr) {
         m_pWidget->m_pSoundList->append((const char *)filename);
         m_pWidget->m_pSoundNameList->append((const char *)name);
-        m_pWidget->m_pSoundWidget->m_pShutdownCombobox->addItem((char *)name);
+        m_pWidget->m_pSoundWidget->m_pAlertSoundCombobox->addItem((char *)name);
         m_pWidget->m_pSoundWidget->m_pLagoutCombobox->addItem((char *)name);
         m_pWidget->m_pSoundWidget->m_pWindowClosedCombobox->addItem((char *)name);
         m_pWidget->m_pSoundWidget->m_pVolumeChangeCombobox->addItem((char *)name);
@@ -2096,6 +2104,36 @@ void UkmediaMainWidget::comboxIndexChangedSlot(int index)
     QString sound_name = m_pSoundList->at(index);
     updateAlert(this,sound_name.toLatin1().data());
     playAlretSoundFromPath(this,sound_name);
+
+    QString fileName = m_pSoundList->at(index);
+    QStringList list = fileName.split("/");
+    QString soundName = list.at(list.count()-1);
+    QStringList eventIdList = soundName.split(".");
+    QString eventId = eventIdList.at(0);
+    QList<char *> existsPath = listExistsPath();
+
+    for (char * path : existsPath) {
+
+        char * prepath = QString(KEYBINDINGS_CUSTOM_DIR).toLatin1().data();
+        char * allpath = strcat(prepath, path);
+
+        const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
+        const QByteArray bba(allpath);
+        if(QGSettings::isSchemaInstalled(ba))
+        {
+            QGSettings * settings = new QGSettings(ba, bba);
+//            QString filenameStr = settings->get(FILENAME_KEY).toString();
+            QString nameStr = settings->get(NAME_KEY).toString();
+            if (nameStr == "alert-sound") {
+                qDebug() << "找到窗口关闭" <<  nameStr << eventId;
+                settings->set(FILENAME_KEY,eventId);
+                return;
+            }
+        }
+        else {
+            continue;
+        }
+    }
 
 }
 
@@ -2332,6 +2370,21 @@ void UkmediaMainWidget::themeComboxIndexChangedSlot(int index)
     const char *m_pThemeName = ba.data();
     gboolean ok = g_settings_set_string (m_pSoundSettings, SOUND_THEME_KEY, m_pThemeName);
     qDebug() << "index changed:" << index << m_pThemeNameList->at(index) << m_pThemeName << "设置主题是否成功" << ok;
+
+    if (strcmp(m_pThemeName,"freedesktop") == 0) {
+//        m_pSoundWidget->m_pAlertSoundCombobox->setCurrentIndex();
+        int index = 0;
+        for (int i=0;i<m_pSoundList->count();i++) {
+            QString str = m_pSoundList->at(i);
+            if (str.contains("drip",Qt::CaseSensitive)) {
+                index = i;
+                break;
+            }
+        }
+
+        QString displayName = m_pSoundNameList->at(index);
+        m_pSoundWidget->m_pAlertSoundCombobox->setCurrentText(displayName);
+    }
 
     /* special case for no sounds */
     if (strcmp (m_pThemeName, NO_SOUNDS_THEME_NAME) == 0) {

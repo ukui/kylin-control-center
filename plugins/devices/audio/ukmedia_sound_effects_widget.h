@@ -48,7 +48,7 @@ public Q_SLOTS:
 
 private:
     QFrame *m_pThemeWidget;
-    QFrame *m_pShutDownWidget;
+    QFrame *m_pAlertSoundWidget;
     QFrame *m_pLagoutWidget;
     QFrame *m_pAlertSoundSwitchWidget;
     QFrame *m_pAlertSoundVolumeWidget;
@@ -70,7 +70,7 @@ private:
     QLabel *m_pSettingSoundLabel;
 
     QComboBox *m_pSoundThemeCombobox;
-    QComboBox *m_pShutdownCombobox;
+    QComboBox *m_pAlertSoundCombobox;
     QComboBox *m_pLagoutCombobox;
     QComboBox *m_pWindowClosedCombobox;
     QComboBox *m_pVolumeChangeCombobox;
