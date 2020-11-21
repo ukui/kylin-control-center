@@ -367,7 +367,15 @@ void Screenlock::keyChangedSlot(const QString &key) {
     if(key == "ukui-screensaver") {
         if(!bIsCloudService)
             bIsCloudService = true;
-        initScreenlockStatus();
+        QString bgStr = lSetting->get(SCREENLOCK_BG_KEY).toString();
+        if (bgStr.isEmpty()) {
+            if (QGSettings::isSchemaInstalled(MATE_BACKGROUND_SCHEMAS)) {
+                QGSettings * bgGsetting  = new QGSettings(MATE_BACKGROUND_SCHEMAS, QByteArray(), this);
+                bgStr = bgGsetting->get(FILENAME).toString();
+            }
+        }
+
+        ui->previewLabel->setPixmap(QPixmap(bgStr).scaled(ui->previewLabel->size()));
         QStringList keys =  lSetting->keys();
         if (keys.contains("lockEnabled")) {
             bool status = lSetting->get(SCREENLOCK_LOCK_KEY).toBool();
