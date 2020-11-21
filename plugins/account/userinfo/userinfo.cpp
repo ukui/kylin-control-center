@@ -349,20 +349,6 @@ void UserInfo::initComponent(){
         ui->autoLoginFrame->setVisible(false);
         ui->autoLoginFrame_2->setVisible(false);
     }
-    //样式表
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-//    ui->currentUserWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-//    ui->autoLoginWidget->setStyleSheet("QWidget{background: #F4F4F4; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
-
-//    QString btnQss = QString("QPushButton{background: #FFFFFF; border-radius: 4px;}");
-//    ui->changePwdBtn->setStyleSheet(btnQss);
-//    ui->changeTypeBtn->setStyleSheet(btnQss);
-
-//    ui->addUserWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-
-//    QString filename = "/etc/lightdm/lightdm.conf";
-//    autoSettings = new QSettings(filename, QSettings::IniFormat);
 
     ui->listWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
 

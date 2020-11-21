@@ -40,14 +40,8 @@ Notice::~Notice()
 {
     if (!mFirstLoad) {
         delete ui;
-    }
-    if (!vecGsettins) {
-        qDeleteAll(*vecGsettins);
-        vecGsettins->clear();
-    }
-
-    if (!nSetting) {
-        delete nSetting;
+        qDeleteAll(vecGsettins);
+        vecGsettins.clear();
     }
 }
 
@@ -71,7 +65,6 @@ QWidget * Notice::get_plugin_ui() {
         ui->setupUi(pluginWidget);
 
         mFirstLoad = false;
-        vecGsettins = new QVector<QGSettings*>();
 
         ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
         ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
@@ -130,7 +123,7 @@ void Notice::setupComponent() {
 void Notice::setupGSettings() {
     if(QGSettings::isSchemaInstalled(NOTICE_SCHEMA)) {
         QByteArray id(NOTICE_SCHEMA);
-        nSetting = new QGSettings(id);
+        nSetting = new QGSettings(id, QByteArray(), this);
     }
 }
 
@@ -213,11 +206,9 @@ void Notice::initOriNoticeStatus() {
         baseWidget->setLayout(baseVerLayout);
 
         QListWidgetItem * item = new QListWidgetItem(ui->applistWidget);
-//        item->setSizeHint(QSize(502, 52));
         item->setSizeHint(QSize(QSizePolicy::Expanding, 52));
 
         ui->applistWidget->setItemWidget(item, baseWidget);
-//        QString availablepath = findFreePath();
 
         QList<char *> listChar =  listExistsCustomNoticePath();
 
@@ -228,7 +219,7 @@ void Notice::initOriNoticeStatus() {
         for (int j = 0; j < listChar.length(); j++) {
             path =QString("%1%2").arg(NOTICE_ORIGIN_PATH).arg(QString(listChar.at(j)));
             settings = new QGSettings(id, path.toLatin1().data());
-            vecGsettins->append(settings);
+            vecGsettins.append(settings);
             QStringList keys = settings->keys();
 
             if (keys.contains(static_cast<QString>(NAME_KEY))) {

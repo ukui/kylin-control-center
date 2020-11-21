@@ -103,9 +103,9 @@ void SysdbusRegister::setAutoLoginStatus(QString username)
     QString filename = "/etc/lightdm/lightdm.conf";
     QSharedPointer<QSettings>  autoSettings = QSharedPointer<QSettings>(new QSettings(filename, QSettings::IniFormat));
     autoSettings->beginGroup("SeatDefaults");
-    autoSettings->clear();
 
     autoSettings->setValue("autologin-user", username);
+
     autoSettings->endGroup();
     autoSettings->sync();
 }

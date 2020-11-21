@@ -180,7 +180,7 @@ void ChangtimeDialog::initUi(){
         ui->seccomboBox->addItem(QString::number(s));
     }
 
-    for (int year = 1900; year <= 2100; year++) {
+    for (int year = 1900; year <= 2035; year++) {
         ui->yearcomboBox->addItem(QString::number(year)/*+tr("year")*/);
     }
     for (int month = 1; month <= 12; month++) {

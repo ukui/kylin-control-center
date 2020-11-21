@@ -90,7 +90,7 @@ private:
     QGSettings * oriSettings;
     QStringList appsName;
     QStringList appsKey;
-    QVector<QGSettings*> *vecGsettins;
+    QVector<QGSettings*> vecGsettins;
 
     bool mFirstLoad;
 };

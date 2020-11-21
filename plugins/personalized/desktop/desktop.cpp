@@ -58,14 +58,8 @@ Desktop::~Desktop()
 {
     if (!mFirstLoad) {
         delete ui;
-        clearContent();
-        if (!dSettings ){
-            delete dSettings;
-        }
-
-        if (!vecGsettings) {
-            delete vecGsettings;
-        }
+        qDeleteAll(vecGsettings);
+        vecGsettings.clear();
     }
 }
 
@@ -92,7 +86,6 @@ QWidget *Desktop::get_plugin_ui() {
         ui->menuLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
         ui->titleLabel->setVisible(false);
-    //    ui->title2Label->setVisible(false);
 
         ui->deskComputerFrame->setVisible(false);
         ui->deskTrashFrame->setVisible(false);
@@ -101,7 +94,6 @@ QWidget *Desktop::get_plugin_ui() {
         ui->deskNetworkFrame->setVisible(false);
 
         ui->titleLabel->setVisible(false);
-    //    ui->title2Label->setVisible(false);
 
         ui->deskComputerFrame->setVisible(false);
         ui->deskTrashFrame->setVisible(false);
@@ -112,10 +104,9 @@ QWidget *Desktop::get_plugin_ui() {
         ui->title2Label->hide();
         ui->fullScreenMenuFrame->setVisible(false);
 
-        vecGsettings = new QVector<QGSettings*>();
         const QByteArray id(DESKTOP_SCHEMA);
         if (QGSettings::isSchemaInstalled(id)) {
-            dSettings = new QGSettings(id);
+            dSettings = new QGSettings(id, QByteArray(), this);
         }
         cmd = QSharedPointer<QProcess>(new QProcess());
         initSearchText();
@@ -321,7 +312,6 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     iconBtn->setStyleSheet("QPushButton{background-color:transparent;border-radius:4px}"
                                        "QPushButton:hover{background-color: transparent ;color:transparent;}");
 
-//    iconBtn->setFlat(true);
     QSizePolicy iconSizePolicy = iconBtn->sizePolicy();
     iconSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
     iconSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
@@ -395,7 +385,7 @@ void Desktop::initTraySettings() {
         QString path = QString("%1%2").arg(TRAY_SCHEMA_PATH).arg(QString(trayList.at(i)));;
 
         if (QGSettings::isSchemaInstalled(id)) {
-            traySettings = new QGSettings(id, path.toLatin1().data(), pluginWidget);
+            traySettings = new QGSettings(id, path.toLatin1().data());
 
             connect(traySettings, &QGSettings::changed, this, [=] (const QString &key) {
 
@@ -410,7 +400,7 @@ void Desktop::initTraySettings() {
                     }
                 }
             });
-            vecGsettings->append(traySettings);
+            vecGsettings << traySettings;
             QStringList keys = traySettings->keys();
 
             if (keys.contains(static_cast<QString>(TRAY_NAME_KEY)) &&
@@ -418,10 +408,9 @@ void Desktop::initTraySettings() {
                 name = traySettings->get(TRAY_NAME_KEY).toString();
                 action = traySettings->get(TRAY_ACTION_KEY).toString();
                 winID = traySettings->get(TRAY_BINDING_KEY).toInt();
-//                show(winID);
             }
 
-            if (!("" == name || "freeze" == action || disList.contains(name))){
+            if (!("" == name || "freeze" == action || disList.contains(name))) {
                 QIcon icon;
                 if (!iconMap[name].isEmpty()) {
                     icon = QIcon::fromTheme(iconMap[name]);
@@ -434,11 +423,6 @@ void Desktop::initTraySettings() {
         }
     }
     ui->listWidget->setFixedHeight(itemCount * 55);
-}
-
-// TODO: double free?
-void Desktop::clearContent() {
-
 }
 
 QString Desktop::desktopConver(QString processName) {

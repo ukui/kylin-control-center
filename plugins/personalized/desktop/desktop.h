@@ -74,7 +74,7 @@ private:
     int pluginType;
     QString pluginName;
     QWidget * pluginWidget;
-    QVector<QGSettings*> *vecGsettings;
+    QVector<QGSettings*> vecGsettings;
     QMap<QString, QString> transMap; // transaltion Map
     QMap<QString, QString> iconMap;
     QStringList disList;
