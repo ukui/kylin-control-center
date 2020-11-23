@@ -129,8 +129,8 @@ void DateTime::component_init() {
     ui->titleLabel->setContentsMargins(0,0,0,16);
     ui->timeClockLable->setContentsMargins(0,0,0,16);
 
-    //~ contents_path /datetime/Sync system time
-    ui->synsystimeBtn->setText(tr("Sync system time"));
+    //~ contents_path /datetime/Sync network time
+    ui->synsystimeBtn->setText(tr("Sync network time"));
     //~ contents_path /datetime/Change time
     ui->chgtimebtn->setText(tr("Change time"));
     //~ contents_path /datetime/Change time zone

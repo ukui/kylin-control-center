@@ -182,7 +182,7 @@
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>Sync system time</string>
+        <string>Sync network time</string>
        </property>
       </widget>
      </item>
