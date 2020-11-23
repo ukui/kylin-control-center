@@ -99,8 +99,6 @@ private:
     int pluginType;
     QDBusInterface *m_cloudInterface;
 
-    bool mFirstLoad;
-
 public slots:
     void browserComBoBox_changed_cb(int index);
     void mailComBoBox_changed_cb(int index);
