@@ -51,6 +51,7 @@ public:
     ~ShareMain();
 
 private:
+    QFrame * mEnableFrame;
     QFrame * mViewFrame;
     QFrame * mSecurityFrame;
     QFrame * mSecurityPwdFrame;
@@ -58,6 +59,7 @@ private:
     QFrame * mNoticeOFrame;
     QFrame * mNoticeNFrame;
 
+    QCheckBox * mEnableBox;
     QCheckBox * mViewBox;
     QRadioButton * mAccessBox;
     QRadioButton * mPwdBox;
@@ -67,6 +69,7 @@ private:
     QRadioButton * mNoticeNBtn;
 
     QLabel * mShareTitleLabel;
+    QLabel * mEnableLabel;
     QLabel * mViewLabel;
     QLabel * mSecurityTitleLabel;
     QLabel * mAccessLabel;
@@ -87,8 +90,11 @@ private:
     void initUI();
     void initConnection();
     void initShareStatus(bool isConnnect, bool isPwd);
+    void initEnableStatus();
+    void setFrameVisible(bool visible);
 
 private slots:
+    void enableSlot(bool status);
     void viewBoxSlot(bool status);
     void accessSlot(int index);
     void pwdInputSlot(QString pwd);

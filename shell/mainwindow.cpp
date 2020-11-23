@@ -474,9 +474,12 @@ void MainWindow::loadPlugins(){
 
         if (!fileName.endsWith(".so"))
             continue;
-        if (fileName == "libexperienceplan.so" || "libvino.so" == fileName)
+        if (fileName == "libexperienceplan.so")
             continue;
         if ("libnetworkaccount.so" == fileName && !isExistCloud) {
+            continue;
+        }
+        if (!QGSettings::isSchemaInstalled(kVinoSchemas) && "libvino.so" == fileName) {
             continue;
         }
 

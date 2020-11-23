@@ -19,6 +19,7 @@
  */
 #include "sharemain.h"
 
+#include <QProcess>
 #include <QHBoxLayout>
 #include <QAbstractButton>
 
@@ -41,6 +42,21 @@ void ShareMain::initUI() {
     mShareTitleLabel = new QLabel(tr("Share"), this);
     mShareTitleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
+    mEnableFrame = new QFrame(this);
+    mEnableFrame->setFrameShape(QFrame::Shape::Box);
+    mEnableFrame->setMinimumSize(550, 50);
+    mEnableFrame->setMaximumSize(960, 50);
+
+    QHBoxLayout * enableHLayout = new QHBoxLayout();
+
+    mEnableBox = new QCheckBox(this);
+    mEnableLabel = new QLabel(tr("Allow others to view your desktop"), this);
+    enableHLayout->addWidget(mEnableBox);
+    enableHLayout->addWidget(mEnableLabel);
+    enableHLayout->addStretch();
+
+    mEnableFrame->setLayout(enableHLayout);
+
     mViewFrame = new QFrame(this);
     mViewFrame->setFrameShape(QFrame::Shape::Box);
     mViewFrame->setMinimumSize(550, 50);
@@ -49,7 +65,7 @@ void ShareMain::initUI() {
     QHBoxLayout * viewHLayout = new QHBoxLayout();
 
     mViewBox = new QCheckBox(this);
-    mViewLabel = new QLabel(tr("Allow others to view your desktop"), this);
+    mViewLabel = new QLabel(tr("Allow connection to control screen"), this);
     viewHLayout->addWidget(mViewBox);
     viewHLayout->addWidget(mViewLabel);
     viewHLayout->addStretch();
@@ -90,6 +106,7 @@ void ShareMain::initUI() {
     mSecurityPwdFrame->setLayout(pwdHLayout);
 
     mVlayout->addWidget(mShareTitleLabel);
+    mVlayout->addWidget(mEnableFrame);
     mVlayout->addWidget(mViewFrame);
 
     mVlayout->addWidget(mSecurityTitleLabel);
@@ -110,16 +127,19 @@ void ShareMain::initConnection() {
     if (QGSettings::isSchemaInstalled(id)) {
         mVinoGsetting = new QGSettings(kVinoSchemas, QByteArray(), this);
 
+        bool isShared = mVinoGsetting->get(kVinoViewOnlyKey).toBool();
+        bool secPwd = mVinoGsetting->get(kVinoPromptKey).toBool();
+
+        initShareStatus(!isShared, secPwd);
+        initEnableStatus();
+
+        connect(mEnableBox, &QCheckBox::clicked, this, &ShareMain::enableSlot);
         connect(mViewBox, &QCheckBox::clicked, this, &ShareMain::viewBoxSlot);
         connect(mPwdLineEdit, &QLineEdit::textChanged, this, &ShareMain::pwdInputSlot);
         connect(mBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked),
             [=](int index) {
             accessSlot(index);
         });
-
-        bool isShared = mVinoGsetting->get(kVinoViewOnlyKey).toBool();
-        bool secPwd = mVinoGsetting->get(kVinoPromptKey).toBool();
-        initShareStatus(!isShared, secPwd);
     }
 }
 
@@ -132,11 +152,41 @@ void ShareMain::initShareStatus(bool isConnnect, bool isPwd) {
     }
 }
 
-void ShareMain::viewBoxSlot(bool status) {
-    Q_UNUSED(status);
-    if (status) {
-        mVinoGsetting->set(kVinoViewOnlyKey, status);
+void ShareMain::initEnableStatus() {
+    QProcess *process = new QProcess;
+
+    process->start("systemctl", QStringList() << "--user" << "is-active" << "vino-server.service");
+    process->waitForFinished();
+    setFrameVisible((process->readAllStandardOutput().replace("\n","") == "active"));
+
+    process->close();
+}
+
+void ShareMain::setFrameVisible(bool visible) {
+    mEnableBox->setChecked(visible);
+
+    mViewFrame->setVisible(visible);
+    mSecurityFrame->setVisible(visible);
+    mSecurityPwdFrame->setVisible(visible);
+    mSecurityTitleLabel->setVisible(visible);
+}
+
+void ShareMain::enableSlot(bool status) {
+    QProcess process;
+    QString cmd;
+
+    if(status) {
+        cmd = "start";
+    } else {
+        cmd = "stop";
     }
+    process.startDetached("systemctl", QStringList() << "--user" << cmd << "vino-server.service");
+
+    setFrameVisible(status);
+}
+
+void ShareMain::viewBoxSlot(bool status) {
+    mVinoGsetting->set(kVinoViewOnlyKey, !status);
 }
 
 void ShareMain::accessSlot(int index) {
@@ -151,7 +201,7 @@ void ShareMain::accessSlot(int index) {
         mPwdsLabel->setEnabled(true);
         mPwdLineEdit->setEnabled(true);
         mVinoGsetting->set(kVinoPromptKey, false);
-        mVinoGsetting->reset(kAuthenticationKey), 'vnc';
+        mVinoGsetting->reset(kAuthenticationKey);
     }
 }
 

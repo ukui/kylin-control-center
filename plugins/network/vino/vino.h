@@ -52,6 +52,7 @@ private:
     QString pluginName;
     int pluginType;
     ShareMain* pluginWidget;
+    bool mFirstLoad;
 
 };
 #endif // VINO_H
