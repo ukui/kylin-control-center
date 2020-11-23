@@ -79,9 +79,6 @@ int main(int argc, char *argv[])
         QObject::connect(&a, SIGNAL(messageReceived(const QString&)), &w, SLOT(sltMessageReceived(const QString&)));
         w.show();
 
-        FramelessHandle * pHandle = new FramelessHandle(&w);
-        pHandle->activateOn(&w);
-
         return a.exec();
     }
 }
