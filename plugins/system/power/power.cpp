@@ -152,7 +152,7 @@ void Power::setIdleTime(int idleTime) {
 }
 
 void Power::setupComponent() {
-    //
+
     ui->powerModeBtnGroup->setId(ui->balanceRadioBtn, BALANCE);
     ui->powerModeBtnGroup->setId(ui->savingRadioBtn, SAVING);
     ui->powerModeBtnGroup->setId(ui->custdomRadioBtn, CUSTDOM);
@@ -426,6 +426,24 @@ void Power::initCustomPlanStatus() {
         ui->darkenFrame->show();
     }
 
+
+    int valueSleep = ui->sleepComboBox->currentData(Qt::UserRole).toInt() * 60;
+    if (valueSleep) {
+        ui->sleepLabel->setText(QString(tr("Enter idle state %1 min and sleep after %2 min :")).arg(getIdleTime())
+                                .arg(getIdleTime() + valueSleep / 60));
+    } else {
+        ui->sleepLabel->setText(tr("Change PC sleep time:"));
+    }
+
+    int valueClose = ui->closeComboBox->currentData(Qt::UserRole).toInt() * 60;
+    if (valueClose) {
+        ui->closeLabel->setText(QString(tr("Enter idle state %1 min and close after %2 min :")).arg(getIdleTime())
+                                .arg(getIdleTime() + valueClose / 60));
+    } else {
+        ui->closeLabel->setText(tr("Change DP close time:"));;
+    }
+
+
     // 信号阻塞解除
     ui->sleepComboBox->blockSignals(false);
     ui->closeComboBox->blockSignals(false);
@@ -446,6 +464,7 @@ void Power::refreshUI() {
     }
 }
 
+// 空闲时间
 int Power::getIdleTime() {
     return sessionSetting->get(IDLE_DELAY_KEY).toInt();
 }
