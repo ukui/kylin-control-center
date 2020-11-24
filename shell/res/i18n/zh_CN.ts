@@ -1141,42 +1141,42 @@ change system settings</source>
         <translation>含有非法字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="416"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="417"/>
         <source>The user name cannot be empty</source>
         <translation>用户名不能为空</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="418"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="419"/>
         <source>The first character must be lowercase letters!</source>
         <translation>首字符必须为小写字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="421"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="422"/>
         <source>User name can not contain capital letters!</source>
         <translation>用户名不能包含大写字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="433"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="434"/>
         <source>The user name is already in use, please use a different one.</source>
         <translation>用户名已存在，请换用其他用户名。</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="435"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="436"/>
         <source>The name corresponds to the group already exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>用户名对应组已存在，请更换用户名.</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="440"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="441"/>
         <source>User name length need to less than %1 letters!</source>
         <translation>用户名长度需要小于%1个字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="442"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="443"/>
         <source>The user name can only be composed of letters, numbers and underline!</source>
         <translation>用户名只能由字母、数字以及下划线组成！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="447"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="448"/>
         <source>The username is configured, please change the username</source>
         <translation>用户配置已存在，请更换用户名</translation>
     </message>
@@ -1285,9 +1285,8 @@ change system settings</source>
         <translation>时区</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/datetime.ui" line="185"/>
         <source>Sync system time</source>
-        <translation>同步系统时间</translation>
+        <translation type="vanished">同步系统时间</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="204"/>
@@ -1328,6 +1327,7 @@ change system settings</source>
         <extra-contents_path>/datetime/24-hour clock</extra-contents_path>
     </message>
     <message>
+        <location filename="../../../plugins/time-language/datetime/datetime.ui" line="185"/>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="133"/>
         <source>Sync network time</source>
         <translation>同步网络时间</translation>
@@ -1355,37 +1355,37 @@ change system settings</source>
         <translation>默认应用</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="90"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="85"/>
         <source>Browser</source>
         <translation>浏览器</translation>
         <extra-contents_path>/defaultapp/Browser</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="92"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="87"/>
         <source>Mail</source>
         <translation>电子邮件</translation>
         <extra-contents_path>/defaultapp/Mail</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="94"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="89"/>
         <source>Image Viewer</source>
         <translation>图像查看器</translation>
         <extra-contents_path>/defaultapp/Image Viewer</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="96"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="91"/>
         <source>Audio Player</source>
         <translation>音频播放器</translation>
         <extra-contents_path>/defaultapp/Audio Player</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="98"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="93"/>
         <source>Video Player</source>
         <translation>视频播放器</translation>
         <extra-contents_path>/defaultapp/Video Player</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="100"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="95"/>
         <source>Text Editor</source>
         <translation>文档编辑器</translation>
         <extra-contents_path>/defaultapp/Text Editor</extra-contents_path>
@@ -2261,20 +2261,20 @@ folder will be deleted!</source>
 <context>
     <name>Fonts</name>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="44"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="47"/>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="102"/>
         <source>Fonts</source>
         <translation>字体</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="195"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="198"/>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="178"/>
         <source>Fonts select</source>
         <translation>字体选择</translation>
         <extra-contents_path>/fonts/Fonts select</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="129"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="132"/>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="176"/>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="180"/>
         <source>Font size</source>
@@ -2282,28 +2282,28 @@ folder will be deleted!</source>
         <extra-contents_path>/fonts/Font size</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="312"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="315"/>
         <source>Reset to default</source>
         <translation>恢复默认设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="465"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="468"/>
         <source>Gtk default font</source>
         <translation>通用字体</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="583"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="586"/>
         <source>Document font</source>
         <translation>文档字体</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="264"/>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="701"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="267"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="704"/>
         <source>Monospace font</source>
         <translation>等宽字体</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="367"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="370"/>
         <source>Advanced settings</source>
         <translation>高级设置</translation>
     </message>
@@ -2312,12 +2312,12 @@ folder will be deleted!</source>
         <translation type="vanished">桌面字体</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="819"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="822"/>
         <source>titlebar font</source>
         <translation>标题字体</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="922"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.ui" line="925"/>
         <source>Select text sample that looks clearest</source>
         <translation>选择看起来清晰的字体效果</translation>
     </message>
@@ -3328,7 +3328,7 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="132"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="166"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="167"/>
         <source>Hand habit</source>
         <translation>惯用手</translation>
         <extra-contents_path>/mouse/Hand habit</extra-contents_path>
@@ -3340,7 +3340,7 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="598"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="170"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="171"/>
         <source>Speed</source>
         <translation>速度</translation>
         <extra-contents_path>/mouse/Speed</extra-contents_path>
@@ -3348,7 +3348,7 @@ Please retry for login!</source>
     <message>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="257"/>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="636"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1424"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1333"/>
         <source>Slow</source>
         <translation>慢</translation>
     </message>
@@ -3360,13 +3360,13 @@ Please retry for login!</source>
     <message>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="304"/>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="686"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1377"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1286"/>
         <source>Fast</source>
         <translation>快</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="378"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="168"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="169"/>
         <source>Doubleclick  delay</source>
         <translation>鼠标双击间隔时长</translation>
         <extra-contents_path>/mouse/Doubleclick  delay</extra-contents_path>
@@ -3383,42 +3383,45 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="757"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="172"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="173"/>
+        <source>Acceleration</source>
+        <translation>鼠标加速</translation>
+        <extra-contents_path>/mouse/Acceleration</extra-contents_path>
+    </message>
+    <message>
         <source>Sensitivity</source>
-        <translation>敏感度</translation>
+        <translation type="vanished">敏感度</translation>
         <extra-contents_path>/mouse/Sensitivity</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="795"/>
         <source>Low</source>
-        <translation>低</translation>
+        <translation type="vanished">低</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="845"/>
         <source>High</source>
-        <translation>高</translation>
+        <translation type="vanished">高</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="913"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="174"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="822"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="175"/>
         <source>Visibility</source>
         <translation>按Ctrl键显示指针位置</translation>
         <extra-contents_path>/mouse/Visibility</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="991"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="176"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="900"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="177"/>
         <source>Pointer size</source>
         <translation>指针大小</translation>
         <extra-contents_path>/mouse/Pointer size</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1041"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="950"/>
         <source>Cursor Settings</source>
         <translation>光标设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1189"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1098"/>
         <source>Cursor weight</source>
         <translation></translation>
     </message>
@@ -3427,25 +3430,25 @@ Please retry for login!</source>
         <translation type="obsolete">光标粗细</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1214"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1123"/>
         <source>Thin</source>
         <translation>细</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1249"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1158"/>
         <source>Coarse</source>
         <translation>粗</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1352"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="180"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1261"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="181"/>
         <source>Cursor speed</source>
         <translation>光标速度</translation>
         <extra-contents_path>/mouse/Cursor speed</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1108"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="178"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1017"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="179"/>
         <source>Enable flashing on text area</source>
         <translation>启用文本区域的光标闪烁</translation>
         <extra-contents_path>/mouse/Enable flashing on text area</extra-contents_path>
@@ -3455,7 +3458,7 @@ Please retry for login!</source>
         <translation type="vanished">鼠标</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="100"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="101"/>
         <source>Mouse</source>
         <translation>鼠标</translation>
     </message>
@@ -3470,17 +3473,17 @@ Please retry for login!</source>
         <translation>右手</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="207"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="212"/>
         <source>Default(Recommended)</source>
         <translation>默认（推荐）</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="208"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="213"/>
         <source>Medium</source>
         <translation>中等</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="209"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="214"/>
         <source>Large</source>
         <translation>较大</translation>
     </message>
@@ -3771,12 +3774,14 @@ Please retry for login!</source>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="611"/>
         <location filename="../../../plugins/system/power/power.cpp" line="269"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="435"/>
         <source>Change PC sleep time:</source>
         <translation>系统进入空闲状态并于此时间后挂起：</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="713"/>
         <location filename="../../../plugins/system/power/power.cpp" line="291"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="443"/>
         <source>Change DP close time:</source>
         <translation>系统进入空闲状态并于此时间后关闭显示器：</translation>
     </message>
@@ -3837,12 +3842,14 @@ Please retry for login!</source>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="146"/>
         <location filename="../../../plugins/system/power/power.cpp" line="266"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="432"/>
         <source>Enter idle state %1 min and sleep after %2 min :</source>
         <translation>系统%1分钟后进入空闲状态并于%2分钟后挂起：</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="150"/>
         <location filename="../../../plugins/system/power/power.cpp" line="288"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="440"/>
         <source>Enter idle state %1 min and close after %2 min :</source>
         <translation>系统%1分钟后进入空闲状态并于%2分钟后关闭显示器：</translation>
     </message>
@@ -5810,12 +5817,12 @@ run start-pulseaudio-x11 manually.</source>
         <translation>用户已经登录，请注销后删除用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="38"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="41"/>
         <source>Current User</source>
         <translation>当前用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="219"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="222"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="115"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="691"/>
         <source>Change pwd</source>
@@ -5823,7 +5830,7 @@ run start-pulseaudio-x11 manually.</source>
         <extra-contents_path>/userinfo/Change pwd</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="284"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="287"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="117"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="678"/>
         <source>Change type</source>
@@ -5831,14 +5838,14 @@ run start-pulseaudio-x11 manually.</source>
         <extra-contents_path>/userinfo/Change type</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="349"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="352"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="119"/>
         <source>Change valid</source>
         <translation>密码时效</translation>
         <extra-contents_path>/userinfo/Change valid</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="414"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="417"/>
         <source>User group</source>
         <translation>用户组</translation>
     </message>
@@ -5847,26 +5854,26 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="vanished">密码时效</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="526"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="529"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="121"/>
         <source>Login no passwd</source>
         <translation>免密登录</translation>
         <extra-contents_path>/userinfo/Login no passwd</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="604"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="607"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="123"/>
         <source>enable autoLogin</source>
         <translation>自动登录</translation>
         <extra-contents_path>/userinfo/enable autoLogin</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="682"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="685"/>
         <source>Currently in Live mode, please create a new user and log out</source>
         <translation>当前处于试用模式，请创建一个新用户并注销生效</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="719"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="722"/>
         <source>Other Users</source>
         <translation>其他用户</translation>
     </message>
