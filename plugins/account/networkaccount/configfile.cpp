@@ -21,6 +21,7 @@
 #include <QDebug>
 #include <QProcess>
 #include <QDir>
+#include <QtConcurrent/QtConcurrent>
 
 ConfigFile::ConfigFile(QString qstrfilename)
 {

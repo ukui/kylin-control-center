@@ -34,7 +34,7 @@ FrameItem::FrameItem(QWidget *parent) :QFrame(parent)
     m_run = new QLabel(this);
     m_errorStatusLabel = new InfoLabel(this);
     m_cTimer = new QTimer(this);
-    m_svgHandler = new SVGHandler(this);
+    m_svgHandler = new SVGHandler(this,true);
     m_stackedWidget = new QStackedWidget(this);
     m_nullWidget = new QWidget(this);
 
