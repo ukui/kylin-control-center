@@ -51,6 +51,7 @@ extern "C" {
 #define ACCELERATION_KEY      "motion-acceleration"
 #define THRESHOLD_KEY         "motion-threshold"
 #define WHEEL_KEY             "wheel-speed"
+#define ACCEL_KEY             "mouse-accel"
 
 #define SESSION_SCHEMA        "org.ukui.session"
 #define SESSION_MOUSE_KEY     "mouse-size-changed"
@@ -168,8 +169,8 @@ void MouseControl::initSearchText() {
     ui->delayLabel->setText(tr("Doubleclick  delay"));
     //~ contents_path /mouse/Speed
     ui->speedLabel->setText(tr("Speed"));
-    //~ contents_path /mouse/Sensitivity
-    ui->senseLabel->setText(tr("Sensitivity"));
+    //~ contents_path /mouse/Acceleration
+    ui->accelLabel->setText(tr("Acceleration"));
     //~ contents_path /mouse/Visibility
     ui->visLabel->setText(tr("Visibility"));
     //~ contents_path /mouse/Pointer size
@@ -184,7 +185,6 @@ void MouseControl::initStyle() {
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->sensitivityFrame->setVisible(false);
 }
 
 void MouseControl::setupComponent() {
@@ -195,12 +195,17 @@ void MouseControl::setupComponent() {
     ui->handHabitComBox->addItem(tr("Lefthand"), true);
     ui->handHabitComBox->addItem(tr("Righthand"), false);
 
-    MyLabel * testLabel = new MyLabel();
-    ui->doubleClickHorLayout->addWidget(testLabel);
+    ui->doubleClickHorLayout->addWidget(new MyLabel());
 
     //设置指针可见性控件
     visiblityBtn = new SwitchButton(pluginWidget);
     ui->visibilityHorLayout->addWidget(visiblityBtn);
+
+    // 鼠标加速度控件
+    mAccelBtn = new SwitchButton(pluginWidget);
+    mAccelBtn->setChecked(settings->get(ACCEL_KEY).toBool());
+    ui->accelLayout->addStretch();
+    ui->accelLayout->addWidget(mAccelBtn);
 
     //设置指针大小
     ui->pointerSizeComBox->setMaxVisibleItems(5);
@@ -236,10 +241,6 @@ void MouseControl::setupComponent() {
         settings->set(ACCELERATION_KEY, static_cast<double>(value)/ui->pointerSpeedSlider->maximum()*10);
     });
 
-    connect(ui->pointerSensitivitySlider, &QSlider::valueChanged, [=](int value) {
-        settings->set(THRESHOLD_KEY, 10*value/ui->pointerSensitivitySlider->maximum());
-    });
-
     connect(visiblityBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         settings->set(LOCATE_KEY, checked);
     });
@@ -266,6 +267,9 @@ void MouseControl::setupComponent() {
         mThemeSettings->set(CURSOR_BLINK_TIME_KEY, ui->cursorSpeedSlider->value());
     });
 
+    connect(mAccelBtn, &SwitchButton::checkedChanged, this, [=] (bool checked) {
+       settings->set(ACCEL_KEY, checked);
+    });
 }
 
 void MouseControl::initHandHabitStatus() {
@@ -305,11 +309,6 @@ void MouseControl::initPointerStatus() {
     ui->pointerSpeedSlider->blockSignals(true);
     ui->pointerSpeedSlider->setValue(static_cast<int>(settings->get(ACCELERATION_KEY).toDouble()*100));
     ui->pointerSpeedSlider->blockSignals(false);
-
-    //初始化指针敏感度控件
-    ui->pointerSensitivitySlider->blockSignals(true);
-    ui->pointerSensitivitySlider->setValue(settings->get(THRESHOLD_KEY).toInt()*100);
-    ui->pointerSensitivitySlider->blockSignals(false);
 
     //初始化可见性控件
     visiblityBtn->blockSignals(true);

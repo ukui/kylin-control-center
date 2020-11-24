@@ -83,6 +83,8 @@ private:
 
     SwitchButton * visiblityBtn;
     SwitchButton * flashingBtn;
+    SwitchButton * mAccelBtn;
+
 
     QGSettings *settings;
     QGSettings *sesstionSetttings;
