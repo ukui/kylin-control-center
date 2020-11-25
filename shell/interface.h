@@ -51,6 +51,7 @@ enum DevicesIndex{
     KEYBOARD,
     SHORTCUT,
     AUDIO,
+    BLUETOOTH,
     TOTALDEVICESFUNC,
 };
 

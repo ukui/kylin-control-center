@@ -141,6 +141,8 @@
         <file>secondaryleftmenu/VinoWhite.svg</file>
         <file>plugins/theme/opacitylow.svg</file>
         <file>plugins/theme/opacityhigh.svg</file>
+        <file>secondaryleftmenu/Bluetooth.svg</file>
+        <file>secondaryleftmenu/BluetoothWhite.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

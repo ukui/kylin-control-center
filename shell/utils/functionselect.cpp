@@ -83,6 +83,9 @@ void FunctionSelect::initValue(){
     devicesList[AUDIO].nameString = QString("Audio");
     devicesList[AUDIO].namei18nString = QObject::tr("Audio");
     devicesList[AUDIO].mainShow = false;
+    devicesList[BLUETOOTH].nameString = QString("Bluetooth");
+    devicesList[BLUETOOTH].namei18nString = QObject::tr("Bluetooth");
+    devicesList[BLUETOOTH].mainShow = false;
 
     funcinfoList.append(devicesList);
 
