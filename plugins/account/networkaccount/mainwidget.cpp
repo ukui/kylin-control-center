@@ -196,6 +196,7 @@ void MainWidget::init_gui() {
     //gif = new QLabel(exit_page);//同步动画
     //pm = new QMovie(":/new/image/autosync.gif");
     m_blueEffect_sync = new Blueeffect(m_exitCloud_btn); //同步动画
+    m_exitCode = new QLabel(this);
     m_blueEffect_sync->settext(tr("Sync"));
 
     m_animateLayout = new QHBoxLayout;
@@ -240,6 +241,7 @@ void MainWidget::init_gui() {
     m_syncTooltips->setLayout(m_tipsLayout);
     m_syncTipsText->setText(tr("Stop sync"));
     m_exitCloud_btn->installEventFilter(this);
+    m_exitCode->setFixedHeight(24);
 
 
     m_syncTooltips->setFixedSize(86,44);
@@ -344,6 +346,8 @@ void MainWidget::init_gui() {
 
     m_exitCloud_btn->setFixedSize(120,36);
 
+    m_exitCode->setStyleSheet("QLabel{color:#F53547}");
+
 
     m_welcomeLayout->addSpacing(120);
     m_welcomeLayout->addWidget(m_welcomeImage,0,Qt::AlignCenter);
@@ -351,7 +355,8 @@ void MainWidget::init_gui() {
     m_welcomeLayout->setSpacing(0);
     m_welcomeLayout->addSpacing(20);
     m_welcomeLayout->addWidget(m_welcomeMsg,0,Qt::AlignCenter);
-    m_welcomeLayout->addSpacing(32);
+    m_welcomeLayout->addSpacing(8);
+    m_welcomeLayout->addWidget(m_exitCode,0,Qt::AlignCenter);
     m_welcomeLayout->addWidget(m_login_btn,0,Qt::AlignCenter);
     m_welcomeLayout->addStretch();
     m_welcomeLayout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
@@ -364,6 +369,8 @@ void MainWidget::init_gui() {
 
     m_key = "";
 
+
+    m_exitCode->setText(" ");
 
     m_exitCloud_btn->setFocusPolicy(Qt::NoFocus);
     QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/edit.svg");
@@ -494,6 +501,7 @@ void MainWidget::on_login() {
     m_mainDialog->set_client(m_dbusClient,thread);
     m_mainDialog->is_used = true;
     m_mainDialog->set_clear();
+    m_exitCode->setText(" ");
     //qDebug()<<"login";
 
     connect(m_mainDialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
@@ -563,10 +571,12 @@ bool MainWidget::eventFilter(QObject *watched, QEvent *event) {
 /* 登录成功处理事件 */
 void MainWidget::finished_load(int ret, QString uuid) {
     //qDebug()<<"wb111"<<ret;
-    if(ret == 303) {
+    if(ret == 301 || ret == 401 || ret == 201) {
         if(m_mainWidget->currentWidget() != m_nullWidget) {
             showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry for login!"));
-            emit dologout();
+            m_exitCode->setText(tr("Your account is sign on on other device already!"));
+            on_login_out();
+            return ;
         }
     }
     //qDebug()<<uuid<<this->m_szUuid;
@@ -577,8 +587,6 @@ void MainWidget::finished_load(int ret, QString uuid) {
     //qDebug()<<"wb222"<<ret;
     if (ret == 0) {
         emit doconf();
-    } else if(ret == 401 || ret == 203 || ret == 201) {
-        emit dologout();
     }
 }
 

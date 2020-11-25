@@ -66,6 +66,7 @@ private:
     FrameItem    *m_autoSyn;
     QLabel              *m_title;
     QLabel              *m_infoTab;
+    QLabel              *m_exitCode;
     Blueeffect          *m_blueEffect_sync;
     QPushButton     *m_exitCloud_btn;
     QWidget         *m_widgetContainer;
