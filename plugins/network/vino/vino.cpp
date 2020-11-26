@@ -20,15 +20,13 @@
 #include "vino.h"
 #include "ui_vino.h"
 
-Vino::Vino() : ui(new Ui::Vino), mFirstLoad(true) {
+Vino::Vino() : mFirstLoad(true) {
     pluginName = tr("Vino");
     pluginType = NETWORK;
 }
 
 Vino::~Vino() {
-    if (!mFirstLoad) {
-        delete ui;
-    }
+
 }
 
 QString Vino::get_plugin_name() {
@@ -42,8 +40,8 @@ int Vino::get_plugin_type() {
 QWidget *Vino::get_plugin_ui() {
     if (mFirstLoad) {
         mFirstLoad = false;
+        // will delete by takewidget
         pluginWidget = new ShareMain;
-        ui->setupUi(pluginWidget);
     }
 
     return pluginWidget;
