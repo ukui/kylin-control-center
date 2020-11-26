@@ -72,16 +72,11 @@ void ResolutionSlider::init()
         mComboBox = new QComboBox();
         mComboBox->setMinimumSize(402,30);
         mComboBox->setMaximumSize(1677215, 30);
-//        mComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-//        mComboBox->setEditable(false);
-//        mComboBox->setStyleSheet(qss);
-//        mComboBox->setItemDelegate(itemDelege);
-//        mComboBox->setMaxVisibleItems(5);
 
         int currentModeIndex = -1;
         int preferredModeIndex = -1;
         Q_FOREACH (const QSize &size, mModes) {
-            if (size.width() < 1024) {
+            if (size.width() * size.height() < 1024 * 576) {
                 continue;
             }
             if (size == mModes[0]) {
