@@ -27,10 +27,6 @@
 #include "shell/interface.h"
 #include "sharemain.h"
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class Vino; }
-QT_END_NAMESPACE
-
 class Vino : public QObject, CommonInterface
 {
     Q_OBJECT
@@ -48,7 +44,6 @@ public:
     const QString name() const  Q_DECL_OVERRIDE;
 
 private:
-    Ui::Vino *ui;
     QString pluginName;
     int pluginType;
     ShareMain* pluginWidget;

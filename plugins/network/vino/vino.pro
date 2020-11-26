@@ -33,8 +33,7 @@ HEADERS += \
     sharemain.h \
     vino.h
 
-FORMS += \
-    vino.ui
+FORMS +=
 
 # Default rules for deployment.
 INSTALLS += target
