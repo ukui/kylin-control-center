@@ -25,16 +25,15 @@
 #include "addappdialog.h"
 
 #define BROWSERTYPE "x-scheme-handler/http"
-#define MAILTYPE "x-scheme-handler/mailto"
-#define IMAGETYPE "image/png"
-#define AUDIOTYPE "audio/x-vorbis+ogg"
-#define VIDEOTYPE "video/x-ogm+ogg"
-#define TEXTTYPE "text/plain"
+#define MAILTYPE    "x-scheme-handler/mailto"
+#define IMAGETYPE   "image/png"
+#define AUDIOTYPE   "audio/x-vorbis+ogg"
+#define VIDEOTYPE   "video/x-ogm+ogg"
+#define TEXTTYPE    "text/plain"
 
 #define DESKTOPPATH "/usr/share/applications/"
 
-DefaultApp::DefaultApp()
-{
+DefaultApp::DefaultApp() {
     pluginName = tr("Default App");
     pluginType = SYSTEM;
     ui = new Ui::DefaultAppWindow;
@@ -79,22 +78,9 @@ const QString DefaultApp::name() const {
 }
 
 void DefaultApp::initUI() {
-
-    if(!bIsCloudService) {
-        //~ contents_path /defaultapp/Browser
-        ui->browserLabel->setText(tr("Browser"));
-        //~ contents_path /defaultapp/Mail
-        ui->mailLabel->setText(tr("Mail"));
-        //~ contents_path /defaultapp/Image Viewer
-        ui->imageLabel->setText(tr("Image Viewer"));
-        //~ contents_path /defaultapp/Audio Player
-        ui->audioLabel->setText(tr("Audio Player"));
-        //~ contents_path /defaultapp/Video Player
-        ui->videoLabel->setText(tr("Video Player"));
-        //~ contents_path /defaultapp/Text Editor
-        ui->textLabel->setText(tr("Text Editor"));
+    if (!bIsCloudService) {
         connect(this,&DefaultApp::appInitDone,this,[=](const QIcon &appicon,const QString &appname,const QString &single,int index,const QString &type) {
-            if(type == BROWSERTYPE) {
+            if (type == BROWSERTYPE) {
                 ui->browserComBoBox->addItem(appicon, appname, single);
                 if(index != -1) {
                     ui->browserComBoBox->setCurrentIndex(index);
@@ -166,7 +152,6 @@ void DefaultApp::initUI() {
     QtConcurrent::run([this] {
         // BROWSER
         int browserindex = -1;
-        QString currentbrowser(getDefaultAppId(BROWSERTYPE)); //获取当前
         AppList * list = getAppIdList(BROWSERTYPE); //获取可选列表
         if (list) {
             for (int i = 0; list[i].appid != NULL; i++) {
@@ -174,14 +159,15 @@ void DefaultApp::initUI() {
                 QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
                 GDesktopAppInfo * browserinfo = g_desktop_app_info_new_from_filename(ba.constData());
                 QString appname = g_app_info_get_name(G_APP_INFO(browserinfo));
-                //        qDebug() << appname ;
                 const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(browserinfo)));
                 QIcon appicon;
                 if (QIcon::hasThemeIcon(QString(iconname)))
                     appicon = QIcon::fromTheme(QString(iconname));
 
-                if (currentbrowser == single)
+                if ("firefox.desktop" == single) {
+                    mDefaultBrowser = appname;
                     browserindex = i;
+                }
                 emit appInitDone(appicon,appname,single,browserindex,BROWSERTYPE);
                 browserindex = -1;
                 free(list[i].appid);
@@ -191,7 +177,6 @@ void DefaultApp::initUI() {
 
         // MAIL
         int mailindex = -1;
-        QString currentmail(getDefaultAppId(MAILTYPE));
 
         AppList * maillist = getAppIdList(MAILTYPE);
         if (maillist) {
@@ -205,8 +190,10 @@ void DefaultApp::initUI() {
                 if (QIcon::hasThemeIcon(QString(iconname)))
                     appicon = QIcon::fromTheme(QString(iconname));
 
-                if (currentmail == single)
+                if ("claws-mail.desktop" == single) {
+                    mDefaultMail = appname;
                     mailindex = i;
+                }
                 emit appInitDone(appicon,appname,single,mailindex,MAILTYPE);
                 mailindex = -1;
                 free(maillist[i].appid);
@@ -234,6 +221,9 @@ void DefaultApp::initUI() {
                     appicon = QIcon::fromTheme(QString(iconname));
 
                 if(!browserList.contains(appname)){
+                    if ("eom.desktop" == single) {
+                        mDefaultPic = appname;
+                    }
                     emit appInitDone(appicon,appname,single,imageindex,IMAGETYPE);
                     free(imagelist[i].appid);
                 }
@@ -243,7 +233,6 @@ void DefaultApp::initUI() {
 
         // AUDIO
         int audioindex = -1;
-        QString currentaudio(getDefaultAppId(AUDIOTYPE));
 
         AppList * audiolist = getAppIdList(AUDIOTYPE);
         if (audiolist) {
@@ -256,8 +245,11 @@ void DefaultApp::initUI() {
                 QIcon appicon;
                 if (QIcon::hasThemeIcon(QString(iconname)))
                     appicon = QIcon::fromTheme(QString(iconname));
-                if (currentaudio == single)
+
+                if ("kylin-video.desktop" == single) {
+                    mDefaultAdudio = appname;
                     audioindex = i;
+                }
                 emit appInitDone(appicon,appname,single,audioindex,AUDIOTYPE);
                 audioindex = -1;
                 free(audiolist[i].appid);
@@ -267,7 +259,6 @@ void DefaultApp::initUI() {
 
         // VIDEO
         int videoindex =-1;
-        QString currentvideo(getDefaultAppId(VIDEOTYPE));
 
         AppList * videolist = getAppIdList(VIDEOTYPE);
         if (videolist) {
@@ -280,8 +271,11 @@ void DefaultApp::initUI() {
                 QIcon appicon;
                 if (QIcon::hasThemeIcon(QString(iconname)))
                     appicon = QIcon::fromTheme(QString(iconname));
-                if (currentvideo == single)
+
+                if ("kylin-video.desktop" == single) {
+                    mDefaultVideo = appname;
                     videoindex = i;
+                }
                 emit appInitDone(appicon,appname,single,videoindex,VIDEOTYPE);
                 videoindex = -1;
                 free(videolist[i].appid);
@@ -291,7 +285,6 @@ void DefaultApp::initUI() {
 
         // TEXT
         int textindex = -1;
-        QString currenttext(getDefaultAppId(TEXTTYPE));
 
         AppList * textlist = getAppIdList(TEXTTYPE);
         if (textlist){
@@ -304,8 +297,10 @@ void DefaultApp::initUI() {
                 QIcon appicon;
                 if (QIcon::hasThemeIcon(QString(iconname)))
                     appicon = QIcon::fromTheme(QString(iconname));
-                if (currenttext == single)
+                if ("pluma.desktop" == single) {
+                    mDefaultText = appname;
                     textindex = i;
+                }
                 emit appInitDone(appicon,appname,single,textindex,TEXTTYPE);
                 textindex = -1;
                 free(textlist[i].appid);
@@ -313,90 +308,89 @@ void DefaultApp::initUI() {
             free(textlist);
         }
     });
+
+
+}
+
+void DefaultApp::initSearchText() {
+    //~ contents_path /defaultapp/Browser
+    ui->browserLabel->setText(tr("Browser"));
+    //~ contents_path /defaultapp/Mail
+    ui->mailLabel->setText(tr("Mail"));
+    //~ contents_path /defaultapp/Image Viewer
+    ui->imageLabel->setText(tr("Image Viewer"));
+    //~ contents_path /defaultapp/Audio Player
+    ui->audioLabel->setText(tr("Audio Player"));
+    //~ contents_path /defaultapp/Video Player
+    ui->videoLabel->setText(tr("Video Player"));
+    //~ contents_path /defaultapp/Text Editor
+    ui->textLabel->setText(tr("Text Editor"));
 }
 
 void DefaultApp::browserComBoBox_changed_cb(int index) {
-//    QString appid = ui->browserComBoBox->currentData().toString();
     QString appid = ui->browserComBoBox->itemData(index).toString();
-    if (appid == "add") {
-//        AddAppDialog * dialog = new AddAppDialog();
-//        dialog->show();
-        qDebug() << "add clicked";
-    } else {
-        QByteArray ba = appid.toUtf8(); // QString to char *
-        setWebBrowsersDefaultProgram(ba.data());
-    }
+    QByteArray ba = appid.toUtf8(); // QString to char *
+    setWebBrowsersDefaultProgram(ba.data());
 }
 
 void DefaultApp::mailComBoBox_changed_cb(int index) {
     QString appid = ui->mailComBoBox->itemData(index).toString();
-    if (appid == "add"){
-        qDebug() << "add clicked";
-    } else {
-        QtConcurrent::run([=] {
-            QByteArray ba = appid.toUtf8(); // QString to char *
-            setMailReadersDefaultProgram(ba.data());
-        });
-    }
+
+    QtConcurrent::run([=] {
+        QByteArray ba = appid.toUtf8(); // QString to char *
+        setMailReadersDefaultProgram(ba.data());
+    });
+
 }
 
 void DefaultApp::imageComBoBox_changed_cb(int index) {
     QString appid = ui->imageComBoBox->itemData(index).toString();
-    if (appid == "add"){
-        qDebug() << "add clicked";
-    } else {
-        QtConcurrent::run([=] () {
-            QByteArray ba = appid.toUtf8(); // QString to char *
-            setImageViewersDefaultProgram(ba.data());
-        });
-    }
+
+    QtConcurrent::run([=] () {
+        QByteArray ba = appid.toUtf8(); // QString to char *
+        setImageViewersDefaultProgram(ba.data());
+    });
 }
 
 void DefaultApp::audioComBoBox_changed_cb(int  index) {
-    qDebug() << "this is audio:" << index<<endl;
-
     QString appid = ui->audioComBoBox->itemData(index).toString();
-    if (appid == "add"){
-        qDebug() << "add clicked";
-    } else {
-        QtConcurrent::run([=] () {
-            QByteArray ba = appid.toUtf8(); // QString to char *
-            setAudioPlayersDefaultProgram(ba.data());
-        });
-    }
+    QtConcurrent::run([=] () {
+        QByteArray ba = appid.toUtf8(); // QString to char *
+        setAudioPlayersDefaultProgram(ba.data());
+    });
 }
 
 void DefaultApp::videoComBoBox_changed_cb(int index) {
     QString appid = ui->videoComBoBox->itemData(index).toString();
-    if (appid == "add") {
-        qDebug() << "add clicked";
-    } else {
-        QtConcurrent::run([=] () {
-            QByteArray ba = appid.toUtf8(); // QString to char *
-            setVideoPlayersDefaultProgram(ba.data());
-        });
-    }
+
+    QtConcurrent::run([=] () {
+        QByteArray ba = appid.toUtf8(); // QString to char *
+        setVideoPlayersDefaultProgram(ba.data());
+    });
 }
 
 void DefaultApp::textComBoBox_changed_cb(int index) {
     QString appid = ui->textComBoBox->itemData(index).toString();
-    if (appid == "add"){
-        qDebug() << "add clicked";
-    } else {
-        QtConcurrent::run([=] {
-            QByteArray ba = appid.toUtf8(); // QString to char *
-            setTextEditorsDefautlProgram(ba.data());
-        });
-    }
+
+    QtConcurrent::run([=] {
+        QByteArray ba = appid.toUtf8(); // QString to char *
+        setTextEditorsDefautlProgram(ba.data());
+    });
 }
 
 void DefaultApp::resetDefaultApp() {
-    ui->browserComBoBox->setCurrentIndex(0);
-    ui->mailComBoBox->setCurrentIndex(0);
-    ui->imageComBoBox->setCurrentIndex(0);
-    ui->audioComBoBox->setCurrentIndex(0);
-    ui->videoComBoBox->setCurrentIndex(0);
-    ui->textComBoBox->setCurrentIndex(0);
+
+    ui->browserComBoBox->setCurrentText(mDefaultBrowser);
+    ui->imageComBoBox->setCurrentText(mDefaultPic);
+    ui->audioComBoBox->setCurrentText(mDefaultAdudio);
+    ui->videoComBoBox->setCurrentText(mDefaultVideo);
+    ui->textComBoBox->setCurrentText(mDefaultText);
+
+    if (mDefaultMail.isEmpty()) {
+        ui->mailComBoBox->setCurrentIndex(0);
+    } else {
+        ui->mailComBoBox->setCurrentText(mDefaultMail);
+    }
 }
 
 char * DefaultApp::getDefaultAppId(const char * contentType) {
@@ -418,7 +412,7 @@ char * DefaultApp::getDefaultAppId(const char * contentType) {
 
 AppList * DefaultApp::getAppIdList(const char *contentType) {
     Appinfo *appinfo = _getAppList(contentType);
-    if(appinfo != NULL){
+    if (appinfo != NULL) {
         int i = 0;
         while(appinfo[i].item != NULL)
             i++;

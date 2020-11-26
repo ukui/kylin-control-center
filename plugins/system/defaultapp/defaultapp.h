@@ -74,6 +74,7 @@ public:
     const QString name() const  Q_DECL_OVERRIDE;
 
     void initUI();
+    void initSearchText();
 
     bool setWebBrowsersDefaultProgram(char * appid);
     bool setMailReadersDefaultProgram(char * appid);
@@ -98,6 +99,13 @@ private:
     bool bIsCloudService;
     int pluginType;
     QDBusInterface *m_cloudInterface;
+
+    QString mDefaultBrowser;
+    QString mDefaultMail;
+    QString mDefaultPic;
+    QString mDefaultAdudio;
+    QString mDefaultVideo;
+    QString mDefaultText;
 
 public slots:
     void browserComBoBox_changed_cb(int index);
