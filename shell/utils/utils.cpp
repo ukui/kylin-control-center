@@ -30,6 +30,7 @@ void Utils::setCLIName(QCommandLineParser &parser) {
     QCommandLineOption keyboardRoleOption("keyboard", QObject::tr("Go to keyboard settings page"));
     QCommandLineOption shortcutRoleOption("shortcut", QObject::tr("Go to shortcut settings page"));
     QCommandLineOption audioRoleOption(QStringList() << "s" << "audio", QObject::tr("Go to audio settings page"));
+    QCommandLineOption blutetoothRoleOption("bluethooth", QObject::tr("Go to bluetooth settings page"));
 
     QCommandLineOption backgroundRoleOption(QStringList() << "b" << "background", QObject::tr("Go to background settings page"));
     QCommandLineOption themeRoleOption("theme", QObject::tr("Go to theme settings page"));
@@ -67,6 +68,7 @@ void Utils::setCLIName(QCommandLineParser &parser) {
     parser.addOption(keyboardRoleOption);
     parser.addOption(shortcutRoleOption);
     parser.addOption(audioRoleOption);
+    parser.addOption(blutetoothRoleOption);
 
     parser.addOption(backgroundRoleOption);
     parser.addOption(themeRoleOption);

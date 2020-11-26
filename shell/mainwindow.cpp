@@ -120,6 +120,8 @@ void MainWindow::bootOptionsFilter(QString opt) {
         bootOptionsSwitch(DEVICES, SHORTCUT);
     } else if (opt == "--audio" || opt == "-s") {
         bootOptionsSwitch(DEVICES, AUDIO);
+    } else if (opt == "--bluetooth") {
+        bootOptionsSwitch(DEVICES, BLUETOOTH);
     } else if (opt == "--background" || opt == "-b") {
         bootOptionsSwitch(PERSONALIZED, BACKGROUND);
     } else if (opt == "--theme") {
@@ -155,6 +157,7 @@ void MainWindow::bootOptionsFilter(QString opt) {
     } else if (opt == "--about" || opt == "-a") {
         bootOptionsSwitch(NOTICEANDTASKS, ABOUT);
     }
+
 }
 
 void MainWindow::bootOptionsSwitch(int moduleNum, int funcNum){
