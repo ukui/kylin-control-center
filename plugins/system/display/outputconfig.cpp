@@ -174,9 +174,9 @@ void OutputConfig::initUi()
     int maxReslu = mResolution->getMaxResolution().width();
 
     scaleCombox->addItem(tr("100%"));
-//    if (maxReslu >= 2000) {
+    if (maxReslu >= 2000) {
         scaleCombox->addItem(tr("200%"));
-//    }
+    }
 
     QLabel *scaleLabel = new QLabel(this);
     //~ contents_path /display/screen zoom
