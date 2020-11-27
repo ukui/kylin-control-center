@@ -27,23 +27,22 @@ public:
     explicit DeviceInfoItem(QWidget *parent = nullptr);
     ~DeviceInfoItem();
     void initInfoPage(DEVICE_TYPE icon_type = DEVICE_TYPE::OTHER,QString d_name = "",DEVICE_STATUS status = DEVICE_STATUS::NOT,BluezQt::DevicePtr device = nullptr);
+    QString get_dev_name();
+    void changeDevStatus();
+    void setDevConnectedIcon();
 protected:
     void resizeEvent(QResizeEvent *event);
     void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event);
 signals:
-    void sendConnectDevice(BluezQt::DevicePtr);
+    void sendConnectDevice(QString);
     void sendDisconnectDeviceAddress(QString);
     void sendDeleteDeviceAddress(QString);
-
+    void send_this_item_is_pair();
 private slots:
     void onClick_Connect_Btn(bool);
     void onClick_Disconnect_Btn(bool);
     void onClick_Delete_Btn(bool);
-
-    void setTimerStop(QString dev_name = "");
-    void setTimerStart(QString dev_name = "");
-
     void updateDeviceStatus(DEVICE_STATUS status = DEVICE_STATUS::NOT);
 private:
     QWidget *parent_widget;

@@ -26,17 +26,17 @@ DeviceInfoItem::DeviceInfoItem(QWidget *parent) : QWidget(parent)
     info_page_layout->addWidget(device_status);
 
     connect_btn = new QPushButton(tr("Connect"),this);
-    connect_btn->setStyleSheet("QPushButton{background: #E7E7E7;border-radius: 6px;}");
+//    connect_btn->setStyleSheet("QPushButton{background: #E7E7E7;border-radius: 6px;}");
     connect_btn->setVisible(false);
     connect(connect_btn,SIGNAL(clicked(bool)),this,SLOT(onClick_Connect_Btn(bool)));
 
     disconnect_btn = new QPushButton(tr("Disconnect"),this);
-    disconnect_btn->setStyleSheet("QPushButton{background: #E7E7E7;border-radius: 6px;}");
+//    disconnect_btn->setStyleSheet("QPushButton{background: #E7E7E7;border-radius: 6px;}");
     disconnect_btn->setVisible(false);
     connect(disconnect_btn,SIGNAL(clicked(bool)),this,SLOT(onClick_Disconnect_Btn(bool)));
 
     del_btn = new QPushButton(tr("Remove"),this);
-    del_btn->setStyleSheet("QPushButton{background: #E7E7E7;border-radius: 6px;}");
+//    del_btn->setStyleSheet("QPushButton{background: #E7E7E7;border-radius: 6px;}");
     del_btn->setVisible(false);
     connect(del_btn,SIGNAL(clicked(bool)),this,SLOT(onClick_Delete_Btn(bool)));
 
@@ -51,20 +51,29 @@ DeviceInfoItem::~DeviceInfoItem()
 
 void DeviceInfoItem::initInfoPage(DEVICE_TYPE icon_type, QString d_name, DEVICE_STATUS status, BluezQt::DevicePtr device)
 {
+    connect(device.data(),&BluezQt::Device::pairedChanged,this,[=](bool paird){
+        qDebug() << Q_FUNC_INFO << paird;
+        changeDevStatus();
+        emit this->send_this_item_is_pair();
+    });
+    connect(device.data(),&BluezQt::Device::connectedChanged,this,[=](bool connected){
+        setDevConnectedIcon();
+        qDebug() << Q_FUNC_INFO << "connected:" << connected;
+    });
+
     QIcon icon_device,icon_status;
     if(icon_type == DEVICE_TYPE::PC){
         icon_device = QIcon::fromTheme("video-display-symbolic");
-        device_icon->setPixmap(icon_device.pixmap(QSize(24,24)));
     }else if(icon_type == DEVICE_TYPE::PHONE){
         icon_device = QIcon::fromTheme("phone-apple-iphone-symbolic");
-        device_icon->setPixmap(icon_device.pixmap(QSize(24,24)));
     }else if(icon_type == DEVICE_TYPE::HEADSET){
         icon_device = QIcon::fromTheme("audio-headphones-symbolic");
-        device_icon->setPixmap(icon_device.pixmap(QSize(24,24)));
+    }else if(icon_type == DEVICE_TYPE::Mouse){
+        icon_device = QIcon::fromTheme("input-mouse-symbolic");
     }else{
         icon_device = QIcon::fromTheme("bluetooth-symbolic");
-        device_icon->setPixmap(icon_device.pixmap(QSize(24,24)));
     }
+    device_icon->setPixmap(icon_device.pixmap(QSize(24,24)));
 
     if(d_name.isEmpty()){
         return;
@@ -77,10 +86,15 @@ void DeviceInfoItem::initInfoPage(DEVICE_TYPE icon_type, QString d_name, DEVICE_
     if(status == DEVICE_STATUS::LINK){
         icon_status = QIcon::fromTheme("emblem-ok-symbolic");
         device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
-    }else if(status == DEVICE_STATUS::UNLINK){
+    }/*else if(status == DEVICE_STATUS::UNLINK){
         icon_status = QIcon::fromTheme("emblem-danger");
         device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
-    }
+    }*/
+}
+
+QString DeviceInfoItem::get_dev_name()
+{
+    return device_item->name();
 }
 
 void DeviceInfoItem::resizeEvent(QResizeEvent *event)
@@ -94,6 +108,7 @@ void DeviceInfoItem::enterEvent(QEvent *event)
 //    qDebug() << Q_FUNC_INFO << device_name->text();
     QPropertyAnimation *enter_action = new QPropertyAnimation(info_page,"geometry");
     enter_action->setDuration(300);
+    enter_action->setEasingCurve(QEasingCurve::OutQuad);
     enter_action->setStartValue(QRect(0, 0, info_page->width(), info_page->height()));
     enter_action->setEndValue(QRect(0, 0, info_page->width()-170, info_page->height()));
     enter_action->start();
@@ -125,6 +140,7 @@ void DeviceInfoItem::leaveEvent(QEvent *event)
 
     QPropertyAnimation *leave_action = new QPropertyAnimation(info_page,"geometry");
     leave_action->setDuration(300);
+    leave_action->setEasingCurve(QEasingCurve::InQuad);
     leave_action->setStartValue(QRect(0, 0, info_page->width(), info_page->height()));
     leave_action->setEndValue(QRect(0, 0, this->width(), info_page->height()));
     leave_action->start();
@@ -134,7 +150,10 @@ void DeviceInfoItem::leaveEvent(QEvent *event)
 void DeviceInfoItem::onClick_Connect_Btn(bool isclicked)
 {
     qDebug() << Q_FUNC_INFO;
-    emit sendConnectDevice(device_item);
+    emit sendConnectDevice(device_item->address());
+
+    if(!device_status->isVisible())
+        device_status->setVisible(true);
 
     connect(icon_timer,&QTimer::timeout,this,[=]{
         if(i == 0)
@@ -149,27 +168,25 @@ void DeviceInfoItem::onClick_Connect_Btn(bool isclicked)
 void DeviceInfoItem::onClick_Disconnect_Btn(bool isclicked)
 {
     qDebug() << Q_FUNC_INFO;
+    emit sendDisconnectDeviceAddress(device_item->address());
 }
 
 void DeviceInfoItem::onClick_Delete_Btn(bool isclicked)
 {
     qDebug() << Q_FUNC_INFO;
+    emit sendDeleteDeviceAddress(device_item->address());
 }
 
-void DeviceInfoItem::setTimerStop(QString dev_name)
+void DeviceInfoItem::changeDevStatus()
 {
-    if(dev_name == device_item->name() || dev_name == "")
-    {
-        icon_timer->stop();
-    }
+    icon_timer->stop();
+    device_status->setVisible(false);
 }
 
-void DeviceInfoItem::setTimerStart(QString dev_name)
+void DeviceInfoItem::setDevConnectedIcon()
 {
-    if(dev_name == device_item->name() || dev_name == "")
-    {
-        icon_timer->start();
-    }
+    QIcon icon_status = QIcon::fromTheme("emblem-ok-symbolic");
+    device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
 }
 
 void DeviceInfoItem::updateDeviceStatus(DEVICE_STATUS status)

@@ -12,6 +12,8 @@
 #include <KF5/BluezQt/bluezqt/agent.h>
 #include <KF5/BluezQt/bluezqt/pendingcall.h>
 
+#include <QGSettings/QGSettings>
+
 #include <QMainWindow>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -28,16 +30,11 @@
 #include <QScrollArea>
 #include <QMenu>
 #include <QTimer>
+#include <QVariant>
+
 
 #include "deviceinfoitem.h"
 #include "bluetoothagent.h"
-
-using namespace PolkitQt1;
-
-namespace BluezQt
-{
-extern void bluezqt_initFakeBluezTestRun();
-}
 
 class BlueToothMain : public QMainWindow
 {
@@ -48,19 +45,27 @@ public:
     void InitMainTopUI();
     void InitMainbottomUI();
     void startDiscovery();
-    void InitTray();
     ~BlueToothMain();
 protected:
+
+signals:
 
 private slots:
     void onClick_Open_Bluetooth(bool);
     void serviceDiscovered(BluezQt::DevicePtr);
-
-    void receiveConnectsignal(BluezQt::DevicePtr);
-//    void receive
-
+    void receiveConnectsignal(QString);
+    void receiveDisConnectSignal(QString);
+    void receiveRemoveSignal(QString);
     void Refresh_load_Label_icon();
+    void GSetting_value_chanage(const QString &key);
+    void get_pair_item();
+    void set_tray_visible(bool);
 private:
+    QGSettings *settings;
+    QString Default_Adapter;
+    QStringList paired_device_address;
+    QString finally_connect_the_device;
+
     QVBoxLayout *main_layout;
     QSystemTrayIcon * tray;
     QWidget *main_widget;

@@ -6,6 +6,7 @@ enum DEVICE_TYPE{
     PHONE,
     HEADSET,
     OTHER,
+    Mouse,
 };
 
 enum DEVICE_STATUS{
