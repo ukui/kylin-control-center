@@ -721,7 +721,6 @@ void Theme::themeBtnClickSlot(QAbstractButton *button) {
      QString themeMode = button->property("value").toString();
      QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
 
-     qApp->setStyle(new InternalStyle(themeMode));
      if (QString::compare(currentThemeMode, themeMode)){
          QString tmpMode;
          if ("ukui-dark" == themeMode) {
