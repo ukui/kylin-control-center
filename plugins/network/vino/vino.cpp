@@ -18,7 +18,6 @@
  *
  */
 #include "vino.h"
-#include "ui_vino.h"
 
 Vino::Vino() : mFirstLoad(true) {
     pluginName = tr("Vino");
