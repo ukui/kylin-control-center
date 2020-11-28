@@ -11,6 +11,7 @@
 #include <QDBusError>
 #include <QDBusReply>
 #include <QStringList>
+#include <QSharedPointer>
 
 #include <KF5/KScreen/kscreen/config.h>
 
@@ -149,6 +150,7 @@ class Widget : public QWidget
     void save();
     void scaleChangedSlot(int index);
     void changedSlot();
+    void propertiesChangedSlot(QString, QMap<QString, QVariant>, QStringList);
 
   private:
     void loadQml();
@@ -211,6 +213,8 @@ class Widget : public QWidget
     QSettings  *mQsettings      = nullptr;
 
     QButtonGroup *singleButton;
+
+    QSharedPointer<QDBusInterface> *mUPowerInterface;
 
     int screenScale = 1;
     // 是否为夜间模式

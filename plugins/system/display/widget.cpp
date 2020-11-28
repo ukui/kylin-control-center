@@ -954,6 +954,14 @@ void Widget::changedSlot() {
     mConfigChanged = true;
 }
 
+void Widget::propertiesChangedSlot(QString property, QMap<QString, QVariant> propertyMap, QStringList propertyList) {
+    Q_UNUSED(property);
+    Q_UNUSED(propertyList);
+    if (propertyMap.keys().contains("OnBattery")) {
+        mOnBattery = propertyMap.value("OnBattery").toBool();
+    }
+}
+
 // 是否禁用主屏按钮
 void Widget::mainScreenButtonSelect(int index) {
     if (!mConfig) {
@@ -1525,6 +1533,12 @@ void Widget::initUiComponent() {
     if (batteryInfo.isValid()) {
         mOnBattery = batteryInfo.value().toBool();
     }
+
+
+
+    batteryInterface.connection().connect("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower.DBus.Properties", "PropertiesChanged",
+                                   this, SLOT(propertiesChangedSlot(QString, QMap<QString, QVariant>, QStringList)));
+
 }
 
 void Widget::setRedShiftIsValid(bool redshiftIsValid) {
