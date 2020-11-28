@@ -74,8 +74,6 @@ MainWindow::MainWindow(QWidget *parent) :
     mate_mixer_init();
     // 设置初始大小
     resize(QSize(840, 600));
-    // 设置窗体无边框
-    setAttribute(Qt::WA_TranslucentBackground, true);
 
     logoLabel  = new QLabel(tr("UKCC"), this);
     PreScene *prescene = new PreScene(logoLabel, this->size());
@@ -157,7 +155,6 @@ void MainWindow::bootOptionsFilter(QString opt) {
     } else if (opt == "--about" || opt == "-a") {
         bootOptionsSwitch(NOTICEANDTASKS, ABOUT);
     }
-
 }
 
 void MainWindow::bootOptionsSwitch(int moduleNum, int funcNum){
@@ -249,6 +246,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 
 void MainWindow::initUI() {
     ui->setupUi(this);
+    ui->centralWidget->setStyleSheet("QWidget#centralWidget{background: palette(base); border-radius: 6px;}");
 
     m_ModuleMap = Utils::getModuleHideStatus();
 
@@ -307,13 +305,9 @@ void MainWindow::initUI() {
         if (index){ //首页部分组件样式
             //中部内容区域
             ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-right-radius: 6px;}");
-            // 标题栏
-            ui->titleWdiget->setStyleSheet("QWidget#titleWdiget{background-color: palette(base); border-top-right-radius: 6px;}");
         } else { //次页部分组件样式
             //中部内容区域
             ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background:  palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
-            // 标题栏
-            ui->titleWdiget->setStyleSheet("QWidget#titleWdiget{background-color: palette(base);border-top-left-radius: 6px; border-top-right-radius: 6px;}");
         }
     });
 
