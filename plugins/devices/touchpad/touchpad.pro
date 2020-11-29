@@ -29,6 +29,8 @@ CONFIG        += link_pkgconfig \
                  C++11
 
 PKGCONFIG     += gsettings-qt \
+                 xi \
+                 x11
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
