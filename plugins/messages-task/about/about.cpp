@@ -192,17 +192,14 @@ void About::setupSerialComponent() {
     ui->trialButton->setFlat(true);
     ui->trialButton->setStyleSheet("text-align: left");
     if (!activeInterface.get()->isValid()) {
-        qDebug() << "Create active Interface Failed When Get Computer info: " << QDBusConnection::systemBus().lastError();
+        qDebug() << "Create active Interface Failed When Get active info: " << QDBusConnection::systemBus().lastError();
         return;
     }
 
     int status;
-    QDBusReply<int> activeStatus;
-    activeStatus  = activeInterface.get()->call("status");
-    if (!activeStatus.isValid()) {
-        qDebug()<<"activeStatus is invalid"<<endl;
-    } else {
-        status = activeStatus.value();
+    QDBusMessage activeReply = activeInterface.get()->call("status");
+    if (activeReply.type() == QDBusMessage::ReplyMessage) {
+        status = activeReply.arguments().at(0).toInt();
     }
 
     QString serial;
@@ -214,15 +211,21 @@ void About::setupSerialComponent() {
         serial = serialReply.value();
     }
 
-    qDebug()<<"status and serial is:"<<status<<" "<<serial<<endl;
-
-    if (status != 1) {
-        ui->activeContent->setText(tr("Inactivated"));
-    } else {
+    if (1 == status) {
         ui->activeContent->setText(tr("Activated"));
         ui->activeButton->hide();
+    } else {
+        QDBusMessage dateReply = activeInterface.get()->call("date");
+        QString dateRes;
+        if (dateReply.type() == QDBusMessage::ReplyMessage) {
+            dateRes = dateReply.arguments().at(0).toString();
+            if (!dateRes.isEmpty()) {
+                ui->activeContent->setText(tr("The system has expired. The expiration time is:") + dateRes);
+            } else {
+                ui->activeContent->setText(tr("Activated"));
+            }
+        }
     }
-
     ui->serviceContent->setText(serial);
 
     connect(ui->activeButton, &QPushButton::clicked, this, &About::runActiveWindow);
