@@ -214,6 +214,7 @@ void About::setupSerialComponent() {
     if (1 == status) {
         ui->activeContent->setText(tr("Activated"));
         ui->activeButton->hide();
+        ui->trialButton->hide();
     } else {
         QDBusMessage dateReply = activeInterface.get()->call("date");
         QString dateRes;
@@ -222,7 +223,7 @@ void About::setupSerialComponent() {
             if (!dateRes.isEmpty()) {
                 ui->activeContent->setText(tr("The system has expired. The expiration time is:") + dateRes);
             } else {
-                ui->activeContent->setText(tr("Activated"));
+                ui->activeContent->setText(tr("Inactivated"));
             }
         }
     }
