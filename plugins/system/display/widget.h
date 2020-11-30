@@ -214,7 +214,7 @@ class Widget : public QWidget
 
     QButtonGroup *singleButton;
 
-    QSharedPointer<QDBusInterface> *mUPowerInterface;
+    QSharedPointer<QDBusInterface> mUPowerInterface;
 
     int screenScale = 1;
     // 是否为夜间模式

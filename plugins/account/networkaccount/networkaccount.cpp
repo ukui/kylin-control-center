@@ -21,6 +21,7 @@
 
 networkaccount::networkaccount() : mFirstLoad(true)
 {
+    //~ contents_path /Cloud Account/Cloud Account
     pluginName = tr("Cloud Account");
     pluginType = ACCOUNT;
 }
