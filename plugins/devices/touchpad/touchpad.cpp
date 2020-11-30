@@ -35,15 +35,15 @@ extern "C" {
 #include <X11/Xatom.h>
 }
 
-#define TOUCHPAD_SCHEMA "org.ukui.peripherals-touchpad"
-#define ACTIVE_TOUCHPAD_KEY "touchpad-enabled"
+#define TOUCHPAD_SCHEMA          "org.ukui.peripherals-touchpad"
+#define ACTIVE_TOUCHPAD_KEY      "touchpad-enabled"
 #define DISABLE_WHILE_TYPING_KEY "disable-while-typing"
-#define TOUCHPAD_CLICK_KEY "tap-to-click"
-#define V_EDGE_KEY "vertical-edge-scrolling"
-#define H_EDGE_KEY "horizontal-edge-scrolling"
-#define V_FINGER_KEY "vertical-two-finger-scrolling"
-#define H_FINGER_KEY "horizontal-two-finger-scrolling"
-#define N_SCROLLING "none"
+#define TOUCHPAD_CLICK_KEY       "tap-to-click"
+#define V_EDGE_KEY               "vertical-edge-scrolling"
+#define H_EDGE_KEY               "horizontal-edge-scrolling"
+#define V_FINGER_KEY             "vertical-two-finger-scrolling"
+#define H_FINGER_KEY             "horizontal-two-finger-scrolling"
+#define N_SCROLLING              "none"
 
 bool findSynaptics();
 bool _supportsXinputDevices();
@@ -139,6 +139,7 @@ void Touchpad::setupComponent(){
 
     connect(enableBtn, &SwitchButton::checkedChanged, [=](bool checked){
         tpsettings->set(ACTIVE_TOUCHPAD_KEY, checked);
+        setModuleVisible(checked);
     });
 
     connect(typingBtn, &SwitchButton::checkedChanged, [=](bool checked){
@@ -172,6 +173,7 @@ void Touchpad::initTouchpadStatus(){
     //初始化启用按钮
     enableBtn->blockSignals(true);
     enableBtn->setChecked(tpsettings->get(ACTIVE_TOUCHPAD_KEY).toBool());
+    setModuleVisible(tpsettings->get(ACTIVE_TOUCHPAD_KEY).toBool());
     enableBtn->blockSignals(false);
 
     // 初始化打字禁用
@@ -200,6 +202,12 @@ QString Touchpad::_findKeyScrollingType(){
     if (tpsettings->get(H_FINGER_KEY).toBool())
         return H_FINGER_KEY;
     return N_SCROLLING;
+}
+
+void Touchpad::setModuleVisible(bool visible) {
+    ui->typingFrame->setVisible(visible);
+    ui->clickFrame->setVisible(visible);
+    ui->scrollingFrame->setVisible(visible);
 }
 
 bool findSynaptics(){
