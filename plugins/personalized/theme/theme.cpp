@@ -46,15 +46,15 @@
 #define ICON_QT_KEY "icon-theme-name"
 
 // 窗口管理器Marco主题
-#define MARCO_SCHEMA "org.gnome.desktop.wm.preferences"
+#define MARCO_SCHEMA    "org.gnome.desktop.wm.preferences"
 #define MARCO_THEME_KEY "theme"
 
-#define ICONTHEMEPATH "/usr/share/icons/"
-#define SYSTHEMEPATH "/usr/share/themes/"
+#define ICONTHEMEPATH       "/usr/share/icons/"
+#define SYSTHEMEPATH        "/usr/share/themes/"
 #define CURSORS_THEMES_PATH "/usr/share/icons/"
 
 #define CURSOR_THEME_SCHEMA "org.ukui.peripherals-mouse"
-#define CURSOR_THEME_KEY "cursor-theme"
+#define CURSOR_THEME_KEY    "cursor-theme"
 
 #define ICONWIDGETHEIGH 74
 
@@ -64,9 +64,9 @@
 #define PERSONALSIE_BLURRY_KEY "blurry"
 #define PERSONALSIE_EFFECT_KEY "effect"
 
-const QString defCursor = "DMZ-White";
+const QString kDefCursor =           "DMZ-White";
 const QString UbuntuVesionEnhance = "20.10";
-const QString kXder = "XRender";
+const QString kXder =               "XRender";
 
 const int transparency = 75;
 
@@ -521,7 +521,7 @@ void Theme::initCursorTheme(){
         cursorThemeWidgetGroup->addWidget(widget);
 
         //初始化指针主题选中界面
-        if (currentCursorTheme == cursor || (currentCursorTheme.isEmpty() && cursor == defCursor)){
+        if (currentCursorTheme == cursor || (currentCursorTheme.isEmpty() && cursor == kDefCursor)){
             cursorThemeWidgetGroup->setCurrentWidget(widget);
             widget->setSelectedStatus(true);
         } else {
@@ -647,8 +647,14 @@ void Theme::resetBtnClickSlot() {
     emit ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
 
     // reset cursor default theme
-    QString cursorTheme = "DMZ-White";
-    curSettings->set(CURSOR_THEME_KEY,cursorTheme);
+    curSettings->reset(CURSOR_THEME_KEY);
+    QString cursorTheme = kDefCursor;
+    QString defaultCursor = curSettings->get(CURSOR_THEME_KEY).toString();
+    if (defaultCursor.isEmpty()) {
+        curSettings->set(CURSOR_THEME_KEY, kDefCursor);
+    } else {
+        cursorTheme = defaultCursor;
+    }
 
     //reset icon default theme
     qtSettings->reset(ICON_QT_KEY);
