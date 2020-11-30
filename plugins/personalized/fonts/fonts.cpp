@@ -54,6 +54,7 @@
 
 QList<int> defaultsizeList = {6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72};
 const QString kErrorFont = "Noto Serif Tibetan";
+const QString kErrorStardFont = "Standard Symbols";
 /*
   设置字体，每套字体包括5个部件，应用程序字体、文档字体、等宽字体、桌面字体和窗口标题字体。
   字体设置为预设值，每套字体除大小不固定，其他字体类别固定。
@@ -208,8 +209,8 @@ void Fonts::setupComponent(){
     QStringList fontfamiles = fontdb.families();
     for (QString font : fontfamiles){
 
-        if (!font.startsWith(kErrorFont, Qt::CaseInsensitive)) {
-            //字体
+        if (!font.startsWith(kErrorFont, Qt::CaseInsensitive) &&
+                !font.startsWith(kErrorStardFont, Qt::CaseInsensitive)) {
             ui->fontSelectComBox->addItem(font);
         }
 
