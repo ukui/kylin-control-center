@@ -58,7 +58,7 @@ private slots:
     void receiveRemoveSignal(QString);
     void Refresh_load_Label_icon();
     void GSetting_value_chanage(const QString &key);
-    void get_pair_item();
+//    void get_pair_item();
     void set_tray_visible(bool);
 private:
     QGSettings *settings;
@@ -91,8 +91,11 @@ private:
 
     QSystemTrayIcon *pSystemTray;
 
+    QLabel *label_2;
     QLabel *loadLabel;
+    QPushButton *discover_refresh;
     QTimer *m_timer;
+    QTimer *discovering_timer;
     int i = 7;
 };
 

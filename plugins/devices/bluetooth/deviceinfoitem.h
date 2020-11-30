@@ -28,8 +28,8 @@ public:
     ~DeviceInfoItem();
     void initInfoPage(DEVICE_TYPE icon_type = DEVICE_TYPE::OTHER,QString d_name = "",DEVICE_STATUS status = DEVICE_STATUS::NOT,BluezQt::DevicePtr device = nullptr);
     QString get_dev_name();
-    void changeDevStatus();
-    void setDevConnectedIcon();
+    void changeDevStatus(bool);
+    void setDevConnectedIcon(bool);
 protected:
     void resizeEvent(QResizeEvent *event);
     void enterEvent(QEvent *event);

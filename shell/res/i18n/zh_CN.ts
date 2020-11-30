@@ -572,10 +572,64 @@ you can restore them to ensure the integrity of your system.</source>
     </message>
 </context>
 <context>
+    <name>BlueToothMain</name>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="67"/>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="331"/>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="439"/>
+        <source>Turn off Bluetooth</source>
+        <translation>关闭蓝牙</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="69"/>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="347"/>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="446"/>
+        <source>Turn on Bluetooth</source>
+        <translation>开启蓝牙</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="81"/>
+        <source>Bluetooth</source>
+        <translation>蓝牙</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="147"/>
+        <source>Show icon on taskbar</source>
+        <translation>在任务栏上显示蓝牙图标</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="166"/>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="435"/>
+        <source>Can now be found as </source>
+        <translation>现在可被发现为 </translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="187"/>
+        <source>Other Devices</source>
+        <translation>设备</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="200"/>
+        <source>Refresh</source>
+        <translation>刷新</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="328"/>
+        <source>Can now be found as &quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="328"/>
+        <source>&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Bluetooth</name>
     <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetooth.cpp" line="6"/>
         <source>Bluetooth</source>
-        <translation type="vanished">蓝牙</translation>
+        <translation>蓝牙</translation>
     </message>
 </context>
 <context>
@@ -1629,6 +1683,24 @@ folder will be deleted!</source>
         <location filename="../../../plugins/personalized/desktop/desktop.cpp" line="53"/>
         <source>Desktop</source>
         <translation>桌面</translation>
+    </message>
+</context>
+<context>
+    <name>DeviceInfoItem</name>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/deviceinfoitem.cpp" line="28"/>
+        <source>Connect</source>
+        <translation>连接</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/deviceinfoitem.cpp" line="33"/>
+        <source>Disconnect</source>
+        <translation>断开</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/deviceinfoitem.cpp" line="38"/>
+        <source>Remove</source>
+        <translation>移除</translation>
     </message>
 </context>
 <context>
@@ -3183,7 +3255,7 @@ folder will be deleted!</source>
 <context>
     <name>MainWidget</name>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.h" line="86"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.h" line="87"/>
         <source>Disconnected</source>
         <translation>未连接</translation>
     </message>
@@ -3195,68 +3267,73 @@ folder will be deleted!</source>
         <translation>您的云账户：%1</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="568"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="576"/>
         <source>Unauthorized device or OSS falied.
 Please retry for login!</source>
         <translation>OSS访问失败，请检查您的网络后再登录！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="190"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="794"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="814"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="802"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="822"/>
         <source>Exit</source>
         <translation>退出登录</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="199"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="200"/>
         <source>Sync</source>
         <translation>同步中</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="220"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="221"/>
         <source>Sign in</source>
         <translation>登录</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="241"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="242"/>
         <source>Stop sync</source>
         <translation>结束同步</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="255"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="257"/>
         <source>Sync your settings</source>
         <translation>同步您的设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="259"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="261"/>
         <source>Your account:%1</source>
         <translation>您的云账户：%1</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="269"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="271"/>
         <source>Auto sync</source>
         <translation>自动同步</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="338"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="340"/>
         <source>Synchronize your personalized settings and data</source>
         <translation>同步您账户的数据以及个性化设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="320"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="431"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="803"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="824"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="322"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="438"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="811"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="832"/>
         <source>The latest time sync is: </source>
         <translation>上次同步时间为: </translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="664"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="577"/>
+        <source>Your account is sign on on other device already!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="672"/>
         <source>This operation may cover your settings!</source>
         <translation>该操作可能覆盖您目前的快捷键！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="909"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="917"/>
         <source>Cloud ID desktop message</source>
         <translation>云账户消息</translation>
     </message>
@@ -3285,7 +3362,7 @@ Please retry for login!</source>
         <translation type="vanished">同步失败，请检查您的网络连接或者登出再重试一次！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="880"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="888"/>
         <source>%1,</source>
         <translation>%1,</translation>
     </message>
@@ -3718,6 +3795,39 @@ Please retry for login!</source>
         <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="113"/>
         <source>Your password is valid!</source>
         <translation>您的密码是有效的！</translation>
+    </message>
+</context>
+<context>
+    <name>PinCodeWidget</name>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/pincodewidget.cpp" line="11"/>
+        <source>Is it paired with &quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/pincodewidget.cpp" line="11"/>
+        <source>&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/pincodewidget.cpp" line="12"/>
+        <source>Please make sure the number displayed on &quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/pincodewidget.cpp" line="12"/>
+        <source>&quot; matches the number below. Please do not enter this code on any other accessories.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/pincodewidget.cpp" line="40"/>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/pincodewidget.cpp" line="50"/>
+        <source>Refush</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
