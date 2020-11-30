@@ -57,6 +57,9 @@ public:
     QString _findKeyScrollingType();
 
 private:
+    void setModuleVisible(bool visible);
+
+private:
     Ui::Touchpad *ui;
 
     QString pluginName;
