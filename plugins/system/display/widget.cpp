@@ -1519,26 +1519,29 @@ void Widget::initUiComponent() {
         ui->brightnessframe->setVisible(true);
     }
 
-    QDBusInterface batteryInterface("org.freedesktop.UPower",
-                                    "/org/freedesktop/UPower",
-                                    "org.freedesktop.DBus.Properties",
-                                     QDBusConnection::systemBus());
-    if (!batteryInterface.isValid()) {
+    mUPowerInterface = QSharedPointer<QDBusInterface>(
+                new QDBusInterface("org.freedesktop.UPower",
+                                   "/org/freedesktop/UPower",
+                                   "org.freedesktop.DBus.Properties",
+                                   QDBusConnection::systemBus()));
+
+    if (!mUPowerInterface.get()->isValid()) {
         qDebug() << "Create UPower Battery Interface Failed : " << QDBusConnection::systemBus().lastError();
         return;
     }
 
     QDBusReply<QVariant> batteryInfo;
-    batteryInfo  = batteryInterface.call("Get", "org.freedesktop.UPower", "OnBattery");
+    batteryInfo  = mUPowerInterface.get()->call("Get", "org.freedesktop.UPower", "OnBattery");
     if (batteryInfo.isValid()) {
         mOnBattery = batteryInfo.value().toBool();
     }
 
-
-
-    batteryInterface.connection().connect("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower.DBus.Properties", "PropertiesChanged",
-                                   this, SLOT(propertiesChangedSlot(QString, QMap<QString, QVariant>, QStringList)));
-
+    mUPowerInterface.get()->connection().connect("org.freedesktop.UPower",
+                                                 "/org/freedesktop/UPower",
+                                                 "org.freedesktop.DBus.Properties",
+                                                 "PropertiesChanged",
+                                                 this,
+                                                 SLOT(propertiesChangedSlot(QString, QMap<QString, QVariant>, QStringList)));
 }
 
 void Widget::setRedShiftIsValid(bool redshiftIsValid) {
@@ -1563,7 +1566,7 @@ void Widget::initNightStatus() {
     QString tmpNight = qbaOutput;
     mIsNightMode = (tmpNight=="active\n" ? true : false);
 
-    if (isRedShiftValid){
+    if (isRedShiftValid) {
         updateNightStatus();
     }
     setRedShiftIsValid(isRedShiftValid);
