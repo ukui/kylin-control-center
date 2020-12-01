@@ -116,30 +116,20 @@ void Wallpaper::initSearchText() {
 }
 
 void Wallpaper::setupComponent(){
-
-//    ui->browserLocalwpBtn->hide();
-//    ui->browserOnlinewpBtn->hide();
-    //背景形式
+    // 背景形式
     QStringList formList;
     formList << tr("picture") << tr("color")/* << tr("slideshow")*/ ;
-//    ui->formComBox->addItems(formList);
     ui->formComBox->addItem(formList.at(0), PICTURE);
     ui->formComBox->addItem(formList.at(1), COLOR);
-//    ui->formComBox->addItem(formList.at(2), SLIDESHOW);
 
-    //预览遮罩
-//    MaskWidget * maskWidget = new MaskWidget(ui->previewLabel);
-//    maskWidget->setGeometry(0, 0, ui->previewLabel->width(), ui->previewLabel->height());
-
-    ///图片背景
+    // 图片背景
     picFlowLayout = new FlowLayout(ui->picListWidget);
     picFlowLayout->setContentsMargins(0, 0, 0, 0);
     ui->picListWidget->setLayout(picFlowLayout);
-    //纯色背景
+    // 纯色背景
     colorFlowLayout = new FlowLayout(ui->colorListWidget);
     colorFlowLayout->setContentsMargins(0, 0, 0, 0);
     ui->colorListWidget->setLayout(colorFlowLayout);
-
 
     colWgt = new HoverWidget("");
     colWgt->setObjectName("colWgt");
@@ -172,7 +162,7 @@ void Wallpaper::setupComponent(){
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(windowText);");
     });
-    //打开自定义颜色面板
+    // 打开自定义颜色面板
     connect(colWgt, &HoverWidget::widgetClicked,[=](QString mname){
         Q_UNUSED(mname);
         colordialog = new ColorDialog();
@@ -181,7 +171,7 @@ void Wallpaper::setupComponent(){
 
     });
 
-    //壁纸放置方式
+    // 壁纸放置方式
     ui->picOptionsComBox->addItem(tr("wallpaper"), "wallpaper");
     ui->picOptionsComBox->addItem(tr("centered"), "centered");
     ui->picOptionsComBox->addItem(tr("scaled"), "scaled");
@@ -189,12 +179,7 @@ void Wallpaper::setupComponent(){
     ui->picOptionsComBox->addItem(tr("zoom"), "zoom");
     ui->picOptionsComBox->addItem(tr("spanned"), "spanned");
 
-    //屏蔽背景放置方式无效
-    //ui->picOptionsComBox->hide();
-    //ui->picOptionsLabel->hide();
-    //ui->switchFrame_2->hide();
-
-    //屏蔽纯色背景的确定按钮
+    // 屏蔽纯色背景的确定按钮
     ui->cancelBtn->hide();
     ui->certainBtn->hide();
 }
@@ -224,20 +209,6 @@ void Wallpaper::setupConnect(){
 
     pObject->moveToThread(pThread);
     connect(pThread, &QThread::started, pObject, &WorkerObject::run);
-//    connect(pThread, &QThread::finished, this, [=](){
-//        if (ui->formComBox->currentIndex() == PICTURE){
-//           设置当前壁纸放置方式
-//            if (wallpaperinfosMap.contains(filename)){
-//                QMap<QString, QString> currentwpMap = wallpaperinfosMap.value(filename);
-//                if (currentwpMap.contains("options")){
-//                    QString opStr = QString::fromLocal8Bit("%1").arg(currentwpMap.value("options"));
-//                    ui->picOptionsComBox->blockSignals(true);
-//                    ui->picOptionsComBox->setCurrentText(tr("%1").arg(opStr));
-//                    ui->picOptionsComBox->blockSignals(false);
-//                }
-//            }
-//        }
-//    });
     connect(pThread, &QThread::finished, this, [=](){
 
 
@@ -275,7 +246,7 @@ void Wallpaper::setupConnect(){
             QString widgetQss = QString("QWidget{background: %1; border-radius: 6px;}").arg(color);
             ui->previewWidget->setStyleSheet(widgetQss);
 
-            ///设置系统纯色背景
+            // 设置系统纯色背景
             bgsettings->set(FILENAME, "");
             bgsettings->set(PRIMARY, QVariant(color));
             bgsettings->set(SECONDARY, QVariant(color));
@@ -299,10 +270,7 @@ void Wallpaper::setupConnect(){
             ui->picOptionsComBox->hide();
             ui->picOptionsLabel->hide();
             ui->switchFrame_2->hide();
-        } else if (currentPage == PICTURE){
-            //ui->picOptionsComBox->show();
-            //ui->picOptionsLabel->show();
-            //ui->switchFrame_2->show();
+        } else if (currentPage == PICTURE) {
             ui->picOptionsComBox->hide();
             ui->picOptionsLabel->hide();
             ui->switchFrame_2->hide();
