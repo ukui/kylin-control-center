@@ -41,7 +41,7 @@ DeviceInfoItem::DeviceInfoItem(QWidget *parent) : QWidget(parent)
     connect(del_btn,SIGNAL(clicked(bool)),this,SLOT(onClick_Delete_Btn(bool)));
 
     icon_timer = new QTimer(this);
-    icon_timer->setInterval(200);
+    icon_timer->setInterval(100);
 }
 
 DeviceInfoItem::~DeviceInfoItem()
@@ -129,12 +129,8 @@ void DeviceInfoItem::enterEvent(QEvent *event)
 
 void DeviceInfoItem::leaveEvent(QEvent *event)
 {
-
-    if (d_status == DEVICE_STATUS::LINK){
-        disconnect_btn->setVisible(false);
-    }else if (d_status == DEVICE_STATUS::UNLINK){
-        connect_btn->setVisible(false);
-    }
+    disconnect_btn->setVisible(false);
+    connect_btn->setVisible(false);
 
     del_btn->setVisible(false);
 
