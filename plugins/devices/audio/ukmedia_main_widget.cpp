@@ -3582,7 +3582,7 @@ void UkmediaMainWidget::context_state_callback(pa_context *c, void *userdata) {
         }
         case PA_CONTEXT_TERMINATED:
         default:
-            qApp->quit();
+//            qApp->quit();
             return;
     }
 }
@@ -3642,10 +3642,10 @@ void UkmediaMainWidget::show_error(const char *txt) {
     char buf[256];
 
     snprintf(buf, sizeof(buf), "%s: %s", txt, pa_strerror(pa_context_errno(context)));
-
-    QMessageBox::critical(nullptr, QObject::tr("Error"), QString::fromUtf8(buf));
+    qDebug() << "show error:" << QString::fromUtf8(buf);
+//    QMessageBox::critical(nullptr, QObject::tr("Error"), QString::fromUtf8(buf));
 //    qApp->quit();
-    QApplication::quit();
+//    QApplication::quit();
 }
 
 pa_context* UkmediaMainWidget::get_context()
