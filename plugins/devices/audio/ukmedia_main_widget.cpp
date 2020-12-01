@@ -617,12 +617,12 @@ void UkmediaMainWidget::addStream (UkmediaMainWidget *m_pWidget, MateMixerStream
         m_pLabel = mate_mixer_stream_get_label (m_pStream);
         QString deviceName = m_pName;
         qDebug() << "device name ***" << deviceName << m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->count();
-        if (m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->count() == 0) {
+        if (m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->count() == 0 && !m_pWidget->m_pInputStreamList->contains(m_pName)) {
             m_pWidget->m_pInputStreamList->append(m_pName);
             m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->addItem(m_pLabel);
         }
         else {
-            if (!deviceName.contains("monitor",Qt::CaseInsensitive)) {
+            if (!deviceName.contains("monitor",Qt::CaseInsensitive) && !m_pWidget->m_pInputStreamList->contains(m_pName)) {
                 m_pWidget->m_pInputStreamList->append(m_pName);
                 m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->addItem(m_pLabel);
             }
@@ -642,7 +642,7 @@ void UkmediaMainWidget::addStream (UkmediaMainWidget *m_pWidget, MateMixerStream
         m_pName  = mate_mixer_stream_get_name (m_pStream);
         m_pLabel = mate_mixer_stream_get_label (m_pStream);
         qDebug() << "输出设备名为:" <<m_pName;
-        if (!strstr(m_pName,".echo-cancel")) {
+        if (!strstr(m_pName,".echo-cancel") && !(m_pWidget->m_pOutputStreamList->contains(m_pName))) {
             m_pWidget->m_pOutputStreamList->append(m_pName);
             m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->addItem(m_pLabel);
         }
