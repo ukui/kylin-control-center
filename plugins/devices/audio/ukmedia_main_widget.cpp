@@ -1274,11 +1274,13 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
         }
         m_pInputs = m_pInputs->next;
     }
-
+    //当前的麦克风可用开始监听输入等级
     if (show == TRUE) {
+        mate_mixer_stream_control_set_monitor_enabled(m_pControl,true);
         g_debug ("Input icon enabled");
     }
     else {
+        mate_mixer_stream_control_set_monitor_enabled(m_pControl,false);
         g_debug ("There is no recording application, input icon disabled");
     }
     streamStatusIconSetControl(m_pWidget, m_pControl);
@@ -1289,12 +1291,12 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
     else {
         g_debug ("There is no output stream/control, output icon disabled");
     }
-    //开始监听输入等级
+
 //    if (show == TRUE ) {
-        flags = mate_mixer_stream_control_get_flags(m_pControl);
-        if (m_pWidget->m_pDeviceStr == UKUI_INPUT_REAR_MIC || m_pWidget->m_pDeviceStr == UKUI_INPUT_FRONT_MIC || m_pWidget->m_pDeviceStr == UKUI_OUTPUT_HEADPH) {
-            mate_mixer_stream_control_set_monitor_enabled(m_pControl,true);
-        }
+//        flags = mate_mixer_stream_control_get_flags(m_pControl);
+//        if (m_pWidget->m_pDeviceStr == UKUI_INPUT_REAR_MIC || m_pWidget->m_pDeviceStr == UKUI_INPUT_FRONT_MIC || m_pWidget->m_pDeviceStr == UKUI_OUTPUT_HEADPH) {
+//            mate_mixer_stream_control_set_monitor_enabled(m_pControl,true);
+//        }
         /* Enable level bar only if supported by the control */
         if (flags & MATE_MIXER_STREAM_CONTROL_HAS_MONITOR) {
         }
