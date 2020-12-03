@@ -29,6 +29,8 @@
 
 #include "shell/interface.h"
 
+#include "commonComponent/ComboxFrame/comboxframe.h"
+
 namespace Ui {
 class Power;
 }
@@ -80,11 +82,24 @@ private:
     QStringList buttonStringList;
     QStringList iconShowList;
 
+    QStringList mPowerKeys;
+
     bool settingsCreate;
     bool isExitsPower;
     bool mFirstLoad;
+
+    ComboxFrame *mHibernate;
+    QDBusInterface *mUkccInterface;
+
+private:
+    void initGeneralSet();
+    bool getHibernateStatus();
+    QString  getHibernateTime();
+    void initDbus();
+
 private slots:
     void setIdleTime(int idleTime);
+    void setHibernateTime(QString hibernate);
 };
 
 #endif // POWER_H

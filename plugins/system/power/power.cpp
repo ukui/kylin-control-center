@@ -22,6 +22,10 @@
 #include "powermacrodata.h"
 
 #include <QDebug>
+#include <QDBusInterface>
+#include <QDBusReply>
+#include <QDBusConnection>
+#include <QSettings>
 
 typedef enum {
     BALANCE,
@@ -44,6 +48,9 @@ const int DISPLAY_BALANCE   =  10 * 60;
 const int COMPUTER_BALANCE  = 30 * 60;
 const int DISPLAY_SAVING    = 20 * 60;
 const int COMPUTER_SAVING   = 2 * 60 * 60;
+
+const QStringList kHibernate { QObject::tr("Never"),QObject::tr("10min"), QObject::tr("20min"),
+                               QObject::tr("40min"), QObject::tr("80min")};
 
 Power::Power() : mFirstLoad(true)
 {
@@ -78,11 +85,17 @@ QWidget * Power::get_plugin_ui() {
         const QByteArray id(POWERMANAGER_SCHEMA);
         const QByteArray sessionId(SESSION_SCHEMA);
 
+        initDbus();
         setupComponent();
         isPowerSupply();
         if (QGSettings::isSchemaInstalled(id)) {
             settings = new QGSettings(id, QByteArray(), this);
             sessionSetting = new QGSettings(sessionId, QByteArray(), this);
+
+            mPowerKeys = settings->keys();
+
+            initGeneralSet();
+
             initModeStatus();
             setupConnect();
             initPowerOtherStatus();
@@ -131,6 +144,7 @@ void Power::isPowerSupply() {
         ui->closeLidFrame->setVisible(false);
         ui->title2Label->setVisible(false);
         ui->iconFrame->setVisible(false);
+        ui->verticalSpacer_2->changeSize(0, 0);
     } else {
         isExitsPower = true ;
         bool status = briginfo.value().toBool();
@@ -149,6 +163,10 @@ void Power::setIdleTime(int idleTime) {
     if (ui->closeComboBox->currentIndex()) {
         ui->closeLabel->setText(QString(tr("Enter idle state %1 min and close after %2 min :")).arg(idleTime).arg(idleTime + closetime));
     }
+}
+
+void Power::setHibernateTime(QString hibernate) {
+    mUkccInterface->call("setSuspendThenHibernate", hibernate);
 }
 
 void Power::setupComponent() {
@@ -467,4 +485,62 @@ void Power::refreshUI() {
 // 空闲时间
 int Power::getIdleTime() {
     return sessionSetting->get(IDLE_DELAY_KEY).toInt();
+}
+
+void Power::initGeneralSet() {
+    if (getHibernateStatus() && mPowerKeys.contains("afterIdleAction")) {
+        mHibernate = new ComboxFrame(tr("After suspending this time, the system will go to sleep:"), pluginWidget);
+
+        ui->powerLayout->addWidget(new QLabel(tr("General Settings")));
+        ui->powerLayout->addWidget(mHibernate);
+
+        ui->powerLayout->addStretch();
+
+        for(int i = 0; i < kHibernate.length(); i++) {
+            mHibernate->mCombox->addItem(kHibernate.at(i));
+        }
+
+        if (getHibernateTime().isEmpty()) {
+            mHibernate->mCombox->setCurrentIndex(0);
+        } else {
+            mHibernate->mCombox->setCurrentText(getHibernateTime());
+        }
+
+        connect(mHibernate->mCombox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+            setHibernateTime(mHibernate->mCombox->currentText());
+            if (index) {
+                settings->set(HIBERNATE_KEY, "suspend-then-hibernate");
+            } else {
+                settings->set(HIBERNATE_KEY, "suspend");
+            }
+        });
+    }
+}
+
+bool Power::getHibernateStatus() {
+
+    QDBusInterface loginInterface("org.freedesktop.login1",
+                                  "/org/freedesktop/login1",
+                                  "org.freedesktop.login1.Manager",
+                                  QDBusConnection::systemBus());
+
+    if (loginInterface.isValid()) {
+        QDBusReply<QString> reply = loginInterface.call("CanSuspendThenHibernate");
+        return reply.value() == "yes" ? true : false;
+    }
+}
+
+QString Power::getHibernateTime() {
+    QDBusReply<QString> hibernateTime = mUkccInterface->call("getSuspendThenHibernate");
+    if (hibernateTime.isValid()) {
+        return hibernateTime.value();
+    }
+    return "";
+}
+
+void Power::initDbus() {
+    mUkccInterface = new QDBusInterface("com.control.center.qt.systemdbus",
+                                        "/",
+                                        "com.control.center.interface",
+                                        QDBusConnection::systemBus());
 }

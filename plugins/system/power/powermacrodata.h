@@ -31,6 +31,7 @@
 #define BUTTON_SUSPEND_KEY      "button-suspend"
 #define BUTTON_POWER_KEY        "button-power"
 #define IDLE_DIM_TIME_KEY       "idle-dim-time"
+#define HIBERNATE_KEY           "after-idle-action"
 
 #define PRESENT_VALUE           "present"
 #define ALWAYS_VALUE            "always"

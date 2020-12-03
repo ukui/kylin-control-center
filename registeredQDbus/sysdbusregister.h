@@ -23,8 +23,8 @@
 #include <QObject>
 #include <QCoreApplication>
 #include <QProcess>
-
 #include <QFile>
+#include <QSettings>
 
 class SysdbusRegister : public QObject
 {
@@ -37,29 +37,34 @@ public:
     ~SysdbusRegister();
 
 private:
-//    QString m_name;
+    QString mHibernateFile;
+
+    QSettings *mHibernateSet;
 
 signals:
     Q_SCRIPTABLE void nameChanged(QString);
     Q_SCRIPTABLE void computerinfo(QString);
 
 public slots:
-//    Q_SCRIPTABLE QString name() const;
-//    Q_SCRIPTABLE void SetName(QString name);
 
     Q_SCRIPTABLE void exitService();
     Q_SCRIPTABLE QString GetComputerInfo();
     Q_SCRIPTABLE void systemRun(QString cmd);
 
-    //设置免密登录状态
+    // 设置免密登录状态
     Q_SCRIPTABLE void setNoPwdLoginStatus(bool status,QString username);
 
-    //获取免密登录状态
+    // 获取免密登录状态
     Q_SCRIPTABLE QString getNoPwdLoginStatus();
 
-    //设置自动登录状态
+    // 设置自动登录状态
     Q_SCRIPTABLE void setAutoLoginStatus(QString username);
 
+    // 获取挂起到休眠时间
+    Q_SCRIPTABLE QString getSuspendThenHibernate();
+
+    // 设置挂起到休眠时间
+    Q_SCRIPTABLE void setSuspendThenHibernate(QString time);
 };
 
 #endif // SYSDBUSREGISTER_H

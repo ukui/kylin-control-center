@@ -20,30 +20,26 @@
 #include "sysdbusregister.h"
 
 #include <QDebug>
-#include <QSettings>
 #include <QSharedPointer>
+#include <QRegExp>
+#include <stdlib.h>
 
 SysdbusRegister::SysdbusRegister()
 {
+    mHibernateFile = "/etc/systemd/sleep.conf";
+    mHibernateSet = new QSettings(mHibernateFile, QSettings::IniFormat, this);
+    mHibernateSet->setIniCodec("UTF-8");
 }
 
 SysdbusRegister::~SysdbusRegister()
 {
 }
 
-//QString SysdbusRegister::name () const{
-//    return m_name;
-//}
-
-//void SysdbusRegister::SetName(QString name){
-//    m_name = name;
-//}
-
-void SysdbusRegister::exitService(){
+void SysdbusRegister::exitService() {
     qApp->exit(0);
 }
 
-QString SysdbusRegister::GetComputerInfo(){
+QString SysdbusRegister::GetComputerInfo() {
     QByteArray ba;
     FILE * fp = NULL;
     char cmd[128];
@@ -86,7 +82,7 @@ QString SysdbusRegister::getNoPwdLoginStatus(){
 }
 
 //设置免密登录状态
-void SysdbusRegister::setNoPwdLoginStatus(bool status,QString username){
+void SysdbusRegister::setNoPwdLoginStatus(bool status,QString username) {
 
     QString cmd;
     if(true == status){
@@ -98,8 +94,7 @@ void SysdbusRegister::setNoPwdLoginStatus(bool status,QString username){
 }
 
 // 设置自动登录状态
-void SysdbusRegister::setAutoLoginStatus(QString username)
-{
+void SysdbusRegister::setAutoLoginStatus(QString username) {
     QString filename = "/etc/lightdm/lightdm.conf";
     QSharedPointer<QSettings>  autoSettings = QSharedPointer<QSettings>(new QSettings(filename, QSettings::IniFormat));
     autoSettings->beginGroup("SeatDefaults");
@@ -108,4 +103,24 @@ void SysdbusRegister::setAutoLoginStatus(QString username)
 
     autoSettings->endGroup();
     autoSettings->sync();
+}
+
+QString SysdbusRegister::getSuspendThenHibernate() {
+    mHibernateSet->beginGroup("Sleep");
+
+    QString time = mHibernateSet->value("HibernateDelaySec").toString();
+
+    mHibernateSet->endGroup();
+    mHibernateSet->sync();
+
+    return time;
+}
+
+void SysdbusRegister::setSuspendThenHibernate(QString time) {
+    mHibernateSet->beginGroup("Sleep");
+
+    mHibernateSet->setValue("HibernateDelaySec", time);
+
+    mHibernateSet->endGroup();
+    mHibernateSet->sync();
 }

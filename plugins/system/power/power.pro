@@ -1,8 +1,9 @@
+include(../../../env.pri)
 QT       += widgets dbus
 TEMPLATE = lib
 CONFIG   += plugin
 
-include(../../../env.pri)
+include($$PROJECT_COMPONENTSOURCE/comboxframe.pri)
 
 TARGET = $$qtLibraryTarget(power)
 DESTDIR = ../..
