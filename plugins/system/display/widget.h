@@ -34,22 +34,6 @@ class QQuickView;
 class QQuickWidget;
 class QStyledItemDelegate;
 
-typedef struct xml{
-    QString isClone;
-    QString outputName;
-    QString vendorName;
-    QString productName;
-    QString serialNum;
-    QString widthValue;
-    QString heightValue;
-    QString rateValue;
-    QString posxValue;
-    QString posyValue;
-    QString rotationValue;
-    QString isPrimary;
-    bool isEnable;
-}xmlFile;
-
 typedef enum {
     SUN,
     CUSTOM,
@@ -82,11 +66,7 @@ class Widget : public QWidget
     void initConnection();
     QString getScreenName(QString name = "");
     void initTemptSlider();
-    void writeScreenXml(int count);
-    // 初始化屏幕配置文件
-    void initScreenXml(int count);
-    // 获取edid信息
-    void getEdidInfo(QString monitorName,xmlFile *xml);
+    void writeScreenXml();
     void setIsNightMode(bool isNightMode);
 
     float converToScale(const int value);
@@ -194,9 +174,6 @@ class Widget : public QWidget
     QString brightnessFile = nullptr;
 
     QStringList mPowerKeys;
-
-    // xml文件
-    xmlFile inputXml[100];
 
     SwitchButton *mNightButton       = nullptr;
     SwitchButton *mCloseScreenButton = nullptr;

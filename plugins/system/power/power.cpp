@@ -94,7 +94,7 @@ QWidget * Power::get_plugin_ui() {
 
             mPowerKeys = settings->keys();
 
-            initGeneralSet();
+//            initGeneralSet();
 
             initModeStatus();
             setupConnect();

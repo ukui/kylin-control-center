@@ -818,21 +818,14 @@ void Widget::save() {
     }
 
     const KScreen::ConfigPtr &config = this->currentConfig();
-    const int countOutput = config->connectedOutputs().count();
 
     bool atLeastOneEnabledOutput = false;
-    int i = 0;
-    int connectedScreen = 0;
-    int outputCount = 0;
     Q_FOREACH(const KScreen::OutputPtr &output, config->outputs()) {
-        KScreen::ModePtr mode = output->currentMode();
         if (output->isEnabled()) {
             atLeastOneEnabledOutput = true;
-            connectedScreen++;
         }
         if (!output->isConnected())
             continue;
-        outputCount++;
 
         QMLOutput *base = mScreen->primaryOutput();
         if (!base) {
@@ -848,34 +841,6 @@ void Widget::save() {
                 return;
             }
         }
-        inputXml[i].isClone = base->isCloneMode() == true? "yes" : "no";
-        inputXml[i].outputName = output->name();
-
-        inputXml[i].widthValue = QString::number(mode->size().width());
-        inputXml[i].heightValue = QString::number(mode->size().height());
-        inputXml[i].rateValue = QString::number(mode->refreshRate());
-
-        inputXml[i].posxValue = (outputCount == 2 && connectedScreen == 1) ? "0" : QString::number(output->pos().x());
-        inputXml[i].posyValue = QString::number(output->pos().y());
-        inputXml[i].vendorName = output->edid()->pnpId();
-
-        auto rotation = [&] ()->QString {
-                if(1 == output->rotation())
-                    return "normal";
-                else if(2 == output->rotation())
-                    return "left";
-                else if(4 == output->rotation())
-                    return "upside_down";
-                else if(8 == output->rotation())
-                    return "right";
-        };
-
-        inputXml[i].rotationValue = rotation();
-        inputXml[i].isPrimary = (output->isPrimary() == true ? "yes" :"no");
-        inputXml[i].isEnable = output->isEnabled();
-
-        getEdidInfo(output->name(),&inputXml[i]);
-        i++;
     }
 
     if (!atLeastOneEnabledOutput ) {
@@ -923,8 +888,7 @@ void Widget::save() {
         op->exec();
     } else {
         mPrevConfig = config->clone();
-        initScreenXml(countOutput);
-        writeScreenXml(countOutput);
+        writeScreenXml();
     }
 }
 
@@ -1163,281 +1127,29 @@ void Widget::initConfigFile(bool changed, bool status) {
     }
 }
 
-void Widget::writeScreenXml(int count) {
-    Q_UNUSED(count)
+void Widget::writeScreenXml() {
+    MateRRScreen *rr_screen;
+    MateRRConfig *rr_config;
 
-    QString homePath = getenv("HOME");
-    QString monitorFile = homePath+"/.config/monitors.xml";
-    QFile file(monitorFile);
-    QDomDocument doc;
+    /* Normally, mate_rr_config_save() creates a backup file based on the
+     * old monitors.xml.  However, if *that* file didn't exist, there is
+     * nothing from which to create a backup.  So, here we'll save the
+     * current/unchanged configuration and then let our caller call
+     * mate_rr_config_save() again with the new/changed configuration, so
+     * that there *will* be a backup file in the end.
+     */
 
-    if (!file.open(QIODevice::ReadOnly)) {
-        qDebug()<<"open file failed"<<endl;
-        return ;
-    }
+    rr_screen = mate_rr_screen_new (gdk_screen_get_default (), NULL); /* NULL-GError */
+    if (!rr_screen)
+            return;
 
-    // 将文件内容读到doc中
-    if (!doc.setContent(&file)) {
-        qDebug()<<"open file failed"<<endl;
-        file.close();
-        return ;
-    }
-    // 关闭文件
-    file.close();
+    rr_config = mate_rr_config_new_current (rr_screen, NULL);
+    mate_rr_config_save (rr_config, NULL); /* NULL-GError */
 
-    // 返回根元素
-    QDomElement docElem = doc.documentElement();
-    // 返回根节点的第一个子结点
-    QDomNode n = docElem.firstChild();
-    if(n.isElement()){
-    }
-    // 如果结点不为空，则转到下一个节点
-    while(!n.isNull())
-    {
-        // 如果结点是元素
-        if (n.isElement())
-        {
-            // 获得元素e的所有子结点的列表
-            QDomElement e = n.toElement();
-            QDomNodeList list = e.childNodes();
-
-            // 遍历该列表
-            for(int i=0; i<list.count(); i++)
-            {
-                QDomNode node = list.at(i);
-                    if (node.isElement()) {
-
-                        QDomNodeList e2 = node.childNodes();
-                        if (node.toElement().tagName() == "clone") {
-                             node.toElement().firstChild().setNodeValue(inputXml[i].isClone);
-                             qDebug() << "    "<< (node.toElement().tagName())
-                                      <<(node.toElement().text());
-
-                        } else if("output" == node.toElement().tagName()
-                            &&inputXml[i-1].outputName == node.toElement().attribute("name")
-                            &&inputXml[i-1].isEnable
-                            &&e2.count() > 3){
-
-                            qDebug() << "    "<< (node.toElement().tagName())
-                                    <<(node.toElement().attribute("name"));
-                            for (int j=0; j<e2.count(); j++) {
-                                QDomNode node2 = e2.at(j);
-                                if (node2.toElement().tagName() == "width") {
-                                    node2.toElement().firstChild().setNodeValue(inputXml[i-1].widthValue);
-                                    qDebug() << "         "<< node2.toElement().tagName()
-                                             <<node2.toElement().text();
-                                } else if(node2.toElement().tagName() == "height") {
-                                    node2.toElement().firstChild().setNodeValue(inputXml[i-1].heightValue);
-                                    qDebug() << "         "<< node2.toElement().tagName()
-                                             <<node2.toElement().text();
-                                } else if(node2.toElement().tagName() == "rate") {
-                                    node2.toElement().firstChild().setNodeValue(inputXml[i-1].rateValue);
-                                    qDebug() << "         "<< node2.toElement().tagName()
-                                             <<node2.toElement().text();
-                                } else if(node2.toElement().tagName() == "x") {
-                                    node2.toElement().firstChild().setNodeValue(inputXml[i-1].posxValue);
-                                    qDebug() << "         "<< node2.toElement().tagName()
-                                             <<node2.toElement().text();
-                                } else if(node2.toElement().tagName() == "y") {
-                                    node2.toElement().firstChild().setNodeValue(inputXml[i-1].posyValue);
-                                    qDebug() << "         "<< node2.toElement().tagName()
-                                             <<node2.toElement().text();
-                                } else if(node2.toElement().tagName() == "rotation") {
-                                    node2.toElement().firstChild().setNodeValue(inputXml[i-1].rotationValue);
-                                    qDebug() << "         "<< node2.toElement().tagName()
-                                             <<node2.toElement().text();
-                                } else if(node2.toElement().tagName() == "primary") {
-                                    node2.toElement().firstChild().setNodeValue(inputXml[i-1].isPrimary);
-                                    qDebug() << "         "<< node2.toElement().tagName()
-                                             <<node2.toElement().text();
-                                }
-                            }
-                         } else if ("output" == node.toElement().tagName()
-                                   &&inputXml[i-1].outputName == node.toElement().attribute("name")
-                                   &&!inputXml[i-1].isEnable
-                                   &&e2.count() > 3) {
-                            for (; e2.count() > 3; ) {
-                                QDomNode node2 = e2.at(2);
-                                qDebug() << "         "<< node2.toElement().tagName()
-                                         <<node2.toElement().text();
-                                node.removeChild(e2.at(3));
-                            }
-                         } else if ("output" == node.toElement().tagName()
-                                   &&inputXml[i-1].outputName == node.toElement().attribute("name")
-                                   &&inputXml[i-1].isEnable
-                                   &&e2.count() <= 3){
-
-                            QDomElement width  = doc.createElement("width");
-                            QDomText widthtext = doc.createTextNode(inputXml[i-1].widthValue);
-                            width.appendChild(widthtext);
-                            node.appendChild(width);
-
-                            QDomElement height  = doc.createElement("height");
-                            QDomText heightext = doc.createTextNode(inputXml[i-1].heightValue);
-                            height.appendChild(heightext);
-                            node.appendChild(height);
-
-                            QDomElement rate  = doc.createElement("rate");
-                            QDomText ratetext = doc.createTextNode(inputXml[i-1].rateValue);
-                            rate.appendChild(ratetext);
-                            node.appendChild(rate);
-
-                            QDomElement x  = doc.createElement("x");
-                            QDomText xtext = doc.createTextNode(inputXml[i-1].posxValue);
-                            x.appendChild(xtext);
-                            node.appendChild(x);
-
-                            QDomElement y  = doc.createElement("y");
-                            QDomText ytext = doc.createTextNode(inputXml[i-1].posyValue);
-                            y.appendChild(ytext);
-                            node.appendChild(y);
-
-                            QDomElement rotation  = doc.createElement("rotation");
-                            QDomText rotationtext = doc.createTextNode(inputXml[i-1].rotationValue);
-                            rotation.appendChild(rotationtext);
-                            node.appendChild(rotation);
-
-                            QDomElement reflect_x  = doc.createElement("reflect_x");
-                            QDomText reflect_xtext = doc.createTextNode("no");
-                            reflect_x.appendChild(reflect_xtext);
-                            node.appendChild(reflect_x);
-
-                            QDomElement reflect_y  = doc.createElement("reflect_y");
-                            QDomText reflect_ytext = doc.createTextNode("no");
-                            reflect_y.appendChild(reflect_ytext);
-                            node.appendChild(reflect_y);
-
-                            QDomElement primary  = doc.createElement("primary");
-                            QDomText primarytext = doc.createTextNode(inputXml[i-1].isPrimary);
-                            primary.appendChild(primarytext);
-                            node.appendChild(primary);
-
-                         } else if (node.toElement().tagName() == "clone") {
-                            node.toElement().firstChild().setNodeValue(inputXml[i-1].isClone);
-                            qDebug() << "    "<< (node.toElement().tagName())
-                                     <<(node.toElement().text());
-                        }
-                    }
-                }
-            }
-        // 转到下一个兄弟结点
-        n = n.nextSibling();
-    }
-
-    if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
-        qDebug()<<"save file failed"<<endl;
-        return ;
-    }
-
-    QTextStream out_stream(&file);
-    doc.save(out_stream,4);
-    file.close();
+    g_object_unref (rr_config);
+    g_object_unref (rr_screen);
 }
 
-
-void Widget::initScreenXml(int count) {
-    QString homePath = getenv("HOME");
-    QString monitorFile = homePath+"/.config/monitors.xml";
-    QFile file(monitorFile);
-
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug()<<"open file failed"<<endl;
-        return ;
-    }
-    QXmlStreamWriter xmlWriter(&file);
-
-    xmlWriter.setAutoFormatting(true);
-    xmlWriter.writeStartElement("monitors");
-    xmlWriter.writeAttribute("version","1");
-    xmlWriter.writeStartElement("configuration");
-    xmlWriter.writeTextElement("clone","no");
-
-    for(int i = 0; i < count; ++i){
-        xmlWriter.writeStartElement("output");
-        xmlWriter.writeAttribute("name",inputXml[i].outputName);
-        xmlWriter.writeTextElement("vendor",inputXml[i].vendorName);
-        xmlWriter.writeTextElement("product",inputXml[i].productName);
-        xmlWriter.writeTextElement("serial",inputXml[i].serialNum);
-        xmlWriter.writeTextElement("width",inputXml[i].widthValue);
-        xmlWriter.writeTextElement("height",inputXml[i].heightValue);
-        xmlWriter.writeTextElement("rate",inputXml[i].rateValue);
-        xmlWriter.writeTextElement("x",inputXml[i].posxValue);
-        xmlWriter.writeTextElement("y",inputXml[i].posyValue);
-        xmlWriter.writeTextElement("rotation",inputXml[i].rotationValue);
-        xmlWriter.writeTextElement("reflect_x","no");
-        xmlWriter.writeTextElement("reflect_y","no");
-        xmlWriter.writeTextElement("primary",inputXml[i].isPrimary);
-        xmlWriter.writeEndElement();
-    }
-    xmlWriter.writeEndElement();
-    xmlWriter.writeEndElement();
-}
-
-void Widget::getEdidInfo(QString monitorName,xmlFile *xml) {
-    int i;
-    int modelDec;
-    int serialDec;
-
-    GList *justTurnedOn;
-
-    MateRRScreen *rwScreen;
-    MateRRConfig *config;
-    MateRROutputInfo **outputs;
-
-    rwScreen = mate_rr_screen_new (gdk_screen_get_default (), NULL);
-    config = mate_rr_config_new_current (rwScreen, NULL);
-    justTurnedOn = NULL;
-    outputs = mate_rr_config_get_outputs (config);
-
-    for (i = 0; outputs[i] != NULL; i++) {
-        MateRROutputInfo *output = outputs[i];
-        if (mate_rr_output_info_is_connected (output) && !mate_rr_output_info_is_active (output)) {
-            justTurnedOn = g_list_prepend (justTurnedOn, GINT_TO_POINTER (i));
-        }
-    }
-
-    for (i = 0; outputs[i] != NULL; i++) {
-        MateRROutputInfo *output = outputs[i];
-        if (g_list_find (justTurnedOn, GINT_TO_POINTER (i))) {
-            continue;
-        }
-
-        if (mate_rr_output_info_is_active (output)) {
-            g_assert (mate_rr_output_info_is_connected (output));
-            char *name = mate_rr_output_info_get_name(output);;
-            unsigned int product = mate_rr_output_info_get_product(output);
-            unsigned int serial = mate_rr_output_info_get_serial(output);
-            qDebug()<<"the product and serial is------->"<<name<<" "<<product<<" "<<serial<<endl;
-            if (monitorName == QString(QLatin1String(name))) {
-               modelDec = product;
-               serialDec = serial;
-            }
-        }
-    }
-
-    for (GList *l = justTurnedOn; l; l = l->next) {
-        MateRROutputInfo *output;
-        i = GPOINTER_TO_INT (l->data);
-        output = outputs[i];
-        if (mate_rr_output_info_is_active(output)) {
-            g_assert (mate_rr_output_info_is_connected (output));
-            char *name = mate_rr_output_info_get_name(output);
-            unsigned int product = mate_rr_output_info_get_product(output);
-            unsigned int serial = mate_rr_output_info_get_serial(output);
-            qDebug()<<"the product and serial is------->"<<name<<" "<<product<<" "<<serial<<endl;
-            if (monitorName == QString(QLatin1String(name))) {
-               modelDec = product;
-               serialDec = serial;
-            }
-        }
-    }
-
-    xml->productName = "0x"+QString("%1").arg(modelDec,4,16,QLatin1Char('0'));
-    xml->serialNum = "0x"+QString("%1").arg(serialDec,4,16,QLatin1Char('0'));
-
-    g_list_free (justTurnedOn);
-    g_object_unref (config);
-}
 
 void Widget::setNightMode(const bool nightMode) {
     QProcess process;
