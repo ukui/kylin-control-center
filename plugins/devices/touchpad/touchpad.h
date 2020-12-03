@@ -26,6 +26,10 @@
 
 #include <QGSettings>
 #include <QX11Info>
+#include <QDBusInterface>
+#include <QProcess>
+#include <QDBusReply>
+#include <QVector>
 
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
@@ -52,12 +56,18 @@ public:
 
 public:
     void setupComponent();
+    void initConnection();
     void initTouchpadStatus();
 
     QString _findKeyScrollingType();
 
 private:
     void setModuleVisible(bool visible);
+    bool isWaylandPlatform();
+
+    void initWaylandDbus();
+    void initWaylandTouchpadStatus();
+    void initWaylandConnection();
 
 private:
     Ui::Touchpad *ui;
@@ -74,6 +84,10 @@ private:
     QGSettings * tpsettings;
 
     bool mFirstLoad;
+
+    QDBusInterface *mWaylandIface;
+    QDBusInterface *mDeviceIface;
+
 };
 
 #endif // TOUCHPAD_H

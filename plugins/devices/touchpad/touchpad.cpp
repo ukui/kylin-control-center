@@ -60,9 +60,6 @@ Touchpad::~Touchpad()
 {
     if (!mFirstLoad) {
         delete ui;
-        if (QGSettings::isSchemaInstalled(TOUCHPAD_SCHEMA)){
-            delete tpsettings;
-        }
     }
 }
 
@@ -87,22 +84,27 @@ QWidget *Touchpad::get_plugin_ui(){
         ui->titleLabel->setText(tr("Touchpad Settings"));
         ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-        ui->scrollingTypeComBox->setView(new QListView());
-        const QByteArray id(TOUCHPAD_SCHEMA);
+        setupComponent();
+        if (!isWaylandPlatform()) {
+            ui->scrollingTypeComBox->setView(new QListView());
+            const QByteArray id(TOUCHPAD_SCHEMA);
 
-        if (QGSettings::isSchemaInstalled(TOUCHPAD_SCHEMA)){
-            tpsettings = new QGSettings(id);
-            setupComponent();
-            if (findSynaptics()){
-                qDebug() << "Touch Devices Available";
-                ui->tipLabel->hide();
-                initTouchpadStatus();
-            } else {
-                ui->clickFrame->hide();
-                ui->enableFrame->hide();
-                ui->scrollingFrame->hide();
-                ui->typingFrame->hide();
+            if (QGSettings::isSchemaInstalled(TOUCHPAD_SCHEMA)){
+                tpsettings = new QGSettings(id, QByteArray(), this);
+                initConnection();
+                if (findSynaptics()){
+                    qDebug() << "Touch Devices Available";
+                    ui->tipLabel->hide();
+                    initTouchpadStatus();
+                } else {
+                    ui->clickFrame->hide();
+                    ui->enableFrame->hide();
+                    ui->scrollingFrame->hide();
+                    ui->typingFrame->hide();
+                }
             }
+        } else {
+            initWaylandDbus();
         }
     }
     return pluginWidget;
@@ -118,25 +120,23 @@ const QString Touchpad::name() const {
 }
 
 void Touchpad::setupComponent(){
-    //
     enableBtn = new SwitchButton(pluginWidget);
     ui->enableHorLayout->addWidget(enableBtn);
 
-    //
     typingBtn = new SwitchButton(pluginWidget);
     ui->typingHorLayout->addWidget(typingBtn);
 
-    //
     clickBtn = new SwitchButton(pluginWidget);
     ui->clickHorLayout->addWidget(clickBtn);
 
-    //
     ui->scrollingTypeComBox->addItem(tr("Disable rolling"), N_SCROLLING);
     ui->scrollingTypeComBox->addItem(tr("Vertical edge scrolling"), V_EDGE_KEY);
     ui->scrollingTypeComBox->addItem(tr("Horizontal edge scrolling"), H_EDGE_KEY);
     ui->scrollingTypeComBox->addItem(tr("Vertical two-finger scrolling"), V_FINGER_KEY);
     ui->scrollingTypeComBox->addItem(tr("Horizontal two-finger scrolling"), H_FINGER_KEY);
+}
 
+void Touchpad::initConnection() {
     connect(enableBtn, &SwitchButton::checkedChanged, [=](bool checked){
         tpsettings->set(ACTIVE_TOUCHPAD_KEY, checked);
         setModuleVisible(checked);
@@ -208,6 +208,74 @@ void Touchpad::setModuleVisible(bool visible) {
     ui->typingFrame->setVisible(visible);
     ui->clickFrame->setVisible(visible);
     ui->scrollingFrame->setVisible(visible);
+}
+
+bool Touchpad::isWaylandPlatform() {
+    QProcess processGrep;
+
+    processGrep.start("bash", QStringList() << "-c" << "env | grep XDG_SESSION_TYPE");
+
+    processGrep.waitForFinished();
+    QString platform = processGrep.readAll();
+
+    return platform.trimmed() == "XDG_SESSION_TYPE=wayland" ? true : false;
+}
+
+void Touchpad::initWaylandDbus() {
+
+    mWaylandIface = new QDBusInterface("org.kde.KWin",
+                                       "/org/kde/KWin/InputDevice",
+                                       "org.kde.KWin.InputDeviceManager",
+                                       QDBusConnection::sessionBus(),
+                                       this);
+    if (mWaylandIface->isValid()) {
+        initWaylandTouchpadStatus();
+    }
+}
+
+void Touchpad::initWaylandTouchpadStatus() {
+
+    QVariant deviceReply = mWaylandIface->property("devicesSysNames");
+
+    if (deviceReply.isValid()) {
+        QStringList deviceList = deviceReply.toStringList();
+        for (QString device : deviceList) {
+            QDBusInterface *deviceIface = new QDBusInterface("org.kde.KWin",
+                                                             "/org/kde/KWin/InputDevice/"+ device,
+                                                             "org.kde.KWin.InputDevice",
+                                                             QDBusConnection::sessionBus(),
+                                                             this);
+            if (deviceIface->isValid() &&
+                    deviceIface->property("touchpad").toBool()) {
+                mDeviceIface = deviceIface;
+                enableBtn->setChecked(mDeviceIface->property("enabled").toBool());
+                clickBtn->setChecked(mDeviceIface->property("tapToClick").toBool());
+
+                ui->scrollingFrame->hide();
+                ui->typingFrame->hide();
+                ui->tipLabel->hide();
+
+                initWaylandConnection();
+
+                return;
+            }
+        }
+    }
+    ui->scrollingFrame->hide();
+    ui->typingFrame->hide();
+    ui->clickFrame->hide();
+    ui->enableFrame->hide();
+}
+
+void Touchpad::initWaylandConnection() {
+
+    connect(enableBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
+        mDeviceIface->setProperty("enabled", checked);
+    });
+
+    connect(clickBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
+        mDeviceIface->setProperty("tapToClick", checked);
+    });
 }
 
 bool findSynaptics(){
