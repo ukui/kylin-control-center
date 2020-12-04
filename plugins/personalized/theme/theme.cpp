@@ -218,7 +218,7 @@ void Theme::setupComponent(){
     ui->controlLabel->hide();
     ui->controlWidget->hide();
 
-    ui->defaultButton->setProperty("value", "ukui-default");
+    ui->defaultButton->setProperty("value", "ukui");
     ui->lightButton->setProperty("value", "ukui-light");
     ui->darkButton->setProperty("value", "ukui-dark");
 
@@ -301,7 +301,7 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
 void Theme::initThemeMode() {
     // 获取当前主题
     QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-    if ("ukui-white" == currentThemeMode || "ukui-default" == currentThemeMode) {
+    if (/*"ukui-white" == currentThemeMode || */"ukui" == currentThemeMode) {
         ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
     } else if ("ukui-dark" == currentThemeMode){
         ui->themeModeBtnGroup->buttonClicked(ui->darkButton);
@@ -318,11 +318,11 @@ void Theme::initThemeMode() {
             QString currentThemeMode = qtSettings->get(key).toString();
             for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
                 QVariant valueVariant = button->property("value");
-                if ("ukui-black" == currentThemeMode) {
-                    currentThemeMode = "ukui-dark";
-                } else if("ukui-white" == currentThemeMode) {
-                    currentThemeMode = "ukui-default";
-                }
+//                if ("ukui-dark" == currentThemeMode) {
+//                    currentThemeMode = "ukui-dark";
+//                } else if("ukui-light" == currentThemeMode) {
+//                    currentThemeMode = "ukui-default";
+//                }
                 if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode) {
                     disconnect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeBtnClickSlot(QAbstractButton*)));
                     button->click();
@@ -371,11 +371,11 @@ void Theme::initIconTheme() {
     QDir themesDir = QDir(ICONTHEMEPATH);
 
     foreach (QString themedir, themesDir.entryList(QDir::Dirs)) {
-        if (themedir.startsWith("ukui-icon-theme-")){
+        if (themedir.startsWith("ukui")){
 
             QDir appsDir = QDir(ICONTHEMEPATH + themedir + "/48x48/apps/");
 
-            if ("ukui-icon-theme-basic" == themedir) {
+            if ("ukui-icon-theme-default" == themedir) {
                 continue;
             }
             appsDir.setFilter(QDir::Files | QDir::NoSymLinks);
@@ -728,13 +728,13 @@ void Theme::themeBtnClickSlot(QAbstractButton *button) {
      QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
 
      if (QString::compare(currentThemeMode, themeMode)){
-         QString tmpMode;
-         if ("ukui-dark" == themeMode) {
-             tmpMode = "ukui-black";
-         } else {
-             tmpMode = "ukui-white";
-         }
-         gtkSettings->set(MODE_GTK_KEY, tmpMode);
+//         QString tmpMode;
+//         if ("ukui-dark" == themeMode) {
+//             tmpMode = "ukui-black";
+//         } else {
+//             tmpMode = "ukui-white";
+//         }
+         gtkSettings->set(MODE_GTK_KEY, themeMode);
 
          QtConcurrent::run([=](){
              qtSettings->set(MODE_QT_KEY, themeMode);
