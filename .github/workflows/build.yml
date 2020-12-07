@@ -85,7 +85,7 @@ jobs:
   opensuse-tumbleweed:
     name: on openSUSE Tumbleweed
     runs-on: ubuntu-20.04
-    container: docker.io/library/opensuse/tumbleweed
+    container: opensuse/tumbleweed:latest
     steps:
       - name: Checkout ukui-control-center source code
         uses: actions/checkout@v2
