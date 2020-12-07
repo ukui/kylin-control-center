@@ -121,7 +121,7 @@ jobs:
           qmake ..;
           make -j$(nproc);
 
-   ubuntu-rolling:
+  ubuntu-rolling:
     name: on Ubuntu Latest
     runs-on: ubuntu-20.04
     container: docker.io/library/ubuntu:rolling
