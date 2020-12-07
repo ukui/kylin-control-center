@@ -101,3 +101,23 @@ jobs:
           cd build;
           qmake ..;
           make -j$(nproc);
+
+   ubuntu-rolling:
+    name: on Ubuntu Latest
+    runs-on: ubuntu-20.04
+    container: docker.io/library/ubuntu:rolling
+    env:
+      DEBIAN_FRONTEND: noninteractive
+    steps:
+      - name: Checkout ukui-control-center source code
+        uses: actions/checkout@v2
+      - name: Update apt repository
+        run: apt-get update -y
+      - name: Install build dependcies
+        run: apt-get install -y build-essential qt5-default qttools5-dev-tools pkg-kde-tools pkg-config libkf5widgetsaddons-dev libkf5config-dev libkf5configwidgets-dev libkf5screen-dev debhelper-compat libqt5svg5-dev libgsettings-qt-dev libglib2.0-dev libmatekbd-dev libqt5x11extras5-dev libxklavier-dev qtdeclarative5-dev libdconf-dev libmatemixer-dev libqt5xdg-dev qtmultimedia5-dev libxml2-dev libcanberra-dev libmate-desktop-dev libxkbcommon-dev libxkbfile-dev libkf5i18n-dev libkf5windowsystem-dev libkf5guiaddons-dev libkf5coreaddons-dev libboost-dev libxcb-xkb-dev
+      - name: QMake configure & Make
+        run: |
+          mkdir build;
+          cd build;
+          qmake ..;
+          make -j$(nproc);       
