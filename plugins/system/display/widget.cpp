@@ -254,7 +254,7 @@ void Widget::resetPrimaryCombo() {
 
 void Widget::addOutputToPrimaryCombo(const KScreen::OutputPtr &output) {
     // 注释后让他显示全部屏幕下拉框
-    if (!output->isConnected()) {
+    if (!output->isConnected() || !output->isEnabled()) {
         return;
     }
 
