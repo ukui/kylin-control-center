@@ -116,6 +116,9 @@ void Wallpaper::initSearchText() {
 }
 
 void Wallpaper::setupComponent(){
+
+
+
     // 背景形式
     QStringList formList;
     formList << tr("picture") << tr("color")/* << tr("slideshow")*/ ;
@@ -171,17 +174,6 @@ void Wallpaper::setupComponent(){
 
     });
 
-    // 壁纸放置方式
-    ui->picOptionsComBox->addItem(tr("wallpaper"), "wallpaper");
-    ui->picOptionsComBox->addItem(tr("centered"), "centered");
-    ui->picOptionsComBox->addItem(tr("scaled"), "scaled");
-    ui->picOptionsComBox->addItem(tr("stretched"), "stretched");
-    ui->picOptionsComBox->addItem(tr("zoom"), "zoom");
-    ui->picOptionsComBox->addItem(tr("spanned"), "spanned");
-
-    // 屏蔽纯色背景的确定按钮
-    ui->cancelBtn->hide();
-    ui->certainBtn->hide();
 }
 
 void Wallpaper::setupConnect(){
@@ -218,7 +210,6 @@ void Wallpaper::setupConnect(){
 
     pThread->start();
 
-    connect(ui->picOptionsComBox, SIGNAL(currentTextChanged(QString)), this, SLOT(wpOptionsChangedSlot(QString)));
 
     connect(ui->browserLocalwpBtn, &QPushButton::clicked, [=]{
         showLocalWpDialog();
@@ -267,13 +258,9 @@ void Wallpaper::setupConnect(){
         ui->substackedWidget->setCurrentIndex(currentPage);
 
         if (currentPage == COLOR){
-            ui->picOptionsComBox->hide();
-            ui->picOptionsLabel->hide();
-            ui->switchFrame_2->hide();
+            ui->wallpaperWidget->setMaximumHeight(600);
         } else if (currentPage == PICTURE) {
-            ui->picOptionsComBox->hide();
-            ui->picOptionsLabel->hide();
-            ui->switchFrame_2->hide();
+            ui->wallpaperWidget->setMaximumHeight(16777215);
         }
 
     });
@@ -360,15 +347,9 @@ void Wallpaper::showComponent(int index){
     if (PICTURE == index){ //图片
 //        ui->picOptionsComBox->show();
 //        ui->picOptionsLabel->show();
-        ui->picOptionsComBox->hide();
-        ui->picOptionsLabel->hide();
-        ui->switchFrame_2->hide();
     } else if (COLOR == index){ //纯色
 //        ui->picOptionsComBox->hide();
 //        ui->picOptionsLabel->hide();
-        ui->picOptionsComBox->hide();
-        ui->picOptionsLabel->hide();
-        ui->switchFrame_2->hide();
     } else { //幻灯片
 
     }
@@ -399,7 +380,7 @@ void Wallpaper::colorSelectedSlot(QColor color){
     QString widgetQss = QString("QWidget{background: %1;}").arg(color.name());
     ui->previewWidget->setStyleSheet(widgetQss);
 
-    ///设置系统纯色背景
+    // 设置系统纯色背景
     bgsettings->set(FILENAME, "");
     bgsettings->set(PRIMARY, QVariant(color.name()));
 
@@ -411,7 +392,6 @@ void Wallpaper::wpOptionsChangedSlot(QString op){
 //    QListWidgetItem * currentitem = ui->listWidget->currentItem();
 //    QString filename = currentitem->data(Qt::UserRole).toString();
 
-    bgsettings->set(OPTIONS, ui->picOptionsComBox->currentData().toString());
 
     //更新xml数据
 //    if (wallpaperinfosMap.contains(filename)){
