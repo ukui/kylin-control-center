@@ -57,13 +57,7 @@ ShowAllShortcut::ShowAllShortcut(QWidget *parent) :
     setWindowTitle(tr("Show all shortcut"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-//    ui->closeBtn->setFlat(true);
     ui->closeBtn->setIcon(QIcon(QPixmap("://img/titlebar/close.svg")));
-
-//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
     connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked) {
         Q_UNUSED(checked)
@@ -85,7 +79,6 @@ void ShowAllShortcut::buildComponent(QMap<QString, QMap<QString, QString> > shor
 
     QWidget * baseWidget = new QWidget;
     baseWidget->setAttribute(Qt::WA_DeleteOnClose);
-//    baseWidget->setFixedWidth(ui->scrollArea->width());
     baseWidget->setFixedWidth(ui->scrollArea->width() - 4);
     baseWidget->setStyleSheet("QWidget{background: palette(base);/* border-radius: 6px;*/ }");
 
@@ -138,7 +131,6 @@ QWidget * ShowAllShortcut::buildTitleWidget(QString tName){
     QWidget * titleWidget = new QWidget;
     titleWidget->setAttribute(Qt::WA_DeleteOnClose);
     titleWidget->setFixedHeight(TITLEWIDGETHEIGH);
-//    titleWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
     QHBoxLayout * titleHorLayout = new QHBoxLayout(titleWidget);
     titleHorLayout->setSpacing(0);
@@ -183,7 +175,6 @@ QWidget * ShowAllShortcut::buildGeneralWidget(QString schema, QMap<QString, QStr
 
     QWidget * pWidget = new QWidget;
     pWidget->setAttribute(Qt::WA_DeleteOnClose);
-//    pWidget->setStyleSheet("QWidget{background: #ffffff; border: none;}");
     QVBoxLayout * pVerLayout = new QVBoxLayout(pWidget);
     pVerLayout->setSpacing(2);
     pVerLayout->setMargin(0);

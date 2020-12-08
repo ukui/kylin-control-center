@@ -318,11 +318,6 @@ void Theme::initThemeMode() {
             QString currentThemeMode = qtSettings->get(key).toString();
             for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
                 QVariant valueVariant = button->property("value");
-//                if ("ukui-dark" == currentThemeMode) {
-//                    currentThemeMode = "ukui-dark";
-//                } else if("ukui-light" == currentThemeMode) {
-//                    currentThemeMode = "ukui-default";
-//                }
                 if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode) {
                     disconnect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeBtnClickSlot(QAbstractButton*)));
                     button->click();

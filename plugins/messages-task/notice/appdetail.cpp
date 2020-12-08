@@ -19,13 +19,8 @@ AppDetail::AppDetail(QString Name,QString key, QGSettings *gsettings, QWidget *p
     setWindowTitle(appName);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-//    ui->closeBtn->setFlat(true);
-
 
     initUiStatus();
-//    initGSettings();
     initComponent();
     initConnect();
 }
@@ -38,8 +33,6 @@ AppDetail::~AppDetail()
 void AppDetail::initUiStatus(){
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
-//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
     enablebtn = new SwitchButton;
     ui->enableLayout->addWidget(enablebtn);

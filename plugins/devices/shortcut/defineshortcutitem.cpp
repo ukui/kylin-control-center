@@ -27,7 +27,6 @@
 
 DefineShortcutItem::DefineShortcutItem(QString name, QString binding)
 {
-//    setAttribute(Qt::WA_DeleteOnClose);
 
     _deleteable = false;
     _updateable = false;

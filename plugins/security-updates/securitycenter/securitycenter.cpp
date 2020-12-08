@@ -52,14 +52,10 @@ void BlockWidget::initComponent(){
 void BlockWidget::setupComponent(QString logo, QString title, QString detail, QString cmd){
     logoLabel->setPixmap(QPixmap(logo).scaled(logoLabel->size()));
     titleLable->setText(title);
-//    detailLabel->setText(detail);
-//    detailLabel->adjustSize();
     m_curIndex = 0;
     m_showText = detail + "    ";
     m_charWidth = fontMetrics().width("。");
     m_labelWidth = m_charWidth * (m_showText.length() - 4);
-//    this->detailLabel->installEventFilter(this);
-//    m_charWidth = fontMetrics().width("a") * 2;
     _cmd = cmd;
 }
 
@@ -83,11 +79,6 @@ void BlockWidget::enterEvent(QEvent *event){
     m_charWidth = fontMetrics().width("。");
     m_labelWidth = m_charWidth * m_showText.length();
     scrollLabel();
-//    if(m_labelWidth > 200){
-//        scrollLabel();
-//    }else{
-//        qDebug()<<"Needn't to scroll";
-//    }
     QWidget::enterEvent(event);
 }
 
@@ -136,9 +127,6 @@ void BlockWidget::paintEvent(QPaintEvent *event){
     opt.init(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-//    qDebug()<<"Scroll!";
-////    painter.drawText(0, 30, m_showText.mid(m_curIndex));
-////    painter.drawText(this->detailLabel->width() - m_charWidth*m_curIndex, 30, m_showText.left(m_curIndex));
 }
 
 SecurityCenter::SecurityCenter()

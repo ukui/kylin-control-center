@@ -94,12 +94,6 @@ void AddAutoBoot::initStyle() {
     selectFile = "";
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
-//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-//    ui->closeBtn->setFlat(true);
-
-//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
     ui->nameLineEdit->setPlaceholderText(tr("Program name"));
     ui->execLineEdit->setPlaceholderText(tr("Program exec"));

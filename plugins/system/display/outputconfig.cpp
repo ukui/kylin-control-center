@@ -69,7 +69,6 @@ void OutputConfig::initUi()
 
     //分辨率下拉框
     mResolution = new ResolutionSlider(mOutput, this);
-//    mResolution->setFont(ft);
     mResolution->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     mResolution->setMinimumSize(402,30);
     mResolution->setMaximumSize(16777215,30);

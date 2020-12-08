@@ -177,8 +177,6 @@ void Screenlock::setupComponent(){
 }
 
 void Screenlock::setupConnect(){
-//    ui->delaySlider->setMinimum(1);
-//    ui->delaySlider->setMaximum(120);
     connect(loginbgSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked) {
         setLockBackground(checked);
     });

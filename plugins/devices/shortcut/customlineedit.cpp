@@ -35,15 +35,8 @@ CustomLineEdit::~CustomLineEdit()
 {
 }
 
-//void CustomLineEdit::mousePressEvent(QMouseEvent *e){
-//    if (e->buttons() & Qt::LeftButton){
-//        this->setText("New Shortcut...");
-//    }
-//}
 
 void CustomLineEdit::focusInEvent(QFocusEvent *evt){
-//    if (this->text() == _oldshortcut)
-//        this->setText(_wait);
     this->setText(_wait);
     flag = true;
 }

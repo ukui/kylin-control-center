@@ -649,7 +649,6 @@ void DefaultApp::connectToServer(){
         qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
         return;
     }
-//    QDBusConnection::sessionBus().connect(cloudInterface, SIGNAL(shortcutChanged()), this, SLOT(shortcutChangedSlot()));
     QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "keyChanged", this, SLOT(keyChangedSlot(QString)));
     // 将以后所有DBus调用的超时设置为 milliseconds
     m_cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时

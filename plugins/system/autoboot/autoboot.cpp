@@ -296,11 +296,6 @@ void AutoBoot::initConnection() {
 }
 
 bool AutoBoot::_copy_desktop_file_to_local(QString bname){
-//    GFile * srcfile;
-//    GFile * dstfile;
-//    GError * error;
-//    char * dstpath, * srcpath;
-
     QString srcPath;
     QString dstPath;
 
@@ -312,22 +307,9 @@ bool AutoBoot::_copy_desktop_file_to_local(QString bname){
     }
 
     QMap<QString, AutoApp>::iterator it = appMaps.find(bname);
-//    dstpath = g_build_filename(localconfigdir, bname.toLatin1().data(), NULL);
-//    srcpath = it.value().path.toLatin1().data();
 
     dstPath = QString(localconfigdir) + "/" + bname;
     srcPath = it.value().path;
-
-//    srcfile = g_file_new_for_path(srcpath);
-//    dstfile = g_file_new_for_path(dstpath);
-
-//    if (!g_file_copy(srcfile, dstfile, G_FILE_COPY_NONE, NULL, NULL, NULL, &error)){
-//        qDebug() << "Could not copy desktop file for autoboot";
-//        g_object_unref(srcfile);
-//        g_object_unref(dstfile);
-//        g_free(dstpath);
-//        return false;
-//    }
 
     if (!QFile::copy(srcPath, dstPath))
         return false;
@@ -343,9 +325,6 @@ bool AutoBoot::_copy_desktop_file_to_local(QString bname){
     updateit.value().xdg_position = ALLPOS;
     updateit.value().path = dstPath;
 
-//    g_object_unref(srcfile);
-//    g_object_unref(dstfile);
-//    g_free(dstpath);
     return true;
 }
 
@@ -358,7 +337,6 @@ void AutoBoot::clearAutoItem()
             delete item->widget();
             delete item;
         }
-//        delete ui->availableLayout->layout();
     }
 }
 
@@ -725,12 +703,6 @@ void AutoBoot::update_app_status(){
             //整合状态
             QMap<QString, AutoApp>::iterator updateit = statusMaps.find(localit.key());
 
-//            if (localit.value().enable != updateit.value().enable){
-//                updateit.value().enable = localit.value().enable;
-//                updateit.value().path = localit.value().path;
-//                if (appMaps.contains(localit.key()))
-//                    updateit.value().xdg_position = ALLPOS;
-//            }
             if (localit.value().hidden != updateit.value().hidden){
                 updateit.value().hidden = localit.value().hidden;
                 updateit.value().path = localit.value().path;
@@ -799,21 +771,9 @@ void AutoBoot::del_autoboot_realize(QString bname){
         return;
     }
 
-//    if (it.value().xdg_position == SYSTEMPOS){ //复制改值
-//        if (_copy_desktop_file_to_local(bname)){
-//            _delete_autoapp(bname);
-//        }
-//    }
-//    else if (it.value().xdg_position == ALLPOS){ //改值
-//        _delete_autoapp(bname);
-
-//    }
-//    else if (it.value().xdg_position == LOCALPOS){ //删除
-        _delete_local_autoapp(bname);
-//        ui->listWidget->clear();
-        clearAutoItem();
-        initUI();
-        //    }
+    _delete_local_autoapp(bname);
+    clearAutoItem();
+    initUI();
 }
 
 void AutoBoot::checkbox_changed_cb(QString bname){
@@ -843,10 +803,6 @@ void AutoBoot::checkbox_changed_cb(QString bname){
                         else
                             qDebug() << "Update status failed when start autoboot";
                     }
-//                    QMap<QString, AutoApp>::iterator statusit = statusMaps.begin();
-//                    for (; statusit != statusMaps.end(); statusit++){
-//                        qDebug() << statusit.value().xdg_position << statusit.value().path;
-//                    }
                 }
                 else if (it.value().xdg_position == LOCALPOS){//改值
                     _enable_autoapp(bname, true);
@@ -885,7 +841,6 @@ void AutoBoot::connectToServer(){
         qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
         return;
     }
-//    QDBusConnection::sessionBus().connect(cloudInterface, SIGNAL(shortcutChanged()), this, SLOT(shortcutChangedSlot()));
     QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "keyChanged", this, SLOT(keyChangedSlot(QString)));
     // 将以后所有DBus调用的超时设置为 milliseconds
     m_cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时

@@ -38,8 +38,6 @@ TimezoneMap::TimezoneMap(QWidget* parent) : QFrame (parent),
 {
     m_totalZones = m_zoninfo->getzoneInforList();
 
-//    qDebug()<<m_totalZones<<endl;
-//    setAttribute(Qt::WA_TranslucentBackground);
     this->initUI();
 }
 

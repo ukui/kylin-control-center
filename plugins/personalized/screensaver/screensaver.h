@@ -76,9 +76,6 @@ public:
     }
 protected:
     void paintEvent(QPaintEvent *e);
-//    void showEvent(QShowEvent *e);
-//    void moveEvent(QMoveEvent *e);
-//    void hideEvent(QHideEvent *e);
 };
 
 class Screensaver : public QObject, CommonInterface
@@ -134,10 +131,6 @@ private:
 
     SwitchButton * enableSwitchBtn;
     SwitchButton * lockSwitchBtn;
-    /*
-    SwitchButton * activeswitchbtn;
-    SwitchButton * lockswitchbtn;
-    */
 
     QMap<QString, SSThemeInfo> infoMap;
 

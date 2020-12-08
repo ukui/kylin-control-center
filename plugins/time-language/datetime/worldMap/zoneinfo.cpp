@@ -63,7 +63,6 @@ ZoneinfoList ZoneInfo::getzoneInforList() {
                 if(index == -1) {
                     index = coordinate.indexOf('-', 3);
                 }
-//                qDebug()<<"coordinate----->"<<coordinate<<endl;
                 Q_ASSERT(index > -1);
 
                 double latitude = convertoPos(coordinate.left(index), 2);

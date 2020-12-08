@@ -185,11 +185,6 @@ void Screensaver::initComponent() {
     ui->lockhorizontalLayout->addWidget(uslider);
     ui->lockhorizontalLayout->addSpacing(15);
 
-//    ui->idleSlider->setMinimum(IDLEMIN);
-//    ui->idleSlider->setMaximum(IDLEMAX);
-//    ui->idleSlider->setSingleStep(IDLESTEP);
-//    ui->idleSlider->setPageStep(IDLESTEP);
-
     connect(enableSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked) {
         screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
         g_settings_set_boolean(screensaver_settings, ACTIVE_KEY, checked);
@@ -206,25 +201,6 @@ void Screensaver::initComponent() {
         }
     });
 
-
-//    connect(lockSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){
-//        //REVIEW*** g_object_unref faild
-//        //    screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
-//        //    g_settings_set_boolean(screensaver_settings, LOCK_KEY, status);
-//        //    if (screensaver_settings)
-//        //            g_object_unref(screensaver_settings);
-//        const QByteArray ba(SCREENSAVER_SCHEMA);
-//        QGSettings * settings = new QGSettings(ba);
-//        settings->set(LOCK_KEY, checked);
-//        delete settings;
-//    });
-
-//    connect(uslider, &QSlider::valueChanged, this, [=](int value){
-//        //刷新分钟显示
-//        ui->idleLineEdit->blockSignals(true);
-//        ui->idleLineEdit->setText(QString::number(value));
-//        ui->idleLineEdit->blockSignals(false);
-//    });
     connect(uslider, &QSlider::valueChanged, this, [=] {
         int value = convertToLocktime(uslider->value());
         session_settings = g_settings_new(SESSION_SCHEMA);
@@ -336,54 +312,11 @@ void Screensaver::initIdleSliderStatus() {
     uslider->setValue(lockConvertToSlider(minutes));
     uslider->blockSignals(false);
 
-//    ui->idleSlider->blockSignals(true);
-//    ui->idleSlider->setValue(minutes);
-//    ui->idleSlider->blockSignals(false);
-
-//    ui->idleLineEdit->blockSignals(true);
-//    ui->idleLineEdit->setText(QString::number(minutes));
-//    ui->idleLineEdit->blockSignals(true);
-
     g_object_unref(session_settings);
 }
 
 void Screensaver::component_init() {
 
-    //设置屏保预览widget的背景为黑色
-//    mPreviewWidget->setStyleSheet("#previewWidget{background: black}");
-
-    //
-//    activeswitchbtn = new SwitchButton();
-//    activeswitchbtn->setAttribute(Qt::WA_DeleteOnClose);
-//    ui->activeHLayout->addWidget(activeswitchbtn);
-//    ui->activeHLayout->addStretch();
-
-//    lockswitchbtn = new SwitchButton();
-//    lockswitchbtn->setAttribute(Qt::WA_DeleteOnClose);
-//    ui->lockHLayout->addWidget(lockswitchbtn);
-//    ui->lockHLayout->addStretch();
-
-//    ui->comboBox->addItem(tr("Blank_Only"));
-//    ui->comboBox->addItem(tr("Random"));
-
-//    QMap<QString, SSThemeInfo>::iterator it = infoMap.begin();
-//    for (int itemsindex = 2; it != infoMap.end(); it++, itemsindex++){
-//        SSThemeInfo info = (SSThemeInfo)it.value();
-//        ui->comboBox->addItem(info.name);
-//        ui->comboBox->setItemData(itemsindex, QVariant::fromValue(info));
-//    }
-
-    //init slider
-//    int min = 1;
-//    int max = 120;
-//    int singlestep = 1;
-
-//    ui->idleSlider->setMinimum(min);
-//    ui->idleSlider->setMaximum(max);
-//    ui->idleSlider->setSingleStep(singlestep);
-//    ui->idleSlider->installEventFilter(this);
-
-//    connect(this, SIGNAL(kill_signals()), this, SLOT(kill_screensaver_preview()));
 }
 
 void Screensaver::status_init() {
@@ -416,45 +349,17 @@ void Screensaver::status_init() {
         g_strfreev(strv);
     }
 
-    //init
-//    bool activation; bool lockable;
-//    activation = g_settings_get_boolean(screensaver_settings, ACTIVE_KEY);
-//    activeswitchbtn->setChecked(activation);
-//    if (activation){
-//        lockable = g_settings_get_boolean(screensaver_settings, LOCK_KEY);
-//        lockswitchbtn->setChecked(lockable);
-//        ui->widget->show();
-//    }
-//    else{
-//        lockswitchbtn->setChecked(false);
-//        ui->widget->hide();
-//    }
-
     g_object_unref(screensaver_settings);
 
     //获取空闲时间
     int minutes;
     minutes = g_settings_get_int(session_settings, IDLE_DELAY_KEY);
     uslider->setValue(lockConvertToSlider(minutes));
-//    ui->idleSlider->setValue(minutes);
-//    ui->idleLabel->setText(QString("%1%2").arg(minutes).arg(tr("minutes")));
 
-
-    //获取功能列表
-//    PublicData * publicdata = new PublicData();
-//    QStringList tmpList = publicdata->subfuncList[SYSTEM];
-
-    //connect
-//    connect(ui->powerBtn, &QPushButton::clicked, this, [=]{pluginWidget->emitting_toggle_signal(tmpList.at(2), SYSTEM, 0);});
-
-//    connect(uslider, SIGNAL(sliderReleased()), this, SLOT(slider_released_slot())); //改gsettings
-//    connect(activeswitchbtn, SIGNAL(checkedChanged(bool)), this, SLOT(activebtn_changed_slot(bool)));
-//    connect(lockswitchbtn, SIGNAL(checkedChanged(bool)), this, SLOT(lockbtn_changed_slot(bool)));
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(combobox_changed_slot(int)));
 
     connect(mPreviewWidget, SIGNAL(destroyed(QObject*)), this, SLOT(kill_screensaver_preview()));
 
-//    delete publicdata;
 }
 
 void Screensaver::startupScreensaver() {
@@ -594,11 +499,6 @@ void Screensaver::slider_released_slot() {
 }
 
 void Screensaver::lockbtn_changed_slot(bool status) {
-    //REVIEW***  setchecked(false) -> g_object_unref faild
-//    screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
-//    g_settings_set_boolean(screensaver_settings, LOCK_KEY, status);
-//    if (screensaver_settings)
-//            g_object_unref(screensaver_settings);
     const QByteArray ba(SCREENSAVER_SCHEMA);
     QGSettings * settings = new QGSettings(ba);
     settings->set(LOCK_KEY, status);
@@ -609,16 +509,7 @@ void Screensaver::activebtn_changed_slot(bool status) {
     screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
     g_settings_set_boolean(screensaver_settings, ACTIVE_KEY, status);
 
-//    if (status){
-//        ui->widget->show();
-//    }
-//    else{
-//        lockswitchbtn->setChecked(false);
-//        ui->widget->hide();
-
-//    }
     g_object_unref(screensaver_settings);
-
 }
 
 void Screensaver::themesComboxChanged(int index) {
@@ -690,10 +581,6 @@ void Screensaver::combobox_changed_slot(int index) {
         qDebug() << Q_FUNC_INFO << "wxy-----------" <<strv;
         g_settings_set_strv(screensaver_settings, THEMES_KEY, (const gchar * const*)strv);
     }
-    //set mode
-//    g_settings_set_enum(screensaver_settings, MODE_KEY, mode);
-    //set themes
-//    g_settings_set_strv(screensaver_settings, THEMES_KEY, (const gchar * const*)strv);
 
     g_object_unref(screensaver_settings);
     g_strfreev(strv);
@@ -815,7 +702,6 @@ void Screensaver::connectToServer(){
         qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
         return;
     }
-//    QDBusConnection::sessionBus().connect(cloudInterface, SIGNAL(shortcutChanged()), this, SLOT(shortcutChangedSlot()));
     QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "keyChanged", this, SLOT(keyChangedSlot(QString)));
     // 将以后所有DBus调用的超时设置为 milliseconds
     m_cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时

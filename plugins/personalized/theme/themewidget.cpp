@@ -36,10 +36,7 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, QStringList iStringList, QWi
     setMaximumWidth(960);
     setAttribute(Qt::WA_DeleteOnClose);
 
-//    setStyleSheet("background: palette(button); border-radius: 6px;");
-
     pValue = "";
-
 
     QHBoxLayout * mainHorLayout = new QHBoxLayout(this);
     mainHorLayout->setSpacing(16);
@@ -98,10 +95,7 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, const QList<QPixmap> &listMa
     setMaximumWidth(960);
     setAttribute(Qt::WA_DeleteOnClose);
 
-//    setStyleSheet("background: palette(button); border-radius: 6px;");
-
     pValue = "";
-
 
     QHBoxLayout * mainHorLayout = new QHBoxLayout(this);
     mainHorLayout->setSpacing(16);

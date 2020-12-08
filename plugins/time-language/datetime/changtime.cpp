@@ -81,7 +81,6 @@ void ChangtimeDialog::datetimeUpdateSlot(){
     QString currentminStr = current.toString("mm");
     QString currentsecStr = current.toString("ss");
 
-//    ui->seccomboBox->setCurrentIndex(currentsecStr.toInt());
     if (currentsecStr.toInt() == 0) {
        ui->mincomboBox->setCurrentIndex(currentminStr.toInt());
     }
@@ -196,14 +195,6 @@ void ChangtimeDialog::hourComboxSetup(){
     for (int h = 0; h < 24; h++){
         ui->hourcomboBox->addItem(QString::number(h));
     }
-
-//    if (this->m_isEFHour){
-//        for (int h = 0; h < 24; h++)
-//            ui->hourcomboBox->addItem(QString::number(h));
-//    } else {
-//        for (int h = 1; h <= 12; h++)
-//            ui->hourcomboBox->addItem(QString::number(h));
-//    }
 }
 
 
@@ -230,10 +221,8 @@ void ChangtimeDialog::initStatus(){
 
     //if date formate is 24 hour
     if(this->m_isEFHour) {
-//        ui->hourcomboBox->setItemText(currenthourStr.toInt());
         ui->hourcomboBox->setCurrentIndex(currenthourStr.toInt());
     } else {
-//        qDebug()<<"currenthourStr.toInt() is------------->"<<currenthourStr.toInt()<<endl;
         if (currenthourStr.toInt() > 12) {
             ui->hourcomboBox->setCurrentIndex(currenthourStr.toInt() - 12);
         } else {

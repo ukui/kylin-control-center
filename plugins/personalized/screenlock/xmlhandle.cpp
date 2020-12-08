@@ -90,8 +90,6 @@ void XmlHandle::xmlreader(QString filename){
             QString encodingStr = reader.documentEncoding().toString();
             headMap.insert("version", versionStr);
             headMap.insert("encoding", encodingStr);
-//            bool aloneBool = reader.isStandaloneDocument();
-//            qDebug() << QString::fromLocal8Bit("Version: %1 encoding: %2 standalone: %3").arg(versionStr).arg(encodingStr).arg(aloneBool);
             break;
         }
         case QXmlStreamReader::DTD: {
@@ -100,7 +98,6 @@ void XmlHandle::xmlreader(QString filename){
             QString dtdsystemidStr = reader.dtdSystemId().toString();
             headMap.insert("doctype", dtdnameStr);
             headMap.insert("system", dtdsystemidStr);
-//            qDebug() << QString::fromLocal8Bit("DTD:%1; DTD name:%2; systemid:%3").arg(dtdStr).arg(dtdnameStr).arg(dtdsystemidStr);
             break;
         }
         case QXmlStreamReader::Comment: {
@@ -143,7 +140,6 @@ void XmlHandle::_parseWallpaper(QXmlStreamReader &reader){
             QString elementnameStr = reader.name().toString();
             if (elementnameStr == "wallpaper"){
                 wpMap.clear();
-//                qDebug() << QString::fromLocal8Bit("******开始元素<wallpaper>***");
                 QXmlStreamAttributes wp_attributes = reader.attributes();
                 if (wp_attributes.hasAttribute("deleted")){
                     QString deletedStr = wp_attributes.value("deleted").toString();
@@ -154,7 +150,6 @@ void XmlHandle::_parseWallpaper(QXmlStreamReader &reader){
                 QXmlStreamAttributes name_attributes = reader.attributes();
                 if (name_attributes.hasAttribute("xml:lang")){
                     QString langStr = name_attributes.value("xml:lang").toString();
-//                    qDebug() << QString::fromLocal8Bit("name zh_CN: %1").arg(reader.readElementText());
                     wpMap.insert("name.zh_CN", reader.readElementText());
                 }
                 else
@@ -166,20 +161,12 @@ void XmlHandle::_parseWallpaper(QXmlStreamReader &reader){
         else if (reader.isEndElement()){
             QString elementnameStr = reader.name().toString();
             if (elementnameStr == "wallpaper"){
-//                QMap<QString, QString> tmpMap;
-//                QMap<QString, QString>::iterator it=wpMap.begin();
-//                for (;it!=wpMap.end(); it++){
-//                    tmpMap.insert(it.key(),it.value());
-////                    qDebug() << QString::fromLocal8Bit("key: %1\t value: %2\n").arg(it.key()).arg(it.value());
-//                }
                 QString filename = QString(wpMap.find("filename").value());
                 QFile file(filename);
                 if (!filename.endsWith("xml") && file.exists()) //slide show not append and file must exist!
                     wallpapersMap.insert(QString(wpMap.find("filename").value()), wpMap);
-//                qDebug() << QString::fromLocal8Bit("******结束元素<wallpaper>***") << wpList.length();
             }
             else if (elementnameStr == "wallpapers"){
-//                qDebug() << QString::fromLocal8Bit("*******结束元素<wallpapers>****");
                 break;
             }
         }

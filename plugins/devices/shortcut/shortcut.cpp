@@ -138,14 +138,12 @@ void Shortcut::connectToServer(){
         qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
         return;
     }
-//    QDBusConnection::sessionBus().connect(cloudInterface, SIGNAL(shortcutChanged()), this, SLOT(shortcutChangedSlot()));
     QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "shortcutChanged", this, SLOT(shortcutChangedSlot()));
     // 将以后所有DBus调用的超时设置为 milliseconds
     cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时
 }
 
 void Shortcut::setupComponent(){
-//    ui->addLabel->setPixmap(QPixmap("://img/plugins/printer/add.png"));
 
     //~ contents_path /shortcut/System Shortcut
     ui->titleLabel->setText(tr("System Shortcut"));
@@ -155,16 +153,12 @@ void Shortcut::setupComponent(){
 
     ui->generalListWidget->setFocusPolicy(Qt::NoFocus);
     ui->generalListWidget->setSelectionMode(QAbstractItemView::NoSelection);
-//    ui->generalListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->generalListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->generalListWidget->setSpacing(1);
 
     ui->customListWidget->setFocusPolicy(Qt::NoFocus);
     ui->customListWidget->setSelectionMode(QAbstractItemView::NoSelection);
-//    ui->customListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//    ui->customListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->customListWidget->setSpacing(0);
-//    ui->customListWidget->setFixedHeight((showList.length() * ITEMHEIGH));
 
     addWgt = new HoverWidget("");
     addWgt->setObjectName("addwgt");
@@ -200,9 +194,6 @@ void Shortcut::setupComponent(){
 
     ui->addLyt->addWidget(addWgt);
 
-
-//    ui->addFrame->installEventFilter(this);
-//    ui->generalListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->generalListWidget->setSelectionMode(QAbstractItemView::NoSelection);
 
     ui->resetBtn->hide();
@@ -233,9 +224,7 @@ void Shortcut::setupConnect(){
         if (desktopMap.count() != 0) {
             generalMaps.insert("Desktop", desktopMap);
         }
-//        if (systemMap.count() != 0) {
-//            generalMaps.insert("System", systemMap);
-//        }
+
         showDialog->buildComponent(generalMaps);
         showDialog->exec();
     });
@@ -451,8 +440,6 @@ void Shortcut::initItemsStyle(QListWidget *listWidget){
 
         QWidget * widget = listWidget->itemWidget(listWidget->item(row));
         DefineShortcutItem * pShortcutItem = dynamic_cast<DefineShortcutItem *>(widget);
-//        pShortcutItem->widgetComponent()->setStyleSheet(style);
-//        pShortcutItem->btnComponent()->setStyleSheet(subStyle);
     }
 }
 
@@ -512,11 +499,6 @@ void Shortcut::createNewShortcut(QString path, QString name, QString exec){
             }
         }
     }
-
-//    if (availablepath.isEmpty()){
-//        qDebug() << "add custom shortcut failed";
-//        return;
-//    }
 
     const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
     const QByteArray idd(availablepath.toLatin1().data());
@@ -784,31 +766,4 @@ void Shortcut::shortcutChangedSlot(){
     initFunctionStatus();
 }
 
-//bool Shortcut::eventFilter(QObject *watched, QEvent *event){
-//    if (watched == ui->addFrame){
-//        if (event->type() == QEvent::MouseButtonPress){
-//            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
-//            if (mouseEvent->button() == Qt::LeftButton){
-//                addDialog->setTitleText(QObject::tr("Add Shortcut"));
-//                addDialog->exec();
-//                return true;
-//            } else
-//                return false;
-//        }
-//    }
-//    return QObject::eventFilter(watched, event);
-//}
-
-//bool Shortcut::event(QEvent *event){
-//    qDebug() << "---111--->";
-//    if (event->type() == QEvent::MouseButtonPress){
-//        qDebug() << "-------------->";
-//        QMouseEvent * mouseEvent = dynamic_cast<QMouseEvent *>(event);
-//        if (!ui->customListWidget->geometry().contains(mouseEvent->globalX(), mouseEvent->globalY())){
-//            qDebug() << "=============>";
-//            emit hideDelBtn();
-//        }
-//    }
-//    return QObject::event(event);
-//}
 

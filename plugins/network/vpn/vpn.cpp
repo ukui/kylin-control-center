@@ -64,11 +64,6 @@ const QString Vpn::name() const {
 }
 
 void Vpn::initComponent(){
-//    ui->addBtn->setIcon(QIcon("://img/plugins/vpn/add.png"));
-//    ui->addBtn->setIconSize(QSize(48, 48));
-//    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
-
-
     addWgt = new HoverWidget("");
     addWgt->setObjectName("addwgt");
     addWgt->setMinimumSize(QSize(580, 50));
@@ -114,18 +109,3 @@ void Vpn::runExternalApp(){
     QProcess process(this);
     process.startDetached(cmd);
 }
-
-//bool Vpn::eventFilter(QObject *watched, QEvent *event)
-//{
-//    if (watched == ui->addFrame){
-//        if (event->type() == QEvent::MouseButtonPress){
-//            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
-//            if (mouseEvent->button() == Qt::LeftButton){
-//                runExternalApp();
-//                return true;
-//            } else
-//                return false;
-//        }
-//    }
-//    return QObject::eventFilter(watched, event);
-//}

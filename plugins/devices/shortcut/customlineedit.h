@@ -33,7 +33,6 @@ public:
     explicit CustomLineEdit(QString shortcut, QWidget *parent = 0);
     ~CustomLineEdit();
 
-//    virtual void mousePressEvent(QMouseEvent * e);
     virtual void focusOutEvent(QFocusEvent * evt);
     virtual void focusInEvent(QFocusEvent * evt);
     virtual void keyReleaseEvent(QKeyEvent * evt);
