@@ -970,16 +970,13 @@ void UserInfo::changeUserFace(QString facefile, QString username){
 
     QString cmd = QString("cp %1 /home/%2/.face").arg(facefile).arg(user.username);
 
-    QDBusReply<QString> reply =  sysinterface->call("systemRun", QVariant(cmd));
-
+    QProcess::execute(cmd);
 
     //重新获取全部用户QMap
     _acquireAllUsersInfo();
 
     //更新界面显示
     _refreshUserInfoUI();
-
-    Q_UNUSED(reply)
 }
 
 void UserInfo::showChangePwdDialog(QString username){
