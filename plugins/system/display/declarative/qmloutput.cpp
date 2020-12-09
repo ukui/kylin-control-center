@@ -549,7 +549,8 @@ bool QMLOutput::maybeSnapTo(QMLOutput *other)
     // 矩形是否相交
     if (!(x() + width() < x2 ||  x2 + width2 < x() ||
           y() > y2 +height2 || y2 > y() + height()) &&
-            (x() != x2 || y() != y2)) {
+            (x() != x2 || y() != y2) &&
+            other->output()->isConnected()) {
 
         if ((x() + width() > x2) && (x() < x2)) {
             setX(x2 - width() + sMargin);
@@ -570,7 +571,7 @@ bool QMLOutput::maybeSnapTo(QMLOutput *other)
         }
     }
 
-    if (x() == x2 && y() == y2 ) {
+    if (x() == x2 && y() == y2 && other->output()->isConnected()) {
         if (x() == 0) {
             setX(x() + width());
         } else if (x() + width() == 550){

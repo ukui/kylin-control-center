@@ -107,7 +107,7 @@ class QMLScreen : public QQuickItem
     int m_connectedOutputsCount = 0;
     int m_enabledOutputsCount = 0;
 
-    float m_outputScale = 1.0 / 11.0;//缩放比例
+    float m_outputScale = 1.0 / 8.0;//缩放比例
 
     QMLOutput *m_leftmost = nullptr;
     QMLOutput *m_topmost = nullptr;
