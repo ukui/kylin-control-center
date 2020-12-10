@@ -26,7 +26,8 @@ INCLUDEPATH   +=  \
 CONFIG        += link_pkgconfig \
                  C++11
 PKGCONFIG     += gio-2.0 \
-                 gio-unix-2.0
+                 gio-unix-2.0 \
+                 gsettings-qt
 
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 

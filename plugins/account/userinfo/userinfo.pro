@@ -29,7 +29,8 @@ LIBS          += -L$$[QT_INSTALL_LIBS] -lcrypt -lpolkit-qt5-core-1
 CONFIG        += link_pkgconfig \
                  C++11
 PKGCONFIG     += gio-2.0 \
-                 gio-unix-2.0
+                 gio-unix-2.0 \
+                 gsettings-qt
 
 
 #DEFINES += QT_DEPRECATED_WARNINGS

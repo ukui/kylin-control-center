@@ -5,7 +5,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 include(../../../env.pri)
 
 TEMPLATE = lib
-CONFIG += c++11 plugin
+CONFIG += c++11 plugin link_pkgconfig
+PKGCONFIG += gsettings-qt
 TARGET = $$qtLibraryTarget(networkaccount)
 DESTDIR = ../..
 target.path = $${PLUGIN_INSTALL_DIRS}

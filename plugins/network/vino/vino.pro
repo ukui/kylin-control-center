@@ -4,8 +4,8 @@ QT       += widgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TEMPLATE = lib
-CONFIG += plugin
-
+CONFIG += plugin link_pkgconfig
+PKGCONFIG += gsettings-qt
 
 TARGET = $$qtLibraryTarget(vino)
 DESTDIR = ../..
