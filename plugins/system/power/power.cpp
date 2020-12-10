@@ -528,6 +528,7 @@ bool Power::getHibernateStatus() {
         QDBusReply<QString> reply = loginInterface.call("CanSuspendThenHibernate");
         return reply.value() == "yes" ? true : false;
     }
+    return true;
 }
 
 QString Power::getHibernateTime() {

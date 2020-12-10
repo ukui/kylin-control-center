@@ -52,6 +52,7 @@ FrameItem* ItemList::get_item_by_name(const QString &name) {
             return m_itemWidget[cur_ptr];
         }
     }
+    return 0;
 }
 
 /* 读取列表

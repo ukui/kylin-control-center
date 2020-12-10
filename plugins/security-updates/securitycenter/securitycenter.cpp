@@ -109,6 +109,7 @@ bool BlockWidget::eventFilter(QObject *watched, QEvent *event)
         this->detailLabel->setText(m_showText);
     }
     QWidget::eventFilter(watched,event);
+    return true;
 }
 
 //实现响应函数
