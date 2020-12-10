@@ -12,7 +12,7 @@
         <location filename="../../../plugins/messages-task/about/about.ui" line="140"/>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="256"/>
         <source>version</source>
-        <translation type="unfinished"></translation>
+        <translation>نسخه</translation>
         <extra-contents_path>/about/version</extra-contents_path>
     </message>
     <message>
@@ -36,7 +36,7 @@
         <location filename="../../../plugins/messages-task/about/about.ui" line="310"/>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="260"/>
         <source>CPU</source>
-        <translation type="unfinished"></translation>
+        <translation>پردازنده</translation>
         <extra-contents_path>/about/CPU</extra-contents_path>
     </message>
     <message>
@@ -62,7 +62,7 @@
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="490"/>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>کاربر</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="536"/>
@@ -110,12 +110,12 @@
     <message>
         <location filename="../../../plugins/system/defaultapp/addappdialog.ui" line="74"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>تأیید</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/defaultapp/addappdialog.ui" line="81"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>لغو</translation>
     </message>
 </context>
 <context>
@@ -145,7 +145,7 @@
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="285"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>باز‌کردن</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="317"/>
@@ -242,30 +242,30 @@
         <location filename="../../../plugins/time-language/area/area.ui" line="270"/>
         <location filename="../../../plugins/time-language/area/area.cpp" line="157"/>
         <source>calendar</source>
-        <translation type="unfinished"></translation>
+        <translation>تقویم</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.ui" line="283"/>
         <location filename="../../../plugins/time-language/area/area.cpp" line="241"/>
         <source>lunar</source>
-        <translation type="unfinished"></translation>
+        <translation>قمری</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.ui" line="312"/>
         <source>First day of the week</source>
-        <translation type="unfinished"></translation>
+        <translation>اولین روز هفته</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.ui" line="319"/>
         <location filename="../../../plugins/time-language/area/area.cpp" line="248"/>
         <source>monday</source>
-        <translation type="unfinished"></translation>
+        <translation>دوشنبه</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.ui" line="348"/>
         <location filename="../../../plugins/time-language/area/area.cpp" line="159"/>
         <source>date</source>
-        <translation type="unfinished"></translation>
+        <translation>تاریخ</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.ui" line="355"/>
@@ -701,7 +701,7 @@ you can restore them to ensure the integrity of your system.</source>
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="530"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>لغو</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="552"/>
