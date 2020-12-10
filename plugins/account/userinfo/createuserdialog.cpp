@@ -273,8 +273,9 @@ void CreateUserDialog::pwdLegalityCheck(QString pwd){
             char buf[256];
 
             QByteArray ba = pwd.toLatin1();
+            QByteArray ba1 = ui->usernameLineEdit->text().toLatin1();
 
-            ret = pwquality_check(settings, ba.data(), NULL, NULL, &auxerror);
+            ret = pwquality_check(settings, ba.data(), NULL, ba1.data(), &auxerror);
             if (ret < 0 && pwd.length() > 0){
                 msg = pwquality_strerror(buf, sizeof(buf), ret, auxerror);
                 pwdTip = QString(msg);

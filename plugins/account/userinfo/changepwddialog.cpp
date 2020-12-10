@@ -70,6 +70,8 @@ ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QWidget *parent) :
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(tr("Change pwd"));
 
+    currentUserName = "";
+
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->pwdFrame->setFrameShape(QFrame::Shape::Box);
     ui->tipLabel->setAlignment(Qt::AlignCenter);
@@ -271,6 +273,7 @@ void ChangePwdDialog::setFace(QString iconfile){
 }
 
 void ChangePwdDialog::setUsername(QString username){
+    currentUserName = username;
     ui->usernameLabel->setText(username);
 }
 
@@ -344,8 +347,9 @@ void ChangePwdDialog::pwdLegalityCheck(QString pwd){
             char buf[256];
 
             QByteArray ba = pwd.toLatin1();
+            QByteArray ba1 = ui->curPwdLineEdit->text().toLatin1();
 
-            ret = pwquality_check(settings, ba.data(), NULL, NULL, &auxerror);
+            ret = pwquality_check(settings, ba.data(), ba1.data(), currentUserName.toLatin1().data(), &auxerror);
             if (ret < 0 && pwd.length() > 0){
                 msg = pwquality_strerror(buf, sizeof(buf), ret, auxerror);
                 pwdTip = QString(msg);
