@@ -80,6 +80,7 @@ private:
     bool checkCharLegitimacy(QString password);
     bool checkOtherPasswd(QString name, QString pwd);
 
+    QString currentUserName;
     QString pwdTip;
     QString pwdSureTip;
 

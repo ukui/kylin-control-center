@@ -229,7 +229,7 @@ void Theme::setupComponent(){
     ui->tranSlider->setRange(35, 100);
 
     ui->tranSlider->setValue(static_cast<int>(personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble() * 100.0));
-    connect(ui->tranSlider, &QSlider::sliderReleased, this, [=]() {
+    connect(ui->tranSlider, &QSlider::valueChanged, this, [=]() {
         personliseGsettings->set(PERSONALSIE_TRAN_KEY,(static_cast<int>(ui->tranSlider->value()) / 100.0));
         qtSettings->set(THEME_TRAN_KEY, ui->tranSlider->value());
         qtSettings->set(PEONY_TRAN_KEY, ui->tranSlider->value());
@@ -318,11 +318,6 @@ void Theme::initThemeMode() {
             QString currentThemeMode = qtSettings->get(key).toString();
             for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
                 QVariant valueVariant = button->property("value");
-//                if ("ukui-dark" == currentThemeMode) {
-//                    currentThemeMode = "ukui-dark";
-//                } else if("ukui-light" == currentThemeMode) {
-//                    currentThemeMode = "ukui-default";
-//                }
                 if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode) {
                     disconnect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeBtnClickSlot(QAbstractButton*)));
                     button->click();

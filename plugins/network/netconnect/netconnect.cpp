@@ -160,9 +160,6 @@ void NetConnect::initComponent(){
 
     connect(ui->RefreshBtn, &QPushButton::clicked, this, [=](bool checked){
         Q_UNUSED(checked)
-//        clearContent();
-//        ui->waitLabel->setVisible(true);
-//        ui->statuswaitLabel->setVisible(true);
         ui->RefreshBtn->setText(tr("Refreshing..."));
         ui->RefreshBtn->setEnabled(false);
         wifiBtn->setEnabled(false);
@@ -173,9 +170,6 @@ void NetConnect::initComponent(){
         wifiBtn->setChecked(getInitStatus());
     }
     connect(wifiBtn, &SwitchButton::checkedChanged, this,[=](bool checked){
-//        clearContent();
-//        ui->waitLabel->setVisible(true);
-//        ui->statuswaitLabel->setVisible(true);
         ui->RefreshBtn->setText(tr("Refreshing..."));
         ui->RefreshBtn->setEnabled(false);
         wifiBtn->setEnabled(false);
@@ -315,7 +309,7 @@ void NetConnect::getNetList() {
 
 void NetConnect::rebuildAvailComponent(QString iconPath, QString netName){
 
-    ////构建Widget
+    // 构建Widget
     QWidget * baseWidget = new QWidget();
     baseWidget->setAttribute(Qt::WA_DeleteOnClose);
 
@@ -352,25 +346,13 @@ void NetConnect::rebuildAvailComponent(QString iconPath, QString netName){
     nameLabel->setScaledContents(true);
     nameLabel->setText(netName);
 
-//    QLabel * statusLabel = new QLabel(devFrame);
-//    QSizePolicy statusSizePolicy = statusLabel->sizePolicy();
-//    statusSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
-//    statusSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
-//    statusLabel->setSizePolicy(statusSizePolicy);
-//    statusLabel->setScaledContents(true);
-//    statusLabel->setText(netName);
-
     devHorLayout->addWidget(iconLabel);
     devHorLayout->addWidget(nameLabel);
-//    devHorLayout->addWidget(statusLabel);
     devHorLayout->addStretch();
 
     devFrame->setLayout(devHorLayout);
 
     baseVerLayout->addWidget(devFrame);
-//    baseVerLayout->addStretch();
-
-//    baseWidget->setLayout(baseVerLayout);
 
     ui->availableLayout->addWidget(baseWidget);
 }
@@ -425,13 +407,11 @@ QStringList NetConnect::execGetLanList(){
     shellOutput += output;
     QStringList slist = shellOutput.split("\n");
 
-//    qDebug()<<"lanslist--------------->"<<slist<<endl;
     return slist;
 }
 
 void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanList) {
 
-//    qDebug()<<"getwifiListDone--------->"<<getwifislist<<" \n" <<getlanList<<endl;
     clearContent();
 
     QString lockPath = QDir::homePath() + "/.config/control-center-net";
@@ -579,7 +559,6 @@ void NetConnect::clearContent()
             delete item->widget();
             delete item;
         }
-//        delete ui->availableLayout->layout();
     }
 
     if (ui->statusLayout->layout() != NULL) {
@@ -589,9 +568,7 @@ void NetConnect::clearContent()
             delete item->widget();
             delete item;
         }
-//        delete ui->availableLayout->layout();
     }
-//    ui->statusListWidget->clear();
 
     this->connectedLan.clear();
     this->connectedWifi.clear();

@@ -85,15 +85,10 @@ void ControlPanel::activateOutput(const KScreen::OutputPtr &output)
         return;
     }
 
-
     //qCDebug(KSCREEN_KCM) << "Activate output" << output->id();
-    //qDebug()<<"activateOutput---->"<<mOutputConfigs<<endl;
     Q_FOREACH (OutputConfig *cfg, mOutputConfigs) {
 
-    //    qDebug()<<cfg->output()->id()<<" "<<output->id();
         cfg->setVisible(cfg->output()->id() == output->id());
-
-        //cfg->setVisible(cfg->output()->id() == 66)
     }
 }
 
@@ -110,7 +105,6 @@ void ControlPanel::activateOutputNoParam()
 
     Q_FOREACH (OutputConfig *cfg, mOutputConfigs) {
         qDebug()<<cfg->output()->id()<<" id";
-        //cfg->setVisible(cfg->output()->id() == output->id());
         cfg->setVisible(cfg->output()->id() == 66);
     }
 }
@@ -121,7 +115,6 @@ void ControlPanel::setUnifiedOutput(const KScreen::OutputPtr &output)
         if (!config->output()->isConnected()) {
             continue;
         }
-        //qDebug()<<"config is---->"<<config->output()<<"--------"<<output<<endl;
 
         //隐藏下面控制
         config->setVisible(output == nullptr);
@@ -131,7 +124,6 @@ void ControlPanel::setUnifiedOutput(const KScreen::OutputPtr &output)
         mUnifiedOutputCfg->deleteLater();
         mUnifiedOutputCfg = nullptr;
     } else {
-        //qDebug()<<"config is---->"<<mConfig<<endl;
         mUnifiedOutputCfg = new UnifiedOutputConfig(mConfig, this);
         mUnifiedOutputCfg->setOutput(output);
         mUnifiedOutputCfg->setVisible(true);

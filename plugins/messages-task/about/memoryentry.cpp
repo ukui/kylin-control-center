@@ -56,6 +56,5 @@ QStringList MemoryEntry::totalMemory()
         res << total << available;
         return res;
     }
-//    return ki18n("Unknown amount of RAM", "Unknown");
     return res;
 }

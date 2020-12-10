@@ -58,10 +58,6 @@ QString SysdbusRegister::GetComputerInfo() {
     return QString(ba);
 }
 
-void SysdbusRegister::systemRun(QString cmd){
-    QProcess::execute(cmd);
-}
-
 //获取免密登录状态
 QString SysdbusRegister::getNoPwdLoginStatus(){
     QByteArray ba;
@@ -90,7 +86,7 @@ void SysdbusRegister::setNoPwdLoginStatus(bool status,QString username) {
     } else{
         cmd = QString("gpasswd  -d %1 nopasswdlogin").arg(username);
     }
-    systemRun(cmd);
+    QProcess::execute(cmd);
 }
 
 // 设置自动登录状态

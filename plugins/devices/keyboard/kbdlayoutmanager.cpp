@@ -64,16 +64,8 @@ KbdLayoutManager::KbdLayoutManager(QWidget *parent) :
     setAttribute(Qt::WA_DeleteOnClose);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-//    ui->closeBtn->setFlat(true);
-
-//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
-
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
-//    ui->PreBtn->setVisible(false);
 
     ui->variantFrame->setFrameShape(QFrame::Shape::Box);
 
@@ -85,7 +77,6 @@ KbdLayoutManager::KbdLayoutManager(QWidget *parent) :
         setupComponent();
         setupConnect();
     }
-
 }
 
 KbdLayoutManager::~KbdLayoutManager()
@@ -238,15 +229,10 @@ void KbdLayoutManager::rebuild_listwidget(){
         //自定义widget
         QWidget * layoutWidget = new QWidget();
         layoutWidget->setAttribute(Qt::WA_DeleteOnClose);
-//        layoutWidget->setStyleSheet("QWidget{border-bottom: 1px solid #f5f6f7}");
         QHBoxLayout * mainHLayout = new QHBoxLayout(layoutWidget);
         QLabel * layoutLabel = new QLabel(layoutWidget);
         QPushButton * layoutdelBtn = new QPushButton(layoutWidget);
-//        layoutdelBtn->setIcon(QIcon("://keyboardcontrol/delete.png"));
         layoutdelBtn->setText(tr("Del"));
-//        layoutdelBtn->setStyleSheet(""
-//                            "QPushButton{background: #FA6056; border-radius: 2px;}"
-//                            "QPushButton:hover:pressed{background: #E54A50; border-radius: 2px;}");
 
         connect(layoutdelBtn, &QPushButton::clicked, this, [=]{
             QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
@@ -326,9 +312,6 @@ static void kbd_set_countries(XklConfigRegistry *config_registry, XklConfigItem 
     item.desc = config_item->description;
     item.name = config_item->name;
 
-//    qDebug()<<"countries" << "desc = "<<item.desc<<"name = "<<item.name ;
-
-//    list->append(item);
     countries.append(item);
 }
 
@@ -337,8 +320,6 @@ static void kbd_set_languages(XklConfigRegistry *config_registry, XklConfigItem 
     Layout item;
     item.desc = config_item->description;
     item.name = config_item->name;
-//     qDebug()<<"languages" << "desc = "<<item.desc<<"name = "<<item.name;
-//    list->append(item);
     languages.append(item);
 }
 

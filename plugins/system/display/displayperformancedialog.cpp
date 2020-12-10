@@ -26,7 +26,7 @@
 #include <QDBusInterface>
 #include <QPainter>
 #include <QPainterPath>
-
+#include <QProcess>
 #include <QDebug>
 
 #define ADVANCED_SCHEMAS "org.ukui.session.required-components"
@@ -176,8 +176,7 @@ void DisplayPerformanceDialog::changeConfValue(){
 
     QString cmd = QString("mv %1 %2").arg(WM_CHOOSER_CONF_TMP).arg(WM_CHOOSER_CONF);
 
-    QDBusReply<QString> reply =  sysinterface->call("systemRun", QVariant(cmd));
-
+    QProcess::execute(cmd);
     delete sysinterface;
 }
 

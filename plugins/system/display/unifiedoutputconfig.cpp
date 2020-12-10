@@ -60,30 +60,15 @@ void UnifiedOutputConfig::setOutput(const KScreen::OutputPtr &output)
 
 void UnifiedOutputConfig::initUi()
 {
-
-
     QVBoxLayout *vbox = new QVBoxLayout(this);
     vbox->setContentsMargins(0,0,0,0);
-    //mTitle = new QLabel(this);
-  //  mTitle->setAlignment(Qt::AlignHCenter);
-//    vbox->addWidget(mTitle);
-
- //   setTitle(i18n("统一输出"));
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-
-
-    //vbox->addStretch(0);
 
     KScreen::OutputPtr fakeOutput = createFakeOutput();
     mResolution = new ResolutionSlider(fakeOutput, this);
 
-
-
-    //统一输出分辨率下拉框
-
     mResolution->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     mResolution->setMinimumSize(402,30);
-//    mResolution->setMaximumSize(402,30);
 
     QLabel *resLabel = new QLabel(this);
     resLabel->setText(tr("resolution"));
@@ -94,13 +79,10 @@ void UnifiedOutputConfig::initUi()
     QHBoxLayout *resLayout = new QHBoxLayout();
     resLayout->addWidget(resLabel);
     resLayout->addWidget(mResolution);
-//    resLayout->addStretch();
 
     QFrame *resFrame = new QFrame(this);
     resFrame->setFrameShape(QFrame::Shape::Box);
     resFrame->setLayout(resLayout);
-//    resWidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-//    mResolution->setStyleSheet("background-color:#F8F9F9");
 
     resFrame->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     resFrame->setMinimumSize(552,50);
@@ -122,10 +104,6 @@ void UnifiedOutputConfig::initUi()
     mRotation->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     mRotation->setMinimumSize(402,30);
     mRotation->setMaximumSize(16777215,30);
-//    mRotation->setStyleSheet(qss);
-//    mRotation->setItemDelegate(itemDelege);
-//    mRotation->setMaxVisibleItems(5);
-
 
     QLabel *rotateLabel = new QLabel(this);
     rotateLabel->setText(tr("orientation"));
@@ -150,8 +128,6 @@ void UnifiedOutputConfig::initUi()
     QFrame *rotateFrame = new QFrame(this);
     rotateFrame->setFrameShape(QFrame::Shape::Box);
     rotateFrame->setLayout(roatateLayout);
-//    rotateWidget->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
-//    mRotation->setStyleSheet("background-color:#F8F9F9");
 
     rotateFrame->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     rotateFrame->setMinimumSize(552,50);
@@ -284,20 +260,11 @@ void UnifiedOutputConfig::slotRotationChangedDerived(int index){
     KScreen::Output::Rotation rotation =
         static_cast<KScreen::Output::Rotation>(mRotation->itemData(index).toInt());
     auto mainOutput = mConfig->primaryOutput();
-    //qDebug()<<"首屏幕输出--->"<<mainOutput<<endl;
     Q_FOREACH (const KScreen::OutputPtr &clone, mClones) {
         if(clone->isConnected()&&clone->isEnabled()){
-            //mOutput = clone;
-
             mainOutput->setRotation(rotation);
-          //  clone->setRotation(rotation);
-            //qDebug()<<"是不是首屏------->"<<clone->isPrimary()<<endl;
             if(!clone->isPrimary()){
-               // qDebug()<<"非首屏------>"<<clone<<endl;
-//                KScreen::OutputPtr output = clone;
                 clone->setRotation(rotation);
-                //output->apply(mainOutput);
-                //clone->apply(mainOutput);
             }
         }
     }

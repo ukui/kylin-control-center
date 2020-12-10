@@ -185,20 +185,6 @@ bool TimeZoneChooser::eventFilter(QObject* obj, QEvent *event) {
     return false;
 }
 
-//void TimeZoneChooser::paintEvent(QPaintEvent *e)
-//{
-//    QStyleOption opt;
-//    opt.init(this);
-//    QPainter p(this);
-//    p.setBrush(QBrush(QColor(22, 24, 26)));
-//    p.setPen(QColor(22, 24, 26));
-//    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-//    p.drawRoundedRect(opt.rect,6,6);
-//    QPainterPath path;
-////    setProperty("blurRegion",QRegion(path.toFillPolygon().toPolygon()));
-//    style()->drawPrimitive(QStyle::PE_Frame, &opt, &p, this);
-
-//}
 //获取适合屏幕的地图大小
 QSize TimeZoneChooser::getFitSize(){
     const QDesktopWidget *desktop = QApplication::desktop();
@@ -206,9 +192,6 @@ QSize TimeZoneChooser::getFitSize(){
 
     double width = primaryRect.width() - 360/* dcc */ - 20 * 2;
     double height = primaryRect.height() - 70/* dock */ - 20 * 2;
-
-//    double width =1440;
-//    double height =860;
 
     return QSize(width,height);
 }
@@ -234,10 +217,7 @@ void TimeZoneChooser::initSize(){
     const double heightScale = MapPictureHeight / mapHeight;
     const double scale = qMax(widthScale, heightScale);
 
-//    qDebug()<<"scale------>"<<MapPictureWidth / scale<<" "<<MapPictureHeight / scale<<endl;
     m_map->setFixedSize(MapPictureWidth / scale, MapPictureHeight / scale);
-
-//    m_searchInput->setFixedWidth(250);
 
     m_cancelBtn->setFixedHeight(36);
     m_confirmBtn->setFixedHeight(36);
