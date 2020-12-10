@@ -17,7 +17,10 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="leftMargin">
-      <number>40</number>
+      <number>90</number>
+     </property>
+     <property name="topMargin">
+      <number>20</number>
      </property>
      <item>
       <widget class="QListWidget" name="listWidget">

@@ -73,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // 初始化mixer
     mate_mixer_init();
     // 设置初始大小
-    resize(QSize(840, 600));
+    this->setMinimumSize(895, 600);
 
     logoLabel  = new QLabel(tr("UKCC"), this);
     PreScene *prescene = new PreScene(logoLabel, this->size());
