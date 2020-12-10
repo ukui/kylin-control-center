@@ -186,7 +186,7 @@ void AutoBoot::initUI() {
     nameLabel->setText(tr("Name"));
 
     QLabel * statusLabel = new QLabel(headWidget);
-    statusLabel->setFixedWidth(68);
+    statusLabel->setFixedWidth(150);
     statusLabel->setText(tr("Status"));
 
     headHorLayout->addWidget(nameLabel);
