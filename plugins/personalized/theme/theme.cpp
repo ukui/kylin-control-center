@@ -193,8 +193,8 @@ void Theme::setupSettings() {
     if (keys.contains("Compositing")) {
         kwinSettings->beginGroup("Compositing");
         QString xder;
-        bool kwinOG;
-        bool kwinEN;
+        bool kwinOG = false;
+        bool kwinEN = true;
         xder = kwinSettings->value("Backend", xder).toString();
         kwinOG = kwinSettings->value("OpenGLIsUnsafe", kwinOG).toBool();
         kwinEN = kwinSettings->value("Enabled", kwinEN).toBool();
@@ -366,7 +366,7 @@ void Theme::initIconTheme() {
     QDir themesDir = QDir(ICONTHEMEPATH);
 
     foreach (QString themedir, themesDir.entryList(QDir::Dirs)) {
-        if (themedir.startsWith("ukui")){
+        if (themedir.startsWith("ukui-icon")){
 
             QDir appsDir = QDir(ICONTHEMEPATH + themedir + "/48x48/apps/");
 
