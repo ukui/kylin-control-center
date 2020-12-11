@@ -984,7 +984,7 @@ you can restore them to ensure the integrity of your system.</source>
     <message>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="41"/>
         <source>Change valid</source>
-        <translation>密码时效</translation>
+        <translation>གསང་ཨང་དུས་ནུས་</translation>
     </message>
 </context>
 <context>
