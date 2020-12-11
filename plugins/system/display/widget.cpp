@@ -1048,7 +1048,12 @@ void Widget::setBrightnessScreen(int value) {
 //滑块改变
 void Widget::setBrightnesSldierValue() {
     int value = 99;
-    value = mPowerGSettings->get(POWER_KEY).toInt();
+    if (mPowerKeys.contains("brightnessBat") && mOnBattery) {
+        value = mPowerGSettings->get(POWER_BAT_KEY).toInt();
+    } else {
+        value = mPowerGSettings->get(POWER_KEY).toInt();
+    }
+
     ui->brightnessSlider->setValue(value);
 }
 
