@@ -206,6 +206,7 @@ void Notice::initOriNoticeStatus() {
         baseWidget->setLayout(baseVerLayout);
 
         QListWidgetItem * item = new QListWidgetItem(ui->applistWidget);
+        item->setFlags(Qt::NoItemFlags);
         item->setSizeHint(QSize(QSizePolicy::Expanding, 52));
 
         ui->applistWidget->setItemWidget(item, baseWidget);
