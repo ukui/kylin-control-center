@@ -3044,7 +3044,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="496"/>
         <source>Failed attempt to return value!</source>
-        <translation type="unfinished"></translation>
+        <translation>获取返回值失败！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/maindialog.cpp" line="497"/>
@@ -3275,7 +3275,8 @@ folder will be deleted!</source>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="576"/>
         <source>Unauthorized device or OSS falied.
 Please retry for login!</source>
-        <translation>OSS访问失败，请检查您的网络后再登录！</translation>
+        <translation>您的账户凭据已经失效，
+可能在其他地方登录!</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="190"/>
@@ -3330,7 +3331,7 @@ Please retry for login!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="577"/>
         <source>Your account is sign on on other device already!</source>
-        <translation type="unfinished"></translation>
+        <translation>您的账户已经在其他设备登录！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="672"/>
