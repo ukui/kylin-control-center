@@ -28,7 +28,6 @@
 #include <QDebug>
 #include <KF5/KScreen/kscreen/types.h>
 
-//这里注册的类型为什么不起作用
 Q_DECLARE_METATYPE(KScreen::OutputPtr)
 Q_DECLARE_METATYPE(QMLScreen*)
 

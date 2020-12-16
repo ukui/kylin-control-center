@@ -184,7 +184,7 @@ class Widget : public QWidget
 
     Slider *slider;
 
-    QGSettings *mGsettings     = nullptr;
+    QGSettings *mGsettings      = nullptr;
     QGSettings *scaleGSettings  = nullptr;
     QGSettings *mPowerGSettings = nullptr;
     QSettings  *mQsettings      = nullptr;

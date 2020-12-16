@@ -75,26 +75,5 @@ Item {
 
             spacing: 5;
         }
-
-/**
-// 对识别按钮注释
-        Controls.ToolButton {
-
-            id: identifyButton
-            objectName: "identifyButton";
-
-            anchors {
-                right: parent.right
-                bottom: parent.bottom
-                margins: 5
-            }
-
-            height: width
-            width: theme.largeIconSize;
-            iconName: "kdocumentinfo"
-
-            tooltip: i18nd("kcm_displayconfiguration", "Identify outputs");
-        }
-*/
     }
 }
