@@ -992,7 +992,7 @@ void Widget::checkOutputScreen(bool judge) {
 
 // 亮度调节UI
 void Widget::initBrightnessUI() {
-    ui->brightnessSlider->setRange(0.2*100, 100);
+    ui->brightnessSlider->setRange(0, 100);
     ui->brightnessSlider->setTracking(true);
 
     setBrightnesSldierValue();
