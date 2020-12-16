@@ -74,6 +74,7 @@ public:
     const QString name() const  Q_DECL_OVERRIDE;
 
     void initUI();
+    void initSlots();
     void initSearchText();
 
     bool setWebBrowsersDefaultProgram(char * appid);
