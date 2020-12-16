@@ -966,11 +966,26 @@ void Widget::checkOutputScreen(bool judge) {
    int index  = ui->primaryCombo->currentIndex();
    const KScreen::OutputPtr newPrimary = mConfig->output(ui->primaryCombo->itemData(index).toInt());
 
-   KScreen::OutputPtr  mainScreen=  mConfig->primaryOutput();
+   KScreen::OutputPtr mainScreen=  mConfig->primaryOutput();
    if (!mainScreen) {
        mConfig->setPrimaryOutput(newPrimary);
    }
+
    newPrimary->setEnabled(judge);
+
+   int enabledOutput = 0;
+   Q_FOREACH(KScreen::OutputPtr outptr , mConfig->outputs()) {
+       if (outptr->isEnabled()) {
+           enabledOutput++;
+       }
+
+       if (enabledOutput >= 2) {
+           // 设置副屏在主屏右边
+           newPrimary->setPos(QPoint(mainScreen->pos().x() + mainScreen->size().width(),
+                               mainScreen->pos().y()));
+       }
+   }
+
    ui->primaryCombo->setCurrentIndex(index);
    Q_EMIT changed();
 }
@@ -1003,14 +1018,7 @@ void Widget::initConnection() {
 
     // TODO: Find out why adjusting the screen orientation does not take effect
     connect(ui->applyButton, &QPushButton::clicked, this, [=]() {
-       save();
-       if (mOriApply) {
-           QTimer::singleShot(1000, this,
-               [this] () {
-                  save();
-               }
-           );
-       }
+        save();
     });
 
     connect(ui->advancedBtn, &QPushButton::clicked, this, [=] {
