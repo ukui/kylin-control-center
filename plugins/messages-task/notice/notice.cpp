@@ -72,7 +72,7 @@ QWidget * Notice::get_plugin_ui() {
         ui->newfeatureWidget->setVisible(false);
         ui->lockscreenWidget->setVisible(false);
 
-        ui->title2Label->setContentsMargins(0,0,0,16);
+        ui->title2Label->setContentsMargins(0, 0, 0, 16);
         ui->applistWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
         initSearchText();
@@ -218,8 +218,8 @@ void Notice::initOriNoticeStatus() {
         QString path;
 
         for (int j = 0; j < listChar.length(); j++) {
-            path =QString("%1%2").arg(NOTICE_ORIGIN_PATH).arg(QString(listChar.at(j)));
-            settings = new QGSettings(id, path.toLatin1().data());
+            path = QString("%1%2").arg(NOTICE_ORIGIN_PATH).arg(QString(listChar.at(j)));
+            settings = new QGSettings(id, path.toLatin1().data(), this);
             vecGsettins.append(settings);
             QStringList keys = settings->keys();
 
@@ -236,7 +236,6 @@ void Notice::initOriNoticeStatus() {
         connect(devWidget, &HoverWidget::enterWidget, this, [=](QString name) {
             Q_UNUSED(name)
             devWidget->setStyleSheet("QWidget#hovorWidget{background-color: rgba(61,107,229,40%);border-radius:4px;}");
-
         });
 
         connect(devWidget, &HoverWidget::leaveWidget, this, [=](QString name) {
@@ -262,27 +261,6 @@ void Notice::initOriNoticeStatus() {
             changeAppstatus(checked, appname, appSwitch);
         });
 
-        connect(nSetting,&QGSettings::changed,this,[=] (const QString &key) {
-           if(key == "enableNotice") {
-               enableSwitchBtn->blockSignals(true);
-               bool checked = nSetting->get(ENABLE_NOTICE_KEY).toBool();
-               bool judge = settings->get(MESSAGES_KEY).toBool();
-               enableSwitchBtn->setChecked(checked);
-               setHiddenNoticeApp(checked);
-               appSwitch->setChecked(judge);
-               //changeAppstatus(checked, appname, appSwitch);
-               enableSwitchBtn->blockSignals(false);
-           } else if(key == "showNewFeature") {
-               newfeatureSwitchBtn->blockSignals(true);
-               newfeatureSwitchBtn->setChecked(nSetting->get(NEW_FEATURE_KEY).toBool());
-               newfeatureSwitchBtn->blockSignals(false);
-           } else if(key == "showOnLockscreen") {
-               lockscreenSwitchBtn->blockSignals(true);
-               lockscreenSwitchBtn->setChecked(nSetting->get(SHOWON_LOCKSCREEN_KEY).toBool());
-               lockscreenSwitchBtn->blockSignals(false);
-           }
-        });
-
         connect(appSwitch, &SwitchButton::checkedChanged, [=](bool checked) {
             settings->set(MESSAGES_KEY, checked);
         });
@@ -302,13 +280,13 @@ void Notice::initGSettings() {
         bool isExist = false;
 
         for (int j = 0; j < listChar.length(); j++) {
-            path =QString("%1%2").arg(NOTICE_ORIGIN_PATH).arg(QString(listChar.at(j)));
+            path = QString("%1%2").arg(NOTICE_ORIGIN_PATH).arg(QString(listChar.at(j)));
             settings = new QGSettings(id, path.toLatin1().data());
             QStringList keys = settings->keys();
 
             if (keys.contains(static_cast<QString>(NAME_KEY))) {
                 QString appName = settings->get(NAME_KEY).toString();
-                if ( appsKey.at(i) == appName) {
+                if (appsKey.at(i) == appName) {
                     isExist = true;
                 }
             }
@@ -328,7 +306,7 @@ void Notice::initGSettings() {
 
 void Notice::changeAppstatus(bool checked, QString name, SwitchButton *appBtn) {
 
-    // if master swtich is off, record app's pre status
+    // 记录应用之前状态
     bool judge;
     if (!checked) {
         judge = appBtn->isChecked();

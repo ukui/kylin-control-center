@@ -63,7 +63,6 @@ QString findFreePath(){
     }
 
     if (i == MAX_CUSTOM_SHORTCUTS){
-//        qDebug() << "Keyboard Shortcuts" << "Too many custom shortcuts";
         return "";
     }
 
