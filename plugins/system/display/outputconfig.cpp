@@ -1,7 +1,6 @@
 #include "outputconfig.h"
 #include "resolutionslider.h"
 #include "utils.h"
-//#include "kcm_screen_debug.h"
 
 #include <QStringBuilder>
 #include <QFormLayout>
@@ -12,7 +11,6 @@
 #include <QPushButton>
 #include <QGroupBox>
 
-//#include <KLocalizedString>
 #include <QComboBox>
 #include <QGSettings>
 
@@ -22,7 +20,7 @@
 #include "ComboBox/combobox.h"
 
 #define SCALE_SCHEMAS "org.ukui.SettingsDaemon.plugins.xsettings"
-#define SCALE_KEY "scaling-factor"
+#define SCALE_KEY     "scaling-factor"
 
 OutputConfig::OutputConfig(QWidget *parent)
     : QWidget(parent)
