@@ -37,20 +37,20 @@ extern "C" {
 #include <dconf/dconf.h>
 }
 
-#define NOTICE_SCHEMA "org.ukui.control-center.notice"
-#define NEW_FEATURE_KEY "show-new-feature"
-#define ENABLE_NOTICE_KEY "enable-notice"
-#define SHOWON_LOCKSCREEN_KEY "show-on-lockscreen"
+#define NOTICE_SCHEMA           "org.ukui.control-center.notice"
+#define NEW_FEATURE_KEY         "show-new-feature"
+#define ENABLE_NOTICE_KEY       "enable-notice"
+#define SHOWON_LOCKSCREEN_KEY   "show-on-lockscreen"
 
-#define NOTICE_ORIGIN_SCHEMA "org.ukui.control-center.noticeorigin"
-#define NOTICE_ORIGIN_PATH "/org/ukui/control-center/noticeorigin/"
+#define NOTICE_ORIGIN_SCHEMA    "org.ukui.control-center.noticeorigin"
+#define NOTICE_ORIGIN_PATH      "/org/ukui/control-center/noticeorigin/"
 
-#define MAX_SHORTCUTS 1000
+#define MAX_SHORTCUTS           1000
 
-#define MESSAGES_KEY "messages"
-#define VOICE_KEY "voice"
-#define MAXIMINE_KEY "maximize"
-#define NAME_KEY "name"
+#define MESSAGES_KEY            "messages"
+#define VOICE_KEY               "voice"
+#define MAXIMINE_KEY            "maximize"
+#define NAME_KEY                "name"
 
 #define MAX_CUSTOM_SHORTCUTS 1000
 
