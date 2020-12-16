@@ -38,19 +38,20 @@ typedef enum {
     ALWAYS
 }ICONDISPLAY;
 
-/**
- * 平衡：关闭显示器10分钟；计算机进入睡眠30分钟
- * 节能：关闭显示器20分钟；计算机进入睡眠2小时
- * 自定义
- */
+// 平衡模式
+const int DISPLAY_BAT_BALANCE   =  10 * 60;
+const int DISPLAY_AC_BALANCE    =  30 * 60;
+const int COMPUTER_BALANCE      =  0;
 
-const int DISPLAY_BALANCE   =  10 * 60;
-const int COMPUTER_BALANCE  = 30 * 60;
-const int DISPLAY_SAVING    = 20 * 60;
-const int COMPUTER_SAVING   = 2 * 60 * 60;
+// 节能模式
+const int DISPLAY_SAVING        =  5 * 60;
+const int COMPUTER_SAVING       =  10 * 60;
 
 const QStringList kHibernate { QObject::tr("Never"),QObject::tr("10min"), QObject::tr("20min"),
                                QObject::tr("40min"), QObject::tr("80min")};
+
+const QStringList kLid       { QObject::tr("interactive"), QObject::tr("suspend"), QObject::tr("hibernate"), QObject::tr("shutdown") };
+const QStringList kEnkLid    { "interactive", "suspend", "hibernate", "shutdown"};
 
 Power::Power() : mFirstLoad(true)
 {
@@ -94,12 +95,10 @@ QWidget * Power::get_plugin_ui() {
 
             mPowerKeys = settings->keys();
 
-//            initGeneralSet();
-
+            initGeneralSet();
             initModeStatus();
             setupConnect();
             initPowerOtherStatus();
-            setIdleTime(sessionSetting->get(IDLE_DELAY_KEY).toInt());
         } else {
             qCritical() << POWERMANAGER_SCHEMA << "not installed!\n";
         }
@@ -142,8 +141,6 @@ void Power::isPowerSupply() {
         isExitsPower = false ;
         ui->batteryBtn->setVisible(false);
         ui->closeLidFrame->setVisible(false);
-        ui->title2Label->setVisible(false);
-        ui->iconFrame->setVisible(false);
         ui->verticalSpacer_2->changeSize(0, 0);
     } else {
         isExitsPower = true ;
@@ -217,9 +214,6 @@ void Power::setupComponent() {
     // 电源不显示变暗功能
     ui->darkenFrame->hide();
 
-    // s3tos4先隐藏
-    ui->s3Tos4Frame->hide();
-
     // 电源图标
     iconShowList << tr("always") << tr("present") << tr("charge");
     ui->iconComboBox->insertItem(0, iconShowList.at(0), "always");
@@ -237,10 +231,11 @@ void Power::setupConnect() {
 #endif
         refreshUI();
 
+        // 平衡模式
         if (id == BALANCE) {
             // 设置显示器关闭
-            settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_BALANCE);
-            settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_BALANCE);
+            settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_AC_BALANCE);
+            settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_BAT_BALANCE);
             // 设置计算机睡眠
             settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_BALANCE);
             settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_BALANCE);
@@ -251,9 +246,8 @@ void Power::setupConnect() {
             // 设置计算机睡眠
             settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_SAVING);
             settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_SAVING);
-
         } else {
-            resetCustomPlanStatus();
+            initCustomPlanStatus();
         }
     });
 
@@ -280,12 +274,7 @@ void Power::setupConnect() {
             settings->set(SLEEP_COMPUTER_BATT_KEY, QVariant(value));
         }
 
-        if (value) {
-            ui->sleepLabel->setText(QString(tr("Enter idle state %1 min and sleep after %2 min :")).arg(getIdleTime())
-                                    .arg(getIdleTime() + value / 60));
-        } else {
-            ui->sleepLabel->setText(tr("Change PC sleep time:"));
-        }
+        ui->sleepLabel->setText(tr("Change PC sleep time:"));
     });
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
@@ -302,12 +291,7 @@ void Power::setupConnect() {
             settings->set(SLEEP_DISPLAY_BATT_KEY, QVariant(value));
         }
 
-        if (value) {
-            ui->closeLabel->setText(QString(tr("Enter idle state %1 min and close after %2 min :")).arg(getIdleTime())
-                                    .arg(getIdleTime() + value / 60));
-        } else {
-            ui->closeLabel->setText(tr("Change DP close time:"));;
-        }
+        ui->closeLabel->setText(tr("Change DP close time:"));;
     });
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
@@ -347,12 +331,6 @@ void Power::setupConnect() {
         int idleDarken = ui->darkenCombo->currentData(Qt::UserRole).toInt() * 60;
         settings->set(IDLE_DIM_TIME_KEY, idleDarken);
     });
-
-    connect(sessionSetting, &QGSettings::changed, this, [=](QString key){
-       if ("idleDelay" == key)  {
-           setIdleTime(sessionSetting->get(key).toInt());
-       }
-    });
 }
 
 void Power::initModeStatus() {
@@ -363,17 +341,14 @@ void Power::initModeStatus() {
     int batclose = settings->get(SLEEP_DISPLAY_BATT_KEY).toInt();
 
     if (acsleep == COMPUTER_BALANCE && batsleep == COMPUTER_BALANCE &&
-            acclose == DISPLAY_BALANCE && batclose == DISPLAY_BALANCE){
+            acclose == DISPLAY_AC_BALANCE && batclose == DISPLAY_BAT_BALANCE){
         ui->balanceRadioBtn->setChecked(true);
-
     } else if (acsleep == COMPUTER_SAVING && batsleep == COMPUTER_SAVING &&
                acclose == DISPLAY_SAVING && batclose == DISPLAY_SAVING){
         ui->savingRadioBtn->setChecked(true);
     } else {
         ui->custdomRadioBtn->setChecked(true);
-
         ui->acBtn->setChecked(true);
-
         initCustomPlanStatus();
     }
     refreshUI();
@@ -417,11 +392,11 @@ void Power::initCustomPlanStatus() {
         int acclose = settings->get(SLEEP_DISPLAY_AC_KEY).toInt() / FIXES;
         ui->closeComboBox->setCurrentIndex(ui->closeComboBox->findData(acclose));
 
-        //合盖
+        // 合盖
         QString aclid = settings->get(BUTTON_LID_AC_KEY).toString();
         ui->closeLidCombo->setCurrentIndex(ui->closeLidCombo->findData(aclid));
 
-        //变暗
+        // 变暗
         ui->darkenFrame->hide();
     }
 
@@ -444,23 +419,8 @@ void Power::initCustomPlanStatus() {
         ui->darkenFrame->show();
     }
 
-
-    int valueSleep = ui->sleepComboBox->currentData(Qt::UserRole).toInt() * 60;
-    if (valueSleep) {
-        ui->sleepLabel->setText(QString(tr("Enter idle state %1 min and sleep after %2 min :")).arg(getIdleTime())
-                                .arg(getIdleTime() + valueSleep / 60));
-    } else {
-        ui->sleepLabel->setText(tr("Change PC sleep time:"));
-    }
-
-    int valueClose = ui->closeComboBox->currentData(Qt::UserRole).toInt() * 60;
-    if (valueClose) {
-        ui->closeLabel->setText(QString(tr("Enter idle state %1 min and close after %2 min :")).arg(getIdleTime())
-                                .arg(getIdleTime() + valueClose / 60));
-    } else {
-        ui->closeLabel->setText(tr("Change DP close time:"));;
-    }
-
+    ui->sleepLabel->setText(tr("Change PC sleep time:"));
+    ui->closeLabel->setText(tr("Change DP close time:"));;
 
     // 信号阻塞解除
     ui->sleepComboBox->blockSignals(false);
@@ -473,8 +433,9 @@ void Power::refreshUI() {
         ui->custom1Frame->hide();
         ui->custom2Frame->hide();
         ui->closeLidFrame->hide();
-        if (ui->batteryBtn->isChecked())
+        if (ui->batteryBtn->isChecked()) {
             ui->darkenFrame->hide();
+        }
     } else {
         ui->custom1Frame->show();
         ui->custom2Frame->show();
@@ -488,10 +449,34 @@ int Power::getIdleTime() {
 }
 
 void Power::initGeneralSet() {
+
+    if (isExitsPower) {
+        mPowerBtn = new ComboxFrame(tr("When the power button is pressed:"), pluginWidget);
+
+        mPowerBtn->mHLayout->setSpacing(48);
+        mPowerBtn->mHLayout->setContentsMargins(16, 0, 16, 0);
+
+        mPowerBtn->mTitleLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        mPowerBtn->mTitleLabel->setMinimumWidth(300);
+        ui->powerLayout->addWidget(mPowerBtn);
+
+        for(int i = 0; i < kLid.length(); i++) {
+            mPowerBtn->mCombox->insertItem(i, kLid.at(i), kEnkLid.at(i));
+        }
+
+        QString btnStaus = settings->get(BUTTON_POWER_KEY).toString();
+        mPowerBtn->mCombox->setCurrentIndex(mPowerBtn->mCombox->findData(btnStaus));
+
+        connect(mPowerBtn->mCombox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+            settings->set(BUTTON_POWER_KEY, mPowerBtn->mCombox->itemData(index));
+        });
+    }
+
+    /* 休眠接口后续开放
     if (getHibernateStatus() && mPowerKeys.contains("afterIdleAction")) {
         mHibernate = new ComboxFrame(tr("After suspending this time, the system will go to sleep:"), pluginWidget);
 
-        ui->powerLayout->addWidget(new QLabel(tr("General Settings")));
+
         ui->powerLayout->addWidget(mHibernate);
 
         ui->powerLayout->addStretch();
@@ -515,6 +500,7 @@ void Power::initGeneralSet() {
             }
         });
     }
+    */
 }
 
 bool Power::getHibernateStatus() {

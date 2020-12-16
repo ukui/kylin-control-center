@@ -89,6 +89,8 @@ private:
     bool mFirstLoad;
 
     ComboxFrame *mHibernate;
+    ComboxFrame *mPowerBtn;
+
     QDBusInterface *mUkccInterface;
 
 private:

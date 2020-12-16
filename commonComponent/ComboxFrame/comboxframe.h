@@ -17,10 +17,10 @@ public:
 
 public:
     QComboBox *mCombox;
-
-private:
     QLabel      *mTitleLabel;
     QHBoxLayout *mHLayout;
+
+private:
     QString     mTitleName;
 
 signals:
