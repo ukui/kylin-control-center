@@ -31,19 +31,19 @@
 
 // GTK主题
 #define THEME_GTK_SCHEMA "org.mate.interface"
-#define MODE_GTK_KEY "gtk-theme"
+#define MODE_GTK_KEY     "gtk-theme"
 
 // GTK图标主题
-#define ICON_GTK_KEY "icon-theme"
+#define ICON_GTK_KEY    "icon-theme"
 
 // QT主题
 #define THEME_QT_SCHEMA "org.ukui.style"
-#define MODE_QT_KEY "style-name"
-#define THEME_TRAN_KEY "menu-transparency"
-#define PEONY_TRAN_KEY "peony-side-bar-transparency"
+#define MODE_QT_KEY     "style-name"
+#define THEME_TRAN_KEY  "menu-transparency"
+#define PEONY_TRAN_KEY  "peony-side-bar-transparency"
 
 // QT图标主题
-#define ICON_QT_KEY "icon-theme-name"
+#define ICON_QT_KEY     "icon-theme-name"
 
 // 窗口管理器Marco主题
 #define MARCO_SCHEMA    "org.gnome.desktop.wm.preferences"
@@ -65,13 +65,15 @@
 #define PERSONALSIE_EFFECT_KEY "effect"
 
 const QString kDefCursor =           "DMZ-White";
-const QString UbuntuVesionEnhance = "20.10";
-const QString kXder =               "XRender";
+const QString UbuntuVesionEnhance =  "20.10";
+const QString kXder =                "XRender";
 
 const int transparency = 75;
 
 const QStringList effectList {"blur", "kwin4_effect_translucency", "kwin4_effect_maximize", "zoom"};
 const QStringList kIconsList {"blueman", "disk-burner", "firefox", "kylin-video", "kylin-assistant", "kylin-scanner", "kylin-ipmsg"};
+
+const QStringList kExcludeIcon {"ukui-icon-theme-default", "ukui-icon-theme-classical", "ukui-icon-theme-basic"};
 
 namespace {
 
@@ -115,7 +117,6 @@ Theme::Theme()
 
     //设置组件
     setupComponent();
-    // init kwin settings
     setupSettings();
     initThemeMode();
     initIconTheme();
@@ -301,7 +302,7 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
 void Theme::initThemeMode() {
     // 获取当前主题
     QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-    if (/*"ukui-white" == currentThemeMode || */"ukui" == currentThemeMode) {
+    if ("ukui" == currentThemeMode) {
         ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
     } else if ("ukui-dark" == currentThemeMode){
         ui->themeModeBtnGroup->buttonClicked(ui->darkButton);
@@ -366,11 +367,11 @@ void Theme::initIconTheme() {
     QDir themesDir = QDir(ICONTHEMEPATH);
 
     foreach (QString themedir, themesDir.entryList(QDir::Dirs)) {
-        if (themedir.startsWith("ukui-icon")){
+        if (themedir.startsWith("ukui")){
 
             QDir appsDir = QDir(ICONTHEMEPATH + themedir + "/48x48/apps/");
 
-            if ("ukui-icon-theme-default" == themedir) {
+            if (kExcludeIcon.contains(themedir, Qt::CaseInsensitive)) {
                 continue;
             }
             appsDir.setFilter(QDir::Files | QDir::NoSymLinks);
@@ -632,8 +633,9 @@ QString Theme::dullTranslation(QString str) {
         return QObject::tr("classical");
     } else if (!QString::compare(str, "default")){
         return QObject::tr("default");
-    } else
-        return QObject::tr("Unknown");
+    } else {
+        return QObject::tr("default");
+    }
 }
 
 // reset all of themes, include cursor, icon,and etc...
@@ -722,13 +724,7 @@ void Theme::themeBtnClickSlot(QAbstractButton *button) {
      QString themeMode = button->property("value").toString();
      QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
 
-     if (QString::compare(currentThemeMode, themeMode)){
-//         QString tmpMode;
-//         if ("ukui-dark" == themeMode) {
-//             tmpMode = "ukui-black";
-//         } else {
-//             tmpMode = "ukui-white";
-//         }
+     if (QString::compare(currentThemeMode, themeMode)) {
          gtkSettings->set(MODE_GTK_KEY, themeMode);
 
          QtConcurrent::run([=](){
