@@ -82,49 +82,49 @@ ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QWidget *parent) :
 //    isCurrentUser = true;
 
     //初始化passwd对象
-    if (isCurrentUser){
-        passwd_handler = passwd_init();
-        connect(ui->curPwdLineEdit, &QLineEdit::editingFinished, [=]{
+//    if (isCurrentUser){
+//        passwd_handler = passwd_init();
+//        connect(ui->curPwdLineEdit, &QLineEdit::editingFinished, [=]{
 
-            if (isCurrentUser){
-                if (!ui->curPwdLineEdit->text().isEmpty()){
-                    curPwdTip = tr("Cur pwd checking!");
-                    cpdGlobalObj->helpEmitSignal();
+//            if (isCurrentUser){
+//                if (!ui->curPwdLineEdit->text().isEmpty()){
+//                    curPwdTip = tr("Cur pwd checking!");
+//                    cpdGlobalObj->helpEmitSignal();
 
-                    std::string str1 = ui->curPwdLineEdit->text().toStdString();
-                    const char * old_passwd = str1.c_str();
-                    passwd_authenticate(passwd_handler, old_passwd, auth_cb, NULL);
-                } else {
-                    curPwdTip = "";
-                    cpdGlobalObj->helpEmitSignal();
-                }
-            }
-        });
-    } else {
-        connect(ui->curPwdLineEdit, &QLineEdit::editingFinished, [=]{
+//                    std::string str1 = ui->curPwdLineEdit->text().toStdString();
+//                    const char * old_passwd = str1.c_str();
+//                    passwd_authenticate(passwd_handler, old_passwd, auth_cb, NULL);
+//                } else {
+//                    curPwdTip = "";
+//                    cpdGlobalObj->helpEmitSignal();
+//                }
+//            }
+//        });
+//    } else {
+//        connect(ui->curPwdLineEdit, &QLineEdit::editingFinished, [=]{
 
-            if (checkOtherPasswd(ui->usernameLabel->text(), ui->curPwdLineEdit->text())){
-                curPwdTip = "";
-            } else {
-                curPwdTip = QObject::tr("Pwd input error, re-enter!");
-            }
-            cpdGlobalObj->helpEmitSignal();
+//            if (checkOtherPasswd(ui->usernameLabel->text(), ui->curPwdLineEdit->text())){
+//                curPwdTip = "";
+//            } else {
+//                curPwdTip = QObject::tr("Pwd input error, re-enter!");
+//            }
+//            cpdGlobalObj->helpEmitSignal();
 
-        });
+//        });
 
-    }
+//    }
 
-    connect(cpdGlobalObj, &ChangePwdDialog::pwdCheckOver, this, [=]{
+//    connect(cpdGlobalObj, &ChangePwdDialog::pwdCheckOver, this, [=]{
 
-        ui->tipLabel->setText(curPwdTip);
-        if (curPwdTip.isEmpty()){
-            pwdTip.isEmpty() ? ui->tipLabel->setText(pwdTip) : ui->tipLabel->setText(pwdSureTip);
-        }
+//        ui->tipLabel->setText(curPwdTip);
+//        if (curPwdTip.isEmpty()){
+//            pwdTip.isEmpty() ? ui->tipLabel->setText(pwdTip) : ui->tipLabel->setText(pwdSureTip);
+//        }
 
-        refreshConfirmBtnStatus();
-    });
+//        refreshConfirmBtnStatus();
+//    });
 
-    if (isCurrentUser){
+    if (0/*isCurrentUser*/){
         connect(ui->confirmPushBtn, &QPushButton::clicked, [=]{
             this->accept();
             std::string str2 = ui->pwdLineEdit->text().toStdString();
@@ -236,6 +236,9 @@ void ChangePwdDialog::setupComponent(){
     ui->pwdLineEdit->setPlaceholderText(tr("New Password"));
     ui->pwdsureLineEdit->setPlaceholderText(tr("New Password Identify"));
 
+    ui->curPwdLineEdit->hide();
+    ui->curPwdLabel->hide();
+
     refreshConfirmBtnStatus();
 }
 
@@ -287,7 +290,7 @@ void ChangePwdDialog::setAccountType(QString aType){
 
 void ChangePwdDialog::haveCurrentPwdEdit(bool have){
     ui->curPwdLineEdit->setVisible(have);
-    ui->label->setVisible(have);
+    ui->curPwdLabel->setVisible(have);
 }
 
 void ChangePwdDialog::paintEvent(QPaintEvent *event) {
@@ -393,7 +396,7 @@ bool ChangePwdDialog::checkCharLegitimacy(QString password){
 void ChangePwdDialog::refreshConfirmBtnStatus(){
     if (getuid()){
         if (!ui->tipLabel->text().isEmpty() || \
-                ui->curPwdLineEdit->text().isEmpty() || ui->curPwdLineEdit->text() == tr("Current Password") || \
+                /*ui->curPwdLineEdit->text().isEmpty() || ui->curPwdLineEdit->text() == tr("Current Password") || \*/
                 ui->pwdLineEdit->text().isEmpty() || ui->pwdLineEdit->text() == tr("New Password") || \
                 ui->pwdsureLineEdit->text().isEmpty() || ui->pwdsureLineEdit->text() == tr("New Password Identify") ||
                 !curPwdTip.isEmpty() || !pwdTip.isEmpty() || !pwdSureTip.isEmpty())
