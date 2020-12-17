@@ -13,10 +13,12 @@ class ComboxFrame : public QFrame
     Q_OBJECT
 public:
     ComboxFrame(QString labelStr, QWidget *parent = nullptr);
+    ComboxFrame(bool isNum, QString labelStr, QWidget *parent = nullptr);
     ~ComboxFrame();
 
 public:
-    QComboBox *mCombox;
+    QComboBox   *mCombox;
+    QComboBox   *mNumCombox;
     QLabel      *mTitleLabel;
     QHBoxLayout *mHLayout;
 
