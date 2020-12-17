@@ -185,13 +185,13 @@
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="196"/>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="104"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="98"/>
         <source>Program name</source>
         <translation>程序名</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="247"/>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="105"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="99"/>
         <source>Program exec</source>
         <translation>程序路径</translation>
     </message>
@@ -202,33 +202,33 @@
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="317"/>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="106"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="100"/>
         <source>Program comment</source>
         <translation>程序描述</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="395"/>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="145"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="379"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="139"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="420"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="404"/>
         <source>Certain</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="143"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="137"/>
         <source>select autoboot desktop</source>
         <translation>选择自启动程序</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="144"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="138"/>
         <source>Select</source>
         <translation>选择</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="212"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="206"/>
         <source>desktop file not exist</source>
         <translation>desktop文件不存在</translation>
     </message>
@@ -820,42 +820,42 @@ you can restore them to ensure the integrity of your system.</source>
         <translation>更改密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="89"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="91"/>
         <source>Cur pwd checking!</source>
         <translation>当前密码检查!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="227"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="229"/>
         <source>General Pwd</source>
         <translation>通用密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="233"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="392"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="235"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="396"/>
         <source>Current Password</source>
         <translation>当前密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="234"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="393"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="401"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="236"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="397"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="405"/>
         <source>New Password</source>
         <translation>新密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="235"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="394"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="402"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="237"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="398"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="406"/>
         <source>New Password Identify</source>
         <translation>新密码确认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="335"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="338"/>
         <source>Contains illegal characters!</source>
         <translation>含有非法字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="337"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="340"/>
         <source>Same with old pwd</source>
         <translation>与旧密码相同</translation>
     </message>
@@ -872,8 +872,8 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="vanished">密码长度需要大于5个字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="250"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="367"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="252"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="371"/>
         <source>Inconsistency with pwd</source>
         <translation>与新密码不同</translation>
     </message>
@@ -990,22 +990,22 @@ you can restore them to ensure the integrity of your system.</source>
 <context>
     <name>ChangtimeDialog</name>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="172"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="171"/>
         <source>day</source>
         <translation>日期</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="169"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="168"/>
         <source>time</source>
         <translation>时间</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="170"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="169"/>
         <source>year</source>
         <translation>年份</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="171"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="170"/>
         <source>month</source>
         <translation>月份</translation>
     </message>
@@ -1180,7 +1180,7 @@ change system settings</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="176"/>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="313"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="314"/>
         <source>Inconsistency with pwd</source>
         <translation>和密码不一致</translation>
     </message>
@@ -1207,42 +1207,42 @@ change system settings</source>
         <translation>含有非法字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="416"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="417"/>
         <source>The user name cannot be empty</source>
         <translation>用户名不能为空</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="418"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="419"/>
         <source>The first character must be lowercase letters!</source>
         <translation>首字符必须为小写字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="421"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="422"/>
         <source>User name can not contain capital letters!</source>
         <translation>用户名不能包含大写字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="433"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="434"/>
         <source>The user name is already in use, please use a different one.</source>
         <translation>用户名已存在，请换用其他用户名。</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="435"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="436"/>
         <source>The name corresponds to the group already exists.</source>
         <translation>用户名对应组已存在，请更换用户名.</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="440"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="441"/>
         <source>User name length need to less than %1 letters!</source>
         <translation>用户名长度需要小于%1个字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="442"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="443"/>
         <source>The user name can only be composed of letters, numbers and underline!</source>
         <translation>用户名只能由字母、数字以及下划线组成！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="447"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="448"/>
         <source>The username is configured, please change the username</source>
         <translation>用户配置已存在，请更换用户名</translation>
     </message>
@@ -1400,7 +1400,7 @@ change system settings</source>
         <extra-contents_path>/datetime/Sync network time</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="246"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="245"/>
         <source>change time</source>
         <translation>更改时间</translation>
     </message>
@@ -1495,7 +1495,7 @@ change system settings</source>
         <translation>文档编辑器</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.ui" line="592"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.ui" line="594"/>
         <source>Reset to default</source>
         <translation>恢复默认设置</translation>
     </message>
@@ -1516,7 +1516,7 @@ change system settings</source>
 <context>
     <name>DefineShortcutItem</name>
     <message>
-        <location filename="../../../plugins/devices/shortcut/defineshortcutitem.cpp" line="59"/>
+        <location filename="../../../plugins/devices/shortcut/defineshortcutitem.cpp" line="58"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
@@ -2440,7 +2440,7 @@ folder will be deleted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="305"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="297"/>
         <source>Thanks For Using The ukcc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2662,12 +2662,12 @@ folder will be deleted!</source>
         <translation>添加布局</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/keyboard/kbdlayoutmanager.cpp" line="246"/>
+        <location filename="../../../plugins/devices/keyboard/kbdlayoutmanager.cpp" line="235"/>
         <source>Del</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/keyboard/kbdlayoutmanager.cpp" line="303"/>
+        <location filename="../../../plugins/devices/keyboard/kbdlayoutmanager.cpp" line="289"/>
         <source>Keyboard Preview</source>
         <translation>布局预览</translation>
     </message>
@@ -3597,7 +3597,7 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.ui" line="139"/>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="309"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="303"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
@@ -3627,18 +3627,18 @@ Please retry for login!</source>
         <translation type="vanished">网络连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="166"/>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="179"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="163"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="173"/>
         <source>Refreshing...</source>
         <translation>刷新中...</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="240"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="234"/>
         <source>connected</source>
         <translation>已连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="242"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="236"/>
         <source>No network</source>
         <translation>无网络链接</translation>
     </message>
@@ -3701,64 +3701,64 @@ Please retry for login!</source>
 <context>
     <name>OutputConfig</name>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="80"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="77"/>
         <source>resolution</source>
         <translation>分辨率</translation>
         <extra-contents_path>/display/resolution</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="110"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="107"/>
         <source>orientation</source>
         <translation>方向</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="128"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="125"/>
         <source>arrow-up</source>
         <translation>不旋转</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="129"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="126"/>
         <source>90° arrow-right</source>
         <translation>90° 顺时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="130"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="127"/>
         <source>arrow-down</source>
         <translation>上下颠倒</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="131"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="128"/>
         <source>90° arrow-left</source>
         <translation>90° 逆时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="145"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="142"/>
         <source>refresh rate</source>
         <translation>刷新率</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="162"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="159"/>
         <source>auto</source>
         <translation>自动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="176"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="173"/>
         <source>100%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="178"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="175"/>
         <source>200%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="183"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="180"/>
         <source>screen zoom</source>
         <translation>缩放屏幕</translation>
         <extra-contents_path>/display/screen zoom</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="265"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="262"/>
         <source>%1 Hz</source>
         <translation></translation>
     </message>
@@ -3844,14 +3844,14 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="167"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="108"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="125"/>
         <source>Balance (suggest)</source>
         <translation>平衡(推荐)</translation>
         <extra-contents_path>/power/Balance (suggest)</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="277"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="110"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="127"/>
         <source>Saving</source>
         <translation>节能</translation>
         <extra-contents_path>/power/Saving</extra-contents_path>
@@ -3873,7 +3873,7 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="395"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="112"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="129"/>
         <source>Custom</source>
         <translation>自定义</translation>
         <extra-contents_path>/power/Custom</extra-contents_path>
@@ -3895,15 +3895,15 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="611"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="269"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="435"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="282"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="427"/>
         <source>Change PC sleep time:</source>
         <translation>系统进入空闲状态并于此时间后挂起：</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="713"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="291"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="443"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="299"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="428"/>
         <source>Change DP close time:</source>
         <translation>系统进入空闲状态并于此时间后关闭显示器：</translation>
     </message>
@@ -3926,14 +3926,12 @@ Please retry for login!</source>
         <translation>无操作状态下于此时间后减小屏幕亮度：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.ui" line="950"/>
         <source>Power Other Settings</source>
-        <translation>电源图标设置</translation>
+        <translation type="vanished">电源图标设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.ui" line="1118"/>
         <source>S3 to S4 when:</source>
-        <translation>挂起此时间后转为睡眠：</translation>
+        <translation type="vanished">挂起此时间后转为睡眠：</translation>
     </message>
     <message>
         <source>Power Icon Settings</source>
@@ -3949,7 +3947,7 @@ Please retry for login!</source>
         <translation type="vanished">电源</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="50"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="63"/>
         <source>Power</source>
         <translation>电源</translation>
     </message>
@@ -3962,114 +3960,125 @@ Please retry for login!</source>
         <translation type="vanished">系统%1分钟后进入空闲状态并于此时间后关闭显示器：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="146"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="266"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="432"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="162"/>
         <source>Enter idle state %1 min and sleep after %2 min :</source>
         <translation>系统%1分钟后进入空闲状态并于%2分钟后挂起：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="150"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="288"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="440"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="166"/>
         <source>Enter idle state %1 min and close after %2 min :</source>
         <translation>系统%1分钟后进入空闲状态并于%2分钟后关闭显示器：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="161"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="190"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="181"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="191"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="210"/>
         <source>never</source>
         <translation>从不</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="161"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="190"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="181"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="191"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="210"/>
         <source>10 min</source>
         <translation>10分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="161"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="181"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="191"/>
         <source>30 min</source>
         <translation>30分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="161"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="181"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="191"/>
         <source>60 min</source>
         <translation>60分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="161"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="181"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="191"/>
         <source>120 min</source>
         <translation>120分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="161"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="181"/>
         <source>300 min</source>
         <translation>300分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="161"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="190"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="181"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="191"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="210"/>
         <source>20 min</source>
         <translation>20分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="190"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="191"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="210"/>
         <source>1 min</source>
         <translation>1分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="171"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="190"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="191"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="210"/>
         <source>5 min</source>
         <translation>5分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="182"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="202"/>
         <source>nothing</source>
         <translation>无操作</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="182"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="202"/>
         <source>blank</source>
         <translation>黑屏</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="182"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="202"/>
         <source>suspend</source>
         <translation>挂起</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="182"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="202"/>
         <source>hibernate</source>
         <translation>休眠</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="182"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="202"/>
         <source>shutdown</source>
         <translation>关机</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="206"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="223"/>
         <source>always</source>
         <translation>显示电源图标在托盘栏</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="206"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="223"/>
         <source>present</source>
         <translation>仅当存在电池时显示</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="206"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="223"/>
         <source>charge</source>
         <translation>仅当使用电池时显示</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="482"/>
+        <source>Perform operations when battery is low:</source>
+        <translation>低电量执行操作:</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.ui" line="950"/>
+        <source>General Settings</source>
+        <translation>通用设置</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="460"/>
+        <source>When the power button is pressed:</source>
+        <translation>按电源键时执行:</translation>
     </message>
 </context>
 <context>
@@ -4312,33 +4321,33 @@ Please retry for login!</source>
         <translation type="vanished">默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="635"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="631"/>
         <source>basic</source>
         <translation>基础</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="637"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="633"/>
         <source>classical</source>
         <translation>经典</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="639"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="635"/>
         <source>default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="641"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="637"/>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="175"/>
         <source>Unknown</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="390"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="379"/>
         <source>Update Shortcut</source>
         <translation>更新快捷键</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="215"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="206"/>
         <source>Add Shortcut</source>
         <translation>添加快捷键</translation>
     </message>
@@ -4517,10 +4526,64 @@ Please retry for login!</source>
         <translation>体验计划</translation>
     </message>
     <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="50"/>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="169"/>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="206"/>
         <source>Never</source>
         <translation>从不</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="50"/>
+        <source>10min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="50"/>
+        <source>20min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="51"/>
+        <source>40min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="51"/>
+        <source>80min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="54"/>
+        <source>interactive</source>
+        <translation>询问</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="54"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="58"/>
+        <source>suspend</source>
+        <translation>挂起</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="54"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="58"/>
+        <source>hibernate</source>
+        <translation>休眠</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="54"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="58"/>
+        <source>shutdown</source>
+        <translation>关机</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="58"/>
+        <source>nothing</source>
+        <translation type="unfinished">无操作</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="58"/>
+        <source>blank</source>
+        <translation type="unfinished">黑屏</translation>
     </message>
     <message>
         <source>Year</source>
@@ -4640,8 +4703,8 @@ Please retry for login!</source>
         <translation>控制面板已运行!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="107"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="424"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="109"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="428"/>
         <source>Pwd input error, re-enter!</source>
         <translation>密码输入错误,重新输入!</translation>
     </message>
@@ -4786,12 +4849,12 @@ Please retry for login!</source>
         <translation>自动启动的应用程序</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3509"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3511"/>
         <source>PulseAudio Volume Control</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3522"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3524"/>
         <source>Connection to PulseAudio failed. Automatic retry in 5s
 
 In this case this is likely because PULSE_SERVER in the Environment/X11 Root Window Properties
@@ -4802,23 +4865,18 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3567"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3569"/>
         <source>pa_context_subscribe() failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3580"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3582"/>
         <source>Failed to initialize stream_restore extension: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3595"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3597"/>
         <source>pa_ext_stream_restore_read() failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3646"/>
-        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4927,7 +4985,7 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="vanished">(推荐)</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/resolutionslider.cpp" line="110"/>
+        <location filename="../../../plugins/system/display/resolutionslider.cpp" line="109"/>
         <source>No available resolutions</source>
         <translation>没有合适的分辨率</translation>
     </message>
@@ -5180,47 +5238,47 @@ run start-pulseaudio-x11 manually.</source>
         <translation>打开安全中心</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="151"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="140"/>
         <source>Security Center</source>
         <translation>安全中心</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="198"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="187"/>
         <source>Virus Protection</source>
         <translation>病毒防护</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="199"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="188"/>
         <source>Protect system from threats</source>
         <translation>实时防护，帮助系统免受威胁</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="204"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="193"/>
         <source>Network Protection</source>
         <translation>网络保护</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="205"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="194"/>
         <source>Setup app that can access web</source>
         <translation>设置可访问网络的应用</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="210"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="199"/>
         <source>App Execution Control</source>
         <translation>应用执行控制</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="211"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="200"/>
         <source>App install and exe protection</source>
         <translation>应用程序安装和执行保护</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="216"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="205"/>
         <source>Account Security</source>
         <translation>账户安全</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="217"/>
+        <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="206"/>
         <source>Protect account and login security</source>
         <translation>保护账户和登录的安全性</translation>
     </message>
@@ -5262,7 +5320,7 @@ run start-pulseaudio-x11 manually.</source>
     <name>Shortcut</name>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="79"/>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="151"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="149"/>
         <source>System Shortcut</source>
         <translation>系统快捷键</translation>
         <extra-contents_path>/shortcut/System Shortcut</extra-contents_path>
@@ -5274,20 +5332,20 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="185"/>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="153"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="151"/>
         <source>Custom Shortcut</source>
         <translation>自定义快捷键</translation>
         <extra-contents_path>/shortcut/Custom Shortcut</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="179"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="173"/>
         <source>Add custom shortcut</source>
         <translation>添加自定义快捷键</translation>
         <extra-contents_path>/shortcut/Add custom shortcut</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="476"/>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="525"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="463"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="507"/>
         <source>disable</source>
         <translation>无效</translation>
     </message>
@@ -5332,8 +5390,8 @@ run start-pulseaudio-x11 manually.</source>
         <translation>显示全部快捷键</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/showallshortcut.cpp" line="101"/>
-        <location filename="../../../plugins/devices/shortcut/showallshortcut.cpp" line="149"/>
+        <location filename="../../../plugins/devices/shortcut/showallshortcut.cpp" line="94"/>
+        <location filename="../../../plugins/devices/shortcut/showallshortcut.cpp" line="141"/>
         <source>Desktop</source>
         <translation>桌面</translation>
     </message>
@@ -5507,7 +5565,7 @@ run start-pulseaudio-x11 manually.</source>
     <name>Touchpad</name>
     <message>
         <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="41"/>
-        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="87"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="84"/>
         <source>Touchpad Settings</source>
         <translation>触摸板设置</translation>
         <extra-contents_path>/touchpad/Touchpad Settings</extra-contents_path>
@@ -5547,27 +5605,27 @@ run start-pulseaudio-x11 manually.</source>
         <translation>触摸板</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="134"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="132"/>
         <source>Disable rolling</source>
         <translation>禁用滚动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="135"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="133"/>
         <source>Vertical edge scrolling</source>
         <translation>垂直边界滚动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="136"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="134"/>
         <source>Horizontal edge scrolling</source>
         <translation>水平边界滚动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="137"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="135"/>
         <source>Vertical two-finger scrolling</source>
         <translation>垂直双指滚动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="138"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="136"/>
         <source>Horizontal two-finger scrolling</source>
         <translation>水平双指滚动</translation>
     </message>
@@ -5661,12 +5719,12 @@ run start-pulseaudio-x11 manually.</source>
         <translation>加载声音失败</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3498"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3500"/>
         <source>Establishing connection to PulseAudio. Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3633"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3635"/>
         <source>pa_ext_stream_restore_write() failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5833,42 +5891,42 @@ run start-pulseaudio-x11 manually.</source>
 <context>
     <name>UnifiedOutputConfig</name>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="89"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="74"/>
         <source>resolution</source>
         <translation>分辨率</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="131"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="109"/>
         <source>orientation</source>
         <translation>方向</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="139"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="117"/>
         <source>arrow-up</source>
         <translation>不旋转</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="140"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="118"/>
         <source>90° arrow-right</source>
         <translation>90°顺时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="141"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="119"/>
         <source>arrow-down</source>
         <translation>上下颠倒</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="142"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="120"/>
         <source>90° arrow-left</source>
         <translation>90°逆时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="171"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="147"/>
         <source>refresh rate</source>
         <translation>刷新率</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="176"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="152"/>
         <source>auto</source>
         <translation>自动</translation>
     </message>
@@ -6031,7 +6089,7 @@ run start-pulseaudio-x11 manually.</source>
         <translation>添加VPN连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/vpn/vpn.cpp" line="82"/>
+        <location filename="../../../plugins/network/vpn/vpn.cpp" line="77"/>
         <source>Add vpn connect</source>
         <translation>添加VPN连接</translation>
         <extra-contents_path>/vpn/Add vpn connect</extra-contents_path>
@@ -6049,38 +6107,37 @@ run start-pulseaudio-x11 manually.</source>
 <context>
     <name>Wallpaper</name>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="91"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="103"/>
         <source>Desktop Background</source>
         <translation>桌面背景</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="280"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="292"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="109"/>
         <source>Select from</source>
         <translation>选择背景形式</translation>
         <extra-contents_path>/wallpaper/Select from</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="361"/>
         <source>Picture options</source>
-        <translation>图片放置方式</translation>
+        <translation type="vanished">图片放置方式</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="490"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="421"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="111"/>
         <source>Browser local wp</source>
         <translation>浏览本地壁纸</translation>
         <extra-contents_path>/wallpaper/Browser local wp</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="522"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="453"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="115"/>
         <source>Reset to default</source>
         <translation>恢复默认设置</translation>
         <extra-contents_path>/wallpaper/Reset to default</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="471"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="402"/>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="113"/>
         <source>Browser online wp</source>
         <translation>浏览线上壁纸</translation>
@@ -6091,9 +6148,8 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="vanished">恢复默认壁纸</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="668"/>
         <source>Ok</source>
-        <translation>确定</translation>
+        <translation type="vanished">确定</translation>
     </message>
     <message>
         <source>Add</source>
@@ -6109,12 +6165,12 @@ run start-pulseaudio-x11 manually.</source>
         <translation>背景</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="121"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="124"/>
         <source>picture</source>
         <translation>图片</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="121"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="124"/>
         <source>color</source>
         <translation>颜色</translation>
     </message>
@@ -6123,84 +6179,77 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="obsolete">添加自定义快捷键</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="141"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="144"/>
         <source>Custom color</source>
         <translation>自定义颜色</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="175"/>
         <source>wallpaper</source>
-        <translation>平铺</translation>
+        <translation type="vanished">平铺</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="176"/>
         <source>centered</source>
-        <translation>居中</translation>
+        <translation type="vanished">居中</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="177"/>
         <source>scaled</source>
-        <translation>比例放大</translation>
+        <translation type="vanished">比例放大</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="178"/>
         <source>stretched</source>
-        <translation>伸展</translation>
+        <translation type="vanished">伸展</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="179"/>
         <source>zoom</source>
-        <translation>缩放</translation>
+        <translation type="vanished">缩放</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="180"/>
         <source>spanned</source>
-        <translation>适合宽度</translation>
+        <translation type="vanished">适合宽度</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="469"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="449"/>
         <source>Wallpaper files(*.jpg *.jpeg *.bmp *.dib *.png *.jfif *.jpe *.gif *.tif *.tiff *.wdp)</source>
         <translation>图片文件(*.jpg *.jpeg *.bmp *.dib *.png *.jfif *.jpe *.gif *.tif *.tiff *.wdp)</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="469"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="449"/>
         <source>allFiles(*.*)</source>
         <translation>所有文件(*.*)</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="476"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="515"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="456"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="495"/>
         <source>select custom wallpaper file</source>
         <translation>选择自定义壁纸文件</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="477"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="516"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="457"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="496"/>
         <source>Select</source>
         <translation>选择</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="478"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="517"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="458"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="497"/>
         <source>Position: </source>
         <translation>位置： </translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="479"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="518"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="459"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="498"/>
         <source>FileName: </source>
         <translation>文件名： </translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="480"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="519"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="460"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="499"/>
         <source>FileType: </source>
         <translation>文件类型： </translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="649"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="481"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="520"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="461"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="500"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -6266,29 +6315,29 @@ If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation>修改分辨率或刷新率后，由于显示设备与显卡存在兼容性问题，有可能显示不正常或者无法显示．如果出现异常，系统将在%1秒后还原设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="882"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="847"/>
         <source>please insure at least one output!</source>
         <translation>请确保至少开启一个屏幕!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="882"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="889"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="847"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="854"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="889"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="854"/>
         <source>Morning time should be earlier than evening time!</source>
         <translation>早晨时刻应早于晚上的时刻!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="900"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="865"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation>抱歉，配置不能应用.</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="901"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="866"/>
         <source>@title:window</source>
         <comment>Unsupported Configuration</comment>
         <translation>窗口</translation>
@@ -6327,7 +6376,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="458"/>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.cpp" line="171"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.cpp" line="165"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -6342,7 +6391,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
         <translation>添加自定义快捷键</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.cpp" line="169"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.cpp" line="163"/>
         <source>select desktop</source>
         <translation>选择桌面</translation>
     </message>
