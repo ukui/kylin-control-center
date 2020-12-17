@@ -556,8 +556,41 @@ bool DefaultApp::setVideoPlayersDefaultProgram(char *appid) {
                 gboolean ret12 = g_app_info_set_as_default_for_type(appitem, "video/rm", NULL);
                 gboolean ret13 = g_app_info_set_as_default_for_type(appitem, "video/3pg", NULL);
                 gboolean ret14 = g_app_info_set_as_default_for_type(appitem, "video/asf", NULL);
+                gboolean ret15 = g_app_info_set_as_default_for_type(appitem, "video/3gp", NULL);
+                gboolean ret16 = g_app_info_set_as_default_for_type(appitem, "video/3gpp", NULL);
+                gboolean ret17 = g_app_info_set_as_default_for_type(appitem, "video/3gpp2", NULL);
+                gboolean ret18 = g_app_info_set_as_default_for_type(appitem, "video/x-ms-afs", NULL);
+                gboolean ret19 = g_app_info_set_as_default_for_type(appitem, "video/x-ms-asf", NULL);
+                gboolean ret20 = g_app_info_set_as_default_for_type(appitem, "video/x-mpeg2", NULL);
+                gboolean ret21 = g_app_info_set_as_default_for_type(appitem, "video/x-mpeg3", NULL);
+                gboolean ret22 = g_app_info_set_as_default_for_type(appitem, "video/mp4v-es", NULL);
+                gboolean ret23 = g_app_info_set_as_default_for_type(appitem, "video/x-m4v", NULL);
+                gboolean ret24 = g_app_info_set_as_default_for_type(appitem, "video/divx", NULL);
+                gboolean ret25 = g_app_info_set_as_default_for_type(appitem, "video/vnd.divx", NULL);
+                gboolean ret26 = g_app_info_set_as_default_for_type(appitem, "video/x-msvideo", NULL);
+                gboolean ret27 = g_app_info_set_as_default_for_type(appitem, "video/ogg", NULL);
+                gboolean ret28 = g_app_info_set_as_default_for_type(appitem, "video/vnd.rn-realvideo", NULL);
+                gboolean ret29 = g_app_info_set_as_default_for_type(appitem, "video/x-ms-wmv", NULL);
+                gboolean ret30 = g_app_info_set_as_default_for_type(appitem, "video/x-ms-wmx", NULL);
+                gboolean ret31 = g_app_info_set_as_default_for_type(appitem, "video/x-ms-wvxvideo", NULL);
+                gboolean ret32 = g_app_info_set_as_default_for_type(appitem, "video/avi", NULL);
+                gboolean ret33 = g_app_info_set_as_default_for_type(appitem, "video/x-flic", NULL);
+                gboolean ret34 = g_app_info_set_as_default_for_type(appitem, "video/fli", NULL);
+                gboolean ret35 = g_app_info_set_as_default_for_type(appitem, "video/x-flc", NULL);
+                gboolean ret36 = g_app_info_set_as_default_for_type(appitem, "video/flv", NULL);
+                gboolean ret37 = g_app_info_set_as_default_for_type(appitem, "video/x-theora", NULL);
+                gboolean ret38 = g_app_info_set_as_default_for_type(appitem, "video/x-theora+ogg", NULL);
+                gboolean ret39 = g_app_info_set_as_default_for_type(appitem, "video/mkv", NULL);
+                gboolean ret40 = g_app_info_set_as_default_for_type(appitem, "video/x-ogm", NULL);
+                gboolean ret41 = g_app_info_set_as_default_for_type(appitem, "video/vnd.mpegurl", NULL);
+                gboolean ret42 = g_app_info_set_as_default_for_type(appitem, "video/dv", NULL);
+                gboolean ret43 = g_app_info_set_as_default_for_type(appitem, "application/vnd.rn-realmedia", NULL);
+                gboolean ret44 = g_app_info_set_as_default_for_type(appitem, "application/vnd.rn-realmedia-vbr", NULL);
                 if (ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8 && ret9 && ret10 && ret11 && \
-                        ret12 && ret13 && ret14)
+                        ret12 && ret13 && ret14 && ret15 && ret16 && ret17 && ret18 && ret19 && ret20 && ret21 && \
+                        ret22 && ret23 && ret24 && ret25 && ret26 && ret27 && ret28 && ret29 && ret30 && \
+                        ret31 && ret32 && ret33 && ret34 && ret35 && ret36 && ret37 && ret38 && ret39 && \
+                        ret40 && ret41 && ret42 && ret43 && ret44)
                     judge=true;
                 break;
             }
