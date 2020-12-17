@@ -50,8 +50,13 @@ const int COMPUTER_SAVING       =  10 * 60;
 const QStringList kHibernate { QObject::tr("Never"),QObject::tr("10min"), QObject::tr("20min"),
                                QObject::tr("40min"), QObject::tr("80min")};
 
+// 电源按钮操作
 const QStringList kLid       { QObject::tr("interactive"), QObject::tr("suspend"), QObject::tr("hibernate"), QObject::tr("shutdown") };
 const QStringList kEnkLid    { "interactive", "suspend", "hibernate", "shutdown"};
+
+// 低电量操作
+const QStringList kBattery    { QObject::tr("nothing"), QObject::tr("blank"), QObject::tr("suspend"), QObject::tr("hibernate"), QObject::tr("shutdown") };
+const QStringList kEnBattery  { "nothing", "blank", "suspend", "hibernate", "shutdown" };
 
 Power::Power() : mFirstLoad(true)
 {
@@ -451,6 +456,7 @@ int Power::getIdleTime() {
 void Power::initGeneralSet() {
 
     if (isExitsPower) {
+        // 电源按钮操作
         mPowerBtn = new ComboxFrame(tr("When the power button is pressed:"), pluginWidget);
 
         mPowerBtn->mHLayout->setSpacing(48);
@@ -470,6 +476,41 @@ void Power::initGeneralSet() {
         connect(mPowerBtn->mCombox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
             settings->set(BUTTON_POWER_KEY, mPowerBtn->mCombox->itemData(index));
         });
+
+
+        // 低电量操作
+        mBatteryAct = new ComboxFrame(true, tr("Perform operations when battery is low:"), pluginWidget);
+        mBatteryAct->mTitleLabel->setMinimumWidth(300);
+        mBatteryAct->mHLayout->setContentsMargins(16, 0, 16, 0);
+
+        mBatteryAct->mNumCombox->setMaximumWidth(230);
+
+        ui->powerLayout->addWidget(mBatteryAct);
+
+        int batteryRemain = settings->get(PER_ACTION_CRI).toInt();
+        for(int i = 1; i < batteryRemain; i++) {
+            mBatteryAct->mNumCombox->insertItem(i - 1, QString("%1%").arg(i));
+        }
+
+        for(int i = 0; i < kBattery.length(); i++) {
+            mBatteryAct->mCombox->insertItem(i, kBattery.at(i), kEnBattery.at(i));
+        }
+
+        int actionBattery = settings->get(PER_ACTION_KEY).toInt();
+        mBatteryAct->mNumCombox->setCurrentIndex(actionBattery - 1);
+
+        QString actionCriBty = settings->get(ACTION_CRI_BTY).toString();
+        mBatteryAct->mCombox->setCurrentIndex(mBatteryAct->mCombox->findData(actionCriBty));
+
+        connect(mBatteryAct->mNumCombox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+            settings->set(PER_ACTION_KEY, index + 1);
+        });
+
+        connect(mBatteryAct->mCombox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+            Q_UNUSED(index)
+            settings->set(ACTION_CRI_BTY, mBatteryAct->mCombox->itemData(index));
+        });
+
     }
 
     /* 休眠接口后续开放

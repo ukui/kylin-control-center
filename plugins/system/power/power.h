@@ -90,6 +90,7 @@ private:
 
     ComboxFrame *mHibernate;
     ComboxFrame *mPowerBtn;
+    ComboxFrame *mBatteryAct;
 
     QDBusInterface *mUkccInterface;
 
