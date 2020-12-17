@@ -30,30 +30,26 @@
 #define LARGE 1.50
 
 
-#define INTERFACE_SCHEMA "org.mate.interface"
-#define DOC_FONT_KEY "document-font-name" //用于阅读文档的默认字体的名称
-#define GTK_FONT_KEY "font-name" //gkt+使用的默认字体
-#define MONOSPACE_FONT_KEY "monospace-font-name" //用于终端等处的等宽字体
+#define INTERFACE_SCHEMA   "org.mate.interface"
+#define DOC_FONT_KEY       "document-font-name"  // 用于阅读文档的默认字体的名称
+#define GTK_FONT_KEY       "font-name"           // gkt+使用的默认字体
+#define MONOSPACE_FONT_KEY "monospace-font-name" // 用于终端等处的等宽字体
 
-#define MARCO_SCHEMA "org.gnome.desktop.wm.preferences"
-#define TITLEBAR_FONT_KEY "titlebar-font" //描述窗口标题栏字体的字符串。只有在"titlebar-uses-system-font"为false时有效
+#define MARCO_SCHEMA       "org.gnome.desktop.wm.preferences"
+#define TITLEBAR_FONT_KEY  "titlebar-font"       // 描述窗口标题栏字体的字符串。只有在"titlebar-uses-system-font"为false时有效
 
+#define STYLE_FONT_SCHEMA  "org.ukui.style"
+#define SYSTEM_FONT_EKY    "system-font-size"
+#define SYSTEM_NAME_KEY    "system-font"
 
-//#define PEONY_SCHEMA "org.ukui.peony.desktop"
-//#define PEONY_FONT_KEY "font"  //桌面上图标描述所用的字体
+#define FONT_RENDER_SCHEMA "org.ukui.font-rendering"
+#define ANTIALIASING_KEY   "antialiasing" // 绘制字形时使用反锯齿类型
+#define HINTING_KEY        "hinting"      // 绘制字形时使用微调的类型
+#define RGBA_ORDER_KEY     "rgba-order"   // LCD屏幕上次像素的顺序；仅在反锯齿设为"rgba"时有用
+#define DPI_KEY            "dpi"          // 将字体尺寸转换为像素值时所用的分辨率，以每英寸点数为单位
 
-#define STYLE_FONT_SCHEMA "org.ukui.style"
-#define SYSTEM_FONT_EKY "system-font-size"
-#define SYSTEM_NAME_KEY "system-font"
-
-#define FONT_RENDER_SCHEMA           "org.ukui.font-rendering"
-#define ANTIALIASING_KEY        "antialiasing" //绘制字形时使用反锯齿类型
-#define HINTING_KEY             "hinting" //绘制字形时使用微调的类型
-#define RGBA_ORDER_KEY          "rgba-order" //LCD屏幕上次像素的顺序；仅在反锯齿设为"rgba"时有用
-#define DPI_KEY                 "dpi" //将字体尺寸转换为像素值时所用的分辨率，以每英寸点数为单位
-
-QList<int> defaultsizeList = {6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72};
-const QString kErrorFont = "Noto Serif Tibetan";
+QList<int> defaultsizeList =    {6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72};
+const QString kErrorFont   =    "Noto Serif Tibetan";
 const QString kErrorStardFont = "Standard Symbols";
 /*
   设置字体，每套字体包括5个部件，应用程序字体、文档字体、等宽字体、桌面字体和窗口标题字体。
@@ -66,12 +62,10 @@ struct _FontInfo {
     QString gtkfont;
     QString docfont;
     QString monospacefont;
-//    QString peonyfont;
     QString titlebarfont;
     int gtkfontsize;
     int docfontsize;
     int monospacefontsize;
-//    int peonyfontsize;
     int titlebarfontsize;
 };
 
