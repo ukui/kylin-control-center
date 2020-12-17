@@ -34,7 +34,7 @@ void Uslider::paintEvent(QPaintEvent *e)
             int tickNum = minimum() + (tickInterval() * i);
 
             int tickX = (((rect.width()/numTicks) * i) - (fontMetrics.width(QString::number(tickNum *10))/2 + 2));
-            int tickY = rect.height()/2 + fontHeight + 1;
+            int tickY = rect.height()/2 + fontHeight + 5;
 
             if( 0 == i) {
                 tickX += 11;
