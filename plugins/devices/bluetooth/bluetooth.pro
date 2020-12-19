@@ -35,6 +35,7 @@ SOURCES += \
     bluetooth.cpp \
     bluetoothagent.cpp \
     bluetoothmain.cpp \
+    bluetoothnamelabel.cpp \
     deviceinfoitem.cpp \
     loadinglabel.cpp \
     pincodewidget.cpp
@@ -43,6 +44,7 @@ HEADERS += \
     bluetooth.h \
     bluetoothagent.h \
     bluetoothmain.h \
+    bluetoothnamelabel.h \
     config.h \
     deviceinfoitem.h \
     loadinglabel.h \
