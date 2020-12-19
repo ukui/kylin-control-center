@@ -23,6 +23,7 @@ private:
     QVBoxLayout * m_vlayout;
     QWidget * titlebar;
 
+    QLabel  * mTitleIcon;
     QLabel  * titleLabel;
     QLabel  * logoLabel;
     QHBoxLayout * m_logoLayout = nullptr;

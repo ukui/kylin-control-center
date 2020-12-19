@@ -86,6 +86,7 @@ private:
     QPushButton * maxBtn;
     QPushButton * closeBtn;
     QLabel      * titleLabel;
+    QLabel      * mTitleIcon;
     QTimer      * timer;
     QLabel      * logoLabel;
     QLabel            *m_queryIcon;
