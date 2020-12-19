@@ -138,9 +138,7 @@ void InternalStyle::drawComplexControl(QStyle::ComplexControl control, const QSt
 void InternalStyle::polish(QPalette &pal)
 {
     QProxyStyle::polish(pal);
-    pal.setColor(QPalette::Window, pal.base().color());
     pal.setColor(QPalette::Inactive, QPalette::Base, pal.base().color());
-//    pal.setColor(QPalette::Button, pal.alternateBase().color());
 }
 
 void InternalStyle::polish(QWidget *widget)
@@ -150,5 +148,14 @@ void InternalStyle::polish(QWidget *widget)
         auto pal = qApp->palette();
         pal.setColor(QPalette::Base, pal.alternateBase().color());
         widget->setPalette(pal);
+    }
+
+    // 跳过左侧边栏处理
+    if (widget && widget->objectName() == "leftsidebarWidget") {
+
+    } else if (widget){
+        QPalette paltte = widget->palette();
+        paltte.setColor(QPalette::Window, paltte.base().color());
+        widget->setPalette(paltte);
     }
 }

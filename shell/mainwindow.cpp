@@ -301,6 +301,7 @@ void MainWindow::initUI() {
         //左上角显示字符/返回按钮
         backBtn->setVisible(index);
         titleLabel->setHidden(index);
+        mTitleIcon->setHidden(index);
 
         if (index){ //首页部分组件样式
             //中部内容区域
@@ -343,7 +344,8 @@ void MainWindow::initUI() {
 
 void MainWindow::initTileBar() {
 
-    ui->titleLayout->setContentsMargins(9, 9, 9, 0);
+    ui->titleLayout->setContentsMargins(4, 4, 4, 0);
+    ui->titleLayout->setSpacing(0);
     m_searchWidget = new SearchWidget(this);
     m_searchWidget->setFocusPolicy(Qt::ClickFocus);
     m_searchWidget->installEventFilter(this);
@@ -351,10 +353,9 @@ void MainWindow::initTileBar() {
     m_queryWid=new QWidget;
     m_queryWid->setParent(m_searchWidget);
     m_queryWid->setFocusPolicy(Qt::NoFocus);
-//    m_queryWid->setStyleSheet("border:0px;background:transparent");
 
     QHBoxLayout* queryWidLayout = new QHBoxLayout;
-    queryWidLayout->setContentsMargins(4,4,0,0);
+    queryWidLayout->setContentsMargins(0, 0, 0, 0);
     queryWidLayout->setAlignment(Qt::AlignJustify);
     queryWidLayout->setSpacing(0);
     m_queryWid->setLayout(queryWidLayout);
@@ -383,21 +384,29 @@ void MainWindow::initTileBar() {
     backBtn     = new QPushButton(this);
     minBtn      = new QPushButton(this);
     maxBtn      = new QPushButton(this);
-    closeBtn     = new QPushButton(this);
+    closeBtn    = new QPushButton(this);
+    mTitleIcon  = new QLabel(this);
     titleLabel  = new QLabel(tr("UKCC"), this);
 
-    backBtn->setFixedSize(32, 32);
-    minBtn->setFixedSize(32, 32);
-    maxBtn->setFixedSize(32, 32);
-    titleLabel->setFixedHeight(32);
-    titleLabel->setMinimumWidth(32);
-    titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    m_searchWidget->setMinimumWidth(350);
-    m_searchWidget->setMinimumHeight(40);
-    m_searchWidget->setMaximumWidth(350);
-    m_searchWidget->setMaximumHeight(40);
+    backBtn->setFixedSize(30, 30);
+    minBtn->setFixedSize(30, 30);
+    maxBtn->setFixedSize(30, 30);
+    closeBtn->setFixedSize(30, 30);
+    mTitleIcon->setFixedSize(30, 30);
 
-    ui->titleLayout->addSpacing(9);
+    QIcon titleIcon = QIcon::fromTheme("ukui-control-center");
+    mTitleIcon->setPixmap(titleIcon.pixmap(titleIcon.actualSize(QSize(24, 24))));
+
+    titleLabel->setFixedSize(30, 30);
+    titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+
+    m_searchWidget->setMinimumWidth(350);
+    m_searchWidget->setMinimumHeight(35);
+    m_searchWidget->setMaximumWidth(350);
+    m_searchWidget->setMaximumHeight(35);
+
+    ui->titleLayout->addWidget(mTitleIcon);
+    ui->titleLayout->addSpacing(8);
     ui->titleLayout->addWidget(titleLabel);
     ui->titleLayout->addWidget(backBtn);
     ui->titleLayout->addStretch();
@@ -531,7 +540,7 @@ void MainWindow::initLeftsideBar(){
     connect(hBtn, &QPushButton::clicked, this, [=]{
         ui->stackedWidget->setCurrentIndex(0);
     });
-    hBtn->setStyleSheet("QPushButton#homepage{background: palette(button); border: none;}");
+    hBtn->setStyleSheet("QPushButton#homepage{background: palette(window); border: none;}");
     //    hBtn->setStyleSheet("QPushButton#homepage{background: palette(base);}");
     ui->leftsidebarVerLayout->addStretch();
     ui->leftsidebarVerLayout->addWidget(hBtn);
@@ -558,7 +567,7 @@ void MainWindow::initLeftsideBar(){
             leftBtnGroup->addButton(button, type);
 
             button->setStyleSheet("QPushButton::checked{background: palette(base); border-top-left-radius: 6px;border-bottom-left-radius: 6px;}"
-                                  "QPushButton::!checked{background: palette(button);border: none;}");
+                                  "QPushButton::!checked{background: palette(window);border: none;}");
 
             connect(button, &QPushButton::clicked, this, [=]{
                 QPushButton * btn = dynamic_cast<QPushButton *>(QObject::sender());
@@ -600,9 +609,9 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName) {
     iconBtn->setFocusPolicy(Qt::NoFocus);
 
 
-    QString iconHomePageBtnQss = QString("QPushButton{background: palette(button); border: none;}");
+    QString iconHomePageBtnQss = QString("QPushButton{background: palette(window); border: none;}");
     QString iconBtnQss = QString("QPushButton:checked{background: palette(base); border: none;}"
-                                 "QPushButton:!checked{background: palette(button); border: none;}");
+                                 "QPushButton:!checked{background: palette(window); border: none;}");
     QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
     QPixmap pix = ImageUtil::loadSvg(path, "default");
     //单独设置HomePage按钮样式
@@ -716,7 +725,7 @@ void MainWindow::initStyleSheet() {
     closeBtn->setProperty("isWindowButton", 0x02);
     closeBtn->setProperty("useIconHighlightEffect", 0x08);
     closeBtn->setFlat(true);
-    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(button);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
+    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(window);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
 
     // 设置左上角按钮图标
     backBtn->setIcon(QIcon("://img/titlebar/back.svg"));

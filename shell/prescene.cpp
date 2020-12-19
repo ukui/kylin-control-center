@@ -15,6 +15,13 @@ PreScene::PreScene(QLabel *label, QSize size, QWidget *parent) : titleLabel(labe
     m_vlayout = new QVBoxLayout;
     m_logoLayout = new QHBoxLayout;
 
+    mTitleIcon = new QLabel(this);
+    QIcon titleIcon = QIcon::fromTheme("ukui-control-center");
+    mTitleIcon->setPixmap(titleIcon.pixmap(titleIcon.actualSize(QSize(24, 24))));
+
+    mTitleIcon->setFixedSize(30, 30);
+    titleLabel->setFixedSize(28, 28);
+
     titlebar = new QWidget(this);
     logoLabel = new QLabel(this);
     logoLabel->setFixedSize(200,200);
@@ -23,10 +30,14 @@ PreScene::PreScene(QLabel *label, QSize size, QWidget *parent) : titleLabel(labe
     m_logoLayout->addWidget(logoLabel);
 
     m_hlayout = new QHBoxLayout;
-    m_hlayout->setContentsMargins(9, 9, 9, 0);
+    m_hlayout->setContentsMargins(4, 6, 0, 0);
+    m_hlayout->addWidget(mTitleIcon);
     m_hlayout->addWidget(titleLabel);
+    m_hlayout->addStretch();
     titlebar->setLayout(m_hlayout);
 
+    m_vlayout->setSpacing(0);
+    m_vlayout->setContentsMargins(0, 0, 0, 0);
     m_vlayout->addWidget(titlebar);
     m_vlayout->addLayout(m_logoLayout);
     m_vlayout->addStretch();
