@@ -466,7 +466,6 @@ void MainWindow::loadPlugins(){
         pluginsDir = QDir(qApp->applicationDirPath() + "/plugins");
     }
 
-    bool isExistCloud  = isExitsCloudAccount();
     foreach (QString fileName, pluginsDir.entryList(QDir::Files)){
         //三权分立开启
 #ifdef WITHKYSEC
@@ -478,14 +477,15 @@ void MainWindow::loadPlugins(){
         }
 #endif
 
-        if (!fileName.endsWith(".so"))
+        if (!fileName.endsWith(".so")) {
             continue;
-        if (fileName == "libexperienceplan.so")
+        } else if (fileName == "libexperienceplan.so") {
             continue;
-        if ("libnetworkaccount.so" == fileName && !isExistCloud) {
+        } else if ("libnetworkaccount.so" == fileName && !isExitsCloudAccount()) {
             continue;
-        }
-        if (!QGSettings::isSchemaInstalled(kVinoSchemas) && "libvino.so" == fileName) {
+        } else if (!QGSettings::isSchemaInstalled(kVinoSchemas) && "libvino.so" == fileName) {
+            continue;
+        } else if ("libbluetooth.so" == fileName && !isExitBluetooth()) {
             continue;
         }
 
@@ -734,6 +734,15 @@ void MainWindow::initStyleSheet() {
     minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
     maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
     closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
+}
+
+bool MainWindow::isExitBluetooth() {
+    QProcess process;
+    process.start("rfkill list");
+    process.waitForFinished();
+    QByteArray output = process.readAllStandardOutput();
+    QString str_output = output;
+    return str_output.contains(QString("bluetooth"), Qt::CaseInsensitive);
 }
 
 void MainWindow::setModuleBtnHightLight(int id) {
