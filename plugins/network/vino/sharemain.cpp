@@ -101,7 +101,9 @@ void ShareMain::initUI() {
     mPwdLineEdit = new QLineEdit(this);
     pwdHLayout->addWidget(mPwdBox);
     pwdHLayout->addWidget(mPwdsLabel);
+    pwdHLayout->addStretch();
     pwdHLayout->addWidget(mPwdLineEdit);
+
 
     mSecurityPwdFrame->setLayout(pwdHLayout);
 
@@ -193,13 +195,13 @@ void ShareMain::accessSlot(int index) {
     Q_UNUSED(index);
     if (NOPWD == index) {
         mPwdsLabel->setEnabled(false);
-        mPwdLineEdit->setEnabled(false);
+        mPwdLineEdit->setVisible(false);
         mVinoGsetting->set(kVinoPromptKey, true);
         mVinoGsetting->reset(kAuthenticationKey);
         mVinoGsetting->reset(kVncPwdKey);
     } else {
         mPwdsLabel->setEnabled(true);
-        mPwdLineEdit->setEnabled(true);
+        mPwdLineEdit->setVisible(true);
         mVinoGsetting->set(kVinoPromptKey, false);
         mVinoGsetting->reset(kAuthenticationKey);
     }
