@@ -108,6 +108,7 @@ private:
 
     bool dblOnEdge(QMouseEvent *event);
     void initStyleSheet();
+    bool isExitBluetooth();
 
 public slots:
     void functionBtnClicked(QObject * plugin);
