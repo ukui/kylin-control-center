@@ -35,6 +35,7 @@
 
 #include "deviceinfoitem.h"
 #include "bluetoothagent.h"
+#include "bluetoothnamelabel.h"
 
 class BlueToothMain : public QMainWindow
 {
@@ -49,6 +50,7 @@ public:
 protected:
 
 signals:
+    void adapter_name_changed(const QString &name);
 
 private slots:
     void onClick_Open_Bluetooth(bool);
@@ -60,6 +62,7 @@ private slots:
     void GSetting_value_chanage(const QString &key);
 //    void get_pair_item();
     void set_tray_visible(bool);
+    void change_adapter_name(const QString &name);
 private:
     QGSettings *settings;
     QString Default_Adapter;
@@ -71,7 +74,8 @@ private:
     QWidget *main_widget;
     QWidget *frame_top;
     QWidget *frame_bottom;
-    QLabel *bluetooth_name;
+//    QLabel *bluetooth_name;
+    BluetoothNameLabel *bluetooth_name = nullptr;
 
     QVBoxLayout *bottom_layout;
     QScrollArea *device_area;
