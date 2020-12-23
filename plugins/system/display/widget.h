@@ -147,6 +147,8 @@ class Widget : public QWidget
     bool isRestoreConfig();
     QString getCpuInfo();
 
+    bool isCloneMode();
+
   private:
     Ui::DisplayWindow *ui;
     QMLScreen *mScreen = nullptr;
