@@ -97,22 +97,6 @@ void ChangeValidDialog::setupConnect(){
     });
 
     connect(ui->certainBtn, &QPushButton::clicked, [=]{
-        int year = ui->yearCombox->currentData().toInt();
-        QString cmd;
-        if (year == 0){
-            cmd = QString("chage -M %1 %2").arg(99999).arg(_name);
-        } else {
-            int month = ui->monthCombox->currentData().toInt();
-            int day = ui->dayCombox->currentData().toInt();
-
-            QDate selected = QDate(year, month, day);
-
-            int setDays = lastChangeDate.daysTo(selected);
-
-            cmd = QString("chage -M %1 %2").arg(setDays).arg(_name);
-
-        }
-
         QDBusInterface * tmpSysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
                                                               "/",
                                                               "com.control.center.interface",
@@ -122,7 +106,22 @@ void ChangeValidDialog::setupConnect(){
             qCritical() << "Create Client Interface Failed When execute chage: " << QDBusConnection::systemBus().lastError();
             return;
         }
-        tmpSysinterface->call("systemRun", cmd);
+
+        int year = ui->yearCombox->currentData().toInt();
+
+        if (year == 0){
+            tmpSysinterface->call("setPasswdAging", 99999, _name);
+        } else {
+            int month = ui->monthCombox->currentData().toInt();
+            int day = ui->dayCombox->currentData().toInt();
+
+            QDate selected = QDate(year, month, day);
+
+            int setDays = lastChangeDate.daysTo(selected);
+
+            tmpSysinterface->call("setPasswdAging", setDays, _name);
+        }
+
         delete tmpSysinterface;
 
         close();

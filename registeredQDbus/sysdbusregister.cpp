@@ -120,3 +120,10 @@ void SysdbusRegister::setSuspendThenHibernate(QString time) {
     mHibernateSet->endGroup();
     mHibernateSet->sync();
 }
+
+void SysdbusRegister::setPasswdAging(int days, QString username) {
+    QString cmd;
+
+    cmd = QString("chage -M %1 %2").arg(days).arg(username);
+    QProcess::execute(cmd);
+}
