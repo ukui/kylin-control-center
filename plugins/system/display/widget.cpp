@@ -204,6 +204,11 @@ void Widget::setConfig(const KScreen::ConfigPtr &config) {
         }
     }
     slotOutputEnabledChanged();
+
+    if (isCloneMode()) {
+        mUnifyButton->setChecked(true);
+        slotUnifyOutputs();
+    }
 }
 
 KScreen::ConfigPtr Widget::currentConfig() const {
@@ -305,7 +310,9 @@ void Widget::slotOutputConnectedChanged() {
 }
 
 void Widget::slotUnifyOutputs() {
+
     QMLOutput *base = mScreen->primaryOutput();
+
     QList<int> clones;
 
     if (!base) {
@@ -353,7 +360,6 @@ void Widget::slotUnifyOutputs() {
     } else if (!base->isCloneMode() && mUnifyButton->isChecked()){
         // Clone the current config, so that we can restore it in case user
         // breaks the cloning
-        // 保存之前的配置
         mPrevConfig = mConfig->clone();
 
         for (QMLOutput *output: mScreen->outputs()) {
@@ -388,6 +394,7 @@ void Widget::slotUnifyOutputs() {
         }
 
         base->output()->setClones(clones);
+
         base->setIsCloneMode(true);
 
         mScreen->updateOutputsPlacement();
@@ -536,7 +543,6 @@ void Widget::writeConfigFile() {
     mQsettings->endGroup();
 
     mQsettings->beginGroup("switch");
-    mQsettings->setValue("unionswitch", mUnifyButton->isChecked());
     mQsettings->setValue("nightjudge", mNightButton->isChecked());
     mQsettings->setValue("sunjudge", ui->sunradioBtn->isChecked());
     mQsettings->setValue("manualjudge", ui->customradioBtn->isChecked());
@@ -635,6 +641,20 @@ QString Widget::getCpuInfo() {
         cpuType = res["CpuVersion"].toString();
     }
     return cpuType;
+}
+
+bool Widget::isCloneMode()
+{
+    MateRRScreen *rr_screen;
+    MateRRConfig *rr_config;
+
+    rr_screen = mate_rr_screen_new (gdk_screen_get_default (), NULL); /* NULL-GError */
+    if (!rr_screen)
+            return false;
+
+    rr_config = mate_rr_config_new_current (rr_screen, NULL);
+
+    return mate_rr_config_get_clone(rr_config);
 }
 
 
@@ -1117,12 +1137,10 @@ void Widget::initConfigFile(bool changed, bool status) {
 
     bool sunjudge    = false;
     bool manualjudge = false;
-    bool unionjudge  = mQsettings->value("unionswitch", unionjudge).toBool();
     bool nightjudge  = mQsettings->value("nightjudge", nightjudge).toBool();
     manualjudge      = mQsettings->value("manualjudge", manualjudge).toBool();
     sunjudge         = mQsettings->value("sunjudge", sunjudge).toBool();
 
-    mUnifyButton->setChecked(unionjudge);
     mNightButton->setChecked(nightjudge);
 
     if (sunjudge || manualjudge) {
@@ -1158,6 +1176,9 @@ void Widget::writeScreenXml() {
 
     rr_config = mate_rr_config_new_current (rr_screen, NULL);
     mate_rr_config_save (rr_config, NULL); /* NULL-GError */
+
+    char *backup_filename = mate_rr_config_get_backup_filename();
+    unlink(backup_filename);
 
     g_object_unref (rr_config);
     g_object_unref (rr_screen);
