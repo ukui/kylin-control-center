@@ -67,12 +67,28 @@
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="leftMargin">
+         <number>16</number>
+        </property>
         <property name="topMargin">
          <number>8</number>
         </property>
         <property name="rightMargin">
          <number>8</number>
         </property>
+        <item>
+         <widget class="QLabel" name="titleLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Add New Account</string>
+          </property>
+         </widget>
+        </item>
         <item>
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
@@ -124,19 +140,6 @@
         <property name="bottomMargin">
          <number>48</number>
         </property>
-        <item>
-         <widget class="QLabel" name="titleLabel">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Add New Account</string>
-          </property>
-         </widget>
-        </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <property name="spacing">
