@@ -82,9 +82,11 @@ QWidget *AutoBoot::get_plugin_ui() {
         connectToServer();
         initStyle();
         localconfigdir = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
+
         //初始化添加界面
         dialog = new AddAutoBoot();
 
+        initConfig();
         initAddBtn();
         initUI();
         initConnection();
@@ -298,13 +300,6 @@ void AutoBoot::initConnection() {
 bool AutoBoot::_copy_desktop_file_to_local(QString bname){
     QString srcPath;
     QString dstPath;
-
-    //不存在则创建~/.config/autostart/
-    if (!g_file_test(localconfigdir, G_FILE_TEST_EXISTS)){
-        GFile * dstdirfile;
-        dstdirfile = g_file_new_for_path(localconfigdir);
-        g_file_make_directory(dstdirfile, NULL, NULL);
-    }
 
     QMap<QString, AutoApp>::iterator it = appMaps.find(bname);
 
@@ -727,12 +722,6 @@ void AutoBoot::add_autoboot_realize_slot(QString path, QString name, QString exe
 
     filename = path.section("/", -1, -1).toUtf8().data();
 
-    if (!g_file_test(localconfigdir, G_FILE_TEST_EXISTS)){
-        GFile * dstdirfile;
-        dstdirfile = g_file_new_for_path(localconfigdir);
-        g_file_make_directory(dstdirfile, NULL, NULL);
-    }
-
     filepath = g_build_filename(localconfigdir, filename, NULL);
 
     GKeyFile * keyfile;
@@ -844,6 +833,19 @@ void AutoBoot::connectToServer(){
     QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "keyChanged", this, SLOT(keyChangedSlot(QString)));
     // 将以后所有DBus调用的超时设置为 milliseconds
     m_cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时
+}
+
+void AutoBoot::initConfig()
+{
+    //不存在则创建~/.config/autostart/
+    if (!g_file_test(localconfigdir, G_FILE_TEST_EXISTS)) {
+        GFile * dstdirfile;
+        dstdirfile = g_file_new_for_path(localconfigdir);
+        gboolean status = g_file_make_directory(dstdirfile, NULL, NULL);
+        if (!status) {
+            qWarning() << "create autostart dir failed";
+        }
+    }
 }
 
 void AutoBoot::keyChangedSlot(const QString &key) {
