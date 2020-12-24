@@ -73,12 +73,28 @@
        <property name="spacing">
         <number>0</number>
        </property>
+       <property name="leftMargin">
+        <number>18</number>
+       </property>
        <property name="topMargin">
-        <number>16</number>
+        <number>0</number>
        </property>
        <property name="rightMargin">
         <number>8</number>
        </property>
+       <item>
+        <widget class="QLabel" name="titleLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>System Shortcuts</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <spacer name="horizontalSpacer">
          <property name="orientation">
@@ -122,7 +138,7 @@
         <number>32</number>
        </property>
        <property name="topMargin">
-        <number>16</number>
+        <number>0</number>
        </property>
        <property name="rightMargin">
         <number>32</number>
@@ -131,7 +147,7 @@
         <number>32</number>
        </property>
        <item>
-        <widget class="QLabel" name="titleLabel">
+        <widget class="QLabel" name="titleLabel_3">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -139,25 +155,9 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>System Shortcuts</string>
+          <string/>
          </property>
         </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>16</height>
-          </size>
-         </property>
-        </spacer>
        </item>
        <item alignment="Qt::AlignHCenter">
         <widget class="QLineEdit" name="searchLineEdit">
@@ -226,6 +226,22 @@
           </layout>
          </widget>
         </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </item>

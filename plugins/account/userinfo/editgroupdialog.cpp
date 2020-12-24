@@ -223,7 +223,7 @@ void EditGroupDialog::setupInit()
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+//    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 //    ui->closeBtn->setProperty("useIconHighlightEffect", true);
 //    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
 //    ui->closeBtn->setFlat(true);

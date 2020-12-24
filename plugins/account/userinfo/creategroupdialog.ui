@@ -32,7 +32,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>440</y>
+      <y>450</y>
       <width>311</width>
       <height>38</height>
      </rect>
@@ -97,22 +97,38 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="layoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>0</x>
       <y>0</y>
-      <width>87</width>
-      <height>45</height>
+      <width>391</width>
+      <height>51</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="leftMargin">
+      <number>18</number>
+     </property>
      <property name="topMargin">
-      <number>12</number>
+      <number>18</number>
      </property>
      <property name="rightMargin">
-      <number>10</number>
+      <number>18</number>
      </property>
+     <item>
+      <widget class="QLabel" name="titleLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Add New Group</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
@@ -150,7 +166,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="layoutWidget_3">
     <property name="geometry">
      <rect>
       <x>-10</x>
@@ -170,7 +186,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QLabel" name="titleLabel">
+      <widget class="QLabel" name="titleLabel_3">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -178,7 +194,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Add New Group</string>
+        <string/>
        </property>
       </widget>
      </item>
@@ -195,7 +211,7 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
-            <spacer name="horizontalSpacer">
+            <spacer name="horizontalSpacer_4">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -240,9 +256,9 @@
           <number>8</number>
          </property>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout">
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
            <item>
-            <spacer name="horizontalSpacer_4">
+            <spacer name="horizontalSpacer_5">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -289,9 +305,9 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
              <item>
-              <spacer name="horizontalSpacer_5">
+              <spacer name="horizontalSpacer_6">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
