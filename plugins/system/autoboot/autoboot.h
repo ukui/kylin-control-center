@@ -57,6 +57,7 @@ private:
     void update_app_status();
     void del_autoboot_realize(QString bname);
     void connectToServer();
+    void initConfig();
 
     void _walk_config_dirs();
     AutoApp _app_new(const char * path);
