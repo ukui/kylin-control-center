@@ -115,19 +115,35 @@
    <widget class="QWidget" name="layoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>0</x>
       <y>0</y>
-      <width>87</width>
-      <height>45</height>
+      <width>391</width>
+      <height>51</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="leftMargin">
+      <number>18</number>
+     </property>
      <property name="topMargin">
-      <number>12</number>
+      <number>18</number>
      </property>
      <property name="rightMargin">
-      <number>10</number>
+      <number>18</number>
      </property>
+     <item>
+      <widget class="QLabel" name="titleLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Edit User Group</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
@@ -185,7 +201,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QLabel" name="titleLabel">
+      <widget class="QLabel" name="titleLabel_2">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -193,7 +209,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Edit User Group</string>
+        <string/>
        </property>
       </widget>
      </item>

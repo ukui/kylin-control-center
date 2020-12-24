@@ -209,15 +209,8 @@ void ChangeGroupDialog::setupInit()
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+//    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     //ui->titleLabel_2->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-//    ui->closeBtn->setFlat(true);
-
-//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
-
 
     ui->listWidget->setFocusPolicy(Qt::NoFocus);
     ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);
