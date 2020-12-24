@@ -3919,7 +3919,8 @@ run start-pulseaudio-x11 manually.</source>
 
 Dans ce cas, cela est probablement dû au fait que PULSE_SERVER dans l&apos;environnement/Propriétés de la fenêtre racine X11
 ou le serveur par défaut dans client.conf est mal configuré.
-Cette situation peut également se produire lorsque PulseAudio Si c&apos;est le cas, PulseAudio devrait à nouveau apparaître automatiquement, ou si cela n&apos;est pas configuré, vous devez
+Cette situation peut également se produire lorsque PulseAudio
+Si c&apos;est le cas, PulseAudio devrait à nouveau apparaître automatiquement, ou si cela n&apos;est pas configuré, vous devez
 exécuter start-pulseaudio-x11 manuellement.</translation>
     </message>
     <message>
