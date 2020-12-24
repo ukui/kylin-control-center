@@ -1,7 +1,7 @@
 include(../../../env.pri)
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets dbus
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets dbus BluezQt
 
 TEMPLATE = lib
 CONFIG += c++11
