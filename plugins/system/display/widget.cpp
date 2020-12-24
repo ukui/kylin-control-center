@@ -986,7 +986,7 @@ void Widget::checkOutputScreen(bool judge) {
    int index  = ui->primaryCombo->currentIndex();
    const KScreen::OutputPtr newPrimary = mConfig->output(ui->primaryCombo->itemData(index).toInt());
 
-   KScreen::OutputPtr mainScreen=  mConfig->primaryOutput();
+   KScreen::OutputPtr mainScreen = mConfig->primaryOutput();
    if (!mainScreen) {
        mConfig->setPrimaryOutput(newPrimary);
    }
@@ -994,12 +994,15 @@ void Widget::checkOutputScreen(bool judge) {
    newPrimary->setEnabled(judge);
 
    int enabledOutput = 0;
-   Q_FOREACH(KScreen::OutputPtr outptr , mConfig->outputs()) {
+   Q_FOREACH(KScreen::OutputPtr outptr, mConfig->outputs()) {
        if (outptr->isEnabled()) {
            enabledOutput++;
        }
 
        if (enabledOutput >= 2) {
+           if (!mainScreen && outptr != newPrimary) {
+               mainScreen = outptr;
+           }
            // 设置副屏在主屏右边
            newPrimary->setPos(QPoint(mainScreen->pos().x() + mainScreen->size().width(),
                                mainScreen->pos().y()));
