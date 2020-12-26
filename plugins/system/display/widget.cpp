@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "ui_display.h"
 #include "displayperformancedialog.h"
+#include "colorinfo.h"
 
 #include <QHBoxLayout>
 #include <QTimer>
@@ -25,6 +26,7 @@
 #include <QComboBox>
 #include <QQuickWidget>
 #include <QMessageBox>
+#include <QDBusConnection>
 
 #include <KF5/KScreen/kscreen/output.h>
 #include <KF5/KScreen/kscreen/edid.h>
@@ -50,7 +52,6 @@ extern "C" {
 #define QML_PATH "kcm_kscreen/qml/"
 
 #define UKUI_CONTORLCENTER_PANEL_SCHEMAS "org.ukui.control-center.panel.plugins"
-#define NIGHT_MODE_KEY                   "nightmodestatus"
 #define THEME_NIGHT_KEY                  "themebynight"
 
 #define FONT_RENDERING_DPI               "org.ukui.SettingsDaemon.plugins.xsettings"
@@ -123,7 +124,6 @@ Widget::Widget(QWidget *parent)
 
     initGSettings();
     initTemptSlider();
-    initConfigFile(false, false);
     initUiComponent();
     initNightStatus();
     initBrightnessUI();
@@ -495,13 +495,6 @@ void Widget::initGSettings() {
         return;
     }
 
-    connect(mGsettings, &QGSettings::changed, this, [=](QString key) {
-        if (static_cast<QString>(NIGHT_MODE_KEY) == key) {
-            bool status =  mGsettings->get(key).toBool();
-            initConfigFile(true, status);
-        }
-    });
-
     QByteArray powerId(POWER_SCHMES);
     if (QGSettings::isSchemaInstalled(powerId)) {
         mPowerGSettings = new QGSettings(powerId, QByteArray(), this);
@@ -517,40 +510,6 @@ void Widget::initGSettings() {
     if (QGSettings::isSchemaInstalled(scaleId)) {
         scaleGSettings = new QGSettings(scaleId, QByteArray(), this);
     }
-}
-
-void Widget::writeConfigFile() {
-
-    if (mGsettings) {
-        mGsettings->set(NIGHT_MODE_KEY, mNightButton->isChecked());
-    }
-
-    mQsettings->beginGroup("redshift");
-    QString optime = ui->opHourCom->currentText() + ":" + ui->opMinCom->currentText();
-    QString cltime = ui->clHourCom->currentText() + ":" + ui->clMinCom->currentText();
-    QString value = QString::number(ui->temptSlider->value());
-
-
-    if ( !ui->customradioBtn->isChecked()) {
-        optime = "17:55";
-        cltime = "05:04";
-    }
-
-    mQsettings->setValue("dawn-time", cltime);
-    mQsettings->setValue("dusk-time", optime);
-    mQsettings->setValue("temp-day", tempDayBrig);
-    mQsettings->setValue("temp-night", value);
-
-    mQsettings->endGroup();
-
-    mQsettings->beginGroup("switch");
-    mQsettings->setValue("nightjudge", mNightButton->isChecked());
-    mQsettings->setValue("sunjudge", ui->sunradioBtn->isChecked());
-    mQsettings->setValue("manualjudge", ui->customradioBtn->isChecked());
-    mQsettings->setValue("nightStatus", mNightButton->isChecked());
-
-    mQsettings->endGroup();
-    mQsettings->sync();
 }
 
 void Widget::setcomBoxScale() {
@@ -664,7 +623,7 @@ void Widget::showNightWidget(bool judge) {
         ui->sunframe->setVisible(true);
         ui->customframe->setVisible(true);
         ui->temptframe->setVisible(true);
-        ui->themeFrame->setVisible(true);
+        ui->themeFrame->setVisible(false);
     } else {
         ui->sunframe->setVisible(false);
         ui->customframe->setVisible(false);
@@ -878,7 +837,6 @@ void Widget::save() {
     }
 
     writeScale(this->screenScale);
-    writeConfigFile();
     setNightMode(mNightButton->isChecked());
 
     if (!KScreen::Config::canBeApplied(config)) {
@@ -1055,12 +1013,17 @@ void Widget::initConnection() {
         slotUnifyOutputs();
     });
 
-    //TODO----->bug
-//    ui->showMonitorwidget->setVisible(false);
     connect(mCloseScreenButton, &SwitchButton::checkedChanged,
             this, [=](bool checked) {
         checkOutputScreen(checked);
     });
+
+    QDBusConnection::sessionBus().connect(QString(),
+                                          QString("/ColorCorrect"),
+                                          "org.ukui.kwin.ColorCorrect",
+                                          "nightColorConfigChanged",
+                                          this,
+                                          SLOT(nightChangedSlot(QHash<QString,QVariant>)));
 
     mOutputTimer = new QTimer(this);
     connect(mOutputTimer, &QTimer::timeout,
@@ -1094,71 +1057,13 @@ void Widget::initTemptSlider() {
     ui->temptSlider->setTracking(true);
 
     for (int i = 0; i < 24; i++) {
-        ui->opHourCom->addItem(QString::number(i));
-        ui->clHourCom->addItem(QString::number(i));
+        ui->opHourCom->addItem(QStringLiteral("%1").arg(i, 2, 10, QLatin1Char('0')));
+        ui->clHourCom->addItem(QStringLiteral("%1").arg(i, 2, 10, QLatin1Char('0')));
     }
 
     for (int i = 0; i < 60; i++) {
-        ui->opMinCom->addItem(QString::number(i));
-        ui->clMinCom->addItem(QString::number(i));
-    }
-}
-
-void Widget::initConfigFile(bool changed, bool status) {
-    QString filename = QDir::homePath() + "/.config/redshift.conf";
-    mQsettings = new QSettings(filename, QSettings::IniFormat,this);
-
-    mQsettings->beginGroup("redshift");
-
-    QString optime = mQsettings->value("dusk-time", "").toString();
-    QString cltime = mQsettings->value("dawn-time", "").toString();
-    QString temptValue = mQsettings->value("temp-night", "").toString();
-
-    if ("" != optime) {
-        QString ophour = optime.split(":").at(0);
-        QString opmin = optime.split(":").at(1);
-
-        ui->opHourCom->setCurrentIndex(ophour.toInt());
-        ui->opMinCom->setCurrentIndex(opmin.toInt());
-    }
-
-    if ("" != cltime) {
-        QString clhour = cltime.split(":").at(0);
-        QString clmin = cltime.split(":").at(1);
-
-        ui->clHourCom->setCurrentIndex(clhour.toInt());
-        ui->clMinCom->setCurrentIndex(clmin.toInt());
-    }
-
-    if ("" != temptValue) {
-        int value = temptValue.toInt();
-        ui->temptSlider->setValue(value);
-    }
-
-    mQsettings->endGroup();
-
-    mQsettings->beginGroup("switch");;
-
-    bool sunjudge    = false;
-    bool manualjudge = false;
-    bool nightjudge  = mQsettings->value("nightjudge", nightjudge).toBool();
-    manualjudge      = mQsettings->value("manualjudge", manualjudge).toBool();
-    sunjudge         = mQsettings->value("sunjudge", sunjudge).toBool();
-
-    mNightButton->setChecked(nightjudge);
-
-    if (sunjudge || manualjudge) {
-        ui->sunradioBtn->setChecked(sunjudge);
-        ui->customradioBtn->setChecked(manualjudge);
-    } else {
-        ui->sunradioBtn->setChecked(true);
-        ui->temptSlider->setValue(3500);
-    }
-
-    mQsettings->endGroup();
-
-    if (changed) {
-        mNightButton->setChecked(status);
+        ui->opMinCom->addItem(QStringLiteral("%1").arg(i, 2, 10, QLatin1Char('0')));
+        ui->clMinCom->addItem(QStringLiteral("%1").arg(i, 2, 10, QLatin1Char('0')));
     }
 }
 
@@ -1188,54 +1093,32 @@ void Widget::writeScreenXml() {
     g_object_unref (rr_screen);
 }
 
-
 void Widget::setNightMode(const bool nightMode) {
-    QProcess process;
-    QString cmd;
-    QString serverCmd;
+    QDBusInterface colorIft("org.ukui.KWin",
+                             "/ColorCorrect",
+                             "org.ukui.kwin.ColorCorrect",
+                             QDBusConnection::sessionBus());
+    if (!colorIft.isValid()) {
+        qWarning() << "create org.ukui.kwin.ColorCorrect failed";
+        return;
+    }
 
-    if(nightMode) {
-        cmd = "restart";
-        serverCmd = "enable";
+    if (!nightMode) {
+        mNightConfig["Active"] = false;
     } else {
-        cmd = "stop";
-        serverCmd = "disable";
+        mNightConfig["Active"] = true;
+
+        if (ui->sunradioBtn->isChecked()) {
+            mNightConfig["Mode"] = 0;
+        } else if (ui->customradioBtn->isChecked()) {
+            mNightConfig["Mode"] = 2;
+            mNightConfig["EveningBeginFixed"] = ui->opHourCom->currentText() + ":" + ui->opMinCom->currentText() + ":00";
+            mNightConfig["MorningBeginFixed"] = ui->clHourCom->currentText() + ":" + ui->clMinCom->currentText() + ":00";
+        }
+        mNightConfig["NightTemperature"] = ui->temptSlider->value();
     }
 
-    process.startDetached("systemctl", QStringList() << "--user" << serverCmd << "redshift.service");
-
-    process.startDetached("systemctl", QStringList() << "--user" << cmd << "redshift.service");
-    updateNightStatus();
-
-    QGSettings theme("org.ukui.style");
-    if (nightMode && mThemeButton->isChecked()) {
-        theme.set("style-name", "ukui-dark");
-    } else if (nightMode && !mThemeButton->isChecked()) {
-        theme.set("style-name", "ukui-default");
-    }
-}
-
-
-void Widget::updateNightStatus() {
-    QProcess *process = new QProcess;
-
-    connect(process, &QProcess::readyRead, this, [=] {
-        setIsNightMode(process->readAll().replace("\n","") == "active");
-
-        process->deleteLater();
-    });
-
-    process->start("systemctl", QStringList() << "--user" << "is-active" << "redshift.service");
-    process->close();
-}
-
-
-void Widget::setIsNightMode(bool isNightMode) {
-    if(mIsNightMode == isNightMode){
-        return ;
-    }
-    mIsNightMode = isNightMode;
-   // emit nightModeChanged(isNightMode);
+    colorIft.call("setNightColorConfig", mNightConfig) ;
 }
 
 void Widget::initUiComponent() {
@@ -1294,30 +1177,63 @@ void Widget::initUiComponent() {
                                                  SLOT(propertiesChangedSlot(QString, QMap<QString, QVariant>, QStringList)));
 }
 
-void Widget::setRedShiftIsValid(bool redshiftIsValid) {
-    if(mRedshiftIsValid == redshiftIsValid) {
-        return ;
+void Widget::initNightStatus() {
+    QDBusInterface colorIft("org.ukui.KWin",
+                             "/ColorCorrect",
+                             "org.ukui.kwin.ColorCorrect",
+                             QDBusConnection::sessionBus());
+    if (colorIft.isValid()) {
+        this->mRedshiftIsValid = true;
+    } else {
+        qWarning() << "create org.ukui.kwin.ColorCorrect failed";
+        return;
     }
 
-    mRedshiftIsValid = redshiftIsValid;
-    emit redShiftValidChanged(redshiftIsValid);
+    QDBusMessage result = colorIft.call("nightColorInfo");
+
+    QList<QVariant> outArgs = result.arguments();
+    QVariant first = outArgs.at(0);
+    QDBusArgument dbvFirst = first.value<QDBusArgument>();
+    QVariant vFirst = dbvFirst.asVariant();
+    const QDBusArgument &dbusArgs = vFirst.value<QDBusArgument>();
+
+    QVector<ColorInfo> nightColor;
+
+    dbusArgs.beginArray();
+    while (!dbusArgs.atEnd()) {
+        ColorInfo color;
+        dbusArgs >> color;
+        nightColor.push_back(color);
+    }
+    dbusArgs.endArray();
+
+    for (ColorInfo it : nightColor) {
+        mNightConfig.insert(it.arg, it.out.variant());
+    }
+
+    this->mIsNightMode = mNightConfig["Active"].toBool();
+    ui->temptSlider->setValue(mNightConfig["CurrentColorTemperature"].toInt());
+    if (0 == mNightConfig["Mode"].toInt()) {
+        ui->sunradioBtn->setChecked(true);
+    } else if (2 == mNightConfig["Mode"].toInt()) {
+        qDebug() << Q_FUNC_INFO;
+        ui->customradioBtn->setChecked(true);
+        QString openTime = mNightConfig["EveningBeginFixed"].toString();
+        QString ophour = openTime.split(":").at(0);
+        QString opmin = openTime.split(":").at(1);
+
+        ui->opHourCom->setCurrentIndex(ophour.toInt());
+        ui->opMinCom->setCurrentIndex(opmin.toInt());
+
+        QString cltime = mNightConfig["MorningBeginFixed"].toString();
+        QString clhour = cltime.split(":").at(0);
+        QString clmin = cltime.split(":").at(1);
+
+        ui->clHourCom->setCurrentIndex(clhour.toInt());
+        ui->clMinCom->setCurrentIndex(clmin.toInt());
+    }
 }
 
-void Widget::initNightStatus() {
-    QProcess *process = new QProcess;
-    const bool isRedShiftValid  = (0 == process->execute("which",QStringList() << "redshift"));
-
-    QProcess *process_2 = new QProcess;
-    process_2->start("systemctl", QStringList() << "--user" << "is-active" << "redshift.service");
-    process_2->waitForFinished();
-
-    QByteArray qbaOutput = process_2->readAllStandardOutput();
-
-    QString tmpNight = qbaOutput;
-    mIsNightMode = (tmpNight=="active\n" ? true : false);
-
-    if (isRedShiftValid) {
-        updateNightStatus();
-    }
-    setRedShiftIsValid(isRedShiftValid);
+void Widget::nightChangedSlot(QHash<QString, QVariant> nightArg) {
+    mNightButton->setChecked(nightArg["Active"].toBool());
 }

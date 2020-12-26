@@ -42,6 +42,7 @@ SOURCES += \
     displayperformancedialog.cpp
 
 HEADERS += \
+    colorinfo.h \
     display.h \
     declarative/qmloutput.h \
     declarative/qmloutputcomponent.h \
