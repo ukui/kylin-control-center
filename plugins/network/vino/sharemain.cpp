@@ -37,8 +37,6 @@ ShareMain::~ShareMain() {
 }
 
 void ShareMain::initUI() {
-    mBtnGroup = new QButtonGroup(this);
-
     mShareTitleLabel = new QLabel(tr("Share"), this);
     mShareTitleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
@@ -81,7 +79,7 @@ void ShareMain::initUI() {
 
     QHBoxLayout * secHLayout = new QHBoxLayout();
 
-    mAccessBox = new QRadioButton(this);
+    mAccessBox = new QCheckBox(this);
     mAccessLabel = new QLabel(tr("You must confirm every visit for this machine"), this);
     secHLayout->addWidget(mAccessBox);
     secHLayout->addWidget(mAccessLabel);
@@ -96,14 +94,13 @@ void ShareMain::initUI() {
 
     QHBoxLayout * pwdHLayout = new QHBoxLayout();
 
-    mPwdBox = new QRadioButton(this);
+    mPwdBox = new QCheckBox(this);
     mPwdsLabel = new QLabel(tr("Require user to enter this password: "), this);
     mPwdLineEdit = new QLineEdit(this);
     pwdHLayout->addWidget(mPwdBox);
     pwdHLayout->addWidget(mPwdsLabel);
     pwdHLayout->addStretch();
     pwdHLayout->addWidget(mPwdLineEdit);
-
 
     mSecurityPwdFrame->setLayout(pwdHLayout);
 
@@ -116,12 +113,6 @@ void ShareMain::initUI() {
     mVlayout->addWidget(mSecurityPwdFrame);
 
     mVlayout->addStretch();
-
-    mBtnGroup->addButton(mAccessBox);
-    mBtnGroup->addButton(mPwdBox);
-
-    mBtnGroup->setId(mAccessBox, RequestPwd::NOPWD);
-    mBtnGroup->setId(mPwdBox, RequestPwd::NEEDPWD);
 }
 
 void ShareMain::initConnection() {
@@ -129,32 +120,32 @@ void ShareMain::initConnection() {
     if (QGSettings::isSchemaInstalled(id)) {
         mVinoGsetting = new QGSettings(kVinoSchemas, QByteArray(), this);
 
-        bool isShared = mVinoGsetting->get(kVinoViewOnlyKey).toBool();
-        bool secPwd = mVinoGsetting->get(kVinoPromptKey).toBool();
-
-        initShareStatus(!isShared, secPwd);
         initEnableStatus();
 
         connect(mEnableBox, &QCheckBox::clicked, this, &ShareMain::enableSlot);
         connect(mViewBox, &QCheckBox::clicked, this, &ShareMain::viewBoxSlot);
+        connect(mAccessBox, &QCheckBox::clicked, this, &ShareMain::accessSlot);
+        connect(mPwdBox, &QCheckBox::clicked, this, &ShareMain::pwdEnableSlot);
         connect(mPwdLineEdit, &QLineEdit::textChanged, this, &ShareMain::pwdInputSlot);
-        connect(mBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked),
-            [=](int index) {
-            accessSlot(index);
-        });
-    }
-}
-
-void ShareMain::initShareStatus(bool isConnnect, bool isPwd) {
-    mViewBox->setChecked(isConnnect);
-    if (isPwd) {
-        mAccessBox->setChecked(isPwd);
-    } else {
-        mPwdBox->setChecked(true);
     }
 }
 
 void ShareMain::initEnableStatus() {
+    bool isShared = mVinoGsetting->get(kVinoViewOnlyKey).toBool();
+    bool secPwd = mVinoGsetting->get(kVinoPromptKey).toBool();
+    QString pwd = mVinoGsetting->get(kAuthenticationKey).toString();
+
+    mAccessBox->setChecked(secPwd);
+    mViewBox->setChecked(!isShared);
+    if (pwd == "vnc") {
+        mPwdBox->setChecked(true);
+        mPwdsLabel->setEnabled(true);
+    } else {
+        mPwdBox->setChecked(false);
+        mPwdLineEdit->setVisible(false);
+        mPwdsLabel->setEnabled(false);
+    }
+
     QProcess *process = new QProcess;
 
     process->start("systemctl", QStringList() << "--user" << "is-active" << "vino-server.service");
@@ -191,19 +182,23 @@ void ShareMain::viewBoxSlot(bool status) {
     mVinoGsetting->set(kVinoViewOnlyKey, !status);
 }
 
-void ShareMain::accessSlot(int index) {
-    Q_UNUSED(index);
-    if (NOPWD == index) {
-        mPwdsLabel->setEnabled(false);
-        mPwdLineEdit->setVisible(false);
+void ShareMain::accessSlot(bool status) {
+    if (status) {
         mVinoGsetting->set(kVinoPromptKey, true);
-        mVinoGsetting->reset(kAuthenticationKey);
-        mVinoGsetting->reset(kVncPwdKey);
     } else {
+        mVinoGsetting->set(kVinoPromptKey, false);
+    }
+}
+
+void ShareMain::pwdEnableSlot(bool status) {
+    if (status) {
+        mVinoGsetting->set(kAuthenticationKey, "vnc");
         mPwdsLabel->setEnabled(true);
         mPwdLineEdit->setVisible(true);
-        mVinoGsetting->set(kVinoPromptKey, false);
-        mVinoGsetting->reset(kAuthenticationKey);
+    } else {
+        mPwdsLabel->setEnabled(false);
+        mPwdLineEdit->setVisible(false);
+        mVinoGsetting->set(kAuthenticationKey, "none");
     }
 }
 
