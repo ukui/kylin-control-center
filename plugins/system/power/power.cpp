@@ -346,13 +346,21 @@ void Power::initModeStatus() {
     int batclose = settings->get(SLEEP_DISPLAY_BATT_KEY).toInt();
 
     if (acsleep == COMPUTER_BALANCE && batsleep == COMPUTER_BALANCE &&
+<<<<<<< HEAD
             acclose == DISPLAY_AC_BALANCE && batclose == DISPLAY_BAT_BALANCE){
         ui->balanceRadioBtn->setChecked(true);
+=======
+
+>>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
     } else if (acsleep == COMPUTER_SAVING && batsleep == COMPUTER_SAVING &&
                acclose == DISPLAY_SAVING && batclose == DISPLAY_SAVING){
         ui->savingRadioBtn->setChecked(true);
     } else {
+<<<<<<< HEAD
         ui->custdomRadioBtn->setChecked(true);
+=======
+
+>>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
         ui->acBtn->setChecked(true);
         initCustomPlanStatus();
     }

@@ -26,6 +26,7 @@
    <string notr="true">Fonts</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
+<<<<<<< HEAD
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -35,6 +36,8 @@
    <property name="rightMargin">
     <number>32</number>
    </property>
+=======
+>>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
    <item>
     <widget class="QLabel" name="titleLabel">
      <property name="sizePolicy">
@@ -136,6 +139,7 @@
        </layout>
       </item>
      </layout>
+     <zorder></zorder>
     </widget>
    </item>
    <item>
@@ -156,10 +160,23 @@
    </item>
    <item>
     <widget class="QFrame" name="fontTypeFrame">
+<<<<<<< HEAD
      <property name="maximumSize">
       <size>
        <width>960</width>
        <height>60</height>
+=======
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>550</width>
+       <height>55</height>
+>>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
       </size>
      </property>
      <property name="frameShape">
@@ -228,7 +245,108 @@
      <property name="maximumSize">
       <size>
        <width>960</width>
+<<<<<<< HEAD
        <height>60</height>
+=======
+       <height>55</height>
+>>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+<<<<<<< HEAD
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="monoSelectLabel">
+=======
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="fontSelectLabel">
+>>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+<<<<<<< HEAD
+          <property name="minimumSize">
+           <size>
+            <width>140</width>
+=======
+          <property name="minimumSize">
+           <size>
+            <width>140</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>140</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Fonts select</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="fontSelectComBox">
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+>>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+<<<<<<< HEAD
+=======
+            <width>16777215</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="fontTypeFrame_2">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>550</width>
+       <height>55</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>960</width>
+       <height>55</height>
       </size>
      </property>
      <property name="frameShape">
@@ -239,10 +357,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_9">
-        <property name="spacing">
-         <number>0</number>
-        </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
         <item>
          <widget class="QLabel" name="monoSelectLabel">
           <property name="sizePolicy">
@@ -259,6 +374,7 @@
           </property>
           <property name="maximumSize">
            <size>
+>>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
             <width>140</width>
             <height>16777215</height>
            </size>
@@ -1147,6 +1263,14 @@
     </spacer>
    </item>
   </layout>
+  <zorder>titleLabel</zorder>
+  <zorder>fontSizeFrame</zorder>
+  <zorder>advancedFrame</zorder>
+  <zorder>titleSecondLabel</zorder>
+  <zorder>verticalSpacer</zorder>
+  <zorder>verticalSpacer_8</zorder>
+  <zorder>fontTypeFrame_2</zorder>
+  <zorder>fontTypeFrame</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

@@ -87,6 +87,9 @@ void ModulePageWidget::initUI() {
     for (int moduleIndex = 0; moduleIndex < TOTALMODULES; moduleIndex++){
         QListWidget * leftListWidget = new QListWidget;
         leftListWidget->setObjectName("leftWidget");
+<<<<<<< HEAD
+=======
+>>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
         leftListWidget->setAttribute(Qt::WA_DeleteOnClose);
         leftListWidget->setResizeMode(QListView::Adjust);
         leftListWidget->setFocusPolicy(Qt::NoFocus);
