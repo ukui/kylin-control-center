@@ -1552,37 +1552,37 @@ change system settings</source>
         <translation>默认应用</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="317"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="312"/>
         <source>Browser</source>
         <translation>浏览器</translation>
         <extra-contents_path>/defaultapp/Browser</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="319"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="314"/>
         <source>Mail</source>
         <translation>电子邮件</translation>
         <extra-contents_path>/defaultapp/Mail</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="321"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="316"/>
         <source>Image Viewer</source>
         <translation>图像查看器</translation>
         <extra-contents_path>/defaultapp/Image Viewer</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="323"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="318"/>
         <source>Audio Player</source>
         <translation>音频播放器</translation>
         <extra-contents_path>/defaultapp/Audio Player</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="325"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="320"/>
         <source>Video Player</source>
         <translation>视频播放器</translation>
         <extra-contents_path>/defaultapp/Video Player</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="327"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="322"/>
         <source>Text Editor</source>
         <translation>文档编辑器</translation>
         <extra-contents_path>/defaultapp/Text Editor</extra-contents_path>
@@ -2477,21 +2477,21 @@ folder will be deleted!</source>
     <name>Fonts</name>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.ui" line="47"/>
-        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="103"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="97"/>
         <source>Fonts</source>
         <translation>字体</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.ui" line="198"/>
-        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="179"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="173"/>
         <source>Fonts select</source>
         <translation>字体选择</translation>
         <extra-contents_path>/fonts/Fonts select</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.ui" line="132"/>
-        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="177"/>
-        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="181"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="171"/>
+        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="175"/>
         <source>Font size</source>
         <translation>字体大小</translation>
         <extra-contents_path>/fonts/Font size</extra-contents_path>
@@ -2570,62 +2570,90 @@ folder will be deleted!</source>
     </message>
     <message>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="197"/>
 =======
 
 >>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+=======
+        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="191"/>
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
         <source>11</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="197"/>
 =======
 
 >>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+=======
+        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="191"/>
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
         <source>12</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="197"/>
 =======
 
 >>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+=======
+        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="191"/>
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
         <source>13</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="197"/>
 =======
 
 >>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+=======
+        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="191"/>
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
         <source>14</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="197"/>
 =======
 
 >>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+=======
+        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="191"/>
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
         <source>15</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="198"/>
 =======     
 >>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+=======
+        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="192"/>
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
         <source>16</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="297"/>
 =======
 >>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+=======
+        <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="291"/>
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
         <source>Thanks For Using The ukcc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2851,9 +2879,13 @@ folder will be deleted!</source>
     </message>
     <message>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <location filename="../../../plugins/devices/keyboard/kbdlayoutmanager.cpp" line="235"/>
 =======
 >>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+=======
+        <location filename="../../../plugins/devices/keyboard/kbdlayoutmanager.cpp" line="235"/>
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
         <source>Del</source>
         <translation>删除</translation>
     </message>
@@ -3599,17 +3631,17 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../mainwindow.cpp" line="78"/>
-        <location filename="../../mainwindow.cpp" line="387"/>
+        <location filename="../../mainwindow.cpp" line="388"/>
         <source>UKCC</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="699"/>
+        <location filename="../../mainwindow.cpp" line="711"/>
         <source>ukcc</source>
         <translation>控制面板</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="529"/>
+        <location filename="../../mainwindow.cpp" line="541"/>
         <source>Home</source>
         <translation>首页</translation>
     </message>
@@ -6670,47 +6702,67 @@ If something goes wrong, the settings will be restored after %1 seconds</source>
     </message>
     <message>
         <location filename="../../../plugins/system/display/widget.cpp" line="847"/>
+<<<<<<< HEAD
 =======
 
 >>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+=======
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
         <source>please insure at least one output!</source>
         <translation>请确保至少开启一个屏幕!</translation>
     </message>
     <message>
+<<<<<<< HEAD
 <<<<<<< HEAD
         <location filename="../../../plugins/system/display/widget.cpp" line="847"/>
         <location filename="../../../plugins/system/display/widget.cpp" line="854"/>
 =======
 
 >>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+=======
+        <location filename="../../../plugins/system/display/widget.cpp" line="847"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="854"/>
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <location filename="../../../plugins/system/display/widget.cpp" line="854"/>
 =======
 
 >>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+=======
+        <location filename="../../../plugins/system/display/widget.cpp" line="854"/>
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
         <source>Morning time should be earlier than evening time!</source>
         <translation>早晨时刻应早于晚上的时刻!</translation>
     </message>
     <message>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <location filename="../../../plugins/system/display/widget.cpp" line="865"/>
 =======
 
 >>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+=======
+        <location filename="../../../plugins/system/display/widget.cpp" line="865"/>
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation>抱歉，配置不能应用.</translation>
     </message>
     <message>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <location filename="../../../plugins/system/display/widget.cpp" line="866"/>
 =======
 
 >>>>>>> 22462b58edfccc28e225f69e87d18d13734b548a
+=======
+        <location filename="../../../plugins/system/display/widget.cpp" line="866"/>
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
         <source>@title:window</source>
         <comment>Unsupported Configuration</comment>
         <translation>窗口</translation>
@@ -6926,7 +6978,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
         <location filename="../../../plugins/account/networkaccount/networkaccount.cpp" line="25"/>
         <source>Cloud Account</source>
         <translation>云账户</translation>
-        <extra-contents_path>/Cloud Account/Cloud Account</extra-contents_path>
+        <extra-contents_path>/networkaccount/Cloud Account</extra-contents_path>
     </message>
 </context>
 <context>

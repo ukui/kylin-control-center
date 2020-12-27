@@ -34,6 +34,7 @@
 #define MODE_GTK_KEY     "gtk-theme"
 
 // GTK图标主题
+<<<<<<< HEAD
 #define ICON_GTK_KEY    "icon-theme"
 
 // QT主题
@@ -41,6 +42,8 @@
 #define MODE_QT_KEY     "style-name"
 #define THEME_TRAN_KEY  "menu-transparency"
 #define PEONY_TRAN_KEY  "peony-side-bar-transparency"
+=======
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
 
 // QT图标主题
 #define ICON_QT_KEY     "icon-theme-name"
@@ -219,7 +222,7 @@ void Theme::setupComponent(){
     ui->controlLabel->hide();
     ui->controlWidget->hide();
 
-    ui->defaultButton->setProperty("value", "ukui");
+    ui->defaultButton->setProperty("value", "ukui-default");
     ui->lightButton->setProperty("value", "ukui-light");
     ui->darkButton->setProperty("value", "ukui-dark");
 
@@ -302,7 +305,11 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
 void Theme::initThemeMode() {
     // 获取当前主题
     QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
+<<<<<<< HEAD
     if ("ukui" == currentThemeMode) {
+=======
+
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
         ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
     } else if ("ukui-dark" == currentThemeMode){
         ui->themeModeBtnGroup->buttonClicked(ui->darkButton);
@@ -319,6 +326,11 @@ void Theme::initThemeMode() {
             QString currentThemeMode = qtSettings->get(key).toString();
             for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
                 QVariant valueVariant = button->property("value");
+                if ("ukui-black" == currentThemeMode) {
+                    currentThemeMode = "ukui-dark";
+                } else if("ukui-white" == currentThemeMode) {
+                    currentThemeMode = "ukui-default";
+                }
                 if (valueVariant.isValid() && valueVariant.toString() == currentThemeMode) {
                     disconnect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeBtnClickSlot(QAbstractButton*)));
                     button->click();
@@ -367,11 +379,14 @@ void Theme::initIconTheme() {
     QDir themesDir = QDir(ICONTHEMEPATH);
 
     foreach (QString themedir, themesDir.entryList(QDir::Dirs)) {
+<<<<<<< HEAD
         if (themedir.startsWith("ukui")){
 
             QDir appsDir = QDir(ICONTHEMEPATH + themedir + "/48x48/apps/");
 
             if (kExcludeIcon.contains(themedir, Qt::CaseInsensitive)) {
+=======
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
                 continue;
             }
             appsDir.setFilter(QDir::Files | QDir::NoSymLinks);
@@ -440,10 +455,6 @@ void Theme::setupControlTheme(){
         selectedColorLabel->setPixmap(QPixmap("://img/plugins/theme/selected.png"));
         //初始化选中图标状态
         selectedColorLabel->setVisible(button->isChecked());
-//        connect(colorBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this,[=]{
-//            selectedColorLabel->setVisible(button->isChecked());
-//            //设置控件主题
-//        });
 
         colorHorLayout->addStretch();
         colorHorLayout->addWidget(selectedColorLabel);
@@ -724,12 +735,15 @@ void Theme::themeBtnClickSlot(QAbstractButton *button) {
      QString themeMode = button->property("value").toString();
      QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
 
+<<<<<<< HEAD
      if (QString::compare(currentThemeMode, themeMode)) {
          gtkSettings->set(MODE_GTK_KEY, themeMode);
 
          QtConcurrent::run([=](){
              qtSettings->set(MODE_QT_KEY, themeMode);
          });
+=======
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
      }
 }
 

@@ -203,7 +203,8 @@ class Widget : public QWidget
     bool mOriApply;
     bool mConfigChanged   = false;
     bool mOnBattery       = false;
-    bool m_blockChanges = false;
+    bool mBlockChanges    = false;
+    bool mFirstLoad       = true;
 
 };
 

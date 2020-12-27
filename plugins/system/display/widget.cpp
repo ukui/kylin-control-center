@@ -206,8 +206,11 @@ void Widget::setConfig(const KScreen::ConfigPtr &config) {
     }
     slotOutputEnabledChanged();
 
+<<<<<<< HEAD
     if (isCloneMode()) {
         mUnifyButton->setChecked(true);
+=======
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
         slotUnifyOutputs();
     }
 }
@@ -888,7 +891,7 @@ void Widget::save() {
         return;
     }
 
-    m_blockChanges = true;
+    mBlockChanges = true;
     /* Store the current config, apply settings */
     auto *op = new KScreen::SetConfigOperation(config);
 
@@ -900,7 +903,7 @@ void Widget::save() {
     // due to the fact that we just can't be sure when xrandr is done changing things, 1000 doesn't seem to get in the way
     QTimer::singleShot(1000, this,
         [this] () {
-            m_blockChanges = false;
+            mBlockChanges = false;
         }
     );
 

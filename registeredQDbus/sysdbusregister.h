@@ -66,7 +66,10 @@ public slots:
     Q_SCRIPTABLE void setSuspendThenHibernate(QString time);
 
     // 设置密码时效
+<<<<<<< HEAD
     void setPasswdAging(int days, QString username);
+=======
+>>>>>>> af52109c40dffd4d46eb8c7fcc2d2496fd78a362
 };
 
 #endif // SYSDBUSREGISTER_H

@@ -48,6 +48,11 @@ extern "C" {
 #include <gio/gio.h>
 }
 
+#ifdef WITHKYSEC
+#include <kysec/libkysec.h>
+#include <kysec/status.h>
+#endif
+
 #define DEFAULTFACE "/usr/share/ukui/faces/default.png"
 #define ITEMHEIGH 52
 
@@ -349,6 +354,12 @@ void UserInfo::initComponent(){
         ui->autoLoginFrame->setVisible(false);
         ui->autoLoginFrame_2->setVisible(false);
     }
+
+#ifdef WITHKYSEC
+    if (!kysec_is_disabled() && kysec_get_3adm_status() && (getuid() || geteuid())){
+        ui->addUserWidget->hide();
+    }
+#endif
 
     ui->listWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
 
@@ -743,6 +754,15 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
 
     baseWidget->setLayout(baseVerLayout);
 
+#ifdef WITHKYSEC
+    if (!kysec_is_disabled() && kysec_get_3adm_status()){
+        if (user.username == "secadm" || user.username == "auditadm"){
+            pwdBtn->setEnabled(false);
+            typeBtn->setEnabled(false);
+        }
+    }
+#endif
+
     QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
 //    item->setSizeHint(QSize(ui->listWidget->width() - 4, ITEMHEIGH));
     item->setSizeHint(QSize(QSizePolicy::Expanding, ITEMHEIGH));
@@ -852,7 +872,7 @@ void UserInfo::pwdAndAutoChangedSlot(QString key) {
 void UserInfo::propertyChangedSlot(QString property, QMap<QString, QVariant> propertyMap, QStringList propertyList) {
     Q_UNUSED(property);
     Q_UNUSED(propertyList);
-    if (propertyMap.keys().contains("IconFile")) {
+    if (propertyMap.keys().contains("IconFile") && getuid()) {
         QString iconFile = propertyMap.value("IconFile").toString();
         QPixmap iconPixmap = QPixmap(iconFile).scaled(ui->currentUserFaceLabel->size());
         ui->currentUserFaceLabel->setPixmap(iconPixmap);
