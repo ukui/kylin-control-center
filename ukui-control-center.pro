@@ -4,6 +4,7 @@ CONFIG += ordered
 
 SUBDIRS = \
     checkUserPwd \
+    plugins/system/touchscreen \
     registeredQDbus \
     plugins\
     registeredSession \

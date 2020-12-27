@@ -74,6 +74,7 @@ Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::DisplayWindow()), slider(new Slider())
 {
+    qDebug("enter open ui DisplayWindow\n");
     qRegisterMetaType<QQuickView*>();
     gdk_init(NULL, NULL);
 

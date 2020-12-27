@@ -38,6 +38,7 @@ enum FunType{
 
 enum SystemIndex{
     DISPLAY,
+    TOUCHSCREEN,
     DEFAULTAPP,
     POWER,
     AUTOBOOT,

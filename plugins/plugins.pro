@@ -8,6 +8,7 @@ SUBDIRS = \
           system/defaultapp \
           system/power \
           system/autoboot \
+          system/touchscreen \
           system/display \
           devices/printer \
           devices/mouse \

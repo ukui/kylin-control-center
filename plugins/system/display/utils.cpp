@@ -32,4 +32,3 @@ QString Utils::sizeToString(const QSize &size)
 {
     return QStringLiteral("%1x%2").arg(size.width()).arg(size.height());
 }
-

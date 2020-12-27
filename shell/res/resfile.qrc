@@ -143,6 +143,8 @@
         <file>plugins/theme/opacityhigh.svg</file>
         <file>secondaryleftmenu/Bluetooth.svg</file>
         <file>secondaryleftmenu/BluetoothWhite.svg</file>
+        <file>secondaryleftmenu/TouchScreenWhite.svg</file>
+        <file>secondaryleftmenu/TouchScreen.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>
