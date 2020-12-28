@@ -117,4 +117,70 @@ DISTFILES += \
     ../data/installer-timezones.mo \
     ../data/org.ukui.control-center.panel.plugins.gschema.xml \
     ../data/org.ukui.control-center.personalise.gschema.xml \
-    ../data/org.ukui.control-center.wifi.switch.gschema.xml
+    ../data/org.ukui.control-center.wifi.switch.gschema.xml \
+    res/secondaryleftmenu/About.svg \
+    res/secondaryleftmenu/AboutWhite.svg \
+    res/secondaryleftmenu/Area.svg \
+    res/secondaryleftmenu/AreaWhite.svg \
+    res/secondaryleftmenu/Audio.svg \
+    res/secondaryleftmenu/AudioWhite.svg \
+    res/secondaryleftmenu/Autoboot.svg \
+    res/secondaryleftmenu/AutobootWhite.svg \
+    res/secondaryleftmenu/Background.svg \
+    res/secondaryleftmenu/BackgroundWhite.svg \
+    res/secondaryleftmenu/Backup.svg \
+    res/secondaryleftmenu/BackupWhite.svg \
+    res/secondaryleftmenu/Bluetooth.svg \
+    res/secondaryleftmenu/BluetoothWhite.svg \
+    res/secondaryleftmenu/Cloud Account.svg \
+    res/secondaryleftmenu/Cloud Account.svg \
+    res/secondaryleftmenu/Cloud AccountWhite.svg \
+    res/secondaryleftmenu/Cloud AccountWhite.svg \
+    res/secondaryleftmenu/Dat.svg \
+    res/secondaryleftmenu/DatWhite.svg \
+    res/secondaryleftmenu/Defaultapp.svg \
+    res/secondaryleftmenu/DefaultappWhite.svg \
+    res/secondaryleftmenu/Desktop.svg \
+    res/secondaryleftmenu/DesktopWhite.svg \
+    res/secondaryleftmenu/Display.svg \
+    res/secondaryleftmenu/DisplayWhite.svg \
+    res/secondaryleftmenu/Experienceplan.svg \
+    res/secondaryleftmenu/ExperienceplanWhite.svg \
+    res/secondaryleftmenu/Fonts.svg \
+    res/secondaryleftmenu/FontsWhite.svg \
+    res/secondaryleftmenu/Keyboard.svg \
+    res/secondaryleftmenu/KeyboardWhite.svg \
+    res/secondaryleftmenu/Mouse.svg \
+    res/secondaryleftmenu/MouseWhite.svg \
+    res/secondaryleftmenu/Netconnect.svg \
+    res/secondaryleftmenu/NetconnectWhite.svg \
+    res/secondaryleftmenu/Notice.svg \
+    res/secondaryleftmenu/NoticeWhite.svg \
+    res/secondaryleftmenu/Power.svg \
+    res/secondaryleftmenu/PowerWhite.svg \
+    res/secondaryleftmenu/Printer.svg \
+    res/secondaryleftmenu/PrinterWhite.svg \
+    res/secondaryleftmenu/Proxy.svg \
+    res/secondaryleftmenu/ProxyWhite.svg \
+    res/secondaryleftmenu/Screenlock.svg \
+    res/secondaryleftmenu/ScreenlockWhite.svg \
+    res/secondaryleftmenu/Screensaver.svg \
+    res/secondaryleftmenu/ScreensaverWhite.svg \
+    res/secondaryleftmenu/SecurityCenter.svg \
+    res/secondaryleftmenu/SecurityCenterWhite.svg \
+    res/secondaryleftmenu/Shortcut.svg \
+    res/secondaryleftmenu/ShortcutWhite.svg \
+    res/secondaryleftmenu/Theme.svg \
+    res/secondaryleftmenu/ThemeWhite.svg \
+    res/secondaryleftmenu/TouchScreen.svg \
+    res/secondaryleftmenu/TouchScreenWhite.svg \
+    res/secondaryleftmenu/Touchpad.svg \
+    res/secondaryleftmenu/TouchpadWhite.svg \
+    res/secondaryleftmenu/Update.svg \
+    res/secondaryleftmenu/UpdateWhite.svg \
+    res/secondaryleftmenu/Userinfo.svg \
+    res/secondaryleftmenu/UserinfoWhite.svg \
+    res/secondaryleftmenu/Vino.svg \
+    res/secondaryleftmenu/VinoWhite.svg \
+    res/secondaryleftmenu/Vpn.svg \
+    res/secondaryleftmenu/VpnWhite.svg

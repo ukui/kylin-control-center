@@ -100,6 +100,8 @@ MainWindow::~MainWindow()
 void MainWindow::bootOptionsFilter(QString opt) {
     if (opt == "--display" || opt == "-m") {
         bootOptionsSwitch(SYSTEM, DISPLAY);
+    }if (opt == "--touchscreen" || opt == "-m") {
+        bootOptionsSwitch(SYSTEM, TOUCHSCREEN);
     } else if (opt == "--defaultapp") {
         bootOptionsSwitch(SYSTEM, DEFAULTAPP);
     } else if (opt == "--power" || opt == "-p") {
