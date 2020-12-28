@@ -329,6 +329,7 @@ void UkmediaMainWidget::alertIconButtonSetIcon(bool state,int value)
 void UkmediaMainWidget::createAlertSound(UkmediaMainWidget *pWidget)
 {
     const GList   *list;
+    connect_to_pulse(this);
 
     /* Find an event role stored control */
     list = mate_mixer_context_list_stored_controls (pWidget->m_pContext);
@@ -345,6 +346,8 @@ void UkmediaMainWidget::createAlertSound(UkmediaMainWidget *pWidget)
             pWidget->m_pSoundWidget->m_pAlertSlider->setValue(volume);
             pWidget->m_pSoundWidget->m_pAlertVolumeLabel->setText(QString::number(volume).append("%"));
             qDebug() << "media role : " << mate_mixer_stream_control_get_name(control) <<"提示音量值为:" <<volume;
+            gboolean bIsMute = mate_mixer_stream_control_get_mute(control);
+            alertIconButtonSetIcon(bIsMute,volume);
             ukuiBarSetStream(pWidget,stream);
             break;
         }
@@ -352,7 +355,6 @@ void UkmediaMainWidget::createAlertSound(UkmediaMainWidget *pWidget)
         list = list->next;
     }
 
-    connect_to_pulse(this);
 }
 
 /*
@@ -511,6 +513,7 @@ void UkmediaMainWidget::onContextStoredControlAdded(MateMixerContext *m_pContext
     if (G_UNLIKELY (m_pControl == nullptr))
         return;
     qDebug() << "on context stored control add" << mate_mixer_stream_control_get_name(m_pControl);
+    m_pWidget->m_pMediaRoleControl = m_pControl;
     mediaRole = mate_mixer_stream_control_get_media_role (m_pControl);
     if (mediaRole == MATE_MIXER_STREAM_CONTROL_MEDIA_ROLE_EVENT)
         ukuiBarSetStreamControl (m_pWidget,MATE_MIXER_DIRECTION_UNKNOWN, m_pControl);
