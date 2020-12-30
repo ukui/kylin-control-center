@@ -47,12 +47,6 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
     setWindowTitle(tr("Add new user"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-//    ui->closeBtn->setFlat(true);
-
-//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
     ui->tipLabel->setAlignment(Qt::AlignCenter);
 
     ui->label_8->adjustSize();
@@ -117,40 +111,22 @@ void CreateUserDialog::setupComonpent(){
 
     ui->pwdLineEdit->setEchoMode(QLineEdit::Password);
     ui->pwdsureLineEdit->setEchoMode(QLineEdit::Password);
-//    ui->pinLineEdit->setEchoMode(QLineEdit::Password);
-//    ui->pinsureLineEdit->setEchoMode(QLineEdit::Password);
-
-//    QString required = tr("(Required)");
-//    QString optional = tr("(Optional)");
-//    if (ostype == PC){
-//        ui->pwdLabel->setText(required);
-//        ui->pwdsurelabel->setText(required);
-//        ui->pinLabel->setText(optional);
-//        ui->pinsurelabel->setText(optional);
-//    }
-//    else{
-//        ui->pwdLabel->setText(optional);
-//        ui->pwdsurelabel->setText(optional);
-//        ui->pinLabel->setText(required);
-//        ui->pinsurelabel->setText(required);
-//    }
 
     ui->usernameLineEdit->setPlaceholderText(tr("UserName"));
     ui->pwdLineEdit->setPlaceholderText(tr("Password"));
     ui->pwdsureLineEdit->setPlaceholderText(tr("Password Identify"));
-//    ui->pinLineEdit->setPlaceholderText(tr("PIN Code"));
-//    ui->pinsureLineEdit->setPlaceholderText(tr("PIN Code Identify"));
+
 
     ui->pwdTypeComBox->addItem(tr("General Password"));
 
-//    //给radiobtn设置id，id即accoutnType，方便直接返回id值
+    // 给radiobtn设置id，id即accoutnType，方便直接返回id值
     ui->buttonGroup->setId(ui->standardRadioBtn, 0);
     ui->buttonGroup->setId(ui->adminRadioBtn, 1);
 
-//    //默认标准用户
+    // 默认标准用户
     ui->standardRadioBtn->setChecked(true);
 
-    //设置确定按钮
+    // 设置确定按钮
     refreshConfirmBtnStatus();
 
 //    confirm_btn_status_refresh();

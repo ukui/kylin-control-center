@@ -370,20 +370,23 @@ void UserInfo::initComponent(){
     addWgt->setLayout(addLyt);
 
     // 悬浮改变Widget状态
-    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname){
+    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname) {
+        Q_UNUSED(mname);
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(base);");
 
     });
     // 还原状态
-    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname){
+    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname) {
+        Q_UNUSED(mname);
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(windowText);");
     });
 
-    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
+    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname) {
+        Q_UNUSED(mname);
         showCreateUserDialog();
     });
 
@@ -852,7 +855,8 @@ void UserInfo::pwdAndAutoChangedSlot(QString key) {
 void UserInfo::propertyChangedSlot(QString property, QMap<QString, QVariant> propertyMap, QStringList propertyList) {
     Q_UNUSED(property);
     Q_UNUSED(propertyList);
-    if (propertyMap.keys().contains("IconFile")) {
+    if (propertyMap.keys().contains("IconFile") && getuid() &&
+            propertyMap.value("UserName").toString() == mUserName) {
         QString iconFile = propertyMap.value("IconFile").toString();
         QPixmap iconPixmap = QPixmap(iconFile).scaled(ui->currentUserFaceLabel->size());
         ui->currentUserFaceLabel->setPixmap(iconPixmap);
