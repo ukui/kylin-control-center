@@ -30,7 +30,6 @@ CONFIG        += link_pkgconfig \
                  C++11
 PKGCONFIG     += gio-2.0 \
                  gio-unix-2.0 \
-                 libmatemixer \
                  gsettings-qt \
 
 desktop.files += ukui-control-center.desktop
