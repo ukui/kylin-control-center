@@ -74,11 +74,66 @@ void EditGroupDialog::refreshCertainBtnStatus(){
         ui->certainBtn->setEnabled(_nameHasModified || _idHasModified || _boxModified);
 }
 
+UserInfomations EditGroupDialog::_acquireUserInfo(QString objpath){
+    UserInfomations user;
+
+    //默认值
+    user.current = false;
+    user.logined = false;
+    user.autologin = false;
+
+    QDBusInterface * iproperty = new QDBusInterface("org.freedesktop.Accounts",
+                                            objpath,
+                                            "org.freedesktop.DBus.Properties",
+                                            QDBusConnection::systemBus());
+    QDBusReply<QMap<QString, QVariant> > reply = iproperty->call("GetAll", "org.freedesktop.Accounts.User");
+    if (reply.isValid()){
+        QMap<QString, QVariant> propertyMap;
+        propertyMap = reply.value();
+        user.username = propertyMap.find("UserName").value().toString();
+        if (user.username == QString(g_get_user_name())) {
+            user.current = true;
+            user.logined = true;
+        }
+    }
+    else
+        qDebug() << "reply failed";
+
+    delete iproperty;
+
+    return user;
+}
+
+
 void EditGroupDialog::getUsersList(QString usergroup)
 {
-    UserInfo * userinfo = new UserInfo;
-    QStringList usersList = userinfo->getUsersList();
-    qDebug() << "EditGroupDialog::getUsersList";
+    QStringList allUsers;
+    sysdispatcher = new SystemDbusDispatcher(this);
+
+    QStringList objectpaths = sysdispatcher->list_cached_users();
+    allUserInfoMap.clear();
+    //root
+    if (!getuid()){
+        UserInfomations root;
+        root.username = g_get_user_name();
+        root.current = true;
+        root.logined = true;
+        root.autologin = false;
+        root.uid = 0;
+        root.accounttype = ADMINISTRATOR;
+        //        root.iconfile = DEFAULTFACE;
+        allUserInfoMap.insert(root.username, root);
+    }
+    for (QString objectpath : objectpaths){
+        UserInfomations user;
+        user = _acquireUserInfo(objectpath);
+        allUserInfoMap.insert(user.username, user);
+    }
+    for (QVariant tmp : allUserInfoMap.keys()){
+        allUsers << tmp.toString();
+
+    }
+    QStringList usersList = allUsers;
     QStringList usergroupList = usergroup.split(",");
 
     for(int i = 0; i < usersList.size(); i++){
