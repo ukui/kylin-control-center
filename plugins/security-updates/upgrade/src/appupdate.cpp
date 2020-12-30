@@ -43,7 +43,6 @@ void WorkClass::getDependPackages(QString appname)
 void WorkClass::writeSqlite(AppAllMsg msg,QString changelog)
 {
 
-
     QSqlDatabase db2 = QSqlDatabase::addDatabase("QSQLITE","B");
     QString dirPath = QString("%1/.cache/kylin-update-manager/").arg(QDir::homePath());
     QString dbPath = QString("%1/kylin-update-manager.db").arg(dirPath);
@@ -326,17 +325,24 @@ void AppUpdateWid::updateAppUi(QString name)
     updateAPPBtn->setText("更新");
 
     otherBtnLayout = new QHBoxLayout();  //版本号、详情、更细按钮布局
+    otherBtnLayout->setSpacing(0);
+    otherBtnLayout->setMargin(0);
     otherBtnLab = new QLabel(this);
+    otherBtnLab->setMargin(0);
+//    otherBtnLab->setStyleSheet("border:1px solid red");
     otherBtnLab->setMaximumWidth(400);
     otherBtnLab->setFixedHeight(60);
+    appVersion->setMaximumWidth(200);
     otherBtnLayout->addWidget(appVersion,2);
     otherBtnLayout->addWidget(detaileInfo,1);
     otherBtnLayout->addWidget(updateAPPBtn,1);
-    otherBtnLab->setLayout(otherBtnLayout);
 
+    otherBtnLab->setLayout(otherBtnLayout);
+//    appIconName->setStyleSheet("border:1px solid yellow");
     smallHLayout->addWidget(appIconName,4);
     smallHLayout->addStretch(0);
     smallHLayout->addWidget(otherBtnLab,6);
+    smallHLayout->setSpacing(0);
     smallHLayout->setContentsMargins(0,0,10,0);
     appTitleWid->setLayout(smallHLayout);
 
@@ -516,6 +522,7 @@ void AppUpdateWid::calculateSpeedProgress()
 
 void AppUpdateWid::updateAllApp()
 {
+
     qDebug() << "updateall";
     if(isCancel)
     {

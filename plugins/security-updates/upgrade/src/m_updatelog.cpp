@@ -72,6 +72,7 @@ void m_updatelog::initUI()
 
 void m_updatelog::updatesql()
 {
+
     QSqlQuery query(QSqlDatabase::database("A"));
     query.exec("SELECT * FROM installed");
     mainListwidget->clear();
@@ -91,10 +92,12 @@ void m_updatelog::updatesql()
         item1->setSizeHint(QSize(400,80));
         mainListwidget->setItemWidget(item1,mywidget);
     }
+
 }
 
 int m_updatelog::s_insearch(QString arg)
 {
+
     QSqlQuery query(QSqlDatabase::database("A"));
     if(arg == "")
         query.exec(QString("SELECT * FROM installed"));
@@ -115,6 +118,8 @@ int m_updatelog::s_insearch(QString arg)
         QListWidgetItem *item1 = new QListWidgetItem(mainListwidget);
         item1->setSizeHint(QSize(400,80));
         mainListwidget->setItemWidget(item1,mywidget);
+
     }
+
 }
 

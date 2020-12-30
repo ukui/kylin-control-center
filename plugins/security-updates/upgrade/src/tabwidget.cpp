@@ -3,14 +3,59 @@
 TabWid::TabWid(QWidget *parent):QWidget(parent)
 {
     updateMutual = UpdateDbus::getInstance();
+    updateSource = new UpdateSource();
 //    this->resize(620,580);
     allComponents();
     createUI();
     getAllDisplayInformation();
-
+    connect(updateSource->serviceInterface,SIGNAL(updateTemplateStatus(QString)),this,SLOT(slotUpdateTemplate(QString)));
+    connect(updateSource->serviceInterface,SIGNAL(updateCacheStatus(QString)),this,SLOT(slotUpdateCache(QString)));
+    connect(updateSource->serviceInterface,SIGNAL(updateSourceProgress(QString)),this,SLOT(slotUpdateCacheProgress(QString)));
 }
 
+TabWid::~TabWid()
+{
+    qDebug() << "~TabWid" ;
+//    updateMutual->cleanUpdateList();
+}
+void TabWid::slotUpdateTemplate(QString status)
+{
+    qDebug() << "update template status :" << status;
+    /*更新源缓存*/
+    updateSource->callDBusUpdateSource();
+    checkUpdateBtn->setText(tr("正在更新源"));
+}
+void TabWid::slotUpdateCache(QString status)
+{
+    qDebug() << "update cache status :" << status;
 
+    if (!status.compare("success")) {
+        checkUpdateBtn->setText(tr("更新成功"));
+        QFile file(IMPORTANT_FIEL_PATH);
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            qDebug() <<"file open failed!" << IMPORTANT_FIEL_PATH;
+            return ;
+        }
+        QString str =  file.readAll();
+        QStringList list;
+        if (!str.isEmpty() && str.contains(" ")) {
+            list = str.split(" ");
+        }
+        qDebug() << "获取到的包列表：" << list;
+        QStringList ilist =  updateMutual->checkInstallOrUpgrade(list);
+        qDebug() << "处理后的包列表: " << ilist;
+        getAppUpdateMsg(ilist);
+    }
+    else
+    {
+        checkUpdateBtn->setText("更新失败");
+    }
+}
+void TabWid::slotUpdateCacheProgress(QString progress)
+{
+    qDebug() << "update cache progress :" << progress;
+    checkUpdateBtn->setText(tr("更新源:") + progress);
+}
 void TabWid::allComponents()
 {
     mainTabLayout = new QVBoxLayout();  //整个页面的主布局
@@ -26,9 +71,16 @@ void TabWid::allComponents()
     systemWidget->setFrameShape(QFrame::Box);
     systemPortraitLab = new QLabel(systemWidget);
 
+
+    allUpdateWid = new QWidget(this);
+    allUpdateLayout = new QVBoxLayout();
+    allUpdateWid->setLayout(allUpdateLayout);
+//    allUpdateLayout->setContentsMargins(0,5,0,0);
+    allUpdateLayout->setSpacing(8);
     AppMessage->addWidget(systemWidget,0,Qt::AlignTop);
 //    tab1VLayout->addWidget(appUpdateListWidget);
 //    updateTab->setLayout(tab1VLayout);
+    AppMessage->addWidget(allUpdateWid,1,Qt::AlignTop);
 
     scrollArea->setWidget(updateTab);
     scrollArea->setFrameStyle(0);
@@ -79,56 +131,47 @@ void TabWid::getAppUpdateMsg(QStringList arg)
 {
 //    updateMutual->ConnectSlots();
 //    int cnum = updateMutual->cnameList.size();
+    qDebug() << "加载更新信息！";
+    checkUpdateBtn->setText(tr("加载更新..."));
     int inum = arg.size();
-
+    allUpdateLayout->setAlignment(Qt::AlignTop);
     if(inum != 0)
     {
-        QStringList thisInameList = arg;
-        QApt::Backend *m_backend = new QApt::Backend();
-        m_backend->init();
-        int checkNum = 0;
+
         for(inumber = 0; inumber < inum; inumber++)
         {
-
-            QString app_name = thisInameList[inumber];
+            QString app_name = arg[inumber];
             if(app_name.isEmpty())
                 continue;
-            QApt::Package *m_package = m_backend->package(app_name);
-            if(m_package == nullptr)
-                continue;
-            if(!m_package->isInstalled() || (m_package->state() & QApt::Package::Upgradeable)) //判断软件包是否已安装或者可升级
-            {
-                qDebug() << app_name;
-                checkNum++;
-                updateMutual->importantList.append(app_name);   //重要更新列表中添加appname
-                AppUpdateWid *appWidget = new AppUpdateWid(app_name, this);
-                connect(appWidget, &AppUpdateWid::cancel, this, &TabWid::slotCancelDownload);
-                connect(checkUpdateBtn, &QPushButton::clicked, appWidget, &AppUpdateWid::updateAllApp);
-                connect(appWidget,&AppUpdateWid::hideUpdateBtnSignal,this,&TabWid::hideUpdateBtnSlot);
-                connect(appWidget,&AppUpdateWid::changeUpdateAllSignal,this,&TabWid::changeUpdateAllSlot);
+            qDebug() << app_name;
+            updateMutual->importantList.append(app_name);   //重要更新列表中添加appname
+            AppUpdateWid *appWidget = new AppUpdateWid(app_name, this);
+            connect(appWidget, &AppUpdateWid::cancel, this, &TabWid::slotCancelDownload);
+            connect(this, &TabWid::updateAllSignal, appWidget, &AppUpdateWid::updateAllApp);
+            connect(appWidget,&AppUpdateWid::hideUpdateBtnSignal,this,&TabWid::hideUpdateBtnSlot);
+            connect(appWidget,&AppUpdateWid::changeUpdateAllSignal,this,&TabWid::changeUpdateAllSlot);
+            allUpdateLayout->addWidget(appWidget);
+            QCoreApplication::processEvents();   //逐个加载
+//            sleep(2);
 
-                AppMessage->addWidget(appWidget,0,Qt::AlignTop);
-            }
-            delete m_package;
-            m_package = NULL;
         }
-        AppMessage->addStretch();
-
+//        AppMessage->addStretch();
         checkUpdateBtn->setText("全部更新");
-        disconnect(checkUpdateBtn,&QPushButton::clicked,updateMutual,&UpdateDbus::startTray);
 
-        qDebug() << "num:" << checkNum;
-        if(checkNum == 0)
-        {
-            checkUpdateBtn->hide();
-            versionInformationLab->setText("您的系统已是最新！");
-        }
-        m_backend = NULL;
+        QDateTime nowtime = QDateTime::currentDateTime();
+        QString current_date = nowtime.toString("yyyy.MM.dd hh:mm:ss");
+        QSqlQuery query(QSqlDatabase::database("A"));
+        query.exec(QString("update display set item = '%1' where info = '%2'").arg(current_date).arg("上次检测时间"));
     }
     else
     {
         checkUpdateBtn->hide();
         versionInformationLab->setText("您的系统已是最新！");
+
+        QDateTime nowtime = QDateTime::currentDateTime();
+        QString current_date = nowtime.toString("yyyy.MM.dd hh:mm:ss");
+        QSqlQuery query(QSqlDatabase::database("A"));
+        query.exec(QString("update display set item = '%1' where info = '%2'").arg(current_date).arg("上次检测时间"));
     }
 }
 
@@ -153,28 +196,15 @@ void TabWid::getAllDisplayInformation()
     checkUpdateBtn->setText("开始检测");
 
 
-//    if(checkedstatues == "false")
-//    {
-//        isAutoCheckSBtn->setChecked(false);
-//        checkUpdateBtn->setText("开始检测");
-//    }
-//    else if (checkedstatues == "true")
-//    {
-
-////        connect(updateMutual,&UpdateDbus::updatelist,this,&TabWid::getAppUpdateMsg);
-//        isAutoCheckSBtn->setChecked(true);
-//        checkUpdateBtn->setText("全部更新");
-////        getAppUpdateMsg();]
-//        qDebug() << "调用。。。。";
-////        updateMutual->initTrayD_bus(true);
-//        qDebug() << "调用。。。fffff。";
-
-//    }
 
 }
 void TabWid::showHistoryWidget()
 {
-    historyLog = new m_updatelog();
+    if(historyLogIsCreate == false)
+    {
+        historyLog = new m_updatelog();
+        historyLogIsCreate = true;
+    }
     historyLog->updatesql();
     historyLog->show();
     qDebug()<<"ok";
@@ -184,8 +214,8 @@ void TabWid::checkUpdateBtnClicked()
 {
     if(checkUpdateBtn->text() == "开始检测")
     {
-        checkUpdateBtn->setText("正在检测...");
-
+        checkUpdateBtn->setText("正在更新源...");
+        updateSource->callDBusUpdateTemplate();
 //        QDateTime nowtime = QDateTime::currentDateTime();
 //        QString current_date = nowtime.toString("yyyy.MM.dd hh:mm:ss");
 //        QSqlQuery query(QSqlDatabase::database("A"));
@@ -195,8 +225,44 @@ void TabWid::checkUpdateBtnClicked()
     }
     else if(checkUpdateBtn->text() == "全部更新")
     {
-        checkUpdateBtn->setText("正在更新...");
-        checkUpdateBtn->setEnabled(false);
+        QMessageBox msgBox;
+        msgBox.setText(tr("是否进行备份还原？"));
+        msgBox.setInformativeText(tr("备份还原可以保存当前系统状态。"));
+    //    msgBox.setDetailedText(tr("Differences here..."));
+        msgBox.setStandardButtons(QMessageBox::Save
+                                  | QMessageBox::Discard
+                                  | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Save);
+        msgBox.setButtonText(QMessageBox::Save,"是，立即备份");
+        msgBox.setButtonText(QMessageBox::Discard,"我已备份");
+        msgBox.setButtonText(QMessageBox::Cancel,"否，我不备份");
+        int ret = msgBox.exec();
+
+        if(ret == QMessageBox::Save)
+        {
+            qDebug() << "now backup";
+            QProcess os(0);
+            QStringList args;
+            args.append("ukui-control-center");
+            args.append("--backup");
+            os.start("ukui-control-center --backup");
+        //    os.start("whereis ",args);
+            os.waitForFinished(); //等待完成
+        }
+        else if(ret == QMessageBox::Discard)
+        {
+            qDebug() << "no,i had!";
+            checkUpdateBtn->setText("正在更新...");
+            checkUpdateBtn->setEnabled(false);
+            emit updateAllSignal();
+        }
+        else if (ret == QMessageBox::Cancel)
+        {
+            qDebug() << "no,i dont!";
+            emit updateAllSignal();
+            checkUpdateBtn->setText("正在更新...");
+            checkUpdateBtn->setEnabled(false);
+        }
     }
 }
 
@@ -254,7 +320,7 @@ void TabWid::createUI()
     checkUpdateBtn->setText("检测更新");
     checkUpdateBtn->setFixedSize(120,36);
     connect(checkUpdateBtn,&QPushButton::clicked,this,&TabWid::checkUpdateBtnClicked);
-    connect(checkUpdateBtn,&QPushButton::clicked,updateMutual,&UpdateDbus::startTray);
+//    connect(checkUpdateBtn,&QPushButton::clicked,updateMutual,&UpdateDbus::startTray);
 
 
 
@@ -321,6 +387,7 @@ void TabWid::slotCancelDownload()
 
 void TabWid::slotGetImportant(QStringList args)
 {
+    qDebug() << "成功获得更新列表";
     QStringList itList = args;
     getAppUpdateMsg(itList);
 
@@ -328,7 +395,7 @@ void TabWid::slotGetImportant(QStringList args)
 
 void TabWid::hideUpdateBtnSlot()
 {
-    qDebug() << updateMutual->importantList;
+    qDebug() << "当前更新列表" << updateMutual->importantList;
     QDateTime nowtime = QDateTime::currentDateTime();
     QString current_date = nowtime.toString("yyyy.MM.dd hh:mm:ss");
     lastRefreshTime->setText("上次更新时间："+current_date);
@@ -348,6 +415,7 @@ void TabWid::changeUpdateAllSlot()
         checkUpdateBtn->setEnabled(true);
     }
 }
+
 
 //void TabWid::recieveUpgradList(QStringList args)
 //{

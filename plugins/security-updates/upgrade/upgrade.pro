@@ -52,6 +52,7 @@ SOURCES += \
     src/updatedbus.cpp \
     src/updatelog.cpp \
     src/widgetstyle.cpp \
+    src/updatesource.cpp \
     upgrade.cpp
 
 HEADERS += \
@@ -72,6 +73,7 @@ HEADERS += \
     src/updatelog.h \
     src/utils.h \
     src/widgetstyle.h \
+    src/updatesource.h \
     upgrade.h
 
 # Default rules for deployment.

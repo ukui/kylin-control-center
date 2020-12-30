@@ -74,8 +74,6 @@ public slots:
     // 键盘响应事件
     void keyPressEvent(QKeyEvent *event);
 
-    void getDBusService();
-
 
 
 private:

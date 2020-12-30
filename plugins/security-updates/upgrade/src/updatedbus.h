@@ -41,7 +41,7 @@ class UpdateDbus : public QObject
     Q_OBJECT
 public:
     static UpdateDbus *getInstance();
-
+    ~UpdateDbus();
     QDBusInterface *interface;  //dbus接口
 
     QDBusReply<QString> replyStr;   //string类型的返回值
@@ -50,18 +50,10 @@ public:
     QDBusReply<QStringList> replyStrList;
     QDBusReply<int> replyInt; //int类型的返回值
 
-    traybusthread *m_traybusthread;
+//    traybusthread *m_traybusthread;
     QDBusInterface *interface1;
     void ConnectSlots();  //托盘信号
 
-
-
-
-    // 关闭自动更新
-    bool autoStartClose();
-
-    //开启自动更新
-    bool autoStartOpen();
 
     //取消更新包
     bool cancel(QString pkgName);
@@ -108,6 +100,9 @@ public:
     //获得依赖包
     QStringList getDependsPkgs(QString appName);
 
+    //检查列表中的包是否可升级
+    QStringList checkInstallOrUpgrade(QStringList list);
+
 
     //下载pkg列表
     bool Install(QStringList pkgNames);
@@ -131,10 +126,7 @@ public:
     void modifyConf(QString path,QString group,QString key,QString value);
 
     //kill pid
-    void killPid();
-
-    //测试返回值
-    int testReturnValue(int arg);
+    bool cleanUpdateList();
 
     //初始化cache
     void init_cache();
@@ -193,7 +185,6 @@ public slots:
 
 private:
     explicit UpdateDbus(QObject *parent = nullptr);
-    ~UpdateDbus();
     static UpdateDbus *updateMutual;  //UpdateDbus类静态对象
 };
 

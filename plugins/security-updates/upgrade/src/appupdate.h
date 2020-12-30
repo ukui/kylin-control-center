@@ -29,6 +29,7 @@ public:
 private:
     AppMsg appMsg;
     UpdateDbus *m_updateMutual;
+    bool sqliteIsConnect = false;
 
 public slots:
     void getDependPackages(QString appname); //获取下载依赖、包名、大小

@@ -15,12 +15,17 @@
 #include "switchbutton.h"
 #include "logwindow.h"
 #include "m_updatelog.h"
+#include "updatesource.h"
+
+#define CRUCIAL_FILE_PATH "/var/lib/kylin-software-properties/template/crucial.list"
+#define IMPORTANT_FIEL_PATH "/var/lib/kylin-software-properties/template/important.list"
 
 class TabWid : public QWidget
 {
     Q_OBJECT
 public:
     explicit TabWid(QWidget *parent = nullptr);
+    ~TabWid();
     void createUI();  //自动更新关闭
     void tabUI2();  //自动更新开启
     void allComponents(); //更新页面里所有组件
@@ -65,21 +70,28 @@ public:
     QFrame *isAutoCheckWidget;
     QLabel *isAutoCheckedLab;
 
+    QWidget *allUpdateWid;
+    QVBoxLayout *allUpdateLayout;
+
 
     QPushButton *updateSourceSetting;
     int inumber = 0;
 //    LogWindow *logwindow;
     m_updatelog *historyLog;
+    bool historyLogIsCreate = false;
     UpdateDbus *updateMutual;
     void getAppUpdateMsg(QStringList arg);   //加载所有应用的具体更新信息
 
 //    QStringList importantList;
 
+    //源管理器Dbus对象
+    UpdateSource *updateSource;
 
 
 signals:
 //    void send_Signal();
 //    void parameterSignal(int i);
+    void updateAllSignal();
 public slots:
     void showHistoryWidget();
     void checkUpdateBtnClicked();  //检测更新、全部更新按钮
@@ -90,6 +102,12 @@ public slots:
 
     void hideUpdateBtnSlot();
     void changeUpdateAllSlot();
+
+    //调用源管理器相关
+    void slotUpdateTemplate(QString status);
+    void slotUpdateCache(QString status);
+    void slotUpdateCacheProgress(QString progress);
+
 private:
 };
 

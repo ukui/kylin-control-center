@@ -42,24 +42,20 @@ MainWindow::MainWindow(QString arg,QWidget *parent)
     // 初始化样式
     setWidgetStyle();
 
-    my_time =new QTimer;
-    my_time->start(100);
-//    connect(my_time,&QTimer::timeout,this,&MainWindow::getDBusService);
 
+//    qDebug()<<QDir::homePath();
 
-    qDebug()<<QDir::homePath();
-
-    QString fromDir = "/var/lib/kylin-software-properties/kylin-update-timer/";
-    QString toDir = QDir::homePath();
-    toDir += "/.config/kylin-update-manager/";
-    copyFolder(fromDir,toDir,true);
+//    QString fromDir = "/var/lib/kylin-software-properties/kylin-update-timer/";
+//    QString toDir = QDir::homePath();
+//    toDir += "/.config/kylin-update-manager/";
+//    copyFolder(fromDir,toDir,true);
 
 
 }
 
 MainWindow::~MainWindow()
 {
-
+//    qDebug() << "quit mainwindow";
 }
 
 // 初始化组件
@@ -163,14 +159,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void MainWindow::getDBusService()
-{
-
-//    qDebug() << "MainWindow" << UpdateDbus::updateMutual->checkIsInstalled("kylin-ipmsg");
-    my_time->stop();
-}
-
-
 bool MainWindow::copyFolder(const QString &fromDir, const QString &toDir, bool coverFileIfExist)
 {
     QDir sourceDir(fromDir);
@@ -210,6 +198,7 @@ bool MainWindow::copyFolder(const QString &fromDir, const QString &toDir, bool c
 }
 void MainWindow::readConf()
 {
+    /*
     QString toDir = QDir::homePath();
     toDir += "/.config/kylin-update-manager/kylin-update-manager.conf";
     mqsetting = new QSettings(toDir,QSettings::IniFormat);
@@ -219,9 +208,9 @@ void MainWindow::readConf()
     //开始组Generic
     mqsetting->beginGroup(QString::fromLocal8Bit("Generic"));
     //读取
-    qDebug()<<mqsetting->value("service").toString();
-    qDebug()<<mqsetting->value("prefix").toString();
-    qDebug()<<mqsetting->value("enable").toString();
+//    qDebug()<<mqsetting->value("service").toString();
+//    qDebug()<<mqsetting->value("prefix").toString();
+//    qDebug()<<mqsetting->value("enable").toString();
     //写入
 //    mqsetting->setValue("service","qwrewqr");
     //结束组
@@ -232,12 +221,12 @@ void MainWindow::readConf()
     //开始组T1
     mqsetting->beginGroup(QString::fromLocal8Bit("T1"));
     //读取
-    qDebug()<<mqsetting->value("offsettime").toString();
+//    qDebug()<<mqsetting->value("offsettime").toString();
     //写入
 //    mqsetting->setValue("offsettime","qwrewqr");
     //结束组
     mqsetting->endGroup();
 
-
+    */
 }
 

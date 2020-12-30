@@ -39,19 +39,11 @@ UpdateDbus::UpdateDbus(QObject *parent)
 //    connect(interface, SIGNAL(kum_apt_signal(QString, QVariantMap)), this, SLOT(getAptSignal(QString, QVariantMap)));
 
     init_cache();
-//    getInameAndCnameList();
+    cleanUpdateList();
 
-    m_traybusthread = new traybusthread();
-    QObject::connect(m_traybusthread,SIGNAL(result(QStringList)),this,SLOT(initTrayD_bus(QStringList)));
+//    m_traybusthread = new traybusthread();
+//    QObject::connect(m_traybusthread,SIGNAL(result(QStringList)),this,SLOT(initTrayD_bus(QStringList)));
 }
-
-UpdateDbus::~UpdateDbus()
-{
-
-      delete m_traybusthread;
-}
-
-
 
 void UpdateDbus::initTrayD_bus(QStringList arg)
 {
@@ -63,11 +55,8 @@ void UpdateDbus::initTrayD_bus(QStringList arg)
 
 void UpdateDbus::startTray()
 {
-    m_traybusthread->start();
-//    QDateTime nowtime = QDateTime::currentDateTime();
-//    QString current_date = nowtime.toString("yyyy.MM.dd hh:mm:ss");
-//    QSqlQuery query(QSqlDatabase::database("A"));
-//    query.exec(QString("update display set item = '%1' where info = '%2'").arg(current_date).arg("上次检测时间"));
+//    m_traybusthread->start();
+
 }
 
 bool UpdateDbus::cancel(QString pkgName)
@@ -85,36 +74,7 @@ bool UpdateDbus::cancel(QString pkgName)
     }
 }
 
-// 关闭自动更新
-bool UpdateDbus::autoStartClose()
-{
-    //调用关闭自动更新的dbus接口，保存了autostart_close函数的返回值  无参
-    replyBool = interface->call("autostart_close");
 
-    //判断返回值是否有效
-    if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed autoStartClose");
-    }
-}
-
-bool UpdateDbus::autoStartOpen()
-{
-    //调用关闭自动更新的dbus接口，保存了autostart_close函数的返回值  无参
-    replyBool = interface->call("autostart_open");
-
-    //判断返回值是否有效
-    if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed autoStartOpen");
-    }
-}
 
 // 取消更新应用
 void UpdateDbus::cancelDownloadApp(QString appName)
@@ -443,31 +403,20 @@ void UpdateDbus::modifyConf(QString path, QString group, QString key, QString va
     }
 }
 
-void UpdateDbus::killPid()
+bool UpdateDbus::cleanUpdateList()
 {
-    replyStr = interface->call("kill_pid");
+    replyBool = interface->call("clear_install_list");
     // replyStrreplyStr.value()作为返回值
-    if (replyStr.isValid()) {
-        qDebug() << replyStr.value();
-        return ;
+    if (replyBool.isValid()) {
+        qDebug() << replyBool.value();
+        return replyBool.value();
     }
     else{
-        qDebug() << QString("Call failed kill_pid");
+        qDebug() << QString("Call failed clear_install_list");
     }
 }
 
-int UpdateDbus::testReturnValue(int arg)
-{
-    replyInt = interface->call("test_return_value",arg);
-    // replyStrreplyStr.value()作为返回值
-    if (replyInt.isValid()) {
-        qDebug() << replyInt.value();
-        return replyInt.value();
-    }
-    else{
-        qDebug() << QString("Call failed test_return_value");
-    }
-}
+
 
 //初始化cache
 void UpdateDbus::init_cache()
@@ -487,26 +436,7 @@ void UpdateDbus::init_cache()
 
 bool UpdateDbus::checkIsInstalled(QString appName)
 {
-    QProcess os(0);
-    QStringList args;
-    args.append("-l");
-//    args.append("|");
-    args.append("grep");
-    args.append(appName);
-    os.start("dpkg", args);
-//    os.start("whereis ",args);
-    os.waitForFinished(); //等待完成
-//
-    QString result = QString::fromLocal8Bit(os.readAllStandardOutput());
-//    qDebug() << result;
-    if(result.indexOf(appName) == -1)
-    {
-//        qDebug()<<QString::fromLocal8Bit(os.readAllStandardError());
 
-        return false;
-    }
-
-    return true;
 }
 
 bool UpdateDbus::checkLoongson3A4000()
@@ -644,17 +574,23 @@ void UpdateDbus::getDesktopOrServer()
 
 QStringList UpdateDbus::getDependsPkgs(QString appName)
 {
-//    qDebug() << appName ;
-
     replyStrList = interface->call("get_depends_pkgs",appName);
-//    qDebug() << "程序执行" ;
-    // replyStrreplyStr.value()作为返回值
     if (replyStrList.isValid()) {
-//        qDebug() << replyStrList.value();
         return replyStrList.value();
     }
     else{
         qDebug() << QString("Call failed getDependsPkgs");
+    }
+}
+
+QStringList UpdateDbus::checkInstallOrUpgrade(QStringList list)
+{
+    replyStrList = interface->call("check_installed_or_upgrade",list);
+    if (replyStrList.isValid()) {
+        return replyStrList.value();
+    }
+    else{
+        qDebug() << QString("Call failed check_installed_or_upgrade");
     }
 }
 
@@ -698,4 +634,10 @@ void UpdateDbus::getAptSignal(QString arg, QMap<QString, QVariant> map)
 void UpdateDbus::slotCopyFinished(QString appName)
 {
     emit copyFinish(appName);
+}
+
+UpdateDbus::~UpdateDbus()
+{
+    qDebug() << "update quit";
+    cleanUpdateList();
 }
