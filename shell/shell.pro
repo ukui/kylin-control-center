@@ -117,4 +117,5 @@ DISTFILES += \
     ../data/installer-timezones.mo \
     ../data/org.ukui.control-center.panel.plugins.gschema.xml \
     ../data/org.ukui.control-center.personalise.gschema.xml \
-    ../data/org.ukui.control-center.wifi.switch.gschema.xml
+    ../data/org.ukui.control-center.wifi.switch.gschema.xml \
+    res/search.xml

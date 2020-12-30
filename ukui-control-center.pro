@@ -31,7 +31,11 @@ isEmpty(PREFIX) {
 qm_files.path = $${PREFIX}/share/ukui-control-center/shell/res/i18n/
 qm_files.files = shell/res/i18n/*.qm
 
-INSTALLS += qm_files
+search_file.path = $${PREFIX}/share/ukui-control-center/shell/res/
+search_file.files = shell/res/search.xml
+
+INSTALLS += qm_files \
+            search_file
 
 HEADERS += \
     shell/utils/xatom-helper.h
