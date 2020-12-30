@@ -158,5 +158,6 @@
         <file>i18n/en_US.ts</file>
         <file>i18n/bo.ts</file>
         <file>i18n/tr.ts</file>
+        <file>search.xml</file>
     </qresource>
 </RCC>
