@@ -66,8 +66,20 @@ void Utils::setCLIName(QCommandLineParser &parser) {
 
     //三权分立开启
 #ifdef WITHKYSEC
-    if (!kysec_is_disabled() && kysec_get_3adm_status() && (!getuid() || !geteuid())){
-        //时间和日期 | 用户账户 | 电源管理 |网络连接 |网络代理|更新
+    if (!kysec_is_disabled() && kysec_get_3adm_status()){
+        if (!getuid() || !geteuid()){
+            //时间和日期 | 用户账户 | 电源管理 |网络连接 |网络代理|更新
+            parser.addOption(powerRoleOption);
+            parser.addOption(netconnectRoleOption);
+            parser.addOption(vpnRoleOption);
+            parser.addOption(proxyRoleOption);
+            parser.addOption(userinfoRoleOption);
+            parser.addOption(datetimeRoleOption);
+            parser.addOption(updateRoleOption);
+            parser.addOption(upgradeRoleOption);
+        }
+
+    } else {
         parser.addOption(powerRoleOption);
         parser.addOption(netconnectRoleOption);
         parser.addOption(vpnRoleOption);
@@ -76,7 +88,6 @@ void Utils::setCLIName(QCommandLineParser &parser) {
         parser.addOption(datetimeRoleOption);
         parser.addOption(updateRoleOption);
         parser.addOption(upgradeRoleOption);
-
     }
 
 #else
