@@ -1107,11 +1107,12 @@ void Widget::setNightMode(const bool nightMode) {
         mNightConfig["Active"] = false;
     } else {
         mNightConfig["Active"] = true;
+        mNightConfig["Mode"] = 2;
 
         if (ui->sunradioBtn->isChecked()) {
-            mNightConfig["Mode"] = 0;
+            mNightConfig["EveningBeginFixed"] = "17:55:00";
+            mNightConfig["MorningBeginFixed"] = "05:55:04";
         } else if (ui->customradioBtn->isChecked()) {
-            mNightConfig["Mode"] = 2;
             mNightConfig["EveningBeginFixed"] = ui->opHourCom->currentText() + ":" + ui->opMinCom->currentText() + ":00";
             mNightConfig["MorningBeginFixed"] = ui->clHourCom->currentText() + ":" + ui->clMinCom->currentText() + ":00";
         }
