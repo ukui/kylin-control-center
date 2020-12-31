@@ -42,7 +42,7 @@
 #include "svghandler.h"
 #include "blueeffect.h"
 
-#define PATH "/.cache/kylinssoclient/All.conf"
+#define PATH "/.cache/kylinId/All.conf"
 
 class MainWidget : public QWidget
 {

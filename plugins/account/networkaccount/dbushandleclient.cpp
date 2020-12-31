@@ -5,36 +5,6 @@ DbusHandleClient::DbusHandleClient(QObject *parent) : QObject(parent)
 
 }
 
-/* DBUS接口之注册 */
-int DbusHandleClient::registered(QString username, QString pwd, QString phonenumb, QString mcode,QString uuid) {
-    int re = -1;
-    //构造一个method_call消息，服务名称为：org.kylinssoclient.dbus，对象路径为：/org/kylinssoclient/path
-    //接口名称为org.freedesktop.kylinssoclient.interface，method名称为check_login
-    QDBusMessage message = QDBusMessage::createMethodCall("org.kylinssoclient.dbus",
-                                                          "/org/kylinssoclient/path",
-                                                          "org.freedesktop.kylinssoclient.interface",
-                                                          "registered");
-    username.trimmed();
-    pwd.trimmed();
-    phonenumb.trimmed();
-    message<<username<<pwd<<phonenumb<<mcode<<uuid;
-    //发送消息
-    QDBusMessage response = QDBusConnection::sessionBus().call(message);
-    //判断method是否被正确返回
-    if (response.type() == QDBusMessage::ReplyMessage)
-    {
-        //从返回参数获取返回值
-        QString value = response.arguments().takeFirst().toString();
-        re = value.toInt();
-    }
-    else
-    {
-
-    }
-    emit finished_ret_reg(re);
-    return re;
-}
-
 /* DBUS接口之登录 */
 int DbusHandleClient::login(QString username, QString pwd,QString uuid) {
     int re = 104;
@@ -90,7 +60,6 @@ int DbusHandleClient::get_mcode_by_phone(QString phonenumb,QString uuid) {
         //qDebug() << "value method called failed!";
     }
     emit finished_ret_code_log(re);
-    emit finished_ret_code_reg(re);
     emit finished_ret_code_bind(re);
     return re;
 }
@@ -203,6 +172,29 @@ int DbusHandleClient::logout() {
         //qDebug() << "value method called failed!";
     }
     emit finished_logout(re);
+    return re;
+}
+
+int DbusHandleClient::getMCodeImage(QString uuid) {
+    int re = -1;
+    QDBusMessage message = QDBusMessage::createMethodCall("org.kylinssoclient.dbus",
+                                                          "/org/kylinssoclient/path",
+                                                          "org.freedesktop.kylinssoclient.interface",
+                                                          "getMCodeImage");
+    //发送消息
+    QDBusMessage response = QDBusConnection::sessionBus().call(message);
+    //判断method是否被正确返回
+    if (response.type() == QDBusMessage::ReplyMessage)
+    {
+        //从返回参数获取返回值
+        QString value = response.arguments().takeFirst().toString();
+        re = value.toInt();
+    }
+    else
+    {
+        //qDebug() << "value method called failed!";
+    }
+    emit finished_image(re);
     return re;
 }
 
@@ -319,10 +311,12 @@ int DbusHandleClient::manual_sync() {
     int re = 401;
     //构造一个method_call消息，服务名称为：org.kylinssoclient.dbus，对象路径为：/org/kylinssoclient/path
     //接口名称为org.freedesktop.kylinssoclient.interface，method名称为check_login
+    //qDebug() <<"ttttt";
     QDBusMessage message = QDBusMessage::createMethodCall("org.kylinssoclient.dbus",
                                                           "/org/kylinssoclient/path",
                                                           "org.freedesktop.kylinssoclient.interface",
                                                           "manual_sync");
+    //qDebug() <<"ttttt";
     //发送消息
     QDBusMessage response = QDBusConnection::sessionBus().call(message);
     //判断method是否被正确返回
@@ -336,6 +330,7 @@ int DbusHandleClient::manual_sync() {
     {
         //qDebug() << "value method called failed!";
     }
+    //qDebug() << "ttttt";
     emit finished_man(re);
     return re;
 }

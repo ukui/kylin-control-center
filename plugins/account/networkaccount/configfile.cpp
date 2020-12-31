@@ -33,7 +33,7 @@ ConfigFile::ConfigFile(QString qstrfilename)
 
         QByteArrayList releaseList = proc.readAll().split('\t');
         QByteArray ar = releaseList.at(1);
-        QString path = QDir::homePath()  + "/.cache/kylinssoclient/All-" + ar.replace("\n","") + ".conf";
+        QString path = QDir::homePath()  + "/.cache/kylinId/All-" + ar.replace("\n","") + ".conf";
         m_qstrFileName = path;
     }
     else
