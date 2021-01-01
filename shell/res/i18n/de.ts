@@ -6,13 +6,13 @@
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="52"/>
         <source>System Summary</source>
-        <translation type="unfinished"></translation>
+        <translation>Systemzusammenfassung</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="140"/>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="256"/>
         <source>version</source>
-        <translation type="unfinished"></translation>
+        <translation>Version</translation>
         <extra-contents_path>/about/version</extra-contents_path>
     </message>
     <message>
@@ -29,21 +29,21 @@
         <location filename="../../../plugins/messages-task/about/about.ui" line="271"/>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="258"/>
         <source>Kernel</source>
-        <translation type="unfinished"></translation>
+        <translation>Kernel</translation>
         <extra-contents_path>/about/Kernel</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="310"/>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="260"/>
         <source>CPU</source>
-        <translation type="unfinished"></translation>
+        <translation>Prozessor</translation>
         <extra-contents_path>/about/CPU</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="358"/>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="262"/>
         <source>Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Arbeitsspeicher</translation>
         <extra-contents_path>/about/Memory</extra-contents_path>
     </message>
     <message>
@@ -57,12 +57,12 @@
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="460"/>
         <source>Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Desktop</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="490"/>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>Nutzer</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="536"/>
@@ -77,7 +77,7 @@
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="602"/>
         <source>Active</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiv</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="632"/>
@@ -87,12 +87,12 @@
     <message>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="37"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Systeminformationen</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="147"/>
         <source> available</source>
-        <translation type="unfinished"></translation>
+        <translation> verfügbar</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="220"/>
@@ -102,7 +102,7 @@
     <message>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="222"/>
         <source>Activated</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiviert</translation>
     </message>
 </context>
 <context>
@@ -110,12 +110,12 @@
     <message>
         <location filename="../../../plugins/system/defaultapp/addappdialog.ui" line="74"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/defaultapp/addappdialog.ui" line="81"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Abbrechen</translation>
     </message>
 </context>
 <context>
@@ -128,13 +128,13 @@
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="150"/>
         <source>Add autoboot program</source>
-        <translation type="unfinished"></translation>
+        <translation>Autostart Programm hinzufügen</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="196"/>
         <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="104"/>
         <source>Program name</source>
-        <translation type="unfinished"></translation>
+        <translation>Programmname</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="247"/>
@@ -145,39 +145,39 @@
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="285"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffnen</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="317"/>
         <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="106"/>
         <source>Program comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Programmkommentar</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="395"/>
         <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="145"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="420"/>
         <source>Certain</source>
-        <translation type="unfinished"></translation>
+        <translation>Sicher</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="212"/>
         <source>desktop file not exist</source>
-        <translation type="unfinished"></translation>
+        <translation>Desktop Datei existiert nicht</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="143"/>
         <source>select autoboot desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Autostart Desktop auswählen</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="144"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Auswählen</translation>
     </message>
 </context>
 <context>
@@ -185,7 +185,7 @@
     <message>
         <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="32"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialog</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="104"/>
@@ -195,12 +195,12 @@
     <message>
         <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="155"/>
         <source>Allow notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigung erlauben</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="205"/>
         <source>Number of notification centers</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzahl der Benachrichtigungszentren</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="279"/>
