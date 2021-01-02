@@ -102,17 +102,10 @@ void DefaultApp::initUI() {
                 mailComBoBox_changed_cb(index);
             }
         } else if(type == IMAGETYPE) {
-            QString currentimage(getDefaultAppId(IMAGETYPE));
-            int imageindex;
-            for(int i = 0; i < ui->imageComBoBox->count(); i++) {
-                if(currentimage == ui->imageComBoBox->itemData(i)) {
-                    imageindex = i;
-                }
-            }
             ui->imageComBoBox->addItem(appicon, appname, single);
             if(index != -1) {
-                ui->imageComBoBox->setCurrentIndex(imageindex);
-                imageComBoBox_changed_cb(imageindex);
+                ui->imageComBoBox->setCurrentIndex(index);
+                imageComBoBox_changed_cb(index);
             }
         } else if(type == AUDIOTYPE) {
             ui->audioComBoBox->addItem(appicon, appname, single);
@@ -155,7 +148,6 @@ void DefaultApp::initUI() {
                 }
                 if ("firefox.desktop" == single) {
                     mDefaultBrowser = appname;
-//                    browserindex = i;
                 }
                 emit appInitDone(appicon,appname,single,browserindex,BROWSERTYPE);
                 browserindex = -1;
@@ -183,7 +175,6 @@ void DefaultApp::initUI() {
                 }
                 if ("claws-mail.desktop" == single) {
                     mDefaultMail = appname;
-//                    mailindex = i;
                 }
                 emit appInitDone(appicon,appname,single,mailindex,MAILTYPE);
                 mailindex = -1;
@@ -212,10 +203,9 @@ void DefaultApp::initUI() {
                 }
                 if ("eom.desktop" == single) {
                     mDefaultPic = appname;
-                } else {
-                    mDefaultPic = currentimage;
                 }
                 emit appInitDone(appicon,appname,single,imageindex,IMAGETYPE);
+                imageindex = -1;
                 free(imagelist[i].appid);
             }
             free(imagelist);
@@ -240,7 +230,6 @@ void DefaultApp::initUI() {
                 }
                 if ("kylin-video.desktop" == single) {
                     mDefaultAdudio = appname;
-//                    audioindex = i;
                 }
                 emit appInitDone(appicon,appname,single,audioindex,AUDIOTYPE);
                 audioindex = -1;
@@ -268,7 +257,6 @@ void DefaultApp::initUI() {
                 }
                 if ("kylin-video.desktop" == single) {
                     mDefaultVideo = appname;
-//                    videoindex = i;
                 }
                 emit appInitDone(appicon,appname,single,videoindex,VIDEOTYPE);
                 videoindex = -1;
@@ -296,7 +284,6 @@ void DefaultApp::initUI() {
                 }
                 if ("pluma.desktop" == single) {
                     mDefaultText = appname;
-//                    textindex = i;
                 }
                 emit appInitDone(appicon,appname,single,textindex,TEXTTYPE);
                 textindex = -1;
