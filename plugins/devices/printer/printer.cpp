@@ -64,9 +64,7 @@ QWidget *Printer::get_plugin_ui() {
         ui->listWidget->setFocusPolicy(Qt::NoFocus);
         ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);
 
-        pTimer = new QTimer(this);
-        pTimer->setInterval(1000);
-        connect(pTimer, SIGNAL(timeout()), this, SLOT(refreshPrinterDev()));
+        refreshPrinterDev();
 
         initComponent();
     }
@@ -84,11 +82,13 @@ const QString Printer::name() const {
 
 void Printer::initComponent(){
 
-    addWgt = new HoverWidget("", pluginWidget);
-    addWgt->setObjectName("addwgt");
-    addWgt->setMinimumSize(QSize(580, 50));
-    addWgt->setMaximumSize(QSize(960, 50));
-    addWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
+    mAddWgt = new HoverWidget("", pluginWidget);
+    mAddWgt->setObjectName("addwgt");
+    mAddWgt->setMinimumSize(QSize(580, 50));
+    mAddWgt->setMaximumSize(QSize(960, 50));
+    mAddWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
+
+    ui->listWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
 
     QHBoxLayout *addLyt = new QHBoxLayout;
 
@@ -99,10 +99,10 @@ void Printer::initComponent(){
     addLyt->addWidget(iconLabel);
     addLyt->addWidget(textLabel);
     addLyt->addStretch();
-    addWgt->setLayout(addLyt);
+    mAddWgt->setLayout(addLyt);
 
     // 悬浮改变Widget状态
-    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname) {
+    connect(mAddWgt, &HoverWidget::enterWidget, this, [=](QString mname) {
         Q_UNUSED(mname)
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
         iconLabel->setPixmap(pixgray);
@@ -110,20 +110,19 @@ void Printer::initComponent(){
 
     });
     // 还原状态
-    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname) {
+    connect(mAddWgt, &HoverWidget::leaveWidget, this, [=](QString mname) {
         Q_UNUSED(mname)
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(windowText);");
     });
 
-    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname) {
+    connect(mAddWgt, &HoverWidget::widgetClicked, this, [=](QString mname) {
         Q_UNUSED(mname)
         runExternalApp();
     });
-    ui->addLyt->addWidget(addWgt);
+    ui->addLyt->addWidget(mAddWgt);
 
-    pTimer->start();
 }
 
 void Printer::refreshPrinterDev(){
@@ -133,11 +132,19 @@ void Printer::refreshPrinterDev(){
     QStringList printer = QPrinterInfo::availablePrinterNames();
 
     for (int num = 0; num < printer.count(); num++) {
-        QIcon icon("://img/plugins/printer/printer.png");
-//        icon.actualSize()
-        QListWidgetItem * item = new QListWidgetItem(icon, printer.at(num), ui->listWidget);
-        item->setSizeHint(QSize(ui->listWidget->width(), 40));
-        ui->listWidget->addItem(item);
+
+        HoverBtn * printerItem = new HoverBtn(printer.at(num), pluginWidget);
+        printerItem->mPitLabel->setText(printer.at(num));
+        printerItem->mAbtBtn->setText(tr("Attributes"));
+        QIcon printerIcon = QIcon::fromTheme("printer");
+        printerItem->mPitIcon->setPixmap(printerIcon.pixmap(printerIcon.actualSize(QSize(24, 24))));
+
+        connect(printerItem->mAbtBtn, &QPushButton::clicked, this, [=]{
+            runExternalApp();
+        });
+        QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
+        item->setSizeHint(QSize(QSizePolicy::Expanding, 50));
+        ui->listWidget->setItemWidget(item, printerItem);
     }
 }
 

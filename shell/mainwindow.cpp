@@ -34,7 +34,6 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QProcess>
-#include <libmatemixer/matemixer.h>
 #include <QDebug>
 #include <QMessageBox>
 #include <QGSettings>
@@ -70,8 +69,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_searchWidget(nullptr)
 {
-    // 初始化mixer
-    mate_mixer_init();
     // 设置初始大小
     this->setMinimumSize(895, 600);
 
