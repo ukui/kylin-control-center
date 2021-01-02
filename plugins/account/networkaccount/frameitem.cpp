@@ -109,22 +109,22 @@ void FrameItem::set_change(const int &status,const QString &code) {
         m_cTimer->stop();
         bIsStart = false;
         if(code == "Failed!") {
-            m_errorStatusLabel->setTipText(tr("Sync failed, please login out to retry!"));
+            m_errorStatusLabel->setTipText(tr("Sync failed,please relogin!"));
         }
         if(code == "Change conf file failed!") {
-            m_errorStatusLabel->setTipText(tr("Change configuration file failed, please login out to retry!"));
+            m_errorStatusLabel->setTipText(tr("Change configuration file failed,please relogin!"));
         }
         if(code == "Config file not exist!") {
-            m_errorStatusLabel->setTipText(tr("Configuration file not exist, please login out to retry!"));
+            m_errorStatusLabel->setTipText(tr("Configuration file not exist,please relogin!"));
         }
         if(code == "Cloud verifyed file download failed!") {
-            m_errorStatusLabel->setTipText(tr("Cloud verifyed file download failed, please login out to retry!"));
+            m_errorStatusLabel->setTipText(tr("Cloud verifyed file download failed,please relogin!"));
         }
         if(code == "OSS access failed!") {
-            m_errorStatusLabel->setTipText(tr("OSS access failed, please login out to retry!"));
+            m_errorStatusLabel->setTipText(tr("OSS access failed,please relogin!"));
         }
         else if(code != "Upload" && code != "Download") {
-            m_errorStatusLabel->setTipText(tr("Sync failed, please retry or login out to get a better experience!"));
+            m_errorStatusLabel->setTipText(tr("Sync failed,please relogin!"));
         }
         m_stackedWidget->setCurrentWidget(m_errorStatusLabel);
     }

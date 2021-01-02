@@ -27,6 +27,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     thread  = new QThread();            //为创建的客户端做异步处理
     m_dbusClient->moveToThread(thread);
     m_szUuid = QUuid::createUuid().toString();
+    m_szConfPath = ConfigFile().GetPath();
     //m_configFile = new ConfigFile();
     connect(this,SIGNAL(dooss(QString)),m_dbusClient,SLOT(init_oss(QString)));
     connect(this,SIGNAL(docheck()),m_dbusClient,SLOT(check_login()));
@@ -43,7 +44,6 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     connect(m_dbusClient,SIGNAL(finished_change(int)),this,SLOT(setret_change(int)));
     connect(m_dbusClient,SIGNAL(finished_logout(int)),this,SLOT(setret_logout(int)));
     connect(thread,&QThread::finished,thread,&QObject::deleteLater);
-
     thread->start();    //线程开始
     m_mainWidget = new QStackedWidget(this);
     m_mainWidget->setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
@@ -69,7 +69,7 @@ void MainWidget::setname(QString n) {
         //setshow(m_mainWidget);
         m_bTokenValid = true;              //开启登录状态
         m_autoSyn->set_change(0,"0");
-
+        //dooss(m_szUuid);
         for(int i = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_change(0,"0");
         }
@@ -117,8 +117,6 @@ void MainWidget::setret_conf(int ret) {
 
 void MainWidget::setret_man(int ret) {
     if(ret == 0) {
-        //emit doconf();
-        //qDebug()<<"1111 manul";
     }
 }
 
@@ -131,9 +129,9 @@ void MainWidget::setret_check(QString ret) {
     } else if(!(ret == "" || ret =="201" || ret == "203" || ret == "401" ) &&!m_bTokenValid){
         m_bTokenValid = true;
         m_szCode = ret;
+        //dooss(m_szUuid);
         m_infoTab->setText(tr("Your account：%1").arg(ret));
         m_mainWidget->setCurrentWidget(m_widgetContainer);
-
         //setshow(m_mainWidget);
 
 
@@ -145,13 +143,14 @@ void MainWidget::setret_check(QString ret) {
         m_mainWidget->setCurrentWidget(m_nullWidget);
        // setshow(m_mainWidget);
     } else if(!(ret == "" || ret =="201" || ret == "203" || ret == "401" ) && m_bTokenValid){
+        dooss(m_szUuid);
         m_infoTab->setText(tr("Your account：%1").arg(ret));
         m_szCode = ret;
         m_mainWidget->setCurrentWidget(m_widgetContainer);
        // setshow(m_mainWidget);
         QFile all_conf_file(ConfigFile(m_szConfPath).GetPath());
         if(all_conf_file.exists() == false) {
-          //  doconf();
+            //doconf();
         } else {
             handle_conf();
         }
@@ -177,7 +176,6 @@ void MainWidget::setret_change(int ret) {
 /* 初始化GUI */
 void MainWidget::init_gui() {
     //Allocator
-    m_szConfPath = ConfigFile().GetPath(); //All.conf文件地址
     m_vboxLayout = new QVBoxLayout;//整体布局
     m_infoTabWidget = new QWidget(this);//用户信息窗口
     m_widgetContainer = new QWidget(this);//业务逻辑窗口，包括用户信息以及同步
@@ -375,9 +373,8 @@ void MainWidget::init_gui() {
     m_exitCloud_btn->setFocusPolicy(Qt::NoFocus);
     QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/edit.svg");
     m_openEditDialog_btn->setIcon(pixmap);
-
-
     QtConcurrent::run([=] () {
+
         for(int btncnt = 0;btncnt < m_itemList->get_list().size();btncnt ++) {
             connect(m_itemList->get_item(btncnt)->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_switch_button(int,int)));
         }
@@ -444,8 +441,10 @@ void MainWidget::init_gui() {
 
     connect(this,&MainWidget::closedialog,[this] () {
           m_mainDialog->on_close();
-          QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
+          // qDebug() << "scscacsacsac============ascas";
+          //QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
           emit doman();
+          // qDebug() << "scscacsacsacsssssssssssssssascas";
 
     });
 
@@ -459,23 +458,25 @@ void MainWidget::init_gui() {
 
     connect(m_autoSyn->get_swbtn(),&SwitchButton::status,[=] (int on,int id) {
        if(on == 1) {
-
            m_stackedWidget->setCurrentWidget(m_itemList);
            m_keyInfoList.clear();
            __once__ = false;
 
            m_autoSyn->set_change(0,"0");
+           //qDebug() <<"ssssssssssssssssssssssssssssssssssss";
            for(int i  = 0;i < m_szItemlist.size();i ++) {
+              // qDebug() << m_itemList->size();
                if(m_itemList->get_item(i)->get_swbtn()->get_swichbutton_val() == 1) {
                    m_itemList->get_item(i)->set_change(0,"0");
                }
            }
+           //qDebug() <<"ssssssssssssssssssssssssssssssssssss";
            QFile file(ConfigFile(m_szConfPath).GetPath());
-
+            //qDebug() <<"ssssssssssssssssssssssssssssssssssss";
            if(file.exists() == false) {
                // emit doconf();
            }  else {
-               QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
+               //QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
                emit doman();
            }
 
@@ -491,6 +492,7 @@ void MainWidget::init_gui() {
     m_widgetContainer->adjustSize();
     m_mainWidget->adjustSize();
     adjustSize();
+   // qDebug() <<"ssssssssssssssssssssssssssssssssssss";
 }
 
 /* 打开登录框处理事件 */
@@ -534,6 +536,7 @@ void MainWidget::on_login() {
         }
     });
     m_mainDialog->exec();
+   // qDebug() << "scscacsacsacascas";
 }
 
 /* 登录过程处理事件 */
@@ -574,8 +577,7 @@ void MainWidget::finished_load(int ret, QString uuid) {
     if(ret == 301 || ret == 401 || ret == 201) {
         if(m_mainWidget->currentWidget() != m_nullWidget) {
             showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry for login!"));
-            m_exitCode->setText(tr("Your account is sign on on other device already!"));
-            on_login_out();
+            // m_exitCode->setText(tr("Please check your connection!"));
             return ;
         }
     }
@@ -835,7 +837,7 @@ void MainWidget::push_over() {
 }
 
 void MainWidget::get_key_info(QString info) {
-    //qDebug() << info;
+    qDebug() << info;
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
@@ -926,7 +928,7 @@ void MainWidget::showDesktopNotify(const QString &message)
 /* 析构函数 */
 MainWidget::~MainWidget() {
 
-    m_fsWatcher.removePath(QDir::homePath() + "/.cache/kylinssoclient/");
+    m_fsWatcher.removePath(QDir::homePath() + "/.cache/kylinId/");
     delete m_itemList;
     delete m_dbusClient;
     delete m_welcomeImage;
