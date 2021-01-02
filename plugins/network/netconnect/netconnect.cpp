@@ -35,7 +35,7 @@
 #define CONTROL_CENTER_WIFI "org.ukui.control-center.wifi.switch"
 
 bool sortByVal(const QPair<QString, int> &l, const QPair<QString, int> &r) {
-    return (l.second > r.second);
+    return (l.second < r.second);
 }
 
 NetConnect::NetConnect() : m_wifiList(new Wifi), mFirstLoad(true)
@@ -121,8 +121,6 @@ void NetConnect::initSearchText() {
 }
 
 void NetConnect::initComponent(){
-
-//    ui->RefreshBtn->hide();
 
     //把判断列表是否已刷新的bool值初始化为true
     this->is_refreshed = true;
@@ -324,8 +322,6 @@ void NetConnect::rebuildAvailComponent(QString iconPath, QString netName){
     devFrame->setMinimumHeight(50);
     devFrame->setMaximumHeight(50);
 
-//        devFrame->setFixedHeight(50);
-//    devFrame->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
     QHBoxLayout * devHorLayout = new QHBoxLayout(devFrame);
     devHorLayout->setSpacing(8);
     devHorLayout->setContentsMargins(16, 0, 0, 0);
@@ -529,8 +525,6 @@ bool NetConnect::getSwitchStatus(QString key){
     return res;
 }
 
-
-
 bool NetConnect::getInitStatus()
 {
 
@@ -541,7 +535,7 @@ bool NetConnect::getInitStatus()
     //获取当前wifi是否连接
     QDBusReply<QVariant> m_result = interface.call("Get", "org.freedesktop.NetworkManager", "WirelessEnabled");
 
-    if (m_result.isValid()){
+    if (m_result.isValid()) {
         bool status = m_result.value().toBool();
         return status;
     } else {
