@@ -441,10 +441,10 @@ void MainWidget::init_gui() {
 
     connect(this,&MainWidget::closedialog,[this] () {
           m_mainDialog->on_close();
-          //qDebug() << "scscacsacsac============ascas";
+          // qDebug() << "scscacsacsac============ascas";
           //QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
           emit doman();
-          //qDebug() << "scscacsacsacsssssssssssssssascas";
+          // qDebug() << "scscacsacsacsssssssssssssssascas";
 
     });
 
@@ -492,7 +492,7 @@ void MainWidget::init_gui() {
     m_widgetContainer->adjustSize();
     m_mainWidget->adjustSize();
     adjustSize();
-    //qDebug() <<"ssssssssssssssssssssssssssssssssssss";
+   // qDebug() <<"ssssssssssssssssssssssssssssssssssss";
 }
 
 /* 打开登录框处理事件 */
@@ -536,7 +536,7 @@ void MainWidget::on_login() {
         }
     });
     m_mainDialog->exec();
-    //qDebug() << "scscacsacsacascas";
+   // qDebug() << "scscacsacsacascas";
 }
 
 /* 登录过程处理事件 */
@@ -577,8 +577,7 @@ void MainWidget::finished_load(int ret, QString uuid) {
     if(ret == 301 || ret == 401 || ret == 201) {
         if(m_mainWidget->currentWidget() != m_nullWidget) {
             showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry for login!"));
-            m_exitCode->setText(tr("Your account is sign on on other device already!"));
-            on_login_out();
+            // m_exitCode->setText(tr("Please check your connection!"));
             return ;
         }
     }

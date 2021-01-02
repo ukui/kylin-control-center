@@ -1303,17 +1303,6 @@ void MainDialog::on_close() {
 }
 
 void MainDialog::closedialog() {
-    m_forgetpassSendBtn->setEnabled(true);
-    m_forgetpassSendBtn->setText(tr("Send"));
-    m_baseWidget->setEnabled(true);
-    m_blueEffect->stop();
-    m_bAutoLogin = false;
-    set_staus(true);
-    m_submitBtn->setText(tr("Sign in"));
-    m_loginDialog->get_mcode_widget()->set_change(1);
-
-    back_login_btn();
-    set_clear();
     close();
 
 }
