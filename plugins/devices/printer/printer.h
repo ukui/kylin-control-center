@@ -28,6 +28,7 @@
 #include "shell/interface.h"
 #include "HoverWidget/hoverwidget.h"
 #include "ImageUtil/imageutil.h"
+#include "HoverBtn/hoverbtn.h"
 
 namespace Ui {
 class Printer;
@@ -58,8 +59,7 @@ private:
     QString pluginName;
     int pluginType;
     QWidget * pluginWidget;
-    HoverWidget * addWgt;
-    QTimer * pTimer;
+    HoverWidget * mAddWgt;
 
     bool mFirstLoad;
 
