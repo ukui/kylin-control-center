@@ -209,25 +209,24 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             }
         }
     }
-    if (watched==m_searchWidget) {
-        if (event->type()==QEvent::FocusIn) {
+    if (watched == m_searchWidget) {
+        if (event->type() == QEvent::FocusIn) {
             if (m_searchWidget->text().isEmpty()) {
                 m_animation->stop();
                 m_animation->setStartValue(QRect((m_searchWidget->width()-(m_queryIcon->width()+m_queryText->width()+10))/2,0,
-                                                 m_queryIcon->width()+m_queryText->width()+30,(m_searchWidget->height()+36)/2));
-                m_animation->setEndValue(QRect(0,0,
-                                               m_queryIcon->width()+5,(m_searchWidget->height()+36)/2));
+                                                 m_queryIcon->width()+m_queryText->width()+30,(m_searchWidget->height()+32)/2));
+                m_animation->setEndValue(QRect(0, 0, m_queryIcon->width() + 5,(m_searchWidget->height()+32)/2));
                 m_animation->setEasingCurve(QEasingCurve::OutQuad);
                 m_animation->start();
-                m_searchWidget->setTextMargins(30,1,0,1);
+                m_searchWidget->setTextMargins(30, 1, 0, 1);
             }
-            m_isSearching=true;
-        } else if(event->type()==QEvent::FocusOut) {
+            m_isSearching = true;
+        } else if (event->type() == QEvent::FocusOut) {
             m_searchKeyWords.clear();
             if (m_searchWidget->text().isEmpty()) {
                 if (m_isSearching) {
                     m_queryText->adjustSize();
-                    m_animation->setStartValue(QRect(0,0,
+                    m_animation->setStartValue(QRect(0, 0,
                                                      m_queryIcon->width()+5,(m_searchWidget->height()+36)/2));
                     m_animation->setEndValue(QRect((m_searchWidget->width() - (m_queryIcon->width()+m_queryText->width()+10))/2,0,
                                                    m_queryIcon->width()+m_queryText->width()+30,(m_searchWidget->height()+36)/2));
@@ -291,7 +290,6 @@ void MainWindow::initUI() {
         close();
     });
 
-    //    ui->leftsidebarWidget->setVisible(ui->stackedWidget->currentIndex());
     connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, [=](int index){
         //左侧边栏显示/不显示
         ui->leftsidebarWidget->setVisible(index);
@@ -341,13 +339,13 @@ void MainWindow::initUI() {
 
 void MainWindow::initTileBar() {
 
-    ui->titleLayout->setContentsMargins(4, 4, 4, 0);
+    ui->titleLayout->setContentsMargins(8, 4, 4, 0);
     ui->titleLayout->setSpacing(0);
     m_searchWidget = new SearchWidget(this);
     m_searchWidget->setFocusPolicy(Qt::ClickFocus);
     m_searchWidget->installEventFilter(this);
 
-    m_queryWid=new QWidget;
+    m_queryWid = new QWidget;
     m_queryWid->setParent(m_searchWidget);
     m_queryWid->setFocusPolicy(Qt::NoFocus);
 
@@ -357,11 +355,9 @@ void MainWindow::initTileBar() {
     queryWidLayout->setSpacing(0);
     m_queryWid->setLayout(queryWidLayout);
 
-    QPixmap pixmap = ImageUtil::loadSvg(QString("://img/dropArrow/search.svg"),"gray");
+    QIcon searchIcon = QIcon::fromTheme("edit-find-symbolic");
     m_queryIcon = new QLabel(this);
-    m_queryIcon->setStyleSheet("background:transparent");
-    m_queryIcon->setFixedSize(pixmap.size());
-    m_queryIcon->setPixmap(pixmap);
+    m_queryIcon->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(16, 16))));
 
     m_queryText = new QLabel(this);
     m_queryText->setText(tr("Search"));
@@ -389,18 +385,15 @@ void MainWindow::initTileBar() {
     minBtn->setFixedSize(30, 30);
     maxBtn->setFixedSize(30, 30);
     closeBtn->setFixedSize(30, 30);
-    mTitleIcon->setFixedSize(30, 30);
+    mTitleIcon->setFixedSize(24, 24);
 
     QIcon titleIcon = QIcon::fromTheme("ukui-control-center");
     mTitleIcon->setPixmap(titleIcon.pixmap(titleIcon.actualSize(QSize(24, 24))));
 
-    titleLabel->setFixedSize(30, 30);
     titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
-    m_searchWidget->setMinimumWidth(350);
-    m_searchWidget->setMinimumHeight(35);
-    m_searchWidget->setMaximumWidth(350);
-    m_searchWidget->setMaximumHeight(35);
+    m_searchWidget->setFixedHeight(32);
+    m_searchWidget->setFixedWidth(350);
 
     ui->titleLayout->addWidget(mTitleIcon);
     ui->titleLayout->addSpacing(8);
@@ -410,15 +403,17 @@ void MainWindow::initTileBar() {
     ui->titleLayout->addWidget(m_searchWidget);
     ui->titleLayout->addStretch();
     ui->titleLayout->addWidget(minBtn);
+    ui->titleLayout->addSpacing(4);
     ui->titleLayout->addWidget(maxBtn);
+    ui->titleLayout->addSpacing(4);
     ui->titleLayout->addWidget(closeBtn);
 }
 void MainWindow::animationFinishedSlot()
 {
-    if(m_isSearching) {
+    if (m_isSearching) {
         m_queryWid->layout()->removeWidget(m_queryText);
         m_queryText->setParent(nullptr);
-        m_searchWidget->setTextMargins(30,1,0,1);
+        m_searchWidget->setTextMargins(30, 1, 0, 1);
         if(!m_searchKeyWords.isEmpty()) {
             m_searchWidget->setText(m_searchKeyWords);
             m_searchKeyWords.clear();

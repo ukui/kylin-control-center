@@ -12,26 +12,31 @@ PreScene::PreScene(QLabel *label, QSize size, QWidget *parent) : titleLabel(labe
     this->setFixedSize(m_size);
     this->setObjectName("prescene");
     this->setStyleSheet("PreScene#prescene{background:  palette(base); border-radius: 6px;}");
+
+    titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+
     m_vlayout = new QVBoxLayout;
     m_logoLayout = new QHBoxLayout;
 
     mTitleIcon = new QLabel(this);
+    mTitleIcon->setFixedSize(24, 24);
+
     QIcon titleIcon = QIcon::fromTheme("ukui-control-center");
     mTitleIcon->setPixmap(titleIcon.pixmap(titleIcon.actualSize(QSize(24, 24))));
 
-    mTitleIcon->setFixedSize(30, 30);
-    titleLabel->setFixedSize(28, 28);
-
     titlebar = new QWidget(this);
+
     logoLabel = new QLabel(this);
-    logoLabel->setFixedSize(200,200);
+    logoLabel->setFixedSize(200, 200);
     logoLabel->setPixmap(loadSvg(":/img/titlebar/ukui-control-center.svg"));
     m_logoLayout->setContentsMargins(70, 160, 0, 0);
     m_logoLayout->addWidget(logoLabel);
 
     m_hlayout = new QHBoxLayout;
-    m_hlayout->setContentsMargins(4, 6, 0, 0);
+    m_hlayout->setSpacing(0);
+    m_hlayout->setContentsMargins(8, 8, 4, 0);
     m_hlayout->addWidget(mTitleIcon);
+    m_hlayout->addSpacing(8);
     m_hlayout->addWidget(titleLabel);
     m_hlayout->addStretch();
     titlebar->setLayout(m_hlayout);
