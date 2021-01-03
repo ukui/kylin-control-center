@@ -352,13 +352,13 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
 
     QString status = gsettings->get(TRAY_ACTION_KEY).toString();
     if ("tray" == status) {
-        appSwitch->setChecked(true);
-    } else {
         appSwitch->setChecked(false);
+    } else {
+        appSwitch->setChecked(true);
     }
 
     connect(appSwitch, &SwitchButton::checkedChanged, [=](bool checked) {
-        if (checked) {
+        if (!checked) {
             gsettings->set(TRAY_ACTION_KEY, "tray");
             gsettings->set(TRAY_RECORD_KEY, "tray");
         } else {
