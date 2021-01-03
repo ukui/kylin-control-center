@@ -39,6 +39,7 @@ signals:
     void sendDisconnectDeviceAddress(QString);
     void sendDeleteDeviceAddress(QString);
     void send_this_item_is_pair();
+    void sendPairedAddress(QString);
 private slots:
     void onClick_Connect_Btn(bool);
     void onClick_Disconnect_Btn(bool);

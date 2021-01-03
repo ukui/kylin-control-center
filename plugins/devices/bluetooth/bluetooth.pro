@@ -33,22 +33,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     bluetooth.cpp \
-    bluetoothagent.cpp \
     bluetoothmain.cpp \
     bluetoothnamelabel.cpp \
     deviceinfoitem.cpp \
-    loadinglabel.cpp \
-    pincodewidget.cpp
+    loadinglabel.cpp
+#    mylayout.cpp
 
 HEADERS += \
     bluetooth.h \
-    bluetoothagent.h \
     bluetoothmain.h \
     bluetoothnamelabel.h \
     config.h \
     deviceinfoitem.h \
-    loadinglabel.h \
-    pincodewidget.h
+    loadinglabel.h
+#    mylayout.h
 
 # Default rules for deployment.
 INSTALLS += target

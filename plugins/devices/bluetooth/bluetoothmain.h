@@ -34,7 +34,6 @@
 
 
 #include "deviceinfoitem.h"
-#include "bluetoothagent.h"
 #include "bluetoothnamelabel.h"
 
 class BlueToothMain : public QMainWindow
@@ -43,6 +42,7 @@ class BlueToothMain : public QMainWindow
 public:
     BlueToothMain(QWidget *parent = nullptr);
     void InitMainTopUI();
+    void InitMainMiddleUI();
     void InitMainbottomUI();
     void startDiscovery();
     ~BlueToothMain();
@@ -61,6 +61,7 @@ private slots:
 //    void get_pair_item();
     void set_tray_visible(bool);
     void change_adapter_name(const QString &name);
+    void change_device_parent(const QString &address);
 private:
     QGSettings *settings;
     QString Default_Adapter;
@@ -69,8 +70,13 @@ private:
 
     QVBoxLayout *main_layout;
     QSystemTrayIcon * tray;
+
     QWidget *main_widget;
     QWidget *frame_top;
+
+    QWidget *frame_middle;
+    QVBoxLayout *paired_dev_layout;
+
     QWidget *frame_bottom;
 //    QLabel *bluetooth_name;
     BluetoothNameLabel *bluetooth_name = nullptr;
@@ -81,7 +87,6 @@ private:
     QVBoxLayout *device_list_layout;
 
 //    QBluetoothLocalDevice *m_localDevice;
-    BluetoothAgent *Agent;
     BluezQt::Manager *m_manager;
     BluezQt::InitManagerJob  *job;
     BluezQt::AdapterPtr m_localDevice;
