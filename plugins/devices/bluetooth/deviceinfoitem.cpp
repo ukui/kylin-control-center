@@ -51,14 +51,15 @@ DeviceInfoItem::~DeviceInfoItem()
 
 void DeviceInfoItem::initInfoPage(DEVICE_TYPE icon_type, QString d_name, DEVICE_STATUS status, BluezQt::DevicePtr device)
 {
+    this->setObjectName(device->address());
+
     connect(device.data(),&BluezQt::Device::pairedChanged,this,[=](bool paird){
         qDebug() << Q_FUNC_INFO << paird;
         changeDevStatus(paird);
-//        emit this->send_this_item_is_pair();
     });
     connect(device.data(),&BluezQt::Device::connectedChanged,this,[=](bool connected){
-        setDevConnectedIcon(connected);
         qDebug() << Q_FUNC_INFO << "connected:" << connected;
+        setDevConnectedIcon(connected);
     });
 
     QIcon icon_device,icon_status;
@@ -170,13 +171,20 @@ void DeviceInfoItem::onClick_Disconnect_Btn(bool isclicked)
 void DeviceInfoItem::onClick_Delete_Btn(bool isclicked)
 {
     qDebug() << Q_FUNC_INFO;
+//    this->setVisible(false);
     emit sendDeleteDeviceAddress(device_item->address());
 }
 
 void DeviceInfoItem::changeDevStatus(bool pair)
 {
     icon_timer->stop();
-    device_status->setVisible(false);
+    if(pair){
+        device_status->setVisible(false);
+        emit sendPairedAddress(device_item->address());
+    }else{
+//        QIcon icon_status = QIcon::fromTheme("emblem-ok-symbolic");
+//        device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
+    }
 }
 
 void DeviceInfoItem::setDevConnectedIcon(bool connected)
