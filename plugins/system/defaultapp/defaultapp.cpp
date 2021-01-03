@@ -41,8 +41,6 @@ DefaultApp::DefaultApp() {
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
-    bIsCloudService = false;
-
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
     initUI();
@@ -195,15 +193,11 @@ void DefaultApp::initUI() {
                     ui->imageComBoBox->addItem(appicon, appname, single);
                     free(imagelist[i].appid);
                 }
-//                if (currentimage == single) {
-//                    imageindex = i;
-//                    emit appInitDone(imageindex, IMAGETYPE);
-//                }
+
                 if ("eom.desktop" == single) {
                     mDefaultPic = appname;
                 }
 
-                //free(imagelist[i].appid);
             }
             free(imagelist);
         }
@@ -225,16 +219,16 @@ void DefaultApp::initUI() {
                 GDesktopAppInfo * audioinfo = g_desktop_app_info_new_from_filename(ba.constData());
                 QString appname = g_app_info_get_name(G_APP_INFO(audioinfo));
                 const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(audioinfo)));
+                qDebug() << "audio iconname" << ba;
                 QIcon appicon;
                 if (QIcon::hasThemeIcon(QString(iconname)))
                     appicon = QIcon::fromTheme(QString(iconname));
-
                 ui->audioComBoBox->addItem(appicon, appname, single);
                 if (currentaudio == single) {
                     audioindex = i;
                     emit appInitDone(audioindex, AUDIOTYPE);
                 }
-                if ("kylin-video.desktop" == single) {
+                if ("kylin-music.desktop" == single) {
                     mDefaultAdudio = appname;
                 }
 
@@ -680,8 +674,6 @@ void DefaultApp::connectToServer(){
 
 void DefaultApp::keyChangedSlot(const QString &key) {
     if(key == "default-open") {
-        if(!bIsCloudService)
-            bIsCloudService = true;
         initUI();
     }
 }
