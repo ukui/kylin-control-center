@@ -74,7 +74,6 @@ public:
     const QString name() const  Q_DECL_OVERRIDE;
 
     void initUI();
-    void initSlots();
     void initSearchText();
 
     bool setWebBrowsersDefaultProgram(char * appid);
@@ -118,7 +117,7 @@ public slots:
     void keyChangedSlot(const QString &key);
     void resetDefaultApp();
 Q_SIGNALS:
-    void appInitDone(const QIcon &icon,const QString &appname,const QString &single,int index,const QString &type);
+    void appInitDone(int index,const QString &type);
 };
 
 #endif // DEFAULTAPP_H

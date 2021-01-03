@@ -46,7 +46,6 @@ DefaultApp::DefaultApp() {
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
     initUI();
-    initSlots();
     connectToServer();
 
     connect(ui->ResetBtn, SIGNAL(clicked(bool)), this, SLOT(resetDefaultApp()));
@@ -77,54 +76,39 @@ const QString DefaultApp::name() const {
     return QStringLiteral("defaultapp");
 }
 
-void DefaultApp::initSlots() {
-    connect(ui->browserComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::browserComBoBox_changed_cb);
-    connect(ui->mailComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::mailComBoBox_changed_cb);
-    connect(ui->imageComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::imageComBoBox_changed_cb);
-    connect(ui->audioComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::audioComBoBox_changed_cb);
-    connect(ui->videoComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::videoComBoBox_changed_cb);
-    connect(ui->textComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::textComBoBox_changed_cb);
-}
-
 void DefaultApp::initUI() {
 
-    connect(this,&DefaultApp::appInitDone,this,[=](const QIcon &appicon,const QString &appname,const QString &single,int index,const QString &type) {
+    connect(this,&DefaultApp::appInitDone,this,[=](int index, const QString &type) {
         if (type == BROWSERTYPE) {
-            ui->browserComBoBox->addItem(appicon, appname, single);
-            if(index != -1) {
-                ui->browserComBoBox->setCurrentIndex(index);
-                browserComBoBox_changed_cb(index);
-            }
+            ui->browserComBoBox->setCurrentIndex(index);
+            browserComBoBox_changed_cb(index);
+            connect(ui->browserComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::browserComBoBox_changed_cb);
+
         } else if(type == MAILTYPE) {
-            ui->mailComBoBox->addItem(appicon, appname, single);
-            if(index != -1) {
-                ui->mailComBoBox->setCurrentIndex(index);
-                mailComBoBox_changed_cb(index);
-            }
+            ui->mailComBoBox->setCurrentIndex(index);
+            mailComBoBox_changed_cb(index);
+            connect(ui->mailComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::mailComBoBox_changed_cb);
+
         } else if(type == IMAGETYPE) {
-            ui->imageComBoBox->addItem(appicon, appname, single);
-            if(index != -1) {
-                ui->imageComBoBox->setCurrentIndex(index);
-                imageComBoBox_changed_cb(index);
-            }
+            ui->imageComBoBox->setCurrentIndex(index);
+            imageComBoBox_changed_cb(index);
+            connect(ui->imageComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::imageComBoBox_changed_cb);
+
         } else if(type == AUDIOTYPE) {
-            ui->audioComBoBox->addItem(appicon, appname, single);
-            if(index != -1) {
-                ui->audioComBoBox->setCurrentIndex(index);
-                audioComBoBox_changed_cb(index);
-            }
+            ui->audioComBoBox->setCurrentIndex(index);
+            audioComBoBox_changed_cb(index);
+            connect(ui->audioComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::audioComBoBox_changed_cb);
+
         } else if(type == VIDEOTYPE) {
-            ui->videoComBoBox->addItem(appicon, appname, single);
-            if(index != -1) {
-                ui->videoComBoBox->setCurrentIndex(index);
-                videoComBoBox_changed_cb(index);
-            }
-        } else if(type == TEXTTYPE) {
-            ui->textComBoBox->addItem(appicon, appname, single);
-            if(index != -1) {
-                ui->textComBoBox->setCurrentIndex(index);
-                textComBoBox_changed_cb(index);
-            }
+            ui->videoComBoBox->setCurrentIndex(index);
+            videoComBoBox_changed_cb(index);
+            connect(ui->videoComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::videoComBoBox_changed_cb);
+
+        } else if(type == TEXTTYPE) { 
+            ui->textComBoBox->setCurrentIndex(index);
+            textComBoBox_changed_cb(index);
+            connect(ui->textComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::textComBoBox_changed_cb);
+
         }
     });
 
@@ -143,14 +127,16 @@ void DefaultApp::initUI() {
                 QIcon appicon;
                 if (QIcon::hasThemeIcon(QString(iconname)))
                     appicon = QIcon::fromTheme(QString(iconname));
+
+                ui->browserComBoBox->addItem(appicon, appname, single);
                 if (currentbrowser == single) {
                     browserindex = i;
+                    emit appInitDone(browserindex, BROWSERTYPE);
                 }
                 if ("firefox.desktop" == single) {
                     mDefaultBrowser = appname;
                 }
-                emit appInitDone(appicon,appname,single,browserindex,BROWSERTYPE);
-                browserindex = -1;
+
                 free(list[i].appid);
             }
             free(list);
@@ -170,14 +156,16 @@ void DefaultApp::initUI() {
                 QIcon appicon;
                 if (QIcon::hasThemeIcon(QString(iconname)))
                     appicon = QIcon::fromTheme(QString(iconname));
+
+                ui->mailComBoBox->addItem(appicon, appname, single);
                 if (currentmail == single) {
                     mailindex = i;
+                    emit appInitDone(mailindex, MAILTYPE);
                 }
                 if ("claws-mail.desktop" == single) {
                     mDefaultMail = appname;
                 }
-                emit appInitDone(appicon,appname,single,mailindex,MAILTYPE);
-                mailindex = -1;
+
                 free(maillist[i].appid);
             }
             free(maillist);
@@ -185,9 +173,13 @@ void DefaultApp::initUI() {
 
         // IMAGE
         int imageindex = -1;
+        QStringList browserList;
         QString currentimage(getDefaultAppId(IMAGETYPE));
         AppList * imagelist = getAppIdList(IMAGETYPE);
 
+        for(int i = 0; i < ui->browserComBoBox->count(); i++){
+            browserList << ui->browserComBoBox->itemText(i);
+        }
         if (imagelist) {
             for (int i = 0; imagelist[i].appid != NULL; i++) {
                 QString single(imagelist[i].appid);
@@ -198,17 +190,28 @@ void DefaultApp::initUI() {
                 QIcon appicon;
                 if (QIcon::hasThemeIcon(QString(iconname)))
                     appicon = QIcon::fromTheme(QString(iconname));
-                if (currentimage == single) {
-                    imageindex = i;
+
+                if(!browserList.contains(appname)){
+                    ui->imageComBoBox->addItem(appicon, appname, single);
+                    free(imagelist[i].appid);
                 }
+//                if (currentimage == single) {
+//                    imageindex = i;
+//                    emit appInitDone(imageindex, IMAGETYPE);
+//                }
                 if ("eom.desktop" == single) {
                     mDefaultPic = appname;
                 }
-                emit appInitDone(appicon,appname,single,imageindex,IMAGETYPE);
-                imageindex = -1;
-                free(imagelist[i].appid);
+
+                //free(imagelist[i].appid);
             }
             free(imagelist);
+        }
+        for(int i = 0; i < ui->imageComBoBox->count(); i++){
+            if(currentimage == ui->imageComBoBox->itemData(i)){
+                imageindex = i;
+                emit appInitDone(imageindex, IMAGETYPE);
+            }
         }
 
         // AUDIO
@@ -225,14 +228,16 @@ void DefaultApp::initUI() {
                 QIcon appicon;
                 if (QIcon::hasThemeIcon(QString(iconname)))
                     appicon = QIcon::fromTheme(QString(iconname));
+
+                ui->audioComBoBox->addItem(appicon, appname, single);
                 if (currentaudio == single) {
                     audioindex = i;
+                    emit appInitDone(audioindex, AUDIOTYPE);
                 }
                 if ("kylin-video.desktop" == single) {
                     mDefaultAdudio = appname;
                 }
-                emit appInitDone(appicon,appname,single,audioindex,AUDIOTYPE);
-                audioindex = -1;
+
                 free(audiolist[i].appid);
             }
             free(audiolist);
@@ -252,14 +257,16 @@ void DefaultApp::initUI() {
                 QIcon appicon;
                 if (QIcon::hasThemeIcon(QString(iconname)))
                     appicon = QIcon::fromTheme(QString(iconname));
+
+                ui->videoComBoBox->addItem(appicon, appname, single);
                 if (currentvideo == single) {
                     videoindex = i;
+                    emit appInitDone(videoindex, VIDEOTYPE);
                 }
                 if ("kylin-video.desktop" == single) {
                     mDefaultVideo = appname;
                 }
-                emit appInitDone(appicon,appname,single,videoindex,VIDEOTYPE);
-                videoindex = -1;
+
                 free(videolist[i].appid);
             }
             free(videolist);
@@ -279,14 +286,16 @@ void DefaultApp::initUI() {
                 QIcon appicon;
                 if (QIcon::hasThemeIcon(QString(iconname)))
                     appicon = QIcon::fromTheme(QString(iconname));
+
+                ui->textComBoBox->addItem(appicon, appname, single);
                 if (currenttext == single) {
                     textindex = i;
+                    emit appInitDone(textindex, TEXTTYPE);
                 }
                 if ("pluma.desktop" == single) {
                     mDefaultText = appname;
                 }
-                emit appInitDone(appicon,appname,single,textindex,TEXTTYPE);
-                textindex = -1;
+
                 free(textlist[i].appid);
             }
             free(textlist);
