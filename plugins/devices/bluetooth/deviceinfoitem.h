@@ -18,6 +18,7 @@
 #include <QResizeEvent>
 #include <QPropertyAnimation>
 #include <QTimer>
+#include <QDateTime>
 #include <QString>
 
 class DeviceInfoItem : public QWidget
@@ -30,6 +31,7 @@ public:
     QString get_dev_name();
     void changeDevStatus(bool);
     void setDevConnectedIcon(bool);
+    void AnimationInit();
 protected:
     void resizeEvent(QResizeEvent *event);
     void enterEvent(QEvent *event);
@@ -46,22 +48,28 @@ private slots:
     void onClick_Delete_Btn(bool);
     void updateDeviceStatus(DEVICE_STATUS status = DEVICE_STATUS::NOT);
 private:
-    QWidget *parent_widget;
-    QLabel *device_icon;
-    QLabel *device_name;
-    QLabel *device_status;
+    QWidget *parent_widget = nullptr;
+    QLabel *device_icon = nullptr;
+    QLabel *device_name = nullptr;
+    QLabel *device_status = nullptr;
 
     BluezQt::DevicePtr device_item;
 
-    QPushButton *connect_btn;
-    QPushButton *disconnect_btn;
-    QPushButton *del_btn;
+    QPushButton *connect_btn = nullptr;
+    QPushButton *disconnect_btn = nullptr;
+    QPushButton *del_btn = nullptr;
 
     DEVICE_STATUS d_status;
 
-    QFrame *info_page;
-    QTimer *icon_timer;
+    QFrame *info_page = nullptr;
+    QTimer *icon_timer = nullptr;
     int i = 7;
+
+    QPropertyAnimation *enter_action = nullptr;
+    QPropertyAnimation *leave_action = nullptr;
+
+    bool AnimationFlag = false;
+    QTimer *mouse_timer = nullptr;
 };
 
 #endif // DEVICEINFOITEM_H
