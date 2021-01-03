@@ -6,6 +6,8 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPalette>
+#include <QFont>
+#include <QFontMetrics>
 #include <QDebug>
 #include <QObject>
 

@@ -46,7 +46,7 @@ BlueToothMain::BlueToothMain(QWidget *parent)
 
     main_layout = new QVBoxLayout(main_widget);
     main_layout->setSpacing(40);
-    main_layout->setContentsMargins(0,0,20,0);
+    main_layout->setContentsMargins(0,0,20,10);
     frame_top    = new QWidget(main_widget);
     frame_top->setObjectName("frame_top");
     frame_top->setMinimumSize(582,135);
@@ -416,6 +416,7 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
                 bluetooth_name->set_dev_name(m_localDevice->name());
                 bluetooth_name->setVisible(true);
                 frame_bottom->setVisible(true);
+                frame_middle->setVisible(true);
                 label_2->setText(tr("Turn off Bluetooth"));
                 qDebug() << Q_FUNC_INFO << m_localDevice->isPowered() <<__LINE__;
                 this->startDiscovery();
@@ -432,6 +433,7 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
                 bluetooth_name->setVisible(false);
                 qDebug() << Q_FUNC_INFO << !m_localDevice->isPowered() << __LINE__;
                 frame_bottom->setVisible(false);
+                frame_middle->setVisible(false);
                 label_2->setText(tr("Turn on Bluetooth"));
             }
         });
@@ -559,6 +561,7 @@ void BlueToothMain::GSetting_value_chanage(const QString &key)
                 bluetooth_name->set_dev_name(m_localDevice->name());
                 bluetooth_name->setVisible(true);
                 frame_bottom->setVisible(true);
+                frame_middle->setVisible(true);
                 open_bluetooth->setChecked(true);
                 label_2->setText(tr("Turn off Bluetooth"));
                 this->startDiscovery();
@@ -567,6 +570,7 @@ void BlueToothMain::GSetting_value_chanage(const QString &key)
                 bluetooth_name->setVisible(false);
                 open_bluetooth->setChecked(false);
                 frame_bottom->setVisible(false);
+                frame_middle->setVisible(false);
                 label_2->setText(tr("Turn on Bluetooth"));
                 if(m_localDevice->isDiscovering()){
                     m_localDevice->stopDiscovery();

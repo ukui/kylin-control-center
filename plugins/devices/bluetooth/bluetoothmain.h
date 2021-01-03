@@ -39,7 +39,6 @@
 class BlueToothMain : public QMainWindow
 {
     Q_OBJECT
-
 public:
     BlueToothMain(QWidget *parent = nullptr);
     void InitMainTopUI();
@@ -47,7 +46,6 @@ public:
     void InitMainbottomUI();
     void startDiscovery();
     ~BlueToothMain();
-protected:
 
 signals:
     void adapter_name_changed(const QString &name);

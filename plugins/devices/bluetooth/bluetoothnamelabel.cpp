@@ -23,6 +23,7 @@ BluetoothNameLabel::BluetoothNameLabel(QWidget *parent, int x, int y):
 
     m_lineedit = new QLineEdit(this);
     m_lineedit->setEchoMode(QLineEdit::Normal);
+    m_lineedit->setAlignment(Qt::AlignCenter);
     connect(m_lineedit,&QLineEdit::editingFinished,this,&BluetoothNameLabel::LineEdit_Input_Complete);
     m_lineedit->setGeometry(2,2,this->width()-3,this->height()-3);
     m_lineedit->setVisible(false);
@@ -35,7 +36,11 @@ BluetoothNameLabel::~BluetoothNameLabel()
 
 void BluetoothNameLabel::set_dev_name(const QString &dev_name)
 {
-    m_label->setText(tr("Can now be found as ")+"\""+dev_name+"\"");
+    QFont ft;
+    QFontMetrics fm(ft);
+    QString text = fm.elidedText(dev_name, Qt::ElideRight, 150);
+    m_label->setText(tr("Can now be found as ")+"\""+text+"\"");
+
     m_label->update();
 
     device_name = dev_name;
@@ -72,7 +77,12 @@ void BluetoothNameLabel::enterEvent(QEvent *event)
 
 void BluetoothNameLabel::LineEdit_Input_Complete()
 {
-    emit this->send_adapter_name(m_lineedit->text());
+    if(device_name == m_lineedit->text()){
+        set_label_text(device_name);
+    }else{
+        device_name = m_lineedit->text();
+        emit this->send_adapter_name(m_lineedit->text());
+    }
     this->setStyleSheet("QWidget{border:none;border-radius:2px;}");
 }
 
@@ -80,7 +90,10 @@ void BluetoothNameLabel::set_label_text(const QString &value)
 {
     m_lineedit->setVisible(false);
 
-    m_label->setText(tr("Can now be found as ")+"\""+m_lineedit->text()+"\"");
+    QFont ft;
+    QFontMetrics fm(ft);
+    QString text = fm.elidedText(m_lineedit->text(), Qt::ElideRight, 150);
+    m_label->setText(tr("Can now be found as ")+"\""+text+"\"");
     m_label->setVisible(true);
 }
 

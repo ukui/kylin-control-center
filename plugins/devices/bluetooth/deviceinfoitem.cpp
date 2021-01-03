@@ -42,6 +42,8 @@ DeviceInfoItem::DeviceInfoItem(QWidget *parent) : QWidget(parent)
 
     icon_timer = new QTimer(this);
     icon_timer->setInterval(100);
+
+    AnimationInit();
 }
 
 DeviceInfoItem::~DeviceInfoItem()
@@ -106,42 +108,24 @@ void DeviceInfoItem::resizeEvent(QResizeEvent *event)
 
 void DeviceInfoItem::enterEvent(QEvent *event)
 {
-//    qDebug() << Q_FUNC_INFO << device_name->text();
-    QPropertyAnimation *enter_action = new QPropertyAnimation(info_page,"geometry");
-    enter_action->setDuration(300);
-    enter_action->setEasingCurve(QEasingCurve::OutQuad);
-    enter_action->setStartValue(QRect(0, 0, info_page->width(), info_page->height()));
-    enter_action->setEndValue(QRect(0, 0, info_page->width()-170, info_page->height()));
-    enter_action->start();
-
-    connect(enter_action,&QPropertyAnimation::finished,this,[=]{
-        if (d_status == DEVICE_STATUS::LINK){
-            disconnect_btn->setGeometry(this->width()-155,2,80,45);
-            disconnect_btn->setVisible(true);
-        }else if (d_status == DEVICE_STATUS::UNLINK){
-            connect_btn->setGeometry(this->width()-155,2,80,45);
-            connect_btn->setVisible(true);
-        }
-
-        del_btn->setGeometry(this->width()-65,2,65,45);
-        del_btn->setVisible(true);
-    });
+    AnimationFlag = true;
+    mouse_timer->start();
 }
 
 void DeviceInfoItem::leaveEvent(QEvent *event)
 {
+//    QDateTime current_date_time = QDateTime::currentDateTime();
+//    QString current_time = current_date_time.toString("hh:mm:ss.zzz ");
+//    qDebug() << Q_FUNC_INFO << current_time;
+    AnimationFlag = false;
+
     disconnect_btn->setVisible(false);
     connect_btn->setVisible(false);
-
     del_btn->setVisible(false);
 
-    QPropertyAnimation *leave_action = new QPropertyAnimation(info_page,"geometry");
-    leave_action->setDuration(300);
-    leave_action->setEasingCurve(QEasingCurve::InQuad);
     leave_action->setStartValue(QRect(0, 0, info_page->width(), info_page->height()));
     leave_action->setEndValue(QRect(0, 0, this->width(), info_page->height()));
     leave_action->start();
-
 }
 
 void DeviceInfoItem::onClick_Connect_Btn(bool isclicked)
@@ -164,13 +148,13 @@ void DeviceInfoItem::onClick_Connect_Btn(bool isclicked)
 
 void DeviceInfoItem::onClick_Disconnect_Btn(bool isclicked)
 {
-    qDebug() << Q_FUNC_INFO;
+//    qDebug() << Q_FUNC_INFO;
     emit sendDisconnectDeviceAddress(device_item->address());
 }
 
 void DeviceInfoItem::onClick_Delete_Btn(bool isclicked)
 {
-    qDebug() << Q_FUNC_INFO;
+//    qDebug() << Q_FUNC_INFO;
 //    this->setVisible(false);
     emit sendDeleteDeviceAddress(device_item->address());
 }
@@ -200,6 +184,45 @@ void DeviceInfoItem::setDevConnectedIcon(bool connected)
         d_status = DEVICE_STATUS::UNLINK;
         device_status->setVisible(false);
     }
+}
+
+void DeviceInfoItem::AnimationInit()
+{
+    mouse_timer = new QTimer(this);
+    mouse_timer->setInterval(300);
+
+    connect(mouse_timer,&QTimer::timeout,this,[=]{
+        if(AnimationFlag){
+            if(leave_action->state() != QAbstractAnimation::Running){
+                enter_action->setStartValue(QRect(0, 0, info_page->width(), info_page->height()));
+                enter_action->setEndValue(QRect(0, 0, info_page->width()-170, info_page->height()));
+                enter_action->start();
+            }
+        }
+        mouse_timer->stop();
+    });
+
+    enter_action = new QPropertyAnimation(info_page,"geometry");
+    enter_action->setDuration(300);
+    enter_action->setEasingCurve(QEasingCurve::OutQuad);
+
+    connect(enter_action,&QPropertyAnimation::finished,this,[=]{
+        if (d_status == DEVICE_STATUS::LINK){
+            disconnect_btn->setGeometry(this->width()-155,2,80,45);
+            disconnect_btn->setVisible(true);
+        }else if (d_status == DEVICE_STATUS::UNLINK){
+            connect_btn->setGeometry(this->width()-155,2,80,45);
+            connect_btn->setVisible(true);
+        }
+
+        del_btn->setGeometry(this->width()-65,2,65,45);
+        del_btn->setVisible(true);
+    });
+
+
+    leave_action = new QPropertyAnimation(info_page,"geometry");
+    leave_action->setDuration(300);
+    leave_action->setEasingCurve(QEasingCurve::InQuad);
 }
 
 void DeviceInfoItem::updateDeviceStatus(DEVICE_STATUS status)
