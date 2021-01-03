@@ -96,7 +96,6 @@ private:
     QWidget * pluginWidget;
 
     QString pluginName;
-    bool bIsCloudService;
     int pluginType;
     QDBusInterface *m_cloudInterface;
 
