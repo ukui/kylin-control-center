@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 Upgrade::Upgrade() :mFirstLoad(true) {
+    //~ contents_path /upgrade/Upgrade
     pluginName = tr("Upgrade");
     pluginType = UPDATE;
 }

@@ -97,7 +97,7 @@ MainWindow::~MainWindow()
 void MainWindow::bootOptionsFilter(QString opt) {
     if (opt == "--display" || opt == "-m") {
         bootOptionsSwitch(SYSTEM, DISPLAY);
-    }if (opt == "--touchscreen" || opt == "-m") {
+    }if (opt == "--touchscreen") {
         bootOptionsSwitch(SYSTEM, TOUCHSCREEN);
     } else if (opt == "--defaultapp") {
         bootOptionsSwitch(SYSTEM, DEFAULTAPP);
@@ -145,11 +145,9 @@ void MainWindow::bootOptionsFilter(QString opt) {
         bootOptionsSwitch(DATETIME, DAT);
     }  else if (opt == "--area") {
         bootOptionsSwitch(DATETIME, AREA);
-    } else if (opt == "--update") {
-        bootOptionsSwitch(UPDATE, UPDATES);
     } else if (opt == "--upgrade") {
         bootOptionsSwitch(UPDATE, UPGRADE);
-    }else if (opt == "--backup") {
+    } else if (opt == "--backup") {
         bootOptionsSwitch(UPDATE, BACKUP);
     } else if (opt == "--notice" || opt == "-n") {
         bootOptionsSwitch(NOTICEANDTASKS, NOTICE);
