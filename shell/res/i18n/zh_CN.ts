@@ -1423,37 +1423,37 @@ change system settings</source>
         <translation>默认应用</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="299"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="302"/>
         <source>Browser</source>
         <translation>浏览器</translation>
         <extra-contents_path>/defaultapp/Browser</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="301"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="304"/>
         <source>Mail</source>
         <translation>电子邮件</translation>
         <extra-contents_path>/defaultapp/Mail</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="303"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="306"/>
         <source>Image Viewer</source>
         <translation>图像查看器</translation>
         <extra-contents_path>/defaultapp/Image Viewer</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="305"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="308"/>
         <source>Audio Player</source>
         <translation>音频播放器</translation>
         <extra-contents_path>/defaultapp/Audio Player</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="307"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="310"/>
         <source>Video Player</source>
         <translation>视频播放器</translation>
         <extra-contents_path>/defaultapp/Video Player</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="309"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="312"/>
         <source>Text Editor</source>
         <translation>文档编辑器</translation>
         <extra-contents_path>/defaultapp/Text Editor</extra-contents_path>
@@ -2493,27 +2493,27 @@ folder will be deleted!</source>
         <location filename="../../../plugins/account/networkaccount/frameitem.cpp" line="112"/>
         <location filename="../../../plugins/account/networkaccount/frameitem.cpp" line="127"/>
         <source>Sync failed,please relogin!</source>
-        <translation type="unfinished"></translation>
+        <translation>同步失败，请重新登录！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/frameitem.cpp" line="115"/>
         <source>Change configuration file failed,please relogin!</source>
-        <translation type="unfinished"></translation>
+        <translation>修改配置文件失败，请重新登录！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/frameitem.cpp" line="118"/>
         <source>Configuration file not exist,please relogin!</source>
-        <translation type="unfinished"></translation>
+        <translation>配置文件不存在，请重试！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/frameitem.cpp" line="121"/>
         <source>Cloud verifyed file download failed,please relogin!</source>
-        <translation type="unfinished"></translation>
+        <translation>云文件验证失败，请重试！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/frameitem.cpp" line="124"/>
         <source>OSS access failed,please relogin!</source>
-        <translation type="unfinished"></translation>
+        <translation>连接失败，请重试或重新登录！</translation>
     </message>
 </context>
 <context>
@@ -2555,7 +2555,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="40"/>
         <source>Wallpaper</source>
-        <translation type="unfinished"></translation>
+        <translation>桌面壁纸</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="41"/>
@@ -3280,15 +3280,14 @@ folder will be deleted!</source>
         <translation>您的云账户：%1</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="579"/>
         <source>Unauthorized device or OSS falied.
 Please retry for login!</source>
-        <translation>OSS访问失败，请检查您的网络后再登录！</translation>
+        <translation type="vanished">OSS访问失败，请检查您的网络后再登录！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="188"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="804"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="824"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="838"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="858"/>
         <source>Exit</source>
         <translation>退出登录</translation>
     </message>
@@ -3329,19 +3328,35 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="320"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="435"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="813"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="834"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="462"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="847"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="868"/>
         <source>The latest time sync is: </source>
         <translation>上次同步时间为: </translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="674"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="412"/>
+        <source>The Cloud Account Service version is out of date!</source>
+        <translation>云账户服务版本已经过期，请升级！</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="606"/>
+        <source>Unauthorized device or OSS falied.
+Please retry or relogin!</source>
+        <translation>设备凭证已过期，请重新登录！</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="613"/>
+        <source>Authorization failed!</source>
+        <translation>认证失败，请重新登录！</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="708"/>
         <source>This operation may cover your settings!</source>
         <translation>该操作可能覆盖您目前的快捷键！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="919"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="953"/>
         <source>Cloud ID desktop message</source>
         <translation>云账户消息</translation>
     </message>
@@ -3370,7 +3385,7 @@ Please retry for login!</source>
         <translation type="vanished">同步失败，请检查您的网络连接或者登出再重试一次！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="890"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="924"/>
         <source>%1,</source>
         <translation>%1,</translation>
     </message>
@@ -4959,7 +4974,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="66"/>
         <source>This operation is permanent</source>
-        <translation type="unfinished">设置后不可更改，最高30位</translation>
+        <translation>设置后不可更改，最高30位</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/regdialog.cpp" line="69"/>

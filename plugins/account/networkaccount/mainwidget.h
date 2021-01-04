@@ -145,6 +145,7 @@ signals:
     void dosingle(QString key);
     void closedialog();
     void isRunning();
+    void oldVersion();
 };
 
 #endif // CONFIG_LIST_WIDGET_H
