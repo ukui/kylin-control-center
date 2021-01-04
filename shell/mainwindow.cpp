@@ -25,6 +25,7 @@
 #include "utils/utils.h"
 #include "../commonComponent/ImageUtil/imageutil.h"
 
+#include <libmatemixer/matemixer.h>
 #include <QLabel>
 #include <QLocale>
 #include <QPushButton>
@@ -69,6 +70,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_searchWidget(nullptr)
 {
+
+    mate_mixer_init();
     // 设置初始大小
     this->setMinimumSize(895, 600);
 

@@ -4,7 +4,7 @@
 #include <QObject>
 
 #include "shell/interface.h"
-#include "src/mainwindow.h"
+#include "src/upgrademain.h"
 
 class Upgrade : public QObject, CommonInterface
 {
@@ -24,7 +24,7 @@ public:
 private:
     QString pluginName;
     int pluginType;
-    MainWindow *pluginWidget;
+    UpgradeMain *pluginWidget;
     bool mFirstLoad;    
 };
 

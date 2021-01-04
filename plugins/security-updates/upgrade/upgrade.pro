@@ -44,13 +44,13 @@ SOURCES += \
     src/listwig.cpp \
     src/logwindow.cpp \
     src/m_updatelog.cpp \
-    src/mainwindow.cpp \
     src/shadowwidget.cpp \
     src/switchbutton.cpp \
     src/tabwidget.cpp \
     src/traybusthread.cpp \
     src/updatedbus.cpp \
     src/updatelog.cpp \
+    src/upgrademain.cpp \
     src/widgetstyle.cpp \
     src/updatesource.cpp \
     upgrade.cpp
@@ -63,7 +63,6 @@ HEADERS += \
     src/listwig.h \
     src/logwindow.h \
     src/m_updatelog.h \
-    src/mainwindow.h \
     src/metatypes.h \
     src/shadowwidget.h \
     src/switchbutton.h \
@@ -71,6 +70,7 @@ HEADERS += \
     src/traybusthread.h \
     src/updatedbus.h \
     src/updatelog.h \
+    src/upgrademain.h \
     src/utils.h \
     src/widgetstyle.h \
     src/updatesource.h \

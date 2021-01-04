@@ -15,8 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef UPGRADEMAIN_H
+#define UPGRADEMAIN_H
 
 #include <QMainWindow>
 #include <QKeyEvent>
@@ -42,13 +42,13 @@
 #include "updatedbus.h"
 
 
-class MainWindow : public QMainWindow
+class UpgradeMain : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QString arg, QWidget *parent = nullptr);
-    ~MainWindow();
+    UpgradeMain(QString arg, QWidget *parent = nullptr);
+    ~UpgradeMain();
 
     // 初始化组件
     void setWidgetUi();
@@ -109,4 +109,4 @@ private:
 
 };
 
-#endif // MAINWINDOW_H
+#endif // UPGRADEMAIN_H

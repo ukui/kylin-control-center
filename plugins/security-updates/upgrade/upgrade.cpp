@@ -25,7 +25,7 @@ QWidget *Upgrade::get_plugin_ui() {
     if (mFirstLoad) {
         mFirstLoad = false;
         // will delete by takewidget
-        pluginWidget = new MainWindow("");
+        pluginWidget = new UpgradeMain("");
     }
 
     return pluginWidget;

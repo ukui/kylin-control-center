@@ -31,6 +31,7 @@ CONFIG        += link_pkgconfig \
 PKGCONFIG     += gio-2.0 \
                  gio-unix-2.0 \
                  gsettings-qt \
+                 libmatemixer
 
 desktop.files += ukui-control-center.desktop
 desktop.path = /usr/share/applications

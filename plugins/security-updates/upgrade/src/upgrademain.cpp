@@ -15,11 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "mainwindow.h"
+#include "upgrademain.h"
 #include "metatypes.h"
 //#include "connection.h"
 
-MainWindow::MainWindow(QString arg,QWidget *parent)
+UpgradeMain::UpgradeMain(QString arg,QWidget *parent)
     : QMainWindow(parent)
 {
     qDebug() << "new";
@@ -53,13 +53,13 @@ MainWindow::MainWindow(QString arg,QWidget *parent)
 
 }
 
-MainWindow::~MainWindow()
+UpgradeMain::~UpgradeMain()
 {
 //    qDebug() << "quit mainwindow";
 }
 
 // 初始化组件
-void MainWindow::setWidgetUi()
+void UpgradeMain::setWidgetUi()
 {
     // 窗口设置
     // 无边框、界面置顶
@@ -97,7 +97,7 @@ void MainWindow::setWidgetUi()
 }
 
 // 初始化样式
-void MainWindow::setWidgetStyle()
+void UpgradeMain::setWidgetStyle()
 {
 //    // 设置窗体大小
 //    this->resize(WINDOWW, WINDOWH);
@@ -138,17 +138,17 @@ void MainWindow::setWidgetStyle()
 }
 
 // 切换深色模式
-void MainWindow::changeDarkTheme()
+void UpgradeMain::changeDarkTheme()
 {
 }
 
 // 切换浅色模式
-void MainWindow::changeLightTheme()
+void UpgradeMain::changeLightTheme()
 {
 }
 
 // 实现键盘响应
-void MainWindow::keyPressEvent(QKeyEvent *event)
+void UpgradeMain::keyPressEvent(QKeyEvent *event)
 {
     // F1快捷键打开用户手册
     if (event->key() == Qt::Key_F1) {
@@ -159,7 +159,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
 }
 
-bool MainWindow::copyFolder(const QString &fromDir, const QString &toDir, bool coverFileIfExist)
+bool UpgradeMain::copyFolder(const QString &fromDir, const QString &toDir, bool coverFileIfExist)
 {
     QDir sourceDir(fromDir);
     QDir targetDir(toDir);
@@ -196,7 +196,7 @@ bool MainWindow::copyFolder(const QString &fromDir, const QString &toDir, bool c
     return true;
 
 }
-void MainWindow::readConf()
+void UpgradeMain::readConf()
 {
     /*
     QString toDir = QDir::homePath();
