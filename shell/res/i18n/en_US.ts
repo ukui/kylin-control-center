@@ -484,65 +484,6 @@ you can restore them to ensure the integrity of your system.</source>
     </message>
 </context>
 <context>
-    <name>BlueToothMain</name>
-    <message>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="76"/>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="420"/>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="566"/>
-        <source>Turn off Bluetooth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="78"/>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="437"/>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="574"/>
-        <source>Turn on Bluetooth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="90"/>
-        <source>Bluetooth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="151"/>
-        <source>Show icon on taskbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="196"/>
-        <source>My Devices</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="266"/>
-        <source>Other Devices</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="279"/>
-        <source>Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Bluetooth</name>
-    <message>
-        <location filename="../../../plugins/devices/bluetooth/bluetooth.cpp" line="6"/>
-        <source>Bluetooth</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>BluetoothNameLabel</name>
-    <message>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothnamelabel.cpp" line="42"/>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothnamelabel.cpp" line="96"/>
-        <source>Can now be found as </source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CertificationDialog</name>
     <message>
         <location filename="../../../plugins/network/proxy/certificationdialog.ui" line="26"/>
@@ -1233,37 +1174,37 @@ change system settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="299"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="302"/>
         <source>Browser</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/defaultapp/Browser</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="301"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="304"/>
         <source>Mail</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/defaultapp/Mail</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="303"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="306"/>
         <source>Image Viewer</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/defaultapp/Image Viewer</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="305"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="308"/>
         <source>Audio Player</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/defaultapp/Audio Player</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="307"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="310"/>
         <source>Video Player</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/defaultapp/Video Player</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="309"/>
+        <location filename="../../../plugins/system/defaultapp/defaultapp.cpp" line="312"/>
         <source>Text Editor</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/defaultapp/Text Editor</extra-contents_path>
@@ -1470,24 +1411,6 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/personalized/desktop/desktop.cpp" line="53"/>
         <source>Desktop</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DeviceInfoItem</name>
-    <message>
-        <location filename="../../../plugins/devices/bluetooth/deviceinfoitem.cpp" line="28"/>
-        <source>Connect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/devices/bluetooth/deviceinfoitem.cpp" line="33"/>
-        <source>Disconnect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/devices/bluetooth/deviceinfoitem.cpp" line="38"/>
-        <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2741,8 +2664,8 @@ folder will be deleted!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="188"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="804"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="824"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="811"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="831"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2779,8 +2702,8 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="320"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="435"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="813"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="834"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="820"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="841"/>
         <source>The latest time sync is: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -2792,21 +2715,26 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="579"/>
         <source>Unauthorized device or OSS falied.
-Please retry for login!</source>
+Please retry or relogin!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="674"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="586"/>
+        <source>Authorization failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="681"/>
         <source>This operation may cover your settings!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="890"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="897"/>
         <source>%1,</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="919"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="926"/>
         <source>Cloud ID desktop message</source>
         <translation type="unfinished"></translation>
     </message>

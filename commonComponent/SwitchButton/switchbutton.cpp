@@ -20,6 +20,8 @@
 #include "switchbutton.h"
 
 #include <QDebug>
+#define THEME_QT_SCHEMA "org.ukui.style"
+#define THEME_GTK_SCHEMA "org.mate.interface"
 
 SwitchButton::SwitchButton(QWidget *parent) :
     QWidget(parent)
@@ -47,6 +49,31 @@ SwitchButton::SwitchButton(QWidget *parent) :
     timer = new QTimer(this);
     timer->setInterval(5);
     connect(timer, SIGNAL(timeout()), this, SLOT(updatevalue()));
+    if(QGSettings::isSchemaInstalled(THEME_GTK_SCHEMA) && QGSettings::isSchemaInstalled(THEME_QT_SCHEMA)) {
+        QByteArray qtThemeID(THEME_QT_SCHEMA);
+        QByteArray gtkThemeID(THEME_GTK_SCHEMA);
+
+        m_gtkThemeSetting = new QGSettings(gtkThemeID,QByteArray(),this);
+        m_qtThemeSetting = new QGSettings(qtThemeID,QByteArray(),this);
+
+        QString style = m_qtThemeSetting->get("styleName").toString();
+        if(style == "ukui-dark") {
+            bgColorOff = QColor("#3d3d3f");
+        } else {
+            bgColorOff = QColor("#cccccc");
+        }
+
+        connect(m_qtThemeSetting,&QGSettings::changed, [this] (const QString &key) {
+            QString style = m_qtThemeSetting->get("styleName").toString();
+            if(key == "styleName") {
+                if(style == "ukui-dark") {
+                    bgColorOff = QColor("#3d3d3f");
+                } else {
+                    bgColorOff = QColor("#cccccc");
+                }
+            }
+        });
+    }
 }
 
 SwitchButton::~SwitchButton()

@@ -574,10 +574,17 @@ bool MainWidget::eventFilter(QObject *watched, QEvent *event) {
 /* 登录成功处理事件 */
 void MainWidget::finished_load(int ret, QString uuid) {
     //qDebug()<<"wb111"<<ret;
-    if(ret == 301 || ret == 401 || ret == 201) {
+    if(ret == 301) {
         if(m_mainWidget->currentWidget() != m_nullWidget) {
-            showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry for login!"));
+            showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry or relogin!"));
             // m_exitCode->setText(tr("Please check your connection!"));
+            return ;
+        }
+    }
+    if(ret == 401 || ret == 201) {
+        if(m_mainWidget->currentWidget() != m_nullWidget) {
+            m_exitCode->setText(tr("Authorization failed!"));
+            on_login_out();
             return ;
         }
     }

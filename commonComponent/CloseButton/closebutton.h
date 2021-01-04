@@ -7,7 +7,7 @@
 #include <QPainter>
 #include <QIcon>
 #include <QMouseEvent>
-#include <QGSettings/QGSettings>
+#include <QGSettings>
 
 class CloseButton : public QLabel
 {

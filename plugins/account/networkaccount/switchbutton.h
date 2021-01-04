@@ -23,6 +23,8 @@
 #include <QWidget>
 #include <QTimer>
 #include <QPainter>
+#include <QGSettings>
+#include <QVariant>
 
 class SwitchButton : public QWidget
 {
@@ -37,6 +39,10 @@ public:
     int             get_active() const;
     void            set_active(const bool &ok);
 private:
+    QColor          m_bgColorOff;
+    QColor          m_bgColorOn;
+    QGSettings      *m_qtThemeSetting;
+    QGSettings      *m_gtkThemeSetting;
     int             m_bIsActive = 1;
     int             m_bIsOn = 1;
     QColor          *m_buttonColor;
