@@ -3268,8 +3268,8 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="188"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="811"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="831"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="838"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="858"/>
         <source>Exit</source>
         <translation>退出登录</translation>
     </message>
@@ -3309,21 +3309,26 @@ Please retry for login!</source>
         <translation>同步您账户的数据以及个性化设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="579"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="412"/>
+        <source>The Cloud Account Service version is out of date!</source>
+        <translation>云账户服务版本已经过期，请升级！</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="606"/>
         <source>Unauthorized device or OSS falied.
 Please retry or relogin!</source>
         <translation>设备凭证已过期，请重新登录！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="586"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="613"/>
         <source>Authorization failed!</source>
         <translation>认证失败，请重新登录！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="320"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="435"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="820"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="841"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="462"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="847"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="868"/>
         <source>The latest time sync is: </source>
         <translation>上次同步时间为: </translation>
     </message>
@@ -3332,12 +3337,12 @@ Please retry or relogin!</source>
         <translation type="vanished">您的账户已经在其他设备登录！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="681"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="708"/>
         <source>This operation may cover your settings!</source>
         <translation>该操作可能覆盖您目前的快捷键！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="926"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="953"/>
         <source>Cloud ID desktop message</source>
         <translation>云账户消息</translation>
     </message>
@@ -3366,7 +3371,7 @@ Please retry or relogin!</source>
         <translation type="vanished">同步失败，请检查您的网络连接或者登出再重试一次！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="897"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="924"/>
         <source>%1,</source>
         <translation>%1,</translation>
     </message>

@@ -674,6 +674,12 @@ void DefaultApp::connectToServer(){
 
 void DefaultApp::keyChangedSlot(const QString &key) {
     if(key == "default-open") {
+        ui->browserComBoBox->clear();
+        ui->audioComBoBox->clear();
+        ui->imageComBoBox->clear();
+        ui->textComBoBox->clear();
+        ui->mailComBoBox->clear();
+        ui->videoComBoBox->clear();
         initUI();
     }
 }

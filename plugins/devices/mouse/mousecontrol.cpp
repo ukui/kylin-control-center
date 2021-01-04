@@ -262,6 +262,43 @@ void MouseControl::setupComponent() {
         settings->set(WHEEL_KEY, ui->midHorSlider->value());
     });
 
+    connect(settings,&QGSettings::changed,[=] (const QString &key){
+        if(key == "locatePointer") {
+            visiblityBtn->setChecked(settings->get(LOCATE_KEY).toBool());
+        } else if(key == "mouseAccel") {
+            mAccelBtn->setChecked(settings->get(ACCEL_KEY).toBool());
+        } else if(key == "doubleClick") {
+            int dc = settings->get(DOUBLE_CLICK_KEY).toInt();
+            ui->doubleclickHorSlider->blockSignals(true);
+            ui->doubleclickHorSlider->setValue(dc);
+            ui->doubleclickHorSlider->blockSignals(false);
+        } else if(key == "wheelSpeed") {
+            ui->midHorSlider->setValue(settings->get(WHEEL_KEY).toInt());
+        } else if(key == "motionAcceleration") {
+            ui->pointerSpeedSlider->blockSignals(true);
+            ui->pointerSpeedSlider->setValue(static_cast<int>(settings->get(ACCELERATION_KEY).toDouble()*100));
+            ui->pointerSpeedSlider->blockSignals(false);
+        } else if(key == "leftHanded") {
+            int handHabitIndex = ui->handHabitComBox->findData(settings->get(HAND_KEY).toBool());
+            ui->handHabitComBox->blockSignals(true);
+            ui->handHabitComBox->setCurrentIndex(handHabitIndex);
+            ui->handHabitComBox->blockSignals(false);
+        }
+    });
+
+    connect(desktopSettings,&QGSettings::changed,[=](const QString &key) {
+        if(key == "cursorBlinkTime") {
+            ui->cursorSpeedSlider->blockSignals(true);
+            ui->cursorSpeedSlider->setValue(desktopSettings->get(CURSOR_BLINK_TIME_KEY).toInt());
+            ui->cursorSpeedSlider->blockSignals(false);
+        } else if(key == "cursorBlink") {
+            flashingBtn->blockSignals(true);
+            flashingBtn->setChecked(desktopSettings->get(CURSOR_BLINK_KEY).toBool());
+            ui->cursorSpeedFrame->setVisible(desktopSettings->get(CURSOR_BLINK_KEY).toBool());
+            flashingBtn->blockSignals(false);
+        }
+    });
+
     connect(ui->cursorSpeedSlider, &QSlider::sliderReleased, [=] {
         desktopSettings->set(CURSOR_BLINK_TIME_KEY, ui->cursorSpeedSlider->value());
         mThemeSettings->set(CURSOR_BLINK_TIME_KEY, ui->cursorSpeedSlider->value());

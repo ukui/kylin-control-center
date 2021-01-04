@@ -404,6 +404,33 @@ void MainWidget::init_gui() {
         setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
     }
 
+    connect(this,&MainWidget::oldVersion,[=] () {
+        if(m_mainWidget->currentWidget() != m_nullWidget) {
+            on_login_out();
+        }
+        m_login_btn->hide();
+        m_welcomeMsg->setText(tr("The Cloud Account Service version is out of date!"));
+    });
+    QtConcurrent::run([=] {
+       QProcess proc;
+       QStringList options;
+       options <<"-c" <<"dpkg -s kylin-sso-client | grep '^Version:'";
+       proc.start("/bin/sh",options);
+       proc.waitForFinished(-1);
+       proc.waitForReadyRead(-1);
+       QByteArray ret = proc.readAll();
+       if(ret.replace("\n","") != "") {
+           if(ret.contains("Version")) {
+               QByteArrayList list =  ret.split(' ');
+               if(list.size() >= 2) {
+                   if(!list.at(1).startsWith("1")) {
+                       emit oldVersion();
+                   }
+               }
+           }
+       }
+    });
+
     //连接信号
     connect(m_mainWidget,&QStackedWidget::currentChanged,[this] (int index) {
        if(m_mainWidget->widget(index) == m_nullWidget) {

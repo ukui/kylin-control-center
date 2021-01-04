@@ -3217,8 +3217,8 @@ Lütfen giriş için tekrar deneyin!</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="188"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="811"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="831"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="838"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="858"/>
         <source>Exit</source>
         <translation>Çıkış</translation>
     </message>
@@ -3259,30 +3259,35 @@ Lütfen giriş için tekrar deneyin!</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="320"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="435"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="820"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="841"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="462"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="847"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="868"/>
         <source>The latest time sync is: </source>
         <translation type="unfinished">En son zaman senkronizasyonu: </translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="579"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="412"/>
+        <source>The Cloud Account Service version is out of date!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="606"/>
         <source>Unauthorized device or OSS falied.
 Please retry or relogin!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="586"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="613"/>
         <source>Authorization failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="681"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="708"/>
         <source>This operation may cover your settings!</source>
         <translation>Bu işlem ayarlarınızı kapsayabilir!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="926"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="953"/>
         <source>Cloud ID desktop message</source>
         <translation>Cloud ID masaüstü mesajı</translation>
     </message>
@@ -3311,7 +3316,7 @@ Please retry or relogin!</source>
         <translation type="vanished">Senkronizasyon başarısız oldu, lütfen internet bağlantınızı kontrol edin veya yeniden denemek için oturumu kapatın!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="897"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="924"/>
         <source>%1,</source>
         <translation>%1,</translation>
     </message>
