@@ -26,13 +26,13 @@
 #include <QThread>
 #include <QListWidget>
 #include <QDBusInterface>
+#include <QPushButton>
 
 #include "shell/interface.h"
 
 #include "keymap.h"
 #include "addshortcutdialog.h"
 #include "getshortcutworker.h"
-#include "showallshortcut.h"
 #include "HoverWidget/hoverwidget.h"
 #include "ImageUtil/imageutil.h"
 
@@ -79,12 +79,12 @@ public:
     void setupConnect();
     void initFunctionStatus();
 
-    void appendGeneralItems();
+    void appendGeneralItems(QMap<QString, QMap<QString, QString> > shortcutsMap);
     void appendCustomItems();
     void buildCustomItem(KeyEntry * nkeyEntry);
+    QWidget * buildGeneralWidget(QString schema, QMap<QString, QString> subShortcutsMap);
 
     void initItemsStyle(QListWidget * listWidget);
-    void initGeneralItemsStyle();
     void initCustomItemsStyle();
 
     void createNewShortcut(QString path, QString name, QString exec);
@@ -95,9 +95,6 @@ public:
     QString getBindingName(QList<int> keyCode);
     bool keyIsForbidden(QString key);
     void connectToServer();
-
-public:
-    QStringList showList;
 
 protected:
 //    bool event(QEvent *event);
@@ -119,7 +116,6 @@ private:
     KeyMap * pKeyMap;
 
     addShortcutDialog * addDialog;
-    ShowAllShortcut * showDialog;
     QDBusInterface *cloudInterface;
     bool isCloudService;
 
