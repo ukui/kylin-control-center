@@ -43,6 +43,8 @@ extern "C" {
 
 
 #define ITEMHEIGH 36
+#define TITLEWIDGETHEIGH 40
+#define SYSTEMTITLEWIDGETHEIGH 50
 
 //快捷键屏蔽键
 QStringList forbiddenKeys = {
@@ -79,7 +81,6 @@ Shortcut::~Shortcut()
         delete ui;
         delete pKeyMap;
         delete addDialog;
-        delete showDialog;
     }
 }
 
@@ -100,15 +101,13 @@ QWidget *Shortcut::get_plugin_ui(){
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
 
-        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->systemLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->customLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
         pKeyMap = new KeyMap;
         addDialog = new addShortcutDialog();
-        showDialog = new ShowAllShortcut();
 
         isCloudService = false;
-        showList << "terminal" << "screenshot" << "area-screenshot" << "peony-qt" << "logout" << "screensaver";
 
         setupComponent();
         setupConnect();
@@ -146,19 +145,29 @@ void Shortcut::connectToServer(){
 void Shortcut::setupComponent(){
 
     //~ contents_path /shortcut/System Shortcut
-    ui->titleLabel->setText(tr("System Shortcut"));
+    ui->systemLabel->setText(tr("System Shortcut"));
     //~ contents_path /shortcut/Custom Shortcut
-    ui->title2Label->setText(tr("Custom Shortcut"));
-
-
-    ui->generalListWidget->setFocusPolicy(Qt::NoFocus);
-    ui->generalListWidget->setSelectionMode(QAbstractItemView::NoSelection);
-    ui->generalListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->generalListWidget->setSpacing(1);
+    ui->customLabel->setText(tr("Custom Shortcut"));
 
     ui->customListWidget->setFocusPolicy(Qt::NoFocus);
     ui->customListWidget->setSelectionMode(QAbstractItemView::NoSelection);
     ui->customListWidget->setSpacing(0);
+
+    QWidget * systemTitleWidget = new QWidget;
+    QVBoxLayout * systemVerLayout = new QVBoxLayout(systemTitleWidget);
+
+    systemTitleWidget->setFixedHeight(SYSTEMTITLEWIDGETHEIGH);
+    systemTitleWidget->setStyleSheet("QWidget{background: palette(window); border: none; border-radius: 4px}");
+    systemVerLayout->setSpacing(0);
+    systemVerLayout->setContentsMargins(16, 15, 19, 0);
+
+    QLabel * titleLabel  = new QLabel(systemTitleWidget);
+    titleLabel->setText(tr("System Shortcut"));
+
+    systemVerLayout->addWidget(titleLabel);
+    systemVerLayout->addStretch();
+    systemTitleWidget->setLayout(systemVerLayout);
+    //ui->verticalLayout_4->addWidget(systemTitleWidget);
 
     addWgt = new HoverWidget("");
     addWgt->setObjectName("addwgt");
@@ -193,11 +202,6 @@ void Shortcut::setupComponent(){
     });
 
     ui->addLyt->addWidget(addWgt);
-
-    ui->generalListWidget->setSelectionMode(QAbstractItemView::NoSelection);
-
-    ui->resetBtn->hide();
-
 }
 
 void Shortcut::setupConnect(){
@@ -207,65 +211,8 @@ void Shortcut::setupConnect(){
         addDialog->exec();
     });
 
-    connect(ui->showBtn, &QPushButton::clicked, [=]{
-        QMap<QString, QString> systemMap;
-        QMap<QString, QString> desktopMap;
-
-        //最新快捷键数据
-        for (int i = 0; i < generalEntries.count(); i++){
-            if (generalEntries[i]->gsSchema == KEYBINDINGS_DESKTOP_SCHEMA){
-                desktopMap.insert(generalEntries[i]->keyStr, generalEntries[i]->valueStr);
-            } else if (generalEntries[i]->gsSchema == KEYBINDINGS_SYSTEM_SCHEMA){
-                systemMap.insert(generalEntries[i]->keyStr, generalEntries[i]->valueStr);
-            }
-
-        }
-        QMap<QString, QMap<QString, QString>> generalMaps;
-        if (desktopMap.count() != 0) {
-            generalMaps.insert("Desktop", desktopMap);
-        }
-
-        showDialog->buildComponent(generalMaps);
-        showDialog->exec();
-    });
-
     connect(addDialog, &addShortcutDialog::shortcutInfoSignal, [=](QString path, QString name, QString exec){
         createNewShortcut(path, name, exec);
-    });
-
-    connect(ui->generalListWidget, &QListWidget::itemSelectionChanged, [=]{
-        QList<QListWidgetItem *> selectedItems = ui->generalListWidget->selectedItems();
-        if (selectedItems.count() == 1){
-            ui->resetBtn->show();
-        } else{
-            ui->resetBtn->hide();
-        }
-    });
-
-    connect(ui->resetBtn, &QPushButton::clicked, [=]{
-        QList<QListWidgetItem *> selectedItems = ui->generalListWidget->selectedItems();
-        if (!selectedItems.isEmpty()){
-            QListWidgetItem * sItem = selectedItems.first();
-            DefineShortcutItem * wItem = dynamic_cast<DefineShortcutItem *>(ui->generalListWidget->itemWidget(sItem));
-//            KeyEntry * currentEntry = dynamic_cast<KeyEntry *>(wItem->userData(Qt::UserRole));
-            KeyEntry * currentEntry = wItem->property("userData").value<KeyEntry *>();
-
-            const QByteArray id(currentEntry->gsSchema.toLatin1().data());
-            QGSettings * settings = new QGSettings(id);
-
-            settings->reset(currentEntry->keyStr);
-
-            QString value = settings->get(currentEntry->keyStr).toString();
-            wItem->setShortcutBinding(value);
-
-            // 同时更新 显示全部快捷键中 对应键值
-            for (int index = 0; index < generalEntries.count(); index++){
-                if (currentEntry->keyStr == generalEntries[index]->keyStr){
-                    generalEntries[index]->valueStr = value;
-                }
-            }
-            delete settings;
-        }
     });
 }
 
@@ -306,12 +253,24 @@ void Shortcut::initFunctionStatus(){
     pWorker->moveToThread(pThread);
     connect(pThread, &QThread::started, pWorker, &GetShortcutWorker::run);
     connect(pThread, &QThread::finished, this, [=]{
-        //系统快捷键
-        if(isCloudService == false) {
-            appendGeneralItems();
-            ui->generalListWidget->setFixedHeight((ui->generalListWidget->count() + 1) * ITEMHEIGH);
-            initGeneralItemsStyle();
+        QMap<QString, QString> systemMap;
+        QMap<QString, QString> desktopMap;
+
+        //最新快捷键数据
+        for (int i = 0; i < generalEntries.count(); i++){
+            if (generalEntries[i]->gsSchema == KEYBINDINGS_DESKTOP_SCHEMA){
+                desktopMap.insert(generalEntries[i]->keyStr, generalEntries[i]->valueStr);
+            } else if (generalEntries[i]->gsSchema == KEYBINDINGS_SYSTEM_SCHEMA){
+                systemMap.insert(generalEntries[i]->keyStr, generalEntries[i]->valueStr);
+            }
+
         }
+        QMap<QString, QMap<QString, QString>> generalMaps;
+        if (desktopMap.count() != 0) {
+            generalMaps.insert("Desktop", desktopMap);
+        }
+        //系统快捷键
+        appendGeneralItems(generalMaps);
 
         //自定义快捷键
         appendCustomItems();
@@ -322,44 +281,85 @@ void Shortcut::initFunctionStatus(){
     connect(pThread, &QThread::finished, pWorker, &GetShortcutWorker::deleteLater);
 
     pThread->start();
+}
+
+QWidget * Shortcut::buildGeneralWidget(QString schema, QMap<QString, QString> subShortcutsMap){
+
+    GSettingsSchema * pSettings;
+    QString domain;
+
+    if (schema == "Desktop"){
+        pSettings = g_settings_schema_source_lookup(g_settings_schema_source_new_from_directory("/usr/share/glib-2.0/schemas/", g_settings_schema_source_get_default(), FALSE, NULL),
+                                                    KEYBINDINGS_DESKTOP_SCHEMA,
+                                                    FALSE);
+        domain = "ukui-settings-daemon";
+
+    } else if (schema == "System"){
+        pSettings = g_settings_schema_source_lookup(g_settings_schema_source_new_from_directory("/usr/share/glib-2.0/schemas/", g_settings_schema_source_get_default(), FALSE, NULL),
+                                                    KEYBINDINGS_SYSTEM_SCHEMA,
+                                                    FALSE);
+        domain = "gsettings-desktop-schemas";
+    }
+
+    QWidget * pWidget = new QWidget;
+    pWidget->setAttribute(Qt::WA_DeleteOnClose);
+    QVBoxLayout * pVerLayout = new QVBoxLayout(pWidget);
+    pVerLayout->setSpacing(2);
+    //pVerLayout->setMargin(0);
+    pVerLayout->setContentsMargins(0,0,0,16);
+
+    pWidget->setLayout(pVerLayout);
+
+    QMap<QString, QString>::iterator it = subShortcutsMap.begin();
+
+    for (; it != subShortcutsMap.end(); it++){
+
+        QWidget * gWidget = new QWidget;
+        gWidget->setFixedHeight(TITLEWIDGETHEIGH);
+        gWidget->setStyleSheet("QWidget{background: palette(window); border: none; border-radius: 4px}");
+
+        QHBoxLayout * gHorLayout = new QHBoxLayout(gWidget);
+        gHorLayout->setSpacing(0);
+        gHorLayout->setContentsMargins(16, 0, 19, 0);
+
+        QByteArray ba = domain.toLatin1();
+        QByteArray ba1 = it.key().toLatin1();
+
+        GSettingsSchemaKey * keyObj = g_settings_schema_get_key(pSettings, ba1.data());
+
+        char * i18nKey;
+        QLabel * nameLabel  = new QLabel(gWidget);
+        i18nKey = const_cast<char *>(g_dgettext(ba.data(), g_settings_schema_key_get_summary(keyObj)));
+        nameLabel->setText(QString(i18nKey));
+
+        QLabel * bindingLabel = new QLabel(gWidget);
+        bindingLabel->setText(it.value());
+
+        gHorLayout->addWidget(nameLabel);
+        gHorLayout->addStretch();
+        gHorLayout->addWidget(bindingLabel);
+
+        gWidget->setLayout(gHorLayout);
+
+
+        pVerLayout->addWidget(gWidget);
+
+        g_settings_schema_key_unref(keyObj);
+    }
+
+    g_settings_schema_unref(pSettings);
+
+    return pWidget;
 
 }
 
-void Shortcut::appendGeneralItems(){
-    for (KeyEntry * gkeyEntry: generalEntries){
-        if (showList.contains(gkeyEntry->keyStr)){
+void Shortcut::appendGeneralItems(QMap<QString, QMap<QString, QString> > shortcutsMap){
 
-            GSettingsSchema * pSettings;
+    QMap<QString, QMap<QString, QString>>::iterator it = shortcutsMap.begin();
+    for (; it != shortcutsMap.end(); it++){
+        QWidget * gWidget = buildGeneralWidget(it.key(), it.value());
 
-            pSettings = g_settings_schema_source_lookup(g_settings_schema_source_new_from_directory("/usr/share/glib-2.0/schemas/", g_settings_schema_source_get_default(), FALSE, NULL),
-                                                        KEYBINDINGS_DESKTOP_SCHEMA,
-                                                        FALSE);
-
-            QByteArray ba = QString("ukui-settings-daemon").toLatin1();
-            QByteArray ba1 = gkeyEntry->keyStr.toLatin1();
-
-            GSettingsSchemaKey * keyObj = g_settings_schema_get_key(pSettings, ba1.data());
-
-            char * i18nKey;
-            i18nKey = const_cast<char *>(g_dgettext(ba.data(), g_settings_schema_key_get_summary(keyObj)));
-
-            DefineShortcutItem * singleWidget = new DefineShortcutItem(QString(i18nKey), gkeyEntry->valueStr);
-            singleWidget->setFrameShape(QFrame::Shape::Box);
-//            singleWidget->setUserData(Qt::UserRole, gkeyEntry);
-            singleWidget->setProperty("userData", QVariant::fromValue(gkeyEntry));
-
-            CustomLineEdit * line = singleWidget->lineeditComponent();
-            line->setFocusPolicy(Qt::NoFocus);
-            connect(line, &CustomLineEdit::shortcutCodeSignals, this, [=](QList<int> keyCode){
-                newBindingRequest(keyCode);
-            });
-
-            QListWidgetItem * item = new QListWidgetItem(ui->generalListWidget);
-//            item->setSizeHint(QSize(ui->generalListWidget->width() - 4, ITEMHEIGH));
-            item->setSizeHint(QSize(QSizePolicy::Expanding, ITEMHEIGH));
-            item->setData(Qt::UserRole, "");
-            ui->generalListWidget->setItemWidget(item, singleWidget);
-        }
+        ui->verticalLayout->addWidget(gWidget);
     }
 }
 
@@ -441,10 +441,6 @@ void Shortcut::initItemsStyle(QListWidget *listWidget){
         QWidget * widget = listWidget->itemWidget(listWidget->item(row));
         DefineShortcutItem * pShortcutItem = dynamic_cast<DefineShortcutItem *>(widget);
     }
-}
-
-void Shortcut::initGeneralItemsStyle(){
-    initItemsStyle(ui->generalListWidget);
 }
 
 void Shortcut::initCustomItemsStyle(){
