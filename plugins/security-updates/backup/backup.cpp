@@ -65,19 +65,19 @@ Backup::~Backup()
     delete ui;
 }
 
-QString Backup::get_plugin_name(){
+QString Backup::get_plugin_name() {
     return pluginName;
 }
 
-int Backup::get_plugin_type(){
+int Backup::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *Backup::get_plugin_ui(){
+QWidget *Backup::get_plugin_ui() {
     return pluginWidget;
 }
 
-void Backup::plugin_delay_control(){
+void Backup::plugin_delay_control() {
 
 }
 
@@ -86,53 +86,10 @@ const QString Backup::name() const {
     return QStringLiteral("backup");
 }
 
-void Backup::btnClicked(){
-    QString cmd = "/usr/bin/deja-dup";
-
-    QString versionPath = "/etc/os-release";
-    QStringList osRes =  readFile(versionPath);
-    QString version;
-
-    for (QString str : osRes) {
-        if (str.contains("PRETTY_NAME=")) {
-            int index = str.indexOf("PRETTY_NAME=");
-            int startIndex = index + 13;
-            int length = str.length() - startIndex - 1;
-            version = str.mid(startIndex, length);
-        }
-    }
-
-    if (version == "Kylin V10" || version == "Kylin V10.1") {
-        QString desktopfp = "/usr/share/applications/yhkylin-backup-tools.desktop";
-        GDesktopAppInfo *desktopAppInfo = g_desktop_app_info_new_from_filename(desktopfp.toLocal8Bit().data());
-        g_app_info_launch(G_APP_INFO(desktopAppInfo), nullptr, nullptr, nullptr);
-        g_object_unref(desktopAppInfo);
-        return;
-    }
-
-    QProcess process(this);
-    process.startDetached(cmd);
-}
-
-QStringList Backup::readFile(QString filepath)
-{
-    QStringList fileCont;
-    QFile file(filepath);
-    if(file.exists()) {
-        if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            qWarning() << "ReadFile() failed to open" << filepath;
-            return QStringList();
-        }
-        QTextStream textStream(&file);
-        while(!textStream.atEnd()) {
-            QString line= textStream.readLine();
-            line.remove('\n');
-            fileCont<<line;
-        }
-        file.close();
-        return fileCont;
-    } else {
-        qWarning() << filepath << " not found"<<endl;
-        return QStringList();
-    }
+void Backup::btnClicked() {
+    QString desktopfp = "/usr/share/applications/yhkylin-backup-tools.desktop";
+    GDesktopAppInfo *desktopAppInfo = g_desktop_app_info_new_from_filename(desktopfp.toLocal8Bit().data());
+    g_app_info_launch(G_APP_INFO(desktopAppInfo), nullptr, nullptr, nullptr);
+    g_object_unref(desktopAppInfo);
+    return;
 }
