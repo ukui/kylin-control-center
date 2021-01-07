@@ -24,6 +24,7 @@
 #include "utils/functionselect.h"
 #include "utils/utils.h"
 #include "../commonComponent/ImageUtil/imageutil.h"
+#include "ukccabout.h"
 
 #include <QLabel>
 #include <QLocale>
@@ -37,10 +38,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QGSettings>
-
-#define QueryLineEditBackground        "#FFFFFF" //搜索框背景
-#define QueryLineEditClickedBackground "#FFFFFF" //搜索框背景选中
-#define QueryLineEditClickedBorder     "rgba(61, 107, 229, 1)" //搜索框背景选中边框
+#include <QMenu>
 
 #ifdef WITHKYSEC
 #include <kysec/libkysec.h>
@@ -276,6 +274,7 @@ void MainWindow::initUI() {
     //加载插件
     loadPlugins();
 
+    connect(mOptionBtn, SIGNAL(clicked()), this, SLOT(showUkccAboutSlot()));
     connect(minBtn, SIGNAL(clicked()), this, SLOT(showMinimized()));
     connect(maxBtn, &QPushButton::clicked, this, [=] {
         if (isMaximized()) {
@@ -375,6 +374,7 @@ void MainWindow::initTileBar() {
     connect(m_searchWidget, &SearchWidget::notifyModuleSearch, this, &MainWindow::switchPage);
 
     backBtn     = new QPushButton(this);
+    mOptionBtn  = new QPushButton(this);
     minBtn      = new QPushButton(this);
     maxBtn      = new QPushButton(this);
     closeBtn    = new QPushButton(this);
@@ -382,6 +382,7 @@ void MainWindow::initTileBar() {
     titleLabel  = new QLabel(tr("UKCC"), this);
 
     backBtn->setFixedSize(30, 30);
+    mOptionBtn->setFixedSize(30, 30);
     minBtn->setFixedSize(30, 30);
     maxBtn->setFixedSize(30, 30);
     closeBtn->setFixedSize(30, 30);
@@ -402,6 +403,8 @@ void MainWindow::initTileBar() {
     ui->titleLayout->addStretch();
     ui->titleLayout->addWidget(m_searchWidget);
     ui->titleLayout->addStretch();
+    ui->titleLayout->addWidget(mOptionBtn);
+    ui->titleLayout->addSpacing(4);
     ui->titleLayout->addWidget(minBtn);
     ui->titleLayout->addSpacing(4);
     ui->titleLayout->addWidget(maxBtn);
@@ -421,6 +424,33 @@ void MainWindow::animationFinishedSlot()
     } else {
         m_queryWid->layout()->addWidget(m_queryText);
     }
+}
+
+void MainWindow::showUkccAboutSlot() {
+    QMenu* ukccMain = new QMenu(this);
+    ukccMain->setObjectName("mainMenu");
+
+    QAction* ukccHelp = new QAction(tr("Help"),this);
+    ukccMain->addAction(ukccHelp);
+    QAction* ukccAbout = new QAction(tr("About"),this);
+    ukccMain->addAction(ukccAbout);
+    QAction* ukccExit = new QAction(tr("Exit"),this);
+    ukccMain->addAction(ukccExit);
+    QPoint pt= QPoint(mOptionBtn->x() + 10, mOptionBtn->y()+mOptionBtn->height());
+
+    connect(ukccExit, SIGNAL(triggered()), this, SLOT(close()));
+
+    connect(ukccAbout, &QAction::triggered, this, [=] {
+        UkccAbout *ukcc = new UkccAbout(this);
+        ukcc->exec();
+    });
+
+    connect(ukccHelp, &QAction::triggered, this, [=] {
+        QProcess process(this);
+        process.startDetached("kylin-user-guide");
+    });
+
+    ukccMain->exec(this->mapToGlobal(pt));
 }
 void MainWindow::setBtnLayout(QPushButton * &pBtn){
     QLabel * imgLabel = new QLabel(pBtn);
@@ -707,9 +737,14 @@ void MainWindow::initStyleSheet() {
     backBtn->setProperty("iconHighlightEffectMode", 1);
     backBtn->setFlat(true);
 
+    mOptionBtn->setProperty("useIconHighlightEffect", 0x2);
+    mOptionBtn->setProperty("isWindowButton", 0x01);
+    mOptionBtn->setFlat(true);
+
     minBtn->setProperty("useIconHighlightEffect", 0x2);
     minBtn->setProperty("isWindowButton", 0x01);
     minBtn->setFlat(true);
+
     maxBtn->setProperty("useIconHighlightEffect", 0x2);
     maxBtn->setProperty("isWindowButton", 0x1);
     maxBtn->setFlat(true);
@@ -723,6 +758,7 @@ void MainWindow::initStyleSheet() {
     backBtn->setIcon(QIcon("://img/titlebar/back.svg"));
 
     // 设置右上角按钮图标
+    mOptionBtn->setIcon(QIcon::fromTheme("open-menu-symbolic"));
     minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
     maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
     closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));

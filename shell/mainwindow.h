@@ -81,14 +81,15 @@ private:
     KeyValueConverter * kvConverter;
     SearchWidget * m_searchWidget;
 
-    QPushButton * backBtn;
-    QPushButton * minBtn;
-    QPushButton * maxBtn;
-    QPushButton * closeBtn;
-    QLabel      * titleLabel;
-    QLabel      * mTitleIcon;
-    QTimer      * timer;
-    QLabel      * logoLabel;
+    QPushButton *backBtn;
+    QPushButton *mOptionBtn;
+    QPushButton *minBtn;
+    QPushButton *maxBtn;
+    QPushButton *closeBtn;
+    QLabel      *titleLabel;
+    QLabel      *mTitleIcon;
+    QTimer      *timer;
+    QLabel      *logoLabel;
     QLabel            *m_queryIcon;
     QLabel            *m_queryText  = nullptr;
     QPropertyAnimation *m_animation = nullptr;
@@ -115,6 +116,7 @@ public slots:
     void sltMessageReceived(const QString &msg);
     void switchPage(QString moduleName);
     void animationFinishedSlot();
+    void showUkccAboutSlot();
 };
 
 #endif // MAINWINDOW_H

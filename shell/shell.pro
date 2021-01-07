@@ -71,6 +71,7 @@ SOURCES += \
     pinyin.cpp \
     prescene.cpp \
     searchwidget.cpp \
+    ukccabout.cpp \
     utils/keyvalueconverter.cpp \
     component/leftwidgetitem.cpp \
     component/clicklabel.cpp \
@@ -94,6 +95,7 @@ HEADERS += \
     pinyin.h \
     prescene.h \
     searchwidget.h \
+    ukccabout.h \
     utils/keyvalueconverter.h \
     component/leftwidgetitem.h \
     component/clicklabel.h \
