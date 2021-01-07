@@ -17,24 +17,48 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef UKCCABOUT_H
+#define UKCCABOUT_H
 
-#include <QRect>
-#include <QCursor>
-#include <QObject>
 #include <QWidget>
-#include <QApplication>
-#include <QCommandLineOption>
-#include <QCommandLineParser>
-#include <QDesktopWidget>
-#include <QVariantMap>
+#include <QDialog>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QPushButton>
 
-namespace Utils
-{    
-    void centerToScreen(QWidget *widget);
-    void setCLIName(QCommandLineParser &parser);
-    QVariantMap getModuleHideStatus();
+class UkccAbout : public QDialog
+{
+    Q_OBJECT
+public:
+    explicit UkccAbout(QWidget *parent = nullptr);
 
-}
-#endif // UTILS_H
+private:
+    QLabel *mUkccIcon;
+    QLabel *mUkccTitle;
+    QPushButton *mUkccCloseBtn;
+
+    QLabel *mUkccCenterIcon;
+    QLabel *mUkccCenterTitle;
+    QLabel *mUkccVersion;
+    QLabel *mUkccDetail;
+    QLabel *mUkccDeveloper;
+
+    QHBoxLayout *mCenterIconLayout;
+    QHBoxLayout *mCenterTitleLayout;
+    QHBoxLayout *mCenterVersionLayout;
+    QHBoxLayout *mUkccDetailLayout;
+    QHBoxLayout *mUkccDeveloperLayout;
+    QHBoxLayout *mTitleLayout;
+    QVBoxLayout *mMainVLayout;
+
+private:
+    void initUI();
+    void initConnection();
+    QString getUkccVersion();
+
+signals:
+
+};
+
+#endif // UKCCABOUT_H
