@@ -1065,7 +1065,42 @@ void UkmediaMainWidget::onContextDefaultOutputStreamNotify (MateMixerContext *m_
     MateMixerStream *m_pStream;
     m_pStream = mate_mixer_context_get_default_output_stream (m_pContext);
 
-    qDebug() << "on context default output steam notify:" << mate_mixer_stream_get_name(m_pStream);
+    //修改输出设备时跟随输出设备改变
+    MateMixerDevice *pDevice = mate_mixer_stream_get_device(m_pStream);
+    const gchar *cardName = mate_mixer_device_get_name(pDevice);
+    int cardIndex = m_pWidget->m_pDeviceNameList->indexOf(cardName);
+//    qDebug() << "index " << cardIndex;
+//    if (cardIndex < 0)
+//        return;
+//    m_pWidget->m_pOutputWidget->m_pSelectCombobox->blockSignals(true);
+//    m_pWidget->m_pOutputWidget->m_pSelectCombobox->setCurrentIndex(cardIndex);
+//    m_pWidget->m_pOutputWidget->m_pSelectCombobox->blockSignals(false);
+
+    qDebug() << "on context default output steam notify:" << mate_mixer_stream_get_name(m_pStream) << cardName;
+
+    /* Enable the port selector if the stream has one */
+    MateMixerSwitch *portSwitch;
+    portSwitch = findStreamPortSwitch (m_pWidget,m_pStream);
+    //拔插耳机时设置输出端口名
+    m_pWidget->m_pOutputPortList->clear();
+    m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->clear();
+    if (MATE_MIXER_IS_STREAM(m_pStream)) {
+        if (portSwitch != nullptr) {
+            const GList *options;
+            options = mate_mixer_switch_list_options(MATE_MIXER_SWITCH(portSwitch));
+            while (options != nullptr) {
+                MateMixerSwitchOption *opt = MATE_MIXER_SWITCH_OPTION(options->data);
+                QString label = mate_mixer_switch_option_get_label(opt);
+                QString name = mate_mixer_switch_option_get_name(opt);
+                qDebug() << "***********" << name ;
+                if (!m_pWidget->m_pOutputPortList->contains(name)) {
+                    m_pWidget->m_pOutputPortList->append(name);
+                    m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->addItem(label);
+                }
+                options = options->next;
+            }
+        }
+    }
     if (m_pStream == nullptr) {
         //当输出流更改异常时，使用默认的输入流，不应该发生这种情况
         m_pStream = m_pWidget->m_pOutputStream;
@@ -1445,6 +1480,8 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
     /* Enable the port selector if the stream has one */
      portSwitch = findStreamPortSwitch (m_pWidget,stream);
     //拔插耳机时设置输出端口名
+     m_pWidget->m_pOutputPortList->clear();
+     m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->clear();
     if (MATE_MIXER_IS_STREAM(m_pStream)) {
         if (portSwitch != nullptr) {
             const GList *options;
@@ -1488,10 +1525,14 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
     //设置输出滑动条的值
     int value = volume*100/65536.0 + 0.5;
     if (direction == MATE_MIXER_DIRECTION_OUTPUT) {
+        m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->blockSignals(true);
         m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->setValue(value);
+        m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->blockSignals(true);
     }
     else if (direction == MATE_MIXER_DIRECTION_INPUT) {
+        m_pWidget->m_pInputWidget->m_pIpVolumeSlider->blockSignals(true);
         m_pWidget->m_pInputWidget->m_pIpVolumeSlider->setValue(value);
+        m_pWidget->m_pInputWidget->m_pIpVolumeSlider->blockSignals(true);
     }
 }
 
@@ -2808,7 +2849,6 @@ MateMixerSwitch* UkmediaMainWidget::findStreamPortSwitch (UkmediaMainWidget *wid
     switches = mate_mixer_stream_list_switches (stream);
     while (switches != nullptr) {
         MateMixerStreamSwitch *swtch = MATE_MIXER_STREAM_SWITCH (switches->data);
-
         if (!MATE_MIXER_IS_STREAM_TOGGLE (swtch) &&
                 mate_mixer_stream_switch_get_role (swtch) == MATE_MIXER_STREAM_SWITCH_ROLE_PORT) {
             return MATE_MIXER_SWITCH (swtch);
