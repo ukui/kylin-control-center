@@ -25,6 +25,7 @@
 #include "utils/utils.h"
 #include "../commonComponent/ImageUtil/imageutil.h"
 #include "ukccabout.h"
+#include "devicesmonitor.h"
 
 #include <libmatemixer/matemixer.h>
 #include <QLabel>
@@ -514,6 +515,8 @@ void MainWindow::loadPlugins(){
         } else if (!QGSettings::isSchemaInstalled(kVinoSchemas) && "libvino.so" == fileName) {
             continue;
         } else if ("libbluetooth.so" == fileName && !isExitBluetooth()) {
+            continue;
+        }else if ("libtouchscreen.so" == fileName && !isExitTouchScreen()) {
             continue;
         }
 

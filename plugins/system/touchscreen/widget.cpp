@@ -1,9 +1,10 @@
-#include "widget.h"
-#include "declarative/qmloutput.h"
-#include "declarative/qmlscreen.h"
-#include "utils.h"
-#include "ui_touchscreen.h"
-
+extern "C" {
+#define MATE_DESKTOP_USE_UNSTABLE_API
+#include <libmate-desktop/mate-rr.h>
+#include <libmate-desktop/mate-rr-config.h>
+#include <libmate-desktop/mate-rr-labeler.h>
+#include <libmate-desktop/mate-desktop-utils.h>
+}
 #include <QHBoxLayout>
 #include <QTimer>
 #include <QLabel>
@@ -20,6 +21,9 @@
 #include <QStandardPaths>
 #include <QComboBox>
 #include <QMessageBox>
+#include <QLibrary>
+#include <iostream>
+#include <cstring>
 
 #include <KF5/KScreen/kscreen/output.h>
 #include <KF5/KScreen/kscreen/edid.h>
@@ -34,17 +38,20 @@
 #include <X11/extensions/XInput2.h>
 #include <X11/Xutil.h>
 
+#include "declarative/qmloutput.h"
+#include "declarative/qmlscreen.h"
+#include "utils.h"
+#include "ui_touchscreen.h"
+#include "widget.h"
+
+#include "xinputmanager.h"
+
+
+
 #ifdef signals
 #undef signals
 #endif
 
-extern "C" {
-#define MATE_DESKTOP_USE_UNSTABLE_API
-#include <libmate-desktop/mate-rr.h>
-#include <libmate-desktop/mate-rr-config.h>
-#include <libmate-desktop/mate-rr-labeler.h>
-#include <libmate-desktop/mate-desktop-utils.h>
-}
 
 #define QML_PATH "kcm_kscreen/qml/"
 
@@ -64,6 +71,10 @@ Widget::Widget(QWidget *parent)
     qRegisterMetaType<QQuickView*>();
     gdk_init(NULL, NULL);
 
+    m_pXinputManager=new XinputManager;
+
+    m_pXinputManager->start();
+
     ui->setupUi(this);
     ui->touchscreenLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
@@ -76,30 +87,35 @@ Widget::Widget(QWidget *parent)
 
 
     initConnection();
+    initui();
     loadQml();
 
 }
 
-void Widget::loadQml() {
-    /*
-    qmlRegisterType<QMLOutput>("org.kde.kscreen", 1, 0, "QMLOutput");
-    qmlRegisterType<QMLScreen>("org.kde.kscreen", 1, 0, "QMLScreen");
+void Widget::initui(){
 
-    qmlRegisterType<KScreen::Output>("org.kde.kscreen", 1, 0, "KScreenOutput");
-    qmlRegisterType<KScreen::Edid>("org.kde.kscreen", 1, 0, "KScreenEdid");
-    qmlRegisterType<KScreen::Mode>("org.kde.kscreen", 1, 0, "KScreenMode");
-
-    ui->quickWidget->setSource(QUrl("qrc:/qml/main.qml"));
-
-    QQuickItem* rootObject = ui->quickWidget->rootObject();
-
-    mScreen = rootObject->findChild<QMLScreen*>(QStringLiteral("outputView"));
-    if (!mScreen) {
-        return;
+    if (findTouchScreen()){
+        qDebug() << "Touch Screen Devices Available";
+        ui->tipLabel->hide();
+        ui->screenFrame->show();
+        ui->touchscreenFrame->show();
+        ui->deviceinfoFrame->show();
+        ui->mapButton->show();
+        ui->CalibrationButton->show();
+        //initTouchScreenStatus();
+    } else {
+        qDebug() << "Touch Screen Devices Unavailable";
+        ui->screenFrame->hide();
+        ui->touchscreenFrame->hide();
+        ui->deviceinfoFrame->hide();
+        ui->mapButton->hide();
+        ui->CalibrationButton->hide();
+        ui->tipLabel->show();
     }
-    connect(mScreen, &QMLScreen::focusedOutputChanged,
-            this, &Widget::slotFocusedOutputChanged);
-    */
+}
+
+void Widget::loadQml() {
+
 }
 
 Widget::~Widget() {
@@ -315,6 +331,17 @@ void Widget::outputRemoved(int outputId) {
     ui->monitorCombo->removeItem(index);
 }
 
+void Widget::touchscreenAdded() {
+    initui();
+    resettouchscreenCombo();
+}
+
+void Widget::touchscreenRemoved() {
+    initui();
+    resettouchscreenCombo();
+
+}
+
 void Widget::primaryOutputSelected(int index) {
     if (!mConfig) {
         return;
@@ -345,6 +372,9 @@ void Widget::initConnection() {
         CalibratTouch();
     });
 
+    connect(m_pXinputManager, &XinputManager::xinputSlaveAdded, this, &Widget::touchscreenAdded);
+    connect(m_pXinputManager, &XinputManager::xinputSlaveRemoved, this, &Widget::touchscreenRemoved);
+
 }
 
 void Widget::curOutoutChanged(int index)
@@ -362,18 +392,48 @@ void Widget::curTouchScreenChanged(int index)
     CurDevicesName=findTouchScreenName(CurDevicesId);
     ui->touchnameContent->setText(CurDevicesName);
 }
-//todo:完善映射设置代码
+
 void Widget::maptooutput() {
-    //依赖xinput命令
-    QString cmd = QString("xinput map-to-output %1 %2").arg(CurTouchScreenName).arg(CurMonitorName);
-    QProcess::execute(cmd);
+
+    Display *dpy=XOpenDisplay(NULL);
+
+    QLibrary lib("/usr/lib/libkysset.so");
+
+    std::string touchstr = CurTouchScreenName.toStdString();
+    std::string monitorstr = CurMonitorName.toStdString();
+    const char* _CurTouchScreenName = touchstr.c_str();
+    const char* _CurMonitorName = monitorstr.c_str();
+
+    if(lib.load()){
+
+        typedef int(*MapToOutput)(Display *,const char *,const char *);
+        MapToOutput _maptooutput=(MapToOutput)lib.resolve("MapToOutput");
+
+        if(!_maptooutput){
+            qDebug("maptooutput resolve failed!\n");
+        }else{
+            int ret=_maptooutput(dpy,_CurTouchScreenName,_CurMonitorName);
+            if(ret!=0){
+                qDebug("MapToOutput exe failed ! ret=%d\n",ret);
+            }
+        }
+
+        lib.unload();
+
+    }else{
+        qDebug("/usr/lib/libkysset.so not found!\n");
+    }
+
+    XCloseDisplay(dpy);
+
 }
 
 //todo:完善触摸校准代码
 void Widget::CalibratTouch() {
-    //依赖xinput_calibrator命令
-    QString cmd = QString("xinput_calibrator --device %1").arg(CurTouchScreenName);
-    QProcess::execute(cmd);
+
+    QDBusMessage msg =QDBusMessage::createSignal("/com/control/center/calibrator",  "com.control.center.calibrator.interface", "calibratorEvent");
+    msg<<CurTouchScreenName;
+    QDBusConnection::systemBus().send(msg);
 }
 
 
@@ -382,9 +442,11 @@ void Widget::addTouchScreenToTouchCombo(const QString touchscreenname ){
     ui->touchscreenCombo->addItem(touchscreenname);
 }
 
-void Widget::findTouchScreen(){
+bool Widget::findTouchScreen(){
 
     int  ndevices = 0;
+    bool retval=false;
+
     Display *dpy = XOpenDisplay(NULL);
     XIDeviceInfo *info = XIQueryDevice(dpy, XIAllDevices, &ndevices);
     QString devicesid="";
@@ -401,9 +463,15 @@ void Widget::findTouchScreen(){
             {
                 devicesid = tr("%1").arg(dev->deviceid);
                 addTouchScreenToTouchCombo(devicesid);
+                retval = true;
             }
         }
     }
+
+    XIFreeDeviceInfo(info);
+    XCloseDisplay(dpy);
+
+    return retval;
 }
 
 QString Widget::findTouchScreenName(int devicesid){

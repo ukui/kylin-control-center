@@ -8,7 +8,6 @@ SUBDIRS = \
           system/defaultapp \
           system/power \
           system/autoboot \
-          system/touchscreen \
           system/display \
           devices/printer \
           devices/mouse \
@@ -31,5 +30,6 @@ SUBDIRS = \
 #          security-updates/update \
           security-updates/upgrade \
           messages-task/about \
+          system/touchscreen \
           time-language/datetime \
           time-language/area

@@ -42,17 +42,21 @@ SOURCES += \
     declarative/qmloutput.cpp \
     declarative/qmloutputcomponent.cpp \
     declarative/qmlscreen.cpp \
+    monitorinputtask.cpp \
     touchscreen.cpp \
     utils.cpp \
-    widget.cpp
+    widget.cpp \
+    xinputmanager.cpp
 
 HEADERS += \
     declarative/qmloutput.h \
     declarative/qmloutputcomponent.h \
     declarative/qmlscreen.h \
+    monitorinputtask.h \
     touchscreen.h \
     utils.h \
-    widget.h
+    widget.h \
+    xinputmanager.h
 
 FORMS += \
     touchscreen.ui
