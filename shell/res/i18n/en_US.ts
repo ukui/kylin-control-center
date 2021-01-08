@@ -4653,38 +4653,43 @@ run start-pulseaudio-x11 manually.</source>
     <name>TouchScreen</name>
     <message>
         <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="14"/>
-        <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="212"/>
+        <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="20"/>
         <location filename="../../../plugins/system/touchscreen/touchscreen.cpp" line="11"/>
         <source>TouchScreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="56"/>
+        <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="57"/>
         <source>monitor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="124"/>
+        <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="122"/>
         <source>touch id</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="183"/>
+        <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="227"/>
         <source>map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="246"/>
+        <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="256"/>
         <source>calibration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="293"/>
+        <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="270"/>
+        <source>No touch screen found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="190"/>
         <source>input device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="300"/>
+        <location filename="../../../plugins/system/touchscreen/touchscreen.ui" line="197"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5308,7 +5313,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/touchscreen/widget.cpp" line="402"/>
+        <location filename="../../../plugins/system/touchscreen/widget.cpp" line="450"/>
         <source>%1</source>
         <translation type="unfinished"></translation>
     </message>

@@ -33,7 +33,7 @@ int main(int argc, char *argv[]){
 
 
     QDBusConnection systemBus = QDBusConnection::systemBus();
-    if (!systemBus.registerService("com.control.center.qt.systemdbus")){
+    if (!systemBus.registerService("com.control.center.qt.systemdbus.test")){
         qCritical() << "QDbus register service failed reason:" << systemBus.lastError();
         exit(1);
     }

@@ -21,7 +21,7 @@ include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
 
 DEFINES += PLUGIN_INSTALL_DIRS='\\"$${PLUGIN_INSTALL_DIRS}\\"'
 
-LIBS += -L$$[QT_INSTALL_LIBS] -lX11 -lgsettings-qt
+LIBS += -L$$[QT_INSTALL_LIBS] -lX11 -lgsettings-qt -lXi
 
 #LIBS += -L$$[QT_INSTALL_LIBS] -lkylinssoclient
 
@@ -71,6 +71,7 @@ SOURCES += \
     pinyin.cpp \
     prescene.cpp \
     searchwidget.cpp \
+    utils/devicesmonitor.cpp \
     utils/keyvalueconverter.cpp \
     component/leftwidgetitem.cpp \
     component/clicklabel.cpp \
@@ -83,6 +84,7 @@ SOURCES += \
 
 HEADERS += \
     customstyle.h \
+    devicesmonitor.h \
     mainwindow.h \
     interface.h \
     framelessExtended/cursorposcalculator.h \

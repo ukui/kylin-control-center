@@ -10,6 +10,8 @@ TouchScreen::TouchScreen() : mFirstLoad(true)
 {
     pluginName = tr("TouchScreen");
     pluginType = SYSTEM;
+
+
 }
 
 TouchScreen::~TouchScreen() {

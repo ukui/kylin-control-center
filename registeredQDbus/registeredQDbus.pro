@@ -29,3 +29,7 @@ HEADERS += \
 SOURCES += \
     main.cpp \
     sysdbusregister.cpp
+
+DISTFILES += \
+    conf/com.control.center.qt.systemdbus.conf \
+    conf/com.control.center.qt.systemdbus.service

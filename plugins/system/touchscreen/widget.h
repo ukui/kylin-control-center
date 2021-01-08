@@ -1,6 +1,7 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+//
 #include <QWidget>
 #include <QVariantMap>
 #include <QGSettings>
@@ -17,6 +18,7 @@
 
 
 
+
 class QLabel;
 class QMLOutput;
 class QMLScreen;
@@ -25,6 +27,7 @@ class PrimaryOutputCombo;
 class QPushButton;
 class QComboBox;
 class QStyledItemDelegate;
+class XinputManager;
 
 namespace KScreen
 {
@@ -48,8 +51,10 @@ class Widget : public QWidget
 
     void slotFocusedOutputChangedNoParam();
     void initConnection();
+    void initui();
     QString getScreenName(QString name = "");
     bool event(QEvent *event);
+
 
   protected:
 
@@ -65,6 +70,8 @@ class Widget : public QWidget
 
     void outputAdded(const KScreen::OutputPtr &output);
     void outputRemoved(int outputId);
+    void touchscreenAdded();
+    void touchscreenRemoved();
     void curOutoutChanged(int index);
     void curTouchScreenChanged(int index);
     void primaryOutputSelected(int index);
@@ -79,12 +86,13 @@ class Widget : public QWidget
     void resettouchscreenCombo();
     void addOutputToMonitorCombo(const KScreen::OutputPtr &output);
     void addTouchScreenToTouchCombo(const QString touchscreenname );
-    void findTouchScreen();
+    bool findTouchScreen();
     QString findTouchScreenName(int devicesid);
     KScreen::OutputPtr findOutput(const KScreen::ConfigPtr &config, const QVariantMap &info);
 
   private:
     Ui::TouchScreen *ui;
+    XinputManager *m_pXinputManager;
     QMLScreen *mScreen = nullptr;
     QString CurTouchScreenName = "";
     QString CurMonitorName = "";
@@ -104,13 +112,11 @@ class Widget : public QWidget
     QButtonGroup *singleButton;
 
 
-
-
-
     bool mOriApply;
     bool mConfigChanged   = false;
     bool mOnBattery       = false;
     bool m_blockChanges = false;
 
 };
+
 #endif // WIDGET_H

@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "prescene.h"
@@ -24,6 +25,7 @@
 #include "utils/functionselect.h"
 #include "utils/utils.h"
 #include "../commonComponent/ImageUtil/imageutil.h"
+#include "devicesmonitor.h"
 
 #include <QLabel>
 #include <QLocale>
@@ -38,6 +40,8 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QGSettings>
+
+
 
 #define QueryLineEditBackground        "#FFFFFF" //搜索框背景
 #define QueryLineEditClickedBackground "#FFFFFF" //搜索框背景选中
@@ -61,6 +65,7 @@ extern "C" {
 #include <glib.h>
 #include <gio/gio.h>
 }
+
 
 const int dbWitdth = 50;
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
@@ -488,6 +493,8 @@ void MainWindow::loadPlugins(){
         } else if (!QGSettings::isSchemaInstalled(kVinoSchemas) && "libvino.so" == fileName) {
             continue;
         } else if ("libbluetooth.so" == fileName && !isExitBluetooth()) {
+            continue;
+        }else if ("libtouchscreen.so" == fileName && !isExitTouchScreen()) {
             continue;
         }
 
