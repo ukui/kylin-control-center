@@ -21,6 +21,8 @@
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
 #include <sys/stat.h>
+#include <QDesktopServices>
+#include <QUrl>
 
 MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_dbusClient = new DbusHandleClient();    //创建一个通信客户端
@@ -143,7 +145,6 @@ void MainWidget::setret_check(QString ret) {
         m_mainWidget->setCurrentWidget(m_nullWidget);
        // setshow(m_mainWidget);
     } else if(!(ret == "" || ret =="201" || ret == "203" || ret == "401" ) && m_bTokenValid){
-        dooss(m_szUuid);
         m_infoTab->setText(tr("Your account：%1").arg(ret));
         m_szCode = ret;
         m_mainWidget->setCurrentWidget(m_widgetContainer);
@@ -225,6 +226,7 @@ void MainWidget::init_gui() {
     m_nullwidgetContainer = new QWidget(this);
     m_syncTimeLabel = new QLabel(this);
     m_cLoginTimer = new QTimer(this);
+    m_lazyTimer = new QTimer(this);
 
     //m_mainWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
@@ -466,12 +468,18 @@ void MainWidget::init_gui() {
         }
     });
 
+    m_lazyTimer->setSingleShot(true);
+    connect(m_lazyTimer,&QTimer::timeout,[this] () {
+       emit doman();
+    });
+
     connect(this,&MainWidget::closedialog,[this] () {
           m_mainDialog->on_close();
           // qDebug() << "scscacsacsac============ascas";
           //QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
-          emit doman();
-          // qDebug() << "scscacsacsacsssssssssssssssascas";
+          m_lazyTimer->setSingleShot(true);
+          m_lazyTimer->start(1000);
+           //qDebug() << "clsoe dialog";
 
     });
 
@@ -504,7 +512,8 @@ void MainWidget::init_gui() {
                // emit doconf();
            }  else {
                //QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
-               emit doman();
+               m_lazyTimer->setSingleShot(true);
+               m_lazyTimer->start(1000);
            }
 
        } else {
@@ -539,6 +548,7 @@ void MainWidget::on_login() {
         m_cLoginTimer->setInterval(15000);
         m_cLoginTimer->start();
         m_bIsStopped = false;
+        //qDebug() << "sssssssssssssssssss";
     });
     connect(m_mainDialog,&MainDialog::on_login_failed,[this] () {
         m_cLoginTimer->stop();
@@ -562,7 +572,7 @@ void MainWidget::on_login() {
             emit dologout();
         }
     });
-    m_mainDialog->exec();
+    m_mainDialog->show();
    // qDebug() << "scscacsacsacascas";
 }
 
@@ -745,17 +755,7 @@ void MainWidget::on_login_out() {
 
 /* 修改密码打开处理事件 */
 void MainWidget::neweditdialog() {
-    //emit docheck();
-    m_editDialog = new EditPassDialog;
-    m_editDialog->setAttribute(Qt::WA_DeleteOnClose);
-    m_editDialog->set_client(m_dbusClient,thread);
-    m_editDialog->m_bIsUsed = true;
-    //m_mainDialog->is_used = false;
-    m_editDialog->set_clear();
-    m_editDialog->m_szCode  = m_szCode;
-    connect(m_editDialog,SIGNAL(account_changed()),this,SLOT(on_login_out()));
-    m_editDialog->show();
-    m_editDialog->raise();
+    QDesktopServices::openUrl(QUrl("https://id.kylinos.cn/find"));
 }
 
 /* 动态布局显示处理函数 */

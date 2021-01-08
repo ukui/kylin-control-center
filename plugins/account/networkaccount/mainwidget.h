@@ -73,11 +73,12 @@ private:
     QWidget         *m_infoTabWidget;
     QVBoxLayout     *m_vboxLayout;
     QPushButton     *m_openEditDialog_btn;
-    EditPassDialog      *m_editDialog;
+    //EditPassDialog      *m_editDialog;
     QStackedWidget  *m_mainWidget;
     QWidget         *m_nullWidget;
     DbusHandleClient   *m_dbusClient;
     QPushButton         *m_login_btn;
+    QTimer              *m_lazyTimer;
     QLabel              *m_welcomeMsg;
     QSvgWidget              *m_welcomeImage;
     QVBoxLayout         *m_welcomeLayout;
