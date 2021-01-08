@@ -289,6 +289,10 @@ void Desktop::initLockingStatus() {
 }
 
 void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
+    QMap<QString, QIcon> desktopMap = desktopConver(name);
+    if (desktopMap.isEmpty()) {
+        return;
+    }
     nameList.append(name);
     const QString locale = QLocale::system().name();
 
@@ -509,12 +513,16 @@ void Desktop::addTrayItem(QGSettings * trayGSetting) {
 QString Desktop::desktopToName(QString desktopfile) {
     const QString locale = QLocale::system().name();
     const QString localeName = "Name[" + locale +"]";
+    const QString genericName = "GenericName[" + locale +"]";
     QSettings desktopSettings(desktopfile, QSettings::IniFormat);
 
     desktopSettings.setIniCodec(QTextCodec::codecForName("UTF-8"));
     desktopSettings.beginGroup("Desktop Entry");
 
     QString desktopName = desktopSettings.value(localeName, "").toString();
+    if (desktopName.isEmpty()) {
+        desktopName = desktopSettings.value(genericName, "").toString();
+    }
 
     desktopSettings.endGroup();
     return desktopName;
