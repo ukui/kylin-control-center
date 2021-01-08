@@ -17,8 +17,6 @@
 #include <KF5/KScreen/kscreen/config.h>
 
 
-
-
 class QLabel;
 class QMLOutput;
 class QMLScreen;
@@ -28,6 +26,7 @@ class QPushButton;
 class QComboBox;
 class QStyledItemDelegate;
 class XinputManager;
+
 
 namespace KScreen
 {
@@ -51,10 +50,10 @@ class Widget : public QWidget
 
     void slotFocusedOutputChangedNoParam();
     void initConnection();
+
     void initui();
     QString getScreenName(QString name = "");
     bool event(QEvent *event);
-
 
   protected:
 

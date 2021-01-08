@@ -17,60 +17,48 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef SHOWALLSHORTCUT_H
-#define SHOWALLSHORTCUT_H
+#ifndef UKCCABOUT_H
+#define UKCCABOUT_H
 
+#include <QWidget>
 #include <QDialog>
-#include <QPainter>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QLabel>
 #include <QPushButton>
 
-namespace Ui {
-class ShowAllShortcut;
-}
-
-class ClickWidget : public QWidget
+class UkccAbout : public QDialog
 {
     Q_OBJECT
-
 public:
-    explicit ClickWidget(QString name);
-    ~ClickWidget(){}
-
-public:
-    bool checked();
-
-protected:
-    void mousePressEvent(QMouseEvent * e);
-    void paintEvent(QPaintEvent * e);
+    explicit UkccAbout(QWidget *parent = nullptr);
 
 private:
-    QPushButton * directionBtn;
+    QLabel *mUkccIcon;
+    QLabel *mUkccTitle;
+    QPushButton *mUkccCloseBtn;
 
-Q_SIGNALS:
-    void widgetClicked(bool checked);
+    QLabel *mUkccCenterIcon;
+    QLabel *mUkccCenterTitle;
+    QLabel *mUkccVersion;
+    QLabel *mUkccDetail;
+    QLabel *mUkccDeveloper;
+
+    QHBoxLayout *mCenterIconLayout;
+    QHBoxLayout *mCenterTitleLayout;
+    QHBoxLayout *mCenterVersionLayout;
+    QHBoxLayout *mUkccDetailLayout;
+    QHBoxLayout *mUkccDeveloperLayout;
+    QHBoxLayout *mTitleLayout;
+    QVBoxLayout *mMainVLayout;
+
+private:
+    void initUI();
+    void initConnection();
+    QString getUkccVersion();
+
+signals:
 
 };
 
-class ShowAllShortcut : public QDialog
-{
-    Q_OBJECT
-
-public:
-    explicit ShowAllShortcut(QWidget *parent = nullptr);
-    ~ShowAllShortcut();
-
-public:
-    void buildComponent(QMap<QString, QMap<QString, QString>> shortcutsMap);
-
-    QWidget * buildTitleWidget(QString tName);
-    QWidget * buildGeneralWidget(QString schema, QMap<QString, QString> subShortcutsMap);
-
-protected:
-    void paintEvent(QPaintEvent *);
-
-
-private:
-    Ui::ShowAllShortcut *ui;
-};
-
-#endif // SHOWALLSHORTCUT_H
+#endif // UKCCABOUT_H

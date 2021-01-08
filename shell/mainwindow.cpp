@@ -27,6 +27,8 @@
 #include "../commonComponent/ImageUtil/imageutil.h"
 #include "devicesmonitor.h"
 
+
+#include <libmatemixer/matemixer.h>
 #include <QLabel>
 #include <QLocale>
 #include <QPushButton>
@@ -36,16 +38,15 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QProcess>
-#include <libmatemixer/matemixer.h>
 #include <QDebug>
 #include <QMessageBox>
 #include <QGSettings>
 
 
-
 #define QueryLineEditBackground        "#FFFFFF" //搜索框背景
 #define QueryLineEditClickedBackground "#FFFFFF" //搜索框背景选中
 #define QueryLineEditClickedBorder     "rgba(61, 107, 229, 1)" //搜索框背景选中边框
+
 
 #ifdef WITHKYSEC
 #include <kysec/libkysec.h>
@@ -75,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_searchWidget(nullptr)
 {
-    // 初始化mixer
+
     mate_mixer_init();
     // 设置初始大小
     this->setMinimumSize(895, 600);
@@ -153,8 +154,8 @@ void MainWindow::bootOptionsFilter(QString opt) {
         bootOptionsSwitch(DATETIME, DAT);
     }  else if (opt == "--area") {
         bootOptionsSwitch(DATETIME, AREA);
-    } else if (opt == "--update") {
-        bootOptionsSwitch(UPDATE, UPDATES);
+    } else if (opt == "--upgrade") {
+        bootOptionsSwitch(UPDATE, UPGRADE);
     } else if (opt == "--backup") {
         bootOptionsSwitch(UPDATE, BACKUP);
     } else if (opt == "--notice" || opt == "-n") {
@@ -219,25 +220,24 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             }
         }
     }
-    if (watched==m_searchWidget) {
-        if (event->type()==QEvent::FocusIn) {
+    if (watched == m_searchWidget) {
+        if (event->type() == QEvent::FocusIn) {
             if (m_searchWidget->text().isEmpty()) {
                 m_animation->stop();
                 m_animation->setStartValue(QRect((m_searchWidget->width()-(m_queryIcon->width()+m_queryText->width()+10))/2,0,
-                                                 m_queryIcon->width()+m_queryText->width()+30,(m_searchWidget->height()+36)/2));
-                m_animation->setEndValue(QRect(0,0,
-                                               m_queryIcon->width()+5,(m_searchWidget->height()+36)/2));
+                                                 m_queryIcon->width()+m_queryText->width()+30,(m_searchWidget->height()+32)/2));
+                m_animation->setEndValue(QRect(0, 0, m_queryIcon->width() + 5,(m_searchWidget->height()+32)/2));
                 m_animation->setEasingCurve(QEasingCurve::OutQuad);
                 m_animation->start();
-                m_searchWidget->setTextMargins(30,1,0,1);
+                m_searchWidget->setTextMargins(30, 1, 0, 1);
             }
-            m_isSearching=true;
-        } else if(event->type()==QEvent::FocusOut) {
+            m_isSearching = true;
+        } else if (event->type() == QEvent::FocusOut) {
             m_searchKeyWords.clear();
             if (m_searchWidget->text().isEmpty()) {
                 if (m_isSearching) {
                     m_queryText->adjustSize();
-                    m_animation->setStartValue(QRect(0,0,
+                    m_animation->setStartValue(QRect(0, 0,
                                                      m_queryIcon->width()+5,(m_searchWidget->height()+36)/2));
                     m_animation->setEndValue(QRect((m_searchWidget->width() - (m_queryIcon->width()+m_queryText->width()+10))/2,0,
                                                    m_queryIcon->width()+m_queryText->width()+30,(m_searchWidget->height()+36)/2));
@@ -287,6 +287,7 @@ void MainWindow::initUI() {
     //加载插件
     loadPlugins();
 
+    connect(mOptionBtn, SIGNAL(clicked()), this, SLOT(showUkccAboutSlot()));
     connect(minBtn, SIGNAL(clicked()), this, SLOT(showMinimized()));
     connect(maxBtn, &QPushButton::clicked, this, [=] {
         if (isMaximized()) {
@@ -301,7 +302,6 @@ void MainWindow::initUI() {
         close();
     });
 
-    //    ui->leftsidebarWidget->setVisible(ui->stackedWidget->currentIndex());
     connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, [=](int index){
         //左侧边栏显示/不显示
         ui->leftsidebarWidget->setVisible(index);
@@ -351,13 +351,13 @@ void MainWindow::initUI() {
 
 void MainWindow::initTileBar() {
 
-    ui->titleLayout->setContentsMargins(4, 4, 4, 0);
+    ui->titleLayout->setContentsMargins(8, 4, 4, 0);
     ui->titleLayout->setSpacing(0);
     m_searchWidget = new SearchWidget(this);
     m_searchWidget->setFocusPolicy(Qt::ClickFocus);
     m_searchWidget->installEventFilter(this);
 
-    m_queryWid=new QWidget;
+    m_queryWid = new QWidget;
     m_queryWid->setParent(m_searchWidget);
     m_queryWid->setFocusPolicy(Qt::NoFocus);
 
@@ -367,11 +367,9 @@ void MainWindow::initTileBar() {
     queryWidLayout->setSpacing(0);
     m_queryWid->setLayout(queryWidLayout);
 
-    QPixmap pixmap = ImageUtil::loadSvg(QString("://img/dropArrow/search.svg"),"gray");
+    QIcon searchIcon = QIcon::fromTheme("edit-find-symbolic");
     m_queryIcon = new QLabel(this);
-    m_queryIcon->setStyleSheet("background:transparent");
-    m_queryIcon->setFixedSize(pixmap.size());
-    m_queryIcon->setPixmap(pixmap);
+    m_queryIcon->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(16, 16))));
 
     m_queryText = new QLabel(this);
     m_queryText->setText(tr("Search"));
@@ -389,6 +387,7 @@ void MainWindow::initTileBar() {
     connect(m_searchWidget, &SearchWidget::notifyModuleSearch, this, &MainWindow::switchPage);
 
     backBtn     = new QPushButton(this);
+    mOptionBtn  = new QPushButton(this);
     minBtn      = new QPushButton(this);
     maxBtn      = new QPushButton(this);
     closeBtn    = new QPushButton(this);
@@ -396,21 +395,19 @@ void MainWindow::initTileBar() {
     titleLabel  = new QLabel(tr("UKCC"), this);
 
     backBtn->setFixedSize(30, 30);
+    mOptionBtn->setFixedSize(30, 30);
     minBtn->setFixedSize(30, 30);
     maxBtn->setFixedSize(30, 30);
     closeBtn->setFixedSize(30, 30);
-    mTitleIcon->setFixedSize(30, 30);
+    mTitleIcon->setFixedSize(24, 24);
 
     QIcon titleIcon = QIcon::fromTheme("ukui-control-center");
     mTitleIcon->setPixmap(titleIcon.pixmap(titleIcon.actualSize(QSize(24, 24))));
 
-    titleLabel->setFixedSize(30, 30);
     titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
-    m_searchWidget->setMinimumWidth(350);
-    m_searchWidget->setMinimumHeight(35);
-    m_searchWidget->setMaximumWidth(350);
-    m_searchWidget->setMaximumHeight(35);
+    m_searchWidget->setFixedHeight(32);
+    m_searchWidget->setFixedWidth(350);
 
     ui->titleLayout->addWidget(mTitleIcon);
     ui->titleLayout->addSpacing(8);
@@ -419,16 +416,20 @@ void MainWindow::initTileBar() {
     ui->titleLayout->addStretch();
     ui->titleLayout->addWidget(m_searchWidget);
     ui->titleLayout->addStretch();
+    ui->titleLayout->addWidget(mOptionBtn);
+    ui->titleLayout->addSpacing(4);
     ui->titleLayout->addWidget(minBtn);
+    ui->titleLayout->addSpacing(4);
     ui->titleLayout->addWidget(maxBtn);
+    ui->titleLayout->addSpacing(4);
     ui->titleLayout->addWidget(closeBtn);
 }
 void MainWindow::animationFinishedSlot()
 {
-    if(m_isSearching) {
+    if (m_isSearching) {
         m_queryWid->layout()->removeWidget(m_queryText);
         m_queryText->setParent(nullptr);
-        m_searchWidget->setTextMargins(30,1,0,1);
+        m_searchWidget->setTextMargins(30, 1, 0, 1);
         if(!m_searchKeyWords.isEmpty()) {
             m_searchWidget->setText(m_searchKeyWords);
             m_searchKeyWords.clear();
@@ -436,6 +437,33 @@ void MainWindow::animationFinishedSlot()
     } else {
         m_queryWid->layout()->addWidget(m_queryText);
     }
+}
+
+void MainWindow::showUkccAboutSlot() {
+    QMenu* ukccMain = new QMenu(this);
+    ukccMain->setObjectName("mainMenu");
+
+    QAction* ukccHelp = new QAction(tr("Help"),this);
+    ukccMain->addAction(ukccHelp);
+    QAction* ukccAbout = new QAction(tr("About"),this);
+    ukccMain->addAction(ukccAbout);
+    QAction* ukccExit = new QAction(tr("Exit"),this);
+    ukccMain->addAction(ukccExit);
+    QPoint pt= QPoint(mOptionBtn->x() + 10, mOptionBtn->y()+mOptionBtn->height());
+
+    connect(ukccExit, SIGNAL(triggered()), this, SLOT(close()));
+
+    connect(ukccAbout, &QAction::triggered, this, [=] {
+        UkccAbout *ukcc = new UkccAbout(this);
+        ukcc->exec();
+    });
+
+    connect(ukccHelp, &QAction::triggered, this, [=] {
+        QProcess process(this);
+        process.startDetached("kylin-user-guide");
+    });
+
+    ukccMain->exec(this->mapToGlobal(pt));
 }
 void MainWindow::setBtnLayout(QPushButton * &pBtn){
     QLabel * imgLabel = new QLabel(pBtn);
@@ -479,7 +507,8 @@ void MainWindow::loadPlugins(){
         if (!kysec_is_disabled() && kysec_get_3adm_status() && (getuid() || geteuid())){
             //时间和日期 | 用户账户 | 电源管理 |网络连接 |网络代理
             if (fileName.contains("datetime") || fileName.contains("userinfo") || fileName.contains("power") || \
-                    fileName.contains("netconnect") || fileName.contains("proxy") || fileName.contains("update"))
+                    fileName.contains("netconnect") || fileName.contains("proxy") || fileName.contains("update") || \
+                    fileName.contains("upgrade"))
                 continue;
         }
 #endif
@@ -724,9 +753,14 @@ void MainWindow::initStyleSheet() {
     backBtn->setProperty("iconHighlightEffectMode", 1);
     backBtn->setFlat(true);
 
+    mOptionBtn->setProperty("useIconHighlightEffect", 0x2);
+    mOptionBtn->setProperty("isWindowButton", 0x01);
+    mOptionBtn->setFlat(true);
+
     minBtn->setProperty("useIconHighlightEffect", 0x2);
     minBtn->setProperty("isWindowButton", 0x01);
     minBtn->setFlat(true);
+
     maxBtn->setProperty("useIconHighlightEffect", 0x2);
     maxBtn->setProperty("isWindowButton", 0x1);
     maxBtn->setFlat(true);
@@ -740,6 +774,7 @@ void MainWindow::initStyleSheet() {
     backBtn->setIcon(QIcon("://img/titlebar/back.svg"));
 
     // 设置右上角按钮图标
+    mOptionBtn->setIcon(QIcon::fromTheme("open-menu-symbolic"));
     minBtn->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
     maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
     closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));

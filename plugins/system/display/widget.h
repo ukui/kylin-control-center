@@ -12,6 +12,8 @@
 #include <QDBusReply>
 #include <QStringList>
 #include <QSharedPointer>
+#include <QHash>
+#include <QVariant>
 
 #include <KF5/KScreen/kscreen/config.h>
 
@@ -67,7 +69,6 @@ class Widget : public QWidget
     QString getScreenName(QString name = "");
     void initTemptSlider();
     void writeScreenXml();
-    void setIsNightMode(bool isNightMode);
 
     float converToScale(const int value);
     int scaleToSlider(const float value);
@@ -84,8 +85,6 @@ class Widget : public QWidget
     void redShiftValidChanged(const bool isValid) const;
 
   private Q_SLOTS:
-    void initConfigFile(bool changed, bool status);
-
     void slotFocusedOutputChanged(QMLOutput *output);
 
     void slotOutputEnabledChanged();
@@ -119,12 +118,9 @@ class Widget : public QWidget
     void setBrightnesSldierValue();
     // 设置夜间模式
     void setNightMode(const bool nightMode);
-    // redshitf是否合法
-    void setRedShiftIsValid(bool redshiftIsValid);
-    // 更新夜间模式状态
-    void updateNightStatus();
     // 初始化夜间模式
     void initNightStatus();
+    void nightChangedSlot(QHash<QString, QVariant> nightArg);
 
   public Q_SLOTS:
     void save();
@@ -140,7 +136,6 @@ class Widget : public QWidget
 
     void writeScale(int scale);
     void initGSettings();
-    void writeConfigFile();
     void setcomBoxScale();
     void initNightUI();
     // 是否恢复应用之前的配置
@@ -194,6 +189,7 @@ class Widget : public QWidget
     QButtonGroup *singleButton;
 
     QSharedPointer<QDBusInterface> mUPowerInterface;
+    QHash<QString, QVariant> mNightConfig;
 
     int screenScale = 1;
     // 是否为夜间模式

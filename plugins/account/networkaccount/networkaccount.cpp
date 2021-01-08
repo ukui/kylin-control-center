@@ -51,5 +51,3 @@ const QString networkaccount::name() const {
 
     return QStringLiteral("networkaccount");
 }
-
-

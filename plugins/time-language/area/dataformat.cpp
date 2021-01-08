@@ -22,9 +22,6 @@ DataFormat::DataFormat(QWidget *parent) :
     setAttribute(Qt::WA_TranslucentBackground);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-//    ui->closeBtn->setFlat(true);
 
     QByteArray id(PANEL_GSCHEMAL);
     if(QGSettings::isSchemaInstalled(id)) {
@@ -48,8 +45,6 @@ DataFormat::~DataFormat()
 void DataFormat::initUi() {
     //关闭按钮在右上角，窗体radius 6px，所以按钮只得6px
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
-//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
     ui->calendarLabel->setText(tr("calendar"));
     ui->dayLabel->setText(tr("first day of week"));

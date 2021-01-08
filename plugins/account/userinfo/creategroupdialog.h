@@ -30,7 +30,22 @@
 #include <QLineEdit>
 #include <QListWidget>
 
-class UserInfo;
+#include "qtdbus/systemdbusdispatcher.h"
+
+typedef struct _UserInfomationss {
+    QString objpath;
+    QString username;
+    QString iconfile;
+    QString passwd;
+    int accounttype;
+    int passwdtype;
+    bool current;
+    bool logined;
+    bool autologin;
+    bool noPwdLogin;
+    qint64 uid;
+}UserInfomationss;
+
 class ChangeGroupDialog;
 namespace Ui {
 class CreateGroupDialog;
@@ -62,9 +77,12 @@ private:
     bool _nameHasModified;
     bool _idHasModified;
     bool _boxModified;
+    QMap<QString, UserInfomationss> allUserInfoMap;
+    SystemDbusDispatcher * sysdispatcher;
 
     void setupInit();
     void signalsBind();
+    UserInfomationss _acquireUserInfo(QString objpath);
 };
 
 #endif // CREATEGROUPDIALOG_H

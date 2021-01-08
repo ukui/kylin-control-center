@@ -1,3 +1,4 @@
+
 extern "C" {
 #define MATE_DESKTOP_USE_UNSTABLE_API
 #include <libmate-desktop/mate-rr.h>
@@ -5,6 +6,7 @@ extern "C" {
 #include <libmate-desktop/mate-rr-labeler.h>
 #include <libmate-desktop/mate-desktop-utils.h>
 }
+
 #include <QHBoxLayout>
 #include <QTimer>
 #include <QLabel>
@@ -21,9 +23,11 @@ extern "C" {
 #include <QStandardPaths>
 #include <QComboBox>
 #include <QMessageBox>
+
 #include <QLibrary>
 #include <iostream>
 #include <cstring>
+
 
 #include <KF5/KScreen/kscreen/output.h>
 #include <KF5/KScreen/kscreen/edid.h>
@@ -38,6 +42,7 @@ extern "C" {
 #include <X11/extensions/XInput2.h>
 #include <X11/Xutil.h>
 
+
 #include "declarative/qmloutput.h"
 #include "declarative/qmlscreen.h"
 #include "utils.h"
@@ -47,11 +52,9 @@ extern "C" {
 #include "xinputmanager.h"
 
 
-
 #ifdef signals
 #undef signals
 #endif
-
 
 #define QML_PATH "kcm_kscreen/qml/"
 
@@ -70,10 +73,11 @@ Widget::Widget(QWidget *parent)
 {
     qRegisterMetaType<QQuickView*>();
     gdk_init(NULL, NULL);
-
+      
     m_pXinputManager=new XinputManager;
 
     m_pXinputManager->start();
+
 
     ui->setupUi(this);
     ui->touchscreenLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
@@ -87,7 +91,9 @@ Widget::Widget(QWidget *parent)
 
 
     initConnection();
+
     initui();
+
     loadQml();
 
 }
@@ -425,7 +431,6 @@ void Widget::maptooutput() {
     }
 
     XCloseDisplay(dpy);
-
 }
 
 //todo:完善触摸校准代码
@@ -446,7 +451,6 @@ bool Widget::findTouchScreen(){
 
     int  ndevices = 0;
     bool retval=false;
-
     Display *dpy = XOpenDisplay(NULL);
     XIDeviceInfo *info = XIQueryDevice(dpy, XIAllDevices, &ndevices);
     QString devicesid="";

@@ -28,7 +28,8 @@ SUBDIRS = \
           account/networkaccount \
           security-updates/securitycenter \
           security-updates/backup \
-          security-updates/update \
+#          security-updates/update \
+          security-updates/upgrade \
           messages-task/about \
           time-language/datetime \
           time-language/area

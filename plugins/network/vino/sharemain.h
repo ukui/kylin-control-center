@@ -59,10 +59,10 @@ private:
     QFrame * mNoticeOFrame;
     QFrame * mNoticeNFrame;
 
-    QCheckBox * mEnableBox;
-    QCheckBox * mViewBox;
-    QRadioButton * mAccessBox;
-    QRadioButton * mPwdBox;
+    QCheckBox * mEnableBox;     // 允许其他人查看桌面
+    QCheckBox * mViewBox;       // 允许连接控制屏幕
+    QCheckBox * mAccessBox;     // 为本机确认每次访问
+    QCheckBox * mPwdBox;        // 要求用户输入密码
 
     QRadioButton * mNoticeWBtn;
     QRadioButton * mNoticeOBtn;
@@ -82,7 +82,6 @@ private:
     QLineEdit * mPwdLineEdit;
 
     QVBoxLayout * mVlayout;
-    QButtonGroup * mBtnGroup;
 
     QGSettings * mVinoGsetting;
 
@@ -96,7 +95,8 @@ private:
 private slots:
     void enableSlot(bool status);
     void viewBoxSlot(bool status);
-    void accessSlot(int index);
+    void accessSlot(bool status);
+    void pwdEnableSlot(bool status);
     void pwdInputSlot(QString pwd);
 };
 

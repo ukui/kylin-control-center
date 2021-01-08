@@ -48,6 +48,8 @@ public:
     const QString name() const  Q_DECL_OVERRIDE;
 
 private:
+    void requestBackend();
+private:
     Ui::DisplayWindow * ui;
     QString pluginName;
     int pluginType;

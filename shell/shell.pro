@@ -30,8 +30,8 @@ CONFIG        += link_pkgconfig \
                  C++11
 PKGCONFIG     += gio-2.0 \
                  gio-unix-2.0 \
-                 libmatemixer \
                  gsettings-qt \
+                 libmatemixer
 
 desktop.files += ukui-control-center.desktop
 desktop.path = /usr/share/applications
@@ -96,6 +96,7 @@ HEADERS += \
     pinyin.h \
     prescene.h \
     searchwidget.h \
+    ukccabout.h \
     utils/keyvalueconverter.h \
     component/leftwidgetitem.h \
     component/clicklabel.h \
@@ -120,3 +121,4 @@ DISTFILES += \
     ../data/org.ukui.control-center.panel.plugins.gschema.xml \
     ../data/org.ukui.control-center.personalise.gschema.xml \
     ../data/org.ukui.control-center.wifi.switch.gschema.xml \
+

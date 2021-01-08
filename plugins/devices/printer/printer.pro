@@ -7,6 +7,7 @@
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
 include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
+include($$PROJECT_COMPONENTSOURCE/hoverbtn.pri)
 
 QT       += widgets printsupport
 

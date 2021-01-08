@@ -32,8 +32,6 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include "logindialog.h"
-#include "regdialog.h"
 #include "successdiaolog.h"
 #include "passdialog.h"
 #include <QTimer>
@@ -47,6 +45,7 @@
 #include "tips.h"
 #include "svghandler.h"
 #include "blueeffect.h"
+#include "logindialog.h"
 #include <QDialog>
 #include "CloseButton/closebutton.h"
 
@@ -73,7 +72,6 @@ public:
 
 public slots:
     void linked_forget_btn();
-    void linked_register_btn();
     void back_login_btn();
     void back_normal();
     void on_login_btn();
@@ -81,12 +79,11 @@ public slots:
     void on_reg_btn();
     void on_login_finished(int ret,QString m_uuid);
     void on_pass_finished(int ret,QString m_uuid);
-    void on_reg_finished(int ret,QString m_uuid);
+    //void on_reg_finished(int ret,QString m_uuid);
     void on_get_mcode_by_name(int ret,QString m_uuid);
     void on_get_mcode_by_phone(int ret,QString m_uuid);
     void on_timer_timeout();
     void on_send_code();
-    void on_send_code_reg();
     void on_send_code_log();
     void on_send_code_bind();
     void on_close();
@@ -96,10 +93,8 @@ public slots:
     void setret_login(int ret);
     void setret_phone_login(int ret);
     void setret_rest(int ret);
-    void setret_reg(int ret);
     void setret_bind(int ret);
     void setret_code_phone_login(int ret);
-    void setret_code_phone_reg(int ret);
     void setret_code_user_pass(int ret);
     void setret_code_user_bind(int ret);
     void set_back();
@@ -123,28 +118,28 @@ private:
     QPoint          m_startPoint;
     CloseButton     *m_delBtn;
     PassDialog      *m_passDialog;
-    RegDialog       *m_regDialog;
-    QLabel          *m_accountTips;
+    //RegDialog       *m_regDialog;
+    //QLabel          *m_accountTips;
     QLabel          *m_passTips;
     Tips          *m_errorPassTips;
-    Tips          *m_errorRegTips;
-    PasswordLineEdit       *m_regPassLineEdit;
-    QLineEdit       *m_regAccountLineEdit;
+    //Tips          *m_errorRegTips;
+   // PasswordLineEdit       *m_regPassLineEdit;
+    //QLineEdit       *m_regAccountLineEdit;
     PasswordLineEdit       *m_loginPassLineEdit;
-    QLineEdit       *m_mcodeLineEdit;
-    QLineEdit       *m_phoneLineEdit;
+    //QLineEdit       *m_mcodeLineEdit;
+    //QLineEdit       *m_phoneLineEdit;
     QLineEdit       *m_passLineEdit;
     PasswordLineEdit       *m_passConfirmLineEdit;
     PasswordLineEdit       *m_passPasswordLineEdit;
     QLineEdit       *m_passMCodeLineEdit;
     QLineEdit       *m_loginLineEdit;
     QLineEdit       *m_loginAccountLineEdit;
-    PasswordLineEdit       *m_regConfirmLineEdit;
+    //PasswordLineEdit       *m_regConfirmLineEdit;
     Tips          *m_loginTips;
-    QLabel          *m_regTips;
+    //QLabel          *m_regTips;
     QLineEdit       *m_loginMCodeLineEdit;
     Tips          *m_loginCodeStatusTips;
-    QPushButton     *m_regSendCodeBtn;
+    //QPushButton     *m_regSendCodeBtn;
     QPushButton     *m_forgetpassBtn;
     QPushButton     *m_forgetpassSendBtn;
     QString         *m_szPassName;
@@ -177,7 +172,7 @@ signals:
     void dogetmcode_number_bind(QString username,QString uuid);
     void dogetmcode_number_pass(QString username,QString uuid);
     void dorest(QString username,QString newpwd,QString mCode,QString uuid);
-    void doreg(QString username,QString pwd,QString phonenumb,QString mcode,QString uuid);
+    //void doreg(QString username,QString pwd,QString phonenumb,QString mcode,QString uuid);
     void dophonelogin(QString phone,QString mCode,QString uuid);
     void dobind(QString username,QString pwd,QString phone,QString mCode,QString uuid);
 

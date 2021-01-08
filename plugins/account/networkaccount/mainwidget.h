@@ -42,7 +42,7 @@
 #include "svghandler.h"
 #include "blueeffect.h"
 
-#define PATH "/.cache/kylinssoclient/All.conf"
+#define PATH "/.cache/kylinId/All.conf"
 
 class MainWidget : public QWidget
 {
@@ -145,6 +145,7 @@ signals:
     void dosingle(QString key);
     void closedialog();
     void isRunning();
+    void oldVersion();
 };
 
 #endif // CONFIG_LIST_WIDGET_H

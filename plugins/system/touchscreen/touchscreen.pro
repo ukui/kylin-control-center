@@ -48,6 +48,7 @@ SOURCES += \
     widget.cpp \
     xinputmanager.cpp
 
+
 HEADERS += \
     declarative/qmloutput.h \
     declarative/qmloutputcomponent.h \

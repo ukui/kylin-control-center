@@ -11,7 +11,6 @@ public:
     bool m_bFirstAttempt = false;
     explicit DbusHandleClient(QObject *parent = nullptr);
 public slots:
-    int registered(QString username, QString pwd, QString phonenumb, QString mcode,QString uuid);  // 注册接口
     int login(QString username, QString pwd,QString uuid);   // 登录接口
     int get_mcode_by_phone(QString phonenumb,QString uuid);  // 手机获取验证码
     int get_mcode_by_username(QString username,QString uuid);  // 用户名获取验证码
@@ -23,7 +22,7 @@ public slots:
     int change_conf_value(QString name, int flag);  // 应用配置开关
     int bindPhone(QString username, QString pwd, QString phone, QString mCode,QString uuid);
 
-
+    int getMCodeImage(QString uuid);
     // ----------- 云相关 -----------------
     int init_oss(QString uuid);  // 登录后，初始化云服务
     int manual_sync();  // 手动同步
@@ -32,7 +31,6 @@ private:
 
 signals:
     void login_ok();
-    void reg_ok();
     void mcode_phone_ok();
     void mcode_username_ok();
     void restpwd_ok();
@@ -41,12 +39,10 @@ signals:
     void changeret(int mode);
 
     void finished_ret_log(int ret);
-    void finished_ret_reg(int ret);
     void finished_ret_phonelogin(int ret);
     void finished_ret_rest(int ret);
     void finished_ret_bind(int ret);
     void finished_ret_code_log(int ret);
-    void finished_ret_code_reg(int ret);
     void finished_ret_code_pass(int ret);
     void finished_ret_code_bind(int ret);
     void finished_ret_check_edit(QString ret);
@@ -60,6 +56,7 @@ signals:
     void finished_change(int ret);
     void finished_logout(int ret);
     void finished_single(int ret);
+    void finished_image(int ret);
 
 };
 

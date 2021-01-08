@@ -70,12 +70,67 @@ void CreateGroupDialog::refreshCertainBtnStatus(){
         ui->certainBtn->setEnabled(_nameHasModified || _idHasModified);
 }
 
+UserInfomationss CreateGroupDialog::_acquireUserInfo(QString objpath){
+    UserInfomationss user;
+
+    //默认值
+    user.current = false;
+    user.logined = false;
+    user.autologin = false;
+
+    QDBusInterface * iproperty = new QDBusInterface("org.freedesktop.Accounts",
+                                            objpath,
+                                            "org.freedesktop.DBus.Properties",
+                                            QDBusConnection::systemBus());
+    QDBusReply<QMap<QString, QVariant> > reply = iproperty->call("GetAll", "org.freedesktop.Accounts.User");
+    if (reply.isValid()){
+        QMap<QString, QVariant> propertyMap;
+        propertyMap = reply.value();
+        user.username = propertyMap.find("UserName").value().toString();
+        if (user.username == QString(g_get_user_name())) {
+            user.current = true;
+            user.logined = true;
+        }
+    }
+    else
+        qDebug() << "reply failed";
+
+    delete iproperty;
+
+    return user;
+}
+
 void CreateGroupDialog::getUsersList()
 {
     qDebug() << "当前文件 :" << __FILE__ << "当前函数 :" << __FUNCTION__ << "当前行号 :" << __LINE__;
-    UserInfo * userinfo = new UserInfo;
-    QStringList usersList = userinfo->getUsersList();
-//    qDebug() << "CreateGroupDialog::getUsersList" << usersList.at(0) << usersList.at(1);
+    QStringList allUsers;
+    sysdispatcher = new SystemDbusDispatcher(this);
+
+    QStringList objectpaths = sysdispatcher->list_cached_users();
+    allUserInfoMap.clear();
+    //root
+    if (!getuid()){
+        UserInfomationss root;
+        root.username = g_get_user_name();
+        root.current = true;
+        root.logined = true;
+        root.autologin = false;
+        root.uid = 0;
+        root.accounttype = ADMINISTRATOR;
+        //        root.iconfile = DEFAULTFACE;
+        allUserInfoMap.insert(root.username, root);
+    }
+    for (QString objectpath : objectpaths){
+        UserInfomationss user;
+        user = _acquireUserInfo(objectpath);
+        allUserInfoMap.insert(user.username, user);
+    }
+    for (QVariant tmp : allUserInfoMap.keys()){
+        allUsers << tmp.toString();
+
+    }
+    QStringList usersList = allUsers;
+
     for(int i = 0; i < usersList.size(); i++){
         QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
         item->setSizeHint(QSize(ui->listWidget->width(), 36));
@@ -155,25 +210,12 @@ void CreateGroupDialog::setupInit()
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
 
-//    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-//    ui->closeBtn->setFlat(true);
-
-//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
     ui->listWidget->setFocusPolicy(Qt::NoFocus);
     ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);
     ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//    ui->listWidget->setSpacing(5);
-//    ui->lineEdit_name->setStyleSheet("QLineEdit{background:#EEEEEE;}");
-//    ui->lineEdit_id->setStyleSheet("QLineEdit{background:#EEEEEE;}");
-//    ui->listWidget->setStyleSheet("QListWidget{background:#EEEEEE; border-radius: 4px;}"
-//                                  "QListWidget::Item:hover{background:#FFE1E1E1}"
-//                                  "QListWidget::Item{padding-left:20px;}");
 
     ui->listWidget->setStyleSheet("QListWidget{border-radius: 4px;}"
                                   "QListWidget::Item{padding-left:20px;}");

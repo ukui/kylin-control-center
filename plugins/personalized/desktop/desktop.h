@@ -65,7 +65,7 @@ public:
     void clearContent();
 
 private:
-    QString desktopConver(QString processName);
+    QMap<QString, QIcon> desktopConver(QString processName);
     bool isFileExist(QString fullFileName);
 
 private:
@@ -102,7 +102,8 @@ private slots:
     void removeTrayItem(QString itemName);
     void addTrayItem(QGSettings * trayGSetting);
     QString desktopToName(QString desktopfile);
-    QString readOuputSlot();
+    QIcon   desktopToIcon(const QString &desktopfile);
+    QMap<QString, QIcon> readOuputSlot();
     void readErrorSlot();
     void slotCloudAccout(const QString &key);
 };

@@ -19,6 +19,9 @@
  */
 #include "switchbutton.h"
 
+#define THEME_QT_SCHEMA "org.ukui.style"
+#define THEME_GTK_SCHEMA "org.mate.interface"
+
 SwitchButton::SwitchButton(QWidget *parent) : QWidget(parent) {
     m_buttonColor = new QColor;
     setMaximumSize(48,24);
@@ -33,7 +36,37 @@ SwitchButton::SwitchButton(QWidget *parent) : QWidget(parent) {
     else {
         m_fCurrentValue = 4;
     }
+
+    m_bgColorOff = QColor("#cccccc");
+    m_bgColorOn = QColor("#3D6BE5");
+
     connect(m_cTimer,SIGNAL(timeout()),this,SLOT(startAnimation()));
+
+    if(QGSettings::isSchemaInstalled(THEME_GTK_SCHEMA) && QGSettings::isSchemaInstalled(THEME_QT_SCHEMA)) {
+        QByteArray qtThemeID(THEME_QT_SCHEMA);
+        QByteArray gtkThemeID(THEME_GTK_SCHEMA);
+
+        m_gtkThemeSetting = new QGSettings(gtkThemeID,QByteArray(),this);
+        m_qtThemeSetting = new QGSettings(qtThemeID,QByteArray(),this);
+
+        QString style = m_qtThemeSetting->get("styleName").toString();
+        if(style == "ukui-dark") {
+            m_bgColorOff = QColor("#3d3d3f");
+        } else {
+            m_bgColorOff = QColor("#cccccc");
+        }
+
+        connect(m_qtThemeSetting,&QGSettings::changed, [this] (const QString &key) {
+            QString style = m_qtThemeSetting->get("styleName").toString();
+            if(key == "styleName") {
+                if(style == "ukui-dark") {
+                    m_bgColorOff = QColor("#3d3d3f");
+                } else {
+                    m_bgColorOff = QColor("#cccccc");
+                }
+            }
+        });
+    }
 }
 
 /* 绘制SwitchButton */
@@ -43,13 +76,11 @@ void SwitchButton::paintEvent(QPaintEvent *event) {
     painter.setRenderHint(QPainter::SmoothPixmapTransform);
     painter.setRenderHint(QPainter::Antialiasing); //kan ju ci
     painter.setPen(Qt::NoPen);
-    QColor colorActiveOn(61,107,229);
-    QColor colorActiveOff(204,204,204);
     QColor colorInactive(233,233,233);
     if(m_bIsActive == 1 && m_bIsOn) {
-        *m_buttonColor = colorActiveOn;
+        *m_buttonColor = m_bgColorOn;
     } else if(m_bIsActive == 1 && !m_bIsOn) {
-        *m_buttonColor = colorActiveOff;
+        *m_buttonColor = m_bgColorOff;
     } else {
         *m_buttonColor = colorInactive;
     }
