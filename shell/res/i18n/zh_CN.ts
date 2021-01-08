@@ -4142,7 +4142,7 @@ Please retry or relogin!</source>
     <message>
         <location filename="../../../plugins/devices/printer/printer.cpp" line="138"/>
         <source>Attributes</source>
-        <translation type="unfinished"></translation>
+        <translation>属性</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/printer/printer.ui" line="166"/>
@@ -4912,12 +4912,12 @@ Please retry or relogin!</source>
         <translation>自动启动的应用程序</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3514"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3616"/>
         <source>PulseAudio Volume Control</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3527"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3629"/>
         <source>Connection to PulseAudio failed. Automatic retry in 5s
 
 In this case this is likely because PULSE_SERVER in the Environment/X11 Root Window Properties
@@ -4928,17 +4928,17 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3572"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3674"/>
         <source>pa_context_subscribe() failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3585"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3687"/>
         <source>Failed to initialize stream_restore extension: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3600"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3702"/>
         <source>pa_ext_stream_restore_read() failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5912,12 +5912,12 @@ run start-pulseaudio-x11 manually.</source>
         <translation>加载声音失败</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3503"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3605"/>
         <source>Establishing connection to PulseAudio. Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3638"/>
+        <location filename="../../../plugins/devices/audio/ukmedia_main_widget.cpp" line="3740"/>
         <source>pa_ext_stream_restore_write() failed</source>
         <translation type="unfinished"></translation>
     </message>
