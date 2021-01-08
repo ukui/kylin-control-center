@@ -231,6 +231,7 @@ void Notice::initOriNoticeStatus() {
                     break;
                 }
             }
+            settings = nullptr;
         }
 
         connect(devWidget, &HoverWidget::enterWidget, this, [=](QString name) {
@@ -290,16 +291,18 @@ void Notice::initGSettings() {
                     isExist = true;
                 }
             }
+            delete settings;
         }
         if (!isExist) {
             path = findFreePath();
-            newSettings = new QGSettings(id, path.toLatin1().data(), this);
+            newSettings = new QGSettings(id, path.toLatin1().data());
             QStringList keys = newSettings->keys();
             if (keys.contains(static_cast<QString>(NAME_KEY)) &&
                     keys.contains(static_cast<QString>(MESSAGES_KEY))) {
                 newSettings->set(NAME_KEY, appsKey.at(i));
                 newSettings->set(MESSAGES_KEY, true);
             }
+            delete newSettings;
         }
     }
 }
