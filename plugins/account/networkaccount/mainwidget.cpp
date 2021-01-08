@@ -145,7 +145,6 @@ void MainWidget::setret_check(QString ret) {
         m_mainWidget->setCurrentWidget(m_nullWidget);
        // setshow(m_mainWidget);
     } else if(!(ret == "" || ret =="201" || ret == "203" || ret == "401" ) && m_bTokenValid){
-        dooss(m_szUuid);
         m_infoTab->setText(tr("Your account：%1").arg(ret));
         m_szCode = ret;
         m_mainWidget->setCurrentWidget(m_widgetContainer);
@@ -227,6 +226,7 @@ void MainWidget::init_gui() {
     m_nullwidgetContainer = new QWidget(this);
     m_syncTimeLabel = new QLabel(this);
     m_cLoginTimer = new QTimer(this);
+    m_lazyTimer = new QTimer(this);
 
     //m_mainWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
@@ -468,12 +468,18 @@ void MainWidget::init_gui() {
         }
     });
 
+    m_lazyTimer->setSingleShot(true);
+    connect(m_lazyTimer,&QTimer::timeout,[this] () {
+       emit doman();
+    });
+
     connect(this,&MainWidget::closedialog,[this] () {
           m_mainDialog->on_close();
           // qDebug() << "scscacsacsac============ascas";
           //QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
-          emit doman();
-          // qDebug() << "scscacsacsacsssssssssssssssascas";
+          m_lazyTimer->setSingleShot(true);
+          m_lazyTimer->start(1000);
+           //qDebug() << "clsoe dialog";
 
     });
 
@@ -506,7 +512,8 @@ void MainWidget::init_gui() {
                // emit doconf();
            }  else {
                //QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
-               emit doman();
+               m_lazyTimer->setSingleShot(true);
+               m_lazyTimer->start(1000);
            }
 
        } else {
@@ -541,6 +548,7 @@ void MainWidget::on_login() {
         m_cLoginTimer->setInterval(15000);
         m_cLoginTimer->start();
         m_bIsStopped = false;
+        //qDebug() << "sssssssssssssssssss";
     });
     connect(m_mainDialog,&MainDialog::on_login_failed,[this] () {
         m_cLoginTimer->stop();
@@ -564,7 +572,7 @@ void MainWidget::on_login() {
             emit dologout();
         }
     });
-    m_mainDialog->exec();
+    m_mainDialog->show();
    // qDebug() << "scscacsacsacascas";
 }
 

@@ -78,6 +78,7 @@ private:
     QWidget         *m_nullWidget;
     DbusHandleClient   *m_dbusClient;
     QPushButton         *m_login_btn;
+    QTimer              *m_lazyTimer;
     QLabel              *m_welcomeMsg;
     QSvgWidget              *m_welcomeImage;
     QVBoxLayout         *m_welcomeLayout;

@@ -190,7 +190,7 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
 
     /*界面逻辑有关信号与槽函数连接*/
     connect(m_delBtn,SIGNAL(clicked()),this,SLOT(on_close()));
-    connect(m_loginDialog->get_forget_btn(),SIGNAL(clicked()),this,SLOT(linked_forget_btn()));
+    connect(m_loginDialog->get_forget_btn(),SIGNAL(clicked()),this,SLOT(on_pass_btn()));
     connect(m_regBtn,SIGNAL(clicked()),this,SLOT(on_reg_btn()));
     connect(m_submitBtn,SIGNAL(clicked()),this,SLOT(on_login_btn()));
     //connect(m_forgetpassBtn,SIGNAL(clicked()),this,SLOT(on_send_code()));
@@ -199,8 +199,8 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     //connect(m_BindDialog->get_send_code(),SIGNAL(clicked()),this,SLOT(on_send_code_bind()));
     connect(m_successDialog->m_backloginBtn,SIGNAL(clicked()),this,SLOT(back_normal()));
     //connect(m_passPasswordLineEdit,SIGNAL(textChanged(QString)),this,SLOT(cleanconfirm(QString)));
-    connect(m_loginDialog->get_mcode_lineedit(),SIGNAL(returnPressed()),m_submitBtn,SIGNAL(clicked()),Qt::UniqueConnection);
-    connect(m_loginDialog->get_login_code(),SIGNAL(returnPressed()),m_submitBtn,SIGNAL(clicked()),Qt::UniqueConnection);
+    connect(m_loginDialog->get_mcode_lineedit(),SIGNAL(returnPressed()),this,SLOT(on_login_btn()));
+    connect(m_loginDialog->get_login_code(),SIGNAL(returnPressed()),this,SLOT(on_login_btn()));
     //connect(m_BindDialog->get_code_lineedit(),SIGNAL(returnPressed()),m_submitBtn,SIGNAL(clicked()),Qt::UniqueConnection);
     //connect(m_passDialog->get_valid_code(),SIGNAL(returnPressed()),m_submitBtn,SIGNAL(clicked()),Qt::UniqueConnection);
     connect(m_loginDialog->get_stack_widget(),&QStackedWidget::currentChanged,[this] (int) {
@@ -261,19 +261,19 @@ void MainDialog::set_client(DbusHandleClient *c,QThread *t) {
     m_dbusClient = c;
     m_workThread  = t;
     connect(this,SIGNAL(dologin(QString,QString,QString)),m_dbusClient,SLOT(login(QString,QString,QString)));
-    connect(this,SIGNAL(dobind(QString, QString, QString, QString,QString)),m_dbusClient,SLOT(bindPhone(QString, QString, QString, QString,QString)));
+    //connect(this,SIGNAL(dobind(QString, QString, QString, QString,QString)),m_dbusClient,SLOT(bindPhone(QString, QString, QString, QString,QString)));
     connect(this,SIGNAL(dogetmcode_phone_log(QString,QString)),m_dbusClient,SLOT(get_mcode_by_phone(QString,QString)));
-    connect(this,SIGNAL(dogetmcode_number_pass(QString,QString)),m_dbusClient,SLOT(get_mcode_by_username(QString,QString)));
-    connect(this,SIGNAL(dogetmcode_number_bind(QString,QString)),m_dbusClient,SLOT(get_mcode_by_phone(QString,QString)));
-    connect(this,SIGNAL(dorest(QString, QString, QString,QString)),m_dbusClient,SLOT(user_resetpwd(QString, QString, QString,QString)));
+   // connect(this,SIGNAL(dogetmcode_number_pass(QString,QString)),m_dbusClient,SLOT(get_mcode_by_username(QString,QString)));
+    //connect(this,SIGNAL(dogetmcode_number_bind(QString,QString)),m_dbusClient,SLOT(get_mcode_by_phone(QString,QString)));
+    //connect(this,SIGNAL(dorest(QString, QString, QString,QString)),m_dbusClient,SLOT(user_resetpwd(QString, QString, QString,QString)));
     connect(this,SIGNAL(dophonelogin(QString,QString,QString)),m_dbusClient,SLOT(user_phone_login(QString,QString,QString)));
     connect(m_dbusClient,SIGNAL(finished_ret_log(int)),this,SLOT(setret_login(int)));
     connect(m_dbusClient,SIGNAL(finished_ret_phonelogin(int)),this,SLOT(setret_phone_login(int)));
-    connect(m_dbusClient,SIGNAL(finished_ret_rest(int)),this,SLOT(setret_rest(int)));
-    connect(m_dbusClient,SIGNAL(finished_ret_bind(int)),this,SLOT(setret_bind(int)));
+    //connect(m_dbusClient,SIGNAL(finished_ret_rest(int)),this,SLOT(setret_rest(int)));
+    //connect(m_dbusClient,SIGNAL(finished_ret_bind(int)),this,SLOT(setret_bind(int)));
     connect(m_dbusClient,SIGNAL(finished_ret_code_log(int)),this,SLOT(setret_code_phone_login(int)));
-    connect(m_dbusClient,SIGNAL(finished_ret_code_pass(int)),this,SLOT(setret_code_user_pass(int)));
-    connect(m_dbusClient,SIGNAL(finished_ret_code_bind(int)),this,SLOT(setret_code_user_bind(int)));
+    //connect(m_dbusClient,SIGNAL(finished_ret_code_pass(int)),this,SLOT(setret_code_user_pass(int)));
+    //connect(m_dbusClient,SIGNAL(finished_ret_code_bind(int)),this,SLOT(setret_code_user_bind(int)));
 
     QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface", "finished_login", this, SLOT(on_login_finished(int,QString)));
     //client->connectdbus("finished_login",this,SLOT(on_login_finished(int)));
@@ -283,12 +283,12 @@ void MainDialog::set_client(DbusHandleClient *c,QThread *t) {
     QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_mcode_by_phone",this,SLOT(on_get_mcode_by_phone(int,QString)));
     //connect(client,SIGNAL(finished_user_resetpwd(int)),this,SLOT(on_pass_finished(int)));
     //connect(client,SIGNAL(finished_mcode_by_username(int)),this,SLOT(on_get_mcode_by_name(int)));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_user_resetpwd",this,SLOT(on_pass_finished(int,QString)));
+   // QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_user_resetpwd",this,SLOT(on_pass_finished(int,QString)));
     QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_mcode_by_username",this,SLOT(on_get_mcode_by_name(int,QString)));
     //connect(client,SIGNAL(finished_registered(int)),this,SLOT(on_reg_finished(int)));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_registered",this,SLOT(on_reg_finished(int,QString)));
+   // QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_registered",this,SLOT(on_reg_finished(int,QString)));
     //connect(client,SIGNAL(finished_bindPhone(int)),this,SLOT(on_bind_finished(int)));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_bindPhone",this,SLOT(on_bind_finished(int,QString)));
+    //QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_bindPhone",this,SLOT(on_bind_finished(int,QString)));
 }
 
 /* 窗口控件动态显示处理过渡处理函数，每次窗口布局显示或者
@@ -546,7 +546,6 @@ void MainDialog::back_login_btn() {
         m_regBtn->setText(tr("Sign up"));
         m_submitBtn->setText(tr("Sign in"));
         setshow(m_stackedWidget);
-        setshow(m_stackedWidget);
 
         disconnect(m_regBtn,SIGNAL(clicked()),this,SLOT(back_login_btn()));
         connect(m_regBtn,SIGNAL(clicked()),this,SLOT(on_reg_btn()));
@@ -633,6 +632,7 @@ void MainDialog::on_login_finished(int ret, QString uuid) {
             return ;
         }
     }
+    //qDebug()<<"scascasca";
 }
 
 /* 手机号直接发送验证码回调函数，发送手机验证码回执消息后执行此处 */
