@@ -6,7 +6,7 @@
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="52"/>
         <source>System Summary</source>
-        <translation type="unfinished"></translation>
+        <translation>خلاصۀ سیستم</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="140"/>
@@ -23,7 +23,7 @@
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="183"/>
         <source>Copyright 2009-2020 @ Kylinos All rights reserved</source>
-        <translation type="unfinished"></translation>
+        <translation>کپی‌رایت 2009-2020 @ Kylinos تمامی حقوق محفوظ است</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="271"/>
@@ -97,12 +97,12 @@
     <message>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="220"/>
         <source>Inactivated</source>
-        <translation type="unfinished"></translation>
+        <translation>غیرفعال</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="222"/>
         <source>Activated</source>
-        <translation type="unfinished"></translation>
+        <translation>فعال</translation>
     </message>
 </context>
 <context>
