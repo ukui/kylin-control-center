@@ -2474,12 +2474,12 @@ folder will be deleted!</source>
         <location filename="../../../plugins/account/networkaccount/frameitem.cpp" line="112"/>
         <location filename="../../../plugins/account/networkaccount/frameitem.cpp" line="127"/>
         <source>Sync failed,please relogin!</source>
-        <translation>同步失败，请重新登录！</translation>
+        <translation>同步失败，请重试！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/frameitem.cpp" line="115"/>
         <source>Change configuration file failed,please relogin!</source>
-        <translation>修改配置文件失败，请重新登录！</translation>
+        <translation>修改配置失败，请重试！</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/frameitem.cpp" line="118"/>
@@ -2494,7 +2494,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/frameitem.cpp" line="124"/>
         <source>OSS access failed,please relogin!</source>
-        <translation>连接失败，请重试或重新登录！</translation>
+        <translation>连接失败，请检查网络！</translation>
     </message>
 </context>
 <context>
