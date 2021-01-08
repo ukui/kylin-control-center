@@ -219,7 +219,7 @@ void LoginDialog::startaction_2() {
         m_accountLogin_btn->setFocusPolicy(Qt::NoFocus);
         m_phoneLogin_btn->setFocusPolicy(Qt::NoFocus);
         m_stackedWidget->setCurrentIndex(0);
-        m_accountLineEdit->setPlaceholderText(tr("Your account/phone here"));
+        m_accountLineEdit->setPlaceholderText(tr("Your account/phone/email here"));
     }
 }
 
