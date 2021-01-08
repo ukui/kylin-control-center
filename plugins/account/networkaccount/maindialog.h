@@ -71,32 +71,28 @@ public:
     ~MainDialog();
 
 public slots:
-    void linked_forget_btn();
     void back_login_btn();
     void back_normal();
     void on_login_btn();
     void on_pass_btn();
     void on_reg_btn();
     void on_login_finished(int ret,QString m_uuid);
-    void on_pass_finished(int ret,QString m_uuid);
     //void on_reg_finished(int ret,QString m_uuid);
     void on_get_mcode_by_name(int ret,QString m_uuid);
     void on_get_mcode_by_phone(int ret,QString m_uuid);
     void on_timer_timeout();
-    void on_send_code();
     void on_send_code_log();
-    void on_send_code_bind();
+    //void on_send_code_bind();
     void on_close();
-    void on_bind_finished(int ret,QString m_uuid);
-    void on_bind_btn();
+    //void on_bind_finished(int ret,QString m_uuid);
+    //void on_bind_btn();
     void cleanconfirm(QString str);
     void setret_login(int ret);
     void setret_phone_login(int ret);
-    void setret_rest(int ret);
-    void setret_bind(int ret);
+    //void setret_rest(int ret);
+    //void setret_bind(int ret);
     void setret_code_phone_login(int ret);
-    void setret_code_user_pass(int ret);
-    void setret_code_user_bind(int ret);
+    //void setret_code_user_bind(int ret);
     void set_back();
 protected:
     void            paintEvent(QPaintEvent *event);
@@ -117,21 +113,21 @@ private:
     QHBoxLayout     *m_subLayout;
     QPoint          m_startPoint;
     CloseButton     *m_delBtn;
-    PassDialog      *m_passDialog;
+    //PassDialog      *m_passDialog;
     //RegDialog       *m_regDialog;
     //QLabel          *m_accountTips;
-    QLabel          *m_passTips;
-    Tips          *m_errorPassTips;
+    //QLabel          *m_passTips;
+    //Tips          *m_errorPassTips;
     //Tips          *m_errorRegTips;
    // PasswordLineEdit       *m_regPassLineEdit;
     //QLineEdit       *m_regAccountLineEdit;
     PasswordLineEdit       *m_loginPassLineEdit;
     //QLineEdit       *m_mcodeLineEdit;
     //QLineEdit       *m_phoneLineEdit;
-    QLineEdit       *m_passLineEdit;
-    PasswordLineEdit       *m_passConfirmLineEdit;
-    PasswordLineEdit       *m_passPasswordLineEdit;
-    QLineEdit       *m_passMCodeLineEdit;
+    //QLineEdit       *m_passLineEdit;
+    //PasswordLineEdit       *m_passConfirmLineEdit;
+    //PasswordLineEdit       *m_passPasswordLineEdit;
+    //QLineEdit       *m_passMCodeLineEdit;
     QLineEdit       *m_loginLineEdit;
     QLineEdit       *m_loginAccountLineEdit;
     //PasswordLineEdit       *m_regConfirmLineEdit;
@@ -140,7 +136,7 @@ private:
     QLineEdit       *m_loginMCodeLineEdit;
     Tips          *m_loginCodeStatusTips;
     //QPushButton     *m_regSendCodeBtn;
-    QPushButton     *m_forgetpassBtn;
+    //QPushButton     *m_forgetpassBtn;
     QPushButton     *m_forgetpassSendBtn;
     QString         *m_szPassName;
     QTimer          *m_timer;
@@ -148,7 +144,7 @@ private:
     QWidget         *m_containerWidget;
     QStackedWidget  *m_baseWidget;
     SuccessDiaolog  *m_successDialog;
-    BindPhoneDialog *m_BindDialog;
+    //BindPhoneDialog *m_BindDialog;
     Blueeffect          *m_blueEffect;
     QThread         *m_workThread;
     bool            m_bIsSendOk = false;
@@ -168,13 +164,13 @@ signals:
     void on_allow_send();
     void dologin(QString username,QString pwd,QString uuid);
     void dogetmcode_phone_log(QString phonenumb,QString uuid);
-    void dogetmcode_phone_reg(QString phonenumb,QString uuid);
-    void dogetmcode_number_bind(QString username,QString uuid);
-    void dogetmcode_number_pass(QString username,QString uuid);
-    void dorest(QString username,QString newpwd,QString mCode,QString uuid);
+    //void dogetmcode_phone_reg(QString phonenumb,QString uuid);
+    //void dogetmcode_number_bind(QString username,QString uuid);
+    //void dogetmcode_number_pass(QString username,QString uuid);
+    //void dorest(QString username,QString newpwd,QString mCode,QString uuid);
     //void doreg(QString username,QString pwd,QString phonenumb,QString mcode,QString uuid);
     void dophonelogin(QString phone,QString mCode,QString uuid);
-    void dobind(QString username,QString pwd,QString phone,QString mCode,QString uuid);
+    //void dobind(QString username,QString pwd,QString phone,QString mCode,QString uuid);
 
 };
 
