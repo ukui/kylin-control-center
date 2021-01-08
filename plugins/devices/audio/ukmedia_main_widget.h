@@ -206,6 +206,7 @@ public:
     static gboolean customThemeDirIsEmpty (void);
     static MateMixerSwitch *findStreamPortSwitch (UkmediaMainWidget *widget,MateMixerStream *stream);
     static MateMixerSwitch *findDeviceProfileSwitch (UkmediaMainWidget *widget,MateMixerDevice *device);
+    static void onSwitchActiveOptionNotify (MateMixerSwitch *swtch,GParamSpec *pspec,UkmediaMainWidget *w);
     static void onDeviceProfileActiveOptionNotify (MateMixerDeviceSwitch *swtch,GParamSpec *pspec,UkmediaMainWidget *w);
     static gchar *deviceStatus (MateMixerDevice *device);
     static void updateDeviceInfo (UkmediaMainWidget *w, MateMixerDevice *device);
