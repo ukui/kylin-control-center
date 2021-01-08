@@ -21,6 +21,8 @@
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
 #include <sys/stat.h>
+#include <QDesktopServices>
+#include <QUrl>
 
 MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_dbusClient = new DbusHandleClient();    //创建一个通信客户端
@@ -745,17 +747,7 @@ void MainWidget::on_login_out() {
 
 /* 修改密码打开处理事件 */
 void MainWidget::neweditdialog() {
-    //emit docheck();
-    m_editDialog = new EditPassDialog;
-    m_editDialog->setAttribute(Qt::WA_DeleteOnClose);
-    m_editDialog->set_client(m_dbusClient,thread);
-    m_editDialog->m_bIsUsed = true;
-    //m_mainDialog->is_used = false;
-    m_editDialog->set_clear();
-    m_editDialog->m_szCode  = m_szCode;
-    connect(m_editDialog,SIGNAL(account_changed()),this,SLOT(on_login_out()));
-    m_editDialog->show();
-    m_editDialog->raise();
+    QDesktopServices::openUrl(QUrl("https://id.kylinos.cn/find"));
 }
 
 /* 动态布局显示处理函数 */
