@@ -6,6 +6,7 @@
 #include <QDBusConnection>
 #include <QDebug>
 #include <QDBusPendingCall>
+#include <QDBusPendingReply>
 
 class UpdateSource : public QObject
 {
@@ -17,7 +18,9 @@ public:
 
     void callDBusUpdateSource();
 
+//    QDBusReply<QString> replyStr;   //string类型的返回值
     QDBusInterface *serviceInterface;
+    void getReply(QDBusPendingCallWatcher *call);
 
 signals:
 

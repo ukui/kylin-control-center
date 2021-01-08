@@ -1,10 +1,9 @@
 #include "updatelog.h"
 
 
-UpdateLog::UpdateLog(QWidget *parent) : QWidget(parent)
+UpdateLog::UpdateLog(QDialog *parent) : QDialog(parent)
 {
     logUi();
-    logStyle();
 
 }
 void UpdateLog::logUi()
@@ -13,6 +12,7 @@ void UpdateLog::logUi()
 //    this->setAttribute(Qt::WA_TranslucentBackground, true);
 
     this->setFixedSize(460,560);
+    this->setWindowTitle("更新日志");
 
     logVLayout = new QVBoxLayout();
     logMainLayout = new QVBoxLayout();
@@ -21,54 +21,43 @@ void UpdateLog::logUi()
     logAppVLayout = new QVBoxLayout();
 
     logAppIcon = new QLabel(this);
+    logAppIcon->setFixedSize(48,48);
+
     logAppName = new QLabel(this);
     logAppVerson = new QLabel(this);
 
     logWidget = new QWidget(this);
     logAppWidget = new QWidget(this);
 
+
     logContent = new QTextEdit(this);
-
-    logAppName->setText("麒麟音乐更新日志");
-    logAppVerson->setText("当前版本 1.0.2");
-    logAppIcon->setFixedSize(48,48);
-
-    //    logContent->setFixedSize(396,411);
-
-
+    QPalette pl = logContent->palette();
+    pl.setBrush(QPalette::Base,QBrush(QColor(255,0,0,0)));
+    logContent->setPalette(pl);
+    contentFrame = new QFrame(this);
+    contentFrame->setFrameShape(QFrame::Box);
+    QVBoxLayout *contentLayout = new QVBoxLayout();
+    contentFrame->setLayout(contentLayout);
+    contentLayout->addWidget(logContent);
+    contentLayout->setMargin(0);
+    contentLayout->setSpacing(0);
     logContent->setReadOnly(true);
-
-
 
     logAppVLayout->addWidget(logAppName);
     logAppVLayout->addWidget(logAppVerson);
     logAppVLayout->setMargin(0);
     logAppVLayout->setSpacing(0);
-
     logAppHLayout->addWidget(logAppIcon);
     logAppHLayout->addLayout(logAppVLayout);
     logAppHLayout->setMargin(0);
     logAppHLayout->setSpacing(8);
-
-
     logAppWidget->setLayout(logAppHLayout);
-
-
-
 
     logVLayout->addWidget(logAppWidget);
     logVLayout->addSpacing(12);
-    logVLayout->addWidget(logContent);
+    logVLayout->addWidget(contentFrame);
     logVLayout->setContentsMargins(24,0,24,24);
-//    logVLayout->setMargin(0);
     logVLayout->setSpacing(0);
-
-
-
-
-
-
-
     logWidget->setLayout(logVLayout);
 
 
@@ -80,18 +69,10 @@ void UpdateLog::logUi()
     this->setLayout(logMainLayout);
 }
 
-void UpdateLog::logStyle()
-{
-
-}
-
 // 实现圆角阴影效果
 void UpdateLog::paintEvent(QPaintEvent *event)
 {
 //    WidgetStyle::paintEvent(event, this);
 }
 
-//void UpdateLog::closeUpdateLog()
-//{
-//    this->close();
-//}
+

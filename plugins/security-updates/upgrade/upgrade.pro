@@ -39,41 +39,41 @@ DEFINES += QT_DEPRECATED_WARNINGS \
 
 SOURCES += \
     src/appupdate.cpp \
-    src/changelogwidget.cpp \
+    src/backup.cpp \
     src/daemonipcdbus.cpp \
-    src/listwig.cpp \
-    src/logwindow.cpp \
+    src/historyupdatelistwig.cpp \
     src/m_updatelog.cpp \
     src/shadowwidget.cpp \
     src/switchbutton.cpp \
     src/tabwidget.cpp \
     src/traybusthread.cpp \
+    src/ukscconn.cpp \
     src/updatedbus.cpp \
     src/updatelog.cpp \
+    src/updatesource.cpp \
     src/upgrademain.cpp \
     src/widgetstyle.cpp \
-    src/updatesource.cpp \
     upgrade.cpp
 
 HEADERS += \
     src/appupdate.h \
-    src/changelogwidget.h \
+    src/backup.h \
     src/connection.h \
     src/daemonipcdbus.h \
-    src/listwig.h \
-    src/logwindow.h \
+    src/historyupdatelistwig.h \
     src/m_updatelog.h \
     src/metatypes.h \
     src/shadowwidget.h \
     src/switchbutton.h \
     src/tabwidget.h \
     src/traybusthread.h \
+    src/ukscconn.h \
     src/updatedbus.h \
     src/updatelog.h \
+    src/updatesource.h \
     src/upgrademain.h \
     src/utils.h \
     src/widgetstyle.h \
-    src/updatesource.h \
     upgrade.h
 
 # Default rules for deployment.

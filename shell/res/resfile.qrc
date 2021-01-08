@@ -148,6 +148,8 @@
         <file>plugins/upgrade/refresh.png</file>
         <file>secondaryleftmenu/Upgrade.svg</file>
         <file>secondaryleftmenu/UpgradeWhite.svg</file>
+        <file>plugins/upgrade/update.png</file>
+        <file>plugins/upgrade/normal.png</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

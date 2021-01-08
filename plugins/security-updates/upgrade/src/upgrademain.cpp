@@ -43,14 +43,6 @@ UpgradeMain::UpgradeMain(QString arg,QWidget *parent)
     setWidgetStyle();
 
 
-//    qDebug()<<QDir::homePath();
-
-//    QString fromDir = "/var/lib/kylin-software-properties/kylin-update-timer/";
-//    QString toDir = QDir::homePath();
-//    toDir += "/.config/kylin-update-manager/";
-//    copyFolder(fromDir,toDir,true);
-
-
 }
 
 UpgradeMain::~UpgradeMain()
@@ -61,18 +53,6 @@ UpgradeMain::~UpgradeMain()
 // 初始化组件
 void UpgradeMain::setWidgetUi()
 {
-    // 窗口设置
-    // 无边框、界面置顶
-//     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-
-    // 窗体透明
-//    this->setAttribute(Qt::WA_TranslucentBackground, true);
-
-
-    // 设置图标
-    // this->setWindowTitle("麒麟计算器");
-    // this->setWindowIcon(QIcon("/usr/share/icons/ukui-icon-theme-default/64x64/apps/calc.png"));
-
     // 整体界面widget
     mainWid = new QWidget(this);
 
@@ -84,7 +64,7 @@ void UpgradeMain::setWidgetUi()
     mainLayout->setSpacing(0);
 
     myTabwidget = new TabWid(this);
-//    myTabwidget->resize(620,580);
+
 
     mainLayout->addWidget(myTabwidget);
 
@@ -99,13 +79,6 @@ void UpgradeMain::setWidgetUi()
 // 初始化样式
 void UpgradeMain::setWidgetStyle()
 {
-//    // 设置窗体大小
-//    this->resize(WINDOWW, WINDOWH);
-
-//    //在屏幕中央显示
-//    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
-//    this->move((availableGeometry.width() - this->width())/2, (availableGeometry.height() - this->height())/2);
-
     // 读取主题颜色配置文件 监听主题颜色改变
     if(QGSettings::isSchemaInstalled(FITTHEMEWINDOW))
     {
@@ -198,35 +171,6 @@ bool UpgradeMain::copyFolder(const QString &fromDir, const QString &toDir, bool 
 }
 void UpgradeMain::readConf()
 {
-    /*
-    QString toDir = QDir::homePath();
-    toDir += "/.config/kylin-update-manager/kylin-update-manager.conf";
-    mqsetting = new QSettings(toDir,QSettings::IniFormat);
-    mqsetting->setIniCodec(QTextCodec::codecForName("UTF-8")); //在此添加设置，即可读写conf文件中的中文
 
-
-    //开始组Generic
-    mqsetting->beginGroup(QString::fromLocal8Bit("Generic"));
-    //读取
-//    qDebug()<<mqsetting->value("service").toString();
-//    qDebug()<<mqsetting->value("prefix").toString();
-//    qDebug()<<mqsetting->value("enable").toString();
-    //写入
-//    mqsetting->setValue("service","qwrewqr");
-    //结束组
-    mqsetting->endGroup();
-
-
-
-    //开始组T1
-    mqsetting->beginGroup(QString::fromLocal8Bit("T1"));
-    //读取
-//    qDebug()<<mqsetting->value("offsettime").toString();
-    //写入
-//    mqsetting->setValue("offsettime","qwrewqr");
-    //结束组
-    mqsetting->endGroup();
-
-    */
 }
 

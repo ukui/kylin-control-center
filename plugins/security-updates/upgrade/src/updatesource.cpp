@@ -26,5 +26,20 @@ void UpdateSource::callDBusUpdateTemplate()
 */
 void UpdateSource::callDBusUpdateSource()
 {
-    serviceInterface->asyncCall("updateSourcePackages");
+   QDBusPendingCall call = serviceInterface->asyncCall("updateSourcePackages");
+   qDebug() << "调用完了" ;
+   QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call,this);
+   connect(watcher,&QDBusPendingCallWatcher::finished,this,&UpdateSource::getReply);
+}
+
+void UpdateSource::getReply(QDBusPendingCallWatcher *call)
+{
+    QDBusPendingReply<QString> reply = *call;
+    if (!reply.isValid()) {
+        qDebug() << "iserror";
+    } else {
+        QString text = reply.argumentAt<0>();
+        qDebug() << "QString::" << text <<"111111111111111111111";
+    }
+    call->deleteLater();
 }

@@ -1,7 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
-#include "updatedbus.h"
 #include <QDir>
+#include <QMetaType>
 #define DOWN_CACHE_PATH QString("%1/.cache/kylin-update-manager/").arg(QDir::homePath())
 #define DOWN_TEMP_PATH QString("%1/.cache/kylin-update-manager/kylin-update-manager-deb/deb/").arg(QDir::homePath())
 
@@ -17,7 +17,7 @@ struct AppMsg //记录当前包信息：包名、依赖列表、总大小、获�
 {
     QVector<UrlMsg> depList;
     long allSize = 0;
-    bool getDepends = true;
+    bool getDepends = false;
 };
 
 struct AppAllMsg
@@ -45,4 +45,6 @@ struct AppAllMsg
     AppMsg msg;
 
 };
+Q_DECLARE_METATYPE(AppMsg) //注册AppMsg结构用于信号槽传输
+Q_DECLARE_METATYPE(AppAllMsg) //注册AppMsg结构用于信号槽传输
 #endif // UTILS_H

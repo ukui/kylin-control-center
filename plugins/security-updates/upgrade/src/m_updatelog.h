@@ -1,73 +1,48 @@
 #ifndef M_UPDATELOG_H
 #define M_UPDATELOG_H
 
-#include <QWidget>
+#include <QFrame>
+#include <QDialog>
+
+#include <QBoxLayout>
+
 #include <QLabel>
-#include <QLineEdit>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QListWidget>
-#include <QTreeWidget>
-#include <QTableWidget>
-#include <QString>
+#include <QTextEdit>
+#include <QScrollBar>
+
 #include <QSqlDatabase>
-#include <QApplication>
-#include <QDebug>
 #include <QSqlQuery>
 #include <QSqlQueryModel>
-#include <QStringList>
-#include <QListView>
-#include <QTableWidgetItem>
-#include "listwig.h"
-#include <QAction>
-#include <QFont>
-#include <QPushButton>
 
-class m_updatelog : public QWidget
+#include <QDebug>
+
+#include <QFont>
+
+#include "historyupdatelistwig.h"
+
+class m_updatelog : public QDialog
 {
     Q_OBJECT
 public:
     explicit m_updatelog(QWidget *parent = nullptr);
-    void initUI();
+    QTextEdit * des = nullptr;
 
-    QLabel       *toplabel;
-    QLabel       *uplabel;
-
-    QLineEdit    *searchEdit;
-
-    QHBoxLayout  *m_pfirstlayout   = nullptr;
-    QHBoxLayout  *m_psecondlayout   = nullptr;
-    QHBoxLayout  *m_entrylayout   = nullptr;
-    QVBoxLayout  *m_pmainlayout   = nullptr;
-
-    QWidget      *firstWidget;
-    QWidget      *secondWidget;
+protected:
 
 
-    QListWidget  *mainListwidget;
+private:
+    QListWidget  *mainListwidget; //列表容器
+    int maxCode = 0;
+    int minCode = 0;
+    QHBoxLayout *hll = nullptr;
 
-    headerwidget *headtitle ;
-
-    //数据库相关
-    QSqlDatabase    db;
-    QSqlQueryModel  model;
-
-    QStringList     m_Appname;
-    QStringList     m_Version;
-    QStringList     m_Time;
-    QStringList     m_Description;
-    QStringList     m_statue;
-
-    int sqlnum;
-    int s_insearch(QString arg);
-
-signals:
-    void closesignal();
-
-public slots:
-    void updatesql();
-
-
+private slots:
+    void initUI(); //初始化UI
+    void dynamicLoadingInit(); //动态加载
+    void dynamicLoading(int i); //动态加载
+    void updatesql();//更新列表
+    void defaultItem();//默认选中
 };
 
 #endif // M_UPDATELOG_H

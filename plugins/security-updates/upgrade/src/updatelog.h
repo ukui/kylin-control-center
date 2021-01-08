@@ -8,16 +8,17 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QDialog>
 
 #include "widgetstyle.h"
 #include "shadowwidget.h"
 
 
-class UpdateLog : public QWidget
+class UpdateLog : public QDialog
 {
 
 public:
-    explicit UpdateLog(QWidget *parent = nullptr);
+    explicit UpdateLog(QDialog *parent = nullptr);
 
     void logUi();
 
@@ -36,8 +37,7 @@ public:
     QVBoxLayout *logMainLayout;
 
     QTextEdit *logContent;
-
-    void logStyle();
+    QFrame *contentFrame;
 
 
     void paintEvent(QPaintEvent *);

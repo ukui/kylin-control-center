@@ -1,6 +1,9 @@
 #include "updatedbus.h"
 #include "connection.h"
 #include <QMutexLocker>
+#define PROGRAM_NAME "control-upgrade"
+#define PATH_MAX_LEN 1024
+#define PID_STRING_LEN 64
 
 UpdateDbus* UpdateDbus::updateMutual = nullptr;
 using namespace std;
@@ -19,10 +22,8 @@ UpdateDbus* UpdateDbus::getInstance()
 UpdateDbus::UpdateDbus(QObject *parent)
     :QObject(parent)
 {
-
-    m_backend = new QApt::Backend(this);
-    m_backend->init();
-
+    qRegisterMetaType<AppMsg>("AppMsg"); //注册信号槽类型
+    qRegisterMetaType<AppAllMsg>("AppAllMsg"); //注册信号槽类型
     interface = new QDBusInterface(KYLIN_UPDATE_MANAGER_SERVICE,
                                    KYLIN_UPDATE_MANAGER_PATH,
                                    KYLIN_UPDATE_MANAGER_INTERFACE,
@@ -32,19 +33,53 @@ UpdateDbus::UpdateDbus(QObject *parent)
                                          QString("cn.kylinos.KylinUpdateManager"),
                                          QString("kum_apt_signal"), this, SLOT(getAptSignal(QString, QMap<QString, QVariant>)));
 
+    QDBusConnection::systemBus().connect(QString("cn.kylinos.KylinUpdateManager"), QString("/cn/kylinos/KylinUpdateManager"),
+                                         QString("cn.kylinos.KylinUpdateManager"),
+                                         QString("important_app_message_signal"), this, SLOT(getAppMessageSignal(QMap<QString, QVariant>, QStringList, QStringList, QStringList, QStringList, QString, bool)));
+
+    QDBusConnection::systemBus().connect(QString("cn.kylinos.KylinUpdateManager"), QString("/cn/kylinos/KylinUpdateManager"),
+                                         QString("cn.kylinos.KylinUpdateManager"),
+                                         QString("get_message_finished_signal"), this, SLOT(slotFinishGetMessage(QString)));
 
     QDBusConnection::systemBus().connect(QString("cn.kylinos.KylinUpdateManager"), QString("/cn/kylinos/KylinUpdateManager"),
                                          QString("cn.kylinos.KylinUpdateManager"),
                                          QString("copy_finish"), this, SLOT(slotCopyFinished(QString)));
-//    connect(interface, SIGNAL(kum_apt_signal(QString, QVariantMap)), this, SLOT(getAptSignal(QString, QVariantMap)));
 
     init_cache();
     cleanUpdateList();
-
-//    m_traybusthread = new traybusthread();
-//    QObject::connect(m_traybusthread,SIGNAL(result(QStringList)),this,SLOT(initTrayD_bus(QStringList)));
+//    fileUnLock();
+//    qDebug() << "文件锁" << fileLock();
 }
 
+void UpdateDbus::onRequestSendDesktopNotify(QString message)
+{
+    QDBusInterface iface("org.freedesktop.Notifications",
+                         "/org/freedesktop/Notifications",
+                         "org.freedesktop.Notifications",
+                         QDBusConnection::sessionBus());
+    QList<QVariant> args;
+    args<<(QCoreApplication::applicationName())
+       <<((unsigned int) 0)
+      <<QString("qweq")
+     <<tr("控制面板-更新提示") //显示的是什么类型的信息
+    <<message //显示的具体信息
+    <<QStringList()
+    <<QVariantMap()
+    <<(int)-1;
+    iface.callWithArgumentList(QDBus::AutoDetect,"Notify",args);
+}
+
+bool UpdateDbus::fileLock()
+{
+    int fd = open(lockPath.toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+    return lockf(fd, F_TLOCK, 0);
+}
+
+void UpdateDbus::fileUnLock()
+{
+    int fd = open(lockPath.toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+    lockf(fd, F_ULOCK, 0);
+}
 void UpdateDbus::initTrayD_bus(QStringList arg)
 {
 
@@ -53,10 +88,11 @@ void UpdateDbus::initTrayD_bus(QStringList arg)
     //    m_traybusthread->quit();
 }
 
-void UpdateDbus::startTray()
+void UpdateDbus::slotFinishGetMessage(QString num)
 {
-//    m_traybusthread->start();
-
+    qDebug() << "num:" << num;
+    int inum = num.toInt();
+    emit sendFinishGetMsgSignal(inum);
 }
 
 bool UpdateDbus::cancel(QString pkgName)
@@ -92,36 +128,6 @@ void UpdateDbus::cancelDownloadApp(QString appName)
     }
 }
 
-bool UpdateDbus::changeSourceListToDefault(QString serviceKey, QString pwd, QString currentUser, QString osCodename, QString availableSource)
-{
-    // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->call("change_source_list_to_default", serviceKey,pwd,currentUser,osCodename,availableSource);
-
-    // 将reply.value()作为返回值
-    if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed changeSourceListToDefault");
-    }
-}
-
-bool UpdateDbus::changeSourceListToKylinUpdateServer(QStringList lines)
-{
-    // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->call("change_source_list_to_kylin_update_server",lines);
-
-    // 将reply.value()作为返回值
-    if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed changeSourceListToKylinUpdateServer");
-    }
-}
-
 //函数：解决冲突
 bool UpdateDbus::configureDpkgByShell(bool queit)
 {
@@ -139,7 +145,7 @@ bool UpdateDbus::configureDpkgByShell(bool queit)
 }
 
 //拷贝软件包到安装目录，拷贝之前需要判断是否存在archives目录
-void UpdateDbus::copyFileToInstall(QStringList srcPath, QString appName)
+void UpdateDbus::copyFinsh(QStringList srcPath, QString appName)
 {
     QDir dir(QString("/var/cache/apt/archives/"));
     if(!dir.exists())
@@ -279,20 +285,6 @@ QStringList UpdateDbus::getChangeLog(QString appName)
     }
 }
 
-void UpdateDbus::ConnectSlots()
-{
-
-    replyStr = interface1->call("connectSuccessslots");
-//    qDebug() << "程序执行" ;
-    // replyStrreplyStr.value()作为返回值
-    if (replyStr.isValid()) {
-//        qDebug() << replyStrList.value();
-        return ;
-    }
-    else{
-        qDebug() << QString("Call failed connectSuccessslots");
-    }
-}
 
 //下载pkg列表
 bool UpdateDbus::Install(QStringList pkgNames)
@@ -342,21 +334,6 @@ bool UpdateDbus::Update(bool quiet)
     }
 }
 
-//通过shell更新软件源
-bool UpdateDbus::updateByShell(bool quiet)
-{
-    // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->call("update_by_shell",quiet);
-
-    // 将reply.value()作为返回值
-    if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed updateByShell");
-    }
-}
 
 //升级
 bool UpdateDbus::Upgrade(QStringList pkgNames)
@@ -434,33 +411,6 @@ void UpdateDbus::init_cache()
     }
 }
 
-bool UpdateDbus::checkIsInstalled(QString appName)
-{
-
-}
-
-bool UpdateDbus::checkLoongson3A4000()
-{
-    QProcess os(0);
-    QStringList args;
-    args.append("grep");
-    args.append("'Loongson-3A4000'");
-
-    os.start("lscpu", args);
-
-    os.waitForFinished(); //等待完成
-//
-    QString result = QString::fromLocal8Bit(os.readAllStandardOutput());
-    qDebug()<<result;
-    if(result.indexOf("Loongson-3A4000") == -1)
-    {
-//        qDebug()<<QString::fromLocal8Bit(os.readAllStandardError());
-
-        return false;
-    }
-
-    return true;
-}
 
 QString UpdateDbus::selectCNFromDatebase(QString appName)
 {
@@ -492,54 +442,6 @@ QString UpdateDbus::selectIconFromDatebase(QString appName)
 
 }
 
-
-// 获取sinfo中source.list 将etc/apt/source.list设置为sinfo中[source.list]内容
-void UpdateDbus::getSourceListFromSinfo()
-{
-//    QFile file("L:/qtpro/_qtApp/text/t.txt");
-//    file.open(QIODevice::ReadOnly | QIODevice::Text);
-//    QByteArray t = file.readAll();
-//    ui->text_r->setText(QString(t));
-//    file.close();
-    QFile file("/home/liujialin/kylin/sinfo.206.juniper");
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
-
-    QByteArray t ;
-    bool start = false;
-    while (!file.atEnd())
-    {
-        t = file.readLine();
-        QString lineStr = QString(t);
-
-        if (start == true)
-        {
-            // 没有源
-            if (lineStr.indexOf('[') != -1 || lineStr.simplified() == "" ||
-                lineStr == NULL)
-            {
-                break;
-            }
-            else
-            {
-                QString source = "deb http://archive.kylinos.cn" + lineStr.simplified();
-                sourcesList.append(source);
-            }
-        }
-        if (lineStr.indexOf("[sources.list]") != -1)
-        {
-
-            start = true;
-        }
-    }
-
-    file.close();
-//    qDebug() << "sourcesList" << sourcesList;
-
-    return;
-
-
-}
-
 void UpdateDbus::getInameAndCnameList(QString arg)
 {
 
@@ -558,18 +460,62 @@ void UpdateDbus::getInameAndCnameList(QString arg)
 
 }
 
-void UpdateDbus::getDesktopOrServer()
+void UpdateDbus::getAppMessageSignal(QMap<QString, QVariant> map, QStringList urlList, QStringList nameList,QStringList fullnameList,QStringList sizeList, QString allSize, bool dependState)
 {
-    QSettings settings("/etc/.kyinfo", QSettings::IniFormat);
-    settings.setIniCodec(QTextCodec::codecForName("utf-8"));
-    settings.beginGroup("dist");
-    QString data = settings.value("dist_id").toString().simplified();
-    settings.endGroup();
+    qDebug() << "getAppMessageSignal";
+    QVariant dateQVariant;
+    AppAllMsg appAllMsg;
+    QVariantMap::Iterator it;
+//    qDebug() << "收到信号" << map.value(1).toString();
+    for (it = map.begin(); it != map.end(); ++it) {
+        if (it.key() == "appname")
+        {
+            dateQVariant = it.value();
+            appAllMsg.name = dateQVariant.toString();
+        }
+        if(it.key() == "current_version")
+        {
+            dateQVariant = it.value();
+            appAllMsg.version = dateQVariant.toString().section('=',1,1);
+            qDebug() << appAllMsg.version;
+        }
+        if(it.key() == "source_version")
+        {
+            dateQVariant = it.value();
+            appAllMsg.availableVersion = dateQVariant.toString().section('=',1,1);
+        }
+        if(it.key() == "size")
+        {
+            dateQVariant = it.value();
+            appAllMsg.packageSize = dateQVariant.toInt();
+        }
+        if(it.key() == "description")
+        {
+            dateQVariant = it.value();
+            appAllMsg.longDescription = dateQVariant.toString();
+        }
+    }
+    qDebug() <<  "urllist:" << allSize;
+    if(urlList.length() != 0)
+    {
+        for(int i = 0; i < urlList.length(); i++)
+        {
+            UrlMsg msg;
+            msg.url = urlList.at(i);
+            msg.name = nameList.at(i);
+            msg.fullname = fullnameList.at(i);
+            QString size = sizeList.at(i);
+            msg.size = size.toInt();
+            appAllMsg.msg.depList.append(msg);
+            qDebug() << "url:" << msg.url << "name:" << msg.name << "fullname:" << msg.fullname << "size:" << msg.size;
+        }
+    }
+    appAllMsg.msg.allSize = allSize.toLong();
+    appAllMsg.msg.getDepends = dependState;
+    qDebug() << "allsize:" << appAllMsg.msg.allSize << "state:" <<  appAllMsg.msg.getDepends;
 
-    if (data.indexOf("server") != -1)
-        desktopOrServer = "server";
-    else
-        desktopOrServer = "desktop";
+//    qDebug() << "获取信息" << appAllMsg.name << appAllMsg.longDescription;
+    emit sendAppMessageSignal(appAllMsg);
 }
 
 QStringList UpdateDbus::getDependsPkgs(QString appName)
@@ -583,6 +529,12 @@ QStringList UpdateDbus::getDependsPkgs(QString appName)
     }
 }
 
+void UpdateDbus::insertInstallStates(QString item,QString info)
+{
+    interface->asyncCall("insert_install_state",item,info);
+    qDebug() << QString("insert_install_state") << item << info;
+}
+
 QStringList UpdateDbus::checkInstallOrUpgrade(QStringList list)
 {
     replyStrList = interface->call("check_installed_or_upgrade",list);
@@ -593,6 +545,14 @@ QStringList UpdateDbus::checkInstallOrUpgrade(QStringList list)
         qDebug() << QString("Call failed check_installed_or_upgrade");
     }
 }
+
+void UpdateDbus::getAppMessage(QStringList list)
+{
+    qDebug () << "get_app_message";
+    interface->asyncCall("get_app_message",list);
+    qDebug() << QString("Call get_app_message");
+}
+
 
 void UpdateDbus::getAptSignal(QString arg, QMap<QString, QVariant> map)
 {
@@ -635,6 +595,7 @@ void UpdateDbus::slotCopyFinished(QString appName)
 {
     emit copyFinish(appName);
 }
+
 
 UpdateDbus::~UpdateDbus()
 {

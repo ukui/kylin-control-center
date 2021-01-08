@@ -15,8 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef UPGRADEMAIN_H
-#define UPGRADEMAIN_H
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
 #include <QMainWindow>
 #include <QKeyEvent>
@@ -81,32 +81,18 @@ private:
 
     // 更新管理器Dbus
      UpdateDbus *updateDbus;
-
-
     // 整体界面widget
     QWidget *mainWid;
-
     // QGSettings
     QGSettings *gSettings = nullptr;
-
     // 用户手册功能
     DaemonIpcDbus *mDaemonIpcDbus;
-
     // 整体界面布局
     QVBoxLayout *mainLayout;
-
     TabWid *myTabwidget;
-
-
     QTimer *my_time;
-
-
-
-//    QScrollArea *scrollArea;
-
-
 
 
 };
 
-#endif // UPGRADEMAIN_H
+#endif // MAINWINDOW_H

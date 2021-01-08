@@ -13,7 +13,7 @@ static bool CreatConnection()
 {
     qDebug() << "connect db";
     QSqlDatabase db1 = QSqlDatabase::addDatabase("QSQLITE","A");
-    QString dirPath = QString("%1/.cache/kylin-update-manager/").arg(QDir::homePath());
+    QString dirPath = QString("/var/cache/kylin-update-manager");
     QString dbPath = QString("%1/kylin-update-manager.db").arg(dirPath);
     QDir dir(dirPath);
     if(!dir.exists())

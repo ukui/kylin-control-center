@@ -3,21 +3,119 @@
 TabWid::TabWid(QWidget *parent):QWidget(parent)
 {
     updateMutual = UpdateDbus::getInstance();
+    ukscConnect = new UKSCConn();
     updateSource = new UpdateSource();
 //    this->resize(620,580);
     allComponents();
-    createUI();
+    //打开时是否自动检测
+
     getAllDisplayInformation();
     connect(updateSource->serviceInterface,SIGNAL(updateTemplateStatus(QString)),this,SLOT(slotUpdateTemplate(QString)));
     connect(updateSource->serviceInterface,SIGNAL(updateCacheStatus(QString)),this,SLOT(slotUpdateCache(QString)));
     connect(updateSource->serviceInterface,SIGNAL(updateSourceProgress(QString)),this,SLOT(slotUpdateCacheProgress(QString)));
+    bacupInit();//初始化备份
+
 }
 
 TabWid::~TabWid()
 {
     qDebug() << "~TabWid" ;
+    backupDelete();//回收资源
 //    updateMutual->cleanUpdateList();
 }
+void TabWid::backupMessageBox(QString str)
+{
+    QMessageBox msgBox;
+    msgBox.setText(str);
+//        msgBox.setInformativeText(tr("备份还原可以保存当前系统状态。"));
+//    msgBox.setDetailedText(tr("Differences here..."));
+    msgBox.setStandardButtons(QMessageBox::Save
+                              | QMessageBox::Discard);
+    msgBox.setButtonText(QMessageBox::Save,"立即更新");
+    msgBox.setButtonText(QMessageBox::Discard,"取消更新");
+//        msgBox.setButtonText(QMessageBox::Abort,"否，我不备份");
+    int ret = msgBox.exec();
+    if(ret == QMessageBox::Save)
+    {
+        qDebug() << "立即更新!";
+        checkUpdateBtn->setText("正在更新...");
+        checkUpdateBtn->setEnabled(false);
+        emit updateAllSignal();
+    }
+    else if(ret == QMessageBox::Discard)
+    {
+       qDebug() << "不进行全部更新。";
+       checkUpdateBtn->setEnabled(true);
+    }
+}
+
+void TabWid::backupCore()
+{
+    int initresult = emit needBackUp();
+    switch (initresult) {
+    case -1:
+        backupMessageBox("未能找到备份还原分区，本次更新不会备份系统!");
+        //如果是则立即更新,否的话取消全部更新
+        return;
+    case -2:
+        versionInformationLab->setText("麒麟备份还原工具正在进行其他操作，请稍后更新");
+        return;
+    case 1://正在备份
+        emit startBackUp(0);
+        break;
+    case needBack://需要备份
+        emit startBackUp(1);
+        break;
+    case -9://备份还原工具不存在
+        backupMessageBox("麒麟备份还原工具不存在，本次更新不会备份系统!");
+        return;
+    default:
+        return;
+    }
+     qDebug()<<"开始备份";
+     versionInformationLab->setText("开始备份,正在获取进度...");
+}
+
+void TabWid::backupProgress(int progress)
+{
+    if(progress==100)
+    {
+        //备份完成，开始安装
+        qDebug()<<"备份完成，开始安装";
+        checkUpdateBtn->setText("正在更新...");
+        checkUpdateBtn->setEnabled(false);
+        emit updateAllSignal();
+        return;
+    }
+    versionInformationLab->setText("备份中："+QString::number(progress)+"%");
+}
+
+void TabWid::bakeupFinish(int result)
+{
+    if(result!=0)
+    {
+        versionInformationLab->setText("麒麟备份还原工具异常，异常代码："+QString::number(result));
+    }
+}
+
+void TabWid::bacupInit()
+{
+    backup = new BackUp;
+    backupThread = new QThread;
+    backup->moveToThread(backupThread);
+    connect(this,&TabWid::needBackUp,backup,&BackUp::needBacdUp,Qt::BlockingQueuedConnection);//同步信号，阻塞，取返回值
+    connect(this,&TabWid::startBackUp,backup,&BackUp::startBackUp);
+    connect(backup,&BackUp::bakeupFinish,this,&TabWid::bakeupFinish);
+    connect(backup,&BackUp::backupProgress,this,&TabWid::backupProgress);
+    backupThread->start();
+}
+
+void TabWid::backupDelete()
+{
+    backup->deleteLater();
+    backupThread->deleteLater();
+}
+
 void TabWid::slotUpdateTemplate(QString status)
 {
     qDebug() << "update template status :" << status;
@@ -30,7 +128,7 @@ void TabWid::slotUpdateCache(QString status)
     qDebug() << "update cache status :" << status;
 
     if (!status.compare("success")) {
-        checkUpdateBtn->setText(tr("更新成功"));
+        checkUpdateBtn->setText(tr("获取更新列表"));
         QFile file(IMPORTANT_FIEL_PATH);
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qDebug() <<"file open failed!" << IMPORTANT_FIEL_PATH;
@@ -42,13 +140,16 @@ void TabWid::slotUpdateCache(QString status)
             list = str.split(" ");
         }
         qDebug() << "获取到的包列表：" << list;
-        QStringList ilist =  updateMutual->checkInstallOrUpgrade(list);
-        qDebug() << "处理后的包列表: " << ilist;
-        getAppUpdateMsg(ilist);
+
+        updateMutual->getAppMessage(list);
+
+
     }
     else
     {
-        checkUpdateBtn->setText("更新失败");
+        checkUpdateBtn->setEnabled(true);
+        checkUpdateBtn->setText(tr("检查更新"));
+        versionInformationLab->setText("更新软件源失败!");
     }
 }
 void TabWid::slotUpdateCacheProgress(QString progress)
@@ -59,69 +160,98 @@ void TabWid::slotUpdateCacheProgress(QString progress)
 void TabWid::allComponents()
 {
     mainTabLayout = new QVBoxLayout();  //整个页面的主布局
-
-    updateWidget = new QTabWidget(this);   //标签页
-//    updateWidget->resize(500,580);
     scrollArea = new QScrollArea(this);
-
     updateTab = new QWidget(this);  //更新页面
+
     AppMessage = new QVBoxLayout();
+    AppMessage->setAlignment(Qt::AlignTop);
     updateTab->setLayout(AppMessage);
     systemWidget = new QFrame(updateTab);
     systemWidget->setFrameShape(QFrame::Box);
     systemPortraitLab = new QLabel(systemWidget);
 
-
     allUpdateWid = new QWidget(this);
     allUpdateLayout = new QVBoxLayout();
+    allUpdateLayout->setAlignment(Qt::AlignTop);
     allUpdateWid->setLayout(allUpdateLayout);
-//    allUpdateLayout->setContentsMargins(0,5,0,0);
-    allUpdateLayout->setSpacing(8);
-    AppMessage->addWidget(systemWidget,0,Qt::AlignTop);
-//    tab1VLayout->addWidget(appUpdateListWidget);
-//    updateTab->setLayout(tab1VLayout);
-    AppMessage->addWidget(allUpdateWid,1,Qt::AlignTop);
+    allUpdateLayout->setSpacing(2);
+    allUpdateLayout->setMargin(0);
+
+    QLabel *labUpdate = new QLabel(this);
+    labUpdate->setText(tr("更新"));
+    ft.setPointSize(28);
+    labUpdate->setFont(ft);
 
     scrollArea->setWidget(updateTab);
     scrollArea->setFrameStyle(0);
-//    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scrollArea->setWidgetResizable(true);
 
-//    tab1VLayout->addWidget(appWid1,0,Qt::AlignTop);
-//    tab1VLayout->addWidget(appWid2,1,Qt::AlignTop);
+    systemWidget->resize(560,140);
+    systemWidget->setFixedHeight(140);
 
-    systemWidget->setFixedHeight(120);
+    systemPortraitLab = new QLabel();
+    tab1HLayout = new QHBoxLayout();
+    systemWidget->setLayout(tab1HLayout);
+    systemPortraitLab->setFixedSize(96,96);
+    systemPortraitLab->setPixmap(QPixmap(":/img/plugins/upgrade/normal.png").scaled(QSize(96,96)));
 
-    updateSettingTab = new QWidget(this);  //更新设置界面
-    tab2VLayout = new QVBoxLayout();
-    updateSettingTab->setLayout(tab2VLayout);
-//    tab2HLayout = new QHBoxLayout(updateSettingTab);
-    isAutoCheckWidget = new QFrame();
-    isAutoCheckWidget->setFrameShape(QFrame::Box);
-    isAutoCheckedLab = new QLabel();
-    isAutoCheckWidget->setFixedHeight(50);
-    isAutoCheckedLab->setText("自动检查更新");
+    QWidget *historyUpdateLogWid = new QWidget(this);
+    QHBoxLayout *historyUpdateLogLayout = new QHBoxLayout();
+    historyUpdateLog = new QPushButton(this); // 历史日志弹出窗口控制按钮
+    historyUpdateLog->setText(tr("查看更新历史"));
+    historyUpdateLogWid->setLayout(historyUpdateLogLayout);
+    historyUpdateLogLayout->setAlignment(Qt::AlignLeft);
+    historyUpdateLogLayout->addWidget(historyUpdateLog);
+    historyUpdateLogLayout->setSpacing(0);
+    historyUpdateLogLayout->setMargin(0);
 
-    isAutoCheckSBtn = new SwitchButton(isAutoCheckWidget);
-    QHBoxLayout *autoCheckLayout = new QHBoxLayout();
-    isAutoCheckWidget->setLayout(autoCheckLayout);
-    autoCheckLayout->addWidget(isAutoCheckedLab,0,Qt::AlignLeft);
-    autoCheckLayout->addWidget(isAutoCheckSBtn,1,Qt::AlignRight);
-    autoCheckLayout->setSpacing(0);
+    isAutoCheckBox = new QCheckBox(this);
+    isAutoCheckBox->setCheckable(true);
+    isAutoCheckBox->setText(tr("允许通知可更新的应用"));
+
+    inforLayout = new QVBoxLayout();
+    lastRefreshTime = new QLabel(systemWidget);
+    lastRefreshTime->setText("上次更新时间：0000.00.00 00:00");
+    versionInformationLab = new QLabel(systemWidget);
+    versionInformationLab->setText("上次检测时间：0000.00.00 00:00");
+    inforLayout->addWidget(versionInformationLab);
+    inforLayout->addWidget(lastRefreshTime);
+    inforLayout->addWidget(isAutoCheckBox);
+    QWidget *inforWidget = new QWidget(systemWidget);
+    inforWidget->setLayout(inforLayout);
+
+    checkUpdateBtn = new QPushButton(systemWidget);
+    checkUpdateBtn->setDefault(true);
+    checkUpdateBtn->setText(tr("检查更新"));
+    checkUpdateBtn->setFixedSize(120,36);
 
 
-    tab2VLayout->addWidget(isAutoCheckWidget,0,Qt::AlignTop);
+    tab1HLayout->addWidget(systemPortraitLab,0,Qt::AlignLeft);
+    tab1HLayout->addWidget(inforWidget,Qt::AlignLeft|Qt::AlignTop);
+    tab1HLayout->addWidget(checkUpdateBtn);
+    tab1HLayout->setContentsMargins(8,25,20,20);
+    tab1HLayout->setSpacing(0);
 
-    mainTabLayout->addWidget(updateWidget);
-    mainTabLayout->setContentsMargins(0,0,0,0);  //存在问题，设置右边边距为28px时会截掉右边部分窗口
+    AppMessage->addWidget(labUpdate);
+    AppMessage->addWidget(systemWidget);
+    AppMessage->addWidget(allUpdateWid);
+    AppMessage->addWidget(historyUpdateLogWid);
+    AppMessage->setContentsMargins(0,0,28,10);
 
-    updateWidget->addTab(scrollArea,"更新");
-    updateWidget->addTab(updateSettingTab,"更新设置");
-
+    mainTabLayout->setAlignment(Qt::AlignTop);
+    mainTabLayout->addWidget(scrollArea);
+    mainTabLayout->setSpacing(0);
+    mainTabLayout->setMargin(0);
     this->setLayout(mainTabLayout);
-    connect(isAutoCheckSBtn,&SwitchButton::checkedChanged,this,&TabWid::isAutoCheckedChanged);
+
     connect(updateMutual,&UpdateDbus::updatelist,this,&TabWid::slotGetImportant);
+    connect(updateMutual,&UpdateDbus::sendAppMessageSignal,this,&TabWid::loadingOneUpdateMsgSlot);
+    connect(updateMutual,&UpdateDbus::sendFinishGetMsgSignal,this,&TabWid::loadingFinishedSlot);
+    connect(checkUpdateBtn,&QPushButton::clicked,this,&TabWid::checkUpdateBtnClicked);
+    connect(historyUpdateLog,&QPushButton::clicked,this,&TabWid::showHistoryWidget);
+    connect(isAutoCheckBox,&QCheckBox::clicked,this,&TabWid::isAutoCheckedChanged);
+//    connect(historyUpdateLog,&QPushButton::clicked,this,&TabWid::downloadFailedSlot);
 
 
 }
@@ -129,255 +259,127 @@ void TabWid::allComponents()
 //往tabwidget中插入listwidget信息
 void TabWid::getAppUpdateMsg(QStringList arg)
 {
-//    updateMutual->ConnectSlots();
-//    int cnum = updateMutual->cnameList.size();
-    qDebug() << "加载更新信息！";
-    checkUpdateBtn->setText(tr("加载更新..."));
-    int inum = arg.size();
-    allUpdateLayout->setAlignment(Qt::AlignTop);
-    if(inum != 0)
+
+}
+
+void TabWid::loadingOneUpdateMsgSlot(AppAllMsg msg)
+{
+//    checkUpdateBtn->setText();
+    updateMutual->importantList.append(msg.name);   //重要更新列表中添加appname
+    AppUpdateWid *appWidget = new AppUpdateWid(msg, this);
+    connect(appWidget, &AppUpdateWid::cancel, this, &TabWid::slotCancelDownload);
+    connect(this, &TabWid::updateAllSignal, appWidget, &AppUpdateWid::updateAllApp);
+    connect(appWidget,&AppUpdateWid::hideUpdateBtnSignal,this,&TabWid::hideUpdateBtnSlot);
+    connect(appWidget,&AppUpdateWid::changeUpdateAllSignal,this,&TabWid::changeUpdateAllSlot);
+    connect(appWidget,&AppUpdateWid::downloadFailedSignal,this,&TabWid::downloadFailedSlot);
+    connect(appWidget,&AppUpdateWid::filelockedSignal,this,&TabWid::waitCrucialInstalled);
+    QStringList list = ukscConnect->getInfoByName(msg.name);
+    if(list[1] != "")
     {
+        appWidget->appNameLab->setText(list[1]);
+    }
+    allUpdateLayout->addWidget(appWidget);
+}
 
-        for(inumber = 0; inumber < inum; inumber++)
-        {
-            QString app_name = arg[inumber];
-            if(app_name.isEmpty())
-                continue;
-            qDebug() << app_name;
-            updateMutual->importantList.append(app_name);   //重要更新列表中添加appname
-            AppUpdateWid *appWidget = new AppUpdateWid(app_name, this);
-            connect(appWidget, &AppUpdateWid::cancel, this, &TabWid::slotCancelDownload);
-            connect(this, &TabWid::updateAllSignal, appWidget, &AppUpdateWid::updateAllApp);
-            connect(appWidget,&AppUpdateWid::hideUpdateBtnSignal,this,&TabWid::hideUpdateBtnSlot);
-            connect(appWidget,&AppUpdateWid::changeUpdateAllSignal,this,&TabWid::changeUpdateAllSlot);
-            allUpdateLayout->addWidget(appWidget);
-            QCoreApplication::processEvents();   //逐个加载
-//            sleep(2);
-
-        }
-//        AppMessage->addStretch();
-        checkUpdateBtn->setText("全部更新");
-
-        QDateTime nowtime = QDateTime::currentDateTime();
-        QString current_date = nowtime.toString("yyyy.MM.dd hh:mm:ss");
-        QSqlQuery query(QSqlDatabase::database("A"));
-        query.exec(QString("update display set item = '%1' where info = '%2'").arg(current_date).arg("上次检测时间"));
+void TabWid::loadingFinishedSlot(int size)
+{
+    if(size == 0)
+    {
+        checkUpdateBtn->setEnabled(true);
+        checkUpdateBtn->setText(tr("检查更新"));
+        versionInformationLab->setText(tr("您的系统已是最新！"));
     }
     else
     {
-        checkUpdateBtn->hide();
-        versionInformationLab->setText("您的系统已是最新！");
+        checkUpdateBtn->setText(tr("全部更新"));
+        versionInformationLab->setText(tr("检测到你的系统有可更新的应用！"));
+        systemPortraitLab->setPixmap(QPixmap(":/img/plugins/upgrade/update.png").scaled(96,96));
 
-        QDateTime nowtime = QDateTime::currentDateTime();
-        QString current_date = nowtime.toString("yyyy.MM.dd hh:mm:ss");
-        QSqlQuery query(QSqlDatabase::database("A"));
-        query.exec(QString("update display set item = '%1' where info = '%2'").arg(current_date).arg("上次检测时间"));
     }
 }
 
 void TabWid::getAllDisplayInformation()
 {
     QSqlQuery query(QSqlDatabase::database("A"));
-    QStringList displayinfo;
 
+    QString updatetime;
+    QString checkedtime;
+    QString checkedstatues;
     query.exec("select * from display");
     while(query.next())
     {
-        displayinfo.append(query.value(1).toString());
+        updatetime = query.value(2).toString();
+        checkedtime = query.value(1).toString();
+        checkedstatues = query.value(3).toString();
     }
-    QString updatetime = displayinfo[0];
-    QString checkedtime = displayinfo[1];
-    QString checkedstatues = displayinfo[3];
-
     lastRefreshTime->setText("上次更新: "+updatetime);
 
     versionInformationLab->setText("上次检测: "+checkedtime);
 
-    checkUpdateBtn->setText("开始检测");
+    checkUpdateBtn->setText(tr("检查更新"));
+
+    if(checkedstatues == "false")
+    {
+        isAutoCheckBox->setChecked(false);
+    }
+    else
+    {
+        isAutoCheckBox->setChecked(true);
+    }
 
 
 
 }
 void TabWid::showHistoryWidget()
 {
-    if(historyLogIsCreate == false)
-    {
-        historyLog = new m_updatelog();
-        historyLogIsCreate = true;
-    }
-    historyLog->updatesql();
-    historyLog->show();
+
+    historyLog = new m_updatelog();
+    historyLog->exec();
     qDebug()<<"ok";
 }
 
 void TabWid::checkUpdateBtnClicked()
 {
-    if(checkUpdateBtn->text() == "开始检测")
+    if(checkUpdateBtn->text() == "检查更新")
     {
+        QLayoutItem *child;
+        while ((child = allUpdateLayout->takeAt(0)) != 0)
+        {
+            //setParent为NULL，防止删除之后界面不消失
+            if(child->widget())
+            {
+                child->widget()->setParent(NULL);
+            }
+
+            delete child;
+        }
         checkUpdateBtn->setText("正在更新源...");
         updateSource->callDBusUpdateTemplate();
-//        QDateTime nowtime = QDateTime::currentDateTime();
-//        QString current_date = nowtime.toString("yyyy.MM.dd hh:mm:ss");
-//        QSqlQuery query(QSqlDatabase::database("A"));
-//        query.exec(QString("update display set item = '%1' where info = '%2'").arg(current_date).arg("上次检测时间"));
-
-
+        QDateTime current_date_time = QDateTime::currentDateTime();
+        QString current_date = current_date_time.toString("yyyy.MM.dd hh:mm:ss");
+        updateMutual->insertInstallStates("check_time",current_date);
     }
     else if(checkUpdateBtn->text() == "全部更新")
     {
-        QMessageBox msgBox;
-        msgBox.setText(tr("是否进行备份还原？"));
-        msgBox.setInformativeText(tr("备份还原可以保存当前系统状态。"));
-    //    msgBox.setDetailedText(tr("Differences here..."));
-        msgBox.setStandardButtons(QMessageBox::Save
-                                  | QMessageBox::Discard
-                                  | QMessageBox::Cancel);
-        msgBox.setDefaultButton(QMessageBox::Save);
-        msgBox.setButtonText(QMessageBox::Save,"是，立即备份");
-        msgBox.setButtonText(QMessageBox::Discard,"我已备份");
-        msgBox.setButtonText(QMessageBox::Cancel,"否，我不备份");
-        int ret = msgBox.exec();
-
-        if(ret == QMessageBox::Save)
-        {
-            qDebug() << "now backup";
-            QProcess os(0);
-            QStringList args;
-            args.append("ukui-control-center");
-            args.append("--backup");
-            os.start("ukui-control-center --backup");
-        //    os.start("whereis ",args);
-            os.waitForFinished(); //等待完成
-        }
-        else if(ret == QMessageBox::Discard)
-        {
-            qDebug() << "no,i had!";
-            checkUpdateBtn->setText("正在更新...");
-            checkUpdateBtn->setEnabled(false);
-            emit updateAllSignal();
-        }
-        else if (ret == QMessageBox::Cancel)
-        {
-            qDebug() << "no,i dont!";
-            emit updateAllSignal();
-            checkUpdateBtn->setText("正在更新...");
-            checkUpdateBtn->setEnabled(false);
-        }
+        checkUpdateBtn->setEnabled(false);
+        backupCore();//备份模块主函数
     }
 }
 
 void TabWid::isAutoCheckedChanged()     //自动检测按钮绑定的槽函数
 {
-    QSqlQuery query(QSqlDatabase::database("A"));
-    if(isAutoCheckSBtn->isChecked() == false)
+    if(isAutoCheckBox->isChecked() == false)
     {
-        QString Str = QString("update display set item = '%1' where info = '%2'").arg("false").arg("自动检测");
-        query.exec(Str);
+        updateMutual->insertInstallStates("auto_check","false");
 
     }
-    else if(isAutoCheckSBtn->isChecked() == true)
+    else if(isAutoCheckBox->isChecked() == true)
     {
-        QString Str = QString("update display set item = '%1' where info = '%2'").arg("true").arg("自动检测");
-        query.exec(Str);
+        updateMutual->insertInstallStates("auto_check","true");
     }
 }
-void TabWid::createUI()
-{
-    systemPortraitLab = new QLabel();
-    tab1HLayout = new QHBoxLayout();
-    systemWidget->setLayout(tab1HLayout);
-//    systemWidget->setBaseSize(QSize(400,120));
-
-    historyUpdateLog = new QPushButton(this); // 历史日志弹出窗口控制按钮
-    historyUpdateLog->setText("历史更新");
-    historyUpdateLog->setFlat(true);
-
-    connect(historyUpdateLog,&QPushButton::clicked,this,&TabWid::showHistoryWidget);
 
 
-
-
-    systemPortraitLab->setFixedSize(68,68);
-    systemPortraitLab->setPixmap(QPixmap(":/img/plugins/upgrade/refresh.png").scaled(QSize(64,64)));
-
-
-    inforLayout = new QVBoxLayout();
-    lastRefreshTime = new QLabel(systemWidget);
-    lastRefreshTime->setText("上次更新时间：0000.00.00 00:00");
-
-
-    versionInformationLab = new QLabel(systemWidget);
-    versionInformationLab->setText("上次检测时间：0000.00.00 00:00");
-
-
-
-    inforLayout->addWidget(versionInformationLab);
-    inforLayout->addWidget(lastRefreshTime);
-    QWidget *inforWidget = new QWidget(systemWidget);
-    inforWidget->setLayout(inforLayout);
-
-    checkUpdateBtn = new QPushButton(systemWidget);
-    checkUpdateBtn->setText("检测更新");
-    checkUpdateBtn->setFixedSize(120,36);
-    connect(checkUpdateBtn,&QPushButton::clicked,this,&TabWid::checkUpdateBtnClicked);
-//    connect(checkUpdateBtn,&QPushButton::clicked,updateMutual,&UpdateDbus::startTray);
-
-
-
-
-    tab1HLayout->addWidget(systemPortraitLab,0,Qt::AlignLeft);
-    tab1HLayout->addWidget(inforWidget,Qt::AlignLeft|Qt::AlignTop);
-    tab1HLayout->addWidget(historyUpdateLog);
-    tab1HLayout->addWidget(checkUpdateBtn);
-
-    tab1HLayout->setMargin(20);
-    tab1HLayout->setSpacing(20);
-
-
-
-
-}
-
-void TabWid::tabUI2()
-{
-    systemPortraitLab = new QLabel();
-    tab1HLayout = new QHBoxLayout();
-    systemWidget->setLayout(tab1HLayout);
-
-    systemPortraitLab->setFixedSize(68,68);
-
-    systemPortraitLab->setPixmap(QPixmap(":/image/refresh.png").scaled(QSize(64,64)));
-
-
-    historyUpdateLog = new QPushButton(this); // 历史日志弹出窗口控制按钮
-    historyUpdateLog->setText("历史更新");
-    historyUpdateLog->setFlat(true);
-
-
-    inforLayout = new QVBoxLayout();
-    lastRefreshTime = new QLabel(systemWidget);
-
-
-    versionInformationLab = new QLabel(systemWidget);
-
-    inforLayout->addWidget(versionInformationLab);
-    inforLayout->addWidget(lastRefreshTime);
-    QWidget *inforWidget = new QWidget(systemWidget);
-    inforWidget->setLayout(inforLayout);
-
-    updateAllBtn = new QPushButton(systemWidget);
-    updateAllBtn->setText("全部更新");
-    updateAllBtn->setFixedSize(120,36);
-
-
-    tab1HLayout->addWidget(systemPortraitLab,0,Qt::AlignLeft);
-    tab1HLayout->addWidget(inforWidget,Qt::AlignLeft|Qt::AlignTop);
-    tab1HLayout->addWidget(updateAllBtn);
-
-    tab1HLayout->setMargin(20);
-    tab1HLayout->setSpacing(20);
-
-}
 
 void TabWid::slotCancelDownload()
 {
@@ -387,9 +389,9 @@ void TabWid::slotCancelDownload()
 
 void TabWid::slotGetImportant(QStringList args)
 {
-    qDebug() << "成功获得更新列表";
-    QStringList itList = args;
-    getAppUpdateMsg(itList);
+//    qDebug() << "成功获得更新列表";
+//    QStringList itList = args;
+//    getAppUpdateMsg(itList);
 
 }
 
@@ -401,8 +403,10 @@ void TabWid::hideUpdateBtnSlot()
     lastRefreshTime->setText("上次更新时间："+current_date);
     if(updateMutual->importantList.size() == 0)
     {
-        checkUpdateBtn->hide();
-        versionInformationLab->setText("您的系统已是最新！");
+        checkUpdateBtn->setEnabled(true);
+        checkUpdateBtn->setText(tr("检查更新"));
+        versionInformationLab->setText(tr("您的系统已是最新！"));
+        systemPortraitLab->setPixmap(QPixmap(":/img/plugins/upgrade/normal.png").scaled(96,96));
     }
 }
 
@@ -417,7 +421,19 @@ void TabWid::changeUpdateAllSlot()
 }
 
 
-//void TabWid::recieveUpgradList(QStringList args)
-//{
-
-//}
+void TabWid::downloadFailedSlot()
+{
+    if(downloadFailedStatus ==false)
+    {
+        QMessageBox::warning(NULL, "错误提示", "服务器异常或网络断开连接，暂停下载！");
+        downloadFailedStatus = true;
+    }
+}
+void TabWid::waitCrucialInstalled()
+{
+    if(fileLockedStatus == false)
+    {
+        updateMutual->onRequestSendDesktopNotify("正在进行一项重要更新，请等待。");
+        fileLockedStatus == true;
+    }
+}

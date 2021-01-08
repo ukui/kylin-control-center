@@ -26,15 +26,6 @@ void traybusthread::getInameAndCnameList(QString arg)
     //调用远程的value方法
 
     QDBusReply<QStringList> reply = m_pServiceInterface->call("getImportant");
-
-//    QSqlDatabase db3 = QSqlDatabase::addDatabase("QSQLITE","C");
-//    QString dirPath = QString("%1/.cache/kylin-update-manager/").arg(QDir::homePath());
-//    QString dbPath = QString("%1/kylin-update-manager.db").arg(dirPath);
-//    db3.setDatabaseName(dbPath);
-//    QDateTime nowtime = QDateTime::currentDateTime();
-//    QString current_date = nowtime.toString("yyyy.MM.dd hh:mm:ss");
-//    QSqlQuery query(QSqlDatabase::database("C"));
-//    query.exec(QString("update display set item = '%1' where info = '%2'").arg(current_date).arg("上次检测时间"));
     if (reply.isValid()) {
         inameList = reply.value();
         qDebug() << inameList;
