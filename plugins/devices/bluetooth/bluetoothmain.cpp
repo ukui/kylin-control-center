@@ -16,6 +16,7 @@ BlueToothMain::BlueToothMain(QWidget *parent)
     if(QGSettings::isSchemaInstalled("org.ukui.bluetooth")){
         settings = new QGSettings("org.ukui.bluetooth");
 
+        paired_device_address.clear();
         paired_device_address = settings->get("paired-device-address").toStringList();
         finally_connect_the_device = settings->get("finally-connect-the-device").toString();
         Default_Adapter = settings->get("adapter-address").toString();
@@ -68,12 +69,15 @@ BlueToothMain::BlueToothMain(QWidget *parent)
     main_layout->addWidget(frame_bottom);
     main_layout->addStretch();
 
+    Discovery_device_address.clear();
+
     InitMainTopUI();
     InitMainMiddleUI();
     InitMainbottomUI();
     if(m_localDevice->isPowered()){
         this->startDiscovery();
-        label_2->setText(tr("Turn off Bluetooth"));
+//        label_2->setText(tr("Turn off Bluetooth"));
+        label_2->setText(tr("Turn on Bluetooth"));
     }else{
         label_2->setText(tr("Turn on Bluetooth"));
         frame_bottom->setVisible(false);
@@ -93,7 +97,6 @@ void BlueToothMain::InitMainTopUI()
                            font-size: 18px;\
                            font-family: PingFangSC-Medium, PingFang SC;\
                            font-weight: 500;\
-                           color: rgba(0, 0, 0, 0.85);\
                            line-height: 25px;}");
 
     QVBoxLayout *top_layout = new QVBoxLayout();
@@ -124,7 +127,6 @@ void BlueToothMain::InitMainTopUI()
                            font-size: 14px;\
                            font-family: PingFangSC-Regular, PingFang SC;\
                            font-weight: 400;\
-                           color: rgba(0, 0, 0, 0.85);\
                            line-height: 20px;}");
     frame_1_layout->addWidget(label_2);
     frame_1_layout->addStretch();
@@ -155,7 +157,6 @@ void BlueToothMain::InitMainTopUI()
                            font-size: 14px;\
                            font-family: PingFangSC-Regular, PingFang SC;\
                            font-weight: 400;\
-                           color: rgba(0, 0, 0, 0.85);\
                            line-height: 20px;}");
     frame_2_layout->addWidget(label_3);
     frame_2_layout->addStretch();
@@ -199,7 +200,6 @@ void BlueToothMain::InitMainMiddleUI()
                                 font-size: 18px;\
                                 font-family: PingFangSC-Medium, PingFang SC;\
                                 font-weight: 500;\
-                                color: rgba(0, 0, 0, 0.85);\
                                 line-height: 25px;}");
 
     middle_layout->addWidget(middle_label,Qt::AlignTop);
@@ -213,38 +213,15 @@ void BlueToothMain::InitMainMiddleUI()
 
         show_flag = true;
 
-        DEVICE_TYPE d_type;
-        switch (m_localDevice->devices().at(i)->type()){
-        case BluezQt::Device::Type::Uncategorized:
-            d_type = DEVICE_TYPE::OTHER;
-            break;
-        case BluezQt::Device::Type::Computer:
-            d_type = DEVICE_TYPE::PC;
-            break;
-        case BluezQt::Device::Type::Phone:
-            d_type = DEVICE_TYPE::PHONE;
-            break;
-        case BluezQt::Device::Headphones:
-        case BluezQt::Device::Headset:
-            d_type = DEVICE_TYPE::HEADSET;
-            break;
-        case BluezQt::Device::Mouse:
-            d_type = DEVICE_TYPE::Mouse;
-            break;
-        default:
-            d_type = DEVICE_TYPE::OTHER;
-            break;
-        }
-
         DeviceInfoItem *item = new DeviceInfoItem();
         connect(item,SIGNAL(sendConnectDevice(QString)),this,SLOT(receiveConnectsignal(QString)));
         connect(item,SIGNAL(sendDisconnectDeviceAddress(QString)),this,SLOT(receiveDisConnectSignal(QString)));
         connect(item,SIGNAL(sendDeleteDeviceAddress(QString)),this,SLOT(receiveRemoveSignal(QString)));
         connect(item,SIGNAL(sendPairedAddress(QString)),this,SLOT(change_device_parent(QString)));
         if(m_localDevice->devices().at(i)->isConnected())
-            item->initInfoPage(d_type, m_localDevice->devices().at(i)->name(), DEVICE_STATUS::LINK, m_localDevice->devices().at(i));
+            item->initInfoPage(m_localDevice->devices().at(i)->name(), DEVICE_STATUS::LINK, m_localDevice->devices().at(i));
         else
-            item->initInfoPage(d_type, m_localDevice->devices().at(i)->name(), DEVICE_STATUS::UNLINK, m_localDevice->devices().at(i));
+            item->initInfoPage(m_localDevice->devices().at(i)->name(), DEVICE_STATUS::UNLINK, m_localDevice->devices().at(i));
 
         paired_dev_layout->addWidget(item,Qt::AlignTop);
     }
@@ -270,7 +247,6 @@ void BlueToothMain::InitMainbottomUI()
                           font-size: 18px;\
                           font-family: PingFangSC-Medium, PingFang SC;\
                           font-weight: 500;\
-                          color: rgba(0, 0, 0, 0.85);\
                           line-height: 25px;}");
 
     loadLabel = new QLabel(frame_bottom);
@@ -322,22 +298,9 @@ void BlueToothMain::InitMainbottomUI()
     bottom_layout->setSpacing(8);
     bottom_layout->setContentsMargins(0,0,0,0);
     bottom_layout->addLayout(title_layout);
-//    bottom_layout->addStretch();
-
-//    QScrollArea *device_area = new QScrollArea(frame_bottom);
-//    device_area->setWidgetResizable(true);
-//    device_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//    device_area->setMinimumHeight(290);
-//    device_area->setMinimumWidth(582);
-//    device_area->setMaximumWidth(1000);
-//    bottom_layout->addWidget(device_area);
 
     device_list = new QWidget();
-//    device_list->setStyleSheet("background:blue;");
-//    device_list->setMinimumHeight(290);
-//    device_list->setMinimumWidth(582);
-//    device_list->setMaximumWidth(1000);
-//    device_area->setWidget(device_list);
+
     bottom_layout->addWidget(device_list);
 
     device_list_layout  = new QVBoxLayout(device_list);
@@ -346,32 +309,15 @@ void BlueToothMain::InitMainbottomUI()
     device_list->setLayout(device_list_layout);
 
     for(int i = 0;i < m_localDevice->devices().size(); i++){
-//        qDebug() << m_localDevice->devices().at(i)->name() << m_localDevice->devices().at(i)->type()<<m_localDevice->devices().at(i)->isPaired();
+        qDebug() << m_localDevice->devices().at(i)->name() << m_localDevice->devices().at(i)->type()<<m_localDevice->devices().at(i)->isPaired();
+        if(!Discovery_device_address.isEmpty()){
+            if(Discovery_device_address.contains(m_localDevice->devices().at(i)->address())){
+                continue;
+            }
+        }
+
         if(m_localDevice->devices().at(i)->isPaired())
             continue;
-
-        DEVICE_TYPE d_type;
-        switch (m_localDevice->devices().at(i)->type()){
-        case BluezQt::Device::Type::Uncategorized:
-            d_type = DEVICE_TYPE::OTHER;
-            break;
-        case BluezQt::Device::Type::Computer:
-            d_type = DEVICE_TYPE::PC;
-            break;
-        case BluezQt::Device::Type::Phone:
-            d_type = DEVICE_TYPE::PHONE;
-            break;
-        case BluezQt::Device::Headphones:
-        case BluezQt::Device::Headset:
-            d_type = DEVICE_TYPE::HEADSET;
-            break;
-        case BluezQt::Device::Mouse:
-            d_type = DEVICE_TYPE::Mouse;
-            break;
-        default:
-            d_type = DEVICE_TYPE::OTHER;
-            break;
-        }
 
         DeviceInfoItem *item = new DeviceInfoItem();
         connect(item,SIGNAL(sendConnectDevice(QString)),this,SLOT(receiveConnectsignal(QString)));
@@ -380,11 +326,13 @@ void BlueToothMain::InitMainbottomUI()
         connect(item,SIGNAL(sendPairedAddress(QString)),this,SLOT(change_device_parent(QString)));
 
         if(m_localDevice->devices().at(i)->isConnected())
-            item->initInfoPage(d_type, m_localDevice->devices().at(i)->name(), DEVICE_STATUS::LINK, m_localDevice->devices().at(i));
+            item->initInfoPage(m_localDevice->devices().at(i)->name(), DEVICE_STATUS::LINK, m_localDevice->devices().at(i));
         else
-            item->initInfoPage(d_type, m_localDevice->devices().at(i)->name(), DEVICE_STATUS::UNLINK, m_localDevice->devices().at(i));
+            item->initInfoPage(m_localDevice->devices().at(i)->name(), DEVICE_STATUS::UNLINK, m_localDevice->devices().at(i));
 
         device_list_layout->addWidget(item);
+
+        Discovery_device_address << m_localDevice->devices().at(i)->address();
     }
 
     device_list_layout->addStretch();
@@ -417,7 +365,7 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
                 bluetooth_name->setVisible(true);
                 frame_bottom->setVisible(true);
                 frame_middle->setVisible(true);
-                label_2->setText(tr("Turn off Bluetooth"));
+//                label_2->setText(tr("Turn off Bluetooth"));
                 qDebug() << Q_FUNC_INFO << m_localDevice->isPowered() <<__LINE__;
                 this->startDiscovery();
             }
@@ -442,20 +390,9 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
 
 void BlueToothMain::serviceDiscovered(BluezQt::DevicePtr device)
 {
-    DEVICE_TYPE d_type;
-    switch (device->type()){
-    case BluezQt::Device::Type::Uncategorized:
-        d_type = DEVICE_TYPE::OTHER;
-        break;
-    case BluezQt::Device::Type::Computer:
-        d_type = DEVICE_TYPE::PC;
-        break;
-    case BluezQt::Device::Type::Phone:
-        d_type = DEVICE_TYPE::PHONE;
-        break;
-    default:
-        d_type = DEVICE_TYPE::OTHER;
-        break;
+    qDebug() << Q_FUNC_INFO << device->type() << device->name();
+    if(Discovery_device_address.contains(device->address())){
+        return;
     }
 
     DeviceInfoItem *item = new DeviceInfoItem(device_list);
@@ -464,9 +401,11 @@ void BlueToothMain::serviceDiscovered(BluezQt::DevicePtr device)
     connect(item,SIGNAL(sendDeleteDeviceAddress(QString)),this,SLOT(receiveRemoveSignal(QString)));
     connect(item,SIGNAL(sendPairedAddress(QString)),this,SLOT(change_device_parent(QString)));
 
-    item->initInfoPage(d_type, device->name(), DEVICE_STATUS::UNLINK, device);
+    item->initInfoPage(device->name(), DEVICE_STATUS::UNLINK, device);
 
     device_list_layout->addWidget(item,Qt::AlignTop);
+
+    Discovery_device_address << device->address();
 }
 
 void BlueToothMain::receiveConnectsignal(QString device)
@@ -509,6 +448,10 @@ void BlueToothMain::receiveRemoveSignal(QString address)
 
     if(m_localDevice->deviceForAddress(address).isNull()){
         qDebug() << Q_FUNC_INFO << "No this address " << address;
+        DeviceInfoItem *item = device_list->findChild<DeviceInfoItem *>(address);
+        device_list_layout->removeWidget(item);
+        item->setParent(NULL);
+        delete item;
         return;
     }
 
@@ -563,7 +506,7 @@ void BlueToothMain::GSetting_value_chanage(const QString &key)
                 frame_bottom->setVisible(true);
                 frame_middle->setVisible(true);
                 open_bluetooth->setChecked(true);
-                label_2->setText(tr("Turn off Bluetooth"));
+//                label_2->setText(tr("Turn off Bluetooth"));
                 this->startDiscovery();
                 qDebug() << discovering_timer->isActive();
             }else{

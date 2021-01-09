@@ -63,46 +63,38 @@ private slots:
     void change_adapter_name(const QString &name);
     void change_device_parent(const QString &address);
 private:
-    QGSettings *settings;
+    QGSettings *settings = nullptr;
     QString Default_Adapter;
     QStringList paired_device_address;
     QString finally_connect_the_device;
+    QStringList Discovery_device_address;
 
-    QVBoxLayout *main_layout;
-    QSystemTrayIcon * tray;
+    QVBoxLayout *main_layout = nullptr;
 
-    QWidget *main_widget;
-    QWidget *frame_top;
-
-    QWidget *frame_middle;
-    QVBoxLayout *paired_dev_layout;
-
-    QWidget *frame_bottom;
-//    QLabel *bluetooth_name;
+    QWidget *main_widget = nullptr;
+    QWidget *frame_top = nullptr;
+    QWidget *frame_middle = nullptr;
+    QVBoxLayout *paired_dev_layout = nullptr;
+    QWidget *frame_bottom = nullptr;
     BluetoothNameLabel *bluetooth_name = nullptr;
 
-    QVBoxLayout *bottom_layout;
-    QScrollArea *device_area;
-    QWidget *device_list;
-    QVBoxLayout *device_list_layout;
+    QVBoxLayout *bottom_layout = nullptr;
+    QScrollArea *device_area = nullptr;
+    QWidget *device_list = nullptr;
+    QVBoxLayout *device_list_layout = nullptr;
 
-//    QBluetoothLocalDevice *m_localDevice;
-    BluezQt::Manager *m_manager;
-    BluezQt::InitManagerJob  *job;
-    BluezQt::AdapterPtr m_localDevice;
+    BluezQt::Manager *m_manager = nullptr;
+    BluezQt::InitManagerJob  *job = nullptr;
+    BluezQt::AdapterPtr m_localDevice = nullptr;
 
-//    QBluetoothDeviceDiscoveryAgent *discoveryAgent;
+    SwitchButton *open_bluetooth = nullptr;
+    SwitchButton *show_panel = nullptr;
 
-    SwitchButton *open_bluetooth;
-    SwitchButton *show_panel;
-
-    QSystemTrayIcon *pSystemTray;
-
-    QLabel *label_2;
-    QLabel *loadLabel;
+    QLabel *label_2 = nullptr;
+    QLabel *loadLabel = nullptr;
     QPushButton *discover_refresh;
-    QTimer *m_timer;
-    QTimer *discovering_timer;
+    QTimer *m_timer = nullptr;
+    QTimer *discovering_timer =nullptr;
     int i = 7;
 };
 

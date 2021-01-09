@@ -2,6 +2,11 @@
 
 DeviceInfoItem::DeviceInfoItem(QWidget *parent) : QWidget(parent)
 {
+    if(QGSettings::isSchemaInstalled("org.ukui.style")){
+        item_gsettings = new QGSettings("org.ukui.style");
+        connect(item_gsettings,&QGSettings::changed,this,&DeviceInfoItem::GSettingsChanges);
+    }
+
     this->setMinimumSize(580,50);
     this->setMaximumSize(1000,50);
 //    this->setStyleSheet("background:white;");
@@ -43,6 +48,17 @@ DeviceInfoItem::DeviceInfoItem(QWidget *parent) : QWidget(parent)
     icon_timer = new QTimer(this);
     icon_timer->setInterval(100);
 
+    connect_timer = new QTimer(this);
+    connect_timer->setInterval(10000);
+
+    connect(connect_timer,&QTimer::timeout,this,[=]{
+        if(icon_timer->isActive()){
+            icon_timer->stop();
+            device_status->setPixmap(QIcon::fromTheme("emblem-danger").pixmap(QSize(24,24)));
+            device_status->update();
+        }
+    });
+
     AnimationInit();
 }
 
@@ -51,7 +67,7 @@ DeviceInfoItem::~DeviceInfoItem()
 
 }
 
-void DeviceInfoItem::initInfoPage(DEVICE_TYPE icon_type, QString d_name, DEVICE_STATUS status, BluezQt::DevicePtr device)
+void DeviceInfoItem::initInfoPage(QString d_name, DEVICE_STATUS status, BluezQt::DevicePtr device)
 {
     this->setObjectName(device->address());
 
@@ -65,14 +81,16 @@ void DeviceInfoItem::initInfoPage(DEVICE_TYPE icon_type, QString d_name, DEVICE_
     });
 
     QIcon icon_device,icon_status;
-    if(icon_type == DEVICE_TYPE::PC){
-        icon_device = QIcon::fromTheme("video-display-symbolic");
-    }else if(icon_type == DEVICE_TYPE::PHONE){
+    if(device->type() == BluezQt::Device::Computer){
+        icon_device = QIcon::fromTheme("computer-symbolic");
+    }else if(device->type() == BluezQt::Device::Phone){
         icon_device = QIcon::fromTheme("phone-apple-iphone-symbolic");
-    }else if(icon_type == DEVICE_TYPE::HEADSET){
+    }else if(device->type() == BluezQt::Device::Headset){
         icon_device = QIcon::fromTheme("audio-headphones-symbolic");
-    }else if(icon_type == DEVICE_TYPE::Mouse){
+    }else if(device->type() == BluezQt::Device::Mouse){
         icon_device = QIcon::fromTheme("input-mouse-symbolic");
+    }else if(device->type() == BluezQt::Device::Keyboard){
+        icon_device = QIcon::fromTheme("input-keyboard-symbolic");
     }else{
         icon_device = QIcon::fromTheme("bluetooth-symbolic");
     }
@@ -93,6 +111,13 @@ void DeviceInfoItem::initInfoPage(DEVICE_TYPE icon_type, QString d_name, DEVICE_
         icon_status = QIcon::fromTheme("emblem-danger");
         device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
     }*/
+
+    if(item_gsettings->get("style-name").toString() == "ukui-black"){
+        device_icon->setProperty("setIconHighlightEffectDefaultColor", QColor(Qt::white));
+        device_icon->setProperty("useIconHighlightEffect", 0x10);
+        device_status->setProperty("setIconHighlightEffectDefaultColor", QColor(Qt::white));
+        device_status->setProperty("useIconHighlightEffect", 0x10);
+    }
 }
 
 QString DeviceInfoItem::get_dev_name()
@@ -130,7 +155,7 @@ void DeviceInfoItem::leaveEvent(QEvent *event)
 
 void DeviceInfoItem::onClick_Connect_Btn(bool isclicked)
 {
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO << icon_timer->interval();
     emit sendConnectDevice(device_item->address());
 
     if(!device_status->isVisible())
@@ -143,6 +168,7 @@ void DeviceInfoItem::onClick_Connect_Btn(bool isclicked)
         device_status->update();
         i--;
     });
+    connect_timer->start();
     icon_timer->start();
 }
 
@@ -234,5 +260,23 @@ void DeviceInfoItem::updateDeviceStatus(DEVICE_STATUS status)
     }else if(status == DEVICE_STATUS::UNLINK){
         icon_status = QIcon::fromTheme("emblem-important");
         device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
+    }
+}
+
+void DeviceInfoItem::GSettingsChanges(const QString &key)
+{
+    qDebug() << Q_FUNC_INFO << key;
+    if(key == "styleName"){
+        if(item_gsettings->get("style-name").toString() == "ukui-black"){
+            device_icon->setProperty("setIconHighlightEffectDefaultColor", QColor(Qt::white));
+            device_icon->setProperty("useIconHighlightEffect", 0x10);
+            device_status->setProperty("setIconHighlightEffectDefaultColor", QColor(Qt::white));
+            device_status->setProperty("useIconHighlightEffect", 0x10);
+        }else{
+            device_icon->setProperty("setIconHighlightEffectDefaultColor", QColor(Qt::black));
+            device_icon->setProperty("useIconHighlightEffect", 0x10);
+            device_status->setProperty("setIconHighlightEffectDefaultColor", QColor(Qt::white));
+            device_status->setProperty("useIconHighlightEffect", 0x10);
+        }
     }
 }
