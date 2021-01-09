@@ -144,7 +144,7 @@ void About::setupKernelCompenent() {
 
     MemoryEntry memoryInfo;
     QStringList memory = memoryInfo.totalMemory();
-    memorySize = memorySize + memory.at(0) + "(" + memory.at(1) + tr(" available") + ")";
+    memorySize = memorySize + memory.at(0) + "GB"+ "(" + memory.at(1) + "GB" + tr(" available") + ")";
 
     ui->cpuContent->setText(cpuType);
     ui->diskContent->setText(diskSize);

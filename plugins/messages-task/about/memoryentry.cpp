@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QObject>
 #include <QtAlgorithms>
+#include <cstdlib>
 
 #ifdef Q_OS_LINUX
 #include <sys/sysinfo.h>
@@ -50,10 +51,10 @@ QStringList MemoryEntry::totalMemory()
     if (totalRam > 0) {
         QString total =  KFormat().formatByteSize(totalRam, 0);
         QString available = KFormat().formatByteSize(totalRam, 1);
-        if (total.toDouble() > available.toDouble()) {
+        if (atof(total.toLatin1()) < atof(available.toLatin1())) {
             qSwap(total, available);
         }
-        res << total << available;
+        res << QString::number(atof(total.toLatin1())) << QString::number(atof(available.toLatin1()));
         return res;
     }
     return res;
