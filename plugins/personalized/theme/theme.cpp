@@ -536,10 +536,10 @@ void Theme::initConnection() {
 
     connect(effectSwitchBtn, &SwitchButton::checkedChanged, [this](bool checked) {
         if (!checked) {
-            personliseGsettings->set(PERSONALSIE_TRAN_KEY, 0.95);
-            qtSettings->set(THEME_TRAN_KEY, 95);
-            qtSettings->set(PEONY_TRAN_KEY, 95);
-            ui->tranSlider->setValue(95);
+            personliseGsettings->set(PERSONALSIE_TRAN_KEY, 1.0);
+            qtSettings->set(THEME_TRAN_KEY, 100);
+            qtSettings->set(PEONY_TRAN_KEY, 100);
+            ui->tranSlider->setValue(100);
         }
         // 提供给外部监听特效接口
         personliseGsettings->set(PERSONALSIE_EFFECT_KEY, checked);
