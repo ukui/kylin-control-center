@@ -209,10 +209,7 @@ void Theme::setupSettings() {
     }
 }
 
-void Theme::setupComponent(){
-
-    ui->lowLabel->setPixmap(QPixmap("://img/plugins/theme/opacitylow.svg"));
-    ui->highlabel->setPixmap(QPixmap("://img/plugins/theme/opacityhigh.svg"));
+void Theme::setupComponent() {
 
     ui->lightButton->setVisible(getSystemVersion());
     //隐藏现阶段不支持功能
@@ -540,6 +537,9 @@ void Theme::initConnection() {
             qtSettings->set(THEME_TRAN_KEY, 100);
             qtSettings->set(PEONY_TRAN_KEY, 100);
             ui->tranSlider->setValue(100);
+        } else {
+            ui->lowLabel->setPixmap(QPixmap("://img/plugins/theme/opacitylow.svg"));
+            ui->highlabel->setPixmap(QPixmap("://img/plugins/theme/opacityhigh.svg"));
         }
         // 提供给外部监听特效接口
         personliseGsettings->set(PERSONALSIE_EFFECT_KEY, checked);
