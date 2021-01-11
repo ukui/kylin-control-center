@@ -5,11 +5,14 @@
 #include <QEvent>
 #include <QString>
 #include <QFrame>
+#include <QTimer>
 #include <QLabel>
 #include <QPushButton>
 #include <QHBoxLayout>
+#include <QResizeEvent>
+#include <QPropertyAnimation>
 
-class HoverBtn : public QFrame
+class HoverBtn : public QWidget
 {
     Q_OBJECT
 public:
@@ -20,15 +23,26 @@ public:
     QString mName;
     QPushButton *mAbtBtn;
 
+    QFrame *mInfoItem;
+
     QLabel *mPitIcon;
     QLabel *mPitLabel;
 
     QHBoxLayout *mHLayout;
 
+    QTimer *mMouseTimer;
+
+    bool mAnimationFlag = false;
+
+    QPropertyAnimation *mEnterAction = nullptr;
+    QPropertyAnimation *mLeaveAction = nullptr;
+
 private:
     void initUI();
+    void initAnimation();
 
 protected:
+    virtual void resizeEvent(QResizeEvent *event);
     virtual void enterEvent(QEvent * event);
     virtual void leaveEvent(QEvent * event);
     virtual void mousePressEvent(QMouseEvent * event);

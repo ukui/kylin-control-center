@@ -6,6 +6,7 @@
 
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+include($$PROJECT_COMPONENTSOURCE/hoverbtn.pri)
 
 QT       += widgets network dbus gui core
 TEMPLATE = lib

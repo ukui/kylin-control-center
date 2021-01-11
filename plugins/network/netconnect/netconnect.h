@@ -89,6 +89,7 @@ public:
     void rebuildAvailComponent(QString iconpath, QString netName);
 
     void runExternalApp();
+    void runKylinmApp();
 
     bool getwifiisEnable();
 
