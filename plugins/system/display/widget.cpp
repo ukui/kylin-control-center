@@ -541,7 +541,7 @@ void Widget::initNightUI() {
 }
 
 bool Widget::isRestoreConfig() {
-    int cnt = 10;
+    int cnt = 9;
     int ret;
     QMessageBox msg;
     if (mConfigChanged) {
