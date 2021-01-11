@@ -21,6 +21,7 @@
 #include "ui_netconnect.h"
 
 #include "kylin_network_interface.h"
+#include "commonComponent/HoverBtn/hoverbtn.h"
 
 #include <QGSettings>
 #include <QProcess>
@@ -185,7 +186,7 @@ void NetConnect::initComponent(){
 }
 
 void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName){
-    // 构建Widget
+
     QWidget * baseWidget = new QWidget();
     baseWidget->setAttribute(Qt::WA_DeleteOnClose);
 
@@ -305,57 +306,28 @@ void NetConnect::getNetList() {
 
 }
 
-void NetConnect::rebuildAvailComponent(QString iconPath, QString netName){
+void NetConnect::rebuildAvailComponent(QString iconPath, QString netName) {
 
-    // 构建Widget
-    QWidget * baseWidget = new QWidget();
-    baseWidget->setAttribute(Qt::WA_DeleteOnClose);
+    HoverBtn * wifiItem = new HoverBtn(netName, pluginWidget);
+    wifiItem->mPitLabel->setText(netName);
+    wifiItem->mPitIcon->setPixmap(iconPath);
+    wifiItem->mAbtBtn->setText(tr("Connect"));
 
-    QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);
-    baseVerLayout->setSpacing(0);
-    baseVerLayout->setContentsMargins(0, 0, 0, 2);
+    connect(wifiItem->mAbtBtn, &QPushButton::clicked, this, [=] {
+        runKylinmApp();
+    });
 
-    QFrame * devFrame = new QFrame(baseWidget);
-    devFrame->setFrameShape(QFrame::Shape::Box);
-    devFrame->setMinimumWidth(550);
-    devFrame->setMaximumWidth(960);
-    devFrame->setMinimumHeight(50);
-    devFrame->setMaximumHeight(50);
-
-    QHBoxLayout * devHorLayout = new QHBoxLayout(devFrame);
-    devHorLayout->setSpacing(8);
-    devHorLayout->setContentsMargins(16, 0, 0, 0);
-
-    QLabel * iconLabel = new QLabel(devFrame);
-    QSizePolicy iconSizePolicy = iconLabel->sizePolicy();
-    iconSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
-    iconSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
-    iconLabel->setSizePolicy(iconSizePolicy);
-    iconLabel->setScaledContents(true);
-    iconLabel->setPixmap(QPixmap(iconPath));
-
-    QLabel * nameLabel = new QLabel(devFrame);
-    QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
-    nameSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
-    nameSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
-    nameLabel->setSizePolicy(nameSizePolicy);
-    nameLabel->setScaledContents(true);
-    nameLabel->setText(netName);
-
-    devHorLayout->addWidget(iconLabel);
-    devHorLayout->addWidget(nameLabel);
-    devHorLayout->addStretch();
-
-    devFrame->setLayout(devHorLayout);
-
-    baseVerLayout->addWidget(devFrame);
-
-    ui->availableLayout->addWidget(baseWidget);
+    ui->availableLayout->addWidget(wifiItem);
 }
 
-
-void NetConnect::runExternalApp(){
+void NetConnect::runExternalApp() {
     QString cmd = "nm-connection-editor";
+    QProcess process(this);
+    process.startDetached(cmd);
+}
+
+void NetConnect::runKylinmApp() {
+    QString cmd = "kylin-nm";
     QProcess process(this);
     process.startDetached(cmd);
 }
