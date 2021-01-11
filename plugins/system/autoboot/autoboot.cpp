@@ -610,7 +610,7 @@ AutoApp AutoBoot::_app_new(const char *path){
     QFileInfo iconfile(static_cast<QString>(icon));
 
 
-    if (!QString(icon).isEmpty() && QIcon::hasThemeIcon(QString(icon))){
+    if (!QString(icon).isEmpty() /*&& QIcon::hasThemeIcon(QString(icon))*/){
         QIcon currenticon = QIcon::fromTheme(QString(icon));
         app.pixmap = currenticon.pixmap(QSize(32, 32));
     }  else if (iconfile.exists()) {

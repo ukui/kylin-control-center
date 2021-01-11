@@ -23,7 +23,10 @@ INCLUDEPATH   +=  \
                  $$PROJECT_COMPONENTSOURCE \
                  $$PROJECT_ROOTDIR \
 
-LIBS          += -L$$[QT_INSTALL_LIBS] -lcrypt -lpolkit-qt5-core-1
+LIBS          += -L$$[QT_INSTALL_LIBS] -lcrypt -lpolkit-qt5-core-1 -lkysec -lpwquality
+
+DEFINES += ENABLEPQ
+DEFINES += WITHKYSEC
 
 ##加载gio库和gio-unix库
 CONFIG        += link_pkgconfig \

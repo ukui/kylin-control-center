@@ -47,6 +47,8 @@ extern "C" {
 #define PWD_LOW_LENGTH 6
 #define PWD_HIGH_LENGTH 20
 
+bool pwdchecking = false;
+
 QString ChangePwdDialog::curPwdTip = "";
 
 ChangePwdDialog * cpdGlobalObj = new ChangePwdDialog(false);
@@ -88,12 +90,18 @@ ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QWidget *parent) :
 
             if (isCurrentUser){
                 if (!ui->curPwdLineEdit->text().isEmpty()){
-                    curPwdTip = tr("Cur pwd checking!");
-                    cpdGlobalObj->helpEmitSignal();
 
                     std::string str1 = ui->curPwdLineEdit->text().toStdString();
                     const char * old_passwd = str1.c_str();
                     passwd_authenticate(passwd_handler, old_passwd, auth_cb, NULL);
+
+                    /*pwd checking!*/
+                    pwdchecking = true;
+
+                    /*fork进程处理密码校验，未返回状态前需要设置检查中。。。*/
+//                    curPwdTip = tr("Cur pwd checking!");
+//                    cpdGlobalObj->helpEmitSignal();
+
                 } else {
                     curPwdTip = "";
                     cpdGlobalObj->helpEmitSignal();
@@ -116,10 +124,17 @@ ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QWidget *parent) :
 
     connect(cpdGlobalObj, &ChangePwdDialog::pwdCheckOver, this, [=]{
 
-        ui->tipLabel->setText(curPwdTip);
-        if (curPwdTip.isEmpty()){
-            pwdTip.isEmpty() ? ui->tipLabel->setText(pwdTip) : ui->tipLabel->setText(pwdSureTip);
+
+//        ui->tipLabel->setText(curPwdTip);
+        if (pwdTip.isEmpty() && pwdSureTip.isEmpty()){
+            ui->tipLabel->setText(curPwdTip);
         }
+
+        if (curPwdTip.isEmpty()){
+            pwdTip.isEmpty() ? ui->tipLabel->setText(pwdSureTip) : ui->tipLabel->setText(pwdTip);
+        }
+
+        pwdchecking = false;
 
         refreshConfirmBtnStatus();
     });
@@ -391,12 +406,13 @@ bool ChangePwdDialog::checkCharLegitimacy(QString password){
 
 
 void ChangePwdDialog::refreshConfirmBtnStatus(){
+
     if (getuid()){
         if (!ui->tipLabel->text().isEmpty() || \
                 ui->curPwdLineEdit->text().isEmpty() || ui->curPwdLineEdit->text() == tr("Current Password") || \
                 ui->pwdLineEdit->text().isEmpty() || ui->pwdLineEdit->text() == tr("New Password") || \
                 ui->pwdsureLineEdit->text().isEmpty() || ui->pwdsureLineEdit->text() == tr("New Password Identify") ||
-                !curPwdTip.isEmpty() || !pwdTip.isEmpty() || !pwdSureTip.isEmpty())
+                !curPwdTip.isEmpty() || !pwdTip.isEmpty() || !pwdSureTip.isEmpty() || pwdchecking)
             ui->confirmPushBtn->setEnabled(false);
         else
             ui->confirmPushBtn->setEnabled(true);

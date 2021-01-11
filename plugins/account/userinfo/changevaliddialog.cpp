@@ -143,13 +143,20 @@ void ChangeValidDialog::setUserType(QString atype){
 void ChangeValidDialog::_getCurrentPwdStatus(){
     //
     QString cmd = "passwd -S " + _name;
+    QString valid;
 
-    QProcess * process = new QProcess;
-    process->start(cmd);
-    process->waitForFinished();
+    FILE   *stream;
+    char buf[256];
 
-    QByteArray ba = process->readAllStandardOutput();
-    QString valid = QString(ba.data()).simplified();
+    if ((stream = popen(cmd.toLatin1().data(), "r" )) == NULL){
+        return;
+    }
+
+    while(fgets(buf, 256, stream) != NULL){
+        valid = QString(buf).simplified();
+    }
+
+    pclose(stream);
 
     if (valid.startsWith(_name)){
         QStringList validList = valid.split(" ");

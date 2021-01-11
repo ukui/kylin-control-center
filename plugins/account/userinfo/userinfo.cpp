@@ -877,9 +877,9 @@ void UserInfo::propertyChangedSlot(QString property, QMap<QString, QVariant> pro
     Q_UNUSED(propertyList);
     if (propertyMap.keys().contains("IconFile") && getuid() &&
             propertyMap.value("UserName").toString() == mUserName) {
-        QString iconFile = propertyMap.value("IconFile").toString();
-        QPixmap iconPixmap = QPixmap(iconFile).scaled(ui->currentUserFaceLabel->size());
-        ui->currentUserFaceLabel->setPixmap(iconPixmap);
+//        QString iconFile = propertyMap.value("IconFile").toString();
+//        QPixmap iconPixmap = QPixmap(iconFile).scaled(ui->currentUserFaceLabel->size());
+//        ui->currentUserFaceLabel->setPixmap(iconPixmap);
         if (propertyMap.keys().contains("AccountType")) {
             int type = propertyMap.value("AccountType").toInt();
             ui->userTypeLabel->setText(_accountTypeIntToString(type));

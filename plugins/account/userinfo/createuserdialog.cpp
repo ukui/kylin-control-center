@@ -401,10 +401,20 @@ void CreateUserDialog::nameLegalityCheck(QString username){
         if (username.length() > 0 && username.length() < USER_LENGTH){
 
             QString cmd = QString("getent group %1").arg(username);
-            QProcess process(this);
-            process.start(cmd);
-            process.waitForFinished();
-            QString output = process.readAllStandardOutput();
+            QString output;
+
+            FILE   *stream;
+            char buf[256];
+
+            if ((stream = popen(cmd.toLatin1().data(), "r" )) == NULL){
+                return;
+            }
+
+            while(fgets(buf, 256, stream) != NULL){
+                output = QString(buf).simplified();
+            }
+
+            pclose(stream);
 
             if (usersStringList.contains(username)){
                 nameTip = tr("The user name is already in use, please use a different one.");

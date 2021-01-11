@@ -51,7 +51,8 @@ void Utils::setCLIName(QCommandLineParser &parser) {
     QCommandLineOption printerRoleOption("printer", QObject::tr("Go to printer settings page"));
     QCommandLineOption mouseRoleOption("mouse", QObject::tr("Go to mouse settings page"));
     QCommandLineOption touchpadRoleOption("touchpad", QObject::tr("Go to touchpad settings page"));
-    QCommandLineOption keyboardRoleOption("keyboard", QObject::tr("Go to keyboard settings page"));
+//    QCommandLineOption keyboardRoleOption("keyboard", QObject::tr("Go to keyboard settings page"));
+    QCommandLineOption keyboardRoleOption(QStringList() << "k" << "keyboard", QObject::tr("Go to keyboard settings page"));
     QCommandLineOption shortcutRoleOption("shortcut", QObject::tr("Go to shortcut settings page"));
     QCommandLineOption audioRoleOption(QStringList() << "s" << "audio", QObject::tr("Go to audio settings page"));
     QCommandLineOption blutetoothRoleOption("bluetooth", QObject::tr("Go to bluetooth settings page"));
