@@ -18,7 +18,6 @@ BluetoothNameLabel::BluetoothNameLabel(QWidget *parent, int x, int y):
                              font-size: 14px;\
                              font-family: PingFangSC-Regular, PingFang SC;\
                              font-weight: 400;\
-                             color: rgba(0, 0, 0, 0.85);\
                              line-height: 20px;}");
 
     m_lineedit = new QLineEdit(this);
@@ -27,6 +26,15 @@ BluetoothNameLabel::BluetoothNameLabel(QWidget *parent, int x, int y):
     connect(m_lineedit,&QLineEdit::editingFinished,this,&BluetoothNameLabel::LineEdit_Input_Complete);
     m_lineedit->setGeometry(2,2,this->width()-3,this->height()-3);
     m_lineedit->setVisible(false);
+
+    if(QGSettings::isSchemaInstalled("org.ukui.style")){
+        settings = new QGSettings("org.ukui.style");
+        if(settings->get("style-name").toString() == "ukui-black")
+            style_flag = true;
+        else
+            style_flag = false;
+        qDebug() << Q_FUNC_INFO << connect(settings,&QGSettings::changed,this,&BluetoothNameLabel::settings_changed);
+    }
 }
 
 BluetoothNameLabel::~BluetoothNameLabel()
@@ -72,7 +80,11 @@ void BluetoothNameLabel::enterEvent(QEvent *event)
 //    palette.setColor(QPalette::Background, QColor(Qt::white));
 //    this->setPalette(palette);
 //    this->update();
-    this->setStyleSheet("QWidget{background-color:white;border:none;border-radius:2px;}");
+
+    if(style_flag)
+        this->setStyleSheet("QWidget{background-color:black;border:none;border-radius:2px;}");
+    else
+        this->setStyleSheet("QWidget{background-color:white;border:none;border-radius:2px;}");
 }
 
 void BluetoothNameLabel::LineEdit_Input_Complete()
@@ -97,3 +109,13 @@ void BluetoothNameLabel::set_label_text(const QString &value)
     m_label->setVisible(true);
 }
 
+void BluetoothNameLabel::settings_changed(const QString &key)
+{
+    qDebug() << Q_FUNC_INFO <<key;
+    if(key == "styleName"){
+        if(settings->get("style-name").toString() == "ukui-black")
+            style_flag = true;
+        else
+            style_flag = false;
+    }
+}

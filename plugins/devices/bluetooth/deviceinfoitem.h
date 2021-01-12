@@ -20,6 +20,7 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QString>
+#include <QGSettings/QGSettings>
 
 class DeviceInfoItem : public QWidget
 {
@@ -27,7 +28,7 @@ class DeviceInfoItem : public QWidget
 public:
     explicit DeviceInfoItem(QWidget *parent = nullptr);
     ~DeviceInfoItem();
-    void initInfoPage(DEVICE_TYPE icon_type = DEVICE_TYPE::OTHER,QString d_name = "",DEVICE_STATUS status = DEVICE_STATUS::NOT,BluezQt::DevicePtr device = nullptr);
+    void initInfoPage(QString d_name = "",DEVICE_STATUS status = DEVICE_STATUS::NOT,BluezQt::DevicePtr device = nullptr);
     QString get_dev_name();
     void changeDevStatus(bool);
     void setDevConnectedIcon(bool);
@@ -47,13 +48,16 @@ private slots:
     void onClick_Disconnect_Btn(bool);
     void onClick_Delete_Btn(bool);
     void updateDeviceStatus(DEVICE_STATUS status = DEVICE_STATUS::NOT);
+    void GSettingsChanges(const QString &key);
 private:
+    QGSettings *item_gsettings = nullptr;
+
     QWidget *parent_widget = nullptr;
     QLabel *device_icon = nullptr;
     QLabel *device_name = nullptr;
     QLabel *device_status = nullptr;
 
-    BluezQt::DevicePtr device_item;
+    BluezQt::DevicePtr device_item = nullptr;
 
     QPushButton *connect_btn = nullptr;
     QPushButton *disconnect_btn = nullptr;
@@ -63,6 +67,7 @@ private:
 
     QFrame *info_page = nullptr;
     QTimer *icon_timer = nullptr;
+    QTimer *connect_timer = nullptr;
     int i = 7;
 
     QPropertyAnimation *enter_action = nullptr;

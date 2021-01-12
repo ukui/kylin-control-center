@@ -10,6 +10,7 @@
 #include <QFontMetrics>
 #include <QDebug>
 #include <QObject>
+#include <QGSettings/QGSettings>
 
 class BluetoothNameLabel : public QWidget
 {
@@ -29,8 +30,12 @@ signals:
 public slots:
     void LineEdit_Input_Complete();
     void set_label_text(const QString &value);
+    void settings_changed(const QString &key);
 
 private:
+    QGSettings *settings;
+    bool style_flag = false;
+
     QLabel *m_label = nullptr;
     QLineEdit *m_lineedit = nullptr;
     QString device_name;
