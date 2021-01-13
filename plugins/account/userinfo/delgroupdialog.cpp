@@ -43,9 +43,6 @@ void DelGroupDialog::signalsBind()
     connect(ui->cancelBtn,&QPushButton::clicked,[=](){
         close();
     });
-    connect(ui->closeBtn,&CloseButton::clicked,[=](){
-        close();
-    });
 }
 
 void DelGroupDialog::setupInit()
@@ -55,22 +52,13 @@ void DelGroupDialog::setupInit()
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
 
-//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-//    ui->closeBtn->setFlat(true);
-
-//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
     ui->labelPic->setPixmap(QPixmap("://img/plugins/userinfo/notice.png"));
-    ui->labelText->setText(tr("Are you sure to delete the group, which will make some file components in the file system invalid!"));
-    ui->labelText->setWordWrap(true);
+    ui->titleLabel->setText(tr("Are you sure to delete the group, which will make some file components in the file system invalid!"));
+    ui->titleLabel->setWordWrap(true);
 }
 
 QPushButton * DelGroupDialog::delBtnComponent()
 {
-//    pDelBtn = ui->closeBtn;
-//    return pDelBtn;
     return ui->delBtn;
 }
 

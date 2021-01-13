@@ -13,108 +13,29 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QFrame" name="frame">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>390</width>
-     <height>523</height>
-    </rect>
+  <layout class="QVBoxLayout" name="verticalLayout_4">
+   <property name="spacing">
+    <number>0</number>
    </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
+   <property name="leftMargin">
+    <number>42</number>
    </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
+   <property name="topMargin">
+    <number>42</number>
    </property>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>450</y>
-      <width>311</width>
-      <height>38</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_6">
+   <property name="rightMargin">
+    <number>42</number>
+   </property>
+   <property name="bottomMargin">
+    <number>34</number>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
      <property name="spacing">
-      <number>16</number>
+      <number>24</number>
      </property>
-     <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelBtn">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>36</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>36</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="text">
-        <string>Cancel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="certainBtn">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>36</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>36</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Certain</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>391</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <property name="leftMargin">
-      <number>18</number>
-     </property>
-     <property name="topMargin">
-      <number>18</number>
-     </property>
-     <property name="rightMargin">
-      <number>18</number>
+     <property name="bottomMargin">
+      <number>40</number>
      </property>
      <item>
       <widget class="QLabel" name="titleLabel">
@@ -126,75 +47,6 @@
        </property>
        <property name="text">
         <string>Add New Group</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="CloseButton" name="closeBtn">
-       <property name="minimumSize">
-        <size>
-         <width>32</width>
-         <height>32</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>32</width>
-         <height>32</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget_3">
-    <property name="geometry">
-     <rect>
-      <x>-10</x>
-      <y>73</y>
-      <width>369</width>
-      <height>334</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_3">
-     <property name="spacing">
-      <number>25</number>
-     </property>
-     <property name="leftMargin">
-      <number>33</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QLabel" name="titleLabel_3">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string/>
        </property>
       </widget>
      </item>
@@ -211,7 +63,7 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
-            <spacer name="horizontalSpacer_4">
+            <spacer name="horizontalSpacer">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -256,9 +108,9 @@
           <number>8</number>
          </property>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
-            <spacer name="horizontalSpacer_5">
+            <spacer name="horizontalSpacer_4">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -305,9 +157,9 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
              <item>
-              <spacer name="horizontalSpacer_6">
+              <spacer name="horizontalSpacer_5">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
@@ -375,17 +227,87 @@
        </item>
       </layout>
      </item>
+     <item>
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
     </layout>
-   </widget>
-  </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <property name="spacing">
+      <number>16</number>
+     </property>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelBtn">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>36</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>36</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="certainBtn">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>36</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>36</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text">
+        <string>Certain</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>CloseButton</class>
-   <extends>QPushButton</extends>
-   <header location="global">CloseButton/closebutton.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

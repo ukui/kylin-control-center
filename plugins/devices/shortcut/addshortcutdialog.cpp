@@ -37,21 +37,13 @@ addShortcutDialog::addShortcutDialog(QWidget *parent) :
     setWindowTitle(tr("Add custom shortcut"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    ui->closeBtn->setIcon(QIcon(QPixmap("://img/titlebar/close.svg")));
     ui->noteLabel->setPixmap(QPixmap("://img/plugins/shortcut/note.png"));
-
     ui->stackedWidget->setCurrentIndex(1);
-
 
     refreshCertainChecked();
 
     gsPath = "";
 
-    connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked){
-        Q_UNUSED(checked)
-        close();
-    });
     connect(ui->openBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
         openProgramFileDialog();
