@@ -70,6 +70,7 @@ private:
 
     QGSettings *settings;
     QGSettings *sessionSetting;
+    QGSettings *mUkccpersonpersonalize;
 
     QString pluginName;
     int pluginType;

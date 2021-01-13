@@ -45,5 +45,7 @@
 
 #define FIXES 60
 
+#define PERSONALSIE_SCHEMA     "org.ukui.control-center.personalise"
+#define PERSONALSIE_POWER_KEY  "custompower"
 
 #endif // POWERMACRODATA_H

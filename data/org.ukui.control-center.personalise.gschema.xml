@@ -15,5 +15,10 @@
       <summary>Control panel special effects transmit signal</summary>
       <description>ture:Special effects open; false: Special effects off</description>
     </key>
+    <key type="b" name="custompower">
+      <default>false</default>
+      <summary>Whether to customize the power plan</summary>
+      <description>Used to determine that the control panel user has customized a power plan</description>
+    </key>
   </schema>
 </schemalist>
