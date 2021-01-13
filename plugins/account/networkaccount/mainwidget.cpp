@@ -555,7 +555,7 @@ void MainWidget::on_login() {
         m_bIsStopped = true;
     });
 
-    connect(m_mainDialog, &MainDialog::on_close_event, [this] () {
+    connect(this, &MainWidget::closedialog, [this] () {
         m_cLoginTimer->stop();
         m_bIsStopped = true;
     });
