@@ -91,9 +91,8 @@ void UkccAbout::initUI() {
     mCenterVersionLayout->addWidget(mUkccVersion);
     mCenterVersionLayout->addStretch();
 
-    mUkccDetail = new QLabel(tr("The control panel provides a friendly graphical user interface to manage common configuration items of the operating system. "
+    mUkccDetail = new QTextEdit(tr("The control panel provides a friendly graphical user interface to manage common configuration items of the operating system. "
                                 "System configuration provides system, equipment, personalization, network, account, time and date, account, time and date, update, notification and operation module operations. "));
-    mUkccDetail->setWordWrap(true);
 
     mUkccDetailLayout->addSpacing(32);
     mUkccDetailLayout->addWidget(mUkccDetail);
