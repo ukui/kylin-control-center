@@ -56,6 +56,7 @@ const QByteArray kVinoSchemas    = "org.gnome.Vino";
 extern "C" {
 #include <glib.h>
 #include <gio/gio.h>
+#include <libmatemixer/matemixer.h>
 }
 
 const int dbWitdth = 50;
