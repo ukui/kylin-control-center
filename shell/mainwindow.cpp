@@ -19,7 +19,6 @@
  */
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "prescene.h"
 #include "utils/keyvalueconverter.h"
 #include "utils/functionselect.h"
 #include "utils/utils.h"
@@ -67,24 +66,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_searchWidget(nullptr)
 {
+    mate_mixer_init();
     // 设置初始大小
     this->setMinimumSize(895, 600);
-
     logoLabel  = new QLabel(tr("UKCC"), this);
-    PreScene *prescene = new PreScene(logoLabel, this->size());
-    prescene->setAttribute(Qt::WA_DeleteOnClose);
-    prescene->setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
-    prescene->raise();
-    this->setCentralWidget(prescene);
-
-    timer = new QTimer(this);
-    timer->stop();
-    connect(timer, &QTimer::timeout, this, [=]() {
-        initUI();
-        timer->stop();
-        prescene->close();
-    });
-    timer->start(200);
+    initUI();
 }
 
 MainWindow::~MainWindow()
