@@ -33,20 +33,19 @@
 #include <QTextCodec>
 #include <QtDBus/QDBusConnection>
 
-//#define DESKTOP_SCHEMA "org.ukui.peony.desktop"
-#define DESKTOP_SCHEMA "org.ukui.control-center.desktop"
+#define DESKTOP_SCHEMA       "org.ukui.control-center.desktop"
 
 #define COMPUTER_VISIBLE_KEY "computer-icon-visible"
-#define HOME_VISIBLE_KEY "home-icon-visible"
-#define NETWORK_VISIBLE_KEY "network-icon-visible"
-#define TRASH_VISIBLE_KEY "trash-icon-visible"
-#define VOLUMES_VISIBLE_KEY "volumes-visible"
+#define HOME_VISIBLE_KEY     "home-icon-visible"
+#define NETWORK_VISIBLE_KEY  "network-icon-visible"
+#define TRASH_VISIBLE_KEY    "trash-icon-visible"
+#define VOLUMES_VISIBLE_KEY  "volumes-visible"
 
 #define MENU_FULL_SCREEN_KEY "menufull-screen"
-#define COMPUTER_LOCK_KEY "computer-icon-locking"
-#define PERSONAL_LOCK_KEY "personal-icon-locking"
-#define SETTINGS_LOCK_KEY "settings-icon-locking"
-#define TRASH_LOCK_KEY "trash-icon-locking"
+#define COMPUTER_LOCK_KEY    "computer-icon-locking"
+#define PERSONAL_LOCK_KEY    "personal-icon-locking"
+#define SETTINGS_LOCK_KEY    "settings-icon-locking"
+#define TRASH_LOCK_KEY       "trash-icon-locking"
 
 Desktop::Desktop() : mFirstLoad(true)
 {
@@ -236,7 +235,7 @@ void Desktop::setupConnect(){
 }
 
 void Desktop::slotCloudAccout(const QString &key) {
-    if(key == "ukui-menu") {
+    if (key == "ukui-menu") {
         initVisibleStatus();
         initLockingStatus();
     }
@@ -268,7 +267,6 @@ void Desktop::initLockingStatus() {
     menuSettingSwitchBtn->blockSignals(true);
     menuTrashSwitchBtn->blockSignals(true);
 
-
     QStringList keys = dSettings->keys();
     if (keys.contains("menufullScreen")) {
         fullMenuSwitchBtn->setChecked(dSettings->get(MENU_FULL_SCREEN_KEY).toBool());
@@ -294,7 +292,6 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
         return;
     }
     nameList.append(name);
-    const QString locale = QLocale::system().name();
 
     QVBoxLayout * baseVerLayout = new QVBoxLayout();
     baseVerLayout->setSpacing(1);
@@ -321,6 +318,9 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     iconSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
     iconBtn->setSizePolicy(iconSizePolicy);
     iconBtn->setIconSize(QSize(32, 32));
+    if (icon.isNull()) {
+        icon = desktopMap.values().at(0).isNull() ? QIcon::fromTheme("application-x-desktop") : desktopMap.values().at(0);
+    }
     iconBtn->setIcon(icon);
 
     QLabel * nameLabel = new QLabel(pluginWidget);
@@ -329,7 +329,7 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     nameSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
     nameLabel->setSizePolicy(nameSizePolicy);
     nameLabel->setScaledContents(true);
-    nameLabel->setText(desktopConver(name));
+    nameLabel->setText(desktopMap.keys().at(0));
 
     SwitchButton *appSwitch = new SwitchButton(pluginWidget);
     if (disList.contains(name)) {
@@ -344,8 +344,6 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     devFrame->setLayout(devHorLayout);
     baseVerLayout->addWidget(devFrame);
     baseVerLayout->addStretch();
-
-//    ui->trayVBoxLayout->addWidget(devFrame);
 
     QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
 
@@ -418,10 +416,9 @@ void Desktop::initTraySettings() {
                 QIcon icon;
                 if (!iconMap[name].isEmpty()) {
                     icon = QIcon::fromTheme(iconMap[name]);
-                } else {
-                    icon = QIcon::fromTheme("application-x-desktop");
                 }
                 itemCount++;
+
                 initTrayStatus(name, icon, traySettings);
             }
         }
@@ -429,33 +426,35 @@ void Desktop::initTraySettings() {
     ui->listWidget->setFixedHeight(itemCount * 55);
 }
 
-QString Desktop::desktopConver(QString processName) {
+QMap<QString, QIcon> Desktop::desktopConver(QString processName) {
 
+    QMap<QString, QIcon> desktopMap;
     if (isFileExist("/etc/xdg/autostart/"+processName + ".desktop") ||
             isFileExist("/usr/share/applications/"+processName+".desktop")) {
-        QString autoName =  desktopToName("/etc/xdg/autostart/"+processName+".desktop");
-        QString appName = desktopToName("/usr/share/applications/"+processName+".desktop");
+        QString autoName = desktopToName("/etc/xdg/autostart/"+processName+".desktop");
+        QIcon autoIcon   = desktopToIcon("/etc/xdg/autostart/"+processName+".desktop");
+        QString appName  = desktopToName("/usr/share/applications/"+processName+".desktop");
+        QIcon appIcon    = desktopToIcon("/usr/share/applications/"+processName+".desktop");
         if (autoName != "") {
-            return autoName;
+            desktopMap.insert(autoName, autoIcon);
         } else if (appName != "") {
-            return appName;
+            desktopMap.insert(appName, appIcon);
         }
     } else if (isFileExist("/etc/xdg/autostart/" + processName.toLower() + ".desktop") ||
                isFileExist("/usr/share/applications/" + processName.toLower() + ".desktop")){
-        QString autoName =  desktopToName("/etc/xdg/autostart/" + processName.toLower() + ".desktop");
-        QString appName = desktopToName("/usr/share/applications/" + processName.toLower() + ".desktop");
+        QString autoName = desktopToName("/etc/xdg/autostart/" + processName.toLower() + ".desktop");
+        QIcon autoIcon = desktopToIcon("/etc/xdg/autostart/" + processName.toLower() + ".desktop");
+
+        QString appName  = desktopToName("/usr/share/applications/" + processName.toLower() + ".desktop");
+        QIcon appIcon  = desktopToIcon("/usr/share/applications/" + processName.toLower() + ".desktop");
         if (autoName != "") {
-            return autoName;
+            desktopMap.insert(autoName, autoIcon);
         } else if (appName != "") {
-            return appName;
+            desktopMap.insert(appName, appIcon);
         }
     } else {
-
         connect(cmd.get(), &QProcess::readyReadStandardOutput, this, [&]() {
-            QString cmdName = readOuputSlot();
-            if (!cmdName.isEmpty()){
-                processName = cmdName;
-            }
+            desktopMap = readOuputSlot();
         });
         // 异常处理
         connect(cmd.get() , SIGNAL(readyReadStandardError()) , this , SLOT(readErrorSlot()));
@@ -464,7 +463,7 @@ QString Desktop::desktopConver(QString processName) {
         cmd->start(inputCmd);
         cmd->waitForFinished(-1);
     }
-    return processName;
+    return desktopMap;
 }
 
 bool Desktop::isFileExist(QString fullFileName) {
@@ -476,7 +475,6 @@ bool Desktop::isFileExist(QString fullFileName) {
 }
 
 void Desktop::removeTrayItem(QString itemName) {
-
     for (int i = 0; i < ui->listWidget->count(); i++) {
         QListWidgetItem * item = ui->listWidget->item(i);
         QString value = item->data(Qt::UserRole).toString();
@@ -528,10 +526,21 @@ QString Desktop::desktopToName(QString desktopfile) {
     return desktopName;
 }
 
-QString Desktop::readOuputSlot() {
-    QString name;
-    QString str;
+QIcon Desktop::desktopToIcon(const QString &desktopfile) {
+    QSettings desktopSettings(desktopfile, QSettings::IniFormat);
 
+    desktopSettings.setIniCodec(QTextCodec::codecForName("UTF-8"));
+    desktopSettings.beginGroup("Desktop Entry");
+
+    QString iconName = desktopSettings.value("Icon", "").toString();
+
+    desktopSettings.endGroup();
+    return QIcon::fromTheme(iconName);
+}
+
+QMap<QString, QIcon> Desktop::readOuputSlot() {
+    QString str;
+    QMap<QString, QIcon> desktopMap;
     QFile file("/tmp/desktopprocess.txt");
     QString output=cmd->readAllStandardOutput().data();
 
@@ -546,15 +555,14 @@ QString Desktop::readOuputSlot() {
         str = line;
         if(str.contains(".desktop:") && str.contains(":Exec")){
             str = str.section(".desktop", 0, 0)+".desktop";
-            name = desktopToName(str);
+            desktopMap.insert(desktopToName(str), desktopToIcon(str));
         }
     }
     file.close();
     file.remove();
-    return name;
+    return desktopMap;
 }
 
 void Desktop::readErrorSlot() {
     qWarning() << "read desktop file name failed";
 }
-
