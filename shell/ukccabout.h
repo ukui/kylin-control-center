@@ -26,6 +26,7 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
+#include <QTextEdit>
 
 class UkccAbout : public QDialog
 {
@@ -41,8 +42,9 @@ private:
     QLabel *mUkccCenterIcon;
     QLabel *mUkccCenterTitle;
     QLabel *mUkccVersion;
-    QLabel *mUkccDetail;
     QLabel *mUkccDeveloper;
+
+    QTextEdit *mUkccDetail;
 
     QHBoxLayout *mCenterIconLayout;
     QHBoxLayout *mCenterTitleLayout;
