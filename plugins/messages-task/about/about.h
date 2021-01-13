@@ -63,6 +63,9 @@ private:
     void setupKernelCompenent();
     void setupVersionCompenent();
     void setupSerialComponent();
+    qlonglong calculateTotalRam();
+    QStringList totalMemory();
+
 
 private:
     Ui::About *ui;
