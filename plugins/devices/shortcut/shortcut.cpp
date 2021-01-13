@@ -203,7 +203,7 @@ void Shortcut::setupComponent(){
 void Shortcut::setupConnect(){
 
     connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
-        addDialog->setTitleText(QObject::tr("Add Shortcut"));
+        addDialog->setTitleText(QObject::tr("Custom Shortcut"));
         addDialog->exec();
     });
 
