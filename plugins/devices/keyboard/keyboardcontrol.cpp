@@ -21,6 +21,7 @@
 #include "ui_keyboardcontrol.h"
 
 #include <QGSettings>
+#include <QProcess>
 
 #include <QDebug>
 #include <QMouseEvent>
@@ -47,7 +48,7 @@ KeyboardControl::~KeyboardControl()
     if (!mFirstLoad) {
         delete ui;
         if (settingsCreate) {
-            delete kbdsettings;
+//            delete kbdsettings;
             delete settings;
         }
     }
@@ -77,16 +78,16 @@ QWidget *KeyboardControl::get_plugin_ui() {
         // 初始化键盘通用设置GSettings
         const QByteArray id(KEYBOARD_SCHEMA);
         // 初始化键盘布局GSettings
-        const QByteArray idd(KBD_LAYOUTS_SCHEMA);
+//        const QByteArray idd(KBD_LAYOUTS_SCHEMA);
         // 初始化按键提示GSettings
         const QByteArray iid(CC_KEYBOARD_OSD_SCHEMA);
         // 控制面板自带GSettings，不再判断是否安装
         osdSettings = new QGSettings(iid);
 
-        if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(idd)){
+        if (QGSettings::isSchemaInstalled(id)){
             settingsCreate = true;
 
-            kbdsettings = new QGSettings(idd);
+//            kbdsettings = new QGSettings(idd);
             settings = new QGSettings(id);
 
             //构建布局管理器对象
@@ -134,40 +135,44 @@ void KeyboardControl::setupStylesheet(){
 
 void KeyboardControl::setupComponent(){
 
-    addWgt = new HoverWidget("");
-    addWgt->setObjectName("addwgt");
-    addWgt->setMinimumSize(QSize(580, 50));
-    addWgt->setMaximumSize(QSize(960, 50));
-    addWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
+//    addWgt = new HoverWidget("");
+//    addWgt->setObjectName("addwgt");
+//    addWgt->setMinimumSize(QSize(580, 50));
+//    addWgt->setMaximumSize(QSize(960, 50));
+//    addWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
 
-    QHBoxLayout *addLyt = new QHBoxLayout;
 
-    QLabel * iconLabel = new QLabel();
-    QLabel * textLabel = new QLabel(tr("Install layouts"));
-    QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
-    iconLabel->setPixmap(pixgray);
-    addLyt->addWidget(iconLabel);
-    addLyt->addWidget(textLabel);
-    addLyt->addStretch();
-    addWgt->setLayout(addLyt);
+    ui->layoutFrame_0->hide();
+    ui->addLytWidget->hide();
+
+//    QHBoxLayout *addLyt = new QHBoxLayout;
+
+//    QLabel * iconLabel = new QLabel();
+//    QLabel * textLabel = new QLabel(tr("Install layouts"));
+//    QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+//    iconLabel->setPixmap(pixgray);
+//    addLyt->addWidget(iconLabel);
+//    addLyt->addWidget(textLabel);
+//    addLyt->addStretch();
+//    addWgt->setLayout(addLyt);
 
     // 悬浮改变Widget状态
-    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname) {
-        Q_UNUSED(mname);
-        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
-        iconLabel->setPixmap(pixgray);
-        textLabel->setStyleSheet("color: palette(base);");
-    });
+//    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname) {
+//        Q_UNUSED(mname);
+//        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
+//        iconLabel->setPixmap(pixgray);
+//        textLabel->setStyleSheet("color: palette(base);");
+//    });
 
     // 还原状态
-    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname) {
-        Q_UNUSED(mname);
-        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
-        iconLabel->setPixmap(pixgray);
-        textLabel->setStyleSheet("color: palette(windowText);");
-    });
+//    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname) {
+//        Q_UNUSED(mname);
+//        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+//        iconLabel->setPixmap(pixgray);
+//        textLabel->setStyleSheet("color: palette(windowText);");
+//    });
 
-    ui->addLyt->addWidget(addWgt);
+//    ui->addLyt->addWidget(addWgt);
 
     // 隐藏未开发功能
     ui->repeatFrame_5->hide();
@@ -218,44 +223,49 @@ void KeyboardControl::setupConnect(){
        }
     });
 
-    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname) {
-        Q_UNUSED(mname);
-        KbdLayoutManager * templayoutManager = new KbdLayoutManager;
-        templayoutManager->exec();
+//    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname) {
+//        Q_UNUSED(mname);
+//        KbdLayoutManager * templayoutManager = new KbdLayoutManager;
+//        templayoutManager->exec();
+//    });
+
+//    connect(ui->resetBtn, &QPushButton::clicked, this, [=] {
+//        kbdsettings->reset(KBD_LAYOUTS_KEY);
+//        if ("zh_CN" == QLocale::system().name()) {
+//            kbdsettings->set(KBD_LAYOUTS_KEY, "cn");
+//        } else {
+//            kbdsettings->set(KBD_LAYOUTS_KEY, "us");
+//        }
+//    });
+
+    connect(ui->inputSettingsBtn, &QPushButton::clicked, this, [=]{
+        QProcess process;
+        process.startDetached("fcitx-config-gtk3");
     });
 
-    connect(ui->resetBtn, &QPushButton::clicked, this, [=] {
-        kbdsettings->reset(KBD_LAYOUTS_KEY);
-        if ("zh_CN" == QLocale::system().name()) {
-            kbdsettings->set(KBD_LAYOUTS_KEY, "cn");
-        } else {
-            kbdsettings->set(KBD_LAYOUTS_KEY, "us");
-        }
-    });
-
-    connect(kbdsettings, &QGSettings::changed, [=](QString key) {
-        if (key == KBD_LAYOUTS_KEY)
-            rebuildLayoutsComBox();
-    });
+//    connect(kbdsettings, &QGSettings::changed, [=](QString key) {
+//        if (key == KBD_LAYOUTS_KEY)
+//            rebuildLayoutsComBox();
+//    });
 
     connect(tipKeyboardSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked) {
         osdSettings->set(CC_KEYBOARD_OSD_KEY, checked);
     });
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    connect(ui->layoutsComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
-#else
-    connect(ui->layoutsComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
-#endif
-        QStringList layoutsList;
-        layoutsList.append(ui->layoutsComBox->currentData(Qt::UserRole).toString());
-        for (int i = 0; i < ui->layoutsComBox->count(); i++){
-            QString id = ui->layoutsComBox->itemData(i, Qt::UserRole).toString();
-            if (i != index) //跳过当前item
-                layoutsList.append(id);
-        }
-        kbdsettings->set(KBD_LAYOUTS_KEY, layoutsList);
-    });
+//#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+//    connect(ui->layoutsComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
+//#else
+//    connect(ui->layoutsComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
+//#endif
+//        QStringList layoutsList;
+//        layoutsList.append(ui->layoutsComBox->currentData(Qt::UserRole).toString());
+//        for (int i = 0; i < ui->layoutsComBox->count(); i++){
+//            QString id = ui->layoutsComBox->itemData(i, Qt::UserRole).toString();
+//            if (i != index) //跳过当前item
+//                layoutsList.append(id);
+//        }
+//        kbdsettings->set(KBD_LAYOUTS_KEY, layoutsList);
+//    });
 }
 
 void KeyboardControl::initGeneralStatus() {
@@ -276,21 +286,21 @@ void KeyboardControl::initGeneralStatus() {
 }
 
 void KeyboardControl::rebuildLayoutsComBox() {
-    QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
-    ui->layoutsComBox->blockSignals(true);
+//    QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
+//    ui->layoutsComBox->blockSignals(true);
     //清空键盘布局下拉列表
-    ui->layoutsComBox->clear();
+//    ui->layoutsComBox->clear();
 
     //重建键盘布局下拉列表
-    for (QString layout : layouts) {
-        ui->layoutsComBox->addItem(layoutmanagerObj->kbd_get_description_by_id(const_cast<const char *>(layout.toLatin1().data())), layout);
-    }
-    ui->layoutsComBox->blockSignals(false);
-    if (0 == ui->layoutsComBox->count()) {
-        ui->layoutsComBox->setVisible(false);
-    } else {
-        ui->layoutsComBox->setVisible(true);
-    }
+//    for (QString layout : layouts) {
+//        ui->layoutsComBox->addItem(layoutmanagerObj->kbd_get_description_by_id(const_cast<const char *>(layout.toLatin1().data())), layout);
+//    }
+//    ui->layoutsComBox->blockSignals(false);
+//    if (0 == ui->layoutsComBox->count()) {
+//        ui->layoutsComBox->setVisible(false);
+//    } else {
+//        ui->layoutsComBox->setVisible(true);
+//    }
 }
 
 void KeyboardControl::setKeyboardVisible(bool checked) {

@@ -696,7 +696,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Keyboard Layout</string>
+           <string>Input Settings</string>
           </property>
           <property name="scaledContents">
            <bool>true</bool>
@@ -809,7 +809,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QWidget" name="addWidget" native="true">
+           <widget class="QWidget" name="addLytWidget" native="true">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -855,7 +855,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="resetBtn">
+           <widget class="QPushButton" name="inputSettingsBtn">
             <property name="minimumSize">
              <size>
               <width>120</width>
@@ -869,7 +869,7 @@
              </size>
             </property>
             <property name="text">
-             <string>Reset layout</string>
+             <string>Input settings</string>
             </property>
            </widget>
           </item>

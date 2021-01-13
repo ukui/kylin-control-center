@@ -33,10 +33,10 @@
     <number>0</number>
    </property>
    <property name="topMargin">
-    <number>8</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>8</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
     <number>0</number>
@@ -54,27 +54,30 @@
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>32</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>32</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>32</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>24</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="leftMargin">
-         <number>16</number>
+         <number>0</number>
         </property>
         <property name="topMargin">
-         <number>8</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>8</number>
+         <number>0</number>
         </property>
         <item>
          <widget class="QLabel" name="titleLabel">
@@ -102,43 +105,24 @@
           </property>
          </spacer>
         </item>
-        <item>
-         <widget class="CloseButton" name="closeBtn">
-          <property name="minimumSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <property name="spacing">
-         <number>20</number>
+         <number>0</number>
         </property>
         <property name="leftMargin">
-         <number>32</number>
+         <number>0</number>
         </property>
         <property name="topMargin">
          <number>16</number>
         </property>
         <property name="rightMargin">
-         <number>32</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
-         <number>48</number>
+         <number>0</number>
         </property>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -445,7 +429,7 @@
               <number>0</number>
              </property>
              <property name="leftMargin">
-              <number>0</number>
+              <number>6</number>
              </property>
              <property name="topMargin">
               <number>0</number>
@@ -459,10 +443,13 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_6">
                <property name="spacing">
-                <number>10</number>
+                <number>6</number>
                </property>
                <property name="leftMargin">
-                <number>16</number>
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
                </property>
                <property name="rightMargin">
                 <number>0</number>
@@ -492,9 +479,12 @@
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_5">
                  <property name="spacing">
+                  <number>3</number>
+                 </property>
+                 <property name="topMargin">
                   <number>0</number>
                  </property>
-                 <item>
+                 <item alignment="Qt::AlignBottom">
                   <widget class="QLabel" name="label_7">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -502,12 +492,18 @@
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>23</height>
+                    </size>
+                   </property>
                    <property name="text">
                     <string>standard user</string>
                    </property>
                   </widget>
                  </item>
-                 <item>
+                 <item alignment="Qt::AlignTop">
                   <widget class="QLabel" name="label_8">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -522,6 +518,19 @@ change system settings</string>
                   </widget>
                  </item>
                 </layout>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_3">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
               </layout>
              </item>
@@ -547,7 +556,7 @@ change system settings</string>
               <number>0</number>
              </property>
              <property name="leftMargin">
-              <number>0</number>
+              <number>6</number>
              </property>
              <property name="topMargin">
               <number>0</number>
@@ -561,10 +570,10 @@ change system settings</string>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_8">
                <property name="spacing">
-                <number>10</number>
+                <number>6</number>
                </property>
                <property name="leftMargin">
-                <number>16</number>
+                <number>0</number>
                </property>
                <property name="rightMargin">
                 <number>0</number>
@@ -594,9 +603,9 @@ change system settings</string>
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_6">
                  <property name="spacing">
-                  <number>0</number>
+                  <number>3</number>
                  </property>
-                 <item>
+                 <item alignment="Qt::AlignBottom">
                   <widget class="QLabel" name="label_9">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -609,7 +618,7 @@ change system settings</string>
                    </property>
                   </widget>
                  </item>
-                 <item>
+                 <item alignment="Qt::AlignTop">
                   <widget class="QLabel" name="label_10">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -623,6 +632,19 @@ change system settings</string>
                   </widget>
                  </item>
                 </layout>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_4">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
               </layout>
              </item>
@@ -642,7 +664,7 @@ change system settings</string>
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>18</height>
+            <height>40</height>
            </size>
           </property>
          </spacer>
@@ -712,13 +734,6 @@ change system settings</string>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>CloseButton</class>
-   <extends>QPushButton</extends>
-   <header location="global">CloseButton/closebutton.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
  <buttongroups>

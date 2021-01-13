@@ -44,48 +44,59 @@ DelUserDialog::~DelUserDialog()
 }
 
 void DelUserDialog::setupComonpent(){
+
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 //    ui->closeBtn->setFlat(true);
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+//    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 //    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
 //                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
-    ui->label_2->adjustSize();
-    ui->label_2->setWordWrap(true);
+    ui->label->adjustSize();
+    ui->label->setWordWrap(true);
+
+    ui->buttonGroup->setId(ui->keepRadioBtn, 0);
+    ui->buttonGroup->setId(ui->delRadioBtn, 1);
+
+    ui->delRadioBtn->setChecked(true);
 }
 
 void DelUserDialog::setupConnect(){
 
-    connect(ui->closeBtn, &CloseButton::clicked, [=](){
-        close();
-    });
+//    connect(ui->closeBtn, &CloseButton::clicked, [=](){
+//        close();
+//    });
     connect(ui->cancelPushBtn, SIGNAL(clicked()), this, SLOT(reject()));
 
-    QSignalMapper * differSignalMapper = new QSignalMapper();
-    for (QAbstractButton * button : ui->buttonGroup->buttons()){
-        connect(button, SIGNAL(clicked()), differSignalMapper, SLOT(map()));
-        differSignalMapper->setMapping(button, button->text());
-    }
-
-#if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
-    connect(differSignalMapper, static_cast<void(QSignalMapper::*)(const QString &)>(&QSignalMapper::mapped), [=](const QString key){
-#else
-    connect(differSignalMapper, QOverload<const QString &>::of(&QSignalMapper::mapped), [=](const QString key){
-#endif
+    connect(ui->deleteBtn, &QPushButton::clicked, this, [=]{
         this->accept();
-        bool removefile;
-        if (ui->removePushBtn->text() == key)
-            removefile = true;
-        else
-            removefile = false;
-        emit removefile_send(removefile, ui->usernameLabel->text());
+        emit removefile_send(ui->buttonGroup->checkedId());
     });
+
+//    QSignalMapper * differSignalMapper = new QSignalMapper();
+//    for (QAbstractButton * button : ui->buttonGroup->buttons()){
+//        connect(button, SIGNAL(clicked()), differSignalMapper, SLOT(map()));
+//        differSignalMapper->setMapping(button, button->text());
+//    }
+
+//#if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
+//    connect(differSignalMapper, static_cast<void(QSignalMapper::*)(const QString &)>(&QSignalMapper::mapped), [=](const QString key){
+//#else
+//    connect(differSignalMapper, QOverload<const QString &>::of(&QSignalMapper::mapped), [=](const QString key){
+//#endif
+//        this->accept();
+//        bool removefile;
+//        if (ui->removePushBtn->text() == key)
+//            removefile = true;
+//        else
+//            removefile = false;
+//        emit removefile_send(removefile, ui->usernameLabel->text());
+//    });
 }
 
-void DelUserDialog::setFace(QString iconfile){
-    ui->faceLabel->setPixmap(QPixmap(iconfile));
-}
 
 void DelUserDialog::setUsername(QString username){
-    ui->usernameLabel->setText(username);
+    QString title1 = tr("Delete the user '");
+    QString title3 = tr("' and:");
+    ui->titleLabel->setText(title1 + username + title3);
 }
 
 

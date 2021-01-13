@@ -40,7 +40,7 @@ ChangeValidDialog::ChangeValidDialog(QString userName, QWidget *parent) :
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(tr("Change valid"));
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+//    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 //    ui->closeBtn->setProperty("useIconHighlightEffect", true);
@@ -70,9 +70,9 @@ ChangeValidDialog::~ChangeValidDialog()
 }
 
 void ChangeValidDialog::setupConnect(){
-    connect(ui->closeBtn, &CloseButton::clicked, [=]{
-        close();
-    });
+//    connect(ui->closeBtn, &CloseButton::clicked, [=]{
+//        close();
+//    });
     connect(ui->cancelBtn, &QPushButton::clicked, [=]{
         reject();
     });

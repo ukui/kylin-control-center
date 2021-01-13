@@ -207,7 +207,7 @@ void ChangeGroupDialog::setupInit()
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+//    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
 //    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     //ui->titleLabel_2->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
@@ -227,7 +227,7 @@ void ChangeGroupDialog::setupInit()
 
 void ChangeGroupDialog::signalsBind()
 {
-    connect(ui->closeBtn, &CloseButton::clicked, [=]{
+    connect(ui->cancelPushBtn, &QPushButton::clicked, [=]{
         close();
     });
 }

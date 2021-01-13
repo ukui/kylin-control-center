@@ -36,7 +36,7 @@
     <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>13</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
     <number>0</number>
@@ -54,21 +54,21 @@
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>32</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>32</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>32</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>24</number>
       </property>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <property name="spacing">
-         <number>0</number>
+         <number>12</number>
         </property>
         <property name="bottomMargin">
          <number>0</number>
@@ -98,7 +98,7 @@
             <number>0</number>
            </property>
            <property name="leftMargin">
-            <number>16</number>
+            <number>0</number>
            </property>
            <property name="topMargin">
             <number>0</number>
@@ -140,25 +140,6 @@
                </property>
               </spacer>
              </item>
-             <item>
-              <widget class="CloseButton" name="closeBtn">
-               <property name="minimumSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
             </layout>
            </item>
           </layout>
@@ -167,36 +148,20 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <property name="spacing">
-           <number>18</number>
+           <number>12</number>
           </property>
           <property name="leftMargin">
-           <number>32</number>
+           <number>0</number>
           </property>
           <property name="topMargin">
-           <number>16</number>
+           <number>0</number>
           </property>
           <property name="rightMargin">
-           <number>32</number>
+           <number>0</number>
           </property>
           <property name="bottomMargin">
-           <number>48</number>
+           <number>0</number>
           </property>
-          <item>
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
           <item>
            <widget class="QFrame" name="infoFrame">
             <property name="minimumSize">
@@ -236,7 +201,7 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_3">
                <property name="spacing">
-                <number>8</number>
+                <number>12</number>
                </property>
                <item>
                 <widget class="QLabel" name="faceLabel">
@@ -268,7 +233,10 @@
                </item>
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_6">
-                 <item>
+                 <property name="spacing">
+                  <number>3</number>
+                 </property>
+                 <item alignment="Qt::AlignBottom">
                   <widget class="QLabel" name="nameLabel">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -281,7 +249,7 @@
                    </property>
                   </widget>
                  </item>
-                 <item>
+                 <item alignment="Qt::AlignTop">
                   <widget class="QLabel" name="typeLabel">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -450,6 +418,22 @@
            </widget>
           </item>
           <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>30</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
            <widget class="QFrame" name="btnFrame">
             <property name="minimumSize">
              <size>
@@ -531,13 +515,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>CloseButton</class>
-   <extends>QPushButton</extends>
-   <header location="global">CloseButton/closebutton.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

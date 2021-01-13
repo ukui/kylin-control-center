@@ -68,8 +68,11 @@ protected:
 private:
     Ui::ChangeFaceDialog *ui;
 
+private:
+    QString selectedFaceIcon;
+
 Q_SIGNALS:
-    void face_file_send(QString file, QString username);
+    void face_file_send(QString file);
 };
 
 #endif // CHANGEFACEDIALOG_H

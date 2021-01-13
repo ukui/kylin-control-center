@@ -55,7 +55,7 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
     ui->label_10->adjustSize();
     ui->label_10->setWordWrap(true);
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+//    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
     initPwdChecked();
     setupComonpent();
@@ -134,10 +134,10 @@ void CreateUserDialog::setupComonpent(){
 
 void CreateUserDialog::setupConnect(){
 
-    connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked){
-        Q_UNUSED(checked)
-        close();
-    });
+//    connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked){
+//        Q_UNUSED(checked)
+//        close();
+//    });
 
     connect(ui->usernameLineEdit, &QLineEdit::textChanged, [=](QString text){
         nameLegalityCheck(text);

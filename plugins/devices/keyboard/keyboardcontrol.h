@@ -68,7 +68,7 @@ private:
     QWidget * pluginWidget;
 
     QGSettings * settings;
-    QGSettings * kbdsettings;
+//    QGSettings * kbdsettings;
     QGSettings * osdSettings;
 
     SwitchButton * keySwitchBtn;

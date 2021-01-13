@@ -53,7 +53,7 @@ private:
 
 
 Q_SIGNALS:
-    void removefile_send(bool removefile, QString username);
+    void removefile_send(bool removefile);
 };
 
 #endif // DELUSERDIALOG_H

@@ -839,10 +839,9 @@ void UserInfo::showDeleteUserDialog(QString username){
 
     DelUserDialog * dialog = new DelUserDialog;
     dialog->setAttribute(Qt::WA_DeleteOnClose);
-    dialog->setFace(user.iconfile);
     dialog->setUsername(user.username);
-    connect(dialog, &DelUserDialog::removefile_send, this, [=](bool removeFile, QString userName){
-        deleteUser(removeFile, userName);
+    connect(dialog, &DelUserDialog::removefile_send, this, [=](bool removeFile){
+        deleteUser(removeFile, user.username);
     });
     dialog->exec();
 }
@@ -972,8 +971,8 @@ void UserInfo::showChangeFaceDialog(QString username){
     dialog->setUsername(user.username);
     dialog->setAccountType(_accountTypeIntToString(user.accounttype));
 //    dialog->set_face_list_status(user.iconfile);
-    connect(dialog, &ChangeFaceDialog::face_file_send, [=](QString faceFile, QString userName){
-        changeUserFace(faceFile, userName);
+    connect(dialog, &ChangeFaceDialog::face_file_send, [=](QString faceFile){
+        changeUserFace(faceFile, user.username);
     });
     dialog->exec();
 }

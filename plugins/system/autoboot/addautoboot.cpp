@@ -93,8 +93,6 @@ void AddAutoBoot::initStyle() {
 
     selectFile = "";
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
-
     ui->nameLineEdit->setPlaceholderText(tr("Program name"));
     ui->execLineEdit->setPlaceholderText(tr("Program exec"));
     ui->commentLineEdit->setPlaceholderText(tr("Program comment"));
@@ -115,9 +113,6 @@ void AddAutoBoot::initConnection() {
     });
     connect(ui->certainBtn, &QPushButton::clicked, this, [=] {
         emit autoboot_adding_signals(selectFile, ui->nameLineEdit->text(), mDesktopExec, ui->commentLineEdit->text(), mDesktopIcon);
-        resetBeforeClose();
-    });
-    connect(ui->closeBtn, &CloseButton::clicked, [=] {
         resetBeforeClose();
     });
 }

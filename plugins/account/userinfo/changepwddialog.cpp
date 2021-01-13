@@ -77,7 +77,7 @@ ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QWidget *parent) :
     ui->tipLabel->setAlignment(Qt::AlignCenter);
     ui->tipLabel->setStyleSheet("color:red;");
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+//    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
 //    isCurrentUser = true;
 
@@ -240,9 +240,9 @@ void ChangePwdDialog::setupComponent(){
 }
 
 void ChangePwdDialog::setupConnect(){
-    connect(ui->closeBtn, &CloseButton::clicked, [=]{
-        close();
-    });
+//    connect(ui->closeBtn, &CloseButton::clicked, [=]{
+//        close();
+//    });
 
     connect(ui->pwdLineEdit, &QLineEdit::textChanged, [=](QString text){
         pwdLegalityCheck(text);

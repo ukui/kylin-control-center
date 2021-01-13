@@ -51,8 +51,10 @@ ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
 //    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
 
+    ui->customfaceBtn->setStyleSheet("background: transparent; color: blue; text-align:left");
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+    selectedFaceIcon = "";
+
 
     ElipseMaskWidget * cfMaskWidget = new ElipseMaskWidget(ui->faceLabel);
 //    cfMaskWidget->setBgColor("#F4F4F4");
@@ -61,11 +63,16 @@ ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
     loadSystemFaces();
 
 
-    connect(ui->closeBtn, &CloseButton::clicked, [=]{
+    connect(ui->cancelBtn, &QPushButton::clicked, [=]{
         close();
     });
     connect(ui->customfaceBtn, &QPushButton::clicked, [=]{
         showLocalFaceDialog();
+    });
+
+    connect(ui->saveBtn, &QPushButton::clicked, [=]{
+        emit face_file_send(selectedFaceIcon);
+        close();
     });
 }
 
@@ -76,8 +83,9 @@ ChangeFaceDialog::~ChangeFaceDialog()
 
 void ChangeFaceDialog::loadSystemFaces(){
 
-    FlowLayout * facesFlowLayout = new FlowLayout(ui->facesWidget);
+    FlowLayout * facesFlowLayout = new FlowLayout(ui->facesWidget, 0, 5, 5);
     ui->facesWidget->setLayout(facesFlowLayout);
+
 
     //遍历头像目录
     QStringList facesList;
@@ -91,8 +99,9 @@ void ChangeFaceDialog::loadSystemFaces(){
             continue;
 
         QPushButton * button = new QPushButton;
+        button->setCheckable(true);
         button->setAttribute(Qt::WA_DeleteOnClose);
-        button->setFixedSize(QSize(48, 48));
+        button->setFixedSize(QSize(64, 64));
 //        button->setStyleSheet("QPushButton{border: none;}");
 
         QHBoxLayout * mainHorLayout = new QHBoxLayout(button);
@@ -110,7 +119,9 @@ void ChangeFaceDialog::loadSystemFaces(){
             //show dialog更新头像
             setFace(fullface);
 
-            emit face_file_send(fullface, ui->usernameLabel->text());
+            selectedFaceIcon = fullface;
+
+//            emit face_file_send(fullface, ui->usernameLabel->text());
         });
 
         facesFlowLayout->addWidget(button);
@@ -160,7 +171,7 @@ void ChangeFaceDialog::showLocalFaceDialog(){
     }
 
     setFace(selectedfile);
-    emit face_file_send(selectedfile, ui->usernameLabel->text());
+    emit face_file_send(selectedfile);
 }
 
 void ChangeFaceDialog::paintEvent(QPaintEvent *event) {

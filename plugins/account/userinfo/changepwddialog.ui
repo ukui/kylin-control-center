@@ -33,10 +33,10 @@
     <number>0</number>
    </property>
    <property name="topMargin">
-    <number>9</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>9</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
     <number>0</number>
@@ -60,27 +60,30 @@
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>32</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>32</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>32</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>24</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="leftMargin">
-         <number>16</number>
+         <number>0</number>
         </property>
         <property name="topMargin">
-         <number>8</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>8</number>
+         <number>0</number>
         </property>
         <item>
          <widget class="QLabel" name="titleLabel">
@@ -108,43 +111,24 @@
           </property>
          </spacer>
         </item>
-        <item>
-         <widget class="CloseButton" name="closeBtn">
-          <property name="minimumSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <property name="spacing">
-         <number>16</number>
+         <number>12</number>
         </property>
         <property name="leftMargin">
-         <number>32</number>
+         <number>0</number>
         </property>
         <property name="topMargin">
-         <number>16</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>32</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
-         <number>48</number>
+         <number>0</number>
         </property>
         <item>
          <spacer name="verticalSpacer">
@@ -157,7 +141,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>35</height>
+            <height>10</height>
            </size>
           </property>
          </spacer>
@@ -201,9 +185,9 @@
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_8">
             <property name="spacing">
-             <number>8</number>
+             <number>3</number>
             </property>
-            <item>
+            <item alignment="Qt::AlignBottom">
              <widget class="QLabel" name="usernameLabel">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -216,7 +200,7 @@
               </property>
              </widget>
             </item>
-            <item>
+            <item alignment="Qt::AlignTop">
              <widget class="QLabel" name="aTypeLabel">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -510,6 +494,22 @@
          </widget>
         </item>
         <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>30</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <spacer name="horizontalSpacer">
@@ -574,13 +574,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>CloseButton</class>
-   <extends>QPushButton</extends>
-   <header location="global">CloseButton/closebutton.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

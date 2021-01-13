@@ -49,7 +49,7 @@ ChangeTypeDialog::ChangeTypeDialog(QWidget *parent) :
 
 
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+//    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
 
     setupComonpent();
@@ -71,9 +71,9 @@ void ChangeTypeDialog::setupComonpent(){
 
     ui->confirmPushBtn->setEnabled(false);
 
-    connect(ui->closeBtn, &CloseButton::clicked, [=]{
-        close();
-    });
+//    connect(ui->closeBtn, &CloseButton::clicked, [=]{
+//        close();
+//    });
     connect(ui->cancelPushBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
         reject();
