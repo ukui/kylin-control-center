@@ -434,7 +434,7 @@ void MainWindow::showUkccAboutSlot() {
 
     connect(ukccHelp, &QAction::triggered, this, [=] {
         QProcess process(this);
-        process.startDetached("kylin-user-guide");
+        process.startDetached("kylin-user-guide -A ukui-control-center");
     });
 
     ukccMain->exec(this->mapToGlobal(pt));
