@@ -29,6 +29,7 @@
 #include <QtDBus>
 #include <QtDBus/QDBusMessage>
 #include <QtDBus/QDBusConnection>
+#include <QtConcurrent/QtConcurrent>
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -264,9 +265,13 @@ void MouseControl::setupComponent() {
 
     connect(settings,&QGSettings::changed,[=] (const QString &key){
         if(key == "locatePointer") {
+            visiblityBtn->blockSignals(true);
             visiblityBtn->setChecked(settings->get(LOCATE_KEY).toBool());
+            visiblityBtn->blockSignals(false);
         } else if(key == "mouseAccel") {
+            ui->doubleclickHorSlider->blockSignals(true);
             mAccelBtn->setChecked(settings->get(ACCEL_KEY).toBool());
+            ui->doubleclickHorSlider->blockSignals(false);
         } else if(key == "doubleClick") {
             int dc = settings->get(DOUBLE_CLICK_KEY).toInt();
             ui->doubleclickHorSlider->blockSignals(true);
@@ -283,6 +288,10 @@ void MouseControl::setupComponent() {
             ui->handHabitComBox->blockSignals(true);
             ui->handHabitComBox->setCurrentIndex(handHabitIndex);
             ui->handHabitComBox->blockSignals(false);
+        } else if(key == "cursorSize") {
+            ui->pointerSizeComBox->blockSignals(true);
+            ui->pointerSizeComBox->setCurrentIndex(settings->get(CURSOR_SIZE_KEY).toInt());
+            ui->pointerSizeComBox->blockSignals(false);
         }
     });
 

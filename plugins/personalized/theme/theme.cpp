@@ -344,6 +344,13 @@ void Theme::initThemeMode() {
        }
     });
 
+    connect(personliseGsettings, &QGSettings::changed,this,[=] (const QString &key) {
+       if(key == "effect") {
+           bool effectEnabled = personliseGsettings->get("effect").toBool();
+           effectSwitchBtn->setChecked(effectEnabled);
+       }
+    });
+
     connect(ui->themeModeBtnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(themeBtnClickSlot(QAbstractButton*)));
 }
 
