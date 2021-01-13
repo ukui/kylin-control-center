@@ -143,15 +143,13 @@ void Shortcut::connectToServer(){
 }
 
 void Shortcut::setupComponent(){
-
-    //~ contents_path /shortcut/System Shortcut
     ui->systemLabel->setText(tr("System Shortcut"));
-    //~ contents_path /shortcut/Custom Shortcut
     ui->customLabel->setText(tr("Custom Shortcut"));
 
     ui->customListWidget->setFocusPolicy(Qt::NoFocus);
     ui->customListWidget->setSelectionMode(QAbstractItemView::NoSelection);
     ui->customListWidget->setSpacing(0);
+    ui->customListWidget->setMaximumWidth(960);
 
     QWidget * systemTitleWidget = new QWidget;
     QVBoxLayout * systemVerLayout = new QVBoxLayout(systemTitleWidget);
@@ -167,7 +165,6 @@ void Shortcut::setupComponent(){
     systemVerLayout->addWidget(titleLabel);
     systemVerLayout->addStretch();
     systemTitleWidget->setLayout(systemVerLayout);
-    //ui->verticalLayout_4->addWidget(systemTitleWidget);
 
     addWgt = new HoverWidget("");
     addWgt->setObjectName("addwgt");
@@ -178,7 +175,6 @@ void Shortcut::setupComponent(){
     QHBoxLayout *addLyt = new QHBoxLayout;
 
     QLabel * iconLabel = new QLabel();
-    //~ contents_path /shortcut/Add custom shortcut
     QLabel * textLabel = new QLabel(tr("Add custom shortcut"));
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);
@@ -358,7 +354,7 @@ void Shortcut::appendGeneralItems(QMap<QString, QMap<QString, QString> > shortcu
     QMap<QString, QMap<QString, QString>>::iterator it = shortcutsMap.begin();
     for (; it != shortcutsMap.end(); it++){
         QWidget * gWidget = buildGeneralWidget(it.key(), it.value());
-
+        gWidget->setMaximumWidth(960);
         ui->verticalLayout->addWidget(gWidget);
     }
 }
