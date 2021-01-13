@@ -208,14 +208,10 @@ void ChangeGroupDialog::setupInit()
     setAttribute(Qt::WA_DeleteOnClose);
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
-
-//    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    //ui->titleLabel_2->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
+    ui->iconLabel->setPixmap(QIcon::fromTheme("ukui-control-center").pixmap(24,24));
     ui->listWidget->setFocusPolicy(Qt::NoFocus);
     ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);
     ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setSpacing(1);
 
     connectToServer();

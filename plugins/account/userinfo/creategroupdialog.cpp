@@ -168,10 +168,6 @@ QListWidget *CreateGroupDialog::listWidgetComponent()
 
 void CreateGroupDialog::signalsBind()
 {
-    connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked){
-        Q_UNUSED(checked)
-        close();
-    });
     connect(ui->cancelBtn,&QPushButton::clicked,[=](){
         close();
     });
@@ -209,8 +205,6 @@ void CreateGroupDialog::setupInit()
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
-
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
     ui->listWidget->setFocusPolicy(Qt::NoFocus);
     ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);
