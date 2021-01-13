@@ -45,16 +45,20 @@ face.path = /usr/share/ukui/
 mo.files += $$PROJECT_ROOTDIR/data/installer-timezones.mo
 mo.path = /usr/share/locale/zh_CN/LC_MESSAGES/
 
+guideCN.files += $$PROJECT_ROOTDIR/data/zh_CN/
+guideCN.path += /usr/share/kylin-user-guide/data/guide/ukui-control-center/
+
 target.source += $$TARGET
 target.path = /usr/bin
 
 
 INSTALLS +=  \
-            target \
+            target  \
             desktop \
             schemes \
-            face \
-            mo
+            face    \
+            mo      \
+            guideCN
 
 INCLUDEPATH += qtsingleapplication
 DEPENDPATH += qtsingleapplication
