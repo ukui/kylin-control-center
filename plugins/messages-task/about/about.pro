@@ -15,14 +15,10 @@ INCLUDEPATH   +=  \
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += \
-    about.h \
-    entry.h \
-    memoryentry.h
+    about.h
 
 SOURCES += \
-    about.cpp \
-    entry.cpp \
-    memoryentry.cpp
+    about.cpp
 
 FORMS += \
     about.ui
