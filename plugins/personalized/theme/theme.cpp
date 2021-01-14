@@ -300,7 +300,7 @@ void Theme::initThemeMode() {
     QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
     if ("ukui-white" == currentThemeMode || "ukui-default" == currentThemeMode) {
         ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
-    } else if ("ukui-dark" == currentThemeMode){
+    } else if ("ukui-dark" == currentThemeMode || "ukui-black" == currentThemeMode){
         ui->themeModeBtnGroup->buttonClicked(ui->darkButton);
     } else {
         ui->themeModeBtnGroup->buttonClicked(ui->lightButton);
