@@ -485,7 +485,7 @@ void MainWindow::loadPlugins(){
             //时间和日期 | 用户账户 | 电源管理 |网络连接 |网络代理
             if (fileName.contains("datetime") || fileName.contains("userinfo") || fileName.contains("power") || \
                     fileName.contains("netconnect") || fileName.contains("proxy") || fileName.contains("update") || \
-                    fileName.contains("upgrade"))
+                    fileName.contains("upgrade") || fileName.contains("backup"))
                 continue;
         }
 #endif

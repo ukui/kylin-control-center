@@ -97,6 +97,7 @@ void Utils::setCLIName(QCommandLineParser &parser) {
             parser.addOption(datetimeRoleOption);
             parser.addOption(updateRoleOption);
             parser.addOption(upgradeRoleOption);
+            parser.addOption(backupRoleOption);
         }
 
     } else {
@@ -108,6 +109,7 @@ void Utils::setCLIName(QCommandLineParser &parser) {
         parser.addOption(datetimeRoleOption);
         parser.addOption(updateRoleOption);
         parser.addOption(upgradeRoleOption);
+        parser.addOption(backupRoleOption);
     }
 
 #else
@@ -144,8 +146,6 @@ void Utils::setCLIName(QCommandLineParser &parser) {
     parser.addOption(cloudaccountRoleOption);
 
     parser.addOption(areaRoleOption);
-
-    parser.addOption(backupRoleOption);
 
     parser.addOption(noticeRoleOption);
     parser.addOption(aboutRoleOption);

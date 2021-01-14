@@ -143,6 +143,8 @@ void Proxy::setupComponent(){
     manualSwitchBtn->setObjectName("manual");
     ui->manualHorLayout->addWidget(manualSwitchBtn);
 
+    ui->cetificationBtn->hide();
+
     //QLineEdit 设置数据
     GSData httpHostData;
     httpHostData.schema = HTTP_PROXY_SCHEMA;
@@ -199,10 +201,10 @@ void Proxy::setupConnect(){
     connect(ui->ftpPortLineEdit, &QLineEdit::textChanged, this, [=](const QString &txt){manualProxyTextChanged(txt);});
     connect(ui->socksPortLineEdit, &QLineEdit::textChanged, this, [=](const QString &txt){manualProxyTextChanged(txt);});
 
-    connect(ui->cetificationBtn, &QPushButton::clicked, [=](bool checked){
-        Q_UNUSED(checked)
-        showCertificationDialog();
-    });
+//    connect(ui->cetificationBtn, &QPushButton::clicked, [=](bool checked){
+//        Q_UNUSED(checked)
+//        showCertificationDialog();
+//    });
     connect(ui->ignoreHostTextEdit, &QTextEdit::textChanged, this, [=](){
         QString text = ui->ignoreHostTextEdit->toPlainText();
         QStringList hostStringList = text.split(";");
