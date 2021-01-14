@@ -150,6 +150,18 @@
         <file>secondaryleftmenu/UpgradeWhite.svg</file>
         <file>plugins/upgrade/update.png</file>
         <file>plugins/upgrade/normal.png</file>
+        <file>plugins/securitycenter/icon_scanning_b48@1x.png</file>
+        <file>plugins/securitycenter/icon_scanning_w48@1x.png</file>
+        <file>plugins/securitycenter/kysec_48_white.png</file>
+        <file>plugins/securitycenter/kysec_48.png</file>
+        <file>plugins/securitycenter/net_48_white.png</file>
+        <file>plugins/securitycenter/net_48.png</file>
+        <file>plugins/securitycenter/protect_48_white.png</file>
+        <file>plugins/securitycenter/protect_48.png</file>
+        <file>plugins/securitycenter/set2@2x_1.png</file>
+        <file>plugins/securitycenter/set2px.png</file>
+        <file>plugins/securitycenter/user_48_white.png</file>
+        <file>plugins/securitycenter/user_48.png</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

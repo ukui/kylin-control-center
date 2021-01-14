@@ -37,7 +37,13 @@ void BlockWidget::initComponent(){
     detailLabel = new QLabel;
     detailLabel->setAlignment(Qt::AlignTop);
     detailLabel->setFixedHeight(32);
-
+    QFont font;
+    font.setBold(true);
+    font.setPixelSize(18);
+    titleLable->setFont(font);
+    font.setPixelSize(14);
+    font.setBold(false);
+    detailLabel->setFont(font);
     textHorLayout->addStretch();
     textHorLayout->addWidget(titleLable);
     textHorLayout->addWidget(detailLabel);
@@ -52,6 +58,7 @@ void BlockWidget::initComponent(){
 void BlockWidget::setupComponent(QString logo, QString title, QString detail, QString cmd){
     logoLabel->setPixmap(QPixmap(logo).scaled(logoLabel->size()));
     titleLable->setText(title);
+    detailLabel->setText(detail);
     m_curIndex = 0;
     m_showText = detail + "    ";
     m_charWidth = fontMetrics().width("。");
@@ -182,49 +189,70 @@ void SecurityCenter::initComponent(){
     flowLayout->setContentsMargins(0, 0, 0, 0);
     ui->modulesWidget->setLayout(flowLayout);
 
-    BlockWidget * kysecWidget = new BlockWidget();
-    kysecWidget->setupComponent(":/img/plugins/securitycenter/kysec.png", \
-                                tr("Virus Protection"), \
-                                tr("Protect system from threats"), \
-                                "/usr/sbin/ksc-defender  --virus-protect");
+    BlockWidget * account_sec_Widget = new BlockWidget();
+    account_sec_Widget->setupComponent(":/img/plugins/securitycenter/user_48.png", \
+                                       tr("Account Security"), \
+                                       tr("Protect account and login security"), \
+                                       "/usr/sbin/ksc-defender --account-sec");
 
-    BlockWidget * netWidget = new BlockWidget();
-    netWidget->setupComponent(":/img/plugins/securitycenter/net.png", \
-                              tr("Network Protection"), \
-                              tr("Setup app that can access web"), \
-                              "/usr/sbin/ksc-defender --net-protect");
 
-    BlockWidget * protectWidget = new BlockWidget();
-    protectWidget->setupComponent(":/img/plugins/securitycenter/protect.png", \
-                                  tr("App Execution Control"), \
-                                  tr("App install and exe protection"), \
-                                  "/usr/sbin/ksc-defender --exec-ctrl");
 
-    BlockWidget * userWidget = new BlockWidget();
-    userWidget->setupComponent(":/img/plugins/securitycenter/user.png", \
-                               tr("Account Security"), \
-                               tr("Protect account and login security"), \
-                               "/usr/sbin/ksc-defender --account-sec");
+    BlockWidget * baseline_ctrl_Widget = new BlockWidget();
+    baseline_ctrl_Widget->setupComponent(":/img/plugins/securitycenter/icon_scanning_b48@1x.png", \
+                                         tr("Safety check-up"), \
+                                         tr("Detect abnormal configuration"), \
+                                         "/usr/sbin/ksc-defender --baseline-ctrl");
 
-    flowLayout->addWidget(kysecWidget);
-    flowLayout->addWidget(netWidget);
-    flowLayout->addWidget(protectWidget);
-    flowLayout->addWidget(userWidget);
+    BlockWidget * virus_protect_Widget = new BlockWidget();
+    virus_protect_Widget->setupComponent(":/img/plugins/securitycenter/protect_48.png", \
+                                         tr("Virus defense"), \
+                                         tr("Real time protection from virus threat"), \
+                                         "/usr/sbin/ksc-defender  --virus-protect");
 
-    connect(kysecWidget, &BlockWidget::bwClicked, [=](QString cmd){
+    BlockWidget * exec_ctrl_Widget = new BlockWidget();
+    exec_ctrl_Widget->setupComponent(":/img/plugins/securitycenter/kysec_48.png", \
+                                     tr("App protection"), \
+                                     tr("App install"), \
+                                     "/usr/sbin/ksc-defender --exec-ctrl");
+
+
+    BlockWidget * net_protect_Widget = new BlockWidget();
+    net_protect_Widget->setupComponent(":/img/plugins/securitycenter/net_48.png", \
+                                       tr("Network protection"), \
+                                       tr("Manage and control network"), \
+                                       "/usr/sbin/ksc-defender --net-protect");
+
+    BlockWidget * security_setting_Widget = new BlockWidget();
+    security_setting_Widget->setupComponent(":/img/plugins/securitycenter/set2px.png", \
+                                            tr("Secure mode configuration"), \
+                                            tr("Simple configuraion"), \
+                                            "/usr/sbin/ksc-defender --security_setting");
+
+    flowLayout->addWidget(account_sec_Widget);
+    flowLayout->addWidget(baseline_ctrl_Widget);
+    flowLayout->addWidget(virus_protect_Widget);
+    flowLayout->addWidget(net_protect_Widget);
+    flowLayout->addWidget(exec_ctrl_Widget);
+    flowLayout->addWidget(security_setting_Widget);
+
+    connect(account_sec_Widget, &BlockWidget::bwClicked, [=](QString cmd){
         runExternalApp(cmd);
     });
-    connect(netWidget, &BlockWidget::bwClicked, [=](QString cmd){
+    connect(baseline_ctrl_Widget, &BlockWidget::bwClicked, [=](QString cmd){
         runExternalApp(cmd);
     });
-    connect(protectWidget, &BlockWidget::bwClicked, [=](QString cmd){
+    connect(virus_protect_Widget, &BlockWidget::bwClicked, [=](QString cmd){
         runExternalApp(cmd);
     });
-    connect(userWidget, &BlockWidget::bwClicked, [=](QString cmd){
+    connect(net_protect_Widget, &BlockWidget::bwClicked, [=](QString cmd){
         runExternalApp(cmd);
     });
-
-
+    connect(exec_ctrl_Widget, &BlockWidget::bwClicked, [=](QString cmd){
+        runExternalApp(cmd);
+    });
+    connect(security_setting_Widget, &BlockWidget::bwClicked, [=](QString cmd){
+        runExternalApp(cmd);
+    });
 }
 
 void SecurityCenter::runExternalApp(QString cmd){
