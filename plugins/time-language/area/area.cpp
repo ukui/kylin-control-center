@@ -212,8 +212,8 @@ void Area::initUI() {
 void Area::initComponent() {
     QStringList res = getUserDefaultLanguage();
     QString lang = res.at(1);
-    int langIndex = lang.split(':').at(0) == "en_US" ? 0 : 1;;
-    int formatIndex = res.at(0) == "en_US.UTF-8" ? 0 : 1;
+    int langIndex = lang.split(':').at(0) == "zh_CN" ? 1 : 0;
+    int formatIndex = res.at(0) == "zh_CN.UTF-8" ? 1 : 0;
     ui->langcomboBox->setCurrentIndex(langIndex);
     ui->countrycomboBox->setCurrentIndex(formatIndex);
 
