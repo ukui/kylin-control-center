@@ -849,6 +849,12 @@ void UserInfo::pwdAndAutoChangedSlot(QString key) {
     if ("option" == key) {
         autoLoginSwitchBtn->setChecked(getAutomaticLogin(mUserName));
         nopwdSwitchBtn->setChecked(getNoPwdStatus());
+    } else if( "avatar" == key) {
+        //更新所有用户信息
+        _acquireAllUsersInfo();
+
+        //重置其他用户ListWidget高度
+        _resetListWidgetHeigh();
     }
 }
 
