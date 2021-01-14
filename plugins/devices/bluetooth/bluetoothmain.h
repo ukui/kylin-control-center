@@ -57,11 +57,10 @@ private slots:
     void receiveDisConnectSignal(QString);
     void receiveRemoveSignal(QString);
     void Refresh_load_Label_icon();
-    void GSetting_value_chanage(const QString &key);
-//    void get_pair_item();
     void set_tray_visible(bool);
     void change_adapter_name(const QString &name);
     void change_device_parent(const QString &address);
+    void adapterPoweredChanged(bool value);
 private:
     QGSettings *settings = nullptr;
     QString Default_Adapter;
