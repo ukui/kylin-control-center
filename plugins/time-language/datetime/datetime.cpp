@@ -350,13 +350,13 @@ QString DateTime::getLocalTimezoneName(QString timezone, QString locale) {
     // Reset locale.
     (void) setlocale(LC_ALL, kDefaultLocale);
 
-    if ("Asia/Shanghai" == timezone) {
-        if (QLocale::system().name() == "zh_CN") {
-            return kcnBj;
-        } else {
-            return kenBj;
-        }
-    }
+//    if ("Asia/Shanghai" == timezone) {
+//        if (QLocale::system().name() == "zh_CN") {
+//            return kcnBj;
+//        } else {
+//            return kenBj;
+//        }
+//    }
 
     return (index > -1) ? local_name.mid(index + 1) : local_name;
 }

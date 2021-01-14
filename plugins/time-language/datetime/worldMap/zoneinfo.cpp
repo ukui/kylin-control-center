@@ -67,13 +67,13 @@ ZoneinfoList ZoneInfo::getzoneInforList() {
 
                 double latitude = convertoPos(coordinate.left(index), 2);
                 double longtitude = convertoPos(coordinate.mid(index), 3);
-                if ("+3114" == coordinate.left(index)) {
-                    latitude = convertoPos("+3992", 2);
-                }
+//                if ("+3114" == coordinate.left(index)) {
+//                    latitude = convertoPos("+3992", 2);
+//                }
 
-                if ("+12128" == coordinate.mid(index)) {
-                    longtitude = convertoPos("+11646", 3);
-                }
+//                if ("+12128" == coordinate.mid(index)) {
+//                    longtitude = convertoPos("+11646", 3);
+//                }
 
 
                 ZoneInfo_ zoneinfo_ = {details.at(0), details.at(2), latitude, longtitude,0.0};
@@ -115,13 +115,13 @@ QString ZoneInfo::getLocalTimezoneName(QString timezone, QString locale) {
     (void) setlocale(LC_ALL, kDefaultLocale);
 
 
-    if ("Asia/Shanghai" == timezone) {
-        if (QLocale::system().name() == "zh_CN") {
-            return kcnBj;
-        } else {
-            return kenBj;
-        }
-    }
+//    if ("Asia/Shanghai" == timezone) {
+//        if (QLocale::system().name() == "zh_CN") {
+//            return kcnBj;
+//        } else {
+//            return kenBj;
+//        }
+//    }
 
     return (index > -1) ? local_name.mid(index + 1) : local_name;
 }

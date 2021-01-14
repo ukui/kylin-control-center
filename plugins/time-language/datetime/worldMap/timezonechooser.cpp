@@ -110,13 +110,13 @@ TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
 
     QTimer::singleShot(0, [this] {
         QStringList completions;
-        completions << kenBj;
-        completions << kcnBj;
-        m_zoneCompletion[kcnBj] = kenBj;
+//        completions << kenBj;
+//        completions << kcnBj;
+//        m_zoneCompletion[kcnBj] = kenBj;
         for (QString timezone : QTimeZone::availableTimeZoneIds()) {
-            if ("Asia/Shanghai" == timezone) {
-                continue;
-            }
+//            if ("Asia/Shanghai" == timezone) {
+//                continue;
+//            }
             completions << timezone;
 
             const QString locale = QLocale::system().name();
