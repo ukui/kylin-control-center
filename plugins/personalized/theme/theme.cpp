@@ -661,15 +661,11 @@ void Theme::resetBtnClickSlot() {
         cursorTheme = defaultCursor;
     }
 
-    //reset icon default theme
+    // reset icon default theme
     qtSettings->reset(ICON_QT_KEY);
 
-    if (ui->effectFrame->isVisible() && effectSwitchBtn->isChecked()) {
-        qtSettings->reset(THEME_TRAN_KEY);
-        qtSettings->reset(PEONY_TRAN_KEY);
-        gtkSettings->reset(ICON_GTK_KEY);
-        personliseGsettings->reset(PERSONALSIE_TRAN_KEY);
-        ui->tranSlider->setValue(transparency);
+    if (ui->effectFrame->isVisible()) {
+        effectSwitchBtn->setChecked(true);
     }
 
     QString icoName = qtSettings->get(ICON_QT_KEY).toString();
