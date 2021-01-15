@@ -226,7 +226,7 @@ void SecurityCenter::initComponent(){
     security_setting_Widget->setupComponent(":/img/plugins/securitycenter/set2px.png", \
                                             tr("Secure mode configuration"), \
                                             tr("Simple configuraion"), \
-                                            "/usr/sbin/ksc-defender --security_setting");
+                                            "/usr/sbin/ksc-defender --security-setting");
 
     flowLayout->addWidget(account_sec_Widget);
     flowLayout->addWidget(baseline_ctrl_Widget);
