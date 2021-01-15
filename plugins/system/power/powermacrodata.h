@@ -35,6 +35,7 @@
 #define PER_ACTION_KEY          "percentage-action"
 #define ACTION_CRI_BTY          "action-critical-battery"
 #define PER_ACTION_CRI          "percentage-critical"
+#define POWER_POLICY_KEY        "power-policy-current"
 
 #define PRESENT_VALUE           "present"
 #define ALWAYS_VALUE            "always"

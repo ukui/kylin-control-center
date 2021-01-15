@@ -58,7 +58,7 @@ Depends: ${shlibs:Depends},
 Suggests: gsettings-desktop-schemas,
           mate-desktop-common,
           ukui-power-manager,
-          ukui-session-manager,
+          ukui-session-manager(>=2.1.23),
           ukui-screensaver,
           ukui-settings-daemon,
 Description: utilities to configure the UKUI desktop

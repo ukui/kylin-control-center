@@ -247,6 +247,9 @@ void Power::setupConnect() {
             // 设置计算机睡眠
             settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_BALANCE);
             settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_BALANCE);
+
+            // 省电模式
+            settings->set(POWER_POLICY_KEY, 1);
         } else if (id == SAVING) {
             mUkccpersonpersonalize->set("custompower", false);
             // 设置显示器关闭
@@ -255,7 +258,12 @@ void Power::setupConnect() {
             // 设置计算机睡眠
             settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_SAVING);
             settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_SAVING);
+
+            // 省电模式
+            settings->set(POWER_POLICY_KEY, 2);
         } else {
+            // 省电模式
+            settings->set(POWER_POLICY_KEY, 1);
             mUkccpersonpersonalize->set("custompower", true);
             initCustomPlanStatus();
         }
