@@ -96,9 +96,16 @@ void ShareMain::initUI() {
 
     mPwdBox = new QCheckBox(this);
     mPwdsLabel = new QLabel(tr("Require user to enter this password: "), this);
+
+    mHintLabel = new QLabel(tr("Password length is greater than 8"), this);
+    mHintLabel->setStyleSheet("color:red;");
+    mHintLabel->setVisible(false);
+
     mPwdLineEdit = new QLineEdit(this);
     pwdHLayout->addWidget(mPwdBox);
     pwdHLayout->addWidget(mPwdsLabel);
+    pwdHLayout->addStretch();
+    pwdHLayout->addWidget(mHintLabel);
     pwdHLayout->addStretch();
     pwdHLayout->addWidget(mPwdLineEdit);
 
@@ -202,9 +209,16 @@ void ShareMain::pwdEnableSlot(bool status) {
     }
 }
 
-void ShareMain::pwdInputSlot(QString pwd) {
+void ShareMain::pwdInputSlot(const QString &pwd) {
     Q_UNUSED(pwd);
-    QByteArray text = pwd.toLocal8Bit();
-    QByteArray secPwd = text.toBase64();
-    mVinoGsetting->set(kVncPwdKey, secPwd);
+
+    if (pwd.length() < 8) {
+        mHintLabel->setVisible(false);
+        QByteArray text = pwd.toLocal8Bit();
+        QByteArray secPwd = text.toBase64();
+        mVinoGsetting->set(kVncPwdKey, secPwd);
+    } else {
+        mHintLabel->setVisible(true);
+        mPwdLineEdit->setText(pwd.mid(0, 8));
+    }
 }

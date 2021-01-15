@@ -51,33 +51,34 @@ public:
     ~ShareMain();
 
 private:
-    QFrame * mEnableFrame;
-    QFrame * mViewFrame;
-    QFrame * mSecurityFrame;
-    QFrame * mSecurityPwdFrame;
-    QFrame * mNoticeWFrame;
-    QFrame * mNoticeOFrame;
-    QFrame * mNoticeNFrame;
+    QFrame *mEnableFrame;
+    QFrame *mViewFrame;
+    QFrame *mSecurityFrame;
+    QFrame *mSecurityPwdFrame;
+    QFrame *mNoticeWFrame;
+    QFrame *mNoticeOFrame;
+    QFrame *mNoticeNFrame;
 
-    QCheckBox * mEnableBox;     // 允许其他人查看桌面
-    QCheckBox * mViewBox;       // 允许连接控制屏幕
-    QCheckBox * mAccessBox;     // 为本机确认每次访问
-    QCheckBox * mPwdBox;        // 要求用户输入密码
+    QCheckBox *mEnableBox;     // 允许其他人查看桌面
+    QCheckBox *mViewBox;       // 允许连接控制屏幕
+    QCheckBox *mAccessBox;     // 为本机确认每次访问
+    QCheckBox *mPwdBox;        // 要求用户输入密码
 
-    QRadioButton * mNoticeWBtn;
-    QRadioButton * mNoticeOBtn;
-    QRadioButton * mNoticeNBtn;
+    QRadioButton *mNoticeWBtn;
+    QRadioButton *mNoticeOBtn;
+    QRadioButton *mNoticeNBtn;
 
-    QLabel * mShareTitleLabel;
-    QLabel * mEnableLabel;
-    QLabel * mViewLabel;
-    QLabel * mSecurityTitleLabel;
-    QLabel * mAccessLabel;
-    QLabel * mPwdsLabel;
-    QLabel * mNoticeTitleLabel;
-    QLabel * mNoticeWLabel;
-    QLabel * mNoticeOLabel;
-    QLabel * mNoticeNLabel;
+    QLabel *mShareTitleLabel;
+    QLabel *mEnableLabel;
+    QLabel *mViewLabel;
+    QLabel *mSecurityTitleLabel;
+    QLabel *mAccessLabel;
+    QLabel *mPwdsLabel;
+    QLabel *mNoticeTitleLabel;
+    QLabel *mNoticeWLabel;
+    QLabel *mNoticeOLabel;
+    QLabel *mNoticeNLabel;
+    QLabel *mHintLabel;
 
     QLineEdit * mPwdLineEdit;
 
@@ -97,7 +98,7 @@ private slots:
     void viewBoxSlot(bool status);
     void accessSlot(bool status);
     void pwdEnableSlot(bool status);
-    void pwdInputSlot(QString pwd);
+    void pwdInputSlot(const QString &pwd);
 };
 
 #endif // SHAREMAIN_H
