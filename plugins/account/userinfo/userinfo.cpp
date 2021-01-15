@@ -882,11 +882,11 @@ void UserInfo::deleteUserDone(QString objpath){
     //更新其他用户QMap
     otherUserItemMap.remove(objpath);
 
-    //更新所有用户信息
+    //重新获取全部用户QMap
     _acquireAllUsersInfo();
 
-    //重置其他用户ListWidget高度
-    _resetListWidgetHeigh();
+    //更新界面显示
+    _refreshUserInfoUI();
 }
 
 void UserInfo::showChangeGroupDialog(){
