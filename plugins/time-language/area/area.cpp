@@ -57,6 +57,7 @@ Area::Area()
 
     if(QGSettings::isSchemaInstalled(id)) {
         m_gsettings = new QGSettings(id, QByteArray(), pluginWidget);
+        mDateFormat = m_gsettings->get(DATE_FORMATE_KEY).toString();
         connect(m_gsettings, &QGSettings::changed, this, [=](QString key) {
             mDateFormat = m_gsettings->get(DATE_FORMATE_KEY).toString();
             if ("hoursystem" == key) {
