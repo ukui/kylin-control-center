@@ -23,6 +23,7 @@
 #include <QGSettings>
 #include "SwitchButton/switchbutton.h"
 #include "realizedesktop.h"
+#include "commonComponent/listDelegate/listdelegate.h"
 
 #include <QDebug>
 #include <QPushButton>
@@ -78,6 +79,8 @@ QWidget *Desktop::get_plugin_ui() {
         pluginWidget = new QWidget;
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
+
+        ui->listWidget->setItemDelegate(new ListDelegate(this));
 
         ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
         ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
