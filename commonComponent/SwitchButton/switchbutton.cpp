@@ -179,7 +179,7 @@ void SwitchButton::updatevalue(){
 void SwitchButton::setChecked(bool checked){
     if (this->checked != checked){
         this->checked = checked;
-//        emit checkedChanged(checked);
+        emit checkedChanged(checked);
         update();
     }
 
