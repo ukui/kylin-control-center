@@ -146,11 +146,9 @@ void ShareMain::initEnableStatus() {
     mViewBox->setChecked(!isShared);
     if (pwd == "vnc") {
         mPwdBox->setChecked(true);
-        mPwdsLabel->setEnabled(true);
     } else {
         mPwdBox->setChecked(false);
         mPwdLineEdit->setVisible(false);
-        mPwdsLabel->setEnabled(false);
     }
 
     QProcess *process = new QProcess;
@@ -200,10 +198,8 @@ void ShareMain::accessSlot(bool status) {
 void ShareMain::pwdEnableSlot(bool status) {
     if (status) {
         mVinoGsetting->set(kAuthenticationKey, "vnc");
-        mPwdsLabel->setEnabled(true);
         mPwdLineEdit->setVisible(true);
     } else {
-        mPwdsLabel->setEnabled(false);
         mPwdLineEdit->setVisible(false);
         mVinoGsetting->set(kAuthenticationKey, "none");
     }
