@@ -31,6 +31,7 @@ public:
     QLabel *appIconName;
     QLabel *appNameLab;
     QLabel *appVersion;
+    QLabel *appVersionIcon;
 
     QLabel *progressLab;  //进度
     QLabel *otherBtnLab;
@@ -50,6 +51,7 @@ public:
 //    AppMsg *thisAppMessage;
     QString chlog;
 
+    bool eventFilter(QObject *watched, QEvent *event);
 private:
     bool isCancel = true;
     bool firstDownload = true;
@@ -76,7 +78,7 @@ public slots:
     void showUpdateLog();
     void cancelOrUpdate();
 
-    void showInstallStatues(QString status,QString appAptName,float progress);
+    void showInstallStatues(QString status, QString appAptName, float progress, QString errormsg);
     void showDownloadStatues(QString downloadSpeed, int progress);
 
     void slotDownloadPackages();
@@ -84,10 +86,13 @@ public slots:
     void startInstall(QString appName);
     void updateAllApp();
 
+    void showUpdateBtn();
+    void hideOrShowUpdateBtnSlot(int result);  //显示或隐藏更新按钮  备份过程中
 private:
     void curlDownload(UrlMsg msg, QString path); //断点续传下载
     bool getDownloadSpeed(QString appName, QString fullName, int fileSize); //获取下载速度
     void initConnect(); //初始化信号槽
+    void changeDownloadState(int state);
     QString modifySizeUnit(int size);
     QString modifySpeedUnit(int size, float time);
 
@@ -95,11 +100,10 @@ signals:
     void startWork(QString appName);
     void startMove(QStringList list, QString appName);
 
-    void writeSqliteSignal(AppAllMsg msg ,QString changelog);
     void hideUpdateBtnSignal();
     void changeUpdateAllSignal();
 
-    void downloadFailedSignal();  //网络异常或者其他情况下下载失败时
+    void downloadFailedSignal(int exitCode);  //网络异常或者其他情况下下载失败时
 
     void filelockedSignal();
     void cancel();
@@ -108,6 +112,8 @@ signals:
 //    void aptFinish();
 private:
     void updateAppUi(QString name);
+    QString translationVirtualPackage(QString str);
+    QString pkgIconPath = "";
 };
 
 #endif // APPUPDATE_H

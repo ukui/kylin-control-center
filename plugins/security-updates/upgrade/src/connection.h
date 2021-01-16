@@ -11,7 +11,6 @@
 
 static bool CreatConnection()
 {
-    qDebug() << "connect db";
     QSqlDatabase db1 = QSqlDatabase::addDatabase("QSQLITE","A");
     QString dirPath = QString("/var/cache/kylin-update-manager");
     QString dbPath = QString("%1/kylin-update-manager.db").arg(dirPath);
@@ -25,16 +24,12 @@ static bool CreatConnection()
     {
         QFile::copy("/usr/share/kylin-update-manager/kylin-update-manager.db", dbPath);
     }
-
-    qDebug() << "set db";
     db1.setDatabaseName(dbPath);
     if (!db1.open()) {
-           qDebug()<<"open sql error";
+           qDebug()<<"更新管理器数据库打开失败.";
            return false;
     }
-    qDebug() << "open db";
-
-    qDebug() << "over";
+    qDebug()<<"更新管理器数据库打开成功.";
     return true;
 }
 

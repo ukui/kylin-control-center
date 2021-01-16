@@ -23,12 +23,35 @@ const int TEXT_DSC_LEFT_SPACING = 5;//QTextEdit左侧有边距
 const int TEXT_TAB_TOP = 17;//更新详情lable对于其背景，顶部边距
 const int TEXT_TAB_SPACING = 18;//更新详情lable对于内容框的间距
 
-m_updatelog::m_updatelog(QWidget *parent) : QDialog(parent)
+const QString OBJECT_NAME = "OBJECT_NAME";
+
+m_updatelog * m_updatelog::m_instance(nullptr);
+
+m_updatelog::m_updatelog(QWidget* parent) : QDialog(parent)
 {
-    initUI();
-    //dynamicLoadingInit();//动态加载暂未实现
+    initUI();//初始化UI
+    dynamicLoadingInit();//动态加载
     updatesql();//更新列表
-    defaultItem();//设置
+    defaultItem();//设置默认选中
+    //监听更新完成信号
+    UpdateDbus *uddbus = UpdateDbus::getInstance();
+    connect(uddbus->interface,SIGNAL(update_sqlite_signal(QString,QString)),this,SLOT(historyUpdateNow(QString,QString)));
+}
+
+m_updatelog * m_updatelog::GetInstance(QWidget *parent)
+{
+    if(m_instance==nullptr)
+    {
+        m_instance = new m_updatelog(parent);
+        qDebug()<<m_instance->parent();
+    }
+    return m_instance;
+}
+
+void m_updatelog::closeUpdateLog()
+{
+    m_instance->close();
+    m_instance->deleteLater();
 }
 
 void m_updatelog::initUI()
@@ -41,7 +64,7 @@ void m_updatelog::initUI()
     this->setWindowTitle(tr("历史更新"));
     this->setFixedSize(WIDTH,HEIGHT);
     this->setObjectName(FIND_DES_LABLE_TYPE);
-    this->setAttribute(Qt::WA_DeleteOnClose);
+    //this->setAttribute(Qt::WA_DeleteOnClose);
 
     //实例化控件
     QFrame *listBackground = new QFrame;
@@ -57,6 +80,7 @@ void m_updatelog::initUI()
     palette.setBrush(QPalette::Base, QColor (0, 0 , 0, 0));
     mainListwidget->setPalette(palette);
     mainListwidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);  //滑块平滑滚动
+    mainListwidget->setSpacing(2);
 
     QPalette palette2 = des->palette();
     palette2.setBrush(QPalette::Base, QColor (0, 0 , 0, 0));
@@ -93,6 +117,7 @@ void m_updatelog::initUI()
     hll->setMargin(0);
     hll->addSpacing(LIST_LEFT);
     hll->addWidget(mainListwidget);
+    hll->addWidget(mainListwidget->verticalScrollBar());
     QVBoxLayout *vll = new QVBoxLayout;
     vll->setSpacing(0);
     vll->setMargin(0);
@@ -123,21 +148,46 @@ void m_updatelog::initUI()
     desBackground->setLayout(hlr);
 }
 
-void m_updatelog::updatesql()
+void m_updatelog::updatesql( const int &start,const int &num,const QString &intop)
 {
-    QSqlQuery query(QSqlDatabase::database("A"));
-    query.exec("SELECT * FROM installed");
+    //sql 拼接
+    QString sqlCmd = "SELECT * FROM installed";
+    if(intop!="")
+        sqlCmd+=" where `time` = '"+intop+"'";
+    else if(start>0)
+        sqlCmd+=" where `id` < "+QString::number(start);
+    sqlCmd+=" order by `id` desc limit ";
+    sqlCmd+=QString::number(num);
     //载入数据库数据
+    QSqlQuery query(QSqlDatabase::database("A"));
+    query.exec(sqlCmd);
     while(query.next()){
         HistoryUpdateListWig *hulw = new HistoryUpdateListWig();
-        hulw->setAttribute(query.value("appname").toString()+" "+query.value("version").toString(),
+        hulw->setAttribute(translationVirtualPackage(query.value("appname").toString())+" "+query.value("version").toString(),
                            query.value("statue").toString(),
                            query.value("time").toString(),
-                           query.value("description").toString());
-        QListWidgetItem *item = new QListWidgetItem(mainListwidget);
-        item->setFlags(Qt::ItemIsSelectable);
+                           query.value("description").toString(),
+                           query.value("id").toInt());
+        loadingCode = hulw->id;//记录加载到哪个位置
+        QListWidgetItem *item = new QListWidgetItem();
+        item->setFlags(Qt::NoItemFlags);
         item->setSizeHint(hulw->getTrueSize());
+        if(intop!="")
+        {
+            if(hulw->id<=firstCode)
+            {
+                hulw->deleteLater();
+                delete item;
+                return;
+            }
+            firstCode=hulw->id;
+            mainListwidget->insertItem(0,item);
+        }
+        else
+            mainListwidget->addItem(item);
         mainListwidget->setItemWidget(item,hulw);
+        if(intop!="")
+            hulw->selectStyle();//设置选中样式
     }
 }
 
@@ -146,23 +196,49 @@ void m_updatelog::defaultItem()
     //默认选中第一个
     HistoryUpdateListWig *first = mainListwidget->findChild<HistoryUpdateListWig *>();
     if(first!=nullptr)
-        first->selectStyle();
+    {
+        first->selectStyle();//设置选中样式
+        firstCode = first->id;//记录id
+    }
+}
+
+QString m_updatelog::translationVirtualPackage(QString str)
+{
+    if(str == "kylin-update-desktop-app")
+        return "基本应用";
+    if(str == "kylin-update-desktop-security")
+        return "安全更新";
+    if(str == "kylin-update-desktop-support")
+        return "系统基础组件";
+    if(str == "kylin-update-desktop-ukui")
+        return "桌面环境组件";
+    if(str == "kylin-update-desktop-kernel")
+        return "系统内核组件";
+    if(str == "kylin-update-desktop-kernel-3a4000")
+        return "系统内核组件";
+    if(str == "kylin-update-desktop-kydroid")
+        return "kydroid补丁包";
+    return str;
 }
 
 void m_updatelog::dynamicLoadingInit()
 {
-    //禁用列表容器滑块
-    mainListwidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    //实例化滑块
-    QScrollBar *scrollBar = new QScrollBar;
-    //设置滑块
-    scrollBar->setMaximum(20);
-    hll->addWidget(scrollBar);
     //绑定信号和槽
-    connect(scrollBar,&QScrollBar::valueChanged, this,&m_updatelog::dynamicLoading );
+    connect(mainListwidget->verticalScrollBar(),&QScrollBar::valueChanged, this,&m_updatelog::dynamicLoading );
 }
 
 void m_updatelog::dynamicLoading(int i)
 {
-
+    if(mainListwidget->verticalScrollBar()->maximum()==i)
+    {
+        qDebug()<<"动态加载";
+        updatesql(loadingCode);
+    }
 }
+
+void m_updatelog::historyUpdateNow(QString str1,QString str2)
+{
+    qDebug()<<"动态更新:"<<str1;
+    updatesql(0,1,str2);
+}
+

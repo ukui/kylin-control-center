@@ -22,7 +22,6 @@
 UpgradeMain::UpgradeMain(QString arg,QWidget *parent)
     : QMainWindow(parent)
 {
-    qDebug() << "new";
     qDBusRegisterMetaType<CustomData>();
     // 界面获取焦点
 //    setFocus();
@@ -30,7 +29,7 @@ UpgradeMain::UpgradeMain(QString arg,QWidget *parent)
 //    CreatConnection();
     if(!CreatConnection())
     {
-        qDebug() << "out";
+        qDebug() << "datebase can not open.";
     }
 
     // 用户手册功能
@@ -43,6 +42,11 @@ UpgradeMain::UpgradeMain(QString arg,QWidget *parent)
     setWidgetStyle();
 
 
+    //初始化DBus
+    QTimer *timer = new QTimer;
+    timer->setSingleShot(true);
+    connect(timer,&QTimer::timeout,myTabwidget,&TabWid::initDbus);
+    timer->start(1);
 }
 
 UpgradeMain::~UpgradeMain()
@@ -62,18 +66,12 @@ void UpgradeMain::setWidgetUi()
     // 设置整体界面布局
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
-
     myTabwidget = new TabWid(this);
-
-
     mainLayout->addWidget(myTabwidget);
 
-
     this->mainWid->setLayout(mainLayout);
-
     // 将mainWid作为整体界面
     this->setCentralWidget(mainWid);
-    this->show();
 }
 
 // 初始化样式
@@ -173,4 +171,5 @@ void UpgradeMain::readConf()
 {
 
 }
+
 

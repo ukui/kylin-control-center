@@ -5,8 +5,10 @@
 #include <QFile>
 #include <QDBusInterface>
 #include <QDBusReply>
+#include <QDBusMessage>
 #include <QDebug>
 #include <QFileInfo>
+#include <QDateTime>
 
 class BackUp : public QObject
 {

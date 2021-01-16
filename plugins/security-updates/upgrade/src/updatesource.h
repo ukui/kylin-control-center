@@ -7,7 +7,8 @@
 #include <QDebug>
 #include <QDBusPendingCall>
 #include <QDBusPendingReply>
-
+#include <QDBusReply>
+const QString Symbol = "control";
 class UpdateSource : public QObject
 {
     Q_OBJECT
@@ -16,12 +17,13 @@ public:
 
     void callDBusUpdateTemplate();
 
-    void callDBusUpdateSource();
+    void callDBusUpdateSource(QString symbol);
 
 //    QDBusReply<QString> replyStr;   //string类型的返回值
     QDBusInterface *serviceInterface;
     void getReply(QDBusPendingCallWatcher *call);
 
+    QString getFailInfo(int statusCode);
 signals:
 
 public slots:

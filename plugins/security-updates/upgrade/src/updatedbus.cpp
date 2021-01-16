@@ -47,8 +47,7 @@ UpdateDbus::UpdateDbus(QObject *parent)
 
     init_cache();
     cleanUpdateList();
-//    fileUnLock();
-//    qDebug() << "文件锁" << fileLock();
+    setImportantStatus(true);
 }
 
 void UpdateDbus::onRequestSendDesktopNotify(QString message)
@@ -72,77 +71,31 @@ void UpdateDbus::onRequestSendDesktopNotify(QString message)
 bool UpdateDbus::fileLock()
 {
     int fd = open(lockPath.toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+    if(fd < 0)
+    {
+        qDebug() << "文件锁的文件不存在，程序退出。";
+        exit(0);
+    }
     return lockf(fd, F_TLOCK, 0);
 }
 
 void UpdateDbus::fileUnLock()
 {
     int fd = open(lockPath.toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+    if(fd < 0)
+    {
+        qDebug() << "解锁文件不存在，程序退出。";
+        exit(0);
+    }
     lockf(fd, F_ULOCK, 0);
-}
-void UpdateDbus::initTrayD_bus(QStringList arg)
-{
-
-//    m_traybusthread->start();
-    emit updatelist(arg);
-    //    m_traybusthread->quit();
 }
 
 void UpdateDbus::slotFinishGetMessage(QString num)
 {
-    qDebug() << "num:" << num;
     int inum = num.toInt();
     emit sendFinishGetMsgSignal(inum);
 }
 
-bool UpdateDbus::cancel(QString pkgName)
-{
-    // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->call("cancel", pkgName);
-
-    // replyStrreplyStr.value()作为返回值
-    if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed cancel");
-    }
-}
-
-
-
-// 取消更新应用
-void UpdateDbus::cancelDownloadApp(QString appName)
-{
-    // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyStr = interface->call("cancel_download_app", appName);
-
-    // replyStrreplyStr.value()作为返回值
-    if (replyStr.isValid()) {
-        qDebug() << replyStr.value();
-        return ;
-    }
-    else{
-        qDebug() << QString("Call failed cancelDownloadApp");
-    }
-}
-
-//函数：解决冲突
-bool UpdateDbus::configureDpkgByShell(bool queit)
-{
-    // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->call("configure_dpkg_by_shell",queit);
-
-    // 将reply.value()作为返回值
-    if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed configureDpkgByShell");
-    }
-}
 
 //拷贝软件包到安装目录，拷贝之前需要判断是否存在archives目录
 void UpdateDbus::copyFinsh(QStringList srcPath, QString appName)
@@ -153,14 +106,7 @@ void UpdateDbus::copyFinsh(QStringList srcPath, QString appName)
         makeDirs(QString("/var/cache/apt/archives/"));
     }
     replyStr = interface->call("copy_file_to_install",srcPath,appName);
-    // replyStrreplyStr.value()作为返回值
-    if (replyStr.isValid()) {
-        qDebug() << replyStr.value();
-        return ;
-    }
-    else{
-        qDebug() << QString("Call failed copyFileToInstall");
-    }
+    qDebug() << "copy_file_to_install";
 }
 
 bool UpdateDbus::makeDirs(QString path)
@@ -170,135 +116,27 @@ bool UpdateDbus::makeDirs(QString path)
 
     // 将reply.value()作为返回值
     if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
+        qDebug() << "makeDirs" << replyBool.value();
         return replyBool.value();
     }
     else{
-        qDebug() << QString("Call failed instalOneApp");
+        qDebug() << QString("Call failed makeDirs");
     }
 }
 
-// 安装单个应用
-bool UpdateDbus::instalOneApp(QString appName)
+// setImportantStatus
+bool UpdateDbus::setImportantStatus(bool status)
 {
     // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->call("insone", appName);
+    replyBool = interface->call("set_important_status", status);
 
     // 将reply.value()作为返回值
     if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
+        qDebug() <<"setImportantStatus:"<<replyBool.value();
         return replyBool.value();
     }
     else{
-        qDebug() << QString("Call failed instalOneApp");
-    }
-}
-
-//每日更新关闭
-bool UpdateDbus::dailyStartClose()
-{
-    // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->call("dailystart_close");
-
-    // 将reply.value()作为返回值
-    if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed dailyStartClose");
-    }
-}
-
-//每日更新开启
-bool UpdateDbus::dailyStartOpen()
-{
-    // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->call("dailystart_open");
-
-    // 将reply.value()作为返回值
-    if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed dailyStartOpen");
-    }
-}
-
-//下载deb包
-void UpdateDbus::downDepPackage(QString appName)
-{
-    replyStr = interface->call("down_dep_pkg",appName);
-    // replyStrreplyStr.value()作为返回值
-    if (replyStr.isValid()) {
-        qDebug() << replyStr.value();
-        return ;
-    }
-    else{
-        qDebug() << QString("Call failed downDepPackage");
-    }
-}
-
-//退出dbus
-void UpdateDbus::Exit()
-{
-    replyStr = interface->call("exit");
-    // replyStrreplyStr.value()作为返回值
-    if (replyStr.isValid()) {
-        qDebug() << replyStr.value();
-        return ;
-    }
-    else{
-        qDebug() << QString("Call failed Exit");
-    }
-}
-
-//通过shell解决冲突
-bool UpdateDbus::fixConffileByShell(bool quiet)
-{
-    // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->call("fix_conffile_by_shell",quiet);
-
-    // 将reply.value()作为返回值
-    if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed fixConffileByShell");
-    }
-}
-
-QStringList UpdateDbus::getChangeLog(QString appName)
-{
-
-    replyStrList = interface->call("get_changlog",appName);
-//    qDebug() << "程序执行" ;
-    // replyStrreplyStr.value()作为返回值
-    if (replyStrList.isValid()) {
-//        qDebug() << replyStrList.value();
-        return replyStrList.value();
-    }
-    else{
-        qDebug() << QString("Call failed get_changlog");
-    }
-}
-
-
-//下载pkg列表
-bool UpdateDbus::Install(QStringList pkgNames)
-{
-    // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->call("install",pkgNames);
-
-    // 将reply.value()作为返回值
-    if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed Install");
+        qDebug() << QString("Call failed setImportantStatus");
     }
 }
 
@@ -310,7 +148,7 @@ bool UpdateDbus::installAndUpgrade(QString pkgName)
 
     // 将reply.value()作为返回值
     if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
+        qDebug() << "installAndUpgrade:" <<replyBool.value();
         return replyBool.value();
     }
     else{
@@ -318,74 +156,20 @@ bool UpdateDbus::installAndUpgrade(QString pkgName)
     }
 }
 
-//更新软件源
-bool UpdateDbus::Update(bool quiet)
-{
-    // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->call("update",quiet);
 
-    // 将reply.value()作为返回值
-    if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed Update");
-    }
-}
-
-
-//升级
-bool UpdateDbus::Upgrade(QStringList pkgNames)
-{
-    // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->call("upgrade",pkgNames);
-
-    // 将reply.value()作为返回值
-    if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed Upgrade");
-    }
-}
-
-//单个升级
-bool UpdateDbus::upgradeOne(QString pkgName)
-{
-    // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->call("upone",pkgName);
-
-    // 将reply.value()作为返回值
-    if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed upgradeOne");
-    }
-}
 
 void UpdateDbus::modifyConf(QString path, QString group, QString key, QString value)
 {
     replyStr = interface->call("modify_conf",path,group,key,value);
-    // replyStrreplyStr.value()作为返回值
-    if (replyStr.isValid()) {
-        qDebug() << replyStr.value();
-        return ;
-    }
-    else{
-        qDebug() << QString("Call failed modify_conf");
-    }
+    qDebug() << QString("Call modify_conf");
+
 }
 
 bool UpdateDbus::cleanUpdateList()
 {
     replyBool = interface->call("clear_install_list");
-    // replyStrreplyStr.value()作为返回值
     if (replyBool.isValid()) {
-        qDebug() << replyBool.value();
+        qDebug() << "cleanUpdateList:"<<replyBool.value();
         return replyBool.value();
     }
     else{
@@ -393,53 +177,12 @@ bool UpdateDbus::cleanUpdateList()
     }
 }
 
-
-
 //初始化cache
 void UpdateDbus::init_cache()
 {
 
-    replyStr = interface->call("init_cache");
-
-    // replyStrreplyStr.value()作为返回值
-    if (replyStr.isValid()) {
-        qDebug() << replyStr.value();
-        return ;
-    }
-    else{
-        qDebug() << QString("Call failed init_cache");
-    }
-}
-
-
-QString UpdateDbus::selectCNFromDatebase(QString appName)
-{
-//    QSqlQuery query1(db1);
-//    QString displayName = "";
-////    query1 = QSqlQuery::QSqlQuery(db1);
-//    query1.exec(QString("select display_name_cn from application where app_name = %1;").arg(appName));
-//    while(query1.next())
-//    {
-//        qDebug()<< "cn name" << query1.value(4).toString();
-//        displayName = query1.value(4).toString();
-//    }
-
-//    return displayName;
-
-}
-
-QString UpdateDbus::selectIconFromDatebase(QString appName)
-{
-//    QSqlQuery query1(db1);
-//    query1.exec(QString("select description from application where app_name = %1").arg(appName));
-//    QString description = "";
-//    while(query1.next())
-//    {
-//        qDebug()<< "des " << query1.value(4).toString();
-//        description = query1.value(4).toString();
-//    }
-//    return description;
-
+    interface->call("init_cache");
+    qDebug() << " call init_cache";
 }
 
 void UpdateDbus::getInameAndCnameList(QString arg)
@@ -462,11 +205,9 @@ void UpdateDbus::getInameAndCnameList(QString arg)
 
 void UpdateDbus::getAppMessageSignal(QMap<QString, QVariant> map, QStringList urlList, QStringList nameList,QStringList fullnameList,QStringList sizeList, QString allSize, bool dependState)
 {
-    qDebug() << "getAppMessageSignal";
     QVariant dateQVariant;
     AppAllMsg appAllMsg;
     QVariantMap::Iterator it;
-//    qDebug() << "收到信号" << map.value(1).toString();
     for (it = map.begin(); it != map.end(); ++it) {
         if (it.key() == "appname")
         {
@@ -476,13 +217,12 @@ void UpdateDbus::getAppMessageSignal(QMap<QString, QVariant> map, QStringList ur
         if(it.key() == "current_version")
         {
             dateQVariant = it.value();
-            appAllMsg.version = dateQVariant.toString().section('=',1,1);
-            qDebug() << appAllMsg.version;
+            appAllMsg.version = dateQVariant.toString();
         }
         if(it.key() == "source_version")
         {
             dateQVariant = it.value();
-            appAllMsg.availableVersion = dateQVariant.toString().section('=',1,1);
+            appAllMsg.availableVersion = dateQVariant.toString();
         }
         if(it.key() == "size")
         {
@@ -495,7 +235,6 @@ void UpdateDbus::getAppMessageSignal(QMap<QString, QVariant> map, QStringList ur
             appAllMsg.longDescription = dateQVariant.toString();
         }
     }
-    qDebug() <<  "urllist:" << allSize;
     if(urlList.length() != 0)
     {
         for(int i = 0; i < urlList.length(); i++)
@@ -507,32 +246,17 @@ void UpdateDbus::getAppMessageSignal(QMap<QString, QVariant> map, QStringList ur
             QString size = sizeList.at(i);
             msg.size = size.toInt();
             appAllMsg.msg.depList.append(msg);
-            qDebug() << "url:" << msg.url << "name:" << msg.name << "fullname:" << msg.fullname << "size:" << msg.size;
         }
     }
     appAllMsg.msg.allSize = allSize.toLong();
     appAllMsg.msg.getDepends = dependState;
-    qDebug() << "allsize:" << appAllMsg.msg.allSize << "state:" <<  appAllMsg.msg.getDepends;
-
 //    qDebug() << "获取信息" << appAllMsg.name << appAllMsg.longDescription;
     emit sendAppMessageSignal(appAllMsg);
-}
-
-QStringList UpdateDbus::getDependsPkgs(QString appName)
-{
-    replyStrList = interface->call("get_depends_pkgs",appName);
-    if (replyStrList.isValid()) {
-        return replyStrList.value();
-    }
-    else{
-        qDebug() << QString("Call failed getDependsPkgs");
-    }
 }
 
 void UpdateDbus::insertInstallStates(QString item,QString info)
 {
     interface->asyncCall("insert_install_state",item,info);
-    qDebug() << QString("insert_install_state") << item << info;
 }
 
 QStringList UpdateDbus::checkInstallOrUpgrade(QStringList list)
@@ -548,9 +272,8 @@ QStringList UpdateDbus::checkInstallOrUpgrade(QStringList list)
 
 void UpdateDbus::getAppMessage(QStringList list)
 {
-    qDebug () << "get_app_message";
     interface->asyncCall("get_app_message",list);
-    qDebug() << QString("Call get_app_message");
+    qDebug() << "Call get_app_message";
 }
 
 
@@ -559,6 +282,7 @@ void UpdateDbus::getAptSignal(QString arg, QMap<QString, QVariant> map)
 
     QString aptStatus;
     QString aptAppName;
+    QString errorMessage;
     float aptPercent;
 
     QVariant dateQVariant;
@@ -579,15 +303,17 @@ void UpdateDbus::getAptSignal(QString arg, QMap<QString, QVariant> map)
             dateQVariant = it.value();
             aptPercent = dateQVariant.toFloat();
         }
-//        qDebug() << "key:"<< it.key().toLatin1().data();
-//        qDebug() <<"value:" <<it.value().toString().toLatin1().data();
+        if(it.key() == "error_message")
+        {
+            dateQVariant = it.value();
+            errorMessage = dateQVariant.toString();
+        }
     }
-
 
     qDebug() << "aptAppName:" << aptAppName;
     qDebug() << "aptPercent:" << aptPercent;
 
-    emit transferAptProgress(aptStatus,aptAppName,aptPercent);
+    emit transferAptProgress(aptStatus,aptAppName,aptPercent,errorMessage);
 
 }
 
@@ -601,4 +327,5 @@ UpdateDbus::~UpdateDbus()
 {
     qDebug() << "update quit";
     cleanUpdateList();
+    setImportantStatus(false);
 }

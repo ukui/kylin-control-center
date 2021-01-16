@@ -2,12 +2,7 @@
 
 #define TIMESTAMP_PATH "/var/lib/kylin-software-properties/template/kylin-source-status"
 #define TIMESTAMP_TAB "UpdateTime="
-#define BACKINFO_PATH "/backup/snapshots/backuplists.xml"
-#define BACKINFO_TAB1 "<Comment>"
-#define BACKINFO_TAB2 "</Comment>"
-#define BACKINFO_TAB3 "<State>"
-#define BACKINFO_TAB4 "</State>"
-#define BACKINFO_STATE "backup finished"
+#define BACKINFO_STATE "0"
 
 #define BACKUP_DBUS_SERVICE "com.kylin.backup"
 #define BACKUP_DBUS_PATH "/"
@@ -21,7 +16,6 @@ BackUp::BackUp(QObject *parent) : QObject(parent)
 {
     interface = new QDBusInterface(BACKUP_DBUS_SERVICE,BACKUP_DBUS_PATH, BACKUP_DBUS_INTERFACE,QDBusConnection::systemBus());
     connect(interface,SIGNAL(sendRate(int,int)),this,SLOT(sendRate(int,int)));
-//    QDBusConnection::connect()
 }
 
 
@@ -53,8 +47,18 @@ void BackUp::sendRate(int sta,int pro)
 {
     if(!setProgress)
         return;
+    qDebug()<<"状态码:"<<sta<<"  进度："<<pro<<"%";
+    if(sta!=1&&sta!=2&&sta!=4&&sta!=5&&sta!=99)
+    {//备份失败
+        emit bakeupFinish(sta);
+        return;
+    }
     emit backupProgress(pro);
-    qDebug()<<"sta:"<<sta;
+    if(pro == 100)
+    {
+        setProgress = false;
+        emit bakeupFinish(99);
+    }
 }
 
 void BackUp::startBackUp(int num)
@@ -63,6 +67,11 @@ void BackUp::startBackUp(int num)
     {
         QDBusReply<int> reply = interface->call("autoBackUpForSystemUpdate",timeStamp);
         emit bakeupFinish(reply.value());
+        if(reply.value()==0)
+        {
+            setProgress = true;
+        }
+        return;
     }
     emit bakeupFinish(0);
     setProgress = true;
@@ -87,12 +96,6 @@ bool BackUp::haveBackTool()
         return false;
     }
     bakeupState = reply.value();
-//    if(bakeupState==0)
-//    {
-//        qDebug()<<"未安装新版麒麟备份还原工具";
-//        return false;
-//    }
-    qDebug()<<"bakeupState:"<<bakeupState;
     return true;
 }
 
@@ -111,14 +114,16 @@ bool BackUp::readSourceManagerInfo()
             line=line.replace("\n","");
             line=line.replace(TIMESTAMP_TAB,"");
             bool ok;
-            line.toInt(&ok);
+            uint time = line.toUInt(&ok);
             if(!ok)
             {
                 file.close();
                 qDebug()<<"源管理器配置文件不合规";
                 return false;
             }
-            timeStamp = line;
+            QDateTime datetime = QDateTime::fromTime_t(time);
+            QString filename = "自动备份："+datetime.toString("yyyy-MM-dd hh:mm:ss")+"("+line+")";
+            timeStamp = filename;
             break;
         }
     }
@@ -128,45 +133,29 @@ bool BackUp::readSourceManagerInfo()
         qDebug()<<"源管理器配置文件不合规";
         return false;
     }
+
+    qDebug()<<"读取源管理器配置文件成功";
     return true;
 }
 
 bool BackUp::readBackToolInfo()
 {
-    QFile file(BACKINFO_PATH);
-    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    QDBusMessage msg = interface->call("getBackupCommentForSystemUpdate");
+    QVariantList list = msg.arguments();
+    if(list.length()<2)
     {
-        qDebug()<<"读取备份还原工具配置文件失败";
+        qDebug()<<"备份还原接口异常";
+    }
+    if(list.at(0).toString()!=timeStamp)
+    {
+        qDebug()<<"未找到相同版本备份镜像，需要备份";
         return true;
     }
-    bool tag = false;
-    while (!file.atEnd()) {
-        QString line = file.readLine();
-        if(line.contains(BACKINFO_TAB1,Qt::CaseSensitive))
-        {
-            line=line.replace("\n","");
-            line=line.replace(BACKINFO_TAB1,"");
-            line=line.replace(BACKINFO_TAB2,"");
-            if(line == timeStamp)
-            {
-                tag = true;
-            }
-        }
-        if(line.contains(BACKINFO_TAB3,Qt::CaseSensitive))
-        {
-            if(!tag)
-                continue;
-            tag = false;
-            line=line.replace("\n","");
-            line=line.replace(BACKINFO_TAB3,"");
-            line=line.replace(BACKINFO_TAB4,"");
-            if(line == BACKINFO_STATE)
-            {
-                file.close();
-                return false;
-            }
-        }
+    qDebug()<<"找到相同版本镜像";
+    if(list.at(1).toString() == "0")
+    {
+        qDebug()<<"已存在相同版本备份镜像，无需备份";
+        return false;
     }
-    file.close();
     return true;
 }

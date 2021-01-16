@@ -2,7 +2,7 @@
 
 const QString FIND_DES_LABLE_TYPE = "FIND_DES_LABLE_TYPE";//历史更新模块标签
 const QString IS_SELECT = "IS_SELECT";//历史更新模块标签
-const int WIDTH = 236;
+const int WIDTH = 236 - 2;
 const int LINE_SPACING = 2;
 const int TOP_MARGIN = 5;//上(下)边距
 const int RIGHT_MARGIN = 3;//右边距
@@ -70,7 +70,7 @@ void HistoryUpdateListWig::initUI()
     this->layout()->setSizeConstraint(QLayout::SetFixedSize);
 }
 
-void HistoryUpdateListWig::setAttribute(const QString &mname,const QString &mstatue,const QString &mtime,const QString &mdescription)
+void HistoryUpdateListWig::setAttribute(const QString &mname,const QString &mstatue,const QString &mtime,const QString &mdescription,const int &myid)
 {
     debName->setText(mname);
     debTime->setText(mtime);
@@ -79,13 +79,14 @@ void HistoryUpdateListWig::setAttribute(const QString &mname,const QString &msta
         debStatue->setText(tr("更新成功"));
     else
         debStatue->setText(tr("更新失败"));
+    id = myid;
     //this->setStyleSheet("border:1px solid red;");
 }
 
 QSize HistoryUpdateListWig::getTrueSize()
 {
     QSize lsize =this->layout()->sizeHint();
-    lsize.setHeight(lsize.rheight()+LINE_SPACING*2);
+    //lsize.setHeight(lsize.rheight()+LINE_SPACING*2);
     return lsize;
 }
 
@@ -124,6 +125,8 @@ void HistoryUpdateListWig::selectStyle()
     debTime->setStyleSheet("color:#fff;");
     this->setStyleSheet("QFrame{background-color:rgba(55, 144, 250, 1);border-radius:4px}");
     this->setStatusTip(IS_SELECT);
+    //详细内容
+    setDescription();
 }
 
 void HistoryUpdateListWig::clearStyleSheet()

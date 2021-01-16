@@ -68,7 +68,6 @@ public:
     QSettings *mqsetting;   //读取配置文件
     void readConf();
 
-
 public slots:
 
     // 键盘响应事件

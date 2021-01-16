@@ -2,8 +2,9 @@
 #define UTILS_H
 #include <QDir>
 #include <QMetaType>
-#define DOWN_CACHE_PATH QString("%1/.cache/kylin-update-manager/").arg(QDir::homePath())
-#define DOWN_TEMP_PATH QString("%1/.cache/kylin-update-manager/kylin-update-manager-deb/deb/").arg(QDir::homePath())
+
+#define DOWN_CACHE_PATH QString("%1/.kylin-update-manager/").arg(QDir::homePath())
+#define DOWN_TEMP_PATH QString("%1/.kylin-update-manager/kylin-update-manager-deb/deb/").arg(QDir::homePath())
 
 struct UrlMsg //记录单包信息：包名、全名、链接、大小
 {

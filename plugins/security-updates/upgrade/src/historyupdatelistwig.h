@@ -15,10 +15,11 @@ class HistoryUpdateListWig : public QFrame
 public:
     HistoryUpdateListWig();
     ~HistoryUpdateListWig();
-    void setAttribute(const QString &mname, const QString &mstatue, const QString &mtime, const QString &mdescription);//赋值
+    void setAttribute(const QString &mname, const QString &mstatue, const QString &mtime, const QString &mdescription, const int &myid);//赋值
     QSize getTrueSize();//获取真实大小
     void selectStyle();//选中样式
     void clearStyleSheet();//取消选中样式
+    int id = 0;
 protected:
     void mousePressEvent(QMouseEvent * event);
 private:

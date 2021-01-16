@@ -17,8 +17,6 @@
 
 #include "widgetstyle.h"
 
-#include <QPainterPath>
-
 int WidgetStyle::themeColor = 0;
 int WidgetStyle::systemStatus = 0;
 
