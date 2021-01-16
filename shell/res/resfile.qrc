@@ -162,6 +162,19 @@
         <file>plugins/securitycenter/set2px.png</file>
         <file>plugins/securitycenter/user_48_white.png</file>
         <file>plugins/securitycenter/user_48.png</file>
+        <file>plugins/upgrade/kylin-update-desktop-app.png</file>
+        <file>plugins/upgrade/kylin-update-desktop-kernel-3a4000.png</file>
+        <file>plugins/upgrade/kylin-update-desktop-security.png</file>
+        <file>plugins/upgrade/kylin-update-desktop-support.png</file>
+        <file>plugins/upgrade/kylin-update-desktop-ukui.png</file>
+        <file>plugins/upgrade/loading10.svg</file>
+        <file>plugins/upgrade/loading11.svg</file>
+        <file>plugins/upgrade/loading12.svg</file>
+        <file>plugins/upgrade/loading13.svg</file>
+        <file>plugins/upgrade/loading14.svg</file>
+        <file>plugins/upgrade/loading15.svg</file>
+        <file>plugins/upgrade/loading16.svg</file>
+        <file>plugins/upgrade/loading17.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>
