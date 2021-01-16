@@ -101,6 +101,9 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     m_pOutputPortList = new QStringList;
     m_pSoundNameList = new QStringList;
     m_pProfileNameList = new QStringList;
+    m_pSoundThemeList = new QStringList;
+    m_pSoundThemeDirList = new QStringList;
+    m_pSoundThemeXmlNameList = new QStringList;
 
     eventList = new QStringList;
     eventIdNameList = new QStringList;
@@ -1296,6 +1299,12 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
     m_pStream = mate_mixer_context_get_default_input_stream (m_pWidget->m_pContext);
     const GList *m_pInputs =mate_mixer_stream_list_controls(m_pStream);
     m_pControl = mate_mixer_stream_get_default_control(m_pStream);
+    const gchar *inputControlName = mate_mixer_stream_control_get_name(m_pControl);
+
+    if (inputControlName != nullptr && inputControlName != "auto_null.monitor") {
+        if (strstr(inputControlName,"alsa_input"))
+            show = true;
+    }
 
     m_pWidget->m_pStream = m_pStream;
     //初始化滑动条的值
@@ -1307,7 +1316,6 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
     percent.append("%");
     m_pWidget->m_pInputWidget->m_pIpVolumePercentLabel->setText(percent);
     m_pWidget->m_pInputWidget->m_pInputIconBtn->setFocusPolicy(Qt::NoFocus);
-//    m_pWidget->m_pInputWidget->m_pInputIconBtn->setStyleSheet("QPushButton{background:transparent;border:0px;padding-left:0px;}");
 
     const QSize icon_size = QSize(24,24);
     m_pWidget->m_pInputWidget->m_pInputIconBtn->setIconSize(icon_size);
@@ -1332,7 +1340,7 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
                      * control for the icon */
                     m_pControl = input;
                 }
-                show = TRUE;
+                show = true;
                 break;
             }
             if (strcmp (m_pAppId, "org.mate.VolumeControl") != 0 &&
@@ -1343,14 +1351,14 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
                 if G_UNLIKELY (m_pControl == nullptr)
                     m_pControl = input;
 
-                show = TRUE;
+                show = true;
                 break;
             }
         }
         m_pInputs = m_pInputs->next;
     }
     //当前的麦克风可用开始监听输入等级
-    if (show == TRUE) {
+    if (show == true) {
         mate_mixer_stream_control_set_monitor_enabled(m_pControl,true);
         g_debug ("Input icon enabled");
     }
@@ -1367,18 +1375,6 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
         g_debug ("There is no output stream/control, output icon disabled");
     }
 
-//    if (show == TRUE ) {
-//        flags = mate_mixer_stream_control_get_flags(m_pControl);
-//        if (m_pWidget->m_pDeviceStr == UKUI_INPUT_REAR_MIC || m_pWidget->m_pDeviceStr == UKUI_INPUT_FRONT_MIC || m_pWidget->m_pDeviceStr == UKUI_OUTPUT_HEADPH) {
-//            mate_mixer_stream_control_set_monitor_enabled(m_pControl,true);
-//        }
-        /* Enable level bar only if supported by the control */
-        if (flags & MATE_MIXER_STREAM_CONTROL_HAS_MONITOR) {
-        }
-//    }
-//    else if(show == FALSE) {
-//        mate_mixer_stream_control_set_monitor_enabled(m_pControl,false);
-//    }
 }
 
 /*
@@ -1676,7 +1672,10 @@ void UkmediaMainWidget::updateOutputSettings (UkmediaMainWidget *m_pWidget,MateM
     connect(m_pWidget->m_pOutputWidget->m_pOutputPortCombobox,SIGNAL(currentIndexChanged(int)),m_pWidget,SLOT(outputPortComboxChangedSlot(int)));
     connect(m_pWidget->m_pOutputWidget->m_pOpBalanceSlider,&QSlider::valueChanged,[=](int volume){
         gdouble value = volume/100.0;
-        mate_mixer_stream_control_set_balance(m_pControl,value);
+        MateMixerStream *stream = mate_mixer_context_get_default_output_stream(m_pWidget->m_pContext);
+        MateMixerStreamControl *control = mate_mixer_stream_get_default_control(stream);
+        qDebug() <<"设置平衡值为 " <<value <<mate_mixer_stream_control_get_name(control);
+        mate_mixer_stream_control_set_balance(control,value);
     });
 //    m_pWidget->updateProfileOption();
 }
@@ -1781,13 +1780,17 @@ void UkmediaMainWidget::soundThemeInDir (UkmediaMainWidget *m_pWidget,GHashTable
         if (m_pIndexName == nullptr) {
             continue;
         }
+
+        gchar * themeName = g_settings_get_string (m_pWidget->m_pSoundSettings, SOUND_THEME_KEY);
         //设置主题到combox中
-//        if(m_pName != NO_SOUNDS_THEME_NAME) {
-            qDebug() << "sound theme in dir" << "displayname:" << m_pIndexName << "theme name:" << m_pName;
+        qDebug() << "sound theme in dir" << "displayname:" << m_pIndexName << "theme name:" << m_pName << "theme："<< themeName;
+        //屏蔽ubuntu custom 主题
+        if (/*!strstr(m_pName,"ubuntu") &&*/ !strstr(m_pName,"freedesktop") && !strstr(m_pName,"custom")) {
             m_pWidget->m_pThemeDisplayNameList->append(m_pIndexName);
             m_pWidget->m_pThemeNameList->append(m_pName);
             m_pWidget->m_pSoundWidget->m_pSoundThemeCombobox->addItem(m_pIndexName);
-//        }
+
+        }
     }
     g_dir_close (d);
 }
@@ -1826,7 +1829,6 @@ char *UkmediaMainWidget::loadIndexThemeName (const char *index,char **parent)
 void UkmediaMainWidget::setComboxForThemeName (UkmediaMainWidget *m_pWidget,const char *name)
 {
     g_debug("set combox for theme name");
-//    qDebug() << "set combox for theme name" << name;
     gboolean      found;
     int count = 0;
     /* If the name is empty, use "freedesktop" */
@@ -1846,9 +1848,6 @@ void UkmediaMainWidget::setComboxForThemeName (UkmediaMainWidget *m_pWidget,cons
     }
     if (m_pWidget->m_pThemeNameList->contains(name)) {
         index = m_pWidget->m_pThemeNameList->indexOf(name);
-//        if (index == -1) {
-//            return;
-//        }
         value = m_pWidget->m_pThemeNameList->at(index);
         m_pWidget->m_pSoundWidget->m_pSoundThemeCombobox->setCurrentIndex(index);
     }
@@ -2000,20 +1999,59 @@ void UkmediaMainWidget::populateModelFromDir (UkmediaMainWidget *m_pWidget,const
     g_debug("populate model from dir");
     GDir *d;
     const char *name;
+    char *path;
     d = g_dir_open (dirname, 0, nullptr);
     if (d == nullptr) {
         return;
     }
     while ((name = g_dir_read_name (d)) != nullptr) {
-        char *path;
 
         if (! g_str_has_suffix (name, ".xml")) {
             continue;
         }
+        QString themeName = name;
+        QStringList temp = themeName.split("-");
+        themeName = temp.at(0);
+        if (!m_pWidget->m_pSoundThemeList->contains(themeName)) {
+            m_pWidget->m_pSoundThemeList->append(themeName);
+            m_pWidget->m_pSoundThemeDirList->append(dirname);
+            m_pWidget->m_pSoundThemeXmlNameList->append(name);
+        }
+        qDebug() << "xml *****" << name << themeName;
         path = g_build_filename (dirname, name, nullptr);
-        populateModelFromFile (m_pWidget, path);
-        g_free (path);
     }
+    char *pThemeName = g_settings_get_string (m_pWidget->m_pSoundSettings, SOUND_THEME_KEY);
+    qDebug() << "初始主题为*********:" << pThemeName;
+    int themeIndex;
+    if(m_pWidget->m_pSoundThemeList->contains(pThemeName)) {
+         themeIndex =  m_pWidget->m_pSoundThemeList->indexOf(pThemeName);
+         if (themeIndex < 0 )
+             return;
+
+    }
+    else {
+        themeIndex = 1;
+    }
+
+    QString dirName = m_pWidget->m_pSoundThemeDirList->at(themeIndex);
+    QString xmlName = m_pWidget->m_pSoundThemeXmlNameList->at(themeIndex);
+    path = g_build_filename (dirName.toLatin1().data(), xmlName.toLatin1().data(), nullptr);
+//    m_pWidget->m_pSoundList->clear();
+//    m_pWidget->m_pSoundNameList->clear();
+    m_pWidget->m_pSoundWidget->m_pAlertSoundCombobox->blockSignals(true);
+    m_pWidget->m_pSoundWidget->m_pAlertSoundCombobox->clear();
+    m_pWidget->m_pSoundWidget->m_pAlertSoundCombobox->blockSignals(false);
+
+//        m_pWidget->m_pSoundList->clear();
+//        m_pWidget->m_pSoundNameList->clear();
+//        m_pWidget->m_pSoundWidget->m_pLagoutCombobox->clear();
+//        m_pWidget->m_pSoundWidget->m_pWindowClosedCombobox->clear();
+//        m_pWidget->m_pSoundWidget->m_pVolumeChangeCombobox->clear();
+//        m_pWidget->m_pSoundWidget->m_pSettingSoundCombobox->clear();
+    populateModelFromFile (m_pWidget, path);
+    //初始化声音主题
+
+    g_free (path);
     g_dir_close (d);
 }
 
@@ -2027,7 +2065,7 @@ void UkmediaMainWidget::populateModelFromFile (UkmediaMainWidget *m_pWidget,cons
     xmlNodePtr root;
     xmlNodePtr child;
     gboolean   exists;
-
+    qDebug() <<"populate model from file" << filename;
     exists = g_file_test (filename, G_FILE_TEST_EXISTS);
     if (! exists) {
         return;
@@ -2072,6 +2110,8 @@ void UkmediaMainWidget::populateModelFromNode (UkmediaMainWidget *m_pWidget,xmlN
                 /* EH? should have been trimmed */
         }
     }
+
+    gchar * themeName = g_settings_get_string (m_pWidget->m_pSoundSettings, SOUND_THEME_KEY);
 
     //将找到的声音文件名设置到combox中
     if (filename != nullptr && name != nullptr) {
@@ -2468,7 +2508,6 @@ void UkmediaMainWidget::themeComboxIndexChangedSlot(int index)
     QByteArray ba = theme.toLatin1();
     const char *m_pThemeName = ba.data();
     gboolean ok = g_settings_set_string (m_pSoundSettings, SOUND_THEME_KEY, m_pThemeName);
-    qDebug() << "index changed:" << index << m_pThemeNameList->at(index) << m_pThemeName << "设置主题是否成功" << ok;
 
     if (strcmp(m_pThemeName,"freedesktop") == 0) {
 //        m_pSoundWidget->m_pAlertSoundCombobox->setCurrentIndex();
@@ -2484,6 +2523,32 @@ void UkmediaMainWidget::themeComboxIndexChangedSlot(int index)
         QString displayName = m_pSoundNameList->at(index);
         m_pSoundWidget->m_pAlertSoundCombobox->setCurrentText(displayName);
     }
+
+    QString dirName = m_pSoundThemeDirList->at(index);
+    int themeIndex =  m_pSoundThemeList->indexOf(m_pThemeName);
+    if (themeIndex < 0 )
+        return;
+    qDebug() << "index changed:" << m_pSoundThemeXmlNameList->at(themeIndex) << m_pThemeNameList->at(index) << m_pThemeName << dirName.toLatin1().data() ;//<< path;
+    QString xmlName = m_pSoundThemeXmlNameList->at(themeIndex);
+    const gchar *path = g_build_filename (dirName.toLatin1().data(), xmlName.toLatin1().data(), nullptr);
+    m_pSoundList->clear();
+    m_pSoundNameList->clear();
+    m_pSoundWidget->m_pAlertSoundCombobox->blockSignals(true);
+    m_pSoundWidget->m_pLagoutCombobox->blockSignals(true);
+    m_pSoundWidget->m_pWindowClosedCombobox->blockSignals(true);
+    m_pSoundWidget->m_pVolumeChangeCombobox->blockSignals(true);;
+    m_pSoundWidget->m_pSettingSoundCombobox->blockSignals(true);;
+    m_pSoundWidget->m_pAlertSoundCombobox->clear();
+    m_pSoundWidget->m_pLagoutCombobox->clear();
+    m_pSoundWidget->m_pWindowClosedCombobox->clear();
+    m_pSoundWidget->m_pVolumeChangeCombobox->clear();
+    m_pSoundWidget->m_pSettingSoundCombobox->clear();
+    m_pSoundWidget->m_pAlertSoundCombobox->blockSignals(false);
+    m_pSoundWidget->m_pLagoutCombobox->blockSignals(false);
+    m_pSoundWidget->m_pWindowClosedCombobox->blockSignals(false);
+    m_pSoundWidget->m_pVolumeChangeCombobox->blockSignals(false);
+    m_pSoundWidget->m_pSettingSoundCombobox->blockSignals(false);
+    populateModelFromFile (this, path);
 
     /* special case for no sounds */
     if (strcmp (m_pThemeName, NO_SOUNDS_THEME_NAME) == 0) {

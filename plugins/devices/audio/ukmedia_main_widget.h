@@ -278,6 +278,9 @@ private:
     QStringList *m_pInputPortList;
     QStringList *m_pOutputPortList;
     QStringList *m_pProfileNameList;
+    QStringList *m_pSoundThemeList;
+    QStringList *m_pSoundThemeDirList;
+    QStringList *m_pSoundThemeXmlNameList;
 
     QStringList *m_pSoundNameList;
     QStringList *eventList;
