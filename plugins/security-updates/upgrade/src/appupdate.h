@@ -9,7 +9,6 @@
 #include <QDateTime>
 #include <QTextEdit>
 #include <QToolTip>
-
 #include "utils.h"
 #include "updatelog.h"
 #include <QMetaType>
@@ -99,12 +98,9 @@ private:
 signals:
     void startWork(QString appName);
     void startMove(QStringList list, QString appName);
-
     void hideUpdateBtnSignal();
     void changeUpdateAllSignal();
-
     void downloadFailedSignal(int exitCode);  //网络异常或者其他情况下下载失败时
-
     void filelockedSignal();
     void cancel();
 
