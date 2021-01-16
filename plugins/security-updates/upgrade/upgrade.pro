@@ -40,10 +40,10 @@ DEFINES += QT_DEPRECATED_WARNINGS \
 SOURCES += \
     src/appupdate.cpp \
     src/backup.cpp \
+    src/checkbutton.cpp \
     src/daemonipcdbus.cpp \
     src/historyupdatelistwig.cpp \
     src/m_updatelog.cpp \
-    src/shadowwidget.cpp \
     src/switchbutton.cpp \
     src/tabwidget.cpp \
     src/traybusthread.cpp \
@@ -58,6 +58,7 @@ SOURCES += \
 HEADERS += \
     src/appupdate.h \
     src/backup.h \
+    src/checkbutton.h \
     src/connection.h \
     src/daemonipcdbus.h \
     src/historyupdatelistwig.h \

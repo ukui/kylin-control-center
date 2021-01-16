@@ -11,7 +11,6 @@
 #include <QDialog>
 
 #include "widgetstyle.h"
-#include "shadowwidget.h"
 
 
 class UpdateLog : public QDialog
