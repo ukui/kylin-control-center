@@ -128,6 +128,8 @@ public:
     void _buildWidgetForItem(UserInfomation user);
     void _resetListWidgetHeigh();
 
+    int _userCanDel(QString user);
+
     void _refreshUserInfoUI();
 
     void showCreateUserDialog();

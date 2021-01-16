@@ -152,7 +152,7 @@ void UserInfo::_acquireAllUsersInfo(){
     //初始化用户信息QMap
     allUserInfoMap.clear();
     //初始化管理员数目为0
-    adminnum = 0;
+//    adminnum = 0;
 
     //root
     if (!getuid()){
@@ -185,6 +185,36 @@ void UserInfo::_acquireAllUsersInfo(){
     initUserPropertyConnection(objectpaths);
 }
 
+int UserInfo::_userCanDel(QString user){
+    QString cmd = QString("cat /etc/group | grep sudo | awk -F: '{ print $NF}'");
+    QString output;
+
+    FILE   *stream;
+    char buf[256];
+
+    if ((stream = popen(cmd.toLatin1().data(), "r" )) == NULL){
+        return -1;
+    }
+
+    while(fgets(buf, 256, stream) != NULL){
+        output = QString(buf).simplified();
+    }
+
+    pclose(stream);
+
+    int num = output.split(",").length();
+
+    if (output.contains(user)){
+        if (num > 1){
+            return 1;
+        } else {
+            return 0;
+        }
+    } else {
+        return 1;
+    }
+}
+
 UserInfomation UserInfo::_acquireUserInfo(QString objpath){
     UserInfomation user;
 
@@ -208,8 +238,8 @@ UserInfomation UserInfo::_acquireUserInfo(QString objpath){
             user.noPwdLogin = getNoPwdStatus();
         }
         user.accounttype = propertyMap.find("AccountType").value().toInt();
-        if (user.accounttype == ADMINISTRATOR)
-            adminnum++;
+//        if (user.accounttype == ADMINISTRATOR)
+//            adminnum++;
         user.iconfile = propertyMap.find("IconFile").value().toString();
         user.passwdtype = propertyMap.find("PasswordMode").value().toInt();
         user.uid = propertyMap.find("Uid").value().toInt();
@@ -350,7 +380,7 @@ void UserInfo::initComponent(){
     //root需要屏蔽部分功能
     if (!getuid()){
         ui->changeTypeBtn->setEnabled(false);
-        ui->changeGroupBtn->setEnabled(false);
+//        ui->changeGroupBtn->setEnabled(false);
         ui->autoLoginFrame->setVisible(false);
         ui->autoLoginFrame_2->setVisible(false);
     }
@@ -729,14 +759,14 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     });
 
     connect(baseWidget, &HoverWidget::enterWidget, this, [=](QString name){
-        Q_UNUSED(name)
 
         //不允许删除最后一个管理员
-        if (user.accounttype > 0 && adminnum == 1){
-            delBtn->setEnabled(false);
-        } else {
+        if (_userCanDel(name) == 1){
             delBtn->setEnabled(true);
+        } else if (_userCanDel(name) == 0) {
+            delBtn->setEnabled(false);
         }
+
         typeBtn->show();
         pwdBtn->show();
         delBtn->show();
@@ -762,6 +792,7 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
         if (user.username == "secadm" || user.username == "auditadm"){
             pwdBtn->setEnabled(false);
             typeBtn->setEnabled(false);
+            delBtn->setEnabled(false);
         }
     }
 #endif
@@ -940,7 +971,7 @@ void UserInfo::showChangeTypeDialog(QString username){
         dialog->setUsername(user.username);
         dialog->setCurrentAccountTypeLabel(_accountTypeIntToString(user.accounttype));
         dialog->setCurrentAccountTypeBtn(user.accounttype);
-        dialog->forbidenChange(adminnum);
+        dialog->forbidenChange(_userCanDel(username));
 //        connect(dialog, SIGNAL(type_send(int,QString,bool)), this, SLOT(change_accounttype_slot(int,QString,bool)));
         connect(dialog, &ChangeTypeDialog::type_send, this, [=](int atype, QString userName){
             changeUserType(atype, userName);

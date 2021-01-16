@@ -44,7 +44,7 @@ public:
     void setCurrentAccountTypeLabel(QString aType);
     void setCurrentAccountTypeBtn(int id);
 
-    void forbidenChange(int total);
+    void forbidenChange(int can);
 
 protected:
     void paintEvent(QPaintEvent *);

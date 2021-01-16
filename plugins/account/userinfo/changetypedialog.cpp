@@ -116,11 +116,13 @@ void ChangeTypeDialog::setCurrentAccountTypeBtn(int id){
     });
 }
 
-void ChangeTypeDialog::forbidenChange(int total){
-    if (total <= 1 && currenttype == 1){
-        ui->standardRadioButton->setEnabled(false);
-    } else {
+void ChangeTypeDialog::forbidenChange(int can){
+    if (can == -1)
+        return;
+    if (can){
         ui->standardRadioButton->setEnabled(true);
+    } else {
+        ui->standardRadioButton->setEnabled(false);
     }
 }
 
