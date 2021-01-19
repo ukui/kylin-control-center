@@ -72,11 +72,15 @@ class QMLScreen : public QQuickItem
 
     void setActiveOutput(QMLOutput *output);
 
+    void setScreenPos(QMLOutput *output);
+
   public Q_SLOTS:
     void setActiveOutput() {
         setActiveOutput(qobject_cast<QMLOutput*>(sender()));
     }
-
+    void setScreenPos() {
+        setScreenPos(qobject_cast<QMLOutput*>(sender()));
+    }
 
   Q_SIGNALS:
     void connectedOutputsCountChanged();

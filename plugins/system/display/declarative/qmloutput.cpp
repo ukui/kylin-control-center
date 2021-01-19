@@ -385,7 +385,6 @@ bool QMLOutput::collidesWithOutput(QObject *other)
 
 bool QMLOutput::maybeSnapTo(QMLOutput *other)
 {
-    //qDebug()<<"maybeSnapTo---->"<<endl;
     qreal centerX = x() + (width() / 2.0);
     qreal centerY = y() + (height() / 2.0);
 
@@ -539,43 +538,12 @@ bool QMLOutput::maybeSnapTo(QMLOutput *other)
 
         return true;
     }
-    if ((x() + width()) > 550) {
-        setPosition(QPointF(550 - width(), y()));
-    }
-    if ((y() + height()) > 300) {
-        setPosition(QPointF(x(), 350 - height()));
-    }
-
-    // 矩形是否相交
-    if (!(x() + width() < x2 ||  x2 + width2 < x() ||
-          y() > y2 +height2 || y2 > y() + height()) &&
-            (x() != x2 || y() != y2) &&
-            other->output()->isConnected()) {
-
-        if ((x() + width() > x2) && (x() < x2)) {
-            setX(x2 - width() + sMargin);
-            setRightDockedTo(other);
-            other->setLeftDockedTo(this);
-        } else if ((x() < x2 + width2) && (x() + width() > x2 + width2)) {
-            setX(x2 + width2 - sMargin);
-            setLeftDockedTo(other);
-            other->setRightDockedTo(this);
-        } else if ((y() + height() > y2) && (y() < y2 + height2)) {
-            setY(y2 - height() + sMargin);
-            setBottomDockedTo(other);
-            other->setTopDockedTo(this);
-        } else if ((y()  <  y2  + height2) && (y() + height() > y2 + height2)) {
-            setY(y2 + height2 - sMargin);
-            setTopDockedTo(other);
-            other->setBottomDockedTo(this);
+    if (!(this->output()->isConnected() && other->output()->isConnected())) {
+        if ((x() + width()) > 550) {
+            setPosition(QPointF(550 - width(), y()));
         }
-    }
-
-    if (x() == x2 && y() == y2 && other->output()->isConnected()) {
-        if (x() == 0) {
-            setX(x() + width());
-        } else if (x() + width() == 550){
-            setX(x() - width());
+        if ((y() + height()) > 300) {
+            setPosition(QPointF(x(), 350 - height()));
         }
     }
     return false;
@@ -583,7 +551,6 @@ bool QMLOutput::maybeSnapTo(QMLOutput *other)
 
 void QMLOutput::moved()
 {
-//    qDebug()<<"moved----->"<<endl;
     const QList<QQuickItem*> siblings = screen()->childItems();
 
     // First, if we have moved, then unset the "cloneOf" flag
