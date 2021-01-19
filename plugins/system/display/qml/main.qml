@@ -54,25 +54,20 @@ Item {
             focus: true;
 
             QMLScreen {
-
                 id: outputView;
-
                 anchors.fill: parent;
                 clip: true;
-
                 objectName: "outputView";
             }
         }
 
         Column {
-
             anchors {
                 left: parent.left;
                 //right: identifyButton.left;
                 bottom: parent.bottom;
                 margins: 5;
             }
-
             spacing: 5;
         }
     }

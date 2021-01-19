@@ -119,6 +119,12 @@ void QMLScreen::addOutput(const KScreen::OutputPtr &output)
     connect(qmloutput, SIGNAL(clicked()),
             this, SLOT(setActiveOutput()));
 
+    connect(qmloutput, SIGNAL(mouseReleased()),
+            this, SLOT(setScreenPos()));
+
+    connect(qmloutput, SIGNAL(rotationChanged()),
+            this, SLOT(setScreenPos()));
+
     qmloutput->updateRootProperties();
 }
 
@@ -175,6 +181,74 @@ void QMLScreen::setActiveOutput(QMLOutput *output)
     //选中屏幕
     output->setFocus(true);
     Q_EMIT focusedOutputChanged(output);
+}
+
+void QMLScreen::setScreenPos(QMLOutput *output) {
+
+    int x1, y1;
+    int width1, height1;
+    int x2, y2;
+    int width2, height2;
+
+    x1 = output->x();
+    y1 = output->y();
+    width1 = output->width();
+    height1 = output->height();
+
+    int connectedScreen = 0;
+    QMLOutput *other;
+    Q_FOREACH (QMLOutput *qmlOutput, m_outputMap) {
+        if (qmlOutput->output()->isConnected()) {
+            connectedScreen++;
+        }
+        if (qmlOutput != output) {
+            other = qmlOutput;
+            x2 = other->x();
+            y2 = other->y();
+            width2 = other->width();
+            height2 = other->height();
+        }
+    }
+
+    if (connectedScreen < 2) {
+        return ;
+    }
+
+    if (!((x1 + width1 == x2)
+          || (y1 == y2 + height2)
+          || (x1 == x2 + width2)
+          || (y1 + height1 == y2))) {
+        if (x1 + width1 < x2) {
+            output->setX(x2 - width1);
+            output->setY(y2);
+        } else if (y1 > y2 + height2) {
+            output->setX(x2);
+            output->setY(y2 + height2);
+        } else if (x1 > x2 + width2) {
+            output->setX(x2 + width2);
+            output->setY(y2);
+        } else if (y1 + height1 < y2) {
+            output->setX(x2);
+            output->setY(y2 - height1);
+        }
+
+        // 矩形是否相交
+        if (!(x1 + width1 < x2 ||  x2 + width2 < x1 ||
+              y1 > y2 +height2 || y2 > y1 + height1) &&
+                (x1 != x2 || y1 != y2) &&
+                other->output()->isConnected()) {
+
+            if ((x1 + width1 > x2) && (x1 < x2)) {
+                output->setX(x2 - width1);
+            } else if ((x1 < x2 + width2) && (x1 + width1 > x2 + width2)) {
+                output->setX(x2 + width2);
+            } else if ((y1 + height() > y2) && (y1 < y2 + height2)) {
+                output->setY(y2 - height1);
+            } else if ((y1  <  y2  + height2) && (y1 + height1 > y2 + height2)) {
+                output->setY(y2 + height2);
+            }
+        }
+    }
 }
 
 QSize QMLScreen::maxScreenSize() const
