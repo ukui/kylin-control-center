@@ -38,7 +38,8 @@ Build-Depends: debhelper-compat (= 12),
                libkf5bluezqt-dev,
                libkysec-dev,
                libpwquality-dev,
-	       libudev-dev	
+	       libudev-dev,
+	       xserver-xorg-dev	
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Homepage: https://github.com/ukui/ukui-control-center
