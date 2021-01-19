@@ -242,6 +242,7 @@ void Widget::resetPrimaryCombo() {
 
 #else
     bool isPrimaryDisplaySupported = mConfig->supportedFeatures().testFlag(KScreen::Config::Feature::PrimaryDisplay);
+    ui->screenframe->setVisible(isPrimaryDisplaySupported);
     ui->primaryLabel->setVisible(isPrimaryDisplaySupported);
     ui->primaryCombo->setVisible(isPrimaryDisplaySupported);
 #endif
@@ -455,6 +456,11 @@ KScreen::OutputPtr Widget::findOutput(const KScreen::ConfigPtr &config, const QV
 }
 
 void Widget::writeScale(int scale) {
+
+    if (scale != scaleGSettings->get(SCALE_KEY).toInt()) {
+        mIsScaleChanged = true;
+    }
+
     if (mIsScaleChanged) {
         QMessageBox::information(this, tr("Information"), tr("Some applications need to be logouted to take effect"));
     } else {
@@ -976,7 +982,7 @@ void Widget::checkOutputScreen(bool judge) {
 
 // 亮度调节UI
 void Widget::initBrightnessUI() {
-    ui->brightnessSlider->setRange(0, 100);
+    ui->brightnessSlider->setRange(1, 100);
     ui->brightnessSlider->setTracking(true);
 
     setBrightnesSldierValue();
@@ -1219,7 +1225,6 @@ void Widget::initNightStatus() {
     if (0 == mNightConfig["Mode"].toInt()) {
         ui->sunradioBtn->setChecked(true);
     } else if (2 == mNightConfig["Mode"].toInt()) {
-        qDebug() << Q_FUNC_INFO;
         ui->customradioBtn->setChecked(true);
         QString openTime = mNightConfig["EveningBeginFixed"].toString();
         QString ophour = openTime.split(":").at(0);
