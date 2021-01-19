@@ -8,13 +8,13 @@
 UpdateDbus* UpdateDbus::updateMutual = nullptr;
 using namespace std;
 
-UpdateDbus* UpdateDbus::getInstance()
+UpdateDbus* UpdateDbus::getInstance(QObject *parent)
 {
     static QMutex mutex;
     if(nullptr == updateMutual)
     {
         QMutexLocker locker(&mutex);
-        updateMutual = new UpdateDbus;
+        updateMutual = new UpdateDbus(parent);
     }
     return updateMutual;
 }
@@ -45,9 +45,9 @@ UpdateDbus::UpdateDbus(QObject *parent)
                                          QString("cn.kylinos.KylinUpdateManager"),
                                          QString("copy_finish"), this, SLOT(slotCopyFinished(QString)));
 
-    init_cache();
     cleanUpdateList();
     setImportantStatus(true);
+
 }
 
 void UpdateDbus::onRequestSendDesktopNotify(QString message)
@@ -70,12 +70,28 @@ void UpdateDbus::onRequestSendDesktopNotify(QString message)
 
 bool UpdateDbus::fileLock()
 {
-    int fd = open(lockPath.toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+    int uid = getuid();
+    struct passwd *pwd = getpwuid(uid);
+    QString nameuid = QString("%1(%2)\n").arg(pwd->pw_name).arg(uid);
+    char*  charnameuid;
+    QByteArray ba = nameuid.toLatin1(); // must
+    charnameuid=ba.data();
+    qDebug()<<"charnameuid:"<<charnameuid;
+
+    //初始化运行程序名称
+    char name_string[20] = {"ukui-control-center"};
+
+    int fd = open(lockPath.toUtf8().data(), O_RDWR| O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
     if(fd < 0)
     {
         qDebug() << "文件锁的文件不存在，程序退出。";
         exit(0);
     }
+    else{
+        write(fd, charnameuid, strlen(charnameuid));
+        write(fd, name_string, strlen(name_string));
+    }
+
     return lockf(fd, F_TLOCK, 0);
 }
 
@@ -86,6 +102,9 @@ void UpdateDbus::fileUnLock()
     {
         qDebug() << "解锁文件不存在，程序退出。";
         exit(0);
+    }
+    else{
+        ftruncate(fd, 0);
     }
     lockf(fd, F_ULOCK, 0);
 }
@@ -129,10 +148,9 @@ bool UpdateDbus::setImportantStatus(bool status)
 {
     // 有参数的情况下  传参调用dbus接口并保存返回值
     replyBool = interface->call("set_important_status", status);
-
     // 将reply.value()作为返回值
     if (replyBool.isValid()) {
-        qDebug() <<"setImportantStatus:"<<replyBool.value();
+        qDebug() <<"setImportantStatus:"<<status;
         return replyBool.value();
     }
     else{
@@ -167,6 +185,7 @@ void UpdateDbus::modifyConf(QString path, QString group, QString key, QString va
 
 bool UpdateDbus::cleanUpdateList()
 {
+    qDebug() << "cleanUpdateList";
     replyBool = interface->call("clear_install_list");
     if (replyBool.isValid()) {
         qDebug() << "cleanUpdateList:"<<replyBool.value();
@@ -325,7 +344,8 @@ void UpdateDbus::slotCopyFinished(QString appName)
 
 UpdateDbus::~UpdateDbus()
 {
-    qDebug() << "update quit";
+//    qDebug() << "update quit------>";
     cleanUpdateList();
     setImportantStatus(false);
+    fileUnLock();
 }

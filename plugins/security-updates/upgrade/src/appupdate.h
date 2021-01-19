@@ -22,6 +22,7 @@ class AppUpdateWid : public QWidget
     Q_OBJECT
 public:
     explicit AppUpdateWid(AppAllMsg msg, QWidget *parent = nullptr);
+    ~AppUpdateWid();
 
     QFrame *AppFrame;
     UpdateLog *updatelog1;
@@ -51,6 +52,7 @@ public:
     QString chlog;
 
     bool eventFilter(QObject *watched, QEvent *event);
+    QString setDefaultDescription(QString str);
 private:
     bool isCancel = true;
     bool firstDownload = true;
@@ -59,6 +61,7 @@ private:
     long priorSize = 0;
     int connectTimes = 0;
     bool downloadFinish = false;
+    bool stopTimer = false;
     UrlMsg urlmsg;
     QString path;
     QString currentPackage;

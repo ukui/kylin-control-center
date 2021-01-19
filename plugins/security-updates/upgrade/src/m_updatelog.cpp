@@ -38,6 +38,13 @@ m_updatelog::m_updatelog(QWidget* parent) : QDialog(parent)
     connect(uddbus->interface,SIGNAL(update_sqlite_signal(QString,QString)),this,SLOT(historyUpdateNow(QString,QString)));
 }
 
+QString m_updatelog::setDefaultDescription(QString str)
+{
+    if(str == "")
+        str = tr("暂无内容");
+    return str;
+}
+
 m_updatelog * m_updatelog::GetInstance(QWidget *parent)
 {
     if(m_instance==nullptr)
@@ -166,7 +173,7 @@ void m_updatelog::updatesql( const int &start,const int &num,const QString &into
         hulw->setAttribute(translationVirtualPackage(query.value("appname").toString())+" "+query.value("version").toString(),
                            query.value("statue").toString(),
                            query.value("time").toString(),
-                           query.value("description").toString(),
+                           setDefaultDescription(query.value("description").toString()),
                            query.value("id").toInt());
         loadingCode = hulw->id;//记录加载到哪个位置
         QListWidgetItem *item = new QListWidgetItem();

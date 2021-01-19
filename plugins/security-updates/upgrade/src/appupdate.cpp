@@ -3,7 +3,7 @@
 
 AppUpdateWid::AppUpdateWid(AppAllMsg msg,QWidget *parent):QWidget(parent)
 {
-    m_updateMutual = UpdateDbus::getInstance();
+    m_updateMutual = UpdateDbus::getInstance(this);
     qRegisterMetaType<AppMsg>("AppMsg"); //注册信号槽类型
     qRegisterMetaType<AppAllMsg>("AppAllMsg"); //注册信号槽类型
     appAllMsg = msg;
@@ -13,6 +13,11 @@ AppUpdateWid::AppUpdateWid(AppAllMsg msg,QWidget *parent):QWidget(parent)
     updateAppUi(appAllMsg.name);
     this->setObjectName("AppUpdateWid");
     initConnect();
+}
+
+AppUpdateWid::~AppUpdateWid()
+{
+    qDebug() << "delete------->" << Q_FUNC_INFO;
 }
 
 void AppUpdateWid::initConnect()
@@ -126,15 +131,6 @@ void AppUpdateWid::slotDownloadPackages()
             else //下载完成调用dbus接口拷贝文件到/var/cache/apt/archives目录下
             {
                 downloadFinish = true;
-                m_updateMutual->copyFinsh(downloadPackages, appAllMsg.name);
-                if(m_updateMutual->fileLock() != false)
-                {
-                    emit filelockedSignal();
-                }
-                appVersion->setText("准备安装");
-                appVersion->setToolTip(tr("准备安装"));
-//                appVersion->installEventFilter(this);
-
                 qDebug() << "download over11";
             }
         }
@@ -146,25 +142,10 @@ void AppUpdateWid::slotDownloadPackages()
                 curlDownload(urlmsg,path);
         }
     }
-    else //下载完成调用dbus接口拷贝文件到/var/cache/apt/archives目录下
+    else //包已经存在于/var/cache/apt/archives目录下，直接安装
     {
-        if(firstDownload)
-        {
-            qDebug() << "startinstall";
-            startInstall(appAllMsg.name);
-        }
-        else
-        {
-            downloadFinish = true;
-            m_updateMutual->copyFinsh(downloadPackages, appAllMsg.name);
-            if(m_updateMutual->fileLock() != false)
-            {
-                emit filelockedSignal();
-            }
-            appVersion->setText("准备安装");
-            appVersion->setToolTip("准备安装");
-            qDebug() << "download over22";
-        }
+        qDebug() << "已下载完毕";
+        startInstall(appAllMsg.name);
     }
 }
 
@@ -180,6 +161,7 @@ void AppUpdateWid::curlDownload(UrlMsg msg, QString path)
     args.append(QString("%1").arg(path));
     args.append("-T");
     args.append("10");
+//    args.append("--limit-rate 1"); //预留超时接口
     currentPackage = msg.fullname;
     qDebug() << "currentPackage" << currentPackage << "size:" << msg.size;
     downloadProcess->start("/usr/bin/wget", args);
@@ -395,7 +377,7 @@ void AppUpdateWid::updateAppUi(QString name)
 
     }
     //获取并输出changelog
-    chlog = appAllMsg.longDescription;
+    chlog = setDefaultDescription(appAllMsg.longDescription);
     updatelog1->logContent->append(chlog);
 
     QTextCursor tmpCursor = updatelog1->logContent->textCursor();
@@ -573,11 +555,29 @@ void AppUpdateWid::calculateSpeedProgress()
             downSize = priorSize;
         QString speed = modifySpeedUnit(downSize-preDownSize, 0.5);
         int progress = (int)((downSize*100/appAllMsg.msg.allSize));
-        if(priorSize == appAllMsg.msg.allSize) //确保完全下载完成后再停止定时器
-            timer->stop();
-        qDebug() << "priorsize:" << priorSize << "predownsize" << preDownSize << "tmpsize" << tmpFile.size() << "downsize" << downSize << "allsize" << appAllMsg.msg.allSize << "progress:" << progress << "speed" << speed << "name" << currentPackage;
+        qDebug() << "priorsize:" << priorSize
+                 << "predownsize" << preDownSize
+                 << "tmpsize" << tmpFile.size()
+                 << "downsize" << downSize
+                 << "allsize" << appAllMsg.msg.allSize
+                 << "progress:" << progress
+                 << "speed" << speed
+                 << "name" << currentPackage;
         preDownSize = downSize;
         showDownloadStatues(speed,progress);
+        if(downSize == appAllMsg.msg.allSize) //确保完全下载完成后再停止定时器
+        {
+            qDebug() << "dowload over:" << priorSize;
+            timer->stop();
+            m_updateMutual->copyFinsh(downloadPackages, appAllMsg.name);
+            if(m_updateMutual->fileLock() != false)
+            {
+                emit filelockedSignal();
+            }
+            appVersion->setText("准备安装");
+            appVersion->setToolTip(tr("准备安装"));
+            appVersion->installEventFilter(this);
+        }
     }
 }
 
@@ -590,6 +590,7 @@ void AppUpdateWid::updateAllApp()
         cancelOrUpdate();
     }
 }
+
 void AppUpdateWid::showUpdateBtn()
 {
 
@@ -641,4 +642,10 @@ bool AppUpdateWid::eventFilter(QObject *watched, QEvent *event)
             return false;
         }
     }
+}
+QString AppUpdateWid::setDefaultDescription(QString str)
+{
+    if(str == "")
+        str = tr("暂无内容");
+    return str;
 }

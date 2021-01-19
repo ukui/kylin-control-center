@@ -40,9 +40,11 @@ void TabWid::initDbus()
 TabWid::~TabWid()
 {
     qDebug() << "~TabWid" ;
+    delete updateMutual;
     backupDelete();//回收资源
 //    updateMutual->cleanUpdateList();
 }
+
 void TabWid::backupMessageBox(QString str)
 {
     QMessageBox msgBox;
@@ -51,10 +53,11 @@ void TabWid::backupMessageBox(QString str)
 //        msgBox.setInformativeText(tr("备份还原可以保存当前系统状态。"));
 //    msgBox.setDetailedText(tr("Differences here..."));
     msgBox.setStandardButtons(QMessageBox::Save
-                              | QMessageBox::Discard);
+                              | QMessageBox::Discard|QMessageBox::Abort);
     msgBox.setButtonText(QMessageBox::Save,"立即更新");
     msgBox.setButtonText(QMessageBox::Discard,"取消更新");
-//        msgBox.setButtonText(QMessageBox::Abort,"否，我不备份");
+    msgBox.setButtonText(QMessageBox::Abort,"否，我不备份");
+    msgBox.button(QMessageBox::Abort)->hide();
     int ret = msgBox.exec();
     if(ret == QMessageBox::Save)
     {
@@ -65,6 +68,13 @@ void TabWid::backupMessageBox(QString str)
         emit updateAllSignal();
     }
     else if(ret == QMessageBox::Discard)
+    {
+       qDebug() << "不进行全部更新。";
+       checkUpdateBtn->stop();
+       checkUpdateBtn->setEnabled(true);
+       checkUpdateBtn->setText("全部更新");
+    }
+    else if(ret == QMessageBox::Abort)
     {
        qDebug() << "不进行全部更新。";
        checkUpdateBtn->stop();
@@ -182,13 +192,18 @@ void TabWid::slotUpdateTemplate(QString status)
 {
     qDebug() << "update template status :" << status;
     /*更新源缓存*/
-    updateSource->callDBusUpdateSource(Symbol);
-    versionInformationLab->setText(tr("正在更新源..."));
+//    if(updateMutual->importantList.size() == 0)
+//    {
+
+//        updateSource->callDBusUpdateSource(Symbol);
+//        versionInformationLab->setText(tr("正在更新源..."));
+//    }
 }
 void TabWid::slotUpdateCache(QVariantList sta)
 {
     QString status = sta.at(1).toString();
     QString nowsymbol = sta.at(0).toString();
+    qDebug() << "slotUpdateCache" << "nowsymbol" <<nowsymbol << status;
     if(nowsymbol == Symbol)
     {
         qDebug() << "update cache status :" << status;
@@ -383,35 +398,40 @@ void TabWid::allComponents()
 void TabWid::loadingOneUpdateMsgSlot(AppAllMsg msg)
 {
 //    checkUpdateBtn->setText();
-    updateMutual->importantList.append(msg.name);   //重要更新列表中添加appname
-    AppUpdateWid *appWidget = new AppUpdateWid(msg, this);
-    appWidget->updateAPPBtn->hide();
-    connect(appWidget, &AppUpdateWid::cancel, this, &TabWid::slotCancelDownload);
-    connect(this, &TabWid::updateAllSignal, appWidget, &AppUpdateWid::updateAllApp);
-    connect(appWidget,&AppUpdateWid::hideUpdateBtnSignal,this,&TabWid::hideUpdateBtnSlot);
-    connect(appWidget,&AppUpdateWid::changeUpdateAllSignal,this,&TabWid::changeUpdateAllSlot);
-    connect(updateMutual,&UpdateDbus::sendFinishGetMsgSignal,appWidget,&AppUpdateWid::showUpdateBtn);
-    connect(appWidget,&AppUpdateWid::filelockedSignal,this,&TabWid::waitCrucialInstalled);
-    connect(backup,&BackUp::bakeupFinish,appWidget,&AppUpdateWid::hideOrShowUpdateBtnSlot);
-    if(ukscConnect->isConnectUskc = true)
+    if(updateMutual->importantList.indexOf(msg.name) == -1)
     {
-        QStringList list = ukscConnect->getInfoByName(msg.name);
-        if(list[2] != "")
+        updateMutual->importantList.append(msg.name);   //重要更新列表中添加appname
+        AppUpdateWid *appWidget = new AppUpdateWid(msg, this);
+        appWidget->updateAPPBtn->hide();
+        connect(appWidget, &AppUpdateWid::cancel, this, &TabWid::slotCancelDownload);
+        connect(this, &TabWid::updateAllSignal, appWidget, &AppUpdateWid::updateAllApp);
+        connect(appWidget,&AppUpdateWid::hideUpdateBtnSignal,this,&TabWid::hideUpdateBtnSlot);
+        connect(appWidget,&AppUpdateWid::changeUpdateAllSignal,this,&TabWid::changeUpdateAllSlot);
+        connect(updateMutual,&UpdateDbus::sendFinishGetMsgSignal,appWidget,&AppUpdateWid::showUpdateBtn);
+        connect(appWidget,&AppUpdateWid::filelockedSignal,this,&TabWid::waitCrucialInstalled);
+        connect(backup,&BackUp::bakeupFinish,appWidget,&AppUpdateWid::hideOrShowUpdateBtnSlot);
+        if(ukscConnect->isConnectUskc = true)
         {
-            appWidget->appNameLab->setText(list[2]);
+            QStringList list = ukscConnect->getInfoByName(msg.name);
+            if(list[2] != "")
+            {
+                appWidget->appNameLab->setText(list[2]);
 
+            }
+            if(list[1] != "")
+            {
+                appWidget->appNameLab->setText(list[1]);
+            }
+            if(list[0] != "")
+            {
+                appWidget->appIcon->setPixmap(QPixmap(list[0]).scaled(32, 32));
+            }
         }
-        if(list[1] != "")
-        {
-            appWidget->appNameLab->setText(list[1]);
-        }
-        if(list[0] != "")
-        {
-            appWidget->appIcon->setPixmap(QPixmap(list[0]).scaled(32, 32));
-        }
+        allUpdateLayout->addWidget(appWidget);
+        qDebug() << "loadingOneUpdateMsgSlot:" << appWidget->appNameLab->text();
+
     }
-    allUpdateLayout->addWidget(appWidget);
-    qDebug() << "loadingOneUpdateMsgSlot:" << appWidget->appNameLab->text();
+
 }
 
 void TabWid::loadingFinishedSlot(int size)

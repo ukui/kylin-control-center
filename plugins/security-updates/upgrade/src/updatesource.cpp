@@ -18,8 +18,9 @@ UpdateSource::UpdateSource(QObject *parent) : QObject(parent)
 */
 void UpdateSource::callDBusUpdateTemplate()
 {
-    serviceInterface->asyncCall("updateSourceTemplate");
-
+    QDBusPendingCall call = serviceInterface->asyncCall("updateSourceTemplate");
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call,this);
+    connect(watcher,&QDBusPendingCallWatcher::finished,this,&UpdateSource::getReply);
     qDebug() << "callDBusUpdateTemplate: " << "updateSourceTemplate";
 }
 /*
@@ -29,8 +30,7 @@ void UpdateSource::callDBusUpdateSource(QString symbol)
 {
    QDBusPendingCall call = serviceInterface->asyncCall("updateSourcePackages",symbol);
    qDebug() << "Call updateSourcePackages" ;
-   QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call,this);
-   connect(watcher,&QDBusPendingCallWatcher::finished,this,&UpdateSource::getReply);
+
 }
 
 QString UpdateSource::getFailInfo(int statusCode)
@@ -50,11 +50,20 @@ QString UpdateSource::getFailInfo(int statusCode)
 }
 void UpdateSource::getReply(QDBusPendingCallWatcher *call)
 {
-    QDBusPendingReply<int> reply = *call;
+//    QDBusPendingReply<int> reply = *call;
+//    if (!reply.isValid()) {
+//        qDebug() <<"getReply:" << "iserror";
+//    } else {
+//        int status = reply.value();
+//    }
+//    call->deleteLater();
+    QDBusPendingReply<bool> reply = *call;
     if (!reply.isValid()) {
-        qDebug() <<"getReply:" << "iserror";
+         qDebug() <<"getReply:" << "iserror";
     } else {
-        int status = reply.value();
+            bool status = reply.value();
+            if (status) {
+                callDBusUpdateSource(Symbol);
+            }
     }
-    call->deleteLater();
 }

@@ -39,6 +39,7 @@ private:
     int firstCode = 0;
     int loadingCode = 0;
     QHBoxLayout *hll = nullptr;
+    QString setDefaultDescription(QString str);
 
 private slots:
     void initUI(); //初始化UI

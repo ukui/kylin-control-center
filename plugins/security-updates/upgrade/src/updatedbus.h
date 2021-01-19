@@ -26,6 +26,14 @@
 #include <QSqlQuery>
 #include <QMessageBox>
 #include <QSqlError>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <pwd.h>
 #include "traybusthread.h"
 
 //#include <Python.h>
@@ -42,7 +50,7 @@ class UpdateDbus : public QObject
 {
     Q_OBJECT
 public:
-    static UpdateDbus *getInstance();
+    static UpdateDbus *getInstance(QObject *parenet  = nullptr);
     ~UpdateDbus();
     QDBusInterface *interface;  //dbus接口
     QDBusReply<QString> replyStr;   //string类型的返回值
