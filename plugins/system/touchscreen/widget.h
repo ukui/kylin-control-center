@@ -13,6 +13,7 @@
 #include <QDBusReply>
 #include <QStringList>
 #include <QSharedPointer>
+#include <QDir>
 
 #include <KF5/KScreen/kscreen/config.h>
 
@@ -82,6 +83,14 @@ class Widget : public QWidget
 
   private:
     void loadQml();
+    void save(QString touchname,QString touchid,QString screenname);
+    void initTouchConfig(int curcount,QString touchserial,QString screenname);
+    void writeTouchConfig();
+    void writeTouchConfig(QString touchname,QString touchid,QString touchserial,QString screenname);
+    bool Configserialisexit(QString touchserial);
+    void cleanTouchConfig(int touchcount);
+    int  compareserial(int touchcount);
+    int comparescreenname(QString _touchserial,QString _screenname);
     void resetPrimaryCombo();
     void resettouchscreenCombo();
     void addOutputToMonitorCombo(const KScreen::OutputPtr &output);
@@ -94,8 +103,12 @@ class Widget : public QWidget
     Ui::TouchScreen *ui;
     XinputManager *m_pXinputManager;
     QMLScreen *mScreen = nullptr;
+    QSettings *configIni;
+    QDir *qdir;
     QString CurTouchScreenName = "";
     QString CurMonitorName = "";
+    QString CurDevicesName="";
+    int CurTouchscreenNum;
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     KScreen::ConfigPtr mConfig ;

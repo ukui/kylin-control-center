@@ -44,14 +44,13 @@ extern "C" {
 #include "ui_touchscreen.h"
 #include "widget.h"
 
+#include "touchserialquery.h"
 #include "xinputmanager.h"
-
 
 
 #ifdef signals
 #undef signals
 #endif
-
 
 #define QML_PATH "kcm_kscreen/qml/"
 
@@ -386,7 +385,6 @@ void Widget::curOutoutChanged(int index)
 void Widget::curTouchScreenChanged(int index)
 {
     int CurDevicesId;
-    QString CurDevicesName="";
     CurTouchScreenName= ui->touchscreenCombo->itemText(ui->touchscreenCombo->currentIndex());
     CurDevicesId=ui->touchscreenCombo->itemText(ui->touchscreenCombo->currentIndex()).toInt();
     CurDevicesName=findTouchScreenName(CurDevicesId);
@@ -413,7 +411,11 @@ void Widget::maptooutput() {
             qDebug("maptooutput resolve failed!\n");
         }else{
             int ret=_maptooutput(dpy,_CurTouchScreenName,_CurMonitorName);
-            if(ret!=0){
+            if(!ret){
+
+                save(CurDevicesName,CurTouchScreenName,CurMonitorName);
+
+            }else{
                 qDebug("MapToOutput exe failed ! ret=%d\n",ret);
             }
         }
@@ -446,7 +448,7 @@ bool Widget::findTouchScreen(){
 
     int  ndevices = 0;
     bool retval=false;
-
+    CurTouchscreenNum=0;
     Display *dpy = XOpenDisplay(NULL);
     XIDeviceInfo *info = XIQueryDevice(dpy, XIAllDevices, &ndevices);
     QString devicesid="";
@@ -464,6 +466,7 @@ bool Widget::findTouchScreen(){
                 devicesid = tr("%1").arg(dev->deviceid);
                 addTouchScreenToTouchCombo(devicesid);
                 retval = true;
+                CurTouchscreenNum++;
             }
         }
     }
@@ -499,4 +502,145 @@ QString Widget::findTouchScreenName(int devicesid){
             }
         }
     }
+}
+
+int Widget::compareserial(int touchcount){
+
+    for(int i=1;i<=touchcount;i++)
+    {
+        QString str = QString::number(i);
+        QString mapoption = "MAP"+str;
+        QString serial = mapoption+"/serial";
+        QString name = mapoption+"/name";
+        QString id = mapoption+"/id";
+        QString touchname = configIni->value(name).toString();
+        QString touchserial = configIni->value(serial).toString();
+        int touchid = configIni->value(id).toInt();
+        char _touchserial[32]={0};
+        std::string namestr = touchname.toStdString();
+        char * _touchname=(char *)namestr.c_str();
+        findSerialFromId(touchid,_touchname,_touchserial);
+        qDebug("_touchserial=%s\n",_touchserial);
+        QString Qtouchserial(_touchserial);
+        qDebug("Qtouchserial=%s\n",Qtouchserial.toStdString().data());
+        qDebug("touchserial=%s\n",touchserial.toStdString().data());
+        if(Qtouchserial!=touchserial){
+            return -1;
+        }
+    }
+
+    return Success;
+}
+
+int Widget::comparescreenname(QString _touchserial,QString _screenname){
+
+    int touchcount=configIni->value("COUNT/num").toInt();
+
+    for(int i=1;i<=touchcount;i++)
+    {
+        QString str = QString::number(i);
+        QString mapoption = "MAP"+str;
+        QString serial = mapoption+"/serial";
+        QString scrname = mapoption+"/scrname";
+        QString screenname = configIni->value(scrname).toString();
+        QString touchserial = configIni->value(serial).toString();
+
+        qDebug("Qtouchserial=%s\n",screenname.toStdString().data());
+        qDebug("touchserial=%s\n",touchserial.toStdString().data());
+        if(_touchserial==touchserial){
+            if(screenname!=_screenname){
+                configIni->remove(mapoption);
+            }
+        }
+    }
+
+    return Success;
+}
+
+void Widget::cleanTouchConfig(int touchcount){
+
+    configIni->setValue("COUNT/num",0);
+    for(int i=1;i<=touchcount;i++)
+    {
+        QString str = QString::number(i);
+        QString mapoption = "MAP"+str;
+        configIni->remove(mapoption);
+    }
+}
+
+void Widget::initTouchConfig(int curcount,QString touchserial,QString screenname) {
+    qdir = new QDir;
+    QString homepath = qdir->homePath();
+    QString touchcfgpath = homepath + "/.config/touchcfg.ini";
+    configIni = new QSettings(touchcfgpath, QSettings::IniFormat);
+
+    int touchcount=configIni->value("COUNT/num").toInt();
+
+    if(!touchcount)
+        return ;
+
+    if(compareserial(touchcount)!=0){
+
+        cleanTouchConfig(touchcount);
+        qDebug("compareserial cleanTouchConfig\n");
+    }
+    comparescreenname(touchserial,screenname);
+}
+
+bool Widget::Configserialisexit(QString touchserial){
+
+    bool devicesisexit=0;
+    int touchcount=configIni->value("COUNT/num").toInt();
+
+    for(int i=0;i<=touchcount;i++){
+
+        QString numstr = QString::number(i);
+        QString mapoption = "MAP"+numstr;
+        QString serial = mapoption+"/serial";
+        QString _touchserial = configIni->value(serial).toString();
+        if(_touchserial == touchserial){
+            devicesisexit=1;
+            break;
+        }
+
+    }
+    if(devicesisexit)
+        return TRUE;
+    else
+        return FALSE;
+
+}
+
+void Widget::writeTouchConfig(QString touchname,QString touchid,QString touchserial,QString screenname) {
+
+    int touchcount = configIni->value("COUNT/num").toInt();
+    bool devicesisexit = Configserialisexit(touchserial);
+    if(devicesisexit && touchcount)
+        return;
+
+    QString str = QString::number(touchcount+1);
+    QString mapoption = "MAP"+str;
+    QString serial = mapoption+"/serial";
+    QString name = mapoption+"/name";
+    QString id = mapoption+"/id";
+    QString scrname = mapoption+"/scrname";
+
+    configIni->setValue( "COUNT/num" ,touchcount+1);
+    configIni->setValue( name ,touchname);
+    configIni->setValue( id ,touchid);
+    configIni->setValue( serial ,touchserial);
+    configIni->setValue( scrname ,screenname);
+
+}
+
+void Widget::save(QString touchname,QString touchid,QString screenname) {
+
+    char _touchserial[32]={0};
+    std::string str = touchname.toStdString();
+    char * _touchname=(char *)str.c_str();
+    findSerialFromId(touchid.toInt(),_touchname,_touchserial);
+    qDebug("_touchserial1=%s\n",_touchserial);
+    QString touchserial(_touchserial);
+    initTouchConfig(CurTouchscreenNum,touchserial,screenname);
+    writeTouchConfig(touchname,touchid,touchserial,screenname);
 }

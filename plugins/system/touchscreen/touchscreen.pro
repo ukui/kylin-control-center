@@ -30,12 +30,13 @@ INCLUDEPATH   +=  \
                  $$PROJECT_COMPONENTSOURCE \
                  $$PROJECT_ROOTDIR \
 
-LIBS          += -L$$[QT_INSTALL_LIBS] -lgsettings-qt
+LIBS          += -L$$[QT_INSTALL_LIBS] -lgsettings-qt -ludev
 
 PKGCONFIG += gsettings-qt     \
              gtk+-3.0         \
 #             glib-2.0         \
              mate-desktop-2.0 \
+             udev             \
 
 
 SOURCES += \
@@ -44,6 +45,7 @@ SOURCES += \
     declarative/qmlscreen.cpp \
     monitorinputtask.cpp \
     touchscreen.cpp \
+    touchserialquery.cpp \
     utils.cpp \
     widget.cpp \
     xinputmanager.cpp
@@ -54,6 +56,7 @@ HEADERS += \
     declarative/qmlscreen.h \
     monitorinputtask.h \
     touchscreen.h \
+    touchserialquery.h \
     utils.h \
     widget.h \
     xinputmanager.h
