@@ -38,7 +38,7 @@ void HoverBtn::initUI() {
 
 void HoverBtn::initAnimation() {
     mMouseTimer = new QTimer(this);
-    mMouseTimer->setInterval(300);
+    mMouseTimer->setInterval(1);
 
     connect(mMouseTimer, &QTimer::timeout, this, [=] {
         if (mAnimationFlag) {
@@ -52,7 +52,7 @@ void HoverBtn::initAnimation() {
     });
 
     mEnterAction = new QPropertyAnimation(mInfoItem, "geometry");
-    mEnterAction->setDuration(300);
+    mEnterAction->setDuration(1);
     mEnterAction->setEasingCurve(QEasingCurve::OutQuad);
 
     connect(mEnterAction, &QPropertyAnimation::finished, this, [=] {
@@ -61,7 +61,7 @@ void HoverBtn::initAnimation() {
     });
 
     mLeaveAction = new QPropertyAnimation(mInfoItem,"geometry");
-    mLeaveAction->setDuration(300);
+    mLeaveAction->setDuration(1);
     mLeaveAction->setEasingCurve(QEasingCurve::InQuad);
 }
 
