@@ -223,6 +223,8 @@ void FunctionSelect::pushRecordValue(int type, QString name){
     }
 }
 
-void FunctionSelect::popRecordValue(){
-    recordFuncStack.pop();
+void FunctionSelect::popRecordValue() {
+    if (!recordFuncStack.isEmpty()) {
+        recordFuncStack.pop();
+    }
 }
