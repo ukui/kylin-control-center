@@ -70,6 +70,14 @@ class Widget : public QWidget
     void initTemptSlider();
     void writeScreenXml();
 
+    bool writeFile(const QString &filePath);
+    void writeGlobal(const KScreen::OutputPtr &output);
+    bool writeGlobalPart(const KScreen::OutputPtr &output,
+                         QVariantMap &info,
+                         const KScreen::OutputPtr &fallback);
+    QString globalFileName(const QString &hash);
+    QVariantMap getGlobalData(KScreen::OutputPtr output);
+
     float converToScale(const int value);
     int scaleToSlider(const float value);
 

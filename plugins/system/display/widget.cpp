@@ -27,6 +27,7 @@
 #include <QQuickWidget>
 #include <QMessageBox>
 #include <QDBusConnection>
+#include <QJsonDocument>
 
 #include <KF5/KScreen/kscreen/output.h>
 #include <KF5/KScreen/kscreen/edid.h>
@@ -874,10 +875,161 @@ void Widget::save() {
         auto *op = new KScreen::SetConfigOperation(mPrevConfig);
         op->exec();
     } else {
+        QString dir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) %
+                                                        QStringLiteral("/kscreen/") %
+                                                        QStringLiteral("" /*"configs/"*/);
+        QString hash = mPrevConfig->connectedOutputsHash();
         mPrevConfig = config->clone();
         writeScreenXml();
+        writeFile(dir % hash);
     }
 }
+
+QVariantMap metadata(const KScreen::OutputPtr &output)
+{
+    QVariantMap metadata;
+    metadata[QStringLiteral("name")] = output->name();
+    if (!output->edid() || !output->edid()->isValid()) {
+        return metadata;
+    }
+
+    metadata[QStringLiteral("fullname")] = output->edid()->deviceId();
+    return metadata;
+}
+
+QString Widget::globalFileName(const QString &hash)
+{
+    QString s_dirPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) %
+                                                         QStringLiteral("/kscreen/");
+    const auto dir =s_dirPath  % QStringLiteral("outputs/");
+    if (!QDir().mkpath(dir)) {
+        return QString();
+    }
+    return dir % hash;
+}
+
+QVariantMap Widget::getGlobalData(KScreen::OutputPtr output)
+{
+    QFile file(globalFileName(output->hashMd5()));
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << "Failed to open file" << file.fileName();
+        return QVariantMap();
+    }
+    QJsonDocument parser;
+    return parser.fromJson(file.readAll()).toVariant().toMap();
+}
+
+void Widget::writeGlobal(const KScreen::OutputPtr &output)
+{
+    // get old values and subsequently override
+    QVariantMap info = getGlobalData(output);
+    if (!writeGlobalPart(output, info, nullptr)) {
+        return;
+    }
+    QFile file(globalFileName(output->hashMd5()));
+    if (!file.open(QIODevice::WriteOnly)) {
+        qWarning() << "Failed to open global output file for writing! " << file.errorString();
+        return;
+    }
+
+    file.write(QJsonDocument::fromVariant(info).toJson());
+    return;
+}
+
+bool Widget::writeGlobalPart(const KScreen::OutputPtr &output, QVariantMap &info,
+                             const KScreen::OutputPtr &fallback)
+{
+
+    info[QStringLiteral("id")] = output->hash();
+    info[QStringLiteral("metadata")] = metadata(output);
+    info[QStringLiteral("rotation")] = output->rotation();
+
+    // Round scale to four digits
+    info[QStringLiteral("scale")] = int(output->scale() * 10000 + 0.5) / 10000.;
+
+    QVariantMap modeInfo;
+    float refreshRate = -1.;
+    QSize modeSize;
+    if (output->currentMode() && output->isEnabled()) {
+        refreshRate = output->currentMode()->refreshRate();
+        modeSize = output->currentMode()->size();
+    } else if (fallback && fallback->currentMode()) {
+        refreshRate = fallback->currentMode()->refreshRate();
+        modeSize = fallback->currentMode()->size();
+    }
+
+    if (refreshRate < 0 || !modeSize.isValid()) {
+        return false;
+    }
+
+    modeInfo[QStringLiteral("refresh")] = refreshRate;
+
+    QVariantMap modeSizeMap;
+    modeSizeMap[QStringLiteral("width")] = modeSize.width();
+    modeSizeMap[QStringLiteral("height")] = modeSize.height();
+    modeInfo[QStringLiteral("size")] = modeSizeMap;
+
+    info[QStringLiteral("mode")] = modeInfo;
+
+    return true;
+}
+
+bool Widget::writeFile(const QString &filePath)
+{
+    const KScreen::OutputList outputs = mConfig->outputs();
+    const auto oldConfig = mPrevConfig;
+    KScreen::OutputList oldOutputs;
+    if (oldConfig) {
+        oldOutputs = oldConfig->outputs();
+    }
+    QVariantList outputList;
+    for (const KScreen::OutputPtr &output : outputs) {
+        QVariantMap info;
+        const auto oldOutputIt = std::find_if(oldOutputs.constBegin(), oldOutputs.constEnd(),
+                                              [output](const KScreen::OutputPtr &out) {
+                                                  return out->hashMd5() == output->hashMd5();
+                                               }
+        );
+        const KScreen::OutputPtr oldOutput = oldOutputIt != oldOutputs.constEnd() ? *oldOutputIt :
+                                                                                    nullptr;
+        if (!output->isConnected()) {
+            continue;
+        }
+
+        writeGlobalPart(output, info, oldOutput);
+        info[QStringLiteral("primary")] = output->isPrimary();
+        info[QStringLiteral("enabled")] = output->isEnabled();
+
+        auto setOutputConfigInfo = [&info](const KScreen::OutputPtr &out) {
+            if (!out) {
+                return;
+            }
+
+            QVariantMap pos;
+            pos[QStringLiteral("x")] = out->pos().x();
+            pos[QStringLiteral("y")] = out->pos().y();
+            info[QStringLiteral("pos")] = pos;
+        };
+        setOutputConfigInfo(output->isEnabled() ? output : oldOutput);
+
+        if (output->isEnabled()) {
+                // try to update global output data
+                writeGlobal(output);
+            }
+        outputList.append(info);
+    }
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qWarning() << "Failed to open config file for writing! " << file.errorString();
+        return false;
+    }
+    file.write(QJsonDocument::fromVariant(outputList).toJson());
+    qDebug() << "Config saved on: " << file.fileName();
+
+    return true;
+}
+
 
 void Widget::scaleChangedSlot(int index) {
     switch (index) {
