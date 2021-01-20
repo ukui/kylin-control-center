@@ -36,6 +36,7 @@
 #include <KF5/KScreen/kscreen/configmonitor.h>
 #include <KF5/KScreen/kscreen/setconfigoperation.h>
 #include <KF5/KScreen/kscreen/edid.h>
+#include <KF5/KScreen/kscreen/types.h>
 
 #ifdef signals
 #undef signals
@@ -169,7 +170,6 @@ void Widget::setConfig(const KScreen::ConfigPtr &config) {
         }
         mConfig->disconnect(this);
     }
-
     mConfig = config;
     mPrevConfig = config->clone();
 
@@ -333,15 +333,23 @@ void Widget::slotUnifyOutputs() {
     }
 
     if (base->isCloneMode() && !mUnifyButton->isChecked()) {
+
         QPoint secPoint;
         KScreen::OutputList screens =  mPrevConfig->connectedOutputs();
+
 
         QMap<int, KScreen::OutputPtr>::iterator it = screens.begin();
         while (it != screens.end()) {
 
             KScreen::OutputPtr screen= it.value();
+
             if (screen->isPrimary()) {
-                secPoint = QPoint(screen->size().width(),0);
+                KScreen::ModeList modes = screen->modes();
+                Q_FOREACH(const KScreen::ModePtr &mode, modes) {
+                    if (screen->currentModeId() == mode->id()) {
+                        secPoint = QPoint(mode->size().width(), 0);
+                    }
+                }
             }
             it++;
         }
@@ -361,7 +369,7 @@ void Widget::slotUnifyOutputs() {
         ui->primaryCombo->setEnabled(true);
         mCloseScreenButton->setEnabled(true);
         ui->primaryCombo->setEnabled(true);
-    } else if (!base->isCloneMode() && mUnifyButton->isChecked()){
+    } else if (!base->isCloneMode() && mUnifyButton->isChecked()) {
         // Clone the current config, so that we can restore it in case user
         // breaks the cloning
         mPrevConfig = mConfig->clone();
