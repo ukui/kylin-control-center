@@ -77,24 +77,13 @@ void Vpn::initComponent(){
     QLabel * textLabel = new QLabel(tr("Add vpn connect"));
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);
+    iconLabel->setProperty("useIconHighlightEffect", true);
+    iconLabel->setProperty("iconHighlightEffectMode", 1);
+
     addLyt->addWidget(iconLabel);
     addLyt->addWidget(textLabel);
     addLyt->addStretch();
     addWgt->setLayout(addLyt);
-
-    // 悬浮改变Widget状态
-    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname){
-        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
-        iconLabel->setPixmap(pixgray);
-        textLabel->setStyleSheet("color: palette(base);");
-
-    });
-    // 还原状态
-    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname){
-        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
-        iconLabel->setPixmap(pixgray);
-        textLabel->setStyleSheet("color: palette(windowText);");
-    });
 
     connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
         runExternalApp();

@@ -96,26 +96,13 @@ void Printer::initComponent(){
     QLabel * textLabel = new QLabel(tr("Add printers and scanners"));
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);
+    iconLabel->setProperty("useIconHighlightEffect", true);
+    iconLabel->setProperty("iconHighlightEffectMode", 1);
+
     addLyt->addWidget(iconLabel);
     addLyt->addWidget(textLabel);
     addLyt->addStretch();
     mAddWgt->setLayout(addLyt);
-
-    // 悬浮改变Widget状态
-    connect(mAddWgt, &HoverWidget::enterWidget, this, [=](QString mname) {
-        Q_UNUSED(mname)
-        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
-        iconLabel->setPixmap(pixgray);
-        textLabel->setStyleSheet("color: palette(base);");
-
-    });
-    // 还原状态
-    connect(mAddWgt, &HoverWidget::leaveWidget, this, [=](QString mname) {
-        Q_UNUSED(mname)
-        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
-        iconLabel->setPixmap(pixgray);
-        textLabel->setStyleSheet("color: palette(windowText);");
-    });
 
     connect(mAddWgt, &HoverWidget::widgetClicked, this, [=](QString mname) {
         Q_UNUSED(mname)
