@@ -118,13 +118,13 @@ void HomePageWidget::initUI(){
             QString firstFunc;
             QList<FuncInfo> tmpList = FunctionSelect::funcinfoList[moduleIndex];
             for (FuncInfo tmpStruct : tmpList) {
-
-                if (moduleMap.keys().contains(tmpStruct.namei18nString)
-                        && mModuleMap[tmpStruct.nameString.toLower()].toBool()){
-                    firstFunc = tmpStruct.namei18nString;
-                    //跳转
-                    pmainWindow->functionBtnClicked(moduleMap.value(firstFunc));
-                    break;
+                if (moduleMap.keys().contains(tmpStruct.namei18nString)) {
+                    if (mModuleMap.isEmpty() || mModuleMap[tmpStruct.nameString.toLower()].toBool()) {
+                        firstFunc = tmpStruct.namei18nString;
+                        //跳转
+                        pmainWindow->functionBtnClicked(moduleMap.value(firstFunc));
+                        break;
+                    }
                 }
             }
         });

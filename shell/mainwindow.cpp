@@ -593,10 +593,11 @@ void MainWindow::initLeftsideBar(){
                 QMap<QString, QObject *> currentFuncMap = modulesList[selectedInt];
 
                 for (FuncInfo tmpStruct : tmpList){
-                    if (currentFuncMap.keys().contains(tmpStruct.namei18nString)
-                            && m_ModuleMap[tmpStruct.nameString.toLower()].toBool()) {
-                        modulepageWidget->switchPage(currentFuncMap.value(tmpStruct.namei18nString));
-                        break;
+                    if (currentFuncMap.keys().contains(tmpStruct.namei18nString)) {
+                        if (m_ModuleMap.isEmpty() || m_ModuleMap[tmpStruct.nameString.toLower()].toBool()) {
+                            modulepageWidget->switchPage(currentFuncMap.value(tmpStruct.namei18nString));
+                            break;
+                        }
                     }
                 }
             });
@@ -622,7 +623,6 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName) {
     iconBtn->setCheckable(true);
     iconBtn->setFixedSize(QSize(24, 24));
     iconBtn->setFocusPolicy(Qt::NoFocus);
-
 
     QString iconHomePageBtnQss = QString("QPushButton{background: palette(window); border: none;}");
     QString iconBtnQss = QString("QPushButton:checked{background: palette(base); border: none;}"
