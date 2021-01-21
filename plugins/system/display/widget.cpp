@@ -360,6 +360,7 @@ void Widget::slotUnifyOutputs() {
 
         ui->primaryCombo->setEnabled(true);
         mCloseScreenButton->setEnabled(true);
+        ui->showMonitorframe->setVisible(true);
         ui->primaryCombo->setEnabled(true);
     } else if (!base->isCloneMode() && mUnifyButton->isChecked()){
         // Clone the current config, so that we can restore it in case user
@@ -405,6 +406,7 @@ void Widget::slotUnifyOutputs() {
 
         //关闭开关
         mCloseScreenButton->setEnabled(false);
+        ui->showMonitorframe->setVisible(false);
         ui->primaryCombo->setEnabled(false);
         ui->mainScreenButton->setEnabled(false);
 
@@ -920,6 +922,7 @@ void Widget::mainScreenButtonSelect(int index) {
     }
 
     const KScreen::OutputPtr newPrimary = mConfig->output(ui->primaryCombo->itemData(index).toInt());
+    int connectCount  = mConfig->connectedOutputs().count();
     if (newPrimary == mConfig->primaryOutput()) {
         ui->mainScreenButton->setEnabled(false);
     } else {
@@ -927,6 +930,7 @@ void Widget::mainScreenButtonSelect(int index) {
     }
     // 设置是否勾选
     mCloseScreenButton->setEnabled(true);
+    ui->showMonitorframe->setVisible(connectCount > 1 ? true : false);
 
     // 初始化时不要发射信号
     const bool blockded = mCloseScreenButton->blockSignals(true);
