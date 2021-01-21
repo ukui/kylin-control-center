@@ -13,26 +13,25 @@
 #include <QFontMetrics>
 
 
-BlockWidget::BlockWidget(){
+BlockWidget::BlockWidget()
+{
     setFixedSize(QSize(260, 80));
     initComponent();
 }
 
-BlockWidget::~BlockWidget(){
+BlockWidget::~BlockWidget()
+{
 
 }
 
 void BlockWidget::initComponent(){
     QHBoxLayout * mainVerLayout = new QHBoxLayout(this);
     mainVerLayout->setSpacing(12);
-    mainVerLayout->setMargin(0);
-
+    mainVerLayout->setMargin(8);
     logoLabel = new QLabel;
     logoLabel->setFixedSize(QSize(48, 48));
-
     QVBoxLayout * textHorLayout = new QVBoxLayout;
     textHorLayout->setSpacing(10);
-
     titleLable = new QLabel;
     detailLabel = new QLabel;
     detailLabel->setAlignment(Qt::AlignTop);
@@ -48,15 +47,15 @@ void BlockWidget::initComponent(){
     textHorLayout->addWidget(titleLable);
     textHorLayout->addWidget(detailLabel);
     textHorLayout->addStretch();
-
     mainVerLayout->addWidget(logoLabel);
     mainVerLayout->addLayout(textHorLayout);
-
     setLayout(mainVerLayout);
 }
 
-void BlockWidget::setupComponent(QString logo, QString title, QString detail, QString cmd){
-    logoLabel->setPixmap(QPixmap(logo).scaled(logoLabel->size()));
+void BlockWidget::setupComponent(QString normal_icon ,QString hover_icon, QString title, QString detail, QString cmd){
+    m_normalIcon = normal_icon;
+    m_hoverIcon = hover_icon;
+    logoLabel->setPixmap(QPixmap(normal_icon).scaled(logoLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     titleLable->setText(title);
     detailLabel->setText(detail);
     m_curIndex = 0;
@@ -86,14 +85,23 @@ void BlockWidget::enterEvent(QEvent *event){
     m_charWidth = fontMetrics().width("。");
     m_labelWidth = m_charWidth * m_showText.length();
     scrollLabel();
+    logoLabel->setPixmap(QPixmap(m_hoverIcon).scaled(logoLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    setBackgroundRole(QPalette::Highlight);
+    setAutoFillBackground(true);
+    setStyleSheet("background:palette(Highlight);"
+                  "border-radius:6px;");
     QWidget::enterEvent(event);
 }
 
 void BlockWidget::leaveEvent(QEvent *event){
-    //style
     timer->stop();
     m_curIndex = 0;
     this->detailLabel->update();
+    setBackgroundRole(QPalette::Base);
+    setAutoFillBackground(true);
+    setStyleSheet("background:palette(Base);"
+                  "border-radius:6px;");
+    logoLabel->setPixmap(QPixmap(m_normalIcon).scaled(logoLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     QWidget::leaveEvent(event);
 }
 
@@ -143,7 +151,6 @@ SecurityCenter::SecurityCenter()
     pluginWidget = new QWidget;
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
-
     pluginName = tr("Security Center");
     pluginType = UPDATE;
 
@@ -182,7 +189,7 @@ const QString SecurityCenter::name() const {
 }
 
 void SecurityCenter::initComponent(){
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);font-weight:bold;}");
 
     //设置布局
     flowLayout = new FlowLayout;
@@ -191,26 +198,27 @@ void SecurityCenter::initComponent(){
 
     BlockWidget * account_sec_Widget = new BlockWidget();
     account_sec_Widget->setupComponent(":/img/plugins/securitycenter/user_48.png", \
+                                       ":/img/plugins/securitycenter/user_48_white.png",\
                                        tr("Account Security"), \
                                        tr("Protect account and login security"), \
                                        "/usr/sbin/ksc-defender --account-sec");
-
-
-
     BlockWidget * baseline_ctrl_Widget = new BlockWidget();
     baseline_ctrl_Widget->setupComponent(":/img/plugins/securitycenter/icon_scanning_b48@1x.png", \
+                                         ":/img/plugins/securitycenter/icon_scanning_w48@1x.png",\
                                          tr("Safety check-up"), \
                                          tr("Detect abnormal configuration"), \
                                          "/usr/sbin/ksc-defender --baseline-ctrl");
 
     BlockWidget * virus_protect_Widget = new BlockWidget();
     virus_protect_Widget->setupComponent(":/img/plugins/securitycenter/protect_48.png", \
+                                         ":/img/plugins/securitycenter/protect_48_white.png",\
                                          tr("Virus defense"), \
                                          tr("Real time protection from virus threat"), \
                                          "/usr/sbin/ksc-defender  --virus-protect");
 
     BlockWidget * exec_ctrl_Widget = new BlockWidget();
     exec_ctrl_Widget->setupComponent(":/img/plugins/securitycenter/kysec_48.png", \
+                                     ":/img/plugins/securitycenter/kysec_48_white.png",\
                                      tr("App protection"), \
                                      tr("App install"), \
                                      "/usr/sbin/ksc-defender --exec-ctrl");
@@ -218,12 +226,14 @@ void SecurityCenter::initComponent(){
 
     BlockWidget * net_protect_Widget = new BlockWidget();
     net_protect_Widget->setupComponent(":/img/plugins/securitycenter/net_48.png", \
+                                       ":/img/plugins/securitycenter/net_48_white.png",\
                                        tr("Network protection"), \
                                        tr("Manage and control network"), \
                                        "/usr/sbin/ksc-defender --net-protect");
 
     BlockWidget * security_setting_Widget = new BlockWidget();
     security_setting_Widget->setupComponent(":/img/plugins/securitycenter/set2px.png", \
+                                            ":/img/plugins/securitycenter/set2@2x_1.png",\
                                             tr("Secure mode configuration"), \
                                             tr("Simple configuraion"), \
                                             "/usr/sbin/ksc-defender --security-setting");

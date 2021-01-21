@@ -25,7 +25,7 @@ public:
     ~BlockWidget();
 public:
     void initComponent();
-    void setupComponent(QString logo, QString title, QString detail, QString cmd);
+    void setupComponent(QString normal_icon ,QString hover_icon, QString title, QString detail, QString cmd);
 
 public:
     QString _cmd;
@@ -38,6 +38,8 @@ public:
     int m_curIndex;
     int m_labelWidth;
     QString m_showText;
+    QString m_normalIcon;
+    QString m_hoverIcon;
     QTimer *timer;
     void scrollLabel();
     void updateIndex();
