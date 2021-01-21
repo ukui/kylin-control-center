@@ -301,7 +301,7 @@
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.ui" line="283"/>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="242"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="229"/>
         <source>lunar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -312,7 +312,7 @@
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.ui" line="319"/>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="249"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="236"/>
         <source>monday</source>
         <translation type="unfinished"></translation>
     </message>
@@ -346,7 +346,7 @@
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.cpp" line="91"/>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="277"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="264"/>
         <source>Need to log off to take effect</source>
         <translation type="unfinished"></translation>
     </message>
@@ -410,17 +410,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="244"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="231"/>
         <source>solar calendar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="251"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="238"/>
         <source>sunday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="322"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="309"/>
         <source>change data format</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1237,21 +1237,21 @@ change system settings</source>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="133"/>
         <source>Sync network time</source>
         <translation type="unfinished"></translation>
-        <extra-contents_path>/Dat/Sync network time</extra-contents_path>
+        <extra-contents_path>/dat/Sync network time</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="204"/>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="135"/>
         <source>Change time</source>
         <translation type="unfinished"></translation>
-        <extra-contents_path>/Dat/Change time</extra-contents_path>
+        <extra-contents_path>/dat/Change time</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="223"/>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="137"/>
         <source>Change time zone</source>
         <translation type="unfinished"></translation>
-        <extra-contents_path>/Dat/Change time zone</extra-contents_path>
+        <extra-contents_path>/dat/Change time zone</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="303"/>
@@ -1267,7 +1267,7 @@ change system settings</source>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="60"/>
         <source>24-hour clock</source>
         <translation type="unfinished"></translation>
-        <extra-contents_path>/Dat/24-hour clock</extra-contents_path>
+        <extra-contents_path>/dat/24-hour clock</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="245"/>
@@ -1445,7 +1445,7 @@ change system settings</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/deluserdialog.cpp" line="98"/>
-        <source>&apos; and:</source>
+        <source>&apos;and:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2862,12 +2862,12 @@ Please retry or relogin!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="808"/>
+        <location filename="../../mainwindow.cpp" line="812"/>
         <source>Warnning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="808"/>
+        <location filename="../../mainwindow.cpp" line="812"/>
         <source>This function has been controlled</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3467,7 +3467,7 @@ Please retry or relogin!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/printer/printer.cpp" line="138"/>
+        <location filename="../../../plugins/devices/printer/printer.cpp" line="125"/>
         <source>Attributes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3860,12 +3860,12 @@ Please retry or relogin!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="206"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="194"/>
         <source>Custom Shortcut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="375"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="363"/>
         <source>Update Shortcut</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4484,8 +4484,8 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="455"/>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="499"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="443"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="487"/>
         <source>disable</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5077,7 +5077,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="222"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="120"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="735"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="721"/>
         <source>Change pwd</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Change pwd</extra-contents_path>
@@ -5085,7 +5085,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="287"/>
         <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="122"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="722"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="708"/>
         <source>Change type</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Change type</extra-contents_path>
@@ -5152,17 +5152,17 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="753"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="739"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="866"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="852"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="866"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="852"/>
         <source>The user is logged in, please delete the user after logging out</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5304,82 +5304,82 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="465"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="467"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="465"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="467"/>
         <source>Some applications need to be logouted to take effect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="534"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="536"/>
         <source>unify output</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/display/unify output</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="538"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="540"/>
         <source>night mode</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/display/night mode</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="546"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="548"/>
         <source>Theme follow night mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="556"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="558"/>
         <source>Hint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="557"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="559"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display
 If something goes wrong, the settings will be restored after 10 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="561"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="563"/>
         <source>Save Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="562"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="564"/>
         <source>Restore Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="570"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="572"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display 
 If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="835"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="842"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="837"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="844"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="835"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="837"/>
         <source>please insure at least one output!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="842"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="844"/>
         <source>Morning time should be earlier than evening time!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="852"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="854"/>
         <source>Warnning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="853"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="855"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation type="unfinished"></translation>
@@ -5496,7 +5496,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
         <location filename="../../../plugins/account/networkaccount/networkaccount.cpp" line="25"/>
         <source>Cloud Account</source>
         <translation type="unfinished"></translation>
-        <extra-contents_path>/Cloud Account/Cloud Account</extra-contents_path>
+        <extra-contents_path>/cloud account/Cloud Account</extra-contents_path>
     </message>
 </context>
 </TS>
