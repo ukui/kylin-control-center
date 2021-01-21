@@ -663,7 +663,15 @@ void Theme::resetBtnClickSlot() {
     qtSettings->reset(ICON_QT_KEY);
 
     if (ui->effectFrame->isVisible()) {
-        effectSwitchBtn->setChecked(true);
+        if (!effectSwitchBtn->isChecked()) {
+            effectSwitchBtn->setChecked(true);
+        } else {
+            qtSettings->reset(THEME_TRAN_KEY);
+            qtSettings->reset(PEONY_TRAN_KEY);
+            gtkSettings->reset(ICON_GTK_KEY);
+            personliseGsettings->reset(PERSONALSIE_TRAN_KEY);
+            ui->tranSlider->setValue(transparency);
+        }
     }
 
     QString icoName = qtSettings->get(ICON_QT_KEY).toString();
