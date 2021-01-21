@@ -95,7 +95,7 @@ void DelUserDialog::setupConnect(){
 
 void DelUserDialog::setUsername(QString username){
     QString title1 = tr("Delete the user '");
-    QString title3 = tr("' and:");
+    QString title3 = tr("'and:");
     ui->titleLabel->setText(title1 + username + title3);
 }
 
