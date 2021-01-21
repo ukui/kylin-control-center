@@ -901,7 +901,7 @@ QString Widget::globalFileName(const QString &hash)
 {
     QString s_dirPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) %
                                                          QStringLiteral("/kscreen/");
-    const auto dir =s_dirPath  % QStringLiteral("outputs/");
+    QString dir =s_dirPath  % QStringLiteral("outputs/");
     if (!QDir().mkpath(dir)) {
         return QString();
     }
