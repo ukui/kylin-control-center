@@ -25,7 +25,7 @@
 #include <QStringList>
 #include <QObject>
 
-const int BEGINYEAR = 1900;
+const int BEGINYEAR = 1971;
 const int BEGINMD = 1;
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
@@ -179,7 +179,7 @@ void ChangtimeDialog::initUi(){
         ui->seccomboBox->addItem(QString::number(s));
     }
 
-    for (int year = 1900; year <= 2035; year++) {
+    for (int year = 1971; year <= 2035; year++) {
         ui->yearcomboBox->addItem(QString::number(year)/*+tr("year")*/);
     }
     for (int month = 1; month <= 12; month++) {
