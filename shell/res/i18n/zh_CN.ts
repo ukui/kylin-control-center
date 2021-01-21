@@ -1413,14 +1413,14 @@ change system settings</source>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="135"/>
         <source>Change time</source>
         <translation>手动更改时间</translation>
-        <extra-contents_path>/datetime/Change time</extra-contents_path>
+        <extra-contents_path>/Dat/Change time</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="223"/>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="137"/>
         <source>Change time zone</source>
         <translation>更改时区</translation>
-        <extra-contents_path>/datetime/Change time zone</extra-contents_path>
+        <extra-contents_path>/Dat/Change time zone</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="303"/>
@@ -1444,14 +1444,14 @@ change system settings</source>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="60"/>
         <source>24-hour clock</source>
         <translation>24小时制</translation>
-        <extra-contents_path>/datetime/24-hour clock</extra-contents_path>
+        <extra-contents_path>/Dat/24-hour clock</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="185"/>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="133"/>
         <source>Sync network time</source>
         <translation>同步网络时间</translation>
-        <extra-contents_path>/datetime/Sync network time</extra-contents_path>
+        <extra-contents_path>/Dat/Sync network time</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="245"/>
@@ -1636,12 +1636,12 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/userinfo/deluserdialog.ui" line="192"/>
         <source>keep the user&apos;s data, like desktop,documents, favorites, music, pictures and so on</source>
-        <translation type="unfinished"></translation>
+        <translation>保留该用户下所属的桌面、文件、收藏夹、音乐等文件</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/deluserdialog.ui" line="260"/>
         <source>delete whole data belong user</source>
-        <translation type="unfinished"></translation>
+        <translation>删除用户所有文件</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/deluserdialog.ui" line="318"/>
@@ -1664,12 +1664,13 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/userinfo/deluserdialog.cpp" line="97"/>
         <source>Delete the user &apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>是否删除用户&apos;</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/deluserdialog.cpp" line="98"/>
         <source>&apos; and:</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>&apos;同时:</translatorcomment>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2518,7 +2519,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="291"/>
         <source>Thanks For Using The ukcc</source>
-        <translation type="unfinished"></translation>
+        <translation>欢迎使用UKCC</translation>
     </message>
 </context>
 <context>
@@ -2739,12 +2740,12 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/devices/keyboard/preview/kbpreviewframe.cpp" line="321"/>
         <source>No preview found</source>
-        <translation type="unfinished"></translation>
+        <translation>无预览</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/keyboard/preview/kbpreviewframe.cpp" line="325"/>
         <source>Unable to open Preview !</source>
-        <translation type="unfinished"></translation>
+        <translation>无法打开预览！</translation>
     </message>
 </context>
 <context>
@@ -2990,7 +2991,7 @@ folder will be deleted!</source>
         <location filename="../../../plugins/devices/keyboard/preview/keyboardpainter.cpp" line="67"/>
         <location filename="../../../plugins/devices/keyboard/preview/keyboardpainter.cpp" line="69"/>
         <source>Keyboard layout levels</source>
-        <translation type="unfinished"></translation>
+        <translation>键盘布局等级</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/keyboard/preview/keyboardpainter.cpp" line="67"/>
@@ -3517,6 +3518,16 @@ Please retry or relogin!</source>
         <translation>控制面板</translation>
     </message>
     <message>
+        <location filename="../../mainwindow.cpp" line="808"/>
+        <source>Warnning</source>
+        <translation>警告</translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="808"/>
+        <source>This function has been controlled</source>
+        <translation>该功能已被管控</translation>
+    </message>
+    <message>
         <location filename="../../mainwindow.cpp" line="553"/>
         <source>Home</source>
         <translation>首页</translation>
@@ -3980,14 +3991,14 @@ Please retry or relogin!</source>
         <location filename="../../../plugins/system/power/power.cpp" line="295"/>
         <location filename="../../../plugins/system/power/power.cpp" line="441"/>
         <source>Change PC sleep time:</source>
-        <translation>系统进入空闲状态并于此时间后挂起：</translation>
+        <translation>系统于此时间后挂起：</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="713"/>
         <location filename="../../../plugins/system/power/power.cpp" line="312"/>
         <location filename="../../../plugins/system/power/power.cpp" line="442"/>
         <source>Change DP close time:</source>
-        <translation>系统进入空闲状态并于此时间后关闭显示器：</translation>
+        <translation>系统于此时间后关闭显示器：</translation>
     </message>
     <message>
         <source>Change pc sleep time:</source>
@@ -6546,82 +6557,82 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="vanished">屏幕缩放 </translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="528"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="534"/>
         <source>unify output</source>
         <translation>统一输出</translation>
         <extra-contents_path>/display/unify output</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="532"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="538"/>
         <source>night mode</source>
         <translation>夜间模式</translation>
         <extra-contents_path>/display/night mode</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="459"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="465"/>
         <source>Some applications need to be logouted to take effect</source>
         <translation>部分程序需要注销生效</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="459"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="465"/>
         <source>Information</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="540"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="546"/>
         <source>Theme follow night mode</source>
         <translation>主题跟随夜间模式变化</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="550"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="556"/>
         <source>Hint</source>
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="551"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="557"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display
 If something goes wrong, the settings will be restored after 10 seconds</source>
         <translation>修改分辨率或刷新率后，由于显示设备与显卡存在兼容性问题，有可能显示不正常或者无法显示．如果出现异常，系统将在10秒后还原设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="555"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="561"/>
         <source>Save Config</source>
         <translation>保存当前配置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="556"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="562"/>
         <source>Restore Config</source>
         <translation>恢复之前配置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="564"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="570"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display 
 If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation>修改分辨率或刷新率后，由于显示设备与显卡存在兼容性问题，有可能显示不正常或者无法显示．如果出现异常，系统将在%1秒后还原设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="829"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="835"/>
         <source>please insure at least one output!</source>
         <translation>请确保至少开启一个屏幕!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="829"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="836"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="835"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="842"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="836"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="842"/>
         <source>Morning time should be earlier than evening time!</source>
         <translation>早晨时刻应早于晚上的时刻!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="846"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="852"/>
         <source>Warnning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="847"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="853"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation>抱歉，配置不能应用.</translation>
@@ -6860,7 +6871,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
         <location filename="../../../plugins/account/networkaccount/networkaccount.cpp" line="25"/>
         <source>Cloud Account</source>
         <translation>云账户</translation>
-        <extra-contents_path>/networkaccount/Cloud Account</extra-contents_path>
+        <extra-contents_path>/Cloud Account/Cloud Account</extra-contents_path>
     </message>
 </context>
 <context>

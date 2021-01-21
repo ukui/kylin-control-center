@@ -118,8 +118,8 @@ bool SearchWidget::jumpContentPathWidget(QString path) {
                     qDebug() << " [SearchWidget] data.translateContent : " << data.translateContent << " , data.fullPagePath : " << data.fullPagePath << " , data.actualModuleName: " << data.actualModuleName;
 #endif
                     //the data.actualModuleName had translate to All lowercase
-                    qDebug() <<" actulaModuleName is:" << data.translateContent << " " << m_EnterNewPagelist[i].fullPagePath.section('/', 2, -1) << endl;
-                    Q_EMIT notifyModuleSearch(data.translateContent);//fullPagePath need delete moduleName
+                    qDebug() <<" actulaModuleName is:" << data.translateContent << " " << m_EnterNewPagelist[i].fullPagePath << m_EnterNewPagelist[i].fullPagePath.section('/', 1, 1);
+                    Q_EMIT notifyModuleSearch(data.translateContent, m_EnterNewPagelist[i].fullPagePath.section('/', 1, 1));//fullPagePath need delete moduleName
                     bResult = true;
                     break;
                 }

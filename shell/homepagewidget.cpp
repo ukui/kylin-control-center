@@ -111,14 +111,16 @@ void HomePageWidget::initUI(){
 
         widget->setObjectName("itemWidget");
         widget->setStyleSheet("ResHoverWidget:hover:!pressed#itemWidget{background: #3D6BE5; border-radius: 4px;}");
-        connect(widget, &ResHoverWidget::widgetClicked, [=](QString moduleName){
+        connect(widget, &ResHoverWidget::widgetClicked, [=](QString moduleName) {
             int moduleIndex = kvConverter->keystringTokeycode(moduleName);
 
             //获取模块的第一项跳转
             QString firstFunc;
             QList<FuncInfo> tmpList = FunctionSelect::funcinfoList[moduleIndex];
-            for (FuncInfo tmpStruct : tmpList){
-                if (moduleMap.keys().contains(tmpStruct.namei18nString)){
+            for (FuncInfo tmpStruct : tmpList) {
+
+                if (moduleMap.keys().contains(tmpStruct.namei18nString)
+                        && mModuleMap[tmpStruct.nameString.toLower()].toBool()){
                     firstFunc = tmpStruct.namei18nString;
                     //跳转
                     pmainWindow->functionBtnClicked(moduleMap.value(firstFunc));

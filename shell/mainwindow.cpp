@@ -442,7 +442,7 @@ void MainWindow::showUkccAboutSlot() {
 
     ukccMain->exec(this->mapToGlobal(pt));
 }
-void MainWindow::setBtnLayout(QPushButton * &pBtn){
+void MainWindow::setBtnLayout(QPushButton * &pBtn) {
     QLabel * imgLabel = new QLabel(pBtn);
     QSizePolicy imgLabelPolicy = imgLabel->sizePolicy();
     imgLabelPolicy.setHorizontalPolicy(QSizePolicy::Fixed);
@@ -556,7 +556,6 @@ void MainWindow::initLeftsideBar(){
         ui->stackedWidget->setCurrentIndex(0);
     });
     hBtn->setStyleSheet("QPushButton#homepage{background: palette(window); border: none;}");
-    //    hBtn->setStyleSheet("QPushButton#homepage{background: palette(base);}");
     ui->leftsidebarVerLayout->addStretch();
     ui->leftsidebarVerLayout->addWidget(hBtn);
 
@@ -594,7 +593,8 @@ void MainWindow::initLeftsideBar(){
                 QMap<QString, QObject *> currentFuncMap = modulesList[selectedInt];
 
                 for (FuncInfo tmpStruct : tmpList){
-                    if (currentFuncMap.keys().contains(tmpStruct.namei18nString)){
+                    if (currentFuncMap.keys().contains(tmpStruct.namei18nString)
+                            && m_ModuleMap[tmpStruct.nameString.toLower()].toBool()) {
                         modulepageWidget->switchPage(currentFuncMap.value(tmpStruct.namei18nString));
                         break;
                     }
@@ -796,14 +796,19 @@ void MainWindow::sltMessageReceived(const QString &msg) {
     showNormal();
 }
 
-void MainWindow::switchPage(QString moduleName) {
+void MainWindow::switchPage(QString moduleName, QString jumpMoudle) {
 
     for (int i = 0; i < modulesList.length(); i++) {
         auto modules = modulesList.at(i);
         //开始跳转
         if (modules.keys().contains(moduleName)) {
-            ui->stackedWidget->setCurrentIndex(1);
-            modulepageWidget->switchPage(modules.value(moduleName));
+            if (m_ModuleMap.isEmpty() || m_ModuleMap[jumpMoudle.toLower()].toBool()) {
+                ui->stackedWidget->setCurrentIndex(1);
+                modulepageWidget->switchPage(modules.value(moduleName));
+                return ;
+            }
         }
     }
+    QMessageBox::information(this, tr("Warnning"), tr("This function has been controlled"));
+    return;
 }

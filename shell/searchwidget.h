@@ -47,7 +47,7 @@ private Q_SLOTS:
     void onCompleterActivated(QString value);
 
 Q_SIGNALS:
-    void notifyModuleSearch(QString);
+    void notifyModuleSearch(QString, QString);
 
 private:
     void loadxml();

@@ -56,7 +56,7 @@ DateTime::DateTime() {
     connect(m_itimer,SIGNAL(timeout()), this, SLOT(datetime_update_slot()));
 
     m_formTimeBtn = new SwitchButton;
-    //~ contents_path /datetime/24-hour clock
+    //~ contents_path /Dat/24-hour clock
     m_formTimeLabel = new QLabel(tr("24-hour clock"));
 
     // 初始化gsettings
@@ -122,18 +122,18 @@ void DateTime::plugin_delay_control() {
 
 const QString DateTime::name() const {
 
-    return QStringLiteral("datetime");
+    return QStringLiteral("dat");
 }
 
 void DateTime::component_init() {
     ui->titleLabel->setContentsMargins(0,0,0,16);
     ui->timeClockLable->setContentsMargins(0,0,0,16);
 
-    //~ contents_path /datetime/Sync network time
+    //~ contents_path /Dat/Sync network time
     ui->synsystimeBtn->setText(tr("Sync network time"));
-    //~ contents_path /datetime/Change time
+    //~ contents_path /Dat/Change time
     ui->chgtimebtn->setText(tr("Change time"));
-    //~ contents_path /datetime/Change time zone
+    //~ contents_path /Dat/Change time zone
     ui->chgzonebtn->setText(tr("Change time zone"));
 
     ui->chgLayout->setSpacing(16);

@@ -1237,21 +1237,21 @@ change system settings</source>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="133"/>
         <source>Sync network time</source>
         <translation type="unfinished"></translation>
-        <extra-contents_path>/datetime/Sync network time</extra-contents_path>
+        <extra-contents_path>/Dat/Sync network time</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="204"/>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="135"/>
         <source>Change time</source>
         <translation type="unfinished"></translation>
-        <extra-contents_path>/datetime/Change time</extra-contents_path>
+        <extra-contents_path>/Dat/Change time</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="223"/>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="137"/>
         <source>Change time zone</source>
         <translation type="unfinished"></translation>
-        <extra-contents_path>/datetime/Change time zone</extra-contents_path>
+        <extra-contents_path>/Dat/Change time zone</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="303"/>
@@ -1267,7 +1267,7 @@ change system settings</source>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="60"/>
         <source>24-hour clock</source>
         <translation type="unfinished"></translation>
-        <extra-contents_path>/datetime/24-hour clock</extra-contents_path>
+        <extra-contents_path>/Dat/24-hour clock</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="245"/>
@@ -2859,6 +2859,16 @@ Please retry or relogin!</source>
     <message>
         <location filename="../../mainwindow.cpp" line="553"/>
         <source>Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="808"/>
+        <source>Warnning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="808"/>
+        <source>This function has been controlled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5294,82 +5304,82 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="459"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="465"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="459"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="465"/>
         <source>Some applications need to be logouted to take effect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="528"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="534"/>
         <source>unify output</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/display/unify output</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="532"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="538"/>
         <source>night mode</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/display/night mode</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="540"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="546"/>
         <source>Theme follow night mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="550"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="556"/>
         <source>Hint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="551"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="557"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display
 If something goes wrong, the settings will be restored after 10 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="555"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="561"/>
         <source>Save Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="556"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="562"/>
         <source>Restore Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="564"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="570"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display 
 If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="829"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="836"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="835"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="842"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="829"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="835"/>
         <source>please insure at least one output!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="836"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="842"/>
         <source>Morning time should be earlier than evening time!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="846"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="852"/>
         <source>Warnning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="847"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="853"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation type="unfinished"></translation>
@@ -5486,7 +5496,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
         <location filename="../../../plugins/account/networkaccount/networkaccount.cpp" line="25"/>
         <source>Cloud Account</source>
         <translation type="unfinished"></translation>
-        <extra-contents_path>/networkaccount/Cloud Account</extra-contents_path>
+        <extra-contents_path>/Cloud Account/Cloud Account</extra-contents_path>
     </message>
 </context>
 </TS>
