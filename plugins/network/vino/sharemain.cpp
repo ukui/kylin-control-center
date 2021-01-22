@@ -97,9 +97,8 @@ void ShareMain::initUI() {
     mPwdBox = new QCheckBox(this);
     mPwdsLabel = new QLabel(tr("Require user to enter this password: "), this);
 
-    mHintLabel = new QLabel(tr("Password length is greater than 8"), this);
+    mHintLabel = new QLabel(tr("Password can not be blank"), this);
     mHintLabel->setStyleSheet("color:red;");
-    mHintLabel->setVisible(false);
 
     mPwdLineEdit = new QLineEdit(this);
     pwdHLayout->addWidget(mPwdBox);
@@ -146,9 +145,11 @@ void ShareMain::initEnableStatus() {
     mViewBox->setChecked(!isShared);
     if (pwd == "vnc") {
         mPwdBox->setChecked(true);
+        mHintLabel->setVisible(true);
     } else {
         mPwdBox->setChecked(false);
         mPwdLineEdit->setVisible(false);
+        mHintLabel->setVisible(false);
     }
 
     QProcess *process = new QProcess;
@@ -199,8 +200,10 @@ void ShareMain::pwdEnableSlot(bool status) {
     if (status) {
         mVinoGsetting->set(kAuthenticationKey, "vnc");
         mPwdLineEdit->setVisible(true);
+        mHintLabel->setVisible(true);
     } else {
         mPwdLineEdit->setVisible(false);
+        mHintLabel->setVisible(false);
         mVinoGsetting->set(kAuthenticationKey, "none");
     }
 }
@@ -208,12 +211,16 @@ void ShareMain::pwdEnableSlot(bool status) {
 void ShareMain::pwdInputSlot(const QString &pwd) {
     Q_UNUSED(pwd);
 
-    if (pwd.length() < 8) {
+    if (pwd.length() < 8 && !pwd.isEmpty()) {
         mHintLabel->setVisible(false);
         QByteArray text = pwd.toLocal8Bit();
         QByteArray secPwd = text.toBase64();
         mVinoGsetting->set(kVncPwdKey, secPwd);
+    } else if (pwd.isEmpty()) {
+        mHintLabel->setText(tr("Password can not be blank"));
+        mHintLabel->setVisible(true);
     } else {
+        mHintLabel->setText(tr("Password length is greater than 8"));
         mHintLabel->setVisible(true);
         mPwdLineEdit->setText(pwd.mid(0, 8));
     }
