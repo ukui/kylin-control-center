@@ -885,12 +885,12 @@ void Widget::save() {
         auto *op = new KScreen::SetConfigOperation(mPrevConfig);
         op->exec();
     } else {
+        mPrevConfig = config->clone();
+        writeScreenXml();
         QString dir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) %
                                                         QStringLiteral("/kscreen/") %
                                                         QStringLiteral("" /*"configs/"*/);
         QString hash = mPrevConfig->connectedOutputsHash();
-        mPrevConfig = config->clone();
-        writeScreenXml();
         writeFile(dir % hash);
     }
 }
@@ -911,7 +911,7 @@ QString Widget::globalFileName(const QString &hash)
 {
     QString s_dirPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) %
                                                          QStringLiteral("/kscreen/");
-    const auto dir =s_dirPath  % QStringLiteral("outputs/");
+    QString dir = s_dirPath  % QStringLiteral("outputs/");
     if (!QDir().mkpath(dir)) {
         return QString();
     }
