@@ -51,7 +51,7 @@ ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
 //    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
 
-    ui->customfaceBtn->setStyleSheet("background: transparent; color: blue; text-align:left");
+    ui->customfaceBtn->setStyleSheet("background: transparent; text-align:left");
 
     selectedFaceIcon = "";
 

@@ -27,6 +27,15 @@
 #include <QDBusConnection>
 #include <QSettings>
 
+/* qt会将glib里的signals成员识别为宏，所以取消该宏
+ * 后面如果用到signals时，使用Q_SIGNALS代替即可
+ **/
+#ifdef signals
+#undef signals
+#endif
+
+#include "libupower-glib/upower.h"
+
 typedef enum {
     BALANCE,
     SAVING,
@@ -93,6 +102,7 @@ QWidget * Power::get_plugin_ui() {
         const QByteArray personalizeId(PERSONALSIE_SCHEMA);
 
         initDbus();
+        initDeviceStatus();
         setupComponent();
         isPowerSupply();
         if (QGSettings::isSchemaInstalled(id)) {
@@ -175,6 +185,10 @@ void Power::setHibernateTime(QString hibernate) {
 
 void Power::setupComponent() {
 
+    if (!hasBat){
+        ui->iconFrame->hide();
+    }
+
     ui->powerModeBtnGroup->setId(ui->balanceRadioBtn, BALANCE);
     ui->powerModeBtnGroup->setId(ui->savingRadioBtn, SAVING);
     ui->powerModeBtnGroup->setId(ui->custdomRadioBtn, CUSTDOM);
@@ -227,6 +241,28 @@ void Power::setupComponent() {
     ui->iconComboBox->insertItem(1, iconShowList.at(1), "present");
     ui->iconComboBox->insertItem(2, iconShowList.at(2), "charge");
     refreshUI();
+}
+
+void Power::initDeviceStatus(){
+
+    /* 默认机器没有电池 */
+    hasBat = false;
+//    GError *error = NULL;
+    UpClient * client = up_client_new ();
+    GPtrArray *devices = NULL;
+    UpDevice * device;
+    UpDeviceKind kind;
+
+    devices = up_client_get_devices2(client);
+
+    for (int i=0; i< devices->len; i++) {
+            device = (UpDevice *)g_ptr_array_index (devices, i);
+            g_object_get (device, "kind", &kind, NULL);
+            if (kind == UP_DEVICE_KIND_BATTERY)
+                    hasBat = true;
+    }
+    g_ptr_array_unref (devices);
+
 }
 
 void Power::setupConnect() {

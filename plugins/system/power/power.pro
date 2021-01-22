@@ -13,13 +13,16 @@ INSTALLS += target
 INCLUDEPATH += \
                $$PROJECT_ROOTDIR \
 
-LIBS     += -L$$[QT_INSTALL_LIBS] -lgsettings-qt
+LIBS     += -L$$[QT_INSTALL_LIBS] -lgsettings-qt -lupower-glib
 
 CONFIG +=  \
           link_pkgconfig \
           c++11
 
 PKGCONFIG += gsettings-qt \
+             gio-2.0 \
+             gio-unix-2.0 \
+             upower-glib
 
 FORMS += \
     power.ui

@@ -89,6 +89,8 @@ private:
     bool isExitsPower;
     bool mFirstLoad;
 
+    bool hasBat;
+
     ComboxFrame *mHibernate;
     ComboxFrame *mPowerBtn;
     ComboxFrame *mBatteryAct;
@@ -100,6 +102,7 @@ private:
     bool getHibernateStatus();
     QString  getHibernateTime();
     void initDbus();
+    void initDeviceStatus();
 
 private slots:
     void setIdleTime(int idleTime);

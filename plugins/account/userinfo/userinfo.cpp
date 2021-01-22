@@ -683,13 +683,16 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
 
     QPushButton * faceBtn = new QPushButton(widget);
     faceBtn->setObjectName("faceBtn");
-    faceBtn->setFixedSize(32, 32);
+    faceBtn->setFixedSize(40, 40);
     faceBtn->setIcon(QIcon(user.iconfile));
-    faceBtn->setIconSize(faceBtn->size());
+    faceBtn->setIconSize(QSize(32, 32));
     connect(faceBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
         showChangeFaceDialog(user.username);
     });
+
+    ElipseMaskWidget * otherElipseMaskWidget = new ElipseMaskWidget(faceBtn);
+    otherElipseMaskWidget->setGeometry(0, 0, faceBtn->width(), faceBtn->height());
 
     QLabel * nameLabel = new QLabel(widget);
     QSizePolicy nameSizePolicy = nameLabel->sizePolicy();

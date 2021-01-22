@@ -111,6 +111,10 @@ ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QWidget *parent) :
     } else {
         connect(ui->curPwdLineEdit, &QLineEdit::editingFinished, [=]{
 
+            if (ui->curPwdLineEdit->text().isEmpty()){
+                return;
+            }
+
             if (checkOtherPasswd(ui->usernameLabel->text(), ui->curPwdLineEdit->text())){
                 curPwdTip = "";
             } else {
