@@ -172,6 +172,7 @@ void NetConnect::initComponent(){
         ui->RefreshBtn->setText(tr("Refreshing..."));
         ui->RefreshBtn->setEnabled(false);
         wifiBtn->setEnabled(false);
+        ui->openWifiFrame->setVisible(false);
 
         wifiBtn->blockSignals(true);
         wifiSwitchSlot(checked);
@@ -180,6 +181,7 @@ void NetConnect::initComponent(){
 
     ui->RefreshBtn->setEnabled(false);
     wifiBtn->setEnabled(false);
+    ui->openWifiFrame->setVisible(false);
 
     emit ui->RefreshBtn->clicked(true);
     ui->verticalLayout_2->setContentsMargins(0,0,32,0);
@@ -257,6 +259,7 @@ void NetConnect::getNetList() {
         wifiBtn->setChecked(wifiSt);
     }
     wifiBtn->setEnabled(wifiSt);
+    ui->openWifiFrame->setVisible(wifiSt);
 
     this->TlanList =  execGetLanList();
     pThread = new QThread;
@@ -298,6 +301,7 @@ void NetConnect::getNetList() {
     connect(pThread, &QThread::finished, this, [=]{
         bool wifiSt = getwifiisEnable();
         wifiBtn->setEnabled(wifiSt);
+        ui->openWifiFrame->setVisible(wifiSt);
         ui->RefreshBtn->setEnabled(true);
         ui->RefreshBtn->setText(tr("Refresh"));
     });
