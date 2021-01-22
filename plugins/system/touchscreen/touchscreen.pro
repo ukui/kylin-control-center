@@ -36,7 +36,7 @@ PKGCONFIG += gsettings-qt     \
              gtk+-3.0         \
 #             glib-2.0         \
              mate-desktop-2.0 \
-             udev             \
+             libudev             \
 
 
 SOURCES += \
