@@ -127,6 +127,7 @@ TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
         }
 
         QCompleter *completer = new QCompleter(completions, m_searchInput);
+        completer->popup()->setAttribute(Qt::WA_InputMethodEnabled);
         completer->setCompletionMode(QCompleter::PopupCompletion);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         completer->setFilterMode(Qt::MatchContains);
