@@ -30,7 +30,6 @@ activecon *kylin_network_get_activecon_info(char *path)
         fgets(activeStrLine,1024,activefp);
         activenum++;
     }
-    // printf("%d\n",activenum);
     fclose(activefp);
     activecon *activelist=(activecon *)malloc(sizeof(activecon)*activenum);
 
@@ -80,7 +79,6 @@ activecon *kylin_network_get_activecon_info(char *path)
                 if(*(index+1)=' ')
                     if(*(index+2)!=' ')
                         break;
-
             }
         }
         char *index1=index+2;

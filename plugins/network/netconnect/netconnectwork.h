@@ -3,8 +3,7 @@
 
 #include <QObject>
 #include <QStringList>
-
-#include "wifi.h"
+#include <QProcess>
 
 class NetconnectWork : public QObject
 {

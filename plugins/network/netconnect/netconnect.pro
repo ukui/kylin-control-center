@@ -32,14 +32,12 @@ PKGCONFIG += gsettings-qt \
 SOURCES += \
     kylin_network_interface.c \
     netconnect.cpp \
-    netconnectwork.cpp \
-    wifi.cpp
+    netconnectwork.cpp
 
 HEADERS += \
     kylin_network_interface.h \
     netconnect.h \
-    netconnectwork.h \
-    wifi.h
+    netconnectwork.h
 
 FORMS += \
     netconnect.ui

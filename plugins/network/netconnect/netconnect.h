@@ -38,7 +38,6 @@
 #include <HoverWidget/hoverwidget.h>
 #include <QMap>
 
-#include "wifi.h"
 #include "netconnectwork.h"
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
@@ -103,12 +102,13 @@ private:
     SwitchButton *wifiBtn;
 
     QMap<QString, int> connectedWifi;
-    QMap<QString,int> wifiList;     //wifi list<name,Signal strength>
-    QStringList lanList;            // list of wired network
+    // Wifi list<name,Signal strength>
+    QMap<QString,int> wifiList;
+    // List of wired network
+    QStringList lanList;
     QString connectedLan;
-    QGSettings *m_gsettings = nullptr;
+    QGSettings *m_gsettings;
 
-    Wifi *m_wifiList;
     QThread *pThread;
     NetconnectWork *pNetWorker;
 
@@ -124,23 +124,23 @@ private:
 
     QMap<QString, QListWidgetItem *> AvailableNetworkMap;
 
-    int setSignal(QString lv);      //get wifi's strength
+    // Get wifi's strength
+    int setSignal(QString lv);
     QStringList execGetLanList();
     void getWifiListDone(QStringList wifislist, QStringList lanList);
     bool getSwitchStatus(QString key);
 
-    /*
-     * the wifi's origin status
-     */
+    // The wifi's origin status
     bool getInitStatus();
 
-    // clear the lan and wifi list
+    // Clear the lan and wifi list
     void clearContent();
 
     void deleteNetworkDone(QString);
     void addNetworkDone(QString);
     void _buildWidgetForItem(QString);
     void initNetworkMap();
+    QString wifiIcon(bool isLock, int strength);
 
 private slots:
     void wifiSwitchSlot(bool signal);
