@@ -31,6 +31,10 @@
 #include <QMenu>
 #include <QTimer>
 #include <QVariant>
+#include <QProcess>
+#include <QComboBox>
+#include <QStringView>
+#include <QLayoutItem>
 
 
 #include "deviceinfoitem.h"
@@ -45,6 +49,8 @@ public:
     void InitMainMiddleUI();
     void InitMainbottomUI();
     void startDiscovery();
+    void adapterChanged();
+    void updateUIWhenAdapterChanged();
     ~BlueToothMain();
 
 signals:
@@ -61,14 +67,20 @@ private slots:
     void change_adapter_name(const QString &name);
     void change_device_parent(const QString &address);
     void adapterPoweredChanged(bool value);
+    void adapterComboxChanged(int i);
+    void adapterNameChanged(const QString &name);
 private:
     QGSettings *settings = nullptr;
     QString Default_Adapter;
     QStringList paired_device_address;
     QString finally_connect_the_device;
     QStringList Discovery_device_address;
+    QStringList adapter_address_list;
+    QStringList adapter_name_list;
 
     QVBoxLayout *main_layout = nullptr;
+    QFrame *frame_2 = nullptr;
+    QComboBox *adapter_list = nullptr;
 
     QWidget *main_widget = nullptr;
     QWidget *frame_top = nullptr;
@@ -95,6 +107,7 @@ private:
     QTimer *m_timer = nullptr;
     QTimer *discovering_timer =nullptr;
     int i = 7;
+    bool show_flag = false;
 };
 
 #endif // BLUETOOTHMAIN_H

@@ -89,6 +89,7 @@ void BluetoothNameLabel::enterEvent(QEvent *event)
 
 void BluetoothNameLabel::LineEdit_Input_Complete()
 {
+    qDebug() << Q_FUNC_INFO;
     if(device_name == m_lineedit->text()){
         set_label_text(device_name);
     }else{

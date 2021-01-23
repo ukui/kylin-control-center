@@ -85,7 +85,7 @@ void DeviceInfoItem::initInfoPage(QString d_name, DEVICE_STATUS status, BluezQt:
         icon_device = QIcon::fromTheme("computer-symbolic");
     }else if(device->type() == BluezQt::Device::Phone){
         icon_device = QIcon::fromTheme("phone-apple-iphone-symbolic");
-    }else if(device->type() == BluezQt::Device::Headset){
+    }else if((device->type() == BluezQt::Device::Headset)||(device->type() == BluezQt::Device::Headphones)){
         icon_device = QIcon::fromTheme("audio-headphones-symbolic");
     }else if(device->type() == BluezQt::Device::Mouse){
         icon_device = QIcon::fromTheme("input-mouse-symbolic");
@@ -229,7 +229,7 @@ void DeviceInfoItem::AnimationInit()
     });
 
     enter_action = new QPropertyAnimation(info_page,"geometry");
-    enter_action->setDuration(300);
+    enter_action->setDuration(0);
     enter_action->setEasingCurve(QEasingCurve::OutQuad);
 
     connect(enter_action,&QPropertyAnimation::finished,this,[=]{
@@ -247,7 +247,7 @@ void DeviceInfoItem::AnimationInit()
 
 
     leave_action = new QPropertyAnimation(info_page,"geometry");
-    leave_action->setDuration(300);
+    leave_action->setDuration(0);
     leave_action->setEasingCurve(QEasingCurve::InQuad);
 }
 
