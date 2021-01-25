@@ -130,7 +130,7 @@ void DefaultApp::initUI() {
                     browserindex = i;
                     emit appInitDone(browserindex, BROWSERTYPE);
                 }
-                if ("firefox.desktop" == single) {
+                if(single.contains("firefox")) {
                     mDefaultBrowser = appname;
                 }
 
@@ -314,47 +314,37 @@ void DefaultApp::browserComBoBox_changed_cb(int index) {
 
 void DefaultApp::mailComBoBox_changed_cb(int index) {
     QString appid = ui->mailComBoBox->itemData(index).toString();
+    QByteArray ba = appid.toUtf8(); // QString to char *
 
-    QtConcurrent::run([=] {
-        QByteArray ba = appid.toUtf8(); // QString to char *
-        setMailReadersDefaultProgram(ba.data());
-    });
-
+    setMailReadersDefaultProgram(ba.data());
 }
 
 void DefaultApp::imageComBoBox_changed_cb(int index) {
     QString appid = ui->imageComBoBox->itemData(index).toString();
+    QByteArray ba = appid.toUtf8(); // QString to char *
 
-    QtConcurrent::run([=] () {
-        QByteArray ba = appid.toUtf8(); // QString to char *
-        setImageViewersDefaultProgram(ba.data());
-    });
+    setImageViewersDefaultProgram(ba.data());
 }
 
 void DefaultApp::audioComBoBox_changed_cb(int  index) {
     QString appid = ui->audioComBoBox->itemData(index).toString();
-    QtConcurrent::run([=] () {
-        QByteArray ba = appid.toUtf8(); // QString to char *
-        setAudioPlayersDefaultProgram(ba.data());
-    });
+    QByteArray ba = appid.toUtf8(); // QString to char *
+
+    setAudioPlayersDefaultProgram(ba.data());
 }
 
 void DefaultApp::videoComBoBox_changed_cb(int index) {
     QString appid = ui->videoComBoBox->itemData(index).toString();
+    QByteArray ba = appid.toUtf8(); // QString to char *
 
-    QtConcurrent::run([=] () {
-        QByteArray ba = appid.toUtf8(); // QString to char *
-        setVideoPlayersDefaultProgram(ba.data());
-    });
+    setVideoPlayersDefaultProgram(ba.data());
 }
 
 void DefaultApp::textComBoBox_changed_cb(int index) {
     QString appid = ui->textComBoBox->itemData(index).toString();
+    QByteArray ba = appid.toUtf8(); // QString to char *
 
-    QtConcurrent::run([=] {
-        QByteArray ba = appid.toUtf8(); // QString to char *
-        setTextEditorsDefautlProgram(ba.data());
-    });
+    setTextEditorsDefautlProgram(ba.data());
 }
 
 void DefaultApp::resetDefaultApp() {
