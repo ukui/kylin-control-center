@@ -171,7 +171,10 @@ void ChangeFaceDialog::showLocalFaceDialog(){
     }
 
     setFace(selectedfile);
-    emit face_file_send(selectedfile);
+
+    selectedFaceIcon = selectedfile;
+//    emit face_file_send(selectedfile);
+
 }
 
 void ChangeFaceDialog::paintEvent(QPaintEvent *event) {

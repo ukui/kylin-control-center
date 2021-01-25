@@ -756,6 +756,14 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
             delBtn->setEnabled(false);
         }
 
+#ifdef WITHKYSEC
+        if (!kysec_is_disabled() && kysec_get_3adm_status()){
+            if (user.username == "secadm" || user.username == "auditadm"){
+                delBtn->setEnabled(false);
+            }
+        }
+#endif
+
         typeBtn->show();
         pwdBtn->show();
         delBtn->show();
@@ -781,7 +789,6 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
         if (user.username == "secadm" || user.username == "auditadm"){
             pwdBtn->setEnabled(false);
             typeBtn->setEnabled(false);
-            delBtn->setEnabled(false);
         }
     }
 #endif
