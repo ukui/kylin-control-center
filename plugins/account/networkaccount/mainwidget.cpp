@@ -94,7 +94,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     });
 
     connect(m_dbusClient, &DBusUtils::infoFinished,this,[=] (const QString &name) {
-        if(name == "" || name =="201" || name == "203" || name == "401" ) {
+        if(name == "" || name =="201" || name == "203" || name == "401" || name == "504") {
             m_mainWidget->setCurrentWidget(m_nullWidget);
             return ;
         } else {
@@ -613,7 +613,7 @@ void MainWidget::finished_conf(int ret) {
 
 /* 登录成功处理事件 */
 void MainWidget::finished_load(int ret, QString uuid) {
-    if(ret == 301) {
+    if(ret == 301 || ret == 504) {
         if(m_mainWidget->currentWidget() != m_nullWidget) {
             showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry or relogin!"));
             // m_exitCode->setText(tr("Please check your connection!"));
