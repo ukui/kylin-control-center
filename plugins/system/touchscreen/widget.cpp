@@ -60,6 +60,7 @@ extern "C" {
 
 #define ADVANCED_SCHEMAS                 "org.ukui.session.required-components"
 #define ADVANCED_KEY                     "windowmanager"
+#define TOUCHSCREEN_CFG_PATH             "/.config/touchcfg.ini"
 
 Q_DECLARE_METATYPE(KScreen::OutputPtr)
 
@@ -391,6 +392,7 @@ void Widget::curTouchScreenChanged(int index)
     ui->touchnameContent->setText(CurDevicesName);
 }
 
+//触摸映射
 void Widget::maptooutput() {
 
     Display *dpy=XOpenDisplay(NULL);
@@ -413,7 +415,7 @@ void Widget::maptooutput() {
             int ret=_maptooutput(dpy,_CurTouchScreenName,_CurMonitorName);
             if(!ret){
 
-                save(CurDevicesName,CurTouchScreenName,CurMonitorName);
+                save(CurDevicesName,CurTouchScreenName,CurMonitorName); //保存映射关系
 
             }else{
                 qDebug("MapToOutput exe failed ! ret=%d\n",ret);
@@ -430,11 +432,14 @@ void Widget::maptooutput() {
 
 }
 
-//todo:完善触摸校准代码
+/*触摸校准
+ * 通过dbus信号与kylin-xinput-calibration应用交互
+ * 发送触摸校准事件并传递相关参数
+*/
 void Widget::CalibratTouch() {
 
     QDBusMessage msg =QDBusMessage::createSignal("/com/control/center/calibrator",  "com.control.center.calibrator.interface", "calibratorEvent");
-    msg<<CurTouchScreenName;
+    msg<<(CurTouchScreenName+","+CurMonitorName);
     QDBusConnection::systemBus().send(msg);
 }
 
@@ -444,6 +449,7 @@ void Widget::addTouchScreenToTouchCombo(const QString touchscreenname ){
     ui->touchscreenCombo->addItem(touchscreenname);
 }
 
+//识别触摸屏设备
 bool Widget::findTouchScreen(){
 
     int  ndevices = 0;
@@ -477,6 +483,7 @@ bool Widget::findTouchScreen(){
     return retval;
 }
 
+//获取触摸屏名称
 QString Widget::findTouchScreenName(int devicesid){
 
     int  ndevices = 0;
@@ -504,6 +511,12 @@ QString Widget::findTouchScreenName(int devicesid){
     }
 }
 
+/*
+  *判断映射关系保存时，屏幕是否已更换，不同屏幕通过touch serial区分
+  *通过配置中保存的touch name及touch id获取对应touch serial
+  *然后用该touch serial与配置文件中的touch serial作比较，如果相同则触摸屏设备没有更换
+  *否则清空配置文件重新记录
+*/
 int Widget::compareserial(int touchcount){
 
     for(int i=1;i<=touchcount;i++)
@@ -515,15 +528,17 @@ int Widget::compareserial(int touchcount){
         QString id = mapoption+"/id";
         QString touchname = configIni->value(name).toString();
         QString touchserial = configIni->value(serial).toString();
+        if( (touchname == "") && (touchserial == "") )
+            continue;
         int touchid = configIni->value(id).toInt();
         char _touchserial[32]={0};
         std::string namestr = touchname.toStdString();
         char * _touchname=(char *)namestr.c_str();
         findSerialFromId(touchid,_touchname,_touchserial);
-        qDebug("_touchserial=%s\n",_touchserial);
+        //qDebug("_touchserial=%s\n",_touchserial);
         QString Qtouchserial(_touchserial);
-        qDebug("Qtouchserial=%s\n",Qtouchserial.toStdString().data());
-        qDebug("touchserial=%s\n",touchserial.toStdString().data());
+        //qDebug("Qtouchserial=%s\n",Qtouchserial.toStdString().data());
+        //qDebug("touchserial=%s\n",touchserial.toStdString().data());
         if(Qtouchserial!=touchserial){
             return -1;
         }
@@ -532,6 +547,10 @@ int Widget::compareserial(int touchcount){
     return Success;
 }
 
+/*
+ *比较配置文件中同一触摸屏与显示器的映射关系
+ *如不同则保存最新的映射关系
+*/
 int Widget::comparescreenname(QString _touchserial,QString _screenname){
 
     int touchcount=configIni->value("COUNT/num").toInt();
@@ -545,8 +564,8 @@ int Widget::comparescreenname(QString _touchserial,QString _screenname){
         QString screenname = configIni->value(scrname).toString();
         QString touchserial = configIni->value(serial).toString();
 
-        qDebug("Qtouchserial=%s\n",screenname.toStdString().data());
-        qDebug("touchserial=%s\n",touchserial.toStdString().data());
+        //qDebug("Qtouchserial=%s\n",screenname.toStdString().data());
+        //qDebug("touchserial=%s\n",touchserial.toStdString().data());
         if(_touchserial==touchserial){
             if(screenname!=_screenname){
                 configIni->remove(mapoption);
@@ -557,6 +576,7 @@ int Widget::comparescreenname(QString _touchserial,QString _screenname){
     return Success;
 }
 
+//清空配置文件
 void Widget::cleanTouchConfig(int touchcount){
 
     configIni->setValue("COUNT/num",0);
@@ -568,16 +588,21 @@ void Widget::cleanTouchConfig(int touchcount){
     }
 }
 
-void Widget::initTouchConfig(int curcount,QString touchserial,QString screenname) {
+//对配置文件进行预处理
+void Widget::initTouchConfig(QString touchserial,QString screenname) {
     qdir = new QDir;
     QString homepath = qdir->homePath();
-    QString touchcfgpath = homepath + "/.config/touchcfg.ini";
+    QString touchcfgpath = homepath + TOUCHSCREEN_CFG_PATH; //触摸屏映射关系配置文件路径
     configIni = new QSettings(touchcfgpath, QSettings::IniFormat);
 
-    int touchcount=configIni->value("COUNT/num").toInt();
+    int touchcount = configIni->value("COUNT/num").toInt();
+    int devicecount = configIni->value("COUNT/device_num").toInt();
 
     if(!touchcount)
         return ;
+
+    if(devicecount != CurTouchscreenNum)
+        cleanTouchConfig(touchcount);
 
     if(compareserial(touchcount)!=0){
 
@@ -587,6 +612,10 @@ void Widget::initTouchConfig(int curcount,QString touchserial,QString screenname
     comparescreenname(touchserial,screenname);
 }
 
+/*
+ *判断配置文件中是否已有该触摸屏配置
+ * 并返回相应状态
+*/
 bool Widget::Configserialisexit(QString touchserial){
 
     bool devicesisexit=0;
@@ -611,11 +640,12 @@ bool Widget::Configserialisexit(QString touchserial){
 
 }
 
+//写入配置文件，保存触摸映射关系
 void Widget::writeTouchConfig(QString touchname,QString touchid,QString touchserial,QString screenname) {
 
     int touchcount = configIni->value("COUNT/num").toInt();
     bool devicesisexit = Configserialisexit(touchserial);
-    if(devicesisexit && touchcount)
+    if(devicesisexit && touchcount)      //如果配置文件中已存在该触摸屏配置，则不重复写入
         return;
 
     QString str = QString::number(touchcount+1);
@@ -626,6 +656,7 @@ void Widget::writeTouchConfig(QString touchname,QString touchid,QString touchser
     QString scrname = mapoption+"/scrname";
 
     configIni->setValue( "COUNT/num" ,touchcount+1);
+    configIni->setValue( "COUNT/device_num" ,CurTouchscreenNum);
     configIni->setValue( name ,touchname);
     configIni->setValue( id ,touchid);
     configIni->setValue( serial ,touchserial);
@@ -633,14 +664,18 @@ void Widget::writeTouchConfig(QString touchname,QString touchid,QString touchser
 
 }
 
+/*保存触摸映射关系
+ *对保存过程中的各种异常情况做处理
+ *如避免重复保存、更换屏幕后删除原映射关系、多屏情况下各屏映射关系保存
+ */
 void Widget::save(QString touchname,QString touchid,QString screenname) {
 
     char _touchserial[32]={0};
     std::string str = touchname.toStdString();
     char * _touchname=(char *)str.c_str();
     findSerialFromId(touchid.toInt(),_touchname,_touchserial);
-    qDebug("_touchserial1=%s\n",_touchserial);
+
     QString touchserial(_touchserial);
-    initTouchConfig(CurTouchscreenNum,touchserial,screenname);
-    writeTouchConfig(touchname,touchid,touchserial,screenname);
+    initTouchConfig(touchserial,screenname); //保存之前先对配置文集进行处理
+    writeTouchConfig(touchname,touchid,touchserial,screenname);//将触摸映射关系写入配置文件
 }

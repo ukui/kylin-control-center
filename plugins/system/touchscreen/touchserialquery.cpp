@@ -39,7 +39,6 @@ static int find_event_from_touchId(int pId ,char *_event)
 {
     Display *_dpy = XOpenDisplay(NULL);
     int ret = -1;
-    printf("_dpy=%p\n",_dpy);
     if(NULL == _dpy || NULL == _event)
     {
         printf("[%s%d] NULL ptr. \n", __FUNCTION__, __LINE__);
@@ -77,7 +76,7 @@ static int find_event_from_touchId(int pId ,char *_event)
             }
 
             strcpy(_event,cEvent);
-            printf("cEvent=%s,_event=%s\n",cEvent,_event);
+            //printf("cEvent=%s,_event=%s\n",cEvent,_event);
             ret = Success;
             break;
         }
@@ -132,21 +131,20 @@ static int find_serial_from_event(char *_name, char *_event, char *_serial)
         {
             continue;
         }
-        printf("pEvent=%s,_event=%s\n",pEvent,_event);
-        printf("_name=%s,pProduct=%s\n",_name,pProduct);
+        //printf("pEvent=%s,_event=%s\n",pEvent,_event);
+        //printf("_name=%s,pProduct=%s\n",_name,pProduct);
         char *ret=strstr(_name, pProduct);
         if((NULL!=ret) && (0 == strcmp(_event, pEvent)))
         {
-            printf("xixi\n");
             const char *pSerial = udev_device_get_sysattr_value(dev, "serial");
-            printf(" _serial:%s\n  pSerial: %s\n",_serial, pSerial);
+            //printf(" _serial:%s\n  pSerial: %s\n",_serial, pSerial);
             if(NULL == pSerial)
             {
                 continue;
             }
             strcpy(_serial, pSerial);
             ret = Success;
-            printf(" _serial:%s\n  pSerial: %s\n",_serial, pSerial);
+            //printf(" _serial:%s\n  pSerial: %s\n",_serial, pSerial);
             break;
         }
 
@@ -165,6 +163,5 @@ int findSerialFromId(int touchid,char *touchname,char *_touchserial)
     ret=find_serial_from_event(touchname,event,_touchserial);
     if(!strcmp(_touchserial,""))
         strcpy(_touchserial,"kydefault");
-    printf("_touchserial=%s\n",_touchserial);
     return ret;
 }

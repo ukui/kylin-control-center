@@ -84,7 +84,7 @@ class Widget : public QWidget
   private:
     void loadQml();
     void save(QString touchname,QString touchid,QString screenname);
-    void initTouchConfig(int curcount,QString touchserial,QString screenname);
+    void initTouchConfig(QString touchserial,QString screenname);
     void writeTouchConfig();
     void writeTouchConfig(QString touchname,QString touchid,QString touchserial,QString screenname);
     bool Configserialisexit(QString touchserial);
