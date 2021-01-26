@@ -108,9 +108,11 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
             }
             m_bTokenValid = true;              //开启登录状态
             m_autoSyn->set_change(0,"0");
-            QFile file (m_szConfPath);
-            if(file.exists() == false) {
-                emit dooss(m_szUuid);
+            if(bIsLogging == false) {
+                QFile file (m_szConfPath);
+                if(file.exists() == false) {
+                    emit dooss(m_szUuid);
+                }
             }
 
             //dooss(m_szUuid);
@@ -569,6 +571,7 @@ void MainWidget::on_login() {
         m_cLoginTimer->setInterval(10000);
         m_cLoginTimer->start();
         m_bIsStopped = false;
+        bIsLogging = true;
     });
     connect(m_mainDialog,&MainDialog::on_login_failed,this, [this] () {
         m_cLoginTimer->stop();
@@ -761,6 +764,7 @@ void MainWidget::on_login_out() {
         __once__ = false;
         __run__ = false;
         m_bIsStopped = true;
+        bIsLogging = false;
     } else {
         on_auto_syn(0,-1);
         m_autoSyn->get_swbtn()->set_swichbutton_val(0);

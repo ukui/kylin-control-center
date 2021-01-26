@@ -118,6 +118,7 @@ private:
     int             m_indexChanged;
     int             m_statusChanged;
     SyncDialog      *m_syncDialog;
+    bool            bIsLogging = false;
 
 public slots:
     void            on_login_out();
