@@ -21,7 +21,7 @@
 
 networkaccount::networkaccount() : mFirstLoad(true)
 {
-    //~ contents_path /cloud account/Cloud Account
+    //~ contents_path /networkaccount/Cloud Account
     pluginName = tr("Cloud Account");
     pluginType = ACCOUNT;
 }
@@ -49,5 +49,5 @@ void networkaccount::plugin_delay_control() {
 
 const QString networkaccount::name() const {
 
-    return QStringLiteral("cloud account");
+    return QStringLiteral("networkaccount");
 }

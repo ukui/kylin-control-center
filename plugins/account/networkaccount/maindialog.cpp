@@ -45,7 +45,6 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     m_subLayout = new QHBoxLayout;           //切换登录模式按钮布局
     m_delBtn = new CloseButton(this);        //关闭按钮
     m_timer = new QTimer(this);
-    m_successDialog = new SuccessDiaolog(this);        //注册成功页面
     QHBoxLayout *hbox = new QHBoxLayout;    //整体布局
     m_blueEffect = new Blueeffect(m_submitBtn);
     m_animateLayout = new QHBoxLayout;
@@ -89,8 +88,6 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     m_baseWidget->setFixedSize(418,505);
     m_baseWidget->setContentsMargins(0,0,0,0);
     m_baseWidget->addWidget(m_containerWidget);
-    m_baseWidget->addWidget(m_successDialog);
-    m_successDialog->set_mode_text(2);
     m_baseWidget->setCurrentWidget(m_containerWidget);
     m_submitBtn->setContentsMargins(0,0,0,0);
     m_regBtn->setFocusPolicy(Qt::NoFocus);
@@ -170,13 +167,6 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     m_loginAccountLineEdit = m_loginDialog->get_user_edit();    //登录界面用户框
     m_loginMCodeLineEdit = m_loginDialog->get_mcode_lineedit();//登录界面验证码框
 
-
-//    m_passLineEdit = m_passDialog->get_reg_phone();      //忘记密码界面用户框
-//    m_passPasswordLineEdit = m_passDialog->get_reg_pass();        //忘记密码界面密码框
-//    m_passConfirmLineEdit = m_passDialog->get_reg_pass_confirm();//忘记密码确认密码框
-//    m_passMCodeLineEdit = m_passDialog->get_valid_code();     //忘记密码验证码框
-
-
     //忘记密码错误提示
    // m_passTips = m_passDialog->get_passtips();
 
@@ -197,7 +187,6 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     connect(m_timer,SIGNAL(timeout()),this,SLOT(on_timer_timeout()));
     connect(m_forgetpassSendBtn,SIGNAL(clicked()),this,SLOT(on_send_code_log()));
     //connect(m_BindDialog->get_send_code(),SIGNAL(clicked()),this,SLOT(on_send_code_bind()));
-    connect(m_successDialog->m_backloginBtn,SIGNAL(clicked()),this,SLOT(back_normal()));
     //connect(m_passPasswordLineEdit,SIGNAL(textChanged(QString)),this,SLOT(cleanconfirm(QString)));
     connect(m_loginDialog->get_mcode_lineedit(),SIGNAL(returnPressed()),this,SLOT(on_login_btn()));
     connect(m_loginDialog->get_login_code(),SIGNAL(returnPressed()),this,SLOT(on_login_btn()));
@@ -257,38 +246,91 @@ QPushButton * MainDialog::get_login_submit() {
 }
 
 /* 设置DBUS客户端 */
-void MainDialog::set_client(DbusHandleClient *c,QThread *t) {
+void MainDialog::set_client(DBusUtils *c,QThread *t) {
     m_dbusClient = c;
     m_workThread  = t;
-    connect(this,SIGNAL(dologin(QString,QString,QString)),m_dbusClient,SLOT(login(QString,QString,QString)));
-    //connect(this,SIGNAL(dobind(QString, QString, QString, QString,QString)),m_dbusClient,SLOT(bindPhone(QString, QString, QString, QString,QString)));
-    connect(this,SIGNAL(dogetmcode_phone_log(QString,QString)),m_dbusClient,SLOT(get_mcode_by_phone(QString,QString)));
-   // connect(this,SIGNAL(dogetmcode_number_pass(QString,QString)),m_dbusClient,SLOT(get_mcode_by_username(QString,QString)));
-    //connect(this,SIGNAL(dogetmcode_number_bind(QString,QString)),m_dbusClient,SLOT(get_mcode_by_phone(QString,QString)));
-    //connect(this,SIGNAL(dorest(QString, QString, QString,QString)),m_dbusClient,SLOT(user_resetpwd(QString, QString, QString,QString)));
-    connect(this,SIGNAL(dophonelogin(QString,QString,QString)),m_dbusClient,SLOT(user_phone_login(QString,QString,QString)));
-    connect(m_dbusClient,SIGNAL(finished_ret_log(int)),this,SLOT(setret_login(int)));
-    connect(m_dbusClient,SIGNAL(finished_ret_phonelogin(int)),this,SLOT(setret_phone_login(int)));
-    //connect(m_dbusClient,SIGNAL(finished_ret_rest(int)),this,SLOT(setret_rest(int)));
-    //connect(m_dbusClient,SIGNAL(finished_ret_bind(int)),this,SLOT(setret_bind(int)));
-    connect(m_dbusClient,SIGNAL(finished_ret_code_log(int)),this,SLOT(setret_code_phone_login(int)));
-    //connect(m_dbusClient,SIGNAL(finished_ret_code_pass(int)),this,SLOT(setret_code_user_pass(int)));
-    //connect(m_dbusClient,SIGNAL(finished_ret_code_bind(int)),this,SLOT(setret_code_user_bind(int)));
 
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface", "finished_login", this, SLOT(on_login_finished(int,QString)));
-    //client->connectdbus("finished_login",this,SLOT(on_login_finished(int)));
-    //connect(client,SIGNAL(finished_user_phone_login(int)),this,SLOT(on_login_finished(int)));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_user_phone_login",this,SLOT(on_login_finished(int,QString)));
-    //connect(client,SIGNAL(finished_mcode_by_phone(int)),this,SLOT(on_get_mcode_by_phone(int)));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_mcode_by_phone",this,SLOT(on_get_mcode_by_phone(int,QString)));
-    //connect(client,SIGNAL(finished_user_resetpwd(int)),this,SLOT(on_pass_finished(int)));
-    //connect(client,SIGNAL(finished_mcode_by_username(int)),this,SLOT(on_get_mcode_by_name(int)));
-   // QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_user_resetpwd",this,SLOT(on_pass_finished(int,QString)));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_mcode_by_username",this,SLOT(on_get_mcode_by_name(int,QString)));
-    //connect(client,SIGNAL(finished_registered(int)),this,SLOT(on_reg_finished(int)));
-   // QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_registered",this,SLOT(on_reg_finished(int,QString)));
-    //connect(client,SIGNAL(finished_bindPhone(int)),this,SLOT(on_bind_finished(int)));
-    //QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface","finished_bindPhone",this,SLOT(on_bind_finished(int,QString)));
+    connect(this, &MainDialog::dologin, this, [=] (QString kylinID,QString pass) {
+        QList<QVariant> argList;
+        argList << kylinID << pass;
+        m_dbusClient->callMethod("userLogin",argList);
+    });
+
+    connect(this, &MainDialog::dogetmcode_phone_log, this, [=] (QString phone) {
+        QList<QVariant> argList;
+        argList << phone;
+        m_dbusClient->callMethod("getMCodeByPhone",argList);
+    });
+
+    connect(this, &MainDialog::dophonelogin, this, [=] (QString phone,QString code) {
+        QList<QVariant> argList;
+        argList << phone << code;
+        m_dbusClient->callMethod("phoneLogin",argList);
+    });
+
+    connect(m_dbusClient,&DBusUtils::taskFinished,this,[=] (const QString &taskName,int ret) {
+        if(taskName == "userLogin") {
+            if(ret != 0) {
+                m_loginDialog->get_mcode_lineedit()->setText("");
+                if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
+                    m_loginDialog->set_code(messagebox(ret));
+                    m_loginTips->show();
+
+                    m_loginDialog->get_mcode_widget()->set_change(1);
+                    m_loginDialog->get_mcode_widget()->repaint();
+                    setshow(m_stackedWidget);
+                    m_loginDialog->get_mcode_widget()->set_change(0);
+                } else {
+                    m_loginDialog->set_code(messagebox(ret));
+                    m_loginCodeStatusTips->show();
+                    setshow(m_stackedWidget);
+                }
+                return ;
+            } else {
+                //qDebug() << ret;
+            }
+        } else if(taskName == "phoneLogin") {
+            if(m_stackedWidget->currentWidget() != m_loginDialog && m_loginDialog->get_stack_widget()->currentIndex()) {
+                return ;
+            }
+            if(ret != 0) {
+                m_loginDialog->get_mcode_lineedit()->setText("");
+                if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
+                    m_loginDialog->set_code(messagebox(ret));
+                    m_loginTips->show();
+
+                    m_loginDialog->get_mcode_widget()->set_change(1);
+                    m_loginDialog->get_mcode_widget()->repaint();
+                    setshow(m_stackedWidget);
+                    m_loginDialog->get_mcode_widget()->set_change(0);
+                    return ;
+                } else {
+                    m_loginDialog->set_code(messagebox(ret));
+                    m_loginCodeStatusTips->show();
+                    setshow(m_stackedWidget);
+                    return ;
+                }
+            }
+        } else if(taskName == "getMCodeByPhone") {
+            if(m_stackedWidget->currentWidget() != m_loginDialog && m_loginDialog->get_stack_widget()->currentIndex() != 1) {
+                return ;
+            }
+            if(ret == 0) {
+                //not do
+            } else {
+                m_loginDialog->get_mcode_lineedit()->setText("");
+                m_loginDialog->set_code(messagebox(ret));
+                m_loginCodeStatusTips->show();
+                setshow(m_stackedWidget);
+
+                return ;
+            }
+        }
+    });
+
+    m_dbusClient->connectSignal( "finishedPassLogin", this, SLOT(on_login_finished(int)));
+    m_dbusClient->connectSignal("finishedPhoneLogin",this,SLOT(on_login_finished(int)));
+    m_dbusClient->connectSignal("finishedMCodeByPhone",this,SLOT(on_get_mcode_by_phone(int)));
 }
 
 /* 窗口控件动态显示处理过渡处理函数，每次窗口布局显示或者
@@ -300,73 +342,6 @@ void MainDialog::setshow(QWidget *widget) {
     widget->show();
     widget->adjustSize();
 }
-
-void MainDialog::setret_login(int ret) {
-    //qDebug() << "ssssssssssssssss";
-    if(ret != 0) {
-        m_loginDialog->get_mcode_lineedit()->setText("");
-        if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
-            m_loginDialog->set_code(messagebox(ret));
-            m_loginTips->show();
-
-            m_loginDialog->get_mcode_widget()->set_change(1);
-            m_loginDialog->get_mcode_widget()->repaint();
-            setshow(m_stackedWidget);
-            m_loginDialog->get_mcode_widget()->set_change(0);
-        } else {
-            m_loginDialog->set_code(messagebox(ret));
-            m_loginCodeStatusTips->show();
-            setshow(m_stackedWidget);
-        }
-        return ;
-    } else {
-        //qDebug() << ret;
-    }
-}
-
-void MainDialog::setret_phone_login(int ret) {
-    if(m_stackedWidget->currentWidget() != m_loginDialog && m_loginDialog->get_stack_widget()->currentIndex()) {
-        return ;
-    }
-    if(ret != 0) {
-        m_loginDialog->get_mcode_lineedit()->setText("");
-        if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
-            m_loginDialog->set_code(messagebox(ret));
-            m_loginTips->show();
-
-            m_loginDialog->get_mcode_widget()->set_change(1);
-            m_loginDialog->get_mcode_widget()->repaint();
-            setshow(m_stackedWidget);
-            m_loginDialog->get_mcode_widget()->set_change(0);
-            return ;
-        } else {
-            m_loginDialog->set_code(messagebox(ret));
-            m_loginCodeStatusTips->show();
-            setshow(m_stackedWidget);
-            return ;
-        }
-    }
-}
-
-
-
-
-void MainDialog::setret_code_phone_login(int ret) {
-    if(m_stackedWidget->currentWidget() != m_loginDialog && m_loginDialog->get_stack_widget()->currentIndex() != 1) {
-        return ;
-    }
-    if(ret == 0) {
-        //not do
-    } else {
-        m_loginDialog->get_mcode_lineedit()->setText("");
-        m_loginDialog->set_code(messagebox(ret));
-        m_loginCodeStatusTips->show();
-        setshow(m_stackedWidget);
-
-        return ;
-    }
-}
-
 
 LoginDialog* MainDialog::get_dialog() {
     return m_loginDialog;
@@ -391,6 +366,9 @@ QString MainDialog::messagebox(const int &code) const {
     case 500:ret = tr("Failed due to server error!");break;
     case 501:ret = tr("Please check your information!");break;
     case 502:ret = tr("User existing!");break;
+    case 503:ret = tr("User doesn't exist!");break;
+    case 504:ret = tr("Network can not reach!");break;
+    case 511:ret = tr("Account or password error!");break;
     case 610:ret = tr("Phone number already in used!");break;
     case 611:ret = tr("Please check your format!");break;
     case 612:ret = tr("Your are reach the limit!");break;
@@ -399,6 +377,8 @@ QString MainDialog::messagebox(const int &code) const {
     case 615:ret = tr("Account doesn't exist!");break;
     case 616:ret = tr("User has bound the phone!");break;
     case 619:ret = tr("Sending code error occurred!");break;
+    case 632:ret = tr("Phone code is expired!");break;
+    case 702:ret = tr("Phone code error!");break;
     case -1:ret = tr("Please check your information!");break;
 
     }
@@ -449,7 +429,7 @@ void MainDialog::on_login_btn() {
 
         m_submitBtn->setText("");
         m_blueEffect->startmoive();
-        emit dologin(m_szRegAccount,m_szRegPass,m_uuid);            //触发登录信号，告知客户端进行登录操作
+        emit dologin(m_szRegAccount,m_szRegPass);            //触发登录信号，告知客户端进行登录操作
 
     } else if(m_loginDialog->get_user_name() != ""
                && m_loginDialog->get_login_code()->text() != ""
@@ -459,7 +439,7 @@ void MainDialog::on_login_btn() {
         mcode = m_loginDialog->get_login_code()->text();
         m_submitBtn->setText("");
         m_blueEffect->startmoive();
-        emit dophonelogin(phone,mcode,m_uuid);
+        emit dophonelogin(phone,mcode);
     } else {
         emit on_login_failed();
         //信息填写不完整执行此处，包括密码登录以及手机登录
@@ -497,7 +477,7 @@ QString MainDialog::replace_blank(QString &str) {
             filter.push_front(c);
         }
     }
-    for(QChar c : filter) {
+    for(QChar c : qAsConst(filter)) {
         if(c != ' ' && !first) {
             ret.push_front(c);
             first = true;
@@ -520,39 +500,6 @@ void MainDialog::on_pass_btn() {
 
 
 
-/* 从成功注册，修改密码成功界面返回所需要的处理 */
-void MainDialog::back_normal() {
-    //回到登录框
-
-    m_delBtn->show();
-    //qDebug()<<"back normal";
-    m_baseWidget->setCurrentWidget(m_containerWidget);
-    m_successDialog->hide();
-    setshow(m_baseWidget);
-    m_titleLable->setText(tr("Sign in Cloud"));
-    m_stackedWidget->setCurrentWidget(m_loginDialog);
-    m_loginDialog->set_clear();
-}
-
-/* 从忘记密码或者注册界面或者或者手机绑定
- * 界面返回到登录界面的必要操作 */
-void MainDialog::back_login_btn() {
-    //qDebug()<<stack_box->currentIndex();
-    if(m_stackedWidget->currentWidget() != m_loginDialog) {
-        m_titleLable->setText(tr("Sign in Cloud"));
-
-        m_loginDialog->set_clear();
-        m_stackedWidget->setCurrentWidget(m_loginDialog);
-        m_regBtn->setText(tr("Sign up"));
-        m_submitBtn->setText(tr("Sign in"));
-        setshow(m_stackedWidget);
-
-        disconnect(m_regBtn,SIGNAL(clicked()),this,SLOT(back_login_btn()));
-        connect(m_regBtn,SIGNAL(clicked()),this,SLOT(on_reg_btn()));
-    }
-}
-
-
 /* 手机登录验证码发送按钮处理 */
 void MainDialog::on_send_code_log() {
     //qDebug() <<m_loginDialog->get_user_name().length();
@@ -568,7 +515,7 @@ void MainDialog::on_send_code_log() {
     }
     if(m_loginDialog->get_user_name() != "") {
         phone = m_loginDialog->get_user_name();
-        emit dogetmcode_phone_log(phone,m_uuid);
+        emit dogetmcode_phone_log(phone);
     } else {
         m_loginDialog->get_user_mcode()->setEnabled(true);
         m_loginDialog->get_mcode_lineedit()->setText("");
@@ -599,13 +546,9 @@ void MainDialog::on_timer_timeout() {
 }
 
 /* 登录回调槽函数，登录回执消息后执行此处 */
-void MainDialog::on_login_finished(int ret, QString uuid) {
-    //qDebug() << "ssssssssssssssss2";
-    if(uuid != this->m_uuid) {
-        //qDebug()<<uuid<<this->m_uuid;
-        return ;
-    }
-    //qDebug()<<ret;
+void MainDialog::on_login_finished(int ret) {
+    qDebug() << "ssssssssssssssss2";
+    qDebug()<<ret;
     //无手机号码绑定，进入手机号码绑定页面
     //登录返回成功，执行此处
     if(ret == 0) {
@@ -636,10 +579,7 @@ void MainDialog::on_login_finished(int ret, QString uuid) {
 }
 
 /* 手机号直接发送验证码回调函数，发送手机验证码回执消息后执行此处 */
-void MainDialog::on_get_mcode_by_phone(int ret, QString uuid) {
-    if(uuid != this->m_uuid) {
-        return ;
-    }
+void MainDialog::on_get_mcode_by_phone(int ret) {
     //qDebug() << ret;
     if(ret != 0) {
         if(m_stackedWidget->currentWidget() == m_loginDialog) {
@@ -656,36 +596,6 @@ void MainDialog::on_get_mcode_by_phone(int ret, QString uuid) {
         }
         return ;
     } else if(ret == 0) {
-        m_forgetpassSendBtn->setEnabled(false);
-        timerout_num = 60;
-        m_timer->start(1000);
-    }
-}
-
-/* 根据用户名发送验证码回调函数，发送手机验证码回执消息后执行此处 */
-void MainDialog::on_get_mcode_by_name(int ret,QString uuid) {
-    if(uuid != this->m_uuid) {
-        return ;
-    }
-
-    if(is_used == false) {
-        return ;
-    }
-    if(ret != 0) {
-        if(m_stackedWidget->currentWidget() == m_loginDialog) {
-            m_loginDialog->get_user_mcode()->setEnabled(true);
-            m_loginDialog->get_login_pass()->setText("");
-            m_loginDialog->get_mcode_lineedit()->setText("");
-            m_loginDialog->set_code(messagebox(ret));
-            if(m_loginDialog->get_stack_widget()->currentIndex() == 0){
-                m_loginTips->show();
-            } else if(m_loginDialog->get_stack_widget()->currentIndex() == 1) {
-                m_loginCodeStatusTips->show();
-            }
-            setshow(m_stackedWidget);
-        }
-        return ;
-    }  else if(ret == 0) {
         m_forgetpassSendBtn->setEnabled(false);
         timerout_num = 60;
         m_timer->start(1000);

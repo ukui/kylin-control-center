@@ -23,18 +23,17 @@
 #include <QDir>
 #include <QtConcurrent/QtConcurrent>
 
-ConfigFile::ConfigFile(QString qstrfilename)
+ConfigFile::ConfigFile( QString qstrfilename)
 {
     if (qstrfilename.isEmpty())
     {
         QProcess proc;
         proc.start("lsb_release -r");
         proc.waitForFinished();
-
         QByteArrayList releaseList = proc.readAll().split('\t');
         QByteArray ar = releaseList.at(1);
-        QString path = QDir::homePath()  + "/.cache/kylinId/All-" + ar.replace("\n","") + ".conf";
-        m_qstrFileName = path;
+        QString m_confName = "All-" + ar.replace("\n","") + ".conf";
+        m_qstrFileName =QDir::homePath() + "/.cache/kylinId/" + m_confName;
     }
     else
     {

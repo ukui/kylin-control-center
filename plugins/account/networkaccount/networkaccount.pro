@@ -35,8 +35,7 @@ SOURCES += \
     boxitem.cpp \
     combobox.cpp \
     configfile.cpp \
-    dbushandleclient.cpp \
-    editpassdialog.cpp \
+    dbusutils.cpp \
     editpushbutton.cpp \
     frameitem.cpp \
     infolabel.cpp \
@@ -53,6 +52,7 @@ SOURCES += \
     successdiaolog.cpp \
     svghandler.cpp \
     switchbutton.cpp \
+    syncdialog.cpp \
     tips.cpp \
     tooltips.cpp \
     visblebutton.cpp
@@ -64,8 +64,7 @@ HEADERS += \
     boxitem.h \
     combobox.h \
     configfile.h \
-    dbushandleclient.h \
-    editpassdialog.h \
+    dbusutils.h \
     editpushbutton.h \
     frameitem.h \
     infolabel.h \
@@ -82,6 +81,7 @@ HEADERS += \
     successdiaolog.h \
     svghandler.h \
     switchbutton.h \
+    syncdialog.h \
     tips.h \
     tooltips.h \
     visblebutton.h
