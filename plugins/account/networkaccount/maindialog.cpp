@@ -271,6 +271,10 @@ void MainDialog::set_client(DBusUtils *c,QThread *t) {
     connect(m_dbusClient,&DBusUtils::taskFinished,this,[=] (const QString &taskName,int ret) {
         if(taskName == "userLogin") {
             if(ret != 0) {
+                emit on_login_failed();
+                set_back();
+                m_blueEffect->stop();             //登录失败，执行此处，关闭登录执行过程效果，并打印错误消息
+                m_submitBtn->setText(tr("Sign in"));
                 m_loginDialog->get_mcode_lineedit()->setText("");
                 if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
                     m_loginDialog->set_code(messagebox(ret));
@@ -291,9 +295,17 @@ void MainDialog::set_client(DBusUtils *c,QThread *t) {
             }
         } else if(taskName == "phoneLogin") {
             if(m_stackedWidget->currentWidget() != m_loginDialog && m_loginDialog->get_stack_widget()->currentIndex()) {
+                emit on_login_failed();
+                set_back();
+                m_blueEffect->stop();             //登录失败，执行此处，关闭登录执行过程效果，并打印错误消息
+                m_submitBtn->setText(tr("Sign in"));
                 return ;
             }
             if(ret != 0) {
+                emit on_login_failed();
+                set_back();
+                m_blueEffect->stop();             //登录失败，执行此处，关闭登录执行过程效果，并打印错误消息
+                m_submitBtn->setText(tr("Sign in"));
                 m_loginDialog->get_mcode_lineedit()->setText("");
                 if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
                     m_loginDialog->set_code(messagebox(ret));
