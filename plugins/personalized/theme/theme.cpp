@@ -110,9 +110,9 @@ Theme::Theme()
     initTitleLabel();
     initSearchText();
 
-    //设置组件
+    // 设置组件
     setupComponent();
-    // init kwin settings
+    // Init kwin settings
     setupSettings();
     initThemeMode();
     initIconTheme();
@@ -210,6 +210,9 @@ void Theme::setupSettings() {
             ui->transFrame->setVisible(false);
             ui->effectLabel->setVisible(false);
             personliseGsettings->set(PERSONALSIE_EFFECT_KEY, false);
+        } else {
+            ui->lowLabel->setPixmap(QPixmap("://img/plugins/theme/opacitylow.svg"));
+            ui->highlabel->setPixmap(QPixmap("://img/plugins/theme/opacityhigh.svg"));
         }
         kwinSettings->endGroup();
     }
@@ -239,8 +242,6 @@ void Theme::setupComponent() {
         qtSettings->set(PEONY_TRAN_KEY, ui->tranSlider->value());
     });
     setupControlTheme();
-//    ui->effectLabel->hide();
-//    ui->effectWidget->hide();
 
     //构建并填充特效开关按钮
     effectSwitchBtn = new SwitchButton(pluginWidget);
@@ -434,8 +435,6 @@ void Theme::setupControlTheme(){
         QPushButton * button = new QPushButton(ui->controlWidget);
         button->setFixedSize(QSize(48, 48));
         button->setCheckable(true);
-        QString btnStyle = QString("QPushButton{background: %1; border-radius: 4px;}").arg(color);
-//        button->setStyleSheet(btnStyle);
         colorBtnGroup->addButton(button, colorStringList.indexOf(color));
 
         QVBoxLayout * colorVerLayout = new QVBoxLayout();
@@ -551,9 +550,6 @@ void Theme::initConnection() {
             qtSettings->set(THEME_TRAN_KEY, 100);
             qtSettings->set(PEONY_TRAN_KEY, 100);
             ui->tranSlider->setValue(100);
-        } else {
-            ui->lowLabel->setPixmap(QPixmap("://img/plugins/theme/opacitylow.svg"));
-            ui->highlabel->setPixmap(QPixmap("://img/plugins/theme/opacityhigh.svg"));
         }
         // 提供给外部监听特效接口
         personliseGsettings->set(PERSONALSIE_EFFECT_KEY, checked);
@@ -579,7 +575,6 @@ QStringList Theme::_getSystemCursorThemes() {
         foreach (QString dirname, themesDir.entryList(QDir::Dirs)){
             if (dirname == "." || dirname == "..")
                 continue;
-//            QString fullpath(CURSORS_THEMES_PATH + dirname);
             QDir themeDir(CURSORS_THEMES_PATH + dirname + "/cursors/");
             if (themeDir.exists())
                 themes.append(dirname);
@@ -666,7 +661,7 @@ void Theme::resetBtnClickSlot() {
         cursorTheme = defaultCursor;
     }
 
-    // reset icon default theme
+    // Reset icon default theme
     qtSettings->reset(ICON_QT_KEY);
 
     if (ui->effectFrame->isVisible()) {
