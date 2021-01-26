@@ -30,6 +30,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QPainterPath>
 
 class SyncDialog : public QDialog
 {
