@@ -108,6 +108,11 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
             }
             m_bTokenValid = true;              //开启登录状态
             m_autoSyn->set_change(0,"0");
+            QFile file (m_szConfPath);
+            if(file.exists() == false) {
+                emit dooss(m_szUuid);
+            }
+
             //dooss(m_szUuid);
             for(int i = 0;i < m_szItemlist.size();i ++) {
                 m_itemList->get_item(i)->set_change(0,"0");
@@ -613,6 +618,7 @@ void MainWidget::finished_conf(int ret) {
 
 /* 登录成功处理事件 */
 void MainWidget::finished_load(int ret, QString uuid) {
+    qDebug() << ret;
     if(ret == 301 || ret == 504) {
         if(m_mainWidget->currentWidget() != m_nullWidget) {
             showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry or relogin!"));
