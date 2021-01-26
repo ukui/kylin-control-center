@@ -181,6 +181,8 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
         m_mainDialog->on_close();
         if(keyList.size() > 2) {
             on_auto_syn(0,-1);
+            m_autoSyn->get_swbtn()->set_swichbutton_val(0);
+            push_over();
             QList<QVariant> args;
             QFile file(QDir::homePath() + "/.cache/kylinId/keys");
             args << m_szCode;
@@ -211,6 +213,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
 
                 connect(m_syncDialog, &SyncDialog::coverMode, this, [=] () {
                     on_auto_syn(1,-1);
+                    m_autoSyn->get_swbtn()->set_swichbutton_val(1);
                     m_syncDialog->close();
                     handle_conf();
                 });
