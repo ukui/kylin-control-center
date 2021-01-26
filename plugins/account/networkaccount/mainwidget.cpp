@@ -757,6 +757,7 @@ void MainWidget::on_login_out() {
         m_bIsStopped = true;
     } else {
         on_auto_syn(0,-1);
+        m_autoSyn->get_swbtn()->set_swichbutton_val(0);
         push_over();
     }
 
