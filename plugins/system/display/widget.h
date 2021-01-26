@@ -143,6 +143,7 @@ class Widget : public QWidget
     KScreen::OutputPtr findOutput(const KScreen::ConfigPtr &config, const QVariantMap &info);
 
     void writeScale(int scale);
+    void setTitleLabel();
     void initGSettings();
     void setcomBoxScale();
     void initNightUI();

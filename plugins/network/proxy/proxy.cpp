@@ -51,9 +51,6 @@ Proxy::Proxy()
     pluginName = tr("Proxy");
     pluginType = NETWORK;
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
     settingsCreate = false;
 
     const QByteArray id(PROXY_SCHEMA);
@@ -62,6 +59,7 @@ Proxy::Proxy()
     const QByteArray iid(FTP_PROXY_SCHEMA);
     const QByteArray iiid(SOCKS_PROXY_SCHEMA);
 
+    initTitleLabel();
     initSearchText();
     setupStylesheet();
     setupComponent();
@@ -120,6 +118,13 @@ void Proxy::plugin_delay_control(){
 const QString Proxy::name() const {
 
     return QStringLiteral("proxy");
+}
+
+void Proxy::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
+    ui->title2Label->setFont(font);
 }
 
 void Proxy::initSearchText() {

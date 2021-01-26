@@ -41,8 +41,7 @@ DefaultApp::DefaultApp() {
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
+    initTitleLabel();
     initUI();
     connectToServer();
 
@@ -72,6 +71,12 @@ void DefaultApp::plugin_delay_control() {
 const QString DefaultApp::name() const {
 
     return QStringLiteral("defaultapp");
+}
+
+void DefaultApp::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
 }
 
 void DefaultApp::initUI() {

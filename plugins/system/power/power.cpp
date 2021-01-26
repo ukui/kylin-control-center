@@ -94,13 +94,11 @@ QWidget * Power::get_plugin_ui() {
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
 
-        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
         const QByteArray id(POWERMANAGER_SCHEMA);
         const QByteArray sessionId(SESSION_SCHEMA);
         const QByteArray personalizeId(PERSONALSIE_SCHEMA);
 
+        initTitleLabel();
         initDbus();
         initDeviceStatus();
         setupComponent();
@@ -130,6 +128,14 @@ void Power::plugin_delay_control() {
 const QString Power::name() const {
 
     return QStringLiteral("power");
+}
+
+void Power::initTitleLabel()
+{
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
+    ui->title2Label->setFont(font);
 }
 
 void Power::initSearText() {

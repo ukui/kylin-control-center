@@ -87,15 +87,13 @@ QWidget *UserInfo::get_plugin_ui() {
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
 
-        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
         // 构建System dbus调度对象
         sysdispatcher = new SystemDbusDispatcher(this);
 
         // 获取系统全部用户信息，用户Uid大于等于1000的
         _acquireAllUsersInfo();
 
+        initTitleLabel();
         initSearchText();
         readCurrentPwdConf();
         initComponent();
@@ -113,6 +111,13 @@ void UserInfo::plugin_delay_control() {
 const QString UserInfo::name() const {
 
     return QStringLiteral("userinfo");
+}
+
+void UserInfo::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
+    ui->title2Label->setFont(font);
 }
 
 void UserInfo::initSearchText() {

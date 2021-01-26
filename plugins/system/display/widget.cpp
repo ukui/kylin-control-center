@@ -81,7 +81,6 @@ Widget::Widget(QWidget *parent)
     gdk_init(NULL, NULL);
 
     ui->setupUi(this);
-    ui->monitorLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
@@ -124,6 +123,7 @@ Widget::Widget(QWidget *parent)
         ui->advancedHorLayout->setContentsMargins(9, 0, 9, 0);
     }
 
+    setTitleLabel();
     initGSettings();
     initTemptSlider();
     initUiComponent();
@@ -500,6 +500,13 @@ void Widget::writeScale(int scale) {
         }
         cursorSettings.set(CURSOR_SIZE_KEY, cursize);
     }
+}
+
+void Widget::setTitleLabel()
+{
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
 }
 
 void Widget::initGSettings() {

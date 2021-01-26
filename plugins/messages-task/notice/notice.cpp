@@ -55,7 +55,6 @@ int Notice::get_plugin_type() {
 
 QWidget * Notice::get_plugin_ui() {
     if (mFirstLoad) {
-        mFirstLoad = false;
         ui = new Ui::Notice;
         pluginWidget = new QWidget;
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
@@ -66,15 +65,13 @@ QWidget * Notice::get_plugin_ui() {
 
         mFirstLoad = false;
 
-        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
         ui->newfeatureWidget->setVisible(false);
         ui->lockscreenWidget->setVisible(false);
 
         ui->title2Label->setContentsMargins(0, 0, 0, 16);
         ui->applistWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+        initTitleLabel();
         initSearchText();
         setupGSettings();
         setupComponent();
@@ -91,6 +88,13 @@ void Notice::plugin_delay_control() {
 const QString Notice::name() const {
 
     return QStringLiteral("notice");
+}
+
+void Notice::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
+    ui->title2Label->setFont(font);
 }
 
 void Notice::initSearchText() {

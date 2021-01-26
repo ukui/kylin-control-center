@@ -28,6 +28,7 @@ ShareMain::ShareMain(QWidget *parent)
 
     mVlayout = new QVBoxLayout(this);
     mVlayout->setContentsMargins(0, 0, 32, 0);
+    initTitleLabel();
     initUI();
     initConnection();
 }
@@ -36,9 +37,14 @@ ShareMain::~ShareMain() {
 
 }
 
+void ShareMain::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    mShareTitleLabel->setFont(font);
+}
+
 void ShareMain::initUI() {
     mShareTitleLabel = new QLabel(tr("Share"), this);
-    mShareTitleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
     mEnableFrame = new QFrame(this);
     mEnableFrame->setFrameShape(QFrame::Shape::Box);

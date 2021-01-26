@@ -105,12 +105,9 @@ Theme::Theme()
     pluginName = tr("Theme");
     pluginType = PERSONALIZED;
     ui->setupUi(pluginWidget);
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->iconLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->cursorLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->effectLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
     setupGSettings();
+    initTitleLabel();
     initSearchText();
 
     //设置组件
@@ -147,6 +144,16 @@ void Theme::plugin_delay_control(){
 const QString Theme::name() const {
 
     return QStringLiteral("theme");
+}
+
+void Theme::initTitleLabel() {
+    qDebug() << Q_FUNC_INFO;
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
+    ui->iconLabel->setFont(font);
+    ui->controlLabel->setFont(font);
+    ui->cursorLabel->setFont(font);
 }
 
 void Theme::initSearchText() {

@@ -48,13 +48,9 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
     ui->widget->setMinimumWidth(650);
     ui->widget->setMaximumWidth(1200);
 
-    ui->mtitleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(Shadow);}");
     // 左侧二级菜单样式
     ui->leftStackedWidget->setStyleSheet("border: none;");
-    // 上侧二级菜单样式
-//    ui->topStackedWidget->setStyleSheet("border: none;");
     ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//    ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     //初始化记录标志位
     flagBit = true;
@@ -65,12 +61,19 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
     ui->topsideWidget->hide();
 
     getModuleStatus();
+    initTitleLabel();
     initUI();
 }
 
 ModulePageWidget::~ModulePageWidget()
 {
     delete ui;
+}
+
+void ModulePageWidget::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->mtitleLabel->setFont(font);
 }
 
 void ModulePageWidget::initUI() {

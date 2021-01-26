@@ -87,6 +87,7 @@ private:
     QGSettings * mVinoGsetting;
 
 private:
+    void initTitleLabel();
     void initUI();
     void initConnection();
     void initShareStatus(bool isConnnect, bool isPwd);

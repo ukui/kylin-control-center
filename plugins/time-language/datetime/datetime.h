@@ -79,10 +79,10 @@ public:
     void plugin_delay_control() Q_DECL_OVERRIDE;
     const QString name() const  Q_DECL_OVERRIDE;
 
+    void initTitleLabel();
     void component_init();
     void status_init();
     void connectToServer();
-
     bool fileIsExits(const QString& filepath);
 
 private:

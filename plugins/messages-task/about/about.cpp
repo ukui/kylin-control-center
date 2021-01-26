@@ -69,8 +69,7 @@ QWidget *About::get_plugin_ui() {
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
 
-        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
+        initTitleLabel();
         initSearchText();
         initActiveDbus();
         setupDesktopComponent();
@@ -299,6 +298,13 @@ QStringList About::readFile(QString filepath) {
         qWarning() << filepath << " not found"<<endl;
         return QStringList();
     }
+}
+
+void About::initTitleLabel()
+{
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
 }
 
 void About::initSearchText() {

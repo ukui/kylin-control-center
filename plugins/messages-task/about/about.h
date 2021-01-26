@@ -57,6 +57,7 @@ private:
     void initUI();
     QStringList  readFile(QString filePath);
 
+    void initTitleLabel();
     void initSearchText();
     void initActiveDbus();
     void setupDesktopComponent();

@@ -101,14 +101,12 @@ QWidget *Shortcut::get_plugin_ui(){
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
 
-        ui->systemLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-        ui->customLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
         pKeyMap = new KeyMap;
         addDialog = new addShortcutDialog();
 
         isCloudService = false;
 
+        initTitleLabel();
         setupComponent();
         setupConnect();
         initFunctionStatus();
@@ -124,6 +122,13 @@ void Shortcut::plugin_delay_control(){
 const QString Shortcut::name() const {
 
     return QStringLiteral("shortcut");
+}
+
+void Shortcut::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->systemLabel->setFont(font);
+    ui->customLabel->setFont(font);
 }
 
 void Shortcut::connectToServer(){

@@ -126,7 +126,7 @@ QWidget *MouseControl::get_plugin_ui() {
         ui->setupUi(pluginWidget);
 
         initSearchText();
-        initStyle();
+        initTitleLabel();
 
         //初始化鼠标设置GSettings
         const QByteArray id(MOUSE_SCHEMA);
@@ -182,10 +182,12 @@ void MouseControl::initSearchText() {
     ui->cursorspdLabel->setText(tr("Cursor speed"));
 }
 
-void MouseControl::initStyle() {
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+void MouseControl::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
+    ui->title2Label->setFont(font);
+    ui->title3Label->setFont(font);
 }
 
 void MouseControl::setupComponent() {

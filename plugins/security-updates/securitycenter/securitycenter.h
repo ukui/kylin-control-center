@@ -80,6 +80,7 @@ public:
     FlowLayout * flowLayout;
 
 public:
+    void initTitleLabel();
     void initComponent();
 
     void runExternalApp(QString cmd);

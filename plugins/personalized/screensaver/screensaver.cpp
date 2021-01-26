@@ -90,13 +90,13 @@ QWidget *Screensaver::get_plugin_ui() {
         pluginWidget = new QWidget;
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
-        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
         ui->previewWidget->setStyleSheet("#previewWidget{background: black;}");
         ui->previewWidget->setAutoFillBackground(true);
 
         process = new QProcess();
 
+        initTitleLabel();
         initSearchText();
         _acquireThemeinfoList();
         initComponent();
@@ -115,6 +115,12 @@ void Screensaver::plugin_delay_control() {
 const QString Screensaver::name() const {
 
     return QStringLiteral("screensaver");
+}
+
+void Screensaver::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
 }
 
 void Screensaver::initSearchText() {

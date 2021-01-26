@@ -154,6 +154,7 @@ SecurityCenter::SecurityCenter()
     pluginName = tr("Security Center");
     pluginType = UPDATE;
 
+    initTitleLabel();
     initComponent();
 
     connect(ui->pushButton, &QPushButton::clicked, [=]{
@@ -188,9 +189,13 @@ const QString SecurityCenter::name() const {
     return QStringLiteral("securitycenter");
 }
 
-void SecurityCenter::initComponent(){
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);font-weight:bold;}");
+void SecurityCenter::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
+}
 
+void SecurityCenter::initComponent(){
     //设置布局
     flowLayout = new FlowLayout;
     flowLayout->setContentsMargins(0, 0, 0, 0);

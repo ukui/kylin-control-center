@@ -55,6 +55,7 @@ public:
     const QString name() const  Q_DECL_OVERRIDE;
 
 public:
+    void initTitleLabel();
     void setupComponent();
     void initConnection();
     void initTouchpadStatus();

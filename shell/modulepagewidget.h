@@ -43,6 +43,7 @@ public:
     ~ModulePageWidget();
 
 public:
+    void initTitleLabel();
     void initUI();
     void switchPage(QObject * plugin, bool recorded = true);
     void refreshPluginWidget(CommonInterface * plu);

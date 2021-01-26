@@ -33,7 +33,7 @@ Vpn::Vpn()
     pluginName = tr("Vpn");
     pluginType = NETWORK;
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    initTitleLabel();
     initComponent();
 }
 
@@ -61,6 +61,12 @@ void Vpn::plugin_delay_control(){
 const QString Vpn::name() const {
 
     return QStringLiteral("vpn");
+}
+
+void Vpn::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
 }
 
 void Vpn::initComponent(){

@@ -82,8 +82,8 @@ QWidget *Touchpad::get_plugin_ui(){
 
         //~ contents_path /touchpad/Touchpad Settings
         ui->titleLabel->setText(tr("Touchpad Settings"));
-        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
+        initTitleLabel();
         setupComponent();
         if (!isWaylandPlatform()) {
             ui->scrollingTypeComBox->setView(new QListView());
@@ -117,6 +117,12 @@ void Touchpad::plugin_delay_control(){
 const QString Touchpad::name() const {
 
     return QStringLiteral("touchpad");
+}
+
+void Touchpad::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
 }
 
 void Touchpad::setupComponent(){

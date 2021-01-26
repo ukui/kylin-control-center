@@ -82,11 +82,6 @@ QWidget *Desktop::get_plugin_ui() {
 
         ui->listWidget->setItemDelegate(new ListDelegate(this));
 
-        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-        ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-        ui->menuLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
         ui->titleLabel->setVisible(false);
 
         ui->deskComputerFrame->setVisible(false);
@@ -111,6 +106,7 @@ QWidget *Desktop::get_plugin_ui() {
             dSettings = new QGSettings(id, QByteArray(), this);
         }
         cmd = QSharedPointer<QProcess>(new QProcess());
+        initTitleLabel();
         initSearchText();
         initTranslation();
         setupComponent();
@@ -129,6 +125,15 @@ void Desktop::plugin_delay_control(){
 const QString Desktop::name() const {
 
     return QStringLiteral("desktop");
+}
+
+void Desktop::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
+    ui->title3Label->setFont(font);
+    ui->title2Label->setFont(font);
+    ui->menuLabel->setFont(font);
 }
 
 void Desktop::initSearchText() {

@@ -46,8 +46,7 @@ DateTime::DateTime() {
 
     pluginName = tr("Dat");
     pluginType = DATETIME;
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->timeClockLable->setStyleSheet("QLabel{font-size: 24px; color: palette(windowText);}");
+    initTitleLabel();
 
     m_zoneinfo = new ZoneInfo;
     m_timezone = new TimeZoneChooser(pluginWidget);
@@ -61,7 +60,7 @@ DateTime::DateTime() {
 
     // 初始化gsettings
     const QByteArray id(FORMAT_SCHEMA);
-    if(QGSettings::isSchemaInstalled(id)) {
+    if (QGSettings::isSchemaInstalled(id)) {
         const QByteArray id(FORMAT_SCHEMA);
         m_formatsettings = new QGSettings(id, QByteArray(), this);
         connect(m_formatsettings, &QGSettings::changed, this, [=](QString key) {
@@ -123,6 +122,13 @@ void DateTime::plugin_delay_control() {
 const QString DateTime::name() const {
 
     return QStringLiteral("dat");
+}
+
+void DateTime::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
+    ui->timeClockLable->setStyleSheet("QLabel{font-size: 24px; color: palette(windowText);}");
 }
 
 void DateTime::component_init() {

@@ -75,9 +75,9 @@ QWidget *Wallpaper::get_plugin_ui() {
         pluginWidget = new QWidget;
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
-        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
         settingsCreate = false;
+        initTitleLabel();
         initSearchText();
         //初始化控件
         setupComponent();
@@ -104,6 +104,12 @@ const QString Wallpaper::name() const {
     return QStringLiteral("wallpaper");
 }
 
+void Wallpaper::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
+}
+
 void Wallpaper::initSearchText() {
     //~ contents_path /wallpaper/Select from
     ui->selectLabel->setText(tr("Select from"));
@@ -116,8 +122,6 @@ void Wallpaper::initSearchText() {
 }
 
 void Wallpaper::setupComponent(){
-
-
 
     // 背景形式
     QStringList formList;

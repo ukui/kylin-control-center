@@ -58,7 +58,6 @@ QWidget *Printer::get_plugin_ui() {
 
         //~ contents_path /printer/Add Printers And Scanners
         ui->titleLabel->setText(tr("Add Printers And Scanners"));
-        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
         //禁用选中效果
         ui->listWidget->setFocusPolicy(Qt::NoFocus);
@@ -66,6 +65,7 @@ QWidget *Printer::get_plugin_ui() {
 
         refreshPrinterDev();
 
+        initTitleLabel();
         initComponent();
     }
     return pluginWidget;
@@ -78,6 +78,12 @@ void Printer::plugin_delay_control() {
 const QString Printer::name() const {
 
     return QStringLiteral("printer");
+}
+
+void Printer::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
 }
 
 void Printer::initComponent(){

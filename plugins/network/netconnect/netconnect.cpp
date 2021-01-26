@@ -78,15 +78,13 @@ QWidget *NetConnect::get_plugin_ui() {
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
 
-        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
         ui->detailBtn->setText(tr("Network settings"));
 
         wifiBtn = new SwitchButton(pluginWidget);
 
         ui->openWIifLayout->addWidget(wifiBtn);
 
+        initTitleLabel();
         initSearchText();
         initComponent();
     }
@@ -122,6 +120,12 @@ void NetConnect::properties_changed_refresh() {
 const QString NetConnect::name() const {
 
     return QStringLiteral("netconnect");
+}
+
+void NetConnect::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
 }
 
 void NetConnect::initSearchText() {

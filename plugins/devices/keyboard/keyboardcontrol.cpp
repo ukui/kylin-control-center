@@ -72,13 +72,14 @@ QWidget *KeyboardControl::get_plugin_ui() {
         mFirstLoad = false;
         settingsCreate = false;
 
+        initTitleLabel();
         setupStylesheet();
         setupComponent();
 
         // 初始化键盘通用设置GSettings
         const QByteArray id(KEYBOARD_SCHEMA);
         // 初始化键盘布局GSettings
-//        const QByteArray idd(KBD_LAYOUTS_SCHEMA);
+        // const QByteArray idd(KBD_LAYOUTS_SCHEMA);
         // 初始化按键提示GSettings
         const QByteArray iid(CC_KEYBOARD_OSD_SCHEMA);
         // 控制面板自带GSettings，不再判断是否安装
@@ -109,7 +110,14 @@ void KeyboardControl::plugin_delay_control() {
 
 const QString KeyboardControl::name() const {
 
-   return QStringLiteral("keyboard");
+    return QStringLiteral("keyboard");
+}
+
+void KeyboardControl::initTitleLabel() {
+    QFont font;
+    font.setPixelSize(18);
+    ui->titleLabel->setFont(font);
+    ui->title2Label->setFont(font);
 }
 
 void KeyboardControl::setupStylesheet(){
@@ -127,8 +135,6 @@ void KeyboardControl::setupStylesheet(){
     //~ contents_path /keyboard/Keyboard layout
     ui->layoutLabel->setText(tr("Keyboard layout"));
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 }
 
 void KeyboardControl::setupComponent(){

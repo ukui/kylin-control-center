@@ -117,6 +117,7 @@ public:
     const QString name() const  Q_DECL_OVERRIDE;
 
 public:
+    void initTitleLabel();
     void initSearchText();
     void initComponent();
     void initAllUserStatus();

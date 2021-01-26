@@ -72,6 +72,7 @@ public:
     QStringList readFile(const QString& filePath);
 
 private:
+    void initTitleLabel();
     void initUI();
     void initComponent();
     QStringList getUserDefaultLanguage();
