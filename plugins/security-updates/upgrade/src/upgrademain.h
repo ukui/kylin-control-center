@@ -62,12 +62,6 @@ public:
     // 切换浅色模式
     void changeLightTheme();
 
-    // 拷贝函数
-    bool copyFolder(const QString &fromDir, const QString &toDir, bool coverFileIfExist);
-
-    QSettings *mqsetting;   //读取配置文件
-    void readConf();
-
 public slots:
 
     // 键盘响应事件

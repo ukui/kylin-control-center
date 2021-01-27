@@ -11,6 +11,7 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QCheckBox>
+#include <QFont>
 
 #include "appupdate.h"
 #include "switchbutton.h"
@@ -109,7 +110,7 @@ public slots:
     void loadingFinishedSlot(int size); //加载完毕信号
     void waitCrucialInstalled();  //等待静默更新安装完的消息提示
 
-    void hideUpdateBtnSlot();
+    void hideUpdateBtnSlot(bool isSucceed);
     void changeUpdateAllSlot();
 
     //调用源管理器相关
@@ -125,7 +126,8 @@ public slots:
 private:
     UKSCConn *ukscConnect;
     bool firstCheckedStatus = false;
-
+    bool isConnectSourceSignal = false;
+    void unableToConnectSource();
 //备份还原相关
     void bacupInit();
     void backupDelete();

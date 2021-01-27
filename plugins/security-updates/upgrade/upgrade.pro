@@ -44,6 +44,7 @@ SOURCES += \
     src/daemonipcdbus.cpp \
     src/historyupdatelistwig.cpp \
     src/m_updatelog.cpp \
+    src/mylabel.cpp \
     src/switchbutton.cpp \
     src/tabwidget.cpp \
     src/traybusthread.cpp \
@@ -64,6 +65,7 @@ HEADERS += \
     src/historyupdatelistwig.h \
     src/m_updatelog.h \
     src/metatypes.h \
+    src/mylabel.h \
     src/shadowwidget.h \
     src/switchbutton.h \
     src/tabwidget.h \

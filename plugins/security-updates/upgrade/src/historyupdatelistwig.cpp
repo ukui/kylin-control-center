@@ -76,9 +76,9 @@ void HistoryUpdateListWig::setAttribute(const QString &mname,const QString &msta
     debTime->setText(mtime);
     debDescription=mdescription;
     if(mstatue == "Success")
-        debStatue->setText(tr("更新成功"));
+        debStatue->setText(tr("Success"));  //更新成功
     else
-        debStatue->setText(tr("更新失败"));
+        debStatue->setText(tr("Failed"));  //更新失败
     id = myid;
     //this->setStyleSheet("border:1px solid red;");
 }

@@ -16,13 +16,10 @@ public:
     explicit UpdateSource(QObject *parent = nullptr);
 
     void callDBusUpdateTemplate();
-
     void callDBusUpdateSource(QString symbol);
-
 //    QDBusReply<QString> replyStr;   //string类型的返回值
     QDBusInterface *serviceInterface;
     void getReply(QDBusPendingCallWatcher *call);
-
     QString getFailInfo(int statusCode);
 signals:
 

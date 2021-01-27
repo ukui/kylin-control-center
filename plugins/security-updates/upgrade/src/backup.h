@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QFile>
 #include <QDBusInterface>
+#include <QDBusServiceWatcher>
+//#include <QDBusConnection>
 #include <QDBusReply>
 #include <QDBusMessage>
 #include <QDebug>
@@ -33,7 +35,10 @@ private:
     bool readSourceManagerInfo();
     bool readBackToolInfo();
     QDBusInterface *interface = nullptr;
+    QDBusServiceWatcher *watcher = nullptr;
+    void onDBusNameOwnerChanged(const QString &name,const QString &oldOwner,const QString &newOwner);
     bool setProgress = false;
+    void creatInterface();
 };
 
 #endif // BACKUP_H

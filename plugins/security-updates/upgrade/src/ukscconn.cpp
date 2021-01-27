@@ -24,7 +24,7 @@ UKSCConn::UKSCConn()
     ukscDb.setDatabaseName(dbFileName);
     if (!ukscDb.open())
     {
-        qWarning() << "USKC Database Error";
+        qWarning() << "软件商店数据库打开错误！";
         isConnectUskc = false;
     }
     else

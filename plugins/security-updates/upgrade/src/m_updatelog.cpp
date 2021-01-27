@@ -38,19 +38,17 @@ m_updatelog::m_updatelog(QWidget* parent) : QDialog(parent)
     connect(uddbus->interface,SIGNAL(update_sqlite_signal(QString,QString)),this,SLOT(historyUpdateNow(QString,QString)));
 }
 
-QString m_updatelog::setDefaultDescription(QString str)
-{
-    if(str == "")
-        str = tr("暂无内容");
-    return str;
-}
-
 m_updatelog * m_updatelog::GetInstance(QWidget *parent)
 {
     if(m_instance==nullptr)
     {
         m_instance = new m_updatelog(parent);
-        qDebug()<<m_instance->parent();
+        return m_instance;
+    }
+    if(m_instance->isHidden())
+    {
+        m_instance->deleteLater();
+        m_instance = new m_updatelog(parent);
     }
     return m_instance;
 }
@@ -67,8 +65,13 @@ void m_updatelog::initUI()
 //    font.setPointSize(34);//字体大小
     font.setBold(true);
 
+    //当前语言环境
+    QString locale = QLocale::system().name();
+    if (locale == "zh_CN")
+        environment=zh_cn;
+
     //初始化窗口属性
-    this->setWindowTitle(tr("历史更新"));
+    this->setWindowTitle(tr("History Log"));  //历史更新
     this->setFixedSize(WIDTH,HEIGHT);
     this->setObjectName(FIND_DES_LABLE_TYPE);
     //this->setAttribute(Qt::WA_DeleteOnClose);
@@ -100,7 +103,7 @@ void m_updatelog::initUI()
 
     desBackground->setFrameStyle(QFrame::Box);
 
-    updateDesTab->setText(tr("更新详情"));
+    updateDesTab->setText(tr("Update Details"));  //更新详情
 
     //布局
     QHBoxLayout *hl1 = new QHBoxLayout;
@@ -124,7 +127,7 @@ void m_updatelog::initUI()
     hll->setMargin(0);
     hll->addSpacing(LIST_LEFT);
     hll->addWidget(mainListwidget);
-    hll->addWidget(mainListwidget->verticalScrollBar());
+    //hll->addWidget(mainListwidget->verticalScrollBar());
     QVBoxLayout *vll = new QVBoxLayout;
     vll->setSpacing(0);
     vll->setMargin(0);
@@ -173,9 +176,8 @@ void m_updatelog::updatesql( const int &start,const int &num,const QString &into
         hulw->setAttribute(translationVirtualPackage(query.value("appname").toString())+" "+query.value("version").toString(),
                            query.value("statue").toString(),
                            query.value("time").toString(),
-                           setDefaultDescription(query.value("description").toString()),
+                           setDescription(query.value("error_code").toInt(),query.value("description").toString()),
                            query.value("id").toInt());
-        loadingCode = hulw->id;//记录加载到哪个位置
         QListWidgetItem *item = new QListWidgetItem();
         item->setFlags(Qt::NoItemFlags);
         item->setSizeHint(hulw->getTrueSize());
@@ -191,7 +193,10 @@ void m_updatelog::updatesql( const int &start,const int &num,const QString &into
             mainListwidget->insertItem(0,item);
         }
         else
+        {
+            loadingCode = hulw->id;//记录加载到哪个位置
             mainListwidget->addItem(item);
+        }
         mainListwidget->setItemWidget(item,hulw);
         if(intop!="")
             hulw->selectStyle();//设置选中样式
@@ -211,6 +216,8 @@ void m_updatelog::defaultItem()
 
 QString m_updatelog::translationVirtualPackage(QString str)
 {
+    if(environment == en)//英文环境下不翻译
+        return str;
     if(str == "kylin-update-desktop-app")
         return "基本应用";
     if(str == "kylin-update-desktop-security")
@@ -225,6 +232,61 @@ QString m_updatelog::translationVirtualPackage(QString str)
         return "系统内核组件";
     if(str == "kylin-update-desktop-kydroid")
         return "kydroid补丁包";
+    return str;
+}
+
+QString m_updatelog::translationErroCode(int errorcode)
+{
+    if(environment == zh_cn)
+        switch (errorcode) {
+        case -1:
+            return "未知错误：-1";
+        case -2:
+            return "软件包损坏";
+        case -3:
+            return "系统中正在进行其他安装任务";
+        case -4:
+            return "未知错误：-4";
+        case -5:
+            return "未知错误：-5";
+        case -49:
+            return "更新过程中源被修改";
+        case -50:
+            return "获取依赖失败";
+        default:
+            return "";
+        }
+    //英文
+    switch (errorcode) {
+    case -1:
+        return "Unknown error：-1";
+    case -2:
+        return "Package corruption.";
+    case -3:
+        return "Other installation tasks are in progress.";
+    case -4:
+        return "unknown error：-4";
+    case -5:
+        return "unknown error：-5";
+    case -49:
+        return "The source is modified during the update.";
+    case -50:
+        return "Acquisition dependency failed.";
+    default:
+        return "";
+    }
+    return "";
+}
+
+QString m_updatelog::setDescription(int errorcode, QString str)
+{
+    if(str == ""){
+        str = tr("No content.");  //暂无内容
+        return str;
+    }
+    QString result = translationErroCode(errorcode);
+    if(result!="")
+        return result;
     return str;
 }
 

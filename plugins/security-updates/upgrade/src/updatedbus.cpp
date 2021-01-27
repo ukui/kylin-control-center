@@ -60,7 +60,7 @@ void UpdateDbus::onRequestSendDesktopNotify(QString message)
     args<<(QCoreApplication::applicationName())
        <<((unsigned int) 0)
       <<QString("qweq")
-     <<tr("控制面板-更新提示") //显示的是什么类型的信息
+     <<tr("ukui-control-center-update") //显示的是什么类型的信息  控制面板-更新提示
     <<message //显示的具体信息
     <<QStringList()
     <<QVariantMap()
@@ -76,7 +76,7 @@ bool UpdateDbus::fileLock()
     char*  charnameuid;
     QByteArray ba = nameuid.toLatin1(); // must
     charnameuid=ba.data();
-    qDebug()<<"charnameuid:"<<charnameuid;
+    qDebug()<<"文件锁打开 用户ID：" << charnameuid;
 
     //初始化运行程序名称
     char name_string[20] = {"ukui-control-center"};
@@ -85,7 +85,7 @@ bool UpdateDbus::fileLock()
     if(fd < 0)
     {
         qDebug() << "文件锁的文件不存在，程序退出。";
-        exit(0);
+        return false;
     }
     else{
         write(fd, charnameuid, strlen(charnameuid));
@@ -100,8 +100,8 @@ void UpdateDbus::fileUnLock()
     int fd = open(lockPath.toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
     if(fd < 0)
     {
-        qDebug() << "解锁文件不存在，程序退出。";
-        exit(0);
+        qDebug() << "解锁文件不存在或无法打开。";
+        return;
     }
     else{
         ftruncate(fd, 0);
@@ -125,7 +125,7 @@ void UpdateDbus::copyFinsh(QStringList srcPath, QString appName)
         makeDirs(QString("/var/cache/apt/archives/"));
     }
     replyStr = interface->call("copy_file_to_install",srcPath,appName);
-    qDebug() << "copy_file_to_install";
+    qDebug() << "拷贝软件包到安装目录，调用接口copy_file_to_install";
 }
 
 bool UpdateDbus::makeDirs(QString path)
@@ -139,23 +139,16 @@ bool UpdateDbus::makeDirs(QString path)
         return replyBool.value();
     }
     else{
-        qDebug() << QString("Call failed makeDirs");
+        qDebug() << QString("调用失败： makeDirs");
+        return false;
     }
 }
 
 // setImportantStatus
-bool UpdateDbus::setImportantStatus(bool status)
+void UpdateDbus::setImportantStatus(bool status)
 {
-    // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->call("set_important_status", status);
-    // 将reply.value()作为返回值
-    if (replyBool.isValid()) {
-        qDebug() <<"setImportantStatus:"<<status;
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed setImportantStatus");
-    }
+    interface->asyncCall("set_important_status", status);
+    qDebug() <<"更新管理器-设置状态值" <<"setImportantStatus:"<<status;
 }
 
 //安装和升级
@@ -170,7 +163,8 @@ bool UpdateDbus::installAndUpgrade(QString pkgName)
         return replyBool.value();
     }
     else{
-        qDebug() << QString("Call failed installAndUpgrade");
+        qDebug() << QString("调用更新管理器接口失败： installAndUpgrade");
+        return false;
     }
 }
 
@@ -179,21 +173,14 @@ bool UpdateDbus::installAndUpgrade(QString pkgName)
 void UpdateDbus::modifyConf(QString path, QString group, QString key, QString value)
 {
     replyStr = interface->call("modify_conf",path,group,key,value);
-    qDebug() << QString("Call modify_conf");
+    qDebug() << QString("调用 modify_conf接口");
 
 }
 
-bool UpdateDbus::cleanUpdateList()
+void UpdateDbus::cleanUpdateList()
 {
-    qDebug() << "cleanUpdateList";
-    replyBool = interface->call("clear_install_list");
-    if (replyBool.isValid()) {
-        qDebug() << "cleanUpdateList:"<<replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("Call failed clear_install_list");
-    }
+    qDebug() << "更新管理器清除列表：cleanUpdateList";
+    interface->asyncCall("clear_install_list");
 }
 
 //初始化cache
@@ -216,7 +203,7 @@ void UpdateDbus::getInameAndCnameList(QString arg)
         qDebug() << inameList;
 //        qDebug() <<  value;
     } else {
-        qDebug() << "value method called failed!";
+        qDebug() << "value method 调用失败!";
     }
 //    emit sendImportant();
 
@@ -285,14 +272,16 @@ QStringList UpdateDbus::checkInstallOrUpgrade(QStringList list)
         return replyStrList.value();
     }
     else{
-        qDebug() << QString("Call failed check_installed_or_upgrade");
+        QStringList error;
+        qDebug() << QString("check_installed_or_upgrade接口调用失败！");
+        return error;
     }
 }
 
 void UpdateDbus::getAppMessage(QStringList list)
 {
     interface->asyncCall("get_app_message",list);
-    qDebug() << "Call get_app_message";
+    qDebug() << "调用 get_app_message";
 }
 
 

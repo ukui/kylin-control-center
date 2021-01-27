@@ -39,7 +39,11 @@ private:
     int firstCode = 0;
     int loadingCode = 0;
     QHBoxLayout *hll = nullptr;
-    QString setDefaultDescription(QString str);
+    QString setDescription(int errorcode, QString str);
+    enum Environment{
+        en,
+        zh_cn
+    }environment;
 
 private slots:
     void initUI(); //初始化UI
@@ -48,6 +52,7 @@ private slots:
     void updatesql(const int &start=0, const int &num=20, const QString &intop="");//更新列表
     void defaultItem();//默认选中
     QString translationVirtualPackage(QString str);//翻译虚包名
+    QString translationErroCode(int errorcode);//翻译错误信息
 };
 
 #endif // M_UPDATELOG_H

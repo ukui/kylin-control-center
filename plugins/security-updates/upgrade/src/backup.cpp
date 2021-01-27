@@ -14,13 +14,41 @@ const int needBack = 99;
 
 BackUp::BackUp(QObject *parent) : QObject(parent)
 {
-    interface = new QDBusInterface(BACKUP_DBUS_SERVICE,BACKUP_DBUS_PATH, BACKUP_DBUS_INTERFACE,QDBusConnection::systemBus());
-    connect(interface,SIGNAL(sendRate(int,int)),this,SLOT(sendRate(int,int)));
+//    interface = new QDBusInterface(BACKUP_DBUS_SERVICE,BACKUP_DBUS_PATH, BACKUP_DBUS_INTERFACE,QDBusConnection::systemBus());
+//    connect(interface,SIGNAL(sendRate(int,int)),this,SLOT(sendRate(int,int)));
+//    watcher = new QDBusServiceWatcher(BACKUP_DBUS_SERVICE,QDBusConnection::systemBus(),QDBusServiceWatcher::WatchForOwnerChange,this);
+//    connect(watcher,  &QDBusServiceWatcher::serviceOwnerChanged,this, &BackUp::onDBusNameOwnerChanged);
 }
 
+void BackUp::onDBusNameOwnerChanged(const QString &name, const QString &oldOwner, const QString &newOwner)
+{
+    Q_UNUSED(oldOwner);
+
+    if (name == BACKUP_DBUS_SERVICE) {
+        if (newOwner.isEmpty()) {
+            qWarning() << "麒麟备份还原工具被中断";
+            emit bakeupFinish(-20);
+        } else {
+            qWarning() << "麒麟备份还原工具被重启";
+        }
+        //Q_EMIT serviceStatusChanged(!newOwner.isEmpty());
+    }
+}
+
+void BackUp::creatInterface()
+{
+    interface->deleteLater();
+    interface = new QDBusInterface(BACKUP_DBUS_SERVICE,BACKUP_DBUS_PATH, BACKUP_DBUS_INTERFACE,QDBusConnection::systemBus());
+    connect(interface,SIGNAL(sendRate(int,int)),this,SLOT(sendRate(int,int)));
+    watcher->deleteLater();
+    watcher = new QDBusServiceWatcher(BACKUP_DBUS_SERVICE,QDBusConnection::systemBus(),QDBusServiceWatcher::WatchForOwnerChange,this);
+    connect(watcher,  &QDBusServiceWatcher::serviceOwnerChanged,this, &BackUp::onDBusNameOwnerChanged);
+}
 
 int BackUp::needBacdUp()
 {
+    //构造dbus对象
+    creatInterface();
     //备份工具是否存在
     QFileInfo file(BACKUP_PATH);
     if(!file.exists())
@@ -84,11 +112,11 @@ bool BackUp::haveBackTool()
         qDebug()<<"dbus对象未实例化";
         return false;
     }
-    if(!interface->isValid())
-    {
-        qDebug()<<"未创建备份还原分区";
-        return false;
-    }
+//    if(!interface->isValid())
+//    {
+//        qDebug()<<"未创建备份还原分区";
+//        return false;
+//    }
     QDBusReply<int> reply = interface->call("getBackupState");
     if(!reply.isValid())
     {

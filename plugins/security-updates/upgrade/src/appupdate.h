@@ -14,7 +14,8 @@
 #include <QMetaType>
 #include <QTimer>
 #include "updatedbus.h"
-
+#include <QCheckBox>
+#include "mylabel.h"
 class UpdateLog;
 //class UpdateDbus;
 class AppUpdateWid : public QWidget
@@ -29,7 +30,7 @@ public:
     //缩略界面
     QLabel *appIcon;
     QLabel *appIconName;
-    QLabel *appNameLab;
+    MyLabel *appNameLab;
     QLabel *appVersion;
     QLabel *appVersionIcon;
 
@@ -45,14 +46,14 @@ public:
     QWidget *largeWidget;
     QVBoxLayout *mainVLayout;
     //展开界面
-    QTextEdit *someInfoEdit;
+    QTextEdit *someInfoEdit;  //详情内容
     QPushButton *updatelogBtn;
-
 //    AppMsg *thisAppMessage;
-    QString chlog;
-
-    bool eventFilter(QObject *watched, QEvent *event);
-    QString setDefaultDescription(QString str);
+    QString chlog;  //更新日志完整内容
+    bool eventFilter(QObject *watched, QEvent *event); //过滤tooltip事件
+    QString setDefaultDescription(QString str); //将虚包包名汉化
+    void updateOneApp();  //控制更新单个app
+    QString dispalyName;
 private:
     bool isCancel = true;
     bool firstDownload = true;
@@ -95,13 +96,18 @@ private:
     bool getDownloadSpeed(QString appName, QString fullName, int fileSize); //获取下载速度
     void initConnect(); //初始化信号槽
     void changeDownloadState(int state);
-    QString modifySizeUnit(int size);
-    QString modifySpeedUnit(int size, float time);
+    QString modifySizeUnit(long size);
+    QString modifySpeedUnit(long size, float time);
+
+    enum Environment{
+        en,
+        zh_cn
+    }environment;
 
 signals:
     void startWork(QString appName);
     void startMove(QStringList list, QString appName);
-    void hideUpdateBtnSignal();
+    void hideUpdateBtnSignal(bool isSucceed);
     void changeUpdateAllSignal();
     void downloadFailedSignal(int exitCode);  //网络异常或者其他情况下下载失败时
     void filelockedSignal();

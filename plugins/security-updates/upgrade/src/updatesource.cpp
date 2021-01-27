@@ -9,7 +9,7 @@ UpdateSource::UpdateSource(QObject *parent) : QObject(parent)
                                                           QDBusConnection::systemBus());
     if(!serviceInterface->isValid())
     {
-        qDebug() << "Service Interface: " << qPrintable(QDBusConnection::systemBus().lastError().message());
+        qDebug() << "源管理器：" <<"Service Interface: " << qPrintable(QDBusConnection::systemBus().lastError().message());
         return;
     }
 }
@@ -21,7 +21,7 @@ void UpdateSource::callDBusUpdateTemplate()
     QDBusPendingCall call = serviceInterface->asyncCall("updateSourceTemplate");
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call,this);
     connect(watcher,&QDBusPendingCallWatcher::finished,this,&UpdateSource::getReply);
-    qDebug() << "callDBusUpdateTemplate: " << "updateSourceTemplate";
+    qDebug() <<"源管理器：" << "callDBusUpdateTemplate: " << "updateSourceTemplate";
 }
 /*
  * 调用源管理器更新源缓存接口
@@ -29,7 +29,7 @@ void UpdateSource::callDBusUpdateTemplate()
 void UpdateSource::callDBusUpdateSource(QString symbol)
 {
    QDBusPendingCall call = serviceInterface->asyncCall("updateSourcePackages",symbol);
-   qDebug() << "Call updateSourcePackages" ;
+   qDebug() << "源管理器：" <<"Call updateSourcePackages" ;
 
 }
 
@@ -39,31 +39,28 @@ QString UpdateSource::getFailInfo(int statusCode)
     QDBusReply<QString> replyStr;   //string类型的返回值
     replyStr = serviceInterface->call("getFailInfo",statusCode);
     if (replyStr.isValid()) {
-        qDebug() << "getFailInfo:"<<replyStr.value();
+        qDebug() <<"源管理器：" << "getFailInfo:"<<replyStr.value();
         return replyStr.value();
 
     }
     else{
-        qDebug() << QString("Call failed getFailInfo");
+        qDebug() << "源管理器：" <<QString("调用失败 getFailInfo");
+        return QString(tr("Connection failed, please reconnect!"));
+//        return QString(tr("连接失败，请重新连接！"));
     }
 
 }
 void UpdateSource::getReply(QDBusPendingCallWatcher *call)
 {
-//    QDBusPendingReply<int> reply = *call;
-//    if (!reply.isValid()) {
-//        qDebug() <<"getReply:" << "iserror";
-//    } else {
-//        int status = reply.value();
-//    }
-//    call->deleteLater();
     QDBusPendingReply<bool> reply = *call;
     if (!reply.isValid()) {
-         qDebug() <<"getReply:" << "iserror";
+         qDebug() <<"源管理器：" << "getReply:" << "iserror";
     } else {
             bool status = reply.value();
+            qDebug() <<"源管理器：" << "getReply:" << status;
             if (status) {
                 callDBusUpdateSource(Symbol);
             }
+
     }
 }

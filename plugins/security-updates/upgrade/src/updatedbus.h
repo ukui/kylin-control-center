@@ -59,46 +59,33 @@ public:
     QDBusReply<int> replyInt; //int类型的返回值
     QDBusInterface *interface1;
 
-
     //拷贝软件包到安装目录
     void copyFinsh(QStringList srcPath,QString appName);
-
     //创建root目录
     bool makeDirs(QString path);
-
     // setImportantStatus
-    bool setImportantStatus(bool status);
-
-
+    void setImportantStatus(bool status);
     //检查列表中的包是否可升级
     QStringList checkInstallOrUpgrade(QStringList list);
 
     void getAppMessage(QStringList list);
-
     //安装和升级
     bool installAndUpgrade(QString pkgName);
-
-
-
     //修改配置文件
     void modifyConf(QString path,QString group,QString key,QString value);
-
     //kill pid
-    bool cleanUpdateList();
-
+    void cleanUpdateList();
     //初始化cache
     void init_cache();
 //    bool makeDirs(QString path);
-
-
 //dbus接口函数定义完毕
     //
     void onRequestSendDesktopNotify(QString message);
-
     QStringList inameList;  //重要更新列表
-
     QStringList importantList;
     QStringList failedList;
+    int importantSize = 0;
+    bool isPointOutNotBackup = true; //是否在单包更新时弹出提示未备份
 
 
     bool fileLock();

@@ -17,7 +17,7 @@ AppUpdateWid::AppUpdateWid(AppAllMsg msg,QWidget *parent):QWidget(parent)
 
 AppUpdateWid::~AppUpdateWid()
 {
-    qDebug() << "delete------->" << Q_FUNC_INFO;
+    qDebug() << "delete->"<< appAllMsg.name;
 }
 
 void AppUpdateWid::initConnect()
@@ -55,17 +55,20 @@ void AppUpdateWid::initConnect()
 //函数：下载异常时调用该函数
 void AppUpdateWid::changeDownloadState(int state)
 {
-    m_updateMutual->importantList.removeOne(appAllMsg.name);
-    m_updateMutual->failedList.append(appAllMsg.name);
     if(state == 3  || state == 1) //磁盘空间不够
     {
         isCancel = true;
         timer->stop();
-        appVersion->setText("磁盘空间不足！");
+//        appVersion->setText(tr("磁盘空间不足！"));
+        appVersion->setText(tr("Lack of local disk space!"));
+        appVersion->setToolTip("");
         QIcon icon = QIcon::fromTheme("dialog-warning");
         QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(14, 14)));
         appVersionIcon->setPixmap(pixmap);
-        updateAPPBtn->setText("更新");
+//        updateAPPBtn->setText(tr("更新"));
+        updateAPPBtn->setText(tr("Update"));
+        emit changeUpdateAllSignal();
+
     }
     else if(state == 4) //下载网络异常
     {
@@ -79,26 +82,34 @@ void AppUpdateWid::changeDownloadState(int state)
         {
             isCancel = true;
             timer->stop();
-            appVersion->setText("网络异常！");
+//            appVersion->setText(tr("网络异常！"));
+            appVersion->setText(tr("Network abnormal!"));
+            appVersion->setToolTip("");
             QIcon icon = QIcon::fromTheme("dialog-warning");
             QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(16, 16)));
             appVersionIcon->setPixmap(pixmap);
-            updateAPPBtn->setText("更新");
+//            updateAPPBtn->setText(tr("更新"));
+            updateAPPBtn->setText(tr("Update"));
+            emit changeUpdateAllSignal();
         }
     }
     else if(state == 10) //自定义错误码，下载过程软件包被删除
     {
         isCancel = true;
         timer->stop();
-        appVersion->setText("下载失败！");
-        appVersion->setToolTip(tr("下载缓存已被删除"));
+//        appVersion->setText(tr("下载失败！"));
+        appVersion->setText(tr("Download failed!"));
+//        appVersion->setToolTip(tr("下载缓存已被删除"));
+        appVersion->setToolTip(tr("The download cache has been removed"));
         QIcon icon = QIcon::fromTheme("dialog-warning");
         QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(16, 16)));
         appVersionIcon->setPixmap(pixmap);
         updateAPPBtn->hide();
+        m_updateMutual->importantList.removeOne(appAllMsg.name);
+        m_updateMutual->failedList.append(appAllMsg.name);
+        emit hideUpdateBtnSignal(false);
+
     }
-    emit changeUpdateAllSignal();
-    emit hideUpdateBtnSignal();
 
 }
 
@@ -131,12 +142,12 @@ void AppUpdateWid::slotDownloadPackages()
             else //下载完成调用dbus接口拷贝文件到/var/cache/apt/archives目录下
             {
                 downloadFinish = true;
-                qDebug() << "download over11";
+//                qDebug() << "download over11";
             }
         }
         else
         {
-            qDebug() << "first download";
+//            qDebug() << "first download";
             firstDownload = false;
             if(!isCancel)
                 curlDownload(urlmsg,path);
@@ -144,7 +155,7 @@ void AppUpdateWid::slotDownloadPackages()
     }
     else //包已经存在于/var/cache/apt/archives目录下，直接安装
     {
-        qDebug() << "已下载完毕";
+//        qDebug() << "已下载完毕";
         startInstall(appAllMsg.name);
     }
 }
@@ -167,7 +178,7 @@ void AppUpdateWid::curlDownload(UrlMsg msg, QString path)
     downloadProcess->start("/usr/bin/wget", args);
 }
 
-//接收后台dbus信号开始软件包
+//接收后台dbus信号开始安装软件包
 void AppUpdateWid::startInstall(QString appName)
 {
     if(appName == appAllMsg.name)
@@ -177,10 +188,6 @@ void AppUpdateWid::startInstall(QString appName)
         m_updateMutual->installAndUpgrade(appAllMsg.name);
         workProcess = new QProcess();
         workProcess->start(QString("rm -r %1").arg(downloadPath)); //删除创建的目录保证缓存环境的干净
-
-        QDateTime current_date_time = QDateTime::currentDateTime();
-        QString current_date = current_date_time.toString("yyyy.MM.dd hh:mm:ss");
-        m_updateMutual->insertInstallStates("update_time",current_date);
     }
 }
 
@@ -190,41 +197,44 @@ void AppUpdateWid::showInstallStatues(QString status,QString appAptName, float p
     if(QString::compare(appAllMsg.name,appAptName) == 0)
     {
         int pgs = progress;
-        appVersion->setText(tr("正在安装")+"("+QString::number(pgs)+"%)");
-        appVersion->setToolTip(tr("正在安装")+"("+QString::number(pgs)+"%)");
-//        appVersion->installEventFilter(this);
+//        appVersion->setText(tr("正在安装")+"("+QString::number(pgs)+"%)");
+        appVersion->setText(tr("Being installed")+"("+QString::number(pgs)+"%)");
+        appVersion->setToolTip("");
         updateAPPBtn->hide();
-
         if(status == "apt_finish")
         {
             updateAPPBtn->hide();
-            appVersion->setText(tr("更新成功！"));
-            appVersion->installEventFilter(this);
+//            appVersion->setText(tr("更新成功！"));
+            appVersion->setText(tr("Update succeeded!"));
             QIcon icon = QIcon::fromTheme("success");
             QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(14, 14)));
             appVersionIcon->setPixmap(pixmap);
             m_updateMutual->importantList.removeOne(appAllMsg.name);
             m_updateMutual->failedList.removeOne(appAllMsg.name);
-            QString message = QString("%1更新成功！").arg(appNameLab->text());
+//            QString message = QString("%1"+tr("更新成功！")).arg(dispalyName);
+            QString message = QString("%1"+tr("Update succeeded!")).arg(dispalyName);
             m_updateMutual->onRequestSendDesktopNotify(message);
-            emit hideUpdateBtnSignal();
+            detaileInfo->hide();
+            largeWidget->hide();
+            emit hideUpdateBtnSignal(true);
 
         }
         else if(status == "apt_error")
         {
-            appVersion->setText(tr("更新失败！"));
-            appVersion->setToolTip(tr("失败原因：")+errormsg);
+//            appVersion->setText(tr("更新失败！"));
+            appVersion->setText(tr("Update failed!"));
+
+//            appVersion->setToolTip(tr("失败原因：")+(appNameLab->dealMessage(errormsg)));
+            appVersion->setToolTip(tr("Failure reason:")+(appNameLab->dealMessage(errormsg)));
             m_updateMutual->importantList.removeOne(appAllMsg.name);
             m_updateMutual->failedList.append(appAllMsg.name);
             QIcon icon = QIcon::fromTheme("error");
             QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(14, 14)));
             appVersionIcon->setPixmap(pixmap);
-            QPalette pe;
-            pe.setColor(QPalette::WindowText,Qt::red);
-            appVersion->setPalette(pe);
-            QString message = QString("%1更新失败！").arg(appNameLab->text());
+//            QString message = QString("%1"+tr("更新失败！")).arg(dispalyName);
+            QString message = QString("%1"+tr("Update failed!")).arg(dispalyName);
             m_updateMutual->onRequestSendDesktopNotify(message);
-            emit hideUpdateBtnSignal();
+            emit hideUpdateBtnSignal(false);
         }
     }
 }
@@ -247,60 +257,49 @@ void AppUpdateWid::updateAppUi(QString name)
     this->setLayout(frameLayout);
 
     appIconName = new QLabel(this);
-    appIconName->setMinimumWidth(140);
+    appIconName->setMinimumWidth(160);
     appIconName->setMaximumWidth(600);
     appIcon = new QLabel(appIconName);
-    appNameLab = new QLabel(appIconName);
-    appNameLab->setMinimumWidth(126);
+    appNameLab = new MyLabel(appIconName);
+    appNameLab->setMinimumWidth(140);
+//    appNameLab->setStyleSheet("background:red");
     appIconName->setLayout(iconNameLayout);
+    appIcon->setFixedSize(32,32);
     iconNameLayout->addWidget(appIcon);
-//    iconNameLayout->addStretch();
     iconNameLayout->setSpacing(0);
     iconNameLayout->addSpacing(8);
     iconNameLayout->addWidget(appNameLab);
     iconNameLayout->addStretch();
 
-
     appVersion = new QLabel(this);
-
     appVersionIcon = new QLabel(this);
-    progressLab = new QLabel(this);
-    progressLab->setFixedWidth(40);
-
-    appIcon->setFixedSize(32,32);
     appVersionIcon->setFixedSize(16,16);
     appVersionIcon->setPixmap(QPixmap());
+    appVersion->setMinimumWidth(180);
 //    QIcon icon = QIcon::fromTheme("dialog-warning");
 //    QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(14, 14)));
 //    appVersionIcon->setPixmap(pixmap);
-    progressLab->setText("进度：");
-    progressLab->hide();
 
     detaileInfo = new QPushButton(this);
-    detaileInfo->setText("详情");
-    detaileInfo->setFixedSize(40,30);
+//    detaileInfo->setText(tr("详情"));
+    detaileInfo->setText(tr("details"));
+    detaileInfo->setFixedSize(60,30);
     detaileInfo->setFlat(true);
 
     updateAPPBtn = new QPushButton(this);
-    updateAPPBtn->setText("更新");
+//    updateAPPBtn->setText(tr("更新"));
+    updateAPPBtn->setText(tr("Update"));
 
     otherBtnLayout = new QHBoxLayout();  //版本号、详情、更细按钮布局
     otherBtnLayout->setSpacing(0);
     otherBtnLayout->setMargin(0);
     otherBtnLab = new QLabel(this);
-//    otherBtnLab->setStyleSheet("background:blue;");
     otherBtnLab->setMargin(0);
-//    otherBtnLab->setStyleSheet("border:1px solid red");
     otherBtnLab->setMinimumWidth(350);
     otherBtnLab->setMaximumWidth(500);
     otherBtnLab->setFixedHeight(60);
-    appVersion->setMinimumWidth(160);
-//    otherBtnLab->setMaximumWidth(300);
 
-//    appVersion->setStyleSheet("background:green;");
 
-    detaileInfo->setFixedWidth(60);
-//    detaileInfo->setStyleSheet("background:green;");
     otherBtnLayout->setAlignment(Qt::AlignLeft);
     otherBtnLayout->addWidget(appVersionIcon);
     otherBtnLayout->addWidget(appVersion);
@@ -308,7 +307,6 @@ void AppUpdateWid::updateAppUi(QString name)
     otherBtnLayout->addSpacing(10);
     otherBtnLayout->addWidget(updateAPPBtn,0,Qt::AlignRight);
     otherBtnLab->setLayout(otherBtnLayout);
-//    appIconName->setStyleSheet("border:1px solid yellow");
     smallHLayout->addWidget(appIconName,1);
     smallHLayout->addStretch(0);
     smallHLayout->addWidget(otherBtnLab,1);
@@ -326,9 +324,14 @@ void AppUpdateWid::updateAppUi(QString name)
     pl.setBrush(QPalette::Base,QBrush(QColor(255,0,0,0)));
     someInfoEdit->setPalette(pl);
 
+    //当前语言环境
+    QString locale = QLocale::system().name();
+    if (locale == "zh_CN")
+        environment=zh_cn;
 
     updatelogBtn = new QPushButton(this);
-    updatelogBtn->setText("更新日志");
+//    updatelogBtn->setText(tr("更新日志"));
+    updatelogBtn->setText(tr("Update log"));
     updatelogBtn->setFlat(true);
     updatelog1 = new UpdateLog();
 
@@ -340,12 +343,13 @@ void AppUpdateWid::updateAppUi(QString name)
 //    largeWidget->setFixedHeight(80);
     mainVLayout->addWidget(largeWidget);
     largeWidget->hide();
+//    largeWidget->setFixedHeight(120);
+//    appTitleWid->setFixedHeight(60)
 //    this->setLayout(mainVLayout);
     AppFrame->setLayout(mainVLayout);
-    QString dispalyName = translationVirtualPackage(name);
+    dispalyName = translationVirtualPackage(name);
     appNameLab->setText(dispalyName);
-    appNameLab->setToolTip(dispalyName);
-    if(dispalyName != name)
+    if(name.contains("kylin-update-desktop"))
     {
         pkgIconPath = QString(":/img/plugins/upgrade/%1.png").arg(name);
         appIcon->setPixmap(QPixmap(pkgIconPath));
@@ -366,16 +370,23 @@ void AppUpdateWid::updateAppUi(QString name)
     }
 
 
-    QString newStrMsg = appAllMsg.availableVersion;
-    appVersion->setText(tr("最新：")+newStrMsg);
-    QFontMetrics ftWidth(appVersion->font());//得到每个字符的宽度
-//    qDebug() << "ftWidth" << ftWidth.width(newStrMsg) << "appVersion->width()" <<appVersion->width();
-//    QString elideNote = fontWidth.elidedText(newStrMsg, Qt::ElideRight,appVersion->width());//最大宽度150像素
-    if(ftWidth.width(newStrMsg) > 130)
-    {
-        appVersion->setToolTip(tr("最新：")+newStrMsg);
 
+    QString newStrMsg = appAllMsg.availableVersion;
+    if(newStrMsg.size()>16)
+    {
+//        appVersion->setText(tr("最新：")+newStrMsg);
+//        appVersion->setToolTip(tr("最新：")+newStrMsg);
+        appVersion->setText(tr("Newest:")+newStrMsg);
+        appVersion->setToolTip(tr("Newest:")+newStrMsg);
     }
+    else
+    {
+//        appVersion->setText(tr("最新：")+newStrMsg);
+        appVersion->setText(tr("Newest:")+newStrMsg);
+        appVersion->setToolTip("");
+    }
+
+
     //获取并输出changelog
     chlog = setDefaultDescription(appAllMsg.longDescription);
     updatelog1->logContent->append(chlog);
@@ -384,23 +395,27 @@ void AppUpdateWid::updateAppUi(QString name)
     tmpCursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);
     updatelog1->logContent->setTextCursor(tmpCursor);
 
-    updatelog1->logAppName->setText(dispalyName+tr("更新日志"));
-    updatelog1->logAppVerson->setText("最新:"+appAllMsg.availableVersion);
+//    updatelog1->logAppName->setText(dispalyName+tr("更新日志"));
+//    updatelog1->logAppVerson->setText(tr("最新:")+appAllMsg.availableVersion);
+    updatelog1->logAppName->setText(dispalyName+tr("Update log"));
+    updatelog1->logAppVerson->setText(tr("Newest:")+appAllMsg.availableVersion);
 
 
     QFontMetrics fontWidth(someInfoEdit->font());//得到每个字符的宽度
-    QString StrMsg = fontWidth.elidedText(chlog, Qt::ElideRight,800);//最大宽度
+    QString StrMsg = fontWidth.elidedText(chlog, Qt::ElideRight,600);//最大宽度
     someInfoEdit->append(StrMsg);
     if(appAllMsg.msg.allSize == 0)
     {
-        someInfoEdit->append("下载大小："+QString(modifySizeUnit(appAllMsg.packageSize)));
+        someInfoEdit->append(tr("Download size:")+QString(modifySizeUnit(appAllMsg.packageSize)));
+//        someInfoEdit->append(tr("下载大小：")+QString(modifySizeUnit(appAllMsg.packageSize)));
     }
     else
     {
-        someInfoEdit->append("下载大小："+QString(modifySizeUnit(appAllMsg.msg.allSize)));
+//        someInfoEdit->append(tr("下载大小：")+QString(modifySizeUnit(appAllMsg.msg.allSize)));
+        someInfoEdit->append(tr("Download size:")+QString(modifySizeUnit(appAllMsg.msg.allSize)));
     }
 
-    if(dispalyName != name)
+    if(name.contains("kylin-update-desktop"))
     {
         pkgIconPath = QString(":/img/plugins/upgrade/%1.png").arg(name);
         updatelog1->logAppIcon->setPixmap(QPixmap(pkgIconPath));
@@ -423,7 +438,8 @@ void AppUpdateWid::updateAppUi(QString name)
     QString currentVersion = appAllMsg.version;
     if(currentVersion != "")
     {
-        someInfoEdit->append("当前版本:  "+currentVersion);
+//        someInfoEdit->append(tr("当前版本：")+currentVersion);
+        someInfoEdit->append(tr("Current version:")+currentVersion);
     }
 
 }
@@ -434,15 +450,14 @@ void AppUpdateWid::showDetails()
     if(largeWidget->isHidden())
     {
         largeWidget->show();
-//        this->setFixedHeight(largeWidget->height()+10);
-//        this->resize(600,160);
-        detaileInfo->setText("收起");
+//        detaileInfo->setText(tr("收起"));
+        detaileInfo->setText(tr("back"));
     }
     else
     {
         largeWidget->hide();
-//        this->resize(600,80);
-        detaileInfo->setText("详情");
+//        detaileInfo->setText(tr("详情"));
+        detaileInfo->setText(tr("details"));
     }
 }
 
@@ -453,33 +468,53 @@ void AppUpdateWid::showUpdateLog()
 
 void AppUpdateWid::cancelOrUpdate()
 {
-    if(updateAPPBtn->text() == "更新")
+    if(updateAPPBtn->text() == tr("Update"))
     {
-        if(appAllMsg.msg.getDepends == true)
+        if(m_updateMutual->isPointOutNotBackup == true)
         {
-            isCancel = false;
-            firstDownload = true;
-            slotDownloadPackages();
-            timer->start(500); //开启定时器用于计算下载速度
-            qDebug() << "time start";
-            updateAPPBtn->setText("取消");
-            appVersionIcon->setPixmap(QPixmap());
+            QMessageBox msgBox;
+//            msgBox.setText(tr("单个更新不会自动备份系统，如需备份，请点击全部更新。"));
+            msgBox.setText(tr("A single update will not automatically backup the system, if you want to backup, please click Update All."));
+//            msgBox.setWindowTitle("提示信息");
+            msgBox.setWindowTitle(tr("Prompt information"));
+            msgBox.setStandardButtons(QMessageBox::Save
+                                      | QMessageBox::Discard|QMessageBox::Abort);
+//            msgBox.setButtonText(QMessageBox::Save,"不备份，继续更新");
+//            msgBox.setButtonText(QMessageBox::Discard,"取消");
+//            msgBox.setButtonText(QMessageBox::Abort,"取消更新");
+            msgBox.setButtonText(QMessageBox::Save,tr("Do not backup, continue to update"));
+            msgBox.setButtonText(QMessageBox::Discard,tr("Cancel"));
+            msgBox.setButtonText(QMessageBox::Abort,tr("Cancel update"));
+            QCheckBox *cb = new QCheckBox(&msgBox);
+            msgBox.setCheckBox(cb);
+//            msgBox.checkBox()->setText(tr("本次更新不再提示"));
+            msgBox.checkBox()->setText(tr("This time will no longer prompt"));
+            msgBox.checkBox()->show();
+            msgBox.button(QMessageBox::Abort)->hide();
+            int ret = msgBox.exec();
+            if(msgBox.checkBox()->checkState() == Qt::Checked)
+            {
+                m_updateMutual->isPointOutNotBackup = false;
+                qDebug() << "m_updateMutual->isPointOutNotBackup = " << m_updateMutual->isPointOutNotBackup;
+            }
+            if(ret == QMessageBox::Save)
+            {
+                qDebug() << "立即更新!";
+                updateOneApp();
+            }
+            else if(ret == QMessageBox::Discard)
+            {
+                qDebug() << "不进行更新。";
+            }
+            else if(ret == QMessageBox::Abort)
+            {
+                qDebug() << "不进行更新。";
+            }
         }
         else
         {
-            updateAPPBtn->hide();
-            appVersion->setText(tr("获取依赖失败！"));
-            appVersion->installEventFilter(this);
-//            appVersion->setStyleSheet("background:red;");
-            m_updateMutual->importantList.removeOne(appAllMsg.name);
-            m_updateMutual->failedList.append(appAllMsg.name);
-            emit hideUpdateBtnSignal();
-            QIcon icon = QIcon::fromTheme("error");
-            QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(14, 14)));
-            appVersionIcon->setPixmap(pixmap);
-            QPalette pe;
-            pe.setColor(QPalette::WindowText,Qt::red);
-            appVersion->setPalette(pe);
+
+            updateOneApp();
         }
     }
     else
@@ -487,14 +522,45 @@ void AppUpdateWid::cancelOrUpdate()
         isCancel = true;
         downloadProcess->terminate();
         timer->stop();
-        updateAPPBtn->setText("更新");
-        appVersion->setText("暂停中");
+//        updateAPPBtn->setText("更新");
+        updateAPPBtn->setText(tr("Update"));
+//        appVersion->setText(tr("暂停中"));
+        appVersion->setText(tr("In the pause"));
+        appVersion->setToolTip("");
         emit changeUpdateAllSignal();
     }
 }
 
+void AppUpdateWid::updateOneApp()
+{
+    if(appAllMsg.msg.getDepends == true)
+    {
+        isCancel = false;
+        firstDownload = true;
+        slotDownloadPackages();
+        timer->start(500); //开启定时器用于计算下载速度
+        qDebug() << "time start";
+//        updateAPPBtn->setText(tr("取消"));
+        updateAPPBtn->setText(tr("Cancel"));
+        appVersionIcon->setPixmap(QPixmap());
+    }
+    else
+    {
+        updateAPPBtn->hide();
+//        appVersion->setText(tr("获取依赖失败！"));
+        appVersion->setText(tr("Get depends failed!"));
+        appVersion->setToolTip("");
+        m_updateMutual->installAndUpgrade(appAllMsg.name);
+        QIcon icon = QIcon::fromTheme("error");
+        QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(14, 14)));
+        appVersionIcon->setPixmap(pixmap);
+        m_updateMutual->importantList.removeOne(appAllMsg.name);
+        m_updateMutual->failedList.append(appAllMsg.name);
+        emit hideUpdateBtnSignal(false);
+    }
+}
 //转换包大小的单位
-QString AppUpdateWid::modifySizeUnit(int size)
+QString AppUpdateWid::modifySizeUnit(long size)
 {
     double tmpSize = size/1024.0;
     if(tmpSize >= 1)
@@ -514,22 +580,22 @@ QString AppUpdateWid::modifySizeUnit(int size)
 }
 
 //当前下载速度单位换算
-QString AppUpdateWid::modifySpeedUnit(int size, float time)
+QString AppUpdateWid::modifySpeedUnit(long size, float time)
 {
     if(size < 0)
         size = 0;
-    size = (int)(size/time);
+    size = size/time;
     if((size/1024) >= 1)
     {
         if((size/1024/1024) >= 1)
         {
             if((size/1024/1024/1024) >= 1)
-                return QString("%1%2").arg(size/1024/1024/1024).arg("GB/S");
+                return QString("%1%2").arg((int)(size/1024/1024/1024)).arg("GB/S");
             else
-                return QString("%1%2").arg(size/1024/1024).arg("MB/S");
+                return QString("%1%2").arg((int)(size/1024/1024)).arg("MB/S");
         }
         else
-            return QString("%1%2").arg(size/1024).arg("KB/S");
+            return QString("%1%2").arg((int)(size/1024)).arg("KB/S");
     }
     else
         return QString("%1%2").arg(size).arg("B/S");
@@ -537,9 +603,11 @@ QString AppUpdateWid::modifySpeedUnit(int size, float time)
 
 void AppUpdateWid::showDownloadStatues(QString downloadSpeed, int progress)
 {
-        appVersion->setText("更新中("+downloadSpeed+")"+QString::number(progress)+"%");
-        appVersion->setToolTip("更新中("+downloadSpeed+")"+QString::number(progress)+"%");
-//        appVersion->installEventFilter(this);
+//        appVersion->setText(tr("更新中")+"("+downloadSpeed+")"+QString::number(progress)+"%");
+        appVersion->setText(tr("In the update")+"("+downloadSpeed+")"+QString::number(progress)+"%");
+//        appVersion->setToolTip(tr("更新中")+"("+downloadSpeed+")"+QString::number(progress)+"%");
+        appVersion->setToolTip("");
+
 }
 
 
@@ -574,9 +642,9 @@ void AppUpdateWid::calculateSpeedProgress()
             {
                 emit filelockedSignal();
             }
-            appVersion->setText("准备安装");
-            appVersion->setToolTip(tr("准备安装"));
-            appVersion->installEventFilter(this);
+//            appVersion->setText(tr("准备安装"));
+            appVersion->setText(tr("Ready to install"));
+            appVersion->setToolTip("");
         }
     }
 }
@@ -586,7 +654,7 @@ void AppUpdateWid::updateAllApp()
 //    qDebug() << "updateAllApp";
     if(isCancel && m_updateMutual->failedList.indexOf(appAllMsg.name) == -1)
     {
-        qDebug() << "updateAllAppCliekd start update: " << appAllMsg.name;
+        qDebug() << "全部更新信号发出，当前: " << appAllMsg.name;
         cancelOrUpdate();
     }
 }
@@ -595,23 +663,27 @@ void AppUpdateWid::showUpdateBtn()
 {
 
     updateAPPBtn->show();
-    updateAPPBtn->setText(tr("更新"));
+//    updateAPPBtn->setText(tr("更新"));
+    updateAPPBtn->setText(tr("Update"));
 
 }
 void AppUpdateWid::hideOrShowUpdateBtnSlot(int result)
 {
-    if(result == 0)
+    if(result == 0)  //0表示备份还原开始
     {
         updateAPPBtn->hide();
     }
-    else if(result == 99)
+    else if(result == 99 ||result == -20)  //99时备份成功 -20时备份还原进程被中断
     {
         updateAPPBtn->show();
     }
 
 }
+
 QString AppUpdateWid::translationVirtualPackage(QString str)
 {
+    if(environment == en)//英文环境下不翻译
+        return str;
     if(str == "kylin-update-desktop-app")
         return "基本应用";
     if(str == "kylin-update-desktop-security")
@@ -646,6 +718,9 @@ bool AppUpdateWid::eventFilter(QObject *watched, QEvent *event)
 QString AppUpdateWid::setDefaultDescription(QString str)
 {
     if(str == "")
-        str = tr("暂无内容");
+    {
+//        str = tr("暂无内容");
+        str = tr("No content.");
+    }
     return str;
 }
