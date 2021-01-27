@@ -188,27 +188,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="73"/>
+        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="76"/>
         <source>App</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="158"/>
+        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="142"/>
         <source>Allow notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="208"/>
+        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="192"/>
         <source>Number of notification centers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="282"/>
+        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="266"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="301"/>
+        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="285"/>
         <source>confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -995,22 +995,22 @@ you can restore them to ensure the integrity of your system.</source>
 <context>
     <name>ChangtimeDialog</name>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="168"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="162"/>
         <source>time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="169"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="163"/>
         <source>year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="170"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="164"/>
         <source>month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="171"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="165"/>
         <source>day</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1244,65 +1244,65 @@ change system settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="91"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="94"/>
         <source>change format of data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="189"/>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="49"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="173"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="47"/>
         <source>calendar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="266"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="250"/>
         <source>first day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="343"/>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="51"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="327"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="49"/>
         <source>date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="420"/>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="52"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="404"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="50"/>
         <source>time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="522"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="512"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="541"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="531"/>
         <source>confirm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="50"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="48"/>
         <source>first day of week</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="54"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="52"/>
         <source>solar calendar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="57"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="55"/>
         <source>lunar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="60"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="58"/>
         <source>monday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="61"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="59"/>
         <source>sunday</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2779,48 +2779,68 @@ Please retry or relogin!</source>
 <context>
     <name>MainWindow</name>
     <message>
+        <location filename="../../mainwindow.cpp" line="74"/>
+        <location filename="../../mainwindow.cpp" line="372"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../mainwindow.cpp" line="352"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="423"/>
+        <location filename="../../mainwindow.cpp" line="381"/>
+        <source>Main menu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="382"/>
+        <source>Minimize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="383"/>
+        <source>Maximize/Normal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="384"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="428"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="425"/>
+        <location filename="../../mainwindow.cpp" line="430"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="427"/>
+        <location filename="../../mainwindow.cpp" line="432"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="553"/>
+        <location filename="../../mainwindow.cpp" line="558"/>
         <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="821"/>
+        <location filename="../../mainwindow.cpp" line="825"/>
         <source>Warnning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="821"/>
+        <location filename="../../mainwindow.cpp" line="825"/>
         <source>This function has been controlled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="74"/>
-        <location filename="../../mainwindow.cpp" line="372"/>
-        <source>UKCC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../mainwindow.cpp" line="723"/>
+        <location filename="../../mainwindow.cpp" line="727"/>
         <source>ukcc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4283,12 +4303,12 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.ui" line="81"/>
-        <source>电脑安全概况</source>
+        <source>Computer Security Overview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.ui" line="110"/>
-        <source>了解电脑当前的安全情况，并采取有效的防控措施</source>
+        <source>Understand current computer security situation and take measures</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5697,37 +5717,37 @@ Common reasons are that the overall screen size is too big, or you enabled more 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="94"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="100"/>
         <source>current date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="198"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="185"/>
         <source>time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="319"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="306"/>
         <source>year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="396"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="383"/>
         <source>month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="470"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="457"/>
         <source>day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="569"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="559"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="588"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="578"/>
         <source>confirm</source>
         <translation type="unfinished"></translation>
     </message>

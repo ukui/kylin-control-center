@@ -236,27 +236,27 @@
         <translation type="unfinished">更改时间</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="73"/>
+        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="76"/>
         <source>App</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="158"/>
+        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="142"/>
         <source>Allow notification</source>
         <translation>允许通知</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="208"/>
+        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="192"/>
         <source>Number of notification centers</source>
         <translation>最大通知数量</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="282"/>
+        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="266"/>
         <source>cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="301"/>
+        <location filename="../../../plugins/messages-task/notice/appdetail.ui" line="285"/>
         <source>confirm</source>
         <translation>确认</translation>
     </message>
@@ -736,7 +736,7 @@ you can restore them to ensure the integrity of your system.</source>
     <message>
         <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="171"/>
         <source>Bluetooth adapter</source>
-        <translation type="unfinished"></translation>
+        <translation>蓝牙适配器</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="199"/>
@@ -1147,22 +1147,22 @@ you can restore them to ensure the integrity of your system.</source>
 <context>
     <name>ChangtimeDialog</name>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="171"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="165"/>
         <source>day</source>
         <translation>日期</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="168"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="162"/>
         <source>time</source>
         <translation>时间</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="169"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="163"/>
         <source>year</source>
         <translation>年份</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="170"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.cpp" line="164"/>
         <source>month</source>
         <translation>月份</translation>
     </message>
@@ -1420,65 +1420,65 @@ change system settings</source>
         <translation type="unfinished">更改时间</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="91"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="94"/>
         <source>change format of data</source>
         <translation>更改数据格式</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="189"/>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="49"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="173"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="47"/>
         <source>calendar</source>
         <translation>日历</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="266"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="250"/>
         <source>first day</source>
         <translation>一周第一天</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="343"/>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="51"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="327"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="49"/>
         <source>date</source>
         <translation>日期</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="420"/>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="52"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="404"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="50"/>
         <source>time</source>
         <translation>时间</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="522"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="512"/>
         <source>cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="541"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="531"/>
         <source>confirm</source>
         <translation>确认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="50"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="48"/>
         <source>first day of week</source>
         <translation>一周的第一天</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="57"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="55"/>
         <source>lunar</source>
         <translation>农历</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="54"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="52"/>
         <source>solar calendar</source>
         <translation>公历</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="60"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="58"/>
         <source>monday</source>
         <translation>星期一</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="61"/>
+        <location filename="../../../plugins/time-language/area/dataformat.cpp" line="59"/>
         <source>sunday</source>
         <translation>星期天</translation>
     </message>
@@ -3580,43 +3580,67 @@ Please retry or relogin!</source>
         <translation>搜索</translation>
     </message>
     <message>
+        <source>UKCC</source>
+        <translation type="vanished">设置</translation>
+    </message>
+    <message>
         <location filename="../../mainwindow.cpp" line="74"/>
         <location filename="../../mainwindow.cpp" line="372"/>
-        <source>UKCC</source>
+        <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="423"/>
+        <location filename="../../mainwindow.cpp" line="381"/>
+        <source>Main menu</source>
+        <translation>主菜单</translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="382"/>
+        <source>Minimize</source>
+        <translation>最小化</translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="383"/>
+        <source>Maximize/Normal</source>
+        <translation>最大化/正常</translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="384"/>
+        <source>Close</source>
+        <translation>关闭</translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="428"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="425"/>
+        <location filename="../../mainwindow.cpp" line="430"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="427"/>
+        <location filename="../../mainwindow.cpp" line="432"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="723"/>
+        <location filename="../../mainwindow.cpp" line="727"/>
         <source>ukcc</source>
         <translation>控制面板</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="821"/>
+        <location filename="../../mainwindow.cpp" line="825"/>
         <source>Warnning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="821"/>
+        <location filename="../../mainwindow.cpp" line="825"/>
         <source>This function has been controlled</source>
         <translation>该功能已被管控</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="553"/>
+        <location filename="../../mainwindow.cpp" line="558"/>
         <source>Home</source>
         <translation>首页</translation>
     </message>
@@ -5428,13 +5452,13 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.ui" line="81"/>
-        <source>电脑安全概况</source>
-        <translation type="unfinished"></translation>
+        <source>Computer Security Overview</source>
+        <translation>电脑安全概况</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.ui" line="110"/>
-        <source>了解电脑当前的安全情况，并采取有效的防控措施</source>
-        <translation type="unfinished"></translation>
+        <source>Understand current computer security situation and take measures</source>
+        <translation>了解电脑当前安全情况，并采取有效的防控措施</translation>
     </message>
     <message>
         <source>Summarize</source>
@@ -5701,18 +5725,18 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/syncdialog.cpp" line="35"/>
         <source>Do not</source>
-        <translation type="unfinished"></translation>
+        <translation>放弃</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/syncdialog.cpp" line="60"/>
         <location filename="../../../plugins/account/networkaccount/syncdialog.cpp" line="94"/>
         <source>Last sync at %1</source>
-        <translation type="unfinished"></translation>
+        <translation>上次同步于%</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/syncdialog.cpp" line="93"/>
         <source>Sync now?</source>
-        <translation type="unfinished"></translation>
+        <translation>现在同步？</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/syncdialog.h" line="42"/>
@@ -6344,7 +6368,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../ukccabout.cpp" line="101"/>
         <source>Developer</source>
-        <translation>开发者：</translation>
+        <translation>开发者:</translation>
     </message>
     <message>
         <source>Vesion</source>
@@ -7141,37 +7165,37 @@ Common reasons are that the overall screen size is too big, or you enabled more 
         <translation>更改时间</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="94"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="100"/>
         <source>current date</source>
         <translation>时间和日期</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="198"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="185"/>
         <source>time</source>
         <translation>时间</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="319"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="306"/>
         <source>year</source>
         <translation>年份</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="396"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="383"/>
         <source>month</source>
         <translation>月份</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="470"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="457"/>
         <source>day</source>
         <translation>号</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="569"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="559"/>
         <source>cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="588"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="578"/>
         <source>confirm</source>
         <translation>确认</translation>
     </message>

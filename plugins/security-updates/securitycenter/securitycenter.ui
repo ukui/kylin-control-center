@@ -78,7 +78,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>电脑安全概况</string>
+             <string>Computer Security Overview</string>
             </property>
            </widget>
           </item>
@@ -107,7 +107,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>了解电脑当前的安全情况，并采取有效的防控措施</string>
+             <string>Understand current computer security situation and take measures</string>
             </property>
            </widget>
           </item>
