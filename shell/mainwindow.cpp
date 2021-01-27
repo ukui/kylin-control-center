@@ -71,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mate_mixer_init();
     // 设置初始大小
     this->setMinimumSize(895, 600);
-    logoLabel  = new QLabel(tr("UKCC"), this);
+    logoLabel  = new QLabel(tr("Settings"), this);
     initUI();
 }
 
@@ -369,7 +369,7 @@ void MainWindow::initTileBar() {
     maxBtn      = new QPushButton(this);
     closeBtn    = new QPushButton(this);
     mTitleIcon  = new QLabel(this);
-    titleLabel  = new QLabel(tr("UKCC"), this);
+    titleLabel  = new QLabel(tr("Settings"), this);
 
     backBtn->setFixedSize(30, 30);
     mOptionBtn->setFixedSize(30, 30);
@@ -561,7 +561,6 @@ void MainWindow::initLeftsideBar(){
         ui->stackedWidget->setCurrentIndex(0);
     });
     hBtn->setStyleSheet("QPushButton#homepage{background: palette(window); border: none;}");
-    ui->leftsidebarVerLayout->addStretch();
     ui->leftsidebarVerLayout->addWidget(hBtn);
 
     for(int type = 0; type < TOTALMODULES; type++) {
