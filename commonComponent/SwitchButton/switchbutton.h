@@ -25,7 +25,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QEvent>
-#include <QGSettings>
+#include <QGSettings/QGSettings>
 
 class SwitchButton : public QWidget
 {
