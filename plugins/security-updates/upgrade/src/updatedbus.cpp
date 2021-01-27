@@ -155,17 +155,9 @@ void UpdateDbus::setImportantStatus(bool status)
 bool UpdateDbus::installAndUpgrade(QString pkgName)
 {
     // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->call("install_and_upgrade",pkgName);
-
-    // 将reply.value()作为返回值
-    if (replyBool.isValid()) {
-        qDebug() << "installAndUpgrade:" <<replyBool.value();
-        return replyBool.value();
-    }
-    else{
-        qDebug() << QString("调用更新管理器接口失败： installAndUpgrade");
-        return false;
-    }
+    replyBool = interface->asyncCall("install_and_upgrade",pkgName);
+    QString("调用更新管理器接口：installAndUpgrade");
+    return true;
 }
 
 
