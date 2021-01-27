@@ -28,7 +28,7 @@ BlueToothMain::BlueToothMain(QWidget *parent)
     m_manager = new BluezQt::Manager(this);
     job = m_manager->init();
     job->exec();
-    qDebug() << m_manager->isOperational();
+    qDebug() << m_manager->isOperational() << m_manager->isBluetoothBlocked();
 
     if(m_manager->adapters().size()){
         for(int i = 0; i < m_manager->adapters().size(); i++){
@@ -374,7 +374,11 @@ void BlueToothMain::updateUIWhenAdapterChanged()
          if(!frame_bottom->isVisible())
              frame_bottom->setVisible(true);
      }else{
+         qDebug() << Q_FUNC_INFO << m_manager->isBluetoothBlocked();
          open_bluetooth->setChecked(false);
+         if(m_manager->isBluetoothBlocked()){
+            open_bluetooth->setDisabledFlag(false);
+         }
          bluetooth_name->setVisible(false);
          label_2->setText(tr("Turn on Bluetooth"));
          frame_bottom->setVisible(false);
@@ -653,12 +657,16 @@ void BlueToothMain::adapterPoweredChanged(bool value)
             frame_middle->setVisible(true);
 
         open_bluetooth->setChecked(true);
+        if(!m_manager->isBluetoothBlocked())
+            open_bluetooth->setDisabledFlag(true);
 //                label_2->setText(tr("Turn off Bluetooth"));
         this->startDiscovery();
         qDebug() << discovering_timer->isActive();
     }else{
         bluetooth_name->setVisible(false);
         open_bluetooth->setChecked(false);
+        if(m_manager->isBluetoothBlocked())
+            open_bluetooth->setDisabledFlag(false);
         frame_bottom->setVisible(false);
 
         if(frame_middle->isVisible())

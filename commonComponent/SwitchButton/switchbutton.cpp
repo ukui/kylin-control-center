@@ -122,16 +122,22 @@ void SwitchButton::drawSlider(QPainter *painter){
 }
 
 void SwitchButton::mousePressEvent(QMouseEvent *){
-    checked = !checked;
-    emit checkedChanged(checked);
+    if(disabled){
+        checked = !checked;
+        emit checkedChanged(checked);
 
-    step = width() / 40;
+        step = width() / 40;
 
-    if (checked){
-        //circle out
-//        endX = width() - height() + space;
-        //circle in
-        endX = width() - height();
+        if (checked){
+            //circle out
+    //        endX = width() - height() + space;
+            //circle in
+            endX = width() - height();
+        }
+        else{
+            endX = 0;
+        }
+        timer->start();
     }
     else{
         endX = 0;
@@ -199,6 +205,16 @@ void SwitchButton::setChecked(bool checked){
 
 bool SwitchButton::isChecked(){
     return this->checked;
+}
+
+void SwitchButton::setDisabledFlag(bool value)
+{
+    disabled = value;
+}
+
+bool SwitchButton::getDisabledFlag()
+{
+    return disabled;
 }
 
 

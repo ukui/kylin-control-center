@@ -37,7 +37,8 @@ public:
     void setChecked(bool checked);
 
     bool isChecked();
-
+    void setDisabledFlag(bool);
+    bool getDisabledFlag();
 protected:
     void mousePressEvent(QMouseEvent *);
     void resizeEvent(QResizeEvent *);
@@ -47,6 +48,7 @@ protected:
 
 private:
     bool checked;
+    bool disabled = true;
 
     QColor borderColorOff;
 
