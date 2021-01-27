@@ -3,23 +3,19 @@
  "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
  "http://www.freedesktop.org/standards/PolicyKit/1.0/policyconfig.dtd">
 <policyconfig>
-
   <vendor>KYLINOS</vendor>
   <vendor_url>http://www.kylinos.cn</vendor_url>
   <icon_name>ues</icon_name>
 
   <action id="org.ukui.groupmanager.action">
-    <_description>
-      group tools
-    </_description>
-    <_message>
-      To edit the group, you need to authenticate.
-    </_message>
+    <description>group tools</description>
+    <description xml:lang="zh">用户组</description>
+    <message>To edit the group, you need to authenticate.</message>
+    <message xml:lang="zh">修改用户组需要认证</message>
     <defaults>
       <allow_any>auth_admin</allow_any>
       <allow_inactive>auth_admin</allow_inactive>
       <allow_active>auth_admin</allow_active>
     </defaults>
   </action>
-
 </policyconfig>
