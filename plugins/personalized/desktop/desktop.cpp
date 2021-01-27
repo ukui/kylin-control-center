@@ -157,7 +157,7 @@ void Desktop::initTranslation() {
 
     disList<<"ukui-sidebar"<<"kylin-nm"<<"ukui-volume-control-applet-qt"<<"update-notifier"<<"software-update-available"
           <<"blueman-tray"<<"ukui-power-manager"<<"ukui-settings-daemon"<<"blueman-applet"
-         <<"ErrorApplication"<<"livepatch";
+         <<"ErrorApplication"<<"livepatch" << "mktip";
 }
 
 void Desktop::setupComponent() {
