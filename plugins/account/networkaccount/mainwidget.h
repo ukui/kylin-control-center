@@ -146,6 +146,7 @@ signals:
     void isRunning();
     void oldVersion();
     void doquerry(QString name);
+    void dosend(QString info);
 };
 
 #endif // CONFIG_LIST_WIDGET_H
