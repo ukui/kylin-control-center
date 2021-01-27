@@ -45,13 +45,14 @@ class BlueToothMain : public QMainWindow
     Q_OBJECT
 public:
     BlueToothMain(QWidget *parent = nullptr);
+    ~BlueToothMain();
     void InitMainTopUI();
     void InitMainMiddleUI();
     void InitMainbottomUI();
     void startDiscovery();
     void adapterChanged();
     void updateUIWhenAdapterChanged();
-    ~BlueToothMain();
+    void removeDeviceItemUI(QString address);
 
 signals:
     void adapter_name_changed(const QString &name);
@@ -69,6 +70,7 @@ private slots:
     void adapterPoweredChanged(bool value);
     void adapterComboxChanged(int i);
     void adapterNameChanged(const QString &name);
+    void adapterDeviceRemove(BluezQt::DevicePtr ptr);
 private:
     QGSettings *settings = nullptr;
     QString Default_Adapter;

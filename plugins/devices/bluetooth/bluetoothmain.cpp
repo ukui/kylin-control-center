@@ -350,6 +350,7 @@ void BlueToothMain::updateUIWhenAdapterChanged()
     connect(m_localDevice.data(),&BluezQt::Adapter::poweredChanged,this,&BlueToothMain::adapterPoweredChanged);
     connect(m_localDevice.data(),&BluezQt::Adapter::deviceAdded,this,&BlueToothMain::serviceDiscovered);
     connect(m_localDevice.data(),&BluezQt::Adapter::nameChanged,this,&BlueToothMain::adapterNameChanged);
+    connect(m_localDevice.data(),&BluezQt::Adapter::deviceRemoved,this,&BlueToothMain::adapterDeviceRemove);
     connect(m_localDevice.data(),&BluezQt::Adapter::discoveringChanged,this,[=](bool discover){
        if(discover){
            loadLabel->setVisible(true);
@@ -466,6 +467,27 @@ void BlueToothMain::updateUIWhenAdapterChanged()
          m_localDevice->startDiscovery();
 }
 
+void BlueToothMain::removeDeviceItemUI(QString address)
+{
+    qDebug() << Q_FUNC_INFO << address <<__LINE__;
+    if(Discovery_device_address.indexOf(address) != -1){
+        DeviceInfoItem *item = device_list->findChild<DeviceInfoItem *>(address);
+        device_list_layout->removeWidget(item);
+        item->setParent(NULL);
+        delete item;
+        Discovery_device_address.removeAll(address);
+    }else{
+        DeviceInfoItem *item = frame_middle->findChild<DeviceInfoItem *>(address);
+        paired_dev_layout->removeWidget(item);
+        item->setParent(NULL);
+        delete item;
+
+        if(frame_middle->children().size() == 2){
+            frame_middle->setVisible(false);
+        }
+    }
+}
+
 BlueToothMain::~BlueToothMain()
 {
     delete settings;
@@ -570,46 +592,7 @@ void BlueToothMain::receiveRemoveSignal(QString address)
 //    QDBusMessage response = QDBusConnection::sessionBus().call(m);
     qDebug() << Q_FUNC_INFO << address;
 
-    if(m_localDevice->deviceForAddress(address).isNull()){
-        qDebug() << Q_FUNC_INFO << "No this address " << address;
-        DeviceInfoItem *item = device_list->findChild<DeviceInfoItem *>(address);
-        device_list_layout->removeWidget(item);
-        item->setParent(NULL);
-        delete item;
-        Discovery_device_address.removeAll(address);
-        return;
-    }
-
-    //根据设备是否配对，判断在我的设备栏还是设备栏
-    bool layout_flag = false;
-    if(m_localDevice->deviceForAddress(address)->isPaired()){
-        layout_flag = true;
-    }
-
-    //如果点击移除设备，则将界面的item移除；如果是在我的设备下的设备被移除完后，隐藏我的设备一栏
-    BluezQt::PendingCall *call = m_localDevice->removeDevice(m_localDevice->deviceForAddress(address));
-    connect(call,&BluezQt::PendingCall::finished,this,[=](BluezQt::PendingCall *value){
-        if(value->error() == 0){
-            if(layout_flag){
-                DeviceInfoItem *item = frame_middle->findChild<DeviceInfoItem *>(address);
-                paired_dev_layout->removeWidget(item);
-                item->setParent(NULL);
-                delete item;
-
-                if(frame_middle->children().size() == 2){
-                    frame_middle->setVisible(false);
-                }
-            }else{
-                DeviceInfoItem *item = device_list->findChild<DeviceInfoItem *>(address);
-                device_list_layout->removeWidget(item);
-                item->setParent(NULL);
-                delete item;
-            }
-//            Discovery_device_address.removeAll(address);
-        }else{
-            qDebug() << Q_FUNC_INFO << "Device Remove failed!!!";
-        }
-    });
+    m_localDevice->removeDevice(m_localDevice->deviceForAddress(address));
 }
 
 void BlueToothMain::Refresh_load_Label_icon()
@@ -642,6 +625,7 @@ void BlueToothMain::change_device_parent(const QString &address)
     device_list_layout->removeWidget(item);
     item->setParent(frame_middle);
     paired_dev_layout->addWidget(item);
+    Discovery_device_address.removeAll(address);
 }
 
 void BlueToothMain::adapterPoweredChanged(bool value)
@@ -700,5 +684,11 @@ void BlueToothMain::adapterNameChanged(const QString &name)
     adapter_name_list.insert(index,name);
 //    qDebug() << Q_FUNC_INFO << adapter_name_list << adapter_address_list;
     adapter_list->setItemText(index,name);
+}
+
+void BlueToothMain::adapterDeviceRemove(BluezQt::DevicePtr ptr)
+{
+//    qDebug() << Q_FUNC_INFO << ptr.data()->address() << ptr.data()->name();
+    removeDeviceItemUI(ptr.data()->address());
 }
 
