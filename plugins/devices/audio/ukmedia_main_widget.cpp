@@ -114,8 +114,8 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     eventList->append("alert-sound");
     eventIdNameList->append("dialog-warning");
     eventIdNameList->append("bell");
-    eventIdNameList->append("audio-volume-change");
-    eventIdNameList->append("drip");
+    eventIdNameList->append("flop");
+    eventIdNameList->append("gudou");
 
     for (int i=0;i<eventList->count();i++) {
 //        getValue();
@@ -909,63 +909,57 @@ void UkmediaMainWidget::onContextDeviceAdded(MateMixerContext *m_pContext, const
 void UkmediaMainWidget::addDevice(UkmediaMainWidget *m_pWidget, MateMixerDevice *pDevice)
 {
     g_debug("add device");
-        const gchar *pName;
-        const gchar *pLabel;
-        const gchar *profileLabel = NULL;
-        /*
+    const gchar *pName;
+    char *pLabel;
+    const gchar *profileLabel = NULL;
+    /*
          * const gchar *m_pLabel;
          * m_pLabel = mate_mixer_device_get_label (m_pDevice);
         */
-        m_pWidget->m_pDevice = pDevice;
-        pName  = mate_mixer_device_get_name (pDevice);
-        pLabel = mate_mixer_device_get_label(pDevice);
+    m_pWidget->m_pDevice = pDevice;
+    pName  = mate_mixer_device_get_name (pDevice);
+    pLabel = (char *)mate_mixer_device_get_label(pDevice);
 
-        if (m_pWidget->m_pDeviceNameList->contains(pName) == false) {
-            m_pWidget->m_pDeviceNameList->append(pName);
-            m_pWidget->m_pOutputWidget->m_pSelectCombobox->addItem(pLabel);
+    if (m_pWidget->m_pDeviceNameList->contains(pName) == false) {
+        m_pWidget->m_pDeviceNameList->append(pName);
+        if (m_pWidget->m_pOutputWidget->m_pSelectCombobox->findText(pLabel)) {
+
+            if (strstr(pName,"hdmi")) {
+                strcat(pLabel," (HDMI)");
+            }
+            else if (strstr(pName,"dp")) {
+                strcat(pLabel," (DP)");
+            }
+            else if (strstr(pName,"usb")) {
+                strcat(pLabel," (USB)");
+            }
+
         }
-        MateMixerSwitch *profileSwitch;
+        m_pWidget->m_pOutputWidget->m_pSelectCombobox->addItem(pLabel);
 
-        profileSwitch = findDeviceProfileSwitch(m_pWidget,pDevice);
-        MateMixerSwitchOption *activeProfile;
-        activeProfile = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH (profileSwitch));
+        qDebug() << "add device name,device name" << pLabel;
+    }
+    MateMixerSwitch *profileSwitch;
+
+    profileSwitch = findDeviceProfileSwitch(m_pWidget,pDevice);
+    MateMixerSwitchOption *activeProfile;
+    activeProfile = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH (profileSwitch));
+    if (G_LIKELY (activeProfile != NULL))
+        profileLabel = mate_mixer_switch_option_get_label(activeProfile);
+
+    if (profileSwitch != NULL) {
+
+        activeProfile = mate_mixer_switch_get_active_option(profileSwitch);
         if (G_LIKELY (activeProfile != NULL))
             profileLabel = mate_mixer_switch_option_get_label(activeProfile);
-
-        if (profileSwitch != NULL) {
-
-            activeProfile = mate_mixer_switch_get_active_option(profileSwitch);
-            if (G_LIKELY (activeProfile != NULL))
-                profileLabel = mate_mixer_switch_option_get_label(activeProfile);
-    //        qDebug() << "profilelabel :" << profileLabel;
-            g_signal_connect (G_OBJECT (profileSwitch),
-                              "notify::active-option",
-                              G_CALLBACK (onDeviceProfileActiveOptionNotify),
-                              m_pWidget);
-        }
-
-    MateMixerSwitch *portSwitch;
-
-    MateMixerStream *stream = mate_mixer_context_get_default_output_stream(m_pWidget->m_pContext);
-    portSwitch = findStreamPortSwitch(m_pWidget,stream);
-    const GList  *options ;
-    options = mate_mixer_switch_list_options(portSwitch);
-//    MateMixerSwitchOption *option = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(portSwitch));
-
-    MateMixerSwitchOption *activePort;
-    activePort = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH (portSwitch));
-    if (G_LIKELY (activePort != NULL))
-        profileLabel = mate_mixer_switch_option_get_label(activePort);
-//    m_pWidget->m_pSwitch = profileSwitch;
-    if (portSwitch != NULL) {
-        if (G_LIKELY (activePort != NULL))
-            profileLabel = mate_mixer_switch_option_get_label(activePort);
-//        qDebug() << "profilelabel :" << profileLabel;
-        g_signal_connect (G_OBJECT (portSwitch),
+        g_signal_connect (G_OBJECT (profileSwitch),
                           "notify::active-option",
-                          G_CALLBACK(onSwitchActiveOptionNotify),
+                          G_CALLBACK (onDeviceProfileActiveOptionNotify),
                           m_pWidget);
     }
+
+    m_pWidget->updateInputDevicePort();
+    m_pWidget->updateOutputDevicePort();
 
 }
 
@@ -1005,7 +999,7 @@ void UkmediaMainWidget::onContextDefaultInputStreamNotify (MateMixerContext *m_p
     m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->setCurrentIndex(index);
     qDebug() << "on context default input stream notify" <<deviceName;
     updateIconInput(m_pWidget);
-
+    m_pWidget->updateInputDevicePort();
     setInputStream(m_pWidget, m_pStream);
 }
 
@@ -1095,12 +1089,6 @@ void UkmediaMainWidget::onContextDefaultOutputStreamNotify (MateMixerContext *m_
     MateMixerDevice *pDevice = mate_mixer_stream_get_device(m_pStream);
     const gchar *cardName = mate_mixer_device_get_name(pDevice);
     int cardIndex = m_pWidget->m_pDeviceNameList->indexOf(cardName);
-//    qDebug() << "index " << cardIndex;
-//    if (cardIndex < 0)
-//        return;
-//    m_pWidget->m_pOutputWidget->m_pSelectCombobox->blockSignals(true);
-//    m_pWidget->m_pOutputWidget->m_pSelectCombobox->setCurrentIndex(cardIndex);
-//    m_pWidget->m_pOutputWidget->m_pSelectCombobox->blockSignals(false);
 
     qDebug() << "on context default output steam notify:" << mate_mixer_stream_get_name(m_pStream) << cardName;
 
@@ -1140,7 +1128,6 @@ void UkmediaMainWidget::onContextDefaultOutputStreamNotify (MateMixerContext *m_
         m_pWidget->m_pOutputWidget->outputWidgetRemovePort();
         return;
     }
-    m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->setCurrentIndex(portIndex);
     if (m_pStream == nullptr) {
         //当输出流更改异常时，使用默认的输入流，不应该发生这种情况
         m_pStream = m_pWidget->m_pOutputStream;
@@ -1152,6 +1139,9 @@ void UkmediaMainWidget::onContextDefaultOutputStreamNotify (MateMixerContext *m_
     m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->setCurrentIndex(index);
     updateIconOutput(m_pWidget);
     setOutputStream (m_pWidget, m_pStream);
+    m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(true);
+    m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->setCurrentIndex(portIndex);
+    m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(false);
 }
 
 /*
@@ -1396,7 +1386,9 @@ void UkmediaMainWidget::updateIconOutput(UkmediaMainWidget *m_pWidget)
     bool status = mate_mixer_stream_control_get_mute(m_pControl);
     int value = volume *100 /65536.0+0.5;
 
+    m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->blockSignals(true);
     m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->setValue(value);
+    m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->blockSignals(false);
     QString percent = QString::number(value);
     percent.append("%");
     m_pWidget->m_pOutputWidget->m_pOpVolumePercentLabel->setText(percent);
@@ -1492,7 +1484,7 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
 {
     Q_UNUSED(pspec);
     g_debug("on stream control volume notify");
-    qDebug() << "volume notify" << mate_mixer_stream_control_get_name(m_pControl);
+    qDebug() << "on stream control volume notify" << mate_mixer_stream_control_get_name(m_pControl);
     MateMixerStreamControlFlags flags;
     guint volume = 0;
     QString decscription;
@@ -1516,7 +1508,7 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
 
     if (MATE_MIXER_IS_STREAM(m_pStream)) {
         if (direction == MATE_MIXER_DIRECTION_OUTPUT) {
-
+        /*
             if (portSwitch != nullptr) {
                 const GList *options;
                 options = mate_mixer_switch_list_options(MATE_MIXER_SWITCH(portSwitch));
@@ -1537,26 +1529,33 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
                     }
                     options = options->next;
                 }
-//                m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(true);
+                if (m_pWidget->m_privOutputPortLabel != "") {
+                    if(!strcmp(m_pWidget->m_privOutputPortLabel,outputPortLabel) == 0)
+                }
+                m_pWidget->m_privOutputPortLabel;
+                m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(true);
                 m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(outputPortLabel);
-//                m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(false);
+                m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(false);
+                qDebug() << "set output label" << outputPortLabel << mate_mixer_stream_control_get_name(m_pControl);
             }
+        */
         }
     }
     else {
         m_pStream = m_pWidget->m_pStream;
         if (direction == MATE_MIXER_DIRECTION_OUTPUT) {
-//            portSwitch = findStreamPortSwitch (m_pWidget,m_pStream);
-//            mate_mixer_context_set_default_output_stream(m_pWidget->m_pContext,m_pStream);
-//            if (portSwitch!= nullptr) {
-//                MateMixerSwitchOption *option = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(portSwitch));
-//                QString label = mate_mixer_switch_option_get_label(option);
-//                m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(label);
-//                qDebug() << "get stream correct" << mate_mixer_stream_control_get_label(m_pControl) << mate_mixer_stream_get_label(m_pStream) <<label;
+            /*
+            portSwitch = findStreamPortSwitch (m_pWidget,m_pStream);
+            mate_mixer_context_set_default_output_stream(m_pWidget->m_pContext,m_pStream);
+            if (portSwitch!= nullptr) {
+                MateMixerSwitchOption *option = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(portSwitch));
+                QString label = mate_mixer_switch_option_get_label(option);
+                m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(label);
+                qDebug() << "get stream correct" << mate_mixer_stream_control_get_label(m_pControl) << mate_mixer_stream_get_label(m_pStream) <<label;
 
-//            }
+            }
+            */
             setOutputStream(m_pWidget,m_pStream);
-//            qDebug() << "从control 获取的stream不为output stream" << mate_mixer_stream_get_label(m_pStream);
         }
         else if (direction == MATE_MIXER_DIRECTION_INPUT) {
 //            mate_mixer_context_set_default_input_stream(m_pWidget->m_pContext,m_pStream);
@@ -1569,21 +1568,23 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
     //设置输出滑动条的值
     int value = volume*100/65536.0 + 0.5;
     if (direction == MATE_MIXER_DIRECTION_OUTPUT) {
-//        m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->blockSignals(true);
+        m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->blockSignals(true);
         m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->setValue(value);
-//        m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->blockSignals(true);
+        m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->blockSignals(false);
+        QString percentStr = QString::number(value) ;
+        percentStr.append("%");
+        m_pWidget->m_pOutputWidget->m_pOpVolumePercentLabel->setText(percentStr);
+        qDebug() << "volume notify" << mate_mixer_stream_control_get_name(m_pControl) << value;
     }
     else if (direction == MATE_MIXER_DIRECTION_INPUT) {
-//        m_pWidget->m_pInputWidget->m_pIpVolumeSlider->blockSignals(true);
         m_pWidget->m_pInputWidget->m_pIpVolumeSlider->setValue(value);
-//        m_pWidget->m_pInputWidget->m_pIpVolumeSlider->blockSignals(true);
     }
 }
 
 /*
     设置平衡属性
 */
-void UkmediaMainWidget::ukuiBalanceBarSetProperty (UkmediaMainWidget *m_pWidget,MateMixerStreamControl *m_pControl)
+void UkmediaMainWidget::ukuiBalanceBarSetProperty(UkmediaMainWidget *m_pWidget,MateMixerStreamControl *m_pControl)
 {
     g_debug("ukui balance bar set property");
     ukuiBalanceBarSetControl(m_pWidget,m_pControl);
@@ -1592,7 +1593,7 @@ void UkmediaMainWidget::ukuiBalanceBarSetProperty (UkmediaMainWidget *m_pWidget,
 /*
     平衡设置control
 */
-void UkmediaMainWidget::ukuiBalanceBarSetControl (UkmediaMainWidget *m_pWidget, MateMixerStreamControl *m_pControl)
+void UkmediaMainWidget::ukuiBalanceBarSetControl(UkmediaMainWidget *m_pWidget, MateMixerStreamControl *m_pControl)
 {
     g_debug("ukui balance bar set control");
     g_signal_connect (G_OBJECT (m_pControl),
@@ -1665,9 +1666,9 @@ void UkmediaMainWidget::updateOutputSettings (UkmediaMainWidget *m_pWidget,MateM
     qDebug() << "当前输出端口为:" <<outputPortLabel << m_pWidget->m_pOutputPortList->count();
     if (m_pWidget->m_pOutputPortList->count() > 0) {
         m_pWidget->m_pOutputWidget->outputWidgetAddPort();
-//        m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(true);
+        m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(true);
         m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(outputPortLabel);
-//        m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(false);
+        m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(false);
     }
     connect(m_pWidget->m_pOutputWidget->m_pOutputPortCombobox,SIGNAL(currentIndexChanged(int)),m_pWidget,SLOT(outputPortComboxChangedSlot(int)));
     connect(m_pWidget->m_pOutputWidget->m_pOpBalanceSlider,&QSlider::valueChanged,[=](int volume){
@@ -1785,7 +1786,7 @@ void UkmediaMainWidget::soundThemeInDir (UkmediaMainWidget *m_pWidget,GHashTable
         //设置主题到combox中
         qDebug() << "sound theme in dir" << "displayname:" << m_pIndexName << "theme name:" << m_pName << "theme："<< themeName;
         //屏蔽ubuntu custom 主题
-        if (/*!strstr(m_pName,"ubuntu") &&*/ !strstr(m_pName,"freedesktop") && !strstr(m_pName,"custom")) {
+        if (!strstr(m_pName,"ubuntu") && !strstr(m_pName,"freedesktop") && !strstr(m_pName,"custom")) {
             m_pWidget->m_pThemeDisplayNameList->append(m_pIndexName);
             m_pWidget->m_pThemeNameList->append(m_pName);
             m_pWidget->m_pSoundWidget->m_pSoundThemeCombobox->addItem(m_pIndexName);
@@ -2264,7 +2265,6 @@ void UkmediaMainWidget::comboxIndexChangedSlot(int index)
 //            QString filenameStr = settings->get(FILENAME_KEY).toString();
             QString nameStr = settings->get(NAME_KEY).toString();
             if (nameStr == "alert-sound") {
-                qDebug() << "找到窗口关闭" <<  nameStr << eventId;
                 settings->set(FILENAME_KEY,eventId);
                 return;
             }
@@ -2317,6 +2317,10 @@ void UkmediaMainWidget::windowClosedComboboxChangedSlot(int index)
 */
 void UkmediaMainWidget::volumeChangedComboboxChangeSlot(int index)
 {
+    QString sound_name = m_pSoundList->at(index);
+//    updateAlert(this,sound_name.toLatin1().data());
+    playAlretSoundFromPath(this,sound_name);
+
     QString fileName = m_pSoundList->at(index);
     QStringList list = fileName.split("/");
     QString soundName = list.at(list.count()-1);
@@ -2514,7 +2518,7 @@ void UkmediaMainWidget::themeComboxIndexChangedSlot(int index)
         int index = 0;
         for (int i=0;i<m_pSoundList->count();i++) {
             QString str = m_pSoundList->at(i);
-            if (str.contains("drip",Qt::CaseSensitive)) {
+            if (str.contains("gudou",Qt::CaseSensitive)) {
                 index = i;
                 break;
             }
@@ -2745,28 +2749,33 @@ void UkmediaMainWidget::ukuiUpdatePeakValue (UkmediaMainWidget *m_pWidget)
 */
 void UkmediaMainWidget::outputWidgetSliderChangedSlot(int value)
 {
-    m_pStream = mate_mixer_context_get_default_output_stream(m_pContext);
-    if (m_pStream != nullptr)
-        m_pControl = mate_mixer_stream_get_default_control(m_pStream);
-
+    MateMixerStream *pStream = mate_mixer_context_get_default_output_stream(m_pContext);
+    MateMixerStreamControl *pControl;
+    if (pStream != nullptr)
+         pControl = mate_mixer_stream_get_default_control(pStream);
+    else {
+        return;
+    }
     QString percent;
     bool status = false;
     percent = QString::number(value);
     int volume = value*65536/100;
-    mate_mixer_stream_control_set_volume(m_pControl,guint(volume));
+    qDebug() << "set volume" << volume << value;
+
+    mate_mixer_stream_control_set_volume(pControl,guint(volume));
     if (value <= 0) {
         status = true;
-        mate_mixer_stream_control_set_mute(m_pControl,status);
-        mate_mixer_stream_control_set_volume(m_pControl,0);
+        mate_mixer_stream_control_set_mute(pControl,status);
+//        mate_mixer_stream_control_set_volume(m_pControl,0);
         percent = QString::number(0);
     }
     else {
         if (firstEnterSystem) {
-            bool status = mate_mixer_stream_control_get_mute(m_pControl);
-            mate_mixer_stream_control_set_mute(m_pControl,status);
+            bool status = mate_mixer_stream_control_get_mute(pControl);
+            mate_mixer_stream_control_set_mute(pControl,status);
         }
         else {
-            mate_mixer_stream_control_set_mute(m_pControl,status);
+            mate_mixer_stream_control_set_mute(pControl,status);
         }
     }
     firstEnterSystem = false;
@@ -2782,15 +2791,15 @@ void UkmediaMainWidget::outputWidgetSliderChangedSlot(int value)
 */
 void UkmediaMainWidget::inputWidgetSliderChangedSlot(int value)
 {
-    m_pStream = mate_mixer_context_get_default_input_stream(m_pContext);
-    m_pControl = mate_mixer_stream_get_default_control(m_pStream);
+    MateMixerStream *pStream = mate_mixer_context_get_default_input_stream(m_pContext);
+    MateMixerStreamControl *pControl = mate_mixer_stream_get_default_control(pStream);
 
     QString percent;
     bool status = false;
     if (value <= 0) {
         status = true;
-        mate_mixer_stream_control_set_mute(m_pControl,status);
-        mate_mixer_stream_control_set_volume(m_pControl,0);
+        mate_mixer_stream_control_set_mute(pControl,status);
+        mate_mixer_stream_control_set_volume(pControl,0);
         percent = QString::number(0);
     }
     //输入图标修改成深色主题
@@ -2799,8 +2808,8 @@ void UkmediaMainWidget::inputWidgetSliderChangedSlot(int value)
     m_pInputWidget->m_pInputIconBtn->repaint();
     percent = QString::number(value);
     value = value * 65536 / 100;
-    mate_mixer_stream_control_set_mute(m_pControl,status);
-    mate_mixer_stream_control_set_volume(m_pControl,value);
+    mate_mixer_stream_control_set_mute(pControl,status);
+    mate_mixer_stream_control_set_volume(pControl,value);
     percent.append("%");
     m_pInputWidget->m_pInputIconBtn->repaint();
     m_pInputWidget->m_pIpVolumePercentLabel->setText(percent);
@@ -3654,14 +3663,110 @@ void UkmediaMainWidget::onSwitchActiveOptionNotify (MateMixerSwitch *swtch,GPara
     MateMixerSwitchOption *action = mate_mixer_switch_get_active_option(swtch);
     mate_mixer_switch_option_get_label(action);
     const gchar *outputPortLabel = mate_mixer_switch_option_get_label(action);
+    qDebug() << "update active option  notify" << outputPortLabel;
+    w->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(true);
     w->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(outputPortLabel);
+    w->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(false);
 }
 
 void UkmediaMainWidget::onDeviceProfileActiveOptionNotify (MateMixerDeviceSwitch *swtch,GParamSpec *pspec,UkmediaMainWidget *w)
 {
     MateMixerDevice *device;
     device = mate_mixer_device_switch_get_device (swtch);
+    w->updateInputDevicePort();
+    w->updateOutputDevicePort();
     updateDeviceInfo (w, device);
+}
+
+void UkmediaMainWidget::updateOutputDevicePort()
+{
+    MateMixerSwitch *outputPortSwitch;
+    const GList  *options ;
+    const gchar *outputPortLabel = nullptr;
+    const gchar *outputPortName = nullptr;
+
+    MateMixerStream *outputStream = mate_mixer_context_get_default_output_stream(m_pContext);
+    if (outputStream == nullptr) {
+        return;
+    }
+    outputPortSwitch = findStreamPortSwitch(this,outputStream);
+    options = mate_mixer_switch_list_options(outputPortSwitch);
+
+    MateMixerSwitchOption *outputActivePort;
+    outputActivePort = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH (outputPortSwitch));
+    if (G_LIKELY (outputActivePort != NULL)) {
+        outputPortLabel = mate_mixer_switch_option_get_label(outputActivePort);
+        outputPortName = mate_mixer_switch_option_get_name(outputActivePort);
+    }
+    if (outputPortSwitch != NULL) {
+        if (G_LIKELY (outputActivePort != NULL))
+            outputPortLabel = mate_mixer_switch_option_get_label(outputActivePort);
+        if (MATE_MIXER_IS_SWITCH_OPTION (outputActivePort)) {
+            m_pOutputWidget->m_pOutputPortCombobox->blockSignals(true);
+            m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(outputPortLabel);
+            m_pOutputWidget->m_pOutputPortCombobox->blockSignals(false);
+        }
+
+        g_signal_connect (G_OBJECT (outputPortSwitch),
+                          "notify::active-option",
+                          G_CALLBACK(onOutputSwitchActiveOptionNotify),
+                          this);
+    }
+}
+
+void UkmediaMainWidget::updateInputDevicePort()
+{
+    MateMixerSwitch *inputPortSwitch;
+    const GList  *inputOptions ;
+    const gchar *inputPortLabel = nullptr;
+    MateMixerStream *inputStream = mate_mixer_context_get_default_input_stream(m_pContext);
+    if (inputStream == nullptr) {
+        return;
+    }
+    inputPortSwitch = findStreamPortSwitch(this,inputStream);
+
+    inputOptions = mate_mixer_switch_list_options(inputPortSwitch);
+    MateMixerSwitchOption *inputActiveOption = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(inputPortSwitch));
+
+    MateMixerSwitchOption *inputActivePort;
+    inputActivePort = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH (inputPortSwitch));
+    if (G_LIKELY (inputActiveOption != NULL))
+        inputPortLabel = mate_mixer_switch_option_get_label(inputActivePort);
+
+    if (inputPortSwitch != NULL) {
+        if (G_LIKELY (inputActiveOption != NULL))
+            inputPortLabel = mate_mixer_switch_option_get_label(inputActivePort);
+        if (MATE_MIXER_IS_SWITCH_OPTION (inputActivePort)) {
+            m_pInputWidget->m_pInputPortCombobox->blockSignals(true);
+            m_pInputWidget->m_pInputPortCombobox->setCurrentText(inputPortLabel);
+            m_pInputWidget->m_pInputPortCombobox->blockSignals(false);
+        }
+        g_signal_connect (G_OBJECT (inputPortSwitch),
+                          "notify::active-option",
+                          G_CALLBACK(onInputSwitchActiveOptionNotify),
+                          this);
+    }
+}
+
+void UkmediaMainWidget::onInputSwitchActiveOptionNotify (MateMixerSwitch *swtch,GParamSpec *pspec,UkmediaMainWidget *w)
+{
+    MateMixerSwitchOption *action = mate_mixer_switch_get_active_option(swtch);
+    mate_mixer_switch_option_get_label(action);
+    const gchar *inputPortLabel = mate_mixer_switch_option_get_label(action);
+    w->m_pInputWidget->m_pInputPortCombobox->blockSignals(true);
+    w->m_pInputWidget->m_pInputPortCombobox->setCurrentText(inputPortLabel);
+    w->m_pInputWidget->m_pInputPortCombobox->blockSignals(false);
+}
+
+void UkmediaMainWidget::onOutputSwitchActiveOptionNotify (MateMixerSwitch *swtch,GParamSpec *pspec,UkmediaMainWidget *w)
+{
+    MateMixerSwitchOption *action = mate_mixer_switch_get_active_option(swtch);
+    mate_mixer_switch_option_get_label(action);
+    const gchar *outputPortLabel = mate_mixer_switch_option_get_label(action);
+    w->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(true);
+    w->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(outputPortLabel);
+    w->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(false);
+
 }
 
 void UkmediaMainWidget::setConnectingMessage(const char *string) {

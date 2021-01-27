@@ -210,6 +210,10 @@ public:
     static void onDeviceProfileActiveOptionNotify (MateMixerDeviceSwitch *swtch,GParamSpec *pspec,UkmediaMainWidget *w);
     static gchar *deviceStatus (MateMixerDevice *device);
     static void updateDeviceInfo (UkmediaMainWidget *w, MateMixerDevice *device);
+    void updateOutputDevicePort();
+    void updateInputDevicePort();
+    static void onInputSwitchActiveOptionNotify (MateMixerSwitch *swtch,GParamSpec *pspec,UkmediaMainWidget *w);
+    static void onOutputSwitchActiveOptionNotify (MateMixerSwitch *swtch,GParamSpec *pspec,UkmediaMainWidget *w);
 
     //为一些不能更改提示音音量的机器做一些初始化操作
     void executeVolumeUpdate(bool status);
@@ -300,6 +304,7 @@ private:
     bool m_hasMusic;
     bool firstEnterSystem = true;
 
+    const gchar* m_privOutputPortLabel = "";
     QByteArray role;
     QByteArray device;
     pa_channel_map channelMap;
