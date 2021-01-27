@@ -57,7 +57,7 @@ SwitchButton::SwitchButton(QWidget *parent) :
         m_qtThemeSetting = new QGSettings(qtThemeID,QByteArray(),this);
 
         QString style = m_qtThemeSetting->get("styleName").toString();
-        if(style == "ukui-dark") {
+        if(style == "ukui-dark" || style == "ukui-black") {
             bgColorOff = QColor("#3d3d3f");
         } else {
             bgColorOff = QColor("#cccccc");
@@ -66,7 +66,7 @@ SwitchButton::SwitchButton(QWidget *parent) :
         connect(m_qtThemeSetting,&QGSettings::changed, [this] (const QString &key) {
             QString style = m_qtThemeSetting->get("styleName").toString();
             if(key == "styleName") {
-                if(style == "ukui-dark") {
+                if(style == "ukui-dark" || style == "ukui-black") {
                     bgColorOff = QColor("#3d3d3f");
                 } else {
                     bgColorOff = QColor("#cccccc");
