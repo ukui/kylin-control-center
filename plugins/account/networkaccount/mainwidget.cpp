@@ -104,8 +104,8 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
             //setshow(m_mainWidget);
             if(m_bTokenValid == true) {
                 m_mainWidget->setCurrentWidget(m_widgetContainer);
-                handle_conf();
             }
+           // qDebug() << "ssssss";
             m_bTokenValid = true;              //开启登录状态
             m_autoSyn->set_change(0,"0");
             if(bIsLogging == false) {
@@ -119,6 +119,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
             for(int i = 0;i < m_szItemlist.size();i ++) {
                 m_itemList->get_item(i)->set_change(0,"0");
             }
+            handle_conf();
         }
     });
 
@@ -151,13 +152,17 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
         m_dbusClient->callMethod("querryUploaded",argList);
     });
 
+    connect(this, &MainWidget::dosend, m_dbusClient, [=](QString info) {
+        QList<QVariant>args;
+        args<<info;
+        m_dbusClient->callMethod("sendClientInfo",args);
+    });
+
+
     connect(this, &MainWidget::dologout, m_dbusClient, [=]() {
         QList<QVariant> argList;
         m_dbusClient->callMethod("logout",argList);
 
-        QProcess proc;
-        proc.start("killall kylin-sso-client");
-        proc.waitForFinished(-1);
     });
 
     connect(this, &MainWidget::dosingle, m_dbusClient, [=](QString key,bool mode) {
@@ -183,11 +188,16 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     });
 
     connect(m_dbusClient, &DBusUtils::querryFinished, this , [=] (const QStringList &list) {
+        //qDebug() << "csacasacasca";
         QStringList keyList = list;
-        m_cLoginTimer->stop();
-        m_mainDialog->on_close();
+        if(m_cLoginTimer->isActive()) {
+            m_cLoginTimer->stop();
+        }
+        if(bIsLogging) {
+            m_mainDialog->on_close();
+        }
+        //qDebug() << "csacasacasca";
         if(keyList.size() > 2) {
-            on_auto_syn(0,-1);
             QList<QVariant> args;
             QFile file(QDir::homePath() + "/.cache/kylinId/keys");
             args << m_szCode;
@@ -207,6 +217,8 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
                 emit closedialog();
                 handle_conf();
             } else {
+                on_auto_syn(0,-1);
+                m_autoSyn->get_swbtn()->set_swichbutton_val(0);
                 m_syncDialog = new SyncDialog(m_szCode,m_szConfPath);
                 m_syncDialog->m_List = keyList.isEmpty() ? m_szItemlist : keyList;
                 connect(m_syncDialog, &SyncDialog::sendKeyMap, this,[=] (QStringList keyList) {
@@ -523,6 +535,14 @@ void MainWidget::init_gui() {
     connect(m_autoSyn->get_swbtn(),&SwitchButton::status,this ,[=] (int on,int id) {
         Q_UNUSED(id);
        if(on == 1) {
+           QFile file( ConfigFile().GetPath());
+           if(file.exists() == false) {
+               emit dooss(m_szUuid);
+               return ;
+           }  else {
+               emit doman();
+           }
+
            m_stackedWidget->setCurrentWidget(m_itemList);
            m_keyInfoList.clear();
            __once__ = false;
@@ -533,12 +553,6 @@ void MainWidget::init_gui() {
                    m_itemList->get_item(i)->set_change(0,"0");
                }
            }
-           QFile file( ConfigFile().GetPath());
-           if(file.exists() == false) {
-           }  else {
-               emit doman();
-           }
-
        } else {
            m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
        }
@@ -642,7 +656,8 @@ void MainWidget::finished_load(int ret, QString uuid) {
     m_bIsStopped = false;
     if (ret == 0) {
 
-        emit docheck();
+        if(bIsLogging)
+            emit docheck();
         m_autoSyn->set_change(0,"0");
         for(int i = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_change(0,"0");
@@ -766,6 +781,7 @@ void MainWidget::on_login_out() {
         m_bIsStopped = true;
         bIsLogging = false;
     } else {
+        emit dosend("exit");
         on_auto_syn(0,-1);
         m_autoSyn->get_swbtn()->set_swichbutton_val(0);
         push_over();
