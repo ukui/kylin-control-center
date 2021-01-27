@@ -43,8 +43,6 @@ DataFormat::~DataFormat()
 
 
 void DataFormat::initUi() {
-    //关闭按钮在右上角，窗体radius 6px，所以按钮只得6px
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
     ui->calendarLabel->setText(tr("calendar"));
     ui->dayLabel->setText(tr("first day of week"));
@@ -84,11 +82,6 @@ void DataFormat::initConnect() {
     connect(m_itimer,SIGNAL(timeout()), this, SLOT(datetime_update_slot()));
     connect(ui->confirmButton, SIGNAL(clicked(bool)), SLOT(confirm_btn_slot()));
     connect(ui->cancelButton, SIGNAL(clicked()), SLOT(close()));
-    connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked){
-        Q_UNUSED(checked)
-        close();
-    });
-
 }
 
 void DataFormat::initComponent() {

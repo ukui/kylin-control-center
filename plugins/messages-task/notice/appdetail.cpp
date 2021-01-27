@@ -30,9 +30,7 @@ AppDetail::~AppDetail()
     delete ui;
 }
 
-void AppDetail::initUiStatus(){
-
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+void AppDetail::initUiStatus() {
 
     enablebtn = new SwitchButton;
     ui->enableLayout->addWidget(enablebtn);
@@ -54,10 +52,6 @@ void AppDetail::initComponent() {
 }
 
 void AppDetail::initConnect() {
-    connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked){
-        Q_UNUSED(checked)
-        close();
-    });
 
     connect(ui->cancelBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)

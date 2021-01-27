@@ -56,10 +56,13 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="topMargin">
+       <number>32</number>
+      </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <property name="leftMargin">
-         <number>8</number>
+         <number>20</number>
         </property>
         <property name="topMargin">
          <number>8</number>
@@ -104,25 +107,6 @@
            </size>
           </property>
          </spacer>
-        </item>
-        <item>
-         <widget class="CloseButton" name="closeBtn">
-          <property name="minimumSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>48</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
         </item>
        </layout>
       </item>
@@ -480,11 +464,17 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>345</width>
+          <width>16777215</width>
           <height>50</height>
          </size>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <property name="leftMargin">
+          <number>9</number>
+         </property>
+         <property name="rightMargin">
+          <number>32</number>
+         </property>
          <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
@@ -492,7 +482,7 @@
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>40</width>
+             <width>20</width>
              <height>20</height>
             </size>
            </property>
@@ -503,13 +493,13 @@
            <property name="minimumSize">
             <size>
              <width>120</width>
-             <height>30</height>
+             <height>36</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>120</width>
-             <height>30</height>
+             <height>36</height>
             </size>
            </property>
            <property name="sizeIncrement">
@@ -528,13 +518,13 @@
            <property name="minimumSize">
             <size>
              <width>120</width>
-             <height>30</height>
+             <height>36</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>120</width>
-             <height>30</height>
+             <height>36</height>
             </size>
            </property>
            <property name="text">
@@ -553,7 +543,7 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>17</width>
-          <height>34</height>
+          <height>24</height>
          </size>
         </property>
        </spacer>
@@ -563,13 +553,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>CloseButton</class>
-   <extends>QPushButton</extends>
-   <header location="global">CloseButton/closebutton.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

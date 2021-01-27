@@ -43,7 +43,6 @@ ChangtimeDialog::ChangtimeDialog(bool hour,QWidget *parent) :m_isEFHour(hour),
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
     m_datetimeInterface = new QDBusInterface("org.freedesktop.timedate1",
                                        "/org/freedesktop/timedate1",
                                        "org.freedesktop.timedate1",
@@ -54,17 +53,12 @@ ChangtimeDialog::ChangtimeDialog(bool hour,QWidget *parent) :m_isEFHour(hour),
 
     m_chtimer = new QTimer();
     m_chtimer->start(1000);
+
     connect(m_chtimer, SIGNAL(timeout()), this, SLOT(datetimeUpdateSlot()));
-
-
     connect(ui->monthcomboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(dayUpdateSlot()));
     connect(ui->yearcomboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(dayUpdateSlot()));
     connect(ui->cancelButton,SIGNAL(clicked()),this,SLOT(close()));
     connect(ui->confirmButton,SIGNAL(clicked()),this,SLOT(changtimeApplySlot()));
-    connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked){
-        Q_UNUSED(checked)
-        close();
-    });
 
 }
 
