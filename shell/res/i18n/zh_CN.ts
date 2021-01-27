@@ -4921,7 +4921,12 @@ Please retry or relogin!</source>
         <translation type="vanished">日</translation>
     </message>
     <message>
-        <location filename="../../main.cpp" line="53"/>
+        <location filename="../../main.cpp" line="43"/>
+        <source>ukui-control-center</source>
+        <translation>设置</translation>
+    </message>
+    <message>
+        <location filename="../../main.cpp" line="54"/>
         <source>ukui-control-center is already running!</source>
         <translation>控制面板已运行!</translation>
     </message>

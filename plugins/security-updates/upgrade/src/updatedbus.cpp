@@ -57,9 +57,9 @@ void UpdateDbus::onRequestSendDesktopNotify(QString message)
                          "org.freedesktop.Notifications",
                          QDBusConnection::sessionBus());
     QList<QVariant> args;
-    args<<(QCoreApplication::applicationName())
+    args<<(QApplication::applicationName())
        <<((unsigned int) 0)
-      <<QString("qweq")
+      <<QString("ukui-control-center")
      <<tr("ukui-control-center-update") //显示的是什么类型的信息  控制面板-更新提示
     <<message //显示的具体信息
     <<QStringList()

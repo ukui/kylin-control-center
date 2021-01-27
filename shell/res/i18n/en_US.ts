@@ -3512,7 +3512,12 @@ Please retry or relogin!</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../main.cpp" line="53"/>
+        <location filename="../../main.cpp" line="43"/>
+        <source>ukui-control-center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../main.cpp" line="54"/>
         <source>ukui-control-center is already running!</source>
         <translation type="unfinished"></translation>
     </message>
