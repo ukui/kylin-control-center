@@ -470,11 +470,10 @@ void UserInfo::initComponent(){
 
     });
 
-    if (getuid())
-        connect(ui->changeGroupBtn, &QPushButton::clicked, this, [=](bool checked){
-            Q_UNUSED(checked)
-            showChangeGroupDialog();
-        });
+    connect(ui->changeGroupBtn, &QPushButton::clicked, this, [=](bool checked){
+        Q_UNUSED(checked)
+        showChangeGroupDialog();
+    });
 
     //修改当前用户免密登录
     if (getuid())
@@ -936,10 +935,8 @@ void UserInfo::deleteUserDone(QString objpath){
 }
 
 void UserInfo::showChangeGroupDialog(){
-//    qDebug() << "当前函数 :" << __FUNCTION__ << "当前行号 :" << __LINE__ << QDateTime::currentDateTime();
     ChangeGroupDialog * dialog = new ChangeGroupDialog();
     dialog->exec();
-//    qDebug() << "当前函数 :" << __FUNCTION__ << "当前行号 :" << __LINE__ << QDateTime::currentDateTime();
 }
 
 void UserInfo::showChangeValidDialog(QString username){
