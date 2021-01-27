@@ -443,11 +443,10 @@ void UserInfo::initComponent(){
 
     });
 
-    if (getuid())
-        connect(ui->changeGroupBtn, &QPushButton::clicked, this, [=](bool checked){
-            Q_UNUSED(checked)
-            showChangeGroupDialog();
-        });
+    connect(ui->changeGroupBtn, &QPushButton::clicked, this, [=](bool checked){
+        Q_UNUSED(checked)
+        showChangeGroupDialog();
+    });
 
     //修改当前用户免密登录
     if (getuid())
