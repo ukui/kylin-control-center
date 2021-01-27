@@ -59,7 +59,7 @@ CloseButton::CloseButton(QWidget *parent, const QString &filePath, const QString
         m_qtThemeSetting = new QGSettings(qtThemeID,QByteArray(),this);
 
         QString style = m_qtThemeSetting->get("styleName").toString();
-        if(style == "ukui-dark") {
+        if(style == "ukui-black"  || style == "ukui-dark") {
             m_szHoverOut = "white";
         } else {
             m_szHoverOut = "default";
@@ -68,7 +68,7 @@ CloseButton::CloseButton(QWidget *parent, const QString &filePath, const QString
         connect(m_qtThemeSetting,&QGSettings::changed, [this] (const QString &key) {
             QString style = m_qtThemeSetting->get("styleName").toString();
             if(key == "styleName") {
-                if(style == "ukui-dark") {
+                if(style == "ukui-black" || style == "ukui-dark") {
                     m_szHoverOut = "white";
                 } else {
                     m_szHoverOut = "default";

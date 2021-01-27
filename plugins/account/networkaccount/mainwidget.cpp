@@ -621,7 +621,7 @@ void MainWidget::finished_conf(int ret) {
 
 /* 登录成功处理事件 */
 void MainWidget::finished_load(int ret, QString uuid) {
-    qDebug() << ret;
+    //qDebug() << ret;
     if(ret == 301 || ret == 504) {
         if(m_mainWidget->currentWidget() != m_nullWidget) {
             showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry or relogin!"));
