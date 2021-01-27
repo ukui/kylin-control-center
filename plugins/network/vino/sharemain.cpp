@@ -28,9 +28,9 @@ ShareMain::ShareMain(QWidget *parent)
 
     mVlayout = new QVBoxLayout(this);
     mVlayout->setContentsMargins(0, 0, 32, 0);
-    initTitleLabel();
     initUI();
     initConnection();
+    initTitleLabel();
 }
 
 ShareMain::~ShareMain() {
