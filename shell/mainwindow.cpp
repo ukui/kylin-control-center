@@ -378,6 +378,11 @@ void MainWindow::initTileBar() {
     closeBtn->setFixedSize(30, 30);
     mTitleIcon->setFixedSize(24, 24);
 
+    mOptionBtn->setToolTip(tr("Main menu"));
+    minBtn->setToolTip(tr("Minimize"));
+    maxBtn->setToolTip(tr("Maximize/Normal"));
+    closeBtn->setToolTip(tr("Close"));
+
     QIcon titleIcon = QIcon::fromTheme("ukui-control-center");
     mTitleIcon->setPixmap(titleIcon.pixmap(titleIcon.actualSize(QSize(24, 24))));
 
