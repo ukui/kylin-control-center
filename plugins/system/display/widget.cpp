@@ -1211,12 +1211,7 @@ void Widget::initConnection() {
 
 
 void Widget::setBrightnessScreen(int value) {
-
-    if (mPowerKeys.contains("brightnessBat") && mOnBattery) {
-        mPowerGSettings->set(POWER_BAT_KEY, value);
-    } else {
-        mPowerGSettings->set(POWER_KEY, value);
-    }
+    mPowerGSettings->set(POWER_KEY, value);
 }
 
 //滑块改变
