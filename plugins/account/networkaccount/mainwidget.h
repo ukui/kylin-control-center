@@ -32,7 +32,7 @@
 #include "maindialog.h"
 #include <QMessageBox>
 #include "syncdialog.h"
-#include "configfile.h"
+#include <QSettings>
 #include <QGraphicsSvgItem>
 #include <QSvgWidget>
 #include "dbusutils.h"
@@ -114,11 +114,11 @@ private:
     bool            __run__ = false;
     bool            m_bIsStopped = false;
     QLabel          *m_syncTimeLabel;
-    ConfigFile      *m_configFile;
     int             m_indexChanged;
     int             m_statusChanged;
     SyncDialog      *m_syncDialog;
     bool            bIsLogging = false;
+    QSettings         *m_pSettings;
 
 public slots:
     void            on_login_out();
@@ -133,6 +133,8 @@ public slots:
     void            download_over();
     void            push_over();
     void            get_key_info(QString info);
+    void            checkUserName(QString name);
+    void            finishedLogout(int ret);
 signals:
     void dooss(QString m_szUuid);
     void doman();

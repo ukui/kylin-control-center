@@ -24,7 +24,7 @@ const QString DBusUtils::callMethod(const QString &methodName, const QList<QVari
         qDebug()<<methodName<<"called failed";
     }
 
-    qDebug() << methodName;
+    //qDebug() << methodName;
     if(methodName == "checkLogin") {
         emit infoFinished(ret.toString());
     } else if(methodName == "querryUploaded") {
