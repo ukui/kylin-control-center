@@ -75,7 +75,6 @@ private:
     QString downloadPath;
     UpdateDbus *m_updateMutual;
 
-
 public slots:
     void showDetails();
     void showUpdateLog();
@@ -92,10 +91,11 @@ public slots:
     void showUpdateBtn();
     void hideOrShowUpdateBtnSlot(int result);  //显示或隐藏更新按钮  备份过程中
 private:
-    void curlDownload(UrlMsg msg, QString path); //断点续传下载
+    void wgetDownload(UrlMsg msg, QString path); //断点续传下载
     bool getDownloadSpeed(QString appName, QString fullName, int fileSize); //获取下载速度
     void initConnect(); //初始化信号槽
     void changeDownloadState(int state);
+    type checkSourcesType();
     QString modifySizeUnit(long size);
     QString modifySpeedUnit(long size, float time);
 

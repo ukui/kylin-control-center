@@ -75,7 +75,7 @@ void AppUpdateWid::changeDownloadState(int state)
         if(connectTimes < 20) //判断重连次数，重连20次后退出下载
         {
             connectTimes += 1;
-            curlDownload(urlmsg,path);
+            wgetDownload(urlmsg,path);
             qDebug()  << "exitcode:" << state << "connectTimes:" << connectTimes;
         }
         else
@@ -108,9 +108,7 @@ void AppUpdateWid::changeDownloadState(int state)
         m_updateMutual->importantList.removeOne(appAllMsg.name);
         m_updateMutual->failedList.append(appAllMsg.name);
         emit hideUpdateBtnSignal(false);
-
     }
-
 }
 
 //从列表中取出下载信息开始下载
@@ -118,11 +116,11 @@ void AppUpdateWid::slotDownloadPackages()
 {
 //    qDebug() << "list:" << appAllMsg.msg.depList.length();
     if(appAllMsg.msg.depList.length() != 0)
-    {
+    {        
         QDir dir = downloadPath;
         if(!dir.exists())
         {
-            qDebug() << "not exists:" <<QString("%1%2").arg(DOWN_CACHE_PATH).arg(appAllMsg.name);
+//            qDebug() << "not exists:" <<QString("%1%2").arg(DOWN_CACHE_PATH).arg(appAllMsg.name);
             dir.mkpath(QString("%1%2").arg(DOWN_CACHE_PATH).arg(appAllMsg.name));
         }
         urlmsg = appAllMsg.msg.depList.at(0);
@@ -137,31 +135,23 @@ void AppUpdateWid::slotDownloadPackages()
                 urlmsg = appAllMsg.msg.depList.at(0);
                 path = QString("%1%2").arg(downloadPath).arg(urlmsg.fullname);
                 if(!isCancel)
-                    curlDownload(urlmsg,path);
-            }
-            else //下载完成调用dbus接口拷贝文件到/var/cache/apt/archives目录下
-            {
-                downloadFinish = true;
-//                qDebug() << "download over11";
-            }
-        }
-        else
-        {
+                    wgetDownload(urlmsg,path);
+            }else
+                downloadFinish = true; //下载完成调用dbus接口拷贝文件到/var/cache/apt/archives目录下
+        }else{
 //            qDebug() << "first download";
             firstDownload = false;
             if(!isCancel)
-                curlDownload(urlmsg,path);
+                wgetDownload(urlmsg,path);
         }
-    }
-    else //包已经存在于/var/cache/apt/archives目录下，直接安装
-    {
-//        qDebug() << "已下载完毕";
-        startInstall(appAllMsg.name);
+    }else{
+        startInstall(appAllMsg.name); //包已经存在于/var/cache/apt/archives目录下，直接安装
+        appVersion->setText(tr("Ready to install"));
     }
 }
 
 //开启wget断点续传
-void AppUpdateWid::curlDownload(UrlMsg msg, QString path)
+void AppUpdateWid::wgetDownload(UrlMsg msg, QString path)
 {
     QStringList args;
     args.append("-c");
@@ -369,8 +359,6 @@ void AppUpdateWid::updateAppUi(QString name)
         }
     }
 
-
-
     QString newStrMsg = appAllMsg.availableVersion;
     if(newStrMsg.size()>16)
     {
@@ -510,10 +498,10 @@ void AppUpdateWid::cancelOrUpdate()
             {
                 qDebug() << "不进行更新。";
             }
+            qDebug() << "ssss111";
         }
         else
         {
-
             updateOneApp();
         }
     }
@@ -535,14 +523,18 @@ void AppUpdateWid::updateOneApp()
 {
     if(appAllMsg.msg.getDepends == true)
     {
-        isCancel = false;
-        firstDownload = true;
-        slotDownloadPackages();
-        timer->start(500); //开启定时器用于计算下载速度
-        qDebug() << "time start";
-//        updateAPPBtn->setText(tr("取消"));
-        updateAPPBtn->setText(tr("Cancel"));
-        appVersionIcon->setPixmap(QPixmap());
+        if(checkSourcesType() != file){
+            isCancel = false;
+            firstDownload = true;
+            slotDownloadPackages();
+            timer->start(500); //开启定时器用于计算下载速度
+    //        updateAPPBtn->setText(tr("取消"));
+            updateAPPBtn->setText(tr("Cancel"));
+            appVersionIcon->setPixmap(QPixmap());
+        }else{
+            startInstall(appAllMsg.name); //本地源直接开始安装
+            appVersion->setText(tr("Ready to install"));
+        }
     }
     else
     {
@@ -607,7 +599,6 @@ void AppUpdateWid::showDownloadStatues(QString downloadSpeed, int progress)
         appVersion->setText(tr("In the update")+"("+downloadSpeed+")"+QString::number(progress)+"%");
 //        appVersion->setToolTip(tr("更新中")+"("+downloadSpeed+")"+QString::number(progress)+"%");
         appVersion->setToolTip("");
-
 }
 
 
@@ -715,6 +706,7 @@ bool AppUpdateWid::eventFilter(QObject *watched, QEvent *event)
         }
     }
 }
+
 QString AppUpdateWid::setDefaultDescription(QString str)
 {
     if(str == "")
@@ -723,4 +715,21 @@ QString AppUpdateWid::setDefaultDescription(QString str)
         str = tr("No content.");
     }
     return str;
+}
+
+type AppUpdateWid::checkSourcesType()
+{
+    QFile soucesFile(SOURCESLIST);
+    soucesFile.open(QIODevice::ReadOnly | QIODevice::Text);
+    QString result = soucesFile.readAll();
+    if(result.contains("http://")){
+        qDebug() << "当前源为http源";
+        return http;
+    }else if(result.contains("ftp://")){
+        qDebug() << "当前源为ftp源";
+        return ftp;
+    }else if(result.contains("file://")){
+        qDebug() << "当前源为本地源";
+        return file;
+    }
 }

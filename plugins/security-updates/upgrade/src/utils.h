@@ -5,7 +5,9 @@
 
 #define DOWN_CACHE_PATH QString("%1/.kylin-update-manager/").arg(QDir::homePath())
 #define DOWN_TEMP_PATH QString("%1/.kylin-update-manager/kylin-update-manager-deb/deb/").arg(QDir::homePath())
+#define SOURCESLIST "/etc/apt/sources.list"
 
+enum type {http, ftp, file};
 struct UrlMsg //记录单包信息：包名、全名、链接、大小
 {
     QString name = "";

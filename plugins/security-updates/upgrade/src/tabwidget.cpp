@@ -491,6 +491,9 @@ void TabWid::loadingOneUpdateMsgSlot(AppAllMsg msg)
 
 void TabWid::loadingFinishedSlot(int size)
 {
+    disconnect(updateSource->serviceInterface,SIGNAL(updateTemplateStatus(QString)),this,SLOT(slotUpdateTemplate(QString)));
+    disconnect(updateSource->serviceInterface,SIGNAL(updateCacheStatus(QVariantList)),this,SLOT(slotUpdateCache(QVariantList)));
+    disconnect(updateSource->serviceInterface,SIGNAL(updateSourceProgress(QVariantList)),this,SLOT(slotUpdateCacheProgress(QVariantList)));
     qDebug()<< "更新管理器：" <<"加载完毕信号 " << "size = " <<size;
     if(updateMutual->importantList.size() == 0)
     {
@@ -565,11 +568,8 @@ void TabWid::checkUpdateBtnClicked()
     if(checkUpdateBtn->text() == tr("Check Update"))
     {
         connect(updateSource->serviceInterface,SIGNAL(updateTemplateStatus(QString)),this,SLOT(slotUpdateTemplate(QString)));
-        qDebug() << "connect updateTemplateStatus返回值：" << connect(updateSource->serviceInterface,SIGNAL(updateTemplateStatus(QString)),this,SLOT(slotUpdateTemplate(QString)));
         connect(updateSource->serviceInterface,SIGNAL(updateCacheStatus(QVariantList)),this,SLOT(slotUpdateCache(QVariantList)));
-        qDebug() << "connect updateCacheStatus返回值：" << connect(updateSource->serviceInterface,SIGNAL(updateCacheStatus(QVariantList)),this,SLOT(slotUpdateCache(QVariantList)));
         connect(updateSource->serviceInterface,SIGNAL(updateSourceProgress(QVariantList)),this,SLOT(slotUpdateCacheProgress(QVariantList)));
-        qDebug() << "connect updateSourceProgress返回值：" << connect(updateSource->serviceInterface,SIGNAL(updateSourceProgress(QVariantList)),this,SLOT(slotUpdateCacheProgress(QVariantList)));
         updateMutual->failedList.clear();
         QList<AppUpdateWid*> list = this->findChildren<AppUpdateWid*>();
         for(AppUpdateWid* tmp:list)

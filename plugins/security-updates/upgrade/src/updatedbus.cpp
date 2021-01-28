@@ -59,7 +59,7 @@ void UpdateDbus::onRequestSendDesktopNotify(QString message)
     QList<QVariant> args;
     args<<(QCoreApplication::applicationName())
        <<((unsigned int) 0)
-      <<QString("ukui-control-center")
+      <<("ukui-control-center")
      <<tr("ukui-control-center-update") //显示的是什么类型的信息  控制面板-更新提示
     <<message //显示的具体信息
     <<QStringList()
@@ -155,8 +155,9 @@ void UpdateDbus::setImportantStatus(bool status)
 bool UpdateDbus::installAndUpgrade(QString pkgName)
 {
     // 有参数的情况下  传参调用dbus接口并保存返回值
-    replyBool = interface->asyncCall("install_and_upgrade",pkgName);
-    QString("调用更新管理器接口：installAndUpgrade");
+    interface->asyncCall("install_and_upgrade",pkgName);
+
+    // 将reply.value()作为返回值
     return true;
 }
 
