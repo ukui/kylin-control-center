@@ -70,8 +70,18 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_cLoginTimer = new QTimer(this);
     m_lazyTimer = new QTimer(this);
     m_listTimer = new QTimer(this);
+    m_pSettings = nullptr;
 
     m_checkBox = new QCheckBox(tr("Enable item sync"),this);
+
+
+    QProcess proc;
+    proc.start("lsb_release -r");
+    proc.waitForFinished();
+    QByteArrayList releaseList = proc.readAll().split('\t');
+    QByteArray ar = releaseList.at(1);
+    m_confName = "All-" + ar.replace("\n","") + ".conf";
+    m_szConfPath = QDir::homePath() + "/.cache/kylinId/" + m_confName;
 
     m_checkBox->setContentsMargins(0,0,0,0);
 
@@ -81,7 +91,6 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
 
     init_gui();         //初始化gui
 
-    m_dbusClient->moveToThread(thread);
     m_szUuid = QUuid::createUuid().toString();
     m_bIsUIInitial = false;
     m_bTokenValid = false;
@@ -94,36 +103,12 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     });
 
     connect(m_dbusClient, &DBusUtils::infoFinished,this,[=] (const QString &name) {
-        if(name == "" || name =="201" || name == "203" || name == "401" || name == "504") {
+        if(name != "0") {
             m_mainWidget->setCurrentWidget(m_nullWidget);
             return ;
-        } else {
-            m_szCode = name;
-
-            m_infoTab->setText(tr("Your account：%1").arg(m_szCode));
-            //setshow(m_mainWidget);
-            if(m_bTokenValid == true) {
-                m_mainWidget->setCurrentWidget(m_widgetContainer);
-            }
-           // qDebug() << "ssssss";
-            m_bTokenValid = true;              //开启登录状态
-            m_autoSyn->set_change(0,"0");
-            if(bIsLogging == false) {
-                QFile file (m_szConfPath);
-                if(file.exists() == false) {
-                    emit dooss(m_szUuid);
-                }
-            }
-
-            //dooss(m_szUuid);
-            for(int i = 0;i < m_szItemlist.size();i ++) {
-                m_itemList->get_item(i)->set_change(0,"0");
-            }
-            handle_conf();
         }
     });
 
-    emit docheck();
     connect(this, &MainWidget::dooss, m_dbusClient, [=](QString uuid) {
         QList<QVariant> argList;
         argList << uuid;
@@ -178,18 +163,22 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     });
 
     connect(m_dbusClient,&DBusUtils::taskFinished,this,[=] (const QString &taskName,int ret) {
-        if(taskName == "logout") {
-            if(ret == 0) {
-                //m_mainDialog->set_back();
-                m_mainWidget->setCurrentWidget(m_nullWidget);
-                m_bIsStopped = true;
-            }
-        }
+        Q_UNUSED(taskName);
+        Q_UNUSED(ret);
     });
 
     connect(m_dbusClient, &DBusUtils::querryFinished, this , [=] (const QStringList &list) {
         //qDebug() << "csacasacasca";
         QStringList keyList = list;
+
+        if(m_szCode == "" || m_szCode =="201" || m_szCode == "203" ||
+                m_szCode == "401" || m_szCode == "504" || m_szCode == "500" || m_szCode== "502" || m_szCode == tr("Disconnected")) {
+            if(bIsLogging) {
+                m_mainDialog->setnormal();
+            }
+            m_mainWidget->setCurrentWidget(m_nullWidget);
+            return ;
+        }
         if(m_cLoginTimer->isActive()) {
             m_cLoginTimer->stop();
         }
@@ -223,6 +212,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
                 m_syncDialog->m_List = keyList.isEmpty() ? m_szItemlist : keyList;
                 connect(m_syncDialog, &SyncDialog::sendKeyMap, this,[=] (QStringList keyList) {
                     Q_UNUSED(keyList);
+                    on_auto_syn(1,-1);
                     emit doselect(keyList);
                     m_syncDialog->close();
                     handle_conf();
@@ -245,7 +235,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     });
 
     connect(thread,&QThread::finished,thread,&QObject::deleteLater);
-    thread->start();    //线程开始
+
     m_dbusClient->connectSignal("finished_init_oss",this,SLOT(finished_load(int,QString)));
     m_dbusClient->connectSignal("finishedConfLoad",this,SLOT(finished_conf(int)));
     m_dbusClient->connectSignal("backcall_start_download_signal",this,SLOT(download_files()));
@@ -253,7 +243,65 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_dbusClient->connectSignal("backcall_start_push_signal",this,SLOT(push_files()));
     m_dbusClient->connectSignal("backcall_end_push_signal",this,SLOT(push_over()));
     m_dbusClient->connectSignal("backcall_key_info",this,SLOT(get_key_info(QString)));
+    m_dbusClient->connectSignal("finishedVerifyToken",this,SLOT(checkUserName(QString)));
+    m_dbusClient->connectSignal("finishedLogout",this,SLOT(finishedLogout(int)));
+    m_dbusClient->moveToThread(thread);
+    thread->start();    //线程开始
+    emit docheck();
 
+}
+
+void MainWidget::finishedLogout(int ret) {
+    if(ret != 0 && ret != 401) {
+        showDesktopNotify(tr("Logout failed,please check your connection"));
+        return ;
+    } else {
+        m_szCode = "";
+        m_autoSyn->set_change(0,"0");
+        m_autoSyn->set_active(true);
+        m_keyInfoList.clear();
+
+        m_mainWidget->setCurrentWidget(m_nullWidget);
+        setshow(m_mainWidget);
+        __once__ = false;
+        __run__ = false;
+        m_bIsStopped = true;
+        bIsLogging = false;
+        m_bIsStopped = true;
+    }
+}
+
+void MainWidget::checkUserName(QString name) {
+    m_szCode = name;
+    if(name == "" || name =="201" || name == "203" || name == "401" || name == "504" || name == "500" || name == "502") {
+        m_mainWidget->setCurrentWidget(m_nullWidget);
+        on_login_out();
+        return ;
+    }
+    m_pSettings = new QSettings(m_szConfPath,QSettings::IniFormat);
+    m_pSettings->setIniCodec(QTextCodec::codecForName("UTF-8"));
+    m_infoTab->setText(tr("Your account：%1").arg(m_szCode));
+    if(m_pSettings != nullptr)
+        m_syncTimeLabel->setText(tr("The latest time sync is: ") +  m_pSettings->value("Auto-sync/time").toString().toStdString().c_str());
+    //setshow(m_mainWidget);
+    if(m_bTokenValid == true) {
+        m_mainWidget->setCurrentWidget(m_widgetContainer);
+    }
+   // qDebug() << "ssssss";
+    m_bTokenValid = true;              //开启登录状态
+    m_autoSyn->set_change(0,"0");
+    if(bIsLogging == false) {
+        QFile file (m_szConfPath);
+        if(file.exists() == false) {
+            emit dooss(m_szUuid);
+        }
+    }
+
+    //dooss(m_szUuid);
+    for(int i = 0;i < m_szItemlist.size();i ++) {
+        m_itemList->get_item(i)->set_change(0,"0");
+    }
+    handle_conf();
 }
 
 /* 初始化GUI */
@@ -358,7 +406,7 @@ void MainWidget::init_gui() {
     m_infoTabWidget->setContentsMargins(0,0,0,0);
     m_widgetContainer->setMinimumWidth(550);
 
-    m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
+    m_syncTimeLabel->setText(tr("Waitting for sync!"));
 
     m_syncTimeLabel->setContentsMargins(20,0,0,0);
 
@@ -409,7 +457,6 @@ void MainWidget::init_gui() {
 
     m_checkBox->setChecked(m_bCheckBox);
     m_exitCode->setText(" ");
-    m_szConfPath = ConfigFile().GetPath();
 
     m_exitCloud_btn->setFocusPolicy(Qt::NoFocus);
     QtConcurrent::run([=] () {
@@ -494,7 +541,10 @@ void MainWidget::init_gui() {
 
     connect(m_checkBox, &QCheckBox::clicked, this ,[=] (bool status) {
         m_bCheckBox = status;
-        ConfigFile(m_szConfPath).Set("Auto-sync","checked",status ? "true" : "false");
+        if(m_pSettings != nullptr) {
+            m_pSettings->setValue("Auto-sync/checked",status ? "true" : "false");
+            m_pSettings->sync();
+        }
     });
 
     //All.conf的
@@ -502,9 +552,9 @@ void MainWidget::init_gui() {
     m_fsWatcher.addPath(all_conf_path);
 
     connect(&m_fsWatcher,&QFileSystemWatcher::directoryChanged,this,[this] () {
-        m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
         QFile conf( m_szConfPath);
-        if(conf.exists() == true) {
+        if(conf.exists() == true && m_pSettings != nullptr) {
+            m_syncTimeLabel->setText(tr("The latest time sync is: ") +  m_pSettings->value("Auto-sync/time").toString());
             handle_conf();
         }
     });
@@ -534,8 +584,8 @@ void MainWidget::init_gui() {
 
     connect(m_autoSyn->get_swbtn(),&SwitchButton::status,this ,[=] (int on,int id) {
         Q_UNUSED(id);
-       if(on == 1) {
-           QFile file( ConfigFile().GetPath());
+       if(on == 1 && m_pSettings != nullptr) {
+           QFile file( m_pSettings->fileName());
            if(file.exists() == false) {
                emit dooss(m_szUuid);
                return ;
@@ -601,7 +651,7 @@ void MainWidget::on_login() {
         if(m_mainWidget->currentWidget()  == m_widgetContainer) {
         } else if (m_mainWidget->currentWidget() == m_nullWidget) {
             m_mainDialog->setnormal();
-            emit dologout();
+            on_login_out();
         }
     });
     m_mainDialog->show();
@@ -668,11 +718,11 @@ void MainWidget::finished_load(int ret, QString uuid) {
 
 /* 读取滑动按钮列表 */
 void MainWidget::handle_conf() {
-    if(__once__ ) {
+    if(__once__  || m_pSettings == nullptr) {
         return ;
     }
 
-    if( ConfigFile(m_szConfPath).Get("Auto-sync","enable").toString() == "true") {
+    if( m_pSettings != nullptr && m_pSettings->value("Auto-sync/enable").toString() == "true") {
         m_stackedWidget->setCurrentWidget(m_itemList);
         m_autoSyn->make_itemon();
         for(int i  = 0;i < m_szItemlist.size();i ++) {
@@ -684,7 +734,7 @@ void MainWidget::handle_conf() {
         m_autoSyn->make_itemoff();
         m_bAutoSyn = false;
         for(int i  = 0;i < m_szItemlist.size();i ++) {
-            judge_item( ConfigFile(m_szConfPath).Get(m_szItemlist[i],"enable").toString(),i);
+            judge_item( m_pSettings->value("Auto-sync/enable").toString(),i);
         }
         for(int i  = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(m_bAutoSyn);
@@ -692,7 +742,7 @@ void MainWidget::handle_conf() {
         return ;
     }
     for(int i  = 0;i < m_szItemlist.size();i ++) {
-        judge_item( ConfigFile(m_szConfPath).Get(m_szItemlist[i],"enable").toString(),i);
+        judge_item( m_pSettings->value(m_szItemlist.at(i) + "/enable").toString(),i);
     }
 }
 
@@ -737,7 +787,7 @@ void MainWidget::on_switch_button(int on,int id) {
         m_bAutoSyn = false;
 
         if(m_key != "") {
-            QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
+            //QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
             emit dosingle(m_key,m_bCheckBox);
         }
 
@@ -767,19 +817,8 @@ void MainWidget::on_auto_syn(int on, int id) {
 void MainWidget::on_login_out() {
 
     if(m_exitCloud_btn->property("on") == false)  {
-        m_bTokenValid = false;
         emit dologout();
-        m_szCode = "";
-        m_autoSyn->set_change(0,"0");
-        m_autoSyn->set_active(true);
-        m_keyInfoList.clear();
 
-        m_mainWidget->setCurrentWidget(m_nullWidget);
-        setshow(m_mainWidget);
-        __once__ = false;
-        __run__ = false;
-        m_bIsStopped = true;
-        bIsLogging = false;
     } else {
         emit dosend("exit");
         on_auto_syn(0,-1);
@@ -809,7 +848,7 @@ QLabel* MainWidget::get_title() {
 
 /* 同步回调函数集 */
 void MainWidget::download_files() {
-    if(__once__ == true) {
+    if(__once__ == true || m_pSettings == nullptr) {
         return ;
     }
     if(m_mainWidget->currentWidget() == m_nullWidget) {
@@ -825,7 +864,7 @@ void MainWidget::download_files() {
         m_blueEffect_sync->startmoive();
         //showDesktopNotify("同步开始");
     }
-    m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
+    m_syncTimeLabel->setText(tr("The latest time sync is: ") +  m_pSettings->value("Auto-sync/time").toString().toStdString().c_str());
 
 
     if(m_autoSyn->get_swbtn()->get_swichbutton_val() == 0) {
@@ -854,7 +893,7 @@ void MainWidget::push_files() {
         m_blueEffect_sync->startmoive();
        // showDesktopNotify("同步开始");
     }
-    m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
+    m_syncTimeLabel->setText(tr("The latest time sync is: ") +  m_pSettings->value("Auto-sync/time").toString().toStdString().c_str());
 
     if(m_autoSyn->get_swbtn()->get_swichbutton_val() == 0) {
         return ;
@@ -865,6 +904,8 @@ void MainWidget::push_files() {
 
 void MainWidget::download_over() {
     //emit docheck();
+    if(m_pSettings == nullptr) return;
+
     if(m_exitCloud_btn->property("on") == true) {
         m_blueEffect_sync->stop();
         m_exitCloud_btn->setText(tr("Exit"));
@@ -876,7 +917,7 @@ void MainWidget::download_over() {
         //showDesktopNotify("同步结束");
     }
     if(__once__ == false) {
-        m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
+        m_syncTimeLabel->setText(tr("The latest time sync is: ") +  m_pSettings->value("Auto-sync/time").toString().toStdString().c_str());
 
         m_autoSyn->set_change(0,"0");
     }
@@ -885,6 +926,7 @@ void MainWidget::download_over() {
 
 void MainWidget::push_over() {
     //emit docheck();
+     if(m_pSettings == nullptr) return;
     if(m_exitCloud_btn->property("on") == true) {
         m_blueEffect_sync->stop();
         m_exitCloud_btn->setText(tr("Exit"));
@@ -896,7 +938,7 @@ void MainWidget::push_over() {
         //showDesktopNotify("同步结束");
     }
     if(__once__ == false) {
-        m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
+        m_syncTimeLabel->setText(tr("The latest time sync is: ") + m_pSettings->value("Auto-sync/time").toString().toStdString().c_str());
         m_autoSyn->set_change(0,"0");
     }
 }
@@ -997,7 +1039,8 @@ MainWidget::~MainWidget() {
     delete m_itemList;
     delete m_welcomeImage;
     delete m_dbusClient;
-    if(thread)
+    thread->requestInterruption();
+    if(thread != nullptr)
     {
         thread->quit();
     }
