@@ -180,7 +180,7 @@
                <item>
                 <widget class="QLabel" name="label_2">
                  <property name="text">
-                  <string>Copyright 2009-2020 @ Kylinos All rights reserved</string>
+                  <string>Copyright 2009-2021 @ Kylinos All rights reserved</string>
                  </property>
                  <property name="wordWrap">
                   <bool>true</bool>
