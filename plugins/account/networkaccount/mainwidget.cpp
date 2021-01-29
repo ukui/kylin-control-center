@@ -72,7 +72,6 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_listTimer = new QTimer(this);
     m_pSettings = nullptr;
 
-    m_checkBox = new QCheckBox(tr("Enable item sync"),this);
 
 
     QProcess proc;
@@ -83,16 +82,13 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_confName = "All-" + ar.replace("\n","") + ".conf";
     m_szConfPath = QDir::homePath() + "/.cache/kylinId/" + m_confName;
 
-    m_checkBox->setContentsMargins(0,0,0,0);
-
-    m_checkBox->setFixedHeight(40);
 
     m_animateLayout = new QHBoxLayout;
 
     init_gui();         //初始化gui
 
     m_szUuid = QUuid::createUuid().toString();
-    m_bIsUIInitial = false;
+    m_bHasNetwork = true;
     m_bTokenValid = false;
 
 
@@ -150,9 +146,9 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
 
     });
 
-    connect(this, &MainWidget::dosingle, m_dbusClient, [=](QString key,bool mode) {
+    connect(this, &MainWidget::dosingle, m_dbusClient, [=](QString key) {
         QList<QVariant> argList;
-        argList << key << mode;
+        argList << key;
         m_dbusClient->callMethod("single_sync",argList);
     });
 
@@ -163,8 +159,11 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     });
 
     connect(m_dbusClient,&DBusUtils::taskFinished,this,[=] (const QString &taskName,int ret) {
-        Q_UNUSED(taskName);
-        Q_UNUSED(ret);
+        if(ret == 504) {
+            m_bHasNetwork = false;
+        } else {
+            m_bHasNetwork = true;
+        }
     });
 
     connect(m_dbusClient, &DBusUtils::querryFinished, this , [=] (const QStringList &list) {
@@ -187,6 +186,10 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
         }
         //qDebug() << "csacasacasca";
         if(keyList.size() > 2) {
+            if(m_bHasNetwork == false) {
+                showDesktopNotify(tr("Network can not reach!"));
+                return ;
+            }
             QList<QVariant> args;
             QFile file(QDir::homePath() + "/.cache/kylinId/keys");
             args << m_szCode;
@@ -273,7 +276,7 @@ void MainWidget::finishedLogout(int ret) {
 
 void MainWidget::checkUserName(QString name) {
     m_szCode = name;
-    if(name == "" || name =="201" || name == "203" || name == "401" || name == "504" || name == "500" || name == "502") {
+    if(name == "" || name =="201" || name == "203" || name == "401" || name == "500" || name == "502") {
         m_mainWidget->setCurrentWidget(m_nullWidget);
         on_login_out();
         return ;
@@ -389,7 +392,6 @@ void MainWidget::init_gui() {
     m_infoLayout->addWidget(m_infoTab);
     m_infoLayout->setMargin(0);
     m_infoLayout->setSpacing(4);
-    m_infoLayout->addWidget(m_checkBox);
     m_infoLayout->setAlignment(Qt::AlignCenter);
     m_infoWidget->setLayout(m_infoLayout);
     m_infoWidget->adjustSize();
@@ -453,9 +455,6 @@ void MainWidget::init_gui() {
     this->setLayout(m_vboxLayout);
 
     m_key = "";
-
-
-    m_checkBox->setChecked(m_bCheckBox);
     m_exitCode->setText(" ");
 
     m_exitCloud_btn->setFocusPolicy(Qt::NoFocus);
@@ -538,15 +537,6 @@ void MainWidget::init_gui() {
     connect(this,&MainWidget::isRunning,this,[=] {
         download_files();
     });
-
-    connect(m_checkBox, &QCheckBox::clicked, this ,[=] (bool status) {
-        m_bCheckBox = status;
-        if(m_pSettings != nullptr) {
-            m_pSettings->setValue("Auto-sync/checked",status ? "true" : "false");
-            m_pSettings->sync();
-        }
-    });
-
     //All.conf的
     QString all_conf_path = m_szConfPath;
     m_fsWatcher.addPath(all_conf_path);
@@ -565,11 +555,20 @@ void MainWidget::init_gui() {
     });
 
     connect(m_listTimer,&QTimer::timeout,this,[this] () {
+        if(m_bHasNetwork == false) {
+            m_listTimer->stop();
+            showDesktopNotify(tr("Network can not reach!"));
+            return ;
+        }
         emit doselect(m_syncDialog->m_List);
         m_listTimer->stop();
     });
 
     connect(this,&MainWidget::closedialog,this,[this] () {
+        if(m_bHasNetwork == false) {
+            showDesktopNotify(tr("Network can not reach!"));
+            return ;
+        }
         emit doman();
     });
 
@@ -585,14 +584,6 @@ void MainWidget::init_gui() {
     connect(m_autoSyn->get_swbtn(),&SwitchButton::status,this ,[=] (int on,int id) {
         Q_UNUSED(id);
        if(on == 1 && m_pSettings != nullptr) {
-           QFile file( m_pSettings->fileName());
-           if(file.exists() == false) {
-               emit dooss(m_szUuid);
-               return ;
-           }  else {
-               emit doman();
-           }
-
            m_stackedWidget->setCurrentWidget(m_itemList);
            m_keyInfoList.clear();
            __once__ = false;
@@ -602,6 +593,21 @@ void MainWidget::init_gui() {
                if(m_itemList->get_item(i)->get_swbtn()->get_swichbutton_val() == 1) {
                    m_itemList->get_item(i)->set_change(0,"0");
                }
+           }
+           QFile file( m_pSettings->fileName());
+           if(file.exists() == false) {
+               if(m_bHasNetwork == false) {
+                   showDesktopNotify(tr("Network can not reach!"));
+                   return ;
+               }
+               emit dooss(m_szUuid);
+               return ;
+           }  else {
+               if(m_bHasNetwork == false) {
+                   showDesktopNotify(tr("Network can not reach!"));
+                   return ;
+               }
+               emit doman();
            }
        } else {
            m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
@@ -659,6 +665,10 @@ void MainWidget::on_login() {
 
 /* 登录过程处理事件 */
 void MainWidget::open_cloud() {
+    if(m_bHasNetwork == false) {
+        showDesktopNotify(tr("Network can not reach!"));
+        return ;
+    }
     emit dooss(m_szUuid);
     //m_mainDialog->on_close();
 }
@@ -680,13 +690,22 @@ bool MainWidget::eventFilter(QObject *watched, QEvent *event) {
 }
 
 void MainWidget::finished_conf(int ret) {
+    if(m_bHasNetwork == false) {
+        showDesktopNotify(tr("Network can not reach!"));
+        return ;
+    }
      emit doquerry(m_szCode);
 }
 
 /* 登录成功处理事件 */
 void MainWidget::finished_load(int ret, QString uuid) {
+
+    if(m_bHasNetwork == false) {
+        showDesktopNotify(tr("Network can not reach!"));
+        return ;
+    }
     //qDebug() << ret;
-    if(ret == 301 || ret == 504) {
+    if(ret == 301) {
         if(m_mainWidget->currentWidget() != m_nullWidget) {
             showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry or relogin!"));
             // m_exitCode->setText(tr("Please check your connection!"));
@@ -758,6 +777,10 @@ bool MainWidget::judge_item(const QString &enable,const int &cur) const {
 
 /* 滑动按钮点击后改变功能状态 */
 void MainWidget::handle_write(const int &on,const int &id) {
+    if(m_bHasNetwork == false) {
+        showDesktopNotify(tr("Network can not reach!"));
+        return ;
+    }
     char name[32];
     if(id == -1) {
         qstrcpy(name,"Auto-sync");
@@ -787,8 +810,12 @@ void MainWidget::on_switch_button(int on,int id) {
         m_bAutoSyn = false;
 
         if(m_key != "") {
+            if(m_bHasNetwork == false) {
+                showDesktopNotify(tr("Network can not reach!"));
+                return ;
+            }
             //QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
-            emit dosingle(m_key,m_bCheckBox);
+            emit dosingle(m_key);
         }
 
     }
@@ -797,6 +824,10 @@ void MainWidget::on_switch_button(int on,int id) {
         showDesktopNotify(tr("This operation may cover your settings!"));
     }
     //emit docheck();
+    if(m_bHasNetwork == false) {
+        showDesktopNotify(tr("Network can not reach!"));
+        return ;
+    }
     handle_write(on,id);
 }
 
@@ -810,6 +841,10 @@ void MainWidget::on_auto_syn(int on, int id) {
     for(int i  = 0;i < m_szItemlist.size();i ++) {
         m_itemList->get_item(i)->set_active(m_bAutoSyn);
     }
+    if(m_bHasNetwork == false) {
+        showDesktopNotify(tr("Network can not reach!"));
+        return ;
+    }
     handle_write(on,-1);
 }
 
@@ -821,8 +856,8 @@ void MainWidget::on_login_out() {
 
     } else {
         emit dosend("exit");
-        on_auto_syn(0,-1);
-        m_autoSyn->get_swbtn()->set_swichbutton_val(0);
+        QProcess proc;
+        proc.start("killall kylin-sso-client");
         push_over();
     }
 

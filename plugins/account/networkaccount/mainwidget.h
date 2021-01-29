@@ -73,9 +73,8 @@ private:
     QVBoxLayout     *m_vboxLayout;
     QStackedWidget  *m_mainWidget;
     QWidget         *m_nullWidget;
-    bool            m_bIsUIInitial;
+    bool            m_bHasNetwork;
     DBusUtils   *m_dbusClient;
-    QCheckBox           *m_checkBox;
     QString             m_confName;
     QPushButton         *m_login_btn;
     QTimer              *m_lazyTimer;
@@ -98,7 +97,6 @@ private:
     QThread             *thread;
     bool                m_bAutoSyn = true;
     bool                m_bTokenValid = false;
-    bool                m_bCheckBox = false;
     QTimer              *m_cLoginTimer;
     QString             m_szUuid;
     QFileSystemWatcher m_fsWatcher;
@@ -142,7 +140,7 @@ signals:
     void doconf();
     void dochange(QString name,int flag);
     void docheck();
-    void dosingle(QString key,bool mode);
+    void dosingle(QString key);
     void doselect(QStringList keyList);
     void closedialog();
     void isRunning();
