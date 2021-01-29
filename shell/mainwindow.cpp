@@ -780,14 +780,14 @@ void MainWindow::functionBtnClicked(QObject *plugin) {
 
 void MainWindow::sltMessageReceived(const QString &msg) {
 
+    showNormal();
     bootOptionsFilter(msg);
 
-    Qt::WindowFlags flags = windowFlags();
-    flags |= Qt::WindowStaysOnTopHint;
-    setWindowFlags(flags);
-    flags &= ~Qt::WindowStaysOnTopHint;
-    setWindowFlags(flags);
-    showNormal();
+    //Qt::WindowFlags flags = windowFlags();
+    //flags |= Qt::WindowStaysOnTopHint;
+    //setWindowFlags(flags);
+    //flags &= ~Qt::WindowStaysOnTopHint;
+    //setWindowFlags(flags);
 }
 
 void MainWindow::switchPage(QString moduleName) {
