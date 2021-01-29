@@ -48,6 +48,12 @@
 #define SETTINGS_LOCK_KEY    "settings-icon-locking"
 #define TRASH_LOCK_KEY       "trash-icon-locking"
 
+#define PANEL_SETTINGS      "org.ukui.panel.settings"
+#define PANEL_POSITION_KEY  "panelposition"
+#define ICON_SIZE_KEY       "iconsize"
+#define PANEL_SIZE_KEY      "panelsize"
+#define QUICKLAUNCH_APP_NUM "quicklaunchappsnumber"
+
 Desktop::Desktop() : mFirstLoad(true)
 {
     pluginName = tr("Desktop");
@@ -118,6 +124,7 @@ QWidget *Desktop::get_plugin_ui() {
         initVisibleStatus();
         initLockingStatus();
         initTraySettings();
+        initPanelSetUI();
     }
     return pluginWidget;
 }
@@ -357,9 +364,9 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
 
     QString status = gsettings->get(TRAY_ACTION_KEY).toString();
     if ("tray" == status) {
-        appSwitch->setChecked(false);
-    } else {
         appSwitch->setChecked(true);
+    } else {
+        appSwitch->setChecked(false);
     }
 
     connect(appSwitch, &SwitchButton::checkedChanged, [=](bool checked) {
@@ -568,4 +575,157 @@ QMap<QString, QIcon> Desktop::readOuputSlot() {
 
 void Desktop::readErrorSlot() {
     qWarning() << "read desktop file name failed";
+}
+
+void Desktop::initPanelSetUI()
+{
+    QFrame * panelSetupFrame = new QFrame();
+    panelSetupFrame->setFrameShape(QFrame::Shape::Box);
+    QFrame * panelSetupPositionFrame=new QFrame();
+    panelSetupPositionFrame->setFrameShape(QFrame::Shape::Box);
+    QFrame *quicklaunchNumFrame=new QFrame();
+    quicklaunchNumFrame->setFrameShape(QFrame::Shape::Box);
+
+    hLayoutPanelSet = new QHBoxLayout();
+    hLayoutPanelSizeSet = new QHBoxLayout();
+    hLayoutPanelPositionSet = new QHBoxLayout();
+    hLayoutQuicklaunchNumSet = new QHBoxLayout();
+    labelPanelTitle=new QLabel();
+    labelPanelSize=new QLabel();
+    labelPanelPosition=new QLabel();
+    labelQuicklaunchNum=new QLabel();
+    comboBoxPanelSize=new QComboBox();
+    comboBoxPanelPosition=new QComboBox();
+    spinBoxQuickLaunchNum=new QSpinBox();
+
+    labelPanelTitle->setText(tr("Panel Set Up"));
+    labelPanelSize->setText(tr("Panel Size"));
+    labelPanelPosition->setText(tr("Panel Position"));
+    labelQuicklaunchNum->setText(tr("Max Quicklaunch Number"));
+
+    panelSetupFrame->setLayout(hLayoutPanelSizeSet);
+    panelSetupPositionFrame->setLayout(hLayoutPanelPositionSet);
+    quicklaunchNumFrame->setLayout(hLayoutQuicklaunchNumSet);
+
+
+    hLayoutPanelSet->addWidget(labelPanelTitle);
+    hLayoutPanelSizeSet->addWidget(labelPanelSize);
+    hLayoutPanelSizeSet->addWidget(comboBoxPanelSize);
+    hLayoutPanelPositionSet->addWidget(labelPanelPosition);
+    hLayoutPanelPositionSet->addWidget(comboBoxPanelPosition);
+    hLayoutQuicklaunchNumSet->addWidget(labelQuicklaunchNum);
+    hLayoutQuicklaunchNumSet->addWidget(spinBoxQuickLaunchNum);
+
+    ui->verticalLayout_4->addLayout(hLayoutPanelSet);
+    ui->verticalLayout_4->addLayout(hLayoutPanelSizeSet);
+    ui->verticalLayout_4->addLayout(hLayoutPanelPositionSet);
+    ui->verticalLayout_4->addLayout(hLayoutQuicklaunchNumSet);
+
+    ui->verticalLayout_4->addWidget(panelSetupFrame);
+    ui->verticalLayout_4->addWidget(panelSetupPositionFrame);
+    ui->verticalLayout_4->addWidget(quicklaunchNumFrame);
+    labelPanelTitle->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+    initPanelSetItem();
+}
+
+void Desktop::initPanelSetItem()
+{
+    const QByteArray id(PANEL_SETTINGS);
+    settings = new QGSettings(id);
+    QStringList mPanleSizeList;
+    mPanleSizeList<<tr("Small Size")<<tr("Mudium Size")<<tr("Large Size");
+    QStringList mPanelPositionList;
+    mPanelPositionList<<tr("Bottom")<<tr("Top")<<tr("Left")<<tr("Right");
+
+    comboBoxPanelSize->addItems(mPanleSizeList);
+    comboBoxPanelSize->setCurrentIndex(getPanelSize());
+    comboBoxPanelPosition->addItems(mPanelPositionList);
+    comboBoxPanelPosition->setCurrentIndex(getPanelPosition());
+    spinBoxQuickLaunchNum->setValue(settings->get(QUICKLAUNCH_APP_NUM).toInt());
+
+    QObject::connect(settings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key == PANEL_POSITION_KEY){
+            comboBoxPanelPosition->setCurrentIndex(getPanelPosition());
+        }
+        if(key == PANEL_SIZE_KEY){
+            comboBoxPanelSize->setCurrentIndex(getPanelSize());
+        }
+    });
+    connect(comboBoxPanelSize, SIGNAL(currentIndexChanged(int)), this, SLOT(panelSizeComboboxChangedSlot(int)));
+    connect(comboBoxPanelPosition, SIGNAL(currentIndexChanged(int)), this, SLOT(panelPositionComboboxChangedSlot(int)));
+    connect(spinBoxQuickLaunchNum,SIGNAL(valueChanged(int)),this,SLOT(quicklaunchNumSpinBoxChangedSlot(int)));
+}
+int  Desktop::getPanelSize()
+{
+    switch(settings->get(PANEL_SIZE_KEY).toInt())
+    {
+    case 68 ... 72:
+        return 1;
+        break;
+    case 90 ... 94:
+        return 2;
+        break;
+    default:
+        return 0;
+        break;
+    }
+}
+
+int Desktop::getPanelPosition()
+{
+    switch(settings->get(PANEL_POSITION_KEY).toInt()){
+    case 1:
+        return 1;
+        break;
+    case 2:
+        return 2;
+        break;
+    case 3:
+        return 2;
+        break;
+    default:
+        return 0;
+        break;
+    }
+}
+void Desktop::panelSizeComboboxChangedSlot(int size)
+{
+    switch(size){
+    case 0:
+        settings->set(PANEL_SIZE_KEY,46);
+        settings->set(ICON_SIZE_KEY,32);
+        break;
+    case 1:
+        settings->set(PANEL_SIZE_KEY,70);
+        settings->set(ICON_SIZE_KEY,48);
+        break;
+    case 2:
+        settings->set(PANEL_SIZE_KEY,92);
+        settings->set(ICON_SIZE_KEY,64);
+        break;
+    }
+}
+
+void Desktop::panelPositionComboboxChangedSlot(int position)
+{
+    switch(position){
+    case 1:
+        settings->set(PANEL_POSITION_KEY,1);
+        break;
+    case 2:
+        settings->set(PANEL_POSITION_KEY,2);
+        break;
+    case 3:
+        settings->set(PANEL_POSITION_KEY,3);
+        break;
+    default:
+        settings->set(PANEL_POSITION_KEY,0);
+        break;
+    }
+}
+
+void Desktop::quicklaunchNumSpinBoxChangedSlot(int size)
+{
+    QTimer::singleShot(1000,[=] { int s=size; settings->set(QUICKLAUNCH_APP_NUM,s);});
 }
