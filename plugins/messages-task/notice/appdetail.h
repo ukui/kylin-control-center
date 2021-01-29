@@ -8,9 +8,9 @@
 #include "SwitchButton/switchbutton.h"
 
 #define MESSAGES_KEY "messages"
-#define VOICE_KEY "voice"
+#define VOICE_KEY    "voice"
 #define MAXIMINE_KEY "maximize"
-#define NAME_KEY "name"
+#define NAME_KEY     "name"
 
 namespace Ui {
 class AppDetail;
@@ -35,11 +35,9 @@ private:
     void initUiStatus();
     void initComponent();
     void initConnect();
-//    void initGSettings();
 
 protected:
     void paintEvent(QPaintEvent *);
-
 
 private slots:
     void confirmbtnSlot();

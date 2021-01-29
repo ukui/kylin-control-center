@@ -19,29 +19,35 @@
  */
 #include "networkaccount.h"
 
-networkaccount::networkaccount()
+networkaccount::networkaccount() : mFirstLoad(true)
 {
-    pluginWidget = new MainWidget();
-    pluginName = tr("NetworkAccount");
+    //~ contents_path /networkaccount/Cloud Account
+    pluginName = tr("Cloud Account");
     pluginType = ACCOUNT;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
 }
 
-
-QString networkaccount::get_plugin_name(){
+QString networkaccount::get_plugin_name() {
     return pluginName;
 }
 
-int networkaccount::get_plugin_type(){
+int networkaccount::get_plugin_type() {
     return pluginType;
 }
 
-QWidget * networkaccount::get_plugin_ui(){
+QWidget * networkaccount::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+        pluginWidget = new MainWidget();
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+    }
     return pluginWidget;
 }
 
-void networkaccount::plugin_delay_control(){
+void networkaccount::plugin_delay_control() {
 
 }
 
+const QString networkaccount::name() const {
 
+    return QStringLiteral("networkaccount");
+}

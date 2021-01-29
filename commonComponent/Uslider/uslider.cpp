@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QStyleOptionSlider>
 #include <QDebug>
+#include <QPalette>
 
 
 Uslider::Uslider(QStringList list) : scaleList(list), QSlider(Qt::Horizontal)
@@ -18,7 +19,7 @@ void Uslider::paintEvent(QPaintEvent *e)
     QSlider::paintEvent(e);
 
     auto painter = new QPainter(this);
-    painter->setPen(QPen(Qt::black));
+    painter->setBrush(QBrush(QColor(QPalette::Base)));
 
     auto rect = this->geometry();
 
@@ -33,7 +34,7 @@ void Uslider::paintEvent(QPaintEvent *e)
             int tickNum = minimum() + (tickInterval() * i);
 
             int tickX = (((rect.width()/numTicks) * i) - (fontMetrics.width(QString::number(tickNum *10))/2 + 2));
-            int tickY = rect.height()/2 + fontHeight + 1;
+            int tickY = rect.height()/2 + fontHeight + 5;
 
             if( 0 == i) {
                 tickX += 11;

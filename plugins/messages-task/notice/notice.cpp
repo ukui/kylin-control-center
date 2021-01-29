@@ -23,72 +23,84 @@
 #include "realizenotice.h"
 #include "commonComponent/HoverWidget/hoverwidget.h"
 
-#define NOTICE_SCHEMA "org.ukui.control-center.notice"
-#define NEW_FEATURE_KEY "show-new-feature"
-#define ENABLE_NOTICE_KEY "enable-notice"
+#define NOTICE_SCHEMA         "org.ukui.control-center.notice"
+#define NEW_FEATURE_KEY       "show-new-feature"
+#define ENABLE_NOTICE_KEY     "enable-notice"
 #define SHOWON_LOCKSCREEN_KEY "show-on-lockscreen"
 
-#define DESKTOPPATH "/usr/share/applications/"
+#define DESKTOPPATH           "/usr/share/applications/"
 
-Notice::Notice()
+Notice::Notice() : mFirstLoad(true)
 {
-    ui = new Ui::Notice;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    appsName<<"ukui-power-statistics";//<<"kylin-video"<<"kylin-assistant";
-    appsKey<<"电源管理器";//<<"麒麟影音"<<"麒麟助手";
-
-    ui->setupUi(pluginWidget);
-
-    vecGsettins = new QVector<QGSettings*>();
     pluginName = tr("Notice");
     pluginType = NOTICEANDTASKS;
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    ui->newfeatureWidget->setVisible(false);
-    ui->lockscreenWidget->setVisible(false);
-
-    ui->title2Label->setContentsMargins(0,0,0,16);
-    ui->applistWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->applistWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-    setupGSettings();
-    setupComponent();
-    initNoticeStatus();
-    initOriNoticeStatus();
 }
 
 Notice::~Notice()
 {
-    delete ui;
-    if (!vecGsettins) {
-        delete vecGsettins;
-    }
-
-    if (!nSetting) {
-        delete nSetting;
+    if (!mFirstLoad) {
+        delete ui;
+        qDeleteAll(vecGsettins);
+        vecGsettins.clear();
     }
 }
 
-QString Notice::get_plugin_name(){
+QString Notice::get_plugin_name() {
     return pluginName;
 }
 
-int Notice::get_plugin_type(){
+int Notice::get_plugin_type() {
     return pluginType;
 }
 
-QWidget * Notice::get_plugin_ui(){
+QWidget * Notice::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+        ui = new Ui::Notice;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        appsName<<"ukui-power-statistics";
+        appsKey<<"电源管理器";
+
+        ui->setupUi(pluginWidget);
+
+        mFirstLoad = false;
+
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        ui->newfeatureWidget->setVisible(false);
+        ui->lockscreenWidget->setVisible(false);
+
+        ui->title2Label->setContentsMargins(0, 0, 0, 16);
+        ui->applistWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+        initSearchText();
+        setupGSettings();
+        setupComponent();
+        initNoticeStatus();
+        initOriNoticeStatus();
+    }
     return pluginWidget;
 }
 
-void Notice::plugin_delay_control(){
+void Notice::plugin_delay_control() {
 
 }
 
-void Notice::setupComponent(){
+const QString Notice::name() const {
+
+    return QStringLiteral("notice");
+}
+
+void Notice::initSearchText() {
+    //~ contents_path /notice/Set the type of notice in the operation center
+    ui->noticeLabel->setText(tr("Set the type of notice in the operation center"));
+    //~ contents_path /notice/Notice Origin
+    ui->title2Label->setText(tr("Notice Origin"));
+}
+
+void Notice::setupComponent() {
     newfeatureSwitchBtn = new SwitchButton(pluginWidget);
     enableSwitchBtn = new SwitchButton(pluginWidget);
     lockscreenSwitchBtn =  new SwitchButton(pluginWidget);
@@ -111,11 +123,11 @@ void Notice::setupComponent(){
 void Notice::setupGSettings() {
     if(QGSettings::isSchemaInstalled(NOTICE_SCHEMA)) {
         QByteArray id(NOTICE_SCHEMA);
-        nSetting = new QGSettings(id);
+        nSetting = new QGSettings(id, QByteArray(), this);
     }
 }
 
-void Notice::initNoticeStatus(){
+void Notice::initNoticeStatus() {
     newfeatureSwitchBtn->blockSignals(true);
     enableSwitchBtn->blockSignals(true);
     lockscreenSwitchBtn->blockSignals(true);
@@ -125,23 +137,17 @@ void Notice::initNoticeStatus(){
     newfeatureSwitchBtn->blockSignals(false);
     enableSwitchBtn->blockSignals(false);
     lockscreenSwitchBtn->blockSignals(false);
-
-    setHiddenNoticeApp(enableSwitchBtn->isChecked());
 }
 
 void Notice::initOriNoticeStatus() {
-
     initGSettings();
 
-    for (int i = 0; i < appsName.length(); i++)
-    {
+    for (int i = 0; i < appsName.length(); i++) {
         QByteArray ba = QString(DESKTOPPATH + appsName.at(i) + ".desktop").toUtf8();
         GDesktopAppInfo * audioinfo = g_desktop_app_info_new_from_filename(ba.constData());
         QString appname = g_app_info_get_name(G_APP_INFO(audioinfo));
 
-//        qDebug()<<"notify appname is------------->"<<appname<<endl;
-
-        //构建Widget
+        // 构建Widget
         QFrame * baseWidget = new QFrame();
         baseWidget->setFrameShape(QFrame::Shape::Box);
         baseWidget->setAttribute(Qt::WA_DeleteOnClose);
@@ -156,7 +162,6 @@ void Notice::initOriNoticeStatus() {
         devWidget->setMaximumWidth(960);
         devWidget->setMinimumHeight(50);
         devWidget->setMaximumHeight(50);
-//        devWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
 
         QHBoxLayout * devHorLayout = new QHBoxLayout();
         devHorLayout->setSpacing(8);
@@ -177,8 +182,7 @@ void Notice::initOriNoticeStatus() {
         }
         iconBtn->setIcon(QIcon::fromTheme(iconame));
 
-
-        QLabel * nameLabel = new QLabel();
+        QLabel * nameLabel = new QLabel(pluginWidget);
         QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
         nameSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
         nameSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
@@ -186,7 +190,7 @@ void Notice::initOriNoticeStatus() {
         nameLabel->setScaledContents(true);
         nameLabel->setText(appname);
 
-        SwitchButton *appSwitch = new SwitchButton();
+        SwitchButton *appSwitch = new SwitchButton(pluginWidget);
 
         devHorLayout->addWidget(iconBtn);
         devHorLayout->addWidget(nameLabel);
@@ -202,10 +206,10 @@ void Notice::initOriNoticeStatus() {
         baseWidget->setLayout(baseVerLayout);
 
         QListWidgetItem * item = new QListWidgetItem(ui->applistWidget);
-        item->setSizeHint(QSize(502, 52));
+        item->setFlags(Qt::NoItemFlags);
+        item->setSizeHint(QSize(QSizePolicy::Expanding, 52));
 
         ui->applistWidget->setItemWidget(item, baseWidget);
-//        QString availablepath = findFreePath();
 
         QList<char *> listChar =  listExistsCustomNoticePath();
 
@@ -214,42 +218,39 @@ void Notice::initOriNoticeStatus() {
         QString path;
 
         for (int j = 0; j < listChar.length(); j++) {
-            path =QString("%1%2").arg(NOTICE_ORIGIN_PATH).arg(QString(listChar.at(j)));
-            settings = new QGSettings(id, path.toLatin1().data());
-            vecGsettins->append(settings);
+            path = QString("%1%2").arg(NOTICE_ORIGIN_PATH).arg(QString(listChar.at(j)));
+            settings = new QGSettings(id, path.toLatin1().data(), this);
+            vecGsettins.append(settings);
             QStringList keys = settings->keys();
 
             if (keys.contains(static_cast<QString>(NAME_KEY))) {
                 QString appName = settings->get(NAME_KEY).toString();
                 if ( appsKey.at(i) == appName) {
-//                    qDebug() <<" keys is----->name"<<keys<<" "<<appName<<" "<<listChar.at(j)<<endl;
                     bool isCheck = settings->get(MESSAGES_KEY).toBool();
                     appSwitch->setChecked(isCheck);
                     break;
                 }
             }
+            settings = nullptr;
         }
 
-        connect(devWidget, &HoverWidget::enterWidget, this, [=](QString name){
+        connect(devWidget, &HoverWidget::enterWidget, this, [=](QString name) {
             Q_UNUSED(name)
             devWidget->setStyleSheet("QWidget#hovorWidget{background-color: rgba(61,107,229,40%);border-radius:4px;}");
-
         });
 
-        connect(devWidget, &HoverWidget::leaveWidget, this, [=](QString name){
+        connect(devWidget, &HoverWidget::leaveWidget, this, [=](QString name) {
             Q_UNUSED(name)
             devWidget->setStyleSheet("QWidget#hovorWidget{background: palette(button);border-radius:4px;}");
         });
 
-        connect(devWidget, &HoverWidget::widgetClicked, this, [=](QString name){
-//            qDebug()<<"clicked widget--------->"<<endl;
+        connect(devWidget, &HoverWidget::widgetClicked, this, [=](QString name) {
             AppDetail *app;
             app= new AppDetail(name,appsName.at(i), settings);
             app->exec();
         });
 
-        connect(settings, &QGSettings::changed, [=](QString key){
-//            qDebug()<<"settings key is--->"<<key<<endl;
+        connect(settings, &QGSettings::changed, [=](QString key) {
             if (static_cast<QString>(MESSAGES_KEY) == key) {
                 bool judge = settings->get(MESSAGES_KEY).toBool();
                 appSwitch->setChecked(judge);
@@ -261,16 +262,11 @@ void Notice::initOriNoticeStatus() {
             changeAppstatus(checked, appname, appSwitch);
         });
 
-        connect(appSwitch, &SwitchButton::checkedChanged, [=](bool checked){
-            QStringList keys = settings->keys();
-            QString name = settings->get(NAME_KEY).toString();
+        connect(appSwitch, &SwitchButton::checkedChanged, [=](bool checked) {
             settings->set(MESSAGES_KEY, checked);
         });
-
-
-//        delete newSettings;
-//        delete settings;
     }
+    setHiddenNoticeApp(enableSwitchBtn->isChecked());
 }
 
 
@@ -285,20 +281,20 @@ void Notice::initGSettings() {
         bool isExist = false;
 
         for (int j = 0; j < listChar.length(); j++) {
-            path =QString("%1%2").arg(NOTICE_ORIGIN_PATH).arg(QString(listChar.at(j)));
+            path = QString("%1%2").arg(NOTICE_ORIGIN_PATH).arg(QString(listChar.at(j)));
             settings = new QGSettings(id, path.toLatin1().data());
             QStringList keys = settings->keys();
 
             if (keys.contains(static_cast<QString>(NAME_KEY))) {
                 QString appName = settings->get(NAME_KEY).toString();
-                if ( appsKey.at(i) == appName) {
+                if (appsKey.at(i) == appName) {
                     isExist = true;
                 }
             }
+            delete settings;
         }
         if (!isExist) {
             path = findFreePath();
-            qDebug()<<"not contains newSettings ----->path"<<path<<endl;
             newSettings = new QGSettings(id, path.toLatin1().data());
             QStringList keys = newSettings->keys();
             if (keys.contains(static_cast<QString>(NAME_KEY)) &&
@@ -306,19 +302,14 @@ void Notice::initGSettings() {
                 newSettings->set(NAME_KEY, appsKey.at(i));
                 newSettings->set(MESSAGES_KEY, true);
             }
-        }
-
-        if (newSettings) {
             delete newSettings;
         }
     }
-
 }
 
 void Notice::changeAppstatus(bool checked, QString name, SwitchButton *appBtn) {
-    /*
-     * if master swtich is off, record app's pre status
-     */
+
+    // 记录应用之前状态
     bool judge;
     if (!checked) {
         judge = appBtn->isChecked();
@@ -330,11 +321,11 @@ void Notice::changeAppstatus(bool checked, QString name, SwitchButton *appBtn) {
     }
 }
 
-void Notice::setHiddenNoticeApp(bool status)
-{
-    if (status) {
-        ui->applistWidget->setVisible(true);
-    } else {
-        ui->applistWidget->setVisible(false);
+void Notice::setHiddenNoticeApp(bool status) {
+
+    // To prevent jitter, need to be optimized
+    for (int i = 0; i < ui->applistWidget->count(); i++) {
+        QListWidgetItem * item = ui->applistWidget->item(i);
+        item->setHidden(!status);
     }
 }

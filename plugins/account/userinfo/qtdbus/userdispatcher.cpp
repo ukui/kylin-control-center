@@ -44,7 +44,7 @@ UserDispatcher::~UserDispatcher()
     useriface = NULL;
 }
 
-/*来自gtk控制面板的加密代码*/
+// 来自gtk控制面板的加密代码
 QString UserDispatcher::make_crypted (const gchar *plain){
     GString *salt;
     gchar *result;
@@ -111,6 +111,5 @@ void UserDispatcher::change_user_autologin(QString username){
 
 bool UserDispatcher::get_autoLogin_status() {
     QDBusReply<QVariant> reply = userPropert->call("Get", "org.freedesktop.Accounts.User", "AutomaticLogin");
-//    qDebug()<<"the status is------>"<<reply.value().toBool()<<endl;
     return reply.value().toBool();
 }

@@ -22,6 +22,7 @@
 
 class QString;
 class QWidget;
+class QStringLiteral;
 
 enum FunType{
     SYSTEM,
@@ -50,6 +51,7 @@ enum DevicesIndex{
     KEYBOARD,
     SHORTCUT,
     AUDIO,
+    BLUETOOTH,
     TOTALDEVICESFUNC,
 };
 
@@ -67,6 +69,7 @@ enum NetworkIndex{
     NETCONNECT,
     VPN,
     PROXY,
+    VINO,
     TOTALNETFUNC,
 };
 
@@ -103,6 +106,22 @@ public:
     virtual int get_plugin_type() = 0;
     virtual QWidget * get_plugin_ui() = 0;
     virtual void plugin_delay_control() = 0;
+
+
+    /**
+     * \brief name
+     * module name (用于搜索？)
+     */
+    virtual const QString name() const = 0;
+
+    /**
+     * \brief translationPath
+     * 获取多语言文件路径，用于搜索
+     * \return QString
+     */
+    virtual QString translationPath()const {
+        return QStringLiteral(":/i18n/%1.ts");
+    }
 };
 
 #define CommonInterface_iid "org.kycc.CommonInterface"

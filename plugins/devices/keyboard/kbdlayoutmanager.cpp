@@ -19,7 +19,8 @@
  */
 #include "kbdlayoutmanager.h"
 #include "ui_layoutmanager.h"
-#include "tastenbrett.h"
+#include "preview/keyboardpainter.h"
+#include "CloseButton/closebutton.h"
 
 #include <QPainter>
 #include <QPainterPath>
@@ -63,16 +64,8 @@ KbdLayoutManager::KbdLayoutManager(QWidget *parent) :
     setAttribute(Qt::WA_DeleteOnClose);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
-
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
-
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
-    ui->PreBtn->setVisible(false);
 
     ui->variantFrame->setFrameShape(QFrame::Shape::Box);
 
@@ -84,7 +77,6 @@ KbdLayoutManager::KbdLayoutManager(QWidget *parent) :
         setupComponent();
         setupConnect();
     }
-
 }
 
 KbdLayoutManager::~KbdLayoutManager()
@@ -119,10 +111,11 @@ void KbdLayoutManager::setupComponent(){
     rebuildVariantCombo();
 
     rebuild_listwidget();
+
 }
 
 void KbdLayoutManager::setupConnect(){
-    connect(ui->closeBtn, &QPushButton::clicked, [=]{
+    connect(ui->closeBtn, &CloseButton::clicked, [=]{
         close();
     });
     connect(ui->cancelBtn, &QPushButton::clicked, [=]{
@@ -143,6 +136,16 @@ void KbdLayoutManager::setupConnect(){
         rebuildVariantCombo();
     });
 
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+    connect(ui->variantComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
+#else
+    connect(ui->variantComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
+#endif
+        Q_UNUSED(index)
+        if (index != -1)
+            installedNoSame();
+    });
+
     connect(ui->installBtn, &QPushButton::clicked, this, [=]{
         QString layout = ui->variantComboBox->currentData().toString();
 
@@ -153,8 +156,17 @@ void KbdLayoutManager::setupConnect(){
         rebuild_listwidget();
     });
 
-//    connect(ui->PreBtn, &QPushButton::clicked, this, &KbdLayoutManager::preview);
+    connect(ui->PreBtn, &QPushButton::clicked, this, &KbdLayoutManager::preview);
+}
 
+void KbdLayoutManager::installedNoSame(){
+
+    //最多4个布局，来自GTK控制面板，原因未知
+    QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
+    if (layouts.length() < MAXNUM  && !layouts.contains(ui->variantComboBox->currentData(Qt::UserRole).toString()))
+        ui->installBtn->setEnabled(true);
+    else
+        ui->installBtn->setEnabled(false);
 }
 
 void KbdLayoutManager::rebuildSelectListWidget(){
@@ -197,35 +209,30 @@ void KbdLayoutManager::rebuildVariantCombo(){
     ui->variantComboBox->clear();
     for (QString name : availablelayoutsList){
        QString desc = kbd_get_description_by_id(const_cast<const char *>(name.toLatin1().data()));
+       ui->variantComboBox->blockSignals(true);
        ui->variantComboBox->addItem(desc, name);
+       ui->variantComboBox->blockSignals(false);
     }
+
+    installedNoSame();
 }
 
 void KbdLayoutManager::rebuild_listwidget(){
-    //最多4个布局，来自GTK控制面板，原因未知
-    QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
-    if (layouts.length() >= MAXNUM)
-        ui->installBtn->setEnabled(false);
-    else
-        ui->installBtn->setEnabled(true);
+    installedNoSame();
 
     ui->listWidget->clear();
 
+    QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
     for (QString layout : layouts){
         QString desc = kbd_get_description_by_id(const_cast<const char *>(layout.toLatin1().data()));
 
         //自定义widget
         QWidget * layoutWidget = new QWidget();
         layoutWidget->setAttribute(Qt::WA_DeleteOnClose);
-//        layoutWidget->setStyleSheet("QWidget{border-bottom: 1px solid #f5f6f7}");
         QHBoxLayout * mainHLayout = new QHBoxLayout(layoutWidget);
         QLabel * layoutLabel = new QLabel(layoutWidget);
         QPushButton * layoutdelBtn = new QPushButton(layoutWidget);
-//        layoutdelBtn->setIcon(QIcon("://keyboardcontrol/delete.png"));
         layoutdelBtn->setText(tr("Del"));
-//        layoutdelBtn->setStyleSheet(""
-//                            "QPushButton{background: #FA6056; border-radius: 2px;}"
-//                            "QPushButton:hover:pressed{background: #E54A50; border-radius: 2px;}");
 
         connect(layoutdelBtn, &QPushButton::clicked, this, [=]{
             QStringList layouts = kbdsettings->get(KBD_LAYOUTS_KEY).toStringList();
@@ -244,28 +251,45 @@ void KbdLayoutManager::rebuild_listwidget(){
         item->setSizeHint(QSize(ui->listWidget->width(), 50));
 
         layoutLabel->setText(desc);
+        QFontMetrics fontWidth(layoutLabel->font());
+        QString elideNote = fontWidth.elidedText(desc, Qt::ElideRight, 100);
+        layoutLabel->setText(elideNote);
+        layoutLabel->setToolTip(desc);
         ui->listWidget->addItem(item);
         ui->listWidget->setItemWidget(item, layoutWidget);
     }
 
+    if (!ui->listWidget->count()) {
+        ui->installedFrame->setVisible(false);
+    } else {
+        ui->installedFrame->setVisible(true);
+    }
 }
 
-//void KbdLayoutManager::preview()
-//{
-//    QString variantID;
-//    QString layoutID = ui->variantComboBox->currentData(Qt::UserRole).toString();
-//    QStringList layList = layoutID.split('\t');
+void KbdLayoutManager::preview()
+{
+    QString variantID;
+    QString layoutID = ui->variantComboBox->currentData(Qt::UserRole).toString();
+    QStringList layList = layoutID.split('\t');
 
-//    for (int i = 0; i < layList.length(); i++) {
-//        if (0 == i) {
-//            layoutID = layList.at(0);
-//        }
-//        if (1 == i) {
-//            variantID = layList.at(1);
-//        }
-//    }
-//    Tastenbrett::launch("pc104", layoutID, variantID, "");
-//}
+    for (int i = 0; i < layList.length(); i++) {
+        if (0 == i) {
+            layoutID = layList.at(0);
+        }
+        if (1 == i) {
+            variantID = layList.at(1);
+        }
+    }
+
+    KeyboardPainter* layoutPreview = new KeyboardPainter();
+
+
+    qDebug() << " layoutID:"  << layoutID << "variantID:" << variantID <<endl;
+    layoutPreview->generateKeyboardLayout(layoutID, variantID, "pc104", "");
+    layoutPreview->setWindowTitle(tr("Keyboard Preview"));
+    layoutPreview->setModal(true);
+    layoutPreview->exec();
+}
 
 void KbdLayoutManager::kbd_trigger_available_countries(char *countryid){
     xkl_config_registry_foreach_country_variant (config_registry, countryid, (TwoConfigItemsProcessFunc)kbd_set_available_countries, NULL);
@@ -288,9 +312,6 @@ static void kbd_set_countries(XklConfigRegistry *config_registry, XklConfigItem 
     item.desc = config_item->description;
     item.name = config_item->name;
 
-//    qDebug()<<"countries" << "desc = "<<item.desc<<"name = "<<item.name ;
-
-//    list->append(item);
     countries.append(item);
 }
 
@@ -299,8 +320,6 @@ static void kbd_set_languages(XklConfigRegistry *config_registry, XklConfigItem 
     Layout item;
     item.desc = config_item->description;
     item.name = config_item->name;
-//     qDebug()<<"languages" << "desc = "<<item.desc<<"name = "<<item.name;
-//    list->append(item);
     languages.append(item);
 }
 
@@ -330,6 +349,7 @@ void KbdLayoutManager::paintEvent(QPaintEvent *event){
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
     pixmapPainter.setBrush(Qt::black);
+    pixmapPainter.setOpacity(0.65);
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 

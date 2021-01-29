@@ -59,12 +59,12 @@ public:
 private:
     QDBusInterface * useriface;
     QDBusInterface * userPropert;
+    QDBusInterface * iproperty;
 
     UserInfo * pUserInfo;
 
-    /***加密,来自gtk控制面板***/
+    // 加密,来自gtk控制面板
     QString make_crypted(const gchar * plain);
-    /*****/
 };
 
 #endif // USERDISPATCHER_H

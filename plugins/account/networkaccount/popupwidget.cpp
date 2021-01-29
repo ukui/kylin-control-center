@@ -32,7 +32,7 @@ PopupWidget::PopupWidget(QWidget *parent) : QWidget(parent)
 /* 主要目的是绘制阴影 */
 void PopupWidget::paintEvent(QPaintEvent *event)
 {
-
+    Q_UNUSED(event);
     QPainter painter(this);
     QColor m_defaultBackgroundColor = qRgb(0, 0, 0);
     QPainterPath path1;

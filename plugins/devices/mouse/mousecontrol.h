@@ -23,15 +23,12 @@
 #include <QObject>
 #include <QtPlugin>
 #include <QListView>
-
 #include <QX11Info>
 #include <QGSettings>
 #include <QStyledItemDelegate>
-
 #include <QProcess>
-
-
 #include <QLabel>
+#include <QStringList>
 
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
@@ -40,7 +37,7 @@ namespace Ui {
 class MouseControl;
 }
 
-class MyLabel : public QLabel{
+class MyLabel : public QLabel {
     Q_OBJECT
 public:
     MyLabel();
@@ -67,15 +64,18 @@ public:
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget *get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
+    const QString name() const  Q_DECL_OVERRIDE;
 
+    void initSearchText();
+    void initStyle();
     void setupComponent();
     void initHandHabitStatus();
     void initPointerStatus();
     void initCursorStatus();
     void initWheelStatus();
-    int _get_mouse_mid_speed();
-    void _set_mouse_mid_speed(int value);
 
+private slots:
+    void mouseSizeChange();
 private:
     Ui::MouseControl *ui;
 
@@ -83,16 +83,23 @@ private:
 
     SwitchButton * visiblityBtn;
     SwitchButton * flashingBtn;
+    SwitchButton * mAccelBtn;
 
-    QGSettings * settings;
-    QGSettings * sesstionSetttings;
-    QGSettings * desktopSettings;
+
+    QGSettings *settings;
+    QGSettings *sesstionSetttings;
+    QGSettings *desktopSettings;
+    QGSettings *mThemeSettings;
 
     int pluginType;
 
     QString leftStr;
     QString rightStr;
     QString pluginName;
+
+    QStringList mouseKeys;
+
+    bool mFirstLoad;
 };
 
 #endif // MOUSECONTROL_H

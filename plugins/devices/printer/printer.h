@@ -28,6 +28,7 @@
 #include "shell/interface.h"
 #include "HoverWidget/hoverwidget.h"
 #include "ImageUtil/imageutil.h"
+#include "HoverBtn/hoverbtn.h"
 
 namespace Ui {
 class Printer;
@@ -47,24 +48,20 @@ public:
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
+    const QString name() const  Q_DECL_OVERRIDE;
 
 public:
     void initComponent();
-
     void runExternalApp();
-
-private:
-//    bool eventFilter(QObject *watched, QEvent *event);
 
 private:
     Ui::Printer *ui;
     QString pluginName;
     int pluginType;
     QWidget * pluginWidget;
-    HoverWidget * addWgt;
+    HoverWidget * mAddWgt;
 
-private:
-    QTimer * pTimer;
+    bool mFirstLoad;
 
 public slots:
     void refreshPrinterDev();

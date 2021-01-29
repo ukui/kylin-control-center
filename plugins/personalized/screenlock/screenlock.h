@@ -27,6 +27,7 @@
 #include <QThread>
 #include <QGSettings>
 #include <QSettings>
+#include <QtDBus>
 
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
@@ -54,7 +55,9 @@ public:
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
+    const QString name() const  Q_DECL_OVERRIDE;
 
+    void initSearchText();
     void setupComponent();
     void setupConnect();
     void initScreenlockStatus();
@@ -64,6 +67,7 @@ private:
     int lockConvertToSlider(const int value);
     void setLockBackground(bool status);
     bool getLockStatus();
+    void connectToServer();
 
 private:
     Ui::Screenlock *ui;
@@ -85,9 +89,16 @@ private:
 
     QThread * pThread;
 
+    QDBusInterface *m_cloudInterface;
+    bool bIsCloudService;
+
     FlowLayout * flowLayout;
 
     BuildPicUnitsWorker * pWorker;
+
+    bool mFirstLoad;
+public Q_SLOTS:
+    void keyChangedSlot(const QString &key);
 };
 
 #endif // SCREENLOCK_H

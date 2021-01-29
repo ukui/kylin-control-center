@@ -1,0 +1,18 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="org.ukui.ukcc.session.interface">
+    <signal name="configChanged">
+    </signal>
+    <method name="exitService">
+    </method>
+    <method name="ReloadSecurityConfig">
+    </method>
+    <method name="getModuleHideStatus">
+      <arg type="a{sv}" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+    </method>
+    <method name="GetSecurityConfigPath">
+      <arg type="s" direction="out"/>
+    </method>
+  </interface>
+</node>

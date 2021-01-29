@@ -11,14 +11,20 @@
 #include <QHBoxLayout>
 #include <QPainter>
 #include <QPainterPath>
-TimeZoneChooser::TimeZoneChooser():QFrame ()
+
+#include "ImageUtil/imageutil.h"
+
+const QString kcnBj = "北京";
+const QString kenBj = "Asia/Beijing";
+
+TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
 {
     m_map = new TimezoneMap(this);
     m_map->show();
     m_zoneinfo = new ZoneInfo;
-    m_searchInput = new QLineEdit;
-    m_title = new QLabel;
-    closeBtn = new QPushButton;
+    m_searchInput = new QLineEdit(this);
+    m_title = new QLabel(this);
+    m_closeBtn = new QPushButton(this);
     m_cancelBtn = new QPushButton(tr("Cancel"));
     m_confirmBtn = new QPushButton(tr("Confirm"));
 
@@ -26,26 +32,20 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
     setAttribute(Qt::WA_StyledBackground,true);
 
     this->setObjectName("MapFrame");
-//    this->setStyleSheet("QFrame#MapFrame{background-color: rgb(22, 24, 26);border-radius:4px}");
+    this->setStyleSheet("QFrame#MapFrame{background-color: rgb(22, 24, 26);border-radius:4px}");
+    this->setWindowTitle(tr("Change time zone"));
 
-    closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
-    closeBtn->setFlat(true);
-    closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+    QIcon icon = QIcon::fromTheme("window-close-symbolic");
+    m_closeBtn->setIcon(ImageUtil::drawSymbolicColoredPixmap(icon.pixmap(32, 32),"white"));
+    m_closeBtn->setFlat(true);
 
     m_searchInput->setMinimumSize(560,40);
     m_searchInput->setMaximumSize(560,40);
     m_searchInput->setMinimumHeight(40);
-//    m_searchInput->setStyleSheet("background-color: rgb(229, 240, 250 )");
-//    m_cancelBtn->setStyleSheet("background-color: rgb(229, 240, 250 )");
-//    m_confirmBtn->setStyleSheet("background-color: rgb(229, 240, 250 )");
 
-/*    m_title->setMinimumWidth(179);
-    m_title->setMinimumHeight(29);*/;
     m_title->setObjectName("titleLabel");
     m_title->setStyleSheet("color: rgb(229, 240, 250 )");
     m_title->setText(tr("change timezone"));
-
 
     initSize();
 
@@ -53,7 +53,7 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
     wbLayout->setMargin(6);
     wbLayout->setSpacing(0);
     wbLayout->addStretch();
-    wbLayout->addWidget(closeBtn);
+    wbLayout->addWidget(m_closeBtn);
 
     QHBoxLayout *btnlayout = new QHBoxLayout;
     btnlayout->addStretch();
@@ -91,7 +91,7 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
         emit this->cancelled();
     });
 
-    connect(closeBtn, &QPushButton::clicked, this, [this] {
+    connect(m_closeBtn, &QPushButton::clicked, this, [this] {
         hide();
         emit cancelled();
     });
@@ -108,12 +108,15 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
         m_map->setTimezone(timezone);
     });
 
-
     QTimer::singleShot(0, [this] {
-
-//        qDebug()<<"single slot-------->"<<endl;
         QStringList completions;
+        completions << kenBj;
+        completions << kcnBj;
+        m_zoneCompletion[kcnBj] = kenBj;
         for (QString timezone : QTimeZone::availableTimeZoneIds()) {
+            if ("Asia/Shanghai" == timezone) {
+                continue;
+            }
             completions << timezone;
 
             const QString locale = QLocale::system().name();
@@ -126,8 +129,23 @@ TimeZoneChooser::TimeZoneChooser():QFrame ()
         QCompleter *completer = new QCompleter(completions, m_searchInput);
         completer->setCompletionMode(QCompleter::PopupCompletion);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
+        completer->setFilterMode(Qt::MatchContains);
 
         m_searchInput->setCompleter(completer);
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+        connect(completer, static_cast<void(QCompleter::*)(const QString &)>(&QCompleter::activated),
+                [=](const QString &text){
+#else
+        //鼠标点击后直接页面跳转(https://doc.qt.io/qt-5/qcompleter.html#activated-1)
+        connect(completer, QOverload<const QString &>::of(&QCompleter::activated),
+                [=](const QString &text) {
+#endif
+            Q_UNUSED(text);
+            QString timezone = m_searchInput->text();
+            timezone = m_zoneCompletion.value(timezone,timezone);
+            m_map->setTimezone(timezone);
+        });
 
         m_popup = completer->popup();
         m_popup->setAttribute(Qt::WA_TranslucentBackground);
@@ -167,20 +185,6 @@ bool TimeZoneChooser::eventFilter(QObject* obj, QEvent *event) {
     return false;
 }
 
-void TimeZoneChooser::paintEvent(QPaintEvent *e)
-{
-    QStyleOption opt;
-    opt.init(this);
-    QPainter p(this);
-    p.setBrush(QBrush(QColor(22, 24, 26)));
-    p.setPen(QColor(22, 24, 26));
-    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-    p.drawRoundedRect(opt.rect,6,6);
-    QPainterPath path;
-//    setProperty("blurRegion",QRegion(path.toFillPolygon().toPolygon()));
-    style()->drawPrimitive(QStyle::PE_Frame, &opt, &p, this);
-
-}
 //获取适合屏幕的地图大小
 QSize TimeZoneChooser::getFitSize(){
     const QDesktopWidget *desktop = QApplication::desktop();
@@ -188,9 +192,6 @@ QSize TimeZoneChooser::getFitSize(){
 
     double width = primaryRect.width() - 360/* dcc */ - 20 * 2;
     double height = primaryRect.height() - 70/* dock */ - 20 * 2;
-
-//    double width =1440;
-//    double height =860;
 
     return QSize(width,height);
 }
@@ -216,10 +217,7 @@ void TimeZoneChooser::initSize(){
     const double heightScale = MapPictureHeight / mapHeight;
     const double scale = qMax(widthScale, heightScale);
 
-//    qDebug()<<"scale------>"<<MapPictureWidth / scale<<" "<<MapPictureHeight / scale<<endl;
     m_map->setFixedSize(MapPictureWidth / scale, MapPictureHeight / scale);
-
-//    m_searchInput->setFixedWidth(250);
 
     m_cancelBtn->setFixedHeight(36);
     m_confirmBtn->setFixedHeight(36);

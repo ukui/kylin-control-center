@@ -5,6 +5,7 @@
 #-------------------------------------------------
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
 
 QT            += widgets core gui quickwidgets quick xml KScreen KI18n KConfigCore KConfigWidgets KWidgetsAddons dbus
 TEMPLATE = lib
@@ -41,6 +42,7 @@ SOURCES += \
     displayperformancedialog.cpp
 
 HEADERS += \
+    colorinfo.h \
     display.h \
     declarative/qmloutput.h \
     declarative/qmloutputcomponent.h \

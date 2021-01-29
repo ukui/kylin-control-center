@@ -49,78 +49,61 @@ extern "C" {
 #define ITEMHEIGHT 62
 #define HEADHEIGHT 38
 
-
-//struct SaveData : QObjectUserData {
-//    QString bname;
-//};
-
-AutoBoot::AutoBoot(){
-    ui = new Ui::AutoBoot;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
-    pluginName = tr("Autoboot");
-    pluginType = SYSTEM;
-
-//    ui->addFrame->installEventFilter(this);
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-
-
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-//    ui->addWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-
-//    ui->listWidget->setStyleSheet("QListWidget#listWidget{background: #ffffff; border: none;}"
-//                                  "");
-
-//    ui->addBtn->setIcon(QIcon("://img/plugins/autoboot/add.png"));
-//    ui->addBtn->setIconSize(QSize(48, 48));
-//    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
-
-
-
-//    ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-
-//    ui->listWidget->setSpacing(0);
-
-    localconfigdir = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
-    //初始化添加界面
-    dialog = new AddAutoBoot();
-
-    initAddBtn();
-    initUI();
-
-    connect(dialog, SIGNAL(autoboot_adding_signals(QString, QString,QString,QString)), this, SLOT(add_autoboot_realize_slot(QString ,QString,QString,QString)));
-}
-
-AutoBoot::~AutoBoot()
+AutoBoot::AutoBoot() : mFirstLoad(true)
 {
-    delete ui;
-//    delete dialog;
-    g_free(localconfigdir);
+    pluginName = tr("Auto Boot");
+    pluginType = SYSTEM;
 }
 
-QString AutoBoot::get_plugin_name(){
+AutoBoot::~AutoBoot() {
+    if (!mFirstLoad) {
+        delete ui;
+        g_free(localconfigdir);
+    }
+}
+
+QString AutoBoot::get_plugin_name() {
     return pluginName;
 }
 
-int AutoBoot::get_plugin_type(){
+int AutoBoot::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *AutoBoot::get_plugin_ui(){
+QWidget *AutoBoot::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+
+        ui = new Ui::AutoBoot;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        connectToServer();
+        initStyle();
+        localconfigdir = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
+
+        //初始化添加界面
+        dialog = new AddAutoBoot();
+
+        initConfig();
+        initAddBtn();
+        initUI();
+        initConnection();
+    }
     return pluginWidget;
 }
 
-void AutoBoot::plugin_delay_control(){
+void AutoBoot::plugin_delay_control() {
 
 }
 
+const QString AutoBoot::name() const {
+    return QStringLiteral("autoboot");
+}
+
 void AutoBoot::initAddBtn() {
-    addWgt = new HoverWidget("");
+    addWgt = new HoverWidget("", pluginWidget);
     addWgt->setObjectName("addwgt");
     addWgt->setMinimumSize(QSize(580, 50));
     addWgt->setMaximumSize(QSize(960, 50));
@@ -128,8 +111,8 @@ void AutoBoot::initAddBtn() {
 
     QHBoxLayout *addLyt = new QHBoxLayout;
 
-    QLabel * iconLabel = new QLabel();
-    QLabel * textLabel = new QLabel(tr("Add autoboot app "));
+    QLabel * iconLabel = new QLabel(pluginWidget);
+    QLabel * textLabel = new QLabel(tr("Add autoboot app "), pluginWidget);
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);
     addLyt->addWidget(iconLabel);
@@ -138,39 +121,45 @@ void AutoBoot::initAddBtn() {
     addWgt->setLayout(addLyt);
 
     // 悬浮改变Widget状态
-    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname){
+    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname) {
+        Q_UNUSED(mname);
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(base);");
 
     });
     // 还原状态
-    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname){
+    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname) {
+        Q_UNUSED(mname);
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(windowText);");
     });
 
     connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
+        Q_UNUSED(mname);
         dialog->exec();
     });
 
     ui->addLyt->addWidget(addWgt);
-
 }
 
-void AutoBoot::initUI(){
+void AutoBoot::initStyle() {
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+    //~ contents_path /autoboot/Autoboot Settings
+    ui->titleLabel->setText(tr("Autoboot Settings"));
+}
+
+void AutoBoot::initUI() {
     _walk_config_dirs();
 
     appgroupMultiMaps.clear();
 
     int num = statusMaps.count();
 
-    //显示全部ITEM，设置高
-//    ui->listWidget->setFixedHeight(num * ITEMHEIGHT + HEADHEIGHT);
-
     //构建行头基础Widget
-    QFrame * headbaseFrame = new QFrame;
+    QFrame * headbaseFrame = new QFrame(pluginWidget);
     headbaseFrame->setMinimumWidth(550);
     headbaseFrame->setMaximumWidth(960);
     headbaseFrame->setFrameShape(QFrame::Shape::Box);
@@ -181,7 +170,7 @@ void AutoBoot::initUI(){
     headbaseVerLayout->setContentsMargins(0, 0, 0, 2);
 
     //构建行头
-    QWidget * headWidget = new QWidget;
+    QWidget * headWidget = new QWidget(pluginWidget);
     headWidget->setMinimumWidth(550);
     headWidget->setMaximumWidth(960);
 
@@ -189,28 +178,18 @@ void AutoBoot::initUI(){
     headWidget->setMaximumHeight(36);
     headWidget->setAttribute(Qt::WA_DeleteOnClose);
     headWidget->setObjectName("headWidget");
-//    headWidget->setFixedHeight(36);
-//    headWidget->setStyleSheet("QWidget#headWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
 
     QHBoxLayout * headHorLayout = new QHBoxLayout(headWidget);
     headHorLayout->setSpacing(16);
     headHorLayout->setContentsMargins(64, 0, 32, 0);
 
     QLabel * nameLabel = new QLabel(headWidget);
-//    QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
-//    nameSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
-//    nameLabel->setSizePolicy(nameSizePolicy);
     nameLabel->setFixedWidth(220);
     nameLabel->setText(tr("Name"));
-//    nameLabel->setStyleSheet("background: #F4F4F4;");
 
     QLabel * statusLabel = new QLabel(headWidget);
-//    QSizePolicy statusSizePolicy = statusLabel->sizePolicy();
-//    statusSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
-//    statusLabel->setSizePolicy(statusSizePolicy);
-    statusLabel->setFixedWidth(68);
+    statusLabel->setFixedWidth(150);
     statusLabel->setText(tr("Status"));
-//    statusLabel->setStyleSheet("background: #F4F4F4;");
 
     headHorLayout->addWidget(nameLabel);
     headHorLayout->addStretch();
@@ -222,11 +201,6 @@ void AutoBoot::initUI(){
     headbaseVerLayout->addWidget(headWidget);
     headbaseVerLayout->addStretch();
 
-//    headbaseFrame->setLayout(headbaseVerLayout);
-
-//    QListWidgetItem * hItem = new QListWidgetItem(ui->listWidget);
-//    hItem->setSizeHint(QSize(ITEMWIDTH, HEADHEIGHT));
-//    ui->listWidget->setItemWidget(hItem, headbaseFrame);
     ui->autoLayout->addWidget(headbaseFrame);
 
     //构建每个启动项
@@ -236,7 +210,7 @@ void AutoBoot::initUI(){
         QString bname = it.value().bname;
         QString appName = it.value().name;
 
-        QFrame * baseWidget = new QFrame;
+        QFrame * baseWidget = new QFrame(pluginWidget);
         baseWidget->setMinimumWidth(550);
         baseWidget->setMaximumWidth(960);
         baseWidget->setFrameShape(QFrame::Shape::Box);
@@ -247,7 +221,6 @@ void AutoBoot::initUI(){
         baseVerLayout->setContentsMargins(0, 0, 0, 2);
 
         HoverWidget * widget = new HoverWidget(bname);
-//        widget->setFixedHeight(60); //
         widget->setMinimumWidth(550);
         widget->setMaximumWidth(960);
 
@@ -255,7 +228,6 @@ void AutoBoot::initUI(){
         widget->setMaximumHeight(60);
 
         widget->setAttribute(Qt::WA_DeleteOnClose);
-//        widget->setStyleSheet("background: #F4F4F4;");
 
         QHBoxLayout * mainHLayout = new QHBoxLayout(widget);
         mainHLayout->setContentsMargins(16, 0, 32, 0);
@@ -264,34 +236,27 @@ void AutoBoot::initUI(){
         QLabel * iconLabel = new QLabel(widget);
         iconLabel->setFixedSize(32, 32);
         iconLabel->setPixmap(it.value().pixmap);
-//        iconLabel->setStyleSheet("background: #F4F4F4");
 
         QLabel * textLabel = new QLabel(widget);
-//        textLabel->setStyleSheet("background: #F4F4F4");
         textLabel->setFixedWidth(250);
         textLabel->setText(appName);
 
-        SwitchButton * button = new SwitchButton();
+        SwitchButton * button = new SwitchButton(widget);
         button->setAttribute(Qt::WA_DeleteOnClose);
-//        button->setChecked(it.value().enable);
         button->setChecked(!it.value().hidden);
         connect(button, SIGNAL(checkedChanged(bool)), checkSignalMapper, SLOT(map()));
         checkSignalMapper->setMapping(button, it.key());
         appgroupMultiMaps.insert(it.key(), button);
 
         QPushButton * dBtn = new QPushButton(widget);
-        dBtn->setFixedSize(QSize(32, 32));
-        dBtn->setText("Del");
+        dBtn->setFixedSize(QSize(64, 32));
+        dBtn->setText(tr("Delete"));
         dBtn->setHidden(true);
-        connect(dBtn, &QPushButton::clicked, this, [=]{
+        connect(dBtn, &QPushButton::clicked, this, [=] {
             del_autoboot_realize(bname);
         });
-//        dBtn->setStyleSheet(""
-//                            "QPushButton{background: #FA6056; border-radius: 2px;}"
-//                            "QPushButton:hover:pressed{background: #E54A50; border-radius: 2px;}");
-
         QLabel * pLabel = new QLabel(widget);
-        pLabel->setFixedSize(QSize(32, 32));
+        pLabel->setFixedSize(QSize(64, 32));
         pLabel->setHidden(false);
 
         mainHLayout->addWidget(iconLabel);
@@ -308,14 +273,12 @@ void AutoBoot::initUI(){
                 Q_UNUSED(name)
                 dBtn->setHidden(false);
                 pLabel->setHidden(true);
-                //            widget->setStyleSheet("background: #EEF2FD;");
 
             });
             connect(widget, &HoverWidget::leaveWidget, this, [=](QString name){
                 Q_UNUSED(name)
                 dBtn->setHidden(true);
                 pLabel->setHidden(false);
-                //            widget->setStyleSheet("background: #F4F4F4;");
             });
         }
 
@@ -324,49 +287,24 @@ void AutoBoot::initUI(){
 
         baseWidget->setLayout(baseVerLayout);
 
-//        QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
-//        item->setSizeHint(QSize(ITEMWIDTH, ITEMHEIGHT));
-//        ui->listWidget->setItemWidget(item, baseWidget);
-//        ui->listWidget->setSpacing(1);
         ui->autoLayout->addWidget(baseWidget);
     }
     connect(checkSignalMapper, SIGNAL(mapped(QString)), this, SLOT(checkbox_changed_cb(QString)));
 }
 
+void AutoBoot::initConnection() {
+    connect(dialog, SIGNAL(autoboot_adding_signals(QString, QString, QString, QString, QString)),
+            this, SLOT(add_autoboot_realize_slot(QString, QString, QString, QString, QString)));
+}
 
 bool AutoBoot::_copy_desktop_file_to_local(QString bname){
-//    GFile * srcfile;
-//    GFile * dstfile;
-//    GError * error;
-//    char * dstpath, * srcpath;
-
     QString srcPath;
     QString dstPath;
 
-    //不存在则创建~/.config/autostart/
-    if (!g_file_test(localconfigdir, G_FILE_TEST_EXISTS)){
-        GFile * dstdirfile;
-        dstdirfile = g_file_new_for_path(localconfigdir);
-        g_file_make_directory(dstdirfile, NULL, NULL);
-    }
-
     QMap<QString, AutoApp>::iterator it = appMaps.find(bname);
-//    dstpath = g_build_filename(localconfigdir, bname.toLatin1().data(), NULL);
-//    srcpath = it.value().path.toLatin1().data();
 
     dstPath = QString(localconfigdir) + "/" + bname;
     srcPath = it.value().path;
-
-//    srcfile = g_file_new_for_path(srcpath);
-//    dstfile = g_file_new_for_path(dstpath);
-
-//    if (!g_file_copy(srcfile, dstfile, G_FILE_COPY_NONE, NULL, NULL, NULL, &error)){
-//        qDebug() << "Could not copy desktop file for autoboot";
-//        g_object_unref(srcfile);
-//        g_object_unref(dstfile);
-//        g_free(dstpath);
-//        return false;
-//    }
 
     if (!QFile::copy(srcPath, dstPath))
         return false;
@@ -382,9 +320,6 @@ bool AutoBoot::_copy_desktop_file_to_local(QString bname){
     updateit.value().xdg_position = ALLPOS;
     updateit.value().path = dstPath;
 
-//    g_object_unref(srcfile);
-//    g_object_unref(dstfile);
-//    g_free(dstpath);
     return true;
 }
 
@@ -397,7 +332,6 @@ void AutoBoot::clearAutoItem()
             delete item->widget();
             delete item;
         }
-//        delete ui->availableLayout->layout();
     }
 }
 
@@ -514,6 +448,7 @@ bool AutoBoot::_delete_autoapp(QString bname){
     initUI();
 
     g_free(dstpath);
+    g_free(keyfile);
     return true;
 }
 
@@ -671,11 +606,16 @@ AutoApp AutoBoot::_app_new(const char *path){
     app.name = QString::fromUtf8(name);
     app.comment = QString::fromUtf8(comment);
     app.exec = QString::fromUtf8(exec);
+
+    QFileInfo iconfile(static_cast<QString>(icon));
+
+
     if (!QString(icon).isEmpty() && QIcon::hasThemeIcon(QString(icon))){
         QIcon currenticon = QIcon::fromTheme(QString(icon));
         app.pixmap = currenticon.pixmap(QSize(32, 32));
-    }
-    else{
+    }  else if (iconfile.exists()) {
+        app.pixmap = QPixmap(iconfile.filePath()).scaled(32, 32);
+    } else {
         app.pixmap = QPixmap(QString(":/img/plugins/autoboot/desktop.png"));
     }
 
@@ -758,12 +698,6 @@ void AutoBoot::update_app_status(){
             //整合状态
             QMap<QString, AutoApp>::iterator updateit = statusMaps.find(localit.key());
 
-//            if (localit.value().enable != updateit.value().enable){
-//                updateit.value().enable = localit.value().enable;
-//                updateit.value().path = localit.value().path;
-//                if (appMaps.contains(localit.key()))
-//                    updateit.value().xdg_position = ALLPOS;
-//            }
             if (localit.value().hidden != updateit.value().hidden){
                 updateit.value().hidden = localit.value().hidden;
                 updateit.value().path = localit.value().path;
@@ -780,20 +714,13 @@ void AutoBoot::update_app_status(){
 }
 
 
-void AutoBoot::add_autoboot_realize_slot(QString path, QString name, QString exec, QString comment){
+void AutoBoot::add_autoboot_realize_slot(QString path, QString name, QString exec, QString comment, QString icon) {
     if (path.isEmpty())
         return;
 
     char * filename, * filepath;
 
     filename = path.section("/", -1, -1).toUtf8().data();
-
-
-    if (!g_file_test(localconfigdir, G_FILE_TEST_EXISTS)){
-        GFile * dstdirfile;
-        dstdirfile = g_file_new_for_path(localconfigdir);
-        g_file_make_directory(dstdirfile, NULL, NULL);
-    }
 
     filepath = g_build_filename(localconfigdir, filename, NULL);
 
@@ -811,6 +738,7 @@ void AutoBoot::add_autoboot_realize_slot(QString path, QString name, QString exe
     g_key_file_set_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NAME, name.toUtf8().data());
     g_key_file_set_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NAME, locale, name.toUtf8().data());
     g_key_file_set_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, comment.toUtf8().data());
+    g_key_file_set_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, icon.toUtf8().data());
 //    g_key_file_set_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, locale, comment.toUtf8().data());
 
     if (!_key_file_to_file(keyfile, filepath))
@@ -820,10 +748,8 @@ void AutoBoot::add_autoboot_realize_slot(QString path, QString name, QString exe
     g_free(filepath);
 
     //refresh
-//    ui->listWidget->clear();
     clearAutoItem();
     initUI();
-
 }
 
 void AutoBoot::del_autoboot_realize(QString bname){
@@ -834,41 +760,10 @@ void AutoBoot::del_autoboot_realize(QString bname){
         return;
     }
 
-//    if (it.value().xdg_position == SYSTEMPOS){ //复制改值
-//        if (_copy_desktop_file_to_local(bname)){
-//            _delete_autoapp(bname);
-//        }
-//    }
-//    else if (it.value().xdg_position == ALLPOS){ //改值
-//        _delete_autoapp(bname);
-
-//    }
-//    else if (it.value().xdg_position == LOCALPOS){ //删除
-        _delete_local_autoapp(bname);
-//        ui->listWidget->clear();
-        clearAutoItem();
-        initUI();
-        //    }
+    _delete_local_autoapp(bname);
+    clearAutoItem();
+    initUI();
 }
-
-
-
-//bool AutoBoot::eventFilter(QObject *watched, QEvent *event)
-//{
-//    if (watched == ui->addFrame){
-//        if (event->type() == QEvent::MouseButtonPress){
-//            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
-//            if (mouseEvent->button() == Qt::LeftButton){
-//                AddAutoBoot * mdialog = new AddAutoBoot();
-//                mdialog->exec();
-//                dialog->exec();
-//                return true;
-//            } else
-//                return false;
-//        }
-//    }
-//    return QObject::eventFilter(watched, event);
-//}
 
 void AutoBoot::checkbox_changed_cb(QString bname){
     foreach (QString key, appgroupMultiMaps.keys()) {
@@ -897,10 +792,6 @@ void AutoBoot::checkbox_changed_cb(QString bname){
                         else
                             qDebug() << "Update status failed when start autoboot";
                     }
-//                    QMap<QString, AutoApp>::iterator statusit = statusMaps.begin();
-//                    for (; statusit != statusMaps.end(); statusit++){
-//                        qDebug() << statusit.value().xdg_position << statusit.value().path;
-//                    }
                 }
                 else if (it.value().xdg_position == LOCALPOS){//改值
                     _enable_autoapp(bname, true);
@@ -925,6 +816,49 @@ void AutoBoot::checkbox_changed_cb(QString bname){
 
             }
         }
+    }
+}
+
+void AutoBoot::connectToServer(){
+    m_cloudInterface = new QDBusInterface("org.kylinssoclient.dbus",
+                                          "/org/kylinssoclient/path",
+                                          "org.freedesktop.kylinssoclient.interface",
+                                          QDBusConnection::sessionBus());
+    if (!m_cloudInterface->isValid())
+    {
+        qDebug() << "fail to connect to service";
+        qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
+        return;
+    }
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "keyChanged", this, SLOT(keyChangedSlot(QString)));
+    // 将以后所有DBus调用的超时设置为 milliseconds
+    m_cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时
+}
+
+void AutoBoot::initConfig()
+{
+    //不存在则创建~/.config/autostart/
+    if (!g_file_test(localconfigdir, G_FILE_TEST_EXISTS)) {
+        GFile * dstdirfile;
+        dstdirfile = g_file_new_for_path(localconfigdir);
+        gboolean status = g_file_make_directory(dstdirfile, NULL, NULL);
+        if (!status) {
+            qWarning() << "create autostart dir failed";
+        }
+    }
+}
+
+void AutoBoot::keyChangedSlot(const QString &key) {
+    if(key == "boot") {
+        QLayoutItem *child;
+         while ((child = ui->autoLayout->takeAt(0)) != 0) {
+                //setParent为NULL，防止删除之后界面不消失
+                if(child->widget()) {
+                    child->widget()->setParent(NULL);
+                }
+                delete child;
+         }
+         initUI();
     }
 }
 

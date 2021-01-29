@@ -31,8 +31,8 @@ class BoxItem : public QWidget
     Q_OBJECT
 public:
     explicit BoxItem(QWidget *parent = nullptr);
-    void set_country_code(QString str);
-    void set_code(QString str);
+    void set_country_code(const QString &str);
+    void set_code(const QString &str);
 protected:
     virtual void enterEvent(QEvent * event);
     virtual void leaveEvent(QEvent * event);

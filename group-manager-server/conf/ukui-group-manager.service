@@ -1,0 +1,9 @@
+[Unit]
+Description=group-manager-server
+
+[Service]
+User=root
+ExecStart=/usr/bin/group-manager-server
+
+[Install]
+WantedBy=multi-user.target

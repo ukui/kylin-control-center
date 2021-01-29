@@ -8,7 +8,7 @@ include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 include($$PROJECT_COMPONENTSOURCE/uslider.pri)
 
-QT       += widgets
+QT       += widgets dbus
 
 TEMPLATE = lib
 CONFIG += plugin

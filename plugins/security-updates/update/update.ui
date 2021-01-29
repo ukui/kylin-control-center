@@ -70,7 +70,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
-      <number>25</number>
+      <number>0</number>
      </property>
      <item>
       <widget class="QLabel" name="logoLabel">
@@ -131,12 +131,9 @@
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer_3">
+          <spacer name="horizontalSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -155,7 +152,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>CheckUpdate</string>
+            <string>Check for updates</string>
            </property>
            <property name="flat">
             <bool>false</bool>

@@ -36,6 +36,7 @@
 #include <QListView>
 
 
+
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
  **/
@@ -62,10 +63,11 @@ public:
     Area();
     ~Area();
 
-    QString get_plugin_name() Q_DECL_OVERRIDE;
-    int get_plugin_type() Q_DECL_OVERRIDE;
-    QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
+    QString get_plugin_name()   Q_DECL_OVERRIDE;
+    int get_plugin_type()       Q_DECL_OVERRIDE;
+    QWidget * get_plugin_ui()   Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
+    const QString name() const  Q_DECL_OVERRIDE;
 
     QStringList readFile(const QString& filePath);
 
@@ -73,26 +75,25 @@ private:
     void initUI();
     void initComponent();
     QStringList getUserDefaultLanguage();
+    void connectToServer();
 
 private:
     Ui::Area *ui;
 
     int pluginType;
 
-    QString qss;
     QString objpath;
     QString pluginName;
     QString hourformat;
+    QString mDateFormat;
 
     QWidget * pluginWidget;
 
     QDBusInterface *m_areaInterface;
-
-    QGSettings *m_gsettings = nullptr;
-
-    QTimer *m_itimer = nullptr;
-
-    HoverWidget *addWgt;
+    QGSettings     *m_gsettings = nullptr;
+    QTimer         *m_itimer    = nullptr;
+    HoverWidget    *addWgt;
+    QDBusInterface *cloudInterface;
 
 private slots:
     void initFormatData();
@@ -102,6 +103,7 @@ private slots:
     void datetime_update_slot();
     void add_lan_btn_slot();
     void changeform_slot();
+    void cloudChangedSlot(const QString &key);
 };
 
 #endif // AREA_H

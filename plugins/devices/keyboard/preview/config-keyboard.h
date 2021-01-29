@@ -1,0 +1,9 @@
+#ifndef CONFIG_KEYBOARD_H
+#define CONFIG_KEYBOARD_H
+
+#define HAVE_XINPUT
+/* #undef HAVE_UDEV */
+
+#define NEW_GEOMETRY
+
+#endif // CONFIG_KEYBOARD_H

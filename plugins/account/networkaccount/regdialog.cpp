@@ -36,19 +36,25 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     m_errorTips = new Tips(this);
     m_svgHandler = new SVGHandler(this);
 
-    QString str = ("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
-                   "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}"
-                   "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;font-size: 14px;color:rgba(0,0,0,0.85)}");
+    QString str = ("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
+                   "QLineEdit:hover{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;color:rgba(0,0,0,0.85)}"
+                   "QLineEdit:focus{background-color:#F4F4F4;border-radius: 4px;border:1px solid #3D6BE5;color:rgba(0,0,0,0.85)}");
     m_phoneLineEdit->setFixedSize(QSize(338,36));
     m_accountLineEdit->setFixedSize(QSize(338,36));
     m_passLineEdit->setFixedSize(QSize(338,36));
     m_mcodeLineEdit->setFixedSize(QSize(192,36));
-    m_sendMsgBtn->setFixedSize(QSize(130,36));
+    m_passTips->setFixedWidth(330);
+   // m_sendMsgBtn->setFixedSize(QSize(130,36));
+
+    m_sendMsgBtn->setMaximumSize(136,36);
+    m_sendMsgBtn->setMinimumSize(130,36);
+    m_sendMsgBtn->resize(130,36);
+
     m_confirmLineEdit->setFixedSize(QSize(338,36));
     m_phoneLineEdit->setFocusPolicy(Qt::StrongFocus);
 
 
-
+    m_accountLineEdit->setMaxLength(30);
     m_phoneLineEdit->setMaxLength(11);
     m_passLineEdit->setPlaceholderText(tr("Your password here"));
     m_passLineEdit->setEchoMode(QLineEdit::Password);
@@ -59,16 +65,16 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     m_mcodeLineEdit->setMaxLength(4);
     m_accountTips->setText(tr("This operation is permanent"));
     m_accountTips->setContentsMargins(12,0,0,0);
-    m_accountTips->setFixedHeight(16);
+    //m_accountTips->setFixedHeight(16);
     m_passTips->setText(tr("At least 6 bit, include letters and digt"));
-    m_passTips->setFixedHeight(16);
+   // m_passTips->setFixedHeight(16);
     m_passTips->setContentsMargins(12,0,0,0);
-    m_accountTips->setStyleSheet("font-size:14px;");
-    m_passTips->setStyleSheet("font-size:14px;");
+    m_accountTips->setStyleSheet("");
+    m_passTips->setStyleSheet("");
 
     m_confirmLineEdit->setTextMargins(12,0,0,0);
     m_accountLineEdit->setTextMargins(12,0,0,0);
-    m_passLineEdit->setTextMargins(12,0,0,0);
+    //m_passLineEdit->setTextMargins(12,0,0,0);
     m_mcodeLineEdit->setTextMargins(12,0,0,0);
     //valid_code->setStyleSheet(str);
 
@@ -80,9 +86,9 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     //reg_phone->setStyleSheet(str);
    // reg_user->setStyleSheet(str);
    // reg_confirm->setStyleSheet(str);
-    //send_msg_btn->setStyleSheet("QPushButton{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(0,0,0,0.85);} "
-     //                           "QPushButton:hover{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}"
-    //                            "QPushButton:click{background-color:#F4F4F4;font-size:14px;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}");
+    //send_msg_btn->setStyleSheet("QPushButton{background-color:#F4F4F4;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(0,0,0,0.85);} "
+     //                           "QPushButton:hover{background-color:#F4F4F4;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}"
+    //                            "QPushButton:click{background-color:#F4F4F4;border-radius: 4px;border:4px solid #F4F4F4;color:rgba(61,107,229,0.85);}");
 
     m_workLayout->setMargin(0);
     m_workLayout->setSpacing(8);
@@ -130,7 +136,7 @@ RegDialog::RegDialog(QWidget *parent) : QWidget(parent)
     m_phoneLineEdit->setFocus();
 }
 
-void RegDialog::set_staus(bool ok) {
+void RegDialog::set_staus(const bool &ok) {
     m_confirmLineEdit->setEnabled(ok);
     m_accountLineEdit->setEnabled(ok);
     m_phoneLineEdit->setEnabled(ok);
@@ -144,7 +150,7 @@ void RegDialog::setstyleline() {
 }
 
 /* 获取错误代码 */
-void RegDialog::set_code(QString codenum) {
+void RegDialog::set_code(const QString &codenum) {
     m_errorCode = codenum;
     emit code_changed();
 }
@@ -188,18 +194,18 @@ void RegDialog::change_uppercase() {
     m_mcodeLineEdit->setText(str.toUpper());
 }
 
-QString RegDialog::get_user_mcode() {
+QString RegDialog::get_user_mcode() const {
     return m_mcodeLineEdit->text();
 }
 
-QString RegDialog::get_user_phone() {
+QString RegDialog::get_user_phone() const {
     return m_phoneLineEdit->text();
 }
 
-QString RegDialog::get_user_account() {
+QString RegDialog::get_user_account() const {
     return m_accountLineEdit->text();
 }
-QString RegDialog::get_user_passwd() {
+QString RegDialog::get_user_passwd() const {
     return m_passLineEdit->text();
 }
 
@@ -209,10 +215,12 @@ void RegDialog::set_clear() {
         m_errorTips->hide();
     }
     m_passLineEdit->get_visble()->setChecked(false);
+    m_confirmLineEdit->get_visble()->setChecked(false);
     m_passLineEdit->setText("");
     m_accountLineEdit->setText("");
     m_phoneLineEdit->setText("");
     m_mcodeLineEdit->setText("");
+    m_confirmLineEdit->setText("");
 }
 
 Tips* RegDialog::get_tips() {

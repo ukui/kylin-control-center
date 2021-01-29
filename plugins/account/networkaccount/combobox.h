@@ -44,7 +44,7 @@ class ComboBox : public QWidget
     Q_OBJECT
 public:
     explicit ComboBox(QWidget *parent = nullptr);
-    void addItem(QString country,QString code);
+    void addItem(const QString &country,const QString &code);
 public slots:
     void showpopup();
     void closepopup(QListWidgetItem *item);

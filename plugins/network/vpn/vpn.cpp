@@ -33,15 +33,8 @@ Vpn::Vpn()
     pluginName = tr("Vpn");
     pluginType = NETWORK;
 
-//    ui->addFrame->installEventFilter(this);
-
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-//    ui->widget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-
     initComponent();
-
 }
 
 Vpn::~Vpn()
@@ -65,12 +58,12 @@ void Vpn::plugin_delay_control(){
 
 }
 
+const QString Vpn::name() const {
+
+    return QStringLiteral("vpn");
+}
+
 void Vpn::initComponent(){
-//    ui->addBtn->setIcon(QIcon("://img/plugins/vpn/add.png"));
-//    ui->addBtn->setIconSize(QSize(48, 48));
-//    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
-
-
     addWgt = new HoverWidget("");
     addWgt->setObjectName("addwgt");
     addWgt->setMinimumSize(QSize(580, 50));
@@ -80,6 +73,7 @@ void Vpn::initComponent(){
     QHBoxLayout *addLyt = new QHBoxLayout;
 
     QLabel * iconLabel = new QLabel();
+    //~ contents_path /vpn/Add vpn connect
     QLabel * textLabel = new QLabel(tr("Add vpn connect"));
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);
@@ -115,18 +109,3 @@ void Vpn::runExternalApp(){
     QProcess process(this);
     process.startDetached(cmd);
 }
-
-//bool Vpn::eventFilter(QObject *watched, QEvent *event)
-//{
-//    if (watched == ui->addFrame){
-//        if (event->type() == QEvent::MouseButtonPress){
-//            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
-//            if (mouseEvent->button() == Qt::LeftButton){
-//                runExternalApp();
-//                return true;
-//            } else
-//                return false;
-//        }
-//    }
-//    return QObject::eventFilter(watched, event);
-//}

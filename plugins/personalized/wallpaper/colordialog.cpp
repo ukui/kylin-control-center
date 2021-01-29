@@ -20,6 +20,8 @@
 #include "colordialog.h"
 #include "ui_colordialog.h"
 #include "colorsquare.h"
+#include "MaskWidget/maskwidget.h"
+#include "CloseButton/closebutton.h"
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
@@ -53,6 +55,7 @@ void ColorDialog::paintEvent(QPaintEvent *event)
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
     pixmapPainter.setBrush(Qt::black);
+    pixmapPainter.setOpacity(0.65);
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 
@@ -92,6 +95,9 @@ void ColorDialog::setupInit()
     QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     colorSquare->setSizePolicy(sizePolicy);
     ui->horizontalLayout_2->addWidget(colorSquare);
+    // 遮罩
+    MaskWidget * maskWidget = new MaskWidget(colorSquare);
+    maskWidget->setGeometry(0, 0, colorSquare->width(), colorSquare->height());
 
     // 垂直渐变滑动条
     gradientSlider = new GradientSlider(this);
@@ -167,8 +173,8 @@ void ColorDialog::setupInit()
 
     // CloseBtn
     ui->closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
     //取消按钮默认主题灰色背景
     QPalette palette = ui->closeBtn->palette();
     QColor ColorPlaceholderText(255,255,255,0);
@@ -186,7 +192,7 @@ void ColorDialog::setupInit()
 void ColorDialog::signalsBind()
 {
     qDebug() << "signals bind";
-    connect(ui->closeBtn, &QPushButton::clicked, [=](bool checked){
+    connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
         close();
     });

@@ -10,7 +10,7 @@ include($$PROJECT_COMPONENTSOURCE/flowlayout.pri)
 include($$PROJECT_COMPONENTSOURCE/maskwidget.pri)
 include($$PROJECT_COMPONENTSOURCE/uslider.pri)
 
-QT       += widgets xml
+QT       += widgets xml dbus
 
 TEMPLATE = lib
 CONFIG += plugin
@@ -40,13 +40,15 @@ SOURCES += \
         bgfileparse.cpp \
         buildpicunitsworker.cpp \
         pictureunit.cpp \
-        screenlock.cpp
+        screenlock.cpp \
+        xmlhandle.cpp
 
 HEADERS += \
         bgfileparse.h \
         buildpicunitsworker.h \
         pictureunit.h \
-        screenlock.h
+        screenlock.h \
+        xmlhandle.h
 
 FORMS += \
         screenlock.ui

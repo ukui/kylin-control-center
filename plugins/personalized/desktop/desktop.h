@@ -27,6 +27,7 @@
 #include <QVector>
 #include <QPushButton>
 #include <QMap>
+#include <QProcess>
 
 #include "shell/interface.h"
 
@@ -51,7 +52,9 @@ public:
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
+    const QString name() const  Q_DECL_OVERRIDE;
 
+    void initSearchText();
     void initTranslation();
     void setupComponent();
     void setupConnect();
@@ -59,6 +62,11 @@ public:
     void initLockingStatus();
     void initTrayStatus(QString name, QIcon icon, QGSettings *gsettings);
     void initTraySettings();
+    void clearContent();
+
+private:
+    QMap<QString, QIcon> desktopConver(QString processName);
+    bool isFileExist(QString fullFileName);
 
 private:
     Ui::Desktop *ui;
@@ -66,10 +74,11 @@ private:
     int pluginType;
     QString pluginName;
     QWidget * pluginWidget;
-    QVector<QGSettings*> *vecGsettings;
+    QVector<QGSettings*> vecGsettings;
     QMap<QString, QString> transMap; // transaltion Map
     QMap<QString, QString> iconMap;
     QStringList disList;
+    QStringList nameList;
 
     SwitchButton * deskComputerSwitchBtn;
     SwitchButton * deskTrashSwitchBtn;
@@ -85,6 +94,18 @@ private:
 
     QGSettings * dSettings;
 
+    QSharedPointer<QProcess> cmd;
+
+    bool mFirstLoad;
+
+private slots:
+    void removeTrayItem(QString itemName);
+    void addTrayItem(QGSettings * trayGSetting);
+    QString desktopToName(QString desktopfile);
+    QIcon   desktopToIcon(const QString &desktopfile);
+    QMap<QString, QIcon> readOuputSlot();
+    void readErrorSlot();
+    void slotCloudAccout(const QString &key);
 };
 
 #endif // DESKTOP_H

@@ -32,79 +32,62 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include "logindialog.h"
-#include "regdialog.h"
-#include "successdiaolog.h"
 #include "passdialog.h"
 #include <QTimer>
 #include <QSizePolicy>
 #include "passwordlineedit.h"
-#include "dbushandleclient.h"
+#include "dbusutils.h"
 #include <QShortcut>
-#include "bindphonedialog.h"
 #include <QMovie>
 #include <QtDBus/QtDBus>
 #include "tips.h"
 #include "svghandler.h"
 #include "blueeffect.h"
+#include "logindialog.h"
+#include <QDialog>
+#include "CloseButton/closebutton.h"
 
-class MainDialog : public QWidget
+class MainDialog : public QDialog
 {
     Q_OBJECT
 public:
     explicit        MainDialog(QWidget *parent = nullptr);
     QString         status = tr("Sign in Cloud");
     int             timerout_num = 60;
-    int             timerout_num_reg = 60;
-    int             timerout_num_log = 60;
-    int             timerout_num_bind = 60;
-    QString         messagebox(int code);
-    void            set_client(DbusHandleClient *c,QThread *t);
+    QString         messagebox(const int &code) const;
+    void            set_client(DBusUtils *c,QThread *t);
     QPushButton    *get_login_submit();
+    QString replace_blank(QString &str);
     LoginDialog     *get_dialog();
     bool            retok = true;
     void            set_clear();
     void            setshow(QWidget *w);
     bool            is_used = false;
-    void            set_staus(bool ok);
+    void            set_staus(const bool &ok);
     void            closedialog();
     void            setnormal();
     ~MainDialog();
 
 public slots:
-    void linked_forget_btn();
-    void linked_register_btn();
-    void back_login_btn();
-    void back_normal();
     void on_login_btn();
     void on_pass_btn();
     void on_reg_btn();
-    void on_login_finished(int ret,QString m_uuid);
-    void on_pass_finished(int ret,QString m_uuid);
-    void on_reg_finished(int ret,QString m_uuid);
-    void on_get_mcode_by_name(int ret,QString m_uuid);
-    void on_get_mcode_by_phone(int ret,QString m_uuid);
+    void on_login_finished(int ret);
+    //void on_reg_finished(int ret,QString m_uuid);
+    void on_get_mcode_by_phone(int ret);
     void on_timer_timeout();
-    void on_send_code();
-    void on_send_code_reg();
     void on_send_code_log();
-    void on_send_code_bind();
-    void on_timer_reg_out();
-    void on_timer_log_out();
-    void on_timer_bind_out();
+    //void on_send_code_bind();
     void on_close();
-    void on_bind_finished(int ret,QString m_uuid);
-    void on_bind_btn();
+    //void on_bind_finished(int ret,QString m_uuid);
+    //void on_bind_btn();
     void cleanconfirm(QString str);
     void setret_login(int ret);
     void setret_phone_login(int ret);
-    void setret_rest(int ret);
-    void setret_reg(int ret);
-    void setret_bind(int ret);
+    //void setret_rest(int ret);
+    //void setret_bind(int ret);
     void setret_code_phone_login(int ret);
-    void setret_code_phone_reg(int ret);
-    void setret_code_user_pass(int ret);
-    void setret_code_user_bind(int ret);
+    //void setret_code_user_bind(int ret);
     void set_back();
 protected:
     void            paintEvent(QPaintEvent *event);
@@ -124,42 +107,24 @@ private:
     QVBoxLayout     *m_workLayout;
     QHBoxLayout     *m_subLayout;
     QPoint          m_startPoint;
-    QPushButton     *m_delBtn;
-    PassDialog      *m_passDialog;
-    RegDialog       *m_regDialog;
-    QLabel          *m_accountTips;
-    QLabel          *m_passTips;
-    Tips          *m_errorPassTips;
-    Tips          *m_errorRegTips;
-    PasswordLineEdit       *m_regPassLineEdit;
-    QLineEdit       *m_regAccountLineEdit;
+    CloseButton     *m_delBtn;
     PasswordLineEdit       *m_loginPassLineEdit;
-    QLineEdit       *m_mcodeLineEdit;
-    QLineEdit       *m_phoneLineEdit;
-    QLineEdit       *m_passLineEdit;
-    PasswordLineEdit       *m_passConfirmLineEdit;
-    PasswordLineEdit       *m_passPasswordLineEdit;
-    QLineEdit       *m_passMCodeLineEdit;
+
     QLineEdit       *m_loginLineEdit;
     QLineEdit       *m_loginAccountLineEdit;
-    PasswordLineEdit       *m_regConfirmLineEdit;
     Tips          *m_loginTips;
-    QLabel          *m_regTips;
+    //QLabel          *m_regTips;
     QLineEdit       *m_loginMCodeLineEdit;
     Tips          *m_loginCodeStatusTips;
-    QPushButton     *m_regSendCodeBtn;
-    QPushButton     *m_forgetpassBtn;
+    //QPushButton     *m_regSendCodeBtn;
+    //QPushButton     *m_forgetpassBtn;
     QPushButton     *m_forgetpassSendBtn;
     QString         *m_szPassName;
-    QTimer          *m_cPassTimer;
-    QTimer          *m_cRegTimer;
-    QTimer          *m_cLogTimer;
-    QTimer          *m_cBindTimer;
-    DbusHandleClient   *m_dbusClient;
+    QTimer          *m_timer;
+    DBusUtils   *m_dbusClient;
     QWidget         *m_containerWidget;
     QStackedWidget  *m_baseWidget;
-    SuccessDiaolog  *m_successDialog;
-    BindPhoneDialog *m_BindDialog;
+    //BindPhoneDialog *m_BindDialog;
     Blueeffect          *m_blueEffect;
     QThread         *m_workThread;
     bool            m_bIsSendOk = false;
@@ -169,19 +134,17 @@ private:
     SVGHandler *m_svgHandler;
     QHBoxLayout    *m_animateLayout;
 
+    QString        m_PhoneLogin;
+    QString        m_NameLogin;
+
 signals:
+    void on_close_event();
     void on_login_failed();
     void on_login_success();
     void on_allow_send();
-    void dologin(QString username,QString pwd,QString uuid);
-    void dogetmcode_phone_log(QString phonenumb,QString uuid);
-    void dogetmcode_phone_reg(QString phonenumb,QString uuid);
-    void dogetmcode_number_bind(QString username,QString uuid);
-    void dogetmcode_number_pass(QString username,QString uuid);
-    void dorest(QString username, QString newpwd, QString mCode,QString uuid);
-    void doreg(QString username, QString pwd, QString phonenumb, QString mcode,QString uuid);
-    void dophonelogin(QString phone, QString mCode,QString uuid);
-    void dobind(QString username, QString pwd, QString phone, QString mCode,QString uuid);
+    void dologin(QString username,QString pwd);
+    void dogetmcode_phone_log(QString phonenumb);
+    void dophonelogin(QString phone,QString mCode);
 
 };
 

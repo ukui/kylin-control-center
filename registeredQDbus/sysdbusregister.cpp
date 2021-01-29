@@ -20,30 +20,26 @@
 #include "sysdbusregister.h"
 
 #include <QDebug>
-#include <QSettings>
 #include <QSharedPointer>
+#include <QRegExp>
+#include <stdlib.h>
 
 SysdbusRegister::SysdbusRegister()
 {
+    mHibernateFile = "/etc/systemd/sleep.conf";
+    mHibernateSet = new QSettings(mHibernateFile, QSettings::IniFormat, this);
+    mHibernateSet->setIniCodec("UTF-8");
 }
 
 SysdbusRegister::~SysdbusRegister()
 {
 }
 
-//QString SysdbusRegister::name () const{
-//    return m_name;
-//}
-
-//void SysdbusRegister::SetName(QString name){
-//    m_name = name;
-//}
-
-void SysdbusRegister::exitService(){
+void SysdbusRegister::exitService() {
     qApp->exit(0);
 }
 
-QString SysdbusRegister::GetComputerInfo(){
+QString SysdbusRegister::GetComputerInfo() {
     QByteArray ba;
     FILE * fp = NULL;
     char cmd[128];
@@ -60,10 +56,6 @@ QString SysdbusRegister::GetComputerInfo(){
         fp = NULL;
     }
     return QString(ba);
-}
-
-void SysdbusRegister::systemRun(QString cmd){
-    QProcess::execute(cmd);
 }
 
 //获取免密登录状态
@@ -86,7 +78,7 @@ QString SysdbusRegister::getNoPwdLoginStatus(){
 }
 
 //设置免密登录状态
-void SysdbusRegister::setNoPwdLoginStatus(bool status,QString username){
+void SysdbusRegister::setNoPwdLoginStatus(bool status,QString username) {
 
     QString cmd;
     if(true == status){
@@ -94,18 +86,44 @@ void SysdbusRegister::setNoPwdLoginStatus(bool status,QString username){
     } else{
         cmd = QString("gpasswd  -d %1 nopasswdlogin").arg(username);
     }
-    systemRun(cmd);
+    QProcess::execute(cmd);
 }
 
 // 设置自动登录状态
-void SysdbusRegister::setAutoLoginStatus(QString username)
-{
+void SysdbusRegister::setAutoLoginStatus(QString username) {
     QString filename = "/etc/lightdm/lightdm.conf";
     QSharedPointer<QSettings>  autoSettings = QSharedPointer<QSettings>(new QSettings(filename, QSettings::IniFormat));
     autoSettings->beginGroup("SeatDefaults");
-    autoSettings->clear();
 
     autoSettings->setValue("autologin-user", username);
+
     autoSettings->endGroup();
     autoSettings->sync();
+}
+
+QString SysdbusRegister::getSuspendThenHibernate() {
+    mHibernateSet->beginGroup("Sleep");
+
+    QString time = mHibernateSet->value("HibernateDelaySec").toString();
+
+    mHibernateSet->endGroup();
+    mHibernateSet->sync();
+
+    return time;
+}
+
+void SysdbusRegister::setSuspendThenHibernate(QString time) {
+    mHibernateSet->beginGroup("Sleep");
+
+    mHibernateSet->setValue("HibernateDelaySec", time);
+
+    mHibernateSet->endGroup();
+    mHibernateSet->sync();
+}
+
+void SysdbusRegister::setPasswdAging(int days, QString username) {
+    QString cmd;
+
+    cmd = QString("chage -M %1 %2").arg(days).arg(username);
+    QProcess::execute(cmd);
 }

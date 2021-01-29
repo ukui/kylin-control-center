@@ -22,36 +22,43 @@
 
 #include <QDebug>
 
-Audio::Audio()
+Audio::Audio() : mFirstLoad(true)
 {
-    ui = new Ui::Audio;
-    pluginWidget = new UkmediaMainWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("Audio");
     pluginType = DEVICES;
 }
 
 Audio::~Audio()
 {
-    delete ui;
+    if (!mFirstLoad) {
+        delete ui;
+    }
 }
 
-QString Audio::get_plugin_name(){
+QString Audio::get_plugin_name() {
     return pluginName;
 }
 
-int Audio::get_plugin_type(){
+int Audio::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *Audio::get_plugin_ui(){
-    return pluginWidget;
+QWidget *Audio::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+        ui = new Ui::Audio;
+        pluginWidget = new UkmediaMainWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+    }
+    return  pluginWidget;
 }
 
 void Audio::plugin_delay_control(){
 
+}
+
+const QString Audio::name() const {
+    return QStringLiteral("audio");
 }
 

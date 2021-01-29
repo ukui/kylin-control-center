@@ -30,27 +30,51 @@ UkuiMessageBox::UkuiMessageBox()
 UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(parent)
 {
     m_pThemeWidget = new QFrame(this);
-    m_pShutDownWidget = new QFrame(this);
+    m_pAlertSoundWidget = new QFrame(this);
     m_pLagoutWidget = new QFrame(this);
     m_pAlertSoundSwitchWidget = new QFrame(this);
+    m_pAlertSoundVolumeWidget = new QFrame(this);
     m_pWindowClosedWidget = new QFrame(this);
     m_pVolumeChangeWidget = new QFrame(this);
     m_pSettingSoundWidget = new QFrame(this);
 
     m_pThemeWidget->setFrameShape(QFrame::Shape::Box);
-    m_pShutDownWidget->setFrameShape(QFrame::Shape::Box);
+    m_pAlertSoundWidget->setFrameShape(QFrame::Shape::Box);
     m_pLagoutWidget->setFrameShape(QFrame::Shape::Box);
     m_pAlertSoundSwitchWidget->setFrameShape(QFrame::Shape::Box);
+    m_pAlertSoundVolumeWidget->setFrameShape(QFrame::Shape::Box);
     m_pWindowClosedWidget->setFrameShape(QFrame::Shape::Box);
     m_pVolumeChangeWidget->setFrameShape(QFrame::Shape::Box);
     m_pSettingSoundWidget->setFrameShape(QFrame::Shape::Box);
 
+    //~ contents_path /audio/System Sound
     m_pSoundEffectLabel = new QLabel(tr("System Sound"),this);
     m_pSoundEffectLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    //~ contents_path /audio/Sound Theme
     m_pSoundThemeLabel = new QLabel(tr("Sound Theme"),m_pThemeWidget);
     m_pSoundThemeCombobox = new QComboBox(m_pThemeWidget);
-    m_pShutdownlabel = new QLabel(tr("Alert Sound"),m_pShutDownWidget);
-    m_pShutdownCombobox = new QComboBox(m_pShutDownWidget);
+    //~ contents_path /audio/Alert Sound
+    m_pShutdownlabel = new QLabel(tr("Alert Sound"),m_pAlertSoundWidget);
+    m_pAlertSoundCombobox = new QComboBox(m_pAlertSoundWidget);
+    //~ contents_path /audio/Alert Volume
+    m_pAlertSoundLabel = new QLabel(tr("Alert Volume"),m_pAlertSoundVolumeWidget);
+    m_pAlertVolumeLabel = new QLabel(m_pAlertSoundVolumeWidget);
+    m_pAlertSlider = new UkmediaVolumeSlider(m_pAlertSoundVolumeWidget);
+    m_pAlertIconBtn = new UkuiButtonDrawSvg(m_pAlertSoundVolumeWidget);
+    m_pAlertSlider->setRange(0,100);
+    QSize iconSize(24,24);
+    m_pAlertIconBtn->setFocusPolicy(Qt::NoFocus);
+//    m_pAlertIconBtn->setFlat(true);
+    m_pAlertIconBtn->setFixedSize(24,24);
+    m_pAlertIconBtn->setIconSize(iconSize);
+    m_pAlertSlider->setOrientation(Qt::Horizontal);
+    QPalette paleteAppIcon = m_pAlertIconBtn->palette();
+    paleteAppIcon.setColor(QPalette::Highlight,Qt::transparent);
+    paleteAppIcon.setBrush(QPalette::Button,QBrush(QColor(1,1,1,0)));
+    m_pAlertIconBtn->setPalette(paleteAppIcon);
+//    m_pAlertIconBtn->setProperty("useIconHighlightEffect",true);
+//    m_pAlertIconBtn->setProperty("iconHighlightEffectMode",true);
+    //~ contents_path /audio/Boot Music
     m_pLagoutLabel = new QLabel(tr("Boot Music"),m_pLagoutWidget);
     m_pLagoutCombobox = new QComboBox(m_pLagoutWidget);
     m_pBootButton = new SwitchButton(m_pLagoutWidget);
@@ -58,6 +82,7 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pVolumeChangeCombobox = new QComboBox(m_pVolumeChangeWidget);
     m_pSettingSoundCombobox = new QComboBox(m_pSettingSoundWidget);
 
+    //~ contents_path /audio/Beep Switch
     m_pAlertSoundSwitchLabel = new QLabel(tr("Beep Switch"),m_pAlertSoundSwitchWidget);
     m_pAlertSoundSwitchButton = new SwitchButton(m_pAlertSoundSwitchWidget);
 
@@ -67,8 +92,8 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     //设置大小
     m_pThemeWidget->setMinimumSize(550,50);
     m_pThemeWidget->setMaximumSize(960,50);
-    m_pShutDownWidget->setMinimumSize(550,50);
-    m_pShutDownWidget->setMaximumSize(960,50);
+    m_pAlertSoundWidget->setMinimumSize(550,50);
+    m_pAlertSoundWidget->setMaximumSize(960,50);
     m_pLagoutWidget->setMinimumSize(550,50);
     m_pLagoutWidget->setMaximumSize(960,50);
     m_pAlertSoundSwitchWidget->setMinimumSize(550,50);
@@ -79,20 +104,30 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pVolumeChangeWidget->setMaximumSize(960,50);
     m_pSettingSoundWidget->setMinimumSize(550,50);
     m_pSettingSoundWidget->setMaximumSize(960,50);
+    m_pAlertSoundVolumeWidget->setMinimumSize(550,50);
+    m_pAlertSoundVolumeWidget->setMaximumSize(960,50);
 
-    m_pSoundEffectLabel->setFixedSize(120,24);
-    m_pSoundThemeLabel->setFixedSize(115,24);
-    m_pShutdownlabel->setFixedSize(115,24);
-    m_pLagoutLabel->setFixedSize(115,24);
-    m_pWindowClosedLabel->setFixedSize(115,24);
-    m_pVolumeChangeLabel->setFixedSize(115,24);
-    m_pSettingSoundLabel->setFixedSize(115,24);
+//    m_pSoundEffectLabel->setFixedSize(115,24);
+//    m_pSoundThemeLabel->setFixedSize(115,24);
+//    m_pShutdownlabel->setFixedSize(115,24);
+//    m_pLagoutLabel->setFixedSize(115,24);
+//    m_pWindowClosedLabel->setFixedSize(115,24);
+//    m_pVolumeChangeLabel->setFixedSize(115,24);
+//    m_pSettingSoundLabel->setFixedSize(115,24);
+
+    m_pSoundEffectLabel->setFixedSize(150,32);
+    m_pSoundThemeLabel->setFixedSize(150,32);
+    m_pShutdownlabel->setFixedSize(150,32);
+    m_pLagoutLabel->setFixedSize(150,32);
+    m_pWindowClosedLabel->setFixedSize(150,32);
+    m_pVolumeChangeLabel->setFixedSize(150,32);
+    m_pSettingSoundLabel->setFixedSize(150,32);
 
     m_pSoundThemeCombobox->setMinimumSize(50,32);
     m_pSoundThemeCombobox->setMaximumSize(900,32);
 
-    m_pShutdownCombobox->setMinimumSize(50,32);
-    m_pShutdownCombobox->setMaximumSize(900,32);
+    m_pAlertSoundCombobox->setMinimumSize(50,32);
+    m_pAlertSoundCombobox->setMaximumSize(900,32);
     m_pLagoutCombobox->setMinimumSize(50,32);
     m_pLagoutCombobox->setMaximumSize(900,32);
     m_pWindowClosedCombobox->setMinimumSize(50,32);
@@ -112,15 +147,15 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pThemeWidget->setLayout(themeLayout);
     m_pThemeWidget->layout()->setContentsMargins(0,0,0,0);
 
-    QHBoxLayout *shutdownLayout = new QHBoxLayout(m_pShutDownWidget);
-    shutdownLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
-    shutdownLayout->addWidget(m_pShutdownlabel);
-    shutdownLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
-    shutdownLayout->addWidget(m_pShutdownCombobox);
-    shutdownLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
-    shutdownLayout->setSpacing(0);
-    m_pShutDownWidget->setLayout(shutdownLayout);
-    m_pShutDownWidget->layout()->setContentsMargins(0,0,0,0);
+    QHBoxLayout *AlertLayout = new QHBoxLayout(m_pAlertSoundWidget);
+    AlertLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    AlertLayout->addWidget(m_pShutdownlabel);
+    AlertLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    AlertLayout->addWidget(m_pAlertSoundCombobox);
+    AlertLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    AlertLayout->setSpacing(0);
+    m_pAlertSoundWidget->setLayout(AlertLayout);
+    m_pAlertSoundWidget->layout()->setContentsMargins(0,0,0,0);
 
     //开关机音乐设置开关
     QHBoxLayout *lagoutLayout = new QHBoxLayout(m_pLagoutWidget);
@@ -147,6 +182,23 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     alertSoundLayout->setSpacing(0);
     m_pAlertSoundSwitchWidget->setLayout(alertSoundLayout);
     m_pAlertSoundSwitchWidget->layout()->setContentsMargins(0,0,0,0);
+    //提示音大小
+    QHBoxLayout *alertLayout = new QHBoxLayout(m_pAlertSoundVolumeWidget);
+    m_pAlertSoundLabel->setFixedSize(150,32);
+    m_pAlertSlider->setFixedHeight(20);
+    m_pAlertVolumeLabel->setFixedSize(40,24);
+    alertLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    alertLayout->addWidget(m_pAlertSoundLabel);
+    alertLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    alertLayout->addWidget(m_pAlertIconBtn);
+    alertLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    alertLayout->addWidget(m_pAlertSlider);
+    alertLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    alertLayout->addWidget(m_pAlertVolumeLabel);
+    alertLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    alertLayout->setSpacing(0);
+    m_pAlertSoundVolumeWidget->setLayout(alertLayout);
+    m_pAlertSoundVolumeWidget->layout()->setContentsMargins(0,0,0,0);
 
     //窗口关闭提示音
     QHBoxLayout *windowClosedLayout = new QHBoxLayout(m_pWindowClosedWidget);
@@ -181,21 +233,21 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pSettingSoundWidget->layout()->setContentsMargins(0,0,0,0);
 
     //进行整体布局
-    QVBoxLayout *vLayout = new QVBoxLayout(this);
-    vLayout->addWidget(m_pSoundEffectLabel);
-    vLayout->addItem(new QSpacerItem(16,14,QSizePolicy::Fixed));
-    vLayout->addWidget(m_pLagoutWidget);
-    vLayout->addItem(new QSpacerItem(16,6,QSizePolicy::Fixed));
-    vLayout->addWidget(m_pAlertSoundSwitchWidget);
-
-    vLayout->addItem(new QSpacerItem(16,7,QSizePolicy::Fixed));
-    vLayout->addWidget(m_pThemeWidget);
-    vLayout->addWidget(m_pShutDownWidget);
+    m_pSoundLayout = new QVBoxLayout(this);
+    m_pSoundLayout->addWidget(m_pSoundEffectLabel);
+    m_pSoundLayout->addItem(new QSpacerItem(16,14,QSizePolicy::Fixed));
+    m_pSoundLayout->addWidget(m_pLagoutWidget);
+    m_pSoundLayout->addItem(new QSpacerItem(16,6,QSizePolicy::Fixed));
+    m_pSoundLayout->addWidget(m_pAlertSoundSwitchWidget);
+//    m_pSoundLayout->addWidget(m_pAlertSoundVolumeWidget);
+    m_pSoundLayout->addItem(new QSpacerItem(16,7,QSizePolicy::Fixed));
+    m_pSoundLayout->addWidget(m_pThemeWidget);
+    m_pSoundLayout->addWidget(m_pAlertSoundWidget);
 //    vLayout->addWidget(m_pWindowClosedWidget);
-    vLayout->addWidget(m_pVolumeChangeWidget);
+    m_pSoundLayout->addWidget(m_pVolumeChangeWidget);
 //    vLayout->addWidget(m_pSettingSoundWidget);
-    this->setLayout(vLayout);
-    vLayout->setSpacing(1);
+    this->setLayout(m_pSoundLayout);
+    m_pSoundLayout->setSpacing(1);
     this->layout()->setContentsMargins(0,0,0,0);
     m_pSettingSoundWidget->hide();
     m_pWindowClosedWidget->hide();

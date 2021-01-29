@@ -7,7 +7,7 @@ include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 include($$PROJECT_COMPONENTSOURCE/uslider.pri)
 
-QT       += widgets KConfigCore KI18n x11extras concurrent
+QT       += widgets KConfigCore KI18n x11extras concurrent dbus
 
 TEMPLATE = lib
 CONFIG += plugin \

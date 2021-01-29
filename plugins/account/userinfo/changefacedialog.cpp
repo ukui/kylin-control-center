@@ -22,6 +22,7 @@
 
 #include "FlowLayout/flowlayout.h"
 #include "elipsemaskwidget.h"
+#include "CloseButton/closebutton.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -40,12 +41,12 @@ ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
     setAttribute(Qt::WA_DeleteOnClose);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
+    //ui->closeBtn->setProperty("useIconHighlightEffect", true);
+    //ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+    //ui->closeBtn->setFlat(true);
 
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+    //ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+    //                            "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
 //    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
 //    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff; border: none;}");
@@ -60,7 +61,7 @@ ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
     loadSystemFaces();
 
 
-    connect(ui->closeBtn, &QPushButton::clicked, [=]{
+    connect(ui->closeBtn, &CloseButton::clicked, [=]{
         close();
     });
     connect(ui->customfaceBtn, &QPushButton::clicked, [=]{
@@ -129,7 +130,7 @@ void ChangeFaceDialog::setAccountType(QString atype){
 }
 
 void ChangeFaceDialog::showLocalFaceDialog(){
-    QString filters = "Face files(*.png *.jpg *.svg)";
+    QString filters = "Face files(*.jpg *.jpeg *.png *.svg)";
     QFileDialog fd;
     fd.setDirectory(QString(const_cast<char *>(g_get_user_special_dir(G_USER_DIRECTORY_PICTURES))));
     fd.setAcceptMode(QFileDialog::AcceptOpen);
@@ -152,8 +153,9 @@ void ChangeFaceDialog::showLocalFaceDialog(){
     QFile pic(selectedfile);
     int size = pic.size();
 
-    if (size >= 2097152) {
-        QMessageBox::warning(this, tr("Warning"), tr("The avatar is larger than 2M, please choose again"));
+    qDebug() << "size is"  << size;
+    if (size >= 1048576) {
+        QMessageBox::warning(this, tr("Warning"), tr("The avatar is larger than 1M, please choose again"));
         return;
     }
 
@@ -162,7 +164,8 @@ void ChangeFaceDialog::showLocalFaceDialog(){
 }
 
 void ChangeFaceDialog::paintEvent(QPaintEvent *event) {
-    Q_UNUSED(event);
+    Q_UNUSED(event)
+
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
@@ -175,12 +178,14 @@ void ChangeFaceDialog::paintEvent(QPaintEvent *event) {
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
     pixmapPainter.setBrush(Qt::black);
+    pixmapPainter.setOpacity(0.65);
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 
     // 模糊这个黑底
     QImage img = pixmap.toImage();
     qt_blurImage(img, 10, false, false);
+
     // 挖掉中心
     pixmap = QPixmap::fromImage(img);
     QPainter pixmapPainter2(&pixmap);
@@ -192,9 +197,9 @@ void ChangeFaceDialog::paintEvent(QPaintEvent *event) {
 
     // 绘制阴影
     p.drawPixmap(this->rect(), pixmap, pixmap.rect());
+
     // 绘制一个背景
     p.save();
     p.fillPath(rectPath,palette().color(QPalette::Base));
-
     p.restore();
 }

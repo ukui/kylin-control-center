@@ -74,6 +74,8 @@ private:
 private:
     Ui::CreateUserDialog *ui;
 
+    bool checkCharLegitimacy(QString password);
+
     bool back;
     bool isCreateUser = false;
     bool enablePwdQuality;

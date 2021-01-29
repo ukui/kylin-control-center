@@ -1,9 +1,32 @@
 #include "svghandler.h"
 #include <QApplication>
 
-SVGHandler::SVGHandler(QObject *parent) : QObject(parent)
-{
+#define THEME_SCHEMA "org.ukui.style"
+#define THEME_KEY "styleName"
 
+SVGHandler::SVGHandler(QObject *parent,bool highLight) : QObject(parent)
+{
+    m_color = "default";
+    if(highLight) {
+        QByteArray id(THEME_SCHEMA);
+        themeSettings = new QGSettings(id,QByteArray(),this);
+
+        if(themeSettings->get(THEME_KEY).toString() == "ukui-dark") {
+            m_color = "white";
+        } else {
+            m_color = "black";
+        }
+
+        connect(themeSettings,&QGSettings::changed,this,[=] (const QString &key) {
+           if(key == THEME_KEY) {
+               if(themeSettings->get(key).toString() == "ukui-dark") {
+                   m_color = "white";
+               } else {
+                   m_color = "default";
+               }
+           }
+        });
+    }
 }
 
 
@@ -29,7 +52,7 @@ const QPixmap SVGHandler::loadSvg(const QString &fileName)
     return pixmap;
 }
 
-const QPixmap SVGHandler::loadSvgColor(const QString &path, const QString color, int size)
+const QPixmap SVGHandler::loadSvgColor(const QString &path, const QString &color, int size)
 {
     int origSize = size;
     const auto ratio = qApp->devicePixelRatio();
@@ -48,6 +71,11 @@ const QPixmap SVGHandler::loadSvgColor(const QString &path, const QString color,
     painter.end();
 
     pixmap.setDevicePixelRatio(ratio);
+
+    if(color != m_color && m_color != "default") {
+        return drawSymbolicColoredPixmap(pixmap, m_color);
+    }
+
     return drawSymbolicColoredPixmap(pixmap, color);
 }
 

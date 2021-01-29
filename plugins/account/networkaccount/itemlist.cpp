@@ -41,21 +41,22 @@ ItemList::ItemList(QWidget *parent,int itemssize) : QWidget(parent) {
 
 /* 获取列表物品，如麒麟天气、壁纸等选单列表
  * Get a item of list, for example: Getting Kylin-Weather, Wallpaper etc.. */
-FrameItem*  ItemList::get_item(int cur) {
+FrameItem*  ItemList::get_item(const int &cur) {
     return m_itemWidget[cur];
 }
 
-FrameItem* ItemList::get_item_by_name(QString name) {
+FrameItem* ItemList::get_item_by_name(const QString &name) {
     m_cItemCnt = m_szItemNameList.size();
     for(int cur_ptr = 0; cur_ptr < m_cItemCnt; cur_ptr ++) {
         if(m_itemWidget[cur_ptr]->get_itemname() == name) {
             return m_itemWidget[cur_ptr];
         }
     }
+    return 0;
 }
 
 /* 读取列表
  * Read the list */
-QStringList ItemList::get_list() {
+QStringList ItemList::get_list() const {
     return m_szItemNameList;
 }

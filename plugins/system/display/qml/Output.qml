@@ -29,6 +29,8 @@ QMLOutput {
     signal enabledToggled(string self);
     signal mousePressed();
     signal mouseReleased();
+    signal positionChanged();
+    signal rotationChanged();
 
     property bool isDragged: monitorMouseArea.drag.active;
     property bool isDragEnabled: true;
@@ -38,29 +40,22 @@ QMLOutput {
     width: monitorMouseArea.width;
     height: monitorMouseArea.height;
 
-
     visible: (opacity > 0);
     opacity: output.connected ? 1.0 : 0.0;
-
 
     Component.onCompleted: {
         root.updateRootProperties();
     }
 
     SystemPalette {
-
         id: palette;
     }
 
     MouseArea {
-
         id: monitorMouseArea;
-
         width: root.currentOutputWidth * screen.outputScale;
         height: root.currentOutputHeight * screen.outputScale
-
         anchors.centerIn: parent;
-
         //是否激活时的透明度
         opacity: root.output.enabled ? 1.0 : 0.3;
         transformOrigin: Item.Center;
@@ -103,6 +98,8 @@ QMLOutput {
         }
 
         onPressed: root.clicked();
+        onReleased: root.mouseReleased()
+        onRotationChanged: root.rotationChanged();
 
         /* FIXME: This could be in 'Behavior', but MouseArea had
          * some complaints...to tired to investigate */
@@ -150,11 +147,8 @@ QMLOutput {
         }
 
         Rectangle {
-
             id: monitor;
-
             anchors.fill: parent;
-
             //圆角
             radius: 8;
             //是否点击到屏幕
@@ -174,17 +168,12 @@ QMLOutput {
             }
 
             Rectangle {
-
                 id: posLabel;
-
                 y: 4;
                 x: 4;
-
                 width: childrenRect.width + 5;
                 height: childrenRect.height + 2;
-
                 radius: 8;
-
                 opacity: root.output.enabled && monitorMouseArea.drag.active ? 1.0 : 0.0;
                 visible: opacity != 0.0;
 
@@ -192,11 +181,8 @@ QMLOutput {
 
                 Text {
                     id: posLabelText;
-
                     text: root.outputX + "," + root.outputY;
-
                     color: "white";
-
                     y: 2;
                     x: 2;
                 }
@@ -284,14 +270,6 @@ QMLOutput {
 
             Rectangle {
                 id: orientationPanel;
-
-                //注释底部不会变色拖动时候
-//                anchors {
-//                    left: parent.left;
-//                    right: parent.right;
-//                    bottom: parent.bottom;
-//                }
-
                 height: 10;
                 //color: root.focus ? palette.highlight : palette.shadow;
                 //底部颜色

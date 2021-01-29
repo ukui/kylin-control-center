@@ -24,6 +24,7 @@
 #include <QPixmap>
 
 #include "bgfileparse.h"
+#include "xmlhandle.h"
 
 class BuildPicUnitsWorker : public QObject
 {
@@ -33,8 +34,11 @@ public:
     explicit BuildPicUnitsWorker();
     ~BuildPicUnitsWorker();
 
-public:
     void run();
+
+private:
+    XmlHandle * xmlHandleObj;
+
 
 Q_SIGNALS:
     void pixmapGeneral(QPixmap pixmap, BgInfo bginfo);

@@ -30,6 +30,7 @@
 #include <QPaintEvent>
 #include <QShowEvent>
 #include <QMoveEvent>
+#include <QtDBus>
 #include <QHideEvent>
 
 #include "shell/interface.h"
@@ -75,9 +76,6 @@ public:
     }
 protected:
     void paintEvent(QPaintEvent *e);
-//    void showEvent(QShowEvent *e);
-//    void moveEvent(QMoveEvent *e);
-//    void hideEvent(QHideEvent *e);
 };
 
 class Screensaver : public QObject, CommonInterface
@@ -94,8 +92,10 @@ public:
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
+    const QString name() const  Q_DECL_OVERRIDE;
 
 public:
+    void initSearchText();
     void initComponent();
     void initPreviewWidget();
     void initEnableBtnStatus();
@@ -120,6 +120,7 @@ public:
 private:
     int convertToLocktime(const int value);
     int lockConvertToSlider(const int value);
+    void connectToServer();
 
 private:
     Ui::Screensaver *ui;
@@ -130,10 +131,6 @@ private:
 
     SwitchButton * enableSwitchBtn;
     SwitchButton * lockSwitchBtn;
-    /*
-    SwitchButton * activeswitchbtn;
-    SwitchButton * lockswitchbtn;
-    */
 
     QMap<QString, SSThemeInfo> infoMap;
 
@@ -142,6 +139,7 @@ private:
     QGSettings * screenlock_settings = nullptr;
     QGSettings * qSessionSetting = nullptr;
     QGSettings * qScreenSaverSetting = nullptr;
+    QGSettings * qBgSetting = nullptr;
 
     QProcess   * process;
 
@@ -152,6 +150,10 @@ private:
     QStringList  runStringList;
 
     Uslider    * uslider;
+
+    QDBusInterface *m_cloudInterface;
+
+    bool mFirstLoad;
 
 private:
     SSThemeInfo _info_new(const char * path);
@@ -164,6 +166,7 @@ private slots:
     void lockbtn_changed_slot(bool status);
     void slider_released_slot();
     void kill_screensaver_preview();
+    void keyChangedSlot(const QString &key);
 
 Q_SIGNALS:
     void kill_signals();

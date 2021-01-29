@@ -18,21 +18,18 @@ class ControlPanel : public QFrame
 {
     Q_OBJECT
 
-  public:
+public:
     explicit ControlPanel(QWidget *parent = nullptr);
     ~ControlPanel() override;
 
     void setConfig(const KScreen::ConfigPtr &config);
-
     void setUnifiedOutput(const KScreen::OutputPtr &output);
-
-  public Q_SLOTS:
-    void activateOutput(const KScreen::OutputPtr &output);
-
-public:
     void activateOutputNoParam();
 
-  Q_SIGNALS:
+public Q_SLOTS:
+    void activateOutput(const KScreen::OutputPtr &output);
+
+Q_SIGNALS:
     void changed();
     void scaleChanged(int index);
 
@@ -40,11 +37,13 @@ private Q_SLOTS:
     void addOutput(const KScreen::OutputPtr &output);
     void removeOutput(int outputId);
 
-  private:
+public:
+    QVBoxLayout *mLayout;
+
+private:
     KScreen::ConfigPtr mConfig;
     QList<OutputConfig*> mOutputConfigs;
 
-    QVBoxLayout *mLayout;
     UnifiedOutputConfig *mUnifiedOutputCfg;
 };
 

@@ -27,7 +27,9 @@ PKGCONFIG += libmatemixer \
              Qt5Multimedia \
              gsettings-qt \
              libcanberra \
-             dconf
+             dconf  \
+             libpulse \
+             libpulse-mainloop-glib
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \

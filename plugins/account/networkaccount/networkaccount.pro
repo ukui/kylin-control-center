@@ -5,12 +5,16 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 include(../../../env.pri)
 
 TEMPLATE = lib
-CONFIG += c++11 plugin
+CONFIG += c++11 plugin link_pkgconfig
+PKGCONFIG += gsettings-qt
 TARGET = $$qtLibraryTarget(networkaccount)
 DESTDIR = ../..
 target.path = $${PLUGIN_INSTALL_DIRS}
 
+include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
+
 INCLUDEPATH += \
+    $$PROJECT_COMPONENTSOURCE \
     $$PROJECT_ROOTDIR \
 
 # The following define makes your compiler emit warnings if you use
@@ -31,8 +35,7 @@ SOURCES += \
     boxitem.cpp \
     combobox.cpp \
     configfile.cpp \
-    dbushandleclient.cpp \
-    editpassdialog.cpp \
+    dbusutils.cpp \
     editpushbutton.cpp \
     frameitem.cpp \
     infolabel.cpp \
@@ -49,8 +52,10 @@ SOURCES += \
     successdiaolog.cpp \
     svghandler.cpp \
     switchbutton.cpp \
+    syncdialog.cpp \
     tips.cpp \
-    tooltips.cpp
+    tooltips.cpp \
+    visblebutton.cpp
 
 HEADERS += \
     areacodelineedit.h \
@@ -59,8 +64,7 @@ HEADERS += \
     boxitem.h \
     combobox.h \
     configfile.h \
-    dbushandleclient.h \
-    editpassdialog.h \
+    dbusutils.h \
     editpushbutton.h \
     frameitem.h \
     infolabel.h \
@@ -77,8 +81,10 @@ HEADERS += \
     successdiaolog.h \
     svghandler.h \
     switchbutton.h \
+    syncdialog.h \
     tips.h \
-    tooltips.h
+    tooltips.h \
+    visblebutton.h
 
 FORMS += \
 

@@ -19,6 +19,7 @@
  */
 #include "changevaliddialog.h"
 #include "ui_changevaliddialog.h"
+#include "CloseButton/closebutton.h"
 
 #include <QProcess>
 #include <QDBusInterface>
@@ -37,16 +38,21 @@ ChangeValidDialog::ChangeValidDialog(QString userName, QWidget *parent) :
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
+    setWindowTitle(tr("Change valid"));
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
+//    ui->closeBtn->setProperty("useIconHighlightEffect", true);
+//    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
+//    ui->closeBtn->setFlat(true);
 
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+
+    ui->monthCombox->setMaxVisibleItems(3);
+    ui->yearCombox->setMaxVisibleItems(3);
+    ui->dayCombox->setMaxVisibleItems(3);
 
     ui->validFrame->setFrameShape(QFrame::Shape::Box);
 
@@ -64,7 +70,7 @@ ChangeValidDialog::~ChangeValidDialog()
 }
 
 void ChangeValidDialog::setupConnect(){
-    connect(ui->closeBtn, &QPushButton::clicked, [=]{
+    connect(ui->closeBtn, &CloseButton::clicked, [=]{
         close();
     });
     connect(ui->cancelBtn, &QPushButton::clicked, [=]{
@@ -91,22 +97,6 @@ void ChangeValidDialog::setupConnect(){
     });
 
     connect(ui->certainBtn, &QPushButton::clicked, [=]{
-        int year = ui->yearCombox->currentData().toInt();
-        QString cmd;
-        if (year == 0){
-            cmd = QString("chage -M %1 %2").arg(99999).arg(_name);
-        } else {
-            int month = ui->monthCombox->currentData().toInt();
-            int day = ui->dayCombox->currentData().toInt();
-
-            QDate selected = QDate(year, month, day);
-
-            int setDays = lastChangeDate.daysTo(selected);
-
-            cmd = QString("chage -M %1 %2").arg(setDays).arg(_name);
-
-        }
-
         QDBusInterface * tmpSysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
                                                               "/",
                                                               "com.control.center.interface",
@@ -116,7 +106,22 @@ void ChangeValidDialog::setupConnect(){
             qCritical() << "Create Client Interface Failed When execute chage: " << QDBusConnection::systemBus().lastError();
             return;
         }
-        tmpSysinterface->call("systemRun", cmd);
+
+        int year = ui->yearCombox->currentData().toInt();
+
+        if (year == 0){
+            tmpSysinterface->call("setPasswdAging", 99999, _name);
+        } else {
+            int month = ui->monthCombox->currentData().toInt();
+            int day = ui->dayCombox->currentData().toInt();
+
+            QDate selected = QDate(year, month, day);
+
+            int setDays = lastChangeDate.daysTo(selected);
+
+            tmpSysinterface->call("setPasswdAging", setDays, _name);
+        }
+
         delete tmpSysinterface;
 
         close();
@@ -199,7 +204,7 @@ void ChangeValidDialog::setupYearCombo(){
 
     ui->yearCombox->addItem(QObject::tr("Never"), 0);
     for (int year = begin.year(); year <= canSelect.year(); year++){
-        ui->yearCombox->addItem(QString::number(year)+QObject::tr("Year"), year);
+        ui->yearCombox->addItem(QString::number(year)/*+QObject::tr("Year")*/, year);
     }
 
     if (delayDays > 10000)
@@ -217,21 +222,30 @@ void ChangeValidDialog::setupMonthCombo(){
 
     int year = ui->yearCombox->currentData().toInt();
     if (year > 0){
-        ui->monthCombox->addItem(QObject::tr("Jan"), 1);
-        ui->monthCombox->addItem(QObject::tr("Feb"), 2);
-        ui->monthCombox->addItem(QObject::tr("Mar"), 3);
-        ui->monthCombox->addItem(QObject::tr("Apr"), 4);
-        ui->monthCombox->addItem(QObject::tr("May"), 5);
-        ui->monthCombox->addItem(QObject::tr("Jun"), 6);
-        ui->monthCombox->addItem(QObject::tr("Jul"), 7);
-        ui->monthCombox->addItem(QObject::tr("Aug"), 8);
-        ui->monthCombox->addItem(QObject::tr("Sep"), 9);
-        ui->monthCombox->addItem(QObject::tr("Oct"), 10);
-        ui->monthCombox->addItem(QObject::tr("Nov"), 11);
-        ui->monthCombox->addItem(QObject::tr("Dec"), 12);
+        QDate begin = QDate::currentDate().addDays(1);
+
+        if (year == begin.year()){
+            for (int i = begin.month(); i < 13; i++){
+                ui->monthCombox->addItem(QString::number(i), i);
+            }
+        } else {
+            for (int i = 1; i < 13; i++){
+                ui->monthCombox->addItem(QString::number(i), i);
+            }
+        }
+//        ui->monthCombox->addItem(/*QObject::tr("Jan")*/"1", 1);
+//        ui->monthCombox->addItem(/*QObject::tr("Feb")*/"2", 2);
+//        ui->monthCombox->addItem(/*QObject::tr("Mar")*/"3", 3);
+//        ui->monthCombox->addItem(/*QObject::tr("Apr")*/"4", 4);
+//        ui->monthCombox->addItem(/*QObject::tr("May")*/"5", 5);
+//        ui->monthCombox->addItem(/*QObject::tr("Jun")*/"6", 6);
+//        ui->monthCombox->addItem(/*QObject::tr("Jul")*/"7", 7);
+//        ui->monthCombox->addItem(/*QObject::tr("Aug")*/"8", 8);
+//        ui->monthCombox->addItem(/*QObject::tr("Sep")*/"9", 9);
+//        ui->monthCombox->addItem(/*QObject::tr("Oct")*/"10", 10);
+//        ui->monthCombox->addItem(/*QObject::tr("Nov")*/"11", 11);
+//        ui->monthCombox->addItem(/*QObject::tr("Dec")*/"12", 12);
     }
-
-
 
     ui->monthCombox->blockSignals(false);
 }
@@ -247,10 +261,19 @@ void ChangeValidDialog::setupDayCombo(){
         int month = ui->monthCombox->currentData().toInt();
         if (month){
             QDate selected = QDate(year, month, 1);
+            QDate begin = QDate::currentDate().addDays(1);
             int days = selected.daysInMonth();
-            for (int d = 1; d <= days; d++){
-                ui->dayCombox->addItem(QString::number(d)+QObject::tr("Day"), d);
+
+            if (year == begin.year() && month == begin.month()){
+                for (int d = begin.day(); d <= days; d++){
+                    ui->dayCombox->addItem(QString::number(d)/*+QObject::tr("Day")*/, d);
+                }
+            } else {
+                for (int d = 1; d <= days; d++){
+                    ui->dayCombox->addItem(QString::number(d)/*+QObject::tr("Day")*/, d);
+                }
             }
+
         }
     } else {
 
@@ -275,6 +298,7 @@ void ChangeValidDialog::paintEvent(QPaintEvent * event){
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
     pixmapPainter.setBrush(Qt::black);
+    pixmapPainter.setOpacity(0.65);
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 

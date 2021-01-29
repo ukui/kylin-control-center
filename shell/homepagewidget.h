@@ -24,6 +24,7 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QSvgRenderer>
+#include <QVariantMap>
 
 enum COLOR{
     BLUE,
@@ -61,8 +62,9 @@ private slots:
 private:
     Ui::HomePageWidget *ui;
 
-private:
     MainWindow * pmainWindow;
+
+    QVariantMap mModuleMap;
 };
 
 #endif // HOMEPAGEWIDGET_H

@@ -1,3 +1,4 @@
+
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  *
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
@@ -36,6 +37,11 @@
 extern "C" {
 #include <dconf/dconf.h>
 #include <canberra.h>
+#include <glib/gmain.h>
+#include <pulse/ext-stream-restore.h>
+#include <pulse/glib-mainloop.h>
+#include <pulse/error.h>
+#include <pulse/subscribe.h>
 }
 #include <utime.h>
 #include <a.out.h>
@@ -43,6 +49,7 @@ extern "C" {
 #include <QApplication>
 #include <QDomDocument>
 #include <QGSettings>
+#include <QAudioInput>
 
 #define UKUI_THEME_SETTING "org.ukui.style"
 #define UKUI_THEME_NAME "style-name"
@@ -97,6 +104,12 @@ public:
     static int caProplistMergeAp(ca_proplist *p, va_list ap);
     static int caPlayForWidget(UkmediaMainWidget *w, uint32_t id, ...);
     static int caProplistSetForWidget(ca_proplist *p, UkmediaMainWidget *widget);
+
+    QPixmap drawDarkColoredPixmap(const QPixmap &source);
+    QPixmap drawLightColoredPixmap(const QPixmap &source);
+    void updateProfileOption();
+    void alertIconButtonSetIcon(bool state,int value);
+    void createAlertSound(UkmediaMainWidget *w);
     void inputVolumeDarkThemeImage(int value,bool status);
     void outputVolumeDarkThemeImage(int value,bool status);
     int getInputVolume();
@@ -193,9 +206,22 @@ public:
     static gboolean customThemeDirIsEmpty (void);
     static MateMixerSwitch *findStreamPortSwitch (UkmediaMainWidget *widget,MateMixerStream *stream);
     static MateMixerSwitch *findDeviceProfileSwitch (UkmediaMainWidget *widget,MateMixerDevice *device);
+    static void onSwitchActiveOptionNotify (MateMixerSwitch *swtch,GParamSpec *pspec,UkmediaMainWidget *w);
     static void onDeviceProfileActiveOptionNotify (MateMixerDeviceSwitch *swtch,GParamSpec *pspec,UkmediaMainWidget *w);
     static gchar *deviceStatus (MateMixerDevice *device);
     static void updateDeviceInfo (UkmediaMainWidget *w, MateMixerDevice *device);
+
+    //为一些不能更改提示音音量的机器做一些初始化操作
+    void executeVolumeUpdate(bool status);
+    pa_context* get_context(void);
+    void show_error(const char *txt);
+    static void context_state_callback(pa_context *c, void *userdata);
+    gboolean connect_to_pulse(gpointer userdata);
+    void setConnectingMessage(const char *string);
+    void createEventRole();
+    void updateRole(const pa_ext_stream_restore_info &info);
+    static void ext_stream_restore_read_cb(pa_context *,const pa_ext_stream_restore_info *i,int eol,void *userdata);
+    static void ext_stream_restore_subscribe_cb(pa_context *c, void *userdata);
 Q_SIGNALS:
     void appVolumeChangedSignal(bool is_mute,int volume,const QString app_name);
 
@@ -216,8 +242,12 @@ private Q_SLOTS:
     void windowClosedComboboxChangedSlot(int index);
     void volumeChangedComboboxChangeSlot(int index);
     void settingMenuComboboxChangedSlot(int index);
-//    void profileComboboxChangedSlot(int index);
-//    void selectComboboxChangedSlot(int index);
+    void profileComboboxChangedSlot(int index);
+    void selectComboboxChangedSlot(int index);
+    void inputMuteButtonSlot();
+    void outputMuteButtonSlot();
+    void alertVolumeSliderChangedSlot(int value);
+    void alertSoundVolumeChangedSlot();
 private:
     UkmediaInputWidget *m_pInputWidget;
     UkmediaOutputWidget *m_pOutputWidget;
@@ -230,6 +260,7 @@ private:
     MateMixerStreamControl *m_pOutputBarStreamControl;
     MateMixerStreamControl *m_pInputBarStreamControl;
     MateMixerStreamControl *m_pControl;
+    MateMixerStreamControl *m_pMediaRoleControl;
     MateMixerStream *m_pStream;
     MateMixerDevice *m_pDevice;
     MateMixerSwitch *m_pSwitch;
@@ -265,6 +296,14 @@ private:
     QString mThemeName;
     bool m_hasMusic;
     bool firstEnterSystem = true;
+
+    QByteArray role;
+    QByteArray device;
+    pa_channel_map channelMap;
+    pa_cvolume volume;
+    pa_context* context ;
+    pa_mainloop_api* api;
+    pa_ext_stream_restore_info info;
 };
 
 #endif // WIDGET_H

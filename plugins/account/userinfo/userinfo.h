@@ -23,9 +23,6 @@
 #include <QObject>
 #include <QtPlugin>
 
-//#include <QToolButton>
-//#include <QMenu>
-//#include <QAction>
 #include <QSignalMapper>
 #include <QMouseEvent>
 #include <QSettings>
@@ -35,6 +32,7 @@
 #include "qtdbus/systemdbusdispatcher.h"
 #include "qtdbus/userdispatcher.h"
 
+#include "changegroupdialog.h"
 #include "changepwddialog.h"
 #include "changefacedialog.h"
 #include "changetypedialog.h"
@@ -116,11 +114,14 @@ public:
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget *get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
+    const QString name() const  Q_DECL_OVERRIDE;
 
 public:
+    void initSearchText();
     void initComponent();
     void initAllUserStatus();
 
+    QStringList getLoginedUsers();
     void _acquireAllUsersInfo();
     UserInfomation _acquireUserInfo(QString objpath);
     QString _accountTypeIntToString(int type);
@@ -148,6 +149,8 @@ public:
 
     void showChangeValidDialog(QString username);
 
+    void showChangeGroupDialog();
+
     void get_all_users();
     UserInfomation init_user_info(QString objpath);
     void setup_otherusers_ui();
@@ -157,8 +160,8 @@ public:
     QString accounttype_enum_to_string(int id);
     QString login_status_bool_to_string(bool status);
 
-
     void readCurrentPwdConf();
+    QStringList getUsersList();
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
@@ -171,26 +174,15 @@ private:
     QWidget * pluginWidget;
     HoverWidget *addWgt;
 
-private:
     SwitchButton * nopwdSwitchBtn;
     SwitchButton * autoLoginSwitchBtn;
 
     SystemDbusDispatcher * sysdispatcher;
     QSettings * autoSettings = nullptr;
 
-
-private:
-    bool getAutomaticLogin(QString username);
-
-private:
     QMap<QString, UserInfomation> allUserInfoMap;
     QMap<QString, QListWidgetItem *> otherUserItemMap;
 
-    int adminnum;
-
-    QString _newUserPwd;
-
-//    QMap<QString, QToolButton *> otherbtnMap;
     QMap<QString, QListWidgetItem *> otherItemMap;
 
     QSignalMapper * pwdSignalMapper;
@@ -202,12 +194,18 @@ private:
     QSize itemSize;
     QSize btnSize;
 
-
     QString pwdcreate;
+    QString _newUserPwd;
+    QString mUserName;
 
-    QDBusInterface * sysinterface;
+    QStringList m_loginedUser;
 
+    QDBusInterface *sysinterface;
+    QDBusInterface *mUserproperty;
+
+    int adminnum;
     bool enablePwdQuality;
+    bool mFirstLoad;
 
 #ifdef ENABLEPQ
     pwquality_settings_t * pwdconf;
@@ -217,26 +215,15 @@ private:
 
     QString pwdMsg;
 
+private:
+    bool getAutomaticLogin(QString username);
+    bool getNoPwdStatus();
+    void initUserPropertyConnection(const QStringList &objPath);
+
 private slots:
-//    void show_change_pwd_dialog_slot(QString username);
-//    void change_pwd_slot(QString pwd, QString username);
-//    void change_pwd_done_slot();
-
-//    void show_change_face_dialog_slot(QString username);
-//    void change_face_slot(QString facefile, QString username);
-//    void change_face_done_slot();
-
-//    void show_change_accounttype_dialog_slot(QString username);
-//    void change_accounttype_slot(int atype, QString username, bool status);
-//    void change_accounttype_done_slot();
-
-//    void show_del_user_dialog_slot(QString username);
     void delete_user_slot(bool removefile, QString username);
-//    void delete_user_done_slot(QString objpath);
-
-//    void show_create_user_dialog_slot();
-//    void create_user_slot(QString username, QString pwd, QString pin, int atype, bool autologin);
-//    void create_user_done_slot(QString objpath);
+    void propertyChangedSlot(QString, QMap<QString, QVariant>, QStringList);
+    void pwdAndAutoChangedSlot(QString key);
 };
 
 #endif // USERINFO_H

@@ -20,24 +20,32 @@
 #ifndef POWERMACRODATA_H
 #define POWERMACRODATA_H
 
-
-#define POWERMANAGER_SCHEMA "org.ukui.power-manager"
-#define ICONPOLICY "icon-policy"
-#define SLEEP_COMPUTER_AC_KEY "sleep-computer-ac"
+#define POWERMANAGER_SCHEMA     "org.ukui.power-manager"
+#define ICONPOLICY              "icon-policy"
+#define SLEEP_COMPUTER_AC_KEY   "sleep-computer-ac"
 #define SLEEP_COMPUTER_BATT_KEY "sleep-computer-battery"
-#define SLEEP_DISPLAY_AC_KEY "sleep-display-ac"
-#define SLEEP_DISPLAY_BATT_KEY "sleep-display-battery"
-#define BUTTON_LID_AC_KEY "button-lid-ac"
-#define BUTTON_LID_BATT_KET "button-lid-battery"
-#define BUTTON_SUSPEND_KEY "button-suspend"
-#define BUTTON_POWER_KEY "button-power"
-#define IDLE_DIM_TIME_KEY "idle-dim-time"
+#define SLEEP_DISPLAY_AC_KEY    "sleep-display-ac"
+#define SLEEP_DISPLAY_BATT_KEY  "sleep-display-battery"
+#define BUTTON_LID_AC_KEY       "button-lid-ac"
+#define BUTTON_LID_BATT_KET     "button-lid-battery"
+#define BUTTON_SUSPEND_KEY      "button-suspend"
+#define BUTTON_POWER_KEY        "button-power"
+#define IDLE_DIM_TIME_KEY       "idle-dim-time"
+#define HIBERNATE_KEY           "after-idle-action"
+#define PER_ACTION_KEY          "percentage-action"
+#define ACTION_CRI_BTY          "action-critical-battery"
+#define PER_ACTION_CRI          "percentage-critical"
 
-#define PRESENT_VALUE "present"
-#define ALWAYS_VALUE "always"
-#define CHARGE_VALUE "charge"
+#define PRESENT_VALUE           "present"
+#define ALWAYS_VALUE            "always"
+#define CHARGE_VALUE            "charge"
+
+#define SESSION_SCHEMA          "org.ukui.session"
+#define IDLE_DELAY_KEY          "idle-delay"
 
 #define FIXES 60
 
+#define PERSONALSIE_SCHEMA     "org.ukui.control-center.personalise"
+#define PERSONALSIE_POWER_KEY  "custompower"
 
 #endif // POWERMACRODATA_H

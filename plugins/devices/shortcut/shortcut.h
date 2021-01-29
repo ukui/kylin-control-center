@@ -22,16 +22,17 @@
 
 #include <QObject>
 #include <QtPlugin>
-
+#include <QProcess>
 #include <QThread>
 #include <QListWidget>
+#include <QDBusInterface>
+#include <QPushButton>
 
 #include "shell/interface.h"
 
 #include "keymap.h"
 #include "addshortcutdialog.h"
 #include "getshortcutworker.h"
-#include "showallshortcut.h"
 #include "HoverWidget/hoverwidget.h"
 #include "ImageUtil/imageutil.h"
 
@@ -71,18 +72,19 @@ public:
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget *get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
+    const QString name() const  Q_DECL_OVERRIDE;
 
 public:
     void setupComponent();
     void setupConnect();
     void initFunctionStatus();
 
-    void appendGeneralItems();
+    void appendGeneralItems(QMap<QString, QMap<QString, QString> > shortcutsMap);
     void appendCustomItems();
     void buildCustomItem(KeyEntry * nkeyEntry);
+    QWidget * buildGeneralWidget(QString schema, QMap<QString, QString> subShortcutsMap);
 
     void initItemsStyle(QListWidget * listWidget);
-    void initGeneralItemsStyle();
     void initCustomItemsStyle();
 
     void createNewShortcut(QString path, QString name, QString exec);
@@ -92,9 +94,7 @@ public:
 
     QString getBindingName(QList<int> keyCode);
     bool keyIsForbidden(QString key);
-
-public:
-    QStringList showList;
+    void connectToServer();
 
 protected:
 //    bool event(QEvent *event);
@@ -116,7 +116,13 @@ private:
     KeyMap * pKeyMap;
 
     addShortcutDialog * addDialog;
-    ShowAllShortcut * showDialog;
+    QDBusInterface *cloudInterface;
+    bool isCloudService;
+
+    bool mFirstLoad;
+
+private slots:
+    void shortcutChangedSlot();
 
 Q_SIGNALS:
     void hideDelBtn();

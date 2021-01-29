@@ -48,8 +48,8 @@
         <file>secondaryleftmenu/BackgroundWhite.svg</file>
         <file>secondaryleftmenu/Backup.svg</file>
         <file>secondaryleftmenu/BackupWhite.svg</file>
-        <file>secondaryleftmenu/Datetime.svg</file>
-        <file>secondaryleftmenu/DatetimeWhite.svg</file>
+        <file>secondaryleftmenu/Dat.svg</file>
+        <file>secondaryleftmenu/DatWhite.svg</file>
         <file>secondaryleftmenu/Defaultapp.svg</file>
         <file>secondaryleftmenu/DefaultappWhite.svg</file>
         <file>secondaryleftmenu/Desktop.svg</file>
@@ -105,8 +105,6 @@
         <file>primaryleftmenu/datetime.svg</file>
         <file>titlebar/min.svg</file>
         <file>titlebar/back.svg</file>
-        <file>secondaryleftmenu/NetworkAccount.svg</file>
-        <file>secondaryleftmenu/NetworkAccountWhite.svg</file>
         <file>plugins/netconnect/eth.svg</file>
         <file>plugins/netconnect/nonet.svg</file>
         <file>plugins/netconnect/wifi1.svg</file>
@@ -133,12 +131,27 @@
         <file>secondaryleftmenu/SecurityCenter.svg</file>
         <file>secondaryleftmenu/SecurityCenterWhite.svg</file>
         <file>plugins/about/logoukui.svg</file>
+        <file>titlebar/ukui-control-center.svg</file>
+        <file>plugins/userinfo/notice.png</file>
+        <file>secondaryleftmenu/Cloud Account.svg</file>
+        <file>secondaryleftmenu/Cloud AccountWhite.svg</file>
+        <file>plugins/netconnect/wifi5.svg</file>
+        <file>dropArrow/search.svg</file>
+        <file>secondaryleftmenu/Vino.svg</file>
+        <file>secondaryleftmenu/VinoWhite.svg</file>
+        <file>plugins/theme/opacitylow.svg</file>
+        <file>plugins/theme/opacityhigh.svg</file>
+        <file>secondaryleftmenu/Bluetooth.svg</file>
+        <file>secondaryleftmenu/BluetoothWhite.svg</file>
     </qresource>
     <qresource prefix="/">
-        <file>i18n/zh_CN.qm</file>
-        <file>i18n/tr.qm</file>
         <file>global.qss</file>
         <file>combox.qss</file>
         <file>plugins/update/update.png</file>
+        <file>dpinyin.dict</file>
+        <file>i18n/zh_CN.ts</file>
+        <file>i18n/en_US.ts</file>
+        <file>i18n/bo.ts</file>
+        <file>i18n/tr.ts</file>
     </qresource>
 </RCC>

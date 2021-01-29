@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>781</height>
+    <height>817</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -109,7 +109,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_4">
+         <widget class="QLabel" name="handLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -196,9 +196,9 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_5">
+         <widget class="QLabel" name="slowLabel">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -211,7 +211,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>136</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>
@@ -221,9 +221,22 @@
          </widget>
         </item>
         <item>
+         <spacer name="verticalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>10</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="QLabel" name="label_6">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -236,7 +249,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>40</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>
@@ -250,8 +263,11 @@
           <property name="styleSheet">
            <string notr="true"/>
           </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
           <property name="maximum">
-           <number>9</number>
+           <number>10</number>
           </property>
           <property name="pageStep">
            <number>1</number>
@@ -264,7 +280,7 @@
         <item>
          <widget class="QLabel" name="label_7">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -277,7 +293,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>40</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>
@@ -339,9 +355,9 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_20">
+         <widget class="QLabel" name="delayLabel">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -354,7 +370,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>136</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>
@@ -364,9 +380,22 @@
          </widget>
         </item>
         <item>
+         <spacer name="verticalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>10</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="QLabel" name="label_21">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -379,7 +408,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>40</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>
@@ -394,7 +423,7 @@
            <string notr="true"/>
           </property>
           <property name="minimum">
-           <number>100</number>
+           <number>170</number>
           </property>
           <property name="maximum">
            <number>1000</number>
@@ -413,7 +442,7 @@
         <item>
          <widget class="QLabel" name="label_22">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -426,7 +455,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>40</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>
@@ -489,6 +518,22 @@
     </widget>
    </item>
    <item>
+    <spacer name="verticalSpacer_10">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>12</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
     <widget class="QFrame" name="pointerSpeedFrame">
      <property name="minimumSize">
       <size>
@@ -530,7 +575,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="speedLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -555,6 +600,19 @@
          </widget>
         </item>
         <item>
+         <spacer name="verticalSpacer_8">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>10</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="QLabel" name="label_2">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -570,7 +628,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>40</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>
@@ -617,7 +675,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>40</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>
@@ -638,7 +696,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="sensitivityFrame">
+    <widget class="QFrame" name="accelFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
@@ -671,12 +729,12 @@
        <number>0</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <layout class="QHBoxLayout" name="accelLayout">
         <property name="spacing">
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_8">
+         <widget class="QLabel" name="accelLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -696,85 +754,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Sensitivity</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_9">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>40</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>40</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Low</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSlider" name="pointerSensitivitySlider">
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="minimum">
-           <number>100</number>
-          </property>
-          <property name="maximum">
-           <number>1000</number>
-          </property>
-          <property name="singleStep">
-           <number>50</number>
-          </property>
-          <property name="pageStep">
-           <number>50</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_10">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>40</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>40</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="text">
-           <string>High</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <string>Acceleration</string>
           </property>
          </widget>
         </item>
@@ -819,7 +799,7 @@
       <item>
        <layout class="QHBoxLayout" name="visibilityHorLayout">
         <item>
-         <widget class="QLabel" name="label_11">
+         <widget class="QLabel" name="visLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -834,7 +814,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>128</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>
@@ -897,7 +877,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
-         <widget class="QLabel" name="label_12">
+         <widget class="QLabel" name="sizeLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -982,7 +962,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>14</height>
+       <height>12</height>
       </size>
      </property>
     </spacer>
@@ -1026,7 +1006,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_19">
+         <widget class="QLabel" name="flashLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1258,7 +1238,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_16">
+         <widget class="QLabel" name="cursorspdLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>

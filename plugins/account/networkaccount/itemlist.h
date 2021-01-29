@@ -33,11 +33,14 @@ class ItemList : public QWidget
     Q_OBJECT
 public:
     explicit        ItemList(QWidget *parent = nullptr,int itemssize = CURSIZE);
-    QStringList     get_list();
-    FrameItem*   get_item(int cur);
-    FrameItem*   get_item_by_name(QString name);
+    QStringList     get_list() const;
+    FrameItem*   get_item(const int &cur);
+    FrameItem*   get_item_by_name(const QString &name);
 private:
-    QStringList     m_szItemNameList = {tr("Walpaper"),tr("ScreenSaver"),tr("Menu"),tr("Quick Start"),tr("Tab"),tr("Mouse"),tr("TouchPad"),tr("KeyBoard"),tr("ShortCut"),tr("Weather"),tr("Media")};
+    QStringList     m_szItemNameList = {tr("Wallpaper"),tr("ScreenSaver"),tr("Font"),tr("Avatar"),tr("Menu"),tr("Tab"),tr("Quick Start"),
+                                        tr("Themes"),tr("Mouse"),tr("TouchPad"),tr("KeyBoard"),tr("ShortCut"),
+                                        tr("Area"),tr("Date/Time"),tr("Default Open"),tr("Notice"),tr("Option"),tr("Peony"),
+                                        tr("Boot"),tr("Power"),tr("Editor"),tr("Terminal"),tr("Weather"),tr("Media")};
     int             m_cItemCnt = 0;
     FrameItem    *m_itemWidget[30];
     QPoint          m_startPoint;

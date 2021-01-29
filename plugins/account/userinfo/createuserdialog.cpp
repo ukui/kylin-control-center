@@ -19,6 +19,9 @@
  */
 #include "createuserdialog.h"
 #include "ui_createuserdialog.h"
+#include "CloseButton/closebutton.h"
+
+#include "passwdcheckutil.h"
 
 #include <QDebug>
 #include <QDir>
@@ -37,19 +40,13 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
     ui(new Ui::CreateUserDialog),
     usersStringList(userlist)
 {
-//    installEventFilter(this);
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
+    setWindowTitle(tr("Add new user"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
-
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
     ui->tipLabel->setAlignment(Qt::AlignCenter);
 
     ui->label_8->adjustSize();
@@ -94,6 +91,12 @@ void CreateUserDialog::initPwdChecked(){
         enablePwdQuality = true;
     }
 
+    if (PasswdCheckUtil::getCurrentPamState()){
+        enablePwdQuality = true;
+    } else {
+        enablePwdQuality = false;
+    }
+
 #else
     enablePwdQuality = false;
 #endif
@@ -108,40 +111,22 @@ void CreateUserDialog::setupComonpent(){
 
     ui->pwdLineEdit->setEchoMode(QLineEdit::Password);
     ui->pwdsureLineEdit->setEchoMode(QLineEdit::Password);
-//    ui->pinLineEdit->setEchoMode(QLineEdit::Password);
-//    ui->pinsureLineEdit->setEchoMode(QLineEdit::Password);
-
-//    QString required = tr("(Required)");
-//    QString optional = tr("(Optional)");
-//    if (ostype == PC){
-//        ui->pwdLabel->setText(required);
-//        ui->pwdsurelabel->setText(required);
-//        ui->pinLabel->setText(optional);
-//        ui->pinsurelabel->setText(optional);
-//    }
-//    else{
-//        ui->pwdLabel->setText(optional);
-//        ui->pwdsurelabel->setText(optional);
-//        ui->pinLabel->setText(required);
-//        ui->pinsurelabel->setText(required);
-//    }
 
     ui->usernameLineEdit->setPlaceholderText(tr("UserName"));
     ui->pwdLineEdit->setPlaceholderText(tr("Password"));
     ui->pwdsureLineEdit->setPlaceholderText(tr("Password Identify"));
-//    ui->pinLineEdit->setPlaceholderText(tr("PIN Code"));
-//    ui->pinsureLineEdit->setPlaceholderText(tr("PIN Code Identify"));
+
 
     ui->pwdTypeComBox->addItem(tr("General Password"));
 
-//    //给radiobtn设置id，id即accoutnType，方便直接返回id值
+    // 给radiobtn设置id，id即accoutnType，方便直接返回id值
     ui->buttonGroup->setId(ui->standardRadioBtn, 0);
     ui->buttonGroup->setId(ui->adminRadioBtn, 1);
 
-//    //默认标准用户
+    // 默认标准用户
     ui->standardRadioBtn->setChecked(true);
 
-    //设置确定按钮
+    // 设置确定按钮
     refreshConfirmBtnStatus();
 
 //    confirm_btn_status_refresh();
@@ -149,7 +134,7 @@ void CreateUserDialog::setupComonpent(){
 
 void CreateUserDialog::setupConnect(){
 
-    connect(ui->closeBtn, &QPushButton::clicked, [=](bool checked){
+    connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
         close();
     });
@@ -252,32 +237,50 @@ void CreateUserDialog::refreshConfirmBtnStatus(){
 
 
 void CreateUserDialog::pwdLegalityCheck(QString pwd){
-    if (enablePwdQuality){
-#ifdef ENABLEPQ
-        void * auxerror;
-        int ret;
-        const char * msg;
-        char buf[256];
 
-        QByteArray ba = pwd.toLatin1();
-
-        ret = pwquality_check(settings, ba.data(), NULL, NULL, &auxerror);
-        if (ret < 0 && pwd.length() > 0){
-            msg = pwquality_strerror(buf, sizeof(buf), ret, auxerror);
-            pwdTip = QString(msg);
-        } else {
-            pwdTip = "";
-        }
-#endif
+    if (!checkCharLegitimacy(pwd)){
+        pwdTip = tr("Contains illegal characters!");
     } else {
-        if (pwd.length() < PWD_LOW_LENGTH) {
-            pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
-        } else if (pwd.length() > PWD_HIGH_LENGTH) {
-            pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
+        if (enablePwdQuality){
+    #ifdef ENABLEPQ
+            void * auxerror;
+            int ret;
+            const char * msg;
+            char buf[256];
+
+            QByteArray ba = pwd.toLatin1();
+            QByteArray ba1 = ui->usernameLineEdit->text().toLatin1();
+
+            ret = pwquality_check(settings, ba.data(), NULL, ba1.data(), &auxerror);
+            if (ret < 0 && pwd.length() > 0){
+                msg = pwquality_strerror(buf, sizeof(buf), ret, auxerror);
+                pwdTip = QString(msg);
+            } else {
+                pwdTip = "";
+            }
+    #endif
         } else {
+    //        if (pwd.length() < PWD_LOW_LENGTH) {
+    //            pwdTip = tr("Password length needs to more than %1 character!").arg(PWD_LOW_LENGTH - 1);
+    //        } else if (pwd.length() > PWD_HIGH_LENGTH) {
+    //            pwdTip = tr("Password length needs to less than %1 character!").arg(PWD_HIGH_LENGTH + 1);
+    //        } else {
+    //            pwdTip = "";
+    //        }
+    //        const char *s = pwd.toUtf8().data();
+    //        while (*s && *s >= '0' && *s <= '9') {
+    //            s++;
+    //        }
+    //        if (!bool(*s)) {
+    //            pwdTip = tr("Password cannot be made up entirely by Numbers!");
+    //        } else {
+    //            pwdTip = "";
+    //        }
             pwdTip = "";
         }
     }
+
+
 
     //防止先输入确认密码，再输入密码后pwdsuretipLabel无法刷新
     if (!ui->pwdsureLineEdit->text().isEmpty()){
@@ -296,6 +299,16 @@ void CreateUserDialog::pwdLegalityCheck(QString pwd){
     refreshConfirmBtnStatus();
 }
 
+bool CreateUserDialog::checkCharLegitimacy(QString password){
+    //密码不能包含非标准字符
+    foreach (QChar ch, password){
+        if (int(ch.toLatin1() <= 0 || int(ch.toLatin1()) > 127)){
+            return false;
+        }
+    }
+    return true;
+}
+
 
 void CreateUserDialog::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event);
@@ -310,6 +323,7 @@ void CreateUserDialog::paintEvent(QPaintEvent *event) {
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
     pixmapPainter.setBrush(Qt::black);
+    pixmapPainter.setOpacity(0.65);
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 
@@ -385,18 +399,18 @@ void CreateUserDialog::nameLegalityCheck(QString username){
     }
     else if (nameTraverse(username))
         if (username.length() > 0 && username.length() < USER_LENGTH){
-            /*
-             * 此处代码需要优化
-             */
-//            back = false;
-//            QString cmd = QString("getent group %1").arg(username);
-//            process = new QProcess(this);
-//            connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(name_conflict_group_slot()));
-//            process->start(cmd);
+
+            QString cmd = QString("getent group %1").arg(username);
+            QProcess process(this);
+            process.start(cmd);
+            process.waitForFinished();
+            QString output = process.readAllStandardOutput();
 
             if (usersStringList.contains(username)){
                 nameTip = tr("The user name is already in use, please use a different one.");
-            } else {
+            } else if (!output.isEmpty()) {
+                nameTip = tr("The name corresponds to the group already exists.");
+            }else {
                 nameTip = "";
             }
         } else {

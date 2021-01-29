@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>722</height>
+    <height>724</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -118,7 +118,7 @@
          <number>16</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="autoLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -335,7 +335,7 @@
          <number>16</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_5">
+         <widget class="QLabel" name="manualLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -422,13 +422,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>98</width>
+            <width>115</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>98</width>
+            <width>115</width>
             <height>16777215</height>
            </size>
           </property>
@@ -497,22 +497,6 @@
            </size>
           </property>
          </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_12">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>8</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item>
          <widget class="QPushButton" name="cetificationBtn">
@@ -605,13 +589,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>98</width>
+            <width>115</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>98</width>
+            <width>115</width>
             <height>16777215</height>
            </size>
           </property>
@@ -753,13 +737,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>98</width>
+            <width>115</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>98</width>
+            <width>115</width>
             <height>16777215</height>
            </size>
           </property>
@@ -901,13 +885,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>98</width>
+            <width>115</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>98</width>
+            <width>115</width>
             <height>16777215</height>
            </size>
           </property>

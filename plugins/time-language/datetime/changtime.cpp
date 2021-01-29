@@ -19,50 +19,35 @@
  */
 #include "changtime.h"
 #include "ui_changtime.h"
+#include "CloseButton/closebutton.h"
 
 #include <QDebug>
-
+#include <QStringList>
+#include <QObject>
 
 const int BEGINYEAR = 1900;
 const int BEGINMD = 1;
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
+const QStringList kmonthName { QObject::tr("January"), QObject::tr("February"), QObject::tr("March"), QObject::tr("April"), QObject::tr("May"), QObject::tr("June"),
+                               QObject::tr("July"), QObject::tr("August"), QObject::tr("September"), QObject::tr("October"), QObject::tr("Novermber"), QObject::tr("December")};
+
 ChangtimeDialog::ChangtimeDialog(bool hour,QWidget *parent) :m_isEFHour(hour),
     QDialog(parent),
     ui(new Ui::changtimedialog)
 {
-
-//    QFile QssFile("://combox.qss");
-//    QssFile.open(QFile::ReadOnly);
-
-//    if (QssFile.isOpen()){
-//        qss = QLatin1String(QssFile.readAll());
-//        QssFile.close();
-//    }
-
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
 
-//    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
-    //关闭按钮在右上角，窗体radius 6px，所以按钮只得6px
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
-//    ui->closeBtn->setStyleSheet("QPushButton#closeBtn{background: #ffffff; border: none; border-radius: 6px;}"
-//                                "QPushButton:hover:!pressed#closeBtn{background: #FA6056; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}"
-//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border: none; border-top-left-radius: 2px; border-top-right-radius: 6px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;}");
-
     m_datetimeInterface = new QDBusInterface("org.freedesktop.timedate1",
                                        "/org/freedesktop/timedate1",
                                        "org.freedesktop.timedate1",
-                                       QDBusConnection::systemBus());
+                                       QDBusConnection::systemBus(), this);
 
     initUi();
     initStatus();
@@ -76,7 +61,7 @@ ChangtimeDialog::ChangtimeDialog(bool hour,QWidget *parent) :m_isEFHour(hour),
     connect(ui->yearcomboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(dayUpdateSlot()));
     connect(ui->cancelButton,SIGNAL(clicked()),this,SLOT(close()));
     connect(ui->confirmButton,SIGNAL(clicked()),this,SLOT(changtimeApplySlot()));
-    connect(ui->closeBtn, &QPushButton::clicked, [=](bool checked){
+    connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
         close();
     });
@@ -87,7 +72,6 @@ ChangtimeDialog::~ChangtimeDialog()
 {
     m_chtimer->stop();
     delete ui;
-    delete m_datetimeInterface;
 }
 
 
@@ -97,7 +81,6 @@ void ChangtimeDialog::datetimeUpdateSlot(){
     QString currentminStr = current.toString("mm");
     QString currentsecStr = current.toString("ss");
 
-    ui->seccomboBox->setCurrentIndex(currentsecStr.toInt());
     if (currentsecStr.toInt() == 0) {
        ui->mincomboBox->setCurrentIndex(currentminStr.toInt());
     }
@@ -153,7 +136,6 @@ void ChangtimeDialog::dayUpdateSlot(){
 }
 
 void ChangtimeDialog::changtimeApplySlot(){
-//    qDebug()<<"时间应用------------》"<<endl;
     int year = ui->yearcomboBox->currentIndex() + BEGINYEAR;
     int month = ui->monthcomboBox->currentIndex() + BEGINMD;
     int day = ui->daycomboBox->currentIndex() + BEGINMD;
@@ -170,7 +152,6 @@ void ChangtimeDialog::changtimeApplySlot(){
     QTime tmptime(hour, ui->mincomboBox->currentIndex(),ui->seccomboBox->currentIndex());
 
     QDateTime setdt(tmpdate,tmptime);
-//    qDebug()<<"tmp time and hour is-->"<<setdt<<" "<<hour<<endl;
 
     for(int i=0; i < 2; i++){
         m_datetimeInterface->call("SetNTP", false, true);//先关闭网络同步
@@ -184,33 +165,25 @@ void ChangtimeDialog::changtimeApplySlot(){
 }
 
 void ChangtimeDialog::initUi(){
-//    this->setStyleSheet("background: #ffffff;");
     ui->timelabel->setText(tr("time"));
-//    ui->timelabel->setStyleSheet("QLabel#timelabel{background: #F4F4F4;}");
-
     ui->yearlabel->setText(tr("year"));
-//    ui->yearlabel->setStyleSheet("QLabel#yearlabel{background: #F4F4F4;}");
-
     ui->monthlabel->setText(tr("month"));
-//    ui->monthlabel->setStyleSheet("QLabel#monthlabel{background: #F4F4F4;}");
-
     ui->daylabel->setText(tr("day"));
-//    ui->daylabel->setStyleSheet("QLabel#daylabel{background: #F4F4F4;}");
 
     hourComboxSetup();
-    for(int m = 0; m < 60; m++){
+    for (int m = 0; m < 60; m++) {
         ui->mincomboBox->addItem(QString::number(m));
     }
 
-    for(int s = 0; s < 60; s++){
+    for (int s = 0; s < 60; s++) {
         ui->seccomboBox->addItem(QString::number(s));
     }
 
-    for(int year = 1900; year <= 2100; year++){
-        ui->yearcomboBox->addItem(QString::number(year)+tr("year"));
+    for (int year = 1900; year <= 2035; year++) {
+        ui->yearcomboBox->addItem(QString::number(year)/*+tr("year")*/);
     }
-    for(int month = 1; month <= 12; month++){
-        ui->monthcomboBox->addItem(QString::number(month)+tr("month"));
+    for (int month = 1; month <= 12; month++) {
+        ui->monthcomboBox->addItem(kmonthName.at(month - 1)/*+tr("month")*/);
     }
     ymdComboxSetup();
 }
@@ -222,14 +195,6 @@ void ChangtimeDialog::hourComboxSetup(){
     for (int h = 0; h < 24; h++){
         ui->hourcomboBox->addItem(QString::number(h));
     }
-
-//    if (this->m_isEFHour){
-//        for (int h = 0; h < 24; h++)
-//            ui->hourcomboBox->addItem(QString::number(h));
-//    } else {
-//        for (int h = 1; h <= 12; h++)
-//            ui->hourcomboBox->addItem(QString::number(h));
-//    }
 }
 
 
@@ -256,10 +221,8 @@ void ChangtimeDialog::initStatus(){
 
     //if date formate is 24 hour
     if(this->m_isEFHour) {
-//        ui->hourcomboBox->setItemText(currenthourStr.toInt());
         ui->hourcomboBox->setCurrentIndex(currenthourStr.toInt());
     } else {
-//        qDebug()<<"currenthourStr.toInt() is------------->"<<currenthourStr.toInt()<<endl;
         if (currenthourStr.toInt() > 12) {
             ui->hourcomboBox->setCurrentIndex(currenthourStr.toInt() - 12);
         } else {
@@ -284,6 +247,7 @@ void ChangtimeDialog::paintEvent(QPaintEvent *event) {
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
     pixmapPainter.setBrush(Qt::black);
+    pixmapPainter.setOpacity(0.65);
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 

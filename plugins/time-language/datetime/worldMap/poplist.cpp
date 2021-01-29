@@ -49,7 +49,6 @@ QStringList PopList::stringList() {
 }
 
 void PopList::keyPressEvent(QKeyEvent *event) {
-    qDebug()<<"esc------>"<<endl;
     if(event->key() == Qt::Key_Escape) {
         this->hide();
     }

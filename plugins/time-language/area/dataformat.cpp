@@ -1,5 +1,6 @@
 #include "dataformat.h"
 #include "ui_dataformat.h"
+#include "CloseButton/closebutton.h"
 
 #include <QDateTime>
 #include <QDebug>
@@ -21,9 +22,6 @@ DataFormat::DataFormat(QWidget *parent) :
     setAttribute(Qt::WA_TranslucentBackground);
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->closeBtn->setProperty("useIconHighlightEffect", true);
-    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
-    ui->closeBtn->setFlat(true);
 
     QByteArray id(PANEL_GSCHEMAL);
     if(QGSettings::isSchemaInstalled(id)) {
@@ -44,13 +42,9 @@ DataFormat::~DataFormat()
 }
 
 
-void DataFormat::initUi() {    
-
-//    ui->frame->setStyleSheet("QFrame{background: #ffffff;}");
+void DataFormat::initUi() {
     //关闭按钮在右上角，窗体radius 6px，所以按钮只得6px
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
 
     ui->calendarLabel->setText(tr("calendar"));
     ui->dayLabel->setText(tr("first day of week"));
@@ -90,7 +84,7 @@ void DataFormat::initConnect() {
     connect(m_itimer,SIGNAL(timeout()), this, SLOT(datetime_update_slot()));
     connect(ui->confirmButton, SIGNAL(clicked(bool)), SLOT(confirm_btn_slot()));
     connect(ui->cancelButton, SIGNAL(clicked()), SLOT(close()));
-    connect(ui->closeBtn, &QPushButton::clicked, [=](bool checked){
+    connect(ui->closeBtn, &CloseButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
         close();
     });
@@ -214,6 +208,7 @@ void DataFormat::paintEvent(QPaintEvent *event) {
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
     pixmapPainter.setBrush(Qt::black);
+    pixmapPainter.setOpacity(0.65);
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 

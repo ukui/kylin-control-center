@@ -1,2 +1,5 @@
+man/checkuserpwd.1
+man/group-manager-server.1
 man/ukui-control-center.1
 man/launchSysDbus.1
+man/ukui-control-center-session.1

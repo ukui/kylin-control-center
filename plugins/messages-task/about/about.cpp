@@ -21,102 +21,93 @@
 
 #include "about.h"
 #include "ui_about.h"
-#include "memoryentry.h"
+
+#include <KFormat>
+
+#ifdef Q_OS_LINUX
+#include <sys/sysinfo.h>
+#elif defined(Q_OS_FREEBSD)
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#endif
 
 #include <QProcess>
 #include <QFile>
 #include <QDebug>
 #include <QStorageInfo>
 
-const QString TYPEVERSION = "Kylin V10";
-const QString UbuntuVesion = "Ubuntu 20.04 LTS";
-const QString UbuntuVesionEnhance = "Ubuntu 20.04.1 LTS";
+const QString vTen        = "v10";
+const QString vTenEnhance = "v10.1";
+const QString vFour       = "v4";
 
-About::About()
+About::About() : mFirstLoad(true)
 {
-    ui = new Ui::About;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("About");
     pluginType = NOTICEANDTASKS;
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    _data_init();
-
-    setupDesktopComponent();
-    setupKernelCompenent();
-    setupVersionCompenent();
-    setupSerialComponent();
 }
 
-About::~About()
-{
-    delete ui;
-//    delete interface;
+About::~About() {
+    if (!mFirstLoad) {
+        delete ui;
+    }
 }
 
-QString About::get_plugin_name(){
+QString About::get_plugin_name() {
     return pluginName;
 }
 
-int About::get_plugin_type(){
+int About::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *About::get_plugin_ui(){
+QWidget *About::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+
+        ui = new Ui::About;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        initSearchText();
+        initActiveDbus();
+        setupDesktopComponent();
+        setupVersionCompenent();
+        setupSerialComponent();
+        setupKernelCompenent();
+    }
+
     return pluginWidget;
 }
 
-void About::plugin_delay_control(){
+void About::plugin_delay_control() {
 
 }
 
-void About::_data_init(){
-    QStringList infoList = computerinfo.split("\n\n");
-    QString available;
-    if (infoList.length() > 1){
-        available = infoList.at(1);
-    }
-    else {
-        available = "";
-    }
-    if (available != ""){
-        for (QString line : available.split("\n")){
-            if (!line.contains(":"))
-                continue;
-            QStringList lineList = line.split(":");
-            infoMap.insert(lineList.at(0).simplified(), lineList.at(1).simplified());
-        }
-    }
+const QString About::name() const {
+    return QStringLiteral("about");
 }
 
 void About::setupDesktopComponent() {
-    //获取当前桌面环境
+    // 获取当前桌面环境
     QString dEnv;
-    foreach (dEnv, QProcess::systemEnvironment()){
+    foreach (dEnv, QProcess::systemEnvironment()) {
         if (dEnv.startsWith("XDG_CURRENT_DESKTOP"))
             break;
     }
 
-    //设置当前桌面环境信息
+    // 设置当前桌面环境信息
     if (!dEnv.isEmpty()) {
         QString desktop = dEnv.section("=", -1, -1);
         ui->desktopContent->setText(desktop);
     }
 
-//    QProcess *userPro = new QProcess();
-//    userPro->start("whoami");
-//    userPro->waitForFinished();
-
-//    std::string output = userPro->readAll().toStdString();
-
     QString name = qgetenv("USER");
     if (name.isEmpty()) {
         name = qgetenv("USERNAME");
     }
-
 
     ui->userContent->setText(name);
 }
@@ -127,81 +118,79 @@ void About::setupKernelCompenent() {
     QString memorySize;
     QString cpuType;
 
-    //ubuntukylin youker DBus interface
-    QDBusInterface *youkerInterface;
-    for (int i = 0; i < 2; i++) {
-        youkerInterface = new QDBusInterface("com.kylin.assistant.systemdaemon",
-                                             "/com/kylin/assistant/systemdaemon",
-                                             "com.kylin.assistant.systemdaemon",
-                                             QDBusConnection::systemBus());
-    }
-    if (!youkerInterface->isValid()) {
+    QDBusInterface youkerInterface("com.kylin.assistant.systemdaemon",
+                                   "/com/kylin/assistant/systemdaemon",
+                                   "com.kylin.assistant.systemdaemon",
+                                   QDBusConnection::systemBus());
+    if (!youkerInterface.isValid()) {
         qCritical() << "Create youker Interface Failed When Get Computer info: " << QDBusConnection::systemBus().lastError();
         return;
     }
 
     QDBusReply<QMap<QString, QVariant>> diskinfo;
-    diskinfo  = youkerInterface ->call("get_harddisk_info");
+    diskinfo  = youkerInterface.call("get_harddisk_info");
     if (!diskinfo.isValid()) {
-        qDebug()<<"diskinfo is invalid"<<endl;
+        qDebug() << "diskinfo is invalid" << endl;
     } else {
         QMap<QString, QVariant> res = diskinfo.value();
         diskSize = res["DiskCapacity"].toString();
-        if (diskSize.contains("<1_1>")) {
-            int index = diskSize.indexOf("<1_1>");
-            QString disk1 = diskSize.left(index);
-            QString disk2 = diskSize.mid(index + 5, diskSize.length() - index - 5);
-            diskSize = tr("Disk One:") + disk1 + " " + tr("Disk Two:")+disk2;
+        QStringList diskList = diskSize.split("<1_1>");
+        diskSize.clear();
+        for (int i = 0; i < diskList.length(); i++) {
+            diskSize += tr("Disk") + QString::number(i+1) + ":" +diskList.at(i) + " ";
         }
     }
 
     QDBusReply<QMap<QString, QVariant>> cpuinfo;
-    cpuinfo  = youkerInterface ->call("get_cpu_info");
-    if (!diskinfo.isValid()) {
-        qDebug()<<"cpuinfo is invalid"<<endl;
+    cpuinfo  = youkerInterface.call("get_cpu_info");
+    if (!cpuinfo.isValid()) {
+        qDebug() << "cpuinfo is invalid" << endl;
     } else {
         QMap<QString, QVariant> res = cpuinfo.value();
         cpuType = res["CpuVersion"].toString();
     }
 
-    MemoryEntry * memoryInfo = new MemoryEntry;
-    QStringList memory = memoryInfo->totalMemory();
+    QStringList memory = totalMemory();
     memorySize = memorySize + memory.at(0) + "(" + memory.at(1) + tr(" available") + ")";
 
     ui->cpuContent->setText(cpuType);
     ui->diskContent->setText(diskSize);
     ui->kernalContent->setText(kernal);
     ui->memoryContent->setText(memorySize);
-
-    qDebug()<<"cpuType and "<<cpuType<<" "<<diskSize<<" "<<kernal<<" "<<memorySize<<endl;
 }
 
 void About::setupVersionCompenent() {
     QString versionPath = "/etc/os-release";
     QStringList osRes =  readFile(versionPath);
+    QString versionID;
     QString version;
 
     for (QString str : osRes) {
-        if (str.contains("PRETTY_NAME=")) {
-            int index = str.indexOf("PRETTY_NAME=");
-            int startIndex = index + 13;
-            int length = str.length() - startIndex - 1;
-            version = str.mid(startIndex, length);
+        if (str.contains("VERSION_ID=")) {
+            QRegExp rx("VERSION_ID=\"(.*)\"$");
+            int pos = rx.indexIn(str);
+            if (pos > -1) {
+                versionID = rx.cap(1);
+            }
+        }
+        if (str.contains("VERSION=")) {
+            QRegExp rx("VERSION=\"(.*)\"$");
+            int pos = rx.indexIn(str);
+            if (pos > -1) {
+                version = rx.cap(1);
+            }
         }
     }
-    if (UbuntuVesion == version) {
-        version = "UbuntuKylin 20.04 LTS";
-    } else if (UbuntuVesionEnhance == version) {
-        version = "UbuntuKylin 20.04.1 LTS";
-    }
+
     ui->versionContent->setText(version);
-    if (version == "Kylin V10" || version == "Kylin V10.1") {
+    if (!versionID.compare(vTen, Qt::CaseInsensitive) ||
+            !versionID.compare(vTenEnhance, Qt::CaseInsensitive) ||
+            !versionID.compare(vFour, Qt::CaseInsensitive)) {
+
         ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/galaxyUnicorn.png"));
     } else {
-//        qDebug()<<"version----->"<<version<<endl;
         ui->activeFrame->setVisible(false);
         ui->trialButton->setVisible(false);
-        //设置桌面环境LOGO
         ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/logoukui.svg"));
     }
 }
@@ -209,60 +198,97 @@ void About::setupVersionCompenent() {
 void About::setupSerialComponent() {
     ui->trialButton->setFlat(true);
     ui->trialButton->setStyleSheet("text-align: left");
-    //ubuntukylin youker DBus interface
-    QDBusInterface *activeInterface = new QDBusInterface("org.freedesktop.activation",
-                                     "/org/freedesktop/activation",
-                                     "org.freedesktop.activation.interface",
-                                     QDBusConnection::systemBus());
-    if (!activeInterface->isValid()) {
-        qDebug() << "Create active Interface Failed When Get Computer info: " << QDBusConnection::systemBus().lastError();
+    if (!activeInterface.get()->isValid()) {
+        qDebug() << "Create active Interface Failed When Get active info: " << QDBusConnection::systemBus().lastError();
         return;
     }
 
     int status;
-    QDBusReply<int> activeStatus;
-    activeStatus  = activeInterface ->call("status");
-    if (!activeStatus.isValid()) {
-        qDebug()<<"activeStatus is invalid"<<endl;
-    } else {
-        status = activeStatus.value();
+    QDBusMessage activeReply = activeInterface.get()->call("status");
+    if (activeReply.type() == QDBusMessage::ReplyMessage) {
+        status = activeReply.arguments().at(0).toInt();
     }
-
 
     QString serial;
     QDBusReply<QString> serialReply;
-    serialReply  = activeInterface ->call("serial_number");
+    serialReply  = activeInterface.get()->call("serial_number");
     if (!serialReply.isValid()) {
         qDebug()<<"serialReply is invalid"<<endl;
     } else {
         serial = serialReply.value();
     }
 
-    qDebug()<<"status and serial is----->"<<status<<" "<<serial<<endl;
-
-    if (status != 1) {
-        ui->activeContent->setText(tr("Inactivated"));
-    } else {
+    if (1 == status) {
         ui->activeContent->setText(tr("Activated"));
         ui->activeButton->hide();
+        ui->trialButton->hide();
+    } else {
+        QDBusMessage dateReply = activeInterface.get()->call("date");
+        QString dateRes;
+        if (dateReply.type() == QDBusMessage::ReplyMessage) {
+            dateRes = dateReply.arguments().at(0).toString();
+            if (!dateRes.isEmpty()) {
+                ui->activeContent->setText(tr("The system has expired. The expiration time is:") + dateRes);
+            } else {
+                ui->activeContent->setText(tr("Inactivated"));
+            }
+        }
     }
-
     ui->serviceContent->setText(serial);
 
     connect(ui->activeButton, &QPushButton::clicked, this, &About::runActiveWindow);
     connect(ui->trialButton, &QPushButton::clicked, this, &About::showPdf);
 }
 
+qlonglong About::calculateTotalRam() {
+    qlonglong ret = -1;
+#ifdef Q_OS_LINUX
+    struct sysinfo info;
+    if (sysinfo(&info) == 0)
+        // manpage "sizes are given as multiples of mem_unit bytes"
+        ret = qlonglong(info.totalram) * info.mem_unit;
+#elif defined(Q_OS_FREEBSD)
+    /* Stuff for sysctl */
+    size_t len;
+
+    unsigned long memory;
+    len = sizeof(memory);
+    sysctlbyname("hw.physmem", &memory, &len, NULL, 0);
+
+    ret = memory;
+#endif
+    return ret;
+
+}
+
+QStringList About::totalMemory()
+{
+
+    QStringList res;
+    const qlonglong totalRam = calculateTotalRam();
+
+    if (totalRam > 0) {
+        QString total =  KFormat().formatByteSize(totalRam, 0, KFormat::JEDECBinaryDialect);
+        QString available = KFormat().formatByteSize(totalRam, 1, KFormat::JEDECBinaryDialect);
+        if (atof(total.toLatin1()) < atof(available.toLatin1())) {
+            qSwap(total, available);
+        }
+        res << total << available;
+        return res;
+    }
+    return res;
+}
+
 QStringList About::readFile(QString filepath) {
     QStringList fileCont;
     QFile file(filepath);
-    if(file.exists()) {
-        if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    if (file.exists()) {
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qWarning() << "ReadFile() failed to open" << filepath;
             return QStringList();
         }
         QTextStream textStream(&file);
-        while(!textStream.atEnd()) {
+        while (!textStream.atEnd()) {
             QString line= textStream.readLine();
             line.remove('\n');
             fileCont<<line;
@@ -275,53 +301,29 @@ QStringList About::readFile(QString filepath) {
     }
 }
 
-
-void About::_call_dbus_get_computer_info(){
-    interface = new QDBusInterface("com.kylin.assistant.qsessiondbus",
-                                     "/com/kylin/assistant/qsessiondbus",
-                                     "com.kylin.assistant.qsessiondbus",
-                                     QDBusConnection::systemBus());
-
-    if (!interface->isValid()){
-        qCritical() << "Create Client Interface Failed When Get Computer info: " << QDBusConnection::systemBus().lastError();
-        return;
-    }
-
-//    QDBusConnection::systemBus().connect("com.control.center.qt.systemdbus",
-//                                         "/",
-//                                         "com.control.center.interface",
-//                                         "computerinfo", this,
-//                                         SLOT(get(QString)));
-
-    QDBusReply<QString> reply =  interface->call("GetComputerInfo");
-    if (reply.isValid()){
-        computerinfo =  reply.value();
-    }
-    else {
-        qCritical() << "Call 'GetComputerInfo' Failed!" << reply.error().message();
-    }
-
-
-    //async
-//    QDBusPendingCall async = interface->asyncCall("GetComputerInfo");
-//    QDBusPendingCallWatcher * watcher = new QDBusPendingCallWatcher(async, this);
-
-//    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(call_finished_slot(QDBusPendingCallWatcher*)));
+void About::initSearchText() {
+    //~ contents_path /about/version
+    ui->versionLabel->setText(tr("version"));
+    //~ contents_path /about/Kernel
+    ui->kernalLabel->setText(tr("Kernel"));
+    //~ contents_path /about/CPU
+    ui->cpuLabel->setText(tr("CPU"));
+    //~ contents_path /about/Memory
+    ui->memoryLabel->setText(tr("Memory"));
+    //~ contents_path /about/Disk
+    ui->diskLabel->setText(tr("Disk"));
 }
 
-//void About::call_finished_slot(QDBusPendingCallWatcher * call){
-//    qDebug() << "----------------start------------>";
-//    QDBusPendingReply<QString> reply = *call;
-//    if (!reply.isError()){
-//        QString info = reply.argumentAt<0>();
-//        qDebug() << "-----------0--->" << "\n" << info;
-//    }
-//    else{
-//        qDebug() << reply.error().message();
-//    }
-//    call->deleteLater();
-//}
-
+void About::initActiveDbus() {
+    activeInterface = QSharedPointer<QDBusInterface>(
+                new QDBusInterface("org.freedesktop.activation",
+                                   "/org/freedesktop/activation",
+                                   "org.freedesktop.activation.interface",
+                                   QDBusConnection::systemBus()));
+    if (activeInterface.get()->isValid()) {
+        connect(activeInterface.get(), SIGNAL(activation_result(int)), this, SLOT(activeSlot(int)));
+    }
+}
 
 void About::runActiveWindow() {
     QString cmd = "kylin-activation";
@@ -334,5 +336,11 @@ void About::showPdf() {
     QString cmd = "atril /usr/share/man/statement.pdf.gz";
     QProcess process(this);
     process.startDetached(cmd);
+}
+
+void About::activeSlot(int activeSignal) {
+    if (!activeSignal) {
+        setupSerialComponent();
+    }
 }
 

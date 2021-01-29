@@ -148,7 +148,7 @@
                 <number>16</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_3">
+                <widget class="QLabel" name="enableLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -226,7 +226,7 @@
                 <number>16</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_4">
+                <widget class="QLabel" name="delayLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -266,33 +266,7 @@
                <item>
                 <widget class="QSlider" name="delayHorSlider">
                  <property name="styleSheet">
-                  <string notr="true">QSlider{
-    width: 178px;
-    height: 20px;
-}
-QSlider::groove:horizontal {
-    border: 0px solid #bbb;
-
-}
-QSlider::sub-page:horizontal {
-    background: #3D6BE5;
-    border-radius: 2px;
-    margin-top:8px;
-    margin-bottom:9px;
-}
-QSlider::add-page:horizontal {
-    background:  rgba(52,70,80,90%);
-    border: 0px solid #777;
-    border-radius: 2px;
-    margin-top:8px;
-    margin-bottom:9px;
-}
-QSlider::handle:horizontal {
-    width: 20px;
-    height: 20px;
-    background: #3D6BE5;
-    border-radius:10px;
-}</string>
+                  <string notr="true"/>
                  </property>
                  <property name="minimum">
                   <number>100</number>
@@ -371,7 +345,7 @@ QSlider::handle:horizontal {
                 <number>16</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_7">
+                <widget class="QLabel" name="speedLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -411,33 +385,7 @@ QSlider::handle:horizontal {
                <item>
                 <widget class="QSlider" name="speedHorSlider">
                  <property name="styleSheet">
-                  <string notr="true">QSlider{
-    width: 178px;
-    height: 20px;
-}
-QSlider::groove:horizontal {
-    border: 0px solid #bbb;
-
-}
-QSlider::sub-page:horizontal {
-    background: #3D6BE5;
-    border-radius: 2px;
-    margin-top:8px;
-    margin-bottom:9px;
-}
-QSlider::add-page:horizontal {
-    background:  rgba(52,70,80,90%);
-    border: 0px solid #777;
-    border-radius: 2px;
-    margin-top:8px;
-    margin-bottom:9px;
-}
-QSlider::handle:horizontal {
-    width: 20px;
-    height: 20px;
-    background: #3D6BE5;
-    border-radius:10px;
-}</string>
+                  <string notr="true"/>
                  </property>
                  <property name="minimum">
                   <number>10</number>
@@ -516,7 +464,7 @@ QSlider::handle:horizontal {
                 <number>16</number>
                </property>
                <item>
-                <widget class="QLabel" name="repeatLabel_3">
+                <widget class="QLabel" name="repeatLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -524,7 +472,7 @@ QSlider::handle:horizontal {
                   </sizepolicy>
                  </property>
                  <property name="text">
-                  <string>Test repetition rate of the input character:</string>
+                  <string>Input characters to test the repetition effect：</string>
                  </property>
                  <property name="scaledContents">
                   <bool>true</bool>
@@ -613,7 +561,7 @@ QSlider::handle:horizontal {
                 <number>16</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_11">
+                <widget class="QLabel" name="tipLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -688,7 +636,7 @@ QSlider::handle:horizontal {
                 <number>16</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_12">
+                <widget class="QLabel" name="numlockLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -808,7 +756,7 @@ QSlider::handle:horizontal {
                 <number>16</number>
                </property>
                <item>
-                <widget class="QLabel" name="layoutLabel_0">
+                <widget class="QLabel" name="layoutLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -907,82 +855,22 @@ QSlider::handle:horizontal {
            </widget>
           </item>
           <item>
-           <widget class="QFrame" name="resetLayoutFrame">
+           <widget class="QPushButton" name="resetBtn">
             <property name="minimumSize">
              <size>
-              <width>0</width>
-              <height>50</height>
+              <width>120</width>
+              <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>16777215</width>
-              <height>50</height>
+              <width>120</width>
+              <height>16777215</height>
              </size>
             </property>
-            <property name="frameShape">
-             <enum>QFrame::Box</enum>
+            <property name="text">
+             <string>Reset layout</string>
             </property>
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_9">
-             <property name="spacing">
-              <number>0</number>
-             </property>
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <layout class="QHBoxLayout" name="resetHorLayout">
-               <property name="spacing">
-                <number>48</number>
-               </property>
-               <property name="leftMargin">
-                <number>16</number>
-               </property>
-               <property name="rightMargin">
-                <number>16</number>
-               </property>
-               <item>
-                <widget class="QLabel" name="resetLabel">
-                 <property name="text">
-                  <string>reset default layout</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_7">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QPushButton" name="resetBtn">
-                 <property name="text">
-                  <string>Reset layout</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-            </layout>
            </widget>
           </item>
          </layout>

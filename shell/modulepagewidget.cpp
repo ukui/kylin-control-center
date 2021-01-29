@@ -21,14 +21,14 @@
 #include "ui_modulepagewidget.h"
 
 #include <QListWidgetItem>
+#include <QDebug>
 
 #include "mainwindow.h"
 #include "interface.h"
 #include "utils/keyvalueconverter.h"
 #include "utils/functionselect.h"
+#include "utils/utils.h"
 #include "component/leftwidgetitem.h"
-
-#include <QDebug>
 
 ModulePageWidget::ModulePageWidget(QWidget *parent) :
     QWidget(parent),
@@ -36,41 +36,36 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //设置父窗口对象
+    // 设置父窗口对象
     this->setParent(parent);
     pmainWindow = (MainWindow *)parentWidget();
 
-    //左侧Widget大小限定
+    // 左侧Widget大小限定
     ui->leftbarWidget->setMinimumWidth(160);
     ui->leftbarWidget->setMaximumWidth(216);
 
-    //右侧Widget大小限定(限制了最小宽度)
+    // 右侧Widget大小限定(限制了最小宽度)
     ui->widget->setMinimumWidth(650);
     ui->widget->setMaximumWidth(1200);
 
-
-    //
-    ui->mtitleLabel->setStyleSheet(tr("QLabel{font-size: 18px; color: palette(Shadow);}"));
-    //左侧二级菜单样式
+    ui->mtitleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(Shadow);}");
+    // 左侧二级菜单样式
     ui->leftStackedWidget->setStyleSheet("border: none;");
-    //上侧二级菜单样式
+    // 上侧二级菜单样式
 //    ui->topStackedWidget->setStyleSheet("border: none;");
-    //功能区域
-//    ui->scrollArea->setStyleSheet("#scrollArea{border: 0px solid;}");
     ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 //    ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     //初始化记录标志位
     flagBit = true;
 
-
     //构建枚举键值转换对象
     mkvConverter = new KeyValueConverter(); //继承QObject，No Delete
 
     ui->topsideWidget->hide();
 
+    getModuleStatus();
     initUI();
-
 }
 
 ModulePageWidget::~ModulePageWidget()
@@ -78,7 +73,7 @@ ModulePageWidget::~ModulePageWidget()
     delete ui;
 }
 
-void ModulePageWidget::initUI(){
+void ModulePageWidget::initUI() {
     //设置伸缩策略
     QSizePolicy leftSizePolicy = ui->leftbarWidget->sizePolicy();
     QSizePolicy rightSizePolicy = ui->widget->sizePolicy();
@@ -92,12 +87,12 @@ void ModulePageWidget::initUI(){
     for (int moduleIndex = 0; moduleIndex < TOTALMODULES; moduleIndex++){
         QListWidget * leftListWidget = new QListWidget;
         leftListWidget->setObjectName("leftWidget");
-        leftListWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
         leftListWidget->setAttribute(Qt::WA_DeleteOnClose);
         leftListWidget->setResizeMode(QListView::Adjust);
         leftListWidget->setFocusPolicy(Qt::NoFocus);
         leftListWidget->setSelectionMode(QAbstractItemView::NoSelection);
         leftListWidget->setSpacing(12);
+        leftListWidget->setMinimumWidth(172);
         connect(leftListWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), this, SLOT(currentLeftitemChanged(QListWidgetItem*,QListWidgetItem*)));
         QListWidget * topListWidget = new QListWidget;
         topListWidget->setAttribute(Qt::WA_DeleteOnClose);
@@ -116,16 +111,23 @@ void ModulePageWidget::initUI(){
             if (!moduleMap.contains(single.namei18nString))
                 continue;
 
+            if (mModuleMap.keys().contains(single.nameString.toLower())) {
+                if (!mModuleMap[single.nameString.toLower()].toBool()) {
+                    continue;
+                }
+            }
+
             //填充左侧二级菜单
-            LeftWidgetItem * leftWidgetItem = new LeftWidgetItem();
+            LeftWidgetItem * leftWidgetItem = new LeftWidgetItem(this);
             leftWidgetItem->setAttribute(Qt::WA_DeleteOnClose);
             leftWidgetItem->setLabelText(single.namei18nString);
 
             leftWidgetItem->setLabelPixmap(QString("://img/secondaryleftmenu/%1.svg").arg(single.nameString), single.nameString, "default");
 
             QListWidgetItem * item = new QListWidgetItem(leftListWidget);
-            item->setSizeHint(QSize(ui->leftStackedWidget->width(), 40)); //QSize(120, 40) spacing: 12px;
+            item->setSizeHint(QSize(ui->leftStackedWidget->width() + 48, 40)); //QSize(120, 40) spacing: 12px;
             leftListWidget->setItemWidget(item, leftWidgetItem);
+            leftListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
             strItemsMap.insert(single.namei18nString, item);
 
@@ -258,6 +260,10 @@ void ModulePageWidget::highlightItem(QString text){
     //高亮上侧二级菜单
     QListWidget * toptmpListWidget = dynamic_cast<QListWidget *>(ui->topStackedWidget->currentWidget());
     toptmpListWidget->setCurrentItem(currentItemList.at(0)); //QMultiMap 后添加的value在前面
+}
+
+void ModulePageWidget::getModuleStatus() {
+    mModuleMap = Utils::getModuleHideStatus();
 }
 
 void ModulePageWidget::currentLeftitemChanged(QListWidgetItem *cur, QListWidgetItem *pre){

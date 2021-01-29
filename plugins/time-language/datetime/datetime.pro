@@ -13,6 +13,8 @@ CONFIG += plugin \
 
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
+include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
 
 TARGET = $$qtLibraryTarget(datetime)
 DESTDIR = ../..

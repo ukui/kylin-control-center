@@ -49,7 +49,8 @@ public:
     void setShortcutBinding(QString newBinding);
 
 protected:
-    virtual void mousePressEvent(QMouseEvent * e);
+    virtual void enterEvent(QEvent *);
+    virtual void leaveEvent(QEvent *);
     virtual void mouseDoubleClickEvent(QMouseEvent * e);
 
 

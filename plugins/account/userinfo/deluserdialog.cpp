@@ -19,6 +19,7 @@
  */
 #include "deluserdialog.h"
 #include "ui_deluserdialog.h"
+#include "CloseButton/closebutton.h"
 
 #include <QDebug>
 #include <QtGlobal>
@@ -33,13 +34,6 @@ DelUserDialog::DelUserDialog(QWidget *parent) :
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
 
-//    ui->frame->setStyleSheet("QFrame{background: #ffffff; border: none; border-radius: 6px;}");
-//    ui->closeBtn->setStyleSheet("QPushButton{background: #ffffff;}");
-
-    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
-    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
-                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
-
     setupComonpent();
     setupConnect();
 }
@@ -50,12 +44,17 @@ DelUserDialog::~DelUserDialog()
 }
 
 void DelUserDialog::setupComonpent(){
-
+//    ui->closeBtn->setFlat(true);
+    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
+//    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"
+//                                "QPushButton:hover:pressed#closeBtn{background: #E54A50; border-radius: 4px;}");
+    ui->label_2->adjustSize();
+    ui->label_2->setWordWrap(true);
 }
 
 void DelUserDialog::setupConnect(){
 
-    connect(ui->closeBtn, &QPushButton::clicked, [=](){
+    connect(ui->closeBtn, &CloseButton::clicked, [=](){
         close();
     });
     connect(ui->cancelPushBtn, SIGNAL(clicked()), this, SLOT(reject()));
@@ -103,6 +102,7 @@ void DelUserDialog::paintEvent(QPaintEvent *event) {
     pixmapPainter.setRenderHint(QPainter::Antialiasing);
     pixmapPainter.setPen(Qt::transparent);
     pixmapPainter.setBrush(Qt::black);
+    pixmapPainter.setOpacity(0.65);
     pixmapPainter.drawPath(rectPath);
     pixmapPainter.end();
 

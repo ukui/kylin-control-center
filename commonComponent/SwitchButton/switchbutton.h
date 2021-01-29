@@ -25,6 +25,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QEvent>
+#include <QGSettings>
 
 class SwitchButton : public QWidget
 {
@@ -55,6 +56,8 @@ private:
 
     QColor sliderColorOff;
     QColor sliderColorOn;
+    QGSettings *m_qtThemeSetting;
+    QGSettings *m_gtkThemeSetting;
 
     int space; //滑块离背景间隔
     int rectRadius; //圆角角度

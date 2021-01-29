@@ -37,15 +37,15 @@ class FrameItem : public QFrame
     Q_OBJECT
 public:
     explicit        FrameItem(QWidget *parent = nullptr);
-    void            set_itemname(QString name);
-    QString         get_itemname();
+    void            set_itemname(const QString &name);
+    QString         get_itemname() const;
     void            make_itemoff();
     void            make_itemon();
-    void            set_change(int status,QString code);
+    void            set_change(const int &status,const QString &code);
     QHBoxLayout*    get_layout();
     SwitchButton* get_swbtn();
     QWidget*        get_widget();
-    void            set_active(bool ok);
+    void            set_active(const bool &ok);
     ~FrameItem();
 private:
     QLabel          *m_itemName;

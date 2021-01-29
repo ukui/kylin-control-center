@@ -7,7 +7,7 @@
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 
-QT       += widgets x11extras
+QT       += widgets x11extras dbus
 
 #greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TEMPLATE = lib
@@ -30,6 +30,7 @@ CONFIG        += link_pkgconfig \
 PKGCONFIG     += gio-2.0 \
                  gio-unix-2.0 \
                  gsettings-qt \
+                 x11
 
 #DEFINES += QT_DEPRECATED_WARNINGS
 

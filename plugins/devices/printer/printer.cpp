@@ -28,65 +28,67 @@
 
 #define ITEMFIXEDHEIGH 58
 
-Printer::Printer(){
-    ui = new Ui::Printer;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
+Printer::Printer() : mFirstLoad(true)
+{
     pluginName = tr("Printer");
     pluginType = DEVICES;
-
-//    ui->addFrame->installEventFilter(this);
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-//    ui->addWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-
-    ui->listWidget->setSpacing(0);
-//    ui->listWidget->setStyleSheet("QListWidget#listWidget{border: none;}");
-
-
-    pTimer = new QTimer(this);
-    pTimer->setInterval(1000);
-    connect(pTimer, SIGNAL(timeout()), this, SLOT(refreshPrinterDev()));
-
-    initComponent();
 }
 
-Printer::~Printer()
-{
-    delete ui;
+Printer::~Printer() {
+    if (!mFirstLoad) {
+        delete ui;
+    }
 }
 
-QString Printer::get_plugin_name(){
+QString Printer::get_plugin_name() {
     return pluginName;
 }
 
-int Printer::get_plugin_type(){
+int Printer::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *Printer::get_plugin_ui(){
+QWidget *Printer::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+        ui = new Ui::Printer;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        //~ contents_path /printer/Add Printers And Scanners
+        ui->titleLabel->setText(tr("Add Printers And Scanners"));
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        //禁用选中效果
+        ui->listWidget->setFocusPolicy(Qt::NoFocus);
+        ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);
+
+        refreshPrinterDev();
+
+        initComponent();
+    }
     return pluginWidget;
 }
 
-void Printer::plugin_delay_control(){
+void Printer::plugin_delay_control() {
 
+}
+
+const QString Printer::name() const {
+
+    return QStringLiteral("printer");
 }
 
 void Printer::initComponent(){
 
-//    ui->addBtn->setIcon(QIcon("://img/plugins/printer/add.png"));
-//    ui->addBtn->setIconSize(QSize(48, 48));
-//    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
+    mAddWgt = new HoverWidget("", pluginWidget);
+    mAddWgt->setObjectName("addwgt");
+    mAddWgt->setMinimumSize(QSize(580, 50));
+    mAddWgt->setMaximumSize(QSize(960, 50));
+    mAddWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
 
-    addWgt = new HoverWidget("");
-    addWgt->setObjectName("addwgt");
-    addWgt->setMinimumSize(QSize(580, 50));
-    addWgt->setMaximumSize(QSize(960, 50));
-    addWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
+    ui->listWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
 
     QHBoxLayout *addLyt = new QHBoxLayout;
 
@@ -97,32 +99,30 @@ void Printer::initComponent(){
     addLyt->addWidget(iconLabel);
     addLyt->addWidget(textLabel);
     addLyt->addStretch();
-    addWgt->setLayout(addLyt);
+    mAddWgt->setLayout(addLyt);
 
     // 悬浮改变Widget状态
-    connect(addWgt, &HoverWidget::enterWidget, this, [=](QString mname){
+    connect(mAddWgt, &HoverWidget::enterWidget, this, [=](QString mname) {
+        Q_UNUSED(mname)
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(base);");
 
     });
     // 还原状态
-    connect(addWgt, &HoverWidget::leaveWidget, this, [=](QString mname){
+    connect(mAddWgt, &HoverWidget::leaveWidget, this, [=](QString mname) {
+        Q_UNUSED(mname)
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(windowText);");
     });
 
-    connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
+    connect(mAddWgt, &HoverWidget::widgetClicked, this, [=](QString mname) {
+        Q_UNUSED(mname)
         runExternalApp();
     });
-    ui->addLyt->addWidget(addWgt);
+    ui->addLyt->addWidget(mAddWgt);
 
-    pTimer->start();
-
-//    connect(ui->addBtn, &QPushButton::clicked, this, [=]{
-//        runExternalApp();
-//    });
 }
 
 void Printer::refreshPrinterDev(){
@@ -131,54 +131,20 @@ void Printer::refreshPrinterDev(){
 
     QStringList printer = QPrinterInfo::availablePrinterNames();
 
-    for (int num = 0; num < printer.count(); num++){
+    for (int num = 0; num < printer.count(); num++) {
 
-        QWidget * baseWidget = new QWidget;
-        baseWidget->setAttribute(Qt::WA_DeleteOnClose);
+        HoverBtn * printerItem = new HoverBtn(printer.at(num), pluginWidget);
+        printerItem->mPitLabel->setText(printer.at(num));
+        printerItem->mAbtBtn->setText(tr("Attributes"));
+        QIcon printerIcon = QIcon::fromTheme("printer");
+        printerItem->mPitIcon->setPixmap(printerIcon.pixmap(printerIcon.actualSize(QSize(24, 24))));
 
-        QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);
-        baseVerLayout->setSpacing(0);
-        baseVerLayout->setContentsMargins(0, 0, 0, 8);
-
-        QWidget * pdWidget = new QWidget(baseWidget);
-
-        QHBoxLayout * pdHorLayout = new QHBoxLayout(pdWidget);
-        pdHorLayout->setSpacing(8);
-        pdHorLayout->setContentsMargins(16, 0, 0, 0);
-
-        QLabel * pdIconLabel = new QLabel(pdWidget);
-        QSizePolicy iconSizePolicy = pdIconLabel->sizePolicy();
-        iconSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
-        iconSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
-        pdIconLabel->setSizePolicy(iconSizePolicy);
-        pdIconLabel->setFixedSize(QSize(24, 24));
-        pdIconLabel->setScaledContents(true);
-        pdIconLabel->setPixmap(QPixmap("://img/plugins/printer/printer.png"));
-
-        QLabel * pdLabel = new QLabel(pdWidget);
-        QSizePolicy txtSizePolicy = pdLabel->sizePolicy();
-        txtSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
-        txtSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
-        pdLabel->setSizePolicy(txtSizePolicy);
-        pdLabel->setScaledContents(true);
-        pdLabel->setText(printer.at(num));
-
-        pdHorLayout->addWidget(pdIconLabel);
-        pdHorLayout->addWidget(pdLabel);
-        pdHorLayout->addStretch();
-
-        pdWidget->setLayout(pdHorLayout);
-
-        //
-        baseVerLayout->addWidget(pdWidget);
-        baseVerLayout->addStretch();
-
-        baseWidget->setLayout(baseVerLayout);
-
-
+        connect(printerItem->mAbtBtn, &QPushButton::clicked, this, [=]{
+            runExternalApp();
+        });
         QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
-        item->setSizeHint(QSize(ui->listWidget->width(), ITEMFIXEDHEIGH));
-        ui->listWidget->setItemWidget(item, baseWidget);
+        item->setSizeHint(QSize(QSizePolicy::Expanding, 50));
+        ui->listWidget->setItemWidget(item, printerItem);
     }
 }
 
@@ -189,17 +155,3 @@ void Printer::runExternalApp(){
     process.startDetached(cmd);
 }
 
-//bool Printer::eventFilter(QObject *watched, QEvent *event)
-//{
-//    if (watched == ui->addFrame){
-//        if (event->type() == QEvent::MouseButtonPress){
-//            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
-//            if (mouseEvent->button() == Qt::LeftButton){
-//                runExternalApp();
-//                return true;
-//            } else
-//                return false;
-//        }
-//    }
-//    return QObject::eventFilter(watched, event);
-//}

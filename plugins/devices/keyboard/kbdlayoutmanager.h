@@ -57,7 +57,6 @@ public:
     void kbd_trigger_available_countries(char * countryid);
     void kbd_trigger_available_languages(char * languageid);
 
-
     void configRegistry();
     void setupComponent();
     void setupConnect();
@@ -65,7 +64,9 @@ public:
     void rebuildVariantCombo();
 
     void rebuild_listwidget();
-//    void preview();
+    void preview();
+
+    void installedNoSame();
 
 protected:
     void paintEvent(QPaintEvent * event);
@@ -76,7 +77,6 @@ private:
     QStringList layoutsList;
 
     QGSettings * kbdsettings;
-
 };
 
 #endif // KBDLAYOUTMANAGER_H

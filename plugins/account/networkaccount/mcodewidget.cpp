@@ -137,7 +137,7 @@ void MCodeWidget::produceRandomColor() const
 }
 
 /* 控制字母是否能改变，用于外部控制 */
-void MCodeWidget::set_change(int ok_num) {
+void MCodeWidget::set_change(const int &ok_num) {
     if(ok_num == 0) {
         m_bIsOk = false;
     }else {

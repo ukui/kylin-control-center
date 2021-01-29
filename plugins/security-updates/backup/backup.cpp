@@ -42,15 +42,12 @@ Backup::Backup()
     pluginName = tr("Backup");
     pluginType = UPDATE;
 
+    //~ contents_path /backup/Backup
+    ui->titleLabel->setText(tr("Backup"));
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    //~ contents_path /backup/Restore
+    ui->title2Label->setText(tr("Restore"));
     ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-//    ui->backupLabel->setStyleSheet("QLabel{color: #A6000000;}");
-//    ui->restoreLabel->setStyleSheet("QLabel{color: #A6000000;}");
-
-//    ui->backBtn->setStyleSheet("QPushButton{background: #E9E9E9; border: none; border-radius: 4px;}");
-//    ui->restoreBtn->setStyleSheet("QPushButton{background: #E9E9E9; border: none; border-radius: 4px;}");
 
     connect(ui->backBtn, &QPushButton::clicked, this, [=](bool checked){
         Q_UNUSED(checked)
@@ -82,6 +79,11 @@ QWidget *Backup::get_plugin_ui(){
 
 void Backup::plugin_delay_control(){
 
+}
+
+const QString Backup::name() const {
+
+    return QStringLiteral("backup");
 }
 
 void Backup::btnClicked(){

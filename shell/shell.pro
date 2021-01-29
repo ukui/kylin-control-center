@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network x11extras svg
+QT       += core gui network x11extras svg xml dbus
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 include(../env.pri)
+include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
 
 DEFINES += PLUGIN_INSTALL_DIRS='\\"$${PLUGIN_INSTALL_DIRS}\\"'
 
@@ -44,15 +45,20 @@ face.path = /usr/share/ukui/
 mo.files += $$PROJECT_ROOTDIR/data/installer-timezones.mo
 mo.path = /usr/share/locale/zh_CN/LC_MESSAGES/
 
+guideCN.files += $$PROJECT_ROOTDIR/data/zh_CN/
+guideCN.path += /usr/share/kylin-user-guide/data/guide/ukui-control-center/
+
 target.source += $$TARGET
 target.path = /usr/bin
 
+
 INSTALLS +=  \
-            target \
+            target  \
             desktop \
             schemes \
-            face \
-            mo
+            face    \
+            mo      \
+            guideCN
 
 INCLUDEPATH += qtsingleapplication
 DEPENDPATH += qtsingleapplication
@@ -66,13 +72,19 @@ SOURCES += \
     framelessExtended/widgethandlerealize.cpp \
     homepagewidget.cpp \
     modulepagewidget.cpp \
+    pinyin.cpp \
+    prescene.cpp \
+    searchwidget.cpp \
+    ukccabout.cpp \
     utils/keyvalueconverter.cpp \
     component/leftwidgetitem.cpp \
     component/clicklabel.cpp \
     utils/functionselect.cpp \
     component/hoverwidget.cpp \
     qtsingleapplication/qtsingleapplication.cpp \
-    qtsingleapplication/qtlocalpeer.cpp
+    qtsingleapplication/qtlocalpeer.cpp \
+    utils/utils.cpp \
+    utils/xatom-helper.cpp
 
 HEADERS += \
     customstyle.h \
@@ -84,6 +96,10 @@ HEADERS += \
     framelessExtended/widgethandlerealize.h \
     homepagewidget.h \
     modulepagewidget.h \
+    pinyin.h \
+    prescene.h \
+    searchwidget.h \
+    ukccabout.h \
     utils/keyvalueconverter.h \
     component/leftwidgetitem.h \
     component/clicklabel.h \
@@ -91,7 +107,9 @@ HEADERS += \
     component/hoverwidget.h \
     qtsingleapplication/qtsingleapplication_copy.h \
     qtsingleapplication/qtsingleapplication.h \
-    qtsingleapplication/qtlocalpeer.h
+    qtsingleapplication/qtlocalpeer.h \
+    utils/utils.h \
+    utils/xatom-helper.h
 
 FORMS += \
     mainwindow.ui \

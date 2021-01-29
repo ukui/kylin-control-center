@@ -62,6 +62,7 @@ Proxy::Proxy()
     const QByteArray iid(FTP_PROXY_SCHEMA);
     const QByteArray iiid(SOCKS_PROXY_SCHEMA);
 
+    initSearchText();
     setupStylesheet();
     setupComponent();
 
@@ -116,35 +117,19 @@ void Proxy::plugin_delay_control(){
 
 }
 
+const QString Proxy::name() const {
+
+    return QStringLiteral("proxy");
+}
+
+void Proxy::initSearchText() {
+    //~ contents_path /proxy/Auto proxy
+    ui->autoLabel->setText(tr("Auto proxy"));
+    //~ contents_path /proxy/Manual proxy
+    ui->manualLabel->setText(tr("Manual proxy"));
+}
+
 void Proxy::setupStylesheet(){
-
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-//    ui->autoWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->urlWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->urlLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
-
-//    ui->manualWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
-//    ui->httpWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
-//    ui->httpHostLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
-//    ui->httpPortLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
-//    ui->cetificationBtn->setStyleSheet("QPushButton{background: #ffffff; border: none; border-radius: 4px;}");
-
-//    ui->httpsWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
-//    ui->httpsHostLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
-//    ui->httpsPortLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
-
-//    ui->ftpWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
-//    ui->ftpHostLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
-//    ui->ftpPortLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
-
-//    ui->socksWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
-//    ui->socksHostLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
-//    ui->socksPortLineEdit->setStyleSheet("QLineEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
-
-//    ui->ignoreHostsWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px}");
-//    ui->ignoreHostTextEdit->setStyleSheet("QTextEdit{background: #ffffff; border: none; border-radius: 4px; font-size: 14px; color: #000000;}");
-
 }
 
 void Proxy::setupComponent(){

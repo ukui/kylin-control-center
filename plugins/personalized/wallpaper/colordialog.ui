@@ -199,7 +199,7 @@
     <string>     G</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>100</x>
@@ -262,11 +262,11 @@
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="closeBtn">
+  <widget class="CloseButton" name="closeBtn">
    <property name="geometry">
     <rect>
-     <x>358</x>
-     <y>10</y>
+     <x>355</x>
+     <y>13</y>
      <width>32</width>
      <height>32</height>
     </rect>
@@ -288,6 +288,13 @@
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CloseButton</class>
+   <extends>QPushButton</extends>
+   <header location="global">CloseButton/closebutton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

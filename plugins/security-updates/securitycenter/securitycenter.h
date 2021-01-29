@@ -6,8 +6,8 @@
 #include <QtPlugin>
 
 #include <QMouseEvent>
-
 #include <QLabel>
+#include <QTimer>
 
 #include "shell/interface.h"
 #include "FlowLayout/flowlayout.h"
@@ -34,15 +34,26 @@ public:
     QLabel * titleLable;
     QLabel * detailLabel;
 
+    int m_charWidth;
+    int m_curIndex;
+    int m_labelWidth;
+    QString m_showText;
+    QTimer *timer;
+    void scrollLabel();
+    void updateIndex();
+    void showPaint();
+
 protected:
     virtual void enterEvent(QEvent * event);
     virtual void leaveEvent(QEvent * event);
+    virtual bool eventFilter(QObject *watched, QEvent *event);
     virtual void paintEvent(QPaintEvent * event);
 
     virtual void mousePressEvent(QMouseEvent * event);
 
 Q_SIGNALS:
     void bwClicked(QString _cmd);
+    void indexChanged();
 
 };
 
@@ -61,6 +72,7 @@ public:
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
+    const QString name() const  Q_DECL_OVERRIDE;
 
 public:
     FlowLayout * flowLayout;
@@ -69,7 +81,6 @@ public:
     void initComponent();
 
     void runExternalApp(QString cmd);
-
 private:
     Ui::SecurityCenter *ui;
 

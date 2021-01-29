@@ -23,7 +23,6 @@ import QtQuick.Controls 1.1 as Controls
 import org.kde.kscreen 1.0
 
 Item {
-
     id: root;
 
     property variant virtualScreen: null;
@@ -47,7 +46,6 @@ Item {
 //        opacity: 0.6;
 //        radius: 6  //设置矩形圆角弧度
 
-
         FocusScope {
 
             id: outputViewFocusScope;
@@ -56,51 +54,21 @@ Item {
             focus: true;
 
             QMLScreen {
-
                 id: outputView;
-
                 anchors.fill: parent;
                 clip: true;
-
                 objectName: "outputView";
             }
         }
 
         Column {
-
             anchors {
                 left: parent.left;
                 //right: identifyButton.left;
                 bottom: parent.bottom;
                 margins: 5;
             }
-
             spacing: 5;
-
-
-
-
-
-
         }
-
-//对识别按钮注释
-//        Controls.ToolButton {
-
-//            id: identifyButton
-//            objectName: "identifyButton";
-
-//            anchors {
-//                right: parent.right
-//                bottom: parent.bottom
-//                margins: 5
-//            }
-
-//            height: width
-//            width: theme.largeIconSize;
-//            iconName: "kdocumentinfo"
-
-//            tooltip: i18nd("kcm_displayconfiguration", "Identify outputs");
-//        }
     }
 }

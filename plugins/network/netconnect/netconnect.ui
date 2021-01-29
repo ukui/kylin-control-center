@@ -43,52 +43,26 @@
     </widget>
    </item>
    <item>
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>12</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
     <layout class="QVBoxLayout" name="statusLayout">
      <property name="spacing">
       <number>1</number>
      </property>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="statuswaitLayout">
-     <item>
-      <spacer name="horizontalSpacer_6">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QLabel" name="statuswaitLabel">
-       <property name="font">
-        <font>
-         <pointsize>20</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Waitting...</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_7">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
     </layout>
    </item>
    <item>
@@ -193,18 +167,18 @@
        <number>18</number>
       </property>
       <property name="topMargin">
-       <number>16</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
        <number>9</number>
       </property>
       <property name="bottomMargin">
-       <number>16</number>
+       <number>0</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="openWIifLayout">
         <item>
-         <widget class="QLabel" name="open">
+         <widget class="QLabel" name="openLabel">
           <property name="minimumSize">
            <size>
             <width>118</width>
@@ -244,48 +218,6 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="waitLayout">
-       <item>
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLabel" name="waitLabel">
-         <property name="font">
-          <font>
-           <pointsize>20</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Waitting...</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_5">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-     <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QPushButton" name="detailBtn">
@@ -297,7 +229,7 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>120</width>
+           <width>150</width>
            <height>36</height>
           </size>
          </property>

@@ -22,20 +22,14 @@
 
 #include <QObject>
 #include <QtPlugin>
-
 #include <QDBusInterface>
 #include <QDBusConnection>
 #include <QDBusError>
 #include <QDBusReply>
-
 #include <QSysInfo>
 #include <QLabel>
 #include <QStringList>
-
-#define MANUFACTURER "Manufacturer"
-#define VERSION "Version"
-#define PRODUCTNAME "Product Name"
-#define SERIALNUMBER "Serial Number"
+#include <QSharedPointer>
 
 #include "shell/interface.h"
 
@@ -57,18 +51,21 @@ public:
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
+    const QString name() const  Q_DECL_OVERRIDE;
 
-public:
+private:
     void initUI();
     QStringList  readFile(QString filePath);
 
-    void _call_dbus_get_computer_info();
-    void _data_init();
-private:
+    void initSearchText();
+    void initActiveDbus();
     void setupDesktopComponent();
     void setupKernelCompenent();
     void setupVersionCompenent();
     void setupSerialComponent();
+    qlonglong calculateTotalRam();
+    QStringList totalMemory();
+
 
 private:
     Ui::About *ui;
@@ -83,11 +80,14 @@ private:
 
     QString computerinfo;
     QMap<QString, QString> infoMap;
+    QSharedPointer<QDBusInterface> activeInterface;
+
+    bool mFirstLoad;
 
 private slots:
-//    void call_finished_slot(QDBusPendingCallWatcher * call);
     void runActiveWindow();
     void showPdf();
+    void activeSlot(int activeSignal);
 };
 
 #endif // ABOUT_H

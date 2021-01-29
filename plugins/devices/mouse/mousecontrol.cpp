@@ -20,11 +20,16 @@
 #include "mousecontrol.h"
 #include "ui_mousecontrol.h"
 
-#include <QSizePolicy>
-#include <QTimer>
-
+#include <QDir>
 #include <QFile>
+#include <QTimer>
 #include <QDebug>
+#include <QSettings>
+#include <QSizePolicy>
+#include <QtDBus>
+#include <QtDBus/QDBusMessage>
+#include <QtDBus/QDBusConnection>
+#include <QtConcurrent/QtConcurrent>
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -39,25 +44,26 @@ extern "C" {
 #include <gio/gio.h>
 }
 
-#define MOUSE_SCHEMA "org.ukui.peripherals-mouse"
-#define HAND_KEY "left-handed"
-#define DOUBLE_CLICK_KEY "double-click"
-#define LOCATE_KEY "locate-pointer"
-#define CURSOR_SIZE_KEY "cursor-size"
-#define ACCELERATION_KEY "motion-acceleration"
-#define THRESHOLD_KEY "motion-threshold"
+#define MOUSE_SCHEMA          "org.ukui.peripherals-mouse"
+#define HAND_KEY              "left-handed"
+#define DOUBLE_CLICK_KEY      "double-click"
+#define LOCATE_KEY            "locate-pointer"
+#define CURSOR_SIZE_KEY       "cursor-size"
+#define ACCELERATION_KEY      "motion-acceleration"
+#define THRESHOLD_KEY         "motion-threshold"
+#define WHEEL_KEY             "wheel-speed"
+#define ACCEL_KEY             "mouse-accel"
 
-#define SESSION_SCHEMA "org.ukui.session"
-#define SESSION_MOUSE_KEY "mouse-size-changed"
+#define SESSION_SCHEMA        "org.ukui.session"
+#define SESSION_MOUSE_KEY     "mouse-size-changed"
 
-#define DESKTOP_SCHEMA "org.mate.interface"
-#define CURSOR_BLINK_KEY "cursor-blink"
+#define DESKTOP_SCHEMA        "org.mate.interface"
+#define CURSOR_BLINK_KEY      "cursor-blink"
 #define CURSOR_BLINK_TIME_KEY "cursor-blink-time"
 
-#define MOUSE_MID_GET_CMD "/usr/bin/mouse-midbtn-speed-get"
-#define MOUSE_MID_SET_CMD "/usr/bin/mouse-midbtn-speed-set"
+#define THEME_SCHEMA          "org.ukui.style"
 
-MyLabel::MyLabel(){
+MyLabel::MyLabel() {
 
     setAttribute(Qt::WA_DeleteOnClose);
 
@@ -73,17 +79,16 @@ MyLabel::MyLabel(){
 
     const QByteArray id(MOUSE_SCHEMA);
     if (QGSettings::isSchemaInstalled(id)){
-        mSettings = new QGSettings(id);
+        mSettings = new QGSettings(id, QByteArray(), this);
     }
+}
+
+MyLabel::~MyLabel() {
 
 }
 
-MyLabel::~MyLabel(){
-    if (QGSettings::isSchemaInstalled(MOUSE_SCHEMA))
-        delete mSettings;
-}
-
-void MyLabel::mouseDoubleClickEvent(QMouseEvent *event){
+void MyLabel::mouseDoubleClickEvent(QMouseEvent *event) {
+    Q_UNUSED(event);
     int delay = mSettings->get(DOUBLE_CLICK_KEY).toInt();
     setPixmap(QPixmap(":/img/plugins/mouse/double-click-on.png"));
     QTimer::singleShot(delay, this, [=]{
@@ -92,110 +97,116 @@ void MyLabel::mouseDoubleClickEvent(QMouseEvent *event){
 }
 
 
-MouseControl::MouseControl()
+MouseControl::MouseControl() : mFirstLoad(true)
 {
-    ui = new Ui::MouseControl;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("Mouse");
     pluginType = DEVICES;
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-//    QString qss;
-//    QFile QssFile("://combox.qss");
-//    QssFile.open(QFile::ReadOnly);
-
-//    if (QssFile.isOpen()){
-//        qss = QLatin1String(QssFile.readAll());
-//        QssFile.close();
-//    }
-
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-//    ui->handWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->pointerSpeedWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-//    ui->sensitivityWidget->setStyleSheet("QWidget{background: #F4F4F4;}");
-//    ui->visibilityWidget->setStyleSheet("QWidget{background: #F4F4F4;}");
-//    ui->pointerSizeWidget->setStyleSheet("QWidget{background: #F4F4F4; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
-
-    //全局未生效，再次设置
-//    ui->pointerSizeComBox->setView(new QListView());
-//    ui->pointerSizeComBox->setStyleSheet(qss);
-//    ui->handHabitComBox->setView(new QListView());
-//    ui->handHabitComBox->setStyleSheet(qss);
-
-
-//    ui->cursorWeightWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-//    ui->cursorSpeedWidget->setStyleSheet("QWidget{background: #F4F4F4;}");
-//    ui->flashingWidget->setStyleSheet("QWidget{background: #F4F4F4;  border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
-
-    //初始化鼠标设置GSettings
-    const QByteArray id(MOUSE_SCHEMA);
-    const QByteArray sessionId(SESSION_SCHEMA);
-    const QByteArray idd(DESKTOP_SCHEMA);
-    if (QGSettings::isSchemaInstalled(sessionId) && QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(DESKTOP_SCHEMA)) {
-        sesstionSetttings = new QGSettings(sessionId);
-        settings = new QGSettings(id);
-        desktopSettings = new QGSettings(idd);
-
-        setupComponent();
-
-        initHandHabitStatus();
-        initPointerStatus();
-        initCursorStatus();
-        initWheelStatus();
-    }
-
-
-
 }
 
-MouseControl::~MouseControl()
-{
-    delete ui;
-    if (QGSettings::isSchemaInstalled(MOUSE_SCHEMA) && QGSettings::isSchemaInstalled(SESSION_SCHEMA)) {
-        delete settings;
-        delete sesstionSetttings;
-        delete desktopSettings;
+MouseControl::~MouseControl() {
+    if (!mFirstLoad) {
+        delete ui;
     }
 }
 
-QString MouseControl::get_plugin_name(){
+QString MouseControl::get_plugin_name() {
     return pluginName;
 }
 
-int MouseControl::get_plugin_type(){
+int MouseControl::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *MouseControl::get_plugin_ui(){
+QWidget *MouseControl::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+        ui = new Ui::MouseControl;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        initSearchText();
+        initStyle();
+
+        //初始化鼠标设置GSettings
+        const QByteArray id(MOUSE_SCHEMA);
+        const QByteArray sessionId(SESSION_SCHEMA);
+        const QByteArray idd(DESKTOP_SCHEMA);
+        const QByteArray themeId(THEME_SCHEMA);
+        if (QGSettings::isSchemaInstalled(sessionId) &&
+                QGSettings::isSchemaInstalled(id) &&
+                QGSettings::isSchemaInstalled(idd)) {
+            sesstionSetttings = new QGSettings(sessionId, QByteArray(), this);
+            settings = new QGSettings(id, QByteArray(), this);
+            desktopSettings = new QGSettings(idd, QByteArray(), this);
+            mThemeSettings = new QGSettings(themeId, QByteArray(), this);
+
+            mouseKeys = settings->keys();
+
+            setupComponent();
+
+            initHandHabitStatus();
+            initPointerStatus();
+            initCursorStatus();
+            initWheelStatus();
+        }
+    }
     return pluginWidget;
 }
 
-void MouseControl::plugin_delay_control(){
+void MouseControl::plugin_delay_control() {
 
 }
 
-void MouseControl::setupComponent(){
+const QString MouseControl::name() const {
 
-//    ui->title3Label->hide();
-//    ui->cursorSpeedFrame->hide();
+    return QStringLiteral("mouse");
+}
+
+void MouseControl::initSearchText() {
+    //~ contents_path /mouse/Hand habit
+    ui->handLabel->setText(tr("Hand habit"));
+    //~ contents_path /mouse/Doubleclick  delay
+    ui->delayLabel->setText(tr("Doubleclick  delay"));
+    //~ contents_path /mouse/Speed
+    ui->speedLabel->setText(tr("Speed"));
+    //~ contents_path /mouse/Acceleration
+    ui->accelLabel->setText(tr("Acceleration"));
+    //~ contents_path /mouse/Visibility
+    ui->visLabel->setText(tr("Visibility"));
+    //~ contents_path /mouse/Pointer size
+    ui->sizeLabel->setText(tr("Pointer size"));
+    //~ contents_path /mouse/Enable flashing on text area
+    ui->flashLabel->setText(tr("Enable flashing on text area"));
+    //~ contents_path /mouse/Cursor speed
+    ui->cursorspdLabel->setText(tr("Cursor speed"));
+}
+
+void MouseControl::initStyle() {
+    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+}
+
+void MouseControl::setupComponent() {
+
     ui->cursorWeightFrame->hide();
 
     //设置左手右手鼠标控件
     ui->handHabitComBox->addItem(tr("Lefthand"), true);
     ui->handHabitComBox->addItem(tr("Righthand"), false);
 
-    MyLabel * testLabel = new MyLabel();
-    ui->doubleClickHorLayout->addWidget(testLabel);
+    ui->doubleClickHorLayout->addWidget(new MyLabel());
 
     //设置指针可见性控件
     visiblityBtn = new SwitchButton(pluginWidget);
     ui->visibilityHorLayout->addWidget(visiblityBtn);
+
+    // 鼠标加速度控件
+    mAccelBtn = new SwitchButton(pluginWidget);
+    mAccelBtn->setChecked(settings->get(ACCEL_KEY).toBool());
+    ui->accelLayout->addStretch();
+    ui->accelLayout->addWidget(mAccelBtn);
 
     //设置指针大小
     ui->pointerSizeComBox->setMaxVisibleItems(5);
@@ -204,8 +215,8 @@ void MouseControl::setupComponent(){
     ui->pointerSizeComBox->addItem(tr("Large"), 48); //150%
 
     //设置鼠标滚轮是否显示
-    if (!g_file_test(MOUSE_MID_GET_CMD, G_FILE_TEST_EXISTS) || !g_file_test(MOUSE_MID_SET_CMD, G_FILE_TEST_EXISTS)){
-        ui->midSpeedFrame->hide();
+    if (!mouseKeys.contains("wheelSpeed")) {
+        ui->midSpeedFrame->setVisible(false);
     }
 
     //设置启用光标闪烁
@@ -215,54 +226,99 @@ void MouseControl::setupComponent(){
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
      connect(ui->handHabitComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
 #else
-     connect(ui->handHabitComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+     connect(ui->handHabitComBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
 
 #endif
         Q_UNUSED(index)
         settings->set(HAND_KEY, ui->handHabitComBox->currentData().toBool());
     });
 
-     connect(ui->doubleclickHorSlider, &QSlider::sliderReleased, [=]{
+     connect(ui->doubleclickHorSlider, &QSlider::sliderReleased, [=] {
         settings->set(DOUBLE_CLICK_KEY, ui->doubleclickHorSlider->value());
         qApp->setDoubleClickInterval(ui->doubleclickHorSlider->value());
      });
 
-    connect(ui->pointerSpeedSlider, &QSlider::valueChanged, [=](int value){
+    connect(ui->pointerSpeedSlider, &QSlider::valueChanged, [=](int value) {
         settings->set(ACCELERATION_KEY, static_cast<double>(value)/ui->pointerSpeedSlider->maximum()*10);
     });
 
-    connect(ui->pointerSensitivitySlider, &QSlider::valueChanged, [=](int value){
-        settings->set(THRESHOLD_KEY, 10*value/ui->pointerSensitivitySlider->maximum());
-    });
-
-    connect(visiblityBtn, &SwitchButton::checkedChanged, [=](bool checked){
+    connect(visiblityBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         settings->set(LOCATE_KEY, checked);
     });
 
-    connect(ui->pointerSizeComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
-        Q_UNUSED(index)
-        settings->set(CURSOR_SIZE_KEY, ui->pointerSizeComBox->currentData().toInt());
+    connect(ui->pointerSizeComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &MouseControl::mouseSizeChange);
 
-        QStringList keys = sesstionSetttings->keys();
-        if (keys.contains("mouseSizeChanged")) {
-            sesstionSetttings->set(SESSION_MOUSE_KEY, true);
+    connect(flashingBtn, &SwitchButton::checkedChanged, [=](bool checked) {
+        ui->cursorSpeedFrame->setVisible(checked);
+        desktopSettings->set(CURSOR_BLINK_KEY, checked);
+        mThemeSettings->set(CURSOR_BLINK_KEY, checked);
+        if (!checked) {
+            mThemeSettings->set(CURSOR_BLINK_TIME_KEY, 0);
+        } else {
+            mThemeSettings->set(CURSOR_BLINK_TIME_KEY, ui->cursorSpeedSlider->value());
         }
     });
 
-    connect(flashingBtn, &SwitchButton::checkedChanged, [=](bool checked){
-        desktopSettings->set(CURSOR_BLINK_KEY, checked);
+    connect(ui->midHorSlider, &QSlider::sliderReleased, [=] {
+        settings->set(WHEEL_KEY, ui->midHorSlider->value());
     });
 
-    connect(ui->midHorSlider, &QSlider::sliderReleased, [=]{
-        _set_mouse_mid_speed(ui->midHorSlider->value());
+    connect(settings,&QGSettings::changed,[=] (const QString &key){
+        if(key == "locatePointer") {
+            visiblityBtn->blockSignals(true);
+            visiblityBtn->setChecked(settings->get(LOCATE_KEY).toBool());
+            visiblityBtn->blockSignals(false);
+        } else if(key == "mouseAccel") {
+            ui->doubleclickHorSlider->blockSignals(true);
+            mAccelBtn->setChecked(settings->get(ACCEL_KEY).toBool());
+            ui->doubleclickHorSlider->blockSignals(false);
+        } else if(key == "doubleClick") {
+            int dc = settings->get(DOUBLE_CLICK_KEY).toInt();
+            ui->doubleclickHorSlider->blockSignals(true);
+            ui->doubleclickHorSlider->setValue(dc);
+            ui->doubleclickHorSlider->blockSignals(false);
+        } else if(key == "wheelSpeed") {
+            ui->midHorSlider->setValue(settings->get(WHEEL_KEY).toInt());
+        } else if(key == "motionAcceleration") {
+            ui->pointerSpeedSlider->blockSignals(true);
+            ui->pointerSpeedSlider->setValue(static_cast<int>(settings->get(ACCELERATION_KEY).toDouble()*100));
+            ui->pointerSpeedSlider->blockSignals(false);
+        } else if(key == "leftHanded") {
+            int handHabitIndex = ui->handHabitComBox->findData(settings->get(HAND_KEY).toBool());
+            ui->handHabitComBox->blockSignals(true);
+            ui->handHabitComBox->setCurrentIndex(handHabitIndex);
+            ui->handHabitComBox->blockSignals(false);
+        } else if(key == "cursorSize") {
+            ui->pointerSizeComBox->blockSignals(true);
+            ui->pointerSizeComBox->setCurrentIndex(settings->get(CURSOR_SIZE_KEY).toInt());
+            ui->pointerSizeComBox->blockSignals(false);
+        }
     });
 
-    connect(ui->cursorSpeedSlider, &QSlider::sliderReleased, [=]{
+    connect(desktopSettings,&QGSettings::changed,[=](const QString &key) {
+        if(key == "cursorBlinkTime") {
+            ui->cursorSpeedSlider->blockSignals(true);
+            ui->cursorSpeedSlider->setValue(desktopSettings->get(CURSOR_BLINK_TIME_KEY).toInt());
+            ui->cursorSpeedSlider->blockSignals(false);
+        } else if(key == "cursorBlink") {
+            flashingBtn->blockSignals(true);
+            flashingBtn->setChecked(desktopSettings->get(CURSOR_BLINK_KEY).toBool());
+            ui->cursorSpeedFrame->setVisible(desktopSettings->get(CURSOR_BLINK_KEY).toBool());
+            flashingBtn->blockSignals(false);
+        }
+    });
+
+    connect(ui->cursorSpeedSlider, &QSlider::sliderReleased, [=] {
         desktopSettings->set(CURSOR_BLINK_TIME_KEY, ui->cursorSpeedSlider->value());
+        mThemeSettings->set(CURSOR_BLINK_TIME_KEY, ui->cursorSpeedSlider->value());
+    });
+
+    connect(mAccelBtn, &SwitchButton::checkedChanged, this, [=] (bool checked) {
+       settings->set(ACCEL_KEY, checked);
     });
 }
 
-void MouseControl::initHandHabitStatus(){
+void MouseControl::initHandHabitStatus() {
 
     int handHabitIndex = ui->handHabitComBox->findData(settings->get(HAND_KEY).toBool());
     ui->handHabitComBox->blockSignals(true);
@@ -275,7 +331,7 @@ void MouseControl::initHandHabitStatus(){
     ui->doubleclickHorSlider->blockSignals(false);
 }
 
-void MouseControl::initPointerStatus(){
+void MouseControl::initPointerStatus() {
 
     //当前系统指针加速值，-1为系统默认
     double mouse_acceleration = settings->get(ACCELERATION_KEY).toDouble();
@@ -284,7 +340,7 @@ void MouseControl::initPointerStatus(){
     int mouse_threshold =  settings->get(THRESHOLD_KEY).toInt();
 
     //当从接口获取的是-1,则代表系统默认值，真实值需要从底层获取
-    if (mouse_threshold == -1 || static_cast<int>(mouse_acceleration) == -1){
+    if (mouse_threshold == -1 || static_cast<int>(mouse_acceleration) == -1) {
         // speed sensitivity
         int accel_numerator, accel_denominator, threshold;  //当加速值和灵敏度为系统默认的-1时，从底层获取到默认的具体值
 
@@ -300,11 +356,6 @@ void MouseControl::initPointerStatus(){
     ui->pointerSpeedSlider->setValue(static_cast<int>(settings->get(ACCELERATION_KEY).toDouble()*100));
     ui->pointerSpeedSlider->blockSignals(false);
 
-    //初始化指针敏感度控件
-    ui->pointerSensitivitySlider->blockSignals(true);
-    ui->pointerSensitivitySlider->setValue(settings->get(THRESHOLD_KEY).toInt()*100);
-    ui->pointerSensitivitySlider->blockSignals(false);
-
     //初始化可见性控件
     visiblityBtn->blockSignals(true);
     visiblityBtn->setChecked(settings->get(LOCATE_KEY).toBool());
@@ -317,9 +368,10 @@ void MouseControl::initPointerStatus(){
     ui->pointerSizeComBox->blockSignals(false);
 }
 
-void MouseControl::initCursorStatus(){
+void MouseControl::initCursorStatus() {
     flashingBtn->blockSignals(true);
     flashingBtn->setChecked(desktopSettings->get(CURSOR_BLINK_KEY).toBool());
+    ui->cursorSpeedFrame->setVisible(desktopSettings->get(CURSOR_BLINK_KEY).toBool());
     flashingBtn->blockSignals(false);
 
     ui->cursorSpeedSlider->blockSignals(true);
@@ -327,36 +379,41 @@ void MouseControl::initCursorStatus(){
     ui->cursorSpeedSlider->blockSignals(false);
 }
 
-void MouseControl::initWheelStatus(){
-    int value = _get_mouse_mid_speed();
+void MouseControl::initWheelStatus() {
+
     ui->midHorSlider->blockSignals(true);
-    ui->midHorSlider->setValue(value);
+    if (mouseKeys.contains("wheelSpeed")) {
+        ui->midHorSlider->setValue(settings->get(WHEEL_KEY).toInt());
+    }
     ui->midHorSlider->blockSignals(false);
 }
 
-int MouseControl::_get_mouse_mid_speed(){
+void MouseControl::mouseSizeChange() {
 
-    int value = 0;
+    settings->set(CURSOR_SIZE_KEY, ui->pointerSizeComBox->currentData().toInt());
 
-    if (g_file_test(MOUSE_MID_GET_CMD, G_FILE_TEST_EXISTS)){
-        QProcess * getProcess = new QProcess();
-        getProcess->start(MOUSE_MID_GET_CMD);
-        getProcess->waitForFinished();
-
-        QByteArray ba = getProcess->readAllStandardOutput();
-        QString speedStr = QString(ba.data()).simplified();
-        value = speedStr.toInt();
+    QStringList keys = sesstionSetttings->keys();
+    if (keys.contains("mouseSizeChanged")) {
+        sesstionSetttings->set(SESSION_MOUSE_KEY, true);
     }
 
-    return value;
-}
+    QString filename = QDir::homePath() + "/.config/kcminputrc";
+    QSettings *mouseSettings = new QSettings(filename, QSettings::IniFormat);
 
-void MouseControl::_set_mouse_mid_speed(int value){
-    QString cmd;
+    mouseSettings->beginGroup("Mouse");
+    mouseSettings->setValue("cursorSize", ui->pointerSizeComBox->currentData().toInt());
+    mouseSettings->endGroup();
 
-    cmd = MOUSE_MID_SET_CMD + QString(" ") + QString::number(value);
+    delete mouseSettings;
 
-    QProcess * setProcess = new QProcess();
-    setProcess->start(cmd);
-    setProcess->waitForFinished();
+#if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
+
+#else
+    QDBusMessage message = QDBusMessage::createSignal("/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange");
+    QList<QVariant> args;
+    args.append(5);
+    args.append(0);
+    message.setArguments(args);
+    QDBusConnection::sessionBus().send(message);
+#endif
 }

@@ -27,7 +27,6 @@
 
 DefineShortcutItem::DefineShortcutItem(QString name, QString binding)
 {
-//    setAttribute(Qt::WA_DeleteOnClose);
 
     _deleteable = false;
     _updateable = false;
@@ -111,12 +110,18 @@ void DefineShortcutItem::setShortcutBinding(QString newBinding){
     pLineEdit->updateOldShow(newBinding);
 }
 
-void DefineShortcutItem::mousePressEvent(QMouseEvent *e){
-    if (e->button() == Qt::LeftButton && _deleteable){
+void DefineShortcutItem::enterEvent(QEvent *)
+{
+    if (_deleteable){
         pButton->show();
     }
+}
 
-    QWidget::mousePressEvent(e);
+void DefineShortcutItem::leaveEvent(QEvent *)
+{
+    if (_deleteable){
+        pButton->hide();
+    }
 }
 
 void DefineShortcutItem::mouseDoubleClickEvent(QMouseEvent *e){

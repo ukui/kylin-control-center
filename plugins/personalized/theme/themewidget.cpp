@@ -36,10 +36,7 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, QStringList iStringList, QWi
     setMaximumWidth(960);
     setAttribute(Qt::WA_DeleteOnClose);
 
-//    setStyleSheet("background: palette(button); border-radius: 6px;");
-
     pValue = "";
-
 
     QHBoxLayout * mainHorLayout = new QHBoxLayout(this);
     mainHorLayout->setSpacing(16);
@@ -98,10 +95,7 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, const QList<QPixmap> &listMa
     setMaximumWidth(960);
     setAttribute(Qt::WA_DeleteOnClose);
 
-//    setStyleSheet("background: palette(button); border-radius: 6px;");
-
     pValue = "";
-
 
     QHBoxLayout * mainHorLayout = new QHBoxLayout(this);
     mainHorLayout->setSpacing(16);
@@ -125,10 +119,10 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, const QList<QPixmap> &listMa
 
     QLabel * nameLabel = new QLabel(this);
     QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
-    nameSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
+    nameSizePolicy.setHorizontalPolicy(QSizePolicy::Preferred);
     nameSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
     nameLabel->setSizePolicy(nameSizePolicy);
-    nameLabel->setFixedWidth(102);
+    nameLabel->setMinimumWidth(130);
     nameLabel->setText(name);
 
     QHBoxLayout * iconHorLayout = new QHBoxLayout;

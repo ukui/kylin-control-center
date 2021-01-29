@@ -13,9 +13,10 @@ class Blueeffect : public QWidget
     Q_OBJECT
 public:
     explicit Blueeffect(QWidget *parent = nullptr);
+    ~ Blueeffect();
     QLabel  *m_textLabel;
     QLabel  *m_iconLabel;
-    void settext(QString t);
+    void settext(const QString &t);
     void startmoive();
     void stop();
     QTimer *m_cTimer;

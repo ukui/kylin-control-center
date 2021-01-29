@@ -28,7 +28,7 @@
 class ImageUtil
 {
 public:
-    static const QPixmap loadSvg(const QString &path, const QString color, int size = 48);
+    static const QPixmap loadSvg(const QString &path, const QString color, int size = 16);
     static QPixmap drawSymbolicColoredPixmap(const QPixmap &source, QString cgColor);
 };
 

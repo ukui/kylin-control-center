@@ -23,98 +23,102 @@
 #include <QGSettings>
 #include "SwitchButton/switchbutton.h"
 #include "realizedesktop.h"
+#include "commonComponent/listDelegate/listdelegate.h"
 
 #include <QDebug>
 #include <QPushButton>
+#include <QFileInfo>
+#include <QFile>
+#include <QProcess>
+#include <QSettings>
+#include <QTextCodec>
+#include <QtDBus/QDBusConnection>
 
-//#define DESKTOP_SCHEMA "org.ukui.peony.desktop"
-#define DESKTOP_SCHEMA "org.ukui.control-center.desktop"
+#define DESKTOP_SCHEMA       "org.ukui.control-center.desktop"
 
 #define COMPUTER_VISIBLE_KEY "computer-icon-visible"
-#define HOME_VISIBLE_KEY "home-icon-visible"
-#define NETWORK_VISIBLE_KEY "network-icon-visible"
-#define TRASH_VISIBLE_KEY "trash-icon-visible"
-#define VOLUMES_VISIBLE_KEY "volumes-visible"
+#define HOME_VISIBLE_KEY     "home-icon-visible"
+#define NETWORK_VISIBLE_KEY  "network-icon-visible"
+#define TRASH_VISIBLE_KEY    "trash-icon-visible"
+#define VOLUMES_VISIBLE_KEY  "volumes-visible"
 
 #define MENU_FULL_SCREEN_KEY "menufull-screen"
-#define COMPUTER_LOCK_KEY "computer-icon-locking"
-#define PERSONAL_LOCK_KEY "personal-icon-locking"
-#define SETTINGS_LOCK_KEY "settings-icon-locking"
-#define TRASH_LOCK_KEY "trash-icon-locking"
+#define COMPUTER_LOCK_KEY    "computer-icon-locking"
+#define PERSONAL_LOCK_KEY    "personal-icon-locking"
+#define SETTINGS_LOCK_KEY    "settings-icon-locking"
+#define TRASH_LOCK_KEY       "trash-icon-locking"
 
-Desktop::Desktop()
+Desktop::Desktop() : mFirstLoad(true)
 {
-    ui = new Ui::Desktop;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("Desktop");
     pluginType = PERSONALIZED;
-
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->menuLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    ui->titleLabel->setVisible(false);
-//    ui->title2Label->setVisible(false);
-
-    ui->deskComputerFrame->setVisible(false);
-    ui->deskTrashFrame->setVisible(false);
-    ui->deskHomeFrame->setVisible(false);
-    ui->deskVolumeFrame->setVisible(false);
-    ui->deskNetworkFrame->setVisible(false);
-
-    ui->titleLabel->setVisible(false);
-//    ui->title2Label->setVisible(false);
-
-    ui->deskComputerFrame->setVisible(false);
-    ui->deskTrashFrame->setVisible(false);
-    ui->deskHomeFrame->setVisible(false);
-    ui->deskVolumeFrame->setVisible(false);
-    ui->deskNetworkFrame->setVisible(false);
-
-    ui->title2Label->hide();
-    ui->fullScreenMenuFrame->setVisible(false);
-
-    vecGsettings = new QVector<QGSettings*>();
-    const QByteArray id(DESKTOP_SCHEMA);
-    if (QGSettings::isSchemaInstalled(id)) {
-        dSettings = new QGSettings(id);
-    }
-
-
-    initTranslation();
-    setupComponent();
-    setupConnect();
-    initVisibleStatus();
-    initLockingStatus();
-    initTraySettings();
 }
 
 Desktop::~Desktop()
 {
-    delete ui;
-
-    if (!dSettings ){
-        delete dSettings;
-    }
-
-    if (!vecGsettings) {
-        delete vecGsettings;
+    if (!mFirstLoad) {
+        delete ui;
+        qDeleteAll(vecGsettings);
+        vecGsettings.clear();
     }
 }
 
-QString Desktop::get_plugin_name(){
+QString Desktop::get_plugin_name() {
     return pluginName;
 }
 
-int Desktop::get_plugin_type(){
+int Desktop::get_plugin_type() {
     return pluginType;
 }
 
-QWidget *Desktop::get_plugin_ui(){
+QWidget *Desktop::get_plugin_ui() {
+    if (mFirstLoad) {
+        mFirstLoad = false;
+
+        ui = new Ui::Desktop;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        ui->listWidget->setItemDelegate(new ListDelegate(this));
+
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->title3Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->menuLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        ui->titleLabel->setVisible(false);
+
+        ui->deskComputerFrame->setVisible(false);
+        ui->deskTrashFrame->setVisible(false);
+        ui->deskHomeFrame->setVisible(false);
+        ui->deskVolumeFrame->setVisible(false);
+        ui->deskNetworkFrame->setVisible(false);
+
+        ui->titleLabel->setVisible(false);
+
+        ui->deskComputerFrame->setVisible(false);
+        ui->deskTrashFrame->setVisible(false);
+        ui->deskHomeFrame->setVisible(false);
+        ui->deskVolumeFrame->setVisible(false);
+        ui->deskNetworkFrame->setVisible(false);
+
+        ui->title2Label->hide();
+        ui->fullScreenMenuFrame->setVisible(false);
+
+        const QByteArray id(DESKTOP_SCHEMA);
+        if (QGSettings::isSchemaInstalled(id)) {
+            dSettings = new QGSettings(id, QByteArray(), this);
+        }
+        cmd = QSharedPointer<QProcess>(new QProcess());
+        initSearchText();
+        initTranslation();
+        setupComponent();
+        setupConnect();
+        initVisibleStatus();
+        initLockingStatus();
+        initTraySettings();
+    }
     return pluginWidget;
 }
 
@@ -122,17 +126,19 @@ void Desktop::plugin_delay_control(){
 
 }
 
-void Desktop::initTranslation() {
-    transMap.insert("blueman", "蓝牙");
-    transMap.insert("fcitx", "输入法");
-    transMap.insert("indicator-china-weather", "麒麟天气");
-    transMap.insert("explorer.exe", "微信");
-    transMap.insert("ukui-flash-disk", "U盘管理工具");
-    transMap.insert("kylin-nm", "网络工具");
-    transMap.insert("ukui-volume-control-applet-qt", "音量控制");
-    transMap.insert("ukui-sidebar", "侧边栏");
-    transMap.insert("ukui-power-manager-tray", "电源管理");
+const QString Desktop::name() const {
 
+    return QStringLiteral("desktop");
+}
+
+void Desktop::initSearchText() {
+    //~ contents_path /desktop/Icon Show On Desktop
+    ui->titleLabel->setText(tr("Icon Show On Desktop"));
+    //~ contents_path /desktop/Tray icon
+    ui->title3Label->setText(tr("Tray icon"));
+}
+
+void Desktop::initTranslation() {
     iconMap.insert("ukui-volume-control-applet-qt", "audio-card");
     iconMap.insert("kylin-nm", "network-workgroup");
     iconMap.insert("indicator-china-weather", "indicator-china-weather");
@@ -141,14 +147,15 @@ void Desktop::initTranslation() {
     iconMap.insert("fcitx", "fcitx");
     iconMap.insert("blueman", "preferences-system-bluetooth");
     iconMap.insert("kylin-video", "kylin-video");
+    iconMap.insert("kylin-screenshoot", "kylin-screenshoot");
+    iconMap.insert("Onboard", "onboard");
 
     disList<<"ukui-sidebar"<<"kylin-nm"<<"ukui-volume-control-applet-qt"<<"update-notifier"<<"software-update-available"
           <<"blueman-tray"<<"ukui-power-manager"<<"ukui-settings-daemon"<<"blueman-applet"
          <<"ErrorApplication"<<"livepatch";
-
 }
 
-void Desktop::setupComponent(){
+void Desktop::setupComponent() {
 
     ui->deskComputerLabel->setPixmap(QPixmap("://img/plugins/desktop/computer.png"));
     ui->deskHomeLabel->setPixmap(QPixmap("://img/plugins/desktop/homefolder.png"));
@@ -191,7 +198,6 @@ void Desktop::setupComponent(){
 
     menuSettingSwitchBtn = new SwitchButton(pluginWidget);
     ui->menuSettingHorLayout->addWidget(menuSettingSwitchBtn);
-
 }
 
 void Desktop::setupConnect(){
@@ -202,29 +208,43 @@ void Desktop::setupConnect(){
     connect(deskVolumeSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(VOLUMES_VISIBLE_KEY, checked);});
     connect(deskNetworkSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked){dSettings->set(NETWORK_VISIBLE_KEY, checked);});
 
-    connect(fullMenuSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+    connect(fullMenuSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         if (keys.contains("menufullScreen")) {
             dSettings->set(MENU_FULL_SCREEN_KEY, checked);
         }
-
     });
-    connect(menuComputerSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+
+    connect(menuComputerSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         dSettings->set(COMPUTER_LOCK_KEY, checked);
     });
-    connect(menuFilesystemSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+
+    connect(menuFilesystemSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         if (keys.contains("personalIconLocking")) {
             dSettings->set(PERSONAL_LOCK_KEY, checked);
         }
     });
-    connect(menuSettingSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+
+    connect(menuSettingSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         dSettings->set(SETTINGS_LOCK_KEY, checked);
     });
-    connect(menuTrashSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+
+    connect(menuTrashSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         dSettings->set(TRASH_LOCK_KEY, checked);
     });
+
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"),
+                                          QString("org.freedesktop.kylinssoclient.interface"),
+                                          "keyChanged", this, SLOT(slotCloudAccout(QString)));
 }
 
-void Desktop::initVisibleStatus(){
+void Desktop::slotCloudAccout(const QString &key) {
+    if (key == "ukui-menu") {
+        initVisibleStatus();
+        initLockingStatus();
+    }
+}
+
+void Desktop::initVisibleStatus() {
     deskComputerSwitchBtn->blockSignals(true);
     deskHomeSwitchBtn->blockSignals(true);
     deskTrashSwitchBtn->blockSignals(true);
@@ -244,12 +264,11 @@ void Desktop::initVisibleStatus(){
     deskNetworkSwitchBtn->blockSignals(false);
 }
 
-void Desktop::initLockingStatus(){
+void Desktop::initLockingStatus() {
     menuComputerSwitchBtn->blockSignals(true);
     menuFilesystemSwitchBtn->blockSignals(true);
     menuSettingSwitchBtn->blockSignals(true);
     menuTrashSwitchBtn->blockSignals(true);
-
 
     QStringList keys = dSettings->keys();
     if (keys.contains("menufullScreen")) {
@@ -271,12 +290,17 @@ void Desktop::initLockingStatus(){
 }
 
 void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
-    const QString locale = QLocale::system().name();
+    QMap<QString, QIcon> desktopMap = desktopConver(name);
+    if (desktopMap.isEmpty()) {
+        return;
+    }
+    nameList.append(name);
 
     QVBoxLayout * baseVerLayout = new QVBoxLayout();
     baseVerLayout->setSpacing(1);
 
-    QFrame * devFrame = new QFrame();
+    QFrame * devFrame = new QFrame(pluginWidget);
+    devFrame->setObjectName(name);
     devFrame->setFrameShape(QFrame::Shape::Box);
     devFrame->setMinimumWidth(550);
     devFrame->setMaximumWidth(960);
@@ -287,32 +311,30 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     devHorLayout->setSpacing(8);
     devHorLayout->setContentsMargins(16, 0, 16, 0);
 
-    QPushButton * iconBtn = new QPushButton();
+    QPushButton * iconBtn = new QPushButton(pluginWidget);
 
     iconBtn->setStyleSheet("QPushButton{background-color:transparent;border-radius:4px}"
                                        "QPushButton:hover{background-color: transparent ;color:transparent;}");
 
-//    iconBtn->setFlat(true);
     QSizePolicy iconSizePolicy = iconBtn->sizePolicy();
     iconSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
     iconSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
     iconBtn->setSizePolicy(iconSizePolicy);
     iconBtn->setIconSize(QSize(32, 32));
+    if (icon.isNull()) {
+        icon = desktopMap.values().at(0).isNull() ? QIcon::fromTheme("application-x-desktop") : desktopMap.values().at(0);
+    }
     iconBtn->setIcon(icon);
 
-    QLabel * nameLabel = new QLabel();
+    QLabel * nameLabel = new QLabel(pluginWidget);
     QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
     nameSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
     nameSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
     nameLabel->setSizePolicy(nameSizePolicy);
     nameLabel->setScaledContents(true);
-    if ("zh_CN" == locale && transMap.contains(name)) {
-        nameLabel->setText(transMap.value(name));
-    } else {
-        nameLabel->setText(name);
-    }
+    nameLabel->setText(desktopMap.keys().at(0));
 
-    SwitchButton *appSwitch = new SwitchButton();
+    SwitchButton *appSwitch = new SwitchButton(pluginWidget);
     if (disList.contains(name)) {
         appSwitch->setEnabled(false);
     }
@@ -326,17 +348,22 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     baseVerLayout->addWidget(devFrame);
     baseVerLayout->addStretch();
 
-    ui->trayVBoxLayout->addWidget(devFrame);
+    QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
+
+    item->setSizeHint(QSize(QSizePolicy::Fixed, 50));
+    item->setFlags(Qt::ItemFlag::ItemIsSelectable);
+    item->setData(Qt::UserRole, QVariant(name));
+    ui->listWidget->setItemWidget(item, devFrame);
 
     QString status = gsettings->get(TRAY_ACTION_KEY).toString();
     if ("tray" == status) {
-        appSwitch->setChecked(true);
-    } else {
         appSwitch->setChecked(false);
+    } else {
+        appSwitch->setChecked(true);
     }
 
     connect(appSwitch, &SwitchButton::checkedChanged, [=](bool checked) {
-        if (checked) {
+        if (!checked) {
             gsettings->set(TRAY_ACTION_KEY, "tray");
             gsettings->set(TRAY_RECORD_KEY, "tray");
         } else {
@@ -346,24 +373,39 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
     });
 }
 
-
 void Desktop::initTraySettings() {
     QString action;
     QString name;
     int winID;
-    QIcon icon;
 
     QList<char *> trayList = listExistsCustomDesktopPath();
-//    qDebug()<<"path is------------->"<<trayList.length()<<endl;
+
+    int itemCount  = 0;
+    ui->listWidget->setSpacing(1);
+    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
     for (int i = 0; i < trayList.length(); i++) {
         const QByteArray id(TRAY_SCHEMA);
         QGSettings * traySettings = nullptr;
         QString path = QString("%1%2").arg(TRAY_SCHEMA_PATH).arg(QString(trayList.at(i)));;
 
-
         if (QGSettings::isSchemaInstalled(id)) {
             traySettings = new QGSettings(id, path.toLatin1().data());
-            vecGsettings->append(traySettings);
+
+            connect(traySettings, &QGSettings::changed, this, [=] (const QString &key) {
+
+                QString status = traySettings->get(key).toString();
+                if ("action" == key) {
+                    QString status = traySettings->get(key).toString();
+                    QString itemName = traySettings->get(TRAY_NAME_KEY).toString();
+                    if ("freeze" == status) {
+                        removeTrayItem(itemName);
+                    } else if(!nameList.contains(itemName)) {
+                        addTrayItem(traySettings);
+                    }
+                }
+            });
+            vecGsettings << traySettings;
             QStringList keys = traySettings->keys();
 
             if (keys.contains(static_cast<QString>(TRAY_NAME_KEY)) &&
@@ -371,20 +413,159 @@ void Desktop::initTraySettings() {
                 name = traySettings->get(TRAY_NAME_KEY).toString();
                 action = traySettings->get(TRAY_ACTION_KEY).toString();
                 winID = traySettings->get(TRAY_BINDING_KEY).toInt();
-//                show(winID);
             }
-//            qDebug()<<"name is-------------->"<<action<<" "<<name<<endl;
 
-            if (!("" == name || "freeze" == action || disList.contains(name))){
+            if (!("" == name || "freeze" == action || disList.contains(name))) {
                 QIcon icon;
                 if (!iconMap[name].isEmpty()) {
                     icon = QIcon::fromTheme(iconMap[name]);
-                } else {
-                    icon = QIcon::fromTheme("application-x-desktop");
                 }
+                itemCount++;
+
                 initTrayStatus(name, icon, traySettings);
             }
         }
     }
+    ui->listWidget->setFixedHeight(itemCount * 55);
 }
 
+QMap<QString, QIcon> Desktop::desktopConver(QString processName) {
+
+    QMap<QString, QIcon> desktopMap;
+    if (isFileExist("/etc/xdg/autostart/"+processName + ".desktop") ||
+            isFileExist("/usr/share/applications/"+processName+".desktop")) {
+        QString autoName = desktopToName("/etc/xdg/autostart/"+processName+".desktop");
+        QIcon autoIcon   = desktopToIcon("/etc/xdg/autostart/"+processName+".desktop");
+        QString appName  = desktopToName("/usr/share/applications/"+processName+".desktop");
+        QIcon appIcon    = desktopToIcon("/usr/share/applications/"+processName+".desktop");
+        if (autoName != "") {
+            desktopMap.insert(autoName, autoIcon);
+        } else if (appName != "") {
+            desktopMap.insert(appName, appIcon);
+        }
+    } else if (isFileExist("/etc/xdg/autostart/" + processName.toLower() + ".desktop") ||
+               isFileExist("/usr/share/applications/" + processName.toLower() + ".desktop")){
+        QString autoName = desktopToName("/etc/xdg/autostart/" + processName.toLower() + ".desktop");
+        QIcon autoIcon = desktopToIcon("/etc/xdg/autostart/" + processName.toLower() + ".desktop");
+
+        QString appName  = desktopToName("/usr/share/applications/" + processName.toLower() + ".desktop");
+        QIcon appIcon  = desktopToIcon("/usr/share/applications/" + processName.toLower() + ".desktop");
+        if (autoName != "") {
+            desktopMap.insert(autoName, autoIcon);
+        } else if (appName != "") {
+            desktopMap.insert(appName, appIcon);
+        }
+    } else {
+        connect(cmd.get(), &QProcess::readyReadStandardOutput, this, [&]() {
+            desktopMap = readOuputSlot();
+        });
+        // 异常处理
+        connect(cmd.get() , SIGNAL(readyReadStandardError()) , this , SLOT(readErrorSlot()));
+
+        QString inputCmd = QString("grep -nr %1 /usr/share/applications/  /etc/xdg/autostart/\n").arg(processName);
+        cmd->start(inputCmd);
+        cmd->waitForFinished(-1);
+    }
+    return desktopMap;
+}
+
+bool Desktop::isFileExist(QString fullFileName) {
+    QFileInfo fileInfo(fullFileName);
+    if (fileInfo.isFile()) {
+        return true;
+    }
+    return false;
+}
+
+void Desktop::removeTrayItem(QString itemName) {
+    for (int i = 0; i < ui->listWidget->count(); i++) {
+        QListWidgetItem * item = ui->listWidget->item(i);
+        QString value = item->data(Qt::UserRole).toString();
+        if (value == itemName) {
+            ui->listWidget->takeItem(i);
+            break;
+        }
+    }
+
+    for (int i = 0; i < nameList.length(); i++) {
+        if (nameList.at(i) == itemName) {
+            nameList.removeAt(i);
+            break;
+        }
+    }
+}
+
+void Desktop::addTrayItem(QGSettings * trayGSetting) {
+
+    QString name   = trayGSetting->get(TRAY_NAME_KEY).toString();
+    QString action = trayGSetting->get(TRAY_ACTION_KEY).toString();
+
+    if (!("" == name || "freeze" == action || disList.contains(name))){
+        QIcon icon;
+        if (!iconMap[name].isEmpty()) {
+            icon = QIcon::fromTheme(iconMap[name]);
+        } else {
+            icon = QIcon::fromTheme("application-x-desktop");
+        }
+        initTrayStatus(name, icon, trayGSetting);
+    }
+}
+
+QString Desktop::desktopToName(QString desktopfile) {
+    const QString locale = QLocale::system().name();
+    const QString localeName = "Name[" + locale +"]";
+    const QString genericName = "GenericName[" + locale +"]";
+    QSettings desktopSettings(desktopfile, QSettings::IniFormat);
+
+    desktopSettings.setIniCodec(QTextCodec::codecForName("UTF-8"));
+    desktopSettings.beginGroup("Desktop Entry");
+
+    QString desktopName = desktopSettings.value(localeName, "").toString();
+    if (desktopName.isEmpty()) {
+        desktopName = desktopSettings.value(genericName, "").toString();
+    }
+
+    desktopSettings.endGroup();
+    return desktopName;
+}
+
+QIcon Desktop::desktopToIcon(const QString &desktopfile) {
+    QSettings desktopSettings(desktopfile, QSettings::IniFormat);
+
+    desktopSettings.setIniCodec(QTextCodec::codecForName("UTF-8"));
+    desktopSettings.beginGroup("Desktop Entry");
+
+    QString iconName = desktopSettings.value("Icon", "").toString();
+
+    desktopSettings.endGroup();
+    return QIcon::fromTheme(iconName);
+}
+
+QMap<QString, QIcon> Desktop::readOuputSlot() {
+    QString str;
+    QMap<QString, QIcon> desktopMap;
+    QFile file("/tmp/desktopprocess.txt");
+    QString output=cmd->readAllStandardOutput().data();
+
+    // 打开文件，不存在则创建
+    file.open(QIODevice::ReadWrite | QIODevice::Text);
+    file.write(output.toUtf8());
+    file.close();
+
+    file.open(QIODevice::ReadWrite | QIODevice::Text);
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        str = line;
+        if(str.contains(".desktop:") && str.contains(":Exec")){
+            str = str.section(".desktop", 0, 0)+".desktop";
+            desktopMap.insert(desktopToName(str), desktopToIcon(str));
+        }
+    }
+    file.close();
+    file.remove();
+    return desktopMap;
+}
+
+void Desktop::readErrorSlot() {
+    qWarning() << "read desktop file name failed";
+}

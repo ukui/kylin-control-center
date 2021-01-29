@@ -71,6 +71,9 @@
       </size>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QFrame" name="frame">
         <property name="sizePolicy">
@@ -114,7 +117,7 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout">
                <item>
-                <widget class="QLabel" name="label">
+                <widget class="QLabel" name="versionLabel">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                    <horstretch>0</horstretch>
@@ -178,6 +181,9 @@
                 <widget class="QLabel" name="label_2">
                  <property name="text">
                   <string>Copyright 2009-2020 @ Kylinos All rights reserved</string>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
                  </property>
                 </widget>
                </item>
@@ -270,6 +276,9 @@
             <widget class="QLabel" name="kernalContent">
              <property name="text">
               <string/>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -374,7 +383,7 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_12">
            <item>
-            <widget class="QLabel" name="disk">
+            <widget class="QLabel" name="diskLabel">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                <horstretch>0</horstretch>

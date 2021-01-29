@@ -58,15 +58,20 @@ protected:
 
 private:
     Ui::AddAutoBoot *ui;
+    QString selectFile;
+    QString mDesktopExec;
+    QString mDesktopIcon;
 
 private:
-    QString selectFile;
+    void initStyle();
+    void initConnection();
 
 private slots:
     void open_desktop_dir_slots();
+    void execLinEditSlot(const QString &fileName);
 
 Q_SIGNALS:
-    void autoboot_adding_signals(QString path, QString name, QString exec, QString comment);
+    void autoboot_adding_signals(QString path, QString name, QString exec, QString comment, QString icon);
 };
 
 #endif // ADDAUTOBOOT_H

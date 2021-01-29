@@ -38,8 +38,6 @@ TimezoneMap::TimezoneMap(QWidget* parent) : QFrame (parent),
 {
     m_totalZones = m_zoninfo->getzoneInforList();
 
-//    qDebug()<<m_totalZones<<endl;
-//    setAttribute(Qt::WA_TranslucentBackground);
     this->initUI();
 }
 
@@ -139,7 +137,6 @@ void TimezoneMap::popupZoneList(QPoint pos) {
 
     QString locale = QLocale::system().name();
     QStringList zoneNames;
-    qDebug()<<"nearest is--------------->"<<m_nearestZones<<endl;
 
     for (ZoneInfo_ zone : m_nearestZones) {
         zoneNames.append(m_zoninfo->getLocalTimezoneName(zone.timezone, locale));
@@ -172,6 +169,7 @@ void TimezoneMap::popListActiveSlot(int index) {
 }
 
 void TimezoneMap::setTimezone(QString timezone) {
+    timezone = (timezone == "Asia/Beijing" ? "Asia/Shanghai" : timezone);
     m_nearestZones.clear();
     int index = m_zoninfo->getZoneInfoByZone(m_totalZones, timezone);
     if (index > -1) {
@@ -188,14 +186,11 @@ void TimezoneMap::mousePressEvent(QMouseEvent *event) {
         m_nearestZones = m_zoninfo->getNearestZones(m_totalZones,100.0,
                                                     event->x(), event->y(),
                                                     this->width(), this->height());
-//        qDebug()<<"pos------>"<<event->x()<<endl;
-//         qDebug() << m_nearestZones<<endl;
         if (m_nearestZones.length() == 1){
             m_currentZone = m_nearestZones.first();
             this->mark();
             emit this->timezoneSelected(m_currentZone.timezone);
         } else {
-//            qDebug()<<"two add----------->"<<endl;
             this->popupZoneList(event->pos());
         }
     } else {

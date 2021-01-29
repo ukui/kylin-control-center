@@ -27,7 +27,6 @@ FrameItem::FrameItem(QWidget *parent) :QFrame(parent)
 
     this->setFrameShape(QFrame::Shape::Box);
     m_itemName = new QLabel(this);
-    m_itemName->setStyleSheet("font-size: 14px;");
     m_switchBtn = new SwitchButton(this);
     m_workLayout = new QHBoxLayout;
     m_workLayout->addWidget(m_itemName);
@@ -35,7 +34,7 @@ FrameItem::FrameItem(QWidget *parent) :QFrame(parent)
     m_run = new QLabel(this);
     m_errorStatusLabel = new InfoLabel(this);
     m_cTimer = new QTimer(this);
-    m_svgHandler = new SVGHandler(this);
+    m_svgHandler = new SVGHandler(this,true);
     m_stackedWidget = new QStackedWidget(this);
     m_nullWidget = new QWidget(this);
 
@@ -56,11 +55,12 @@ FrameItem::FrameItem(QWidget *parent) :QFrame(parent)
     m_hboxLayout->addWidget(m_stackedWidget,0,Qt::AlignRight);
     m_hboxLayout->addWidget(m_switchBtn,0,Qt::AlignRight);
     m_workLayout->addLayout(m_hboxLayout);
-    m_workLayout->setMargin(16);
+    m_workLayout->setAlignment(Qt::AlignVCenter);
+    m_workLayout->setContentsMargins(16,0,16,0);
     this->setAttribute(Qt::WA_StyledBackground,true);
     //widget->setStyleSheet("background-color: rgba(244,244,244,85%);border-radius:4px;");
     this->setLayout(m_workLayout);
-
+    m_stackedWidget->setFixedHeight(50);
     m_stackedWidget->adjustSize();
 
 
@@ -82,7 +82,7 @@ QWidget* FrameItem::get_widget() {
 }
 
 /* 获取项目名字 */
-QString FrameItem::get_itemname() {
+QString FrameItem::get_itemname() const {
     return m_itemName->text();
 }
 
@@ -92,11 +92,11 @@ QHBoxLayout* FrameItem::get_layout() {
 }
 
 /* 设置项目名字 */
-void FrameItem::set_itemname(QString name) {
+void FrameItem::set_itemname(const QString &name) {
     m_itemName->setText(name);
 }
 
-void FrameItem::set_change(int status,QString code) {
+void FrameItem::set_change(const int &status,const QString &code) {
     if(status == 1) {
         m_stackedWidget->setCurrentWidget(m_run);
         bIsStart = true;
@@ -109,22 +109,22 @@ void FrameItem::set_change(int status,QString code) {
         m_cTimer->stop();
         bIsStart = false;
         if(code == "Failed!") {
-            m_errorStatusLabel->setTipText(tr("Sync failed, please login out to retry!"));
+            m_errorStatusLabel->setTipText(tr("Sync failed,please relogin!"));
         }
         if(code == "Change conf file failed!") {
-            m_errorStatusLabel->setTipText(tr("Change configuration file failed, please login out to retry!"));
+            m_errorStatusLabel->setTipText(tr("Change configuration file failed,please relogin!"));
         }
         if(code == "Config file not exist!") {
-            m_errorStatusLabel->setTipText(tr("Configuration file not exist, please login out to retry!"));
+            m_errorStatusLabel->setTipText(tr("Configuration file not exist,please relogin!"));
         }
         if(code == "Cloud verifyed file download failed!") {
-            m_errorStatusLabel->setTipText(tr("Cloud verifyed file download failed, please login out to retry!"));
+            m_errorStatusLabel->setTipText(tr("Cloud verifyed file download failed,please relogin!"));
         }
         if(code == "OSS access failed!") {
-            m_errorStatusLabel->setTipText(tr("OSS access failed, please login out to retry!"));
+            m_errorStatusLabel->setTipText(tr("OSS access failed,please relogin!"));
         }
         else if(code != "Upload" && code != "Download") {
-            m_errorStatusLabel->setTipText(tr("Sync failed, please retry or login out to get a better experience!"));
+            m_errorStatusLabel->setTipText(tr("Sync failed,please relogin!"));
         }
         m_stackedWidget->setCurrentWidget(m_errorStatusLabel);
     }
@@ -161,6 +161,6 @@ void FrameItem::make_itemoff() {
 }
 
 /* 让列表的SwitchButton可用或者不可用，调用一次就是取反 */
-void FrameItem::set_active(bool ok) {
+void FrameItem::set_active(const bool &ok) {
     m_switchBtn->set_active(ok);
 }

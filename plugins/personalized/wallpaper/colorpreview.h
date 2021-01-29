@@ -20,7 +20,7 @@
 #ifndef COLORPREVIEW_H
 #define COLORPREVIEW_H
 
-
+#include <QDebug>
 #include <QWidget>
 
 class ColorPreview : public QWidget

@@ -28,7 +28,6 @@
 #include <QDebug>
 #include <KF5/KScreen/kscreen/types.h>
 
-//这里注册的类型为什么不起作用
 Q_DECLARE_METATYPE(KScreen::OutputPtr)
 Q_DECLARE_METATYPE(QMLScreen*)
 
@@ -36,11 +35,7 @@ QMLOutputComponent::QMLOutputComponent(QQmlEngine *engine, QMLScreen *parent):
     QQmlComponent(engine, parent),
     m_engine(engine)
 {
-    //const QString qmlPath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("kcm_kscreen/qml/Output.qml"));
-//    const QString qmlpath = QStringLiteral("qrc:/qml/Output.qml");
-//    qDebug()<<"qmlPath is ------>"<<qmlpath<<endl;
     loadUrl(QUrl("qrc:/qml/Output.qml"));
-
 }
 
 QMLOutputComponent::~QMLOutputComponent()
@@ -56,9 +51,6 @@ QMLOutput* QMLOutputComponent::createForOutput(const KScreen::OutputPtr &output)
     }
 
     bool success = instance->setProperty("outputPtr", QVariant::fromValue(qobject_cast<KScreen::OutputPtr>(output)));
-//    qDebug()<<"qmloutcomponent.cpp---->instance类型---->"<<instance<<
-//              "\noutput类型---------->"<<output<<" "<<
-//              "\noutput原始类型------->"<<QVariant::fromValue(qobject_cast<KScreen::OutputPtr>(output))<<" "<<endl;
 
     Q_ASSERT(success);
     success = instance->setProperty("screen", QVariant::fromValue(qobject_cast<QMLScreen*>(parent())));

@@ -22,6 +22,10 @@
 #include "powermacrodata.h"
 
 #include <QDebug>
+#include <QDBusInterface>
+#include <QDBusReply>
+#include <QDBusConnection>
+#include <QSettings>
 
 typedef enum {
     BALANCE,
@@ -34,76 +38,100 @@ typedef enum {
     ALWAYS
 }ICONDISPLAY;
 
-/**
- * 平衡：关闭显示器10分钟；计算机进入睡眠30分钟
- * 节能：关闭显示器20分钟；计算机进入睡眠2小时
- * 自定义
- */
+// 平衡模式
+const int DISPLAY_BAT_BALANCE   =  10 * 60;
+const int DISPLAY_AC_BALANCE    =  30 * 60;
+const int COMPUTER_BALANCE      =  0;
 
-#define DISPLAY_BALANCE 10 * 60
-#define COMPUTER_BALANCE 30 * 60
-#define DISPLAY_SAVING 20 * 60
-#define COMPUTER_SAVING 2 * 60 * 60
+// 节能模式
+const int DISPLAY_SAVING        =  5 * 60;
+const int COMPUTER_SAVING       =  10 * 60;
 
+const QStringList kHibernate { QObject::tr("Never"),QObject::tr("10min"), QObject::tr("20min"),
+                               QObject::tr("40min"), QObject::tr("80min")};
 
+// 电源按钮操作
+const QStringList kLid       { QObject::tr("interactive"), QObject::tr("suspend"), QObject::tr("hibernate"), QObject::tr("shutdown") };
+const QStringList kEnkLid    { "interactive", "suspend", "hibernate", "shutdown"};
 
-Power::Power()
+// 低电量操作
+const QStringList kBattery    { QObject::tr("nothing"), QObject::tr("blank"), QObject::tr("suspend"), QObject::tr("hibernate"), QObject::tr("shutdown") };
+const QStringList kEnBattery  { "nothing", "blank", "suspend", "hibernate", "shutdown" };
+
+Power::Power() : mFirstLoad(true)
 {
-    ui = new Ui::Power;
-    pluginWidget = new QWidget;
-    pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-    ui->setupUi(pluginWidget);
-
     pluginName = tr("Power");
     pluginType = SYSTEM;
+}
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-    ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
-    settingsCreate = false;
-
-    const QByteArray id(POWERMANAGER_SCHEMA);
-
-    setupStylesheet();
-    setupComponent();
-    isPowerSupply();
-    if (QGSettings::isSchemaInstalled(id)){
-        settingsCreate = true;
-        settings = new QGSettings(id);
-        setupConnect();
-        initModeStatus();
-        initPowerOtherStatus();
-    } else {
-        qCritical() << POWERMANAGER_SCHEMA << "not installed!\n";
+Power::~Power() {
+    if (!mFirstLoad) {
+        delete ui;
     }
-
 }
 
-Power::~Power()
-{
-    delete ui;
-    if (settingsCreate)
-        delete settings;
-}
-
-QString Power::get_plugin_name(){
+QString Power::get_plugin_name() {
     return pluginName;
 }
 
-int Power::get_plugin_type(){
+int Power::get_plugin_type() {
     return pluginType;
 }
 
-QWidget * Power::get_plugin_ui(){
+QWidget * Power::get_plugin_ui() {
+    if (mFirstLoad) {
+        ui = new Ui::Power;
+        pluginWidget = new QWidget;
+        pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
+        ui->setupUi(pluginWidget);
+
+        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+
+        const QByteArray id(POWERMANAGER_SCHEMA);
+        const QByteArray sessionId(SESSION_SCHEMA);
+        const QByteArray personalizeId(PERSONALSIE_SCHEMA);
+
+        initDbus();
+        setupComponent();
+        isPowerSupply();
+        if (QGSettings::isSchemaInstalled(id)) {
+            settings = new QGSettings(id, QByteArray(), this);
+            sessionSetting = new QGSettings(sessionId, QByteArray(), this);
+            mUkccpersonpersonalize = new QGSettings(personalizeId, QByteArray(), this);
+
+            mPowerKeys = settings->keys();
+
+            initGeneralSet();
+            initModeStatus();
+            setupConnect();
+            initPowerOtherStatus();
+        } else {
+            qCritical() << POWERMANAGER_SCHEMA << "not installed!\n";
+        }
+    }
     return pluginWidget;
 }
 
-void Power::plugin_delay_control(){
+void Power::plugin_delay_control() {
 
 }
 
-void Power::isPowerSupply(){
-    //ubuntukylin youker DBus interface
+const QString Power::name() const {
+
+    return QStringLiteral("power");
+}
+
+void Power::initSearText() {
+    //~ contents_path /power/Balance (suggest)
+    ui->balanceLabel->setText(tr("Balance (suggest)"));
+    //~ contents_path /power/Saving
+    ui->saveLabel->setText(tr("Saving"));
+    //~ contents_path /power/Custom
+    ui->customLabel->setText(tr("Custom"));
+}
+
+void Power::isPowerSupply() {
     QDBusInterface *brightnessInterface = new QDBusInterface("org.freedesktop.UPower",
                                      "/org/freedesktop/UPower/devices/DisplayDevice",
                                      "org.freedesktop.DBus.Properties",
@@ -115,44 +143,44 @@ void Power::isPowerSupply(){
 
     QDBusReply<QVariant> briginfo;
     briginfo  = brightnessInterface ->call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
-    if (!briginfo.isValid()) {
-        qDebug()<<"brightness info is invalid"<<endl;
+
+    if (!briginfo.value().toBool()) {
+        isExitsPower = false ;
         ui->batteryBtn->setVisible(false);
+        ui->closeLidFrame->setVisible(false);
+        ui->verticalSpacer_2->changeSize(0, 0);
     } else {
-        qDebug() << "brightness info is valid";
+        isExitsPower = true ;
         bool status = briginfo.value().toBool();
         ui->batteryBtn->setVisible(status);
     }
 }
 
-void Power::setupStylesheet(){
-//    pluginWidget->setStyleSheet("background: #ffffff;");
+void Power::setIdleTime(int idleTime) {
 
-//    ui->balanceWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->savingWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-//    ui->customWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-//    ui->custom1Widget->setStyleSheet("QWidget{background: #F4F4F4;}");
-//    ui->custom2Widget->setStyleSheet("QWidget{background: #F4F4F4;}"
-//                                     "QWidget#custom2Widget{border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+    int sleeptime = ui->sleepComboBox->currentData(Qt::UserRole).toInt();
+    int closetime = ui->closeComboBox->currentData(Qt::UserRole).toInt();
+    if (ui->sleepComboBox->currentIndex()) {
+        ui->sleepLabel->setText(QString(tr("Enter idle state %1 min and sleep after %2 min :")).arg(idleTime).arg(idleTime + sleeptime));
+    }
 
-//    ui->acBtn->setStyleSheet("QPushButton#acBtn:checked{background: #3D6BE5; border-radius: 4px; color: #ffffff;}"
-//                             "QPushButton#acBtn:!checked{background: #ffffff; border-radius: 4px;}");
-//    ui->batteryBtn->setStyleSheet("QPushButton#batteryBtn:checked{background: #3D6BE5; border-radius: 4px; color: #ffffff;}"
-//                                  "QPushButton#batteryBtn:!checked{background: #ffffff; border-radius: 4px; color: #000000;}");
-
-//    ui->iconWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-
+    if (ui->closeComboBox->currentIndex()) {
+        ui->closeLabel->setText(QString(tr("Enter idle state %1 min and close after %2 min :")).arg(idleTime).arg(idleTime + closetime));
+    }
 }
 
-void Power::setupComponent(){
-    //
+void Power::setHibernateTime(QString hibernate) {
+    mUkccInterface->call("setSuspendThenHibernate", hibernate);
+}
+
+void Power::setupComponent() {
+
     ui->powerModeBtnGroup->setId(ui->balanceRadioBtn, BALANCE);
     ui->powerModeBtnGroup->setId(ui->savingRadioBtn, SAVING);
     ui->powerModeBtnGroup->setId(ui->custdomRadioBtn, CUSTDOM);
 
-    //电脑睡眠延迟
+    // 电脑睡眠延迟
     sleepStringList  << tr("never") << tr("10 min") << tr("20 min") << tr("30 min") << tr("60 min") << tr("120 min") << tr("300 min");
-//    ui->sleepComboBox->addItems(sleepStringList);
     ui->sleepComboBox->insertItem(0, sleepStringList.at(0), QVariant::fromValue(0));
     ui->sleepComboBox->insertItem(1, sleepStringList.at(1), QVariant::fromValue(10));
     ui->sleepComboBox->insertItem(2, sleepStringList.at(2), QVariant::fromValue(20));
@@ -161,10 +189,8 @@ void Power::setupComponent(){
     ui->sleepComboBox->insertItem(5, sleepStringList.at(5), QVariant::fromValue(120));
     ui->sleepComboBox->insertItem(6, sleepStringList.at(6), QVariant::fromValue(300));
 
-
-    //显示器关闭延迟
+    // 显示器关闭延迟
     closeStringList  << tr("never") << tr("1 min") << tr("5 min") << tr("10 min") << tr("20 min") << tr("30 min") << tr("60 min") << tr("120 min");
-//    ui->closeComboBox->addItems(closeStringList);
     ui->closeComboBox->insertItem(0, closeStringList.at(0), QVariant::fromValue(0));
     ui->closeComboBox->insertItem(1, closeStringList.at(1), QVariant::fromValue(1));
     ui->closeComboBox->insertItem(2, closeStringList.at(2), QVariant::fromValue(5));
@@ -174,7 +200,7 @@ void Power::setupComponent(){
     ui->closeComboBox->insertItem(6, closeStringList.at(6), QVariant::fromValue(60));
     ui->closeComboBox->insertItem(7, closeStringList.at(7), QVariant::fromValue(120));
 
-    //合盖
+    // 合盖
     closeLidStringList << tr("nothing") << tr("blank") << tr("suspend") << tr("hibernate") << tr("shutdown");
     ui->closeLidCombo->insertItem(0, closeLidStringList.at(0), "nothing");
     ui->closeLidCombo->insertItem(1, closeLidStringList.at(1), "blank");
@@ -182,7 +208,7 @@ void Power::setupComponent(){
     ui->closeLidCombo->insertItem(3, closeLidStringList.at(3), "hibernate");
     ui->closeLidCombo->insertItem(4, closeLidStringList.at(4), "shutdown");
 
-    //使用电池时屏幕变暗
+    // 使用电池时屏幕变暗
     darkenStringList << tr("never") << tr("1 min") << tr("5 min") << tr("10 min") << tr("20 min");
     ui->darkenCombo->insertItem(0, darkenStringList.at(0), QVariant::fromValue(0));
     ui->darkenCombo->insertItem(1, darkenStringList.at(1), QVariant::fromValue(1));
@@ -190,113 +216,98 @@ void Power::setupComponent(){
     ui->darkenCombo->insertItem(3, darkenStringList.at(3), QVariant::fromValue(10));
     ui->darkenCombo->insertItem(4, darkenStringList.at(4), QVariant::fromValue(20));
 
-
-    //默认电源
+    // 默认电源
     ui->acBtn->setChecked(true);
-    //电源不显示变暗功能
+    // 电源不显示变暗功能
     ui->darkenFrame->hide();
 
-    //s3tos4先隐藏
-    ui->s3Tos4Frame->hide();
-
-    //电源图标
+    // 电源图标
     iconShowList << tr("always") << tr("present") << tr("charge");
     ui->iconComboBox->insertItem(0, iconShowList.at(0), "always");
     ui->iconComboBox->insertItem(1, iconShowList.at(1), "present");
     ui->iconComboBox->insertItem(2, iconShowList.at(2), "charge");
-
-
-
-    //lid
-//    lidStringList << tr("nothing") << tr("blank") << tr("suspend") << tr("shutdown");
-//    ui->aclidComboBox->addItems(lidStringList);
-//    ui->batlidComboBox->addItems(lidStringList);
-
-    //button
-//    buttonStringList << tr("interactive") << tr("suspend") << tr("shutdown");
-//    ui->powerbtnComboBox->addItems(buttonStringList);
-//    ui->suspendComboBox->addItems(buttonStringList);
-
-    //
-//    ui->icondisplayBtnGroup->setId(ui->presentRadioBtn, PRESENT);
-//    ui->icondisplayBtnGroup->setId(ui->alwaysRadioBtn, ALWAYS);
-
     refreshUI();
 }
 
-void Power::setupConnect(){
+void Power::setupConnect() {
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->powerModeBtnGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=](int id){
 #else
-    connect(ui->powerModeBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [=](int id){
+    connect(ui->powerModeBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [=](int id) {
 #endif
         refreshUI();
-        if (id == BALANCE){
-            //设置显示器关闭
-            settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_BALANCE);
-            settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_BALANCE);
-            //设置计算机睡眠
+
+        // 平衡模式
+        if (id == BALANCE) {
+            mUkccpersonpersonalize->set("custompower", false);
+            // 设置显示器关闭
+            settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_AC_BALANCE);
+            settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_BAT_BALANCE);
+            // 设置计算机睡眠
             settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_BALANCE);
             settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_BALANCE);
-        } else if (id == SAVING){
-            //设置显示器关闭
+        } else if (id == SAVING) {
+            mUkccpersonpersonalize->set("custompower", false);
+            // 设置显示器关闭
             settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_SAVING);
             settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_SAVING);
-            //设置计算机睡眠
+            // 设置计算机睡眠
             settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_SAVING);
             settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_SAVING);
-
         } else {
-            resetCustomPlanStatus();
+            mUkccpersonpersonalize->set("custompower", true);
+            initCustomPlanStatus();
         }
-
     });
-
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     connect(ui->powerTypeBtnGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, [=]{
 #else
-    connect(ui->powerTypeBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, [=]{
+    connect(ui->powerTypeBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, [=] {
 #endif
         initCustomPlanStatus();
     });
 
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    connect(ui->sleepComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
+    connect(ui->sleepComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index) {
 #else
-    connect(ui->sleepComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+    connect(ui->sleepComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
 #endif
         Q_UNUSED(index)
         int value = ui->sleepComboBox->currentData(Qt::UserRole).toInt() * 60;
-        if (ui->acBtn->isChecked()){
+        if (ui->acBtn->isChecked()) {
             settings->set(SLEEP_COMPUTER_AC_KEY, QVariant(value));
         }
-        if (ui->batteryBtn->isChecked()){
+        if (ui->batteryBtn->isChecked()) {
             settings->set(SLEEP_COMPUTER_BATT_KEY, QVariant(value));
         }
+
+        ui->sleepLabel->setText(tr("Change PC sleep time:"));
     });
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    connect(ui->closeComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
+    connect(ui->closeComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index) {
 #else
-    connect(ui->closeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+    connect(ui->closeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
 #endif
         Q_UNUSED(index)
         int value = ui->closeComboBox->currentData(Qt::UserRole).toInt() * 60;
-        if (ui->acBtn->isChecked()){
+        if (ui->acBtn->isChecked()) {
             settings->set(SLEEP_DISPLAY_AC_KEY, QVariant(value));
         }
-        if (ui->batteryBtn->isChecked()){
+        if (ui->batteryBtn->isChecked()) {
             settings->set(SLEEP_DISPLAY_BATT_KEY, QVariant(value));
         }
+
+        ui->closeLabel->setText(tr("Change DP close time:"));;
     });
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    connect(ui->iconComboBox,static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
+    connect(ui->iconComboBox,static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index) {
 #else
-    connect(ui->iconComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+    connect(ui->iconComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
 #endif
 
         Q_UNUSED(index)
@@ -305,167 +316,265 @@ void Power::setupConnect(){
     });
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    connect(ui->closeLidCombo,static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
+    connect(ui->closeLidCombo,static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index) {
 #else
-    connect(ui->closeLidCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+    connect(ui->closeLidCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
 #endif
 
         Q_UNUSED(index)
         QString value = ui->closeLidCombo->currentData(Qt::UserRole).toString();
-        if (ui->acBtn->isChecked()){
+        if (ui->acBtn->isChecked()) {
             settings->set(BUTTON_LID_AC_KEY, value);
         }
-        if (ui->batteryBtn->isChecked()){
+        if (ui->batteryBtn->isChecked()) {
             settings->set(BUTTON_LID_BATT_KET, value);
         }
     });
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    connect(ui->darkenCombo,static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
+    connect(ui->darkenCombo,static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index) {
 #else
-    connect(ui->darkenCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index){
+    connect(ui->darkenCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
 #endif
 
         Q_UNUSED(index)
-        int idleDarken = ui->darkenCombo->currentData(Qt::UserRole).toInt();
+        int idleDarken = ui->darkenCombo->currentData(Qt::UserRole).toInt() * 60;
         settings->set(IDLE_DIM_TIME_KEY, idleDarken);
     });
 }
 
-void Power::initModeStatus(){
+void Power::initModeStatus() {
     int acsleep = settings->get(SLEEP_COMPUTER_AC_KEY).toInt();
     int acclose = settings->get(SLEEP_DISPLAY_AC_KEY).toInt();
 
     int batsleep = settings->get(SLEEP_COMPUTER_BATT_KEY).toInt();
     int batclose = settings->get(SLEEP_DISPLAY_BATT_KEY).toInt();
 
+    bool powerStatus = mUkccpersonpersonalize->get("custompower").toBool();
     if (acsleep == COMPUTER_BALANCE && batsleep == COMPUTER_BALANCE &&
-            acclose == DISPLAY_BALANCE && batclose == DISPLAY_BALANCE){
+            acclose == DISPLAY_AC_BALANCE && batclose == DISPLAY_BAT_BALANCE && !powerStatus) {
         ui->balanceRadioBtn->setChecked(true);
-
     } else if (acsleep == COMPUTER_SAVING && batsleep == COMPUTER_SAVING &&
-               acclose == DISPLAY_SAVING && batclose == DISPLAY_SAVING){
+               acclose == DISPLAY_SAVING && batclose == DISPLAY_SAVING && !powerStatus) {
         ui->savingRadioBtn->setChecked(true);
     } else {
         ui->custdomRadioBtn->setChecked(true);
-        //
         ui->acBtn->setChecked(true);
-
         initCustomPlanStatus();
     }
     refreshUI();
 }
 
-void Power::initPowerOtherStatus(){
+void Power::initPowerOtherStatus() {
     QString value = settings->get(ICONPOLICY).toString();
     ui->iconComboBox->blockSignals(true);
     ui->iconComboBox->setCurrentIndex(ui->iconComboBox->findData(value));
     ui->iconComboBox->blockSignals(false);
 }
 
-void Power::resetCustomPlanStatus(){
-    //当其他电源计划切换至自定义时，默认状态为从不
-    //设置显示器关闭
+void Power::resetCustomPlanStatus() {
+    // 当其他电源计划切换至自定义时，默认状态为从不
+    // 设置显示器关闭
     settings->set(SLEEP_DISPLAY_AC_KEY, 0);
     settings->set(SLEEP_DISPLAY_BATT_KEY, 0);
-    //设置计算机睡眠
+    // 设置计算机睡眠
     settings->set(SLEEP_COMPUTER_AC_KEY, 0);
     settings->set(SLEEP_COMPUTER_BATT_KEY, 0);
-    //
+
     settings->set(BUTTON_LID_AC_KEY, "nothing");
     settings->set(BUTTON_LID_BATT_KET, "nothing");
 
     ui->acBtn->setChecked(true);
     initCustomPlanStatus();
-
 }
 
-void Power::initCustomPlanStatus(){
-    //信号阻塞
+void Power::initCustomPlanStatus() {
+    // 信号阻塞
     ui->sleepComboBox->blockSignals(true);
     ui->closeComboBox->blockSignals(true);
     ui->darkenCombo->blockSignals(true);
 
-    if (ui->acBtn->isChecked()){
-        //计算机睡眠延迟
+    if (ui->acBtn->isChecked()) {
+        // 计算机睡眠延迟
         int acsleep = settings->get(SLEEP_COMPUTER_AC_KEY).toInt() / FIXES;
         ui->sleepComboBox->setCurrentIndex(ui->sleepComboBox->findData(acsleep));
 
-        //显示器关闭延迟
+        // 显示器关闭延迟
         int acclose = settings->get(SLEEP_DISPLAY_AC_KEY).toInt() / FIXES;
         ui->closeComboBox->setCurrentIndex(ui->closeComboBox->findData(acclose));
 
-        //合盖
+        // 合盖
         QString aclid = settings->get(BUTTON_LID_AC_KEY).toString();
         ui->closeLidCombo->setCurrentIndex(ui->closeLidCombo->findData(aclid));
 
-        //变暗
+        // 变暗
         ui->darkenFrame->hide();
-
     }
 
-    if (ui->batteryBtn->isChecked()){
-        //计算机睡眠延迟
+    if (ui->batteryBtn->isChecked()) {
+        // 计算机睡眠延迟
         int batsleep = settings->get(SLEEP_COMPUTER_BATT_KEY).toInt() / FIXES;
         ui->sleepComboBox->setCurrentIndex(ui->sleepComboBox->findData(batsleep));
 
-        //显示器关闭延迟
+        // 显示器关闭延迟
         int batclose = settings->get(SLEEP_DISPLAY_BATT_KEY).toInt() / FIXES;
         ui->closeComboBox->setCurrentIndex(ui->closeComboBox->findData(batclose));
 
-        //合盖
+        // 合盖
         QString batlid = settings->get(BUTTON_LID_BATT_KET).toString();
         ui->closeLidCombo->setCurrentIndex(ui->closeLidCombo->findData(batlid));
 
-        //变暗
-        int darkentime = settings->get(IDLE_DIM_TIME_KEY).toInt();
+        // 变暗
+        int darkentime = settings->get(IDLE_DIM_TIME_KEY).toInt() / FIXES;
         ui->darkenCombo->setCurrentIndex(ui->darkenCombo->findData(darkentime));
         ui->darkenFrame->show();
     }
 
-    //信号阻塞解除
+    ui->sleepLabel->setText(tr("Change PC sleep time:"));
+    ui->closeLabel->setText(tr("Change DP close time:"));;
+
+    // 信号阻塞解除
     ui->sleepComboBox->blockSignals(false);
     ui->closeComboBox->blockSignals(false);
     ui->darkenCombo->blockSignals(false);
-
-    //lid 枚举类型但是toint为零只能toString
-//    QString aclidString = settings->get(BUTTON_LID_AC_KEY).toString();
-//    ui->aclidComboBox->setCurrentText(aclidString);
-//    QString batlidString = settings->get(BUTTON_LID_BATT_KET).toString();
-//    ui->batlidComboBox->setCurrentText(batlidString);
-
-    //power button
-//    QString powerbtn = settings->get(BUTTON_POWER_KEY).toString();
-//    ui->powerbtnComboBox->setCurrentText(powerbtn);
-//    QString suspentbtn = settings->get(BUTTON_SUSPEND_KEY).toString();
-//    ui->suspendComboBox->setCurrentText(suspentbtn);
-
-    //电池图标  枚举类型但是toint为零只能toString
-//    QString ipvalue = settings->get(ICONPOLICY).toString();
-//    if (ipvalue == PRESENT_VALUE)
-//        ui->presentRadioBtn->setChecked(true);
-//    else if (ipvalue == ALWAYS_VALUE)
-//        ui->alwaysRadioBtn->setChecked(true);
 }
 
-void Power::refreshUI(){
-    if (ui->powerModeBtnGroup->checkedId() != CUSTDOM){
-//        ui->custom1Widget->setEnabled(false);
-//        ui->custom2Widget->setEnabled(false);
+void Power::refreshUI() {
+    if (ui->powerModeBtnGroup->checkedId() != CUSTDOM) {
         ui->custom1Frame->hide();
         ui->custom2Frame->hide();
         ui->closeLidFrame->hide();
-        if (ui->batteryBtn->isChecked())
+        if (ui->batteryBtn->isChecked()) {
             ui->darkenFrame->hide();
-//        ui->customWidget->setStyleSheet("QWidget{background: #F4F4F4; border-radius: 6px;}");
-
-
+        }
     } else {
-//        ui->custom1Widget->setEnabled(true);
-//        ui->custom2Widget->setEnabled(true);
         ui->custom1Frame->show();
         ui->custom2Frame->show();
-        ui->closeLidFrame->show();
-//        ui->customWidget->setStyleSheet("QWidget{background: #F4F4F4; border-top-left-radius: 6px; border-top-right-radius: 6px;}");
+        ui->closeLidFrame->setVisible(isExitsPower);
     }
+}
+
+// 空闲时间
+int Power::getIdleTime() {
+    return sessionSetting->get(IDLE_DELAY_KEY).toInt();
+}
+
+void Power::initGeneralSet() {
+
+    if (isExitsPower) {
+        // 电源按钮操作
+        mPowerBtn = new ComboxFrame(tr("When the power button is pressed:"), pluginWidget);
+
+        mPowerBtn->mHLayout->setSpacing(48);
+        mPowerBtn->mHLayout->setContentsMargins(16, 0, 16, 0);
+
+        mPowerBtn->mTitleLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        mPowerBtn->mTitleLabel->setMinimumWidth(300);
+        ui->powerLayout->addWidget(mPowerBtn);
+
+        for(int i = 0; i < kLid.length(); i++) {
+            mPowerBtn->mCombox->insertItem(i, kLid.at(i), kEnkLid.at(i));
+        }
+
+        QString btnStaus = settings->get(BUTTON_POWER_KEY).toString();
+        mPowerBtn->mCombox->setCurrentIndex(mPowerBtn->mCombox->findData(btnStaus));
+
+        connect(mPowerBtn->mCombox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+            settings->set(BUTTON_POWER_KEY, mPowerBtn->mCombox->itemData(index));
+        });
+
+
+        // 低电量操作
+        mBatteryAct = new ComboxFrame(true, tr("Perform operations when battery is low:"), pluginWidget);
+        mBatteryAct->mTitleLabel->setMinimumWidth(300);
+        mBatteryAct->mHLayout->setContentsMargins(16, 0, 16, 0);
+
+        mBatteryAct->mNumCombox->setMaximumWidth(230);
+
+        ui->powerLayout->addWidget(mBatteryAct);
+
+        int batteryRemain = settings->get(PER_ACTION_CRI).toInt();
+        for(int i = 1; i < batteryRemain; i++) {
+            mBatteryAct->mNumCombox->insertItem(i - 1, QString("%1%").arg(i));
+        }
+
+        for(int i = 0; i < kBattery.length(); i++) {
+            mBatteryAct->mCombox->insertItem(i, kBattery.at(i), kEnBattery.at(i));
+        }
+
+        int actionBattery = settings->get(PER_ACTION_KEY).toInt();
+        mBatteryAct->mNumCombox->setCurrentIndex(actionBattery - 1);
+
+        QString actionCriBty = settings->get(ACTION_CRI_BTY).toString();
+        mBatteryAct->mCombox->setCurrentIndex(mBatteryAct->mCombox->findData(actionCriBty));
+
+        connect(mBatteryAct->mNumCombox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+            settings->set(PER_ACTION_KEY, index + 1);
+        });
+
+        connect(mBatteryAct->mCombox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+            Q_UNUSED(index)
+            settings->set(ACTION_CRI_BTY, mBatteryAct->mCombox->itemData(index));
+        });
+
+    }
+
+    /* 休眠接口后续开放
+    if (getHibernateStatus() && mPowerKeys.contains("afterIdleAction")) {
+        mHibernate = new ComboxFrame(tr("After suspending this time, the system will go to sleep:"), pluginWidget);
+
+
+        ui->powerLayout->addWidget(mHibernate);
+
+        ui->powerLayout->addStretch();
+
+        for(int i = 0; i < kHibernate.length(); i++) {
+            mHibernate->mCombox->addItem(kHibernate.at(i));
+        }
+
+        if (getHibernateTime().isEmpty()) {
+            mHibernate->mCombox->setCurrentIndex(0);
+        } else {
+            mHibernate->mCombox->setCurrentText(getHibernateTime());
+        }
+
+        connect(mHibernate->mCombox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+            setHibernateTime(mHibernate->mCombox->currentText());
+            if (index) {
+                settings->set(HIBERNATE_KEY, "suspend-then-hibernate");
+            } else {
+                settings->set(HIBERNATE_KEY, "suspend");
+            }
+        });
+    }
+    */
+}
+
+bool Power::getHibernateStatus() {
+
+    QDBusInterface loginInterface("org.freedesktop.login1",
+                                  "/org/freedesktop/login1",
+                                  "org.freedesktop.login1.Manager",
+                                  QDBusConnection::systemBus());
+
+    if (loginInterface.isValid()) {
+        QDBusReply<QString> reply = loginInterface.call("CanSuspendThenHibernate");
+        return reply.value() == "yes" ? true : false;
+    }
+    return true;
+}
+
+QString Power::getHibernateTime() {
+    QDBusReply<QString> hibernateTime = mUkccInterface->call("getSuspendThenHibernate");
+    if (hibernateTime.isValid()) {
+        return hibernateTime.value();
+    }
+    return "";
+}
+
+void Power::initDbus() {
+    mUkccInterface = new QDBusInterface("com.control.center.qt.systemdbus",
+                                        "/",
+                                        "com.control.center.interface",
+                                        QDBusConnection::systemBus());
 }

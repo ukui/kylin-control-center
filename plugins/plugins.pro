@@ -1,8 +1,10 @@
 TEMPLATE = subdirs
 SUBDIRS = \
+#          devices/bluetooth \
           devices/shortcut \
           messages-task/experienceplan \
           messages-task/notice \
+          network/vino \
           system/defaultapp \
           system/power \
           system/autoboot \

@@ -25,6 +25,8 @@
 #include <QComboBox>
 #include <QIcon>
 #include <QStyledItemDelegate>
+#include <QtDBus>
+#include <QtConcurrent>
 
 #include "shell/interface.h"
 
@@ -69,8 +71,10 @@ public:
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
+    const QString name() const  Q_DECL_OVERRIDE;
 
     void initUI();
+    void initSearchText();
 
     bool setWebBrowsersDefaultProgram(char * appid);
     bool setMailReadersDefaultProgram(char * appid);
@@ -79,6 +83,7 @@ public:
     bool setVideoPlayersDefaultProgram(char * appid);
     bool setTextEditorsDefautlProgram(char * appid);
 
+    void connectToServer();
 
 private:
     char    * getDefaultAppId(const char * contentType);
@@ -91,8 +96,15 @@ private:
     QWidget * pluginWidget;
 
     QString pluginName;
-
     int pluginType;
+    QDBusInterface *m_cloudInterface;
+
+    QString mDefaultBrowser;
+    QString mDefaultMail;
+    QString mDefaultPic;
+    QString mDefaultAdudio;
+    QString mDefaultVideo;
+    QString mDefaultText;
 
 public slots:
     void browserComBoBox_changed_cb(int index);
@@ -101,6 +113,10 @@ public slots:
     void audioComBoBox_changed_cb(int index);
     void videoComBoBox_changed_cb(int index);
     void textComBoBox_changed_cb(int index);
+    void keyChangedSlot(const QString &key);
+    void resetDefaultApp();
+Q_SIGNALS:
+    void appInitDone(int index,const QString &type);
 };
 
 #endif // DEFAULTAPP_H

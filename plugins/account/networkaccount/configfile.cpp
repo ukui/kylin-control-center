@@ -19,18 +19,26 @@
  */
 #include "configfile.h"
 #include <QDebug>
+#include <QProcess>
+#include <QDir>
+#include <QtConcurrent/QtConcurrent>
 
-ConfigFile::ConfigFile(QString qstrfilename)
+ConfigFile::ConfigFile( QString qstrfilename)
 {
     if (qstrfilename.isEmpty())
     {
-        m_qstrFileName = "/kylinssoclient/All.conf";
+        QProcess proc;
+        proc.start("lsb_release -r");
+        proc.waitForFinished();
+        QByteArrayList releaseList = proc.readAll().split('\t');
+        QByteArray ar = releaseList.at(1);
+        QString m_confName = "All-" + ar.replace("\n","") + ".conf";
+        m_qstrFileName =QDir::homePath() + "/.cache/kylinId/" + m_confName;
     }
     else
     {
         m_qstrFileName = qstrfilename;
     }
-
     m_psetting = new QSettings(m_qstrFileName, QSettings::IniFormat);
 }
 
@@ -40,14 +48,18 @@ ConfigFile::~ConfigFile()
     m_psetting = 0;
 }
 
-void ConfigFile::Set(QString qstrnodename,QString qstrkeyname,QVariant qvarvalue)
+QString ConfigFile::GetPath() const {
+    return m_qstrFileName;
+}
+
+void ConfigFile::Set(const QString &qstrnodename,const QString &qstrkeyname,const QVariant &qvarvalue)
 {
 
     m_psetting->setValue(QString("/%1/%2").arg(qstrnodename).arg(qstrkeyname), qvarvalue);
     m_psetting->sync();
 }
 
-QVariant ConfigFile::Get(QString qstrnodename,QString qstrkeyname)
+QVariant ConfigFile::Get(const QString &qstrnodename,const QString &qstrkeyname) const
 {
     QVariant qvar = m_psetting->value(QString("/%1/%2").arg(qstrnodename).arg(qstrkeyname));
     return qvar;

@@ -18,119 +18,66 @@
  *
  */
 #include "mainwindow.h"
-#include <QApplication>
-#include "framelessExtended/framelesshandle.h"
-#include "customstyle.h"
 
+#include <QApplication>
 #include <QtSingleApplication>
 #include <QTranslator>
-#include <fcntl.h>
-#include <syslog.h>
 #include <QObject>
-#include <QDesktopWidget>
-#include <QCommandLineOption>
-#include <QCommandLineParser>
-#include <QTimer>
 #include <QDebug>
 #include <QGSettings>
 #include <QSharedPointer>
 #include <memory>
-#include <X11/Xlib.h>
+#include <QCommandLineParser>
 
-void centerToScreen(QWidget* widget) {
-    if (!widget)
-      return;
-    QDesktopWidget* m = QApplication::desktop();
-    QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
-    int desk_x = desk_rect.width();
-    int desk_y = desk_rect.height();
-    int x = widget->width();
-    int y = widget->height();
-    widget->move(desk_x / 2 - x / 2 + desk_rect.left(), desk_y / 2 - y / 2 + desk_rect.top());
-}
+#include <stdlib.h>
 
-int getScreenWidth() {
-    Display *disp = XOpenDisplay(NULL);
-    Screen *scrn = DefaultScreenOfDisplay(disp);
-    if (NULL == scrn) {
-        return 0;
-    }
-    int width = scrn->width;
-
-    if (NULL != disp) {
-        XCloseDisplay(disp);
-    }
-    return width;
-}
+#include "framelessExtended/framelesshandle.h"
+#include "customstyle.h"
+#include "utils/utils.h"
+#include "utils/xatom-helper.h"
 
 int main(int argc, char *argv[])
 {
-    if (getScreenWidth() > 2560) {
-        #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
-                QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-                QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-        #endif
-    }
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
-    QtSingleApplication a(argc, argv);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+#endif
+
+    QString id = QString("ukui-control-center" + QLatin1String(getenv("DISPLAY")));
+    QtSingleApplication a(id, argc, argv);
 
     if (a.isRunning()) {
         a.sendMessage(QApplication::arguments().length() > 1 ? QApplication::arguments().at(1) : a.applicationFilePath());
         qDebug() << QObject::tr("ukui-control-center is already running!");
         return EXIT_SUCCESS;
     } else {
-        //加载国际化文件
-//        QString locale = QLocale::system().name();
-//        QTranslator translator;
-//        QString qm  = locale + ".qm";
-////        qDebug() << "locale is "<< qm <<endl;
-//        if (translator.load(qm, "://i18n/"))
-//            a.installTranslator(&translator);
-
+        // 加载国际化文件
         QTranslator translator;
         translator.load("/usr/share/ukui-control-center/shell/res/i18n/" + QLocale::system().name());
         a.installTranslator(&translator);
 
-        //命令行参数
+        // 命令行参数
         QCoreApplication::setApplicationName("ukui-control-center");
         QCoreApplication::setApplicationVersion("2.0");
-        QCommandLineParser parser;
-        QCommandLineOption monitorRoleOption("m", "Go to monitor settings page");
-        QCommandLineOption backgroundRoleOption("b", "Go to background settings page");
-        QCommandLineOption userinfoRoleOption("u", "Go to userinfo settings page");
-        QCommandLineOption aboutRoleOption("a", "Go to about settings page");
-        QCommandLineOption powerRoleOption("p", "Go to power settings page");
-        QCommandLineOption datetimeRoleOption("t", "Go to datetime settings page");
-        QCommandLineOption desktopRoleOption("d", "Go to desktop settings page");
-        QCommandLineOption audioRoleOption("s", "Go to audio settings page");
-        QCommandLineOption noticeRoleOption("n", "Go to notice settings page");
 
-        parser.addHelpOption();
-        parser.addVersionOption();
-        parser.addOption(monitorRoleOption);
-        parser.addOption(backgroundRoleOption);
-        parser.addOption(userinfoRoleOption);
-        parser.addOption(aboutRoleOption);
-        parser.addOption(powerRoleOption);
-        parser.addOption(datetimeRoleOption);
-        parser.addOption(desktopRoleOption);
-        parser.addOption(audioRoleOption);
-        parser.addOption(noticeRoleOption);
+        QCommandLineParser parser;
+        Utils::setCLIName(parser);
         parser.process(a);
 
-        MainWindow * w = new MainWindow;
-        centerToScreen(w);
-        w->setAttribute(Qt::WA_DeleteOnClose);
+        MainWindow w;
+        Utils::centerToScreen(&w);
 
-        a.setActivationWindow(w);
-        QObject::connect(&a, SIGNAL(messageReceived(const QString&)),w, SLOT(sltMessageReceived(const QString&)));
-        w->show();
+        MotifWmHints hints;
+        hints.flags = MWM_HINTS_FUNCTIONS | MWM_HINTS_DECORATIONS;
+        hints.functions = MWM_FUNC_ALL;
+        hints.decorations = MWM_DECOR_BORDER;
+        XAtomHelper::getInstance()->setWindowMotifHint(w.winId(), hints);
 
-        FramelessHandle * pHandle = new FramelessHandle(w);
-        pHandle->activateOn(w);
-
-//        auto style = new InternalStyle(nullptr);
-//        a.setStyle(style);
+        a.setActivationWindow(&w);
+        QObject::connect(&a, SIGNAL(messageReceived(const QString&)), &w, SLOT(sltMessageReceived(const QString&)));
+        w.show();
 
         return a.exec();
     }

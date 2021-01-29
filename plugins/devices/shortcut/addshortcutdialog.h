@@ -54,6 +54,7 @@ private:
 
 private:
     QString gsPath;
+    QString selectedfile;
 
 
 Q_SIGNALS:

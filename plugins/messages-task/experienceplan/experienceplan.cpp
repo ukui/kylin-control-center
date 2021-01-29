@@ -33,14 +33,6 @@ ExperiencePlan::ExperiencePlan()
     pluginName = tr("Experienceplan");
     pluginType = NOTICEANDTASKS;
 
-//    pluginWidget->setStyleSheet("background: #ffffff;");
-
-//    ui->joinWidget->setStyleSheet("QWidget{background: #F4F4F4; border: none; border-radius: 6px;}");
-
-//    ui->termsBtn->setStyleSheet("QPushButton{background: #ffffff; color: #3D6BE5;}"
-//                                "QPushButton:hover:!pressed{background: #ffffff; color: #ffffff;}"
-//                                "QPushButton:hover:pressed{background: #ffffff; color: #ffffff;}");
-
     QByteArray id(E_PLAN_SCHEMA);
     eSettings = new QGSettings(id);
 
@@ -70,6 +62,11 @@ QWidget * ExperiencePlan::get_plugin_ui(){
 
 void ExperiencePlan::plugin_delay_control(){
 
+}
+
+const QString ExperiencePlan::name() const{
+
+    return QStringLiteral("experienceplan");
 }
 
 void ExperiencePlan::setupComponent(){

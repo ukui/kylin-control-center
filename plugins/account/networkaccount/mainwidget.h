@@ -31,18 +31,17 @@
 #include "editpushbutton.h"
 #include "maindialog.h"
 #include <QMessageBox>
-#include "editpassdialog.h"
-#include "configfile.h"
+#include "syncdialog.h"
+#include <QSettings>
 #include <QGraphicsSvgItem>
 #include <QSvgWidget>
-#include "dbushandleclient.h"
+#include "dbusutils.h"
 #include <QtDBus/QtDBus>
 #include "tooltips.h"
 #include <QDir>
 #include "svghandler.h"
 #include "blueeffect.h"
 
-#define PATH "/.cache/kylinssoclient/All.conf"
 
 class MainWidget : public QWidget
 {
@@ -56,8 +55,8 @@ public:
     void            setshow(QWidget *w);
     void            init_gui();
     void            handle_conf();
-    bool            judge_item(QString enable,int cur);
-    void            handle_write(int on,int id);
+    bool            judge_item(const QString &enable,const int &cur) const;
+    void            handle_write(const int &on,const int &id);
     void            showDesktopNotify(const QString &message);
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
@@ -66,17 +65,20 @@ private:
     FrameItem    *m_autoSyn;
     QLabel              *m_title;
     QLabel              *m_infoTab;
+    QLabel              *m_exitCode;
     Blueeffect          *m_blueEffect_sync;
     QPushButton     *m_exitCloud_btn;
     QWidget         *m_widgetContainer;
     QWidget         *m_infoTabWidget;
     QVBoxLayout     *m_vboxLayout;
-    QPushButton     *m_openEditDialog_btn;
-    EditPassDialog      *m_editDialog;
     QStackedWidget  *m_mainWidget;
     QWidget         *m_nullWidget;
-    DbusHandleClient   *m_dbusClient;
+    bool            m_bHasNetwork;
+    DBusUtils   *m_dbusClient;
+    QString             m_confName;
     QPushButton         *m_login_btn;
+    QTimer              *m_lazyTimer;
+    QTimer              *m_listTimer;
     QLabel              *m_welcomeMsg;
     QSvgWidget              *m_welcomeImage;
     QVBoxLayout         *m_welcomeLayout;
@@ -85,7 +87,10 @@ private:
     QWidget             *m_nullwidgetContainer;
     QString             m_szCode = tr("Disconnected");
     QString             m_szConfPath;
-    QStringList         m_szItemlist = {"wallpaper","ukui-screensaver","ukui-menu","ukui-panel","ukui-panel2","mouse","touchpad","keyboard","shortcut","indicator-china-weather","kylin-video"};
+    QStringList         m_szItemlist = {"wallpaper","ukui-screensaver","font","avatar","ukui-menu","ukui-panel","ukui-panel2",
+                                        "themes","mouse","touchpad","keyboard","shortcut","area","datetime","default-open",
+                                        "notice","option","peony","boot","power","editor","terminal",
+                                        "indicator-china-weather","kylin-video"};
     MainDialog*   m_mainDialog;
     QWidget             *m_infoWidget;
     QHBoxLayout         *m_infoLayout;
@@ -93,9 +98,7 @@ private:
     bool                m_bAutoSyn = true;
     bool                m_bTokenValid = false;
     QTimer              *m_cLoginTimer;
-    QTimer              *m_cSyncDelay;
     QString             m_szUuid;
-    QTimer              *m_cRetry;
     QFileSystemWatcher m_fsWatcher;
     SVGHandler *m_svgHandler;
     Tooltips       *m_syncTooltips;
@@ -103,31 +106,33 @@ private:
     QHBoxLayout     *m_animateLayout;
     QHBoxLayout     *m_tipsLayout;
     QMap<QString,QString> m_itemMap;
+    QString         m_key;
     QStringList     m_keyInfoList;
     bool            __once__ = false;
     bool            __run__ = false;
     bool            m_bIsStopped = false;
+    QLabel          *m_syncTimeLabel;
+    int             m_indexChanged;
+    int             m_statusChanged;
+    SyncDialog      *m_syncDialog;
+    bool            bIsLogging = false;
+    QSettings         *m_pSettings;
 
 public slots:
-    void            neweditdialog();
     void            on_login_out();
     void            on_login();
     void            open_cloud();
     void            finished_load(int ret,QString m_szUuid);
+    void            finished_conf(int ret);
     void            on_switch_button(int on,int id);
     void            on_auto_syn(int on,int id);
     void            download_files();
     void            push_files();
     void            download_over();
     void            push_over();
-    void            setret_oss(int ret);
-    void            setret_conf(int ret);
-    void            setret_change(int ret);
-    void            setret_logout(int ret);
-    void            setret_man(int ret);
-    void            setname(QString n);
-    void            setret_check(QString ret);
     void            get_key_info(QString info);
+    void            checkUserName(QString name);
+    void            finishedLogout(int ret);
 signals:
     void dooss(QString m_szUuid);
     void doman();
@@ -135,6 +140,13 @@ signals:
     void doconf();
     void dochange(QString name,int flag);
     void docheck();
+    void dosingle(QString key);
+    void doselect(QStringList keyList);
+    void closedialog();
+    void isRunning();
+    void oldVersion();
+    void doquerry(QString name);
+    void dosend(QString info);
 };
 
 #endif // CONFIG_LIST_WIDGET_H

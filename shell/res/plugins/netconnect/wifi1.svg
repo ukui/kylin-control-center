@@ -19,8 +19,8 @@
 		<sliceSourceBounds  bottomLeftOrigin="true" height="1298" width="1504" x="-206" y="-620"></sliceSourceBounds>
 	</sfw>
 </metadata>
-<path fill="none" stroke="#BABABA" stroke-width="2" stroke-miterlimit="10" d="M3.9,12.7c4.5-4.6,11.7-4.6,16.1,0"/>
-<path fill="none" stroke="#BABABA" stroke-width="2" stroke-miterlimit="10" d="M23,9.7c-6.1-6.2-15.9-6.2-22,0"/>
-<path fill="none" stroke="#BABABA" stroke-width="2" stroke-miterlimit="10" d="M17.1,15.7c-2.8-2.9-7.4-2.9-10.3,0"/>
-<path fill="#BABABA" d="M9.8,18.7L12,21l2.2-2.3C13,17.5,11,17.5,9.8,18.7z"/>
+<path fill="none" stroke="#808080" stroke-width="2" stroke-miterlimit="10" d="M4.7,12.7c4.1-4.2,10.6-4.2,14.7,0"/>
+<path fill="none" stroke="#808080" stroke-width="2" stroke-miterlimit="10" d="M22,10C16.5,4.3,7.5,4.3,2,10"/>
+<path fill="none" stroke="#808080" stroke-width="2" stroke-miterlimit="10" d="M16.7,15.5c-2.6-2.7-6.8-2.7-9.3,0"/>
+<path fill="#808080" d="M10,17.4l2,2.1l2-2.1C12.9,16.2,11.1,16.2,10,17.4z"/>
 </svg>

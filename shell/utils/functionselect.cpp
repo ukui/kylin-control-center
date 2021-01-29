@@ -50,12 +50,12 @@ void FunctionSelect::initValue(){
     systemList[DISPLAY].nameString = QString("Display");
     systemList[DISPLAY].namei18nString =  QObject::tr("Display");
     systemList[DEFAULTAPP].nameString = QString("Defaultapp");
-    systemList[DEFAULTAPP].namei18nString =  QObject::tr("Defaultapp");
+    systemList[DEFAULTAPP].namei18nString =  QObject::tr("Default App");
     systemList[DEFAULTAPP].mainShow = false;
     systemList[POWER].nameString = QString("Power");
     systemList[POWER].namei18nString = QObject::tr("Power");
     systemList[AUTOBOOT].nameString = QString("Autoboot");
-    systemList[AUTOBOOT].namei18nString = QObject::tr("Autoboot");
+    systemList[AUTOBOOT].namei18nString = QObject::tr("Auto Boot");
 
     funcinfoList.append(systemList);
 
@@ -83,6 +83,9 @@ void FunctionSelect::initValue(){
     devicesList[AUDIO].nameString = QString("Audio");
     devicesList[AUDIO].namei18nString = QObject::tr("Audio");
     devicesList[AUDIO].mainShow = false;
+    devicesList[BLUETOOTH].nameString = QString("Bluetooth");
+    devicesList[BLUETOOTH].namei18nString = QObject::tr("Bluetooth");
+    devicesList[BLUETOOTH].mainShow = false;
 
     funcinfoList.append(devicesList);
 
@@ -122,11 +125,14 @@ void FunctionSelect::initValue(){
         networkList.append(funcStruct);
     }
     networkList[NETCONNECT].nameString = QString("Netconnect");
-    networkList[NETCONNECT].namei18nString = QObject::tr("Netconnect");
+    networkList[NETCONNECT].namei18nString = QObject::tr("Connect");
     networkList[VPN].nameString = QString("Vpn");
     networkList[VPN].namei18nString = QObject::tr("Vpn");
     networkList[PROXY].nameString = QString("Proxy");
     networkList[PROXY].namei18nString = QObject::tr("Proxy");
+    networkList[VINO].nameString = QString("Vino");
+    networkList[VINO].namei18nString = QObject::tr("Vino");
+    networkList[VINO].mainShow = false;
 
     funcinfoList.append(networkList);
 
@@ -141,9 +147,9 @@ void FunctionSelect::initValue(){
     }
 
     accountList[USERINFO].nameString = QString("Userinfo");
-    accountList[USERINFO].namei18nString = QObject::tr("Userinfo");
-    accountList[NETWORKACCOUNT].nameString = QString("NetworkAccount");
-    accountList[NETWORKACCOUNT].namei18nString = QObject::tr("NetworkAccount");
+    accountList[USERINFO].namei18nString = QObject::tr("User Info");
+    accountList[NETWORKACCOUNT].nameString = QString("Cloud Account");
+    accountList[NETWORKACCOUNT].namei18nString = QObject::tr("Cloud Account");
 
     funcinfoList.append(accountList);
 
@@ -157,8 +163,8 @@ void FunctionSelect::initValue(){
         datetimeList.append(funcStruct);
     }
 
-    datetimeList[DAT].nameString = QString("Datetime");
-    datetimeList[DAT].namei18nString = QObject::tr("Datetime");
+    datetimeList[DAT].nameString = QString("Dat");
+    datetimeList[DAT].namei18nString = QObject::tr("Dat");
     datetimeList[AREA].nameString = QString("Area");
     datetimeList[AREA].namei18nString = QObject::tr("Area");
 
@@ -175,7 +181,7 @@ void FunctionSelect::initValue(){
     }
 
     seupdatesList[SECURITYCENTER].nameString = QString("SecurityCenter");
-    seupdatesList[SECURITYCENTER].namei18nString = QObject::tr("SecurityCenter");
+    seupdatesList[SECURITYCENTER].namei18nString = QObject::tr("Security Center");
     seupdatesList[UPDATES].nameString = QString("Update");
     seupdatesList[UPDATES].namei18nString = QObject::tr("Update");
     seupdatesList[BACKUP].nameString = QString("Backup");

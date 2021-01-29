@@ -21,17 +21,23 @@
 #define MAINWINDOW_H
 
 #include <QDir>
+#include <QTimer>
 #include <QMainWindow>
 #include <QPaintEvent>
 #include <QShowEvent>
 #include <QMoveEvent>
 #include <QHideEvent>
 #include <QPainter>
+#include <QPropertyAnimation>
+#include <QVariantMap>
 
 #include "interface.h"
 #include "homepagewidget.h"
 #include "modulepagewidget.h"
+#include "searchwidget.h"
 
+
+class QLabel;
 class QPushButton;
 class QButtonGroup;
 class KeyValueConverter;
@@ -56,7 +62,6 @@ public:
     void bootOptionsSwitch(int moduleNum, int funcNum);
 
 protected:
-    void paintEvent(QPaintEvent *);
     bool eventFilter(QObject *watched, QEvent *event);
 
 private:
@@ -70,31 +75,48 @@ private:
     QButtonGroup * leftMicBtnGroup; //
 
     QDir pluginsDir;
-//    QStringList modulesStringList;
     QList<int> moduleIndexList;
     QList<QMap<QString, QObject *>> modulesList;
 
     KeyValueConverter * kvConverter;
+    SearchWidget * m_searchWidget;
+
+    QPushButton *backBtn;
+    QPushButton *mOptionBtn;
+    QPushButton *minBtn;
+    QPushButton *maxBtn;
+    QPushButton *closeBtn;
+    QLabel      *titleLabel;
+    QLabel      *mTitleIcon;
+    QTimer      *timer;
+    QLabel      *logoLabel;
+    QLabel            *m_queryIcon;
+    QLabel            *m_queryText  = nullptr;
+    QPropertyAnimation *m_animation = nullptr;
+    QWidget           *m_queryWid   = nullptr;
+    bool              m_isSearching;
+    QString           m_searchKeyWords;
+    QVariantMap       m_ModuleMap;
 
 private:
+    void initUI();
+    void initTileBar();
     void setBtnLayout(QPushButton * &pBtn);
     void loadPlugins();
     void initLeftsideBar();
     QPushButton * buildLeftsideBtn(QString bname, QString tipName);
     bool isExitsCloudAccount();
 
-    // load svg picture
-    const QPixmap loadSvg(const QString &fileName, QString color);
-    //Render icon from theme
-    const QPixmap renderSvg(const QIcon &icon, QString color);
-    // chang svg picture's color
-    QPixmap drawSymbolicColoredPixmap(const QPixmap &source, QString color);
-
     bool dblOnEdge(QMouseEvent *event);
+    void initStyleSheet();
+    bool isExitBluetooth();
 
 public slots:
     void functionBtnClicked(QObject * plugin);
     void sltMessageReceived(const QString &msg);
+    void switchPage(QString moduleName);
+    void animationFinishedSlot();
+    void showUkccAboutSlot();
 };
 
 #endif // MAINWINDOW_H

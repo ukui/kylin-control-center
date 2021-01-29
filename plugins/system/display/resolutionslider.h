@@ -22,7 +22,6 @@ class ResolutionSlider : public QWidget
     QSize currentResolution() const;
     QSize getMaxResolution() const;
 
-
   Q_SIGNALS:
     void resolutionChanged(const QSize &size);
 
@@ -36,6 +35,7 @@ class ResolutionSlider : public QWidget
     KScreen::OutputPtr mOutput;
 
     QList<QSize> mModes;
+    QList<QSize> mExcludeModes;
 
     QLabel *mSmallestLabel = nullptr;
     QLabel *mBiggestLabel = nullptr;
