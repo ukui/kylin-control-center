@@ -450,6 +450,7 @@ void MainWidget::init_gui() {
     m_nullWidget->setLayout(m_welcomeLayout);
     m_nullWidget->adjustSize();
     m_mainWidget->addWidget(m_nullWidget);
+    m_mainWidget->setCurrentWidget(m_nullWidget);
     m_vboxLayout->addWidget(m_mainWidget);
     m_vboxLayout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
     this->setLayout(m_vboxLayout);
