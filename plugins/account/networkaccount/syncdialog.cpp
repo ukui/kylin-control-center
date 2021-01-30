@@ -42,6 +42,7 @@ SyncDialog::SyncDialog(QString name,QString path, QWidget *parent) : QDialog(par
             emit coverMode();
             return ;
         }
+
         emit sendKeyMap(m_List);
     });
     connect(mCancelButton, &QPushButton::clicked,this,[=] {
@@ -69,12 +70,6 @@ void SyncDialog::checkOpt() {
             filter << "indicator-china-weather" << "kylin-video" << "terminal"
             << "editor" << "peony";
 
-            if(filter.contains(item)) {
-                checkBox->setChecked(false);
-            } else {
-                m_List.removeAll(item);
-                checkBox->setChecked(true);
-            }
             connect(checkBox, &QCheckBox::clicked, this, [=] (bool status) {
                if(status == true) {
                    m_List.removeAll(item);
@@ -82,6 +77,12 @@ void SyncDialog::checkOpt() {
                    m_List.append(item);
                }
             });
+            if(filter.contains(item)) {
+                checkBox->setChecked(false);
+            } else {
+                m_List.removeAll(item);
+                checkBox->setChecked(true);
+            }
         }
     }
 }

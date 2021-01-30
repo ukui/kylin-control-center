@@ -82,7 +82,6 @@ public slots:
     //void on_bind_finished(int ret,QString m_uuid);
     //void on_bind_btn();
     void cleanconfirm(QString str);
-    //void setret_code_user_bind(int ret);
     void set_back();
 protected:
     void            paintEvent(QPaintEvent *event);

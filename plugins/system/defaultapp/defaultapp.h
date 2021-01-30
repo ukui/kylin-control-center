@@ -73,7 +73,6 @@ public:
     void plugin_delay_control() Q_DECL_OVERRIDE;
     const QString name() const  Q_DECL_OVERRIDE;
 
-    void initTitleLabel();
     void initUI();
     void initSearchText();
 
@@ -106,6 +105,8 @@ private:
     QString mDefaultAdudio;
     QString mDefaultVideo;
     QString mDefaultText;
+
+    bool isCloudEmitted;
 
 public slots:
     void browserComBoBox_changed_cb(int index);
