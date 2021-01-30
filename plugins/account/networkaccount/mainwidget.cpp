@@ -77,8 +77,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     QProcess proc;
     proc.start("lsb_release -r");
     proc.waitForFinished();
-    QByteArrayList releaseList = proc.readAll().split('\t');
-    QByteArray ar = releaseList.at(1);
+    QByteArray ar = proc.readAll().toStdString().c_str();
     m_confName = "All-" + ar.replace("\n","") + ".conf";
     m_szConfPath = QDir::homePath() + "/.cache/kylinId/" + m_confName;
 
@@ -182,6 +181,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
             m_cLoginTimer->stop();
         }
         if(bIsLogging) {
+            bIsLogging = false;
             m_mainDialog->on_close();
         }
         //qDebug() << "csacasacasca";
@@ -647,6 +647,7 @@ void MainWidget::on_login() {
     connect(m_mainDialog,&MainDialog::on_login_failed,this, [this] () {
         m_cLoginTimer->stop();
         m_bIsStopped = true;
+        bIsLogging = false;
     });
 
     connect(m_cLoginTimer,&QTimer::timeout,m_mainWidget,[this]() {
