@@ -75,7 +75,9 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
 
 
     QProcess proc;
-    proc.start("lsb_release -r");
+    QStringList option;
+    option << "-c" << "lsb_release -r | awk -F'\t' '{print $2}'";
+    proc.start("/bin/bash",option);
     proc.waitForFinished();
     QByteArrayList releaseList = proc.readAll().split('\t');
     QByteArray ar = releaseList.at(1);
@@ -450,6 +452,7 @@ void MainWidget::init_gui() {
     m_nullWidget->setLayout(m_welcomeLayout);
     m_nullWidget->adjustSize();
     m_mainWidget->addWidget(m_nullWidget);
+    m_mainWidget->setCurrentWidget(m_nullWidget);
     m_vboxLayout->addWidget(m_mainWidget);
     m_vboxLayout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
     this->setLayout(m_vboxLayout);
