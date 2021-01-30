@@ -79,8 +79,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     option << "-c" << "lsb_release -r | awk -F'\t' '{print $2}'";
     proc.start("/bin/bash",option);
     proc.waitForFinished();
-    QByteArrayList releaseList = proc.readAll().split('\t');
-    QByteArray ar = releaseList.at(1);
+    QByteArray ar = proc.readAll().toStdString().c_str();
     m_confName = "All-" + ar.replace("\n","") + ".conf";
     m_szConfPath = QDir::homePath() + "/.cache/kylinId/" + m_confName;
 
