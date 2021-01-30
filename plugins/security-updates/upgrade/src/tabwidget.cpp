@@ -11,7 +11,6 @@ void TabWid::initDbus()
     updateSource = new UpdateSource();
     ukscConnect = new UKSCConn();
 //    this->resize(620,580);
-    getAllDisplayInformation();
 
     connect(updateMutual,&UpdateDbus::sendAppMessageSignal,this,&TabWid::loadingOneUpdateMsgSlot);
     connect(updateMutual,&UpdateDbus::sendFinishGetMsgSignal,this,&TabWid::loadingFinishedSlot);
@@ -256,6 +255,10 @@ void TabWid::slotUpdateCache(QVariantList sta)
             QFile file(IMPORTANT_FIEL_PATH);
             if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
                 qDebug() <<"file open failed!" << IMPORTANT_FIEL_PATH;
+                versionInformationLab->setText(tr("Software source update failed: "));  //软件源更新失败
+                checkUpdateBtn->setEnabled(true);
+                checkUpdateBtn->stop();
+                checkUpdateBtn->setText(tr("Check Update"));
                 return ;
             }
             QString str =  file.readAll();
@@ -263,7 +266,6 @@ void TabWid::slotUpdateCache(QVariantList sta)
             if (!str.isEmpty() && str.contains(" ")) {
                 list = str.split(" ");
             }
-//            qDebug() << "获取到的包列表：" << list;
             updateMutual->getAppMessage(list);
             retryTimes = 0;
         }
@@ -417,7 +419,7 @@ void TabWid::allComponents()
     isAutoBackupLayout = new QHBoxLayout();
     isAutoBackupLab = new QLabel();
     isAutoBackupLab->setText(tr("Backup current system before updates all"));
-//    isAutoBackupLab->setText(tr("全部更新前备份当前系统为可回退的版本"));
+//    isAutoBackupLab->setText(tr("全部更新前备份系统"));
     isAutoBackupSBtn = new SwitchButton();
     isAutoBackupLayout->addWidget(isAutoBackupLab);
     isAutoBackupLayout->addWidget(isAutoBackupSBtn);
@@ -446,6 +448,8 @@ void TabWid::allComponents()
 //    mainTabLayout->setSpacing(0);
     mainTabLayout->setMargin(0);
     this->setLayout(mainTabLayout);
+    getAllDisplayInformation();
+
 }
 
 

@@ -30,12 +30,20 @@ m_updatelog * m_updatelog::m_instance(nullptr);
 m_updatelog::m_updatelog(QWidget* parent) : QDialog(parent)
 {
     initUI();//初始化UI
+    initGsettings();//初始化Gsettings
     dynamicLoadingInit();//动态加载
     updatesql();//更新列表
     defaultItem();//设置默认选中
     //监听更新完成信号
     UpdateDbus *uddbus = UpdateDbus::getInstance();
     connect(uddbus->interface,SIGNAL(update_sqlite_signal(QString,QString)),this,SLOT(historyUpdateNow(QString,QString)));
+}
+
+QString m_updatelog::setDefaultDescription(QString str)
+{
+    if(str == "")
+        str = tr("No content.");  //暂无内容
+    return str;
 }
 
 m_updatelog * m_updatelog::GetInstance(QWidget *parent)
@@ -64,11 +72,6 @@ void m_updatelog::initUI()
     QFont font;
 //    font.setPointSize(34);//字体大小
     font.setBold(true);
-
-    //当前语言环境
-    QString locale = QLocale::system().name();
-    if (locale == "zh_CN")
-        environment=zh_cn;
 
     //初始化窗口属性
     this->setWindowTitle(tr("History Log"));  //历史更新
@@ -158,6 +161,35 @@ void m_updatelog::initUI()
     desBackground->setLayout(hlr);
 }
 
+void m_updatelog::initGsettings()
+{
+    timer = new QTimer;
+    timer->setSingleShot(true);
+    connect(timer,&QTimer::timeout,this,&m_updatelog::changeListWidgetItemHeight);
+    const QByteArray iid(THEME_QT_SCHEMA);
+    qtSettings = new QGSettings(iid, QByteArray(), this);
+
+    connect(qtSettings,&QGSettings::changed,this,[=] (const QString &key) {
+       if(key == "systemFontSize") {
+          timer->start(100);
+       }
+    });
+}
+
+void m_updatelog::changeListWidgetItemHeight()
+{
+    if(mainListwidget->count()<1)
+        return;
+    int row=0;
+    while(row<(mainListwidget->count()))
+    {
+        QListWidgetItem * item = mainListwidget->item(row);
+        HistoryUpdateListWig * hulw = qobject_cast<HistoryUpdateListWig*>(mainListwidget->itemWidget(item));
+        item->setSizeHint(hulw->getTrueSize());
+        row++;
+    }
+}
+
 void m_updatelog::updatesql( const int &start,const int &num,const QString &intop)
 {
     //sql 拼接
@@ -176,7 +208,7 @@ void m_updatelog::updatesql( const int &start,const int &num,const QString &into
         hulw->setAttribute(translationVirtualPackage(query.value("appname").toString())+" "+query.value("version").toString(),
                            query.value("statue").toString(),
                            query.value("time").toString(),
-                           setDescription(query.value("error_code").toInt(),query.value("description").toString()),
+                           setDefaultDescription(query.value("description").toString()),
                            query.value("id").toInt());
         QListWidgetItem *item = new QListWidgetItem();
         item->setFlags(Qt::NoItemFlags);
@@ -216,7 +248,7 @@ void m_updatelog::defaultItem()
 
 QString m_updatelog::translationVirtualPackage(QString str)
 {
-    if(environment == en)//英文环境下不翻译
+    if(QLocale::system().name()!="zh_CN")
         return str;
     if(str == "kylin-update-desktop-app")
         return "基本应用";
@@ -235,60 +267,6 @@ QString m_updatelog::translationVirtualPackage(QString str)
     return str;
 }
 
-QString m_updatelog::translationErroCode(int errorcode)
-{
-    if(environment == zh_cn)
-        switch (errorcode) {
-        case -1:
-            return "未知错误：-1";
-        case -2:
-            return "软件包损坏";
-        case -3:
-            return "系统中正在进行其他安装任务";
-        case -4:
-            return "未知错误：-4";
-        case -5:
-            return "未知错误：-5";
-        case -49:
-            return "更新过程中源被修改";
-        case -50:
-            return "获取依赖失败";
-        default:
-            return "";
-        }
-    //英文
-    switch (errorcode) {
-    case -1:
-        return "Unknown error：-1";
-    case -2:
-        return "Package corruption.";
-    case -3:
-        return "Other installation tasks are in progress.";
-    case -4:
-        return "unknown error：-4";
-    case -5:
-        return "unknown error：-5";
-    case -49:
-        return "The source is modified during the update.";
-    case -50:
-        return "Acquisition dependency failed.";
-    default:
-        return "";
-    }
-    return "";
-}
-
-QString m_updatelog::setDescription(int errorcode, QString str)
-{
-    if(str == ""){
-        str = tr("No content.");  //暂无内容
-        return str;
-    }
-    QString result = translationErroCode(errorcode);
-    if(result!="")
-        return result;
-    return str;
-}
 
 void m_updatelog::dynamicLoadingInit()
 {

@@ -12,7 +12,7 @@ void UpdateLog::logUi()
 //    this->setAttribute(Qt::WA_TranslucentBackground, true);
 
     this->setFixedSize(460,560);
-    this->setWindowTitle("Update log");
+    this->setWindowTitle(tr("Update log"));
 //    this->setWindowTitle("更新日志");
 
     logVLayout = new QVBoxLayout();

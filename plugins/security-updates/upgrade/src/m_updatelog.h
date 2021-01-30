@@ -14,11 +14,16 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlQueryModel>
+//GSETTINGS
+#include <QGSettings>
 //其他
 #include <QDebug>
 #include <QFont>
 #include "historyupdatelistwig.h"
 #include "updatedbus.h"
+
+#define THEME_QT_SCHEMA  "org.ukui.style"
+
 class m_updatelog : public QDialog
 {
     Q_OBJECT
@@ -39,20 +44,19 @@ private:
     int firstCode = 0;
     int loadingCode = 0;
     QHBoxLayout *hll = nullptr;
-    QString setDescription(int errorcode, QString str);
-    enum Environment{
-        en,
-        zh_cn
-    }environment;
+    QString setDefaultDescription(QString str);
+    QGSettings *qtSettings=nullptr;
+    QTimer *timer=nullptr;
 
 private slots:
     void initUI(); //初始化UI
+    void initGsettings(); //初始化Gsettings
     void dynamicLoadingInit(); //动态加载
     void dynamicLoading(int i); //动态加载
     void updatesql(const int &start=0, const int &num=20, const QString &intop="");//更新列表
     void defaultItem();//默认选中
     QString translationVirtualPackage(QString str);//翻译虚包名
-    QString translationErroCode(int errorcode);//翻译错误信息
+    void changeListWidgetItemHeight();//修改列表项高度
 };
 
 #endif // M_UPDATELOG_H

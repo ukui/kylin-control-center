@@ -28,11 +28,11 @@ private:
     QVBoxLayout *vl1 = nullptr;
     QLabel *debName = nullptr;//app名字&版本号
     QLabel *debStatue = nullptr;//更新状态
-    QLabel *debTime = nullptr;//更新时间
     QString debDescription = "";//描述
     //int code = 0 ;//编码
     void initUI();//初始化UI
     void setDescription();//赋值事件
+    QFont font;
 };
 
 #endif // HISTORYUPDATELISTWIG_H

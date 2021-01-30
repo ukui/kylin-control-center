@@ -215,7 +215,7 @@ void AppUpdateWid::showInstallStatues(QString status,QString appAptName, float p
             appVersion->setText(tr("Update failed!"));
 
 //            appVersion->setToolTip(tr("失败原因：")+(appNameLab->dealMessage(errormsg)));
-            appVersion->setToolTip(tr("Failure reason:")+(appNameLab->dealMessage(errormsg)));
+            appVersion->setToolTip(tr("Failure reason:")+ "\r\n"+(appNameLab->dealMessage(errormsg)));
             m_updateMutual->importantList.removeOne(appAllMsg.name);
             m_updateMutual->failedList.append(appAllMsg.name);
             QIcon icon = QIcon::fromTheme("error");
@@ -360,6 +360,7 @@ void AppUpdateWid::updateAppUi(QString name)
     }
 
     QString newStrMsg = appAllMsg.availableVersion;
+
     if(newStrMsg.size()>16)
     {
 //        appVersion->setText(tr("最新：")+newStrMsg);
@@ -463,42 +464,40 @@ void AppUpdateWid::cancelOrUpdate()
             QMessageBox msgBox;
 //            msgBox.setText(tr("单个更新不会自动备份系统，如需备份，请点击全部更新。"));
             msgBox.setText(tr("A single update will not automatically backup the system, if you want to backup, please click Update All."));
-//            msgBox.setWindowTitle("提示信息");
             msgBox.setWindowTitle(tr("Prompt information"));
-            msgBox.setStandardButtons(QMessageBox::Save
-                                      | QMessageBox::Discard|QMessageBox::Abort);
-//            msgBox.setButtonText(QMessageBox::Save,"不备份，继续更新");
-//            msgBox.setButtonText(QMessageBox::Discard,"取消");
-//            msgBox.setButtonText(QMessageBox::Abort,"取消更新");
-            msgBox.setButtonText(QMessageBox::Save,tr("Do not backup, continue to update"));
-            msgBox.setButtonText(QMessageBox::Discard,tr("Cancel"));
-            msgBox.setButtonText(QMessageBox::Abort,tr("Cancel update"));
+            msgBox.setStandardButtons(QMessageBox::YesAll
+                                      | QMessageBox::NoToAll|QMessageBox::Cancel);
+            msgBox.setButtonText(QMessageBox::YesAll,tr("Do not backup, continue to update"));
+            msgBox.setButtonText(QMessageBox::NoToAll,tr("Cancel"));
+            msgBox.setButtonText(QMessageBox::Cancel,tr("Cancel update"));
             QCheckBox *cb = new QCheckBox(&msgBox);
             msgBox.setCheckBox(cb);
 //            msgBox.checkBox()->setText(tr("本次更新不再提示"));
             msgBox.checkBox()->setText(tr("This time will no longer prompt"));
             msgBox.checkBox()->show();
-            msgBox.button(QMessageBox::Abort)->hide();
+            msgBox.button(QMessageBox::Cancel)->hide();
             int ret = msgBox.exec();
             if(msgBox.checkBox()->checkState() == Qt::Checked)
             {
                 m_updateMutual->isPointOutNotBackup = false;
-                qDebug() << "m_updateMutual->isPointOutNotBackup = " << m_updateMutual->isPointOutNotBackup;
             }
-            if(ret == QMessageBox::Save)
+            if(ret == QMessageBox::Yes)
             {
                 qDebug() << "立即更新!";
                 updateOneApp();
             }
-            else if(ret == QMessageBox::Discard)
+            else if(ret == QMessageBox::NoToAll)
             {
+                m_updateMutual->isPointOutNotBackup = true;
                 qDebug() << "不进行更新。";
             }
-            else if(ret == QMessageBox::Abort)
+            else if(ret == QMessageBox::Cancel)
             {
                 qDebug() << "不进行更新。";
+                m_updateMutual->isPointOutNotBackup = true;
+
             }
-            qDebug() << "ssss111";
+            qDebug() << "m_updateMutual->isPointOutNotBackup = " << m_updateMutual->isPointOutNotBackup;
         }
         else
         {
@@ -543,7 +542,7 @@ void AppUpdateWid::updateOneApp()
         appVersion->setText(tr("Get depends failed!"));
         appVersion->setToolTip("");
         m_updateMutual->installAndUpgrade(appAllMsg.name);
-        QIcon icon = QIcon::fromTheme("error");
+        QIcon icon = QIcon::fromTheme("dialog-error");
         QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(14, 14)));
         appVersionIcon->setPixmap(pixmap);
         m_updateMutual->importantList.removeOne(appAllMsg.name);

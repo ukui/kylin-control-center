@@ -16,14 +16,12 @@ HistoryUpdateListWig::~HistoryUpdateListWig()
 {
     debName->deleteLater();
     debStatue->deleteLater();
-    debTime->deleteLater();
     hl1->deleteLater();
     hl2->deleteLater();
     vl1->deleteLater();
 }
 void HistoryUpdateListWig::initUI()
 {
-    QFont font;
 //    font.setPointSize(14);//字体大小
     font.setBold(true);
 
@@ -33,12 +31,13 @@ void HistoryUpdateListWig::initUI()
     //实例化控件
     debName = new QLabel;
     debStatue = new QLabel;
-    debTime = new QLabel;
 
     //初始化控件
     debName->setWordWrap(true);
     debName->setFixedWidth(WIDTH - LEFT_MARGIN - LEFT_MARGIN);
     debName->setFont(font);
+    debStatue->setWordWrap(true);
+    debStatue->setFixedWidth(WIDTH - LEFT_MARGIN - LEFT_MARGIN);
 
     //实例化布局
     hl1 = new QHBoxLayout;
@@ -58,9 +57,7 @@ void HistoryUpdateListWig::initUI()
     hl1->addWidget(debName);
     hl1->addSpacing(RIGHT_MARGIN);
     hl2->addSpacing(LEFT_MARGIN);
-    hl2->addWidget(debStatue,2);
-    //hl2->addSpacing(3);
-    hl2->addWidget(debTime,5);
+    hl2->addWidget(debStatue);
     hl2->addSpacing(RIGHT_MARGIN);
     vl1->addSpacing(TOP_MARGIN);
     vl1->addLayout(hl1);
@@ -73,14 +70,15 @@ void HistoryUpdateListWig::initUI()
 void HistoryUpdateListWig::setAttribute(const QString &mname,const QString &mstatue,const QString &mtime,const QString &mdescription,const int &myid)
 {
     debName->setText(mname);
-    debTime->setText(mtime);
     debDescription=mdescription;
+    QString str = "";
     if(mstatue == "Success")
-        debStatue->setText(tr("Success"));  //更新成功
+        str=tr("Success");  //更新成功
     else
-        debStatue->setText(tr("Failed"));  //更新失败
+        str=tr("Failed");  //更新失败
+    str+="  "+mtime;
+    debStatue->setText(str);
     id = myid;
-    //this->setStyleSheet("border:1px solid red;");
 }
 
 QSize HistoryUpdateListWig::getTrueSize()
@@ -122,7 +120,6 @@ void HistoryUpdateListWig::selectStyle()
     //设置选中样式及标签
     debName->setStyleSheet("color:#fff;");
     debStatue->setStyleSheet("color:#fff;");
-    debTime->setStyleSheet("color:#fff;");
     this->setStyleSheet("QFrame{background-color:rgba(55, 144, 250, 1);border-radius:4px}");
     this->setStatusTip(IS_SELECT);
     //详细内容
@@ -133,7 +130,6 @@ void HistoryUpdateListWig::clearStyleSheet()
 {
     debName->setStyleSheet("");
     debStatue->setStyleSheet("");
-    debTime->setStyleSheet("");
     this->setStyleSheet("");
     this->setStatusTip("");
 }
