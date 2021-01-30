@@ -539,7 +539,7 @@ void MainWidget::init_gui() {
         download_files();
     });
     //All.conf的
-    QString all_conf_path = m_szConfPath;
+    QString all_conf_path = QDir::homePath() + "/.cache/kylinId";
     m_fsWatcher.addPath(all_conf_path);
 
     connect(&m_fsWatcher,&QFileSystemWatcher::directoryChanged,this,[this] () {
