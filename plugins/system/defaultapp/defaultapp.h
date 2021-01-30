@@ -106,6 +106,8 @@ private:
     QString mDefaultVideo;
     QString mDefaultText;
 
+    bool isCloudEmitted;
+
 public slots:
     void browserComBoBox_changed_cb(int index);
     void mailComBoBox_changed_cb(int index);

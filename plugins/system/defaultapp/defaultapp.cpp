@@ -41,6 +41,8 @@ DefaultApp::DefaultApp() {
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
+    isCloudEmitted = false;
+
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
     initUI();
@@ -288,6 +290,7 @@ void DefaultApp::initUI() {
             }
             free(textlist);
         }
+        isCloudEmitted = false;
     });
 }
 
@@ -309,42 +312,102 @@ void DefaultApp::initSearchText() {
 void DefaultApp::browserComBoBox_changed_cb(int index) {
     QString appid = ui->browserComBoBox->itemData(index).toString();
     QByteArray ba = appid.toUtf8(); // QString to char *
-    setWebBrowsersDefaultProgram(ba.data());
+
+    bool bRunSync = false;
+
+    isCloudEmitted == false ? setWebBrowsersDefaultProgram(ba.data()):bRunSync = true;
+
+    if(bRunSync == true) {
+        QtConcurrent::run([=] {
+            QString appid = ui->browserComBoBox->itemData(index).toString();
+            QByteArray ba = appid.toUtf8(); // QString to char *
+            setWebBrowsersDefaultProgram(ba.data());
+        });
+    }
 }
 
 void DefaultApp::mailComBoBox_changed_cb(int index) {
     QString appid = ui->mailComBoBox->itemData(index).toString();
     QByteArray ba = appid.toUtf8(); // QString to char *
+    bool bRunSync = false;
 
-    setMailReadersDefaultProgram(ba.data());
+    isCloudEmitted == false ? setMailReadersDefaultProgram(ba.data()):bRunSync = true;
+
+    if(bRunSync == true) {
+        QtConcurrent::run([=] {
+            QString appid = ui->mailComBoBox->itemData(index).toString();
+            QByteArray ba = appid.toUtf8(); // QString to char *
+            setMailReadersDefaultProgram(ba.data());
+        });
+    }
 }
 
 void DefaultApp::imageComBoBox_changed_cb(int index) {
     QString appid = ui->imageComBoBox->itemData(index).toString();
     QByteArray ba = appid.toUtf8(); // QString to char *
 
-    setImageViewersDefaultProgram(ba.data());
+    bool bRunSync = false;
+
+    isCloudEmitted == false ? setImageViewersDefaultProgram(ba.data()):bRunSync = true;
+
+    if(bRunSync == true) {
+        QtConcurrent::run([=] {
+            QString appid = ui->imageComBoBox->itemData(index).toString();
+            QByteArray ba = appid.toUtf8(); // QString to char *
+            setImageViewersDefaultProgram(ba.data());
+        });
+    }
 }
 
 void DefaultApp::audioComBoBox_changed_cb(int  index) {
     QString appid = ui->audioComBoBox->itemData(index).toString();
     QByteArray ba = appid.toUtf8(); // QString to char *
 
-    setAudioPlayersDefaultProgram(ba.data());
+    bool bRunSync = false;
+
+    isCloudEmitted == false ? setAudioPlayersDefaultProgram(ba.data()):bRunSync = true;
+
+    if(bRunSync == true) {
+        QtConcurrent::run([=] {
+            QString appid = ui->audioComBoBox->itemData(index).toString();
+            QByteArray ba = appid.toUtf8(); // QString to char *
+            setAudioPlayersDefaultProgram(ba.data());
+        });
+    }
 }
 
 void DefaultApp::videoComBoBox_changed_cb(int index) {
     QString appid = ui->videoComBoBox->itemData(index).toString();
     QByteArray ba = appid.toUtf8(); // QString to char *
 
-    setVideoPlayersDefaultProgram(ba.data());
+    bool bRunSync = false;
+
+    isCloudEmitted == false ? setVideoPlayersDefaultProgram(ba.data()):bRunSync = true;
+
+    if(bRunSync == true) {
+        QtConcurrent::run([=] {
+            QString appid = ui->videoComBoBox->itemData(index).toString();
+            QByteArray ba = appid.toUtf8(); // QString to char *
+            setVideoPlayersDefaultProgram(ba.data());
+        });
+    }
 }
 
 void DefaultApp::textComBoBox_changed_cb(int index) {
     QString appid = ui->textComBoBox->itemData(index).toString();
     QByteArray ba = appid.toUtf8(); // QString to char *
 
-    setTextEditorsDefautlProgram(ba.data());
+    bool bRunSync = false;
+
+    isCloudEmitted == false ? setTextEditorsDefautlProgram(ba.data()):bRunSync = true;
+
+    if(bRunSync == true) {
+        QtConcurrent::run([=] {
+            QString appid = ui->textComBoBox->itemData(index).toString();
+            QByteArray ba = appid.toUtf8(); // QString to char *
+            setTextEditorsDefautlProgram(ba.data());
+        });
+    }
 }
 
 void DefaultApp::resetDefaultApp() {
@@ -658,6 +721,7 @@ void DefaultApp::connectToServer(){
 
 void DefaultApp::keyChangedSlot(const QString &key) {
     if(key == "default-open") {
+        isCloudEmitted = true;
         ui->browserComBoBox->clear();
         ui->audioComBoBox->clear();
         ui->imageComBoBox->clear();
