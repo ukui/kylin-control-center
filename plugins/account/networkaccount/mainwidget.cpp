@@ -83,7 +83,6 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_confName = "All-" + ar.replace("\n","") + ".conf";
     m_szConfPath = QDir::homePath() + "/.cache/kylinId/" + m_confName;
 
-
     m_animateLayout = new QHBoxLayout;
 
     init_gui();         //初始化gui
@@ -184,6 +183,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
         }
         if(bIsLogging) {
             m_mainDialog->on_close();
+            bIsLogging = false;
         }
         //qDebug() << "csacasacasca";
         if(keyList.size() > 2) {
@@ -540,7 +540,7 @@ void MainWidget::init_gui() {
         download_files();
     });
     //All.conf的
-    QString all_conf_path = m_szConfPath;
+    QString all_conf_path = QDir::homePath() + "/.cache/kylinId";
     m_fsWatcher.addPath(all_conf_path);
 
     connect(&m_fsWatcher,&QFileSystemWatcher::directoryChanged,this,[this] () {
@@ -648,6 +648,7 @@ void MainWidget::on_login() {
     connect(m_mainDialog,&MainDialog::on_login_failed,this, [this] () {
         m_cLoginTimer->stop();
         m_bIsStopped = true;
+        bIsLogging = false;
     });
 
     connect(m_cLoginTimer,&QTimer::timeout,m_mainWidget,[this]() {
