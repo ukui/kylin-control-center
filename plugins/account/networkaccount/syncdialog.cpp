@@ -75,6 +75,13 @@ void SyncDialog::checkOpt() {
                 m_List.removeAll(item);
                 checkBox->setChecked(true);
             }
+            connect(checkBox, &QCheckBox::clicked, this, [=] (bool status) {
+               if(status == true) {
+                   m_List.removeAll(item);
+               } else {
+                   m_List.append(item);
+               }
+            });
         }
     }
 }
