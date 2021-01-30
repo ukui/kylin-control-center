@@ -28,12 +28,13 @@ void BlockWidget::initComponent(){
     QHBoxLayout * mainVerLayout = new QHBoxLayout(this);
     mainVerLayout->setSpacing(12);
     mainVerLayout->setMargin(8);
-    logoLabel = new QLabel;
+    logoLabel = new QLabel(this);
     logoLabel->setFixedSize(QSize(48, 48));
     QVBoxLayout * textHorLayout = new QVBoxLayout;
     textHorLayout->setSpacing(10);
-    titleLable = new QLabel;
-    detailLabel = new QLabel;
+    titleLable = new QLabel(this);
+    titleLable->setObjectName("Sec");
+    detailLabel = new QLabel(this);
     detailLabel->setAlignment(Qt::AlignTop);
     detailLabel->setFixedHeight(32);
     QFont font;
@@ -57,10 +58,22 @@ void BlockWidget::setupComponent(QString normal_icon ,QString hover_icon, QStrin
     m_hoverIcon = hover_icon;
     logoLabel->setPixmap(QPixmap(normal_icon).scaled(logoLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     titleLable->setText(title);
-    detailLabel->setText(detail);
+
+    QString detaildec = detail;
+    QFontMetrics  fontMetrics(detailLabel->font());
+    int fontSize = fontMetrics.width(detail);
+    if (fontSize > detailLabel->width()) {
+        detailLabel->setText(fontMetrics.elidedText(detail, Qt::ElideRight, detailLabel->width()));
+        detailLabel->setToolTip(detaildec);
+    } else {
+        detailLabel->setText(detaildec);
+        detailLabel->setToolTip("");
+    }
+
+    qDebug() << "the width is" <<  fontSize << detailLabel->width();
     m_curIndex = 0;
     m_showText = detail + "    ";
-    m_charWidth = fontMetrics().width("。");
+    // m_charWidth = fontMetrics().width("。");
     m_labelWidth = m_charWidth * (m_showText.length() - 4);
     _cmd = cmd;
 }
@@ -232,15 +245,15 @@ void SecurityCenter::initComponent(){
     BlockWidget * net_protect_Widget = new BlockWidget();
     net_protect_Widget->setupComponent(":/img/plugins/securitycenter/net_48.png", \
                                        ":/img/plugins/securitycenter/net_48_white.png",\
-                                       tr("Network protection"), \
+                                       tr("Net protection"), \
                                        tr("Manage and control network"), \
                                        "/usr/sbin/ksc-defender --net-protect");
 
     BlockWidget * security_setting_Widget = new BlockWidget();
     security_setting_Widget->setupComponent(":/img/plugins/securitycenter/set2px.png", \
                                             ":/img/plugins/securitycenter/set2@2x_1.png",\
-                                            tr("Secure mode configuration"), \
-                                            tr("Simple configuraion"), \
+                                            tr("Secure Config"), \
+                                            tr("Simple Config"), \
                                             "/usr/sbin/ksc-defender --security-setting");
 
     flowLayout->addWidget(account_sec_Widget);
