@@ -73,6 +73,7 @@ void SyncDialog::checkOpt() {
             if(filter.contains(item)) {
                 checkBox->setChecked(false);
             } else {
+                m_List.removeAll(item);
                 checkBox->setChecked(true);
             }
         }
