@@ -42,7 +42,6 @@ SyncDialog::SyncDialog(QString name,QString path, QWidget *parent) : QDialog(par
             emit coverMode();
             return ;
         }
-
         emit sendKeyMap(m_List);
     });
     connect(mCancelButton, &QPushButton::clicked,this,[=] {
@@ -73,6 +72,7 @@ void SyncDialog::checkOpt() {
             if(filter.contains(item)) {
                 checkBox->setChecked(false);
             } else {
+                m_List.removeAll(item);
                 checkBox->setChecked(true);
             }
         }
