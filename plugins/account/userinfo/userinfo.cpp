@@ -121,12 +121,12 @@ void UserInfo::initTitleLabel() {
 }
 
 void UserInfo::initSearchText() {
-    //~ contents_path /userinfo/Change pwd
-    ui->changePwdBtn->setText(tr("Change pwd"));
-    //~ contents_path /userinfo/Change type
-    ui->changeTypeBtn->setText(tr("Change type"));
-    //~ contents_path /userinfo/Change valid
-    ui->changeValidBtn->setText(tr("Change valid"));
+    //~ contents_path /userinfo/Password
+    ui->changePwdBtn->setText(tr("Password"));
+    //~ contents_path /userinfo/Type
+    ui->changeTypeBtn->setText(tr("Type"));
+    //~ contents_path /userinfo/Valid
+    ui->changeValidBtn->setText(tr("Valid"));
     //~ contents_path /userinfo/Login no passwd
     ui->loginpwdLabel->setText(tr("Login no passwd"));
     //~ contents_path /userinfo/enable autoLogin
@@ -136,9 +136,9 @@ void UserInfo::initSearchText() {
 QString UserInfo::_accountTypeIntToString(int type){
     QString atype;
     if (type == STANDARDUSER)
-        atype = tr("standard user");
+        atype = tr("Standard");
     else if (type == ADMINISTRATOR)
-        atype = tr("administrator");
+        atype = tr("Admin");
     else if (type == ROOT)
         atype = tr("root");
 
@@ -743,7 +743,7 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
 
     QPushButton * delBtn = new QPushButton(baseWidget);
     delBtn->setFixedSize(60, 36);
-    delBtn->setText(tr("Delete"));
+    delBtn->setText(tr("Del"));
 //    delBtn->setStyleSheet("QPushButton{background: #FA6056; border-radius: 4px}");
     delBtn->hide();
     connect(delBtn, &QPushButton::clicked, this, [=](bool checked){

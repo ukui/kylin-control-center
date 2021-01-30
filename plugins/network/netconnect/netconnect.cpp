@@ -50,7 +50,7 @@ bool sortByVal(const QPair<QString, int> &l, const QPair<QString, int> &r) {
 
 NetConnect::NetConnect() :  mFirstLoad(true)
 {
-    pluginName = tr("Connect");
+    pluginName = tr("Link");
     pluginType = NETWORK;
 }
 

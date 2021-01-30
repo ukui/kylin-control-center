@@ -29,6 +29,7 @@
 #include "utils/functionselect.h"
 #include "utils/utils.h"
 #include "component/leftwidgetitem.h"
+#include "component/leftmenulist.h"
 
 ModulePageWidget::ModulePageWidget(QWidget *parent) :
     QWidget(parent),
@@ -88,14 +89,14 @@ void ModulePageWidget::initUI() {
     ui->widget->setSizePolicy(rightSizePolicy);
 
     for (int moduleIndex = 0; moduleIndex < TOTALMODULES; moduleIndex++){
-        QListWidget * leftListWidget = new QListWidget;
+        LeftMenuList * leftListWidget = new LeftMenuList;
         leftListWidget->setObjectName("leftWidget");
         leftListWidget->setAttribute(Qt::WA_DeleteOnClose);
         leftListWidget->setResizeMode(QListView::Adjust);
         leftListWidget->setFocusPolicy(Qt::NoFocus);
         leftListWidget->setSelectionMode(QAbstractItemView::NoSelection);
         leftListWidget->setSpacing(12);
-        leftListWidget->setMinimumWidth(172);
+        leftListWidget->setMinimumWidth(200);
         connect(leftListWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), this, SLOT(currentLeftitemChanged(QListWidgetItem*,QListWidgetItem*)));
         QListWidget * topListWidget = new QListWidget;
         topListWidget->setAttribute(Qt::WA_DeleteOnClose);

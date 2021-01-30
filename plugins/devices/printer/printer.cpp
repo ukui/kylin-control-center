@@ -128,7 +128,7 @@ void Printer::refreshPrinterDev(){
 
         HoverBtn * printerItem = new HoverBtn(printer.at(num), pluginWidget);
         printerItem->mPitLabel->setText(printer.at(num));
-        printerItem->mAbtBtn->setText(tr("Attributes"));
+        printerItem->mAbtBtn->setText(tr("Attrs"));
         QIcon printerIcon = QIcon::fromTheme("printer");
         printerItem->mPitIcon->setPixmap(printerIcon.pixmap(printerIcon.actualSize(QSize(24, 24))));
 

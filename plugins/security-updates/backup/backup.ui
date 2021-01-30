@@ -105,7 +105,7 @@ you can restore them to ensure the integrity of your system.</string>
        </property>
        <property name="maximumSize">
         <size>
-         <width>120</width>
+         <width>16777215</width>
          <height>36</height>
         </size>
        </property>
@@ -154,7 +154,7 @@ you can restore them to ensure the integrity of your system.</string>
       </sizepolicy>
      </property>
      <property name="text">
-      <string>View a list of backed-upfiles to restore backed up files to the system</string>
+      <string>View a list of backed-upfiles to backed up files to the system</string>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -189,7 +189,7 @@ you can restore them to ensure the integrity of your system.</string>
        </property>
        <property name="maximumSize">
         <size>
-         <width>120</width>
+         <width>16777215</width>
          <height>36</height>
         </size>
        </property>

@@ -250,7 +250,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>182</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>
@@ -263,13 +263,13 @@
          <widget class="QComboBox" name="comboBox">
           <property name="minimumSize">
            <size>
-            <width>345</width>
+            <width>300</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>345</width>
+            <width>300</width>
             <height>30</height>
            </size>
           </property>
@@ -279,7 +279,7 @@
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_3">
+         <spacer name="horizontalSpacer_2">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>

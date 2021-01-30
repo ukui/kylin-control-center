@@ -24,6 +24,7 @@
 #include <QDebug>
 #include <QSvgRenderer>
 #include <QApplication>
+#include <QGSettings>
 
 LeftWidgetItem::LeftWidgetItem(QWidget *parent) :
     QWidget(parent)
@@ -34,6 +35,7 @@ LeftWidgetItem::LeftWidgetItem(QWidget *parent) :
     iconLabel = new QLabel(widget);
 
     textLabel = new QLabel(widget);
+    textLabel->setMaximumWidth(110);
     QSizePolicy policy1 = textLabel->sizePolicy();
     policy1.setHorizontalPolicy(QSizePolicy::Fixed);
     policy1.setVerticalPolicy(QSizePolicy::Fixed);
@@ -41,14 +43,12 @@ LeftWidgetItem::LeftWidgetItem(QWidget *parent) :
     textLabel->setScaledContents(true);
 
     QHBoxLayout * mainlayout = new QHBoxLayout(widget);
-    mainlayout->setSpacing(8);
     mainlayout->setContentsMargins(8, 0, 0, 0);
     mainlayout->addWidget(iconLabel, Qt::AlignVCenter);
     mainlayout->addWidget(textLabel, Qt::AlignVCenter);
     mainlayout->addStretch();
 
     widget->setLayout(mainlayout);
-
 
     QVBoxLayout * baseVerLayout = new QVBoxLayout(this);
     baseVerLayout->setSpacing(0);
@@ -58,6 +58,14 @@ LeftWidgetItem::LeftWidgetItem(QWidget *parent) :
     baseVerLayout->addStretch();
 
     setLayout(baseVerLayout);
+
+    const QByteArray id("org.ukui.style");
+    QGSettings * fontSetting = new QGSettings(id, QByteArray(), this);
+    connect(fontSetting, &QGSettings::changed,[=](QString key) {
+        if ("systemFont" == key || "systemFontSize" ==key) {
+            changedLabelSlot();
+        }
+    });
 }
 
 LeftWidgetItem::~LeftWidgetItem()
@@ -79,14 +87,14 @@ void LeftWidgetItem::isSetLabelPixmapWhite(bool selected) {
     } else {
         fileName = "://img/secondaryleftmenu/"+this->icoName+".svg";
     }
-//    qDebug()<<"file name is-------->"<<fileName<<endl;
     QPixmap pix =  loadSvg(fileName, "blue");
     iconLabel->setPixmap(pix);
 }
 
-void LeftWidgetItem::setLabelText(QString text){
+void LeftWidgetItem::setLabelText(QString text) {
 
-    textLabel->setText(text);
+    mStr = text;
+    changedLabelSlot();
 }
 
 void LeftWidgetItem::setLabelTextIsWhite(bool selected) {
@@ -106,7 +114,7 @@ void LeftWidgetItem::setSelected(bool selected){
 }
 
 QString LeftWidgetItem::text(){
-    return textLabel->text();
+    return mStr;
 }
 
 const QPixmap LeftWidgetItem::loadSvg(const QString &fileName, QString color)
@@ -160,5 +168,22 @@ QPixmap LeftWidgetItem::drawSymbolicColoredPixmap(const QPixmap &source, QString
         }
     }
     return QPixmap::fromImage(img);
+}
+
+void LeftWidgetItem::resizeEvent(QResizeEvent *event) {
+    changedLabelSlot();
+    QWidget::resizeEvent(event);
+}
+
+void LeftWidgetItem::changedLabelSlot() {
+    QFontMetrics  fontMetrics(textLabel->font());
+    int fontSize = fontMetrics.width(mStr);
+    if (fontSize > textLabel->width()) {
+        textLabel->setText(fontMetrics.elidedText(mStr, Qt::ElideRight, textLabel->width()));
+        textLabel->setToolTip(mStr);
+    } else {
+        textLabel->setText(mStr);
+        textLabel->setToolTip("");
+    }
 }
 

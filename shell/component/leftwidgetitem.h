@@ -25,6 +25,7 @@
 #include <QHBoxLayout>
 #include <QSvgRenderer>
 #include <QPixmap>
+#include <QResizeEvent>
 
 class LeftWidgetItem : public QWidget
 {
@@ -44,18 +45,23 @@ public:
 
     QString text();
 
-private:
-    // load svg picture
+    // Load svg picture
     const QPixmap loadSvg(const QString &fileName, QString color);
-    // chang svg picture's color
+    // Chang svg picture's color
     QPixmap drawSymbolicColoredPixmap(const QPixmap &source, QString cgcolor);
 
+protected:
+    void resizeEvent(QResizeEvent *event);
+
+private slots:
+    void changedLabelSlot();
 private:
     QLabel * iconLabel;
     QLabel * textLabel;
 
     QWidget * widget;
     QString icoName;
+    QString mStr;
 
 };
 
