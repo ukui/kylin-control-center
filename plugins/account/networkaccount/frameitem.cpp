@@ -46,7 +46,7 @@ FrameItem::FrameItem(QWidget *parent) :QFrame(parent)
     m_nullWidget->setStyleSheet("background:transparent;");
 
     m_stackedWidget->setCurrentWidget(m_nullWidget);
-    m_errorStatusLabel->setPixmap(m_svgHandler->loadSvgColor(":/new/image/_.svg","default",16));
+    m_errorStatusLabel->setPixmap(m_svgHandler->loadSvg(":/new/image/_.svg",16));
 
     m_cTimer->stop();
 

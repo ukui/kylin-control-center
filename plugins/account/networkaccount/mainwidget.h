@@ -98,6 +98,7 @@ private:
     QThread             *thread;
     bool                m_bAutoSyn = true;
     bool                m_bTokenValid = false;
+    bool                m_isOpenDialog = false;
     QTimer              *m_cLoginTimer;
     QString             m_szUuid;
     QFileSystemWatcher m_fsWatcher;

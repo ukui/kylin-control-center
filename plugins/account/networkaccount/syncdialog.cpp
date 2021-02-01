@@ -70,8 +70,8 @@ void SyncDialog::checkOpt() {
             filter << "indicator-china-weather" << "kylin-video" << "terminal"
             << "editor" << "peony";
 
-            connect(checkBox, &QCheckBox::stateChanged, this, [=] (int status) {
-               if(status == 1) {
+            connect(checkBox, &QCheckBox::toggled, this, [=] (bool status) {
+               if(status == true) {
                    m_List.removeAll(item);
                } else {
                    m_List.append(item);
@@ -122,6 +122,7 @@ void SyncDialog::initUI() {
     setAttribute(Qt::WA_TranslucentBackground, true);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog | Qt::Tool);
     setModal(true);
+    hide();
 }
 
 /* 窗口重绘，阴影设置 */

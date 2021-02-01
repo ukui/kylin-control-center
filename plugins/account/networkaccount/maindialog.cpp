@@ -297,7 +297,6 @@ void MainDialog::set_client(DBusUtils *c,QThread *t) {
             if(m_stackedWidget->currentWidget() != m_loginDialog && m_loginDialog->get_stack_widget()->currentIndex()) {
                 emit on_login_failed();
                 set_back();
-                qDebug()<<"ssssssssss";
                 //m_blueEffect->stop();             //登录失败，执行此处，关闭登录执行过程效果，并打印错误消息
                 m_submitBtn->setText(tr("Sign in"));
                 return ;
