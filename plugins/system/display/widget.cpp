@@ -857,7 +857,7 @@ void Widget::save() {
                (ui->opHourCom->currentIndex() == ui->clHourCom->currentIndex()  &&
                 ui->opMinCom->currentIndex() <= ui->clMinCom->currentIndex()))  &&
                CUSTOM == singleButton->checkedId() && mNightButton->isChecked()) {
-        QMessageBox::warning(this, tr("Warning"), tr("Morning time should be earlier than evening time!"));
+        QMessageBox::warning(this, tr("Warning"), tr("Open time should be earlier than close time!"));
         mCloseScreenButton->setChecked(true);
         return ;
     }
