@@ -162,6 +162,9 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
         Q_UNUSED(taskName);
         if(ret == 504) {
             m_bHasNetwork = false;
+            if(taskName == "logout") {
+                m_mainWidget->setCurrentWidget(m_nullWidget);
+            }
         } else {
             m_bHasNetwork = true;
         }
@@ -170,7 +173,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     connect(m_dbusClient, &DBusUtils::querryFinished, this , [=] (const QStringList &list) {
         //qDebug() << "csacasacasca";
         QStringList keyList = list;
-
+        m_isOpenDialog = false;
         if(m_szCode == "" || m_szCode =="201" || m_szCode == "203" ||
                 m_szCode == "401" || m_szCode == "504" || m_szCode == "500" || m_szCode== "502" || m_szCode == tr("Disconnected")) {
             if(bIsLogging) {
@@ -181,10 +184,6 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
         }
         if(m_cLoginTimer->isActive()) {
             m_cLoginTimer->stop();
-        }
-        if(bIsLogging) {
-            m_mainDialog->on_close();
-            bIsLogging = false;
         }
         if(m_pSettings != nullptr) {
             m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
@@ -240,7 +239,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
                     handle_conf();
                 });
                 m_syncDialog->checkOpt();
-                m_syncDialog->exec();
+                m_syncDialog->show();
 
             }
         } else {
@@ -319,7 +318,8 @@ void MainWidget::checkUserName(QString name) {
     m_autoSyn->set_change(0,"0");
     if(bIsLogging == false) {
         QFile file (m_szConfPath);
-        if(file.exists() == false) {
+        QFile token (QDir::homePath() + "/.cache/kylinId/token");
+        if(file.exists() == false && token.exists() == true && m_isOpenDialog == false) {
             emit dooss(m_szUuid);
         }
     }
@@ -590,7 +590,7 @@ void MainWidget::init_gui() {
                    m_itemList->get_item(i)->set_change(0,"0");
                }
            }
-           QFile file( m_pSettings->fileName());
+           QFile file( m_szConfPath);
            if(file.exists() == false) {
                if(m_bHasNetwork == false) {
                    showDesktopNotify(tr("Network can not reach!"));
@@ -623,6 +623,7 @@ void MainWidget::init_gui() {
 
 /* 打开登录框处理事件 */
 void MainWidget::on_login() {
+    m_isOpenDialog = true;
     m_mainDialog = new MainDialog;
     m_mainDialog->setAttribute(Qt::WA_DeleteOnClose);
     //m_editDialog->m_bIsUsed = false;
@@ -722,9 +723,11 @@ void MainWidget::finished_load(int ret, QString uuid) {
     }
     m_bIsStopped = false;
     if (ret == 0) {
-
-        if(bIsLogging)
+        if(bIsLogging) {
             emit docheck();
+            m_mainDialog->on_close();
+            bIsLogging = false;
+        }
         m_autoSyn->set_change(0,"0");
         for(int i = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_change(0,"0");

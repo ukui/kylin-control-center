@@ -30,14 +30,13 @@ SVGHandler::SVGHandler(QObject *parent,bool highLight) : QObject(parent)
 }
 
 
-const QPixmap SVGHandler::loadSvg(const QString &fileName)
+const QPixmap SVGHandler::loadSvg(const QString &fileName,int size)
 {
-    int size = 24;
     const auto ratio = qApp->devicePixelRatio();
     if ( 2 == ratio) {
-        size = 48;
+        size = 2 * size;
     } else if (3 == ratio) {
-        size = 96;
+        size = 3 * size;
     }
     QPixmap pixmap(size, size);
     QSvgRenderer renderer(fileName);
