@@ -122,13 +122,13 @@
              <property name="minimumSize">
               <size>
                <width>258</width>
-               <height>28</height>
+               <height>36</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>258</width>
-               <height>28</height>
+               <height>36</height>
               </size>
              </property>
             </widget>
@@ -171,13 +171,13 @@
              <property name="minimumSize">
               <size>
                <width>182</width>
-               <height>28</height>
+               <height>36</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>182</width>
-               <height>28</height>
+               <height>36</height>
               </size>
              </property>
             </widget>
@@ -187,13 +187,13 @@
              <property name="minimumSize">
               <size>
                <width>60</width>
-               <height>28</height>
+               <height>36</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>60</width>
-               <height>28</height>
+               <height>36</height>
               </size>
              </property>
              <property name="focusPolicy">
