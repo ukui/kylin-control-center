@@ -111,7 +111,7 @@ public slots:
 private:
     explicit UpdateDbus(QObject *parent = nullptr);
     static UpdateDbus *updateMutual;  //UpdateDbus类静态对象
-    QString lockPath = "/tmp/kylin-update.lock";
+    QString lockPath = "/tmp/lock/kylin-update.lock";
 };
 
 

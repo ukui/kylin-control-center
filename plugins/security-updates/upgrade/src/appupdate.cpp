@@ -481,7 +481,7 @@ void AppUpdateWid::cancelOrUpdate()
             {
                 m_updateMutual->isPointOutNotBackup = false;
             }
-            if(ret == QMessageBox::Yes)
+            if(ret == QMessageBox::YesAll)
             {
                 qDebug() << "立即更新!";
                 updateOneApp();
