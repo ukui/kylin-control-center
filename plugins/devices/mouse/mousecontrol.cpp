@@ -291,8 +291,9 @@ void MouseControl::setupComponent() {
             ui->handHabitComBox->setCurrentIndex(handHabitIndex);
             ui->handHabitComBox->blockSignals(false);
         } else if(key == "cursorSize") {
+            int pointerSizeIndex = ui->pointerSizeComBox->findData(settings->get(CURSOR_SIZE_KEY).toInt());
             ui->pointerSizeComBox->blockSignals(true);
-            ui->pointerSizeComBox->setCurrentIndex(settings->get(CURSOR_SIZE_KEY).toInt());
+            ui->pointerSizeComBox->setCurrentIndex(pointerSizeIndex);
             ui->pointerSizeComBox->blockSignals(false);
         }
     });
