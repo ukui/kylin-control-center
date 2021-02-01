@@ -159,6 +159,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     });
 
     connect(m_dbusClient,&DBusUtils::taskFinished,this,[=] (const QString &taskName,int ret) {
+        Q_UNUSED(taskName);
         if(ret == 504) {
             m_bHasNetwork = false;
         } else {
@@ -184,6 +185,9 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
         if(bIsLogging) {
             m_mainDialog->on_close();
             bIsLogging = false;
+        }
+        if(m_pSettings != nullptr) {
+            m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
         }
         //qDebug() << "csacasacasca";
         if(keyList.size() > 2) {
@@ -293,13 +297,25 @@ void MainWidget::checkUserName(QString name) {
     m_pSettings->setIniCodec(QTextCodec::codecForName("UTF-8"));
     m_infoTab->setText(tr("Your account：%1").arg(m_szCode));
     if(m_pSettings != nullptr)
-        m_syncTimeLabel->setText(tr("The latest time sync is: ") +  m_pSettings->value("Auto-sync/time").toString().toStdString().c_str());
+        m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
     //setshow(m_mainWidget);
     if(m_bTokenValid == false) {
         m_mainWidget->setCurrentWidget(m_widgetContainer);
+        QtConcurrent::run([=] () {
+
+            QProcess proc;
+            QStringList options;
+            options << "-c" << "ps -ef|grep kylin-sso-client";
+            proc.start("/bin/bash",options);
+            proc.waitForFinished();
+            QString ifn = proc.readAll();
+
+            if(ifn.contains("/usr/bin/kylin-sso-client")) {
+                emit isRunning();
+            }
+        });
     }
    // qDebug() << "ssssss";
-    m_bTokenValid = true;              //开启登录状态
     m_autoSyn->set_change(0,"0");
     if(bIsLogging == false) {
         QFile file (m_szConfPath);
@@ -467,19 +483,6 @@ void MainWidget::init_gui() {
     m_exitCode->setText(" ");
 
     m_exitCloud_btn->setFocusPolicy(Qt::NoFocus);
-    QtConcurrent::run([=] () {
-
-        QProcess proc;
-        QStringList options;
-        options << "-c" << "ps -ef|grep kylin-sso-client";
-        proc.start("/bin/bash",options);
-        proc.waitForFinished();
-        QString ifn = proc.readAll();
-
-        if(ifn.contains("/usr/bin/kylin-sso-client")) {
-            emit isRunning();
-        }
-    });
 
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
@@ -504,25 +507,6 @@ void MainWidget::init_gui() {
         }
         m_login_btn->hide();
         m_welcomeMsg->setText(tr("The Cloud Account Service version is out of date!"));
-    });
-    QtConcurrent::run([=] {
-       QProcess proc;
-       QStringList options;
-       options <<"-c" <<"dpkg -s kylin-sso-client | grep '^Version:'";
-       proc.start("/bin/sh",options);
-       proc.waitForFinished(-1);
-       proc.waitForReadyRead(-1);
-       QByteArray ret = proc.readAll();
-       if(ret.replace("\n","") != "") {
-           if(ret.contains("Version")) {
-               QByteArrayList list =  ret.split(' ');
-               if(list.size() >= 2) {
-                   if(!list.at(1).startsWith("1")) {
-                       emit oldVersion();
-                   }
-               }
-           }
-       }
     });
 
     //连接信号
@@ -554,7 +538,7 @@ void MainWidget::init_gui() {
     connect(&m_fsWatcher,&QFileSystemWatcher::directoryChanged,this,[this] () {
         QFile conf( m_szConfPath);
         if(conf.exists() == true && m_pSettings != nullptr) {
-            m_syncTimeLabel->setText(tr("The latest time sync is: ") +  m_pSettings->value("Auto-sync/time").toString());
+            m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString());
             if(!m_bAutoSyn)
                 handle_conf();
         }
@@ -755,7 +739,7 @@ void MainWidget::handle_conf() {
         return ;
     }
 
-    if( m_pSettings != nullptr && m_pSettings->value("Auto-sync/enable").toString() == "true") {
+    if( m_pSettings != nullptr &&  ConfigFile(m_szConfPath).Get("Auto-sync","enable").toString() == "true") {
         m_stackedWidget->setCurrentWidget(m_itemList);
         m_autoSyn->make_itemon();
         for(int i  = 0;i < m_szItemlist.size();i ++) {
@@ -767,7 +751,7 @@ void MainWidget::handle_conf() {
         m_autoSyn->make_itemoff();
         m_bAutoSyn = false;
         for(int i  = 0;i < m_szItemlist.size();i ++) {
-            judge_item( m_pSettings->value("Auto-sync/enable").toString(),i);
+            judge_item( ConfigFile(m_szConfPath).Get(m_szItemlist.at(i),"enable").toString(),i);
         }
         for(int i  = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(m_bAutoSyn);
@@ -775,7 +759,7 @@ void MainWidget::handle_conf() {
         return ;
     }
     for(int i  = 0;i < m_szItemlist.size();i ++) {
-        judge_item( m_pSettings->value(m_szItemlist.at(i) + "/enable").toString(),i);
+        judge_item(  ConfigFile(m_szConfPath).Get(m_szItemlist.at(i),"enable").toString(),i);
     }
 }
 
@@ -851,10 +835,11 @@ void MainWidget::on_auto_syn(int on, int id) {
         return ;
     }
     //emit docheck();
-    m_bAutoSyn = on;
+    //m_bAutoSyn = on;
     for(int i  = 0;i < m_szItemlist.size();i ++) {
         m_itemList->get_item(i)->set_active(m_bAutoSyn);
     }
+
     if(m_bHasNetwork == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
@@ -913,7 +898,7 @@ void MainWidget::download_files() {
         m_blueEffect_sync->startmoive();
         //showDesktopNotify("同步开始");
     }
-    m_syncTimeLabel->setText(tr("The latest time sync is: ") +  m_pSettings->value("Auto-sync/time").toString().toStdString().c_str());
+    m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
 
 
     if(m_autoSyn->get_swbtn()->get_swichbutton_val() == 0) {
@@ -942,7 +927,7 @@ void MainWidget::push_files() {
         m_blueEffect_sync->startmoive();
        // showDesktopNotify("同步开始");
     }
-    m_syncTimeLabel->setText(tr("The latest time sync is: ") +  m_pSettings->value("Auto-sync/time").toString().toStdString().c_str());
+    m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
 
     if(m_autoSyn->get_swbtn()->get_swichbutton_val() == 0) {
         return ;
@@ -965,8 +950,8 @@ void MainWidget::download_over() {
         m_bAutoSyn = true;
         //showDesktopNotify("同步结束");
     }
+     m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
     if(__once__ == false) {
-        m_syncTimeLabel->setText(tr("The latest time sync is: ") +  m_pSettings->value("Auto-sync/time").toString().toStdString().c_str());
 
         m_autoSyn->set_change(0,"0");
     }
@@ -986,8 +971,8 @@ void MainWidget::push_over() {
         m_bAutoSyn = true;
         //showDesktopNotify("同步结束");
     }
+    m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
     if(__once__ == false) {
-        m_syncTimeLabel->setText(tr("The latest time sync is: ") + m_pSettings->value("Auto-sync/time").toString().toStdString().c_str());
         m_autoSyn->set_change(0,"0");
     }
 }

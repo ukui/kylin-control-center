@@ -70,8 +70,8 @@ void SyncDialog::checkOpt() {
             filter << "indicator-china-weather" << "kylin-video" << "terminal"
             << "editor" << "peony";
 
-            connect(checkBox, &QCheckBox::clicked, this, [=] (bool status) {
-               if(status == true) {
+            connect(checkBox, &QCheckBox::stateChanged, this, [=] (int status) {
+               if(status == 1) {
                    m_List.removeAll(item);
                } else {
                    m_List.append(item);

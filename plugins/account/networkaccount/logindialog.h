@@ -59,6 +59,8 @@ public:
     QString         get_user_name() const;
     QString         get_user_pass() const;
     QPushButton*    get_user_mcode();
+    QLineEdit *&    phoneLineEdit();
+    QLineEdit *&    mCodeLineEdit();
     QStackedWidget* get_stack_widget();
     void            set_code(const QString &codenum);
     MCodeWidget*   get_mcode_widget();

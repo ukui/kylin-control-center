@@ -297,7 +297,8 @@ void MainDialog::set_client(DBusUtils *c,QThread *t) {
             if(m_stackedWidget->currentWidget() != m_loginDialog && m_loginDialog->get_stack_widget()->currentIndex()) {
                 emit on_login_failed();
                 set_back();
-                m_blueEffect->stop();             //登录失败，执行此处，关闭登录执行过程效果，并打印错误消息
+                qDebug()<<"ssssssssss";
+                //m_blueEffect->stop();             //登录失败，执行此处，关闭登录执行过程效果，并打印错误消息
                 m_submitBtn->setText(tr("Sign in"));
                 return ;
             }
@@ -402,6 +403,37 @@ void MainDialog::on_login_btn() {
     m_baseWidget->setEnabled(false); //防止用户在登录按钮按完之后到处乱点，下同
     set_staus(false);
     m_delBtn->setEnabled(true);
+   if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
+       if(m_loginDialog->get_mcode_lineedit()->text().trimmed() == "" ||
+               m_loginDialog->get_user_edit()->text().trimmed() == "" ||
+               m_loginDialog->get_login_pass()->text().trimmed() == ""
+               ) {
+           m_loginDialog->set_code(messagebox(501));
+           m_loginTips->show();
+           m_baseWidget->setEnabled(true);
+           set_staus(true);
+           m_loginDialog->get_mcode_widget()->set_change(1);
+           m_loginDialog->get_mcode_widget()->repaint();
+           setshow(m_stackedWidget);
+           m_loginDialog->get_mcode_lineedit()->setText("");
+           m_loginDialog->get_mcode_widget()->set_change(0);
+           emit on_login_failed();
+           return ;
+       }
+   }
+    if(m_loginDialog->get_stack_widget()->currentIndex() == 1) {
+        if(m_loginDialog->get_login_code()->text().trimmed() == "" ||
+                m_loginDialog->get_user_edit()->text().trimmed() == "") {
+            m_loginDialog->set_code(messagebox(501));
+            m_loginCodeStatusTips->show();
+            m_baseWidget->setEnabled(true);
+            set_staus(true);
+            setshow(m_stackedWidget);
+            m_loginDialog->get_login_code()->setText("");
+            emit on_login_failed();
+            return ;
+        }
+    }
     //如果验证码输入错误，执行此处
     if(m_loginDialog->get_stack_widget()->currentIndex() == 0 &&
         QString(m_loginDialog->get_mcode_widget()->get_verificate_code()) != m_loginDialog->get_mcode_lineedit()->text() &&
@@ -434,21 +466,20 @@ void MainDialog::on_login_btn() {
         m_loginDialog->get_stack_widget()->currentIndex() == 0){
         m_szAccount = m_loginDialog->get_user_name();
         m_szPass = m_loginDialog->get_user_pass();
-
-        m_szRegPass = m_szPass;
-        m_szRegAccount = m_szAccount;
+        m_szRegPass = m_szPass.trimmed();
+        m_szRegAccount = m_szAccount.trimmed();
         //qDebug()<<m_szRegPass<<m_szRegAccount;
 
         m_submitBtn->setText("");
         m_blueEffect->startmoive();
         emit dologin(m_szRegAccount,m_szRegPass);            //触发登录信号，告知客户端进行登录操作
 
-    } else if(m_loginDialog->get_user_name() != ""
-               && m_loginDialog->get_login_code()->text() != ""
+    } else if(m_loginDialog->get_user_name().trimmed() != ""
+               && m_loginDialog->get_login_code()->text().trimmed() != ""
                && m_loginDialog->get_stack_widget()->currentIndex() == 1) {
         QString phone,mcode;                    //如果用户选择手机登录，执行此处
-        phone = m_loginDialog->get_user_name();
-        mcode = m_loginDialog->get_login_code()->text();
+        mcode = m_loginDialog->get_login_code()->text().trimmed();
+        phone = m_loginDialog->get_user_name().trimmed();
         m_submitBtn->setText("");
         m_blueEffect->startmoive();
         emit dophonelogin(phone,mcode);

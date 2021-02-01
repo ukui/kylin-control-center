@@ -8,7 +8,7 @@ Tips::Tips(QWidget *parent) : QWidget(parent)
     m_iconWidget->setFixedSize(16,16);
     m_workLayout->addWidget(m_iconWidget);
     m_workLayout->addWidget(m_textLabel);
-    m_workLayout->setContentsMargins(12,0,0,0);
+    m_workLayout->setContentsMargins(0,0,0,0);
     m_workLayout->setSpacing(8);
     m_textLabel->setStyleSheet("QLabel{color:#F53547}");
     setLayout(m_workLayout);

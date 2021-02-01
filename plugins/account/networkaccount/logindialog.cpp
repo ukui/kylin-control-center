@@ -55,8 +55,8 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
     m_phoneTips->setFixedHeight(32);
     m_passTips->setFixedHeight(32);
 
-    m_phoneTips->setContentsMargins(9,0,0,0);
-    m_passTips->setContentsMargins(9,0,0,0);
+    m_phoneTips->setContentsMargins(0,0,0,0);
+    m_passTips->setContentsMargins(0,0,0,0);
 
     //Basic Widget Configuration
 
@@ -406,6 +406,14 @@ void LoginDialog::set_staus(const bool &ok) {
     m_sendMsgBtn->setEnabled(ok);
     m_forgetPasswordBtn->setEnabled(ok);
 
+}
+
+QLineEdit *& LoginDialog::phoneLineEdit() {
+    return m_phoneLineEdit;
+}
+
+QLineEdit *& LoginDialog::mCodeLineEdit() {
+    return m_mcodePhoneLineEdit;
 }
 
 /* 清空登录框 */
