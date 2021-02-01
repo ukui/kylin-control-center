@@ -32,7 +32,7 @@ FrameItem::FrameItem(QWidget *parent) :QFrame(parent)
     m_workLayout->addWidget(m_itemName);
     m_hboxLayout = new QHBoxLayout;
     m_run = new QLabel(this);
-    m_errorStatusLabel = new InfoLabel(this);
+    m_errorStatusLabel = new QLabel(this);
     m_cTimer = new QTimer(this);
     m_svgHandler = new SVGHandler(this,true);
     m_stackedWidget = new QStackedWidget(this);
@@ -46,9 +46,12 @@ FrameItem::FrameItem(QWidget *parent) :QFrame(parent)
     m_nullWidget->setStyleSheet("background:transparent;");
 
     m_stackedWidget->setCurrentWidget(m_nullWidget);
+    m_errorStatusLabel->setPixmap(m_svgHandler->loadSvgColor(":/new/image/_.svg","default",16));
 
     m_cTimer->stop();
 
+    m_errorStatusLabel->setFixedHeight(50);
+    m_errorStatusLabel->setAlignment(Qt::AlignVCenter);
     m_workLayout->addStretch();
     m_hboxLayout->setMargin(0);
     m_hboxLayout->setSpacing(16);
@@ -109,22 +112,22 @@ void FrameItem::set_change(const int &status,const QString &code) {
         m_cTimer->stop();
         bIsStart = false;
         if(code == "Failed!") {
-            m_errorStatusLabel->setTipText(tr("Sync failed,please relogin!"));
+            m_errorStatusLabel->setToolTip(tr("Sync failed,please relogin!"));
         }
         if(code == "Change conf file failed!") {
-            m_errorStatusLabel->setTipText(tr("Change configuration file failed,please relogin!"));
+            m_errorStatusLabel->setToolTip(tr("Change configuration file failed,please relogin!"));
         }
         if(code == "Config file not exist!") {
-            m_errorStatusLabel->setTipText(tr("Configuration file not exist,please relogin!"));
+            m_errorStatusLabel->setToolTip(tr("Configuration file not exist,please relogin!"));
         }
         if(code == "Cloud verifyed file download failed!") {
-            m_errorStatusLabel->setTipText(tr("Cloud verifyed file download failed,please relogin!"));
+            m_errorStatusLabel->setToolTip(tr("Cloud verifyed file download failed,please relogin!"));
         }
         if(code == "OSS access failed!") {
-            m_errorStatusLabel->setTipText(tr("OSS access failed,please relogin!"));
+            m_errorStatusLabel->setToolTip(tr("OSS access failed,please relogin!"));
         }
         else if(code != "Upload" && code != "Download") {
-            m_errorStatusLabel->setTipText(tr("Sync failed,please relogin!"));
+            m_errorStatusLabel->setToolTip(tr("Sync failed,please relogin!"));
         }
         m_stackedWidget->setCurrentWidget(m_errorStatusLabel);
     }

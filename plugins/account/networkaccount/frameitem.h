@@ -29,7 +29,6 @@
 #include <QFrame>
 #include <QTimer>
 #include <QStackedWidget>
-#include "infolabel.h"
 #include "svghandler.h"
 
 class FrameItem : public QFrame
@@ -55,7 +54,7 @@ private:
     SwitchButton  *m_switchBtn;
     QLabel      *m_run;
     QWidget          *m_nullWidget;
-    InfoLabel            *m_errorStatusLabel;
+    QLabel            *m_errorStatusLabel;
     QStackedWidget  *m_stackedWidget;
     QTimer          *m_cTimer;
     bool            bIsStart = false;

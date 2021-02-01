@@ -39,6 +39,7 @@
 #include <QtDBus/QtDBus>
 #include "tooltips.h"
 #include <QDir>
+#include "configfile.h"
 #include "svghandler.h"
 #include "blueeffect.h"
 

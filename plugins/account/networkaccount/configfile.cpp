@@ -28,10 +28,11 @@ ConfigFile::ConfigFile( QString qstrfilename)
     if (qstrfilename.isEmpty())
     {
         QProcess proc;
-        proc.start("lsb_release -r");
+        QStringList option;
+        option << "-c" << "lsb_release -r | awk -F'\t' '{print $2}'";
+        proc.start("/bin/bash",option);
         proc.waitForFinished();
-        QByteArrayList releaseList = proc.readAll().split('\t');
-        QByteArray ar = releaseList.at(1);
+        QByteArray ar = proc.readAll().toStdString().c_str();
         QString m_confName = "All-" + ar.replace("\n","") + ".conf";
         m_qstrFileName =QDir::homePath() + "/.cache/kylinId/" + m_confName;
     }
