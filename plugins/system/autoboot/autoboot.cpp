@@ -721,6 +721,11 @@ void AutoBoot::update_app_status(){
 
 
 void AutoBoot::add_autoboot_realize_slot(QString path, QString name, QString exec, QString comment, QString icon) {
+
+    if(exec.contains("kylin-screenshot")){
+        QStringList screenshotExec = exec.split(" ");
+        exec = screenshotExec.at(0);
+    }
     if (path.isEmpty())
         return;
 
