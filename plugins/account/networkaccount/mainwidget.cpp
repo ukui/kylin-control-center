@@ -43,9 +43,9 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
 
 
     init_gui();         //初始化gui
-    layoutUI();
 
     initSignalSlots();
+    layoutUI();
     dbusInterface();
 }
 
