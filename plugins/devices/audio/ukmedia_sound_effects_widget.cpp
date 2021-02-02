@@ -199,7 +199,7 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     alertLayout->setSpacing(0);
     m_pAlertSoundVolumeWidget->setLayout(alertLayout);
     m_pAlertSoundVolumeWidget->layout()->setContentsMargins(0,0,0,0);
-
+    m_pAlertSoundVolumeWidget->hide();
     //窗口关闭提示音
     QHBoxLayout *windowClosedLayout = new QHBoxLayout(m_pWindowClosedWidget);
     windowClosedLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));

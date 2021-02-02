@@ -437,7 +437,7 @@ void UkmediaMainWidget::alertSoundButtonSwitchChangedSlot(bool status)
     g_settings_set_boolean (m_pSoundSettings, EVENT_SOUNDS_KEY, status);
     if (status == true) {
 //        if (m_pSoundWidget->m_pSoundLayout->c)
-        m_pSoundWidget->m_pAlertSoundVolumeWidget->show();
+        m_pSoundWidget->m_pAlertSoundVolumeWidget->hide();
         m_pSoundWidget->m_pSoundLayout->insertWidget(5,m_pSoundWidget->m_pAlertSoundVolumeWidget);
     }
     else {
