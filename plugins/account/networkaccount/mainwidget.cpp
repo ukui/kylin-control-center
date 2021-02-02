@@ -25,55 +25,8 @@
 #include <QUrl>
 
 MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
-    m_dbusClient = new DBusUtils;    //创建一个通信客户端
-    thread  = new QThread();            //为创建的客户端做异步处理
 
-    m_mainWidget = new QStackedWidget(this);
-    m_mainWidget->setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
-    m_vboxLayout = new QVBoxLayout;//整体布局
-    m_infoTabWidget = new QWidget(this);//用户信息窗口
-    m_widgetContainer = new QWidget(this);//业务逻辑窗口，包括用户信息以及同步
-    m_infoWidget = new QWidget(this);//名字框
-    m_itemList = new ItemList();//滑动按钮列表
-    //ld = new LoginDialog(this);
-    m_autoSyn = new FrameItem(this);//自动同步按钮
-    m_title = new QLabel(this);//标题
-    m_infoTab = new QLabel(m_infoWidget);//名字
-    m_exitCloud_btn = new QPushButton(tr("Exit"),this);//退出按钮
-    m_workLayout = new QVBoxLayout;//业务逻辑布局
-    //qDebug()<<"222222";
-    //qDebug()<<"111111";;
-    //qDebug()<<"000000";
-    m_infoLayout = new QHBoxLayout;//信息框布局
-    //gif = new QLabel(exit_page);//同步动画
-    //pm = new QMovie(":/new/image/autosync.gif");
-    m_blueEffect_sync = new Blueeffect(m_exitCloud_btn); //同步动画
-    m_exitCode = new QLabel(this);
-    m_blueEffect_sync->settext(tr("Sync"));
-
-    QString btns = "QPushButton {background: #E7E7E7;color:rgba(0,0,0,0.85);border-radius: 4px;}"
-                   "QPushButton:hover{color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}"
-                   "QPushButton:click{color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}";
-
-    m_nullWidget = new QWidget(this);
-    m_welcomeLayout = new QVBoxLayout;
-    m_welcomeImage = new QSvgWidget(":/new/image/96_color.svg");
-    m_welcomeMsg = new QLabel(this);
-    m_login_btn  = new QPushButton(tr("Sign in"),this);
-    m_svgHandler = new SVGHandler(this);
-    m_syncTooltips = new Tooltips(m_exitCloud_btn);
-    m_syncTipsText = new QLabel(m_syncTooltips);
-    m_tipsLayout = new QHBoxLayout;
-    m_stackedWidget = new QStackedWidget(this);
-    m_nullwidgetContainer = new QWidget(this);
-    m_syncTimeLabel = new QLabel(this);
-    m_cLoginTimer = new QTimer(this);
-    m_lazyTimer = new QTimer(this);
-    m_listTimer = new QTimer(this);
-    m_pSettings = nullptr;
-
-
-
+    initMemoryAlloc();
     QProcess proc;
     QStringList option;
     option << "-c" << "lsb_release -r | awk -F'\t' '{print $2}'";
@@ -83,15 +36,20 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_confName = "All-" + ar.replace("\n","") + ".conf";
     m_szConfPath = QDir::homePath() + "/.cache/kylinId/" + m_confName;
 
-    m_animateLayout = new QHBoxLayout;
-
-    init_gui();         //初始化gui
 
     m_szUuid = QUuid::createUuid().toString();
     m_bHasNetwork = true;
     m_bTokenValid = false;
 
 
+    init_gui();         //初始化gui
+    layoutUI();
+
+    initSignalSlots();
+    dbusInterface();
+}
+
+void MainWidget::dbusInterface() {
     connect(this, &MainWidget::docheck, m_dbusClient, [=]() {
         QList<QVariant> argList;
         m_szCode = m_dbusClient->callMethod("checkLogin",argList);
@@ -262,7 +220,6 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_dbusClient->connectSignal("finishedLogout",this,SLOT(finishedLogout(int)));
     m_dbusClient->moveToThread(thread);
     thread->start();    //线程开始
-
 }
 
 void MainWidget::finishedLogout(int ret) {
@@ -331,17 +288,57 @@ void MainWidget::checkUserName(QString name) {
     handle_conf();
 }
 
-/* 初始化GUI */
-void MainWidget::init_gui() {
-    //Allocator
+void MainWidget::initMemoryAlloc() {
+    m_dbusClient = new DBusUtils;    //创建一个通信客户端
+    thread  = new QThread();            //为创建的客户端做异步处理
+
+    m_mainWidget = new QStackedWidget(this);
+
+    m_vboxLayout = new QVBoxLayout;//整体布局
+    m_infoTabWidget = new QWidget(this);//用户信息窗口
+    m_widgetContainer = new QWidget(this);//业务逻辑窗口，包括用户信息以及同步
+    m_infoWidget = new QWidget(this);//名字框
+    m_itemList = new ItemList();//滑动按钮列表
+    m_autoSyn = new FrameItem(this);//自动同步按钮
+    m_title = new QLabel(this);//标题
+    m_infoTab = new QLabel(m_infoWidget);//名字
+    m_exitCloud_btn = new QPushButton(tr("Exit"),this);//退出按钮
+    m_workLayout = new QVBoxLayout;//业务逻辑布局
+    m_infoLayout = new QHBoxLayout;//信息框布局
+
+    m_blueEffect_sync = new Blueeffect(m_exitCloud_btn); //同步动画
+    m_exitCode = new QLabel(this);
+
+    m_nullWidget = new QWidget(this);
+    m_welcomeLayout = new QVBoxLayout;
+    m_welcomeImage = new QSvgWidget(":/new/image/96_color.svg");
+    m_welcomeMsg = new QLabel(this);
+    m_login_btn  = new QPushButton(tr("Sign in"),this);
+    m_svgHandler = new SVGHandler(this);
+    m_syncTooltips = new Tooltips(m_exitCloud_btn);
+    m_syncTipsText = new QLabel(m_syncTooltips);
+    m_tipsLayout = new QHBoxLayout;
+    m_stackedWidget = new QStackedWidget(this);
+    m_nullwidgetContainer = new QWidget(this);
+    m_syncTimeLabel = new QLabel(this);
+    m_cLoginTimer = new QTimer(this);
+    m_lazyTimer = new QTimer(this);
+    m_listTimer = new QTimer(this);
+    m_pSettings = nullptr;
+
+    m_animateLayout = new QHBoxLayout;
+}
+
+void MainWidget::layoutUI() {
+    QVBoxLayout *VBox_tab = new QVBoxLayout;
+    QHBoxLayout *HBox_tab_sub = new QHBoxLayout;
+    QHBoxLayout *HBox_tab_btn_sub = new QHBoxLayout;
 
     m_animateLayout->addWidget(m_blueEffect_sync);
     m_animateLayout->setMargin(0);
     m_animateLayout->setSpacing(0);
     m_animateLayout->setAlignment(Qt::AlignCenter);
     m_exitCloud_btn->setLayout(m_animateLayout);
-
-    //m_mainWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
     m_stackedWidget->addWidget(m_itemList);
     m_stackedWidget->addWidget(m_nullwidgetContainer);
@@ -352,63 +349,7 @@ void MainWidget::init_gui() {
     m_tipsLayout->setSpacing(0);
     m_tipsLayout->setAlignment(Qt::AlignCenter);
     m_syncTooltips->setLayout(m_tipsLayout);
-    m_syncTipsText->setText(tr("Stop sync"));
-    m_exitCloud_btn->installEventFilter(this);
-    m_exitCode->setFixedHeight(24);
 
-
-    m_syncTooltips->setFixedSize(86,44);
-    //    gif = new QLabel(status);
-    //    gif->setWindowFlags(Qt::FramelessWindowHint);//无边框
-    //    gif->setAttribute(Qt::WA_TranslucentBackground);//背景透明
-    //    pm = new QMovie(":/new/image/gif.gif");
-    //login->setStyleSheet(btns);
-
-    QVBoxLayout *VBox_tab = new QVBoxLayout;
-    QHBoxLayout *HBox_tab_sub = new QHBoxLayout;
-    QHBoxLayout *HBox_tab_btn_sub = new QHBoxLayout;
-
-
-    //控件初始化设置
-    m_infoTabWidget->setFocusPolicy(Qt::NoFocus);
-    m_title->setText(tr("Sync your settings"));
-    m_title->setStyleSheet("font-size:18px;font-weight:500;");
-
-
-    m_infoTab->setText(tr("Your account:%1").arg(m_szCode));
-    //    status->setText(syn[0]);
-    //    status->setProperty("objectName","status");  //give object a name
-    //    status->setStyleSheet(qss_btn_str);
-    //    status->setProperty("is_on",false);
-    //    status->style()->unpolish(status);
-    //    status->style()->polish(status);
-    //    status->update();
-    //gif->setStyleSheet("border-radius:4px;border:none;");
-    m_autoSyn->set_itemname(tr("Auto sync"));
-    m_autoSyn->make_itemon();
-    m_autoSyn->get_swbtn()->set_id(m_szItemlist.size());
-    m_widgetContainer->setFocusPolicy(Qt::NoFocus);
-    m_mainWidget->addWidget(m_widgetContainer);
-
-    //控件大小尺寸设置
-    setContentsMargins(0,0,32,0);
-    setMinimumWidth(550);
-    m_infoTabWidget->resize(200,72);
-    m_stackedWidget->adjustSize();
-    m_autoSyn->get_widget()->setFixedHeight(50);
-    m_infoTab->setFixedHeight(40);
-
-
-    m_infoWidget->setFixedHeight(36);
-    m_mainWidget->setMinimumWidth(550);
-    m_widgetContainer->setMinimumWidth(550);
-    m_welcomeImage->setFixedSize(96,96);
-
-//    gif->setMinimumSize(120,36);
-//    gif->setMaximumSize(120,36);
-//    gif->resize(120,36);
-
-    //布局
     HBox_tab_sub->addWidget(m_title,0,Qt::AlignLeft);
     HBox_tab_sub->setMargin(0);
     HBox_tab_sub->setSpacing(0);
@@ -447,18 +388,6 @@ void MainWidget::init_gui() {
     m_workLayout->addWidget(m_stackedWidget);
     m_widgetContainer->setLayout(m_workLayout);
 
-    m_login_btn->setFixedSize(180,36);
-    m_welcomeMsg->setText(tr("Synchronize your personalized settings and data"));
-
-    m_welcomeMsg->setStyleSheet("font-size:18px;");
-
-    m_exitCloud_btn->setStyleSheet("QPushButton[on=true]{background-color:#3D6BE5;border-radius:4px;}");
-    m_exitCloud_btn->setProperty("on",false);
-
-    m_exitCloud_btn->setFixedSize(120,36);
-
-    m_exitCode->setStyleSheet("QLabel{color:#F53547}");
-
 
     m_welcomeLayout->addSpacing(120);
     m_welcomeLayout->addWidget(m_welcomeImage,0,Qt::AlignCenter);
@@ -479,26 +408,11 @@ void MainWidget::init_gui() {
     m_vboxLayout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
     this->setLayout(m_vboxLayout);
 
-    m_key = "";
-    m_exitCode->setText(" ");
+}
 
-    m_exitCloud_btn->setFocusPolicy(Qt::NoFocus);
-
-    if(m_mainWidget->currentWidget() == m_nullWidget) {
-        setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
-    } else {
-        setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
-    }
-
+void MainWidget::initSignalSlots() {
     for(int btncnt = 0;btncnt < m_itemList->get_list().size();btncnt ++) {
         connect(m_itemList->get_item(btncnt)->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_switch_button(int,int)));
-    }
-    int cItem = 0;
-
-
-    for(const QString &key : qAsConst(m_szItemlist)) {
-        m_itemMap.insert(key,m_itemList->get_item(cItem)->get_itemname());
-        cItem ++;
     }
 
     connect(this,&MainWidget::oldVersion,[=] () {
@@ -539,7 +453,7 @@ void MainWidget::init_gui() {
         QFile conf( m_szConfPath);
         if(conf.exists() == true && m_pSettings != nullptr) {
             m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString());
-            if(!m_bAutoSyn)
+            if(m_autoSyn->get_swbtn()->get_active() == 1)
                 handle_conf();
         }
     });
@@ -609,9 +523,79 @@ void MainWidget::init_gui() {
            m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
        }
     });
+}
+
+/* 初始化GUI */
+void MainWidget::init_gui() {
+    //m_mainWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+
+    m_syncTipsText->setText(tr("Stop sync"));
+    m_exitCloud_btn->installEventFilter(this);
+    m_exitCode->setFixedHeight(24);
+
+    m_mainWidget->setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
 
 
-    //
+    m_syncTooltips->setFixedSize(86,44);
+
+    m_login_btn->setFixedSize(180,36);
+    m_welcomeMsg->setText(tr("Synchronize your personalized settings and data"));
+
+    m_welcomeMsg->setStyleSheet("font-size:18px;");
+
+    m_exitCloud_btn->setStyleSheet("QPushButton[on=true]{background-color:#3D6BE5;border-radius:4px;}");
+    m_exitCloud_btn->setProperty("on",false);
+
+    m_exitCloud_btn->setFixedSize(120,36);
+
+    m_exitCode->setStyleSheet("QLabel{color:#F53547}");
+
+    m_blueEffect_sync->settext(tr("Sync"));
+
+    //控件初始化设置
+    m_infoTabWidget->setFocusPolicy(Qt::NoFocus);
+    m_title->setText(tr("Sync your settings"));
+    m_title->setStyleSheet("font-size:18px;font-weight:500;");
+
+
+    m_infoTab->setText(tr("Your account:%1").arg(m_szCode));
+    m_autoSyn->set_itemname(tr("Auto sync"));
+    m_autoSyn->make_itemon();
+    m_autoSyn->get_swbtn()->set_id(m_szItemlist.size());
+    m_widgetContainer->setFocusPolicy(Qt::NoFocus);
+    m_mainWidget->addWidget(m_widgetContainer);
+
+    //控件大小尺寸设置
+    setContentsMargins(0,0,32,0);
+    setMinimumWidth(550);
+    m_infoTabWidget->resize(200,72);
+    m_stackedWidget->adjustSize();
+    m_autoSyn->get_widget()->setFixedHeight(50);
+    m_infoTab->setFixedHeight(40);
+
+
+    m_infoWidget->setFixedHeight(36);
+    m_mainWidget->setMinimumWidth(550);
+    m_widgetContainer->setMinimumWidth(550);
+    m_welcomeImage->setFixedSize(96,96);
+
+    m_key = "";
+    m_exitCode->setText(" ");
+
+    m_exitCloud_btn->setFocusPolicy(Qt::NoFocus);
+
+    if(m_mainWidget->currentWidget() == m_nullWidget) {
+        setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
+    } else {
+        setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
+    }
+    int cItem = 0;
+
+
+    for(const QString &key : qAsConst(m_szItemlist)) {
+        m_itemMap.insert(key,m_itemList->get_item(cItem)->get_itemname());
+        cItem ++;
+    }
     setMaximumWidth(960);
     m_welcomeMsg->adjustSize();
     m_itemList->adjustSize();
@@ -692,8 +676,14 @@ void MainWidget::finished_conf(int ret) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
-    m_bTokenValid = true;
-     emit doquerry(m_szCode);
+    if(ret == 0) {
+        m_autoSyn->make_itemon();
+        for(int i = 0;i < m_szItemlist.size();i ++) {
+            m_itemList->get_item(i)->set_active(true);
+        }
+        m_bTokenValid = true;
+         emit doquerry(m_szCode);
+    }
 }
 
 /* 登录成功处理事件 */
@@ -731,6 +721,10 @@ void MainWidget::finished_load(int ret, QString uuid) {
         m_autoSyn->set_change(0,"0");
         for(int i = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_change(0,"0");
+        }
+        m_autoSyn->make_itemoff();
+        for(int i = 0;i < m_szItemlist.size();i ++) {
+            m_itemList->get_item(i)->set_active(false);
         }
         emit doconf();
     }
@@ -807,8 +801,6 @@ void MainWidget::on_switch_button(int on,int id) {
         return ;
     } else if(on == 1 && m_exitCloud_btn->property("on") == false && m_bAutoSyn){
         m_key = m_szItemlist.at(id);
-
-        m_bAutoSyn = false;
 
         if(m_key != "") {
             if(m_bHasNetwork == false) {
@@ -986,7 +978,7 @@ void MainWidget::get_key_info(QString info) {
         return ;
     }
 
-    if(info == "Upload") {
+    if(info.contains("Upload")) {
         return ;
     }
     if(info == "Download") {

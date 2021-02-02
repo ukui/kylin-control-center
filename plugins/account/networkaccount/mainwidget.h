@@ -55,6 +55,10 @@ public:
     QWidget*        get_login_dialog();
     void            setshow(QWidget *w);
     void            init_gui();
+    void            initMemoryAlloc();
+    void            initSignalSlots();
+    void            layoutUI();
+    void            dbusInterface();
     void            handle_conf();
     bool            judge_item(const QString &enable,const int &cur) const;
     void            handle_write(const int &on,const int &id);
