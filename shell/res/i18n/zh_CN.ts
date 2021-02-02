@@ -5738,7 +5738,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/syncdialog.cpp" line="34"/>
         <source>Sync</source>
-        <translation>同步即将被覆盖</translation>
+        <translation>同步</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/syncdialog.cpp" line="35"/>
@@ -5754,7 +5754,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/syncdialog.cpp" line="93"/>
         <source>Sync now?</source>
-        <translation>现在同步？</translation>
+        <translation>选择以下同步覆盖，继续？</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/syncdialog.h" line="42"/>
