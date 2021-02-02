@@ -81,6 +81,7 @@ public:
 
 public:
     void initTitleLabel();
+    void initSearchText();
     void initComponent();
 
     void runExternalApp(QString cmd);

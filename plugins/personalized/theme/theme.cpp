@@ -147,7 +147,6 @@ const QString Theme::name() const {
 }
 
 void Theme::initTitleLabel() {
-    qDebug() << Q_FUNC_INFO;
     QFont font;
     font.setPixelSize(18);
     ui->titleLabel->setFont(font);
