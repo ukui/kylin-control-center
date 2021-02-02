@@ -28,6 +28,110 @@ void CustomStyle::drawComplexControl(QStyle::ComplexControl control, const QStyl
 void CustomStyle::drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
 
+    switch (element) {
+    case CE_ProgressBar:
+    {
+        if (const QStyleOptionProgressBar *pb  = qstyleoption_cast<const QStyleOptionProgressBar *>(option)) {
+            QStyleOptionProgressBar subopt = *pb;
+            subopt.rect = subElementRect(SE_ProgressBarGroove, pb, widget);
+            proxy()->drawControl(CE_ProgressBarGroove, &subopt, painter, widget);
+            subopt.rect = subElementRect(SE_ProgressBarContents, pb, widget);
+            proxy()->drawControl(CE_ProgressBarContents, &subopt, painter, widget);
+
+            //这是这个控件的当前进度的文字，你那边看情况是否需要绘制
+            //            if (pb->textVisible) {
+            //                subopt.rect = subElementRect(SE_ProgressBarLabel, pb, widget);
+            //                proxy()->drawControl(CE_ProgressBarLabel, &subopt, painter, widget);
+            //            }
+            return;
+        }
+        break;
+    }
+
+    case CE_ProgressBarGroove:
+    {
+        //这是这个控件的背景，你那边看情况是否绘制
+        return;
+        if (const QStyleOptionProgressBar *pbg = qstyleoption_cast<const QStyleOptionProgressBar *>(option)) {
+            const bool enable = pbg->state &State_Enabled;
+            painter->save();
+            painter->setRenderHint(QPainter::Antialiasing, true);
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(pbg->palette.brush(enable ? QPalette::Active : QPalette::Disabled, QPalette::Window));
+            painter->drawRect(pbg->rect);
+            painter->restore();
+            return;
+        }
+        break;
+    }
+
+    case CE_ProgressBarContents:
+    {
+        if (const QStyleOptionProgressBar *bar = qstyleoption_cast<const QStyleOptionProgressBar *>(option)) {
+            if (bar->progress == bar->maximum)
+                return;
+
+            const bool enable = bar->state & QStyle::State_Enabled;
+            const bool vertical = bar->orientation == Qt::Vertical;
+            const bool inverted = bar->invertedAppearance;
+            qint64 minimum = qint64(bar->minimum);
+            qint64 maximum = qint64(bar->maximum);
+            qint64 progress = qint64(bar->progress);
+            qint64 totalSteps = qMax(Q_INT64_C(1), maximum - minimum);
+            qint64 progressSteps = progress - bar->minimum;
+            qint64 progressBarWidth = progressSteps * (vertical ? bar->rect.height() : bar->rect.width()) / totalSteps;
+
+            int ProgressBarItem_Width = 4;
+            int ProgressBarItem_Distance = 16;
+            int distance = ProgressBarItem_Distance + ProgressBarItem_Width;
+            int num = progressBarWidth / distance;
+            int totalnum = (vertical ? bar->rect.height() : bar->rect.width()) / distance;
+
+            bool reverse = (!vertical && (bar->direction == Qt::RightToLeft)) || vertical;
+            if (inverted)
+                reverse = !reverse;
+
+            int ProgressBarItem_Hight = 16;
+            QRect drawRect(bar->rect);
+            if (vertical) {
+                drawRect.setWidth(ProgressBarItem_Hight);
+            } else {
+                drawRect.setHeight(ProgressBarItem_Hight);
+            }
+            drawRect.moveCenter(bar->rect.center());
+
+            QRect itemRect(drawRect);
+            painter->save();
+            painter->setPen(Qt::NoPen);
+            painter->setRenderHints(QPainter::Antialiasing, true);
+            for (int var = 0; var < totalnum; ++var) {
+                if (var < num) {
+                    if (enable)
+                        painter->setBrush(bar->palette.brush(QPalette::Active, QPalette::Highlight));
+                    else
+                        painter->setBrush(bar->palette.color(QPalette::Active, QPalette::Highlight).light(150));
+                } else {
+                    painter->setBrush(bar->palette.brush(enable ? QPalette::Active : QPalette::Disabled, QPalette::Button));
+                }
+
+                if (vertical)
+                    itemRect.setRect(drawRect.left(), !reverse ? drawRect.top() + var * distance : drawRect.bottom() - ProgressBarItem_Width - var * distance,
+                                     drawRect.width(), ProgressBarItem_Width);
+                else
+                    itemRect.setRect(reverse ? drawRect.right() - ProgressBarItem_Width - var * distance : drawRect.left() + var * distance, drawRect.top(),
+                                     ProgressBarItem_Width, drawRect.height());
+                painter->drawRoundedRect(itemRect, ProgressBarItem_Width/2, ProgressBarItem_Width/2);
+            }
+            painter->restore();;
+            return;
+        }
+        break;
+    }
+
+    default:
+        break;
+    }
+
     return QProxyStyle::drawControl(element, option, painter, widget);
 }
 
@@ -128,6 +232,12 @@ QRect CustomStyle::itemTextRect(const QFontMetrics &metrics, const QRect &rectan
 int CustomStyle::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
 {
     switch (metric){
+    case PM_ProgressBarChunkWidth:
+    {
+        int ProgressBarItem_Width = 4;
+        int ProgressBarItem_Distance = 16;
+        return ProgressBarItem_Width + ProgressBarItem_Distance;
+    }
     case PM_ToolBarIconSize:{
         return (int)48*qApp->devicePixelRatio();
     }
@@ -198,6 +308,19 @@ void CustomStyle::unpolish(QApplication *application)
 
 QSize CustomStyle::sizeFromContents(QStyle::ContentsType type, const QStyleOption *option, const QSize &contentsSize, const QWidget *widget) const
 {
+    QSize newSize = contentsSize;
+    switch (type) {
+    case CT_ProgressBar:
+    {
+        qDebug()<<newSize;
+        int ProgressBarItem_Num = 20;
+        int cw = proxy()->pixelMetric(QStyle::PM_ProgressBarChunkWidth, option, widget);
+        newSize.setWidth(cw * ProgressBarItem_Num);
+        return newSize;
+    }
+    default:
+        break;
+    }
     return QProxyStyle::sizeFromContents(type, option, contentsSize, widget);
 }
 
@@ -236,5 +359,13 @@ QRect CustomStyle::subControlRect(QStyle::ComplexControl control, const QStyleOp
 
 QRect CustomStyle::subElementRect(QStyle::SubElement element, const QStyleOption *option, const QWidget *widget) const
 {
+    switch (element) {
+    case SE_ProgressBarGroove:
+    case SE_ProgressBarContents:
+        return option->rect;
+
+    default:
+        break;
+    }
     return QProxyStyle::subElementRect(element, option, widget);
 }

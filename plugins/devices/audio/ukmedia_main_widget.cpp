@@ -32,7 +32,7 @@
 #define MATE_DESKTOP_USE_UNSTABLE_API
 #define VERSION "1.12.1"
 #define GVC_DIALOG_DBUS_NAME "org.mate.VolumeControl"
-#define KEY_SOUNDS_SCHEMA   "org.mate.sound"
+#define KEY_SOUNDS_SCHEMA   "org.ukui.sound"
 #define GVC_SOUND_SOUND    (xmlChar *) "sound"
 #define GVC_SOUND_NAME     (xmlChar *) "name"
 #define GVC_SOUND_FILENAME (xmlChar *) "filename"
@@ -163,8 +163,7 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     m_pOutputWidget->m_pOpBalanceSlider->setMaximum(100);
     m_pOutputWidget->m_pOpBalanceSlider->setMinimum(-100);
     m_pOutputWidget->m_pOpBalanceSlider->setSingleStep(100);
-    m_pInputWidget->m_pInputLevelSlider->setMaximum(100);
-    m_pInputWidget->m_pInputLevelSlider->setEnabled(false);
+    m_pInputWidget->m_pInputLevelProgressBar->setMaximum(100);
     //设置声音主题
     //获取声音gsettings值
     m_pSoundSettings = g_settings_new (KEY_SOUNDS_SCHEMA);
@@ -227,7 +226,7 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     connect(m_pSoundWidget->m_pAlertSoundCombobox,SIGNAL(currentIndexChanged(int)),this,SLOT(comboxIndexChangedSlot(int)));
     connect(m_pSoundWidget->m_pLagoutCombobox ,SIGNAL(currentIndexChanged(int)),this,SLOT(comboxIndexChangedSlot(int)));
     connect(m_pSoundWidget->m_pSoundThemeCombobox,SIGNAL(currentIndexChanged(int)),this,SLOT(themeComboxIndexChangedSlot(int)));
-    connect(m_pInputWidget->m_pInputLevelSlider,SIGNAL(valueChanged(int)),this,SLOT(inputLevelValueChangedSlot()));
+    connect(m_pInputWidget->m_pInputLevelProgressBar,SIGNAL(valueChanged(int)),this,SLOT(inputLevelValueChangedSlot()));
 //    connect(m_pInputWidget->m_pInputPortCombobox,SIGNAL(currentIndexChanged(int)),this,SLOT(inputPortComboxChangedSlot(int)));
     connect(m_pSoundWidget->m_pWindowClosedCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(windowClosedComboboxChangedSlot(int)));
     connect(m_pSoundWidget->m_pVolumeChangeCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(volumeChangedComboboxChangeSlot(int)));
@@ -1350,11 +1349,11 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
     //当前的麦克风可用开始监听输入等级
     if (show == true) {
         mate_mixer_stream_control_set_monitor_enabled(m_pControl,true);
-        g_debug ("Input icon enabled");
+        qDebug() << "Input icon enabled";
     }
     else {
         mate_mixer_stream_control_set_monitor_enabled(m_pControl,false);
-        g_debug ("There is no recording application, input icon disabled");
+        qDebug() << "There is no recording application, input icon disabled";
     }
     streamStatusIconSetControl(m_pWidget, m_pControl);
 
@@ -2896,9 +2895,9 @@ gdouble UkmediaMainWidget::ukuiFractionFromAdjustment (UkmediaMainWidget *m_pWid
     gdouble min;
     gdouble max;
 
-    level = m_pWidget->m_pInputWidget->m_pInputLevelSlider->value();
-    min = m_pWidget->m_pInputWidget->m_pInputLevelSlider->minimum();
-    max = m_pWidget->m_pInputWidget->m_pInputLevelSlider->maximum();
+    level = m_pWidget->m_pInputWidget->m_pInputLevelProgressBar->value();
+    min = m_pWidget->m_pInputWidget->m_pInputLevelProgressBar->minimum();
+    max = m_pWidget->m_pInputWidget->m_pInputLevelProgressBar->maximum();
 
     switch (m_pWidget->scale) {
     case GVC_LEVEL_SCALE_LINEAR:
@@ -2925,7 +2924,7 @@ void UkmediaMainWidget::updateInputSettings (UkmediaMainWidget *m_pWidget,MateMi
     if (m_pControl == nullptr)
         return;
     /* Get owning stream of the control */
-    qDebug() << "control name is :" << mate_mixer_stream_control_get_label(m_pControl);
+    qDebug() << "control name is :" << mate_mixer_stream_control_get_name(m_pControl);
     stream = mate_mixer_stream_control_get_stream (m_pControl);
     if (G_UNLIKELY (stream == nullptr))
         return;
@@ -2940,6 +2939,7 @@ void UkmediaMainWidget::updateInputSettings (UkmediaMainWidget *m_pWidget,MateMi
 
     /* Enable level bar only if supported by the control */
     if (flags & MATE_MIXER_STREAM_CONTROL_HAS_MONITOR) {
+
         g_signal_connect (G_OBJECT (m_pControl),
                           "monitor-value",
                           G_CALLBACK (onStreamControlMonitorValue),
@@ -2989,14 +2989,14 @@ MateMixerSwitch* UkmediaMainWidget::findStreamPortSwitch (UkmediaMainWidget *wid
 
 void UkmediaMainWidget::onStreamControlMonitorValue (MateMixerStream *m_pStream,gdouble value,UkmediaMainWidget *m_pWidget)
 {
-    Q_UNUSED(m_pStream);
+//    Q_UNUSED(m_pStream);
     g_debug("on stream control monitor value");
     value = value*100;
     if (value >= 0) {
-        m_pWidget->m_pInputWidget->m_pInputLevelSlider->setValue(value);
+        m_pWidget->m_pInputWidget->m_pInputLevelProgressBar->setValue(value);
     }
     else {
-        m_pWidget->m_pInputWidget->m_pInputLevelSlider->setValue(0);
+        m_pWidget->m_pInputWidget->m_pInputLevelProgressBar->setValue(0);
     }
 }
 

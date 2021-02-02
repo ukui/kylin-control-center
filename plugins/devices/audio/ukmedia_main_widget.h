@@ -66,7 +66,7 @@ extern "C" {
 #define FILENAME_KEY "filename"
 #define NAME_KEY "name"
 
-#define KEY_SOUNDS_SCHEMA "org.mate.sound"
+#define KEY_SOUNDS_SCHEMA "org.ukui.sound"
 #define UKUI_SWITCH_SETTING "org.ukui.session"
 #define UKUI_BOOT_MUSIC_KEY "boot-music"
 

@@ -27,6 +27,7 @@
 #include "ukmedia_output_widget.h"
 #include <QStyledItemDelegate>
 #include <QFrame>
+#include <QProgressBar>
 #include "ukui_custom_style.h"
 
 class UkmediaInputWidget : public QWidget
@@ -53,14 +54,12 @@ private:
     QLabel *m_pInputDeviceLabel;
     QLabel *m_pIpVolumeLabel;
     QLabel *m_pInputLevelLabel;
-    QLabel *m_pLowLevelLabel;
-    QLabel *m_pHighLevelLabel;
     QLabel *m_pIpVolumePercentLabel;
     QLabel *m_pInputPortLabel;
 
     UkuiButtonDrawSvg *m_pInputIconBtn;
     AudioSlider *m_pIpVolumeSlider;
-    AudioSlider *m_pInputLevelSlider;
+    QProgressBar *m_pInputLevelProgressBar;
     QComboBox *m_pInputDeviceCombobox;
     QComboBox *m_pInputPortCombobox;
 

@@ -60,15 +60,15 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pIpVolumePercentLabel = new QLabel(m_pVolumeWidget);
     //~ contents_path /audio/Input Level
     m_pInputLevelLabel = new QLabel(tr("Input Level"),m_pInputLevelWidget);
-    m_pLowLevelLabel = new QLabel(tr("Low"),m_pInputLevelWidget);
-    m_pInputLevelSlider = new AudioSlider(m_pInputLevelWidget);
-    m_pHighLevelLabel = new QLabel(tr("High"),m_pInputLevelWidget);
+    m_pInputLevelProgressBar = new QProgressBar(m_pInputLevelWidget);
 
+    m_pInputLevelProgressBar->setStyle(new CustomStyle);
     m_pInputPortCombobox = new QComboBox(m_pInputPortWidget);
     m_pInputPortLabel = new QLabel(tr("Connector"),m_pInputPortWidget);
 
+    m_pInputLevelProgressBar->setTextVisible(false);
+
     m_pIpVolumeSlider->setOrientation(Qt::Horizontal);
-    m_pInputLevelSlider->setOrientation(Qt::Horizontal);
     m_pIpVolumeSlider->setRange(0,100);
     m_pInputIconBtn->setFocusPolicy(Qt::NoFocus);
     //输入设备添加布局
@@ -107,18 +107,10 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     //声道平衡添加布局
     QHBoxLayout *m_pSoundLayout = new QHBoxLayout(m_pInputLevelWidget);
     m_pInputLevelLabel->setFixedSize(150,32);
-    m_pLowLevelLabel->setFixedSize(32,24);
-    m_pInputLevelSlider->setFixedHeight(20);
-    m_pHighLevelLabel->setFixedSize(40,24);
     m_pSoundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     m_pSoundLayout->addWidget(m_pInputLevelLabel);
-    m_pSoundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
-    m_pSoundLayout->addWidget(m_pLowLevelLabel);
-    m_pSoundLayout->addItem(new QSpacerItem(8,20,QSizePolicy::Fixed));
-    m_pSoundLayout->addWidget(m_pInputLevelSlider);
-    m_pSoundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
-    m_pSoundLayout->addWidget(m_pHighLevelLabel);
-    m_pSoundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    m_pSoundLayout->addItem(new QSpacerItem(18,20,QSizePolicy::Fixed));
+    m_pSoundLayout->addWidget(m_pInputLevelProgressBar);
     m_pSoundLayout->setSpacing(0);
     m_pInputLevelWidget->setLayout(m_pSoundLayout);
     m_pInputLevelWidget->layout()->setContentsMargins(0,0,0,0);
