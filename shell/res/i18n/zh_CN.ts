@@ -6431,7 +6431,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_input_widget.cpp" line="62"/>
         <source>Input Level</source>
-        <translation>输入等级</translation>
+        <translation>输入反馈</translation>
         <extra-contents_path>/audio/Input Level</extra-contents_path>
     </message>
     <message>
