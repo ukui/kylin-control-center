@@ -162,17 +162,18 @@ void MainWidget::dbusInterface() {
                 fileFLag.waitForReadyRead(-1);
                 localDate = fileFLag.readAll().toStdString().c_str();
             }else {
+                m_pSettings->setValue("Auto-sync/enable","true");
                 emit closedialog();
                 m_mainWidget->setCurrentWidget(m_widgetContainer);
                 handle_conf();
                 return;
             }
             if (localDate == keyList.at(0) || !file.exists()) {
+                m_pSettings->setValue("Auto-sync/enable","true");
                 emit closedialog();
                 handle_conf();
             } else {
                 m_autoSyn->make_itemoff();
-                m_pSettings->setValue("Auto-sync/enable","false");
                 m_pSettings->sync();
                 m_bAutoSyn = false;
                 m_autoSyn->get_swbtn()->set_swichbutton_val(0);
@@ -201,6 +202,7 @@ void MainWidget::dbusInterface() {
 
             }
         } else {
+            m_pSettings->setValue("Auto-sync/enable","true");
             emit closedialog();
             m_mainWidget->setCurrentWidget(m_widgetContainer);
             handle_conf();
@@ -677,10 +679,7 @@ void MainWidget::finished_conf(int ret) {
         return ;
     }
     if(ret == 0) {
-        m_autoSyn->make_itemon();
-        for(int i = 0;i < m_szItemlist.size();i ++) {
-            m_itemList->get_item(i)->set_active(true);
-        }
+        m_pSettings->setValue("Auto-sync/enable","false");
         m_bTokenValid = true;
          emit doquerry(m_szCode);
     }
