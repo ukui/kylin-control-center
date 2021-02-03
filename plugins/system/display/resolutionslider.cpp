@@ -78,6 +78,7 @@ void ResolutionSlider::init()
             if (size.width() * size.height() < 1024 * 768
                     || mExcludeModes.contains(size)
                     || size.width() < 1024) {
+                mModes.removeOne(size);
                 continue;
             }
             if (size == mModes[0]) {
