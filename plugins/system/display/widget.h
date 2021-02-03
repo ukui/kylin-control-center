@@ -147,6 +147,7 @@ class Widget : public QWidget
     void addOutputToPrimaryCombo(const KScreen::OutputPtr &output);
     KScreen::OutputPtr findOutput(const KScreen::ConfigPtr &config, const QVariantMap &info);
 
+    void setHideModuleInfo();
     void setTitleLabel();
     void writeScale(int scale);
     void initGSettings();
@@ -217,6 +218,8 @@ class Widget : public QWidget
     bool mOnBattery       = false;
     bool mBlockChanges    = false;
     bool mFirstLoad       = true;
+
+    QString mCPU;
 };
 
 #endif // WIDGET_H

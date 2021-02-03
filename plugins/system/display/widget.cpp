@@ -69,7 +69,8 @@ extern "C" {
 #define ADVANCED_SCHEMAS                 "org.ukui.session.required-components"
 #define ADVANCED_KEY                     "windowmanager"
 
-const QString kCpu = "ZHAOXIN";
+const QString kCpu   = "ZHAOXIN";
+const QString kLoong = "Loongson";
 
 Q_DECLARE_METATYPE(KScreen::OutputPtr)
 
@@ -82,19 +83,8 @@ Widget::Widget(QWidget *parent)
 
     ui->setupUi(this);
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
-
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    oriApply = true;
-#else
-    mOriApply = false;
-    if (!getCpuInfo().startsWith(kCpu, Qt::CaseInsensitive)) {
-        ui->quickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
-        ui->quickWidget->setClearColor(Qt::transparent);
-    }
-
-#endif
-
     ui->quickWidget->setContentsMargins(0,0,0,9);
+    setHideModuleInfo();
 
     mCloseScreenButton = new SwitchButton(this);
     ui->showScreenLayout->addWidget(mCloseScreenButton);
@@ -455,6 +445,14 @@ KScreen::OutputPtr Widget::findOutput(const KScreen::ConfigPtr &config, const QV
     }
 
     return KScreen::OutputPtr();
+}
+
+void Widget::setHideModuleInfo() {
+    mCPU = getCpuInfo();
+    if (!mCPU.startsWith(kCpu, Qt::CaseInsensitive)) {
+        ui->quickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
+        ui->quickWidget->setClearColor(Qt::transparent);
+    }
 }
 
 void Widget::setTitleLabel() {
@@ -1366,7 +1364,7 @@ void Widget::initNightStatus() {
                              "/ColorCorrect",
                              "org.ukui.kwin.ColorCorrect",
                              QDBusConnection::sessionBus());
-    if (colorIft.isValid()) {
+    if (colorIft.isValid() && !mCPU.startsWith(kLoong, Qt::CaseInsensitive)) {
         this->mRedshiftIsValid = true;
     } else {
         qWarning() << "create org.ukui.kwin.ColorCorrect failed";
