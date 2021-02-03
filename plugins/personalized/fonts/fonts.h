@@ -116,6 +116,9 @@ public Q_SLOTS:
     void keyChangedSlot(const QString &key);
 
 private:
+    void fontKwinSlot();
+
+private:
     bool settingsCreate;
     bool mFirstLoad;
     QGSettings * stylesettings;

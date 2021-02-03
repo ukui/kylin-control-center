@@ -304,6 +304,7 @@ void Fonts::setupConnect(){
     connectToServer();
     connect(uslider, &QSlider::valueChanged, [=](int value){
         int size = sliderConvertToSize(value);
+
         //获取当前字体信息
         _getCurrentFontInfo();
         //设置字体大小
@@ -313,6 +314,7 @@ void Fonts::setupConnect(){
         ifsettings->set(MONOSPACE_FONT_KEY, QVariant(QString("%1 %2").arg(monospacefontStrList.at(0)).arg(size)));
         stylesettings->set(SYSTEM_FONT_EKY, QVariant(QString("%1").arg(size)));
         marcosettings->set(TITLEBAR_FONT_KEY, QVariant(QString("%1 %2").arg(titlebarfontStrList.at(0)).arg(size)));
+        fontKwinSlot();
     });
 
     connect(ui->fontSelectComBox, &QComboBox::currentTextChanged, [=](QString text){
@@ -326,6 +328,7 @@ void Fonts::setupConnect(){
         //给更新高级字体配置
         initAdvancedFontStatus();
 
+        fontKwinSlot();
     });
     connect(ui->monoSelectComBox, &QComboBox::currentTextChanged, [=](QString text){
         //获取当前字体信息
@@ -660,21 +663,21 @@ void Fonts::setFontEffect(QAbstractButton *button){
 }
 
 void Fonts::resetDefault(){
-    //reset font
+    // Reset font
     ifsettings->reset(GTK_FONT_KEY);
     ifsettings->reset(DOC_FONT_KEY);
     ifsettings->reset(MONOSPACE_FONT_KEY);
-//    peonysettings->reset(PEONY_FONT_KEY);
     marcosettings->reset(TITLEBAR_FONT_KEY);
     stylesettings->set(SYSTEM_FONT_EKY, 11);
     stylesettings->reset(SYSTEM_NAME_KEY);
 
-    //reset font render
+    // Reset font render
     rendersettings->reset(ANTIALIASING_KEY);
     rendersettings->reset(HINTING_KEY);
 
-    //更新全部状态
+    // 更新全部状态
     initFontStatus();
+    fontKwinSlot();
 }
 
 void Fonts::connectToServer(){
@@ -697,4 +700,16 @@ void Fonts::keyChangedSlot(const QString &key) {
     if(key == "font") {
         initFontStatus();
     }
+}
+
+void Fonts::fontKwinSlot() {
+    const int fontSize = sliderConvertToSize(uslider->value());
+    const QString fontType = ui->fontSelectComBox->currentText();
+    qDebug() << fontSize << fontType;
+    QDBusMessage message =QDBusMessage::createSignal("/KGlobalSettings", "org.kde.KGlobalSettings", "slotFontChange");
+    QList<QVariant> args;
+    args.append(fontSize);
+    args.append(fontType);
+    message.setArguments(args);
+    QDBusConnection::sessionBus().send(message);
 }
