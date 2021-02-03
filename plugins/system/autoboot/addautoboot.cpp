@@ -158,7 +158,10 @@ void AddAutoBoot::open_desktop_dir_slots() {
     mDesktopExec = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_EXEC, NULL);
     mDesktopIcon = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, NULL);
 
-    ui->nameLineEdit->setText(QString(name));
+    if (ui->nameLineEdit->text().isEmpty()) {
+        ui->nameLineEdit->setText(QString(name));
+    }
+
     ui->execLineEdit->setText(QString(selectedfile));
     ui->commentLineEdit->setText(QString(comment));
 
@@ -192,7 +195,10 @@ void AddAutoBoot::execLinEditSlot(const QString &fileName) {
         mDesktopIcon = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, NULL);
         comment = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
 
-        ui->nameLineEdit->setText(QString(name));
+        if (ui->nameLineEdit->text().isEmpty()) {
+            ui->nameLineEdit->setText(QString(name));
+        }
+
         ui->execLineEdit->setText(QString(fileName));
         ui->commentLineEdit->setText(QString(comment));
 
