@@ -312,11 +312,8 @@ void BlueToothMain::adapterChanged()
     connect(m_manager,&BluezQt::Manager::adapterRemoved,this,[=](BluezQt::AdapterPtr adapter){
 //        qDebug() << Q_FUNC_INFO << adapter_address_list.indexOf(adapter.data()->address());
 //        qDebug() << Q_FUNC_INFO << adapter_list->currentIndex() << adapter_address_list.at(adapter_list->currentIndex()) << adapter.data()->address() <<__LINE__;
-        bool change = false;
+
         int i = adapter_address_list.indexOf(adapter.data()->address());
-        if(adapter_address_list.at(adapter_list->currentIndex()) == adapter.data()->address()){
-            change = true;
-        }
 
         adapter_name_list.removeAt(i);
         adapter_address_list.removeAll(adapter.data()->address());
@@ -472,18 +469,26 @@ void BlueToothMain::removeDeviceItemUI(QString address)
     qDebug() << Q_FUNC_INFO << address <<__LINE__;
     if(Discovery_device_address.indexOf(address) != -1){
         DeviceInfoItem *item = device_list->findChild<DeviceInfoItem *>(address);
-        device_list_layout->removeWidget(item);
-        item->setParent(NULL);
-        delete item;
-        Discovery_device_address.removeAll(address);
+        if(item){
+            device_list_layout->removeWidget(item);
+            item->setParent(NULL);
+            delete item;
+            Discovery_device_address.removeAll(address);
+        }else{
+            return;
+        }
     }else{
         DeviceInfoItem *item = frame_middle->findChild<DeviceInfoItem *>(address);
-        paired_dev_layout->removeWidget(item);
-        item->setParent(NULL);
-        delete item;
+        if(item){
+            paired_dev_layout->removeWidget(item);
+            item->setParent(NULL);
+            delete item;
 
-        if(frame_middle->children().size() == 2){
-            frame_middle->setVisible(false);
+            if(frame_middle->children().size() == 2){
+                frame_middle->setVisible(false);
+            }
+        }else{
+            return;
         }
     }
 }
@@ -622,10 +627,14 @@ void BlueToothMain::change_device_parent(const QString &address)
     }
 
     DeviceInfoItem *item = device_list->findChild<DeviceInfoItem *>(address);
-    device_list_layout->removeWidget(item);
-    item->setParent(frame_middle);
-    paired_dev_layout->addWidget(item);
-    Discovery_device_address.removeAll(address);
+    if(item){
+        device_list_layout->removeWidget(item);
+        item->setParent(frame_middle);
+        paired_dev_layout->addWidget(item);
+        Discovery_device_address.removeAll(address);
+    }else{
+        return;
+    }
 }
 
 void BlueToothMain::adapterPoweredChanged(bool value)
@@ -667,10 +676,20 @@ void BlueToothMain::adapterPoweredChanged(bool value)
 void BlueToothMain::adapterComboxChanged(int i)
 {
 //    qDebug() << Q_FUNC_INFO << i << adapter_address_list.at(i) << adapter_name_list.at(i) << adapter_address_list << adapter_name_list;
-    m_localDevice = m_manager->adapterForAddress(adapter_address_list.at(i));
-    m_localDevice->stopDiscovery();
-    updateUIWhenAdapterChanged();
-    settings->set("adapter-address",QVariant::fromValue(adapter_address_list.at(i)));
+    if(i != -1){
+        m_localDevice = m_manager->adapterForAddress(adapter_address_list.at(i));
+        m_localDevice->stopDiscovery();
+        updateUIWhenAdapterChanged();
+        settings->set("adapter-address",QVariant::fromValue(adapter_address_list.at(i)));
+    }else{
+        if(open_bluetooth->isChecked()){
+            open_bluetooth->setChecked(false);
+            open_bluetooth->setDisabledFlag(false);
+        }
+        if(frame_middle->isVisible()){
+            frame_middle->setVisible(false);
+        }
+    }
 }
 
 void BlueToothMain::adapterNameChanged(const QString &name)
