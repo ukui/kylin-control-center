@@ -36,7 +36,7 @@ void MyLabel::setTextLimitShrink(const QString &text, int width)
 void MyLabel::setTextLimitExpand(const QString &text)
 {
     int textWidth = this->fontMetrics().width(text);
-    this->setMaximumWidth(200);
+    this->setMaximumWidth(textWidth);
     setFullText(text);
 }
 

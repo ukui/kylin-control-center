@@ -57,7 +57,7 @@ int BackUp::needBacdUp()
     if(!haveBackTool())
         return -1;
     //正在备份
-    if(bakeupState==1||bakeupState==2||bakeupState==4||bakeupState==5)
+    if(bakeupState==2||bakeupState==5)
         return 1;
     //备份工具占用
     if(bakeupState!=needBack)

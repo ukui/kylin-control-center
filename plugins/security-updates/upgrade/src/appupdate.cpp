@@ -251,15 +251,15 @@ void AppUpdateWid::updateAppUi(QString name)
     appIconName->setMaximumWidth(600);
     appIcon = new QLabel(appIconName);
     appNameLab = new MyLabel(appIconName);
-    appNameLab->setMinimumWidth(140);
-//    appNameLab->setStyleSheet("background:red");
+//    appNameLab->setMinimumWidth(140);
     appIconName->setLayout(iconNameLayout);
     appIcon->setFixedSize(32,32);
-    iconNameLayout->addWidget(appIcon);
+    iconNameLayout->setAlignment(Qt::AlignLeft);
+    iconNameLayout->addWidget(appIcon,1);
     iconNameLayout->setSpacing(0);
     iconNameLayout->addSpacing(8);
-    iconNameLayout->addWidget(appNameLab);
-    iconNameLayout->addStretch();
+    iconNameLayout->addWidget(appNameLab,10);
+//    iconNameLayout->addStretch();
 
     appVersion = new QLabel(this);
     appVersionIcon = new QLabel(this);
@@ -672,7 +672,7 @@ void AppUpdateWid::hideOrShowUpdateBtnSlot(int result)
 
 QString AppUpdateWid::translationVirtualPackage(QString str)
 {
-    if(environment == en)//英文环境下不翻译
+    if(QLocale::system().name()!="zh_CN")
         return str;
     if(str == "kylin-update-desktop-app")
         return "基本应用";

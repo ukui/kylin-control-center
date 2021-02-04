@@ -18,7 +18,7 @@ void TabWid::initDbus()
     connect(historyUpdateLog,&QPushButton::clicked,this,&TabWid::showHistoryWidget);
     connect(isAutoCheckSBtn,&SwitchButton::checkedChanged,this,&TabWid::isAutoCheckedChanged);
     connect(isAutoBackupSBtn,&SwitchButton::checkedChanged,this,&TabWid::isAutoBackupChanged);
-
+    connect(updateSource,&UpdateSource::getReplyFalseSignal,this,&TabWid::getReplyFalseSlot);
     bacupInit();//初始化备份
 
     checkUpdateBtn->stop();
@@ -36,18 +36,21 @@ void TabWid::unableToConnectSource()
     qDebug() << "源管理器信号是否连接成功：" << isConnectSourceSignal;
     if(isConnectSourceSignal == false)
     {
-        disconnect(updateSource->serviceInterface,SIGNAL(updateTemplateStatus(QString)),this,SLOT(slotUpdateTemplate(QString)));
-        disconnect(updateSource->serviceInterface,SIGNAL(updateCacheStatus(QVariantList)),this,SLOT(slotUpdateCache(QVariantList)));
-        disconnect(updateSource->serviceInterface,SIGNAL(updateSourceProgress(QVariantList)),this,SLOT(slotUpdateCacheProgress(QVariantList)));
-        checkUpdateBtn->setEnabled(true);
-        checkUpdateBtn->stop();
-//        checkUpdateBtn->setText(tr("检查更新"));
-        checkUpdateBtn->setText(tr("Check Update"));
-//        versionInformationLab->setText(tr("服务连接异常，请重新检测!") );
-        versionInformationLab->setText(tr("Service connection abnormal,please retest!") );
+        disconnectSource();
     }
 }
-
+void TabWid::disconnectSource()
+{
+    disconnect(updateSource->serviceInterface,SIGNAL(updateTemplateStatus(QString)),this,SLOT(slotUpdateTemplate(QString)));
+    disconnect(updateSource->serviceInterface,SIGNAL(updateCacheStatus(QVariantList)),this,SLOT(slotUpdateCache(QVariantList)));
+    disconnect(updateSource->serviceInterface,SIGNAL(updateSourceProgress(QVariantList)),this,SLOT(slotUpdateCacheProgress(QVariantList)));
+    checkUpdateBtn->setEnabled(true);
+    checkUpdateBtn->stop();
+//        checkUpdateBtn->setText(tr("检查更新"));
+    checkUpdateBtn->setText(tr("Check Update"));
+//        versionInformationLab->setText(tr("服务连接异常，请重新检测!") );
+    versionInformationLab->setText(tr("Service connection abnormal,please retest!") );
+}
 TabWid::~TabWid()
 {
     qDebug() << "~TabWid" ;
@@ -128,6 +131,7 @@ void TabWid::backupCore()
         return;
     case 1://正在备份
         emit startBackUp(0);
+        versionInformationLab->setText(tr("Start backup,getting progress")+"...");
         break;
     case needBack://需要备份
         emit startBackUp(1);
@@ -140,7 +144,7 @@ void TabWid::backupCore()
         qDebug()<<"备份还原工具状态码"<<initresult;
         return;
     }
-     qDebug()<<"符合备份条件";
+     qDebug()<<"符合备份工具运行条件";
 }
 
 void TabWid::backupProgress(int progress)
@@ -216,6 +220,22 @@ void TabWid::backupHideUpdateBtn(int result)
 
     }
 }
+
+bool TabWid::event(QEvent *event)
+{
+    return true;
+    if(event->type() == QEvent::Resize)
+    {
+        qDebug()<< "窗口事件：" << event->type();
+        QList<AppUpdateWid *> list = this->findChildren<AppUpdateWid *>();
+        for(AppUpdateWid *tmp : list)
+        {
+            tmp->appNameLab->setText(tmp->dispalyName);
+        }
+        return true;
+    }
+    return false;
+}
 void TabWid::bacupInit()
 {
     backup = new BackUp;
@@ -263,9 +283,11 @@ void TabWid::slotUpdateCache(QVariantList sta)
             }
             QString str =  file.readAll();
             QStringList list;
+            str.replace("/n","");
             if (!str.isEmpty() && str.contains(" ")) {
                 list = str.split(" ");
             }
+            qDebug() << "slotUpdateCache函数：获取到的包列表：" << list;
             updateMutual->getAppMessage(list);
             retryTimes = 0;
         }
@@ -477,7 +499,7 @@ void TabWid::loadingOneUpdateMsgSlot(AppAllMsg msg)
                 appWidget->appNameLab->setText(list[2]);
 
             }
-            if(list[1] != "")
+            if(list[1] != "" && QLocale::system().name()=="zh_CN")
             {
                 appWidget->appNameLab->setText(list[1]);
             }
@@ -726,4 +748,10 @@ void TabWid::waitCrucialInstalled()
         versionInformationLab->setText(msg);
         fileLockedStatus == true;
     }
+}
+
+void TabWid::getReplyFalseSlot()
+{
+    isConnectSourceSignal = true;
+    disconnectSource();
 }

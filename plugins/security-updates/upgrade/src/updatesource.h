@@ -22,7 +22,7 @@ public:
     void getReply(QDBusPendingCallWatcher *call);
     QString getFailInfo(int statusCode);
 signals:
-
+    void getReplyFalseSignal();
 public slots:
 
 };

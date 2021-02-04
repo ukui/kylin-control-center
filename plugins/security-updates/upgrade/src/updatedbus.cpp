@@ -28,7 +28,6 @@ UpdateDbus::UpdateDbus(QObject *parent)
                                    KYLIN_UPDATE_MANAGER_PATH,
                                    KYLIN_UPDATE_MANAGER_INTERFACE,
                                    QDBusConnection::systemBus());
-
     QDBusConnection::systemBus().connect(QString("cn.kylinos.KylinUpdateManager"), QString("/cn/kylinos/KylinUpdateManager"),
                                          QString("cn.kylinos.KylinUpdateManager"),
                                          QString("kum_apt_signal"), this, SLOT(getAptSignal(QString, QMap<QString, QVariant>)));
@@ -45,7 +44,7 @@ UpdateDbus::UpdateDbus(QObject *parent)
                                          QString("cn.kylinos.KylinUpdateManager"),
                                          QString("copy_finish"), this, SLOT(slotCopyFinished(QString)));
 
-    cleanUpdateList();
+//    cleanUpdateList();
     setImportantStatus(true);
 
 }

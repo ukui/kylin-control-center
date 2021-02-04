@@ -6106,7 +6106,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="421"/>
         <source>Backup current system before updates all</source>
-        <translation>全部更新前备份当前系统为可回退的版本</translation>
+        <translation type="unfinished">全部更新前备份系统</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="509"/>

@@ -98,6 +98,7 @@ public:
     UpdateSource *updateSource;
 
 
+    void disconnectSource();
 signals:
 //    void send_Signal();
 //    void parameterSignal(int i);
@@ -140,11 +141,15 @@ private:
 signals:
     int needBackUp();
     void startBackUp(int);
+protected:
+    bool event(QEvent *event);
 
 public slots:
     void bakeupFinish(int);
     void backupProgress(int);
     void isAutoBackupChanged();
+
+    void getReplyFalseSlot();
 };
 
 #endif // TABWIDGET_H

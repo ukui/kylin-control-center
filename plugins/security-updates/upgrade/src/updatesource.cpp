@@ -61,6 +61,10 @@ void UpdateSource::getReply(QDBusPendingCallWatcher *call)
             if (status) {
                 callDBusUpdateSource(Symbol);
             }
+            else
+            {
+                emit getReplyFalseSignal();
+            }
 
     }
 }
