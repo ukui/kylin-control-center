@@ -6106,7 +6106,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="421"/>
         <source>Backup current system before updates all</source>
-        <translation type="unfinished">全部更新前备份系统</translation>
+        <translation>全部更新前备份系统</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="509"/>
@@ -6123,7 +6123,7 @@ run start-pulseaudio-x11 manually.</source>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="541"/>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="683"/>
         <source>Last refresh:</source>
-        <translation>上次检测：</translation>
+        <translation type="unfinished">上次更新：</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="543"/>
