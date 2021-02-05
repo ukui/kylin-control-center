@@ -101,8 +101,9 @@ QWidget * Power::get_plugin_ui() {
         initTitleLabel();
         initDbus();
         initDeviceStatus();
-        setupComponent();
         isPowerSupply();
+        setupComponent();
+
         if (QGSettings::isSchemaInstalled(id)) {
             settings = new QGSettings(id, QByteArray(), this);
             sessionSetting = new QGSettings(sessionId, QByteArray(), this);
@@ -193,6 +194,11 @@ void Power::setupComponent() {
 
     if (!hasBat){
         ui->iconFrame->hide();
+    }
+
+    /* 通用设置无功能，隐藏标题 */
+    if (!isExitsPower && !hasBat){
+        ui->title2Label->hide();
     }
 
     ui->powerModeBtnGroup->setId(ui->balanceRadioBtn, BALANCE);

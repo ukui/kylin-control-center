@@ -67,6 +67,9 @@ public slots:
 
     // 设置密码时效
     Q_SCRIPTABLE void setPasswdAging(int days, QString username);
+
+    // 提权修改其他用户密码
+    Q_SCRIPTABLE int changeOtherUserPasswd(QString username, QString pwd);
 };
 
 #endif // SYSDBUSREGISTER_H

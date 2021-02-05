@@ -4,6 +4,7 @@ CONFIG += ordered
 
 SUBDIRS = \
     checkUserPwd \
+    checkUserPwdWithPAM \
     registeredQDbus \
     plugins\
     registeredSession \

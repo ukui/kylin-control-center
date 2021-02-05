@@ -1,0 +1,11 @@
+@include common-auth
+auth optional pam_gnome_keyring.so
+
+
+#If you are using Arch,comment out the 
+#above and use the following.
+
+#auth include system-auth
+#account include system-auth
+#password include system-auth
+#session include system-auth

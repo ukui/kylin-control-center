@@ -24,6 +24,26 @@
 #include <QRegExp>
 #include <stdlib.h>
 
+/* qt会将glib里的signals成员识别为宏，所以取消该宏
+ * 后面如果用到signals时，使用Q_SIGNALS代替即可
+ **/
+#ifdef signals
+#undef signals
+#endif
+
+extern "C" {
+#include <glib.h>
+#include <gio/gio.h>
+
+}
+
+#include "run-passwd2.h"
+
+PasswdHandler * passwd_handler = NULL;
+
+static void chpasswd_cb(PasswdHandler * passwd_handler, GError * error, gpointer user_data);
+
+
 SysdbusRegister::SysdbusRegister()
 {
     mHibernateFile = "/etc/systemd/sleep.conf";
@@ -126,4 +146,27 @@ void SysdbusRegister::setPasswdAging(int days, QString username) {
 
     cmd = QString("chage -M %1 %2").arg(days).arg(username);
     QProcess::execute(cmd);
+}
+
+int SysdbusRegister::changeOtherUserPasswd(QString username, QString pwd){
+
+    std::string str1 = username.toStdString();
+    const char * user_name = str1.c_str();
+
+    std::string str2 = pwd.toStdString();
+    const char * passwd = str2.c_str();
+
+    passwd_handler = passwd_init();
+
+    passwd_change_password(passwd_handler, user_name, passwd, chpasswd_cb, NULL);
+
+    return 1;
+
+}
+
+static void chpasswd_cb(PasswdHandler *passwd_handler, GError *error, gpointer user_data){
+//    g_warning("error code: '%d'", error->code);
+//    passwd_destroy(passwd_handler);
+//    qDebug("chpasswd_cb run");
+    g_warning("chpasswd_cb run");
 }

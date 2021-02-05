@@ -41,6 +41,7 @@ Build-Depends: debhelper-compat (= 12),
 	       libudev-dev,
 	       xserver-xorg-dev,
                libupower-glib-dev,
+               libpam0g-dev,
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Homepage: https://github.com/ukui/ukui-control-center

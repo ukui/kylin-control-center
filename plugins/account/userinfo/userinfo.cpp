@@ -30,6 +30,8 @@
 #include <QDebug>
 #include <QMessageBox>
 
+#include <polkit-qt5-1/polkitqt1-authority.h>
+
 #include "SwitchButton/switchbutton.h"
 #include "ImageUtil/imageutil.h"
 #include "elipsemaskwidget.h"
@@ -1045,14 +1047,32 @@ void UserInfo::showChangePwdDialog(QString username){
 
     if (allUserInfoMap.keys().contains(username)){
         UserInfomation user = allUserInfoMap.value(username);
-        ChangePwdDialog * dialog = new ChangePwdDialog(user.current);
+        ChangePwdDialog * dialog = new ChangePwdDialog(user.current, user.username);
         dialog->setFace(user.iconfile);
         dialog->setUsername(user.username);
         dialog->setAccountType(_accountTypeIntToString(user.accounttype));
-        if (!getuid() && user.current)
+        if (!getuid() || !user.current)
             dialog->haveCurrentPwdEdit(false);
-        connect(dialog, &ChangePwdDialog::passwd_send, this, [=](QString pwd, QString userName){
-            changeUserPwd(pwd, userName);
+
+        connect(dialog, &ChangePwdDialog::passwd_send, this, [=](QString pwd){
+
+                changeUserPwd(pwd, username);
+
+        });
+        connect(dialog, &ChangePwdDialog::passwd_send2, this, [=](QString pwd){
+
+            PolkitQt1::Authority::Result result;
+
+            result = PolkitQt1::Authority::instance()->checkAuthorizationSync(
+                        "org.control.center.qt.systemdbus.action",
+                        PolkitQt1::UnixProcessSubject(QCoreApplication::applicationPid()),
+                        PolkitQt1::Authority::AllowUserInteraction);
+
+            if (result == PolkitQt1::Authority::Yes){
+                changeUserPwd(pwd, username);
+            }
+
+
         });
         dialog->exec();
 
@@ -1066,10 +1086,21 @@ void UserInfo::changeUserPwd(QString pwd, QString username){
     //上层已做判断，这里不去判断而直接获取
     UserInfomation user = allUserInfoMap.value(username);
 
-    UserDispatcher * userdispatcher  = new UserDispatcher(user.objpath); //继承QObject不再删除
-    QString result = userdispatcher->change_user_pwd(pwd, "");
+//    UserDispatcher * userdispatcher  = new UserDispatcher(user.objpath); //继承QObject不再删除
+//    QString result = userdispatcher->change_user_pwd(pwd, "");
 
-    Q_UNUSED(result)
+    QDBusInterface * tmpSysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
+                                                          "/",
+                                                          "com.control.center.interface",
+                                                          QDBusConnection::systemBus());
+
+    if (!tmpSysinterface->isValid()){
+        qCritical() << "Create Client Interface Failed When : " << QDBusConnection::systemBus().lastError();
+        return;
+    }
+    tmpSysinterface->call("changeOtherUserPasswd", username, pwd);
+
+    delete tmpSysinterface;
 }
 
 
