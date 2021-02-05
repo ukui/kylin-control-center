@@ -117,6 +117,7 @@ public slots:
     void switchPage(QString moduleName, QString jumpMoudle);
     void animationFinishedSlot();
     void showUkccAboutSlot();
+    void onF1ButtonClicked();
 };
 
 #endif // MAINWINDOW_H

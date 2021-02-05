@@ -40,6 +40,7 @@
 #include <QMessageBox>
 #include <QGSettings>
 #include <QMenu>
+#include <QShortcut>
 
 #ifdef WITHKYSEC
 #include <kysec/libkysec.h>
@@ -324,6 +325,9 @@ void MainWindow::initUI() {
     if (QApplication::arguments().length() > 1) {
         bootOptionsFilter(QApplication::arguments().at(1));
     }
+
+    //快捷键
+    new QShortcut(QKeySequence(Qt::Key_F1), this, SLOT(onF1ButtonClicked()));
 }
 
 void MainWindow::initTileBar() {
@@ -419,6 +423,20 @@ void MainWindow::animationFinishedSlot()
     } else {
         m_queryWid->layout()->addWidget(m_queryText);
     }
+}
+
+void MainWindow::onF1ButtonClicked() {
+    qDebug() << "onF1ButtonClicked";
+    QString command = "kylin-user-guide";
+
+    QProcess p(0);
+    QStringList args;
+
+    args.append("-A");
+    args.append("ukui-control-center");
+
+    p.execute(command,args);//command是要执行的命令,args是参数
+    p.waitForFinished(-1);
 }
 
 void MainWindow::showUkccAboutSlot() {
