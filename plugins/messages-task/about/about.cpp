@@ -35,6 +35,7 @@
 #include <QFile>
 #include <QDebug>
 #include <QStorageInfo>
+#include <QtMath>
 
 const QString vTen        = "v10";
 const QString vTenEnhance = "v10.1";
@@ -149,8 +150,9 @@ void About::setupKernelCompenent() {
         cpuType = res["CpuVersion"].toString();
     }
 
-    QStringList memory = totalMemory();
-    memorySize = memorySize + memory.at(0) + "(" + memory.at(1) + tr(" available") + ")";
+    //QStringList memory = totalMemory();    
+    //memorySize = memorySize + memory.at(0) + "(" + memory.at(1) + tr(" available") + ")";
+    memorySize = getTotalMemory();
 
     ui->cpuContent->setText(cpuType);
     ui->diskContent->setText(diskSize);
@@ -258,6 +260,39 @@ qlonglong About::calculateTotalRam() {
 #endif
     return ret;
 
+}
+
+QString About::getTotalMemory()
+{
+    const QString fileName = "/proc/meminfo";
+    QFile meninfoFile(fileName);
+    if(!meninfoFile.exists()){
+        printf("/proc/meminfo file not exist \n");
+    }
+    if(!meninfoFile.open(QIODevice::ReadOnly | QIODevice::Text)){
+        printf("open /proc/meminfo fail \n");
+    }
+
+    QTextStream in(&meninfoFile);
+    QString line = in.readLine();
+    int memtotal;
+
+    while(!line.isNull()){
+        if(line.contains("MemTotal")){
+            line.replace(QRegExp("[\\s]+"), " ");
+
+            QStringList lineList = line.split(" ");
+            QString mem = lineList.at(1);
+            memtotal = mem.toInt();
+            break;
+
+        }else {
+            line = in.readLine();
+        }
+    }
+
+    memtotal = ceil(memtotal / 1024 / 1024);
+    return QString::number(memtotal) + " GB";
 }
 
 QStringList About::totalMemory()

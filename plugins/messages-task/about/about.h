@@ -66,6 +66,7 @@ private:
     void setupSerialComponent();
     qlonglong calculateTotalRam();
     QStringList totalMemory();
+    QString getTotalMemory();
 
 
 private:
