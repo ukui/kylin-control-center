@@ -339,7 +339,7 @@ void AppUpdateWid::updateAppUi(QString name)
     AppFrame->setLayout(mainVLayout);
     dispalyName = translationVirtualPackage(name);
     appNameLab->setText(dispalyName);
-    if(name.contains("kylin-update-desktop"))
+    if(name.contains("kylin-update-desktop")||name == "linux-generic")
     {
         pkgIconPath = QString(":/img/plugins/upgrade/%1.png").arg(name);
         appIcon->setPixmap(QPixmap(pkgIconPath));
@@ -404,7 +404,7 @@ void AppUpdateWid::updateAppUi(QString name)
         someInfoEdit->append(tr("Download size:")+QString(modifySizeUnit(appAllMsg.msg.allSize)));
     }
 
-    if(name.contains("kylin-update-desktop"))
+    if(name.contains("kylin-update-desktop")||name == "linux-generic")
     {
         pkgIconPath = QString(":/img/plugins/upgrade/%1.png").arg(name);
         updatelog1->logAppIcon->setPixmap(QPixmap(pkgIconPath));
@@ -682,6 +682,8 @@ QString AppUpdateWid::translationVirtualPackage(QString str)
         return "系统基础组件";
     if(str == "kylin-update-desktop-ukui")
         return "桌面环境组件";
+    if(str == "linux-generic")
+        return "系统内核组件";
     if(str == "kylin-update-desktop-kernel")
         return "系统内核组件";
     if(str == "kylin-update-desktop-kernel-3a4000")

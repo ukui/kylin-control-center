@@ -258,6 +258,8 @@ QString m_updatelog::translationVirtualPackage(QString str)
         return "系统基础组件";
     if(str == "kylin-update-desktop-ukui")
         return "桌面环境组件";
+    if(str == "linux-generic")
+        return "系统内核组件";
     if(str == "kylin-update-desktop-kernel")
         return "系统内核组件";
     if(str == "kylin-update-desktop-kernel-3a4000")
