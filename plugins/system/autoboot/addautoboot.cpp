@@ -122,7 +122,7 @@ AddAutoBoot::~AddAutoBoot() {
 }
 
 void AddAutoBoot::open_desktop_dir_slots() {
-    QString filters = "Desktop files(*.desktop)";
+    QString filters = tr("Desktop files(*.desktop)");
     QFileDialog fd;
     fd.setDirectory(DESKTOPPATH);
     fd.setAcceptMode(QFileDialog::AcceptOpen);

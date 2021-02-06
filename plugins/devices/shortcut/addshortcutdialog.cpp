@@ -145,7 +145,7 @@ void addShortcutDialog::paintEvent(QPaintEvent *event) {
 }
 
 void addShortcutDialog::openProgramFileDialog(){
-    QString filters = "Desktop files(*.desktop)";
+    QString filters = tr("Desktop files(*.desktop)");
     QFileDialog fd;
     fd.setDirectory(DEFAULTPATH);
     fd.setAcceptMode(QFileDialog::AcceptOpen);
