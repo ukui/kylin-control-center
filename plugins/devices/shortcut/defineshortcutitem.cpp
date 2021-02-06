@@ -126,7 +126,7 @@ void DefineShortcutItem::leaveEvent(QEvent *)
 
 void DefineShortcutItem::mouseDoubleClickEvent(QMouseEvent *e){
     if (e->button() == Qt::LeftButton && _updateable){
-        emit updateShortcutSignal();
+        //emit updateShortcutSignal();
     }
     QWidget::mouseDoubleClickEvent(e);
 }

@@ -172,6 +172,12 @@ void Touchpad::initConnection() {
         if (QString::compare(data, N_SCROLLING) != 0)
             tpsettings->set(data, true);
 
+        if(QString::compare(data, N_SCROLLING) == 0){
+            tpsettings->set(V_EDGE_KEY,false);
+            tpsettings->set(H_EDGE_KEY,false);
+            tpsettings->set(V_FINGER_KEY,false);
+            tpsettings->set(H_FINGER_KEY,false);
+        }
     });
 }
 
