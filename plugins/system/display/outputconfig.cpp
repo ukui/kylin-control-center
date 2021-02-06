@@ -22,6 +22,8 @@
 #define SCALE_SCHEMAS "org.ukui.SettingsDaemon.plugins.xsettings"
 #define SCALE_KEY     "scaling-factor"
 
+const QSize KRsolution(1920, 1080);
+
 OutputConfig::OutputConfig(QWidget *parent)
     : QWidget(parent)
     , mOutput(nullptr)
@@ -259,7 +261,10 @@ void OutputConfig::slotResolutionChanged(const QSize &size)
 
     for (int i = 0, total = modes.count(); i < total; ++i) {
         const KScreen::ModePtr mode = modes.at(i);
-        mRefreshRate->addItem(tr("%1 Hz").arg(QLocale().toString(mode->refreshRate())), mode->id());
+        if (!(mode->size() == KRsolution && mode->refreshRate() < 50.0)) {
+            mRefreshRate->addItem(tr("%1 Hz").arg(QLocale().toString(mode->refreshRate())), mode->id());
+        }
+
         // If selected refresh rate is other then what we consider the "Auto" value
         // - that is it's not the highest resolution - then select it, otherwise
         // we stick with "Auto"
