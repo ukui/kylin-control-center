@@ -30,12 +30,12 @@
 #include <QPainter>
 #include <QPropertyAnimation>
 #include <QVariantMap>
+#include <QGSettings/QGSettings>
 
 #include "interface.h"
 #include "homepagewidget.h"
 #include "modulepagewidget.h"
 #include "searchwidget.h"
-
 
 class QLabel;
 class QPushButton;
@@ -79,7 +79,7 @@ private:
     QList<QMap<QString, QObject *>> modulesList;
 
     KeyValueConverter * kvConverter;
-    SearchWidget * m_searchWidget;
+    SearchWidget      * m_searchWidget;
 
     QPushButton *backBtn;
     QPushButton *mOptionBtn;
@@ -97,6 +97,8 @@ private:
     bool              m_isSearching;
     QString           m_searchKeyWords;
     QVariantMap       m_ModuleMap;
+    QGSettings       *m_fontSetting;
+
 
 private:
     void initUI();
@@ -110,6 +112,7 @@ private:
     bool dblOnEdge(QMouseEvent *event);
     void initStyleSheet();
     bool isExitBluetooth();
+    void changeSearchSlot();
 
 public slots:
     void functionBtnClicked(QObject * plugin);

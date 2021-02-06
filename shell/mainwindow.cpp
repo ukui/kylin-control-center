@@ -70,7 +70,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_searchWidget(nullptr)
 {
     mate_mixer_init();
-    // 设置初始大小
     this->setMinimumSize(895, 600);
     logoLabel  = new QLabel(tr("Settings"), this);
     initUI();
@@ -238,9 +237,10 @@ void MainWindow::initUI() {
     this->installEventFilter(this);
 
     const QByteArray id("org.ukui.style");
-    QGSettings * fontSetting = new QGSettings(id, QByteArray(), this);
-    connect(fontSetting, &QGSettings::changed,[=](QString key) {
+    m_fontSetting = new QGSettings(id, QByteArray(), this);
+    connect(m_fontSetting, &QGSettings::changed, this, [=](QString key) {
         if ("systemFont" == key || "systemFontSize" ==key) {
+            changeSearchSlot();
             QFont font = this->font();
             int width = font.pointSize();
             for (auto widget : qApp->allWidgets()) {
@@ -392,7 +392,7 @@ void MainWindow::initTileBar() {
 
     titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
-    m_searchWidget->setFixedHeight(32);
+    changeSearchSlot();
     m_searchWidget->setFixedWidth(350);
 
     ui->titleLayout->addWidget(mTitleIcon);
@@ -795,6 +795,11 @@ bool MainWindow::isExitBluetooth() {
     }
 
     return isDevice && isAddress;
+}
+
+void MainWindow::changeSearchSlot() {
+    int fontSize = m_fontSetting->get("system-font-size").toInt();
+    m_searchWidget->setFixedHeight((fontSize - 11) * 2 + 32);
 }
 
 void MainWindow::setModuleBtnHightLight(int id) {
