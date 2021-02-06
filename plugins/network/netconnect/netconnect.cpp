@@ -426,9 +426,9 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
         for (int i = 1; i < getwifislist.size(); i ++) {
             QString line = getwifislist.at(i);
 
-            QString wsignal = line.mid(0, indexName).trimmed();
-            QString wname = line.mid(indexName, indexLock - indexName).trimmed();
-            QString lockType = line.mid(indexLock).trimmed();
+            QString wsignal  = line.mid(0, indexLock).trimmed();
+            QString lockType = line.mid(indexLock, indexName -indexLock).trimmed();
+            QString wname    = line.mid(indexName).trimmed();
 
             // 过滤重复wifi
             if (wnames.contains(wname, Qt::CaseInsensitive)) {

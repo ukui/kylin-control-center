@@ -11,7 +11,7 @@ NetconnectWork::~NetconnectWork() {
 
 void NetconnectWork::run() {
     QProcess *wifiPro = new QProcess(this);
-    wifiPro->start("nmcli -f signal,ssid,security device wifi");
+    wifiPro->start("nmcli -f signal,security,ssid, device wifi");
     wifiPro->waitForFinished();
     QString shellOutput = "";
     QString output = wifiPro->readAll();
