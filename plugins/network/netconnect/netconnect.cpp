@@ -35,7 +35,7 @@
 #define ITEMHEIGH           50
 #define CONTROL_CENTER_WIFI "org.ukui.control-center.wifi.switch"
 
-const QString KWifiSymbolic     = "network-wireless-excellent";
+const QString KWifiSymbolic     = "network-wireless-signal-excellent";
 const QString KWifiLockSymbolic = "network-wireless-secure-signal-excellent";
 const QString KWifiGood         = "network-wireless-signal-good";
 const QString KWifiLockGood     = "network-wireless-secure-signal-good";
@@ -408,7 +408,6 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
 
         int index = 0;
         while (act[index].con_name != NULL) {
-
             if (QString(act[index].type) == "wifi"
                     || QString(act[index].type) == "802-11-wireless") {
                 actWifiName = QString(act[index].con_name);
@@ -427,31 +426,24 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
         for (int i = 1; i < getwifislist.size(); i ++) {
             QString line = getwifislist.at(i);
 
-
             QString wsignal = line.mid(0, indexName).trimmed();
             QString wname = line.mid(indexName, indexLock - indexName).trimmed();
             QString lockType = line.mid(indexLock).trimmed();
 
-            bool isContinue = false;
-            foreach (QString addName, wnames) {
-                // 重复的网络名称，跳过不处理
-                if (addName == wname) {
-                    isContinue = true;
-                }
-            }
-            if (isContinue) {
+            // 过滤重复wifi
+            if (wnames.contains(wname, Qt::CaseInsensitive)) {
                 continue;
             }
 
-            if (wname != "" && wname != "--") {
+            if (!wname.isEmpty() && wname != "--") {
                 int strength = this->setSignal(wsignal);
                 if (wname == actWifiName) {
-                    if ("--" != lockType) {
+                    if ("--" != lockType && !lockType.isEmpty()) {
                         wname += "lock";
                     }
                     connectedWifi.insert(wname, strength);
                 }
-                if ("--" != lockType) {
+                if ("--" != lockType && !lockType.isEmpty()) {
                     wname += "lock";
                 }
                 wifiList.insert(wname, strength);
@@ -507,7 +499,6 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
         bool isLock = connectedWifiName.contains("lock");
         connectedWifiName = isLock ? connectedWifiName.remove("lock") : connectedWifiName;
         QString iconamePah = wifiIcon(isLock, strength);
-
         rebuildNetStatusComponent(iconamePah, connectedWifiName);
     }
     if (!this->actLanName.isEmpty()) {

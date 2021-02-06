@@ -12,8 +12,7 @@
 extern "C"{
 #endif
 
-typedef struct
-{
+typedef struct {
     char *con_name;//活动网络连接名称
     char *type;//活动网络连接类型
     char *dev;//活动网络所属设备
