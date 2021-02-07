@@ -160,6 +160,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="125"/>
+        <source>Desktop files(*.desktop)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="132"/>
         <source>select autoboot desktop</source>
         <translation type="unfinished"></translation>
@@ -440,17 +445,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="153"/>
-        <source>display format area</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="155"/>
-        <source>format of area</source>
-        <translation type="unfinished"></translation>
-        <extra-contents_path>/area/format of area</extra-contents_path>
-    </message>
-    <message>
         <location filename="../../../plugins/time-language/area/area.cpp" line="157"/>
         <source>first day of week</source>
         <translation type="unfinished"></translation>
@@ -467,6 +461,17 @@
         <location filename="../../../plugins/time-language/area/area.cpp" line="163"/>
         <source>system language</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="153"/>
+        <source>country</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="155"/>
+        <source>regional format</source>
+        <translation type="unfinished"></translation>
+        <extra-contents_path>/area/regional format</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.cpp" line="165"/>
@@ -827,78 +832,83 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="297"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="313"/>
         <source>Pwd type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="372"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="388"/>
         <source>Cur pwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="404"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="420"/>
         <source>New pwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="449"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="465"/>
         <source>New pwd sure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="542"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="558"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="564"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="580"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="73"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="64"/>
         <source>Change pwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="248"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="167"/>
         <source>General Pwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="254"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="416"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="173"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="376"/>
         <source>Current Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="255"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="417"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="425"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="174"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="377"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="385"/>
         <source>New Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="256"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="418"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="426"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="175"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="378"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="386"/>
         <source>New Password Identify</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="271"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="390"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="183"/>
+        <source>Pwd input error, re-enter!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="232"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="352"/>
         <source>Inconsistency with pwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="357"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="314"/>
         <source>Contains illegal characters!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="359"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="316"/>
         <source>Same with old pwd</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1322,25 +1332,18 @@ change system settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/datetime.ui" line="185"/>
-        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="139"/>
-        <source>Sync network time</source>
-        <translation type="unfinished"></translation>
-        <extra-contents_path>/dat/Sync network time</extra-contents_path>
-    </message>
-    <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="204"/>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="141"/>
         <source>Change time</source>
         <translation type="unfinished"></translation>
-        <extra-contents_path>/dat/Change time</extra-contents_path>
+        <extra-contents_path>/date/Change time</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="223"/>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="143"/>
         <source>Change time zone</source>
         <translation type="unfinished"></translation>
-        <extra-contents_path>/dat/Change time zone</extra-contents_path>
+        <extra-contents_path>/date/Change time zone</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="303"/>
@@ -1349,14 +1352,21 @@ change system settings</source>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="47"/>
-        <source>Dat</source>
+        <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="59"/>
         <source>24-hour clock</source>
         <translation type="unfinished"></translation>
-        <extra-contents_path>/dat/24-hour clock</extra-contents_path>
+        <extra-contents_path>/date/24-hour clock</extra-contents_path>
+    </message>
+    <message>
+        <location filename="../../../plugins/time-language/datetime/datetime.ui" line="185"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="139"/>
+        <source>Sync from network</source>
+        <translation type="unfinished"></translation>
+        <extra-contents_path>/date/Sync from network</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="251"/>
@@ -2804,67 +2814,67 @@ Please retry or relogin!</source>
     <name>MainWindow</name>
     <message>
         <location filename="../../mainwindow.cpp" line="74"/>
-        <location filename="../../mainwindow.cpp" line="372"/>
+        <location filename="../../mainwindow.cpp" line="376"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="352"/>
+        <location filename="../../mainwindow.cpp" line="356"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="381"/>
+        <location filename="../../mainwindow.cpp" line="385"/>
         <source>Main menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="382"/>
+        <location filename="../../mainwindow.cpp" line="386"/>
         <source>Minimize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="383"/>
+        <location filename="../../mainwindow.cpp" line="387"/>
         <source>Maximize/Normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="384"/>
+        <location filename="../../mainwindow.cpp" line="388"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="428"/>
+        <location filename="../../mainwindow.cpp" line="446"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="430"/>
+        <location filename="../../mainwindow.cpp" line="448"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="432"/>
+        <location filename="../../mainwindow.cpp" line="450"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="558"/>
+        <location filename="../../mainwindow.cpp" line="576"/>
         <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="824"/>
+        <location filename="../../mainwindow.cpp" line="847"/>
         <source>Warnning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="824"/>
+        <location filename="../../mainwindow.cpp" line="847"/>
         <source>This function has been controlled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="727"/>
+        <location filename="../../mainwindow.cpp" line="745"/>
         <source>ukcc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3083,9 +3093,9 @@ Please retry or relogin!</source>
     <message>
         <location filename="../../../plugins/messages-task/notice/notice.ui" line="91"/>
         <location filename="../../../plugins/messages-task/notice/notice.cpp" line="102"/>
-        <source>Set the type of notice in the operation center</source>
+        <source>Set notice type of operation center</source>
         <translation type="unfinished"></translation>
-        <extra-contents_path>/notice/Set the type of notice in the operation center</extra-contents_path>
+        <extra-contents_path>/notice/Set notice type of operation center</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/notice/notice.ui" line="153"/>
@@ -3118,64 +3128,64 @@ Please retry or relogin!</source>
 <context>
     <name>OutputConfig</name>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="77"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="79"/>
         <source>resolution</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/display/resolution</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="107"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="109"/>
         <source>orientation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="125"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="127"/>
         <source>arrow-up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="126"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="128"/>
         <source>90° arrow-right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="127"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="129"/>
         <source>arrow-down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="128"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="130"/>
         <source>90° arrow-left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="142"/>
-        <source>refresh rate</source>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="144"/>
+        <source>frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="159"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="161"/>
         <source>auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="173"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="175"/>
         <source>100%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="175"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="177"/>
         <source>200%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="180"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="182"/>
         <source>screen zoom</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/display/screen zoom</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="262"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="265"/>
         <source>%1 Hz</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3228,7 +3238,7 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="167"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="143"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="144"/>
         <source>Balance (suggest)</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/power/Balance (suggest)</extra-contents_path>
@@ -3240,7 +3250,7 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="277"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="145"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="146"/>
         <source>Saving</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/power/Saving</extra-contents_path>
@@ -3252,7 +3262,7 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="395"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="147"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="148"/>
         <source>Custom</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/power/Custom</extra-contents_path>
@@ -3274,15 +3284,15 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="611"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="337"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="483"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="343"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="489"/>
         <source>Change PC sleep time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="713"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="354"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="484"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="360"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="490"/>
         <source>Change DP close time:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3312,118 +3322,118 @@ Please retry or relogin!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="180"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="181"/>
         <source>Enter idle state %1 min and sleep after %2 min :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="184"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="185"/>
         <source>Enter idle state %1 min and close after %2 min :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="203"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="213"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="232"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="209"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="219"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="238"/>
         <source>never</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="203"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="213"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="232"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="209"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="219"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="238"/>
         <source>10 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="203"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="213"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="232"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="209"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="219"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="238"/>
         <source>20 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="203"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="213"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="209"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="219"/>
         <source>30 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="203"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="213"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="209"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="219"/>
         <source>60 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="203"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="213"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="209"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="219"/>
         <source>120 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="203"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="209"/>
         <source>300 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="213"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="232"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="219"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="238"/>
         <source>1 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="213"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="232"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="219"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="238"/>
         <source>5 min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="224"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="230"/>
         <source>nothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="224"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="230"/>
         <source>blank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="224"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="230"/>
         <source>suspend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="224"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="230"/>
         <source>hibernate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="224"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="230"/>
         <source>shutdown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="245"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="251"/>
         <source>always</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="245"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="251"/>
         <source>present</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="245"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="251"/>
         <source>charge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="516"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="522"/>
         <source>When the power button is pressed:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="538"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="544"/>
         <source>Perform operations when battery is low:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3651,11 +3661,6 @@ Please retry or relogin!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="169"/>
-        <source>Dat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../utils/functionselect.cpp" line="186"/>
         <source>Security Center</source>
         <translation type="unfinished"></translation>
@@ -3673,6 +3678,11 @@ Please retry or relogin!</source>
     <message>
         <location filename="../../utils/functionselect.cpp" line="154"/>
         <source>Cloud Account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../utils/functionselect.cpp" line="169"/>
+        <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3852,7 +3862,7 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="199"/>
-        <source>Custom Shortcut</source>
+        <source>Customize Shortcut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3973,61 +3983,55 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="121"/>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.cpp" line="448"/>
-        <source>Pwd input error, re-enter!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="298"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="300"/>
         <source>min length %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="308"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="310"/>
         <source>min digit num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="317"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="319"/>
         <source>min upper num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="326"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="328"/>
         <source>min lower num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="335"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="337"/>
         <source>min other num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="345"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="347"/>
         <source>min char class %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="354"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="356"/>
         <source>max repeat %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="363"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="365"/>
         <source>max class repeat %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="372"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="374"/>
         <source>max sequence %1
 </source>
         <translation type="unfinished"></translation>
@@ -4467,13 +4471,17 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.ui" line="69"/>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="152"/>
         <source>Custom Shortcut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="74"/>
         <source>Shortcut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="152"/>
+        <source>Customize Shortcut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5331,7 +5339,7 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="141"/>
-        <source>refresh rate</source>
+        <source>frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5386,32 +5394,32 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="728"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="730"/>
         <source>Change pwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="715"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="717"/>
         <source>Change type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="222"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="125"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="127"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Password</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="287"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="127"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="129"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Type</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="352"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="129"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="131"/>
         <source>Valid</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Valid</extra-contents_path>
@@ -5423,14 +5431,14 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="529"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="131"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="133"/>
         <source>Login no passwd</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Login no passwd</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="607"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="133"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="135"/>
         <source>enable autoLogin</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/enable autoLogin</extra-contents_path>
@@ -5446,42 +5454,42 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="61"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="63"/>
         <source>User Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="139"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="141"/>
         <source>Standard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="141"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="143"/>
         <source>Admin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="143"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="145"/>
         <source>root</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="410"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="412"/>
         <source>Add new user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="746"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="748"/>
         <source>Del</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="866"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="868"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="866"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="868"/>
         <source>The user is logged in, please delete the user after logging out</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5745,6 +5753,11 @@ Common reasons are that the overall screen size is too big, or you enabled more 
     <message>
         <location filename="../../../plugins/devices/shortcut/addshortcutdialog.cpp" line="37"/>
         <source>Add custom shortcut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.cpp" line="148"/>
+        <source>Desktop files(*.desktop)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

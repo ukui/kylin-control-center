@@ -150,9 +150,9 @@ void Area::run_external_app_slot() {
 void Area::initUI() {
     //~ contents_path /area/current area
     ui->titleLabel->setText(tr("current area"));
-    ui->countrylabel->setText(tr("display format area"));
-    //~ contents_path /area/format of area
-    ui->title2Label->setText(tr("format of area"));
+    ui->countrylabel->setText(tr("country"));
+    //~ contents_path /area/regional format
+    ui->title2Label->setText(tr("regional format"));
     ui->calendarlabel->setText(tr("calendar"));
     ui->weeklabel->setText(tr("first day of week"));
     ui->datelabel->setText(tr("date"));

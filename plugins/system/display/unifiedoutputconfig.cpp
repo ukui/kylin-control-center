@@ -138,7 +138,7 @@ void UnifiedOutputConfig::initUi()
     mRefreshRate->setMaximumSize(16777215,30);
 
     QLabel *freshLabel = new QLabel(this);
-    freshLabel->setText(tr("refresh rate"));
+    freshLabel->setText(tr("frequency"));
     freshLabel->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     freshLabel->setMinimumSize(118,30);
     freshLabel->setMaximumSize(118,30);

@@ -44,7 +44,7 @@ DateTime::DateTime() {
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
 
-    pluginName = tr("Dat");
+    pluginName = tr("Date");
     pluginType = DATETIME;
     initTitleLabel();
 
@@ -55,7 +55,7 @@ DateTime::DateTime() {
     connect(m_itimer,SIGNAL(timeout()), this, SLOT(datetime_update_slot()));
 
     m_formTimeBtn = new SwitchButton;
-    //~ contents_path /dat/24-hour clock
+    //~ contents_path /date/24-hour clock
     m_formTimeLabel = new QLabel(tr("24-hour clock"));
 
     // 初始化gsettings
@@ -121,7 +121,7 @@ void DateTime::plugin_delay_control() {
 
 const QString DateTime::name() const {
 
-    return QStringLiteral("dat");
+    return QStringLiteral("date");
 }
 
 void DateTime::initTitleLabel() {
@@ -135,11 +135,11 @@ void DateTime::component_init() {
     ui->titleLabel->setContentsMargins(0,0,0,16);
     ui->timeClockLable->setContentsMargins(0,0,0,16);
 
-    //~ contents_path /dat/Sync network time
-    ui->synsystimeBtn->setText(tr("Sync network time"));
-    //~ contents_path /dat/Change time
+    //~ contents_path /date/Sync from network
+    ui->synsystimeBtn->setText(tr("Sync from network"));
+    //~ contents_path /date/Change time
     ui->chgtimebtn->setText(tr("Change time"));
-    //~ contents_path /dat/Change time zone
+    //~ contents_path /date/Change time zone
     ui->chgzonebtn->setText(tr("Change time zone"));
 
     ui->chgLayout->setSpacing(16);

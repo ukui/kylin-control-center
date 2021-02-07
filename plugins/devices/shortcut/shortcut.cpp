@@ -149,7 +149,7 @@ void Shortcut::connectToServer(){
 
 void Shortcut::setupComponent(){
     ui->systemLabel->setText(tr("System Shortcut"));
-    ui->customLabel->setText(tr("Custom Shortcut"));
+    ui->customLabel->setText(tr("Customize Shortcut"));
 
     ui->customListWidget->setFocusPolicy(Qt::NoFocus);
     ui->customListWidget->setSelectionMode(QAbstractItemView::NoSelection);
@@ -196,7 +196,7 @@ void Shortcut::setupComponent(){
 void Shortcut::setupConnect(){
 
     connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname){
-        addDialog->setTitleText(QObject::tr("Custom Shortcut"));
+        addDialog->setTitleText(QObject::tr("Customize Shortcut"));
         addDialog->exec();
     });
 

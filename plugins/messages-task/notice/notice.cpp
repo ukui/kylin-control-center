@@ -98,8 +98,8 @@ void Notice::initTitleLabel() {
 }
 
 void Notice::initSearchText() {
-    //~ contents_path /notice/Set the type of notice in the operation center
-    ui->noticeLabel->setText(tr("Set the type of notice in the operation center"));
+    //~ contents_path /notice/Set notice type of operation center
+    ui->noticeLabel->setText(tr("Set notice type of operation center"));
     //~ contents_path /notice/Notice Origin
     ui->title2Label->setText(tr("Notice Origin"));
 }

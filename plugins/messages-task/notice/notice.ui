@@ -88,7 +88,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Set the type of notice in the operation center</string>
+         <string>Set notice type of operation center</string>
         </property>
        </widget>
       </item>
