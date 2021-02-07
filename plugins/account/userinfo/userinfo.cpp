@@ -852,8 +852,8 @@ void UserInfo::pwdAndAutoChangedSlot(QString key) {
         //更新所有用户信息
         _acquireAllUsersInfo();
 
-        //重置其他用户ListWidget高度
-        _resetListWidgetHeigh();
+        //更新界面显示
+        _refreshUserInfoUI();
     }
 }
 
