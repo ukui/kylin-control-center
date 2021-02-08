@@ -45,7 +45,7 @@ extern "C" {
 
 typedef struct _Applist
 {
-    char *appid;
+    QString strAppid;
 }AppList;// 用于存放应用列表
 
 typedef struct _AppInfo
@@ -86,9 +86,9 @@ public:
     void connectToServer();
 
 private:
-    char    * getDefaultAppId(const char * contentType);
-    AppList * getAppIdList(const char * contentType);
-    static Appinfo * _getAppList(const char *contentType);
+    QString getDefaultAppId(const char * contentType);
+    QVector<AppList> getAppIdList(const char * contentType);
+    static QVector<Appinfo> _getAppList(const char *contentType);
 
 private:
     Ui::DefaultAppWindow * ui;

@@ -116,10 +116,10 @@ void DefaultApp::initUI() {
         // BROWSER
         int browserindex = -1;
         QString currentbrowser(getDefaultAppId(BROWSERTYPE)); //获取当前
-        AppList * list = getAppIdList(BROWSERTYPE); //获取可选列表
-        if (list) {
-            for (int i = 0; list[i].appid != NULL; i++) {
-                QString single(list[i].appid);
+        QVector<AppList> list = getAppIdList(BROWSERTYPE); //获取可选列表
+        if (!list.isEmpty()) {
+            for (int i = 0; i < list.size(); i++) {
+                QString single(list[i].strAppid);
                 QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
                 GDesktopAppInfo * browserinfo = g_desktop_app_info_new_from_filename(ba.constData());
                 QString appname = g_app_info_get_name(G_APP_INFO(browserinfo));
@@ -135,19 +135,16 @@ void DefaultApp::initUI() {
                 if(single.contains("firefox")) {
                     mDefaultBrowser = appname;
                 }
-
-                free(list[i].appid);
             }
-            free(list);
         }
 
         // MAIL
         int mailindex = -1;
         QString currentmail(getDefaultAppId(MAILTYPE));
-        AppList * maillist = getAppIdList(MAILTYPE);
-        if (maillist) {
-            for (int i = 0; maillist[i].appid != NULL; i++) {
-                QString single(maillist[i].appid);
+        QVector<AppList> maillist = getAppIdList(MAILTYPE);
+        if (!maillist.isEmpty()) {
+            for (int i = 0; i < maillist.size(); i++) {
+                QString single(maillist[i].strAppid);
                 QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
                 GDesktopAppInfo * mailinfo = g_desktop_app_info_new_from_filename(ba.constData());
                 QString appname = g_app_info_get_name(G_APP_INFO(mailinfo));
@@ -163,24 +160,21 @@ void DefaultApp::initUI() {
                 if ("claws-mail.desktop" == single) {
                     mDefaultMail = appname;
                 }
-
-                free(maillist[i].appid);
             }
-            free(maillist);
         }
 
         // IMAGE
         int imageindex = -1;
         QStringList browserList;
         QString currentimage(getDefaultAppId(IMAGETYPE));
-        AppList * imagelist = getAppIdList(IMAGETYPE);
+        QVector<AppList> imagelist = getAppIdList(IMAGETYPE);
 
         for(int i = 0; i < ui->browserComBoBox->count(); i++){
             browserList << ui->browserComBoBox->itemText(i);
         }
-        if (imagelist) {
-            for (int i = 0; imagelist[i].appid != NULL; i++) {
-                QString single(imagelist[i].appid);
+        if (!imagelist.isEmpty()) {
+            for (int i = 0; i < imagelist.size(); i++) {
+                QString single(imagelist[i].strAppid);
                 QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
                 GDesktopAppInfo * imageinfo = g_desktop_app_info_new_from_filename(ba.constData());
                 QString appname = g_app_info_get_name(G_APP_INFO(imageinfo));
@@ -190,7 +184,6 @@ void DefaultApp::initUI() {
 
                 if(!browserList.contains(appname)){
                     ui->imageComBoBox->addItem(appicon, appname, single);
-                    free(imagelist[i].appid);
                 }
 
                 if ("eom.desktop" == single) {
@@ -198,7 +191,6 @@ void DefaultApp::initUI() {
                 }
 
             }
-            free(imagelist);
         }
         for(int i = 0; i < ui->imageComBoBox->count(); i++){
             if(currentimage == ui->imageComBoBox->itemData(i)){
@@ -210,10 +202,10 @@ void DefaultApp::initUI() {
         // AUDIO
         int audioindex = -1;
         QString currentaudio(getDefaultAppId(AUDIOTYPE));
-        AppList * audiolist = getAppIdList(AUDIOTYPE);
-        if (audiolist) {
-            for (int i = 0; audiolist[i].appid != NULL; i++) {
-                QString single(audiolist[i].appid);
+        QVector<AppList> audiolist = getAppIdList(AUDIOTYPE);
+        if (!audiolist.isEmpty()) {
+            for (int i = 0; i < audiolist.size(); i++) {
+                QString single(audiolist[i].strAppid);
                 QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
                 GDesktopAppInfo * audioinfo = g_desktop_app_info_new_from_filename(ba.constData());
                 QString appname = g_app_info_get_name(G_APP_INFO(audioinfo));
@@ -229,19 +221,16 @@ void DefaultApp::initUI() {
                 if ("kylin-music.desktop" == single) {
                     mDefaultAdudio = appname;
                 }
-
-                free(audiolist[i].appid);
             }
-            free(audiolist);
         }
 
         // VIDEO
         int videoindex =-1;
         QString currentvideo(getDefaultAppId(VIDEOTYPE));
-        AppList * videolist = getAppIdList(VIDEOTYPE);
-        if (videolist) {
-            for (int i = 0; videolist[i].appid != NULL; i++) {
-                QString single(videolist[i].appid);
+        QVector<AppList> videolist = getAppIdList(VIDEOTYPE);
+        if (!videolist.isEmpty()) {
+            for (int i = 0; i< videolist.size(); i++) {
+                QString single(videolist[i].strAppid);
                 QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
                 GDesktopAppInfo * videoinfo = g_desktop_app_info_new_from_filename(ba.constData());
                 QString appname = g_app_info_get_name(G_APP_INFO(videoinfo));
@@ -257,19 +246,16 @@ void DefaultApp::initUI() {
                 if ("kylin-video.desktop" == single) {
                     mDefaultVideo = appname;
                 }
-
-                free(videolist[i].appid);
             }
-            free(videolist);
         }
 
         // TEXT
         int textindex = -1;
         QString currenttext(getDefaultAppId(TEXTTYPE));
-        AppList * textlist = getAppIdList(TEXTTYPE);
-        if (textlist){
-            for (int i = 0; textlist[i].appid != NULL; i++) {
-                QString single(textlist[i].appid);
+        QVector<AppList> textlist = getAppIdList(TEXTTYPE);
+        if (!textlist.isEmpty()){
+            for (int i = 0; i < textlist.size(); i++) {
+                QString single(textlist[i].strAppid);
                 QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
                 GDesktopAppInfo * textinfo = g_desktop_app_info_new_from_filename(ba.constData());
                 QString appname = g_app_info_get_name(G_APP_INFO(textinfo));
@@ -285,10 +271,7 @@ void DefaultApp::initUI() {
                 if ("pluma.desktop" == single) {
                     mDefaultText = appname;
                 }
-
-                free(textlist[i].appid);
             }
-            free(textlist);
         }
         isCloudEmitted = false;
     });
@@ -425,80 +408,61 @@ void DefaultApp::resetDefaultApp() {
     }
 }
 
-char * DefaultApp::getDefaultAppId(const char * contentType) {
+QString DefaultApp::getDefaultAppId(const char * contentType) {
     GAppInfo * app = g_app_info_get_default_for_type(contentType, false);
     if(app != NULL){
         const char * id = g_app_info_get_id(app);
-        if(id != NULL){
-            gint len = strlen(id);
-            char * appid = (char *)malloc(sizeof(char)*(len+1));
-            strcpy(appid,id);
-            return appid;
-        } else {
-            return NULL;
-        }
+        QString strId(id);
+        return strId;
     } else {
-        return NULL;
+        return QString("");
     }
 }
 
-AppList * DefaultApp::getAppIdList(const char *contentType) {
-    Appinfo *appinfo = _getAppList(contentType);
-    if (appinfo != NULL) {
-        int i = 0;
-        while(appinfo[i].item != NULL)
-            i++;
-        AppList *list = (AppList *)malloc(sizeof(AppList)*(i+1));
-        int count = i;
-        int index = 0;
-        for(gint j = 0;appinfo[j].item != NULL;j++) {
+QVector<AppList> DefaultApp::getAppIdList(const char *contentType) {
+    QVector<AppList> appList;
+    appList.clear();
+    QVector<Appinfo> appinfo = _getAppList(contentType);
+    if (!appinfo.isEmpty()) {
+        for(int j = 0; j < appinfo.size(); j++) {
             const char *id = g_app_info_get_id(appinfo[j].item);
             if (id != NULL) {
-                int len = strlen(id);
-                list[index].appid = (char *)malloc(sizeof(char)*(len+1));
-                strcpy(list[index].appid,id);
-                index++;
-            } else {
-                free(list+count);
-                count--;
+                AppList al;
+                al.strAppid = QString(id);
+                appList.append(al);
             }
         }
-        list[count].appid=NULL;
-        free(appinfo);
-        return list;
-    } else {
-        return NULL;
     }
+    return appList;
 }
 
-Appinfo * DefaultApp::_getAppList(const char *contentType) {
+QVector<Appinfo> DefaultApp::_getAppList(const char *contentType) {
     GList *applist;
     applist = g_app_info_get_all_for_type(contentType);
     GAppInfo * item;
+    QVector<Appinfo> appinfo;
+    appinfo.clear();
 
     if (applist != NULL) {
         int len = g_list_length(applist);
-        Appinfo * appinfo=(Appinfo *)malloc(sizeof(Appinfo)*(len+1));
 
         //获取应用列表
         for (int index=0; index < len; index++) {
             item = (GAppInfo*) g_list_nth_data(applist, index);
-            appinfo[index].item=item;
+            Appinfo ai;
+            ai.item = item;
+            appinfo.append(ai);
         }
-        appinfo[len].item=NULL;
-        return appinfo;
-
-    } else {
-        return NULL;
-    }
+    } 
+    return appinfo;
 }
 
 bool DefaultApp::setWebBrowsersDefaultProgram(char * appid) {
     const char * content_type = "x-scheme-handler/http";
-    Appinfo * appinfo = _getAppList(content_type);
+    QVector<Appinfo> appinfo = _getAppList(content_type);
     bool judge = false;
-    if (appinfo != NULL) {
-        for(int i = 0; appinfo[i].item != NULL; i++) {
+    if (!appinfo.isEmpty()) {
+        for(int i = 0; i < appinfo.size(); i++) {
             const char *id = g_app_info_get_id(appinfo[i].item);
             int result = strcmp(id,appid);
             if (0 == result) {
@@ -512,18 +476,17 @@ bool DefaultApp::setWebBrowsersDefaultProgram(char * appid) {
                 break;
             }
         }
-        free(appinfo);
     }
     return judge;
 }
 
 bool DefaultApp::setMailReadersDefaultProgram(char *appid) {
     const char *content_type="x-scheme-handler/mailto";
-    Appinfo *appinfo=_getAppList(content_type);
+    QVector<Appinfo> appinfo = _getAppList(content_type);
 
     bool judge = false;
-    if (appinfo != NULL) {
-        for (int i = 0; appinfo[i].item != NULL; i++) {
+    if (!appinfo.isEmpty()) {
+        for (int i = 0; i < appinfo.size(); i++) {
             const char * id = g_app_info_get_id(appinfo[i].item);
             int result=strcmp(id,appid);
             if (0 == result) {
@@ -536,18 +499,17 @@ bool DefaultApp::setMailReadersDefaultProgram(char *appid) {
                 break;
             }
         }
-        free(appinfo);
     }
     return judge;
 }
 
 bool DefaultApp::setImageViewersDefaultProgram(char *appid) {
     const char *content_type="image/png";
-    Appinfo *appinfo = _getAppList(content_type);
+    QVector<Appinfo> appinfo = _getAppList(content_type);
 
     bool judge = false;
-    if (appinfo != NULL) {
-        for (int i=0;appinfo[i].item!=NULL;i++){
+    if (!appinfo.isEmpty()) {
+        for (int i=0; i < appinfo.size();i++){
             const char *id = g_app_info_get_id(appinfo[i].item);
             int result = strcmp(id, appid);
             if (0 == result) {
@@ -562,7 +524,6 @@ bool DefaultApp::setImageViewersDefaultProgram(char *appid) {
                 break;
             }
         }
-        free(appinfo);
     }
 
     return judge;
@@ -570,11 +531,11 @@ bool DefaultApp::setImageViewersDefaultProgram(char *appid) {
 
 bool DefaultApp::setVideoPlayersDefaultProgram(char *appid) {
     const char *content_type = "video/x-ogm+ogg";
-    Appinfo * appinfo = _getAppList(content_type);
+    QVector<Appinfo> appinfo = _getAppList(content_type);
 
     bool judge = false;
-    if (appinfo != NULL) {
-        for(int i = 0; appinfo[i].item != NULL; i++) {
+    if (!appinfo.isEmpty()) {
+        for(int i = 0; i < appinfo.size(); i++) {
             const char *id = g_app_info_get_id(appinfo[i].item);
             int result = strcmp(id,appid);
             if (0 == result) {
@@ -632,18 +593,17 @@ bool DefaultApp::setVideoPlayersDefaultProgram(char *appid) {
                 break;
             }
         }
-        free(appinfo);
     }
     return judge;
 }
 
 bool DefaultApp::setAudioPlayersDefaultProgram(char *appid) {
     const char *content_type = "audio/x-vorbis+ogg";
-    Appinfo * appinfo = _getAppList(content_type);
+    QVector<Appinfo> appinfo = _getAppList(content_type);
 
     bool judge = false;
-    if (appinfo != NULL) {
-        for(int i = 0; appinfo[i].item != NULL ;i++) {
+    if (!appinfo.isEmpty()) {
+        for(int i = 0; i < appinfo.size() ;i++) {
             const char *id = g_app_info_get_id(appinfo[i].item);
             int result = strcmp(id,appid);
             if (0 == result) {
@@ -675,18 +635,17 @@ bool DefaultApp::setAudioPlayersDefaultProgram(char *appid) {
                 break;
             }
         }
-        free(appinfo);
     }
     return judge;
 }
 
 bool DefaultApp::setTextEditorsDefautlProgram(char *appid) {
     const char * content_type = "text/plain";
-    Appinfo * appinfo = _getAppList(content_type);
+    QVector<Appinfo> appinfo = _getAppList(content_type);
 
     bool judge = false;
-    if (appinfo != NULL) {
-        for (int i = 0; appinfo[i].item != NULL; i++) {
+    if (!appinfo.isEmpty()) {
+        for (int i = 0;i < appinfo.size(); i++) {
             const char * id = g_app_info_get_id(appinfo[i].item);
             int result = strcmp(id,appid);
             if (0 == result) {
@@ -697,7 +656,6 @@ bool DefaultApp::setTextEditorsDefautlProgram(char *appid) {
                 break;
             }
         }
-        free(appinfo);
     }
 
     return judge;
