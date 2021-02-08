@@ -30,12 +30,10 @@ PKGCONFIG += gsettings-qt \
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
-    kylin_network_interface.c \
     netconnect.cpp \
     netconnectwork.cpp
 
 HEADERS += \
-    kylin_network_interface.h \
     netconnect.h \
     netconnectwork.h
 

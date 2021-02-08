@@ -396,8 +396,10 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
 
     clearContent();
 
-    QString lockPath = QDir::homePath() + "/.config/control-center-net";
-    activecon *act = kylin_network_get_activecon_info(lockPath.toUtf8().data());
+    //QString lockPath = QDir::homePath() + "/.config/control-center-net";
+    QList<ActiveConInfo> lsActiveInfo;
+    lsActiveInfo.clear();
+    getActiveConInfo(lsActiveInfo);
 
     // If is wifi list
     if (!getwifislist.isEmpty()){
@@ -407,10 +409,10 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
         QString actWifiName = "--";
 
         int index = 0;
-        while (act[index].con_name != NULL) {
-            if (QString(act[index].type) == "wifi"
-                    || QString(act[index].type) == "802-11-wireless") {
-                actWifiName = QString(act[index].con_name);
+        while (index < lsActiveInfo.size()) {
+            if (lsActiveInfo[index].strConType == "wifi"
+                    || lsActiveInfo[index].strConType == "802-11-wireless") {
+                actWifiName = QString(lsActiveInfo[index].strConName);
                 break;
             }
             index ++;
@@ -457,10 +459,10 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
         connectedLan.clear();
 
         int indexLan = 0;
-        while (act[indexLan].con_name != NULL) {
-            if (QString(act[indexLan].type) == "ethernet"
-                    || QString(act[indexLan].type) == "802-3-ethernet"){
-                actLanName = QString(act[indexLan].con_name);
+        while (indexLan < lsActiveInfo.size()) {
+            if (lsActiveInfo[indexLan].strConType == "ethernet"
+                    || lsActiveInfo[indexLan].strConType == "802-3-ethernet"){
+                actLanName = lsActiveInfo[indexLan].strConName;
                 break;
             }
             indexLan ++;
@@ -587,7 +589,7 @@ QString NetConnect::wifiIcon(bool isLock, int strength) {
 // Get wifi's strength
 int NetConnect::setSignal(QString lv) {
     int signal = lv.toInt();
-    int signalLv;
+    int signalLv = 0;
 
     if(signal > 75){
         signalLv = 1;
@@ -615,4 +617,26 @@ void NetConnect::wifiSwitchSlot(bool signal) {
     QTimer::singleShot(2*1000, this, SLOT(getNetList()));
 }
 
+void NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo)
+{
+    QString strCmd = "nmcli connection show -active";
+    QProcess subProcess(0);
+    subProcess.start(strCmd);
+    subProcess.waitForFinished();
 
+    int lineCount = 0;
+    while (subProcess.canReadLine()) {
+        QString strLine = subProcess.readLine();
+        QStringList lineList = strLine.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+        lineCount ++;
+        if(lineCount <= 1) {
+            continue;
+        }
+        ActiveConInfo aci;
+        aci.strConName = lineList.at(0);
+        aci.strConType = lineList.at(1);
+        aci.strConType = lineList.at(2);
+        aci.strConDev = lineList.at(3);
+        qlActiveConInfo.append(aci);
+    }
+}

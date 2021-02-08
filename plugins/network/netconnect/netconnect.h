@@ -64,6 +64,12 @@ namespace Ui {
 class NetConnect;
 }
 
+typedef struct ActiveConInfo_s {
+    QString strConName;
+    QString strConUUID;
+    QString strConType;
+    QString strConDev;
+}ActiveConInfo;
 
 class NetConnect : public QObject, CommonInterface
 {
@@ -92,6 +98,8 @@ public:
     void runKylinmApp();
 
     bool getwifiisEnable();
+
+    void getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo);
 
 private:
     Ui::NetConnect *ui;
