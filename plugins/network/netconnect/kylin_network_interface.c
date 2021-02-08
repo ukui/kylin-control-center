@@ -10,6 +10,7 @@ activecon *kylin_network_get_activecon_info(char *path) {
     if (status != 0) {
         syslog(LOG_ERR, "execute 'nmcli connection show -active' in function 'kylin_network_get_activecon_info' failed");
     }
+    free(cmd);
     char *filename = path;
 
     FILE *activefp;
