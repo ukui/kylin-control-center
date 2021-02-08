@@ -92,14 +92,14 @@ void GetShortcutWorker::run(){
 
     for (char * path : existsPath){
 
-        char * prepath = QString(KEYBINDINGS_CUSTOM_DIR).toLatin1().data();
-        char * fullpath = strcat(prepath, path);
+        QString strFullPath = QString(KEYBINDINGS_CUSTOM_DIR);
+        strFullPath.append(path);
 
         const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
-        const QByteArray bba(fullpath);
+        const QByteArray bba(strFullPath.toLatin1().data());
         QGSettings * settings = new QGSettings(ba, bba);
 
-        QString pathStr = QString(fullpath);
+        QString pathStr = strFullPath;
         QString actionStr = settings->get(ACTION_KEY).toString();
         QString bindingStr = settings->get(BINDING_KEY).toString();
         QString nameStr = settings->get(NAME_KEY).toString();

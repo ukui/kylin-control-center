@@ -367,12 +367,11 @@ void UkmediaMainWidget::comboboxCurrentTextInit()
     QList<char *> existsPath = listExistsPath();
 
     for (char * path : existsPath) {
-
-        char * prepath = QString(KEYBINDINGS_CUSTOM_DIR).toLatin1().data();
-        char * allpath = strcat(prepath, path);
+        QString strAllPath(KEYBINDINGS_CUSTOM_DIR);
+        strAllPath.append(path);
 
         const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
-        const QByteArray bba(allpath);
+        const QByteArray bba(strAllPath.toLatin1().data());
         if(QGSettings::isSchemaInstalled(ba))
         {
             QGSettings * settings = new QGSettings(ba, bba);
@@ -909,7 +908,7 @@ void UkmediaMainWidget::addDevice(UkmediaMainWidget *m_pWidget, MateMixerDevice 
 {
     g_debug("add device");
     const gchar *pName;
-    char *pLabel;
+    QString strLabel;
     const gchar *profileLabel = NULL;
     /*
          * const gchar *m_pLabel;
@@ -917,26 +916,26 @@ void UkmediaMainWidget::addDevice(UkmediaMainWidget *m_pWidget, MateMixerDevice 
         */
     m_pWidget->m_pDevice = pDevice;
     pName  = mate_mixer_device_get_name (pDevice);
-    pLabel = (char *)mate_mixer_device_get_label(pDevice);
+    strLabel = QString((char *)mate_mixer_device_get_label(pDevice));
 
     if (m_pWidget->m_pDeviceNameList->contains(pName) == false) {
         m_pWidget->m_pDeviceNameList->append(pName);
-        if (m_pWidget->m_pOutputWidget->m_pSelectCombobox->findText(pLabel)) {
+        if (m_pWidget->m_pOutputWidget->m_pSelectCombobox->findText(strLabel)) {
 
             if (strstr(pName,"hdmi")) {
-                strcat(pLabel," (HDMI)");
+                strLabel.append(" (HDMI)");
             }
             else if (strstr(pName,"dp")) {
-                strcat(pLabel," (DP)");
+                strLabel.append(" (DP)");
             }
             else if (strstr(pName,"usb")) {
-                strcat(pLabel," (USB)");
+                strLabel.append(" (USB)");
             }
 
         }
-        m_pWidget->m_pOutputWidget->m_pSelectCombobox->addItem(pLabel);
+        m_pWidget->m_pOutputWidget->m_pSelectCombobox->addItem(strLabel);
 
-        qDebug() << "add device name,device name" << pLabel;
+        qDebug() << "add device name,device name" << strLabel;
     }
     MateMixerSwitch *profileSwitch;
 
@@ -2253,11 +2252,11 @@ void UkmediaMainWidget::comboxIndexChangedSlot(int index)
 
     for (char * path : existsPath) {
 
-        char * prepath = QString(KEYBINDINGS_CUSTOM_DIR).toLatin1().data();
-        char * allpath = strcat(prepath, path);
+        QString strAllPath = QString(KEYBINDINGS_CUSTOM_DIR);
+        strAllPath.append(path);
 
         const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
-        const QByteArray bba(allpath);
+        const QByteArray bba(strAllPath.toLatin1().data());
         if(QGSettings::isSchemaInstalled(ba))
         {
             QGSettings * settings = new QGSettings(ba, bba);
@@ -2288,12 +2287,12 @@ void UkmediaMainWidget::windowClosedComboboxChangedSlot(int index)
     QList<char *> existsPath = listExistsPath();
 
     for (char * path : existsPath) {
-
-        char * prepath = QString(KEYBINDINGS_CUSTOM_DIR).toLatin1().data();
-        char * allpath = strcat(prepath, path);
+        
+        QString strAllPath = QString(KEYBINDINGS_CUSTOM_DIR);
+        strAllPath.append(path);
 
         const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
-        const QByteArray bba(allpath);
+        const QByteArray bba(strAllPath.toLatin1().data());
         if(QGSettings::isSchemaInstalled(ba))
         {
             QGSettings * settings = new QGSettings(ba, bba);
@@ -2327,11 +2326,11 @@ void UkmediaMainWidget::volumeChangedComboboxChangeSlot(int index)
     QString eventId = eventIdList.at(0);
     QList<char *> existsPath = listExistsPath();
     for (char * path : existsPath) {
-
-        char * prepath = QString(KEYBINDINGS_CUSTOM_DIR).toLatin1().data();
-        char * allpath = strcat(prepath, path);
+        
+        QString strAllPath = QString(KEYBINDINGS_CUSTOM_DIR);
+        strAllPath.append(path);
         const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
-        const QByteArray bba(allpath);
+        const QByteArray bba(strAllPath.toLatin1().data());
         if(QGSettings::isSchemaInstalled(ba))
         {
             QGSettings * settings = new QGSettings(ba, bba);
@@ -2359,10 +2358,10 @@ void UkmediaMainWidget::settingMenuComboboxChangedSlot(int index)
     QList<char *> existsPath = listExistsPath();
     for (char * path : existsPath) {
 
-        char * prepath = QString(KEYBINDINGS_CUSTOM_DIR).toLatin1().data();
-        char * allpath = strcat(prepath, path);
+        QString strAllPath = QString(KEYBINDINGS_CUSTOM_DIR);
+        strAllPath.append(path);
         const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
-        const QByteArray bba(allpath);
+        const QByteArray bba(strAllPath.toLatin1().data());
         if(QGSettings::isSchemaInstalled(ba))
         {
             QGSettings * settings = new QGSettings(ba, bba);
@@ -3458,18 +3457,18 @@ void UkmediaMainWidget::addValue(QString name,QString filename)
 
     for (char * path : existsPath) {
 
-        char * prepath = QString(KEYBINDINGS_CUSTOM_DIR).toLatin1().data();
-        char * allpath = strcat(prepath, path);
+        QString strAllPath = QString(KEYBINDINGS_CUSTOM_DIR);
+        strAllPath.append(path);
 
         const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
-        const QByteArray bba(allpath);
+        const QByteArray bba(strAllPath.toLatin1().data());
         if(QGSettings::isSchemaInstalled(ba))
         {
             QGSettings * settings = new QGSettings(ba, bba);
             QString filenameStr = settings->get(FILENAME_KEY).toString();
             QString nameStr = settings->get(NAME_KEY).toString();
 
-            g_warning("full path: %s", allpath);
+            g_warning("full path: %s", strAllPath.toLatin1().data());
             qDebug() << filenameStr << FILENAME_KEY <<NAME_KEY << nameStr;
             if (nameStr == name) {
                 qDebug() << "系统已存在该值，跳过" ;
