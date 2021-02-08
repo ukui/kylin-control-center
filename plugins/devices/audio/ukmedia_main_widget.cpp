@@ -627,7 +627,7 @@ void UkmediaMainWidget::addStream (UkmediaMainWidget *m_pWidget, MateMixerStream
             m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->addItem(m_pLabel);
         }
         else {
-            if (!deviceName.contains("monitor",Qt::CaseInsensitive) && !m_pWidget->m_pInputStreamList->contains(m_pName)) {
+            if (/*!deviceName.contains("monitor",Qt::CaseInsensitive) && */!m_pWidget->m_pInputStreamList->contains(m_pName)) {
                 m_pWidget->m_pInputStreamList->append(m_pName);
                 m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->addItem(m_pLabel);
             }
@@ -936,7 +936,7 @@ void UkmediaMainWidget::addDevice(UkmediaMainWidget *m_pWidget, MateMixerDevice 
         }
         m_pWidget->m_pOutputWidget->m_pSelectCombobox->addItem(pLabel);
 
-        qDebug() << "add device name,device name" << pLabel;
+        qDebug() << "add device name,device name" << pLabel << mate_mixer_device_get_name(pDevice);
     }
     MateMixerSwitch *profileSwitch;
 
@@ -988,15 +988,20 @@ void UkmediaMainWidget::onContextDefaultInputStreamNotify (MateMixerContext *m_p
     MateMixerStream *m_pStream;
     m_pStream = mate_mixer_context_get_default_input_stream (m_pContext);
     if (m_pStream == nullptr) {
+        qDebug() << "default input strean is null ---------------------------------------------------";
         //当输入流更改异常时，使用默认的输入流，不应该发生这种情况
-        m_pStream = m_pWidget->m_pInputStream;
+//        m_pStream = m_pWidget->m_pInputStream;
+        return;
+
     }
-    QString deviceName = mate_mixer_stream_get_label(m_pStream);
-    int index = m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->findText(deviceName);
+    QString deviceName = mate_mixer_stream_get_name(m_pStream);
+    int index = m_pWidget->m_pInputStreamList->indexOf(deviceName);
     if (index < 0)
         return;
+    qDebug() << "on context default input stream notify" <<deviceName << index;
+//    m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->blockSignals(true);
     m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->setCurrentIndex(index);
-    qDebug() << "on context default input stream notify" <<deviceName;
+//    m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->blockSignals(false);
     updateIconInput(m_pWidget);
     m_pWidget->updateInputDevicePort();
     setInputStream(m_pWidget, m_pStream);
@@ -1208,10 +1213,10 @@ void UkmediaMainWidget::outputVolumeDarkThemeImage(int value,bool status)
 {
     QImage image;
     QColor color = QColor(0,0,0,216);
-    if (mThemeName == UKUI_THEME_WHITE) {
+    if (mThemeName == UKUI_THEME_WHITE || mThemeName == "ukui-default") {
         color = QColor(0,0,0,216);
     }
-    else if (mThemeName == UKUI_THEME_BLACK) {
+    else if (mThemeName == UKUI_THEME_BLACK || mThemeName == "ukui-dark") {
         color = QColor(255,255,255,216);
     }
     m_pOutputWidget->m_pOutputIconBtn->mColor = color;
@@ -1245,10 +1250,10 @@ void UkmediaMainWidget::inputVolumeDarkThemeImage(int value,bool status)
 {
     QImage image;
     QColor color = QColor(0,0,0,190);
-    if (mThemeName == UKUI_THEME_WHITE) {
+    if (mThemeName == UKUI_THEME_WHITE || mThemeName == "ukui-default") {
         color = QColor(0,0,0,190);
     }
-    else if (mThemeName == UKUI_THEME_BLACK) {
+    else if (mThemeName == UKUI_THEME_BLACK || mThemeName == "ukui-dark") {
         color = QColor(255,255,255,190);
     }
     m_pInputWidget->m_pInputIconBtn->mColor = color;
@@ -1557,7 +1562,6 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
             setOutputStream(m_pWidget,m_pStream);
         }
         else if (direction == MATE_MIXER_DIRECTION_INPUT) {
-//            mate_mixer_context_set_default_input_stream(m_pWidget->m_pContext,m_pStream);
             qDebug() << "从control 获取的stream不为input stream" << mate_mixer_stream_get_label(m_pStream);
             setInputStream(m_pWidget,m_pStream);
         }
@@ -1674,7 +1678,7 @@ void UkmediaMainWidget::updateOutputSettings (UkmediaMainWidget *m_pWidget,MateM
         gdouble value = volume/100.0;
         MateMixerStream *stream = mate_mixer_context_get_default_output_stream(m_pWidget->m_pContext);
         MateMixerStreamControl *control = mate_mixer_stream_get_default_control(stream);
-        qDebug() <<"设置平衡值为 " <<value <<mate_mixer_stream_control_get_name(control);
+//        qDebug() <<"设置平衡值为 " <<value <<mate_mixer_stream_control_get_name(control);
         mate_mixer_stream_control_set_balance(control,value);
     });
 //    m_pWidget->updateProfileOption();
@@ -2438,7 +2442,6 @@ void UkmediaMainWidget::selectComboboxChangedSlot(int index)
             MateMixerSwitchOption *option = MATE_MIXER_SWITCH_OPTION (options->data);
             profileLabel = mate_mixer_switch_option_get_label (option);
             profileName = mate_mixer_switch_option_get_name(option);
-            qDebug() <<"添加配置文件 ============ :" <<profileLabel;
             m_pProfileNameList->append(profileName);
             m_pOutputWidget->m_pProfileCombobox->addItem(profileLabel);
             /* Select the currently active option of the switch */
@@ -2616,12 +2619,14 @@ void UkmediaMainWidget::inputDeviceComboxIndexChangedSlot(QString str)
 //       g_free (name);
        return;
     }
-
+    qDebug() << "input device combobox changed: *****" << str << m_pInputStreamList->at(index) << mate_mixer_stream_get_name(stream);
     flags = mate_mixer_context_get_backend_flags (m_pContext);
 
     if (flags & MATE_MIXER_BACKEND_CAN_SET_DEFAULT_INPUT_STREAM) {
         m_pStream = stream;
+        m_pInputWidget->m_pInputDeviceCombobox->blockSignals(true);
         mate_mixer_context_set_default_input_stream (m_pContext, stream);
+        m_pInputWidget->m_pInputDeviceCombobox->blockSignals(false);
         MateMixerStreamControl *c = mate_mixer_stream_get_default_control(stream);
     }
     else {
@@ -2964,7 +2969,9 @@ void UkmediaMainWidget::updateInputSettings (UkmediaMainWidget *m_pWidget,MateMi
         if (m_pWidget->m_pInputPortList->count() > 0) {
             qDebug() << "设置输入端口当前值为:" << label;
             m_pWidget->m_pInputWidget->inputWidgetAddPort();
+            m_pWidget->m_pInputWidget->m_pInputPortCombobox->blockSignals(true);
             m_pWidget->m_pInputWidget->m_pInputPortCombobox->setCurrentText(label);
+            m_pWidget->m_pInputWidget->m_pInputPortCombobox->blockSignals(false);
         }
         connect(m_pWidget->m_pInputWidget->m_pInputPortCombobox,SIGNAL(currentIndexChanged(int)),m_pWidget,SLOT(inputPortComboxChangedSlot(int)));
     }
