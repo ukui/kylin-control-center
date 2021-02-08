@@ -777,9 +777,9 @@ void MainWidget::handle_write(const int &on,const int &id) {
     }
     char name[32];
     if(id == -1) {
-        qstrcpy(name,"Auto-sync");
+        strncpy(name,"Auto-sync",32);
     } else {
-        qstrcpy(name,m_szItemlist[id].toStdString().c_str());
+        strncpy(name,m_szItemlist[id].toStdString().c_str(),32);
     }
     m_statusChanged = on;
     m_indexChanged = id;

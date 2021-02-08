@@ -4,7 +4,7 @@
 activecon *kylin_network_get_activecon_info(char *path) {
     char *chr = "nmcli connection show -active > ";
     char *cmd = (char *) malloc(strlen(chr) + strlen(path) + 1);
-    strcpy(cmd, chr);
+    strncpy(cmd, chr, strlen(chr) + strlen(path) + 1);
     strcat(cmd, path);
     int status = system(cmd);
     if (status != 0) {

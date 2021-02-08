@@ -35,7 +35,7 @@ get_device_node (XIDeviceInfo devinfo)
     return NULL;
 }
 
-static int find_event_from_touchId(int pId ,char *_event)
+static int find_event_from_touchId(int pId ,char *_event, int max_len)
 {
     Display *_dpy = XOpenDisplay(NULL);
     int ret = -1;
@@ -75,7 +75,7 @@ static int find_event_from_touchId(int pId ,char *_event)
                 continue;
             }
 
-            strcpy(_event,cEvent);
+            strncpy(_event, cEvent, max_len);
             //printf("cEvent=%s,_event=%s\n",cEvent,_event);
             ret = Success;
             break;
@@ -85,7 +85,7 @@ static int find_event_from_touchId(int pId ,char *_event)
     return ret;
 }
 
-static int find_serial_from_event(char *_name, char *_event, char *_serial)
+static int find_serial_from_event(char *_name, char *_event, char *_serial, int max_len)
 {
     int ret = -1;
     if((NULL == _name) || (NULL == _event))
@@ -142,7 +142,7 @@ static int find_serial_from_event(char *_name, char *_event, char *_serial)
             {
                 continue;
             }
-            strcpy(_serial, pSerial);
+            strncpy(_serial, pSerial, max_len);
             ret = Success;
             //printf(" _serial:%s\n  pSerial: %s\n",_serial, pSerial);
             break;
@@ -156,12 +156,12 @@ static int find_serial_from_event(char *_name, char *_event, char *_serial)
     return ret;
 }
 
-int findSerialFromId(int touchid,char *touchname,char *_touchserial)
+int findSerialFromId(int touchid,char *touchname,char *_touchserial,int maxlen)
 {
     char event[32]={0};
-    int ret=find_event_from_touchId(touchid,event);
-    ret=find_serial_from_event(touchname,event,_touchserial);
+    int ret=find_event_from_touchId(touchid, event, 32);
+    ret=find_serial_from_event(touchname, event,_touchserial,maxlen);
     if(!strcmp(_touchserial,""))
-        strcpy(_touchserial,"kydefault");
+        strncpy(_touchserial,"kydefault",maxlen);
     return ret;
 }

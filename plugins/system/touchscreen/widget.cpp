@@ -534,7 +534,7 @@ int Widget::compareserial(int touchcount){
         char _touchserial[32]={0};
         std::string namestr = touchname.toStdString();
         char * _touchname=(char *)namestr.c_str();
-        findSerialFromId(touchid,_touchname,_touchserial);
+        findSerialFromId(touchid,_touchname,_touchserial,32);
         //qDebug("_touchserial=%s\n",_touchserial);
         QString Qtouchserial(_touchserial);
         //qDebug("Qtouchserial=%s\n",Qtouchserial.toStdString().data());
@@ -673,7 +673,7 @@ void Widget::save(QString touchname,QString touchid,QString screenname) {
     char _touchserial[32]={0};
     std::string str = touchname.toStdString();
     char * _touchname=(char *)str.c_str();
-    findSerialFromId(touchid.toInt(),_touchname,_touchserial);
+    findSerialFromId(touchid.toInt(),_touchname,_touchserial,32);
 
     QString touchserial(_touchserial);
     initTouchConfig(touchserial,screenname); //保存之前先对配置文集进行处理
