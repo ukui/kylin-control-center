@@ -22,7 +22,8 @@
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="183"/>
-        <source>Copyright 2009-2020 @ Kylinos All rights reserved</source>
+        <location filename="../../../plugins/messages-task/about/about.cpp"/>
+        <source>Copyright 2009-%1 @ Kylinos All rights reserved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

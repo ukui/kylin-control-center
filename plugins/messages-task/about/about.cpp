@@ -23,7 +23,7 @@
 #include "ui_about.h"
 
 #include <KFormat>
-
+#include <QDate>
 #ifdef Q_OS_LINUX
 #include <sys/sysinfo.h>
 #elif defined(Q_OS_FREEBSD)
@@ -133,11 +133,17 @@ void About::setupKernelCompenent() {
         qDebug() << "diskinfo is invalid" << endl;
     } else {
         QMap<QString, QVariant> res = diskinfo.value();
+        qDebug()<<res["DiskCapacity"];
         diskSize = res["DiskCapacity"].toString();
         QStringList diskList = diskSize.split("<1_1>");
         diskSize.clear();
-        for (int i = 0; i < diskList.length(); i++) {
-            diskSize += tr("Disk") + QString::number(i+1) + ":" +diskList.at(i) + " ";
+        int diskListLength=diskList.length();
+        for (int i = 0; i < diskListLength; i++) {
+            if((diskListLength-1)==i){
+                diskSize += tr("Disk") + QString::number(i+1) + "：" +diskList.at(i) ;
+                continue;
+            }
+            diskSize += tr("Disk") + QString::number(i+1) + "：" +diskList.at(i) + "\n";
         }
     }
 
@@ -183,6 +189,12 @@ void About::setupVersionCompenent() {
     }
 
     ui->versionContent->setText(version);
+    QDate date(QDate::currentDate());
+    int year = date.year();
+    QString yearStr=QString::number(year);
+    QByteArray yearArray = yearStr.toLatin1();
+    qDebug()<<tr("Copyright 2009-%1 @ Kylinos All rights reserved");
+    ui->copyrightContent->setText(tr("Copyright 2009-%1 @ Kylinos All rights reserved").arg(yearArray.data()));
     if (!versionID.compare(vTen, Qt::CaseInsensitive) ||
             !versionID.compare(vTenEnhance, Qt::CaseInsensitive) ||
             !versionID.compare(vFour, Qt::CaseInsensitive)) {

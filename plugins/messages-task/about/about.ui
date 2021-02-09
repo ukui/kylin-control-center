@@ -178,9 +178,9 @@
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_2">
+                <widget class="QLabel" name="copyrightContent">
                  <property name="text">
-                  <string>Copyright 2009-2020 @ Kylinos All rights reserved</string>
+                  <string/>
                  </property>
                  <property name="wordWrap">
                   <bool>true</bool>
