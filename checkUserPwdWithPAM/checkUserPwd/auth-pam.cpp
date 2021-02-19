@@ -64,8 +64,8 @@ void AuthPAM::authenticate(const QString &userName, const QString &userPwd)
         int arg2_int = toChild[0];
         char arg1[128];
         char arg2[128];
-        sprintf(arg1,"%d",arg1_int);
-        sprintf(arg2,"%d",arg2_int);
+        snprintf(arg1,128,"%d",arg1_int);
+        snprintf(arg2,128,"%d",arg2_int);
         //_authenticate(userName.toLocal8Bit().data());
         prctl(PR_SET_PDEATHSIG,SIGHUP);
         execlp ("childCheckpwdwithPAM",

@@ -64,7 +64,7 @@ QString SysdbusRegister::GetComputerInfo() {
     FILE * fp = NULL;
     char cmd[128];
     char buf[1024];
-    sprintf(cmd, "dmidecode -t system");
+    snprintf(cmd, 128, "dmidecode -t system");
 
     if ((fp = popen(cmd, "r")) != NULL){
         rewind(fp);
@@ -84,7 +84,7 @@ QString SysdbusRegister::getNoPwdLoginStatus(){
     FILE * fp = NULL;
     char cmd[128];
     char buf[1024];
-    sprintf(cmd, "cat /etc/group |grep nopasswdlogin");
+    snprintf(cmd, 128, "cat /etc/group |grep nopasswdlogin");
     if ((fp = popen(cmd, "r")) != NULL){
         rewind(fp);
         fgets(buf, sizeof (buf), fp);

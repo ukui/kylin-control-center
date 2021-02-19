@@ -93,16 +93,16 @@ ChangePwdDialog::~ChangePwdDialog()
 bool ChangePwdDialog::checkOtherPasswd(QString name, QString pwd){
     FILE * stream;
     char command[128];
-    char output[128];
+    char output[256];
 
     QByteArray ba1 = name.toLatin1();
 
     //
     if (pwd.contains("'")){
-        sprintf(command, "/usr/bin/checkTest %s \"%s\"", ba1.data(), pwd.toLatin1().data());
+        snprintf(command, 128, "/usr/bin/checkTest %s \"%s\"", ba1.data(), pwd.toLatin1().data());
     } else {
 
-        sprintf(command, "/usr/bin/checkTest %s '%s'", ba1.data(), pwd.toLatin1().data());
+        snprintf(command, 128, "/usr/bin/checkTest %s '%s'", ba1.data(), pwd.toLatin1().data());
     }
 
     if ((stream = popen(command, "r")) == NULL){

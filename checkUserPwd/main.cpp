@@ -72,7 +72,8 @@ static bool checkpwd(char * username, char * currentPwd){
     while(fgets(buf,BUFF_SIZE,fp) != NULL){
         line_len = strlen(buf);
         len += line_len;
-        sscanf(buf,"%[^:]:%[^:]:%[^:]:%[^:]:%[^:]:%[^:]:%[^:]:%[^:]:%[^:]",name,pwd,tmp_1,tmp_2,tmp_3,tmp_4,tmp_5,tmp_6,tmp_7);
+        sscanf(buf,"%255[^:]:%255[^:]:%255[^:]:%255[^:]:%255[^:]:%255[^:]:%255[^:]:%255[^:]:%255[^:]",
+            name,pwd,tmp_1,tmp_2,tmp_3,tmp_4,tmp_5,tmp_6,tmp_7);
         //printf("line_name:%s  username:%s   pwd:%s\n",name,username,pwd);
 
         if(0 == strcmp(name,username)){

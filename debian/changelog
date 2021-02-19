@@ -1,3 +1,9 @@
+ukui-control-center (3.0.1-1-40.2) v101; urgency=medium
+
+  * 修复高危漏洞
+
+ -- Yang Min <yangmin@kylinos.cn>  Fri, 19 Feb 2021 14:31:45 +0800
+
 ukui-control-center (3.0.1-1-40.1) v101; urgency=medium
 
   * 任务栏WiFi列表显示已经连接，但是控制面板的WiFi列表依然显示无网络连接(bug#38090)
