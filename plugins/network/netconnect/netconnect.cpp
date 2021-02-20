@@ -58,6 +58,7 @@ NetConnect::~NetConnect()
 {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
     }
 }
 
@@ -550,6 +551,7 @@ void NetConnect::clearContent()
         while ((item = ui->availableLayout->layout()->takeAt(0)) != NULL ) {
             delete item->widget();
             delete item;
+            item = nullptr;
         }
     }
 
@@ -558,6 +560,7 @@ void NetConnect::clearContent()
         while ((item = ui->statusLayout->layout()->takeAt(0)) != NULL) {
             delete item->widget();
             delete item;
+            item = nullptr;
         }
     }
 

@@ -40,6 +40,7 @@ Vpn::Vpn()
 Vpn::~Vpn()
 {
     delete ui;
+    ui = nullptr;
 }
 
 QString Vpn::get_plugin_name(){

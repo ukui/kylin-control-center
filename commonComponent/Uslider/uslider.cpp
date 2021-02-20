@@ -7,7 +7,7 @@
 #include <QPalette>
 
 
-Uslider::Uslider(QStringList list) : scaleList(list), QSlider(Qt::Horizontal)
+Uslider::Uslider(QStringList list) : QSlider(Qt::Horizontal), scaleList(list)
 {
     this->setMinimumHeight(50);
     this->setMaximumHeight(100);

@@ -37,6 +37,7 @@ Printer::Printer() : mFirstLoad(true)
 Printer::~Printer() {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
     }
 }
 

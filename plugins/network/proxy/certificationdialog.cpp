@@ -42,7 +42,9 @@ CertificationDialog::CertificationDialog(QWidget *parent) :
 CertificationDialog::~CertificationDialog()
 {
     delete ui;
+    ui = nullptr;
     delete cersettings;
+    cersettings = nullptr;
 }
 
 void CertificationDialog::component_init(){

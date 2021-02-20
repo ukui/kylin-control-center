@@ -123,6 +123,7 @@ Theme::Theme()
 Theme::~Theme()
 {
     delete ui;
+    ui = nullptr;
 }
 
 QString Theme::get_plugin_name() {
@@ -494,6 +495,7 @@ void Theme::initCursorTheme(){
         mouseSettings->endGroup();
 
         delete mouseSettings;
+        mouseSettings = nullptr;
 
         QDBusMessage message = QDBusMessage::createSignal("/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange");
         QList<QVariant> args;

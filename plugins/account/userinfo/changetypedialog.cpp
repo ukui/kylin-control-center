@@ -59,6 +59,7 @@ ChangeTypeDialog::ChangeTypeDialog(QWidget *parent) :
 ChangeTypeDialog::~ChangeTypeDialog()
 {
     delete ui;
+    ui = nullptr;
 }
 
 void ChangeTypeDialog::setupComonpent(){

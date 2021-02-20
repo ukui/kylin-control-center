@@ -47,9 +47,11 @@ KeyboardControl::~KeyboardControl()
 {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
         if (settingsCreate) {
 //            delete kbdsettings;
             delete settings;
+            settings = nullptr;
         }
     }
 }

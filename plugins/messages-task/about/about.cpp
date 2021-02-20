@@ -50,6 +50,7 @@ About::About() : mFirstLoad(true)
 About::~About() {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
     }
 }
 
@@ -204,7 +205,7 @@ void About::setupSerialComponent() {
         return;
     }
 
-    int status;
+    int status = 0;
     QDBusMessage activeReply = activeInterface.get()->call("status");
     if (activeReply.type() == QDBusMessage::ReplyMessage) {
         status = activeReply.arguments().at(0).toInt();
@@ -275,7 +276,7 @@ QString About::getTotalMemory()
 
     QTextStream in(&meninfoFile);
     QString line = in.readLine();
-    int memtotal;
+    float memtotal = 0;
 
     while(!line.isNull()){
         if(line.contains("MemTotal")){
@@ -283,7 +284,7 @@ QString About::getTotalMemory()
 
             QStringList lineList = line.split(" ");
             QString mem = lineList.at(1);
-            memtotal = mem.toInt();
+            memtotal = mem.toFloat();
             break;
 
         }else {
@@ -292,6 +293,10 @@ QString About::getTotalMemory()
     }
 
     memtotal = ceil(memtotal / 1024 / 1024);
+    // 向2的n次方取整
+    int nPow = ceil(log(memtotal)/log(2.0));
+    memtotal = pow(2.0, nPow);
+    
     return QString::number(memtotal) + " GB";
 }
 

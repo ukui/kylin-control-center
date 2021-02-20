@@ -78,6 +78,7 @@ void ControlPanel::removeOutput(int outputId)
         if (outputCfg->output()->id() == outputId) {
             mOutputConfigs.removeOne(outputCfg);
             delete outputCfg;
+            outputCfg = nullptr;
             return;
         }
     }

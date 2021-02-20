@@ -52,8 +52,8 @@ extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int tran
 
 ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QString _username, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ChangePwdDialog),
     isCurrentUser(_isCurrentUser),
+    ui(new Ui::ChangePwdDialog),
     currentUserName(_username)
 {
     ui->setupUi(this);
@@ -85,6 +85,7 @@ ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QString _username, QWidget
 ChangePwdDialog::~ChangePwdDialog()
 {
     delete ui;
+    ui = nullptr;
 
 //    pcThread->terminate();
 //    delete pcThread;
@@ -93,16 +94,16 @@ ChangePwdDialog::~ChangePwdDialog()
 bool ChangePwdDialog::checkOtherPasswd(QString name, QString pwd){
     FILE * stream;
     char command[128];
-    char output[128];
+    char output[256];
 
     QByteArray ba1 = name.toLatin1();
 
     //
     if (pwd.contains("'")){
-        sprintf(command, "/usr/bin/checkTest %s \"%s\"", ba1.data(), pwd.toLatin1().data());
+        snprintf(command, 128, "/usr/bin/checkTest %s \"%s\"", ba1.data(), pwd.toLatin1().data());
     } else {
 
-        sprintf(command, "/usr/bin/checkTest %s '%s'", ba1.data(), pwd.toLatin1().data());
+        snprintf(command, 128, "/usr/bin/checkTest %s '%s'", ba1.data(), pwd.toLatin1().data());
     }
 
     if ((stream = popen(command, "r")) == NULL){

@@ -58,6 +58,7 @@ Desktop::~Desktop()
 {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
         qDeleteAll(vecGsettings);
         vecGsettings.clear();
     }

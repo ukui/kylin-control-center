@@ -30,6 +30,7 @@ BuildPicUnitsWorker::BuildPicUnitsWorker()
 BuildPicUnitsWorker::~BuildPicUnitsWorker()
 {
     delete xmlHandleObj;
+    xmlHandleObj = nullptr;
 }
 
 void BuildPicUnitsWorker::run(){

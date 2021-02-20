@@ -30,8 +30,8 @@ extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int tran
 
 ChangeValidDialog::ChangeValidDialog(QString userName, QWidget *parent) :
     QDialog(parent),
-    _name(userName),
-    ui(new Ui::ChangeValidDialog)
+    ui(new Ui::ChangeValidDialog),
+    _name(userName)
 {
     ui->setupUi(this);
 
@@ -67,6 +67,7 @@ ChangeValidDialog::ChangeValidDialog(QString userName, QWidget *parent) :
 ChangeValidDialog::~ChangeValidDialog()
 {
     delete ui;
+    ui = nullptr;
 }
 
 void ChangeValidDialog::setupConnect(){
@@ -123,6 +124,7 @@ void ChangeValidDialog::setupConnect(){
         }
 
         delete tmpSysinterface;
+        tmpSysinterface = nullptr;
 
         close();
     });

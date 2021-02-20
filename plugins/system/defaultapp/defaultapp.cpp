@@ -53,6 +53,7 @@ DefaultApp::DefaultApp() {
 
 DefaultApp::~DefaultApp() {
     delete ui;
+    ui = nullptr;
 }
 
 QString DefaultApp::get_plugin_name() {

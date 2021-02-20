@@ -58,6 +58,7 @@ Backup::Backup()
 Backup::~Backup()
 {
     delete ui;
+    ui = nullptr;
 }
 
 QString Backup::get_plugin_name() {

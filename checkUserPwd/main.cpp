@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 
 static bool checkpwd(char * username, char * currentPwd){
 
-    char buf[BUFF_SIZE] = {0};  /*缓冲区*/
+    char buf[BUFF_SIZE+1] = {0};  /*缓冲区*/
     FILE *fp = NULL/*,*fd = NULL,*fp_check_shadow = NULL*/;           /*文件指针*/
     int len = 0;             /*行字符个数*/
     int line_len = 0;
@@ -70,22 +70,26 @@ static bool checkpwd(char * username, char * currentPwd){
     }
 
     while(fgets(buf,BUFF_SIZE,fp) != NULL){
+        buf[BUFF_SIZE] = '\0';
         line_len = strlen(buf);
         len += line_len;
-        sscanf(buf,"%[^:]:%[^:]:%[^:]:%[^:]:%[^:]:%[^:]:%[^:]:%[^:]:%[^:]",name,pwd,tmp_1,tmp_2,tmp_3,tmp_4,tmp_5,tmp_6,tmp_7);
+        sscanf(buf,"%255[^:]:%255[^:]:%255[^:]:%255[^:]:%255[^:]:%255[^:]:%255[^:]:%255[^:]:%255[^:]",
+            name,pwd,tmp_1,tmp_2,tmp_3,tmp_4,tmp_5,tmp_6,tmp_7);
         //printf("line_name:%s  username:%s   pwd:%s\n",name,username,pwd);
 
         if(0 == strcmp(name,username)){
             char * encrypted = NULL;
             encrypted = crypt(currentPwd, pwd);
             if ( encrypted && strcmp(encrypted, pwd) == 0){
+                fclose(fp);
                 return true;
             } else {
+                fclose(fp);
                 return false;
             }
         }
     }
 
-
+    fclose(fp);
     return false;
 }

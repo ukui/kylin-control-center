@@ -46,9 +46,13 @@ Screenlock::~Screenlock()
 {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
         delete lSetting;
+        lSetting = nullptr;
         delete lockSetting;
+        lockSetting = nullptr;
         delete lockLoginSettings;
+        lockLoginSettings = nullptr;
     }
 }
 

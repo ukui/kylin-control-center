@@ -37,7 +37,7 @@ UKSCConn::UKSCConn()
 QStringList UKSCConn::getInfoByName(QString appName)
 {
     QStringList appInfo;
-    if(isConnectUskc = true)
+    if(isConnectUskc == true)
     {
         QString str = QString("select * from application where app_name = '%1'").arg(appName);
         query.exec(str);

@@ -80,6 +80,8 @@ void MonitorInputTask::ListeningToInputEvent()
 
     free(mask[0].mask);
     free(mask[1].mask);
+    mask[0].mask = NULL;
+    mask[1].mask = NULL;
 
     while(true)
     {

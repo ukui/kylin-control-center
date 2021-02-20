@@ -175,6 +175,7 @@ SecurityCenter::SecurityCenter()
 SecurityCenter::~SecurityCenter()
 {
     delete ui;
+    ui = nullptr;
 }
 
 QString SecurityCenter::get_plugin_name(){

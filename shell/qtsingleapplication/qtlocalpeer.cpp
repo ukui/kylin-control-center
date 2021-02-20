@@ -180,6 +180,7 @@ void QtLocalPeer::receiveConnection()
         if (socket->state() == QLocalSocket::UnconnectedState) {
             qWarning("QtLocalPeer: Peer disconnected");
             delete socket;
+            socket = nullptr;
             return;
         }
         if (socket->bytesAvailable() >= qint64(sizeof(quint32)))
@@ -202,6 +203,7 @@ void QtLocalPeer::receiveConnection()
     if (got < 0) {
         qWarning("QtLocalPeer: Message reception failed %s", socket->errorString().toLatin1().constData());
         delete socket;
+        socket = nullptr;
         return;
     }
     QString message(QString::fromUtf8(uMsg));
@@ -209,5 +211,6 @@ void QtLocalPeer::receiveConnection()
     socket->waitForBytesWritten(1000);
     socket->waitForDisconnected(1000); // make sure client reads ack
     delete socket;
+    socket = nullptr;
     emit messageReceived(message); //### (might take a long time to return)
 }

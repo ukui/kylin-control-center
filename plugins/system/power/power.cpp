@@ -76,6 +76,7 @@ Power::Power() : mFirstLoad(true)
 Power::~Power() {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
     }
 }
 
@@ -267,7 +268,7 @@ void Power::initDeviceStatus(){
 
     devices = up_client_get_devices2(client);
 
-    for (int i=0; i< devices->len; i++) {
+    for (guint i=0; i< devices->len; i++) {
             device = (UpDevice *)g_ptr_array_index (devices, i);
             g_object_get (device, "kind", &kind, NULL);
             if (kind == UP_DEVICE_KIND_BATTERY)

@@ -44,8 +44,9 @@ ExperiencePlan::ExperiencePlan()
 ExperiencePlan::~ExperiencePlan()
 {
     delete ui;
-
+    ui = nullptr;
     delete eSettings;
+    eSettings = nullptr;
 }
 
 QString ExperiencePlan::get_plugin_name(){

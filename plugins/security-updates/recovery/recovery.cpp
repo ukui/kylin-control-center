@@ -34,6 +34,7 @@ Recovery::Recovery()
 Recovery::~Recovery()
 {
     delete ui;
+    ui = nullptr;
 }
 
 QString Recovery::get_plugin_name(){

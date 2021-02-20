@@ -41,6 +41,7 @@ DelUserDialog::DelUserDialog(QWidget *parent) :
 DelUserDialog::~DelUserDialog()
 {
     delete ui;
+    ui = nullptr;
 }
 
 void DelUserDialog::setupComonpent(){

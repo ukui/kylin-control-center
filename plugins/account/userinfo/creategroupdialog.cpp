@@ -29,10 +29,10 @@ extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int tran
 CreateGroupDialog::CreateGroupDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CreateGroupDialog),
+    cgDialog(new ChangeGroupDialog),
     _nameHasModified(false),
     _idHasModified(false),
-    _boxModified(false),
-    cgDialog(new ChangeGroupDialog)
+    _boxModified(false)
 {
     ui->setupUi(this);
     setupInit();
@@ -43,7 +43,9 @@ CreateGroupDialog::CreateGroupDialog(QWidget *parent) :
 CreateGroupDialog::~CreateGroupDialog()
 {
     delete cgDialog;
+    cgDialog = nullptr;
     delete ui;
+    ui = nullptr;
 }
 
 void CreateGroupDialog::limitInput()
@@ -96,6 +98,7 @@ UserInfomationss CreateGroupDialog::_acquireUserInfo(QString objpath){
         qDebug() << "reply failed";
 
     delete iproperty;
+    iproperty = nullptr;
 
     return user;
 }

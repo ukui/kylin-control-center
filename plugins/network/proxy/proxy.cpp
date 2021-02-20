@@ -89,13 +89,19 @@ Proxy::Proxy()
 Proxy::~Proxy()
 {
     delete ui;
+    ui = nullptr;
 
     if (settingsCreate){
         delete proxysettings;
+        proxysettings = nullptr;
         delete httpsettings;
+        httpsettings = nullptr;
         delete securesettings;
+        securesettings = nullptr;
         delete ftpsettings;
+        ftpsettings = nullptr;
         delete sockssettings;
+        sockssettings = nullptr;
     }
 }
 
@@ -353,6 +359,7 @@ void Proxy::manualProxyTextChanged(QString txt){
     setting->set(key, QVariant(txt));
 
     delete setting;
+    setting = nullptr;
 }
 
 void Proxy::proxyModeChangedSlot(bool checked){
