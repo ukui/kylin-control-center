@@ -64,9 +64,9 @@ void KeyboardPainter::generateKeyboardLayout(const QString &layout, const QStrin
     int level = kbframe->getLevel();
 
     if (level > 4) {
-        levelBox->addItem(tr("Keyboard layout levels"), (tr("Level %1, %2"), 3, 4));
+        levelBox->addItem(tr("Keyboard layout levels"), (tr("Level %1, %2").arg(3, 4)));
         for (int i = 5; i <= level; i += 2) {
-            levelBox->addItem(tr("Keyboard layout levels"), (tr("Level %1, %2"), i, i + 1));
+            levelBox->addItem(tr("Keyboard layout levels"), (tr("Level %1, %2").arg(i, i + 1)));
         }
     } else {
         levelBox->setVisible(false);
