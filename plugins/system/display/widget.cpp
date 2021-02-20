@@ -1091,7 +1091,7 @@ void Widget::propertiesChangedSlot(QString property, QMap<QString, QVariant> pro
 
 // 是否禁用主屏按钮
 void Widget::mainScreenButtonSelect(int index) {
-    if (!mConfig) {
+    if (!mConfig || ui->primaryCombo->count() <= 0) {
         return;
     }
 

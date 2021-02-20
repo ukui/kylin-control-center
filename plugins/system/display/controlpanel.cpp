@@ -46,6 +46,7 @@ void ControlPanel::setConfig(const KScreen::ConfigPtr &config)
 
 void ControlPanel::addOutput(const KScreen::OutputPtr &output)
 {
+
     OutputConfig *outputCfg = new OutputConfig(this);
     outputCfg->setVisible(false);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
@@ -64,6 +65,11 @@ void ControlPanel::addOutput(const KScreen::OutputPtr &output)
     mLayout->addWidget(outputCfg);
 
     mOutputConfigs << outputCfg;
+
+#ifdef KIRIN
+    activateOutput(mCurrentOutput);
+#endif
+
 }
 
 void ControlPanel::removeOutput(int outputId)
@@ -86,9 +92,9 @@ void ControlPanel::activateOutput(const KScreen::OutputPtr &output)
         return;
     }
 
-    //qCDebug(KSCREEN_KCM) << "Activate output" << output->id();
-    Q_FOREACH (OutputConfig *cfg, mOutputConfigs) {
+    mCurrentOutput = output;
 
+    Q_FOREACH (OutputConfig *cfg, mOutputConfigs) {
         cfg->setVisible(cfg->output()->id() == output->id());
     }
 }

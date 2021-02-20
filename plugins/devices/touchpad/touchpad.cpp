@@ -236,9 +236,9 @@ bool Touchpad::isWaylandPlatform() {
 
 void Touchpad::initWaylandDbus() {
 
-    mWaylandIface = new QDBusInterface("org.kde.KWin",
-                                       "/org/kde/KWin/InputDevice",
-                                       "org.kde.KWin.InputDeviceManager",
+    mWaylandIface = new QDBusInterface("org.ukui.KWin",
+                                       "/org/ukui/KWin/InputDevice",
+                                       "org.ukui.KWin.InputDeviceManager",
                                        QDBusConnection::sessionBus(),
                                        this);
     if (mWaylandIface->isValid()) {
@@ -253,9 +253,9 @@ void Touchpad::initWaylandTouchpadStatus() {
     if (deviceReply.isValid()) {
         QStringList deviceList = deviceReply.toStringList();
         for (QString device : deviceList) {
-            QDBusInterface *deviceIface = new QDBusInterface("org.kde.KWin",
-                                                             "/org/kde/KWin/InputDevice/"+ device,
-                                                             "org.kde.KWin.InputDevice",
+            QDBusInterface *deviceIface = new QDBusInterface("org.ukui.KWin",
+                                                             "/org/ukui/KWin/InputDevice/"+ device,
+                                                             "org.ukui.KWin.InputDevice",
                                                              QDBusConnection::sessionBus(),
                                                              this);
             if (deviceIface->isValid() &&

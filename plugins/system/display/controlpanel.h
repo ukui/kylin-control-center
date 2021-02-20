@@ -45,6 +45,9 @@ private:
     QList<OutputConfig*> mOutputConfigs;
 
     UnifiedOutputConfig *mUnifiedOutputCfg;
+
+    KScreen::OutputPtr mCurrentOutput;
+
 };
 
 #endif // CONTROLPANEL_H
