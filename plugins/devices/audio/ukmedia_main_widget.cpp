@@ -3490,6 +3490,7 @@ void UkmediaMainWidget::addValue(QString name,QString filename)
                 return;
             }
             delete settings;
+            settings = nullptr;
         }
         else {
             continue;

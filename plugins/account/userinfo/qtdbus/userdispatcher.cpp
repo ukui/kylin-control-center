@@ -107,6 +107,7 @@ void UserDispatcher::change_user_autologin(QString username){
     tmpSysinterface->call("setAutoLoginStatus", username);
 
     delete tmpSysinterface;
+    tmpSysinterface = nullptr;
 }
 
 bool UserDispatcher::get_autoLogin_status() {

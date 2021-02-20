@@ -76,6 +76,7 @@ Power::Power() : mFirstLoad(true)
 Power::~Power() {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
     }
 }
 

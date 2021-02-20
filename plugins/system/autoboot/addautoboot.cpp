@@ -119,6 +119,7 @@ void AddAutoBoot::initConnection() {
 
 AddAutoBoot::~AddAutoBoot() {
     delete ui;
+    ui = nullptr;
 }
 
 void AddAutoBoot::open_desktop_dir_slots() {

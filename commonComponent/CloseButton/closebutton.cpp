@@ -250,11 +250,16 @@ void CloseButton::setHoverOut(const QString &hoverOut) {
 CloseButton::~CloseButton() {
     if(m_icon != nullptr) {
         delete m_icon;
+        m_icon = nullptr;
     }
-    if(m_hoverIcon != nullptr)
+    if(m_hoverIcon != nullptr) {
         delete m_hoverIcon;
-    if(m_customIcon != nullptr)
+        m_hoverIcon = nullptr;
+    }
+    if(m_customIcon != nullptr) {
         delete m_customIcon;
+        m_customIcon = nullptr;
+    }
 }
 
 

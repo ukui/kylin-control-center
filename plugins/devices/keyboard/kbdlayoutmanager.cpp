@@ -82,8 +82,10 @@ KbdLayoutManager::KbdLayoutManager(QWidget *parent) :
 KbdLayoutManager::~KbdLayoutManager()
 {
     delete ui;
+    ui = nullptr;
     if (QGSettings::isSchemaInstalled(KBD_LAYOUTS_SCHEMA)){
         delete kbdsettings;
+        kbdsettings = nullptr;
     }
 }
 

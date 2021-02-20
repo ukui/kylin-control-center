@@ -69,6 +69,7 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
 ModulePageWidget::~ModulePageWidget()
 {
     delete ui;
+    ui = nullptr;
 }
 
 void ModulePageWidget::initTitleLabel() {

@@ -51,6 +51,7 @@ HomePageWidget::HomePageWidget(QWidget *parent) :
 HomePageWidget::~HomePageWidget()
 {
     delete ui;
+    ui = nullptr;
 }
 
 void HomePageWidget::initUI(){

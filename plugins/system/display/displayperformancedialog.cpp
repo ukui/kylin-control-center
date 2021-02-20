@@ -85,8 +85,11 @@ DisplayPerformanceDialog::DisplayPerformanceDialog(QWidget *parent) :
 DisplayPerformanceDialog::~DisplayPerformanceDialog()
 {
     delete ui;
+    ui = nullptr;
     delete settings;
+    settings = nullptr;
     delete confSettings;
+    confSettings = nullptr;
 }
 
 void DisplayPerformanceDialog::setupComponent(){
@@ -162,6 +165,7 @@ void DisplayPerformanceDialog::changeConfValue(){
     tempSettings->endGroup();
 
     delete tempSettings;
+    tempSettings = nullptr;
 
     //替换kylin-wm-chooser
     QDBusInterface * sysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
@@ -178,6 +182,7 @@ void DisplayPerformanceDialog::changeConfValue(){
 
     QProcess::execute(cmd);
     delete sysinterface;
+    sysinterface = nullptr;
 }
 
 void DisplayPerformanceDialog::paintEvent(QPaintEvent *event){

@@ -60,6 +60,7 @@ Touchpad::~Touchpad()
 {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
     }
 }
 

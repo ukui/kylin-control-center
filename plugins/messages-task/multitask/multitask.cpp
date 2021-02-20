@@ -34,6 +34,7 @@ Multitask::Multitask()
 Multitask::~Multitask()
 {
     delete ui;
+    ui = nullptr;
 }
 
 QString Multitask::get_plugin_name(){

@@ -11,6 +11,7 @@ activecon *kylin_network_get_activecon_info(char *path) {
         syslog(LOG_ERR, "execute 'nmcli connection show -active' in function 'kylin_network_get_activecon_info' failed");
     }
     free(cmd);
+    cmd = NULL;
     char *filename = path;
 
     FILE *activefp;
@@ -34,6 +35,7 @@ activecon *kylin_network_get_activecon_info(char *path) {
     if ((fp = fopen(filename,"r")) == NULL) {
         printf("error!");
         free(activelist);
+        activelist = NULL;
         return NULL;
     }
     fgets(StrLine,1024,fp);

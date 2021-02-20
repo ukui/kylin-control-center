@@ -78,6 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    ui = nullptr;
 }
 
 void MainWindow::bootOptionsFilter(QString opt) {

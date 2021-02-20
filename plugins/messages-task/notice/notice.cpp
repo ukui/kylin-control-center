@@ -40,6 +40,7 @@ Notice::~Notice()
 {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
         qDeleteAll(vecGsettins);
         vecGsettins.clear();
     }
@@ -296,6 +297,7 @@ void Notice::initGSettings() {
                 }
             }
             delete settings;
+            settings = nullptr;
         }
         if (!isExist) {
             path = findFreePath();
@@ -307,6 +309,7 @@ void Notice::initGSettings() {
                 newSettings->set(MESSAGES_KEY, true);
             }
             delete newSettings;
+            newSettings = nullptr;
         }
     }
 }

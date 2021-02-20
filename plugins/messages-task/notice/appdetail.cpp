@@ -28,6 +28,7 @@ AppDetail::AppDetail(QString Name,QString key, QGSettings *gsettings, QWidget *p
 AppDetail::~AppDetail()
 {
     delete ui;
+    ui = nullptr;
 }
 
 void AppDetail::initUiStatus() {

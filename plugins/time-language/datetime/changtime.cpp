@@ -66,6 +66,7 @@ ChangtimeDialog::~ChangtimeDialog()
 {
     m_chtimer->stop();
     delete ui;
+    ui = nullptr;
 }
 
 

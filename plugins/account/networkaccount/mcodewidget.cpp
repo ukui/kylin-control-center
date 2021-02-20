@@ -147,7 +147,9 @@ void MCodeWidget::set_change(const int &ok_num) {
 
 MCodeWidget::~MCodeWidget(){
     delete[] m_colorArray;
+    m_colorArray = nullptr;
     delete[] m_verificationCode;
+    m_verificationCode = nullptr;
 }
 
 /* 刷新验证码 ，实际上是重绘 */

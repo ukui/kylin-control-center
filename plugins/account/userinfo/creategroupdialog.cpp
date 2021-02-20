@@ -43,7 +43,9 @@ CreateGroupDialog::CreateGroupDialog(QWidget *parent) :
 CreateGroupDialog::~CreateGroupDialog()
 {
     delete cgDialog;
+    cgDialog = nullptr;
     delete ui;
+    ui = nullptr;
 }
 
 void CreateGroupDialog::limitInput()
@@ -96,6 +98,7 @@ UserInfomationss CreateGroupDialog::_acquireUserInfo(QString objpath){
         qDebug() << "reply failed";
 
     delete iproperty;
+    iproperty = nullptr;
 
     return user;
 }

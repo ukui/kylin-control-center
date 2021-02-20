@@ -47,7 +47,9 @@ EditGroupDialog::EditGroupDialog(QString usergroup, QString groupid, QString gro
 EditGroupDialog::~EditGroupDialog()
 {
     delete cgDialog;
+    cgDialog = nullptr;
     delete ui;
+    ui = nullptr;
 }
 
 void EditGroupDialog::limitInput()
@@ -100,6 +102,7 @@ UserInfomations EditGroupDialog::_acquireUserInfo(QString objpath){
         qDebug() << "reply failed";
 
     delete iproperty;
+    iproperty = nullptr;
 
     return user;
 }
@@ -263,6 +266,7 @@ void EditGroupDialog::signalsBind()
         }
         emit needRefresh();
         delete cgDialog;
+        cgDialog = nullptr;
         close();
     });
 }

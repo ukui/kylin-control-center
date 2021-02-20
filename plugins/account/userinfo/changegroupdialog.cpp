@@ -41,6 +41,7 @@ ChangeGroupDialog::ChangeGroupDialog(QWidget *parent) :
 ChangeGroupDialog::~ChangeGroupDialog()
 {
     delete ui;
+    ui = nullptr;
 }
 
 void ChangeGroupDialog::connectToServer()
@@ -107,6 +108,7 @@ void ChangeGroupDialog::refreshList()
         ui->listWidget->takeItem(i);
         ui->listWidget->removeItemWidget(item);
         delete item;
+        item = nullptr;
     }
     loadGroupInfo();
     loadAllGroup();
@@ -170,6 +172,7 @@ void ChangeGroupDialog::loadAllGroup()
     //                    qDebug() << "current index" << ui->listWidget->currentIndex();
                         ui->listWidget->removeItemWidget(item);
                         delete item;
+                        
                         ui->listWidget->scrollTo(ui->listWidget->currentIndex());
                         delDialog->close();
                     } else {

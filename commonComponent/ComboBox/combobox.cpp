@@ -73,6 +73,7 @@ void ComboBox::removewidgetItems(){
         QListWidgetItem * item = partListWidget->item(i);
         partListWidget->removeItemWidget(item);
         delete item;
+        item = nullptr;
     }
 }
 

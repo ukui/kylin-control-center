@@ -65,6 +65,7 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
 CreateUserDialog::~CreateUserDialog()
 {
     delete ui;
+    ui = nullptr;
 //    delete process;
 }
 

@@ -1065,8 +1065,11 @@ MainWidget::~MainWidget() {
 
     m_fsWatcher.removePath(QDir::homePath() + "/.cache/kylinId/");
     delete m_itemList;
+    m_itemList = nullptr;
     delete m_welcomeImage;
+    m_welcomeImage = nullptr;
     delete m_dbusClient;
+    m_dbusClient = nullptr;
     thread->requestInterruption();
     if(thread != nullptr)
     {

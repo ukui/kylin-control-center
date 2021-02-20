@@ -136,6 +136,7 @@ Widget::Widget(QWidget *parent)
 Widget::~Widget() {
     clearOutputIdentifiers();
     delete ui;
+    ui = nullptr;
 }
 
 bool Widget::eventFilter(QObject* object, QEvent* event) {

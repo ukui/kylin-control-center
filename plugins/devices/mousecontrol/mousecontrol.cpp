@@ -67,6 +67,7 @@ MouseControl::MouseControl()
 MouseControl::~MouseControl()
 {
     delete ui;
+    ui = nullptr;
     DeInitDBusMouse();
 }
 

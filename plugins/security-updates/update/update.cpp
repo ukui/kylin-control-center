@@ -41,6 +41,7 @@ Update::Update()
 Update::~Update()
 {
     delete ui;
+    ui = nullptr;
 }
 
 QString Update::get_plugin_name(){

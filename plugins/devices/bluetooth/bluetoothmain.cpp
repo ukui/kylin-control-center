@@ -394,6 +394,7 @@ void BlueToothMain::updateUIWhenAdapterChanged()
              child->widget()->setParent(NULL);
          }
          delete child;
+         child = nullptr;
      }
      while ((child = device_list_layout->takeAt(0)) != 0)
      {
@@ -403,6 +404,7 @@ void BlueToothMain::updateUIWhenAdapterChanged()
              child->widget()->setParent(NULL);
          }
          delete child;
+         child = nullptr;
      }
      // ========================END===========================================
      qDebug() << Q_FUNC_INFO <<m_localDevice->devices().size();
@@ -473,6 +475,7 @@ void BlueToothMain::removeDeviceItemUI(QString address)
             device_list_layout->removeWidget(item);
             item->setParent(NULL);
             delete item;
+            item = nullptr;
             Discovery_device_address.removeAll(address);
         }else{
             return;
@@ -483,6 +486,7 @@ void BlueToothMain::removeDeviceItemUI(QString address)
             paired_dev_layout->removeWidget(item);
             item->setParent(NULL);
             delete item;
+            item = nullptr;
 
             if(frame_middle->children().size() == 2){
                 frame_middle->setVisible(false);
@@ -496,7 +500,9 @@ void BlueToothMain::removeDeviceItemUI(QString address)
 BlueToothMain::~BlueToothMain()
 {
     delete settings;
+    settings = nullptr;
     delete device_list;
+    device_list = nullptr;
 }
 
 void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)

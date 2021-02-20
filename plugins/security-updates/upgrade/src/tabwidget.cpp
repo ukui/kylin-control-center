@@ -55,6 +55,7 @@ TabWid::~TabWid()
 {
     qDebug() << "~TabWid" ;
     delete updateMutual;
+    updateMutual = nullptr;
     backupDelete();//回收资源
 //    updateMutual->cleanUpdateList();
 }
@@ -746,7 +747,7 @@ void TabWid::waitCrucialInstalled()
 //        QString msg = tr("正在进行一项重要更新，请等待。");
         updateMutual->onRequestSendDesktopNotify(msg);
         versionInformationLab->setText(msg);
-        fileLockedStatus == true;
+        fileLockedStatus = true;
     }
 }
 

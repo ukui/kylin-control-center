@@ -93,7 +93,9 @@ Area::Area()
 Area::~Area()
 {
     delete ui;
+    ui = nullptr;
     delete m_itimer;
+    m_itimer = nullptr;
 }
 
 void Area::cloudChangedSlot(const QString &key) {

@@ -50,6 +50,7 @@ About::About() : mFirstLoad(true)
 About::~About() {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
     }
 }
 

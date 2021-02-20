@@ -106,6 +106,7 @@ MouseControl::MouseControl() : mFirstLoad(true)
 MouseControl::~MouseControl() {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
     }
 }
 
@@ -408,6 +409,7 @@ void MouseControl::mouseSizeChange() {
     mouseSettings->endGroup();
 
     delete mouseSettings;
+    mouseSettings = nullptr;
 
 #if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
 

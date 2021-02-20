@@ -95,6 +95,9 @@ int KeyboardPainter::getWidth()
 KeyboardPainter::~KeyboardPainter()
 {
     delete kbframe;
+    kbframe = nullptr;
     delete exitButton;
+    exitButton = nullptr;
     delete levelBox;
+    levelBox = nullptr;
 }

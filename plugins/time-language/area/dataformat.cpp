@@ -38,7 +38,9 @@ DataFormat::DataFormat(QWidget *parent) :
 DataFormat::~DataFormat()
 {
     delete ui;
+    ui = nullptr;
     delete m_itimer;
+    m_itimer = nullptr;
 }
 
 

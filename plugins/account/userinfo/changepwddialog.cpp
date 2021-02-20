@@ -85,6 +85,7 @@ ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QString _username, QWidget
 ChangePwdDialog::~ChangePwdDialog()
 {
     delete ui;
+    ui = nullptr;
 
 //    pcThread->terminate();
 //    delete pcThread;

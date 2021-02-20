@@ -131,6 +131,7 @@ _authenticate(const char *userName)
         printf("failed to get username\n");
     }
     free(newUser);
+    newUser = NULL;
 //    fprintf(stderr, "authentication result: %d\n", authRet);
 
     // 发送认证结果

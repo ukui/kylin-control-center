@@ -34,6 +34,7 @@ LoginOptions::LoginOptions()
 LoginOptions::~LoginOptions()
 {
     delete ui;
+    ui = nullptr;
 }
 
 QString LoginOptions::get_plugin_name(){

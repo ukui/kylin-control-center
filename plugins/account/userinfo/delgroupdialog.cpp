@@ -36,6 +36,7 @@ DelGroupDialog::DelGroupDialog(QString groupName, QWidget *parent) :
 DelGroupDialog::~DelGroupDialog()
 {
     delete ui;
+    ui = nullptr;
 }
 
 void DelGroupDialog::signalsBind()

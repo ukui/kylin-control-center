@@ -39,6 +39,7 @@ FramelessHandle::~FramelessHandle()
         delete fpri->widgethandleHash.take(widgets[i]);
     }
     delete fpri;
+    fpri = nullptr;
 }
 
 bool FramelessHandle::eventFilter(QObject *watched, QEvent *event){

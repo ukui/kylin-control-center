@@ -219,6 +219,7 @@ void m_updatelog::updatesql( const int &start,const int &num,const QString &into
             {
                 hulw->deleteLater();
                 delete item;
+                item = nullptr;
                 return;
             }
             firstCode=hulw->id;

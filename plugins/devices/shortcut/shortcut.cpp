@@ -79,8 +79,11 @@ Shortcut::~Shortcut()
 {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
         delete pKeyMap;
+        pKeyMap = nullptr;
         delete addDialog;
+        addDialog = nullptr;
     }
 }
 
@@ -395,6 +398,7 @@ void Shortcut::buildCustomItem(KeyEntry * nkeyEntry){
         QListWidgetItem * obItem =  ui->customListWidget->takeItem(row);
 
         delete obItem;
+        obItem = nullptr;
 
         ui->customListWidget->setFixedHeight((ui->customListWidget->count() + 1) * ITEMHEIGH);
 
@@ -498,6 +502,7 @@ void Shortcut::createNewShortcut(QString path, QString name, QString exec){
     settings->set(ACTION_KEY, exec);
 
     delete settings;
+    settings = nullptr;
 }
 
 void Shortcut::deleteCustomShortcut(QString path){
@@ -553,6 +558,7 @@ void Shortcut::newBindingRequest(QList<int> keyCode){
                 current->clearFocus();
                 qDebug() << "Please try with a key such as Control, Alt or Shift at the same time.";
                 delete settings;
+                settings = nullptr;
                 return;
             }
         }
@@ -566,6 +572,7 @@ void Shortcut::newBindingRequest(QList<int> keyCode){
             current->updateOldShow(settings->get(nkeyEntry->keyStr).toString());
             current->clearFocus();
             delete settings;
+            settings = nullptr;
             return;
         }
         if(shortcutString.endsWith(">")){   //special key
@@ -577,6 +584,7 @@ void Shortcut::newBindingRequest(QList<int> keyCode){
             current->updateOldShow(settings->get(nkeyEntry->keyStr).toString());
             current->clearFocus();
             delete settings;
+            settings = nullptr;
             return;
         }
         /* flag to see if the new accelerator was in use by something */
@@ -590,6 +598,7 @@ void Shortcut::newBindingRequest(QList<int> keyCode){
                 current->clearFocus();
                 qDebug() << QString("The shortcut \"%1\" is already used for\n\"%2\",please reset!!!").arg(shortcutString).arg(ckeyEntry->keyStr);
                 delete settings;
+                settings = nullptr;
                 return;
             }
         }
@@ -598,6 +607,7 @@ void Shortcut::newBindingRequest(QList<int> keyCode){
 
         settings->set(nkeyEntry->keyStr, shortcutString);
         delete settings;
+        settings = nullptr;
 
         //更新
         for (int index = 0; index < generalEntries.count(); index++){
@@ -693,6 +703,7 @@ void Shortcut::newBindingRequest(QList<int> keyCode){
         QGSettings * settings = new QGSettings(id, idd);
         settings->set(BINDING_KEY, shortcutString);
         delete settings;
+        settings = nullptr;
 
         //更新
         for (int index = 0; index < customEntries.count(); index++){
@@ -750,6 +761,7 @@ void Shortcut::shortcutChangedSlot(){
     for(int i = 0; i < ui->customListWidget->count(); i++){
         QListWidgetItem * obItem =  ui->customListWidget->takeItem(i);
         delete obItem;
+        obItem = nullptr;
     }
     isCloudService = true;
     initFunctionStatus();
