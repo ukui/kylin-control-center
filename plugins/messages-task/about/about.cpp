@@ -293,6 +293,10 @@ QString About::getTotalMemory()
     }
 
     memtotal = ceil(memtotal / 1024 / 1024);
+    // 向2的n次方取整
+    int nPow = ceil(log(memtotal)/log(2.0));
+    memtotal = pow(2.0, nPow);
+    
     return QString::number(memtotal) + " GB";
 }
 
