@@ -276,7 +276,7 @@ QString About::getTotalMemory()
 
     QTextStream in(&meninfoFile);
     QString line = in.readLine();
-    int memtotal = 0;
+    float memtotal = 0;
 
     while(!line.isNull()){
         if(line.contains("MemTotal")){
@@ -284,7 +284,7 @@ QString About::getTotalMemory()
 
             QStringList lineList = line.split(" ");
             QString mem = lineList.at(1);
-            memtotal = mem.toInt();
+            memtotal = mem.toFloat();
             break;
 
         }else {
