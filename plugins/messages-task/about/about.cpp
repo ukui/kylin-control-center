@@ -204,7 +204,7 @@ void About::setupSerialComponent() {
         return;
     }
 
-    int status;
+    int status = 0;
     QDBusMessage activeReply = activeInterface.get()->call("status");
     if (activeReply.type() == QDBusMessage::ReplyMessage) {
         status = activeReply.arguments().at(0).toInt();
@@ -275,7 +275,7 @@ QString About::getTotalMemory()
 
     QTextStream in(&meninfoFile);
     QString line = in.readLine();
-    int memtotal;
+    int memtotal = 0;
 
     while(!line.isNull()){
         if(line.contains("MemTotal")){

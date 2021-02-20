@@ -4,7 +4,7 @@
 activecon *kylin_network_get_activecon_info(char *path) {
     char *chr = "nmcli connection show -active > ";
     char *cmd = (char *) malloc(strlen(chr) + strlen(path) + 1);
-    strncpy(cmd, chr, strlen(chr) + strlen(path) + 1);
+    strncpy(cmd, chr, strlen(chr) + strlen(path));
     strncat(cmd, path, strlen(path));
     int status = system(cmd);
     if (status != 0) {
@@ -18,6 +18,7 @@ activecon *kylin_network_get_activecon_info(char *path) {
     char activeStrLine[1024];
     if ((activefp = fopen(filename,"r")) == NULL) {
         printf("error!");
+        return NULL;
     }
     fgets(activeStrLine,1024,activefp);
     while (!feof(activefp)) {
@@ -32,6 +33,8 @@ activecon *kylin_network_get_activecon_info(char *path) {
     char StrLine[1024];
     if ((fp = fopen(filename,"r")) == NULL) {
         printf("error!");
+        free(activelist);
+        return NULL;
     }
     fgets(StrLine,1024,fp);
     while (!feof(fp)) {
@@ -55,9 +58,9 @@ activecon *kylin_network_get_activecon_info(char *path) {
         }
 
         activelist[count].con_name = (char *)malloc(sizeof(char)*(num + 1));
-        strncpy(conname, StrLine,num+1);
+        strncpy(conname, StrLine,num);
         conname[num] = '\0';
-        strncpy(activelist[count].con_name, conname, num + 1);
+        strncpy(activelist[count].con_name, conname, num);
 
         // 截取连接类型
         char type[100];
@@ -87,9 +90,9 @@ activecon *kylin_network_get_activecon_info(char *path) {
             num1++;
         }
         activelist[count].type = (char *)malloc(sizeof(char)*(num1 + 1));
-        strncpy(type, index1 + 2, num1 + 1);
+        strncpy(type, index1 + 2, num1);
         type[num1] = '\0';
-        strncpy(activelist[count].type, type, num1 + 1);
+        strncpy(activelist[count].type, type, num1);
 
         // 截取连接所属设备
         char *index3 = index2;
@@ -110,9 +113,9 @@ activecon *kylin_network_get_activecon_info(char *path) {
             num2++;
         }
         activelist[count].dev = (char *)malloc(sizeof(char)*(num2 + 1));
-        strncpy(dev, index3 + 1, num2 + 1);
+        strncpy(dev, index3 + 1, num2);
         dev[num2] = '\0';
-        strncpy(activelist[count].dev, dev, num2 + 1);
+        strncpy(activelist[count].dev, dev, num2);
         count++;
     }
     fclose(fp);

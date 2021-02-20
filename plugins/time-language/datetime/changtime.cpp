@@ -33,9 +33,9 @@ extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int tran
 const QStringList kmonthName { QObject::tr("January"), QObject::tr("February"), QObject::tr("March"), QObject::tr("April"), QObject::tr("May"), QObject::tr("June"),
                                QObject::tr("July"), QObject::tr("August"), QObject::tr("September"), QObject::tr("October"), QObject::tr("Novermber"), QObject::tr("December")};
 
-ChangtimeDialog::ChangtimeDialog(bool hour,QWidget *parent) :m_isEFHour(hour),
-    QDialog(parent),
-    ui(new Ui::changtimedialog)
+ChangtimeDialog::ChangtimeDialog(bool hour,QWidget *parent) : QDialog(parent),
+    ui(new Ui::changtimedialog),
+    m_isEFHour(hour)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);

@@ -62,30 +62,29 @@ void GetShortcutWorker::run(){
 
 
     // list desktop shortcut
-    GSettings * desktopsettings;
+    GSettings * desktopsettings = NULL;
     if (QGSettings::isSchemaInstalled(KEYBINDINGS_DESKTOP_SCHEMA)) {
         desktopsettings = g_settings_new(KEYBINDINGS_DESKTOP_SCHEMA);
-    }
+        char ** dkeys = g_settings_list_keys(desktopsettings);
+        for (int i=0; dkeys[i]!= NULL; i++){
+            //跳过非快捷键
+            if (!g_strcmp0(dkeys[i], "active") || !g_strcmp0(dkeys[i], "volume-step") ||
+                    !g_strcmp0(dkeys[i], "priority") || !g_strcmp0(dkeys[i], "enable-osd"))
+                continue;
 
-    char ** dkeys = g_settings_list_keys(desktopsettings);
-    for (int i=0; dkeys[i]!= NULL; i++){
-        //跳过非快捷键
-        if (!g_strcmp0(dkeys[i], "active") || !g_strcmp0(dkeys[i], "volume-step") ||
-                !g_strcmp0(dkeys[i], "priority") || !g_strcmp0(dkeys[i], "enable-osd"))
-            continue;
+            GVariant *variant = g_settings_get_value(desktopsettings, dkeys[i]);
+            gsize size = g_variant_get_size(variant);
+            char * str = const_cast<char *>(g_variant_get_string(variant, &size));
 
-        GVariant *variant = g_settings_get_value(desktopsettings, dkeys[i]);
-        gsize size = g_variant_get_size(variant);
-        char * str = const_cast<char *>(g_variant_get_string(variant, &size));
-
-        //保存桌面快捷键
-        QString key = QString(dkeys[i]); QString value = QString(str);
-        if (value != "" && !value.contains("XF86")){
-            generalShortcutGenerate(KEYBINDINGS_DESKTOP_SCHEMA, key, value);
+            //保存桌面快捷键
+            QString key = QString(dkeys[i]); QString value = QString(str);
+            if (value != "" && !value.contains("XF86")){
+                generalShortcutGenerate(KEYBINDINGS_DESKTOP_SCHEMA, key, value);
+            }
         }
+        g_strfreev(dkeys);
+        g_object_unref(desktopsettings);
     }
-    g_strfreev(dkeys);
-    g_object_unref(desktopsettings);
 
     // list custdom shortcut
     QList<char *> existsPath = listExistsCustomShortcutPath();

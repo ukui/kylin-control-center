@@ -491,7 +491,7 @@ void TabWid::loadingOneUpdateMsgSlot(AppAllMsg msg)
         connect(updateMutual,&UpdateDbus::sendFinishGetMsgSignal,appWidget,&AppUpdateWid::showUpdateBtn);
         connect(appWidget,&AppUpdateWid::filelockedSignal,this,&TabWid::waitCrucialInstalled);
         connect(backup,&BackUp::bakeupFinish,appWidget,&AppUpdateWid::hideOrShowUpdateBtnSlot);
-        if(ukscConnect->isConnectUskc = true)
+        if(ukscConnect->isConnectUskc == true)
         {
             QStringList list = ukscConnect->getInfoByName(msg.name);
             if(list[2] != "")

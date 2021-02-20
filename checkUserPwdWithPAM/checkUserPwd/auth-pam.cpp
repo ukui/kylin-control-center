@@ -132,6 +132,7 @@ void AuthPAM::respond(const QString &response)
         }
          _respond(resp);
          free(resp);
+         resp = NULL;
          messageList.clear();
          responseList.clear();
     }
@@ -207,6 +208,7 @@ void AuthPAM::onSockRead()
             PAM_RESPONSE *response = (PAM_RESPONSE*)calloc(messageList.size(), sizeof(PAM_RESPONSE));
             _respond(response);
             free(response);
+            response = NULL;
             messageList.clear();
         }
     }
@@ -282,6 +284,7 @@ void AuthPAM::_authenticate(const char *userName)
         qDebug() << "failed to get username";
     }
     free(newUser);
+    newUser = NULL;
 //    fprintf(stderr, "authentication result: %d\n", authRet);
 
     // 发送认证结果

@@ -185,10 +185,10 @@ void QMLScreen::setScreenPos(QMLOutput *output) {
         return ;
     }
 
-    int x1, y1;
-    int width1, height1;
-    int x2, y2;
-    int width2, height2;
+    int x1 = 0, y1 = 0;
+    int width1 = 0, height1 = 0;
+    int x2 = 0, y2 = 0;
+    int width2 = 0, height2 = 0;
 
     x1 = output->x();
     y1 = output->y();
@@ -197,7 +197,7 @@ void QMLScreen::setScreenPos(QMLOutput *output) {
 
     int connectedScreen = 0;
 
-    QMLOutput *other;
+    QMLOutput *other = NULL;
     Q_FOREACH (QMLOutput *qmlOutput, m_outputMap) {
         if (qmlOutput->output()->isConnected()) {
             connectedScreen++;
@@ -236,7 +236,7 @@ void QMLScreen::setScreenPos(QMLOutput *output) {
         // 矩形是否相交
         if (!(x1 + width1 < x2 ||  x2 + width2 < x1 ||
               y1 > y2 +height2 || y2 > y1 + height1) &&
-                (x1 != x2 || y1 != y2) &&
+                (x1 != x2 || y1 != y2) && other != NULL &&
                 other->output()->isConnected()) {
 
             if ((x1 + width1 > x2) && (x1 < x2)) {

@@ -288,6 +288,8 @@ QWidget * Shortcut::buildGeneralWidget(QString schema, QMap<QString, QString> su
                                                     KEYBINDINGS_SYSTEM_SCHEMA,
                                                     FALSE);
         domain = "gsettings-desktop-schemas";
+    } else {
+        return NULL;
     }
 
     QWidget * pWidget = new QWidget;
@@ -347,8 +349,10 @@ void Shortcut::appendGeneralItems(QMap<QString, QMap<QString, QString> > shortcu
     QMap<QString, QMap<QString, QString>>::iterator it = shortcutsMap.begin();
     for (; it != shortcutsMap.end(); it++){
         QWidget * gWidget = buildGeneralWidget(it.key(), it.value());
-        gWidget->setMaximumWidth(960);
-        ui->verticalLayout->addWidget(gWidget);
+        if (gWidget != NULL) {
+            gWidget->setMaximumWidth(960);
+            ui->verticalLayout->addWidget(gWidget);
+        }        
     }
 }
 

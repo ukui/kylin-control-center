@@ -1488,7 +1488,7 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
     Q_UNUSED(pspec);
     g_debug("on stream control volume notify");
     qDebug() << "on stream control volume notify" << mate_mixer_stream_control_get_name(m_pControl);
-    MateMixerStreamControlFlags flags;
+    MateMixerStreamControlFlags flags = MATE_MIXER_STREAM_CONTROL_NO_FLAGS;
     guint volume = 0;
     QString decscription;
 
@@ -2458,20 +2458,24 @@ void UkmediaMainWidget::selectComboboxChangedSlot(int index)
 */
 void UkmediaMainWidget::inputMuteButtonSlot()
 {
-    MateMixerStreamControl *pControl;
+    MateMixerStreamControl *pControl = nullptr;
     MateMixerStream *pStream = mate_mixer_context_get_default_input_stream(m_pContext);
     if (pStream != nullptr)
         pControl = mate_mixer_stream_get_default_control(pStream);
-    int volume = int(mate_mixer_stream_control_get_volume(pControl));
-    volume = int(volume*100/65536.0 + 0.5);
-    bool status = mate_mixer_stream_control_get_mute(pControl);
-    if (status) {
-        status = false;
-       mate_mixer_stream_control_set_mute(pControl,status);
-    }
-    else {
-        status =true;
+    if (pControl != nullptr) {
+        int volume = int(mate_mixer_stream_control_get_volume(pControl));
+        volume = int(volume*100/65536.0 + 0.5);
+        bool status = mate_mixer_stream_control_get_mute(pControl);
+        if (status) {
+            status = false;
         mate_mixer_stream_control_set_mute(pControl,status);
+        }
+        else {
+            status =true;
+            mate_mixer_stream_control_set_mute(pControl,status);
+        }
+    } else {
+        qDebug() << "Can't get mate mixer stream control!!";
     }
 }
 
@@ -2480,20 +2484,24 @@ void UkmediaMainWidget::inputMuteButtonSlot()
 */
 void UkmediaMainWidget::outputMuteButtonSlot()
 {
-    MateMixerStreamControl *pControl;
+    MateMixerStreamControl *pControl = nullptr;
     MateMixerStream *pStream = mate_mixer_context_get_default_output_stream(m_pContext);
     if (pStream != nullptr)
         pControl = mate_mixer_stream_get_default_control(pStream);
-    int volume = int(mate_mixer_stream_control_get_volume(pControl));
-    volume = int(volume*100/65536.0 + 0.5);
-    bool status = mate_mixer_stream_control_get_mute(pControl);
-    if (status) {
-        status = false;
-        mate_mixer_stream_control_set_mute(pControl,status);
-    }
-    else {
-        status =true;
-        mate_mixer_stream_control_set_mute(pControl,status);
+    if (pControl != nullptr) {
+        int volume = int(mate_mixer_stream_control_get_volume(pControl));
+        volume = int(volume*100/65536.0 + 0.5);
+        bool status = mate_mixer_stream_control_get_mute(pControl);
+        if (status) {
+            status = false;
+            mate_mixer_stream_control_set_mute(pControl,status);
+        }
+        else {
+            status =true;
+            mate_mixer_stream_control_set_mute(pControl,status);
+        }
+    } else {
+        qDebug() << "Can't get mate mixer stream control!!";
     }
 }
 
@@ -2641,7 +2649,7 @@ void UkmediaMainWidget::setOutputStream (UkmediaMainWidget *m_pWidget, MateMixer
     if (m_pStream == nullptr) {
         return;
     }
-    MateMixerStreamControl *m_pControl;
+    MateMixerStreamControl *m_pControl = nullptr;
     ukuiBarSetStream(m_pWidget,m_pStream);
     if (m_pStream != nullptr) {
         const GList *controls;

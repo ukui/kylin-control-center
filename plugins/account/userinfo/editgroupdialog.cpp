@@ -29,13 +29,13 @@ extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int tran
 EditGroupDialog::EditGroupDialog(QString usergroup, QString groupid, QString groupname, bool idSetEnable, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::EditGroupDialog),
+    cgDialog(new ChangeGroupDialog),
     _nameHasModified(false),
     _idHasModified(false),
     _boxModified(false),
     userGroup(usergroup),
     groupId(groupid),
-    groupName(groupname),
-    cgDialog(new ChangeGroupDialog)
+    groupName(groupname)
 {
     ui->setupUi(this);
     setupInit();

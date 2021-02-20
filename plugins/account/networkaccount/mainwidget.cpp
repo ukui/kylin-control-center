@@ -775,11 +775,11 @@ void MainWidget::handle_write(const int &on,const int &id) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
-    char name[32];
+    char name[32] = {0};
     if(id == -1) {
-        strncpy(name,"Auto-sync",32);
+        strncpy(name,"Auto-sync",31);
     } else {
-        strncpy(name,m_szItemlist[id].toStdString().c_str(),32);
+        strncpy(name,m_szItemlist[id].toStdString().c_str(),31);
     }
     m_statusChanged = on;
     m_indexChanged = id;

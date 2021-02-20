@@ -52,8 +52,8 @@ extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int tran
 
 ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QString _username, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ChangePwdDialog),
     isCurrentUser(_isCurrentUser),
+    ui(new Ui::ChangePwdDialog),
     currentUserName(_username)
 {
     ui->setupUi(this);

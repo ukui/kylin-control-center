@@ -509,6 +509,7 @@ QString Widget::findTouchScreenName(int devicesid){
             }
         }
     }
+    return devicesname;
 }
 
 /*
