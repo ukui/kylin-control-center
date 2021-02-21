@@ -123,6 +123,7 @@ private:
     SyncDialog      *m_syncDialog;
     bool            bIsLogging = false;
     QSettings         *m_pSettings;
+    bool            m_bIsKylinId = false;
 
 public slots:
     void            on_login_out();
@@ -139,6 +140,7 @@ public slots:
     void            get_key_info(QString info);
     void            checkUserName(QString name);
     void            finishedLogout(int ret);
+    void            loginSuccess(int ret);
 signals:
     void dooss(QString m_szUuid);
     void doman();
@@ -153,6 +155,9 @@ signals:
     void oldVersion();
     void doquerry(QString name);
     void dosend(QString info);
+
+    void kylinIdLogOut();
+    void kylinIdCheck();
 };
 
 #endif // CONFIG_LIST_WIDGET_H

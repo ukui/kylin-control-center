@@ -27,6 +27,7 @@
 MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
 
     initMemoryAlloc();
+
     QProcess proc;
     QStringList option;
     option << "-c" << "lsb_release -r | awk -F'\t' '{print $2}'";
@@ -35,6 +36,16 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     QByteArray ar = proc.readAll().toStdString().c_str();
     m_confName = "All-" + ar.replace("\n","") + ".conf";
     m_szConfPath = QDir::homePath() + "/.cache/kylinId/" + m_confName;
+
+    QProcess kylinIDProc;
+    QStringList kIdOptions;
+    kIdOptions << "-c" << "ps aux | grep kylin-id";
+    kylinIDProc.start("/bin/bash",kIdOptions);
+    kylinIDProc.waitForFinished(-1);
+    QByteArray result = kylinIDProc.readAll();
+    if(result.contains("/usr/bin/kylin-id")) {
+        m_bIsKylinId = true;
+    }
 
 
     m_szUuid = QUuid::createUuid().toString();
@@ -50,6 +61,40 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
 }
 
 void MainWidget::dbusInterface() {
+    if(m_bIsKylinId) {
+        QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinID/path"), QString("org.kylinID.interface"),
+                                              "finishedLogout", this, SLOT(finishedLogout(int)));
+        QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinID/path"), QString("org.kylinID.interface"),
+                                              "finishedVerifyToken", this, SLOT(checkUserName(QString)));
+        QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinID/path"), QString("org.kylinID.interface"),
+                                              "finishedPassLogin", this, SLOT(loginSuccess(int)));
+        QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinID/path"), QString("org.kylinID.interface"),
+                                              "finishedPhoneLogin", this, SLOT(loginSuccess(int)));
+        connect(this, &MainWidget::kylinIdLogOut, this, [=] () {
+            QDBusMessage message = QDBusMessage::createMethodCall("org.kylinID.service","/org/kylinID/path",
+                                                                  "org.kylinID.interface",
+                                                                  "logout");
+            QDBusConnection::sessionBus().call(message);
+            m_mainWidget->setCurrentWidget(m_nullWidget);
+        });
+
+        connect(this, &MainWidget::kylinIdCheck, this, [=] () {
+            QDBusMessage message = QDBusMessage::createMethodCall("org.kylinID.service","/org/kylinID/path",
+                                                                  "org.kylinID.interface",
+                                                                  "checkLogin");
+            QDBusConnection::sessionBus().call(message);
+        });
+    }
+
+    m_dbusClient->connectSignal("finished_init_oss",this,SLOT(finished_load(int,QString)));
+    m_dbusClient->connectSignal("finishedConfLoad",this,SLOT(finished_conf(int)));
+    m_dbusClient->connectSignal("backcall_start_download_signal",this,SLOT(download_files()));
+    m_dbusClient->connectSignal("backcall_end_download_signal",this,SLOT(download_over()));
+    m_dbusClient->connectSignal("backcall_start_push_signal",this,SLOT(push_files()));
+    m_dbusClient->connectSignal("backcall_end_push_signal",this,SLOT(push_over()));
+    m_dbusClient->connectSignal("backcall_key_info",this,SLOT(get_key_info(QString)));
+    m_dbusClient->connectSignal("finishedVerifyToken",this,SLOT(checkUserName(QString)));
+    m_dbusClient->connectSignal("finishedLogout",this,SLOT(finishedLogout(int)));
     connect(this, &MainWidget::docheck, m_dbusClient, [=]() {
         QList<QVariant> argList;
         m_szCode = m_dbusClient->callMethod("checkLogin",argList);
@@ -126,6 +171,20 @@ void MainWidget::dbusInterface() {
         } else {
             m_bHasNetwork = true;
         }
+
+        if(taskName == "logout") {
+            m_szCode = "";
+            m_autoSyn->set_change(0,"0");
+            m_autoSyn->set_active(true);
+            m_keyInfoList.clear();
+
+            m_mainWidget->setCurrentWidget(m_nullWidget);
+            setshow(m_mainWidget);
+            __once__ = false;
+            __run__ = false;
+            m_bIsStopped = true;
+            bIsLogging = false;
+        }
     });
 
     connect(m_dbusClient, &DBusUtils::querryFinished, this , [=] (const QStringList &list) {
@@ -143,9 +202,11 @@ void MainWidget::dbusInterface() {
         if(m_cLoginTimer->isActive()) {
             m_cLoginTimer->stop();
         }
-        if(m_pSettings != nullptr) {
-            m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
-        }
+        QFile fileConf(m_szConfPath);
+        if(m_pSettings != nullptr && fileConf.exists())
+            m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
+        else
+            m_syncTimeLabel->setText(tr("Waiting for initialization..."));
         //qDebug() << "csacasacasca";
         if(keyList.size() > 2) {
             if(m_bHasNetwork == false) {
@@ -208,18 +269,12 @@ void MainWidget::dbusInterface() {
             handle_conf();
         }
     });
-    emit docheck();
+    if(m_bIsKylinId) {
+        emit kylinIdCheck();
+    } else {
+        emit docheck();
+    }
     connect(thread,&QThread::finished,thread,&QObject::deleteLater);
-
-    m_dbusClient->connectSignal("finished_init_oss",this,SLOT(finished_load(int,QString)));
-    m_dbusClient->connectSignal("finishedConfLoad",this,SLOT(finished_conf(int)));
-    m_dbusClient->connectSignal("backcall_start_download_signal",this,SLOT(download_files()));
-    m_dbusClient->connectSignal("backcall_end_download_signal",this,SLOT(download_over()));
-    m_dbusClient->connectSignal("backcall_start_push_signal",this,SLOT(push_files()));
-    m_dbusClient->connectSignal("backcall_end_push_signal",this,SLOT(push_over()));
-    m_dbusClient->connectSignal("backcall_key_info",this,SLOT(get_key_info(QString)));
-    m_dbusClient->connectSignal("finishedVerifyToken",this,SLOT(checkUserName(QString)));
-    m_dbusClient->connectSignal("finishedLogout",this,SLOT(finishedLogout(int)));
     m_dbusClient->moveToThread(thread);
     thread->start();    //线程开始
 }
@@ -227,20 +282,6 @@ void MainWidget::dbusInterface() {
 void MainWidget::finishedLogout(int ret) {
     if(ret != 0 && ret != 401) {
         showDesktopNotify(tr("Logout failed,please check your connection"));
-        return ;
-    } else {
-        m_szCode = "";
-        m_autoSyn->set_change(0,"0");
-        m_autoSyn->set_active(true);
-        m_keyInfoList.clear();
-
-        m_mainWidget->setCurrentWidget(m_nullWidget);
-        setshow(m_mainWidget);
-        __once__ = false;
-        __run__ = false;
-        m_bIsStopped = true;
-        bIsLogging = false;
-        m_bIsStopped = true;
     }
 }
 
@@ -248,14 +289,21 @@ void MainWidget::checkUserName(QString name) {
     m_szCode = name;
     if(name == "" || name =="201" || name == "203" || name == "401" || name == "500" || name == "502") {
         m_mainWidget->setCurrentWidget(m_nullWidget);
-        emit dologout();
+        if(m_bIsKylinId) {
+            emit kylinIdLogOut();
+        } else {
+            emit dologout();
+        }
         return ;
     }
     m_pSettings = new QSettings(m_szConfPath,QSettings::IniFormat);
     m_pSettings->setIniCodec(QTextCodec::codecForName("UTF-8"));
     m_infoTab->setText(tr("Your account：%1").arg(m_szCode));
-    if(m_pSettings != nullptr)
+    QFile fileConf(m_szConfPath);
+    if(m_pSettings != nullptr && fileConf.exists())
         m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
+    else
+        m_syncTimeLabel->setText(tr("Waiting for initialization..."));
     //setshow(m_mainWidget);
     if(m_bTokenValid == false) {
         m_mainWidget->setCurrentWidget(m_widgetContainer);
@@ -454,7 +502,11 @@ void MainWidget::initSignalSlots() {
     connect(&m_fsWatcher,&QFileSystemWatcher::directoryChanged,this,[this] () {
         QFile conf( m_szConfPath);
         if(conf.exists() == true && m_pSettings != nullptr) {
-            m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString());
+            QFile fileConf(m_szConfPath);
+            if(m_pSettings != nullptr && fileConf.exists())
+                m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
+            else
+                m_syncTimeLabel->setText(tr("Waiting for initialization..."));
             if(m_autoSyn->get_swbtn()->get_active() == 1)
                 handle_conf();
         }
@@ -610,41 +662,55 @@ void MainWidget::init_gui() {
 /* 打开登录框处理事件 */
 void MainWidget::on_login() {
     m_isOpenDialog = true;
-    m_mainDialog = new MainDialog;
-    m_mainDialog->setAttribute(Qt::WA_DeleteOnClose);
-    //m_editDialog->m_bIsUsed = false;
-    m_mainDialog->set_client(m_dbusClient,thread);
-    m_mainDialog->is_used = true;
-    m_mainDialog->set_clear();
-    m_exitCode->setText(" ");
+    if (m_bIsKylinId) {
+        QDBusMessage message = QDBusMessage::createMethodCall("org.kylinID.service","/org/kylinID/path",
+                                                              "org.kylinID.interface",
+                                                              "openKylinID");
+        QDBusMessage response =  QDBusConnection::sessionBus().call(message);
 
-    connect(m_mainDialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
-    connect(m_mainDialog,&MainDialog::on_login_success, this,[this] () {
-        m_cLoginTimer->setSingleShot(true);
-        m_cLoginTimer->setInterval(10000);
-        m_cLoginTimer->start();
-        m_bIsStopped = false;
-        bIsLogging = true;
-    });
-    connect(m_mainDialog,&MainDialog::on_login_failed,this, [this] () {
-        m_cLoginTimer->stop();
-        m_bIsStopped = true;
-        bIsLogging = false;
-    });
-
-    connect(m_cLoginTimer,&QTimer::timeout,m_mainWidget,[this]() {
-        m_cLoginTimer->stop();
-        if(m_bIsStopped) {
-            return ;
+        if(response.type() == QDBusMessage::ReplyMessage) {
+            QVariant var =  response.arguments().takeFirst();
+            if(var.toInt() != 0) {
+                showDesktopNotify(tr("KylinID open error!"));
+            }
         }
+    } else {
+        m_mainDialog = new MainDialog;
+        m_mainDialog->setAttribute(Qt::WA_DeleteOnClose);
+        //m_editDialog->m_bIsUsed = false;
+        m_mainDialog->set_client(m_dbusClient,thread);
+        m_mainDialog->is_used = true;
+        m_mainDialog->set_clear();
+        m_exitCode->setText(" ");
 
-        if(m_mainWidget->currentWidget()  == m_widgetContainer) {
-        } else if (m_mainWidget->currentWidget() == m_nullWidget) {
-            m_mainDialog->setnormal();
-            on_login_out();
-        }
-    });
-    m_mainDialog->show();
+        connect(m_mainDialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
+        connect(m_mainDialog,&MainDialog::on_login_success, this,[this] () {
+            m_cLoginTimer->setSingleShot(true);
+            m_cLoginTimer->setInterval(10000);
+            m_cLoginTimer->start();
+            m_bIsStopped = false;
+            bIsLogging = true;
+        });
+        connect(m_mainDialog,&MainDialog::on_login_failed,this, [this] () {
+            m_cLoginTimer->stop();
+            m_bIsStopped = true;
+            bIsLogging = false;
+        });
+
+        connect(m_cLoginTimer,&QTimer::timeout,m_mainWidget,[this]() {
+            m_cLoginTimer->stop();
+            if(m_bIsStopped) {
+                return ;
+            }
+
+            if(m_mainWidget->currentWidget()  == m_widgetContainer) {
+            } else if (m_mainWidget->currentWidget() == m_nullWidget) {
+                m_mainDialog->setnormal();
+                on_login_out();
+            }
+        });
+        m_mainDialog->show();
+    }
 }
 
 /* 登录过程处理事件 */
@@ -653,6 +719,9 @@ void MainWidget::open_cloud() {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
+    emit docheck();
+    m_mainDialog->on_close();
+    bIsLogging = false;
     emit dooss(m_szUuid);
     //m_mainDialog->on_close();
 }
@@ -712,11 +781,6 @@ void MainWidget::finished_load(int ret, QString uuid) {
     }
     m_bIsStopped = false;
     if (ret == 0) {
-        if(bIsLogging) {
-            emit docheck();
-            m_mainDialog->on_close();
-            bIsLogging = false;
-        }
         m_autoSyn->set_change(0,"0");
         for(int i = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_change(0,"0");
@@ -845,7 +909,11 @@ void MainWidget::on_auto_syn(int on, int id) {
 void MainWidget::on_login_out() {
 
     if(m_exitCloud_btn->property("on") == false)  {
-        emit dologout();
+        if(m_bIsKylinId) {
+            emit kylinIdLogOut();
+        } else {
+            emit dologout();
+        }
 
     } else {
         emit dosend("exit");
@@ -1059,6 +1127,17 @@ void MainWidget::showDesktopNotify(const QString &message)
     iface.callWithArgumentList(QDBus::AutoDetect,"Notify",args);
 }
 
+void MainWidget::loginSuccess(int ret) {
+    if(m_bHasNetwork == false) {
+        showDesktopNotify(tr("Network can not reach!"));
+        return ;
+    }
+    if (ret == 0) {
+       emit kylinIdCheck();
+       emit dooss(m_szUuid);
+    }
+}
+
 
 /* 析构函数 */
 MainWidget::~MainWidget() {
@@ -1074,5 +1153,3 @@ MainWidget::~MainWidget() {
     }
     thread->wait();
 }
-
-
