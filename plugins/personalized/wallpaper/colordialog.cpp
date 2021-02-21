@@ -38,6 +38,7 @@ ColorDialog::~ColorDialog()
 {
     qDebug()<<"this is color destructor:" << endl;
     delete ui;
+    ui = nullptr;
 }
 
 void ColorDialog::paintEvent(QPaintEvent *event)

@@ -121,6 +121,7 @@ void Widget::loadQml() {
 Widget::~Widget() {
     //clearOutputIdentifiers();
     delete ui;
+    ui = nullptr;
 }
 
 //接收触摸事件
@@ -509,6 +510,7 @@ QString Widget::findTouchScreenName(int devicesid){
             }
         }
     }
+    return devicesname;
 }
 
 /*

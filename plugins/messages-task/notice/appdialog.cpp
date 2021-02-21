@@ -11,4 +11,5 @@ AppDialog::AppDialog(QWidget *parent) :
 AppDialog::~AppDialog()
 {
     delete ui;
+    ui = nullptr;
 }

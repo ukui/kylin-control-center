@@ -79,6 +79,7 @@ ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
 ChangeFaceDialog::~ChangeFaceDialog()
 {
     delete ui;
+    ui = nullptr;
 }
 
 void ChangeFaceDialog::loadSystemFaces(){

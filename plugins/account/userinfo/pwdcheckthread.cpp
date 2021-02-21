@@ -19,7 +19,7 @@ void PwdCheckThread::run(){
 
     FILE * stream;
     char command[128];
-    char output[128];
+    char output[256];
 
     bool result = false;
 
@@ -27,10 +27,10 @@ void PwdCheckThread::run(){
 
     //
     if (upwd.contains("'")){
-        sprintf(command, "/usr/bin/checkUserPwd %s \"%s\"", ba1.data(), upwd.toLatin1().data());
+        snprintf(command, 128, "/usr/bin/checkUserPwd %s \"%s\"", ba1.data(), upwd.toLatin1().data());
     } else {
 
-        sprintf(command, "/usr/bin/checkUserPwd %s '%s'", ba1.data(), upwd.toLatin1().data());
+        snprintf(command, 128, "/usr/bin/checkUserPwd %s '%s'", ba1.data(), upwd.toLatin1().data());
     }
 
     if ((stream = popen(command, "r")) != NULL){

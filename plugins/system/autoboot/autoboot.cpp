@@ -58,6 +58,7 @@ AutoBoot::AutoBoot() : mFirstLoad(true)
 AutoBoot::~AutoBoot() {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
         g_free(localconfigdir);
     }
 }
@@ -337,6 +338,7 @@ void AutoBoot::clearAutoItem()
         {
             delete item->widget();
             delete item;
+            item = nullptr;
         }
     }
 }
@@ -870,6 +872,7 @@ void AutoBoot::keyChangedSlot(const QString &key) {
                     child->widget()->setParent(NULL);
                 }
                 delete child;
+                child = nullptr;
          }
          initUI();
     }

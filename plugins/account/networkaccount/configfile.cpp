@@ -46,7 +46,7 @@ ConfigFile::ConfigFile( QString qstrfilename)
 ConfigFile::~ConfigFile()
 {
     delete m_psetting;
-    m_psetting = 0;
+    m_psetting = nullptr;
 }
 
 QString ConfigFile::GetPath() const {

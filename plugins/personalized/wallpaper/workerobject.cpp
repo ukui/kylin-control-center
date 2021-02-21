@@ -32,6 +32,7 @@ WorkerObject::WorkerObject()
 WorkerObject::~WorkerObject()
 {
     delete xmlHandleObj;
+    xmlHandleObj = nullptr;
 }
 
 void WorkerObject::run(){

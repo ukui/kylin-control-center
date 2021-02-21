@@ -64,8 +64,8 @@ void AuthPAM::authenticate(const QString &userName, const QString &userPwd)
         int arg2_int = toChild[0];
         char arg1[128];
         char arg2[128];
-        sprintf(arg1,"%d",arg1_int);
-        sprintf(arg2,"%d",arg2_int);
+        snprintf(arg1,128,"%d",arg1_int);
+        snprintf(arg2,128,"%d",arg2_int);
         //_authenticate(userName.toLocal8Bit().data());
         prctl(PR_SET_PDEATHSIG,SIGHUP);
         execlp ("childCheckpwdwithPAM",
@@ -132,6 +132,7 @@ void AuthPAM::respond(const QString &response)
         }
          _respond(resp);
          free(resp);
+         resp = NULL;
          messageList.clear();
          responseList.clear();
     }
@@ -207,6 +208,7 @@ void AuthPAM::onSockRead()
             PAM_RESPONSE *response = (PAM_RESPONSE*)calloc(messageList.size(), sizeof(PAM_RESPONSE));
             _respond(response);
             free(response);
+            response = NULL;
             messageList.clear();
         }
     }
@@ -282,6 +284,7 @@ void AuthPAM::_authenticate(const char *userName)
         qDebug() << "failed to get username";
     }
     free(newUser);
+    newUser = NULL;
 //    fprintf(stderr, "authentication result: %d\n", authRet);
 
     // 发送认证结果

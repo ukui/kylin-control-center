@@ -10,8 +10,8 @@
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
 AppDetail::AppDetail(QString Name,QString key, QGSettings *gsettings, QWidget *parent) :
-    QDialog(parent),appKey(key),m_gsettings(gsettings), appName(Name),
-    ui(new Ui::AppDetail)
+    QDialog(parent), ui(new Ui::AppDetail), appName(Name), appKey(key),
+    m_gsettings(gsettings)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
@@ -28,6 +28,7 @@ AppDetail::AppDetail(QString Name,QString key, QGSettings *gsettings, QWidget *p
 AppDetail::~AppDetail()
 {
     delete ui;
+    ui = nullptr;
 }
 
 void AppDetail::initUiStatus() {

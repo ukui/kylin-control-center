@@ -47,7 +47,7 @@ namespace QtJson {
         QByteArray tabsFields;
         if (prettySerialize && !map.isEmpty()) {
             newline = "\n";
-            for (uint l=1; l<_level; l++) {
+            for (int l=1; l<_level; l++) {
                 tabs += "    ";
             }
             tabsFields = tabs + "    ";
@@ -168,7 +168,7 @@ namespace QtJson {
         QByteArray tabsFields;
         if (prettySerialize) {
             newline = "\n";
-            for (uint l=0; l<_level; l++) {
+            for (int l=0; l<_level; l++) {
                 tabs += "    ";
             }
             tabsFields = tabs + "    ";

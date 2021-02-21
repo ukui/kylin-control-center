@@ -68,7 +68,9 @@ UserInfo::~UserInfo()
 {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
         delete autoSettings;
+        autoSettings = nullptr;
     }
 }
 
@@ -258,6 +260,7 @@ UserInfomation UserInfo::_acquireUserInfo(QString objpath){
         qDebug() << "reply failed";
 
     delete iproperty;
+    iproperty = nullptr;
 
     return user;
 }
@@ -501,6 +504,7 @@ void UserInfo::initComponent(){
             tmpSysinterface->call("setNoPwdLoginStatus", checked, user.username);
 
             delete tmpSysinterface;
+            tmpSysinterface = nullptr;
 
         });
 
@@ -1101,6 +1105,7 @@ void UserInfo::changeUserPwd(QString pwd, QString username){
     tmpSysinterface->call("changeOtherUserPasswd", username, pwd);
 
     delete tmpSysinterface;
+    tmpSysinterface = nullptr;
 }
 
 

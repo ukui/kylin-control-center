@@ -101,6 +101,7 @@ DateTime::DateTime() {
 
 DateTime::~DateTime() {
     delete ui;
+    ui = nullptr;
 }
 
 QString DateTime::get_plugin_name() {

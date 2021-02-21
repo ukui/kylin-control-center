@@ -316,7 +316,7 @@ void UpdateDbus::getAptSignal(QString arg, QMap<QString, QVariant> map)
     QString aptStatus;
     QString aptAppName;
     QString errorMessage;
-    float aptPercent;
+    float aptPercent = 0;
 
     QVariant dateQVariant;
     aptStatus = arg;

@@ -171,6 +171,7 @@ int SwitchButton::get_swichbutton_val() const {
 
 SwitchButton::~SwitchButton() {
     delete m_buttonColor;
+    m_buttonColor = nullptr;
 }
 
 /* 设置开关状态 */

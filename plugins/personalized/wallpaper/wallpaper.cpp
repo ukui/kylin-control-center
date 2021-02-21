@@ -52,10 +52,13 @@ Wallpaper::~Wallpaper()
 {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
         if (settingsCreate){
             delete bgsettings;
+            bgsettings = nullptr;
         }
         delete xmlhandleObj;
+        xmlhandleObj = nullptr;
     }
 }
 

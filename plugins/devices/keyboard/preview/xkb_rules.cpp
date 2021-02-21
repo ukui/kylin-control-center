@@ -221,6 +221,7 @@ Rules* Rules::readRules(ExtrasFlag extrasFlag)
     QString rulesFile = findXkbRulesFile();
     if( ! readRules(rules, rulesFile, false) ) {
         delete rules;
+        rules = nullptr;
         return nullptr;
     }
     if( extrasFlag == Rules::READ_EXTRAS ) {
@@ -231,6 +232,7 @@ Rules* Rules::readRules(ExtrasFlag extrasFlag)
             mergeRules(rules, rulesExtra);
         }
         delete rulesExtra;
+        rulesExtra = nullptr;
     }
     return rules;
 }

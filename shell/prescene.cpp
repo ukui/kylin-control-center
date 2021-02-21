@@ -6,8 +6,8 @@
 #include <QApplication>
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
-PreScene::PreScene(QLabel *label, QSize size, QWidget *parent) : titleLabel(label), m_size(size)
-  , QWidget(parent)
+PreScene::PreScene(QLabel *label, QSize size, QWidget *parent) : QWidget(parent), m_size(size)
+  , titleLabel(label)
 {
     this->setFixedSize(m_size);
     this->setObjectName("prescene");

@@ -69,6 +69,7 @@ Screensaver::Screensaver() : mFirstLoad(true)
 Screensaver::~Screensaver() {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
         delete process;
         process = nullptr;
     }
@@ -253,6 +254,7 @@ void Screensaver::initEnableBtnStatus() {
     initLockBtnStatus(locked);
 
     delete settings;
+    settings = nullptr;
 }
 
 void Screensaver::initLockBtnStatus(bool status) {
@@ -509,6 +511,7 @@ void Screensaver::lockbtn_changed_slot(bool status) {
     QGSettings * settings = new QGSettings(ba);
     settings->set(LOCK_KEY, status);
     delete settings;
+    settings = nullptr;
 }
 
 void Screensaver::activebtn_changed_slot(bool status) {
@@ -577,6 +580,7 @@ void Screensaver::combobox_changed_slot(int index) {
         }
         settings->set(THEMES_KEY, QVariant(valueStringList));
         delete settings;
+        settings = nullptr;
     } else {
         g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_SINGLE);
         //获取当前屏保的id

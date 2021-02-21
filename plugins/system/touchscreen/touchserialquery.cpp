@@ -75,7 +75,7 @@ static int find_event_from_touchId(int pId ,char *_event, int max_len)
                 continue;
             }
 
-            strncpy(_event, cEvent, max_len);
+            strncpy(_event, cEvent, max_len>0?(max_len-1):max_len);
             //printf("cEvent=%s,_event=%s\n",cEvent,_event);
             ret = Success;
             break;
@@ -142,7 +142,7 @@ static int find_serial_from_event(char *_name, char *_event, char *_serial, int 
             {
                 continue;
             }
-            strncpy(_serial, pSerial, max_len);
+            strncpy(_serial, pSerial, max_len>0?(max_len-1):max_len);
             ret = Success;
             //printf(" _serial:%s\n  pSerial: %s\n",_serial, pSerial);
             break;
@@ -162,6 +162,6 @@ int findSerialFromId(int touchid,char *touchname,char *_touchserial,int maxlen)
     int ret=find_event_from_touchId(touchid, event, 32);
     ret=find_serial_from_event(touchname, event,_touchserial,maxlen);
     if(!strcmp(_touchserial,""))
-        strncpy(_touchserial,"kydefault",maxlen);
+        strncpy(_touchserial,"kydefault",maxlen>0?(maxlen-1):maxlen);
     return ret;
 }

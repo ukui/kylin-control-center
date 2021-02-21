@@ -90,6 +90,7 @@ addShortcutDialog::addShortcutDialog(QWidget *parent) :
 addShortcutDialog::~addShortcutDialog()
 {
     delete ui;
+    ui = nullptr;
 }
 
 void addShortcutDialog::setTitleText(QString text){

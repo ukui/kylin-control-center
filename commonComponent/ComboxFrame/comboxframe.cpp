@@ -1,6 +1,6 @@
 #include "comboxframe.h"
 
-ComboxFrame:: ComboxFrame(QString labelStr, QWidget *parent) : mTitleName(labelStr), QFrame(parent) {
+ComboxFrame:: ComboxFrame(QString labelStr, QWidget *parent) : QFrame(parent), mTitleName(labelStr) {
 
     this->setMinimumSize(550, 50);
     this->setMaximumSize(16777215, 50);
@@ -16,7 +16,7 @@ ComboxFrame:: ComboxFrame(QString labelStr, QWidget *parent) : mTitleName(labelS
     this->setLayout(mHLayout);
 }
 
-ComboxFrame::ComboxFrame(bool isNum, QString labelStr, QWidget *parent) : mTitleName(labelStr), QFrame(parent)
+ComboxFrame::ComboxFrame(bool isNum, QString labelStr, QWidget *parent) : QFrame(parent), mTitleName(labelStr)
 {
     Q_UNUSED(isNum)
     this->setMinimumSize(550, 50);

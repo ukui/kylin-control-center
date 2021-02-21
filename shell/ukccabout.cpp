@@ -151,6 +151,7 @@ QString UkccAbout::getUkccVersion() {
     }
 
     free(line);
+    line = NULL;
     pclose(pp);
     return version;
 }

@@ -3,7 +3,7 @@
 #include <QDebug>
 
 HoverBtn::HoverBtn(QString mname, QWidget *parent) :
-    mName(mname), QWidget(parent)
+    QWidget(parent), mName(mname)
 {
     this->setMaximumSize(960, 50);
     this->setMinimumSize(550, 50);

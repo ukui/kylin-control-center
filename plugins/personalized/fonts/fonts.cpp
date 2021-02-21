@@ -102,11 +102,16 @@ Fonts::~Fonts()
 {
     if (!mFirstLoad) {
         delete ui;
+        ui = nullptr;
         if (settingsCreate){
             delete ifsettings;
+            ifsettings = nullptr;
             delete marcosettings;
+            marcosettings = nullptr;
             delete rendersettings;
+            rendersettings = nullptr;
             delete stylesettings;
+            stylesettings = nullptr;
         }
     }
 }

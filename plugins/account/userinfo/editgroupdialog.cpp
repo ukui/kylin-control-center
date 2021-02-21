@@ -29,13 +29,13 @@ extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int tran
 EditGroupDialog::EditGroupDialog(QString usergroup, QString groupid, QString groupname, bool idSetEnable, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::EditGroupDialog),
+    cgDialog(new ChangeGroupDialog),
     _nameHasModified(false),
     _idHasModified(false),
     _boxModified(false),
     userGroup(usergroup),
     groupId(groupid),
-    groupName(groupname),
-    cgDialog(new ChangeGroupDialog)
+    groupName(groupname)
 {
     ui->setupUi(this);
     setupInit();
@@ -47,7 +47,9 @@ EditGroupDialog::EditGroupDialog(QString usergroup, QString groupid, QString gro
 EditGroupDialog::~EditGroupDialog()
 {
     delete cgDialog;
+    cgDialog = nullptr;
     delete ui;
+    ui = nullptr;
 }
 
 void EditGroupDialog::limitInput()
@@ -100,6 +102,7 @@ UserInfomations EditGroupDialog::_acquireUserInfo(QString objpath){
         qDebug() << "reply failed";
 
     delete iproperty;
+    iproperty = nullptr;
 
     return user;
 }
@@ -263,6 +266,7 @@ void EditGroupDialog::signalsBind()
         }
         emit needRefresh();
         delete cgDialog;
+        cgDialog = nullptr;
         close();
     });
 }
