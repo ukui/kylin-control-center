@@ -6,7 +6,7 @@
 
 QT       += core gui network x11extras svg xml dbus
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets quickwidgets
 
 TARGET = ukui-control-center
 DESTDIR = ..

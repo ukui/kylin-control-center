@@ -35,6 +35,7 @@ namespace Utils
     void centerToScreen(QWidget *widget);
     void setCLIName(QCommandLineParser &parser);
     QVariantMap getModuleHideStatus();
+    QString getCpuInfo();
 
 }
 #endif // UTILS_H

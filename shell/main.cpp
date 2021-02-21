@@ -28,6 +28,7 @@
 #include <QSharedPointer>
 #include <memory>
 #include <QCommandLineParser>
+#include <QQuickWidget>
 
 #include <stdlib.h>
 
@@ -36,10 +37,16 @@
 #include "utils/utils.h"
 #include "utils/xatom-helper.h"
 
+const QString KLong = "Loongson";
+
 int main(int argc, char *argv[])
 {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+
+    if (Utils::getCpuInfo().startsWith(KLong, Qt::CaseInsensitive)) {
+        QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
+    }
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
