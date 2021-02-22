@@ -30,6 +30,7 @@
 #include <QStyledItemDelegate>
 
 #include <QGSettings>
+#include <QSettings>
 
 #include "shell/interface.h"
 #include "FlowLayout/flowlayout.h"
@@ -55,15 +56,15 @@ extern "C" {
 
 #define BACKGROUND "org.mate.background"
 
-//图片文件路径
+// 图片文件路径
 #define FILENAME "picture-filename"
-//图片不透明度
+// 图片不透明度
 #define OPACITY "picture-opacity"
-//图片放置方式
+// 图片放置方式
 #define OPTIONS "picture-options"
-//主色
+// 主色
 #define PRIMARY "primary-color"
-//副色
+// 副色
 #define SECONDARY "secondary-color"
 
 namespace Ui {
@@ -100,6 +101,9 @@ public:
     void showComponent(int index);
 
 private:
+    void setLockBackground(QString bg);
+
+private:
     Ui::Wallpaper *ui;
 
     QString pluginName;
@@ -119,13 +123,13 @@ private:
     XmlHandle * xmlhandleObj;
     ColorDialog * colordialog;
     QGSettings * bgsettings;
+    QSettings  *mLockLoginSettings;
     QString localwpconf;
     QMap<QString, QListWidgetItem*> delItemsMap;
 
     CustdomItemModel wpListModel;
 
     //尝试mode view
-    void setlistview();
     void setModeldata();
 
 private:
@@ -142,7 +146,6 @@ public slots:
     void wpOptionsChangedSlot(QString op);
     void colorSelectedSlot(QColor color);
 
-public slots:
     void add_custom_wallpaper();
     void del_wallpaper();
 };

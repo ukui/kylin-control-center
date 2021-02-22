@@ -31,9 +31,9 @@
 const QString kylinUrl = "https://www.ubuntukylin.com/wallpaper.html";
 
 enum{
-    PICTURE, //图片背景
-    COLOR, //纯色背景
-    SLIDESHOW //幻灯片背景
+    PICTURE,   // 图片背景
+    COLOR,     // 纯色背景
+    SLIDESHOW  // 幻灯片背景
 };
 
 #define ITEMWIDTH 182
@@ -53,10 +53,6 @@ Wallpaper::~Wallpaper()
     if (!mFirstLoad) {
         delete ui;
         ui = nullptr;
-        if (settingsCreate){
-            delete bgsettings;
-            bgsettings = nullptr;
-        }
         delete xmlhandleObj;
         xmlhandleObj = nullptr;
     }
@@ -82,18 +78,18 @@ QWidget *Wallpaper::get_plugin_ui() {
         settingsCreate = false;
         initTitleLabel();
         initSearchText();
-        //初始化控件
+        // 初始化控件
         setupComponent();
-        //初始化gsettings
+        // 初始化gsettings
         const QByteArray id(BACKGROUND);
         if (QGSettings::isSchemaInstalled(id)){
             settingsCreate = true;
 
-            bgsettings = new QGSettings(id);
+            bgsettings = new QGSettings(id, QByteArray(), this);
             setupConnect();
             initBgFormStatus();
         }
-        //构建xmlhandle对象
+        // 构建xmlhandle对象
         xmlhandleObj = new XmlHandle();
     }
     return pluginWidget;
@@ -125,6 +121,14 @@ void Wallpaper::initSearchText() {
 }
 
 void Wallpaper::setupComponent(){
+
+    QString name = qgetenv("USER");
+    if (name.isEmpty()) {
+        name = qgetenv("USERNAME");
+    }
+
+    QString lockfilename = "/var/lib/lightdm-data/" + name + "/ukui-greeter.conf";
+    mLockLoginSettings = new QSettings(lockfilename, QSettings::IniFormat, this);
 
     // 背景形式
     QStringList formList;
@@ -180,7 +184,6 @@ void Wallpaper::setupComponent(){
         colordialog->exec();
 
     });
-
 }
 
 void Wallpaper::setupConnect(){
@@ -192,8 +195,8 @@ void Wallpaper::setupConnect(){
         picUnit->setPixmap(pixmap);
         picUnit->setFilenameText(filename);
         connect(picUnit, &PictureUnit::clicked, [=](QString fn){
-//            ui->previewLabel->setPixmap(pixmap.scaled(ui->previewLabel->size()));
             bgsettings->set(FILENAME, fn);
+            setLockBackground("");
             ui->previewStackedWidget->setCurrentIndex(PICTURE);
         });
 
@@ -228,7 +231,7 @@ void Wallpaper::setupConnect(){
     });
     connect(ui->resetBtn, SIGNAL(clicked(bool)), this, SLOT(resetDefaultWallpaperSlot()));
 
-    ///纯色背景
+    // 纯色背景
     QStringList colors;
 
     colors << "#2d7d9a" << "#018574" << "#107c10" << "#10893e" << "#038387" << "#486860" << "#525e54" << "#7e735f" << "#4c4a48" << "#000000";
@@ -248,6 +251,7 @@ void Wallpaper::setupConnect(){
             bgsettings->set(FILENAME, "");
             bgsettings->set(PRIMARY, QVariant(color));
             bgsettings->set(SECONDARY, QVariant(color));
+            setLockBackground(color);
 
             ui->previewStackedWidget->setCurrentIndex(COLOR);
         });
@@ -322,7 +326,7 @@ int Wallpaper::_getCurrentBgForm(){
 
     int current = 0;
 
-    //设置当前背景形式
+    // 设置当前背景形式
     if (filename.isEmpty()){
         current = COLOR;
     } else if (filename.endsWith("xml")){
@@ -350,29 +354,23 @@ void Wallpaper::initBgFormStatus(){
     showComponent(currentIndex);
 }
 
-void Wallpaper::showComponent(int index){
-    if (PICTURE == index){ //图片
-//        ui->picOptionsComBox->show();
-//        ui->picOptionsLabel->show();
-    } else if (COLOR == index){ //纯色
-//        ui->picOptionsComBox->hide();
-//        ui->picOptionsLabel->hide();
-    } else { //幻灯片
+void Wallpaper::showComponent(int index) {
+    Q_UNUSED(index);
+}
 
-    }
+void Wallpaper::setLockBackground(QString bg) {
+    mLockLoginSettings->beginGroup("greeter");
+    mLockLoginSettings->setValue("color", bg);
+    mLockLoginSettings->endGroup();
 }
 
 void Wallpaper::initPreviewStatus(){
-    //设置图片背景的预览效果
+    // 设置图片背景的预览效果
     QString filename = bgsettings->get(FILENAME).toString();
-//    qDebug()<<"preview pic is---------->"<<filename<<endl;
 
-    QByteArray ba = filename.toLatin1();
-//    if (g_file_test(ba.data(), G_FILE_TEST_EXISTS)){
-        ui->previewLabel->setPixmap(QPixmap(filename).scaled(ui->previewLabel->size()));
-//    }
+    ui->previewLabel->setPixmap(QPixmap(filename).scaled(ui->previewLabel->size()));
 
-    //设置纯色背景的预览效果
+    // 设置纯色背景的预览效果
     QString color = bgsettings->get(PRIMARY).toString();
     if (!color.isEmpty()){
         QString widgetQss = QString("QWidget{background: %1;}").arg(color);
@@ -380,7 +378,7 @@ void Wallpaper::initPreviewStatus(){
     }
 }
 
-//自定义颜色面板选定颜色
+// 自定义颜色面板选定颜色
 void Wallpaper::colorSelectedSlot(QColor color){
     qDebug() << "colorSelectedSlot" << color << color.name();
 
@@ -395,29 +393,9 @@ void Wallpaper::colorSelectedSlot(QColor color){
 }
 
 void Wallpaper::wpOptionsChangedSlot(QString op){
-    //获取当前选中的壁纸
-//    QListWidgetItem * currentitem = ui->listWidget->currentItem();
-//    QString filename = currentitem->data(Qt::UserRole).toString();
-
-
-    //更新xml数据
-//    if (wallpaperinfosMap.contains(filename)){
-//        wallpaperinfosMap[filename]["options"] = op;
-//    }
-
+    Q_UNUSED(op)
     //将改动保存至文件
     xmlhandleObj->xmlUpdate(wallpaperinfosMap);
-}
-
-void Wallpaper::setlistview(){
-    //初始化listview
-//    ui->listView->setFocusPolicy(Qt::NoFocus);
-//    ui->listView->setAutoFillBackground(true);
-//    ui->listView->setIconSize(QSize(160, 100));
-//    ui->listView->setResizeMode(QListView::Adjust);
-//    ui->listView->setModel(&wpListModel);
-//    ui->listView->setViewMode(QListView::IconMode);
-//    ui->listView->setSpacing(5);
 }
 
 void Wallpaper::setModeldata(){
@@ -484,11 +462,7 @@ void Wallpaper::showLocalWpDialog(){
     QString bgfile = "/tmp/" + fileRes.at(fileRes.length() - 1);
 
     // TODO: chinese and space support
-//    if (g_file_test(selectedfile.toLatin1().data(), G_FILE_TEST_EXISTS)) {
     bgsettings->set(FILENAME, selectedfile);
-//    } else {
-//        bgsettings->reset(FILENAME);
-//    }
 }
 
 void Wallpaper::add_custom_wallpaper(){
@@ -512,14 +486,9 @@ void Wallpaper::add_custom_wallpaper(){
     QString selectedfile;
     selectedfile = fd.selectedFiles().first();
 
-    QSize IMAGE_SIZE(160, 120);
-    QPixmap pixmap = QPixmap(selectedfile).scaled(IMAGE_SIZE);
-//    append_item(pixmap, selectedfile);
-
     if (wallpaperinfosMap.contains(selectedfile)){
         wallpaperinfosMap[selectedfile]["deleted"] = "false";
-    }
-    else{
+    } else {
         QMap<QString, QString> tmpinfo;
         tmpinfo.insert("artist", "(none)");
         tmpinfo.insert("deleted", "false");
@@ -533,32 +502,9 @@ void Wallpaper::add_custom_wallpaper(){
 
     }
     xmlhandleObj->xmlUpdate(wallpaperinfosMap);
-
-    if (picWpItemMap.contains(selectedfile)){
-//        ui->listWidget->setCurrentItem(picWpItemMap.find(selectedfile).value());
-    }
-
 }
 
 void Wallpaper::del_wallpaper(){
-    //获取当前选中的壁纸
-//    QListWidgetItem * currentitem = ui->listWidget->currentItem();
-//    QString filename = currentitem->data(Qt::UserRole).toString();
-
-    //更新xml数据
-//    if (wallpaperinfosMap.contains(filename)){
-//        wallpaperinfosMap[filename]["deleted"] = "true";
-
-//        int row = ui->listWidget->row(currentitem);
-
-//        int nextrow = ui->listWidget->count() - 1 - row ? row + 1 : row - 1;
-
-//        ui->listWidget->setCurrentItem(ui->listWidget->item(nextrow));
-
-//        ui->listWidget->takeItem(row);
-
-//    }
-
-//    将改动保存至文件
+    // 将改动保存至文件
     xmlhandleObj->xmlUpdate(wallpaperinfosMap);
 }
