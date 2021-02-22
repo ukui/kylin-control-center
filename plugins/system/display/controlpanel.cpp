@@ -1,7 +1,6 @@
 #include "controlpanel.h"
 #include "outputconfig.h"
 #include "unifiedoutputconfig.h"
-//#include "kcm_screen_debug.h"
 
 #include <QVBoxLayout>
 #include <QDebug>
@@ -107,8 +106,6 @@ void ControlPanel::activateOutputNoParam()
     if (mUnifiedOutputCfg) {
         return;
     }
-    qDebug()<<"activateOutputNoParam ------>"<<endl;
-   // qCDebug(KSCREEN_KCM) << "Activate output" << output->id();
 
     Q_FOREACH (OutputConfig *cfg, mOutputConfigs) {
         qDebug()<<cfg->output()->id()<<" id";
@@ -123,7 +120,7 @@ void ControlPanel::setUnifiedOutput(const KScreen::OutputPtr &output)
             continue;
         }
 
-        //隐藏下面控制
+        // 隐藏下面控制
         config->setVisible(output == nullptr);
     }
 

@@ -152,7 +152,6 @@ void UnifiedOutputConfig::initUi()
     QFrame *freshFrame = new QFrame(this);
     freshFrame->setFrameShape(QFrame::Shape::Box);
     freshFrame->setLayout(freshLayout);
-//    freshFrame->setStyleSheet("background-color:#F4F4F4;border-radius:6px");
 
     vbox->addWidget(freshFrame);
 
@@ -194,7 +193,6 @@ KScreen::OutputPtr UnifiedOutputConfig::createFakeOutput()
     if (commonResults.isEmpty()) {
         QSize smallestMode;
         Q_FOREACH (const KScreen::OutputPtr &clone, mClones) {
-            //qCDebug(KSCREEN_KCM) << smallestMode << clone->preferredMode()->size();
             if (!smallestMode.isValid() || clone->preferredMode()->size() < smallestMode) {
                 smallestMode = clone->preferredMode()->size();
             }

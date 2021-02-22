@@ -65,7 +65,6 @@ KScreen::OutputPtr QMLOutput::outputPtr() const
 
 void QMLOutput::setOutputPtr(const KScreen::OutputPtr &output)
 {
-    //qDebug()<<"setOutputPtr------> qmloutput"<<endl;
     Q_ASSERT(m_output.isNull());
 
     m_output = output;
@@ -206,8 +205,6 @@ int QMLOutput::currentOutputHeight() const
             return 1000;
         }
     }
-    //qDebug()<<"mode->size().height()---->"<<mode->size()<<endl;
-
     return mode->size().height() ;/// m_output->scale();
 }
 

@@ -36,14 +36,12 @@
 #define MATE_BACKGROUND_SCHEMAS "org.mate.background"
 #define FILENAME                "picture-filename"
 
-Screenlock::Screenlock() : mFirstLoad(true)
-{
+Screenlock::Screenlock() : mFirstLoad(true) {
     pluginName = tr("Screenlock");
     pluginType = PERSONALIZED;
 }
 
-Screenlock::~Screenlock()
-{
+Screenlock::~Screenlock() {
     if (!mFirstLoad) {
         delete ui;
         ui = nullptr;
@@ -51,8 +49,6 @@ Screenlock::~Screenlock()
         lSetting = nullptr;
         delete lockSetting;
         lockSetting = nullptr;
-        delete lockLoginSettings;
-        lockLoginSettings = nullptr;
     }
 }
 
@@ -120,7 +116,7 @@ void Screenlock::setupComponent(){
     }
 
     QString lockfilename = "/var/lib/lightdm-data/" + name + "/ukui-greeter.conf";
-    lockLoginSettings = new QSettings(lockfilename, QSettings::IniFormat);
+    lockLoginSettings = new QSettings(lockfilename, QSettings::IniFormat, this);
 
     QStringList scaleList;
     scaleList<< tr("1m") << tr("5m") << tr("10m") << tr("30m") << tr("45m")
