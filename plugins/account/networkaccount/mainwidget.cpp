@@ -63,13 +63,18 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
 void MainWidget::dbusInterface() {
     if(m_bIsKylinId) {
         QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinID/path"), QString("org.kylinID.interface"),
-                                              "finishedLogout", this, SLOT(finishedLogout(int)));
+                                              "userInfo", this, SLOT(getUserInfo(QString))); //获取用户信息
+
         QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinID/path"), QString("org.kylinID.interface"),
-                                              "finishedVerifyToken", this, SLOT(checkUserName(QString)));
+                                              "finishedLogout", this, SLOT(finishedLogout(int))); //登出结果反馈
         QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinID/path"), QString("org.kylinID.interface"),
-                                              "finishedPassLogin", this, SLOT(loginSuccess(int)));
+                                              "finishedVerifyToken", this, SLOT(checkUserName(QString))); //用户凭据验证结果反馈
         QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinID/path"), QString("org.kylinID.interface"),
-                                              "finishedPhoneLogin", this, SLOT(loginSuccess(int)));
+                                              "finishedPassLogin", this, SLOT(loginSuccess(int)));//登录结果反馈
+        QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinID/path"), QString("org.kylinID.interface"),
+                                              "finishedPhoneLogin", this, SLOT(loginSuccess(int)));//登录结果反馈
+
+        //登出接口调用
         connect(this, &MainWidget::kylinIdLogOut, this, [=] () {
             QDBusMessage message = QDBusMessage::createMethodCall("org.kylinID.service","/org/kylinID/path",
                                                                   "org.kylinID.interface",
@@ -78,6 +83,7 @@ void MainWidget::dbusInterface() {
             m_mainWidget->setCurrentWidget(m_nullWidget);
         });
 
+        //验证Token接口调用
         connect(this, &MainWidget::kylinIdCheck, this, [=] () {
             QDBusMessage message = QDBusMessage::createMethodCall("org.kylinID.service","/org/kylinID/path",
                                                                   "org.kylinID.interface",
@@ -495,11 +501,10 @@ void MainWidget::initSignalSlots() {
         download_files();
     });
     //All.conf的
-    QString all_conf_path = QDir::homePath() + "/.cache/kylinId";
-    m_fsWatcher.addPath(all_conf_path);
+    m_fsWatcher.addPath(m_szConfPath);
 
 
-    connect(&m_fsWatcher,&QFileSystemWatcher::directoryChanged,this,[this] () {
+    connect(&m_fsWatcher,&QFileSystemWatcher::fileChanged,this,[this] () {
         QFile conf( m_szConfPath);
         if(conf.exists() == true && m_pSettings != nullptr) {
             QFile fileConf(m_szConfPath);
@@ -839,12 +844,11 @@ void MainWidget::handle_write(const int &on,const int &id) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
-    char name[32] = {0};
+    char name[32];
     if(id == -1) {
-
-        strncpy(name,"Auto-sync",31);
+        qstrcpy(name,"Auto-sync");
     } else {
-        strncpy(name,m_szItemlist[id].toStdString().c_str(),31);
+        qstrcpy(name,m_szItemlist[id].toStdString().c_str());
     }
     m_statusChanged = on;
     m_indexChanged = id;
@@ -1145,11 +1149,8 @@ MainWidget::~MainWidget() {
 
     m_fsWatcher.removePath(QDir::homePath() + "/.cache/kylinId/");
     delete m_itemList;
-    m_itemList = nullptr;
     delete m_welcomeImage;
-    m_welcomeImage = nullptr;
     delete m_dbusClient;
-    m_dbusClient = nullptr;
     thread->requestInterruption();
     if(thread != nullptr)
     {
