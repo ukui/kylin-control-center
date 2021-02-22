@@ -96,6 +96,7 @@ public:
     QString getBindingName(QList<int> keyCode);
     bool keyIsForbidden(QString key);
     void connectToServer();
+    QMap<QString, QString> MergerOfTheSamekind(QMap<QString, QString> desktopMap);
 
 protected:
 //    bool event(QEvent *event);

@@ -257,6 +257,9 @@ void Shortcut::initFunctionStatus(){
             }
 
         }
+
+        desktopMap = MergerOfTheSamekind(desktopMap);
+
         QMap<QString, QMap<QString, QString>> generalMaps;
         if (desktopMap.count() != 0) {
             generalMaps.insert("Desktop", desktopMap);
@@ -273,6 +276,20 @@ void Shortcut::initFunctionStatus(){
     connect(pThread, &QThread::finished, pWorker, &GetShortcutWorker::deleteLater);
 
     pThread->start();
+}
+
+QMap<QString, QString> Shortcut:: MergerOfTheSamekind(QMap<QString, QString> desktopMap){
+    QMap<QString, QString>::iterator it = desktopMap.begin();
+    for (; it != desktopMap.end(); it++){
+        QString name = it.key().at(it.key().size() - 1);
+        QString name_modification  = it.key().left(it.key().length() - 1);
+        if(name == '2'){
+            desktopMap[name_modification] = desktopMap[name_modification]+" or "+it.value();
+            desktopMap.erase(it);
+            it = desktopMap.begin()+1;//删除之后要将指针指向后面一个
+        }
+    }
+    return desktopMap;
 }
 
 QWidget * Shortcut::buildGeneralWidget(QString schema, QMap<QString, QString> subShortcutsMap){
