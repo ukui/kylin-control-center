@@ -495,6 +495,7 @@ void Desktop::removeTrayItem(QString itemName) {
     for (int i = 0; i < nameList.length(); i++) {
         if (nameList.at(i) == itemName) {
             nameList.removeAt(i);
+            ui->listWidget->setFixedHeight(ui->listWidget->height() - 55);
             break;
         }
     }
@@ -513,6 +514,7 @@ void Desktop::addTrayItem(QGSettings * trayGSetting) {
             icon = QIcon::fromTheme("application-x-desktop");
         }
         initTrayStatus(name, icon, trayGSetting);
+        ui->listWidget->setFixedHeight(ui->listWidget->height() + 55);
     }
 }
 
