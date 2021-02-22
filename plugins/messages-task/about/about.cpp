@@ -114,10 +114,15 @@ void About::setupDesktopComponent() {
 }
 
 void About::setupKernelCompenent() {
-    QString kernal = QSysInfo::kernelType() + " " + QSysInfo::kernelVersion();
     QString diskSize;
     QString memorySize;
     QString cpuType;
+
+    QString kernal = QSysInfo::kernelType() + " " + QSysInfo::kernelVersion();\
+    memorySize = getTotalMemory();
+
+    ui->kernalContent->setText(kernal);
+    ui->memoryContent->setText(memorySize);
 
     QDBusInterface youkerInterface("com.kylin.assistant.systemdaemon",
                                    "/com/kylin/assistant/systemdaemon",
@@ -151,14 +156,8 @@ void About::setupKernelCompenent() {
         cpuType = res["CpuVersion"].toString();
     }
 
-    //QStringList memory = totalMemory();    
-    //memorySize = memorySize + memory.at(0) + "(" + memory.at(1) + tr(" available") + ")";
-    memorySize = getTotalMemory();
-
     ui->cpuContent->setText(cpuType);
     ui->diskContent->setText(diskSize);
-    ui->kernalContent->setText(kernal);
-    ui->memoryContent->setText(memorySize);
 }
 
 void About::setupVersionCompenent() {
