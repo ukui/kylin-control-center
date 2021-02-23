@@ -364,6 +364,9 @@
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="styleSheet">
+                  <string notr="true">color:red;</string>
+                 </property>
                  <property name="text">
                   <string/>
                  </property>
