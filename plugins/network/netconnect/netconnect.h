@@ -100,6 +100,7 @@ public:
     bool getwifiisEnable();
 
     void getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo);
+    QString getCurrentSsid();
 
 private:
     Ui::NetConnect *ui;

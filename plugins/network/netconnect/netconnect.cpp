@@ -408,6 +408,7 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
         wifiList.clear();
 
         QString actWifiName = "--";
+        QString actSsid = getCurrentSsid();
 
         int index = 0;
         while (index < lsActiveInfo.size()) {
@@ -426,9 +427,9 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
         int indexLock = headLine.indexOf("SECURITY");
 
         QStringList wnames;
+
         for (int i = 1; i < getwifislist.size(); i ++) {
             QString line = getwifislist.at(i);
-
             QString wsignal  = line.mid(0, indexLock).trimmed();
             QString lockType = line.mid(indexLock, indexName -indexLock).trimmed();
             QString wname    = line.mid(indexName).trimmed();
@@ -437,10 +438,9 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
             if (wnames.contains(wname, Qt::CaseInsensitive)) {
                 continue;
             }
-
             if (!wname.isEmpty() && wname != "--") {
                 int strength = this->setSignal(wsignal);
-                if (wname == actWifiName) {
+                if (wname == actSsid) {
                     if ("--" != lockType && !lockType.isEmpty()) {
                         wname += "lock";
                     }
@@ -492,7 +492,6 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
             }
         }
     }
-
     if (!this->connectedWifi.isEmpty()) {
         QMap<QString, int>::iterator iter = this->connectedWifi.begin();
 
@@ -618,6 +617,22 @@ void NetConnect::wifiSwitchSlot(bool signal) {
     m_gsettings->set("switch",signal);
 
     QTimer::singleShot(2*1000, this, SLOT(getNetList()));
+}
+
+QString NetConnect::getCurrentSsid() {
+    QString cmd = "nmcli device wifi list";
+    QProcess process(0);
+    process.start(cmd);
+    process.waitForFinished();
+
+    while(process.canReadLine()) {
+        QString line = process.readLine();
+        QStringList list = line.split((" "), QString::SkipEmptyParts);
+        if(list.at(0) == "*"){
+            return list.at(2);
+        }
+    }
+    return QString();
 }
 
 void NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo)
