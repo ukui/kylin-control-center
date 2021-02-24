@@ -521,7 +521,7 @@ void Desktop::addTrayItem(QGSettings * trayGSetting) {
 
 QString Desktop::desktopToName(QString desktopfile) {
     const QString locale = QLocale::system().name();
-    const QString localeName = "Name[" + locale +"]";
+    const QString localeName = locale != "en_US" ? "Name[" + locale +"]" : "Name";
     const QString genericName = "GenericName[" + locale +"]";
     QSettings desktopSettings(desktopfile, QSettings::IniFormat);
 
