@@ -217,7 +217,7 @@ void ShareMain::pwdEnableSlot(bool status) {
 void ShareMain::pwdInputSlot(const QString &pwd) {
     Q_UNUSED(pwd);
 
-    if (pwd.length() < 8 && !pwd.isEmpty()) {
+    if (pwd.length() <= 8 && !pwd.isEmpty()) {
         mHintLabel->setVisible(false);
         QByteArray text = pwd.toLocal8Bit();
         QByteArray secPwd = text.toBase64();
@@ -226,8 +226,8 @@ void ShareMain::pwdInputSlot(const QString &pwd) {
         mHintLabel->setText(tr("Password can not be blank"));
         mHintLabel->setVisible(true);
     } else {
-        mHintLabel->setText(tr("Password length is greater than 8"));
+        mHintLabel->setText(tr("Password length must be less than or equal to 8"));
         mHintLabel->setVisible(true);
-        mPwdLineEdit->setText(pwd.mid(0, 8));
+        mPwdLineEdit->setText(pwd.mid(0, 9));
     }
 }
