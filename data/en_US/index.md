@@ -1,453 +1,323 @@
-# 控制面板
-## 概 述
-控制面板提供了一个友好的图形用户界面，用于对操作系统常用配置项进行管理。主界面如图所示。
+# Ukui Control Center
+## Overview
+Ukui Control Center provides a friendly graphic interface to set the system. As shown in Fig 1.
 
-![图 1 控制面板-big](image/ukcc.png)
+![Fig 1 Ukui Control Center-big](image/1.png)
 <br>
 
-## 系 统
-系统配置设置提供了显示器、触摸屏、默认应用、电源、开机启动五个模块。
+## System
+### Display
+As shown in Fig 2.
 
-### 显示器
-显示器可以配置显示相关的设置，上方彩色矩形代表当前屏幕，中间显示了显示器名称及接口名，如图所示。
+![Fig 2 Display-big](image/2.png)
 
-![图 2 显示器设置-big](image/display.png)
+- monitor：Select current monitor.
 
-- 显示器：选择当前显示器
+- resolution, orientation, refresh rate, screen zoom are all for the current active monitor.
 
-- 分辨率、方向、刷新率、缩放屏幕的修改都是针对当前活动显示器
+- screen zoom to global zoom.
 
-- 屏幕缩放为全局缩放
+- night mode has the functions of adjusting color temperature and customizing the night mode time period.
 
-- 夜间模式具有调整色温度、夜间模式自定义时间段打开/关闭
+### Touchscreen
+As shown in Fig 3.
 
-### 触摸屏
-触摸屏可以进行触摸相关的设置，在触摸点位置偏移时校准触点或调整触摸映射，如图所示。
+![Fig 3 Touchscreen](image/3.png)
 
-![触摸屏-big](image/touchscreen.png)
+- monitor: Select the screen that you want to map to.
 
-- 显示器：选择要映射到的显示器
+- device: The name of the chosen touchscreen.
 
-- 触摸屏标识：选择要映射或校准的触摸屏
+### Defaultapp
+As shown in Fig 4, browser, mail, image viewer, audio player, video player, text editor can be changed.
 
-- 触摸设备：所选触摸屏名称
+![Fig 4 Defaultapp-big](image/4.png)
 
-- 点击触摸映射按钮，将选定的触摸屏映射到指定显示器
+### Power
+- Provide "Balance", "Saving", "Custom" modes.
 
-- 点击触摸校准按钮，启动工具对选定触摸屏进行校准
+![Fig 5 Power-big](image/5.png)
 
-### 默认应用
-默认应用可以修改图中几种类型的默认打开应用：
+- "Custom" includes "PC sleep time" and "DP close time".
 
-![图 4 默认应用-big](image/default.png)
+![Fig 6 Custom mode](image/6.png)
 
-### 电 源
-- 提供平衡、节能、自定义模式可选
+### Auto Boot
+List shows the existed autoboot applications.
 
-![图 5-1 系统电源设置-big](image/power.png)
+![Fig 7 Auto boot-big](image/7.png)
 
-- 在通用设置中可以设置电源图标显示或者隐藏
-
-- 在“自定义”模式下，用户可设置系统在空闲多少时间后，挂起和关闭显示器
-
-![图 5-2 自定义模式](image/power-custom.png)
-
-### 开机启动
-列表中显示当前系统已存在的开机启动软件。
-
-![图 6 开机启动-big](image/autoboot.png)
-
-点击“添加自启动程序”，可添加开机启动应用。
-
-![图 7 开机启动添加](image/add-autoboot.png)
-
-1）填写“程序名”；
-
-2）填写“程序路径”，或者通过点击“浏览”按钮，在弹出的文件选择界面，选择以desktop为后缀的文件；
-
-3）“程序描述”作为可选项，可填可不填；
-
-4）点击“确定”按钮，新的启动项被创建并显示在列表中。
+Click "+" can add apps.
 
 <br>
 
-## 设 备
-设备设置提供了打印机、鼠标、触摸板、键盘、快捷键、声音六个设置模块。
+## Devices
+### Printer
+Provide an entry to add printers or scanners. 
 
-### 打印机
-打印机功能提供了打印机程序入口
-![图 8 打印机-big](image/printer.png)
+![Fig 8 Printer-big](image/8.png)
 
-### 触摸板
-触摸板提供了以下功能设置
-1）触摸板开启/关闭
-2）打字时触摸板开启/关闭
-3） 触摸板鼠标点击开启/关闭
-4）触摸滚动方式(禁用滚动,垂直滚动,水平边界滚动,垂直双指滚动,水平双指滚动)
-![图 9 触摸板-big](image/touchpad.png)
+### Mouse
+Customize the mouse key, pointer settings, and cursor settings.
 
-### 鼠 标
-对鼠标键、鼠标指针、光标进行个性化设置。
+![Fig 9 Mouse-big](image/9.png)
 
-1）鼠标键：
+### Touchpad
+Touchpad provides the settings as shown in Fig 10.
 
-- 习惯用手设置（左手/右手）
+![Fig 10 Touchpad-big](image/10.png)
 
-- 滚轮速度设置
+### Keyboard
+Set the keyboard's general items, and adjust the layout by the language.
 
-- 双击间隔时长
+![Fig 11 Keyboard-big](image/11.png)
 
-2）指针：
+- Enable repeat key: Long press one button will be recognized to repeat input.
 
-- 指针移动速度
+- Delay: The time between press button and receive input.
 
-- 加速开关
+- Speed: The time between repeat input.
 
-- 按Ctrl键显示位置开关
+- Layout: Up to 4 layouts can be added.
 
-- 指针大小设置（小，中，大）
+### Shortcut
+View all the system shortcuts and customize shortcut.
 
-3）光标：
+![Fig 12 Shortcut-big](image/12.png)
 
-- 文本区域光标闪烁开关
+Tips: System shortcuts are not allowed to be modified.
 
-- 光标速度
+Click "Add custom shortcut" and the popup as shown in Fig 13.
 
-![图 10 鼠标设备-big](image/mouse.png)
+![Fig 13 Add shortcut](image/13.png)
 
-### 键 盘
-对键盘进行常规通用设置，并能够根据键盘语言调整键盘布局。
+### Audio
+Settings for output, input and system sound, as shown in Fig 14.
 
-![图 11 键盘设备-big](image/keyboard.png)
+![Fig 14 Audio-big](image/14.png)
 
-1）启用按键重复设置：按下某个按键不放，系统会将该行为作为重复的键盘输入。启用按键重复设置后，可对延时、速度两个选项进行设置。
+### Bluetooth
+Provide the functions like those: open the bluetooth, rename the device, show/hide the icon of the bluetooth, find the nearby devices, etc.. As shown in Fig 15.
 
-- 延时：按下按键后，到系统开始接收键盘输入之间的间隔
+![Fig 15 Bluetooth-big](image/15.png)
+<br>
 
-- 速度：按下按键后，重复输入之间的间隔；间隔越长，同样时间内，重复输入的次数越少
+## Personalized
+### Background
+Here are "picture" and "color" can be selected.
 
-2）键盘布局：设置当前系统的键盘布局，最多可以添加4个键盘布局。
+![Fig 16 Background-big](image/16.png)
 
-### 快捷键
-查看所有快捷键，添加或删除自定义快捷键。
+### Theme
+- Theme Mode:
 
-![图 12 快捷键-big](image/shortcut.png)
+![Fig 17 Theme mode](image/17.png)
 
-Tips：系统快捷键不允许修改。
+- Icon theme and cursor theme:
 
-点击“添加自定义快捷键”，弹出添加窗口。
+![Fig 18 Icon&cursor theme](image/18.png)
 
-![图 13 添加快捷键](image/add-shortcut.png)
+- Effect settings (some machines do not support this function):
 
-1）确认添加后，该快捷键的按键会显示“无效”；
+![Fig 19 Effect settings](image/19.png)
 
-2）点击“无效”，并按下自定义的按键组合，若快捷键未被占用，则自动写入；
+### Screenlock
+Select the background image that shows in login interface.
 
-3）鼠标悬浮在该快捷键上时，会出现删除按钮，若不再需要该快捷键，可点击删除。
+![Fig 20 Screenlock-big](image/20.png)
 
-### 声 音
-对输入、输出和系统音效进行设置，如图所示。
+### Fonts
+Settings for font, size, mono font.
 
-![图 14 声音-big](image/audio.png)
+Click "Reset to default" to restore the settings to default status.
 
-- 主音量大小：调节当前的输出音量，通过移动滑动条来控制系统输出音量大小
+![Fig 21 Fonts-big](image/21.png)
 
-- 选择输出设备：输出设备是获取声卡选择的输出配置文件生成的，可以点击下拉框查看当前系统可用的输出设备，可根据需要切换的对应的输出设备
+### Screensaver
+Set the screensaver program and idle time.
 
-- 声卡：获取当前系统的声卡
+![Fig 22 Screensaver-big](image/22.png)
 
-- 连接器：列出当前输出设备的输出端口，一般有扬声器，模拟耳机，多声道输出等（检测到输出设备有对应的输出端口才会显示）
+### Desktop
+Set the icons lock on Start Menu and Tray Menu.
 
-- 配置：获取当前声卡的可用的配置文件，切换声卡可用获取到另一个声卡的配置文件，切换配置相当于设置可用的输入输出设备
+![Fig 23 Desktop-big](image/23.png)
+<br>
 
-- 声道平衡：调节输出音量的左右声道
+## Network
+It includes "Connect", "Vpn", "Proxy", and "Vino".
 
-- 选择输入设备：输入设备是获取声卡选择的输入配置文件生成的，可以点击下拉框查看当前系统可用的输入设备，可根据需要切换的对应的输入设备（输入设备主要用来录音视频以及通话）
+![Fig 24 Network-big](image/24.png)
 
-- 音量大小：调节当前的输入音量，通过移动滑动条来控制系统输入音量大小
+### Connect
+Show the available network, open wifi, etc..
 
-- 输入等级：检测当前输入设备的输入等级（检测到有可用的输入设备时开始检测输入等级）
+#### Set Wired Connection
+1) Click "Networking settings" to open the setting window.
 
-- 开关机音乐：控制系统开关机时是否播放开关机音乐
+2) Click "+" and choose "Ethernet". In the "Ethernet" tab can select device.
 
-- 报警音量：控制终端提示音，调节声音等的提示音大小
+![Fig 25 Select device-big](image/25.png)
 
-- 系统音效主题：系统的声音主题
+3) In the "IPv4 Settings" tab can edit the net configuration.
 
-- 提示音量大小：提示音大小即系统发出的提示声音大小，除了受系统音量控制之外还可以通过该选项来调节
+![Fig 26 Configuration-big](image/26.png)
 
-### 蓝牙
+4) Click "Save", and the system will use this connection automatically.
 
-蓝牙模块提供了开关蓝牙、修改蓝牙名称、显示隐藏蓝牙任务图标、发现周围蓝牙设备；与发现的蓝牙设备配对、连接、断开、移除蓝牙设备的基本功能，如图所示。
+### Vpn
+Open the settings of VPN.
 
-- 开关蓝牙：点击开启蓝牙按钮，对本机的蓝牙适配器开启和关闭
+![Fig 27 Vpn-big](image/27.png)
 
-- 修改蓝牙名称：将鼠标在“可以被发现为xxx”上双击，在输入框输入想要的名称
+### Proxy
+Auto proxy, manual proxy (including HTTP, HTTPS, FTP, SOCKS).
 
-- 显示隐藏蓝牙任务栏图标：点击按钮，可以在任务上显示或者不显示托盘上的蓝牙图标
+![Fig 28 Proxy-big](image/28.png)
 
-- 发现周围蓝牙设备：首次进入蓝牙模块后，会进行周围蓝牙设备的扫描，结束后点击刷新，再次进行扫描
+### Vino
+Users can set that confirm when conect or enter specified password after checking "Allow others to view your desktop".
 
-- 发现的蓝牙涉笔基础操作：鼠标悬浮到发现的设备上，出现配对按钮，点击配对按钮与设备配对；点击移除按钮，移除设备；设备配对后会自己连接，出现在我的设备一栏，这时鼠标再悬浮到设备上，出现断开按钮，点击断开按钮与设备断开连接
+![Fig 29 Vino-big](image/29.png)
+<br>
 
-![图 15 背景形式选择-big](image/blutooth.png)
+## Account
+Manage all the system users, create/delete users, and modify users' informations.
+
+![Fig 30 Account-big](image/30.png)
+
+### User Info
+#### Current User
+- Change User Face: Click user's face can change it.
+
+![Fig 31 Change face](image/31.png)
+
+- Change Password: Click "Password" to modify the current user's password.
+
+![Fig 32 Change password](image/32.png)
+
+- Change Account Type: administrator -- can elevated permission temporarily; standard user -- can't elevated permission.
+
+![Fig 33 Change password](image/33.png)
+
+#### Other Users
+Administrator can modify other user's information, add new user, etc..
+
+- Add new user
+
+![Fig 34 Add new user](image/34.png)
+
+- Edit
+
+![Fig 35 Edit user](image/35.png)
+
+### Cloud Account
+Synchronize personalized settings and data, and this function needs to sign in.
+
+![Fig 36 Cloud account-big](image/36.png)
+
+#### Sign In
+Login through Kylin ID login Center.
+
+#### Synchronizable Items
+- Desktop wallpaper
+
+- Screensaver: wallpaper and idle time
+
+- Fonts
+
+- User's face
+
+- The settings in control center, such as start menu, taskbar, theme, etc.
+
+- The settings of pluma, kylin weather, peony, terminal, kylin video.
+
+#### Tips
+1) When opening the cloud account first time, it will synchronize once by default. If the cloud exists configuration files, it will download them and sync to local; Otherwise, the local configuration files will be uploaded to the cloud.
+
+2) After login, if the automatic synchronization is opened, the cloud will synchronize the local configurations every 2 minutes. And they can be used by different machines, different users.
+
+3) If the automatic synchronization is closed, all the cloud configurations will keep the last upload status.
+
+4) The automatic synchronization for the single item is the similar effects.
 
 <br>
 
-## 个性化
-个性化设置提供了背景、主题、锁屏、字体、屏保、桌面六个模块。
+## Datetime
+As shown in Fig 37:
 
-### 背 景
-针对桌面背景，提供两种背景形式的选择：颜色、图片。
+![Fig 37 Datetime-big](image/37.png)
 
-![图 16 背景-big](image/background.png)
+- Sync from network: Sync the time on the Internet NTP server.
 
-### 主 题
-主题包括主题模式、图标主题、光标主题。
+- Change time: Manual set the time and date.
 
-- 主题模式：
+![Fig 38 Change time](image/38.png)
 
-![图 17 主题模式](image/theme.png)
+- Change time zone:
 
-- 图标主题和光标主题：
+![Fig 39 Time zone-big](image/39.png)
 
-![图 18 图标&光标主题](image/theme-cursor.png)
+### Area
 
-- 透明度和特效模式（部分机型不支持）：
+![Fig 40 Area-big](image/40.png)
 
-![图 19 特效模式](image/theme-effect.png)
+- change format of data: Customize calendar, first day of week, date, time.
 
-### 锁 屏
+![Fig 41 Change format of data](image/41.png)
 
-选择在登录界面显示的背景图片。
+- first language: Language in system windows, menus and website. 
 
-![图 20 锁屏设置-big](image/screenlock.png)
-
-### 字 体
-对字体、大小、等宽进行常规设置。
-
-点击“恢复默认设置”按钮将所有字体设置还原为系统默认状态。
-
-![图 21 字体设置-big](image/font.png)
-
-### 屏 保
-设置屏保程序、等待时间。
-
-![图 22 屏保设置-big](image/screensaver.png)
-
-### 桌 面
-设置锁定在开始菜单和托盘上的图标。
-
-![图 23 桌面设置-big](image/desktop.png)
-<br>
-
-## 网 络
-网络主要包含了网络连接、VPN、代理、桌面共享。
-
-### 网络连接
-网络连接包括，可用网络显示(无线,有线)，开启/关闭wifi等功能，具体网络配置可参考“桌面环境”中的“网络”部分。
-![图 24 网络-big](image/netconnect.png)
-
-### VPN
-打开外部VPN设置程序
-![图 25 VPN-big](image/vpn.png)
-
-### 代理
-自动代理开启/关闭，手动代理设置(包括HTTP, HTTPS, FTP,SOCKS代理)
-![图 26 代理-big](image/delegate.png)
-
-### 桌面共享
-勾选“允许其他人查看您的桌面”后，可设置访问时需要确认，或者要求输入指定密码。
-
-![图 27 桌面共享-big](image/vino.png)
-<br>
-
-## 账 户
-对系统用户进行管理配置，允许管理员创建用户、删除用户、修改用户信息。
-
-![图 28 账户信息设置-big](image/account.png)
-
-### 当前用户
-#### 更改用户头像
-点击用户头像，即可进行修改，图片可从本机图片中选择。
-
-![图 29 更改用户头像](image/account-face.png)
-
-#### 更改密码
-点击“更改密码”，即可修改当前用户的密码。
-
-![图 30 更改密码](image/account-pwd.png)
-
-#### 更改账户类型
-系统用户类型分两种：标准用户和管理员用户。
-
-- 管理员用户：输入用户密码，可以临时提升root权限
-
-- 标准用户：无法提升权限
-
-Tips：系统至少需要存在一个管理员用户。
-
-![图 31 更改用户类型](image/account-type.png)
-
-### 其他用户
-可编辑其他用户信息，添加新用户，删除用户等。
-
-- 添加新用户：输入用户名、密码，并选择用户类型，如图所示
-
-![图 32 添加新用户](image/account-add.png)
-
-- 编辑用户
-
-![图 33 编辑用户](image/account-edit.png)
-<br>
-
-## 云账户
-云账户可用于同步控制面板配置选项，需要注册登录生效。
-
-![图 34 云账户-big](image/cloudaccount.png)
-### 登录方式
-- 通过麒麟ID登录中心登录，使用云账户只需拥有麒麟ID即可。
-
-
-### 可同步项
-- 桌面壁纸：同步桌面壁纸
-- 屏保：同步屏保壁纸、屏保休眠时间等
-- 字体：同步控制面板字体设置
-- 头像：同步系统用户头像
-- 开始菜单：开始菜单的相关设置
-- 任务栏： 同步任务栏位置、大小等
-- 快速启动项：同步任务栏插件快速启动栏相关设置
-- 主题：同步控制面板主题设置
-- 鼠标：同步控制面板鼠标设置
-- 触摸板：如果有触摸板的话，同步控制面板触摸板界面
-- 键盘：同步控制面板键盘设置
-- 快捷键：同步控制面板自定义快捷键
-- 语言和地区：同步语言以及地区时区，并非一一对应控制面板
-- 时间和日期：同步时间，并非一一对应控制面板
-- 默认打开方式：同步控制面板默认应用相关设置
-- 侧边栏：同步控制面板通知页面相关设置
-- 登录选项：同步控制面板用户信息自动登录以及免密登录
-- 电源：同步控制面板电源相关选项
-- 文本编辑器：同步文本编辑器Pluma的设置，需要关闭所有Pluma进程并重新打开文本编辑器才能看到效果
-- 终端：同步终端设置资料卡，需要关闭所有终端实例再打开终端才能看到效果
-- 麒麟天气：同步麒麟天气设置
-- 文件管理器：同步文件管理器的设置，不包括置顶窗口设置
-- 开机启动项：同步控制面板开机启动设置
-- 麒麟影音：同步麒麟影音相关设置
-
-
-### 使用须知
-- 使用麒麟ID登录云账户，首次打开默认会同步一次，如果云端有配置文件，则会先把云端配置下载下来同步到本地，否则把本地账户配置上传到云端。
-- 登录云账户之后，如果打开了自动同步按钮，用户无需其他操作，云账户每隔2分钟会同步一次本地配置到云端，上传的配置可供跨机器，跨用户同步。
-- 单独的同步开关关闭会导致此项停止上传到云端，如果开启，则会将之前的此项的云端配置同步到本地。
-- 如果关闭自动同步按钮，所有云端配置将会保留在关闭同步前最后一次上传到云端的本地配置。
-- 如果开启自动同步按钮，则将云端配置下载下来并同步到本地。
-- 单独的开关类似自动同步按钮效果，只是同步效果范围变成了当前项的同步效果。
-
-## 时间和日期
-主界面如图所示：
-
-![图 35 时间和日期-big](image/datetime.png)
-
-- 同步系统时间：与互联网上的NTP服务器时间同步
-
-- 手动更改时间：手动设置时间和年月日
-
-![图 36 手动更改时间](image/datetime-change.png)
-
-- 时间格式分12小时和24小时，点击右侧开关立即生效
-
-- 更改时区：如图所示，根据个人需求进行选择
-
-![图 37 时区-big](image/datetime-zone.png)
-
-### 语言和地区
-主界面如图所示:
-
-![图 38 区域语言-big](image/area.png)
-
-- 更改数据格式：自定义日历、一周第一天、日期、时间
-
-![图 39 更改格式数据](image/area-format.png)
-
-- 首选语言：系统窗口、菜单及网页的显示语言，首选推荐语言为简体中文
-
-- 点击“添加首选语言”，可添加其他地区语言作为备选
+- Click "Add main language" to add others.
 
 <br>
 
-## 更 新
-### 安全中心
-提供了安全中心的入口。
+## Update
+### Security Center
+An access of security center.
 
-![图 40 安全中心-big](image/security.png)
+![Fig 42 Security center-big](image/42.png)
 
-### 备 份
-- 开始备份：将文件备份到其他驱动器
+### Backup
+- Begin backup: Back up files to other devices.
 
-- 开始还原：查看备份列表，并选择还原点进行恢复
+- Begin restore: View backup list and restore the system to one of them.
 
-![图 41 备份和还原-big](image/backup.png)
+![Fig 43 Backup-big](image/43.png)
 
-### 更 新
+### Upgrade
+Check whether the system has available updates.
 
-控制面板的更新模块可以检测检测系统是否有可用更新，更新模块主界面有系统状态、更新列表、更新设置三部分组成。
+- Update: Show the current update status and the time of the latest refresh.
+
+- Update List: Push system available updates.
+
+- Update Settings: Whether allow to renewable notice and backup before updating.
+
+![Fig 44 Upgrade-big](image/44.png)
+
+The update history can be seen here.
+
+![Fig 45 History-big](image/45.png)
+
+#### Background Update
+Silent upgrade in the background, and remind users of available updates.
+
+- Users will receive notification information before and after the upgrade.
+
+- When there exists an available update, the update icon will appear in the lower right corner.
+
+- If users agree to update, it will pop up the control center and check the update.
+
 <br>
 
-- 系统状态：主要显示当前系统更新状态以及上次检测更新时间；
+## Messages
+### Notice
+As shown in Fig 46.
 
-- 更新列表：推送系统可用更新；
+![Fig 46 Notice-big](image/46.png)
 
-- 更新设置：设置是否允许推送可更新的应用以及是否在全部更新之前自动备份。
-<br>
+### About
+Show the system version, authentication, etc..
 
-![图 42 系统更新-big](image/update.png)
-<br>
-
-更新完成后，可在更新历史中查看更新情况。
-
-
-![图 43 历史更新-big](image/historylog.png)
-
-### 后台更新
-
-后台更新主要是在后台进行重要更新操作，以及提醒用户可用更新内容。
-<br>
-
-- 当有重要更新时，会在后台静默更新，在升级前后用户都会收到通知信息。
-
-![图 44 后台更新-big](image/notiffirst.png)
-
-![图 45 后台更新-big](image/notiend.png)
-
-- 当有可用更新时，右下角出现更新图标，并弹出选择界面供用户选择。
-
-![图 46 后台更新-big](image/tray.png)
-
-![图 47 后台更新-big](image/choicewidget.png)
-
-- 当用户选择同意更新后，会弹出控制面板>更新界面，进行检查更新
-
-- 当用户选择暂不更新时，退出后台更新程序
-
-
-
-## 通知和操作
-### 通 知
-如图所示：
-
-![图 48 通知-big](image/notice.png)
-
-### 关 于
-显示本机系统的版本、设备规格、授权激活信息。
-![图 49 通知-big](image/about.png)
-<br>
-
-## 常见问题
-#### 点击开始菜单上的控制面板按钮，无反应
-在键盘上按下 Ctrl + Alt + T 组合键打开命令行终端，输入“ukui-control-center”后按下Enter，查看错误输出。
-
-#### 修改控件状态后，控件立刻还原到修改前状态
-大概率是因为权限问题。
-
-在键盘上按下 Ctrl + Alt + T 组合键打开命令行终端，输入“rm ~/.config/dconf/user”后按下Enter。
+![Fig 47 About-big](image/47.png)
