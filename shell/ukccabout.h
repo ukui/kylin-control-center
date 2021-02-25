@@ -43,6 +43,7 @@ private:
     QLabel *mUkccCenterTitle;
     QLabel *mUkccVersion;
     QLabel *mUkccDeveloper;
+    QPushButton *mUkccDeveloperEmailBtn;
 
     QTextEdit *mUkccDetail;
 
