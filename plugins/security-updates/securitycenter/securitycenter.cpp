@@ -206,7 +206,7 @@ void SecurityCenter::initTitleLabel() {
 }
 
 void SecurityCenter::initSearchText() {
-    // ~contents_path /securitycenter/Computer Security Overview
+    //~ contents_path /securitycenter/Computer Security Overview
     ui->titleLabel->setText(tr("Computer Security Overview"));
 }
 
@@ -219,14 +219,14 @@ void SecurityCenter::initComponent(){
     BlockWidget * account_sec_Widget = new BlockWidget();
     account_sec_Widget->setupComponent(":/img/plugins/securitycenter/user_48.png", \
                                        ":/img/plugins/securitycenter/user_48_white.png",\
-                                       // ~contents_path /securitycenter/Account Security
+                                       //~ contents_path /securitycenter/Account Security
                                        tr("Account Security"), \
                                        tr("Protect account and login security"), \
                                        "/usr/sbin/ksc-defender --account-sec");
     BlockWidget * baseline_ctrl_Widget = new BlockWidget();
     baseline_ctrl_Widget->setupComponent(":/img/plugins/securitycenter/icon_scanning_b48@1x.png", \
                                          ":/img/plugins/securitycenter/icon_scanning_w48@1x.png",\
-                                         // ~contents_path /securitycenter/Safety check-up
+                                         //~ contents_path /securitycenter/Safety check-up
                                          tr("Safety check-up"), \
                                          tr("Detect abnormal configuration"), \
                                          "/usr/sbin/ksc-defender --baseline-ctrl");
@@ -234,7 +234,7 @@ void SecurityCenter::initComponent(){
     BlockWidget * virus_protect_Widget = new BlockWidget();
     virus_protect_Widget->setupComponent(":/img/plugins/securitycenter/protect_48.png", \
                                          ":/img/plugins/securitycenter/protect_48_white.png",\
-                                         // ~contents_path /securitycenter/Virus defense
+                                         //~ contents_path /securitycenter/Virus defense
                                          tr("Virus defense"), \
                                          tr("Real time protection from virus threat"), \
                                          "/usr/sbin/ksc-defender  --virus-protect");
@@ -242,7 +242,7 @@ void SecurityCenter::initComponent(){
     BlockWidget * exec_ctrl_Widget = new BlockWidget();
     exec_ctrl_Widget->setupComponent(":/img/plugins/securitycenter/kysec_48.png", \
                                      ":/img/plugins/securitycenter/kysec_48_white.png",\
-                                     // ~contents_path /securitycenter/App protection
+                                     //~ contents_path /securitycenter/App protection
                                      tr("App protection"), \
                                      tr("App install"), \
                                      "/usr/sbin/ksc-defender --exec-ctrl");
@@ -251,7 +251,7 @@ void SecurityCenter::initComponent(){
     BlockWidget * net_protect_Widget = new BlockWidget();
     net_protect_Widget->setupComponent(":/img/plugins/securitycenter/net_48.png", \
                                        ":/img/plugins/securitycenter/net_48_white.png",\
-                                       // ~contents_path /securitycenter/Net protection
+                                       //~ contents_path /securitycenter/Net protection
                                        tr("Net protection"), \
                                        tr("Manage and control network"), \
                                        "/usr/sbin/ksc-defender --net-protect");
@@ -259,7 +259,7 @@ void SecurityCenter::initComponent(){
     BlockWidget * security_setting_Widget = new BlockWidget();
     security_setting_Widget->setupComponent(":/img/plugins/securitycenter/set2px.png", \
                                             ":/img/plugins/securitycenter/set2@2x_1.png",\
-                                            // ~contents_path /securitycenter/Secure Config
+                                            //~ contents_path /securitycenter/Secure Config
                                             tr("Secure Config"), \
                                             tr("Simple Config"), \
                                             "/usr/sbin/ksc-defender --security-setting");

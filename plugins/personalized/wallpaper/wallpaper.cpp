@@ -388,6 +388,7 @@ void Wallpaper::colorSelectedSlot(QColor color){
     // 设置系统纯色背景
     bgsettings->set(FILENAME, "");
     bgsettings->set(PRIMARY, QVariant(color.name()));
+    setLockBackground(color.name());
 
     ui->previewStackedWidget->setCurrentIndex(COLOR);
 }
