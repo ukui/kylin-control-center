@@ -48,6 +48,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     }
 
 
+
     m_szUuid = QUuid::createUuid().toString();
     m_bHasNetwork = true;
     m_bTokenValid = false;
@@ -58,6 +59,13 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     initSignalSlots();
     layoutUI();
     dbusInterface();
+
+    QFile tokenFile(QDir::homePath() + "/.cache/kylinId/token");
+    if(tokenFile.exists()) {
+        m_mainWidget->setCurrentWidget(m_widgetContainer);
+    } else {
+        m_mainWidget->setCurrentWidget(m_nullWidget);
+    }
 }
 
 void MainWidget::dbusInterface() {
@@ -514,7 +522,7 @@ void MainWidget::initSignalSlots() {
                 }
                 m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
                 m_autoSyn->get_swbtn()->set_active(true);
-                for(int i = 0;i < m_szItemlist;i ++) {
+                for(int i = 0;i < m_szItemlist.size();i ++) {
                     m_itemList->get_item(i)->get_swbtn()->set_active(true);
                 }
             } else {
@@ -523,7 +531,7 @@ void MainWidget::initSignalSlots() {
                 }
                 m_syncTimeLabel->setText(tr("Waiting for initialization..."));
                 m_autoSyn->get_swbtn()->set_active(false);
-                for(int i = 0;i < m_szItemlist;i ++) {
+                for(int i = 0;i < m_szItemlist.size();i ++) {
                     m_itemList->get_item(i)->get_swbtn()->set_active(false);
                 }
             }
