@@ -21,6 +21,8 @@
 #include "../utils/xatom-helper.h"
 
 #include <QVariant>
+#include <QDesktopServices>
+#include <QUrl>
 
 UkccAbout::UkccAbout(QWidget *parent)
     : QDialog(parent) {
@@ -99,10 +101,24 @@ void UkccAbout::initUI() {
     mUkccDetailLayout->addWidget(mUkccDetail);
     mUkccDetailLayout->addSpacing(32);
 
-    mUkccDeveloper = new QLabel(tr("Developer") +" \nsupport@kylinos.cn");
-
+    mUkccDeveloper = new QLabel(tr("Developer"));
+    mUkccDeveloper->setFixedSize(63, 50);
     mUkccDeveloperLayout->addSpacing(32);
     mUkccDeveloperLayout->addWidget(mUkccDeveloper);
+
+    mUkccDeveloperEmailBtn = new QPushButton("support@kylinos.cn");
+    mUkccDeveloperEmailBtn->setFixedSize(185, 50);
+    mUkccDeveloperEmailBtn->setFocusPolicy(Qt::NoFocus);
+    mUkccDeveloperEmailBtn->setContentsMargins(0,0,0,0);
+    mUkccDeveloperEmailBtn->setStyleSheet("QPushButton{background: transparent;border-radius: 4px;} "
+                                    "QPushButton:hover{background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
+                                    "QPushButton:click{background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
+
+    mUkccDeveloperLayout->addWidget(mUkccDeveloperEmailBtn);
+    mUkccDeveloperLayout->setAlignment(Qt::AlignLeft);
+    connect(mUkccDeveloperEmailBtn, &QPushButton::clicked, this,[=] {
+        QDesktopServices::openUrl(QUrl(QLatin1String("mailto:support@kylinos.cn")));
+    });
 
     mMainVLayout->addLayout(mTitleLayout);
     mMainVLayout->addSpacing(42);
