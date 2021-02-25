@@ -23,4 +23,5 @@ void Tips::set_text(const QString &text) {
 
 Tips::~Tips() {
     delete m_iconWidget;
+    m_iconWidget = nullptr;
 }

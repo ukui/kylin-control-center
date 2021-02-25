@@ -139,7 +139,7 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
    //Subabstract Build
     login_account_thr_number();
     login_account_thr_phone();
-    QRegExp regx("^[a-zA-Z0-9_@.-]+$");
+    QRegExp regx("[^\s]+$");
     QValidator *validator = new QRegExpValidator(regx, m_accountLineEdit );
     m_accountLineEdit->setValidator(validator);
     //Initial configuration
@@ -156,7 +156,7 @@ void LoginDialog::startaction_1() {
         m_accountLineEdit->setFocus();
         //m_accountLineEdit->setText("");
         m_accountLineEdit->setMaxLength(11);
-        QRegExp regx("^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$");
+        QRegExp regx("^1[3-9]\d{9}$");
         QValidator *validator = new QRegExpValidator(regx, m_accountLineEdit );
         m_accountLineEdit->setValidator(validator);
         m_accountLogin_btn->setMaximumSize(126,36);
@@ -200,7 +200,7 @@ void LoginDialog::startaction_2() {
     if(m_stackedWidget->currentIndex() == 1) {
         set_clear();
         m_accountLineEdit->setFocus();
-        QRegExp regx("^[a-zA-Z0-9_@.-]+$");
+        QRegExp regx("[^\s]+$");
         m_accountLineEdit->setMaxLength(30);
         QValidator *validator = new QRegExpValidator(regx, m_accountLineEdit );
         m_accountLineEdit->setValidator(validator);
@@ -229,7 +229,7 @@ bool LoginDialog::login_account_thr_number() {
 
     //Congfigurate the widgets
     m_accountLineEdit->setFocus();
-    QRegExp regx("^[a-zA-Z0-9_@.-]+$");
+    QRegExp regx("[^\s]+$");
     QValidator *validator = new QRegExpValidator(regx, m_accountLineEdit );
     m_accountLineEdit->setValidator(validator);
 
@@ -348,7 +348,7 @@ bool LoginDialog::login_account_thr_phone() {
 
     //Congfigurate the widgets
     m_accountLineEdit->setFocus();
-    QRegExp regx("^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$");
+    QRegExp regx("^1[3-9]\d{9}$");
     QValidator *validator = new QRegExpValidator(regx, m_accountLineEdit );
     m_accountLineEdit->setValidator(validator);
     m_mcodePhoneLineEdit->setMaximumSize(192,36);

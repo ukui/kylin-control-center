@@ -48,6 +48,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     }
 
 
+
     m_szUuid = QUuid::createUuid().toString();
     m_bHasNetwork = true;
     m_bTokenValid = false;
@@ -58,18 +59,27 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     initSignalSlots();
     layoutUI();
     dbusInterface();
+
+    QFile tokenFile(QDir::homePath() + "/.cache/kylinId/token");
+    if(tokenFile.exists()) {
+        m_mainWidget->setCurrentWidget(m_widgetContainer);
+    } else {
+        m_mainWidget->setCurrentWidget(m_nullWidget);
+    }
 }
 
 void MainWidget::dbusInterface() {
     if(m_bIsKylinId) {
         QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinID/path"), QString("org.kylinID.interface"),
-                                              "finishedLogout", this, SLOT(finishedLogout(int)));
+                                              "finishedLogout", this, SLOT(finishedLogout(int))); //登出结果反馈
         QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinID/path"), QString("org.kylinID.interface"),
-                                              "finishedVerifyToken", this, SLOT(checkUserName(QString)));
+                                              "finishedVerifyToken", this, SLOT(checkUserName(QString))); //用户凭据验证结果反馈
         QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinID/path"), QString("org.kylinID.interface"),
-                                              "finishedPassLogin", this, SLOT(loginSuccess(int)));
+                                              "finishedPassLogin", this, SLOT(loginSuccess(int)));//登录结果反馈
         QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinID/path"), QString("org.kylinID.interface"),
-                                              "finishedPhoneLogin", this, SLOT(loginSuccess(int)));
+                                              "finishedPhoneLogin", this, SLOT(loginSuccess(int)));//登录结果反馈
+
+        //登出接口调用
         connect(this, &MainWidget::kylinIdLogOut, this, [=] () {
             QDBusMessage message = QDBusMessage::createMethodCall("org.kylinID.service","/org/kylinID/path",
                                                                   "org.kylinID.interface",
@@ -78,6 +88,7 @@ void MainWidget::dbusInterface() {
             m_mainWidget->setCurrentWidget(m_nullWidget);
         });
 
+        //验证Token接口调用
         connect(this, &MainWidget::kylinIdCheck, this, [=] () {
             QDBusMessage message = QDBusMessage::createMethodCall("org.kylinID.service","/org/kylinID/path",
                                                                   "org.kylinID.interface",
@@ -265,7 +276,6 @@ void MainWidget::dbusInterface() {
         } else {
             m_pSettings->setValue("Auto-sync/enable","true");
             emit closedialog();
-            m_mainWidget->setCurrentWidget(m_widgetContainer);
             handle_conf();
         }
     });
@@ -288,7 +298,9 @@ void MainWidget::finishedLogout(int ret) {
 void MainWidget::checkUserName(QString name) {
     m_szCode = name;
     if(name == "" || name =="201" || name == "203" || name == "401" || name == "500" || name == "502") {
-        m_mainWidget->setCurrentWidget(m_nullWidget);
+        if(m_mainWidget->currentWidget() != m_nullWidget) {
+            m_mainWidget->setCurrentWidget(m_nullWidget);
+        }
         if(m_bIsKylinId) {
             emit kylinIdLogOut();
         } else {
@@ -306,7 +318,9 @@ void MainWidget::checkUserName(QString name) {
         m_syncTimeLabel->setText(tr("Waiting for initialization..."));
     //setshow(m_mainWidget);
     if(m_bTokenValid == false) {
-        m_mainWidget->setCurrentWidget(m_widgetContainer);
+        if(m_mainWidget->currentWidget() != m_widgetContainer) {
+            m_mainWidget->setCurrentWidget(m_widgetContainer);
+        }
         QtConcurrent::run([=] () {
 
             QProcess proc;
@@ -495,20 +509,38 @@ void MainWidget::initSignalSlots() {
         download_files();
     });
     //All.conf的
-    QString all_conf_path = QDir::homePath() + "/.cache/kylinId";
-    m_fsWatcher.addPath(all_conf_path);
+    m_fsWatcher.addPath(m_szConfPath);
 
 
-    connect(&m_fsWatcher,&QFileSystemWatcher::directoryChanged,this,[this] () {
-        QFile conf( m_szConfPath);
-        if(conf.exists() == true && m_pSettings != nullptr) {
+    connect(&m_fsWatcher,&QFileSystemWatcher::fileChanged,this,[this] () {
+        QFile token(QDir::homePath() + "/.cache/kylinId/token");
+        if(token.exists() == true && m_pSettings != nullptr) {
             QFile fileConf(m_szConfPath);
-            if(m_pSettings != nullptr && fileConf.exists())
+            if(m_pSettings != nullptr && fileConf.exists()) {
+                if(m_mainWidget->currentWidget() != m_widgetContainer) {
+                    m_mainWidget->setCurrentWidget(m_widgetContainer);
+                }
                 m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
-            else
+                m_autoSyn->get_swbtn()->set_active(true);
+                for(int i = 0;i < m_szItemlist.size();i ++) {
+                    m_itemList->get_item(i)->get_swbtn()->set_active(true);
+                }
+            } else {
+                if(m_mainWidget->currentWidget() != m_nullWidget) {
+                    m_mainWidget->setCurrentWidget(m_nullWidget);
+                }
                 m_syncTimeLabel->setText(tr("Waiting for initialization..."));
+                m_autoSyn->get_swbtn()->set_active(false);
+                for(int i = 0;i < m_szItemlist.size();i ++) {
+                    m_itemList->get_item(i)->get_swbtn()->set_active(false);
+                }
+            }
             if(m_autoSyn->get_swbtn()->get_active() == 1)
                 handle_conf();
+        } else if(!token.exists()){
+            if(m_mainWidget->currentWidget() != m_nullWidget) {
+                m_mainWidget->setCurrentWidget(m_nullWidget);
+            }
         }
     });
 
@@ -839,11 +871,11 @@ void MainWidget::handle_write(const int &on,const int &id) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
-    char name[32];
+    char name[32] = {0};
     if(id == -1) {
-        qstrcpy(name,"Auto-sync");
+        strncpy(name,"Auto-sync", 31);
     } else {
-        qstrcpy(name,m_szItemlist[id].toStdString().c_str());
+        strncpy(name, m_szItemlist[id].toStdString().c_str(), 31);
     }
     m_statusChanged = on;
     m_indexChanged = id;
@@ -1144,8 +1176,11 @@ MainWidget::~MainWidget() {
 
     m_fsWatcher.removePath(QDir::homePath() + "/.cache/kylinId/");
     delete m_itemList;
+    m_itemList = nullptr;
     delete m_welcomeImage;
+    m_welcomeImage = nullptr;
     delete m_dbusClient;
+    m_dbusClient = nullptr;
     thread->requestInterruption();
     if(thread != nullptr)
     {

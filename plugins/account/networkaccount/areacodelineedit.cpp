@@ -96,4 +96,5 @@ AreaCodeLineEdit::AreaCodeLineEdit(QWidget *parent) : QLineEdit(parent)
 
 AreaCodeLineEdit::~AreaCodeLineEdit() {
     delete m_jsonFile;
+    m_jsonFile = nullptr;
 }
