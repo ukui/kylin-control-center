@@ -268,7 +268,6 @@ void MainWidget::dbusInterface() {
         } else {
             m_pSettings->setValue("Auto-sync/enable","true");
             emit closedialog();
-            m_mainWidget->setCurrentWidget(m_widgetContainer);
             handle_conf();
         }
     });
@@ -291,7 +290,9 @@ void MainWidget::finishedLogout(int ret) {
 void MainWidget::checkUserName(QString name) {
     m_szCode = name;
     if(name == "" || name =="201" || name == "203" || name == "401" || name == "500" || name == "502") {
-        m_mainWidget->setCurrentWidget(m_nullWidget);
+        if(m_mainWidget->currentWidget() != m_nullWidget) {
+            m_mainWidget->setCurrentWidget(m_nullWidget);
+        }
         if(m_bIsKylinId) {
             emit kylinIdLogOut();
         } else {
@@ -309,7 +310,9 @@ void MainWidget::checkUserName(QString name) {
         m_syncTimeLabel->setText(tr("Waiting for initialization..."));
     //setshow(m_mainWidget);
     if(m_bTokenValid == false) {
-        m_mainWidget->setCurrentWidget(m_widgetContainer);
+        if(m_mainWidget->currentWidget() != m_widgetContainer) {
+            m_mainWidget->setCurrentWidget(m_widgetContainer);
+        }
         QtConcurrent::run([=] () {
 
             QProcess proc;
@@ -502,15 +505,34 @@ void MainWidget::initSignalSlots() {
 
 
     connect(&m_fsWatcher,&QFileSystemWatcher::fileChanged,this,[this] () {
-        QFile conf( m_szConfPath);
-        if(conf.exists() == true && m_pSettings != nullptr) {
+        QFile token(QDir::homePath() + "/.cache/kylinId/token");
+        if(token.exists() == true && m_pSettings != nullptr) {
             QFile fileConf(m_szConfPath);
-            if(m_pSettings != nullptr && fileConf.exists())
+            if(m_pSettings != nullptr && fileConf.exists()) {
+                if(m_mainWidget->currentWidget() != m_widgetContainer) {
+                    m_mainWidget->setCurrentWidget(m_widgetContainer);
+                }
                 m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
-            else
+                m_autoSyn->get_swbtn()->set_active(true);
+                for(int i = 0;i < m_szItemlist;i ++) {
+                    m_itemList->get_item(i)->get_swbtn()->set_active(true);
+                }
+            } else {
+                if(m_mainWidget->currentWidget() != m_nullWidget) {
+                    m_mainWidget->setCurrentWidget(m_nullWidget);
+                }
                 m_syncTimeLabel->setText(tr("Waiting for initialization..."));
+                m_autoSyn->get_swbtn()->set_active(false);
+                for(int i = 0;i < m_szItemlist;i ++) {
+                    m_itemList->get_item(i)->get_swbtn()->set_active(false);
+                }
+            }
             if(m_autoSyn->get_swbtn()->get_active() == 1)
                 handle_conf();
+        } else if(!token.exists()){
+            if(m_mainWidget->currentWidget() != m_nullWidget) {
+                m_mainWidget->setCurrentWidget(m_nullWidget);
+            }
         }
     });
 
