@@ -111,6 +111,7 @@ private:
     bool getSystemVersion();
     QStringList readFile(QString filepath);
     void setupGSettings();
+    void kwinCursorSlot();
 
 private slots:
     void resetBtnClickSlot();

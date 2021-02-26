@@ -483,27 +483,7 @@ void Theme::initCursorTheme(){
         QString value = curWidget->getValue();
         //设置光标主题
         curSettings->set(CURSOR_THEME_KEY, value);
-
-#if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
-
-#else
-        QString filename = QDir::homePath() + "/.config/kcminputrc";
-        QSettings *mouseSettings = new QSettings(filename, QSettings::IniFormat);
-
-        mouseSettings->beginGroup("Mouse");
-        mouseSettings->setValue("cursorTheme", value);
-        mouseSettings->endGroup();
-
-        delete mouseSettings;
-        mouseSettings = nullptr;
-
-        QDBusMessage message = QDBusMessage::createSignal("/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange");
-        QList<QVariant> args;
-        args.append(5);
-        args.append(0);
-        message.setArguments(args);
-        QDBusConnection::sessionBus().send(message);
-#endif
+        kwinCursorSlot();
     });
 
     for (QString cursor : cursorThemes){
@@ -636,6 +616,26 @@ void Theme::setupGSettings() {
     personliseGsettings = new QGSettings(iiid, QByteArray(), this);
 }
 
+void Theme::kwinCursorSlot() {
+
+    QString filename = QDir::homePath() + "/.config/kcminputrc";
+    QSettings *mouseSettings = new QSettings(filename, QSettings::IniFormat);
+
+    mouseSettings->beginGroup("Mouse");
+    mouseSettings->setValue("cursorTheme", value);
+    mouseSettings->endGroup();
+
+    delete mouseSettings;
+    mouseSettings = nullptr;
+
+    QDBusMessage message = QDBusMessage::createSignal("/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange");
+    QList<QVariant> args;
+    args.append(5);
+    args.append(0);
+    message.setArguments(args);
+    QDBusConnection::sessionBus().send(message);
+}
+
 QString Theme::dullTranslation(QString str) {
     if (!QString::compare(str, "basic")){
         return QObject::tr("basic");
@@ -651,6 +651,7 @@ QString Theme::dullTranslation(QString str) {
 void Theme::resetBtnClickSlot() {
 
     emit ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
+    kwinCursorSlot();
 
     // reset cursor default theme
     curSettings->reset(CURSOR_THEME_KEY);
