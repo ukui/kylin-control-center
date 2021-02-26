@@ -181,7 +181,7 @@ void QMLScreen::setActiveOutput(QMLOutput *output)
 void QMLScreen::setScreenPos(QMLOutput *output) {
 
     // 镜像模式下跳过屏幕旋转处理
-    if (this->primaryOutput()->isCloneMode()) {
+    if (this->primaryOutput() && this->primaryOutput()->isCloneMode()) {
         return ;
     }
 
