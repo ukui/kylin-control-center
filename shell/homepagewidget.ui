@@ -17,7 +17,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="leftMargin">
-      <number>90</number>
+      <number>130</number>
      </property>
      <property name="topMargin">
       <number>20</number>
