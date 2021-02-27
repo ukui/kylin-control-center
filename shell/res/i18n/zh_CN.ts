@@ -398,7 +398,7 @@
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="542"/>
         <source>Get depends failed!</source>
-        <translation type="unfinished">依赖获取异常！</translation>
+        <translation>依赖获取异常！</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="598"/>
