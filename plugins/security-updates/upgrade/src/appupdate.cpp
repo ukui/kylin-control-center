@@ -547,6 +547,8 @@ void AppUpdateWid::updateOneApp()
         appVersionIcon->setPixmap(pixmap);
         m_updateMutual->importantList.removeOne(appAllMsg.name);
         m_updateMutual->failedList.append(appAllMsg.name);
+        QString message = QString("%1"+tr("Get depends failed!")).arg(dispalyName);
+        m_updateMutual->onRequestSendDesktopNotify(message);
         emit hideUpdateBtnSignal(false);
     }
 }

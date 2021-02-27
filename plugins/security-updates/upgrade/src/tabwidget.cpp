@@ -241,6 +241,7 @@ void TabWid::bacupInit()
 {
     backup = new BackUp;
     backupThread = new QThread;
+    qDebug() << "======>tabwid info: " <<backupThread ;
     backup->moveToThread(backupThread);
     connect(this,&TabWid::needBackUp,backup,&BackUp::needBacdUp,Qt::BlockingQueuedConnection);//同步信号，阻塞，取返回值
     connect(this,&TabWid::startBackUp,backup,&BackUp::startBackUp);
@@ -555,8 +556,8 @@ void TabWid::getAllDisplayInformation()
     query.exec("select * from display");
     while(query.next())
     {
-        updatetime = query.value(2).toString();
-        checkedtime = query.value(1).toString();
+        updatetime = query.value("update_time").toString();
+        checkedtime = query.value("check_time").toString();
         checkedstatues = query.value("auto_check").toString();
         backupStatus = query.value("auto_backup").toString();
     }
@@ -704,7 +705,7 @@ void TabWid::hideUpdateBtnSlot(bool isSucceed)
         QString current_date = nowtime.toString("yyyy.MM.dd hh:mm:ss");
 //        lastRefreshTime->setText(tr("上次更新：")+current_date);
         lastRefreshTime->setText(tr("Last refresh:")+current_date);
-        updateMutual->insertInstallStates("update_time",current_date);
+//        updateMutual->insertInstallStates("update_time",current_date);
 
     }
     if(updateMutual->importantList.size() == 0)
