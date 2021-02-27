@@ -448,7 +448,7 @@ void MainDialog::on_login_btn() {
         }
 
         if(m_loginDialog->get_user_edit()->text().trimmed() == "") {
-            m_loginDialog->set_code(messagebox(501));
+            m_loginDialog->set_code(messagebox(505));
             m_loginCodeStatusTips->show();
             m_baseWidget->setEnabled(true);
             set_staus(true);
@@ -511,7 +511,7 @@ void MainDialog::on_login_btn() {
         emit on_login_failed();
         //信息填写不完整执行此处，包括密码登录以及手机登录
         if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
-            m_loginDialog->set_code(messagebox(-1));
+            m_loginDialog->set_code(messagebox(501));
             m_loginTips->show();
             m_baseWidget->setEnabled(true);
             set_staus(true);
@@ -524,7 +524,7 @@ void MainDialog::on_login_btn() {
             m_loginDialog->get_mcode_lineedit()->setText("");
             m_baseWidget->setEnabled(true);
             set_staus(true);
-            m_loginDialog->set_code(messagebox(-1));
+            m_loginDialog->set_code(messagebox(505));
             m_loginCodeStatusTips->show();
             setshow(m_stackedWidget);
             return ;
