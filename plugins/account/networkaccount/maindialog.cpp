@@ -586,7 +586,7 @@ void MainDialog::on_send_code_log() {
     } else {
         m_loginDialog->get_user_mcode()->setEnabled(true);
         m_loginDialog->get_mcode_lineedit()->setText("");
-        m_loginDialog->set_code(messagebox(-1));
+        m_loginDialog->set_code(messagebox(704));
         m_loginCodeStatusTips->show();
         setshow(m_stackedWidget);
 
