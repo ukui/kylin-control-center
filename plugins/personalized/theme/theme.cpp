@@ -215,6 +215,9 @@ void Theme::setupSettings() {
             ui->highlabel->setPixmap(QPixmap("://img/plugins/theme/opacityhigh.svg"));
         }
         kwinSettings->endGroup();
+    }else {
+        ui->lowLabel->setPixmap(QPixmap("://img/plugins/theme/opacitylow.svg"));
+        ui->highlabel->setPixmap(QPixmap("://img/plugins/theme/opacityhigh.svg"));
     }
 }
 
