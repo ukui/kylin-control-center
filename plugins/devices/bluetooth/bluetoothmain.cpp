@@ -70,11 +70,11 @@ BlueToothMain::BlueToothMain(QWidget *parent)
     frame_top    = new QWidget(main_widget);
     frame_top->setObjectName("frame_top");
     if(m_manager->adapters().size() > 1){
+        frame_top->setMinimumSize(582,239);
+        frame_top->setMaximumSize(1000,239);
+    }else{
         frame_top->setMinimumSize(582,187);
         frame_top->setMaximumSize(1000,187);
-    }else{
-        frame_top->setMinimumSize(582,135);
-        frame_top->setMaximumSize(1000,135);
     }
 //    frame_top->setStyleSheet("background:blue;");
     frame_middle = new QWidget(main_widget);
@@ -83,8 +83,8 @@ BlueToothMain::BlueToothMain(QWidget *parent)
 //    frame_middle->setStyleSheet("background:blue;");
     frame_bottom = new QWidget(main_widget);
     frame_bottom->setObjectName("frame_bottom");
-//    frame_bottom->setMinimumWidth(582);
-//    frame_bottom->setMaximumWidth(1000);
+    frame_bottom->setMinimumWidth(582);
+    frame_bottom->setMaximumWidth(1000);
 //    frame_bottom->setMinimumHeight(340);
 //    frame_bottom->setStyleSheet("background:green;");
 
@@ -210,6 +210,31 @@ void BlueToothMain::InitMainTopUI()
     frame_3_layout->addWidget(show_panel);
     show_panel->setChecked(settings->get("tray-show").toBool());
     connect(show_panel,&SwitchButton::checkedChanged,this,&BlueToothMain::set_tray_visible);
+
+    QFrame *frame_4 = new QFrame(frame_top);
+    frame_4->setMinimumWidth(582);
+    frame_4->setFrameShape(QFrame::Shape::Box);
+    frame_4->setFixedHeight(50);
+    layout->addWidget(frame_4);
+
+    QHBoxLayout *frame_4_layout = new QHBoxLayout(frame_4);
+    frame_4_layout->setSpacing(10);
+    frame_4_layout->setContentsMargins(16,0,16,0);
+
+    QLabel *label_5 = new QLabel(tr("Discoverable"),frame_4);
+    label_5->setStyleSheet("QLabel{\
+                           width: 56px;\
+                           height: 20px;\
+                           font-size: 14px;\
+                           font-weight: 400;\
+                           line-height: 20px;}");
+    frame_4_layout->addWidget(label_5);
+    frame_4_layout->addStretch();
+
+    switch_discover = new SwitchButton(frame_4);
+    frame_4_layout->addWidget(switch_discover);
+    switch_discover->setChecked(m_localDevice->isDiscoverable());
+    connect(switch_discover,&SwitchButton::checkedChanged,this,&BlueToothMain::set_discoverable);
 
     connect(open_bluetooth,SIGNAL(checkedChanged(bool)),this,SLOT(onClick_Open_Bluetooth(bool)));
     frame_top->setLayout(top_layout);
@@ -618,6 +643,11 @@ void BlueToothMain::Refresh_load_Label_icon()
 void BlueToothMain::set_tray_visible(bool value)
 {
     settings->set("tray-show",QVariant::fromValue(value));
+}
+
+void BlueToothMain::set_discoverable(bool value)
+{
+    m_localDevice->setDiscoverable(value);
 }
 
 void BlueToothMain::change_adapter_name(const QString &name)

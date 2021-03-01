@@ -745,10 +745,10 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="vanished">关闭蓝牙</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="371"/>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="381"/>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="542"/>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="674"/>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="396"/>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="406"/>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="567"/>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="704"/>
         <source>Turn on Bluetooth</source>
         <translation>开启蓝牙</translation>
     </message>
@@ -768,7 +768,12 @@ you can restore them to ensure the integrity of your system.</source>
         <translation>在任务栏上显示蓝牙图标</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="228"/>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="224"/>
+        <source>Discoverable</source>
+        <translation type="unfinished">设备可见性</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="253"/>
         <source>My Devices</source>
         <translation>我的设备</translation>
     </message>
@@ -777,12 +782,12 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="vanished">现在可被发现为 </translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="247"/>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="272"/>
         <source>Other Devices</source>
         <translation>蓝牙设备</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="258"/>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="283"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
@@ -3679,7 +3684,7 @@ Please retry or relogin!</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../mainwindow.cpp" line="357"/>
+        <location filename="../../mainwindow.cpp" line="336"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
@@ -3689,62 +3694,62 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../mainwindow.cpp" line="74"/>
-        <location filename="../../mainwindow.cpp" line="377"/>
+        <location filename="../../mainwindow.cpp" line="356"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="386"/>
+        <location filename="../../mainwindow.cpp" line="365"/>
         <source>Main menu</source>
         <translation>主菜单</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="387"/>
+        <location filename="../../mainwindow.cpp" line="366"/>
         <source>Minimize</source>
         <translation>最小化</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="388"/>
+        <location filename="../../mainwindow.cpp" line="367"/>
         <source>Maximize/Normal</source>
         <translation>最大化/正常</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="389"/>
+        <location filename="../../mainwindow.cpp" line="368"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="447"/>
+        <location filename="../../mainwindow.cpp" line="426"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="449"/>
+        <location filename="../../mainwindow.cpp" line="428"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="451"/>
+        <location filename="../../mainwindow.cpp" line="430"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="746"/>
+        <location filename="../../mainwindow.cpp" line="724"/>
         <source>ukcc</source>
         <translation>控制面板</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="848"/>
+        <location filename="../../mainwindow.cpp" line="826"/>
         <source>Warnning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="848"/>
+        <location filename="../../mainwindow.cpp" line="826"/>
         <source>This function has been controlled</source>
         <translation>该功能已被管控</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="577"/>
+        <location filename="../../mainwindow.cpp" line="556"/>
         <source>Home</source>
         <translation>首页</translation>
     </message>
@@ -4654,22 +4659,22 @@ Please retry or relogin!</source>
         <translation type="vanished">默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="641"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="644"/>
         <source>basic</source>
         <translation>基础</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="643"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="646"/>
         <source>classical</source>
         <translation>经典</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="645"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="648"/>
         <source>default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="647"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="650"/>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="183"/>
         <source>Unknown</source>
         <translation>未知</translation>
@@ -6289,17 +6294,17 @@ run start-pulseaudio-x11 manually.</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="232"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="235"/>
         <source>Default</source>
         <translation>系统默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="233"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="236"/>
         <source>Light</source>
         <translation>浅色模式</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="234"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="237"/>
         <source>Dark</source>
         <translation>深色模式</translation>
     </message>

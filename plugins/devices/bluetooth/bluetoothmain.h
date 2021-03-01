@@ -65,6 +65,7 @@ private slots:
     void receiveRemoveSignal(QString);
     void Refresh_load_Label_icon();
     void set_tray_visible(bool);
+    void set_discoverable(bool);
     void change_adapter_name(const QString &name);
     void change_device_parent(const QString &address);
     void adapterPoweredChanged(bool value);
@@ -102,6 +103,7 @@ private:
 
     SwitchButton *open_bluetooth = nullptr;
     SwitchButton *show_panel = nullptr;
+    SwitchButton *switch_discover = nullptr;
 
     QLabel *label_2 = nullptr;
     QLabel *loadLabel = nullptr;
