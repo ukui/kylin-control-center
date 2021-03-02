@@ -36,14 +36,14 @@ public:
     int             get_swichbutton_val() const;
     void            set_id(const int &buttonID);
     int             get_id() const;
-    int             get_active() const;
-    void            set_active(const bool &ok);
+    bool             get_active() const;
+    void            set_active(bool ok);
 private:
     QColor          m_bgColorOff;
     QColor          m_bgColorOn;
     QGSettings      *m_qtThemeSetting;
     QGSettings      *m_gtkThemeSetting;
-    int             m_bIsActive = 1;
+    bool             m_bIsActive = true;
     int             m_bIsOn = 1;
     QColor          *m_buttonColor;
     QTimer          *m_cTimer;
