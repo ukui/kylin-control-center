@@ -345,8 +345,9 @@ void AutoBoot::clearAutoItem()
 
 bool AutoBoot::_delete_local_autoapp(QString bname){
     char * dstpath;
+    QByteArray ba = bname.toUtf8();
 
-    dstpath = g_build_filename(localconfigdir, bname.toUtf8().data(), NULL);
+    dstpath = g_build_filename(localconfigdir, ba.data(), NULL);
 
     if (g_remove(dstpath) == -1){
         g_free(dstpath);
@@ -732,9 +733,12 @@ void AutoBoot::add_autoboot_realize_slot(QString path, QString name, QString exe
         return;
 
     char * filename, * filepath;
+    QByteArray ba = path.section("/", -1, -1).toUtf8();
 
-    filename = path.section("/", -1, -1).toUtf8().data();
+    //filename = path.section("/", -1, -1).toUtf8().data();
     // 需要定位desktop解析失败原因，bug#37606
+    // Fix: toUtf8 -> data 数据类型不可连转
+    filename = ba.data();
     qDebug() << "desktop: "<< path.section("/", -1, -1).toUtf8().data();
 
     filepath = g_build_filename(localconfigdir, filename, NULL);

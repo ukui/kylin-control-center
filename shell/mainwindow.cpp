@@ -415,7 +415,7 @@ void MainWindow::onF1ButtonClicked() {
     args.append("-A");
     args.append("ukui-control-center");
 
-    p.execute(command,args);//command是要执行的命令,args是参数
+    p.startDetached(command,args);//command是要执行的命令,args是参数
     p.waitForFinished(-1);
 }
 
