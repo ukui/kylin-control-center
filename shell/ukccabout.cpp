@@ -111,9 +111,8 @@ void UkccAbout::initUI() {
     mUkccDeveloperEmailBtn->setFixedSize(185, 50);
     mUkccDeveloperEmailBtn->setFocusPolicy(Qt::NoFocus);
     mUkccDeveloperEmailBtn->setContentsMargins(0,0,0,0);
-    mUkccDeveloperEmailBtn->setStyleSheet("QPushButton{background: transparent;border-radius: 4px;} "
-                                    "QPushButton:hover{background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
-                                    "QPushButton:click{background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
+    mUkccDeveloperEmailBtn->setCursor(QCursor(Qt::PointingHandCursor));
+    mUkccDeveloperEmailBtn->setStyleSheet("QPushButton{background: transparent;border-radius: 4px;text-decoration: underline;} ");
 
     mUkccDeveloperLayout->addWidget(mUkccDeveloperEmailBtn);
     mUkccDeveloperLayout->setAlignment(Qt::AlignLeft);
