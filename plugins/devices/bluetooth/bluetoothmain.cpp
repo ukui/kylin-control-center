@@ -235,6 +235,9 @@ void BlueToothMain::InitMainTopUI()
     frame_4_layout->addWidget(switch_discover);
     switch_discover->setChecked(m_localDevice->isDiscoverable());
     connect(switch_discover,&SwitchButton::checkedChanged,this,&BlueToothMain::set_discoverable);
+    connect(m_localDevice.data(), &BluezQt::Adapter::discoverableChanged, this, [=](bool discoverable){
+        switch_discover->setChecked(discoverable);
+    });
 
     connect(open_bluetooth,SIGNAL(checkedChanged(bool)),this,SLOT(onClick_Open_Bluetooth(bool)));
     frame_top->setLayout(top_layout);
