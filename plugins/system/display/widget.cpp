@@ -633,6 +633,19 @@ bool Widget::isCloneMode()
     return mate_rr_config_get_clone(rr_config);
 }
 
+bool Widget::isBacklight() {
+    QString cmd = "ukui-power-backlight-helper --get-max-brightness";
+    QProcess process;
+    process.start(cmd);
+    process.waitForFinished();
+    QString result = process.readAllStandardOutput().trimmed();
+
+    QString pattern("^[0-9]*$");
+    QRegExp reg(pattern);
+
+    return reg.exactMatch(result);
+}
+
 
 void Widget::showNightWidget(bool judge) {
     if (judge) {
@@ -1370,7 +1383,7 @@ void Widget::initUiComponent() {
 
     QDBusReply<QVariant> briginfo;
     briginfo  = brightnessInterface.call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
-    if (!briginfo.value().toBool()) {
+    if (!briginfo.value().toBool() || !isBacklight()) {
         ui->brightnessframe->setVisible(false);
     } else {
         ui->brightnessframe->setVisible(true);
