@@ -401,7 +401,7 @@ void Theme::initIconTheme() {
                 showIconsList.append(appsDir.path() + "/" + kIconsList.at(i));
             }
 
-            ThemeWidget * widget = new ThemeWidget(QSize(48, 48), dullTranslation(themedir.section("-", -1, -1, QString::SectionSkipEmpty)), showIconsList);
+            ThemeWidget * widget = new ThemeWidget(QSize(48, 48), dullTranslation(themedir.section("-", -1, -1, QString::SectionSkipEmpty)), showIconsList, pluginWidget);
             widget->setValue(themedir);
 
             // 加入Layout
@@ -501,7 +501,7 @@ void Theme::initCursorTheme(){
             cursorVec.append(QPixmap::fromImage(image));
         }
 
-        ThemeWidget * widget  = new ThemeWidget(QSize(24, 24), cursor, cursorVec);
+        ThemeWidget * widget  = new ThemeWidget(QSize(24, 24), cursor, cursorVec, pluginWidget);
         widget->setValue(cursor);
 
         //加入Layout

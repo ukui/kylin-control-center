@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     app.setApplicationName("ukcc-session-service");
 
     ukccSessionServer service;
-    new InterfaceAdaptor(&service);
+    ukccSessionServer *iftApt = new InterfaceAdaptor(&service);
 
     QDBusConnection sessionBus = QDBusConnection::sessionBus();
     if (!sessionBus.registerService("org.ukui.ukcc.session")) {
@@ -25,6 +25,6 @@ int main(int argc, char *argv[])
         qCritical() << "QDbus register object failed reason:" << sessionBus.lastError();
         exit(2);
     }
-
+    delete iftApt;
     return app.exec();
 }
