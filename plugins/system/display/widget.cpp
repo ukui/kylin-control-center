@@ -914,7 +914,7 @@ void Widget::save() {
         config->output(mScreenId)->setPrimary(true);
         callMethod(config->primaryOutput()->geometry(), config->primaryOutput()->name());
     }
-    mScreen->updateOutputsPlacement();
+    //mScreen->updateOutputsPlacement();
 
     if (isRestoreConfig()) {
         if (mIsWayland) {
@@ -933,6 +933,15 @@ void Widget::save() {
             writeFile(dir % hash);
         }
     }
+    
+    //save config
+    writeScreenXml();
+    QString dir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) %
+                                                        QStringLiteral("/kscreen/") %
+                                                        QStringLiteral("" /*"configs/"*/);
+    QString hash = mPrevConfig->connectedOutputsHash();
+    writeFile(dir % hash);
+    mScreen->updateOutputsPlacement();
 }
 
 QVariantMap metadata(const KScreen::OutputPtr &output)
