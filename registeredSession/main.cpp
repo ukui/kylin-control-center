@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     app.setApplicationName("ukcc-session-service");
 
     ukccSessionServer service;
-    ukccSessionServer *iftApt = new InterfaceAdaptor(&service);
+    InterfaceAdaptor *iftApt = new InterfaceAdaptor(&service);
 
     QDBusConnection sessionBus = QDBusConnection::sessionBus();
     if (!sessionBus.registerService("org.ukui.ukcc.session")) {
