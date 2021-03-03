@@ -101,7 +101,7 @@ void UkccAbout::initUI() {
     mUkccDetailLayout->addWidget(mUkccDetail);
     mUkccDetailLayout->addSpacing(32);
 
-    mUkccDeveloper = new QLabel(tr("Developer"));
+    mUkccDeveloper = new QLabel(tr("Service and Support:"));
     mUkccDeveloper->setFixedSize(63, 50);
 
     mUkccDeveloperLayout->addSpacing(32);
