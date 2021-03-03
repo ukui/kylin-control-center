@@ -1143,7 +1143,6 @@ void MainWidget::get_key_info(QString info) {
     }
 
     bool bIsFailed = false;
-    //qDebug()<<"networkaccount:"+info;
     if(info.contains(",")) {
         m_keyInfoList = info.split(',');
     } else {
@@ -1184,10 +1183,6 @@ void MainWidget::get_key_info(QString info) {
                 }
             }
         }
-
-        //if(keys != "")
-            //showDesktopNotify("同步这些项目失败：" + keys);
-
         m_autoSyn->make_itemoff();
         for(int i = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(false);
@@ -1208,7 +1203,7 @@ void MainWidget::showDesktopNotify(const QString &message)
     QList<QVariant> args;
     args<<(QCoreApplication::applicationName())
     <<((unsigned int) 0)
-    <<QString("qweq")
+    <<QString("/usr/share/icons/ukui/scalable/apps/kylin-cloud-account.svg")
     <<tr("Cloud ID desktop message") //显示的是什么类型的信息
     <<message //显示的具体信息
     <<QStringList()
