@@ -215,6 +215,9 @@ void Theme::setupSettings() {
             ui->highlabel->setPixmap(QPixmap("://img/plugins/theme/opacityhigh.svg"));
         }
         kwinSettings->endGroup();
+    }else {
+        ui->lowLabel->setPixmap(QPixmap("://img/plugins/theme/opacitylow.svg"));
+        ui->highlabel->setPixmap(QPixmap("://img/plugins/theme/opacityhigh.svg"));
     }
 }
 
@@ -398,7 +401,7 @@ void Theme::initIconTheme() {
                 showIconsList.append(appsDir.path() + "/" + kIconsList.at(i));
             }
 
-            ThemeWidget * widget = new ThemeWidget(QSize(48, 48), dullTranslation(themedir.section("-", -1, -1, QString::SectionSkipEmpty)), showIconsList);
+            ThemeWidget * widget = new ThemeWidget(QSize(48, 48), dullTranslation(themedir.section("-", -1, -1, QString::SectionSkipEmpty)), showIconsList, pluginWidget);
             widget->setValue(themedir);
 
             // 加入Layout
@@ -483,27 +486,7 @@ void Theme::initCursorTheme(){
         QString value = curWidget->getValue();
         //设置光标主题
         curSettings->set(CURSOR_THEME_KEY, value);
-
-#if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
-
-#else
-        QString filename = QDir::homePath() + "/.config/kcminputrc";
-        QSettings *mouseSettings = new QSettings(filename, QSettings::IniFormat);
-
-        mouseSettings->beginGroup("Mouse");
-        mouseSettings->setValue("cursorTheme", value);
-        mouseSettings->endGroup();
-
-        delete mouseSettings;
-        mouseSettings = nullptr;
-
-        QDBusMessage message = QDBusMessage::createSignal("/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange");
-        QList<QVariant> args;
-        args.append(5);
-        args.append(0);
-        message.setArguments(args);
-        QDBusConnection::sessionBus().send(message);
-#endif
+        kwinCursorSlot(value);
     });
 
     for (QString cursor : cursorThemes){
@@ -518,7 +501,7 @@ void Theme::initCursorTheme(){
             cursorVec.append(QPixmap::fromImage(image));
         }
 
-        ThemeWidget * widget  = new ThemeWidget(QSize(24, 24), cursor, cursorVec);
+        ThemeWidget * widget  = new ThemeWidget(QSize(24, 24), cursor, cursorVec, pluginWidget);
         widget->setValue(cursor);
 
         //加入Layout
@@ -636,6 +619,26 @@ void Theme::setupGSettings() {
     personliseGsettings = new QGSettings(iiid, QByteArray(), this);
 }
 
+void Theme::kwinCursorSlot(QString value) {
+
+    QString filename = QDir::homePath() + "/.config/kcminputrc";
+    QSettings *mouseSettings = new QSettings(filename, QSettings::IniFormat);
+
+    mouseSettings->beginGroup("Mouse");
+    mouseSettings->setValue("cursorTheme", value);
+    mouseSettings->endGroup();
+
+    delete mouseSettings;
+    mouseSettings = nullptr;
+
+    QDBusMessage message = QDBusMessage::createSignal("/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange");
+    QList<QVariant> args;
+    args.append(5);
+    args.append(0);
+    message.setArguments(args);
+    QDBusConnection::sessionBus().send(message);
+}
+
 QString Theme::dullTranslation(QString str) {
     if (!QString::compare(str, "basic")){
         return QObject::tr("basic");
@@ -651,6 +654,7 @@ QString Theme::dullTranslation(QString str) {
 void Theme::resetBtnClickSlot() {
 
     emit ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
+    kwinCursorSlot(kDefCursor);
 
     // reset cursor default theme
     curSettings->reset(CURSOR_THEME_KEY);

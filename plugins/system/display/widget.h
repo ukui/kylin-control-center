@@ -65,7 +65,6 @@ class Widget : public QWidget
     KScreen::ConfigPtr currentConfig() const;
 
     void slotFocusedOutputChangedNoParam();
-    // 亮度调节UI
     void initBrightnessUI();
     void initConnection();
     QString getScreenName(QString name = "");
@@ -160,6 +159,7 @@ class Widget : public QWidget
     QString getCpuInfo();
 
     bool isCloneMode();
+    bool isBacklight();
 
   private:
     Ui::DisplayWindow *ui;

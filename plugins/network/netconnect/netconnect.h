@@ -68,7 +68,6 @@ typedef struct ActiveConInfo_s {
     QString strConName;
     QString strConUUID;
     QString strConType;
-    QString strConDev;
 }ActiveConInfo;
 
 class NetConnect : public QObject, CommonInterface
@@ -100,7 +99,6 @@ public:
     bool getwifiisEnable();
 
     void getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo);
-    QString getCurrentSsid();
 
 private:
     Ui::NetConnect *ui;

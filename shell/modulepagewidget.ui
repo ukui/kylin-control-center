@@ -35,7 +35,7 @@
       <number>0</number>
      </property>
      <property name="leftMargin">
-      <number>24</number>
+      <number>0</number>
      </property>
      <property name="rightMargin">
       <number>0</number>
@@ -150,7 +150,7 @@
          <number>0</number>
         </property>
         <property name="leftMargin">
-         <number>24</number>
+         <number>8</number>
         </property>
         <property name="topMargin">
          <number>40</number>
@@ -232,7 +232,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>303</width>
+               <width>330</width>
                <height>322</height>
               </rect>
              </property>

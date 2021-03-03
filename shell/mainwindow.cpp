@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_searchWidget(nullptr)
 {
     mate_mixer_init();
-    this->setMinimumSize(895, 600);
+    this->setMinimumSize(930, 620);
     logoLabel  = new QLabel(tr("Settings"), this);
     initUI();
 }
@@ -161,31 +161,10 @@ void MainWindow::bootOptionsSwitch(int moduleNum, int funcNum){
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     if (this == watched) {
         if (event->type() == QEvent::WindowStateChange) {
-            int count = ui->leftsidebarVerLayout->count();
             if (this->windowState() == Qt::WindowMaximized) {
-                QFont font = this->font();
-                int width = font.pointSize();
                 maxBtn->setIcon(QIcon::fromTheme("window-restore-symbolic"));
-                ui->leftsidebarWidget->setMaximumWidth(width * 10 +25);
-                for (int i = 0; i < count; i++) {
-                    QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
-                    if (btn) {
-                        QLayout *layout = btn->layout();
-                        QLabel * tipLabel = static_cast<QLabel *>(layout->itemAt(1)->widget());
-                        tipLabel->setVisible(true);
-                    }
-                }
             } else {
                 maxBtn->setIcon(QIcon::fromTheme("window-maximize-symbolic"));
-                ui->leftsidebarWidget->setMaximumWidth(60);
-                for (int i = 0; i < count; i++) {
-                    QPushButton * btn = static_cast<QPushButton *>(ui->leftsidebarVerLayout->itemAt(i)->widget());
-                    if (btn) {
-                        QLayout *layout = btn->layout();
-                        QLabel * tipLabel = static_cast<QLabel *>(layout->itemAt(1)->widget());
-                        tipLabel->setVisible(false);
-                    }
-                }
             }
         } else if (event->type() == QEvent::MouseButtonDblClick) {
             bool res = dblOnEdge(dynamic_cast<QMouseEvent*>(event));
@@ -436,7 +415,7 @@ void MainWindow::onF1ButtonClicked() {
     args.append("-A");
     args.append("ukui-control-center");
 
-    p.execute(command,args);//command是要执行的命令,args是参数
+    p.startDetached(command,args);//command是要执行的命令,args是参数
     p.waitForFinished(-1);
 }
 
@@ -689,7 +668,6 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName) {
     });
 
     QLabel * textLabel = new QLabel(leftsidebarBtn);
-    textLabel->setVisible(false);
     textLabel->setText(tipName);
     QSizePolicy textLabelPolicy = textLabel->sizePolicy();
     textLabelPolicy.setHorizontalPolicy(QSizePolicy::Fixed);
