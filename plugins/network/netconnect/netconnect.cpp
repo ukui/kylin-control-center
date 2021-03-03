@@ -599,7 +599,7 @@ int NetConnect::setSignal(QString lv) {
         signalLv = 2;
     } else if(signal > 35 && signal <= 55){
         signalLv = 3;
-    } else if(signal  < 35){
+    } else if(signal  <= 35){
         signalLv = 4;
     }
 
