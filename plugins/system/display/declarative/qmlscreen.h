@@ -73,8 +73,6 @@ class QMLScreen : public QQuickItem
     void setActiveOutput(QMLOutput *output);
 
     void setScreenPos(QMLOutput *output);
-    //屏幕(X,Y)值会在热插拔的时候有变化，暂时使用本地配置文件修改屏幕（X,Y）
-    void updateOutputPos(); 
 
   public Q_SLOTS:
     void setActiveOutput() {
@@ -120,19 +118,6 @@ class QMLScreen : public QQuickItem
     QMLOutput *m_rightmost = nullptr;
     QMLOutput *m_bottommost = nullptr;
 
-};
-
-//用于存储 json 文件数据
-class UpdatePos {
-    public:
-        QString id;
-        bool isEnabled;
-        QPoint pos;
-        int refresh;
-        QPoint size;
-        bool isPrimary;
-        int rotation;
-        int scale;
 };
 
 #endif // QMLSCREEN_H

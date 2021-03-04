@@ -26,15 +26,6 @@
 #include <QTimer>
 #include <sys/socket.h>
 
-#include <utils.h>
-//解析json文件
-#include<QJsonDocument>
-#include<QJsonObject>
-#include<QJsonArray>
-#include <QJsonParseError>
-#include <QJsonValue>
-#include <QStandardPaths>
-
 Q_DECLARE_METATYPE(KScreen::OutputPtr)
 
 QMLScreen::QMLScreen(QQuickItem *parent)
@@ -407,80 +398,11 @@ void QMLScreen::setOutputScale(float scale)
     emit outputScaleChanged();
 }
 
-//修正坐标
-void QMLScreen::updateOutputPos() {
-
-    KScreen::ConfigPtr conf = config();
-    QString hash = conf->connectedOutputsHash();
-    QString dir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
-    QString configPath = dir + "/kscreen/" + hash;
-    QFile file(configPath);
-    if(!file.open(QIODevice::ReadOnly)) {
-        return;
-    }
-    
-    QByteArray data=file.readAll();
-    file.close();
-    //使用json文件对象加载字符串
-    QJsonDocument doc= QJsonDocument::fromJson(data);
-    
-    // 从本地配置文件获取值
-    QVector<UpdatePos> upValue;
-    upValue.clear();
-    if(doc.isArray()) {
-        QJsonArray array = doc.array();
-        for(int i = 0; i < array.size(); i++) {
-            UpdatePos upOne;
-            QJsonValue iconArray = array.at(i);
-            QJsonObject icon = iconArray.toObject();
-            upOne.isEnabled = icon.value("enabled").toBool();
-            upOne.id = icon.value("id").toString();
-
-            QJsonObject posVal = icon.value("pos").toObject();
-            upOne.pos.setX(posVal.value("x").toInt());
-            upOne.pos.setY(posVal.value("y").toInt());
-            upValue.push_back(upOne);
-        }
-    }
-
-    //更正 outputX/Y
-    Q_FOREACH (QQuickItem *item, childItems()) {
-        QMLOutput *qmlOutput = qobject_cast<QMLOutput*>(item);
-        if (!qmlOutput->output()->isConnected() || !qmlOutput->output()->isEnabled()) {
-            continue;
-        }
-        qmlOutput->blockSignals(true);
-        for(int i = 0; i < upValue.size(); i++) {
-            if(upValue[i].id == Utils::outputName(qmlOutput->output())) {
-                qmlOutput->setOutputX(upValue[i].pos.x());
-                qmlOutput->setOutputY(upValue[i].pos.y());
-                break;
-            }
-        }
-        qmlOutput->blockSignals(false);
-    }
-}
-
-
 // 画坐标
 void QMLScreen::updateOutputsPlacement()
 {
     if (width() <= 0)
         return;
-   
-    //计算连接数
-    int connectionNumber = 0;
-    Q_FOREACH (QQuickItem *item, childItems()) {
-        QMLOutput *qmlOutput = qobject_cast<QMLOutput*>(item);
-        if (!qmlOutput->output()->isConnected() || !qmlOutput->output()->isEnabled()) {
-            continue;
-        }
-        connectionNumber++;
-    }
-
-    if(connectionNumber >= 2) {
-        updateOutputPos();
-    }
 
     QSizeF initialActiveScreenSize;
 
@@ -512,9 +434,10 @@ void QMLScreen::updateOutputsPlacement()
         qreal lastY = -1.0;
         Q_FOREACH (QQuickItem *item, childItems()) {
             QMLOutput *qmlOutput = qobject_cast<QMLOutput*>(item);
-            if (!qmlOutput->output()->isConnected() || !qmlOutput->output()->isEnabled()) {
+            if (!qmlOutput->output()->isConnected() || !qmlOutput->output()->isEnabled() ||
+                m_manuallyMovedOutputs.contains(qmlOutput)) {
                 continue;
-            }// || m_manuallyMovedOutputs.contains(qmlOutput) 注释掉
+            }
 
             qmlOutput->blockSignals(true);
             qmlOutput->setPosition(QPointF(offset.x() + (qmlOutput->outputX() * scale),
