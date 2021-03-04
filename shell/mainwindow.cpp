@@ -261,17 +261,23 @@ void MainWindow::initUI() {
     });
 
     connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, [=](int index){
-        //左侧边栏显示/不显示
-        ui->leftsidebarWidget->setVisible(index);
-        //左上角显示字符/返回按钮
-        backBtn->setVisible(index);
-        titleLabel->setHidden(index);
-        mTitleIcon->setHidden(index);
 
         if (index){ //首页部分组件样式
-            //中部内容区域
+            titleLabel->setHidden(true);
+            mTitleIcon->setHidden(true);
+              ui->leftsidebarWidget->setVisible(true);
+            //左上角显示字符/返回按钮
+            backBtn->setVisible(true);
+
             ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background: palette(base); border-bottom-right-radius: 6px;}");
         } else { //次页部分组件样式
+            //左侧边栏显示/不显示
+            ui->leftsidebarWidget->setHidden(true);
+            titleLabel->setVisible(true);
+            mTitleIcon->setVisible(true);
+            //左上角显示字符/返回按钮
+            backBtn->setHidden(true);
+
             //中部内容区域
             ui->stackedWidget->setStyleSheet("QStackedWidget#stackedWidget{background:  palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
         }
