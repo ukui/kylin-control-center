@@ -114,7 +114,7 @@ void About::setupDesktopComponent() {
 }
 
 void About::setupKernelCompenent() {
-    QString diskSize;
+    //QString diskSize;
     QString memorySize;
     QString cpuType;
 
@@ -133,19 +133,19 @@ void About::setupKernelCompenent() {
         return;
     }
 
-    QDBusReply<QMap<QString, QVariant>> diskinfo;
-    diskinfo  = youkerInterface.call("get_harddisk_info");
-    if (!diskinfo.isValid()) {
-        qDebug() << "diskinfo is invalid" << endl;
-    } else {
-        QMap<QString, QVariant> res = diskinfo.value();
-        diskSize = res["DiskCapacity"].toString();
-        QStringList diskList = diskSize.split("<1_1>");
-        diskSize.clear();
-        for (int i = 0; i < diskList.length(); i++) {
-            diskSize += tr("Disk") + QString::number(i+1) + ":" +diskList.at(i) + " ";
-        }
-    }
+//    QDBusReply<QMap<QString, QVariant>> diskinfo;
+//    diskinfo  = youkerInterface.call("get_harddisk_info");
+//    if (!diskinfo.isValid()) {
+//        qDebug() << "diskinfo is invalid" << endl;
+//    } else {
+//        QMap<QString, QVariant> res = diskinfo.value();
+//        diskSize = res["DiskCapacity"].toString();
+//        QStringList diskList = diskSize.split("<1_1>");
+//        diskSize.clear();
+//        for (int i = 0; i < diskList.length(); i++) {
+//            diskSize += tr("Disk") + QString::number(i+1) + ":" +diskList.at(i) + " ";
+//        }
+//    }
 
     QDBusReply<QMap<QString, QVariant>> cpuinfo;
     cpuinfo  = youkerInterface.call("get_cpu_info");
@@ -157,7 +157,8 @@ void About::setupKernelCompenent() {
     }
 
     ui->cpuContent->setText(cpuType);
-    ui->diskContent->setText(diskSize);
+     ui->diskContent->setVisible(false);
+   // ui->diskContent->setText(diskSize);
 }
 
 void About::setupVersionCompenent() {
@@ -356,7 +357,8 @@ void About::initSearchText() {
     //~ contents_path /about/Memory
     ui->memoryLabel->setText(tr("Memory"));
     //~ contents_path /about/Disk
-    ui->diskLabel->setText(tr("Disk"));
+    ui->diskLabel->setVisible(false);
+    // ui->diskLabel->setText(tr("Disk"));
 }
 
 void About::initActiveDbus() {
