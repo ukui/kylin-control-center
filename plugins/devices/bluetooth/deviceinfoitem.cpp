@@ -105,12 +105,13 @@ void DeviceInfoItem::initInfoPage(QString d_name, DEVICE_STATUS status, BluezQt:
     device_item = device;
 
     if(status == DEVICE_STATUS::LINK){
-        icon_status = QIcon::fromTheme("emblem-ok-symbolic");
+        icon_status = QIcon::fromTheme("software-installed-symbolic");
         device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
-    }/*else if(status == DEVICE_STATUS::UNLINK){
-        icon_status = QIcon::fromTheme("emblem-danger");
-        device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
-    }*/
+    }
+//    else if(status == DEVICE_STATUS::UNLINK){
+//        icon_status = QIcon::fromTheme("software-update-available-symbolic");
+//        device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
+//    }
 
     if(item_gsettings->get("style-name").toString() == "ukui-black"){
         device_icon->setProperty("setIconHighlightEffectDefaultColor", QColor(Qt::white));
@@ -192,7 +193,7 @@ void DeviceInfoItem::changeDevStatus(bool pair)
         device_status->setVisible(false);
         emit sendPairedAddress(device_item->address());
     }else{
-//        QIcon icon_status = QIcon::fromTheme("emblem-ok-symbolic");
+//        QIcon icon_status = QIcon::fromTheme("software-installed-symbolic");
 //        device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
     }
 }
@@ -204,7 +205,7 @@ void DeviceInfoItem::setDevConnectedIcon(bool connected)
         d_status = DEVICE_STATUS::LINK;
         if(!device_status->isVisible())
             device_status->setVisible(true);
-        QIcon icon_status = QIcon::fromTheme("emblem-ok-symbolic");
+        QIcon icon_status = QIcon::fromTheme("software-installed-symbolic");
         device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
     }else{
         d_status = DEVICE_STATUS::UNLINK;
