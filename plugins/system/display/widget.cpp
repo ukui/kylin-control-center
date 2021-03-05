@@ -697,6 +697,20 @@ void Widget::outputAdded(const KScreen::OutputPtr &output) {
             this, &Widget::changed);
 
     addOutputToPrimaryCombo(output);
+
+    //检查统一输出-防止多显示屏幕
+    if(mUnifyButton->isChecked()) {
+        for (QMLOutput *qmlOutput: mScreen->outputs()) {
+            if (!qmlOutput->output()->isConnected()) {
+                continue;
+            }
+            if(!qmlOutput->isCloneMode()) {
+                qmlOutput->blockSignals(true);
+                qmlOutput->setVisible(false);
+                qmlOutput->blockSignals(false);
+            }
+        }
+    }
 }
 
 void Widget::outputRemoved(int outputId) {
@@ -718,6 +732,18 @@ void Widget::outputRemoved(int outputId) {
         ui->primaryCombo->blockSignals(blocked);
     }
     ui->primaryCombo->removeItem(index);
+
+    //检查统一输出-防止移除后没有屏幕可显示
+    if(mUnifyButton->isChecked()) {
+        for (QMLOutput *qmlOutput: mScreen->outputs()) {
+            if (!qmlOutput->output()->isConnected()) {
+                continue;
+            }
+            qmlOutput->blockSignals(true);
+            qmlOutput->setVisible(true);
+            qmlOutput->blockSignals(false);
+        }
+    }
 }
 
 void Widget::primaryOutputSelected(int index) {
