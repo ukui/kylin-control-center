@@ -1,3 +1,42 @@
+ukui-control-center (3.0.1-1-46) v101; urgency=medium
+
+  * 解决禅道bug40205 39709
+  * 亮度范围错误值(bug#41208)
+  * 控制面板-网络链接中，出现没有图标的wifi(bug#41011)
+  * 控制面板的网络状态在连接有线网络时会显示无网络连接(bug#39788)
+
+ -- zhoubin <zhoubin@kylinos.cn>  Thu, 04 Mar 2021 11:47:13 +0800
+
+ukui-control-center (3.0.1-1-45) v101; urgency=medium
+
+  * 左侧以及导航栏改版
+  * 接入4k屏的情况下，win+p切换模式后，点击控制面板-显示器-显示器区域里的显示器图标，控制面板闪退(bug#39978)
+  * 低分辨率下屏幕抖动(bug#39432)
+
+ -- zhoubin <zhoubin@kylinos.cn>  Mon, 01 Mar 2021 10:29:35 +0800
+
+ukui-control-center (3.0.1-1-44) v101; urgency=medium
+
+  * 更改安全中心搜索关键字
+  * wayland上面隐藏夜间模式(bug#39271)
+  * 修改英文用户手册
+  * 内核，cpu,内存，硬盘等显示空白；对比麒麟助手显示正常(bug#38847)
+  * 获取屏幕大小错误(bug#34098)
+
+ -- zhoubin <zhoubin@kylinos.cn>  Thu, 25 Feb 2021 09:57:09 +0800
+
+ukui-control-center (3.0.1-1-43.20) v101; urgency=medium
+
+  * 解决指定Qt Quick场景图形后端(bug#28609)
+
+ -- zhoubin <zhoubin@kylinos.cn>  Sun, 21 Feb 2021 15:15:23 +0800
+
+ukui-control-center (3.0.1-1-41.2) v101; urgency=medium
+
+  * 解决平台编译失败问题
+
+ -- zhoubin <zhoubin@kylinos.cn>  Fri, 19 Feb 2021 09:45:38 +0800
+
 ukui-control-center (3.0.1-1-40.1) v101; urgency=medium
 
   * 任务栏WiFi列表显示已经连接，但是控制面板的WiFi列表依然显示无网络连接(bug#38090)

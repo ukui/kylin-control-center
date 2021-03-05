@@ -63,6 +63,7 @@ public:
     bool            judge_item(const QString &enable,const int &cur) const;
     void            handle_write(const int &on,const int &id);
     void            showDesktopNotify(const QString &message);
+    bool            isNetWorkOnline();
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
 private:
@@ -78,7 +79,6 @@ private:
     QVBoxLayout     *m_vboxLayout;
     QStackedWidget  *m_mainWidget;
     QWidget         *m_nullWidget;
-    bool            m_bHasNetwork;
     DBusUtils   *m_dbusClient;
     QString             m_confName;
     QPushButton         *m_login_btn;
@@ -141,6 +141,7 @@ public slots:
     void            checkUserName(QString name);
     void            finishedLogout(int ret);
     void            loginSuccess(int ret);
+    void            checkNetWork(QVariantMap map);
 signals:
     void dooss(QString m_szUuid);
     void doman();

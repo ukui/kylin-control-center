@@ -25,14 +25,8 @@ ResolutionSlider::ResolutionSlider(const KScreen::OutputPtr &output, QWidget *pa
 
     connect(output.data(), &KScreen::Output::currentModeIdChanged,
             this, &ResolutionSlider::slotOutputModeChanged);
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-
-#else
     connect(output.data(), &KScreen::Output::modesChanged,
             this, &ResolutionSlider::init);
-#endif
-
-    isWayland();
     init();
 }
 
@@ -71,7 +65,7 @@ void ResolutionSlider::init()
     layout->setContentsMargins(0, 0, 0, 0);
     if (!mModes.empty()) {
         std::reverse(mModes.begin(), mModes.end());
-        mComboBox = new QComboBox();
+        mComboBox = new QComboBox(this);
         mComboBox->setMinimumSize(402,30);
         mComboBox->setMaximumSize(1677215, 30);
 
@@ -81,17 +75,10 @@ void ResolutionSlider::init()
             if (size.width() * size.height() < 1024 * 768
                     || mExcludeModes.contains(size)
                     || size.width() < 1024) {
-
-                if (mIsWayland) {
-                    mModes.removeOne(size);
-                }
                 continue;
             }
-            if (size == mModes[0]) {
-                mComboBox->addItem(Utils::sizeToString(size));
-            } else {
-                mComboBox->addItem(Utils::sizeToString(size));
-            }
+
+            mComboBox->addItem(Utils::sizeToString(size));
 
             if (mOutput->currentMode() && (mOutput->currentMode()->size() == size)) {
                 currentModeIndex = mComboBox->count() - 1;
@@ -154,18 +141,6 @@ void ResolutionSlider::init()
     }
 }
 
-void ResolutionSlider::isWayland() {
-    QDBusInterface screenIfc("org.ukui.SettingsDaemon",
-                             "/org/ukui/SettingsDaemon/wayland",
-                             "org.ukui.SettingsDaemon.wayland",
-                             QDBusConnection::sessionBus());
-    if (screenIfc.isValid()) {
-        mIsWayland = true;
-    } else {
-        mIsWayland = false;
-    }
-}
-
 QSize ResolutionSlider::currentResolution() const
 {
     if (mModes.isEmpty()) {
@@ -214,6 +189,5 @@ void ResolutionSlider::slotValueChanged(int value)
     if (mCurrentLabel) {
         mCurrentLabel->setText(Utils::sizeToString(size));
     }
-
     Q_EMIT resolutionChanged(size);
 }

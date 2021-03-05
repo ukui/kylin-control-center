@@ -30,7 +30,7 @@ OutputConfig::OutputConfig(QWidget *parent)
     : QWidget(parent)
     , mOutput(nullptr)
 {
-    isWayland();
+
 }
 
 OutputConfig::OutputConfig(const KScreen::OutputPtr &output, QWidget *parent)
@@ -253,7 +253,7 @@ void OutputConfig::slotResolutionChanged(const QSize &size)
     KScreen::ModePtr currentMode  = mOutput->currentMode();
     QList<KScreen::ModePtr> modes;
     Q_FOREACH (const KScreen::ModePtr &mode, mOutput->modes()) {
-        if (mode->size() == size) {
+        if (mode->size() == size && mode->id() == mOutput->currentModeId()) {
             selectedMode = mode;
             modes << mode;
         }
@@ -341,16 +341,3 @@ bool OutputConfig::showScaleOption() const
 void OutputConfig::initConfig(const KScreen::ConfigPtr &config){
     mConfig = config;
 }
-
-void OutputConfig::isWayland() {
-    QDBusInterface screenIfc("org.ukui.SettingsDaemon",
-                             "/org/ukui/SettingsDaemon/wayland",
-                             "org.ukui.SettingsDaemon.wayland",
-                             QDBusConnection::sessionBus());
-    if (screenIfc.isValid()) {
-        mIsWayland = true;
-    } else {
-        mIsWayland = false;
-    }
-}
-

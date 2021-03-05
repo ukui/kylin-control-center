@@ -20,7 +20,6 @@
 #include "netconnect.h"
 #include "ui_netconnect.h"
 
-#include "kylin_network_interface.h"
 #include "commonComponent/HoverBtn/hoverbtn.h"
 
 #include <QGSettings>
@@ -157,7 +156,6 @@ void NetConnect::initComponent(){
     if(QGSettings::isSchemaInstalled(id)) {
         m_gsettings = new QGSettings(id, QByteArray(), this);
 
-        // 监听key的value是否发生了变化
         connect(m_gsettings, &QGSettings::changed, this, [=] (const QString &key) {
             if (key == "switchor") {
                 bool judge = getSwitchStatus(key);
@@ -397,18 +395,15 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
 
     clearContent();
 
-    //QString lockPath = QDir::homePath() + "/.config/control-center-net";
     QList<ActiveConInfo> lsActiveInfo;
     lsActiveInfo.clear();
     getActiveConInfo(lsActiveInfo);
 
-    // If is wifi list
     if (!getwifislist.isEmpty()){
         connectedWifi.clear();
         wifiList.clear();
 
-        QString actWifiName = "--";
-        QString actSsid = getCurrentSsid();
+        QString actWifiName;
 
         int index = 0;
         while (index < lsActiveInfo.size()) {
@@ -440,7 +435,7 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
             }
             if (!wname.isEmpty() && wname != "--") {
                 int strength = this->setSignal(wsignal);
-                if (wname == actSsid) {
+                if (wname == actWifiName) {
                     if ("--" != lockType && !lockType.isEmpty()) {
                         wname += "lock";
                     }
@@ -588,7 +583,6 @@ QString NetConnect::wifiIcon(bool isLock, int strength) {
 
 }
 
-// Get wifi's strength
 int NetConnect::setSignal(QString lv) {
     int signal = lv.toInt();
     int signalLv = 0;
@@ -599,7 +593,7 @@ int NetConnect::setSignal(QString lv) {
         signalLv = 2;
     } else if(signal > 35 && signal <= 55){
         signalLv = 3;
-    } else if(signal  < 35){
+    } else if(signal  <= 35){
         signalLv = 4;
     }
 
@@ -619,42 +613,39 @@ void NetConnect::wifiSwitchSlot(bool signal) {
     QTimer::singleShot(2*1000, this, SLOT(getNetList()));
 }
 
-QString NetConnect::getCurrentSsid() {
-    QString cmd = "nmcli device wifi list";
-    QProcess process(0);
-    process.start(cmd);
-    process.waitForFinished();
+void NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
+    QDBusInterface interface( "org.freedesktop.NetworkManager",
+                              "/org/freedesktop/NetworkManager",
+                              "org.freedesktop.DBus.Properties",
+                              QDBusConnection::systemBus() );
 
-    while(process.canReadLine()) {
-        QString line = process.readLine();
-        QStringList list = line.split((" "), QString::SkipEmptyParts);
-        if(list.at(0) == "*"){
-            return list.at(2);
-        }
+    QDBusMessage result = interface.call("Get", "org.freedesktop.NetworkManager", "ActiveConnections");
+    QList<QVariant> outArgs = result.arguments();
+    QVariant first = outArgs.at(0);
+    QDBusVariant dbvFirst = first.value<QDBusVariant>();
+    QVariant vFirst = dbvFirst.variant();
+    const QDBusArgument &dbusArgs = vFirst.value<QDBusArgument>();
+
+    QDBusObjectPath objPath;
+    dbusArgs.beginArray();
+
+    while (!dbusArgs.atEnd()) {
+        dbusArgs >> objPath;
+
+        QDBusInterface interfacePro( "org.freedesktop.NetworkManager",
+                                  objPath.path(),
+                                  "org.freedesktop.DBus.Properties",
+                                  QDBusConnection::systemBus() );
+
+        QDBusReply<QVariant> replyType = interfacePro.call("Get", "org.freedesktop.NetworkManager.Connection.Active", "Type");
+        QDBusReply<QVariant> replyUuid = interfacePro.call("Get", "org.freedesktop.NetworkManager.Connection.Active", "Uuid");
+        QDBusReply<QVariant> replyId   = interfacePro.call("Get", "org.freedesktop.NetworkManager.Connection.Active", "Id");
+
+        ActiveConInfo activeNet;
+        activeNet.strConName = replyId.value().toString();
+        activeNet.strConType = replyType.value().toString();
+        activeNet.strConUUID = replyUuid.value().toString();
+        qlActiveConInfo.append(activeNet);
     }
-    return QString();
-}
-
-void NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo)
-{
-    QString strCmd = "nmcli connection show -active";
-    QProcess subProcess(0);
-    subProcess.start(strCmd);
-    subProcess.waitForFinished();
-
-    int lineCount = 0;
-    while (subProcess.canReadLine()) {
-        QString strLine = subProcess.readLine();
-        QStringList lineList = strLine.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-        lineCount ++;
-        if(lineCount <= 1) {
-            continue;
-        }
-        ActiveConInfo aci;
-        aci.strConName = lineList.at(0);
-        aci.strConType = lineList.at(1);
-        aci.strConType = lineList.at(2);
-        aci.strConDev = lineList.at(3);
-        qlActiveConInfo.append(aci);
-    }
+    dbusArgs.endArray();
 }

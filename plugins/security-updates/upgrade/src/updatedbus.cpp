@@ -70,75 +70,57 @@ void UpdateDbus::onRequestSendDesktopNotify(QString message)
 bool UpdateDbus::fileLock()
 {
     int uid = getuid();
-    struct passwd *pwd = getpwuid(uid);
-    QString nameuid = QString("%1(%2)\n").arg(pwd->pw_name).arg(uid);
-    char*  charnameuid;
-    QByteArray ba = nameuid.toLatin1(); // must
-    charnameuid=ba.data();
+//    struct passwd *pwd = getpwuid(uid);
+    QString nameuid = QString("%1\n").arg(uid);
+    QByteArray str2char1 = nameuid.toLatin1(); // must
+    char* charnameuid = str2char1.data();
     qDebug()<<"文件锁打开 用户ID：" << charnameuid;
 
+    //判断是否有lock目录，没有则创建
     QDir dir("/tmp/lock/");
-    if(dir.exists()){
-        char name_string[20] = {"ukui-control-center"};
-        umask(0000);
-        int fd = open(lockPath.toUtf8().data(), O_RDWR | O_CREAT | O_TRUNC,0666);
-        if(fd < 0)
-        {
-            qDebug() << "文件锁的文件不存在，程序退出。";
-            return false;
-        }
-        else{
-            write(fd, charnameuid, strlen(charnameuid));
-            write(fd, name_string, strlen(name_string));
-        }
-        return lockf(fd, F_TLOCK, 0);
-    }else {
+    if(! dir.exists()) {
         dir.mkdir("/tmp/lock/");//只创建一级子目录，即必须保证上级目录存在
         chmod("/tmp/lock/",0777);
-
-        //初始化运行程序名称
-        char name_string[20] = {"ukui-control-center"};
-        umask(0000);
-        int fd = open(lockPath.toUtf8().data(), O_RDWR | O_CREAT | O_TRUNC,0666);
-        if (fd < 0) {
-            qDebug()<<"文件锁打开异常";
-            return false;
-        } else {
-            write(fd, charnameuid, strlen(charnameuid));
-            write(fd, name_string, strlen(name_string));
-        }
-        return lockf(fd, F_TLOCK, 0);
     }
+    //预设运行程序名称
+    char name_string[25] = {"ukui-control-center\n"};
+    //预设操作类型
+    char operationType[14] = {"install\n"};
+    //预设系统当前时间
+    QDateTime time = QDateTime::currentDateTime();                     //获取系统现在的时间
+    QString str = time.toString("yyyy-MM-dd hh:mm:ss");                //设置显示格式
+    QByteArray str2char2 = str.toLatin1(); // must
+    char* nowtime = str2char2.data();
 
+    umask(0000);
+    //O_TRUNC 为先清空，再写入
+    int fd = open(lockPath.toUtf8().data(), O_RDWR | O_CREAT | O_TRUNC,0666);
+    if (fd < 0) {
+        qDebug()<<"文件锁打开异常";
+        return false;
+    } else {
+        write(fd, charnameuid, strlen(charnameuid));
+        write(fd, name_string, strlen(name_string));
+        write(fd, operationType, strlen(operationType));
+        write(fd, nowtime, strlen(nowtime));
+    }
+    return lockf(fd, F_TLOCK, 0);
 }
 
 void UpdateDbus::fileUnLock()
 {
     QDir dir("/tmp/lock/");
-    if(dir.exists()) {
-        umask(0000);
-        int fd = open(lockPath.toUtf8().data(), O_RDWR | O_CREAT | O_TRUNC,0666);
-        if (fd < 0) {
-            qDebug()<<"解锁时文件锁打开异常";
-            return;
-        } else {
-            ftruncate(fd, 0);
-        }
-        lockf(fd, F_ULOCK, 0);
-
-    } else {
+    if(! dir.exists()) {
         dir.mkdir("/tmp/lock/");//只创建一级子目录，即必须保证上级目录存在
         chmod("/tmp/lock/",0777);
-        umask(0000);
-        int fd = open(lockPath.toUtf8().data(), O_RDWR | O_CREAT | O_TRUNC,0666);
-        if (fd < 0) {
-            qDebug()<<"解锁时文件锁打开异常";
-            return;
-        } else {
-            ftruncate(fd, 0);
-        }
-        lockf(fd, F_ULOCK, 0);
     }
+    umask(0000);
+    int fd = open(lockPath.toUtf8().data(), O_RDWR | O_CREAT,0666);
+    if (fd < 0) {
+        qDebug()<<"解锁时文件锁打开异常";
+        return;
+    }
+    lockf(fd, F_ULOCK, 0);
 }
 
 void UpdateDbus::slotFinishGetMessage(QString num)

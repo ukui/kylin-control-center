@@ -37,9 +37,6 @@ class OutputConfig : public QWidget
 
     void initConfig(const KScreen::ConfigPtr &config);
 
-  private:
-    void isWayland();
-
   protected Q_SLOTS:
     void slotResolutionChanged(const QSize &size);
     void slotRotationChanged(int index);

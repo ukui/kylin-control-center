@@ -435,7 +435,7 @@ void QMLScreen::updateOutputsPlacement()
         Q_FOREACH (QQuickItem *item, childItems()) {
             QMLOutput *qmlOutput = qobject_cast<QMLOutput*>(item);
             if (!qmlOutput->output()->isConnected() || !qmlOutput->output()->isEnabled() ||
-                 m_manuallyMovedOutputs.contains(qmlOutput)) {
+                m_manuallyMovedOutputs.contains(qmlOutput)) {
                 continue;
             }
 

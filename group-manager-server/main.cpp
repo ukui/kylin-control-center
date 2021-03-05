@@ -39,9 +39,11 @@ int main(int argc, char *argv[])
 //		exit(-1);
 	}
     group_manager_server *dbus_demo = new group_manager_server();
-    new InterfaceAdaptor(dbus_demo);
+    InterfaceAdaptor *iftApt = new InterfaceAdaptor(dbus_demo);
     connection.registerObject("/org/ukui/groupmanager", dbus_demo);
     QDBusMessage msg = QDBusMessage::createSignal("/org/ukui/groupmanager", "org.ukui.groupmanager.interface", "message");
     QDBusConnection::systemBus().send(msg);
+    delete iftApt;
+    delete dbus_demo;
 	return a.exec();	
 }

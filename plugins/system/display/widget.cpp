@@ -64,7 +64,6 @@ extern "C" {
 
 #define POWER_SCHMES                     "org.ukui.power-manager"
 #define POWER_KEY                        "brightness-ac"
-#define POWER_BAT_KEY                    "brightness-bat"
 
 #define ADVANCED_SCHEMAS                 "org.ukui.session.required-components"
 #define ADVANCED_KEY                     "windowmanager"
@@ -633,6 +632,19 @@ bool Widget::isCloneMode()
     return mate_rr_config_get_clone(rr_config);
 }
 
+bool Widget::isBacklight() {
+    QString cmd = "ukui-power-backlight-helper --get-max-brightness";
+    QProcess process;
+    process.start(cmd);
+    process.waitForFinished();
+    QString result = process.readAllStandardOutput().trimmed();
+
+    QString pattern("^[0-9]*$");
+    QRegExp reg(pattern);
+
+    return reg.exactMatch(result);
+}
+
 
 void Widget::showNightWidget(bool judge) {
     if (judge) {
@@ -932,7 +944,7 @@ void Widget::save() {
             QString hash = mPrevConfig->connectedOutputsHash();
             writeFile(dir % hash);
         }
-    }
+    } 
 }
 
 QVariantMap metadata(const KScreen::OutputPtr &output)
@@ -1202,7 +1214,7 @@ void Widget::checkOutputScreen(bool judge) {
 
 // 亮度调节UI
 void Widget::initBrightnessUI() {
-    ui->brightnessSlider->setRange(1, 100);
+    ui->brightnessSlider->setRange(0, 100);
     ui->brightnessSlider->setTracking(true);
 
     setBrightnesSldierValue();
@@ -1266,11 +1278,7 @@ void Widget::setBrightnessScreen(int value) {
 //滑块改变
 void Widget::setBrightnesSldierValue() {
     int value = 99;
-    if (mPowerKeys.contains("brightnessBat") && mOnBattery) {
-        value = mPowerGSettings->get(POWER_BAT_KEY).toInt();
-    } else {
-        value = mPowerGSettings->get(POWER_KEY).toInt();
-    }
+    value = mPowerGSettings->get(POWER_KEY).toInt();
 
     ui->brightnessSlider->setValue(value);
 }
@@ -1370,7 +1378,7 @@ void Widget::initUiComponent() {
 
     QDBusReply<QVariant> briginfo;
     briginfo  = brightnessInterface.call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
-    if (!briginfo.value().toBool()) {
+    if (!briginfo.value().toBool() || !isBacklight()) {
         ui->brightnessframe->setVisible(false);
     } else {
         ui->brightnessframe->setVisible(true);

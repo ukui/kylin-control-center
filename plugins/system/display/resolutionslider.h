@@ -31,7 +31,6 @@ class ResolutionSlider : public QWidget
 
   private:
     void init();
-    void isWayland();
 
   private:
     KScreen::OutputPtr mOutput;
