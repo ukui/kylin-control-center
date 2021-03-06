@@ -36,11 +36,8 @@
 #undef signals
 #endif
 
-extern "C" {
 #include <glib.h>
 #include <glib/gi18n.h>
-}
-
 
 #define ITEMHEIGH 36
 #define TITLEWIDGETHEIGH 40

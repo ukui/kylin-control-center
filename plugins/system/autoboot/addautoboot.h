@@ -32,12 +32,10 @@
 #undef signals
 #endif
 
-extern "C" {
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
-}
 
 namespace Ui {
 class AddAutoBoot;

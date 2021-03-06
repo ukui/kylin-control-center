@@ -53,11 +53,9 @@ const QByteArray kVinoSchemas    = "org.gnome.Vino";
 #undef signals
 #endif
 
-extern "C" {
 #include <glib.h>
 #include <gio/gio.h>
 #include <libmatemixer/matemixer.h>
-}
 
 const int dbWitdth = 50;
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);

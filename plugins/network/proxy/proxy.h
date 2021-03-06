@@ -40,10 +40,8 @@
 #undef signals
 #endif
 
-extern "C" {
 #include <glib.h>
 #include <gio/gio.h>
-}
 
 struct GSData
 {

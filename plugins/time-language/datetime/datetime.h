@@ -51,10 +51,8 @@
 #undef signals
 #endif
 
-extern "C" {
 #include <glib.h>
 #include <gio/gio.h>
-}
 
 #define TZ_DATA_FILE "/usr/share/zoneinfo/zoneUtc"
 #define DEFAULT_TZ "Asia/Shanghai"

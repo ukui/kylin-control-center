@@ -48,10 +48,8 @@
 #undef signals
 #endif
 
-extern "C" {
 #include <glib.h>
 #include <gio/gio.h>
-}
 
 #define BACKGROUND "org.mate.background"
 

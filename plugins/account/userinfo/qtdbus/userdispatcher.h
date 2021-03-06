@@ -34,11 +34,9 @@
 #undef signals
 #endif
 
-extern "C" {
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <gio/gio.h>
-}
 
 class UserInfo;
 

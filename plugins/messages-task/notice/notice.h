@@ -37,11 +37,9 @@
 #undef signals
 #endif
 
-extern "C" {
 #include <glib.h>
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
-}
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Notice; }

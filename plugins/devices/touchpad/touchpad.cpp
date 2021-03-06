@@ -30,10 +30,8 @@
 #undef signals
 #endif
 
-extern "C" {
 #include <X11/extensions/XInput.h>
 #include <X11/Xatom.h>
-}
 
 #define TOUCHPAD_SCHEMA          "org.ukui.peripherals-touchpad"
 #define ACTIVE_TOUCHPAD_KEY      "touchpad-enabled"

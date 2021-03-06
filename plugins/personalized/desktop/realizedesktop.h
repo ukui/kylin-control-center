@@ -31,11 +31,9 @@
 #undef signals
 #endif
 
-extern "C" {
 #include <glib.h>
 #include <gio/gio.h>
 #include <dconf/dconf.h>
-}
 
 #define TRAY_SCHEMA "org.ukui.panel.tray"
 #define TRAY_SCHEMA_PATH "/org/ukui/tray/keybindings/"

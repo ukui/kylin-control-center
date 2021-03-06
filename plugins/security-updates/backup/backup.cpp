@@ -28,9 +28,7 @@
 #undef signals
 #endif
 
-extern "C" {
 #include <gio/gdesktopappinfo.h>
-}
 
 Backup::Backup()
 {

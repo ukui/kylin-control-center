@@ -31,11 +31,9 @@
 #undef signals
 #endif
 
-extern "C" {
 #include <glib.h>
 #include <gio/gio.h>
 #include <dconf/dconf.h>
-}
 
 #define NOTICE_SCHEMA           "org.ukui.control-center.notice"
 #define NEW_FEATURE_KEY         "show-new-feature"

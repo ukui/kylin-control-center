@@ -34,10 +34,11 @@
 #include <glib/gi18n.h>
 #include <gobject/gparamspecs.h>
 #include <glib/gstdio.h>
+#include <glib/gmain.h>
+
 extern "C" {
 #include <dconf/dconf.h>
 #include <canberra.h>
-#include <glib/gmain.h>
 #include <pulse/ext-stream-restore.h>
 #include <pulse/glib-mainloop.h>
 #include <pulse/error.h>

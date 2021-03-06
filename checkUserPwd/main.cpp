@@ -18,15 +18,10 @@
  *
  */
 
-extern "C" {
-
 #include <stdio.h>
 #include <stdbool.h>
 #include <cstring>
-
 #include <crypt.h>
-
-}
 
 #define SHADOW_FILE "/etc/shadow"
 #define BUFF_SIZE 256

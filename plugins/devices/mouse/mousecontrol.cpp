@@ -38,11 +38,9 @@
 #undef signals
 #endif
 
-extern "C" {
 #include <X11/Xlib.h>
 #include <glib.h>
 #include <gio/gio.h>
-}
 
 #define MOUSE_SCHEMA          "org.ukui.peripherals-mouse"
 #define HAND_KEY              "left-handed"

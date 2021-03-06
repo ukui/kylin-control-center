@@ -38,12 +38,10 @@
 #undef signals
 #endif
 
-extern "C" {
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
-}
 
 #define ITEMWIDTH 522
 #define ITEMHEIGHT 62
