@@ -276,6 +276,7 @@ void NetConnect::getNetList() {
 
     connect(pNetWorker, &NetconnectWork::wifiGerneral,this,[&](QStringList list){
         this->TwifiList = list;
+        wifiBtn->setEnabled(wifiSt);
         getWifiListDone(this->TwifiList, this->TlanList);
         QMap<QString, int>::iterator iter = this->wifiList.begin();
         QVector<QPair<QString, int>> vec;
