@@ -73,6 +73,7 @@ int Desktop::get_plugin_type() {
 }
 
 QWidget *Desktop::get_plugin_ui() {
+    int index=0;
     if (mFirstLoad) {
         mFirstLoad = false;
 
@@ -110,11 +111,14 @@ QWidget *Desktop::get_plugin_ui() {
         initTitleLabel();
         initSearchText();
         initTranslation();
-        setupComponent();
+        setupComponent(index);
         setupConnect();
         initVisibleStatus();
         initLockingStatus();
         initTraySettings();
+    }else{
+        index=index+1;
+         setupComponent(index);
     }
     return pluginWidget;
 }
@@ -161,7 +165,7 @@ void Desktop::initTranslation() {
          <<"ErrorApplication"<<"livepatch" << "mktip";
 }
 
-void Desktop::setupComponent() {
+void Desktop::setupComponent(int index) {
 
     ui->deskComputerLabel->setPixmap(QPixmap("://img/plugins/desktop/computer.png"));
     ui->deskHomeLabel->setPixmap(QPixmap("://img/plugins/desktop/homefolder.png"));
@@ -189,7 +193,7 @@ void Desktop::setupComponent() {
     ui->menuSettingsLabel->setPixmap(QPixmap::fromImage(QIcon::fromTheme("ukui-control-center").pixmap(32,32).toImage()));
     ui->menuTrashLabel->setPixmap(QPixmap::fromImage(QIcon::fromTheme("user-trash").pixmap(32,32).toImage()));
 
-
+if (index==0) {
     fullMenuSwitchBtn = new SwitchButton(pluginWidget);
     ui->fullScreenMenuLayout->addWidget(fullMenuSwitchBtn);
 
@@ -204,6 +208,7 @@ void Desktop::setupComponent() {
 
     menuSettingSwitchBtn = new SwitchButton(pluginWidget);
     ui->menuSettingHorLayout->addWidget(menuSettingSwitchBtn);
+}
 }
 
 void Desktop::setupConnect(){

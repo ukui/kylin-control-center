@@ -57,7 +57,7 @@ public:
     void initTitleLabel();
     void initSearchText();
     void initTranslation();
-    void setupComponent();
+    void setupComponent(int index);
     void setupConnect();
     void initVisibleStatus();
     void initLockingStatus();
