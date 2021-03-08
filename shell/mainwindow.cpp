@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_searchWidget(nullptr)
 {
     mate_mixer_init();
-    this->setMinimumSize(930, 620);
+    this->setMinimumSize(945, 625);
     logoLabel  = new QLabel(tr("Settings"), this);
     initUI();
 }
