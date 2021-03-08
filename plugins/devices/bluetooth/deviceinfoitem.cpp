@@ -113,7 +113,8 @@ void DeviceInfoItem::initInfoPage(QString d_name, DEVICE_STATUS status, BluezQt:
 //        device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
 //    }
 
-    if(item_gsettings->get("style-name").toString() == "ukui-black"){
+    if(item_gsettings->get("style-name").toString() == "ukui-black" || item_gsettings->get("style-name").toString() == "ukui-dark")
+    {
         device_icon->setProperty("setIconHighlightEffectDefaultColor", QColor(Qt::white));
         device_icon->setProperty("useIconHighlightEffect", 0x10);
         device_status->setProperty("setIconHighlightEffectDefaultColor", QColor(Qt::white));
@@ -268,7 +269,8 @@ void DeviceInfoItem::GSettingsChanges(const QString &key)
 {
     qDebug() << Q_FUNC_INFO << key;
     if(key == "styleName"){
-        if(item_gsettings->get("style-name").toString() == "ukui-black"){
+        if(item_gsettings->get("style-name").toString() == "ukui-black" || item_gsettings->get("style-name").toString() == "ukui-dark")
+        {
             device_icon->setProperty("setIconHighlightEffectDefaultColor", QColor(Qt::white));
             device_icon->setProperty("useIconHighlightEffect", 0x10);
             device_status->setProperty("setIconHighlightEffectDefaultColor", QColor(Qt::white));

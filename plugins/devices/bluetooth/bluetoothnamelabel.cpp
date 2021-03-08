@@ -29,7 +29,7 @@ BluetoothNameLabel::BluetoothNameLabel(QWidget *parent, int x, int y):
 
     if(QGSettings::isSchemaInstalled("org.ukui.style")){
         settings = new QGSettings("org.ukui.style");
-        if(settings->get("style-name").toString() == "ukui-black")
+        if(settings->get("style-name").toString() == "ukui-black" || settings->get("style-name").toString() == "ukui-dark")
             style_flag = true;
         else
             style_flag = false;
@@ -114,7 +114,7 @@ void BluetoothNameLabel::settings_changed(const QString &key)
 {
     qDebug() << Q_FUNC_INFO <<key;
     if(key == "styleName"){
-        if(settings->get("style-name").toString() == "ukui-black")
+        if(settings->get("style-name").toString() == "ukui-black" || settings->get("style-name").toString() == "ukui-dark")
             style_flag = true;
         else
             style_flag = false;
