@@ -205,6 +205,7 @@ void Widget::setConfig(const KScreen::ConfigPtr &config) {
         slotUnifyOutputs();
     }
     mFirstLoad = false;
+    setBrightnesSldierValue();
 }
 
 KScreen::ConfigPtr Widget::currentConfig() const {
@@ -645,6 +646,33 @@ bool Widget::isBacklight() {
     return reg.exactMatch(result);
 }
 
+QString Widget::getMonitorType() {
+    QString monitor = ui->primaryCombo->currentText();
+    QString type;
+    if (monitor.contains("VGA", Qt::CaseInsensitive)) {
+        type = "4";
+    } else {
+        type = "9";
+    }
+    return type;
+}
+
+int Widget::getDDCBrighthess() {
+    QString type = getMonitorType();
+    QDBusInterface ukccIfc("com.control.center.qt.systemdbus",
+                           "/",
+                           "com.control.center.interface",
+                           QDBusConnection::systemBus());
+
+
+    QDBusReply<int> reply = ukccIfc.call("getDDCBrightness", type);
+
+    if (reply.isValid()) {
+        return reply.value();
+    }
+    return 0;
+}
+
 
 void Widget::showNightWidget(bool judge) {
     if (judge) {
@@ -820,11 +848,22 @@ void Widget::slotIdentifyOutputs(KScreen::ConfigOperation *op) {
 }
 
 void Widget::callMethod(QRect geometry, QString name) {
+    auto scale = 1;
+    QDBusInterface waylandIfc("org.ukui.SettingsDaemon",
+                              "/org/ukui/SettingsDaemon/wayland",
+                              "org.ukui.SettingsDaemon.wayland",
+                              QDBusConnection::sessionBus());
+
+    QDBusReply<int> reply =  waylandIfc.call("scale");
+    if (reply.isValid()) {
+        scale = reply.value();
+    }
+
     QDBusMessage message = QDBusMessage::createMethodCall("org.ukui.SettingsDaemon",
                                            "/org/ukui/SettingsDaemon/wayland",
                                            "org.ukui.SettingsDaemon.wayland",
                                            "priScreenChanged");
-    message << geometry.x()<< geometry.y() << geometry.width() << geometry.height() << name;
+    message << geometry.x() / scale << geometry.y() / scale << geometry.width() / scale << geometry.height() / scale << name;
     QDBusConnection::sessionBus().send(message);
 }
 
@@ -850,6 +889,19 @@ void Widget::isWayland() {
         mIsWayland = true;
     } else {
         mIsWayland = false;
+    }
+}
+
+void Widget::setDDCBrighthessSlot(int brightnessValue) {
+
+    if (mIsWayland && !mOnBattery) {
+        QString type = getMonitorType();
+        QDBusInterface ukccIfc("com.control.center.qt.systemdbus",
+                               "/",
+                               "com.control.center.interface",
+                               QDBusConnection::systemBus());
+
+        ukccIfc.call("setDDCBrightness", QString::number(brightnessValue), type);
     }
 }
 
@@ -1217,18 +1269,25 @@ void Widget::initBrightnessUI() {
     ui->brightnessSlider->setRange(0, 100);
     ui->brightnessSlider->setTracking(true);
 
-    setBrightnesSldierValue();
-
-    connect(ui->brightnessSlider, &QSlider::valueChanged, this, &Widget::setBrightnessScreen);
+    if (mIsWayland) {
+        connect(ui->brightnessSlider, &QSlider::sliderReleased, this, &Widget::setDDCBrightness);
+    } else {
+        connect(ui->brightnessSlider, &QSlider::valueChanged, this, &Widget::setBrightnessScreen);
+    }
 }
 
 void Widget::initConnection() {
+
     connect(mNightButton, SIGNAL(checkedChanged(bool)), this, SLOT(showNightWidget(bool)));
     connect(mThemeButton, SIGNAL(checkedChanged(bool)), this, SLOT(slotThemeChanged(bool)));
     connect(singleButton, SIGNAL(buttonClicked(int)), this,  SLOT(showCustomWiget(int)));
     //是否禁用主显示器确认按钮
     connect(ui->primaryCombo, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this, &Widget::mainScreenButtonSelect);
+    connect(ui->primaryCombo, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this, &Widget::mainScreenButtonSelect);
+
+
     //主屏确认按钮
     connect(ui->mainScreenButton, SIGNAL(clicked(bool)), this, SLOT(primaryButtonEnable(bool)));
     mControlPanel = new ControlPanel(this);
@@ -1275,12 +1334,25 @@ void Widget::setBrightnessScreen(int value) {
     mPowerGSettings->set(POWER_KEY, value);
 }
 
+void Widget::setDDCBrightness() {
+    int value = ui->brightnessSlider->value();
+    if (mIsWayland && !mIsBattery) {
+        setDDCBrighthessSlot(value);
+    } else {
+        mPowerGSettings->set(POWER_KEY, value);
+    }
+}
+
 //滑块改变
 void Widget::setBrightnesSldierValue() {
     int value = 99;
     value = mPowerGSettings->get(POWER_KEY).toInt();
 
-    ui->brightnessSlider->setValue(value);
+    if (mIsWayland && !mIsBattery) {
+        ui->brightnessSlider->setValue(getDDCBrighthess());
+    } else {
+        ui->brightnessSlider->setValue(value);
+    }
 }
 
 void Widget::initTemptSlider() {
@@ -1378,8 +1450,9 @@ void Widget::initUiComponent() {
 
     QDBusReply<QVariant> briginfo;
     briginfo  = brightnessInterface.call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
-    if (!briginfo.value().toBool() || !isBacklight()) {
-        ui->brightnessframe->setVisible(false);
+    mIsBattery = briginfo.value().toBool();
+    if (!mIsBattery && !mIsWayland) {
+        ui->brightnessframe->setVisible(true);
     } else {
         ui->brightnessframe->setVisible(true);
     }

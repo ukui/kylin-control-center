@@ -141,8 +141,6 @@ private:
 signals:
     int needBackUp();
     void startBackUp(int);
-protected:
-    bool event(QEvent *event);
 
 public slots:
     void bakeupFinish(int);

@@ -29,6 +29,8 @@ SearchWidget::SearchWidget(QWidget *parent)
     , m_searchValue("")
     , m_bIstextEdited(false)
 {
+    initExcludeSearch();
+
     m_model = new QStandardItemModel(this);
     m_completer = new ukCompleter(m_model, this);
     m_completer->popup()->setAttribute(Qt::WA_InputMethodEnabled);
@@ -227,7 +229,7 @@ void SearchWidget::loadxml() {
                         m_EnterNewPagelist.append(m_searchBoxStruct);
 
                         // Add search result content
-                        if (!m_bIsChinese) {
+                        if (!m_bIsChinese && mEnExclude.contains(m_searchBoxStruct.translateContent, Qt::CaseInsensitive)) {
                             if ("" == m_searchBoxStruct.childPageName) {
                                 m_model->appendRow(new QStandardItem(
                                         QString("%1 --> %2")
@@ -241,9 +243,10 @@ void SearchWidget::loadxml() {
                                                 .arg(m_searchBoxStruct.translateContent)));
                             }
                         } else {
-                            appendChineseData(m_searchBoxStruct);
+                            if (!mCnExclude.contains(m_searchBoxStruct.translateContent, Qt::CaseInsensitive)) {
+                                appendChineseData(m_searchBoxStruct);
+                            }
                         }
-
                         clearSearchData();
                     } else {
                         // donthing
@@ -442,6 +445,13 @@ void SearchWidget::clearSearchData() {
     m_searchBoxStruct.actualModuleName = "";
     m_searchBoxStruct.childPageName = "";
     m_searchBoxStruct.fullPagePath = "";
+}
+
+void SearchWidget::initExcludeSearch() {
+    if (!Utils::isExistEffect()) {
+        mCnExclude << "特效模式" << "透明度";
+        mEnExclude << "Performance mode" << "Transparency";
+    }
 }
 
 void SearchWidget::setLanguage(QString type) {

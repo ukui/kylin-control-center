@@ -36,6 +36,7 @@ namespace Utils
     void setCLIName(QCommandLineParser &parser);
     QVariantMap getModuleHideStatus();
     QString getCpuInfo();
+    bool isExistEffect();
 
 }
 #endif // UTILS_H

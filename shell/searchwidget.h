@@ -1,6 +1,8 @@
 #ifndef SEARCHWIDGET_H
 #define SEARCHWIDGET_H
 
+#include "../utils/utils.h"
+
 #include <QWidget>
 #include <QList>
 #include <QFile>
@@ -14,9 +16,9 @@
 #include <QStandardItemModel>
 #include <QXmlStreamReader>
 
-const QString XML_Source = "source";
-const QString XML_Title = "translation";
-const QString XML_Numerusform = "numerusform";
+const QString XML_Source       = "source";
+const QString XML_Title        = "translation";
+const QString XML_Numerusform  = "numerusform";
 const QString XML_Explain_Path = "extra-contents_path";
 
 class SearchWidget : public QLineEdit
@@ -59,6 +61,8 @@ private:
     void appendChineseData(SearchBoxStruct data);
     void clearSearchData();
 
+    void initExcludeSearch();
+
 private:
     QStandardItemModel *m_model;
     QCompleter *m_completer;
@@ -74,5 +78,8 @@ private:
     bool m_bIstextEdited;
     QStringList m_defaultRemoveableList;//存储已知全部模块是否存在
     QList<QString> m_TxtList;
+
+    QStringList mCnExclude;
+    QStringList mEnExclude;
 };
 #endif // SEARCHWIDGET_H

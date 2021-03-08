@@ -70,6 +70,13 @@ public slots:
 
     // 提权修改其他用户密码
     Q_SCRIPTABLE int changeOtherUserPasswd(QString username, QString pwd);
+
+    // 调节外接台式屏幕亮度
+    Q_SCRIPTABLE void setDDCBrightness(QString brightness, QString type);
+
+    // 获取外接台式屏幕亮度
+    Q_SCRIPTABLE int getDDCBrightness(QString type);
+
 };
 
 #endif // SYSDBUSREGISTER_H

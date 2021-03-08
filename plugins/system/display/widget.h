@@ -122,7 +122,9 @@ class Widget : public QWidget
     // 是否禁用屏幕
     void checkOutputScreen(bool judge);
     // 设置屏幕亮度
-    void setBrightnessScreen(int brightnessValue);
+    void setBrightnessScreen(int value);
+    void setDDCBrightness();
+
     // 设置亮度滑块数值
     void setBrightnesSldierValue();
     // 设置夜间模式
@@ -131,10 +133,13 @@ class Widget : public QWidget
     void initNightStatus();
     void nightChangedSlot(QHash<QString, QVariant> nightArg);
 
-    // Set primary screen
+    // 设置wayland主屏幕
     void callMethod(QRect geometry, QString name);
     QString getPrimaryWaylandScreen();
     void isWayland();
+
+    // 设置外接显示器亮度
+    void setDDCBrighthessSlot(int brightnessValue);
 
   public Q_SLOTS:
     void save();
@@ -160,6 +165,9 @@ class Widget : public QWidget
 
     bool isCloneMode();
     bool isBacklight();
+
+    QString getMonitorType();
+    int getDDCBrighthess();
 
   private:
     Ui::DisplayWindow *ui;
@@ -209,7 +217,7 @@ class Widget : public QWidget
     QHash<QString, QVariant> mNightConfig;
 
     int screenScale = 1;
-    int  mScreenId  = 1;
+    int mScreenId  = 1;
 
     // 是否为夜间模式
     bool mIsNightMode     = false;
@@ -221,6 +229,7 @@ class Widget : public QWidget
     bool mBlockChanges    = false;
     bool mFirstLoad       = true;
     bool mIsWayland       = false;
+    bool mIsBattery       = false;
 
     QString mCPU;
 };

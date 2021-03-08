@@ -23,6 +23,8 @@
 #include <QtDBus/QDBusReply>
 #include <QtDBus/QDBusConnection>
 #include <QDebug>
+#include <QDir>
+#include <QSettings>
 
 #ifdef WITHKYSEC
 #include <kysec/libkysec.h>
@@ -184,4 +186,41 @@ QString Utils::getCpuInfo() {
         cpuType = res["CpuVersion"].toString();
     }
     return cpuType;
+}
+
+bool Utils::isExistEffect() {
+    QString filename = QDir::homePath() + "/.config/ukui-kwinrc";
+    QSettings kwinSettings(filename, QSettings::IniFormat);
+
+    QStringList keys = kwinSettings.childGroups();
+
+    kwinSettings.beginGroup("Plugins");
+    bool kwin = kwinSettings.value("blurEnabled", kwin).toBool();
+
+    if (!kwinSettings.childKeys().contains("blurEnabled")) {
+        kwin = true;
+    }
+    kwinSettings.endGroup();
+
+    QFileInfo dir(filename);
+    if (!dir.isFile()) {
+        return true;
+    }
+
+    if (keys.contains("Compositing")) {
+        kwinSettings.beginGroup("Compositing");
+        QString xder;
+        bool kwinOG = false;
+        bool kwinEN = true;
+        xder = kwinSettings.value("Backend", xder).toString();
+        kwinOG = kwinSettings.value("OpenGLIsUnsafe", kwinOG).toBool();
+        kwinEN = kwinSettings.value("Enabled", kwinEN).toBool();
+        if ("XRender" == xder || kwinOG || !kwinEN) {
+            return false;
+        } else {
+            return true;
+        }
+        kwinSettings.endGroup();
+    }
+    return true;
 }

@@ -222,21 +222,6 @@ void TabWid::backupHideUpdateBtn(int result)
     }
 }
 
-bool TabWid::event(QEvent *event)
-{
-    return true;
-    if(event->type() == QEvent::Resize)
-    {
-        qDebug()<< "窗口事件：" << event->type();
-        QList<AppUpdateWid *> list = this->findChildren<AppUpdateWid *>();
-        for(AppUpdateWid *tmp : list)
-        {
-            tmp->appNameLab->setText(tmp->dispalyName);
-        }
-        return true;
-    }
-    return false;
-}
 void TabWid::bacupInit()
 {
     backup = new BackUp;
@@ -560,6 +545,10 @@ void TabWid::getAllDisplayInformation()
         checkedtime = query.value("check_time").toString();
         checkedstatues = query.value("auto_check").toString();
         backupStatus = query.value("auto_backup").toString();
+    }
+    if(QLocale::system().name()!="zh_CN" && updatetime.contains("暂无信息"))
+    {
+        updatetime = "No Information!";
     }
 //    lastRefreshTime->setText(tr("上次更新：")+updatetime);
     lastRefreshTime->setText(tr("Last refresh:")+updatetime);

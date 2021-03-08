@@ -22,6 +22,7 @@
 #include <QDebug>
 #include <QSharedPointer>
 #include <QRegExp>
+#include <QProcess>
 #include <stdlib.h>
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
@@ -162,6 +163,34 @@ int SysdbusRegister::changeOtherUserPasswd(QString username, QString pwd){
 
     return 1;
 
+}
+
+void SysdbusRegister::setDDCBrightness(QString brightness, QString type) {
+
+    QString program = "ddcutil";
+    QStringList arg;
+    arg << "setvcp" << "10" << brightness << "--bus" << type;
+    QProcess *vcpPro = new QProcess(this);
+    vcpPro->start(program, arg);
+    vcpPro->waitForStarted();
+}
+
+int SysdbusRegister::getDDCBrightness(QString type) {
+    QString program = "ddcutil";
+    QStringList arg;
+    arg << "getvcp" << "10" << "--bus" << type;
+    QProcess *vcpPro = new QProcess(this);
+    vcpPro->start(program, arg);
+    vcpPro->waitForFinished();
+
+    QString result = vcpPro->readAllStandardOutput().trimmed();
+
+    QRegExp rx("current value =(\\s+)(\\d+)");
+    int pos = rx.indexIn(result);
+    if (pos > -1) {
+        return rx.cap(2).toInt();
+    }
+    return 0;
 }
 
 static void chpasswd_cb(PasswdHandler *passwd_handler, GError *error, gpointer user_data){
