@@ -16,6 +16,7 @@
 #include <QVariant>
 #include <QScreen>
 #include <QMultiMap>
+#include <QShortcut>
 
 #include <KF5/KScreen/kscreen/config.h>
 
@@ -232,6 +233,8 @@ class Widget : public QWidget
     bool mIsBattery       = false;
 
     QString mCPU;
+
+    QShortcut *mApplyShortcut;
 };
 
 #endif // WIDGET_H

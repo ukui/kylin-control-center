@@ -1327,6 +1327,9 @@ void Widget::initConnection() {
     mOutputTimer = new QTimer(this);
     connect(mOutputTimer, &QTimer::timeout,
             this, &Widget::clearOutputIdentifiers);
+
+    mApplyShortcut = new QShortcut(QKeySequence("Ctrl+A"), this);
+    connect(mApplyShortcut, SIGNAL(activated()), this, SLOT(save()));
 }
 
 

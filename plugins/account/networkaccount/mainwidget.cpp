@@ -248,7 +248,6 @@ void MainWidget::dbusInterface() {
             m_keyInfoList.clear();
 
             m_mainWidget->setCurrentWidget(m_nullWidget);
-            setshow(m_mainWidget);
             __once__ = false;
             __run__ = false;
             m_bIsStopped = true;

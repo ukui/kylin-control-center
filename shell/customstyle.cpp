@@ -101,17 +101,6 @@ void InternalStyle::drawControl(QStyle::ControlElement element, const QStyleOpti
         return;
         break;
     }
-//    case CE_ItemViewItem: {
-//        if (widget->parent() && ((widget->parent()->inherits("QComboBoxPrivateContainer") ||
-//                                  (qobject_cast<const QFileDialog*>(widget->topLevelWidget()) &&
-//                                   qobject_cast<const QAbstractItemView*>(widget)))))
-//        {
-//            break;
-//        }
-//        QStyleOptionViewItem item = *qstyleoption_cast<const QStyleOptionViewItem *>(option);
-//        item.palette.setColor(QPalette::Highlight, item.palette.base().color());
-//        return QProxyStyle::drawControl(element, &item, painter, widget);
-//    }
     default:
         break;
     }
