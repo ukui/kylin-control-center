@@ -56,7 +56,7 @@ void HoverBtn::initAnimation() {
     mEnterAction->setEasingCurve(QEasingCurve::OutQuad);
 
     connect(mEnterAction, &QPropertyAnimation::finished, this, [=] {
-        mAbtBtn->setGeometry(this->width()-80, 2, 80, 45);
+        mAbtBtn->setGeometry(this->width()-100, 2, 80, 45);
         mAbtBtn->setVisible(true);
     });
 

@@ -325,6 +325,7 @@ void NetConnect::rebuildAvailComponent(QString iconPath, QString netName) {
 
     QIcon searchIcon = QIcon::fromTheme(iconPath);
     wifiItem->mPitIcon->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(24, 24))));
+     wifiItem->mAbtBtn->setMinimumWidth(100);
     wifiItem->mAbtBtn->setText(tr("Connect"));
 
     connect(wifiItem->mAbtBtn, &QPushButton::clicked, this, [=] {

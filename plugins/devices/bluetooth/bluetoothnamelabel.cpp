@@ -15,7 +15,6 @@ BluetoothNameLabel::BluetoothNameLabel(QWidget *parent, int x, int y):
     m_label->setStyleSheet("QLabel{\
                              width: 214px;\
                              height: 20px;\
-                             font-size: 14px;\
                              font-family: PingFangSC-Regular, PingFang SC;\
                              font-weight: 400;\
                              line-height: 20px;}");

@@ -746,6 +746,7 @@ void MainWindow::initStyleSheet() {
     closeBtn->setProperty("isWindowButton", 0x02);
     closeBtn->setProperty("useIconHighlightEffect", 0x08);
     closeBtn->setFlat(true);
+    ui->leftsidebarWidget->setMinimumWidth(153);
     ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(window);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
 
     // 设置左上角按钮图标
