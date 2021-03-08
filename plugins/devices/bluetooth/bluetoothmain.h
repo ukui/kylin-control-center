@@ -60,6 +60,7 @@ signals:
 private slots:
     void onClick_Open_Bluetooth(bool);
     void serviceDiscovered(BluezQt::DevicePtr);
+    void serviceDiscoveredChange(BluezQt::DevicePtr);
     void receiveConnectsignal(QString);
     void receiveDisConnectSignal(QString);
     void receiveRemoveSignal(QString);

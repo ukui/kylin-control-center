@@ -374,6 +374,7 @@ void BlueToothMain::updateUIWhenAdapterChanged()
 {
     connect(m_localDevice.data(),&BluezQt::Adapter::poweredChanged,this,&BlueToothMain::adapterPoweredChanged);
     connect(m_localDevice.data(),&BluezQt::Adapter::deviceAdded,this,&BlueToothMain::serviceDiscovered);
+    connect(m_localDevice.data(),&BluezQt::Adapter::deviceChanged,this,&BlueToothMain::serviceDiscoveredChange);
     connect(m_localDevice.data(),&BluezQt::Adapter::nameChanged,this,&BlueToothMain::adapterNameChanged);
     connect(m_localDevice.data(),&BluezQt::Adapter::deviceRemoved,this,&BlueToothMain::adapterDeviceRemove);
     connect(m_localDevice.data(),&BluezQt::Adapter::discoveringChanged,this,[=](bool discover){
@@ -575,7 +576,33 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
 
 void BlueToothMain::serviceDiscovered(BluezQt::DevicePtr device)
 {
-    qDebug() << Q_FUNC_INFO << device->type() << device->name();
+    qDebug() << Q_FUNC_INFO << device->type() << device->name() << device->address();
+    if(device->type() == BluezQt::Device::Uncategorized){
+        return;
+    }
+    if(Discovery_device_address.contains(device->address())){
+        return;
+    }
+
+    DeviceInfoItem *item = new DeviceInfoItem(device_list);
+    connect(item,SIGNAL(sendConnectDevice(QString)),this,SLOT(receiveConnectsignal(QString)));
+    connect(item,SIGNAL(sendDisconnectDeviceAddress(QString)),this,SLOT(receiveDisConnectSignal(QString)));
+    connect(item,SIGNAL(sendDeleteDeviceAddress(QString)),this,SLOT(receiveRemoveSignal(QString)));
+    connect(item,SIGNAL(sendPairedAddress(QString)),this,SLOT(change_device_parent(QString)));
+
+    item->initInfoPage(device->name(), DEVICE_STATUS::UNLINK, device);
+
+    device_list_layout->addWidget(item,Qt::AlignTop);
+
+    Discovery_device_address << device->address();
+}
+
+void BlueToothMain::serviceDiscoveredChange(BluezQt::DevicePtr device)
+{
+    qDebug() << Q_FUNC_INFO << device->type() << device->name() << device->address();
+    if(device->type() == BluezQt::Device::Uncategorized){
+        return;
+    }
     if(Discovery_device_address.contains(device->address())){
         return;
     }
