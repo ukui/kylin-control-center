@@ -401,11 +401,8 @@ void BlueToothMain::updateUIWhenAdapterChanged()
          if(!frame_bottom->isVisible())
              frame_bottom->setVisible(true);
      }else{
-         qDebug() << Q_FUNC_INFO << m_manager->isBluetoothBlocked();
+         qDebug() << Q_FUNC_INFO << m_manager->isBluetoothBlocked() << __LINE__;
          open_bluetooth->setChecked(false);
-         if(m_manager->isBluetoothBlocked()){
-            open_bluetooth->setDisabledFlag(false);
-         }
          bluetooth_name->setVisible(false);
          label_2->setText(tr("Turn on Bluetooth"));
          frame_bottom->setVisible(false);
@@ -538,6 +535,8 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
 {
     qDebug() << Q_FUNC_INFO << ischeck << m_localDevice->isPowered() << show_flag <<__LINE__;
     if(ischeck){
+        if(m_manager->isBluetoothBlocked())
+            m_manager->setBluetoothBlocked(false);
         BluezQt::PendingCall *call = m_localDevice->setPowered(true);
         connect(call,&BluezQt::PendingCall::finished,this,[=](BluezQt::PendingCall *v){
             if(v->error() == 0){
@@ -716,16 +715,11 @@ void BlueToothMain::adapterPoweredChanged(bool value)
             frame_middle->setVisible(true);
 
         open_bluetooth->setChecked(true);
-        if(!m_manager->isBluetoothBlocked())
-            open_bluetooth->setDisabledFlag(true);
-//                label_2->setText(tr("Turn off Bluetooth"));
         this->startDiscovery();
         qDebug() << discovering_timer->isActive();
     }else{
         bluetooth_name->setVisible(false);
         open_bluetooth->setChecked(false);
-        if(m_manager->isBluetoothBlocked())
-            open_bluetooth->setDisabledFlag(false);
         frame_bottom->setVisible(false);
 
         if(frame_middle->isVisible())
