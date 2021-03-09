@@ -72,11 +72,11 @@ void DeviceInfoItem::initInfoPage(QString d_name, DEVICE_STATUS status, BluezQt:
     this->setObjectName(device->address());
 
     connect(device.data(),&BluezQt::Device::pairedChanged,this,[=](bool paird){
-        qDebug() << Q_FUNC_INFO << paird;
+        qDebug() << Q_FUNC_INFO  << "pairedChanged" << paird;
         changeDevStatus(paird);
     });
     connect(device.data(),&BluezQt::Device::connectedChanged,this,[=](bool connected){
-        qDebug() << Q_FUNC_INFO << "connected:" << connected;
+        qDebug() << Q_FUNC_INFO << "connectedChanged" << connected;
         setDevConnectedIcon(connected);
     });
 
@@ -104,7 +104,7 @@ void DeviceInfoItem::initInfoPage(QString d_name, DEVICE_STATUS status, BluezQt:
     d_status = status;
     device_item = device;
 
-    if(status == DEVICE_STATUS::LINK){
+    if(d_status == DEVICE_STATUS::LINK){
         icon_status = QIcon::fromTheme("software-installed-symbolic");
         device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
     }
@@ -191,7 +191,8 @@ void DeviceInfoItem::changeDevStatus(bool pair)
 {
     icon_timer->stop();
     if(pair){
-        device_status->setVisible(false);
+        if (!device_item->isConnected())
+            device_status->setVisible(false);
         emit sendPairedAddress(device_item->address());
     }else{
 //        QIcon icon_status = QIcon::fromTheme("software-installed-symbolic");
@@ -204,8 +205,7 @@ void DeviceInfoItem::setDevConnectedIcon(bool connected)
     icon_timer->stop();
     if(connected){
         d_status = DEVICE_STATUS::LINK;
-        if(!device_status->isVisible())
-            device_status->setVisible(true);
+        device_status->setVisible(true);
         QIcon icon_status = QIcon::fromTheme("software-installed-symbolic");
         device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
     }else{
