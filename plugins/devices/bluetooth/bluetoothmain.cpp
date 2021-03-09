@@ -66,7 +66,7 @@ BlueToothMain::BlueToothMain(QWidget *parent)
 
     main_layout = new QVBoxLayout(main_widget);
     main_layout->setSpacing(40);
-    main_layout->setContentsMargins(0,0,20,10);
+    main_layout->setContentsMargins(0,0,30,0);
     frame_top    = new QWidget(main_widget);
     frame_top->setObjectName("frame_top");
     if(m_manager->adapters().size() > 1){
@@ -322,6 +322,7 @@ void BlueToothMain::InitMainbottomUI()
     device_list_layout  = new QVBoxLayout(device_list);
     device_list_layout->setSpacing(2);
     device_list_layout->setContentsMargins(0,0,0,0);
+    device_list_layout->setAlignment(Qt::AlignTop);
     device_list->setLayout(device_list_layout);
 
     frame_bottom->setLayout(bottom_layout);
@@ -433,37 +434,37 @@ void BlueToothMain::updateUIWhenAdapterChanged()
          child = nullptr;
      }
      // ========================END===========================================
-     qDebug() << Q_FUNC_INFO <<m_localDevice->devices().size();
+//     qDebug() << Q_FUNC_INFO <<m_localDevice->devices().size();
      show_flag = false;
-     Discovery_device_address.clear();
-     for(int i = 0;i < m_localDevice->devices().size(); i++){
+//     Discovery_device_address.clear();
+//     for(int i = 0;i < m_localDevice->devices().size(); i++){
 //         qDebug() << m_localDevice->devices().at(i)->name() << m_localDevice->devices().at(i)->type();
 
-         DeviceInfoItem *item = new DeviceInfoItem();
-         connect(item,SIGNAL(sendConnectDevice(QString)),this,SLOT(receiveConnectsignal(QString)));
-         connect(item,SIGNAL(sendDisconnectDeviceAddress(QString)),this,SLOT(receiveDisConnectSignal(QString)));
-         connect(item,SIGNAL(sendDeleteDeviceAddress(QString)),this,SLOT(receiveRemoveSignal(QString)));
-         connect(item,SIGNAL(sendPairedAddress(QString)),this,SLOT(change_device_parent(QString)));
-         if(m_localDevice->devices().at(i)->isConnected())
-             item->initInfoPage(m_localDevice->devices().at(i)->name(), DEVICE_STATUS::LINK, m_localDevice->devices().at(i));
-         else
-             item->initInfoPage(m_localDevice->devices().at(i)->name(), DEVICE_STATUS::UNLINK, m_localDevice->devices().at(i));
+//         DeviceInfoItem *item = new DeviceInfoItem();
+//         connect(item,SIGNAL(sendConnectDevice(QString)),this,SLOT(receiveConnectsignal(QString)));
+//         connect(item,SIGNAL(sendDisconnectDeviceAddress(QString)),this,SLOT(receiveDisConnectSignal(QString)));
+//         connect(item,SIGNAL(sendDeleteDeviceAddress(QString)),this,SLOT(receiveRemoveSignal(QString)));
+//         connect(item,SIGNAL(sendPairedAddress(QString)),this,SLOT(change_device_parent(QString)));
+//         if(m_localDevice->devices().at(i)->isConnected())
+//             item->initInfoPage(m_localDevice->devices().at(i)->name(), DEVICE_STATUS::LINK, m_localDevice->devices().at(i));
+//         else
+//             item->initInfoPage(m_localDevice->devices().at(i)->name(), DEVICE_STATUS::UNLINK, m_localDevice->devices().at(i));
 
-         if(m_localDevice->devices().at(i)->isPaired()){
-              show_flag = true;
-              paired_dev_layout->addWidget(item,Qt::AlignTop);
-         }else{
-             if(!Discovery_device_address.isEmpty()){
-                 if(Discovery_device_address.contains(m_localDevice->devices().at(i)->address())){
-                     continue;
-                 }
-             }
-             device_list_layout->addWidget(item);
+//         if(m_localDevice->devices().at(i)->isPaired()){
+//              show_flag = true;
+//              paired_dev_layout->addWidget(item,Qt::AlignTop);
+//         }else{
+//             if(!Discovery_device_address.isEmpty()){
+//                 if(Discovery_device_address.contains(m_localDevice->devices().at(i)->address())){
+//                     continue;
+//                 }
+//             }
+//             device_list_layout->addWidget(item);
 
-             Discovery_device_address << m_localDevice->devices().at(i)->address();
-         }
-     }
-     device_list_layout->addStretch();
+//             Discovery_device_address << m_localDevice->devices().at(i)->address();
+//         }
+//     }
+//     device_list_layout->addStretch();
 
      qDebug() << Q_FUNC_INFO << m_localDevice->devices().size() << show_flag;
      if(m_localDevice->isPowered()){
