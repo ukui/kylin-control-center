@@ -20,7 +20,15 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QString>
+#include <QFont>
 #include <QGSettings/QGSettings>
+
+
+#define ITEM_WIDTH 220
+#define BTN_1_X 215
+#define BTN_2_X 90
+#define BTN_1_WIDTH 120
+#define BTN_2_WIDTH 85
 
 class DeviceInfoItem : public QWidget
 {

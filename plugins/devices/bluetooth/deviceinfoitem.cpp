@@ -105,7 +105,7 @@ void DeviceInfoItem::initInfoPage(QString d_name, DEVICE_STATUS status, BluezQt:
     device_item = device;
 
     if(d_status == DEVICE_STATUS::LINK){
-        icon_status = QIcon::fromTheme("software-installed-symbolic");
+        icon_status = QIcon::fromTheme("ukui-dialog-success");
         device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
     }
 //    else if(status == DEVICE_STATUS::UNLINK){
@@ -206,7 +206,7 @@ void DeviceInfoItem::setDevConnectedIcon(bool connected)
     if(connected){
         d_status = DEVICE_STATUS::LINK;
         device_status->setVisible(true);
-        QIcon icon_status = QIcon::fromTheme("software-installed-symbolic");
+        QIcon icon_status = QIcon::fromTheme("ukui-dialog-success");
         device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
     }else{
         d_status = DEVICE_STATUS::UNLINK;
@@ -223,7 +223,7 @@ void DeviceInfoItem::AnimationInit()
         if(AnimationFlag){
             if(leave_action->state() != QAbstractAnimation::Running){
                 enter_action->setStartValue(QRect(0, 0, info_page->width(), info_page->height()));
-                enter_action->setEndValue(QRect(0, 0, info_page->width()-170, info_page->height()));
+                enter_action->setEndValue(QRect(0, 0, info_page->width()-ITEM_WIDTH, info_page->height()));
                 enter_action->start();
             }
         }
@@ -236,14 +236,14 @@ void DeviceInfoItem::AnimationInit()
 
     connect(enter_action,&QPropertyAnimation::finished,this,[=]{
         if (d_status == DEVICE_STATUS::LINK){
-            disconnect_btn->setGeometry(this->width()-155,2,80,45);
+            disconnect_btn->setGeometry(this->width()-BTN_1_X,2,BTN_1_WIDTH,45);
             disconnect_btn->setVisible(true);
         }else if (d_status == DEVICE_STATUS::UNLINK){
-            connect_btn->setGeometry(this->width()-155,2,80,45);
+            connect_btn->setGeometry(this->width()-BTN_1_X,2,BTN_1_WIDTH,45);
             connect_btn->setVisible(true);
         }
 
-        del_btn->setGeometry(this->width()-65,2,65,45);
+        del_btn->setGeometry(this->width()-BTN_2_X,2,BTN_2_WIDTH,45);
         del_btn->setVisible(true);
     });
 
