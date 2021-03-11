@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="140"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="352"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="350"/>
         <source>version</source>
         <translation>版本</translation>
         <extra-contents_path>/about/version</extra-contents_path>
@@ -26,21 +26,21 @@
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="271"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="354"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="352"/>
         <source>Kernel</source>
         <translation>内核</translation>
         <extra-contents_path>/about/Kernel</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="310"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="356"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="354"/>
         <source>CPU</source>
         <translation>CPU</translation>
         <extra-contents_path>/about/CPU</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="358"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="358"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="356"/>
         <source>Memory</source>
         <translation>内存</translation>
         <extra-contents_path>/about/Memory</extra-contents_path>
@@ -67,8 +67,17 @@
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="566"/>
-        <source>Service serial number</source>
+        <source>Serial</source>
         <translation>序列号</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="632"/>
+        <source>Protocol</source>
+        <translation>免责协议</translation>
+    </message>
+    <message>
+        <source>Service serial number</source>
+        <translation type="vanished">序列号</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="602"/>
@@ -76,9 +85,8 @@
         <translation>激活</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="632"/>
         <source>Trial version disclaimer</source>
-        <translation>试用版免责声明</translation>
+        <translation type="vanished">试用版免责声明</translation>
     </message>
     <message>
         <source>Devices Summary</source>
@@ -94,7 +102,7 @@
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="233"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="231"/>
         <source>The system has expired. The expiration time is:</source>
         <translation>您的系统已激活，技术服务已到期：</translation>
     </message>
@@ -107,12 +115,12 @@
         <translation type="vanished">可用</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="235"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="233"/>
         <source>Inactivated</source>
         <translation>未激活</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="224"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="222"/>
         <source>Activated</source>
         <translation>已激活</translation>
     </message>
@@ -3484,13 +3492,13 @@ folder will be deleted!</source>
 <context>
     <name>MainWidget</name>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="264"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="263"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.h" line="93"/>
         <source>Disconnected</source>
         <translation>未连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="371"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="370"/>
         <source>Your account：%1</source>
         <translation>您的云账户：%1</translation>
     </message>
@@ -3500,19 +3508,19 @@ Please retry for login!</source>
         <translation type="vanished">OSS访问失败，请检查您的网络后再登录！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="427"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1097"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1118"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="426"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1096"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1117"/>
         <source>Exit</source>
         <translation>退出登录</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="697"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="696"/>
         <source>Sync</source>
         <translation>同步中</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="438"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="437"/>
         <source>Sign in</source>
         <translation>登录</translation>
     </message>
@@ -3521,98 +3529,98 @@ Please retry for login!</source>
         <translation type="vanished">开启单项同步</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="352"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="351"/>
         <source>Logout failed,please check your connection</source>
         <translation>登录失败，请检查你的网络连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="676"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="675"/>
         <source>Stop sync</source>
         <translation>结束同步</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="701"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="700"/>
         <source>Sync your settings</source>
         <translation>同步您的设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="705"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="704"/>
         <source>Your account:%1</source>
         <translation>您的云账户：%1</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="706"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="705"/>
         <source>Auto sync</source>
         <translation>自动同步</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="498"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="497"/>
         <source>Waitting for sync!</source>
         <translation>等待同步！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="686"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="685"/>
         <source>Synchronize your personalized settings and data</source>
         <translation>同步您账户的数据以及个性化设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="970"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="969"/>
         <source>This operation may cover your settings!</source>
         <translation>该操作可能覆盖您现有的设置！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="276"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="374"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="581"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1053"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1082"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1105"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1126"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="275"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="373"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="580"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1052"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1081"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1104"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1125"/>
         <source>The latest time sync is: </source>
         <translation>上次同步时间为: </translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="278"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="376"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="590"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="277"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="375"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="589"/>
         <source>Waiting for initialization...</source>
         <translation>等待云账户初始化...</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="282"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="614"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="623"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="654"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="661"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="809"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="837"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="851"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="929"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="949"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="974"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="992"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1217"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="281"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="613"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="622"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="653"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="660"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="808"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="836"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="850"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="928"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="948"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="973"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="991"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1216"/>
         <source>Network can not reach!</source>
         <translation>网络不可达！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="545"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="544"/>
         <source>The Cloud Account Service version is out of date!</source>
         <translation>云账户服务版本已经过期，请升级！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="764"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="763"/>
         <source>KylinID open error!</source>
         <translation>麒麟ID客户端打开失败!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="857"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="856"/>
         <source>Unauthorized device or OSS falied.
 Please retry or relogin!</source>
         <translation>设备凭证已过期，请重新登录！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="864"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="863"/>
         <source>Authorization failed!</source>
         <translation>认证失败，请重新登录！</translation>
     </message>
@@ -3622,7 +3630,7 @@ Please retry or relogin!</source>
         <translation>该操作可能覆盖您目前的快捷键！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1207"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1206"/>
         <source>Cloud ID desktop message</source>
         <translation>云账户消息</translation>
     </message>
@@ -3651,7 +3659,7 @@ Please retry or relogin!</source>
         <translation type="vanished">同步失败，请检查您的网络连接或者登出再重试一次！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1182"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1181"/>
         <source>%1,</source>
         <translation>%1,</translation>
     </message>
@@ -4644,22 +4652,22 @@ Please retry or relogin!</source>
         <translation type="vanished">默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="644"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="659"/>
         <source>basic</source>
         <translation>基础</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="646"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="661"/>
         <source>classical</source>
         <translation>经典</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="648"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="663"/>
         <source>default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="650"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="665"/>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="183"/>
         <source>Unknown</source>
         <translation>未知</translation>
@@ -5042,12 +5050,12 @@ Please retry or relogin!</source>
         <translation type="vanished">日</translation>
     </message>
     <message>
-        <location filename="../../main.cpp" line="69"/>
+        <location filename="../../main.cpp" line="114"/>
         <source>ukui-control-center</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../../main.cpp" line="60"/>
+        <location filename="../../main.cpp" line="105"/>
         <source>ukui-control-center is already running!</source>
         <translation>控制面板已运行!</translation>
     </message>
@@ -7220,34 +7228,34 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="vanished">屏幕缩放 </translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="545"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="546"/>
         <source>unify output</source>
         <translation>统一输出</translation>
         <extra-contents_path>/display/unify output</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="549"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="550"/>
         <source>night mode</source>
         <translation>夜间模式</translation>
         <extra-contents_path>/display/night mode</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="476"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="477"/>
         <source>Some applications need to be logouted to take effect</source>
         <translation>部分程序需要注销生效</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="476"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="477"/>
         <source>Information</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="557"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="558"/>
         <source>Theme follow night mode</source>
         <translation>主题跟随夜间模式变化</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="567"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="568"/>
         <source>Hint</source>
         <translation>提示</translation>
     </message>
@@ -7257,40 +7265,40 @@ If something goes wrong, the settings will be restored after 10 seconds</source>
         <translation type="vanished">修改分辨率或刷新率后，由于显示设备与显卡存在兼容性问题，有可能显示不正常或者无法显示．如果出现异常，系统将在10秒后还原设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="568"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="569"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display
 If something goes wrong, the settings will be restored after 9 seconds</source>
         <translation>修改分辨率或刷新率后，由于显示设备与显卡存在兼容性问题，有可能显示不正常或者无法显示．如果出现异常，系统将在9秒后还原设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="572"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="573"/>
         <source>Save Config</source>
         <translation>保存当前配置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="573"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="574"/>
         <source>Restore Config</source>
         <translation>恢复之前配置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="581"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="582"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display 
 If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation>修改分辨率或刷新率后，由于显示设备与显卡存在兼容性问题，有可能显示不正常或者无法显示．如果出现异常，系统将在%1秒后还原设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="969"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="970"/>
         <source>please insure at least one output!</source>
         <translation>请确保至少开启一个屏幕!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="969"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="976"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="970"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="977"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="976"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="977"/>
         <source>Open time should be earlier than close time!</source>
         <translation>开启时间必须大于关闭时间！</translation>
     </message>
@@ -7299,12 +7307,12 @@ If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation type="vanished">早晨时刻应早于晚上的时刻!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="986"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="987"/>
         <source>Warnning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="987"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="988"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation>抱歉，配置不能应用.</translation>
