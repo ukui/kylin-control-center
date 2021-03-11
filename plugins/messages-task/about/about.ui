@@ -522,13 +522,13 @@
                 <widget class="QLabel" name="label_5">
                  <property name="minimumSize">
                   <size>
-                   <width>100</width>
+                   <width>90</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>90</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -552,18 +552,18 @@
                 <widget class="QLabel" name="label_7">
                  <property name="minimumSize">
                   <size>
-                   <width>100</width>
+                   <width>90</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>90</width>
                    <height>16777215</height>
                   </size>
                  </property>
                  <property name="text">
-                  <string>Service serial number</string>
+                  <string>Serial</string>
                  </property>
                 </widget>
                </item>
@@ -612,13 +612,13 @@
        <widget class="QPushButton" name="trialButton">
         <property name="minimumSize">
          <size>
-          <width>150</width>
+          <width>90</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>220</width>
+          <width>150</width>
           <height>16777215</height>
          </size>
         </property>
@@ -629,7 +629,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Trial version disclaimer</string>
+         <string>Protocol</string>
         </property>
        </widget>
       </item>

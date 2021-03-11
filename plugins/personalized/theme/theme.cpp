@@ -107,12 +107,12 @@ Theme::Theme()
     ui->setupUi(pluginWidget);
 
     setupGSettings();
+    initCursorName();
     initTitleLabel();
     initSearchText();
 
     // 设置组件
     setupComponent();
-    // Init kwin settings
     setupSettings();
     initThemeMode();
     initIconTheme();
@@ -501,6 +501,14 @@ void Theme::initCursorTheme(){
             cursorVec.append(QPixmap::fromImage(image));
         }
 
+
+        if (!QLocale::system().name().compare("ZH_CN", Qt::CaseInsensitive)
+                && mCursorMap.keys().contains(cursor)) {
+
+            cursor = mCursorMap.value(cursor);
+            currentCursorTheme = mCursorMap.value(currentCursorTheme).isEmpty() ? currentCursorTheme : mCursorMap.value(currentCursorTheme);
+        }
+
         ThemeWidget * widget  = new ThemeWidget(QSize(24, 24), cursor, cursorVec, pluginWidget);
         widget->setValue(cursor);
 
@@ -549,6 +557,13 @@ void Theme::initConnection() {
 #else
 
 #endif
+}
+
+void Theme::initCursorName() {
+    mCursorMap.insert("blue-crystal", "蓝水晶");
+    mCursorMap.insert("dark-sense",   "深色质感");
+    mCursorMap.insert("DMZ-Black",    "黑");
+    mCursorMap.insert("DMZ-White",    "白");
 }
 
 QStringList Theme::_getSystemCursorThemes() {

@@ -198,8 +198,6 @@ void About::setupVersionCompenent() {
 }
 
 void About::setupSerialComponent() {
-    ui->trialButton->setFlat(true);
-    ui->trialButton->setStyleSheet("text-align: left");
     if (!activeInterface.get()->isValid()) {
         qDebug() << "Create active Interface Failed When Get active info: " << QDBusConnection::systemBus().lastError();
         return;
