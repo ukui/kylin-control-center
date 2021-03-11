@@ -82,7 +82,9 @@ public:
     void loadGroupInfo();
     void loadPasswdInfo();
     void loadAllGroup();
-    bool polkit();
+    bool polkitEdit();
+    bool polkitDel();
+    bool polkitAdd();
     void refreshList();
 
 public:

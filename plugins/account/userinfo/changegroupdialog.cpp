@@ -114,13 +114,49 @@ void ChangeGroupDialog::refreshList()
     loadAllGroup();
 }
 
-bool ChangeGroupDialog::polkit()
+bool ChangeGroupDialog::polkitEdit()
 {
     PolkitQt1::Authority::Result result;
     //PolkitQt1::SystemBusNameSubject subject(message().service());
 
     result = PolkitQt1::Authority::instance()->checkAuthorizationSync(
-                "org.ukui.groupmanager.action",
+                "org.ukui.groupmanager.action.edit",
+                PolkitQt1::UnixProcessSubject(QCoreApplication::applicationPid()),
+                PolkitQt1::Authority::AllowUserInteraction);
+    if (result == PolkitQt1::Authority::Yes) { //认证通过
+        qDebug() << QString("operation authorized");
+        return true;
+    } else {
+        qDebug() << QString("not authorized");
+        return false;
+    }
+}
+
+bool ChangeGroupDialog::polkitDel()
+{
+    PolkitQt1::Authority::Result result;
+    //PolkitQt1::SystemBusNameSubject subject(message().service());
+
+    result = PolkitQt1::Authority::instance()->checkAuthorizationSync(
+                "org.ukui.groupmanager.action.del",
+                PolkitQt1::UnixProcessSubject(QCoreApplication::applicationPid()),
+                PolkitQt1::Authority::AllowUserInteraction);
+    if (result == PolkitQt1::Authority::Yes) { //认证通过
+        qDebug() << QString("operation authorized");
+        return true;
+    } else {
+        qDebug() << QString("not authorized");
+        return false;
+    }
+}
+
+bool ChangeGroupDialog::polkitAdd()
+{
+    PolkitQt1::Authority::Result result;
+    //PolkitQt1::SystemBusNameSubject subject(message().service());
+
+    result = PolkitQt1::Authority::instance()->checkAuthorizationSync(
+                "org.ukui.groupmanager.action.add",
                 PolkitQt1::UnixProcessSubject(QCoreApplication::applicationPid()),
                 PolkitQt1::Authority::AllowUserInteraction);
     if (result == PolkitQt1::Authority::Yes) { //认证通过
@@ -159,8 +195,8 @@ void ChangeGroupDialog::loadAllGroup()
         QPushButton *itemEditBtn = singleWidget->editBtnComponent();
 
         connect(itemDelBtn, &QPushButton::clicked, [=](){
-            bool reply = polkit();
-            qDebug() << "call polkit " << reply;
+            bool reply = polkitDel();
+            qDebug() << "call polkitdel " << reply;
             if(reply){
                 DelGroupDialog *delDialog = new DelGroupDialog(groupList->at(i)->groupname);
                 QPushButton *delBtn = delDialog->delBtnComponent();
@@ -185,8 +221,8 @@ void ChangeGroupDialog::loadAllGroup()
             }
         });
         connect(itemEditBtn, &QPushButton::clicked, [=](){
-            bool reply = polkit();
-            qDebug() << "call polkit " << reply;
+            bool reply = polkitEdit();
+            qDebug() << "call polkitedit " << reply;
             if(reply){
                 EditGroupDialog *editDialog = new EditGroupDialog(groupList->at(i)->usergroup,groupList->at(i)->groupid,
                                                   groupList->at(i)->groupname, idSetEnable);
@@ -265,8 +301,8 @@ void ChangeGroupDialog::initNewGroupBtn()
     });
 
     connect(addWgt, &HoverWidget::widgetClicked, this, [=](){
-        bool reply = polkit();
-        qDebug() << "call polkit " << reply;
+        bool reply = polkitAdd();
+        qDebug() << "call polkitadd " << reply;
         if(reply){
             CreateGroupDialog *dialog = new CreateGroupDialog();
             QPushButton *certainBtn = dialog->certainBtnComponent();
