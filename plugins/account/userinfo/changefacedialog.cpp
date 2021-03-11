@@ -55,10 +55,14 @@ ChangeFaceDialog::ChangeFaceDialog(QWidget *parent) :
 
     selectedFaceIcon = "";
 
+    btnsGroup = new QButtonGroup;
+
 
     ElipseMaskWidget * cfMaskWidget = new ElipseMaskWidget(ui->faceLabel);
 //    cfMaskWidget->setBgColor("#F4F4F4");
     cfMaskWidget->setGeometry(0, 0, ui->faceLabel->width(), ui->faceLabel->height());
+
+    ui->saveBtn->setEnabled(false);
 
     loadSystemFaces();
 
@@ -105,6 +109,8 @@ void ChangeFaceDialog::loadSystemFaces(){
         button->setFixedSize(QSize(64, 64));
 //        button->setStyleSheet("QPushButton{border: none;}");
 
+        btnsGroup->addButton(button);
+
         QHBoxLayout * mainHorLayout = new QHBoxLayout(button);
         mainHorLayout->setSpacing(0);
         mainHorLayout->setMargin(0);
@@ -121,6 +127,9 @@ void ChangeFaceDialog::loadSystemFaces(){
             setFace(fullface);
 
             selectedFaceIcon = fullface;
+
+            if (!ui->saveBtn->isEnabled())
+                ui->saveBtn->setEnabled(true);
 
 //            emit face_file_send(fullface, ui->usernameLabel->text());
         });

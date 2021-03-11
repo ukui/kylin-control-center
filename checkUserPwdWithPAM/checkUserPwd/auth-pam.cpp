@@ -80,7 +80,7 @@ void AuthPAM::authenticate(const QString &userName, const QString &userPwd)
         connect(notifier, &QSocketNotifier::activated, this, &AuthPAM::onSockRead);
     }
 
-    QTimer::singleShot(10, this, [=]{respond(userPwd);});
+    QTimer::singleShot(100, this, [=]{respond(userPwd);});
 
 }
 
