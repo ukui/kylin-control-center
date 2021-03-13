@@ -53,7 +53,12 @@ SOURCES += \
     changefacedialog.cpp \
     deluserdialog.cpp \
     createuserdialog.cpp \
-    passwdcheckutil.cpp
+    passwdcheckutil.cpp \
+    biometricdeviceinfo.cpp \
+    biometricproxy.cpp \
+    biometricenroll.cpp \
+    biometricmoreinfo.cpp \
+    servicemanager.cpp
 
 HEADERS += \
     changegroupdialog.h \
@@ -74,7 +79,12 @@ HEADERS += \
     changefacedialog.h \
     deluserdialog.h \
     createuserdialog.h \
-    passwdcheckutil.h
+    passwdcheckutil.h \
+    biometricdeviceinfo.h \
+    biometricproxy.h \
+    biometricenroll.h \
+    biometricmoreinfo.h \
+    servicemanager.h 
 
 FORMS += \
     changegroupdialog.ui \
@@ -87,6 +97,8 @@ FORMS += \
     changetypedialog.ui \
     changefacedialog.ui \
     deluserdialog.ui \
-    createuserdialog.ui
+    createuserdialog.ui \
+    biometricmoreinfo.ui \
+    biometricenroll.ui 
 
 INSTALLS += target

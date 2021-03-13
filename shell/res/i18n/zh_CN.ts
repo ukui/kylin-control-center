@@ -744,6 +744,270 @@ you can restore them to ensure the integrity of your system.</source>
     </message>
 </context>
 <context>
+    <name>BiometricEnrollDialog</name>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.ui" line="26"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.ui" line="76"/>
+        <source>Biometrics </source>
+        <translation>生物识别</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.ui" line="312"/>
+        <source>Continue to enroll </source>
+        <translation>继续录入</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.ui" line="344"/>
+        <source>Finish</source>
+        <translation>完成</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="108"/>
+        <source>FingerPrint</source>
+        <translation>指纹</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="110"/>
+        <source>Fingervein</source>
+        <translation>指静脉</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="112"/>
+        <source>Iris</source>
+        <translation>虹膜</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="114"/>
+        <source>Face</source>
+        <translation>人脸</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="116"/>
+        <source>VoicePrint</source>
+        <translation>声纹</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="126"/>
+        <source>Enroll</source>
+        <translation>录入</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="129"/>
+        <source>Verify</source>
+        <translation>验证</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="132"/>
+        <source>Search</source>
+        <translation>搜索</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="160"/>
+        <source>Permission is required.
+Please authenticate yourself to continue</source>
+        <translation>需要授权，请先进行认证已继续操作</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="183"/>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="317"/>
+        <source>Enroll successfully</source>
+        <translation>录入成功</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="248"/>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="319"/>
+        <source>Verify successfully</source>
+        <translation>验证成功</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="251"/>
+        <source>Not Match</source>
+        <translation>不匹配</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="408"/>
+        <source>D-Bus calling error</source>
+        <translation>D-Bus获取错误</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="417"/>
+        <source>Device is busy</source>
+        <translation>设备忙</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="421"/>
+        <source>No such device</source>
+        <translation>设备不存在</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="425"/>
+        <source>Permission denied</source>
+        <translation>权限不够</translation>
+    </message>
+</context>
+<context>
+    <name>BiometricMoreInfoDialog</name>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="26"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="76"/>
+        <source>Biometrics </source>
+        <translation>生物识别</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="166"/>
+        <source>Default device </source>
+        <translation>默认设备</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="208"/>
+        <source>Verify Type:</source>
+        <translation>验证类型：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="215"/>
+        <source>Bus Type:</source>
+        <translation>总线类型：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="222"/>
+        <source>Device Status:</source>
+        <translation>设备状态：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="243"/>
+        <source>Storage Type:</source>
+        <translation>存储类型：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="250"/>
+        <source>Identification Type:</source>
+        <translation>验证类型：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="77"/>
+        <source>Connected</source>
+        <translation>已连接</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="77"/>
+        <source>Unconnected</source>
+        <translation>未连接</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="111"/>
+        <source>FingerPrint</source>
+        <translation>指纹</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="113"/>
+        <source>Fingervein</source>
+        <translation>指静脉</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="115"/>
+        <source>Iris</source>
+        <translation>虹膜</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="117"/>
+        <source>Face</source>
+        <translation>人脸</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="119"/>
+        <source>VoicePrint</source>
+        <translation>声纹</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="128"/>
+        <source>Hardware Verification</source>
+        <translation>硬件验证</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="130"/>
+        <source>Software Verification</source>
+        <translation>软件验证</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="132"/>
+        <source>Mix Verification</source>
+        <translation>混合验证</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="134"/>
+        <source>Other Verification</source>
+        <translation>其他验证</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="142"/>
+        <source>Device Storage</source>
+        <translation>设备存储</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="144"/>
+        <source>OS Storage</source>
+        <translation>系统存储</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="146"/>
+        <source>Mix Storage</source>
+        <translation>混合存储</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="154"/>
+        <source>Serial</source>
+        <translation>串口</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="156"/>
+        <source>USB</source>
+        <translation>USB</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="158"/>
+        <source>PCIE</source>
+        <translation>PCIE</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="160"/>
+        <source>Any</source>
+        <translation>任意类型</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="162"/>
+        <source>Other</source>
+        <translation>其他</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="170"/>
+        <source>Hardware Identification</source>
+        <translation>硬件识别</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="172"/>
+        <source>Software Identification</source>
+        <translation>软件识别</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="174"/>
+        <source>Mix Identification</source>
+        <translation>混合识别</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="176"/>
+        <source>Other Identification</source>
+        <translation>其他识别</translation>
+    </message>
+</context>
+<context>
     <name>BlueToothMain</name>
     <message>
         <source>Turn off Bluetooth</source>
@@ -836,43 +1100,43 @@ you can restore them to ensure the integrity of your system.</source>
 <context>
     <name>ChangeFaceDialog</name>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="152"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="161"/>
         <source>select custom face file</source>
         <translation>选择自定义头像文件</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="153"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="162"/>
         <source>Select</source>
         <translation>选择</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="154"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="163"/>
         <source>Position: </source>
         <translation>位置： </translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="155"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="164"/>
         <source>FileName: </source>
         <translation>文件名： </translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="156"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="165"/>
         <source>FileType: </source>
         <translation>文件类型： </translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changefacedialog.ui" line="317"/>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="157"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="166"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="170"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="179"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="170"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="179"/>
         <source>The avatar is larger than 1M, please choose again</source>
         <translation>警告，头像大于1M请重新选择</translation>
     </message>
@@ -927,34 +1191,34 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="obsolete">添加新用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="208"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="244"/>
         <source>User group</source>
         <translation>用户组</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="245"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="281"/>
         <source>Add user group</source>
         <translation>添加用户组</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="280"/>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="288"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="316"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="324"/>
         <source>Tips</source>
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="280"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="316"/>
         <source>Invalid Id!</source>
         <translation>无效组ID!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="283"/>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="291"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="319"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="327"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="288"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="324"/>
         <source>Invalid Group Name!</source>
         <translation>无效组名!</translation>
     </message>
@@ -1919,6 +2183,34 @@ folder will be deleted!</source>
         <location filename="../../../plugins/devices/bluetooth/deviceinfoitem.cpp" line="43"/>
         <source>Remove</source>
         <translation>移除</translation>
+    </message>
+</context>
+<context>
+    <name>DeviceType</name>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricdeviceinfo.cpp" line="40"/>
+        <source>FingerPrint</source>
+        <translation>指纹</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricdeviceinfo.cpp" line="42"/>
+        <source>FingerVein</source>
+        <translation>指静脉</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricdeviceinfo.cpp" line="44"/>
+        <source>Iris</source>
+        <translation>虹膜</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricdeviceinfo.cpp" line="46"/>
+        <source>Face</source>
+        <translation>人脸</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricdeviceinfo.cpp" line="48"/>
+        <source>VoicePrint</source>
+        <translation>声纹</translation>
     </message>
 </context>
 <context>
@@ -5240,55 +5532,55 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="303"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="306"/>
         <source>min length %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="313"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="316"/>
         <source>min digit num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="322"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="325"/>
         <source>min upper num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="331"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="334"/>
         <source>min lower num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="340"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="343"/>
         <source>min other num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="350"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="353"/>
         <source>min char class %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="359"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="362"/>
         <source>max repeat %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="368"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="371"/>
         <source>max class repeat %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="377"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="380"/>
         <source>max sequence %1
 </source>
         <translation type="unfinished"></translation>
@@ -6910,7 +7202,7 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="vanished">账户信息</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="63"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="66"/>
         <source>User Info</source>
         <translation>账户信息</translation>
     </message>
@@ -6923,36 +7215,52 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="vanished">管理员用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="147"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="150"/>
         <source>root</source>
         <translation>Root</translation>
     </message>
     <message>
-        <source>Delete</source>
-        <translation type="vanished">删除</translation>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1211"/>
+        <source>Add biometric feature</source>
+        <translation>添加生物密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="143"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1666"/>
+        <source>Rename</source>
+        <translation>重命名</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1680"/>
+        <source>Verify</source>
+        <translation>验证</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1700"/>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="146"/>
         <source>Standard</source>
         <translation>标准用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="145"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="148"/>
         <source>Admin</source>
         <translation>管理员</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="752"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="761"/>
         <source>Del</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="872"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="881"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="872"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="881"/>
         <source>The user is logged in, please delete the user after logging out</source>
         <translation>用户已经登录，请注销后删除用户</translation>
     </message>
@@ -6962,12 +7270,12 @@ run start-pulseaudio-x11 manually.</source>
         <translation>当前用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="734"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="743"/>
         <source>Change pwd</source>
         <translation>更改密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="721"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="730"/>
         <source>Change type</source>
         <translation>更改类型</translation>
     </message>
@@ -6986,21 +7294,21 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="222"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="129"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="132"/>
         <source>Password</source>
         <translation>密码</translation>
         <extra-contents_path>/userinfo/Password</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="287"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="131"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="134"/>
         <source>Type</source>
         <translation>类型</translation>
         <extra-contents_path>/userinfo/Type</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="352"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="133"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="136"/>
         <source>Valid</source>
         <translation>密码时效</translation>
         <extra-contents_path>/userinfo/Valid</extra-contents_path>
@@ -7012,14 +7320,14 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="529"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="135"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="138"/>
         <source>Login no passwd</source>
         <translation>免密登录</translation>
         <extra-contents_path>/userinfo/Login no passwd</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="607"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="137"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="140"/>
         <source>enable autoLogin</source>
         <translation>自动登录</translation>
         <extra-contents_path>/userinfo/enable autoLogin</extra-contents_path>
@@ -7030,12 +7338,37 @@ run start-pulseaudio-x11 manually.</source>
         <translation>当前处于试用模式，请创建一个新用户并注销生效</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="722"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="748"/>
+        <source>Biometric Password</source>
+        <translation>生物密码</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="768"/>
+        <source>advanced settings </source>
+        <translation>高级设置</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="875"/>
+        <source>enable biometrics </source>
+        <translation>打开生物特征</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="944"/>
+        <source>types of biometric password </source>
+        <translation>生物密码类型</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="1023"/>
+        <source>biometric device </source>
+        <translation>生物设备</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="1160"/>
         <source>Other Users</source>
         <translation>其他用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="415"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="418"/>
         <source>Add new user</source>
         <translation>添加新用户</translation>
     </message>
@@ -7287,18 +7620,18 @@ If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation>修改分辨率或刷新率后，由于显示设备与显卡存在兼容性问题，有可能显示不正常或者无法显示．如果出现异常，系统将在%1秒后还原设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="970"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="988"/>
         <source>please insure at least one output!</source>
         <translation>请确保至少开启一个屏幕!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="970"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="977"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="988"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="995"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="977"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="995"/>
         <source>Open time should be earlier than close time!</source>
         <translation>开启时间必须大于关闭时间！</translation>
     </message>
@@ -7307,12 +7640,12 @@ If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation type="vanished">早晨时刻应早于晚上的时刻!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="987"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1005"/>
         <source>Warnning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="988"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1006"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation>抱歉，配置不能应用.</translation>

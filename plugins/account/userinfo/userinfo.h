@@ -40,6 +40,10 @@
 #include "deluserdialog.h"
 #include "createuserdialog.h"
 #include "HoverWidget/hoverwidget.h"
+#include "biometricdeviceinfo.h"
+#include "biometricproxy.h"
+#include "biometricenroll.h"
+#include "biometricmoreinfo.h"
 
 #ifdef ENABLEPQ
 extern "C" {
@@ -122,6 +126,31 @@ public:
     void initComponent();
     void initAllUserStatus();
 
+    //初始化生物特征组件
+    void initBioComonent();
+    //添加生物特征
+    void addFeature(FeatureInfo *featureinfo);
+    //更新生物特征设备
+    void updateDevice();
+    void updateFeatureList();
+    void setCurrentDevice(int drvid);
+    void setCurrentDevice(const QString &deviceName);
+    void setCurrentDevice(const DeviceInfoPtr &pDeviceInfo);
+    DeviceInfoPtr findDeviceById(int drvid);
+    DeviceInfoPtr findDeviceByName(const QString &name);
+    bool deviceExists(int drvid);
+    bool deviceExists(const QString &deviceName);
+    void showEnrollDialog();
+    void showVerifyDialog(FeatureInfo *featureinfo);
+    void deleteFeature();
+    void deleteFeaturedone(FeatureInfo *feature);
+    void renameFeaturedone(FeatureInfo *feature,QString newname);
+    void setBiometricDeviceVisible(bool visible);
+    void setBioStatus(bool status);
+    bool getBioStatus();
+    void biometricShowMoreInfoDialog();
+    bool isShowBiometric();
+
     QStringList getLoginedUsers();
     void _acquireAllUsersInfo();
     UserInfomation _acquireUserInfo(QString objpath);
@@ -177,14 +206,24 @@ private:
     QWidget * pluginWidget;
     HoverWidget *addWgt;
 
+    //增加生物密码
+    HoverWidget *addBioFeatureWidget;
+    BiometricProxy      *proxy;
+    DeviceMap           deviceMap;
+    DeviceInfoPtr       currentDevice;
+    BiometricProxy      *m_biometricProxy;
+    QDBusInterface      *serviceInterface;
+
     SwitchButton * nopwdSwitchBtn;
     SwitchButton * autoLoginSwitchBtn;
+    SwitchButton * enableBiometricBtn;
 
     SystemDbusDispatcher * sysdispatcher;
     QSettings * autoSettings = nullptr;
 
     QMap<QString, UserInfomation> allUserInfoMap;
     QMap<QString, QListWidgetItem *> otherUserItemMap;
+    QMap<QString, QListWidgetItem *> biometricFeatureMap;
 
     QMap<QString, QListWidgetItem *> otherItemMap;
 
@@ -227,6 +266,19 @@ private slots:
     void delete_user_slot(bool removefile, QString username);
     void propertyChangedSlot(QString, QMap<QString, QVariant>, QStringList);
     void pwdAndAutoChangedSlot(QString key);
+
+    void onbiometricTypeBoxCurrentIndexChanged(int index);
+    void onbiometricDeviceBoxCurrentIndexChanged(int index);
+    void updateFeatureListCallback(QDBusMessage callbackReply);
+    void errorCallback(QDBusError error);
+    /**
+     * @brief USB设备热插拔
+     * @param drvid     设备id
+     * @param action    插拔动作（1：插入，-1：拔出）
+     * @param deviceNum 插拔动作后该驱动拥有的设备数量
+     */
+    void onBiometricUSBDeviceHotPlug(int drvid, int action, int deviceNum);
+
 };
 
 #endif // USERINFO_H
