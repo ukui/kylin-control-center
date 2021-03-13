@@ -628,6 +628,270 @@ you can restore them to ensure the integrity of your system.</source>
     </message>
 </context>
 <context>
+    <name>BiometricEnrollDialog</name>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.ui" line="26"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.ui" line="76"/>
+        <source>Biometrics </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.ui" line="312"/>
+        <source>Continue to enroll </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.ui" line="344"/>
+        <source>Finish</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="108"/>
+        <source>FingerPrint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="110"/>
+        <source>Fingervein</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="112"/>
+        <source>Iris</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="114"/>
+        <source>Face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="116"/>
+        <source>VoicePrint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="126"/>
+        <source>Enroll</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="129"/>
+        <source>Verify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="132"/>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="160"/>
+        <source>Permission is required.
+Please authenticate yourself to continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="183"/>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="317"/>
+        <source>Enroll successfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="248"/>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="319"/>
+        <source>Verify successfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="251"/>
+        <source>Not Match</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="408"/>
+        <source>D-Bus calling error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="417"/>
+        <source>Device is busy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="421"/>
+        <source>No such device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricenroll.cpp" line="425"/>
+        <source>Permission denied</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BiometricMoreInfoDialog</name>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="26"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="76"/>
+        <source>Biometrics </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="166"/>
+        <source>Default device </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="208"/>
+        <source>Verify Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="215"/>
+        <source>Bus Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="222"/>
+        <source>Device Status:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="243"/>
+        <source>Storage Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="250"/>
+        <source>Identification Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="77"/>
+        <source>Connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="77"/>
+        <source>Unconnected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="111"/>
+        <source>FingerPrint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="113"/>
+        <source>Fingervein</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="115"/>
+        <source>Iris</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="117"/>
+        <source>Face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="119"/>
+        <source>VoicePrint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="128"/>
+        <source>Hardware Verification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="130"/>
+        <source>Software Verification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="132"/>
+        <source>Mix Verification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="134"/>
+        <source>Other Verification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="142"/>
+        <source>Device Storage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="144"/>
+        <source>OS Storage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="146"/>
+        <source>Mix Storage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="154"/>
+        <source>Serial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="156"/>
+        <source>USB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="158"/>
+        <source>PCIE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="160"/>
+        <source>Any</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="162"/>
+        <source>Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="170"/>
+        <source>Hardware Identification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="172"/>
+        <source>Software Identification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="174"/>
+        <source>Mix Identification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricmoreinfo.cpp" line="176"/>
+        <source>Other Identification</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>BlueToothMain</name>
     <message>
         <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="112"/>
@@ -1616,6 +1880,34 @@ change system settings</source>
     <message>
         <location filename="../../../plugins/devices/bluetooth/deviceinfoitem.cpp" line="43"/>
         <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DeviceType</name>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricdeviceinfo.cpp" line="40"/>
+        <source>FingerPrint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricdeviceinfo.cpp" line="42"/>
+        <source>FingerVein</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricdeviceinfo.cpp" line="44"/>
+        <source>Iris</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricdeviceinfo.cpp" line="46"/>
+        <source>Face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/biometricdeviceinfo.cpp" line="48"/>
+        <source>VoicePrint</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3986,55 +4278,55 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="303"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="306"/>
         <source>min length %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="313"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="316"/>
         <source>min digit num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="322"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="325"/>
         <source>min upper num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="331"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="334"/>
         <source>min lower num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="340"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="343"/>
         <source>min other num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="350"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="353"/>
         <source>min char class %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="359"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="362"/>
         <source>max repeat %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="368"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="371"/>
         <source>max class repeat %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="377"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="380"/>
         <source>max sequence %1
 </source>
         <translation type="unfinished"></translation>
@@ -5415,32 +5707,32 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="734"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="743"/>
         <source>Change pwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="721"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="730"/>
         <source>Change type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="222"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="129"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="132"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Password</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="287"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="131"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="134"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Type</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="352"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="133"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="136"/>
         <source>Valid</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Valid</extra-contents_path>
@@ -5452,14 +5744,14 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="529"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="135"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="138"/>
         <source>Login no passwd</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Login no passwd</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="607"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="137"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="140"/>
         <source>enable autoLogin</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/enable autoLogin</extra-contents_path>
@@ -5470,48 +5762,93 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="722"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="748"/>
+        <source>Biometric Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="768"/>
+        <source>advanced settings </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="875"/>
+        <source>enable biometrics </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="944"/>
+        <source>types of biometric password </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="1023"/>
+        <source>biometric device </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.ui" line="1160"/>
         <source>Other Users</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="63"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="66"/>
         <source>User Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="143"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="146"/>
         <source>Standard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="145"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="148"/>
         <source>Admin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="147"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="150"/>
         <source>root</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="415"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="418"/>
         <source>Add new user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="752"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="761"/>
         <source>Del</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="872"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="881"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="872"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="881"/>
         <source>The user is logged in, please delete the user after logging out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1211"/>
+        <source>Add biometric feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1666"/>
+        <source>Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1680"/>
+        <source>Verify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1700"/>
+        <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
