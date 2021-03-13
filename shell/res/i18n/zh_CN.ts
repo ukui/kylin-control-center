@@ -284,10 +284,10 @@
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="69"/>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="92"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="281"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="460"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="513"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="659"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="297"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="476"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="529"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="675"/>
         <source>Update</source>
         <translation>更新</translation>
     </message>
@@ -298,128 +298,134 @@
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="101"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="117"/>
         <source>Download failed!</source>
         <translation>下载失败！</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="103"/>
+        <source>failed to get from the source!</source>
+        <translation>从源中获取失败！</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="119"/>
         <source>The download cache has been removed</source>
         <translation>下载缓存已被删除</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="191"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="207"/>
         <source>Being installed</source>
         <translation>正在安装</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="198"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="205"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="214"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="221"/>
         <source>Update succeeded!</source>
         <translation>更新成功！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="215"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="225"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="231"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="241"/>
         <source>Update failed!</source>
         <translation>更新失败！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="218"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="234"/>
         <source>Failure reason:</source>
         <translation>失败原因：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="275"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="449"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="291"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="465"/>
         <source>details</source>
         <translation>详情</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="324"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="389"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="340"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="405"/>
         <source>Update log</source>
         <translation>更新日志</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="368"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="369"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="374"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="384"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="385"/>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="390"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="406"/>
         <source>Newest:</source>
         <translation>最新：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="398"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="404"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="414"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="420"/>
         <source>Download size:</source>
         <translation>下载大小：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="431"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="447"/>
         <source>Current version:</source>
         <translation>当前版本：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="443"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="459"/>
         <source>back</source>
         <translation>收起</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="515"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="531"/>
         <source>In the pause</source>
         <translation>暂停中</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="471"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="531"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="487"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="547"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="466"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="482"/>
         <source>A single update will not automatically backup the system, if you want to backup, please click Update All.</source>
         <translation>单个更新不会自动备份系统，如需备份，请点击全部更新。</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="467"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="483"/>
         <source>Prompt information</source>
         <translation>提示信息</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="470"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="486"/>
         <source>Do not backup, continue to update</source>
         <translation>不备份，继续更新</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="472"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="488"/>
         <source>Cancel update</source>
         <translation>取消更新</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="476"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="492"/>
         <source>This time will no longer prompt</source>
         <translation>本次更新不再提示</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="542"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="550"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="558"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="566"/>
         <source>Get depends failed!</source>
         <translation>依赖获取异常！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="600"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="616"/>
         <source>In the update</source>
         <translation>更新中</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="149"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="535"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="638"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="165"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="551"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="654"/>
         <source>Ready to install</source>
         <translation>准备安装</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="718"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="734"/>
         <source>No content.</source>
         <translation>暂无内容.</translation>
     </message>
@@ -836,43 +842,43 @@ you can restore them to ensure the integrity of your system.</source>
 <context>
     <name>ChangeFaceDialog</name>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="152"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="161"/>
         <source>select custom face file</source>
         <translation>选择自定义头像文件</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="153"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="162"/>
         <source>Select</source>
         <translation>选择</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="154"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="163"/>
         <source>Position: </source>
         <translation>位置： </translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="155"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="164"/>
         <source>FileName: </source>
         <translation>文件名： </translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="156"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="165"/>
         <source>FileType: </source>
         <translation>文件类型： </translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changefacedialog.ui" line="317"/>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="157"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="166"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="170"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="179"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="170"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="179"/>
         <source>The avatar is larger than 1M, please choose again</source>
         <translation>警告，头像大于1M请重新选择</translation>
     </message>
@@ -927,34 +933,34 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="obsolete">添加新用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="208"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="244"/>
         <source>User group</source>
         <translation>用户组</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="245"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="281"/>
         <source>Add user group</source>
         <translation>添加用户组</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="280"/>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="288"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="316"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="324"/>
         <source>Tips</source>
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="280"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="316"/>
         <source>Invalid Id!</source>
         <translation>无效组ID!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="283"/>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="291"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="319"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="327"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="288"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="324"/>
         <source>Invalid Group Name!</source>
         <translation>无效组名!</translation>
     </message>
@@ -6107,7 +6113,7 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="162"/>
-        <source>In backup</source>
+        <source>In backup:</source>
         <translation>备份中：</translation>
     </message>
     <message>
@@ -7287,18 +7293,18 @@ If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation>修改分辨率或刷新率后，由于显示设备与显卡存在兼容性问题，有可能显示不正常或者无法显示．如果出现异常，系统将在%1秒后还原设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="970"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="988"/>
         <source>please insure at least one output!</source>
         <translation>请确保至少开启一个屏幕!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="970"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="977"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="988"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="995"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="977"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="995"/>
         <source>Open time should be earlier than close time!</source>
         <translation>开启时间必须大于关闭时间！</translation>
     </message>
@@ -7307,12 +7313,12 @@ If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation type="vanished">早晨时刻应早于晚上的时刻!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="987"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1005"/>
         <source>Warnning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="988"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1006"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation>抱歉，配置不能应用.</translation>

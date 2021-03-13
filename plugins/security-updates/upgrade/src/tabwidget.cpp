@@ -159,7 +159,7 @@ void TabWid::backupProgress(int progress)
         return;
     }
 //    versionInformationLab->setText("备份中："+QString::number(progress)+"%");
-    versionInformationLab->setText(tr("In backup")+":"+QString::number(progress)+"%");
+    versionInformationLab->setText(tr("In backup:")+QString::number(progress)+"%");
 
 }
 

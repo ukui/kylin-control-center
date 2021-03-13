@@ -220,10 +220,10 @@
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="69"/>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="92"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="281"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="460"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="513"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="659"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="297"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="476"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="529"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="675"/>
         <source>Update</source>
         <translation type="unfinished"></translation>
     </message>
@@ -234,128 +234,134 @@
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="101"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="117"/>
         <source>Download failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="103"/>
+        <source>failed to get from the source!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="119"/>
         <source>The download cache has been removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="191"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="207"/>
         <source>Being installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="198"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="205"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="214"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="221"/>
         <source>Update succeeded!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="215"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="225"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="231"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="241"/>
         <source>Update failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="218"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="234"/>
         <source>Failure reason:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="275"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="449"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="291"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="465"/>
         <source>details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="324"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="389"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="340"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="405"/>
         <source>Update log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="368"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="369"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="374"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="384"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="385"/>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="390"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="406"/>
         <source>Newest:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="398"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="404"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="414"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="420"/>
         <source>Download size:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="431"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="447"/>
         <source>Current version:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="443"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="459"/>
         <source>back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="466"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="482"/>
         <source>A single update will not automatically backup the system, if you want to backup, please click Update All.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="467"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="483"/>
         <source>Prompt information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="470"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="486"/>
         <source>Do not backup, continue to update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="471"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="531"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="487"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="547"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="472"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="488"/>
         <source>Cancel update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="476"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="492"/>
         <source>This time will no longer prompt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="515"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="531"/>
         <source>In the pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="542"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="550"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="558"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="566"/>
         <source>Get depends failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="600"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="616"/>
         <source>In the update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="149"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="535"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="638"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="165"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="551"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="654"/>
         <source>Ready to install</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="718"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="734"/>
         <source>No content.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -698,43 +704,43 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="152"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="161"/>
         <source>select custom face file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="153"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="162"/>
         <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="154"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="163"/>
         <source>Position: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="155"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="164"/>
         <source>FileName: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="156"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="165"/>
         <source>FileType: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changefacedialog.ui" line="317"/>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="157"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="166"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="170"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="179"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="170"/>
+        <location filename="../../../plugins/account/userinfo/changefacedialog.cpp" line="179"/>
         <source>The avatar is larger than 1M, please choose again</source>
         <translation type="unfinished"></translation>
     </message>
@@ -757,34 +763,34 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="208"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="244"/>
         <source>User group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="245"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="281"/>
         <source>Add user group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="280"/>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="288"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="316"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="324"/>
         <source>Tips</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="280"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="316"/>
         <source>Invalid Id!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="283"/>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="291"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="319"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="327"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="288"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="324"/>
         <source>Invalid Group Name!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5700,28 +5706,28 @@ If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="970"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="977"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="988"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="995"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="970"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="988"/>
         <source>please insure at least one output!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="977"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="995"/>
         <source>Open time should be earlier than close time!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="987"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1005"/>
         <source>Warnning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="988"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1006"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation type="unfinished"></translation>

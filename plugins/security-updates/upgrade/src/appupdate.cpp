@@ -93,6 +93,22 @@ void AppUpdateWid::changeDownloadState(int state)
             emit changeUpdateAllSignal();
         }
     }
+
+    else if(state == 8) //自定义错误码，下载过程软件包被删除
+    {
+        isCancel = true;
+        timer->stop();
+        appVersion->setText(tr("Download failed!"));
+        QString str = urlmsg.name;
+        appVersion->setToolTip(str+tr("failed to get from the source!"));
+        QIcon icon = QIcon::fromTheme("dialog-warning");
+        QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(16, 16)));
+        appVersionIcon->setPixmap(pixmap);
+        updateAPPBtn->hide();
+        m_updateMutual->importantList.removeOne(appAllMsg.name);
+        m_updateMutual->failedList.append(appAllMsg.name);
+        emit hideUpdateBtnSignal(false);
+    }
     else if(state == 10) //自定义错误码，下载过程软件包被删除
     {
         isCancel = true;
