@@ -88,10 +88,10 @@ BlueToothMain::BlueToothMain(QWidget *parent)
 //    frame_bottom->setMinimumHeight(340);
 //    frame_bottom->setStyleSheet("background:green;");
 
-    main_layout->addWidget(frame_top);
-    main_layout->addWidget(frame_middle);
-    main_layout->addWidget(frame_bottom);
-    main_layout->addStretch();
+    main_layout->addWidget(frame_top,1,Qt::AlignTop);
+    main_layout->addWidget(frame_middle,1,Qt::AlignTop);
+    main_layout->addWidget(frame_bottom,1,Qt::AlignTop);
+    main_layout->addStretch(10);
 
     Discovery_device_address.clear();
 
