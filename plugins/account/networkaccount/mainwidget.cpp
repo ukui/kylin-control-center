@@ -55,7 +55,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_szUuid = QUuid::createUuid().toString();
     m_bTokenValid = false;
 
-    isNetWorkOnline();
+    m_bIsOnline = isNetWorkOnline();
 
 
     init_gui();         //初始化gui
@@ -74,6 +74,9 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
 
 void MainWidget::checkNetWork(QVariantMap map) {
     QVariant ret = map.value("Connectivity");
+    if(ret.toInt() == 0) {
+        return ;
+    }
     if(ret.toInt() != 1 && ret.toInt() != 3 ) {
         if(m_autoSyn->get_swbtn()->get_active() == false) {
             m_autoSyn->get_swbtn()->set_active(true);
@@ -81,7 +84,14 @@ void MainWidget::checkNetWork(QVariantMap map) {
                 m_itemList->get_item(i)->get_swbtn()->set_active(true);
             }
         }
+        m_bIsOnline = true;
         handle_conf();
+        if(m_bIsKylinId) {
+            emit kylinIdCheck();
+        } else {
+            emit docheck();
+        }
+
         return ;
     }
     if(m_autoSyn->get_swbtn()->get_active() == true) {
@@ -89,7 +99,7 @@ void MainWidget::checkNetWork(QVariantMap map) {
         for(int i = 0;i < m_szItemlist.size(); i ++ ) {
             m_itemList->get_item(i)->get_swbtn()->set_active(false);
         }
-        handle_conf();
+        m_bIsOnline  = false;
     }
 }
 
@@ -649,14 +659,14 @@ void MainWidget::initSignalSlots() {
            }
            QFile file( m_szConfPath);
            if(file.exists() == false) {
-               if(isNetWorkOnline() == false) {
+               if(m_bIsOnline == false) {
                    showDesktopNotify(tr("Network can not reach!"));
                    return ;
                }
                emit dooss(m_szUuid);
                return ;
            }  else {
-               if(isNetWorkOnline() == false) {
+               if(m_bIsOnline == false) {
                    showDesktopNotify(tr("Network can not reach!"));
                    return ;
                }
@@ -888,7 +898,7 @@ void MainWidget::handle_conf() {
         return ;
     }
 
-    if( m_pSettings != nullptr &&  ConfigFile(m_szConfPath).Get("Auto-sync","enable").toString() == "true") {
+    if(m_pSettings != nullptr &&  ConfigFile(m_szConfPath).Get("Auto-sync","enable").toString() == "true") {
         m_stackedWidget->setCurrentWidget(m_itemList);
         m_autoSyn->make_itemon();
         for(int i  = 0;i < m_szItemlist.size();i ++) {
@@ -924,7 +934,7 @@ bool MainWidget::judge_item(const QString &enable,const int &cur) const {
 
 /* 滑动按钮点击后改变功能状态 */
 void MainWidget::handle_write(const int &on,const int &id) {
-    if(isNetWorkOnline() == false) {
+    if(m_bIsOnline == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -944,7 +954,7 @@ void MainWidget::on_switch_button(int on,int id) {
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
-    if(isNetWorkOnline() == false) {
+    if(m_bIsOnline == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -968,11 +978,6 @@ void MainWidget::on_switch_button(int on,int id) {
     if(m_szItemlist.at(id) == "shortcut" && on == 1) {
         showDesktopNotify(tr("This operation may cover your settings!"));
     }
-    //emit docheck();
-    if(isNetWorkOnline() == false) {
-        showDesktopNotify(tr("Network can not reach!"));
-        return ;
-    }
     handle_write(on,id);
 }
 
@@ -987,7 +992,7 @@ void MainWidget::on_auto_syn(int on, int id) {
         m_itemList->get_item(i)->set_active(m_bAutoSyn);
     }
 
-    if(isNetWorkOnline() == false) {
+    if(m_bIsOnline == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }

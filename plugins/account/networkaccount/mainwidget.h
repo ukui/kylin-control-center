@@ -124,6 +124,7 @@ private:
     bool            bIsLogging = false;
     QSettings         *m_pSettings;
     bool            m_bIsKylinId = false;
+    bool            m_bIsOnline = false;
 
 public slots:
     void            on_login_out();
