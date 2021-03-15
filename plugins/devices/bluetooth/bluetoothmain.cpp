@@ -140,7 +140,7 @@ void BlueToothMain::InitMainTopUI()
     label_2 = new QLabel(frame_1);
     label_2->setStyleSheet("QLabel{\
                            width: 56px;\
-                           height: 20px;\                           
+                           height: 20px;\
                            font-weight: 400;\
                            line-height: 20px;}");
     frame_1_layout->addWidget(label_2);
@@ -170,7 +170,7 @@ void BlueToothMain::InitMainTopUI()
     QLabel *label_3 = new QLabel(tr("Bluetooth adapter"),frame_2);
     label_3->setStyleSheet("QLabel{\
                            width: 56px;\
-                           height: 20px;\                           
+                           height: 20px;\
                            font-weight: 400;\
                            line-height: 20px;}");
     frame_2_layout->addWidget(label_3);
@@ -221,7 +221,7 @@ void BlueToothMain::InitMainTopUI()
     QLabel *label_5 = new QLabel(tr("Discoverable"),frame_4);
     label_5->setStyleSheet("QLabel{\
                            width: 56px;\
-                           height: 20px;\                          
+                           height: 20px;\
                            font-weight: 400;\
                            line-height: 20px;}");
     frame_4_layout->addWidget(label_5);

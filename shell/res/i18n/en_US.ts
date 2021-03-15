@@ -898,6 +898,44 @@ Please authenticate yourself to continue</source>
         <source>Bluetooth</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="170"/>
+        <source>Bluetooth adapter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="197"/>
+        <source>Show icon on taskbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="221"/>
+        <source>Discoverable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="252"/>
+        <source>My Devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="271"/>
+        <source>Other Devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="282"/>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="397"/>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="404"/>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="558"/>
+        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="719"/>
+        <source>Turn on Bluetooth</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Bluetooth</name>
@@ -3480,7 +3518,7 @@ Please retry or relogin!</source>
         <extra-contents_path>/display/screen zoom</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="268"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="273"/>
         <source>%1 Hz</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4278,55 +4316,55 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="306"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="307"/>
         <source>min length %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="316"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="317"/>
         <source>min digit num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="325"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="326"/>
         <source>min upper num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="334"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="335"/>
         <source>min lower num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="343"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="344"/>
         <source>min other num %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="353"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="354"/>
         <source>min char class %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="362"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="363"/>
         <source>max repeat %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="371"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="372"/>
         <source>max class repeat %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="380"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="381"/>
         <source>max sequence %1
 </source>
         <translation type="unfinished"></translation>
@@ -5065,14 +5103,14 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="162"/>
-        <source>In backup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="135"/>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="171"/>
         <source>Start backup,getting progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="162"/>
+        <source>In backup:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5621,42 +5659,42 @@ run start-pulseaudio-x11 manually.</source>
 <context>
     <name>UnifiedOutputConfig</name>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="70"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="77"/>
         <source>resolution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="101"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="108"/>
         <source>orientation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="106"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="113"/>
         <source>arrow-up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="107"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="114"/>
         <source>90° arrow-right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="108"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="115"/>
         <source>arrow-down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="109"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="116"/>
         <source>90° arrow-left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="138"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="145"/>
         <source>frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="143"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="150"/>
         <source>auto</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5707,32 +5745,32 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="743"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="744"/>
         <source>Change pwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="730"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="731"/>
         <source>Change type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="222"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="132"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="133"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Password</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="287"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="134"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="135"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Type</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="352"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="136"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="137"/>
         <source>Valid</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Valid</extra-contents_path>
@@ -5744,14 +5782,14 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="529"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="138"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="139"/>
         <source>Login no passwd</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/Login no passwd</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/userinfo.ui" line="607"/>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="140"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="141"/>
         <source>enable autoLogin</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/userinfo/enable autoLogin</extra-contents_path>
@@ -5797,57 +5835,57 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="146"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="147"/>
         <source>Standard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="148"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="149"/>
         <source>Admin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="150"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="151"/>
         <source>root</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="418"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="419"/>
         <source>Add new user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="761"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="762"/>
         <source>Del</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="881"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="882"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="881"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="882"/>
         <source>The user is logged in, please delete the user after logging out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1211"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1212"/>
         <source>Add biometric feature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1666"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1667"/>
         <source>Rename</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1680"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1681"/>
         <source>Verify</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1700"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1701"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5989,82 +6027,82 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="477"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="478"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="477"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="478"/>
         <source>Some applications need to be logouted to take effect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="546"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="547"/>
         <source>unify output</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/display/unify output</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="550"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="551"/>
         <source>night mode</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/display/night mode</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="558"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="559"/>
         <source>Theme follow night mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="568"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="569"/>
         <source>Hint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="569"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="570"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display
 If something goes wrong, the settings will be restored after 9 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="573"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="574"/>
         <source>Save Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="574"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="575"/>
         <source>Restore Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="582"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="583"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display 
 If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="988"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="995"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="986"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="993"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="988"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="986"/>
         <source>please insure at least one output!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="995"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="993"/>
         <source>Open time should be earlier than close time!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1005"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1003"/>
         <source>Warnning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1006"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1004"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation type="unfinished"></translation>
