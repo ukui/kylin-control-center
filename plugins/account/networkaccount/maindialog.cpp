@@ -376,11 +376,10 @@ QString MainDialog::messagebox(const int &code) const {
     case 110:ret = tr("Please check your information!");break;
     case 401:ret = tr("Please check your account!");break;
     case 500:ret = tr("Failed due to server error!");break;
-    case 501:ret = tr("User and passsword can't be empty!");break;
+    case 501:ret = tr("Please check your information!");break;
     case 502:ret = tr("User existing!");break;
     case 503:ret = tr("User doesn't exist!");break;
     case 504:ret = tr("Network can not reach!");break;
-    case 505:ret = tr("Phone can't be empty!");break;
     case 511:ret = tr("Account or password error!");break;
     case 610:ret = tr("Phone number already in used!");break;
     case 611:ret = tr("Please check your format!");break;
@@ -392,8 +391,6 @@ QString MainDialog::messagebox(const int &code) const {
     case 619:ret = tr("Sending code error occurred!");break;
     case 632:ret = tr("Phone code is expired!");break;
     case 702:ret = tr("Phone code error!");break;
-    case 703:ret = tr("Code can not be empty!");break;
-    case 704:ret = tr("MCode can not be empty!");break;
     case -1:ret = tr("Please check your information!");break;
 
     }
@@ -406,20 +403,8 @@ void MainDialog::on_login_btn() {
     set_staus(false);
     m_delBtn->setEnabled(true);
    if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
-       if(m_loginDialog->get_mcode_lineedit()->text().trimmed() == "") {
-           m_loginDialog->set_code(messagebox(703));
-           m_loginTips->show();
-           m_baseWidget->setEnabled(true);
-           set_staus(true);
-           m_loginDialog->get_mcode_widget()->set_change(1);
-           m_loginDialog->get_mcode_widget()->repaint();
-           setshow(m_stackedWidget);
-           m_loginDialog->get_mcode_lineedit()->setText("");
-           m_loginDialog->get_mcode_widget()->set_change(0);
-           emit on_login_failed();
-           return ;
-       }
-       if(m_loginDialog->get_user_edit()->text().trimmed() == "" ||
+       if(m_loginDialog->get_mcode_lineedit()->text().trimmed() == "" ||
+               m_loginDialog->get_user_edit()->text().trimmed() == "" ||
                m_loginDialog->get_login_pass()->text().trimmed() == ""
                ) {
            m_loginDialog->set_code(messagebox(501));
@@ -436,19 +421,9 @@ void MainDialog::on_login_btn() {
        }
    }
     if(m_loginDialog->get_stack_widget()->currentIndex() == 1) {
-        if(m_loginDialog->get_login_code()->text().trimmed() == "") {
-            m_loginDialog->set_code(messagebox(704));
-            m_loginCodeStatusTips->show();
-            m_baseWidget->setEnabled(true);
-            set_staus(true);
-            setshow(m_stackedWidget);
-            m_loginDialog->get_login_code()->setText("");
-            emit on_login_failed();
-            return ;
-        }
-
-        if(m_loginDialog->get_user_edit()->text().trimmed() == "") {
-            m_loginDialog->set_code(messagebox(505));
+        if(m_loginDialog->get_login_code()->text().trimmed() == "" ||
+                m_loginDialog->get_user_edit()->text().trimmed() == "") {
+            m_loginDialog->set_code(messagebox(501));
             m_loginCodeStatusTips->show();
             m_baseWidget->setEnabled(true);
             set_staus(true);
@@ -511,7 +486,7 @@ void MainDialog::on_login_btn() {
         emit on_login_failed();
         //信息填写不完整执行此处，包括密码登录以及手机登录
         if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
-            m_loginDialog->set_code(messagebox(501));
+            m_loginDialog->set_code(messagebox(-1));
             m_loginTips->show();
             m_baseWidget->setEnabled(true);
             set_staus(true);
@@ -524,7 +499,7 @@ void MainDialog::on_login_btn() {
             m_loginDialog->get_mcode_lineedit()->setText("");
             m_baseWidget->setEnabled(true);
             set_staus(true);
-            m_loginDialog->set_code(messagebox(505));
+            m_loginDialog->set_code(messagebox(-1));
             m_loginCodeStatusTips->show();
             setshow(m_stackedWidget);
             return ;
@@ -586,7 +561,7 @@ void MainDialog::on_send_code_log() {
     } else {
         m_loginDialog->get_user_mcode()->setEnabled(true);
         m_loginDialog->get_mcode_lineedit()->setText("");
-        m_loginDialog->set_code(messagebox(704));
+        m_loginDialog->set_code(messagebox(-1));
         m_loginCodeStatusTips->show();
         setshow(m_stackedWidget);
 

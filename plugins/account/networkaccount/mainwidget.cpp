@@ -48,14 +48,9 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     }
 
 
-    QDBusConnection::systemBus().connect(QString("org.freedesktop.NetworkManager"), QString("/org/freedesktop/NetworkManager"), QString("org.freedesktop.NetworkManager"),
-                                          "PropertiesChanged", this, SLOT(checkNetWork(QVariantMap)));
-
-
     m_szUuid = QUuid::createUuid().toString();
+    m_bHasNetwork = true;
     m_bTokenValid = false;
-
-    isNetWorkOnline();
 
 
     init_gui();         //初始化gui
@@ -63,70 +58,6 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     initSignalSlots();
     layoutUI();
     dbusInterface();
-
-    QFile tokenFile(QDir::homePath() + "/.cache/kylinId/token");
-    if(tokenFile.exists()) {
-        m_mainWidget->setCurrentWidget(m_widgetContainer);
-    } else {
-        m_mainWidget->setCurrentWidget(m_nullWidget);
-    }
-}
-
-void MainWidget::checkNetWork(QVariantMap map) {
-    QVariant ret = map.value("Connectivity");
-    if(ret.toInt() != 1 && ret.toInt() != 3 ) {
-        if(m_autoSyn->get_swbtn()->get_active() == false) {
-            m_autoSyn->get_swbtn()->set_active(true);
-            for(int i = 0;i < m_szItemlist.size(); i ++ ) {
-                m_itemList->get_item(i)->get_swbtn()->set_active(true);
-            }
-        }
-        handle_conf();
-        return ;
-    }
-    if(m_autoSyn->get_swbtn()->get_active() == true) {
-        m_autoSyn->get_swbtn()->set_active(false);
-        for(int i = 0;i < m_szItemlist.size(); i ++ ) {
-            m_itemList->get_item(i)->get_swbtn()->set_active(false);
-        }
-        handle_conf();
-    }
-}
-
-bool MainWidget::isNetWorkOnline()
-{
-    QVariant ret;
-    QDBusMessage message = QDBusMessage::createMethodCall("org.freedesktop.NetworkManager",
-                                                          "/org/freedesktop/NetworkManager",
-                                                          "org.freedesktop.NetworkManager",
-                                                          "CheckConnectivity");
-    QDBusMessage response =  QDBusConnection::systemBus().call(message);
-
-    if(response.type() == QDBusMessage::ReplyMessage) {
-        QDBusVariant value = qvariant_cast<QDBusVariant>(response.arguments().takeFirst());
-        ret = value.variant();
-        if(ret.isValid() == false) {
-            ret = response.arguments().takeFirst();
-            if(ret.toInt() != 3 && ret.toInt() != 1) {
-                if(m_autoSyn->get_swbtn()->get_active() == false) {
-                    m_autoSyn->get_swbtn()->set_active(true);
-                    for(int i = 0;i < m_szItemlist.size(); i ++ ) {
-                        m_itemList->get_item(i)->get_swbtn()->set_active(true);
-                    }
-                }
-                handle_conf();
-                return true;
-            }
-        }
-    }
-    if(m_autoSyn->get_swbtn()->get_active() == true) {
-        m_autoSyn->get_swbtn()->set_active(false);
-        for(int i = 0;i < m_szItemlist.size(); i ++ ) {
-            m_itemList->get_item(i)->get_swbtn()->set_active(false);
-        }
-        handle_conf();
-    }
-    return false;
 }
 
 void MainWidget::dbusInterface() {
@@ -236,9 +167,12 @@ void MainWidget::dbusInterface() {
     connect(m_dbusClient,&DBusUtils::taskFinished,this,[=] (const QString &taskName,int ret) {
         Q_UNUSED(taskName);
         if(ret == 504) {
+            m_bHasNetwork = false;
             if(taskName == "logout") {
                 m_mainWidget->setCurrentWidget(m_nullWidget);
             }
+        } else {
+            m_bHasNetwork = true;
         }
 
         if(taskName == "logout") {
@@ -278,7 +212,7 @@ void MainWidget::dbusInterface() {
             m_syncTimeLabel->setText(tr("Waiting for initialization..."));
         //qDebug() << "csacasacasca";
         if(keyList.size() > 2) {
-            if(isNetWorkOnline() == false) {
+            if(m_bHasNetwork == false) {
                 showDesktopNotify(tr("Network can not reach!"));
                 return ;
             }
@@ -334,6 +268,7 @@ void MainWidget::dbusInterface() {
         } else {
             m_pSettings->setValue("Auto-sync/enable","true");
             emit closedialog();
+            m_mainWidget->setCurrentWidget(m_widgetContainer);
             handle_conf();
         }
     });
@@ -356,9 +291,7 @@ void MainWidget::finishedLogout(int ret) {
 void MainWidget::checkUserName(QString name) {
     m_szCode = name;
     if(name == "" || name =="201" || name == "203" || name == "401" || name == "500" || name == "502") {
-        if(m_mainWidget->currentWidget() != m_nullWidget) {
-            m_mainWidget->setCurrentWidget(m_nullWidget);
-        }
+        m_mainWidget->setCurrentWidget(m_nullWidget);
         if(m_bIsKylinId) {
             emit kylinIdLogOut();
         } else {
@@ -376,9 +309,7 @@ void MainWidget::checkUserName(QString name) {
         m_syncTimeLabel->setText(tr("Waiting for initialization..."));
     //setshow(m_mainWidget);
     if(m_bTokenValid == false) {
-        if(m_mainWidget->currentWidget() != m_widgetContainer) {
-            m_mainWidget->setCurrentWidget(m_widgetContainer);
-        }
+        m_mainWidget->setCurrentWidget(m_widgetContainer);
         QtConcurrent::run([=] () {
 
             QProcess proc;
@@ -571,34 +502,15 @@ void MainWidget::initSignalSlots() {
 
 
     connect(&m_fsWatcher,&QFileSystemWatcher::fileChanged,this,[this] () {
-        QFile token(QDir::homePath() + "/.cache/kylinId/token");
-        if(token.exists() == true && m_pSettings != nullptr) {
+        QFile conf( m_szConfPath);
+        if(conf.exists() == true && m_pSettings != nullptr) {
             QFile fileConf(m_szConfPath);
-            if(m_pSettings != nullptr && fileConf.exists()) {
-                if(m_mainWidget->currentWidget() != m_widgetContainer) {
-                    m_mainWidget->setCurrentWidget(m_widgetContainer);
-                }
+            if(m_pSettings != nullptr && fileConf.exists())
                 m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
-                m_autoSyn->get_swbtn()->set_active(true);
-                for(int i = 0;i < m_szItemlist.size();i ++) {
-                    m_itemList->get_item(i)->get_swbtn()->set_active(true);
-                }
-            } else {
-                if(m_mainWidget->currentWidget() != m_nullWidget) {
-                    m_mainWidget->setCurrentWidget(m_nullWidget);
-                }
+            else
                 m_syncTimeLabel->setText(tr("Waiting for initialization..."));
-                m_autoSyn->get_swbtn()->set_active(false);
-                for(int i = 0;i < m_szItemlist.size();i ++) {
-                    m_itemList->get_item(i)->get_swbtn()->set_active(false);
-                }
-            }
-            if(m_autoSyn->get_swbtn()->get_active() == true)
+            if(m_autoSyn->get_swbtn()->get_active() == 1)
                 handle_conf();
-        } else if(!token.exists()){
-            if(m_mainWidget->currentWidget() != m_nullWidget) {
-                m_mainWidget->setCurrentWidget(m_nullWidget);
-            }
         }
     });
 
@@ -609,7 +521,7 @@ void MainWidget::initSignalSlots() {
     });
 
     connect(m_listTimer,&QTimer::timeout,this,[this] () {
-        if(isNetWorkOnline() == false) {
+        if(m_bHasNetwork == false) {
             m_listTimer->stop();
             showDesktopNotify(tr("Network can not reach!"));
             return ;
@@ -619,7 +531,7 @@ void MainWidget::initSignalSlots() {
     });
 
     connect(this,&MainWidget::closedialog,this,[this] () {
-        if(isNetWorkOnline() == false) {
+        if(m_bHasNetwork == false) {
             showDesktopNotify(tr("Network can not reach!"));
             return ;
         }
@@ -650,14 +562,14 @@ void MainWidget::initSignalSlots() {
            }
            QFile file( m_szConfPath);
            if(file.exists() == false) {
-               if(isNetWorkOnline() == false) {
+               if(m_bHasNetwork == false) {
                    showDesktopNotify(tr("Network can not reach!"));
                    return ;
                }
                emit dooss(m_szUuid);
                return ;
            }  else {
-               if(isNetWorkOnline() == false) {
+               if(m_bHasNetwork == false) {
                    showDesktopNotify(tr("Network can not reach!"));
                    return ;
                }
@@ -805,7 +717,7 @@ void MainWidget::on_login() {
 
 /* 登录过程处理事件 */
 void MainWidget::open_cloud() {
-    if(isNetWorkOnline() == false) {
+    if(m_bHasNetwork == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -833,7 +745,7 @@ bool MainWidget::eventFilter(QObject *watched, QEvent *event) {
 }
 
 void MainWidget::finished_conf(int ret) {
-    if(isNetWorkOnline() == false) {
+    if(m_bHasNetwork == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -847,7 +759,7 @@ void MainWidget::finished_conf(int ret) {
 /* 登录成功处理事件 */
 void MainWidget::finished_load(int ret, QString uuid) {
 
-    if(isNetWorkOnline() == false) {
+    if(m_bHasNetwork == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -925,7 +837,7 @@ bool MainWidget::judge_item(const QString &enable,const int &cur) const {
 
 /* 滑动按钮点击后改变功能状态 */
 void MainWidget::handle_write(const int &on,const int &id) {
-    if(isNetWorkOnline() == false) {
+    if(m_bHasNetwork == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -945,10 +857,6 @@ void MainWidget::on_switch_button(int on,int id) {
     if(m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
-    if(isNetWorkOnline() == false) {
-        showDesktopNotify(tr("Network can not reach!"));
-        return ;
-    }
     if( m_exitCloud_btn->property("on") == true || !m_bAutoSyn) {
         if(m_itemList->get_item(id)->get_swbtn()->get_swichbutton_val() == 1)
             m_itemList->get_item(id)->make_itemoff();
@@ -960,6 +868,10 @@ void MainWidget::on_switch_button(int on,int id) {
         m_key = m_szItemlist.at(id);
 
         if(m_key != "") {
+            if(m_bHasNetwork == false) {
+                showDesktopNotify(tr("Network can not reach!"));
+                return ;
+            }
             //QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
             emit dosingle(m_key);
         }
@@ -970,7 +882,7 @@ void MainWidget::on_switch_button(int on,int id) {
         showDesktopNotify(tr("This operation may cover your settings!"));
     }
     //emit docheck();
-    if(isNetWorkOnline() == false) {
+    if(m_bHasNetwork == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -988,7 +900,7 @@ void MainWidget::on_auto_syn(int on, int id) {
         m_itemList->get_item(i)->set_active(m_bAutoSyn);
     }
 
-    if(isNetWorkOnline() == false) {
+    if(m_bHasNetwork == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -1143,6 +1055,7 @@ void MainWidget::get_key_info(QString info) {
     }
 
     bool bIsFailed = false;
+    //qDebug()<<"networkaccount:"+info;
     if(info.contains(",")) {
         m_keyInfoList = info.split(',');
     } else {
@@ -1183,6 +1096,10 @@ void MainWidget::get_key_info(QString info) {
                 }
             }
         }
+
+        //if(keys != "")
+            //showDesktopNotify("同步这些项目失败：" + keys);
+
         m_autoSyn->make_itemoff();
         for(int i = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(false);
@@ -1203,7 +1120,7 @@ void MainWidget::showDesktopNotify(const QString &message)
     QList<QVariant> args;
     args<<(QCoreApplication::applicationName())
     <<((unsigned int) 0)
-    <<QString("/usr/share/icons/ukui/scalable/apps/kylin-cloud-account.svg")
+    <<QString("qweq")
     <<tr("Cloud ID desktop message") //显示的是什么类型的信息
     <<message //显示的具体信息
     <<QStringList()
@@ -1213,7 +1130,7 @@ void MainWidget::showDesktopNotify(const QString &message)
 }
 
 void MainWidget::loginSuccess(int ret) {
-    if(isNetWorkOnline() == false) {
+    if(m_bHasNetwork == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }

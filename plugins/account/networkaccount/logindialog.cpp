@@ -156,7 +156,7 @@ void LoginDialog::startaction_1() {
         m_accountLineEdit->setFocus();
         //m_accountLineEdit->setText("");
         m_accountLineEdit->setMaxLength(11);
-        QRegExp regx("^1[3-9]\\d{9}$");
+        QRegExp regx("^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$");
         QValidator *validator = new QRegExpValidator(regx, m_accountLineEdit );
         m_accountLineEdit->setValidator(validator);
         m_accountLogin_btn->setMaximumSize(126,36);
@@ -348,7 +348,7 @@ bool LoginDialog::login_account_thr_phone() {
 
     //Congfigurate the widgets
     m_accountLineEdit->setFocus();
-    QRegExp regx("^1[3-9]\\d{9}$");
+    QRegExp regx("^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$");
     QValidator *validator = new QRegExpValidator(regx, m_accountLineEdit );
     m_accountLineEdit->setValidator(validator);
     m_mcodePhoneLineEdit->setMaximumSize(192,36);
