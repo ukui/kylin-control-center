@@ -35,7 +35,7 @@
 #include "Uslider/uslider.h"
 
 #include "buildpicunitsworker.h"
-
+#include "pictureunit.h"
 
 namespace Ui {
 class Screenlock;
@@ -68,7 +68,7 @@ private:
     void setLockBackground(bool status);
     bool getLockStatus();
     void connectToServer();
-
+    PictureUnit * prePicUnit;
 private:
     Ui::Screenlock *ui;
 

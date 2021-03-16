@@ -22,7 +22,7 @@
 
 #include <QLabel>
 #include <QMouseEvent>
-
+#include <QEvent>
 
 class PictureUnit : public QLabel
 {
@@ -35,15 +35,19 @@ public:
 public:
     void setFilenameText(QString fn);
     QString filenameText();
-
+    void changeClickedFlag(bool flag);
+    bool getClickedFlag();
+    void enterEvent(QEvent *e);
+    void leaveEvent(QEvent *e);
 public:
     QString _filename;
-
+    QString clickedStyleSheet;
 protected:
     void mousePressEvent(QMouseEvent * e);
 
-
-
+private:
+    bool clickedFlag;
+    QString hoverStyleSheet;
 Q_SIGNALS:
     void clicked(QString filename);
 
