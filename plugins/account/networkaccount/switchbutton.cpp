@@ -77,9 +77,9 @@ void SwitchButton::paintEvent(QPaintEvent *event) {
     painter.setRenderHint(QPainter::Antialiasing); //kan ju ci
     painter.setPen(Qt::NoPen);
     QColor colorInactive(233,233,233);
-    if(m_bIsActive == 1 && m_bIsOn) {
+    if(m_bIsActive == true && m_bIsOn) {
         *m_buttonColor = m_bgColorOn;
-    } else if(m_bIsActive == 1 && !m_bIsOn) {
+    } else if(m_bIsActive == true && !m_bIsOn) {
         *m_buttonColor = m_bgColorOff;
     } else {
         *m_buttonColor = colorInactive;
@@ -118,19 +118,19 @@ void SwitchButton::set_id(const int &id) {
 }
 
 /* 让SwitchButton处于可用状态 */
-void SwitchButton::set_active(const bool &ok) {
+void SwitchButton::set_active(bool ok) {
     m_bIsActive = ok;
     update();
 }
 
 /* 获取按钮是否可用 */
-int SwitchButton::get_active() const {
+bool SwitchButton::get_active() const {
     return m_bIsActive;
 }
 
 /* 播放按钮开启关闭动画 */
 void SwitchButton::startAnimation() { //滑动按钮动作播放
-    if(m_bIsActive == 0) {
+    if(m_bIsActive == false) {
         return ;
     }
     int pos = 4;
@@ -154,7 +154,7 @@ void SwitchButton::startAnimation() { //滑动按钮动作播放
 
 /* 按钮按下处理 */
 void SwitchButton::mousePressEvent(QMouseEvent *event) {
-    if(m_bIsActive == 0) {
+    if(m_bIsActive == false) {
         return ;
     }
     Q_UNUSED(event);
