@@ -107,7 +107,6 @@ Theme::Theme()
     ui->setupUi(pluginWidget);
 
     setupGSettings();
-    initCursorName();
     initTitleLabel();
     initSearchText();
 
@@ -490,7 +489,6 @@ void Theme::initCursorTheme(){
     });
 
     for (QString cursor : cursorThemes){
-
         QList<QPixmap> cursorVec;
         QString path = CURSORS_THEMES_PATH + cursor;
         XCursorTheme *cursorTheme = new XCursorTheme(path);
@@ -501,15 +499,7 @@ void Theme::initCursorTheme(){
             cursorVec.append(QPixmap::fromImage(image));
         }
 
-
-        if (!QLocale::system().name().compare("ZH_CN", Qt::CaseInsensitive)
-                && mCursorMap.keys().contains(cursor)) {
-
-            cursor = mCursorMap.value(cursor);
-            currentCursorTheme = mCursorMap.value(currentCursorTheme).isEmpty() ? currentCursorTheme : mCursorMap.value(currentCursorTheme);
-        }
-
-        ThemeWidget * widget  = new ThemeWidget(QSize(24, 24), cursor, cursorVec, pluginWidget);
+        ThemeWidget * widget  = new ThemeWidget(QSize(24, 24), dullCursorTranslation(cursor), cursorVec, pluginWidget);
         widget->setValue(cursor);
 
         //加入Layout
@@ -557,13 +547,6 @@ void Theme::initConnection() {
 #else
 
 #endif
-}
-
-void Theme::initCursorName() {
-    mCursorMap.insert("blue-crystal", "蓝水晶");
-    mCursorMap.insert("dark-sense",   "深色质感");
-    mCursorMap.insert("DMZ-Black",    "黑");
-    mCursorMap.insert("DMZ-White",    "白");
 }
 
 QStringList Theme::_getSystemCursorThemes() {
@@ -654,15 +637,30 @@ void Theme::kwinCursorSlot(QString value) {
     QDBusConnection::sessionBus().send(message);
 }
 
+QString Theme::dullCursorTranslation(QString str) {
+    if (!QString::compare(str, "blue-crystal")){
+        return QObject::tr("blue-crystal");
+    } else if (!QString::compare(str, "dark-sense")) {
+        return QObject::tr("dark-sense");
+    } else if (!QString::compare(str, "DMZ-Black")) {
+        return QObject::tr("DMZ-Black");
+    } else if (!QString::compare(str, "DMZ-White")) {
+        return QObject::tr("DMZ-White");
+    } else {
+        return str;
+    }
+}
+
 QString Theme::dullTranslation(QString str) {
     if (!QString::compare(str, "basic")){
         return QObject::tr("basic");
-    } else if (!QString::compare(str, "classical")){
+    } else if (!QString::compare(str, "classical")) {
         return QObject::tr("classical");
-    } else if (!QString::compare(str, "default")){
+    } else if (!QString::compare(str, "default")) {
         return QObject::tr("default");
-    } else
+    } else {
         return QObject::tr("Unknown");
+    }
 }
 
 // reset all of themes, include cursor, icon,and etc...

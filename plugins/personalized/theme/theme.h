@@ -77,8 +77,6 @@ private:
     WidgetGroup *cursorThemeWidgetGroup;
     WidgetGroup *iconThemeWidgetGroup;
 
-    QHash<QString, QString> mCursorMap;
-
 public:
     Theme();
     ~Theme();
@@ -99,7 +97,6 @@ public:
     void initCursorTheme();
     void initEffectSettings();
     void initConnection();
-    void initCursorName();
 
     void buildThemeModeBtn(QPushButton * button, QString name, QString icon);
 
@@ -115,6 +112,8 @@ private:
     QStringList readFile(QString filepath);
     void setupGSettings();
     void kwinCursorSlot(QString value);
+
+    QString dullCursorTranslation(QString str);
 
 private slots:
     void resetBtnClickSlot();
