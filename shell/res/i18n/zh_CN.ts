@@ -287,7 +287,7 @@
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="297"/>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="476"/>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="529"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="675"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="679"/>
         <source>Update</source>
         <translation>更新</translation>
     </message>
@@ -407,25 +407,30 @@
         <translation>本次更新不再提示</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="558"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="566"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="555"/>
+        <source>Calculate the download speed</source>
+        <translation>正在获取当前下载进度</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="562"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="570"/>
         <source>Get depends failed!</source>
         <translation>依赖获取异常！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="616"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="620"/>
         <source>In the update</source>
         <translation>更新中</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="165"/>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="551"/>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="654"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="658"/>
         <source>Ready to install</source>
         <translation>准备安装</translation>
     </message>
     <message>
-        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="734"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="738"/>
         <source>No content.</source>
         <translation>暂无内容.</translation>
     </message>
@@ -3800,13 +3805,13 @@ folder will be deleted!</source>
 <context>
     <name>MainWidget</name>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="263"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="273"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.h" line="93"/>
         <source>Disconnected</source>
         <translation>未连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="370"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="380"/>
         <source>Your account：%1</source>
         <translation>您的云账户：%1</translation>
     </message>
@@ -3816,19 +3821,19 @@ Please retry for login!</source>
         <translation type="vanished">OSS访问失败，请检查您的网络后再登录！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="426"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1096"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1117"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="436"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1101"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1122"/>
         <source>Exit</source>
         <translation>退出登录</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="696"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="706"/>
         <source>Sync</source>
         <translation>同步中</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="437"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="447"/>
         <source>Sign in</source>
         <translation>登录</translation>
     </message>
@@ -3837,98 +3842,97 @@ Please retry for login!</source>
         <translation type="vanished">开启单项同步</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="351"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="361"/>
         <source>Logout failed,please check your connection</source>
         <translation>登录失败，请检查你的网络连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="675"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="685"/>
         <source>Stop sync</source>
         <translation>结束同步</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="700"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="710"/>
         <source>Sync your settings</source>
         <translation>同步您的设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="704"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="714"/>
         <source>Your account:%1</source>
         <translation>您的云账户：%1</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="705"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="715"/>
         <source>Auto sync</source>
         <translation>自动同步</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="497"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="507"/>
         <source>Waitting for sync!</source>
         <translation>等待同步！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="685"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="695"/>
         <source>Synchronize your personalized settings and data</source>
         <translation>同步您账户的数据以及个性化设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="969"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="979"/>
         <source>This operation may cover your settings!</source>
         <translation>该操作可能覆盖您现有的设置！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="275"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="373"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="580"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1052"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1081"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1104"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1125"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="285"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="383"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="590"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1057"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1086"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1109"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1130"/>
         <source>The latest time sync is: </source>
         <translation>上次同步时间为: </translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="277"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="375"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="589"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="287"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="385"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="599"/>
         <source>Waiting for initialization...</source>
         <translation>等待云账户初始化...</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="281"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="613"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="622"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="653"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="660"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="808"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="836"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="850"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="928"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="948"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="973"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="991"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1216"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="291"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="623"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="632"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="663"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="670"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="818"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="846"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="860"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="938"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="958"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="996"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1221"/>
         <source>Network can not reach!</source>
         <translation>网络不可达！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="544"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="554"/>
         <source>The Cloud Account Service version is out of date!</source>
         <translation>云账户服务版本已经过期，请升级！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="763"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="773"/>
         <source>KylinID open error!</source>
         <translation>麒麟ID客户端打开失败!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="856"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="866"/>
         <source>Unauthorized device or OSS falied.
 Please retry or relogin!</source>
         <translation>设备凭证已过期，请重新登录！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="863"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="873"/>
         <source>Authorization failed!</source>
         <translation>认证失败，请重新登录！</translation>
     </message>
@@ -3938,7 +3942,7 @@ Please retry or relogin!</source>
         <translation>该操作可能覆盖您目前的快捷键！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1206"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1211"/>
         <source>Cloud ID desktop message</source>
         <translation>云账户消息</translation>
     </message>
@@ -3967,7 +3971,7 @@ Please retry or relogin!</source>
         <translation type="vanished">同步失败，请检查您的网络连接或者登出再重试一次！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1181"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1186"/>
         <source>%1,</source>
         <translation>%1,</translation>
     </message>
@@ -5678,7 +5682,7 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="277"/>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="103"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="104"/>
         <source>Lock screen when screensaver boot</source>
         <translation>激活屏保时锁定屏幕</translation>
         <extra-contents_path>/screenlock/Lock screen when screensaver boot</extra-contents_path>
@@ -5709,7 +5713,7 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="205"/>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="101"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="102"/>
         <source>Show picture of screenlock on screenlogin</source>
         <translation>显示锁屏壁纸在登录页面</translation>
         <extra-contents_path>/screenlock/Show picture of screenlock on screenlogin</extra-contents_path>
@@ -5735,42 +5739,42 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="vanished">从不</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="122"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="123"/>
         <source>1m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="122"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="123"/>
         <source>5m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="122"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="123"/>
         <source>10m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="122"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="123"/>
         <source>30m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="122"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="123"/>
         <source>45m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="123"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="124"/>
         <source>1h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="123"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="124"/>
         <source>1.5h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="123"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="124"/>
         <source>3h</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7429,7 +7433,7 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="292"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="114"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="115"/>
         <source>Select from</source>
         <translation>选择背景形式</translation>
         <extra-contents_path>/wallpaper/Select from</extra-contents_path>
@@ -7440,21 +7444,21 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="421"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="116"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="117"/>
         <source>Browser local wp</source>
         <translation>浏览本地壁纸</translation>
         <extra-contents_path>/wallpaper/Browser local wp</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="440"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="120"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="121"/>
         <source>Reset to default</source>
         <translation>恢复默认设置</translation>
         <extra-contents_path>/wallpaper/Reset to default</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/personalized/wallpaper/wallpaper.ui" line="402"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="118"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="119"/>
         <source>Browser online wp</source>
         <translation>浏览线上壁纸</translation>
         <extra-contents_path>/wallpaper/Browser online wp</extra-contents_path>
@@ -7481,12 +7485,12 @@ run start-pulseaudio-x11 manually.</source>
         <translation>背景</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="135"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="136"/>
         <source>picture</source>
         <translation>图片</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="135"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="136"/>
         <source>color</source>
         <translation>颜色</translation>
     </message>
@@ -7495,7 +7499,7 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="obsolete">添加自定义快捷键</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="155"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="156"/>
         <source>Custom color</source>
         <translation>自定义颜色</translation>
     </message>
@@ -7524,48 +7528,48 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="vanished">适合宽度</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="435"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="445"/>
         <source>Wallpaper files(*.jpg *.jpeg *.bmp *.dib *.png *.jfif *.jpe *.gif *.tif *.tiff *.wdp)</source>
         <translation>图片文件(*.jpg *.jpeg *.bmp *.dib *.png *.jfif *.jpe *.gif *.tif *.tiff *.wdp)</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="435"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="445"/>
         <source>allFiles(*.*)</source>
         <translation>所有文件(*.*)</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="442"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="477"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="452"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="487"/>
         <source>select custom wallpaper file</source>
         <translation>选择自定义壁纸文件</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="443"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="478"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="453"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="488"/>
         <source>Select</source>
         <translation>选择</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="444"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="479"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="454"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="489"/>
         <source>Position: </source>
         <translation>位置： </translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="445"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="480"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="455"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="490"/>
         <source>FileName: </source>
         <translation>文件名： </translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="446"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="481"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="456"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="491"/>
         <source>FileType: </source>
         <translation>文件类型： </translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="447"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="482"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="457"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="492"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
