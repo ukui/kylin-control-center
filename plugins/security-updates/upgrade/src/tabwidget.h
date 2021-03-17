@@ -148,6 +148,10 @@ public slots:
     void isAutoBackupChanged();
 
     void getReplyFalseSlot();
+
+private slots:
+    void receiveBackupStartResult(int result);
+    void whenStateIsDuing();
 };
 
 #endif // TABWIDGET_H

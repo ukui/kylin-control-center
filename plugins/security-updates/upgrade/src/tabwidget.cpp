@@ -1,4 +1,5 @@
 #include "tabwidget.h"
+#include <kybackup/backuptools-define.h>
 
 TabWid::TabWid(QWidget *parent):QWidget(parent)
 {
@@ -166,22 +167,6 @@ void TabWid::backupProgress(int progress)
 void TabWid::bakeupFinish(int result)
 {
     switch (result) {
-    case 0:
-//        versionInformationLab->setText(tr("开始备份，正在获取进度")+"...");
-        versionInformationLab->setText(tr("Start backup,getting progress")+"...");
-        return;
-    case -1:
-//        backupMessageBox(tr("写入配置文件失败，本次更新不会备份系统！"));
-        backupMessageBox(tr("Failed to write configuration file, this update will not back up the system!"));
-        break;
-    case -2:
-//        backupMessageBox(tr("备份空间不足，本次更新不会备份系统！"));
-        backupMessageBox(tr("Insufficient backup space, this update will not backup your system!"));
-        break;
-    case -8:
-//        backupMessageBox(tr("麒麟备份还原工具无法找到UUID，本次更新不会备份系统!"));
-        backupMessageBox(tr("Kylin backup restore tool could not find the UUID, this update will not backup the system!"));
-        break;
     case -20:
 //        versionInformationLab->setText(tr("备份过程被中断，停止更新！"));
         versionInformationLab->setText(tr("Backup interrupted, stop updating!"));
@@ -199,12 +184,7 @@ void TabWid::bakeupFinish(int result)
 
 void TabWid::backupHideUpdateBtn(int result)
 {
-    if(result == 0)
-    {
-        checkUpdateBtn->start();
-        checkUpdateBtn->setEnabled(false);
-    }
-    else if(result == 99)
+    if(result == 99)
     {
         checkUpdateBtn->start();
 //        versionInformationLab->setText("正在更新...");
@@ -230,6 +210,8 @@ void TabWid::bacupInit()
     backup->moveToThread(backupThread);
     connect(this,&TabWid::needBackUp,backup,&BackUp::needBacdUp,Qt::BlockingQueuedConnection);//同步信号，阻塞，取返回值
     connect(this,&TabWid::startBackUp,backup,&BackUp::startBackUp);
+    connect(backup, &BackUp::calCapacity, this, &TabWid::whenStateIsDuing);
+    connect(backup, &BackUp::backupStartRestult, this, &TabWid::receiveBackupStartResult);
     connect(backup,&BackUp::bakeupFinish,this,&TabWid::bakeupFinish);
     connect(backup,&BackUp::backupProgress,this,&TabWid::backupProgress);
     connect(backup,&BackUp::bakeupFinish,this,&TabWid::backupHideUpdateBtn);
@@ -745,4 +727,39 @@ void TabWid::getReplyFalseSlot()
 {
     isConnectSourceSignal = true;
     disconnectSource();
+}
+
+void TabWid::receiveBackupStartResult(int result)
+{
+    switch (result) {
+    case int(backuptools::backup_result::BACKUP_START_SUCCESS):
+//        versionInformationLab->setText(tr("开始备份，正在获取进度")+"...");
+        versionInformationLab->setText(tr("Start backup,getting progress")+"...");
+        checkUpdateBtn->start();
+        checkUpdateBtn->setEnabled(false);
+        return;
+    case int(backuptools::backup_result::WRITE_STORAGEINFO_ADD_ITEM_FAIL):
+    case int(backuptools::backup_result::WRITE_STORAGEINFO_UPDATE_ITEM_FAIL):
+//        backupMessageBox(tr("写入配置文件失败，本次更新不会备份系统！"));
+        backupMessageBox(tr("Failed to write configuration file, this update will not back up the system!"));
+        break;
+    case int(backuptools::backup_result::BACKUP_CAPACITY_IS_NOT_ENOUGH):
+//        backupMessageBox(tr("备份空间不足，本次更新不会备份系统！"));
+        backupMessageBox(tr("Insufficient backup space, this update will not backup your system!"));
+        break;
+    case int(backuptools::backup_result::INC_NOT_FOUND_UUID):
+//        backupMessageBox(tr("麒麟备份还原工具无法找到UUID，本次更新不会备份系统!"));
+        backupMessageBox(tr("Kylin backup restore tool could not find the UUID, this update will not backup the system!"));
+        break;
+    default:
+        backupMessageBox(tr("Other err! please refers /var/log/backup.txt!"));
+        break;
+    }
+}
+
+void TabWid::whenStateIsDuing()
+{
+    versionInformationLab->setText(tr("Calculating Capacity..."));
+    checkUpdateBtn->start();
+    checkUpdateBtn->setEnabled(false);
 }

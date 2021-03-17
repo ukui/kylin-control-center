@@ -1,4 +1,5 @@
 #include "backup.h"
+#include <kybackup/backuptools-define.h>
 
 #define TIMESTAMP_PATH "/var/lib/kylin-software-properties/template/kylin-source-status"
 #define TIMESTAMP_TAB "UpdateTime="
@@ -10,7 +11,7 @@
 
 #define BACKUP_PATH "/usr/bin/kybackup"
 
-const int needBack = 99;
+const int needBack = int(backuptools::backup_state::BACKUP_STATE_INIT);
 
 BackUp::BackUp(QObject *parent) : QObject(parent)
 {
@@ -40,6 +41,12 @@ void BackUp::creatInterface()
     interface->deleteLater();
     interface = new QDBusInterface(BACKUP_DBUS_SERVICE,BACKUP_DBUS_PATH, BACKUP_DBUS_INTERFACE,QDBusConnection::systemBus());
     connect(interface,SIGNAL(sendRate(int,int)),this,SLOT(sendRate(int,int)));
+#if 0
+    connect(interface, SIGNAL(sendStartBackupResult(int)), this, SIGNAL(bakeupFinish(int)));
+#else
+    connect(interface, SIGNAL(sendStartBackupResult(int)), this, SLOT(receiveStartBackupResult(int)));
+#endif
+
     watcher->deleteLater();
     watcher = new QDBusServiceWatcher(BACKUP_DBUS_SERVICE,QDBusConnection::systemBus(),QDBusServiceWatcher::WatchForOwnerChange,this);
     connect(watcher,  &QDBusServiceWatcher::serviceOwnerChanged,this, &BackUp::onDBusNameOwnerChanged);
@@ -56,12 +63,14 @@ int BackUp::needBacdUp()
     //备份工具是否可用
     if(!haveBackTool())
         return -1;
-    //正在备份
-    if(bakeupState==2||bakeupState==5)
-        return 1;
-    //备份工具占用
-    if(bakeupState!=needBack)
-        return -2;
+    if (m_isActive) {
+        //正在备份
+        if(bakeupState==int(backuptools::backup_state::FULL_BACKUP_SYSUPDATE) || bakeupState==int(backuptools::backup_state::INC_BACKUP_SYSUPDATE))
+            return 1;
+        //备份工具占用
+        if(bakeupState!=needBack)
+            return -2;
+    }
     //获取时间戳
     if(!readSourceManagerInfo())
         return -3;
@@ -73,36 +82,54 @@ int BackUp::needBacdUp()
 
 void BackUp::sendRate(int sta,int pro)
 {
+    if (sta == int(backuptools::backup_state::DU_ING)) {
+        emit calCapacity();
+        return;
+    }
     if(!setProgress)
         return;
     qDebug()<<"状态码:"<<sta<<"  进度："<<pro<<"%";
-    if(sta!=1&&sta!=2&&sta!=4&&sta!=5&&sta!=99)
+    if(sta!=int(backuptools::backup_state::FULL_BACKUP_SYS)
+            &&sta!=int(backuptools::backup_state::FULL_BACKUP_SYSUPDATE)
+            &&sta!=int(backuptools::backup_state::INC_BACKUP_SYS)
+            &&sta!=int(backuptools::backup_state::INC_BACKUP_SYSUPDATE)
+            &&sta!=int(backuptools::backup_state::BACKUP_STATE_INIT)
+            )
     {//备份失败
         emit bakeupFinish(sta);
         return;
     }
+
+#if 1
+    //rsync进程未正常完成
+    if (pro == -1) {
+        setProgress = false;
+        emit bakeupFinish(-20);
+    }
+#endif
     emit backupProgress(pro);
     if(pro == 100)
     {
         setProgress = false;
-        emit bakeupFinish(99);
+        emit bakeupFinish(int(backuptools::backup_state::BACKUP_STATE_INIT));
     }
+}
+
+void BackUp::receiveStartBackupResult(int result)
+{
+    if (result == int(backuptools::backup_result::BACKUP_START_SUCCESS))
+        setProgress = true;
+    emit backupStartRestult(result);
 }
 
 void BackUp::startBackUp(int num)
 {
     if(num==1)
     {
-        QDBusReply<int> reply = interface->call("autoBackUpForSystemUpdate",timeStamp);
-        emit bakeupFinish(reply.value());
-        if(reply.value()==0)
-        {
-            setProgress = true;
-        }
-        return;
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(timeStamp);
+        interface->asyncCallWithArgumentList(QStringLiteral("autoBackUpForSystemUpdate_noreturn"), argumentList);
     }
-    emit bakeupFinish(0);
-    setProgress = true;
 }
 
 bool BackUp::haveBackTool()
@@ -117,13 +144,14 @@ bool BackUp::haveBackTool()
 //        qDebug()<<"未创建备份还原分区";
 //        return false;
 //    }
-    QDBusReply<int> reply = interface->call("getBackupState");
+    QDBusPendingReply<int> reply = interface->call("getBackupState");
     if(!reply.isValid())
     {
         qDebug()<<"备份还原接口异常";
         return false;
     }
-    bakeupState = reply.value();
+    bakeupState = reply.argumentAt(0).toInt();
+    m_isActive = reply.argumentAt(1).toBool();
     return true;
 }
 
