@@ -107,10 +107,9 @@ void UkccAbout::initUI() {
     mUkccDeveloperLayout->addWidget(mUkccDeveloper);
 
     mUkccDeveloperEmailBtn = new QPushButton("support@kylinos.cn");
-    mUkccDeveloperEmailBtn->setFixedSize(185, 50);
     mUkccDeveloperEmailBtn->setFocusPolicy(Qt::NoFocus);
     mUkccDeveloperEmailBtn->setContentsMargins(0,0,0,0);
-    mUkccDeveloperEmailBtn->setCursor(QCursor(Qt::PointingHandCursor));
+    mUkccDeveloperEmailBtn->setCursor( QCursor(Qt::PointingHandCursor));
     mUkccDeveloperEmailBtn->setStyleSheet("QPushButton{background: transparent;border-radius: 4px;text-decoration: underline;} ");
 
     mUkccDeveloperLayout->addWidget(mUkccDeveloperEmailBtn);
