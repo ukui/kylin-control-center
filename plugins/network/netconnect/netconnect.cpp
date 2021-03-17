@@ -42,7 +42,8 @@ const QString KWifiOK           = "network-wireless-signal-ok";
 const QString KWifiLockOK       = "network-wireless-secure-signal-ok";
 const QString KWifiLow          = "network-wireless-signal-low";
 const QString KWifiLockLow      = "network-wireless-secure-signal-low";
-
+const QString KLanSymbolic      = ":/img/plugins/netconnect/eth.svg";
+const QString NoNetSymbolic     = ":/img/plugins/netconnect/nonet.svg";
 bool sortByVal(const QPair<QString, int> &l, const QPair<QString, int> &r) {
     return (l.second < r.second);
 }
@@ -222,8 +223,10 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
 
     QLabel * iconLabel = new QLabel(devFrame);
     QIcon searchIcon = QIcon::fromTheme(iconPath);
+    if(iconPath != KLanSymbolic && iconPath != NoNetSymbolic)
+        iconLabel->setProperty("useIconHighlightEffect", 0x10);
     iconLabel->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(24, 24))));
-
+    
     QLabel * nameLabel = new QLabel(devFrame);
     QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
     nameSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
@@ -298,7 +301,7 @@ void NetConnect::getNetList() {
         }
 
         for (int i = 0; i < this->lanList.length(); i++) {
-            iconamePah= ":/img/plugins/netconnect/eth.svg";
+            iconamePah = KLanSymbolic;
             rebuildAvailComponent(iconamePah , lanList.at(i));
         }
     });
@@ -325,8 +328,10 @@ void NetConnect::rebuildAvailComponent(QString iconPath, QString netName) {
     wifiItem->mPitLabel->setText(netName);
 
     QIcon searchIcon = QIcon::fromTheme(iconPath);
+    if(iconPath != KLanSymbolic && iconPath != NoNetSymbolic)
+        wifiItem->mPitIcon->setProperty("useIconHighlightEffect", 0x10);
     wifiItem->mPitIcon->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(24, 24))));
-     wifiItem->mAbtBtn->setMinimumWidth(100);
+    wifiItem->mAbtBtn->setMinimumWidth(100);
     wifiItem->mAbtBtn->setText(tr("Connect"));
 
     connect(wifiItem->mAbtBtn, &QPushButton::clicked, this, [=] {
@@ -501,12 +506,12 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
         rebuildNetStatusComponent(iconamePah, connectedWifiName);
     }
     if (!this->actLanName.isEmpty()) {
-        QString lanIconamePah = ":/img/plugins/netconnect/eth.svg";
+        QString lanIconamePah = KLanSymbolic;
         rebuildNetStatusComponent(lanIconamePah, this->actLanName);
     }
 
     if (this->connectedWifi.isEmpty() && this->actLanName.isEmpty()) {
-        rebuildNetStatusComponent(":/img/plugins/netconnect/nonet.svg" , "No Net");
+        rebuildNetStatusComponent(NoNetSymbolic , "No Net");
     }
 }
 
