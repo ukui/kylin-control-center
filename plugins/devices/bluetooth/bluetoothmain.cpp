@@ -667,6 +667,10 @@ void BlueToothMain::set_tray_visible(bool value)
 
 void BlueToothMain::set_discoverable(bool value)
 {
+    if(value){
+        if(m_localDevice->discoverableTimeout() != 0)
+            m_localDevice->setDiscoverableTimeout(0);
+    }
     m_localDevice->setDiscoverable(value);
 }
 
