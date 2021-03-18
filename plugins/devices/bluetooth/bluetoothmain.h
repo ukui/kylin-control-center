@@ -35,6 +35,7 @@
 #include <QComboBox>
 #include <QStringView>
 #include <QLayoutItem>
+#include <QMouseEvent>
 
 
 #include "deviceinfoitem.h"
@@ -53,6 +54,9 @@ public:
     void adapterChanged();
     void updateUIWhenAdapterChanged();
     void removeDeviceItemUI(QString address);
+
+protected:
+    void leaveEvent(QEvent *event);
 
 signals:
     void adapter_name_changed(const QString &name);

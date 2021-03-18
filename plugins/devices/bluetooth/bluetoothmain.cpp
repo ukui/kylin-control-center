@@ -511,6 +511,11 @@ void BlueToothMain::removeDeviceItemUI(QString address)
     }
 }
 
+void BlueToothMain::leaveEvent(QEvent *event)
+{
+    qDebug() << Q_FUNC_INFO;
+}
+
 BlueToothMain::~BlueToothMain()
 {
     delete settings;
