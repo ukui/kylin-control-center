@@ -100,7 +100,7 @@ void FrameItem::set_itemname(const QString &name) {
 }
 
 void FrameItem::set_change(const int &status,const QString &code) {
-    if(status == 1) {
+    if (status == 1) {
         m_stackedWidget->setCurrentWidget(m_run);
         bIsStart = true;
         m_cTimer->start(140);
@@ -111,22 +111,22 @@ void FrameItem::set_change(const int &status,const QString &code) {
     } else {
         m_cTimer->stop();
         bIsStart = false;
-        if(code == "Failed!") {
+        if (code == "Failed!") {
             m_errorStatusLabel->setToolTip(tr("Sync failed,please relogin!"));
         }
-        if(code == "Change conf file failed!") {
+        if (code == "Change conf file failed!") {
             m_errorStatusLabel->setToolTip(tr("Change configuration file failed,please relogin!"));
         }
-        if(code == "Config file not exist!") {
+        if (code == "Config file not exist!") {
             m_errorStatusLabel->setToolTip(tr("Configuration file not exist,please relogin!"));
         }
-        if(code == "Cloud verifyed file download failed!") {
+        if (code == "Cloud verifyed file download failed!") {
             m_errorStatusLabel->setToolTip(tr("Cloud verifyed file download failed,please relogin!"));
         }
-        if(code == "OSS access failed!") {
+        if (code == "OSS access failed!") {
             m_errorStatusLabel->setToolTip(tr("OSS access failed,please relogin!"));
         }
-        else if(code != "Upload" && code != "Download") {
+        else if (code != "Upload" && code != "Download") {
             m_errorStatusLabel->setToolTip(tr("Sync failed,please relogin!"));
         }
         m_stackedWidget->setCurrentWidget(m_errorStatusLabel);
@@ -136,8 +136,8 @@ void FrameItem::set_change(const int &status,const QString &code) {
 
 /* 让SwitchButton播放打开动画 */
 void FrameItem::make_itemon() {
-    if(m_switchBtn != nullptr) {
-        if(m_switchBtn->get_swichbutton_val() != 1) {
+    if (m_switchBtn != nullptr) {
+        if (m_switchBtn->get_swichbutton_val() != 1) {
             m_switchBtn->set_swichbutton_val(1);
             //switch_btn->update();
         }
@@ -147,14 +147,14 @@ void FrameItem::make_itemon() {
 }
 
 FrameItem::~FrameItem() {
-    if(m_cTimer->isActive())
+    if (m_cTimer->isActive())
         m_cTimer->stop();
 }
 
 /* 让SwitchButton播放关闭动画 */
 void FrameItem::make_itemoff() {
-    if(m_switchBtn != nullptr) {
-        if(m_switchBtn->get_swichbutton_val() != 0) {
+    if (m_switchBtn != nullptr) {
+        if (m_switchBtn->get_swichbutton_val() != 0) {
             m_switchBtn->set_swichbutton_val(0);
             //switch_btn->update();
         }

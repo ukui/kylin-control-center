@@ -30,7 +30,7 @@ SwitchButton::SwitchButton(QWidget *parent) : QWidget(parent) {
     m_fHeight = (float)height();
     m_cTimer = new QTimer(this);
     m_cTimer->setInterval(5);
-    if(m_bIsOn == 1) {
+    if (m_bIsOn == 1) {
         m_fCurrentValue = m_fWidth - 16 - 4;
     }
     else {
@@ -42,7 +42,7 @@ SwitchButton::SwitchButton(QWidget *parent) : QWidget(parent) {
 
     connect(m_cTimer,SIGNAL(timeout()),this,SLOT(startAnimation()));
 
-    if(QGSettings::isSchemaInstalled(THEME_GTK_SCHEMA) && QGSettings::isSchemaInstalled(THEME_QT_SCHEMA)) {
+    if (QGSettings::isSchemaInstalled(THEME_GTK_SCHEMA) && QGSettings::isSchemaInstalled(THEME_QT_SCHEMA)) {
         QByteArray qtThemeID(THEME_QT_SCHEMA);
         QByteArray gtkThemeID(THEME_GTK_SCHEMA);
 
@@ -50,7 +50,7 @@ SwitchButton::SwitchButton(QWidget *parent) : QWidget(parent) {
         m_qtThemeSetting = new QGSettings(qtThemeID,QByteArray(),this);
 
         QString style = m_qtThemeSetting->get("styleName").toString();
-        if(style == "ukui-dark") {
+        if (style == "ukui-dark") {
             m_bgColorOff = QColor("#3d3d3f");
         } else {
             m_bgColorOff = QColor("#cccccc");
@@ -58,8 +58,8 @@ SwitchButton::SwitchButton(QWidget *parent) : QWidget(parent) {
 
         connect(m_qtThemeSetting,&QGSettings::changed, [this] (const QString &key) {
             QString style = m_qtThemeSetting->get("styleName").toString();
-            if(key == "styleName") {
-                if(style == "ukui-dark") {
+            if (key == "styleName") {
+                if (style == "ukui-dark") {
                     m_bgColorOff = QColor("#3d3d3f");
                 } else {
                     m_bgColorOff = QColor("#cccccc");
@@ -77,14 +77,14 @@ void SwitchButton::paintEvent(QPaintEvent *event) {
     painter.setRenderHint(QPainter::Antialiasing); //kan ju ci
     painter.setPen(Qt::NoPen);
     QColor colorInactive(233,233,233);
-    if(m_bIsActive == true && m_bIsOn) {
+    if (m_bIsActive == true && m_bIsOn) {
         *m_buttonColor = m_bgColorOn;
-    } else if(m_bIsActive == true && !m_bIsOn) {
+    } else if (m_bIsActive == true && !m_bIsOn) {
         *m_buttonColor = m_bgColorOff;
     } else {
         *m_buttonColor = colorInactive;
     }
-    if(m_bIsOn) {
+    if (m_bIsOn) {
         painter.save();
         painter.setBrush(*m_buttonColor);
         QRectF active_rect = QRectF(0,0,m_fWidth,m_fHeight);
@@ -130,21 +130,21 @@ bool SwitchButton::get_active() const {
 
 /* 播放按钮开启关闭动画 */
 void SwitchButton::startAnimation() { //滑动按钮动作播放
-    if(m_bIsActive == false) {
+    if (m_bIsActive == false) {
         return ;
     }
     int pos = 4;
     int size = m_fWidth - 16;
-    if(m_bIsOn) {
+    if (m_bIsOn) {
         m_fCurrentValue ++;                     //往右滑动
-        if(m_fCurrentValue >= size - pos) {      //到达边界停下来
+        if (m_fCurrentValue >= size - pos) {      //到达边界停下来
             m_fCurrentValue = size - pos;
             m_cTimer->stop();
         }
 
     } else {
         m_fCurrentValue --;
-        if(m_fCurrentValue <= pos) {             //到达最小值，停止继续前进
+        if (m_fCurrentValue <= pos) {             //到达最小值，停止继续前进
             m_fCurrentValue = pos;
             m_cTimer->stop();
         }
@@ -154,7 +154,7 @@ void SwitchButton::startAnimation() { //滑动按钮动作播放
 
 /* 按钮按下处理 */
 void SwitchButton::mousePressEvent(QMouseEvent *event) {
-    if(m_bIsActive == false) {
+    if (m_bIsActive == false) {
         return ;
     }
     Q_UNUSED(event);

@@ -139,7 +139,7 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
    //Subabstract Build
     login_account_thr_number();
     login_account_thr_phone();
-    QRegExp regx("[^\s]+$");
+    QRegExp regx("[^\\s]+$");
     QValidator *validator = new QRegExpValidator(regx, m_accountLineEdit );
     m_accountLineEdit->setValidator(validator);
     //Initial configuration
@@ -151,7 +151,7 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
 /* 用户密码登录方式的界面设置 *
  * Setting the page of login that use password way. */ 
 void LoginDialog::startaction_1() {
-    if(m_stackedWidget->currentIndex() == 0) {
+    if (m_stackedWidget->currentIndex() == 0) {
         set_clear();
         m_accountLineEdit->setFocus();
         //m_accountLineEdit->setText("");
@@ -197,10 +197,10 @@ QString LoginDialog::get_user_pass() const {
 }
 
 void LoginDialog::startaction_2() {
-    if(m_stackedWidget->currentIndex() == 1) {
+    if (m_stackedWidget->currentIndex() == 1) {
         set_clear();
         m_accountLineEdit->setFocus();
-        QRegExp regx("[^\s]+$");
+        QRegExp regx("[^\\s]+$");
         m_accountLineEdit->setMaxLength(30);
         QValidator *validator = new QRegExpValidator(regx, m_accountLineEdit );
         m_accountLineEdit->setValidator(validator);
@@ -229,7 +229,7 @@ bool LoginDialog::login_account_thr_number() {
 
     //Congfigurate the widgets
     m_accountLineEdit->setFocus();
-    QRegExp regx("[^\s]+$");
+    QRegExp regx("[^\\s]+$");
     QValidator *validator = new QRegExpValidator(regx, m_accountLineEdit );
     m_accountLineEdit->setValidator(validator);
 
@@ -323,7 +323,7 @@ void LoginDialog::set_code(const QString &codenum) {
 }
 
 void LoginDialog::setstyleline() {
-    if(m_stackedWidget->currentIndex() == 0) {
+    if (m_stackedWidget->currentIndex() == 0) {
         m_passTips->set_text(m_szCode);
     } else {
         m_phoneTips->set_text(m_szCode);
@@ -418,10 +418,10 @@ QLineEdit *& LoginDialog::mCodeLineEdit() {
 
 /* 清空登录框 */
 void LoginDialog::set_clear() {
-    if(!m_phoneTips->isHidden()) {
+    if (!m_phoneTips->isHidden()) {
         m_phoneTips->hide();
     }
-    if(!m_passTips->isHidden()) {
+    if (!m_passTips->isHidden()) {
         m_passTips->hide();
     }
     m_passwordLineEdit->get_visble()->setChecked(false);

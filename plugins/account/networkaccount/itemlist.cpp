@@ -48,7 +48,7 @@ FrameItem*  ItemList::get_item(const int &cur) {
 FrameItem* ItemList::get_item_by_name(const QString &name) {
     m_cItemCnt = m_szItemNameList.size();
     for(int cur_ptr = 0; cur_ptr < m_cItemCnt; cur_ptr ++) {
-        if(m_itemWidget[cur_ptr]->get_itemname() == name) {
+        if (m_itemWidget[cur_ptr]->get_itemname() == name) {
             return m_itemWidget[cur_ptr];
         }
     }

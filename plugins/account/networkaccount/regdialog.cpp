@@ -211,7 +211,7 @@ QString RegDialog::get_user_passwd() const {
 
 /* 清空注册框 */
 void RegDialog::set_clear() {
-    if(!m_errorTips->isHidden()) {
+    if (!m_errorTips->isHidden()) {
         m_errorTips->hide();
     }
     m_passLineEdit->get_visble()->setChecked(false);

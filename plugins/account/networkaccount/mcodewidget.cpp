@@ -40,7 +40,7 @@ MCodeWidget::MCodeWidget(QWidget *parent): QLabel(parent)
 
 /* 该函数实现了鼠标点击后验证码更新的操作 ，用ok变量控制以防止界面刷新就更新 */
 void MCodeWidget::mousePressEvent(QMouseEvent *ev) {
-    if(ev->button() == Qt::LeftButton)
+    if (ev->button() == Qt::LeftButton)
     {
         m_bIsOk = true;
         reflushVerification();
@@ -59,7 +59,7 @@ void MCodeWidget::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     QPoint p;
     painter.fillRect(this->rect(), Qt::white);
-    if(m_bIsOk) {
+    if (m_bIsOk) {
         produceVerificationCode();
         produceRandomColor();
         m_bIsOk = false;
@@ -79,8 +79,8 @@ void MCodeWidget::paintEvent(QPaintEvent *event)
         int charSpace = (charWidth - this->fontMetrics().width("W"))/2;
         charSpace += 14/2;
         painter.translate(i*charWidth+charSpace,0);
-        if(qrand()%2) {
-            if(qrand()%2)
+        if (qrand()%2) {
+            if (qrand()%2)
             {
                 painter.rotate(qrand()% 20);
             }
@@ -94,11 +94,11 @@ void MCodeWidget::paintEvent(QPaintEvent *event)
         } else {
             double xShear = qrand()%4/10.0;
             double yShear = qrand()%4/10.0;
-            if(qrand()%2)
+            if (qrand()%2)
             {
                 xShear = -xShear;
             }
-            if(qrand()%2)
+            if (qrand()%2)
             {
                 yShear = -yShear;
             }
@@ -138,7 +138,7 @@ void MCodeWidget::produceRandomColor() const
 
 /* 控制字母是否能改变，用于外部控制 */
 void MCodeWidget::set_change(const int &ok_num) {
-    if(ok_num == 0) {
+    if (ok_num == 0) {
         m_bIsOk = false;
     }else {
         m_bIsOk = true;

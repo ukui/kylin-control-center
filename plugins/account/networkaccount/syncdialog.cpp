@@ -38,7 +38,7 @@ SyncDialog::SyncDialog(QString name,QString path, QWidget *parent) : QDialog(par
     mHBoxLayout = new QHBoxLayout;
 
     connect(mSyncButton, &QPushButton::clicked,this,[=] {
-        if(m_List.isEmpty()) {
+        if (m_List.isEmpty()) {
             emit coverMode();
             return ;
         }
@@ -60,7 +60,7 @@ void SyncDialog::checkOpt() {
     mTips->setText(tr("Last sync at %1").arg(mDate));
     //qDebug() << m_List.size()<<"mList";
     for(const QString &item : qAsConst(m_szItemlist)) {
-        if(m_List.contains(item)) {
+        if (m_List.contains(item)) {
             QCheckBox * checkBox = new QCheckBox(m_szItemNameList.at(m_szItemlist.indexOf(item)),this);
             QListWidgetItem * items = new QListWidgetItem(mListWidget,0);
             mListWidget->addItem(items);
@@ -71,13 +71,13 @@ void SyncDialog::checkOpt() {
             << "editor" << "peony";
 
             connect(checkBox, &QCheckBox::toggled, this, [=] (bool status) {
-               if(status == true) {
+               if (status == true) {
                    m_List.removeAll(item);
                } else {
                    m_List.append(item);
                }
             });
-            if(filter.contains(item)) {
+            if (filter.contains(item)) {
                 checkBox->setChecked(false);
             } else {
                 m_List.removeAll(item);

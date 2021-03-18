@@ -11,13 +11,13 @@ const QString DBusUtils::callMethod(const QString &methodName, const QList<QVari
                            QString(PATH),
                            QString(INTERFACE),
                            methodName);
-    if(argList.isEmpty() == false) {
+    if (argList.isEmpty() == false) {
         message.setArguments(argList);
     }
     QDBusMessage response = QDBusConnection::sessionBus().call(message);
     if (response.type() == QDBusMessage::ReplyMessage)
     {
-        if(response.arguments().isEmpty() == false) {
+        if (response.arguments().isEmpty() == false) {
             ret = response.arguments().takeFirst();;
         }
     } else {
@@ -25,9 +25,9 @@ const QString DBusUtils::callMethod(const QString &methodName, const QList<QVari
     }
 
     //qDebug() << methodName;
-    if(methodName == "checkLogin") {
+    if (methodName == "checkLogin") {
         emit infoFinished(ret.toString());
-    } else if(methodName == "querryUploaded") {
+    } else if (methodName == "querryUploaded") {
         emit querryFinished(ret.toStringList());
     } else {
         emit taskFinished(methodName,ret.toInt());
@@ -48,8 +48,8 @@ const QVariant DBusUtils::GetProperty(const QString &dbusname,const QString &int
                                                           QString(GETMETHOD));
     message << interface << property;
     QDBusMessage response = flag == 1 ? QDBusConnection::sessionBus().call(message) : QDBusConnection::systemBus().call(message);
-    if(response.type() == QDBusMessage::ReplyMessage) {
-        if(response.arguments().isEmpty() == false) {
+    if (response.type() == QDBusMessage::ReplyMessage) {
+        if (response.arguments().isEmpty() == false) {
             QDBusVariant value = qvariant_cast<QDBusVariant>(response.arguments().takeFirst());
             variant = value.variant();
         }
@@ -66,21 +66,21 @@ const QVariant DBusUtils::ValueRet(const QString &dbusname, const QString &inter
                                                           interface,
                                                           method);
     QList<QVariant> list ;
-    if(value != "")
+    if (value != "")
         list << value;
-    if(argList.isEmpty() == false) {
+    if (argList.isEmpty() == false) {
         list.append(argList);
     }
-    if(list.isEmpty() == false) {
+    if (list.isEmpty() == false) {
         message.setArguments(list);
     }
     //qDebug() << dbusname <<interface << method << "  ==========================";
     QDBusMessage response = flag == 1 ? QDBusConnection::sessionBus().call(message) : QDBusConnection::systemBus().call(message);
-    if(response.type() == QDBusMessage::ReplyMessage) {
-        if(response.arguments().isEmpty() == false) {
+    if (response.type() == QDBusMessage::ReplyMessage) {
+        if (response.arguments().isEmpty() == false) {
             QDBusVariant value = qvariant_cast<QDBusVariant>(response.arguments().takeFirst());
             variant = value.variant();
-            if(variant.isValid() == false) {
+            if (variant.isValid() == false) {
                 variant = response.arguments().takeFirst();
             }
         }
