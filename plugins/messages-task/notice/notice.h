@@ -70,6 +70,7 @@ public:
     void initNoticeStatus();
     void initOriNoticeStatus();
     void initGSettings();
+    QStringList getDesktopHideFile();
 
 private:
     void changeAppstatus(bool checked, QString name,SwitchButton *appBtn);
@@ -94,5 +95,6 @@ private:
     QVector<QGSettings*> vecGsettins;
 
     bool mFirstLoad;
+    QStringList filePathList;
 };
 #endif // NOTICE_H
