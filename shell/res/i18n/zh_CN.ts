@@ -4002,6 +4002,7 @@ Please retry or relogin!</source>
     <message>
         <location filename="../../mainwindow.cpp" line="74"/>
         <location filename="../../mainwindow.cpp" line="362"/>
+        <location filename="../../mainwindow.cpp" line="730"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
@@ -4041,9 +4042,8 @@ Please retry or relogin!</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="730"/>
         <source>ukcc</source>
-        <translation>控制面板</translation>
+        <translation type="vanished">控制面板</translation>
     </message>
     <message>
         <location filename="../../mainwindow.cpp" line="833"/>
@@ -4964,22 +4964,42 @@ Please retry or relogin!</source>
         <translation type="vanished">默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="659"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="642"/>
+        <source>blue-crystal</source>
+        <translation>蓝水晶</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="644"/>
+        <source>dark-sense</source>
+        <translation>深色质感</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="646"/>
+        <source>DMZ-Black</source>
+        <translation>黑</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="648"/>
+        <source>DMZ-White</source>
+        <translation>白</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="656"/>
         <source>basic</source>
         <translation>基础</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="661"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="658"/>
         <source>classical</source>
         <translation>经典</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="663"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="660"/>
         <source>default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="665"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="662"/>
         <location filename="../../../plugins/account/userinfo/changevaliddialog.cpp" line="183"/>
         <source>Unknown</source>
         <translation>未知</translation>
@@ -5898,13 +5918,13 @@ run start-pulseaudio-x11 manually.</source>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.ui" line="81"/>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="218"/>
         <source>Computer Security Overview</source>
-        <translation>电脑安全概况</translation>
+        <translation>安全功能预览</translation>
         <extra-contents_path>/securitycenter/Computer Security Overview</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.ui" line="110"/>
         <source>Understand current computer security situation and take measures</source>
-        <translation>了解电脑当前安全情况，并采取有效的防控措施</translation>
+        <translation>保障系统安全性,并采取有效措施</translation>
     </message>
     <message>
         <source>Summarize</source>
@@ -5957,7 +5977,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="232"/>
         <source>Protect account and login security</source>
-        <translation>保护账户和登录的安全性</translation>
+        <translation>提供账户相关的安全保障</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="238"/>
@@ -5968,7 +5988,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="239"/>
         <source>Detect abnormal configuration</source>
-        <translation>检测电脑异常配置，软件漏洞</translation>
+        <translation>检查修复系统漏洞和异常配置</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="246"/>
@@ -5979,7 +5999,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="247"/>
         <source>Real time protection from virus threat</source>
-        <translation>实时防护，免受病毒威胁</translation>
+        <translation>保护系统免受恶意程序攻击</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="254"/>
@@ -5990,7 +6010,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="255"/>
         <source>App install</source>
-        <translation>应用安装、运行、卸载保护</translation>
+        <translation>提供应用程序安装,运行防护</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="263"/>
@@ -6001,13 +6021,13 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="271"/>
         <source>Secure Config</source>
-        <translation>安全模式配置</translation>
+        <translation>系统安全配置</translation>
         <extra-contents_path>/securitycenter/Secure Config</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="272"/>
         <source>Simple Config</source>
-        <translation>启用系统安全功能简易配置</translation>
+        <translation type="unfinished">启用系统安全功能的相关配置</translation>
     </message>
     <message>
         <source>Network protection</source>
@@ -6016,7 +6036,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="264"/>
         <source>Manage and control network</source>
-        <translation>管控联网行为，保护上网安全</translation>
+        <translation>提供应用联网行为的管控</translation>
     </message>
     <message>
         <source>Secure mode configuration</source>
@@ -6588,7 +6608,7 @@ run start-pulseaudio-x11 manually.</source>
     <name>Theme</name>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="73"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="161"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="160"/>
         <source>Theme Mode</source>
         <translation>主题模式</translation>
         <extra-contents_path>/theme/Theme Mode</extra-contents_path>
@@ -6599,17 +6619,17 @@ run start-pulseaudio-x11 manually.</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="235"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="234"/>
         <source>Default</source>
         <translation>系统默认</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="236"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="235"/>
         <source>Light</source>
         <translation>浅色模式</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="237"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="236"/>
         <source>Dark</source>
         <translation>深色模式</translation>
     </message>
@@ -6619,7 +6639,7 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="273"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="163"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="162"/>
         <source>Icon theme</source>
         <translation>图标主题</translation>
         <extra-contents_path>/theme/Icon theme</extra-contents_path>
@@ -6631,7 +6651,7 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="421"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="165"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="164"/>
         <source>Cursor theme</source>
         <translation>光标主题</translation>
         <extra-contents_path>/theme/Cursor theme</extra-contents_path>
@@ -6643,7 +6663,7 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="645"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="169"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="168"/>
         <source>Transparency</source>
         <translation>透明度</translation>
         <extra-contents_path>/theme/Transparency</extra-contents_path>
@@ -6654,7 +6674,7 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/theme/theme.ui" line="573"/>
-        <location filename="../../../plugins/personalized/theme/theme.cpp" line="167"/>
+        <location filename="../../../plugins/personalized/theme/theme.cpp" line="166"/>
         <source>Performance mode</source>
         <translation>特效模式</translation>
         <extra-contents_path>/theme/Performance mode</extra-contents_path>
@@ -7888,7 +7908,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/m_updatelog.cpp" line="45"/>
         <source>No content.</source>
-        <translation>暂无内容</translation>
+        <translation>暂无内容.</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/m_updatelog.cpp" line="77"/>
