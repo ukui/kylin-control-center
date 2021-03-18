@@ -31,6 +31,7 @@ enum COLOR{
     WHITE,
     BLACK,
     GRAY,
+    HIGHLIGHT,
 };
 
 class MainWindow;
