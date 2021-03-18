@@ -78,7 +78,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     dbusInterface();
 
     QFile tokenFile(QDir::homePath() + "/.cache/kylinId/token");
-    if (tokenFile.exists()) {
+    if (tokenFile.exists() && tokenFile.size() > 1) {
         m_mainWidget->setCurrentWidget(m_widgetContainer);
     } else {
         m_mainWidget->setCurrentWidget(m_nullWidget);
@@ -306,7 +306,7 @@ void MainWidget::dbusInterface() {
             m_cLoginTimer->stop();
         }
         QFile fileConf(m_szConfPath);
-        if (m_pSettings != nullptr && fileConf.exists())
+        if (m_pSettings != nullptr && fileConf.exists() && fileConf.size() > 1)
             m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
         else
             m_syncTimeLabel->setText(tr("Waiting for initialization..."));
@@ -432,7 +432,7 @@ void MainWidget::checkUserName(QString name) {
     if (bIsLogging == false) {
         QFile file (m_szConfPath);
         QFile token (QDir::homePath() + "/.cache/kylinId/token");
-        if (file.exists() == false && token.exists() == true && m_isOpenDialog == false) {
+        if (file.exists() == false && token.exists() == true && m_isOpenDialog == false && token.size() > 1) {
             emit dooss(m_szUuid);
         }
     }
@@ -607,7 +607,7 @@ void MainWidget::initSignalSlots() {
 
     connect(&m_fsWatcher,&QFileSystemWatcher::fileChanged,this,[=] () {
         QFile token(tokenFile);
-        if (!token.exists()) {
+        if (!token.exists() && token.size() > 1) {
             if (m_mainWidget->currentWidget() != m_nullWidget) {
                 m_mainWidget->setCurrentWidget(m_nullWidget);
             }
