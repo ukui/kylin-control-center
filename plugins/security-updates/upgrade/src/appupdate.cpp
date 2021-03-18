@@ -542,13 +542,17 @@ void AppUpdateWid::updateOneApp()
             isCancel = false;
             firstDownload = true;
             slotDownloadPackages();
-            timer->start(500); //开启定时器用于计算下载速度
+            timer->start(1000); //开启定时器用于计算下载速度
     //        updateAPPBtn->setText(tr("取消"));
             updateAPPBtn->setText(tr("Cancel"));
             appVersionIcon->setPixmap(QPixmap());
         }else{
             startInstall(appAllMsg.name); //本地源直接开始安装
             appVersion->setText(tr("Ready to install"));
+        }
+        QDir dir = downloadPath;
+        if(!dir.isEmpty()){
+            appVersion->setText(tr("Calculate the download progress"));
         }
     }
     else
@@ -629,7 +633,7 @@ void AppUpdateWid::calculateSpeedProgress()
             downSize = priorSize + tmpFile.size();
         else
             downSize = priorSize;
-        QString speed = modifySpeedUnit(downSize-preDownSize, 0.5);
+        QString speed = modifySpeedUnit(downSize-preDownSize, 1);
         int progress = (int)((downSize*100/appAllMsg.msg.allSize));
         qDebug() << "priorsize:" << priorSize
                  << "predownsize" << preDownSize

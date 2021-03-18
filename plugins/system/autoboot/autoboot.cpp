@@ -117,6 +117,8 @@ void AutoBoot::initAddBtn() {
     QLabel * textLabel = new QLabel(tr("Add autoboot app "), pluginWidget);
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);
+    iconLabel->setProperty("useIconHighlightEffect", true);
+    iconLabel->setProperty("iconHighlightEffectMode", 1);
     addLyt->addWidget(iconLabel);
     addLyt->addWidget(textLabel);
     addLyt->addStretch();

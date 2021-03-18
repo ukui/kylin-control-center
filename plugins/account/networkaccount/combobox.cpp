@@ -103,7 +103,7 @@ void ComboBox::showpopup() {
 void ComboBox::closepopup(QListWidgetItem *item) {
     m_popupWidget->hide();
     QWidget *wgt = m_listWidget->itemWidget(item);
-    if(wgt != NULL) {
+    if (wgt != NULL) {
         QLabel *code = wgt->findChild<QLabel *>("code");
         m_mainLineEdit->setText(code->text());
     }

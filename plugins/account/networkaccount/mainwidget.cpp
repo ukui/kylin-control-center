@@ -24,6 +24,19 @@
 #include <QDesktopServices>
 #include <QUrl>
 
+#include <sys/types.h>
+#include <string.h>
+#include <stdlib.h>
+#include <sys/ioctl.h>
+#include <stdio.h>
+#include <errno.h>
+#include <net/if.h>
+
+struct ethtool_value {
+        __uint32_t      cmd;
+        __uint32_t      data;
+};
+
 MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
 
     initMemoryAlloc();
@@ -43,7 +56,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     kylinIDProc.start("/bin/bash",kIdOptions);
     kylinIDProc.waitForFinished(-1);
     QByteArray result = kylinIDProc.readAll();
-    if(result.contains("/usr/bin/kylin-id")) {
+    if (result.contains("/usr/bin/kylin-id")) {
         m_bIsKylinId = true;
     }
 
@@ -55,7 +68,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_szUuid = QUuid::createUuid().toString();
     m_bTokenValid = false;
 
-    m_bIsOnline = isNetWorkOnline();
+    isNetWorkOnline();
 
 
     init_gui();         //初始化gui
@@ -65,7 +78,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     dbusInterface();
 
     QFile tokenFile(QDir::homePath() + "/.cache/kylinId/token");
-    if(tokenFile.exists()) {
+    if (tokenFile.exists()) {
         m_mainWidget->setCurrentWidget(m_widgetContainer);
     } else {
         m_mainWidget->setCurrentWidget(m_nullWidget);
@@ -74,19 +87,18 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
 
 void MainWidget::checkNetWork(QVariantMap map) {
     QVariant ret = map.value("Connectivity");
-    if(ret.toInt() == 0) {
+    if (ret.toInt() == 0) {
         return ;
     }
-    if(ret.toInt() != 1 && ret.toInt() != 3 ) {
-        if(m_autoSyn->get_swbtn()->get_active() == false) {
+    if (ret.toInt() != 1 && ret.toInt() != 3 ) {
+        if (m_autoSyn->get_swbtn()->get_active() == false) {
             m_autoSyn->get_swbtn()->set_active(true);
-            for(int i = 0;i < m_szItemlist.size(); i ++ ) {
+            for (int i = 0;i < m_szItemlist.size(); i ++ ) {
                 m_itemList->get_item(i)->get_swbtn()->set_active(true);
             }
         }
-        m_bIsOnline = true;
         handle_conf();
-        if(m_bIsKylinId) {
+        if (m_bIsKylinId) {
             emit kylinIdCheck();
         } else {
             emit docheck();
@@ -94,53 +106,66 @@ void MainWidget::checkNetWork(QVariantMap map) {
 
         return ;
     }
-    if(m_autoSyn->get_swbtn()->get_active() == true) {
+    if (m_autoSyn->get_swbtn()->get_active() == true) {
         m_autoSyn->get_swbtn()->set_active(false);
-        for(int i = 0;i < m_szItemlist.size(); i ++ ) {
+        for (int i = 0;i < m_szItemlist.size(); i ++ ) {
             m_itemList->get_item(i)->get_swbtn()->set_active(false);
         }
-        m_bIsOnline  = false;
     }
 }
 
 bool MainWidget::isNetWorkOnline()
 {
-    QVariant ret;
-    QDBusMessage message = QDBusMessage::createMethodCall("org.freedesktop.NetworkManager",
-                                                          "/org/freedesktop/NetworkManager",
-                                                          "org.freedesktop.NetworkManager",
-                                                          "CheckConnectivity");
-    QDBusMessage response =  QDBusConnection::systemBus().call(message);
-
-    if(response.type() == QDBusMessage::ReplyMessage) {
-        QDBusVariant value = qvariant_cast<QDBusVariant>(response.arguments().takeFirst());
-        ret = value.variant();
-        if(ret.isValid() == false) {
-            ret = response.arguments().takeFirst();
-            if(ret.toInt() != 3 && ret.toInt() != 1) {
-                if(m_autoSyn->get_swbtn()->get_active() == false) {
-                    m_autoSyn->get_swbtn()->set_active(true);
-                    for(int i = 0;i < m_szItemlist.size(); i ++ ) {
-                        m_itemList->get_item(i)->get_swbtn()->set_active(true);
+    QProcess procNet;
+    QStringList options;
+    options << "-c" << "cat /proc/net/dev | awk '{i++; if(i>2){print $1}}' | sed 's/^[\t]*//g' | sed 's/[:]*$//g'";
+    procNet.start("/bin/bash",options);
+    procNet.waitForFinished(-1);
+    procNet.waitForReadyRead(-1);
+    QString data = procNet.readAll();
+    QStringList nwCardList = data.split("\n");
+    if(nwCardList.length() >= 1) {
+        for(QString itemCard : nwCardList) {
+            struct ethtool_value edata;
+            int fd = -1, err = 0;
+            struct ifreq ifr;
+            memset(&ifr, 0, sizeof(ifr));
+            strcpy(ifr.ifr_name, itemCard.toStdString().c_str());
+            fd = socket(AF_INET, SOCK_DGRAM, 0);
+            if (fd >= 0) {
+                edata.cmd = 0x0000000a;
+                ifr.ifr_data = (caddr_t)&edata;
+                err = ioctl(fd, 0x8946, &ifr);
+                if (err == 0) {
+                    if (m_autoSyn->get_swbtn()->get_active() == false) {
+                        m_autoSyn->get_swbtn()->set_active(true);
+                        for (int i = 0;i < m_szItemlist.size(); i ++ ) {
+                            m_itemList->get_item(i)->get_swbtn()->set_active(true);
+                        }
+                        handle_conf();
                     }
+                    m_bIsOnline = true;
+                    return true;
+                } else if (errno != EOPNOTSUPP) {
+                    perror("Cannot get link status");
                 }
-                handle_conf();
-                return true;
             }
         }
     }
-    if(m_autoSyn->get_swbtn()->get_active() == true) {
+    if (m_autoSyn->get_swbtn()->get_active() == true) {
         m_autoSyn->get_swbtn()->set_active(false);
-        for(int i = 0;i < m_szItemlist.size(); i ++ ) {
+        for (int i = 0;i < m_szItemlist.size(); i ++ ) {
             m_itemList->get_item(i)->get_swbtn()->set_active(false);
         }
         handle_conf();
     }
+    m_bIsOnline = false;
     return false;
+
 }
 
 void MainWidget::dbusInterface() {
-    if(m_bIsKylinId) {
+    if (m_bIsKylinId) {
         QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinID/path"), QString("org.kylinID.interface"),
                                               "finishedLogout", this, SLOT(finishedLogout(int))); //登出结果反馈
         QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinID/path"), QString("org.kylinID.interface"),
@@ -184,7 +209,7 @@ void MainWidget::dbusInterface() {
     });
 
     connect(m_dbusClient, &DBusUtils::infoFinished,this,[=] (const QString &name) {
-        if(name != "0") {
+        if (name != "0") {
             m_mainWidget->setCurrentWidget(m_nullWidget);
             return ;
         }
@@ -245,13 +270,13 @@ void MainWidget::dbusInterface() {
 
     connect(m_dbusClient,&DBusUtils::taskFinished,this,[=] (const QString &taskName,int ret) {
         Q_UNUSED(taskName);
-        if(ret == 504) {
-            if(taskName == "logout") {
+        if (ret == 504) {
+            if (taskName == "logout") {
                 m_mainWidget->setCurrentWidget(m_nullWidget);
             }
         }
 
-        if(taskName == "logout") {
+        if (taskName == "logout") {
             m_szCode = "";
             m_autoSyn->set_change(0,"0");
             m_autoSyn->set_active(true);
@@ -269,25 +294,25 @@ void MainWidget::dbusInterface() {
         //qDebug() << "csacasacasca";
         QStringList keyList = list;
         m_isOpenDialog = false;
-        if(m_szCode == "" || m_szCode =="201" || m_szCode == "203" ||
+        if (m_szCode == "" || m_szCode =="201" || m_szCode == "203" ||
                 m_szCode == "401" || m_szCode == "504" || m_szCode == "500" || m_szCode== "502" || m_szCode == tr("Disconnected")) {
-            if(bIsLogging) {
+            if (bIsLogging) {
                 m_mainDialog->setnormal();
             }
             m_mainWidget->setCurrentWidget(m_nullWidget);
             return ;
         }
-        if(m_cLoginTimer->isActive()) {
+        if (m_cLoginTimer->isActive()) {
             m_cLoginTimer->stop();
         }
         QFile fileConf(m_szConfPath);
-        if(m_pSettings != nullptr && fileConf.exists())
+        if (m_pSettings != nullptr && fileConf.exists())
             m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
         else
             m_syncTimeLabel->setText(tr("Waiting for initialization..."));
         //qDebug() << "csacasacasca";
-        if(keyList.size() > 2) {
-            if(isNetWorkOnline() == false) {
+        if (keyList.size() > 2) {
+            if (isNetWorkOnline() == false) {
                 showDesktopNotify(tr("Network can not reach!"));
                 return ;
             }
@@ -297,7 +322,7 @@ void MainWidget::dbusInterface() {
             QString localDate;
             m_mainWidget->setCurrentWidget(m_widgetContainer);
             QFile fileFLag(QDir::homePath() + "/.config/gsettings-set/" + m_szCode + "/User_Save_Flag");
-            if(fileFLag.exists() && fileFLag.open(QIODevice::ReadOnly)) {
+            if (fileFLag.exists() && fileFLag.open(QIODevice::ReadOnly)) {
                 fileFLag.waitForReadyRead(-1);
                 localDate = fileFLag.readAll().toStdString().c_str();
             }else {
@@ -346,7 +371,7 @@ void MainWidget::dbusInterface() {
             handle_conf();
         }
     });
-    if(m_bIsKylinId) {
+    if (m_bIsKylinId) {
         emit kylinIdCheck();
     } else {
         emit docheck();
@@ -357,18 +382,18 @@ void MainWidget::dbusInterface() {
 }
 
 void MainWidget::finishedLogout(int ret) {
-    if(ret != 0 && ret != 401) {
+    if (ret != 0 && ret != 401) {
         showDesktopNotify(tr("Logout failed,please check your connection"));
     }
 }
 
 void MainWidget::checkUserName(QString name) {
     m_szCode = name;
-    if(name == "" || name =="201" || name == "203" || name == "401" || name == "500" || name == "502") {
-        if(m_mainWidget->currentWidget() != m_nullWidget) {
+    if (name == "" || name =="201" || name == "203" || name == "401" || name == "500" || name == "502") {
+        if (m_mainWidget->currentWidget() != m_nullWidget) {
             m_mainWidget->setCurrentWidget(m_nullWidget);
         }
-        if(m_bIsKylinId) {
+        if (m_bIsKylinId) {
             emit kylinIdLogOut();
         } else {
             emit dologout();
@@ -379,13 +404,13 @@ void MainWidget::checkUserName(QString name) {
     m_pSettings->setIniCodec(QTextCodec::codecForName("UTF-8"));
     m_infoTab->setText(tr("Your account：%1").arg(m_szCode));
     QFile fileConf(m_szConfPath);
-    if(m_pSettings != nullptr && fileConf.exists())
+    if (m_pSettings != nullptr && fileConf.exists())
         m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
     else
         m_syncTimeLabel->setText(tr("Waiting for initialization..."));
     //setshow(m_mainWidget);
-    if(m_bTokenValid == false) {
-        if(m_mainWidget->currentWidget() != m_widgetContainer) {
+    if (m_bTokenValid == false) {
+        if (m_mainWidget->currentWidget() != m_widgetContainer) {
             m_mainWidget->setCurrentWidget(m_widgetContainer);
         }
         QtConcurrent::run([=] () {
@@ -397,23 +422,23 @@ void MainWidget::checkUserName(QString name) {
             proc.waitForFinished();
             QString ifn = proc.readAll();
 
-            if(ifn.contains("/usr/bin/kylin-sso-client")) {
+            if (ifn.contains("/usr/bin/kylin-sso-client")) {
                 emit isRunning();
             }
         });
     }
    // qDebug() << "ssssss";
     m_autoSyn->set_change(0,"0");
-    if(bIsLogging == false) {
+    if (bIsLogging == false) {
         QFile file (m_szConfPath);
         QFile token (QDir::homePath() + "/.cache/kylinId/token");
-        if(file.exists() == false && token.exists() == true && m_isOpenDialog == false) {
+        if (file.exists() == false && token.exists() == true && m_isOpenDialog == false) {
             emit dooss(m_szUuid);
         }
     }
 
     //dooss(m_szUuid);
-    for(int i = 0;i < m_szItemlist.size();i ++) {
+    for (int i = 0;i < m_szItemlist.size();i ++) {
         m_itemList->get_item(i)->set_change(0,"0");
     }
     handle_conf();
@@ -542,12 +567,12 @@ void MainWidget::layoutUI() {
 }
 
 void MainWidget::initSignalSlots() {
-    for(int btncnt = 0;btncnt < m_itemList->get_list().size();btncnt ++) {
+    for (int btncnt = 0;btncnt < m_itemList->get_list().size();btncnt ++) {
         connect(m_itemList->get_item(btncnt)->get_swbtn(),SIGNAL(status(int,int)),this,SLOT(on_switch_button(int,int)));
     }
 
     connect(this,&MainWidget::oldVersion,[=] () {
-        if(m_mainWidget->currentWidget() != m_nullWidget) {
+        if (m_mainWidget->currentWidget() != m_nullWidget) {
             on_login_out();
         }
         m_login_btn->hide();
@@ -556,7 +581,7 @@ void MainWidget::initSignalSlots() {
 
     //连接信号
     connect(m_mainWidget,&QStackedWidget::currentChanged,this,[this] (int index) {
-       if(m_mainWidget->widget(index) == m_nullWidget) {
+       if (m_mainWidget->widget(index) == m_nullWidget) {
            setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
            download_over();
            m_mainWidget->adjustSize();
@@ -576,38 +601,18 @@ void MainWidget::initSignalSlots() {
         download_files();
     });
     //All.conf的
-    m_fsWatcher.addPath(m_szConfPath);
+    QString tokenFile = QDir::homePath() + "/.cache/kylinId/token";
+    m_fsWatcher.addPath(tokenFile);
 
 
-    connect(&m_fsWatcher,&QFileSystemWatcher::fileChanged,this,[this] () {
-        QFile token(QDir::homePath() + "/.cache/kylinId/token");
-        if(token.exists() == true && m_pSettings != nullptr) {
-            QFile fileConf(m_szConfPath);
-            if(m_pSettings != nullptr && fileConf.exists()) {
-                if(m_mainWidget->currentWidget() != m_widgetContainer) {
-                    m_mainWidget->setCurrentWidget(m_widgetContainer);
-                }
-                m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
-                m_autoSyn->get_swbtn()->set_active(true);
-                for(int i = 0;i < m_szItemlist.size();i ++) {
-                    m_itemList->get_item(i)->get_swbtn()->set_active(true);
-                }
-            } else {
-                if(m_mainWidget->currentWidget() != m_nullWidget) {
-                    m_mainWidget->setCurrentWidget(m_nullWidget);
-                }
-                m_syncTimeLabel->setText(tr("Waiting for initialization..."));
-                m_autoSyn->get_swbtn()->set_active(false);
-                for(int i = 0;i < m_szItemlist.size();i ++) {
-                    m_itemList->get_item(i)->get_swbtn()->set_active(false);
-                }
-            }
-            if(m_autoSyn->get_swbtn()->get_active() == true)
-                handle_conf();
-        } else if(!token.exists()){
-            if(m_mainWidget->currentWidget() != m_nullWidget) {
+    connect(&m_fsWatcher,&QFileSystemWatcher::fileChanged,this,[=] () {
+        QFile token(tokenFile);
+        if (!token.exists()) {
+            if (m_mainWidget->currentWidget() != m_nullWidget) {
                 m_mainWidget->setCurrentWidget(m_nullWidget);
             }
+        } else {
+            emit docheck();
         }
     });
 
@@ -618,7 +623,7 @@ void MainWidget::initSignalSlots() {
     });
 
     connect(m_listTimer,&QTimer::timeout,this,[this] () {
-        if(isNetWorkOnline() == false) {
+        if (isNetWorkOnline() == false) {
             m_listTimer->stop();
             showDesktopNotify(tr("Network can not reach!"));
             return ;
@@ -628,7 +633,7 @@ void MainWidget::initSignalSlots() {
     });
 
     connect(this,&MainWidget::closedialog,this,[this] () {
-        if(isNetWorkOnline() == false) {
+        if (isNetWorkOnline() == false) {
             showDesktopNotify(tr("Network can not reach!"));
             return ;
         }
@@ -637,7 +642,7 @@ void MainWidget::initSignalSlots() {
 
     connect(m_stackedWidget, &QStackedWidget::currentChanged,this, [this] (int index) {
         Q_UNUSED(index);
-        if(m_stackedWidget->currentWidget() == m_itemList) {
+        if (m_stackedWidget->currentWidget() == m_itemList) {
             setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
         } else {
             setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
@@ -646,27 +651,27 @@ void MainWidget::initSignalSlots() {
 
     connect(m_autoSyn->get_swbtn(),&SwitchButton::status,this ,[=] (int on,int id) {
         Q_UNUSED(id);
-       if(on == 1 && m_pSettings != nullptr) {
+       if (on == 1 && m_pSettings != nullptr) {
            m_stackedWidget->setCurrentWidget(m_itemList);
            m_keyInfoList.clear();
            __once__ = false;
 
            m_autoSyn->set_change(0,"0");
-           for(int i  = 0;i < m_szItemlist.size();i ++) {
-               if(m_itemList->get_item(i)->get_swbtn()->get_swichbutton_val() == 1) {
+           for (int i  = 0;i < m_szItemlist.size();i ++) {
+               if (m_itemList->get_item(i)->get_swbtn()->get_swichbutton_val() == 1) {
                    m_itemList->get_item(i)->set_change(0,"0");
                }
            }
            QFile file( m_szConfPath);
-           if(file.exists() == false) {
-               if(m_bIsOnline == false) {
+           if (file.exists() == false) {
+               if (isNetWorkOnline() == false) {
                    showDesktopNotify(tr("Network can not reach!"));
                    return ;
                }
                emit dooss(m_szUuid);
                return ;
-           }  else {
-               if(m_bIsOnline == false) {
+           } else {
+               if (isNetWorkOnline() == false) {
                    showDesktopNotify(tr("Network can not reach!"));
                    return ;
                }
@@ -737,7 +742,7 @@ void MainWidget::init_gui() {
 
     m_exitCloud_btn->setFocusPolicy(Qt::NoFocus);
 
-    if(m_mainWidget->currentWidget() == m_nullWidget) {
+    if (m_mainWidget->currentWidget() == m_nullWidget) {
         setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
     } else {
         setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
@@ -745,7 +750,7 @@ void MainWidget::init_gui() {
     int cItem = 0;
 
 
-    for(const QString &key : qAsConst(m_szItemlist)) {
+    for (const QString &key : qAsConst(m_szItemlist)) {
         m_itemMap.insert(key,m_itemList->get_item(cItem)->get_itemname());
         cItem ++;
     }
@@ -767,9 +772,9 @@ void MainWidget::on_login() {
                                                               "openKylinID");
         QDBusMessage response =  QDBusConnection::sessionBus().call(message);
 
-        if(response.type() == QDBusMessage::ReplyMessage) {
+        if (response.type() == QDBusMessage::ReplyMessage) {
             QVariant var =  response.arguments().takeFirst();
-            if(var.toInt() != 0) {
+            if (var.toInt() != 0) {
                 showDesktopNotify(tr("KylinID open error!"));
             }
         }
@@ -798,11 +803,11 @@ void MainWidget::on_login() {
 
         connect(m_cLoginTimer,&QTimer::timeout,m_mainWidget,[this]() {
             m_cLoginTimer->stop();
-            if(m_bIsStopped) {
+            if (m_bIsStopped) {
                 return ;
             }
 
-            if(m_mainWidget->currentWidget()  == m_widgetContainer) {
+            if (m_mainWidget->currentWidget()  == m_widgetContainer) {
             } else if (m_mainWidget->currentWidget() == m_nullWidget) {
                 m_mainDialog->setnormal();
                 on_login_out();
@@ -814,7 +819,7 @@ void MainWidget::on_login() {
 
 /* 登录过程处理事件 */
 void MainWidget::open_cloud() {
-    if(isNetWorkOnline() == false) {
+    if (isNetWorkOnline() == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -826,15 +831,15 @@ void MainWidget::open_cloud() {
 }
 
 bool MainWidget::eventFilter(QObject *watched, QEvent *event) {
-    if(watched == m_exitCloud_btn) {
-        if(event->type() == QEvent::Enter && m_syncTooltips->isHidden() == true && m_exitCloud_btn->property("on") == true) {
+    if (watched == m_exitCloud_btn) {
+        if (event->type() == QEvent::Enter && m_syncTooltips->isHidden() == true && m_exitCloud_btn->property("on") == true) {
             QPoint pos;
             pos.setX(m_exitCloud_btn->mapToGlobal(QPoint(0, 0)).x() + 34);
             pos.setY(m_exitCloud_btn->mapToGlobal(QPoint(0, 0)).y() + 34);
             m_syncTooltips->move(pos);
             m_syncTooltips->show();
         }
-        if((event->type() == QEvent::Leave && m_syncTooltips->isHidden() == false) || m_exitCloud_btn->property("on") == false) {
+        if ((event->type() == QEvent::Leave && m_syncTooltips->isHidden() == false) || m_exitCloud_btn->property("on") == false) {
             m_syncTooltips->hide();
         }
     }
@@ -842,11 +847,11 @@ bool MainWidget::eventFilter(QObject *watched, QEvent *event) {
 }
 
 void MainWidget::finished_conf(int ret) {
-    if(isNetWorkOnline() == false) {
+    if (isNetWorkOnline() == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
-    if(ret == 0) {
+    if (ret == 0) {
         m_pSettings->setValue("Auto-sync/enable","false");
         m_bTokenValid = true;
          emit doquerry(m_szCode);
@@ -856,36 +861,36 @@ void MainWidget::finished_conf(int ret) {
 /* 登录成功处理事件 */
 void MainWidget::finished_load(int ret, QString uuid) {
 
-    if(isNetWorkOnline() == false) {
+    if (isNetWorkOnline() == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
     //qDebug() << ret;
-    if(ret == 301) {
-        if(m_mainWidget->currentWidget() != m_nullWidget) {
+    if (ret == 301) {
+        if (m_mainWidget->currentWidget() != m_nullWidget) {
             showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry or relogin!"));
             // m_exitCode->setText(tr("Please check your connection!"));
             return ;
         }
     }
-    if(ret == 401 || ret == 201) {
-        if(m_mainWidget->currentWidget() != m_nullWidget) {
+    if (ret == 401 || ret == 201) {
+        if (m_mainWidget->currentWidget() != m_nullWidget) {
             m_exitCode->setText(tr("Authorization failed!"));
             on_login_out();
             return ;
         }
     }
-    if(uuid != this->m_szUuid) {
+    if (uuid != this->m_szUuid) {
         return ;
     }
     m_bIsStopped = false;
     if (ret == 0) {
         m_autoSyn->set_change(0,"0");
-        for(int i = 0;i < m_szItemlist.size();i ++) {
+        for (int i = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_change(0,"0");
         }
         m_autoSyn->make_itemoff();
-        for(int i = 0;i < m_szItemlist.size();i ++) {
+        for (int i = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(false);
         }
         emit doconf();
@@ -894,14 +899,14 @@ void MainWidget::finished_load(int ret, QString uuid) {
 
 /* 读取滑动按钮列表 */
 void MainWidget::handle_conf() {
-    if(__once__  || m_pSettings == nullptr) {
+    if (__once__  || m_pSettings == nullptr) {
         return ;
     }
 
-    if(m_pSettings != nullptr &&  ConfigFile(m_szConfPath).Get("Auto-sync","enable").toString() == "true") {
+    if (m_pSettings != nullptr &&  ConfigFile(m_szConfPath).Get("Auto-sync","enable").toString() == "true") {
         m_stackedWidget->setCurrentWidget(m_itemList);
         m_autoSyn->make_itemon();
-        for(int i  = 0;i < m_szItemlist.size();i ++) {
+        for (int i  = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(true);
         }
         m_bAutoSyn = true;
@@ -909,22 +914,22 @@ void MainWidget::handle_conf() {
         m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
         m_autoSyn->make_itemoff();
         m_bAutoSyn = false;
-        for(int i  = 0;i < m_szItemlist.size();i ++) {
+        for (int i  = 0;i < m_szItemlist.size();i ++) {
             judge_item( ConfigFile(m_szConfPath).Get(m_szItemlist.at(i),"enable").toString(),i);
         }
-        for(int i  = 0;i < m_szItemlist.size();i ++) {
+        for (int i  = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(m_bAutoSyn);
         }
         return ;
     }
-    for(int i  = 0;i < m_szItemlist.size();i ++) {
+    for (int i  = 0;i < m_szItemlist.size();i ++) {
         judge_item(  ConfigFile(m_szConfPath).Get(m_szItemlist.at(i),"enable").toString(),i);
     }
 }
 
 /* 判断功能是否开启 */
 bool MainWidget::judge_item(const QString &enable,const int &cur) const {
-    if(enable == "true") {
+    if (enable == "true") {
         m_itemList->get_item(cur)->make_itemon();
     } else {
         m_itemList->get_item(cur)->make_itemoff();
@@ -934,12 +939,12 @@ bool MainWidget::judge_item(const QString &enable,const int &cur) const {
 
 /* 滑动按钮点击后改变功能状态 */
 void MainWidget::handle_write(const int &on,const int &id) {
-    if(m_bIsOnline == false) {
+    if (isNetWorkOnline() == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
     char name[32] = {0};
-    if(id == -1) {
+    if (id == -1) {
         strncpy(name,"Auto-sync", 31);
     } else {
         strncpy(name, m_szItemlist[id].toStdString().c_str(), 31);
@@ -951,31 +956,31 @@ void MainWidget::handle_write(const int &on,const int &id) {
 
 /* 滑动按钮点击处理事件 */
 void MainWidget::on_switch_button(int on,int id) {
-    if(m_mainWidget->currentWidget() == m_nullWidget) {
+    if (m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
-    if(m_bIsOnline == false) {
+    if (isNetWorkOnline() == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
-    if( m_exitCloud_btn->property("on") == true || !m_bAutoSyn) {
-        if(m_itemList->get_item(id)->get_swbtn()->get_swichbutton_val() == 1)
+    if ( m_exitCloud_btn->property("on") == true || !m_bAutoSyn) {
+        if (m_itemList->get_item(id)->get_swbtn()->get_swichbutton_val() == 1)
             m_itemList->get_item(id)->make_itemoff();
         else {
             m_itemList->get_item(id)->make_itemon();
         }
         return ;
-    } else if(on == 1 && m_exitCloud_btn->property("on") == false && m_bAutoSyn){
+    } else if (on == 1 && m_exitCloud_btn->property("on") == false && m_bAutoSyn){
         m_key = m_szItemlist.at(id);
 
-        if(m_key != "") {
+        if (m_key != "") {
             //QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
             emit dosingle(m_key);
         }
 
     }
 
-    if(m_szItemlist.at(id) == "shortcut" && on == 1) {
+    if (m_szItemlist.at(id) == "shortcut" && on == 1) {
         showDesktopNotify(tr("This operation may cover your settings!"));
     }
     handle_write(on,id);
@@ -983,16 +988,16 @@ void MainWidget::on_switch_button(int on,int id) {
 
 /* 自动同步滑动按钮点击后改变功能状态 */
 void MainWidget::on_auto_syn(int on, int id) {
-    if(m_mainWidget->currentWidget() == m_nullWidget) {
+    if (m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
     //emit docheck();
     //m_bAutoSyn = on;
-    for(int i  = 0;i < m_szItemlist.size();i ++) {
+    for (int i  = 0;i < m_szItemlist.size();i ++) {
         m_itemList->get_item(i)->set_active(m_bAutoSyn);
     }
 
-    if(m_bIsOnline == false) {
+    if (isNetWorkOnline() == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -1002,8 +1007,8 @@ void MainWidget::on_auto_syn(int on, int id) {
 /* 登出处理事件 */
 void MainWidget::on_login_out() {
 
-    if(m_exitCloud_btn->property("on") == false)  {
-        if(m_bIsKylinId) {
+    if (m_exitCloud_btn->property("on") == false)  {
+        if (m_bIsKylinId) {
             emit kylinIdLogOut();
         } else {
             emit dologout();
@@ -1038,14 +1043,14 @@ QLabel* MainWidget::get_title() {
 
 /* 同步回调函数集 */
 void MainWidget::download_files() {
-    if(__once__ == true || m_pSettings == nullptr) {
+    if (__once__ == true || m_pSettings == nullptr) {
         return ;
     }
-    if(m_mainWidget->currentWidget() == m_nullWidget) {
+    if (m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
     //emit docheck();
-    if(m_exitCloud_btn->property("on") == false) {
+    if (m_exitCloud_btn->property("on") == false) {
         m_exitCloud_btn->setProperty("on",true);
         m_exitCloud_btn->style()->unpolish(m_exitCloud_btn);
         m_exitCloud_btn->style()->polish(m_exitCloud_btn);
@@ -1057,7 +1062,7 @@ void MainWidget::download_files() {
     m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
 
 
-    if(m_autoSyn->get_swbtn()->get_swichbutton_val() == 0) {
+    if (m_autoSyn->get_swbtn()->get_swichbutton_val() == 0) {
         return ;
     }
     m_autoSyn->set_change(1,"0");
@@ -1066,15 +1071,15 @@ void MainWidget::download_files() {
 
 void MainWidget::push_files() {
 
-    if(__once__ == true) {
+    if (__once__ == true) {
         return ;
     }
 
-    if(m_mainWidget->currentWidget() == m_nullWidget) {
+    if (m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
    // emit docheck();
-    if(m_exitCloud_btn->property("on") == false) {
+    if (m_exitCloud_btn->property("on") == false) {
         m_exitCloud_btn->setText("");
         m_exitCloud_btn->setProperty("on",true);
         m_exitCloud_btn->style()->unpolish(m_exitCloud_btn);
@@ -1085,7 +1090,7 @@ void MainWidget::push_files() {
     }
     m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
 
-    if(m_autoSyn->get_swbtn()->get_swichbutton_val() == 0) {
+    if (m_autoSyn->get_swbtn()->get_swichbutton_val() == 0) {
         return ;
     }
     m_autoSyn->set_change(1,"0");
@@ -1094,9 +1099,9 @@ void MainWidget::push_files() {
 
 void MainWidget::download_over() {
     //emit docheck();
-    if(m_pSettings == nullptr) return;
+    if (m_pSettings == nullptr) return;
 
-    if(m_exitCloud_btn->property("on") == true) {
+    if (m_exitCloud_btn->property("on") == true) {
         m_blueEffect_sync->stop();
         m_exitCloud_btn->setText(tr("Exit"));
         m_exitCloud_btn->setProperty("on",false);
@@ -1107,7 +1112,7 @@ void MainWidget::download_over() {
         //showDesktopNotify("同步结束");
     }
      m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
-    if(__once__ == false) {
+    if (__once__ == false) {
 
         m_autoSyn->set_change(0,"0");
     }
@@ -1116,8 +1121,8 @@ void MainWidget::download_over() {
 
 void MainWidget::push_over() {
     //emit docheck();
-     if(m_pSettings == nullptr) return;
-    if(m_exitCloud_btn->property("on") == true) {
+     if (m_pSettings == nullptr) return;
+    if (m_exitCloud_btn->property("on") == true) {
         m_blueEffect_sync->stop();
         m_exitCloud_btn->setText(tr("Exit"));
         m_exitCloud_btn->setProperty("on",false);
@@ -1128,46 +1133,46 @@ void MainWidget::push_over() {
         //showDesktopNotify("同步结束");
     }
     m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
-    if(__once__ == false) {
+    if (__once__ == false) {
         m_autoSyn->set_change(0,"0");
     }
 }
 
 void MainWidget::get_key_info(QString info) {
     qDebug() << info;
-    if(m_mainWidget->currentWidget() == m_nullWidget) {
+    if (m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
 
-    if(info.contains("Upload")) {
+    if (info.contains("Upload")) {
         return ;
     }
-    if(info == "Download") {
+    if (info == "Download") {
         return ;
     }
 
     bool bIsFailed = false;
-    if(info.contains(",")) {
+    if (info.contains(",")) {
         m_keyInfoList = info.split(',');
     } else {
         m_keyInfoList << info;
     }
 
-    if(m_keyInfoList.size() == 1) {
+    if (m_keyInfoList.size() == 1) {
         m_autoSyn->set_change(-1,m_keyInfoList[0]);
         m_autoSyn->make_itemoff();
-        for(int i = 0;i < m_szItemlist.size();i ++) {
+        for (int i = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(false);
         }
         handle_write(0,-1);
         __once__ = true;
         return ;
-    } else if(m_keyInfoList.size() > 1){
+    } else if (m_keyInfoList.size() > 1){
         bIsFailed = true;
     } else {
          m_autoSyn->set_change(0,"0");
-         for(int i  = 0;i < m_szItemlist.size();i ++) {
-             if(m_itemList->get_item(i)->get_swbtn()->get_swichbutton_val() == 1) {
+         for (int i  = 0;i < m_szItemlist.size();i ++) {
+             if (m_itemList->get_item(i)->get_swbtn()->get_swichbutton_val() == 1) {
                  m_itemList->get_item(i)->set_change(0,"0");
              }
          }
@@ -1176,19 +1181,19 @@ void MainWidget::get_key_info(QString info) {
 
     //m_keyInfoList.size() > 1的情况
     //说明size大于2
-    if(bIsFailed) {
+    if (bIsFailed) {
         QString keys = "";
-        for(QString key : m_keyInfoList) {
-            if(key != m_keyInfoList.last()) {
+        for (QString key : m_keyInfoList) {
+            if (key != m_keyInfoList.last()) {
 
-                if(m_itemMap.value(key).isEmpty() == false) {
+                if (m_itemMap.value(key).isEmpty() == false) {
                     m_itemList->get_item_by_name(m_itemMap.value(key))->set_change(-1,"Failed!");
                     keys.append(tr("%1,").arg(m_itemMap.value(key)));
                 }
             }
         }
         m_autoSyn->make_itemoff();
-        for(int i = 0;i < m_szItemlist.size();i ++) {
+        for (int i = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(false);
         }
         m_autoSyn->set_change(-1,"Failed!");
@@ -1217,7 +1222,7 @@ void MainWidget::showDesktopNotify(const QString &message)
 }
 
 void MainWidget::loginSuccess(int ret) {
-    if(isNetWorkOnline() == false) {
+    if (isNetWorkOnline() == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -1239,7 +1244,7 @@ MainWidget::~MainWidget() {
     delete m_dbusClient;
     m_dbusClient = nullptr;
     thread->requestInterruption();
-    if(thread != nullptr)
+    if (thread != nullptr)
     {
         thread->quit();
     }

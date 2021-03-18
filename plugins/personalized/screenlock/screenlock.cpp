@@ -39,6 +39,7 @@
 Screenlock::Screenlock() : mFirstLoad(true) {
     pluginName = tr("Screenlock");
     pluginType = PERSONALIZED;
+    prePicUnit = nullptr;
 }
 
 Screenlock::~Screenlock() {
@@ -226,6 +227,15 @@ void Screenlock::initScreenlockStatus(){
         picUnit->setFilenameText(bgInfo.filename);
 
         connect(picUnit, &PictureUnit::clicked, [=](QString filename){
+            if(prePicUnit != nullptr)
+            {
+                prePicUnit->changeClickedFlag(false);
+                prePicUnit->setStyleSheet("border-width: 0px;");
+            }
+            picUnit->changeClickedFlag(true);
+            prePicUnit = picUnit;
+            picUnit->setFrameShape (QFrame::Box);
+            picUnit->setStyleSheet(picUnit->clickedStyleSheet);
             ui->previewLabel->setPixmap(QPixmap(filename).scaled(ui->previewLabel->size()));
             lSetting->set(SCREENLOCK_BG_KEY, filename);
             setLockBackground(loginbgSwitchBtn->isChecked());

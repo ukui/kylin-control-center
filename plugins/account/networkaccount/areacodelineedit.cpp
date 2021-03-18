@@ -23,7 +23,7 @@
 /* 读取国家代码JSon文件并写入ComboBox */
 void AreaCodeLineEdit::InittoCountrycode() {
     m_loadFile = new QFile(":/country.json",this);
-    if(!m_loadFile->open(QIODevice::ReadOnly)) {
+    if (!m_loadFile->open(QIODevice::ReadOnly)) {
         //qDebug() <<"Open fail!";
         return ;
     }
@@ -32,7 +32,7 @@ void AreaCodeLineEdit::InittoCountrycode() {
     QJsonParseError json_error;
     m_jsonFile = new QJsonDocument(QJsonDocument::fromJson(Data,&json_error));
 
-    if(json_error.error != QJsonParseError::NoError) {
+    if (json_error.error != QJsonParseError::NoError) {
         //qDebug() << "Json Error!";
         return ;
     }

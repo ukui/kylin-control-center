@@ -204,6 +204,9 @@ void m_updatelog::updatesql( const int &start,const int &num,const QString &into
     QSqlQuery query(QSqlDatabase::database("A"));
     query.exec(sqlCmd);
     while(query.next()){
+        QString statusType = query.value("keyword").toString();
+        if(statusType!=""&&statusType!="1")
+            continue;
         HistoryUpdateListWig *hulw = new HistoryUpdateListWig();
         hulw->setAttribute(translationVirtualPackage(query.value("appname").toString())+" "+query.value("version").toString(),
                            query.value("statue").toString(),

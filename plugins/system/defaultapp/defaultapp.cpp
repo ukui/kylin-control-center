@@ -139,7 +139,7 @@ void DefaultApp::initUI() {
                     browserindex = i;
                     emit appInitDone(browserindex, BROWSERTYPE);
                 }
-                if(single.contains("firefox")) {
+                if("qaxbrowser-safe.desktop" == single) {
                     mDefaultBrowser = appname;
                 }
             }

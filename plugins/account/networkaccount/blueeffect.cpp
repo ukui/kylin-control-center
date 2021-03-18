@@ -44,7 +44,7 @@ void Blueeffect::startmoive() {
 void Blueeffect::stop() {
     m_cCnt = 1;
     m_iconLabel->setPixmap(m_svgHandler->loadSvg(":/new/image/loading11.svg"));
-    if(m_cTimer->isActive())
+    if (m_cTimer->isActive())
         m_cTimer->stop();
     hide();
 }

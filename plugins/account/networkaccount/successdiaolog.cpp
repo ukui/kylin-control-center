@@ -51,16 +51,16 @@ SuccessDiaolog::SuccessDiaolog(QWidget *parent) : QWidget(parent)
 
 /* 成功消息统一接收机制 */
 void SuccessDiaolog::set_mode_text(const int &mode) {
-    if(mode == 0) {
+    if (mode == 0) {
         m_textLabel->setText(tr("Sign up success!"));
         m_backloginBtn->setText(tr("Confirm"));
-    } else if(mode == 1) {
+    } else if (mode == 1) {
         m_textLabel->setText(tr("Reset success!"));
         m_backloginBtn->setText(tr("Confirm"));
-    } else if(mode == 2) {
+    } else if (mode == 2) {
         m_textLabel->setText(tr("Sign in success!"));
         m_backloginBtn->setText(tr("Confirm"));
-    } else if(mode == 3) {
+    } else if (mode == 3) {
         m_textLabel->setText(tr("Binding phone success!"));
         m_backloginBtn->setText(tr("Confirm"));
     }

@@ -46,6 +46,7 @@ Wallpaper::Wallpaper() : mFirstLoad(true)
 {
     pluginName = tr("Background");
     pluginType = PERSONALIZED;
+    prePicUnit = nullptr;
 }
 
 Wallpaper::~Wallpaper()
@@ -195,6 +196,15 @@ void Wallpaper::setupConnect(){
         picUnit->setPixmap(pixmap);
         picUnit->setFilenameText(filename);
         connect(picUnit, &PictureUnit::clicked, [=](QString fn){
+            if(prePicUnit != nullptr)
+            {
+                prePicUnit->changeClickedFlag(false);
+                prePicUnit->setStyleSheet("border-width: 0px;");
+            }
+            picUnit->changeClickedFlag(true);
+            prePicUnit = picUnit;
+            picUnit->setFrameShape (QFrame::Box);
+            picUnit->setStyleSheet(picUnit->clickedStyleSheet);
             bgsettings->set(FILENAME, fn);
             setLockBackground("");
             ui->previewStackedWidget->setCurrentIndex(PICTURE);

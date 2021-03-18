@@ -18,17 +18,23 @@
  *
  */
 #include "pictureunit.h"
-
+#include <QColor>
 #include "MaskWidget/maskwidget.h"
-
+#include <QDebug>
 PictureUnit::PictureUnit()
 {
     _filename = "";
-
+    QColor highLightColor = palette().color(QPalette::Highlight);
+    QString stringColor = QString("rgb(%1,%2,%3)")
+            .arg(highLightColor.red())
+            .arg(highLightColor.green())
+            .arg(highLightColor.blue());
+    hoverStyleSheet = QString("border-width: 3px;border-style: solid;border-color: %1;").arg(stringColor);
+    clickedStyleSheet = QString("border-width: 6px;border-style: solid;border-color: %1;").arg(stringColor);;
     setAttribute(Qt::WA_DeleteOnClose);
     setFixedSize(QSize(166, 110));
     setScaledContents(true);
-
+    clickedFlag = false;
     MaskWidget * maskWidget = new MaskWidget(this);
     maskWidget->setGeometry(0, 0, this->width(), this->height());
 }
@@ -45,4 +51,28 @@ void PictureUnit::mousePressEvent(QMouseEvent *e){
     if (e->button() == Qt::LeftButton)
         emit clicked(_filename);
 //    QLabel::mousePressEvent(event);
+}
+
+void PictureUnit::enterEvent(QEvent *e)
+{
+    if(getClickedFlag() == false)
+    {
+        setFrameShape (QFrame::Box);
+        setStyleSheet(hoverStyleSheet);
+    }
+}
+void PictureUnit::leaveEvent(QEvent *e)
+{
+    if(getClickedFlag() == false)
+        setStyleSheet("border-width: 0px;");
+}
+
+bool PictureUnit::getClickedFlag()
+{
+    return clickedFlag;
+}
+
+void PictureUnit::changeClickedFlag(bool flag)
+{   
+    clickedFlag = flag;
 }

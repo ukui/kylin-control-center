@@ -186,7 +186,7 @@ void PassDialog::set_staus(const bool &ok) {
 
 /* 清空忘记密码框 */
 void PassDialog::set_clear() {
-    if(!m_errorTips->isHidden()) {
+    if (!m_errorTips->isHidden()) {
         m_errorTips->hide();
     }
     m_passLineEdit->get_visble()->setChecked(false);
