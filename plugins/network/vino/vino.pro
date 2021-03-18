@@ -1,4 +1,5 @@
 include(../../../env.pri)
+include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 QT       += widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -12,6 +13,7 @@ DESTDIR = ../..
 target.path = $${PLUGIN_INSTALL_DIRS}
 
 INCLUDEPATH   +=  \
+                 $$PROJECT_COMPONENTSOURCE\
                  $$PROJECT_ROOTDIR \
 
 # The following define makes your compiler emit warnings if you use

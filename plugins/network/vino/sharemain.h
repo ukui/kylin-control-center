@@ -31,7 +31,7 @@
 #include <QByteArray>
 #include <QDebug>
 #include <QGSettings/QGSettings>
-
+#include "SwitchButton/switchbutton.h"
 const QByteArray kVinoSchemas    = "org.gnome.Vino";
 const QString kVinoViewOnlyKey   = "view-only";
 const QString kVinoPromptKey     = "prompt-enabled";
@@ -59,10 +59,10 @@ private:
     QFrame *mNoticeOFrame;
     QFrame *mNoticeNFrame;
 
-    QCheckBox *mEnableBox;     // 允许其他人查看桌面
-    QCheckBox *mViewBox;       // 允许连接控制屏幕
-    QCheckBox *mAccessBox;     // 为本机确认每次访问
-    QCheckBox *mPwdBox;        // 要求用户输入密码
+    SwitchButton *mEnableBtn;  // 允许其他人查看桌面
+    SwitchButton *mViewBtn;    // 允许连接控制屏幕
+    SwitchButton *mAccessBtn;  // 为本机确认每次访问
+    SwitchButton *mPwdBtn;    // 要求用户输入密码
 
     QRadioButton *mNoticeWBtn;
     QRadioButton *mNoticeOBtn;

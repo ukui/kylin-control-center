@@ -53,9 +53,9 @@ void ShareMain::initUI() {
 
     QHBoxLayout * enableHLayout = new QHBoxLayout();
 
-    mEnableBox = new QCheckBox(this);
+    mEnableBtn = new SwitchButton(this);
     mEnableLabel = new QLabel(tr("Allow others to view your desktop"), this);
-    enableHLayout->addWidget(mEnableBox);
+    enableHLayout->addWidget(mEnableBtn);
     enableHLayout->addWidget(mEnableLabel);
     enableHLayout->addStretch();
 
@@ -68,9 +68,9 @@ void ShareMain::initUI() {
 
     QHBoxLayout * viewHLayout = new QHBoxLayout();
 
-    mViewBox = new QCheckBox(this);
+    mViewBtn = new SwitchButton(this);
     mViewLabel = new QLabel(tr("Allow connection to control screen"), this);
-    viewHLayout->addWidget(mViewBox);
+    viewHLayout->addWidget(mViewBtn);
     viewHLayout->addWidget(mViewLabel);
     viewHLayout->addStretch();
 
@@ -85,9 +85,9 @@ void ShareMain::initUI() {
 
     QHBoxLayout * secHLayout = new QHBoxLayout();
 
-    mAccessBox = new QCheckBox(this);
+    mAccessBtn = new SwitchButton(this);
     mAccessLabel = new QLabel(tr("You must confirm every visit for this machine"), this);
-    secHLayout->addWidget(mAccessBox);
+    secHLayout->addWidget(mAccessBtn);
     secHLayout->addWidget(mAccessLabel);
     secHLayout->addStretch();
 
@@ -100,14 +100,14 @@ void ShareMain::initUI() {
 
     QHBoxLayout * pwdHLayout = new QHBoxLayout();
 
-    mPwdBox = new QCheckBox(this);
+    mPwdBtn = new SwitchButton(this);
     mPwdsLabel = new QLabel(tr("Require user to enter this password: "), this);
 
     mHintLabel = new QLabel(tr("Password can not be blank"), this);
     mHintLabel->setStyleSheet("color:red;");
 
     mPwdLineEdit = new QLineEdit(this);
-    pwdHLayout->addWidget(mPwdBox);
+    pwdHLayout->addWidget(mPwdBtn);
     pwdHLayout->addWidget(mPwdsLabel);
     pwdHLayout->addStretch();
     pwdHLayout->addWidget(mHintLabel);
@@ -134,10 +134,10 @@ void ShareMain::initConnection() {
 
         initEnableStatus();
 
-        connect(mEnableBox, &QCheckBox::clicked, this, &ShareMain::enableSlot);
-        connect(mViewBox, &QCheckBox::clicked, this, &ShareMain::viewBoxSlot);
-        connect(mAccessBox, &QCheckBox::clicked, this, &ShareMain::accessSlot);
-        connect(mPwdBox, &QCheckBox::clicked, this, &ShareMain::pwdEnableSlot);
+        connect(mEnableBtn, &SwitchButton::checkedChanged, this, &ShareMain::enableSlot);
+        connect(mViewBtn, &SwitchButton::checkedChanged, this, &ShareMain::viewBoxSlot);
+        connect(mAccessBtn, &SwitchButton::checkedChanged, this, &ShareMain::accessSlot);
+        connect(mPwdBtn, &SwitchButton::checkedChanged, this, &ShareMain::pwdEnableSlot);
         connect(mPwdLineEdit, &QLineEdit::textChanged, this, &ShareMain::pwdInputSlot);
     }
 }
@@ -147,13 +147,13 @@ void ShareMain::initEnableStatus() {
     bool secPwd = mVinoGsetting->get(kVinoPromptKey).toBool();
     QString pwd = mVinoGsetting->get(kAuthenticationKey).toString();
 
-    mAccessBox->setChecked(secPwd);
-    mViewBox->setChecked(!isShared);
+    mAccessBtn->setChecked(secPwd);
+    mViewBtn->setChecked(!isShared);
     if (pwd == "vnc") {
-        mPwdBox->setChecked(true);
+        mPwdBtn->setChecked(true);
         mHintLabel->setVisible(true);
     } else {
-        mPwdBox->setChecked(false);
+        mPwdBtn->setChecked(false);
         mPwdLineEdit->setVisible(false);
         mHintLabel->setVisible(false);
     }
@@ -168,7 +168,7 @@ void ShareMain::initEnableStatus() {
 }
 
 void ShareMain::setFrameVisible(bool visible) {
-    mEnableBox->setChecked(visible);
+    mEnableBtn->setChecked(visible);
 
     mViewFrame->setVisible(visible);
     mSecurityFrame->setVisible(visible);
@@ -216,8 +216,9 @@ void ShareMain::pwdEnableSlot(bool status) {
 
 void ShareMain::pwdInputSlot(const QString &pwd) {
     Q_UNUSED(pwd);
-
+    
     if (pwd.length() <= 8 && !pwd.isEmpty()) {
+        mHintLabel->setText(tr(""));
         mHintLabel->setVisible(false);
         QByteArray text = pwd.toLocal8Bit();
         QByteArray secPwd = text.toBase64();
