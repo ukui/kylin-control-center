@@ -449,8 +449,8 @@ void SearchWidget::clearSearchData() {
 
 void SearchWidget::initExcludeSearch() {
     if (!Utils::isExistEffect()) {
-        mCnExclude << "特效模式" << "透明度";
-        mEnExclude << "Performance mode" << "Transparency";
+        mCnExclude << "特效模式" << "透明度" << "夜间模式";
+        mEnExclude << "Performance mode" << "Transparency" << "night mode";
     }
 }
 
