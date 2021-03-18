@@ -198,7 +198,7 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
 
     connect(m_loginAccountLineEdit,&QLineEdit::textChanged,[this] (const QString &changed) {
         // qDebug() << changed;
-       if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
+       if (m_loginDialog->get_stack_widget()->currentIndex() == 0) {
            m_NameLogin = changed;
        } else {
            m_PhoneLogin = changed;
@@ -206,7 +206,7 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     });
 
     connect(m_loginDialog->get_stack_widget(),&QStackedWidget::currentChanged,[this] (int index) {
-        if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
+        if (m_loginDialog->get_stack_widget()->currentIndex() == 0) {
             m_loginAccountLineEdit->setText(m_NameLogin);
         } else {
             m_loginAccountLineEdit->setText(m_PhoneLogin);
@@ -269,14 +269,14 @@ void MainDialog::set_client(DBusUtils *c,QThread *t) {
     });
 
     connect(m_dbusClient,&DBusUtils::taskFinished,this,[=] (const QString &taskName,int ret) {
-        if(taskName == "userLogin") {
-            if(ret != 0) {
+        if (taskName == "userLogin") {
+            if (ret != 0) {
                 emit on_login_failed();
                 set_back();
                 m_blueEffect->stop();             //登录失败，执行此处，关闭登录执行过程效果，并打印错误消息
                 m_submitBtn->setText(tr("Sign in"));
                 m_loginDialog->get_mcode_lineedit()->setText("");
-                if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
+                if (m_loginDialog->get_stack_widget()->currentIndex() == 0) {
                     m_loginDialog->set_code(messagebox(ret));
                     m_loginTips->show();
 
@@ -293,21 +293,21 @@ void MainDialog::set_client(DBusUtils *c,QThread *t) {
             } else {
                 //qDebug() << ret;
             }
-        } else if(taskName == "phoneLogin") {
-            if(m_stackedWidget->currentWidget() != m_loginDialog && m_loginDialog->get_stack_widget()->currentIndex()) {
+        } else if (taskName == "phoneLogin") {
+            if (m_stackedWidget->currentWidget() != m_loginDialog && m_loginDialog->get_stack_widget()->currentIndex()) {
                 emit on_login_failed();
                 set_back();
                 //m_blueEffect->stop();             //登录失败，执行此处，关闭登录执行过程效果，并打印错误消息
                 m_submitBtn->setText(tr("Sign in"));
                 return ;
             }
-            if(ret != 0) {
+            if (ret != 0) {
                 emit on_login_failed();
                 set_back();
                 m_blueEffect->stop();             //登录失败，执行此处，关闭登录执行过程效果，并打印错误消息
                 m_submitBtn->setText(tr("Sign in"));
                 m_loginDialog->get_mcode_lineedit()->setText("");
-                if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
+                if (m_loginDialog->get_stack_widget()->currentIndex() == 0) {
                     m_loginDialog->set_code(messagebox(ret));
                     m_loginTips->show();
 
@@ -323,11 +323,11 @@ void MainDialog::set_client(DBusUtils *c,QThread *t) {
                     return ;
                 }
             }
-        } else if(taskName == "getMCodeByPhone") {
-            if(m_stackedWidget->currentWidget() != m_loginDialog && m_loginDialog->get_stack_widget()->currentIndex() != 1) {
+        } else if (taskName == "getMCodeByPhone") {
+            if (m_stackedWidget->currentWidget() != m_loginDialog && m_loginDialog->get_stack_widget()->currentIndex() != 1) {
                 return ;
             }
-            if(ret == 0) {
+            if (ret == 0) {
                 //not do
             } else {
                 m_loginDialog->get_mcode_lineedit()->setText("");
@@ -405,8 +405,8 @@ void MainDialog::on_login_btn() {
     m_baseWidget->setEnabled(false); //防止用户在登录按钮按完之后到处乱点，下同
     set_staus(false);
     m_delBtn->setEnabled(true);
-   if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
-       if(m_loginDialog->get_mcode_lineedit()->text().trimmed() == "") {
+   if (m_loginDialog->get_stack_widget()->currentIndex() == 0) {
+       if (m_loginDialog->get_mcode_lineedit()->text().trimmed() == "") {
            m_loginDialog->set_code(messagebox(703));
            m_loginTips->show();
            m_baseWidget->setEnabled(true);
@@ -419,7 +419,7 @@ void MainDialog::on_login_btn() {
            emit on_login_failed();
            return ;
        }
-       if(m_loginDialog->get_user_edit()->text().trimmed() == "" ||
+       if (m_loginDialog->get_user_edit()->text().trimmed() == "" ||
                m_loginDialog->get_login_pass()->text().trimmed() == ""
                ) {
            m_loginDialog->set_code(messagebox(501));
@@ -435,8 +435,8 @@ void MainDialog::on_login_btn() {
            return ;
        }
    }
-    if(m_loginDialog->get_stack_widget()->currentIndex() == 1) {
-        if(m_loginDialog->get_login_code()->text().trimmed() == "") {
+    if (m_loginDialog->get_stack_widget()->currentIndex() == 1) {
+        if (m_loginDialog->get_login_code()->text().trimmed() == "") {
             m_loginDialog->set_code(messagebox(704));
             m_loginCodeStatusTips->show();
             m_baseWidget->setEnabled(true);
@@ -447,7 +447,7 @@ void MainDialog::on_login_btn() {
             return ;
         }
 
-        if(m_loginDialog->get_user_edit()->text().trimmed() == "") {
+        if (m_loginDialog->get_user_edit()->text().trimmed() == "") {
             m_loginDialog->set_code(messagebox(505));
             m_loginCodeStatusTips->show();
             m_baseWidget->setEnabled(true);
@@ -459,7 +459,7 @@ void MainDialog::on_login_btn() {
         }
     }
     //如果验证码输入错误，执行此处
-    if(m_loginDialog->get_stack_widget()->currentIndex() == 0 &&
+    if (m_loginDialog->get_stack_widget()->currentIndex() == 0 &&
         QString(m_loginDialog->get_mcode_widget()->get_verificate_code()) != m_loginDialog->get_mcode_lineedit()->text() &&
             m_bAutoLogin == false) {
         m_loginDialog->set_code(tr("Your code is wrong!"));
@@ -474,7 +474,7 @@ void MainDialog::on_login_btn() {
         emit on_login_failed();
         return ;
     }
-    if(m_loginDialog->get_user_name().length() < 11 && m_loginDialog->get_stack_widget()->currentIndex() == 1) {
+    if (m_loginDialog->get_user_name().length() < 11 && m_loginDialog->get_stack_widget()->currentIndex() == 1) {
         m_baseWidget->setEnabled(true);
         m_loginDialog->set_code(tr("Please check your phone!"));
         m_loginCodeStatusTips->show();
@@ -485,7 +485,7 @@ void MainDialog::on_login_btn() {
     }
 
     //如果信息正确可提交，执行此处
-    if(m_loginDialog->get_user_name() != "" &&
+    if (m_loginDialog->get_user_name() != "" &&
         m_loginDialog->get_user_pass() != "" &&
         m_loginDialog->get_stack_widget()->currentIndex() == 0){
         m_szAccount = m_loginDialog->get_user_name();
@@ -498,7 +498,7 @@ void MainDialog::on_login_btn() {
         m_blueEffect->startmoive();
         emit dologin(m_szRegAccount,m_szRegPass);            //触发登录信号，告知客户端进行登录操作
 
-    } else if(m_loginDialog->get_user_name().trimmed() != ""
+    } else if (m_loginDialog->get_user_name().trimmed() != ""
                && m_loginDialog->get_login_code()->text().trimmed() != ""
                && m_loginDialog->get_stack_widget()->currentIndex() == 1) {
         QString phone,mcode;                    //如果用户选择手机登录，执行此处
@@ -510,7 +510,7 @@ void MainDialog::on_login_btn() {
     } else {
         emit on_login_failed();
         //信息填写不完整执行此处，包括密码登录以及手机登录
-        if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
+        if (m_loginDialog->get_stack_widget()->currentIndex() == 0) {
             m_loginDialog->set_code(messagebox(501));
             m_loginTips->show();
             m_baseWidget->setEnabled(true);
@@ -537,18 +537,18 @@ QString MainDialog::replace_blank(QString &str) {
     QString ret = "";
     bool first = false;
     for(QChar c : str) {
-        if(c != ' ' && !first) {
+        if (c != ' ' && !first) {
             filter.push_front(c);
             first = true;
-        } else if(first) {
+        } else if (first) {
             filter.push_front(c);
         }
     }
     for(QChar c : qAsConst(filter)) {
-        if(c != ' ' && !first) {
+        if (c != ' ' && !first) {
             ret.push_front(c);
             first = true;
-        } else if(first) {
+        } else if (first) {
             ret.push_front(c);
         }
     }
@@ -572,7 +572,7 @@ void MainDialog::on_send_code_log() {
     //qDebug() <<m_loginDialog->get_user_name().length();
     QString phone;
     m_loginDialog->get_user_mcode()->setEnabled(false);
-    if(m_loginDialog->get_user_name().length() < 11) {
+    if (m_loginDialog->get_user_name().length() < 11) {
         m_baseWidget->setEnabled(true);
         m_loginDialog->get_user_mcode()->setEnabled(true);
         m_loginDialog->set_code(tr("Please check your phone!"));
@@ -580,7 +580,7 @@ void MainDialog::on_send_code_log() {
         setshow(m_stackedWidget);
         return ;
     }
-    if(m_loginDialog->get_user_name() != "") {
+    if (m_loginDialog->get_user_name() != "") {
         phone = m_loginDialog->get_user_name();
         emit dogetmcode_phone_log(phone);
     } else {
@@ -598,13 +598,13 @@ void MainDialog::on_send_code_log() {
 
 /* 忘记密码验证码的计时器处理 */
 void MainDialog::on_timer_timeout() {
-    if(timerout_num > 0) {
+    if (timerout_num > 0) {
 
         m_timer->start(1000);
         m_forgetpassSendBtn->setEnabled(false);
         m_forgetpassSendBtn->setText(tr("Resend ( %1 )").arg(timerout_num));
         timerout_num --;
-    } else if(timerout_num == 0) {
+    } else if (timerout_num == 0) {
         timerout_num = 60;
         m_forgetpassSendBtn->setEnabled(true);
         m_forgetpassSendBtn->setText(tr("Get"));
@@ -618,7 +618,7 @@ void MainDialog::on_login_finished(int ret) {
     //qDebug()<<ret;
     //无手机号码绑定，进入手机号码绑定页面
     //登录返回成功，执行此处
-    if(ret == 0) {
+    if (ret == 0) {
         //m_blueEffect->stop();
         //m_submitBtn->setText(tr("Sign in"));
         emit on_login_success(); //发送成功登录信号给主页面
@@ -628,14 +628,14 @@ void MainDialog::on_login_finished(int ret) {
         set_back();
         m_blueEffect->stop();             //登录失败，执行此处，关闭登录执行过程效果，并打印错误消息
         m_submitBtn->setText(tr("Sign in"));
-        if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
+        if (m_loginDialog->get_stack_widget()->currentIndex() == 0) {
             m_loginDialog->set_code(messagebox(ret));
             m_loginTips->show();
             m_loginDialog->get_mcode_widget()->set_change(1);
             m_loginDialog->get_mcode_widget()->repaint();
             setshow(m_stackedWidget);
             return ;
-        } else if(m_loginDialog->get_stack_widget()->currentIndex() == 1) {
+        } else if (m_loginDialog->get_stack_widget()->currentIndex() == 1) {
             m_loginDialog->set_code(messagebox(ret));
             m_loginCodeStatusTips->show();
             setshow(m_stackedWidget);
@@ -648,21 +648,21 @@ void MainDialog::on_login_finished(int ret) {
 /* 手机号直接发送验证码回调函数，发送手机验证码回执消息后执行此处 */
 void MainDialog::on_get_mcode_by_phone(int ret) {
     //qDebug() << ret;
-    if(ret != 0) {
-        if(m_stackedWidget->currentWidget() == m_loginDialog) {
+    if (ret != 0) {
+        if (m_stackedWidget->currentWidget() == m_loginDialog) {
             m_loginDialog->get_user_mcode()->setEnabled(true);
             m_loginDialog->get_login_pass()->setText("");
             m_loginDialog->get_mcode_lineedit()->setText("");
             m_loginDialog->set_code(messagebox(ret));
-            if(m_loginDialog->get_stack_widget()->currentIndex() == 0){
+            if (m_loginDialog->get_stack_widget()->currentIndex() == 0){
                 m_loginTips->show();
-            } else if(m_loginDialog->get_stack_widget()->currentIndex() == 1) {
+            } else if (m_loginDialog->get_stack_widget()->currentIndex() == 1) {
                 m_loginCodeStatusTips->show();
             }
             setshow(m_stackedWidget);
         }
         return ;
-    } else if(ret == 0) {
+    } else if (ret == 0) {
         m_forgetpassSendBtn->setEnabled(false);
         timerout_num = 60;
         m_timer->start(1000);
@@ -715,12 +715,12 @@ void MainDialog::paintEvent(QPaintEvent *event)
 /* 子控件事件过滤，主要针对获得或者失去焦点时捕捉 */
 bool MainDialog::eventFilter(QObject *w, QEvent *e) {
 
-//    if(w == m_delBtn) {
-//        if(e->type() == QEvent::Enter) {
+//    if (w == m_delBtn) {
+//        if (e->type() == QEvent::Enter) {
 //            QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete_click.svg");
 //            m_delBtn->setIcon(pixmap);
 //        }
-//        if(e->type() == QEvent::Leave) {
+//        if (e->type() == QEvent::Leave) {
 //            QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete.svg");
 //            m_delBtn->setIcon(pixmap);
 //        }
@@ -728,15 +728,15 @@ bool MainDialog::eventFilter(QObject *w, QEvent *e) {
     //手机绑定的四个控件捕捉
 
     //登录页面的控件捕捉
-    if(m_stackedWidget->currentWidget() == m_loginDialog) {
-        if(w == m_loginPassLineEdit) {
+    if (m_stackedWidget->currentWidget() == m_loginDialog) {
+        if (w == m_loginPassLineEdit) {
             if (e->type() == QEvent::FocusIn && !m_loginTips->isHidden()) {
                 m_loginTips->hide();
 
                // setshow(m_stackedWidget);
             }
         }
-        if(w ==m_loginAccountLineEdit) {
+        if (w ==m_loginAccountLineEdit) {
             if (e->type() == QEvent::FocusIn && !m_loginTips->isHidden()) {
                 m_loginTips->hide();
 
@@ -749,14 +749,14 @@ bool MainDialog::eventFilter(QObject *w, QEvent *e) {
 
             }
         }
-        if(w == m_loginMCodeLineEdit) {
+        if (w == m_loginMCodeLineEdit) {
             if (e->type() == QEvent::FocusIn && !m_loginTips->isHidden()) {
                 m_loginTips->hide();
 
                // setshow(m_stackedWidget);
             }
         }
-        if(w == m_loginLineEdit) {
+        if (w == m_loginLineEdit) {
             if (e->type() == QEvent::FocusIn && !m_loginCodeStatusTips->isHidden()) {
                 m_loginCodeStatusTips->hide();
 
@@ -770,7 +770,7 @@ bool MainDialog::eventFilter(QObject *w, QEvent *e) {
 
 
 
-    if(w == m_submitBtn) {
+    if (w == m_submitBtn) {
         if (e->type() == QEvent::FocusIn && !m_loginTips->isHidden() && m_stackedWidget->currentWidget() == m_loginDialog) {
             m_loginTips->hide();
            // setshow(m_stackedWidget);
@@ -796,7 +796,7 @@ void MainDialog::set_clear() {
     m_titleLable->setText(tr("Sign in Cloud"));
     m_stackedWidget->setCurrentWidget(m_loginDialog);
     m_loginDialog->set_clear();
-    if(m_stackedWidget->currentWidget() == m_loginDialog) {
+    if (m_stackedWidget->currentWidget() == m_loginDialog) {
         m_loginDialog->set_clear();
     }
     m_loginDialog->set_window2();
@@ -804,8 +804,8 @@ void MainDialog::set_clear() {
 }
 
 void MainDialog::set_staus(const bool &ok) {
-    if(m_baseWidget->currentWidget() == m_containerWidget) {
-        if(m_stackedWidget->currentWidget() == m_loginDialog) {
+    if (m_baseWidget->currentWidget() == m_containerWidget) {
+        if (m_stackedWidget->currentWidget() == m_loginDialog) {
             m_loginDialog->set_staus(ok);
         }
         m_stackedWidget->setEnabled(ok);
@@ -830,7 +830,7 @@ void MainDialog::setnormal() {
     set_staus(true);
     m_blueEffect->stop();
     m_submitBtn->setText(tr("Sign in"));
-    if(m_loginDialog->get_stack_widget()->currentIndex() == 0) {
+    if (m_loginDialog->get_stack_widget()->currentIndex() == 0) {
         m_loginDialog->set_code(messagebox(108));
         m_loginDialog->get_mcode_widget()->set_change(1);
         m_loginTips->show();

@@ -31,7 +31,7 @@ PasswordLineEdit::PasswordLineEdit(QWidget *parent) : QLineEdit(parent)
     QPixmap pixmap = m_svgHandler->loadSvgColor(":/new/image/invisible.svg","gray",16);
     m_changeStatusBtn->setPixmap(pixmap);
     connect(m_changeStatusBtn,&VisbleButton::toggled,[this] (bool checked) {
-        if(checked) {
+        if (checked) {
             setEchoMode(QLineEdit::Normal);
             QPixmap pixmap = m_svgHandler->loadSvgColor(":/new/image/visible.svg","gray",16);
             m_changeStatusBtn->setPixmap(pixmap);
@@ -53,24 +53,24 @@ PasswordLineEdit::PasswordLineEdit(QWidget *parent) : QLineEdit(parent)
         bool number = false;
         bool line = false;
         for(QChar c:text) {
-            if(c>='A' && c <= 'Z') {
+            if (c>='A' && c <= 'Z') {
                 uper = true;
                 continue;
             }
-            if(c>='a' && c <='z') {
+            if (c>='a' && c <='z') {
                 normal = true;
                 continue;
             }
-            if(c>='0' && c<='9') {
+            if (c>='0' && c<='9') {
                 number = true;
                 continue;
             }
         }
-        if(text.length() >= 6) {
+        if (text.length() >= 6) {
             line = true;
         }
         bool ok = uper && number && line == true ?true:normal && number && line;
-        if(ok) {
+        if (ok) {
             emit verify_text();
         } else {
             emit false_text();
@@ -94,23 +94,23 @@ bool PasswordLineEdit::check() const {
     bool normal = false;
     bool number = false;
     bool line = false;
-    if(this->text() != "") {
+    if (this->text() != "") {
         QString str = this->text();
         for(QChar c:str) {
-            if(c>='A' && c <= 'Z') {
+            if (c>='A' && c <= 'Z') {
                 uper = true;
                 continue;
             }
-            if(c>='a' && c <='z') {
+            if (c>='a' && c <='z') {
                 normal = true;
                 continue;
             }
-            if(c>='0' && c<='9') {
+            if (c>='0' && c<='9') {
                 number = true;
                 continue;
             }
         }
-        if(text().length() >= 6) {
+        if (text().length() >= 6) {
             line = true;
         }
     } else {
