@@ -14,7 +14,7 @@ void LeftMenuList::resizeEvent(QResizeEvent *event) {
             maxItemWidth = item->width();
         }
     };
-    if (maxItemWidth < 200) {
+    if (maxItemWidth < 100) {
         this->setMinimumWidth(maxItemWidth);
     }
 

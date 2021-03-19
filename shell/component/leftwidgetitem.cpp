@@ -35,7 +35,7 @@ LeftWidgetItem::LeftWidgetItem(QWidget *parent) :
     iconLabel = new QLabel(widget);
 
     textLabel = new QLabel(widget);
-    textLabel->setMaximumWidth(110);
+    textLabel->setMaximumWidth(100);
     QSizePolicy policy1 = textLabel->sizePolicy();
     policy1.setHorizontalPolicy(QSizePolicy::Fixed);
     policy1.setVerticalPolicy(QSizePolicy::Fixed);
