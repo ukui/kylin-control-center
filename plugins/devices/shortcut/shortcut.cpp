@@ -695,6 +695,13 @@ void Shortcut::newBindingRequest(QList<int> keyCode){
             }
         }
         if(keyCode.count() == 3){
+            if (shortcutString == "<Control><Alt>a"){
+                current->setText(nkeyEntry->bindingStr);
+                current->updateOldShow(nkeyEntry->bindingStr);
+                current->clearFocus();
+                qDebug() << "Please try with a valid key." << shortcutString;
+                return;
+            }
             int len = shortcutString.length();
             int count = 0;
             for(int i = 0; i < len; i++){
