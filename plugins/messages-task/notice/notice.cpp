@@ -71,7 +71,7 @@ QWidget * Notice::get_plugin_ui() {
         ui->lockscreenWidget->setVisible(false);
 
         ui->title2Label->setContentsMargins(0, 0, 0, 16);
-        ui->applistWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+       // ui->applistWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
         initTitleLabel();
         initSearchText();
@@ -292,11 +292,7 @@ void Notice::initOriNoticeStatus() {
                 baseVerLayout->addWidget(devWidget);
                 baseVerLayout->addStretch();
                 baseWidget->setLayout(baseVerLayout);
-                QListWidgetItem * item = new QListWidgetItem(ui->applistWidget);
-                item->setFlags(Qt::NoItemFlags);
-                item->setSizeHint(QSize(QSizePolicy::Expanding, 52));
-
-                ui->applistWidget->setItemWidget(item, baseWidget);
+                ui->applistverticalLayout->addWidget(baseWidget);
                 const QByteArray id(NOTICE_ORIGIN_SCHEMA);
                 QGSettings * settings = nullptr;
                 QString path;
@@ -321,7 +317,8 @@ void Notice::initOriNoticeStatus() {
 
                 connect(devWidget, &HoverWidget::widgetClicked, this, [=](QString name) {
                     AppDetail *app;
-                    app= new AppDetail(name,appsName.at(i), settings);
+                    //notice
+                    app= new AppDetail(name,appsName, settings);
                     app->exec();
                 });
 
@@ -333,7 +330,7 @@ void Notice::initOriNoticeStatus() {
                 });
 
                 connect(enableSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
-                    setHiddenNoticeApp(checked);
+
                     changeAppstatus(checked, appname, appSwitch);
                 });
 
@@ -343,7 +340,6 @@ void Notice::initOriNoticeStatus() {
 
     }
 }
-    setHiddenNoticeApp(enableSwitchBtn->isChecked());
 
 }
 
@@ -403,9 +399,9 @@ void Notice::changeAppstatus(bool checked, QString name, SwitchButton *appBtn) {
 
 void Notice::setHiddenNoticeApp(bool status) {
 
-    // To prevent jitter, need to be optimized
-    for (int i = 0; i < ui->applistWidget->count(); i++) {
-        QListWidgetItem * item = ui->applistWidget->item(i);
-        item->setHidden(!status);
-    }
+//    // To prevent jitter, need to be optimized
+//    for (int i = 0; i < ui->applistWidget->count(); i++) {
+//        QListWidgetItem * item = ui->applistWidget->item(i);
+//        item->setHidden(!status);
+//    }
 }
