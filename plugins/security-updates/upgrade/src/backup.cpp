@@ -1,5 +1,7 @@
 #include "backup.h"
 #include <kybackup/backuptools-define.h>
+#include <unistd.h>
+#include <sys/types.h>
 
 #define TIMESTAMP_PATH "/var/lib/kylin-software-properties/template/kylin-source-status"
 #define TIMESTAMP_TAB "UpdateTime="
@@ -101,10 +103,11 @@ void BackUp::sendRate(int sta,int pro)
     }
 
 #if 1
-    //rsync进程未正常完成
+    //rsync进程未正常完成(比如被强制中断)
     if (pro == -1) {
         setProgress = false;
         emit bakeupFinish(-20);
+        return;
     }
 #endif
     emit backupProgress(pro);
@@ -126,8 +129,15 @@ void BackUp::startBackUp(int num)
 {
     if(num==1)
     {
+
+        QString create_note = QObject::tr("system upgrade new backup");
+        QString inc_note = QObject::tr("system upgrade increment backup");
+        QString userName = qgetenv("USER");
+        int uid = getuid();
+
         QList<QVariant> argumentList;
-        argumentList << QVariant::fromValue(timeStamp);
+        argumentList << QVariant::fromValue(timeStamp) << QVariant::fromValue(create_note) << QVariant::fromValue(inc_note)
+                     << QVariant::fromValue(userName) << QVariant::fromValue(uid);
         interface->asyncCallWithArgumentList(QStringLiteral("autoBackUpForSystemUpdate_noreturn"), argumentList);
     }
 }
