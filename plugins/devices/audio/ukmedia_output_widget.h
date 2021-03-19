@@ -30,7 +30,10 @@
 #include <QCoreApplication>
 #include <QVBoxLayout>
 #include "ukui_custom_style.h"
+#include "ukui_list_widget_item.h"
 #include "customstyle.h"
+#include <QListWidget>
+
 
 class AudioSlider : public QSlider
 {
@@ -75,6 +78,7 @@ private:
     QFrame * m_pOutputPortWidget;
     QFrame *m_pProfileWidget;
     QFrame *m_pselectWidget;
+    QListWidget *m_pOutputListWidget;
 
     QLabel *m_pSelectDeviceLabel;
     QLabel *m_pProfileLabel;

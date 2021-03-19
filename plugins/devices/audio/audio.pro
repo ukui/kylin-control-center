@@ -41,7 +41,8 @@ SOURCES += \
     ukui_custom_style.cpp \
     switchbutton.cpp \
     customstyle.cpp \
-    ukmedia_slider_tip_label_helper.cpp
+    ukmedia_slider_tip_label_helper.cpp \
+    ukui_list_widget_item.cpp
 
 HEADERS += \
     audio.h \
@@ -52,7 +53,8 @@ HEADERS += \
     ukui_custom_style.h \
     switchbutton.h \
     customstyle.h \
-    ukmedia_slider_tip_label_helper.h
+    ukmedia_slider_tip_label_helper.h \
+    ukui_list_widget_item.h
 
 FORMS += \
     audio.ui

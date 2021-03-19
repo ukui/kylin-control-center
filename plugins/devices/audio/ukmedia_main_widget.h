@@ -25,6 +25,7 @@
 #include "ukmedia_output_widget.h"
 #include "ukmedia_input_widget.h"
 #include "ukmedia_sound_effects_widget.h"
+#include "ukui_list_widget_item.h"
 #include <QMediaPlayer>
 #include <gio/gio.h>
 #include <libxml/tree.h>
@@ -42,6 +43,7 @@ extern "C" {
 #include <pulse/glib-mainloop.h>
 #include <pulse/error.h>
 #include <pulse/subscribe.h>
+#include <pulse/introspect.h>
 }
 #include <utime.h>
 #include <a.out.h>
@@ -50,6 +52,7 @@ extern "C" {
 #include <QDomDocument>
 #include <QGSettings>
 #include <QAudioInput>
+#include <set>
 
 #define UKUI_THEME_SETTING "org.ukui.style"
 #define UKUI_THEME_NAME "style-name"
@@ -69,6 +72,8 @@ extern "C" {
 #define KEY_SOUNDS_SCHEMA "org.ukui.sound"
 #define UKUI_SWITCH_SETTING "org.ukui.session"
 #define UKUI_BOOT_MUSIC_KEY "boot-music"
+#define UKUI_SLEEP_MUSIC_KEY "sleep-music"
+#define UKUI_WAKEUP_MUSIC_KEY "weakup-music"
 
 #define EVENT_SOUNDS_KEY "event-sounds"
 #define INPUT_SOUNDS_KEY "input-feedback-sounds"
@@ -94,6 +99,20 @@ typedef enum
     GVC_LEVEL_SCALE_LINEAR,
     GVC_LEVEL_SCALE_LOG
 } LevelScale;
+
+class PortInfo {
+public:
+
+      QByteArray name;
+      QByteArray description;
+      uint32_t priority;
+      int available;
+      int direction;
+      int64_t latency_offset;
+      std::vector<QByteArray> profiles;
+
+};
+
 class UkmediaMainWidget : public QWidget
 {
     Q_OBJECT
@@ -101,6 +120,8 @@ class UkmediaMainWidget : public QWidget
 public:
     UkmediaMainWidget(QWidget *parent = nullptr);
     ~UkmediaMainWidget();
+
+    static int connectContext(gpointer userdata);
     static int caProplistMergeAp(ca_proplist *p, va_list ap);
     static int caPlayForWidget(UkmediaMainWidget *w, uint32_t id, ...);
     static int caProplistSetForWidget(ca_proplist *p, UkmediaMainWidget *widget);
@@ -226,6 +247,24 @@ public:
     void updateRole(const pa_ext_stream_restore_info &info);
     static void ext_stream_restore_read_cb(pa_context *,const pa_ext_stream_restore_info *i,int eol,void *userdata);
     static void ext_stream_restore_subscribe_cb(pa_context *c, void *userdata);
+    static void subscribe_cb(pa_context *c, pa_subscription_event_type_t t, uint32_t index, void *userdata);
+    void updateCard(const pa_card_info &info);
+    static void card_cb(pa_context *, const pa_card_info *i, int eol, void *userdata);
+
+    static void updatePorts(UkmediaMainWidget *w,const pa_card_info &info, std::map<QByteArray, PortInfo> &ports);
+
+    void deleteNotAvailableOutputPort();
+    void deleteNotAvailableInputPort();
+    void addAvailableOutputPort();
+    void addAvailableInputPort();
+    int findCardIndex(QString cardName);
+    QString findHighPriorityProfile(int index,QString profile);
+    void findOutputListWidgetItem(QString cardName,MateMixerStream *stream);
+    void findInputListWidgetItem(QString cardName,MateMixerStream *stream);
+    bool inputCardListContainBluetooth();
+    int indexOfOutputPortInOutputListWidget(QString portName);
+    int indexOfInputPortInInputListWidget(QString portName);
+
 Q_SIGNALS:
     void appVolumeChangedSignal(bool is_mute,int volume,const QString app_name);
 
@@ -239,6 +278,8 @@ private Q_SLOTS:
     void inputWidgetSliderChangedSlot(int value);
     void ukuiThemeChangedSlot(const QString &);
     void bootButtonSwitchChangedSlot(bool status);
+    void wakeButtonSwitchChangedSlot(bool status);
+    void sleepMusicButtonSwitchChangedSlot(bool status);
     void alertSoundButtonSwitchChangedSlot(bool status);
     void bootMusicSettingsChanged();
     void inputPortComboxChangedSlot(int index);
@@ -252,6 +293,9 @@ private Q_SLOTS:
     void outputMuteButtonSlot();
     void alertVolumeSliderChangedSlot(int value);
     void alertSoundVolumeChangedSlot();
+    void outputListWidgetCurrentRowChangedSlot(int row);
+    void inputListWidgetCurrentRowChangedSlot(int row);
+
 private:
     UkmediaInputWidget *m_pInputWidget;
     UkmediaOutputWidget *m_pOutputWidget;
@@ -265,6 +309,7 @@ private:
     MateMixerStreamControl *m_pInputBarStreamControl;
     MateMixerStreamControl *m_pControl;
     MateMixerStreamControl *m_pMediaRoleControl;
+    MateMixerStreamControl *m_pPrivInputControl;
     MateMixerStream *m_pStream;
     MateMixerDevice *m_pDevice;
     MateMixerSwitch *m_pSwitch;
@@ -272,23 +317,37 @@ private:
     QStringList *m_pSoundList;
     QStringList *m_pThemeDisplayNameList;
     QStringList *m_pThemeNameList;
+    QStringList *m_pDeviceLabelList;
     QStringList *m_pDeviceNameList;
+    QStringList *m_pInputDeviceLabelList;
     QStringList *m_pAppNameList;
 
     QStringList *m_pOutputStreamList;
+    QStringList *m_pPrivOutputStreamList;
     QStringList *m_pInputStreamList;
     QStringList *m_pAppVolumeList;
     QStringList *m_pStreamControlList;
     QStringList *m_pInputPortList;
     QStringList *m_pOutputPortList;
+    QStringList *m_pOutputPortLabelList;
+    QStringList *m_pInputPortLabelList;
     QStringList *m_pProfileNameList;
     QStringList *m_pSoundThemeList;
     QStringList *m_pSoundThemeDirList;
     QStringList *m_pSoundThemeXmlNameList;
+    QStringList *m_pListWidgetLabelList;
 
+    QStringList *m_pCurrentOutputCardList;
+    QStringList *m_pOutputCardList;
+    QStringList *m_pCurrentOutputPortLabelList;
+    QStringList *m_pCurrentInputPortLabelList;
+    QStringList *m_pCurrentInputCardList;
+    QStringList *m_pInputCardList;
     QStringList *m_pSoundNameList;
     QStringList *eventList;
     QStringList *eventIdNameList;
+    QStringList *m_pCardNameList;
+    QStringList *m_pInputCardNameList;
     QString m_pDeviceStr;
 
     GSettings *m_pSoundSettings;
@@ -312,6 +371,30 @@ private:
     pa_context* context ;
     pa_mainloop_api* api;
     pa_ext_stream_restore_info info;
+
+    int callBackCount = 0;
+    bool firstEntry = true;
+    bool hasSinks;
+    bool hasSources;
+    QByteArray activeProfile;
+    QByteArray noInOutProfile;
+    QByteArray lastActiveProfile;
+    std::map<QByteArray, PortInfo> ports;
+    std::vector< std::pair<QByteArray,QByteArray> > profiles;
+    QMap<int, QString> cardMap;
+    QMap<int, QString> outputPortNameMap;
+    QMap<int, QString> inputPortNameMap;
+    QMap<int, QString> outputPortLabelMap;
+    QMap<int, QString> currentOutputPortLabelMap;
+    QMap<int, QString> currentInputPortLabelMap;
+    QMap<int, QString> inputPortLabelMap;
+    QMap<QString, QString> profileNameMap;
+    QMap<QString, QString> inputPortProfileNameMap;
+    QMap<int, QList<QString>> cardProfileMap;
+    QMap<int, QMap<QString,int>> cardProfilePriorityMap;
+    bool updatePort = true;
+    int reconnectTime;
+    QTimer *time;
 };
 
 #endif // WIDGET_H
