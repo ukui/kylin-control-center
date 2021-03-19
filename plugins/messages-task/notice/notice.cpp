@@ -60,8 +60,8 @@ QWidget * Notice::get_plugin_ui() {
         ui = new Ui::Notice;
         pluginWidget = new QWidget;
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-        appsName<<"ukui-power-statistics";
-        appsKey<<"电源管理器";
+//        appsName<<"ukui-power-statistics";
+//        appsKey<<"电源管理器";
 
         ui->setupUi(pluginWidget);
 
@@ -266,7 +266,7 @@ void Notice::initOriNoticeStatus() {
 
                 QPushButton * iconBtn = new QPushButton();
                 iconBtn->setStyleSheet("QPushButton{background-color:transparent;border-radius:4px}"
-                                "QPushButton:hover{background-color: transparent ;color:transparent;}"); g_key_file_free(keyfile);
+                                "QPushButton:hover{background-color: transparent ;color:transparent;}");
 
                 QSizePolicy iconSizePolicy = iconBtn->sizePolicy();
                 iconSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
