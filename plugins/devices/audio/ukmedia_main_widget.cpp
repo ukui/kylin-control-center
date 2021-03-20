@@ -1453,25 +1453,21 @@ void UkmediaMainWidget::outputVolumeDarkThemeImage(int value,bool status)
     }
     m_pOutputWidget->m_pOutputIconBtn->mColor = color;
     if (status) {
-        image  = QImage("/usr/share/ukui-media/img/audio-volume-muted.svg");
-        m_pOutputWidget->m_pOutputIconBtn->mImage = image;
+        image = QIcon::fromTheme("audio-volume-muted-symbolic").pixmap(24,24).toImage();
     }
     else if (value <= 0) {
-        image  = QImage("/usr/share/ukui-media/img/audio-volume-muted.svg");
-        m_pOutputWidget->m_pOutputIconBtn->mImage = image;
+        image = QIcon::fromTheme("audio-volume-muted-symbolic").pixmap(24,24).toImage();
     }
     else if (value > 0 && value <= 33) {
-        image = QImage("/usr/share/ukui-media/img/audio-volume-low.svg");
-        m_pOutputWidget->m_pOutputIconBtn->mImage = image;
+        image = QIcon::fromTheme("audio-volume-low-symbolic").pixmap(24,24).toImage();
     }
     else if (value >33 && value <= 66) {
-        image = QImage("/usr/share/ukui-media/img/audio-volume-medium.svg");
-        m_pOutputWidget->m_pOutputIconBtn->mImage = image;
+        image = QIcon::fromTheme("audio-volume-medium-symbolic").pixmap(24,24).toImage();
     }
     else {
-        image = QImage("/usr/share/ukui-media/img/audio-volume-high.svg");
-        m_pOutputWidget->m_pOutputIconBtn->mImage = image;
+        image = QIcon::fromTheme("audio-volume-high-symbolic").pixmap(24,24).toImage();
     }
+    m_pOutputWidget->m_pOutputIconBtn->mImage = image;
 
 }
 
@@ -1490,25 +1486,21 @@ void UkmediaMainWidget::inputVolumeDarkThemeImage(int value,bool status)
     }
     m_pInputWidget->m_pInputIconBtn->mColor = color;
     if (status) {
-        image  = QImage("/usr/share/ukui-media/img/microphone-mute.svg");
-        m_pInputWidget->m_pInputIconBtn->mImage = image;
+        image = QIcon::fromTheme("microphone-sensitivity-muted-symbolic").pixmap(24,24).toImage();
     }
     else if (value <= 0) {
-        image  = QImage("/usr/share/ukui-media/img/microphone-mute.svg");
-        m_pInputWidget->m_pInputIconBtn->mImage = image;
+        image = QIcon::fromTheme("microphone-sensitivity-muted-symbolic").pixmap(24,24).toImage();
     }
     else if (value > 0 && value <= 33) {
-        image = QImage("/usr/share/ukui-media/img/microphone-low.svg");
-        m_pInputWidget->m_pInputIconBtn->mImage = image;
+        image = QIcon::fromTheme("microphone-sensitivity-low-symbolic").pixmap(24,24).toImage();
     }
     else if (value >33 && value <= 66) {
-        image = QImage("/usr/share/ukui-media/img/microphone-medium.svg");
-        m_pInputWidget->m_pInputIconBtn->mImage = image;
+        image = QIcon::fromTheme("microphone-sensitivity-medium-symbolic").pixmap(24,24).toImage();
     }
     else {
-        image = QImage("/usr/share/ukui-media/img/microphone-high.svg");
-        m_pInputWidget->m_pInputIconBtn->mImage = image;
+        image = QIcon::fromTheme("microphone-sensitivity-high-symbolic").pixmap(24,24).toImage();
     }
+    m_pInputWidget->m_pInputIconBtn->mImage = image;
 }
 
 /*
@@ -1538,7 +1530,6 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
     }
 
     if (strstr(inputControlName,".monitor")) {
-        qDebug() << "set list widget row wei -1";
         m_pWidget->m_pInputWidget->m_pInputListWidget->setCurrentRow(-1);
     }
 
@@ -1625,7 +1616,7 @@ void UkmediaMainWidget::updateIconOutput(UkmediaMainWidget *m_pWidget)
     m_Stream = mate_mixer_context_get_default_output_stream (m_pWidget->m_pContext);
     if (m_Stream != nullptr)
         m_pControl = mate_mixer_stream_get_default_control (m_Stream);
-
+    qDebug() << "update icon output " << mate_mixer_stream_get_name(m_Stream);
     streamStatusIconSetControl(m_pWidget, m_pControl);
     //初始化滑动条的值
     int volume = mate_mixer_stream_control_get_volume(m_pControl);
@@ -1731,6 +1722,7 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
     Q_UNUSED(pspec);
     g_debug("on stream control volume notify");
     qDebug() << "on stream control volume notify" << mate_mixer_stream_control_get_name(m_pControl);
+    bool status = mate_mixer_stream_control_get_mute(m_pControl);
     MateMixerStreamControlFlags flags;
     guint volume = 0;
     QString decscription;
@@ -1815,6 +1807,8 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
         m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->blockSignals(true);
         m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->setValue(value);
         m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->blockSignals(false);
+        m_pWidget->outputVolumeDarkThemeImage(value,status);
+        m_pWidget->m_pOutputWidget->m_pOutputIconBtn->repaint();
         QString percentStr = QString::number(value) ;
         percentStr.append("%");
         m_pWidget->m_pOutputWidget->m_pOpVolumePercentLabel->setText(percentStr);
@@ -2988,6 +2982,7 @@ void UkmediaMainWidget::ukuiUpdatePeakValue (UkmediaMainWidget *m_pWidget)
 */
 void UkmediaMainWidget::outputWidgetSliderChangedSlot(int value)
 {
+    qDebug() << "outputWidgetSliderChangedSlot" << value;
     MateMixerStream *pStream = mate_mixer_context_get_default_output_stream(m_pContext);
     MateMixerStreamControl *pControl;
     if (pStream != nullptr)
@@ -4987,7 +4982,7 @@ void UkmediaMainWidget::addAvailableOutputPort()
     {
         for(i=0,it=currentOutputPortLabelMap.begin();it!=currentOutputPortLabelMap.end();i++) {
             if ( at.key() == it.key() && at.value() == it.value()) {
-                qDebug() << "current have" << it.value() << it.key();
+
                 break;
             }
             ++it;
