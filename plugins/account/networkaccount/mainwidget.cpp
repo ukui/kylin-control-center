@@ -70,7 +70,6 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
 
 
     if (isNetWorkOnline() == false) {
-        qDebug() << "sadasda";
         if (m_autoSyn->get_swbtn()->get_active() == true) {
             m_autoSyn->get_swbtn()->set_active(false);
             for (int i = 0;i < m_szItemlist.size(); i ++ ) {
