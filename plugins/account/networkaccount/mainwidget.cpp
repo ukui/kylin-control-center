@@ -68,7 +68,23 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_szUuid = QUuid::createUuid().toString();
     m_bTokenValid = false;
 
-    isNetWorkOnline();
+
+    if (isNetWorkOnline() == false) {
+        qDebug() << "sadasda";
+        if (m_autoSyn->get_swbtn()->get_active() == true) {
+            m_autoSyn->get_swbtn()->set_active(false);
+            for (int i = 0;i < m_szItemlist.size(); i ++ ) {
+                m_itemList->get_item(i)->get_swbtn()->set_active(false);
+            }
+        }
+    } else {
+        if (m_autoSyn->get_swbtn()->get_active() == false) {
+            m_autoSyn->get_swbtn()->set_active(true);
+            for (int i = 0;i < m_szItemlist.size(); i ++ ) {
+                m_itemList->get_item(i)->get_swbtn()->set_active(true);
+            }
+        }
+    }
 
 
     init_gui();         //初始化gui
@@ -116,39 +132,27 @@ void MainWidget::checkNetWork(QVariantMap map) {
 
 bool MainWidget::isNetWorkOnline()
 {
-    QProcess procNet;
-    QStringList options;
-    options << "-c" << "cat /proc/net/dev | awk '{i++; if(i>2){print $1}}' | sed 's/^[\t]*//g' | sed 's/[:]*$//g'";
-    procNet.start("/bin/bash",options);
-    procNet.waitForFinished(-1);
-    procNet.waitForReadyRead(-1);
-    QString data = procNet.readAll();
-    QStringList nwCardList = data.split("\n");
-    if(nwCardList.length() >= 1) {
-        for(QString itemCard : nwCardList) {
-            struct ethtool_value edata;
-            int fd = -1, err = 0;
-            struct ifreq ifr;
-            memset(&ifr, 0, sizeof(ifr));
-            strcpy(ifr.ifr_name, itemCard.toStdString().c_str());
-            fd = socket(AF_INET, SOCK_DGRAM, 0);
-            if (fd >= 0) {
-                edata.cmd = 0x0000000a;
-                ifr.ifr_data = (caddr_t)&edata;
-                err = ioctl(fd, 0x8946, &ifr);
-                if (err == 0) {
-                    if (m_autoSyn->get_swbtn()->get_active() == false) {
-                        m_autoSyn->get_swbtn()->set_active(true);
-                        for (int i = 0;i < m_szItemlist.size(); i ++ ) {
-                            m_itemList->get_item(i)->get_swbtn()->set_active(true);
-                        }
-                        handle_conf();
+    QVariant ret;
+    QDBusMessage message = QDBusMessage::createMethodCall("org.freedesktop.NetworkManager",
+                                                          "/org/freedesktop/NetworkManager",
+                                                          "org.freedesktop.NetworkManager",
+                                                          "CheckConnectivity");
+    QDBusMessage response =  QDBusConnection::systemBus().call(message);
+
+    if (response.type() == QDBusMessage::ReplyMessage) {
+        QDBusVariant value = qvariant_cast<QDBusVariant>(response.arguments().takeFirst());
+        ret = value.variant();
+        if (ret.isValid() == false) {
+            ret = response.arguments().takeFirst();
+            if (ret.toInt() != 3 && ret.toInt() != 1) {
+                if (m_autoSyn->get_swbtn()->get_active() == false) {
+                    m_autoSyn->get_swbtn()->set_active(true);
+                    for (int i = 0;i < m_szItemlist.size(); i ++ ) {
+                        m_itemList->get_item(i)->get_swbtn()->set_active(true);
                     }
-                    m_bIsOnline = true;
-                    return true;
-                } else if (errno != EOPNOTSUPP) {
-                    perror("Cannot get link status");
                 }
+                handle_conf();
+                return true;
             }
         }
     }
@@ -159,7 +163,6 @@ bool MainWidget::isNetWorkOnline()
         }
         handle_conf();
     }
-    m_bIsOnline = false;
     return false;
 
 }
