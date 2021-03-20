@@ -98,6 +98,8 @@ private:
     type checkSourcesType();
     QString modifySizeUnit(long size);
     QString modifySpeedUnit(long size, float time);
+    QStringList analysis_config_file(char *p_file_path);
+    void remove_last_enter(char *p_src_in_out);
 
     enum Environment{
         en,
