@@ -183,6 +183,9 @@ void ChangeFaceDialog::showLocalFaceDialog(){
     setFace(selectedfile);
 
     selectedFaceIcon = selectedfile;
+
+    if (!ui->saveBtn->isEnabled())
+        ui->saveBtn->setEnabled(true);
 //    emit face_file_send(selectedfile);
 
 }
