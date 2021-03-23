@@ -6,20 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
+    <width>426</width>
     <height>320</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="minimumSize">
    <size>
-    <width>460</width>
+    <width>420</width>
     <height>320</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>481</width>
-    <height>320</height>
+    <width>426</width>
+    <height>310</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -30,19 +36,25 @@
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>32</number>
+    <number>42</number>
    </property>
    <property name="topMargin">
     <number>32</number>
    </property>
    <property name="rightMargin">
-    <number>32</number>
+    <number>22</number>
    </property>
    <property name="bottomMargin">
-    <number>24</number>
+    <number>42</number>
    </property>
    <item>
     <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -111,9 +123,12 @@
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>40</width>
+              <width>50</width>
               <height>20</height>
              </size>
             </property>
@@ -124,7 +139,7 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <property name="spacing">
-           <number>8</number>
+           <number>0</number>
           </property>
           <property name="leftMargin">
            <number>0</number>
@@ -156,8 +171,11 @@
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <property name="spacing">
+             <number>8</number>
+            </property>
             <property name="rightMargin">
-             <number>12</number>
+             <number>0</number>
             </property>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout">
@@ -260,6 +278,12 @@
               </property>
               <item>
                <widget class="QLineEdit" name="nameLineEdit">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
@@ -281,9 +305,15 @@
                 </property>
                 <item>
                  <widget class="QLineEdit" name="execLineEdit">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="minimumSize">
                    <size>
-                    <width>0</width>
+                    <width>19</width>
                     <height>33</height>
                    </size>
                   </property>
@@ -297,6 +327,12 @@
                 </item>
                 <item>
                  <widget class="QPushButton" name="openBtn">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="minimumSize">
                    <size>
                     <width>60</width>
@@ -318,6 +354,12 @@
               </item>
               <item>
                <widget class="QLineEdit" name="commentLineEdit">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
@@ -338,6 +380,18 @@
           </item>
           <item>
            <widget class="QLabel" name="hintLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>32</height>
+             </size>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -350,9 +404,12 @@
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>40</width>
+                <width>100</width>
                 <height>20</height>
                </size>
               </property>
