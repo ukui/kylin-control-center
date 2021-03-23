@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>401</width>
-    <height>440</height>
+    <width>421</width>
+    <height>425</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,14 +18,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>401</width>
-    <height>440</height>
+    <width>421</width>
+    <height>412</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>420</width>
-    <height>440</height>
+    <width>421</width>
+    <height>425</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -49,21 +49,33 @@
    </property>
    <item>
     <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
+     <property name="midLineWidth">
+      <number>0</number>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="leftMargin">
-       <number>9</number>
+       <number>24</number>
       </property>
       <property name="topMargin">
-       <number>32</number>
+       <number>16</number>
       </property>
       <property name="rightMargin">
        <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
@@ -493,7 +505,7 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>17</width>
-          <height>34</height>
+          <height>14</height>
          </size>
         </property>
        </spacer>
@@ -590,7 +602,7 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>17</width>
-          <height>24</height>
+          <height>20</height>
          </size>
         </property>
        </spacer>
