@@ -180,6 +180,53 @@ void QMLScreen::setActiveOutput(QMLOutput *output)
     Q_EMIT focusedOutputChanged(output);
 }
 
+
+void QMLScreen::setScreenCenterPos()
+{
+    //组成最大矩形四个边的位置，分别对应左上(1)，右下(2)的xy坐标值
+    qreal localX1 = -1, localX2 = -1, localY1 = -1, localY2 = -1;
+    qreal mX1 = 0, mY1 = 0, mX2 = 0, mY2 = 0; //矩形中点坐标
+    qreal moveX = 0,moveY = 0;//移动的值
+    bool firstFlag = true;
+    Q_FOREACH (QMLOutput *qmlOutput, m_outputMap) {
+        if (qmlOutput->output()->isConnected()) {
+            //double aa = qmlOutput->width();
+            //double bb = qmlOutput->height();
+            //qDebug() << "the widht and height" << aa << bb;
+            //printf("aa = %f bb = %f\n",aa,bb);
+            if(firstFlag == true || localX1 > qmlOutput->x()){
+                localX1 = qmlOutput->x();
+            }
+            if(firstFlag == true || localX2 < qmlOutput->x() + qmlOutput->width()){
+                localX2 = qmlOutput->x() + qmlOutput->width();
+            }
+            if(firstFlag == true || localY1 > qmlOutput->y()){
+                localY1 = qmlOutput->y();
+            }
+            if(firstFlag == true || localY2 < qmlOutput->y() + qmlOutput->height()){
+                localY2 =  qmlOutput->y() + qmlOutput->height();
+            }
+            firstFlag = false;
+        }
+    }
+
+    mX1 = localX1 + (localX2-localX1)/2;
+    mY1 = localY1 + (localY2-localY1)/2;
+
+    mX2 = (width() - (localX2 - localX1))/2 + (localX2-localX1)/2;
+    mY2 = (height() - (localY2 - localY1))/2 + (localY2-localY1)/2;
+
+    moveX = mX2 - mX1;
+    moveY = mY2 - mY1;
+
+    Q_FOREACH (QMLOutput *qmlOutput, m_outputMap){
+        qmlOutput->setX(qmlOutput->x() + moveX);
+        qmlOutput->setY(qmlOutput->y() + moveY);
+    }
+}
+
+
+
 void QMLScreen::setScreenPos(QMLOutput *output) {
 
     // 镜像模式下跳过屏幕旋转处理
@@ -214,6 +261,7 @@ void QMLScreen::setScreenPos(QMLOutput *output) {
     }
 
     if (connectedScreen < 2) {
+        setScreenCenterPos();
         return ;
     }
 
@@ -252,6 +300,7 @@ void QMLScreen::setScreenPos(QMLOutput *output) {
             }
         }
     }
+    setScreenCenterPos();
 }
 
 QSize QMLScreen::maxScreenSize() const
@@ -269,6 +318,7 @@ void QMLScreen::outputConnectedChanged()
     int connectedCount = 0;
 
     Q_FOREACH (const KScreen::OutputPtr &output, m_outputMap.keys()) {
+        //qDebug() << output->geometry();
         if (output->isConnected()) {
             ++connectedCount;
         }
@@ -278,6 +328,7 @@ void QMLScreen::outputConnectedChanged()
         m_connectedOutputsCount = connectedCount;
         Q_EMIT connectedOutputsCountChanged();
         updateOutputsPlacement();
+        //setScreenCenterPos();
     }
 }
 
@@ -365,6 +416,7 @@ void QMLScreen::qmlOutputMoved(QMLOutput *qmlOutput)
 void QMLScreen::viewSizeChanged()
 {
     updateOutputsPlacement();
+    setScreenCenterPos();
 }
 
 void QMLScreen::updateCornerOutputs()
