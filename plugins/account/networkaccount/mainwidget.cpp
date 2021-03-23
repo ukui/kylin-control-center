@@ -679,7 +679,7 @@ void MainWidget::initSignalSlots() {
                    showDesktopNotify(tr("Network can not reach!"));
                    return ;
                }
-               emit doman();
+               emit doquerry(m_szCode);
            }
        } else {
            m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
@@ -1001,7 +1001,7 @@ void MainWidget::on_auto_syn(int on, int id) {
         m_itemList->get_item(i)->set_active(m_bAutoSyn);
     }
 
-    if (isNetWorkOnline() == false) {
+    if (m_bIsOnline == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
