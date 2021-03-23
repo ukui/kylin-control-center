@@ -1,5 +1,8 @@
 #include "appupdate.h"
 #include <QPixmap>
+#include <stdio.h>
+
+#define CONFIG_FILE_PATH "/usr/share/ukui-control-center/upgrade/"
 
 AppUpdateWid::AppUpdateWid(AppAllMsg msg,QWidget *parent):QWidget(parent)
 {
@@ -197,9 +200,71 @@ void AppUpdateWid::startInstall(QString appName)
     }
 }
 
+/* remove enter */
+void AppUpdateWid::remove_last_enter(char *p_src_in_out)
+{
+    if (p_src_in_out == NULL) {
+        return;
+    }
+
+    char *p_tmp = p_src_in_out + strlen(p_src_in_out) - 1;
+    if (*p_tmp == '\n') {
+        *p_tmp = '\0';
+    }
+
+    return;
+}
+
+/* analysis config file */
+QStringList AppUpdateWid::analysis_config_file(char *p_file_path)
+{
+    FILE *fd = NULL;
+    char p_buf[1024];
+
+    QStringList dst;
+    dst.clear();
+
+    memset(p_buf , 0x00 , sizeof(p_buf));
+
+    //printf("Info : p_file_path = [%s]\n" , p_file_path);
+    fd = fopen(p_file_path , "r");
+    if (fd == NULL) {
+        printf("Error : open reboot config file fail\n");
+        return dst;
+    }
+
+    while (fgets(p_buf , sizeof(p_buf) , fd) != NULL) {
+        remove_last_enter(p_buf);
+        if (!strlen(p_buf)) {
+            memset(p_buf , 0x00 , sizeof(p_buf));
+            continue;
+        }
+
+        //printf("Info : config file data [%s]\n" , p_buf);
+
+        dst << QString(p_buf);
+
+        memset(p_buf , 0x00 , sizeof(p_buf));
+    }
+
+    return dst;
+}
+
 //修改界面状态值
 void AppUpdateWid::showInstallStatues(QString status,QString appAptName, float progress ,QString errormsg)
 {
+    char p_path[1024];
+
+    memset(p_path , 0x00 , sizeof(p_path));
+    sprintf(p_path , "%s%s" , CONFIG_FILE_PATH , "need-reboot.conf");
+    QStringList reboot = analysis_config_file(p_path);
+    qDebug() << "Info : need reboot pkg :" << reboot;
+
+    memset(p_path , 0x00 , sizeof(p_path));
+    sprintf(p_path , "%s%s" , CONFIG_FILE_PATH , "need-logout.conf");
+    QStringList logout = analysis_config_file(p_path);
+    qDebug() << "Info : need logout pkg :" << logout;
+
     if(QString::compare(appAllMsg.name,appAptName) == 0)
     {
         int pgs = progress;
@@ -211,7 +276,15 @@ void AppUpdateWid::showInstallStatues(QString status,QString appAptName, float p
         {
             updateAPPBtn->hide();
 //            appVersion->setText(tr("更新成功！"));
-            appVersion->setText(tr("Update succeeded!"));
+
+            if (reboot.contains(appAptName)) {
+                appVersion->setText(tr("Update succeeded , please restart the system!"));
+            } else if (logout.contains(appAptName)) {
+                appVersion->setText(tr("Update succeeded , please log in to the system again!"));
+            } else {
+                appVersion->setText(tr("Update succeeded!"));
+            }
+
             QIcon icon = QIcon::fromTheme("success");
             QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(14, 14)));
             appVersionIcon->setPixmap(pixmap);

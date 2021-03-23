@@ -24,7 +24,6 @@
 #include <QObject>
 #include <QtPlugin>
 #include <QProcess>
-
 #include "shell/interface.h"
 #include "ukmedia_main_widget.h"
 
@@ -55,6 +54,7 @@ private:
 
     UkmediaMainWidget *pluginWidget;
     bool mFirstLoad;
+
 };
 
 #endif // AUDIO_H

@@ -79,6 +79,10 @@ void DeviceInfoItem::initInfoPage(QString d_name, DEVICE_STATUS status, BluezQt:
         qDebug() << Q_FUNC_INFO << "connectedChanged" << connected;
         setDevConnectedIcon(connected);
     });
+    connect(device.data(),&BluezQt::Device::nameChanged,this,[=](QString name){
+        qDebug() << Q_FUNC_INFO << "nameChanged" << name;
+        device_name->setText(name);
+    });
 
     QIcon icon_device,icon_status;
     if(device->type() == BluezQt::Device::Computer){

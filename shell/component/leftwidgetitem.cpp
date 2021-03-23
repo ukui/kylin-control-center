@@ -35,7 +35,7 @@ LeftWidgetItem::LeftWidgetItem(QWidget *parent) :
     iconLabel = new QLabel(widget);
 
     textLabel = new QLabel(widget);
-    textLabel->setMaximumWidth(110);
+    textLabel->setMaximumWidth(100);
     QSizePolicy policy1 = textLabel->sizePolicy();
     policy1.setHorizontalPolicy(QSizePolicy::Fixed);
     policy1.setVerticalPolicy(QSizePolicy::Fixed);
@@ -107,7 +107,7 @@ void LeftWidgetItem::setLabelTextIsWhite(bool selected) {
 
 void LeftWidgetItem::setSelected(bool selected){
     if (selected) {
-        widget->setStyleSheet("QWidget{background: #3D6BE5; border-radius: 4px;}");
+        widget->setStyleSheet("QWidget{background: palette(Highlight); border-radius: 4px;}");
     } else {
         widget->setStyleSheet("QListWidget::Item:hover{background:#FF3D6BE5;border-radius: 4px;}");
     }

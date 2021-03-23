@@ -30,16 +30,35 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pInputLevelWidget = new QFrame(m_pInputWidget);
     m_pInputPortWidget = new QFrame(m_pInputWidget);
 
+    m_pInputListWidget = new QListWidget(this);
+    m_pInputListWidget->setFixedHeight(250);
+
+    m_pInputListWidget->setStyleSheet(
+                
+                "QListWidget{"
+                "padding-left:8;"
+                "padding-right:20;"
+                "padding-top:8;"
+                "padding-bottom:8;}"
+                "QListWidget::item{"
+                "border-radius:6px;}"
+                /**列表项扫过*/
+                "QListWidget::item:hover{"
+                "background-color:rgba(55,144,250,0.5);}"
+                /**列表项选中*/
+                "QListWidget::item::selected{"
+                "background-color:rgba(55,144,250,1);"
+                "border-width:0;}");
     m_pInputDeviceWidget->setFrameShape(QFrame::Shape::Box);
     m_pVolumeWidget->setFrameShape(QFrame::Shape::Box);
     m_pInputLevelWidget->setFrameShape(QFrame::Shape::Box);
     m_pInputPortWidget->setFrameShape(QFrame::Shape::Box);
 
     //设置大小
-    m_pInputWidget->setMinimumSize(550,152);
-    m_pInputWidget->setMaximumSize(960,152);
-    m_pInputDeviceWidget->setMinimumSize(550,50);
-    m_pInputDeviceWidget->setMaximumSize(960,50);
+    m_pInputWidget->setMinimumSize(550,422);
+    m_pInputWidget->setMaximumSize(960,422);
+    m_pInputDeviceWidget->setMinimumSize(550,319);
+    m_pInputDeviceWidget->setMaximumSize(960,319);
     m_pVolumeWidget->setMinimumSize(550,50);
     m_pVolumeWidget->setMaximumSize(960,50);
     m_pInputLevelWidget->setMinimumSize(550,50);
@@ -50,8 +69,9 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pInputLabel = new QLabel(tr("Input"),this);
     m_pInputLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     //~ contents_path /audio/Input Device
-    m_pInputDeviceLabel = new QLabel(tr("Input Device"),m_pInputWidget);
+    m_pInputDeviceLabel = new QLabel(tr("Input Device:"),m_pInputWidget);
     m_pInputDeviceCombobox = new QComboBox(m_pInputDeviceWidget);
+//    m_pInputDeviceCombobox->hide();
 
     //~ contents_path /audio/Volume
     m_pIpVolumeLabel = new QLabel(tr("Volume"),m_pVolumeWidget);
@@ -72,20 +92,18 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pIpVolumeSlider->setRange(0,100);
     m_pInputIconBtn->setFocusPolicy(Qt::NoFocus);
     //输入设备添加布局
-    QHBoxLayout *m_pInputDeviceLayout = new QHBoxLayout(m_pInputDeviceWidget);
+    QVBoxLayout *m_pInputDeviceLayout = new QVBoxLayout(m_pInputDeviceWidget);
     m_pInputLabel->setFixedSize(83,24);
     m_pInputDeviceCombobox->setFixedHeight(32);
-    m_pInputDeviceCombobox->setMaximumSize(900,32);
+    m_pInputDeviceCombobox->setFixedSize(600,32);
     m_pInputDeviceLabel->setFixedSize(150,32);
 
-    m_pInputDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     m_pInputDeviceLayout->addWidget(m_pInputDeviceLabel);
-    m_pInputDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
-    m_pInputDeviceLayout->addWidget(m_pInputDeviceCombobox);
-    m_pInputDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    m_pInputDeviceLayout->addWidget(m_pInputListWidget);
     m_pInputDeviceLayout->setSpacing(0);
     m_pInputDeviceWidget->setLayout(m_pInputDeviceLayout);
-    m_pInputDeviceLayout->layout()->setContentsMargins(0,0,0,0);
+    m_pInputDeviceLayout->layout()->setContentsMargins(16,14,16,14);
+
     //主音量添加布局
     QHBoxLayout *m_pMasterLayout = new QHBoxLayout(m_pVolumeWidget);
     m_pIpVolumeLabel->setFixedSize(150,32);
@@ -109,8 +127,13 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pInputLevelLabel->setFixedSize(150,32);
     m_pSoundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     m_pSoundLayout->addWidget(m_pInputLevelLabel);
+    //    m_pSoundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    //    m_pSoundLayout->addWidget(m_pLowLevelLabel);
     m_pSoundLayout->addItem(new QSpacerItem(18,20,QSizePolicy::Fixed));
     m_pSoundLayout->addWidget(m_pInputLevelProgressBar);
+    //    m_pSoundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    //    m_pSoundLayout->addWidget(m_pHighLevelLabel);
+    //    m_pSoundLayout->addItem(new QSpacerItem(24,20,QSizePolicy::Fixed));
     m_pSoundLayout->setSpacing(0);
     m_pInputLevelWidget->setLayout(m_pSoundLayout);
     m_pInputLevelWidget->layout()->setContentsMargins(0,0,0,0);
@@ -131,6 +154,7 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
 
     //进行整体布局
     m_pVlayout = new QVBoxLayout(m_pInputWidget);
+
     m_pVlayout->addWidget(m_pInputDeviceWidget);
     m_pVlayout->addWidget(m_pVolumeWidget);
     m_pVlayout->addWidget(m_pInputLevelWidget);
@@ -149,16 +173,16 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
 
 void UkmediaInputWidget::inputWidgetAddPort()
 {
-    m_pInputWidget->setMinimumSize(550,203);
-    m_pInputWidget->setMaximumSize(960,203);
+    m_pInputWidget->setMinimumSize(550,505);
+    m_pInputWidget->setMaximumSize(960,505);
     m_pVlayout->addWidget(m_pInputPortWidget);
     m_pInputPortWidget->show();
 }
 
 void UkmediaInputWidget::inputWidgetRemovePort()
 {
-    m_pInputWidget->setMinimumSize(550,152);
-    m_pInputWidget->setMaximumSize(960,152);
+    m_pInputWidget->setMinimumSize(550,454);
+    m_pInputWidget->setMaximumSize(960,454);
     m_pVlayout->removeWidget(m_pInputPortWidget);
     m_pInputPortWidget->hide();
 }

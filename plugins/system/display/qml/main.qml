@@ -18,8 +18,6 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1 as Controls
-//import org.kde.plasma.core 2.0 as PlasmaCore
-//import org.kde.kquickcontrols 2.0
 import org.kde.kscreen 1.0
 
 Item {
@@ -40,11 +38,7 @@ Item {
         anchors.fill: parent;
         focus: true;
 
-//        color: "#000000";
         color: "transparent";
-//        color: palette.button;
-//        opacity: 0.6;
-//        radius: 6  //设置矩形圆角弧度
 
         FocusScope {
 
@@ -64,7 +58,6 @@ Item {
         Column {
             anchors {
                 left: parent.left;
-                //right: identifyButton.left;
                 bottom: parent.bottom;
                 margins: 5;
             }

@@ -88,8 +88,6 @@ QMLOutput {
         drag.onActiveChanged: {
             /* If the drag is shorter then the animation then make sure
              * we won't end up in an inconsistent state */
-//            console.log("宽度------>"+width)
-//            console.log("高度------>"+height)
             if (dragActiveChangedAnimation.running) {
                 dragActiveChangedAnimation.complete();
             }
@@ -200,35 +198,11 @@ QMLOutput {
                 }
 
                 Text {
-                    id: nameLabel
-                    text: if (root.isCloneMode === true) {
-                            return "";
-                          } else if (root.output.type !== KScreenOutput.Panel && root.output.edid && root.output.edid.name) {
-                            return root.output.edid.name;
-                          } else {
-                            return "";
-                          }
-
-                    //上面文字颜色
-                    color: "#FFFFFF";
-                    font.pixelSize: 12;
-
-                    anchors {
-                        horizontalCenter: parent.horizontalCenter;
-                        bottom: labelVendor.top;
-                        topMargin: 5;
-                    }
-                }
-
-                Text {
                     id: labelVendor;
                     text: if (root.isCloneMode) {
                             return ("Unified Outputs");
                           } else if (root.output.type === KScreenOutput.Panel) {
                             return ("Laptop Screen");
-                          } else if (root.output.edid && root.output.edid.vendor) {
-
-                            return root.output.edid.vendor;
                           } else {
                             return root.output.name;
                           }
@@ -239,25 +213,9 @@ QMLOutput {
                         right: parent.right;
                     }
                     horizontalAlignment: Text.AlignHCenter;
-                    //下面文字颜色
-                    //color: palette.text;
                     color: "#FFFFFF";
-                    font.pixelSize: 10;
+                    font.pixelSize: 12;
                     elide: Text.ElideRight;
-                }
-
-                Text {
-                    id: label
-                    text: (labelVendor.text === root.output.name) ? "" : root.output.name
-
-                    color: palette.text;
-                    font.pixelSize: 10;
-
-                    anchors {
-                        horizontalCenter: parent.horizontalCenter;
-                        top: labelVendor.bottom;
-                        topMargin: 5;
-                    }
                 }
             }
         }
@@ -271,7 +229,6 @@ QMLOutput {
             Rectangle {
                 id: orientationPanel;
                 height: 10;
-                //color: root.focus ? palette.highlight : palette.shadow;
                 //底部颜色
                 color:  palette.highlight ;
                 smooth: true;

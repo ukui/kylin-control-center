@@ -23,6 +23,9 @@ target.path = $${PLUGIN_INSTALL_DIRS}
 #schemes.files = data/org.kylin-update-manager-data.gschema.xml
 #schemes.path = /usr/share/glib-2.0/schemas/
 
+config.files = ./config_file/*
+config.path = /usr/share/ukui-control-center/upgrade/
+
 INCLUDEPATH   +=  \
                  $$PROJECT_ROOTDIR \
 
@@ -83,6 +86,7 @@ HEADERS += \
 INSTALLS += target  \
             icon    \
             desktop \
-            schemes
+            schemes \
+	    config
 
 

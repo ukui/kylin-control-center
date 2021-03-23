@@ -111,7 +111,7 @@ void HomePageWidget::initUI(){
         widget->setAttribute(Qt::WA_DeleteOnClose);
 
         widget->setObjectName("itemWidget");
-        widget->setStyleSheet("ResHoverWidget:hover:!pressed#itemWidget{background: #3D6BE5; border-radius: 4px;}");
+        widget->setStyleSheet("ResHoverWidget:hover:!pressed#itemWidget{background: palette(Highlight); border-radius: 4px;}");
         connect(widget, &ResHoverWidget::widgetClicked, [=](QString moduleName) {
             int moduleIndex = kvConverter->keystringTokeycode(moduleName);
 
@@ -140,7 +140,7 @@ void HomePageWidget::initUI(){
         logoLabel->setScaledContents(true);
 
         QString path = (QString(":/img/homepage/%1.svg").arg(modulenameString));
-        QPixmap pix = loadSvg(path, BLUE);
+        QPixmap pix = loadSvg(path, HIGHLIGHT);
 
         logoLabel->setPixmap(pix);
 
@@ -219,7 +219,7 @@ void HomePageWidget::initUI(){
         connect(widget, &ResHoverWidget::leaveWidget, this, [=](QString mname) {
             Q_UNUSED(mname)
             ResHoverWidget * w = dynamic_cast<ResHoverWidget *>(QObject::sender());
-            QPixmap cgPix = loadSvg(path, BLUE);
+            QPixmap cgPix = loadSvg(path, HIGHLIGHT);
             logoLabel->setPixmap(cgPix);
 
             titleLabel->setStyleSheet("color: palette(windowText);");
@@ -284,7 +284,14 @@ QPixmap HomePageWidget::drawSymbolicColoredPixmap(const QPixmap &source, COLOR c
                     color.setGreen(163);
                     color.setBlue(164);
                     img.setPixelColor(x, y, color);
-                } else {
+                } else if(HIGHLIGHT == cgColor){
+                    QColor highLightColor = palette().color(QPalette::Highlight);
+                    color.setRed(highLightColor.red());
+                    color.setGreen(highLightColor.green());
+                    color.setBlue(highLightColor.blue());
+                    img.setPixelColor(x, y, color);
+                } 
+                else {
                     return source;
                 }
             }

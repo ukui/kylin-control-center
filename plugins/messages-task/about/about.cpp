@@ -175,16 +175,31 @@ void About::setupVersionCompenent() {
                 versionID = rx.cap(1);
             }
         }
-        if (str.contains("VERSION=")) {
-            QRegExp rx("VERSION=\"(.*)\"$");
-            int pos = rx.indexIn(str);
-            if (pos > -1) {
-                version = rx.cap(1);
+
+        if (!QLocale::system().name().compare("zh_CN", Qt::CaseInsensitive)) {
+            if (str.contains("VERSION=")) {
+                QRegExp rx("VERSION=\"(.*)\"$");
+                int pos = rx.indexIn(str);
+                if (pos > -1) {
+                    version = rx.cap(1);
+                }
+            }
+        } else {
+            if (str.contains("VERSION_US=")) {
+                QRegExp rx("VERSION_US=\"(.*)\"$");
+                int pos = rx.indexIn(str);
+                if (pos > -1) {
+                    version = rx.cap(1);
+                }
             }
         }
     }
 
-    ui->versionContent->setText(version);
+
+    if (!version.isEmpty()) {
+        ui->versionContent->setText(version);
+    }
+
     if (!versionID.compare(vTen, Qt::CaseInsensitive) ||
             !versionID.compare(vTenEnhance, Qt::CaseInsensitive) ||
             !versionID.compare(vFour, Qt::CaseInsensitive)) {

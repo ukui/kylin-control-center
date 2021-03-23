@@ -27,7 +27,7 @@ SUBDIRS = \
           account/networkaccount \
           security-updates/securitycenter \
           security-updates/backup \
-          security-updates/upgrade \
+#          security-updates/upgrade \
           messages-task/about \
           system/touchscreen \
           time-language/datetime \

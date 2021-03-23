@@ -52,9 +52,9 @@ private:
     QFrame *m_pLagoutWidget;
     QFrame *m_pAlertSoundSwitchWidget;
     QFrame *m_pAlertSoundVolumeWidget;
-    QFrame *m_pWindowClosedWidget;
+    QFrame *m_pWakeupMusicWidget;
     QFrame *m_pVolumeChangeWidget;
-    QFrame *m_pSettingSoundWidget;
+    QFrame *m_pSleepMusicWidget;
 
     QString qss;
     QStyledItemDelegate *itemDelegate;
@@ -65,19 +65,19 @@ private:
     QLabel *m_pAlertSoundSwitchLabel;
     QLabel *m_pAlertSoundLabel;
     QLabel *m_pAlertVolumeLabel;
-    QLabel *m_pWindowClosedLabel;
+    QLabel *m_pWakeupMusicLabel;
     QLabel *m_pVolumeChangeLabel;
-    QLabel *m_pSettingSoundLabel;
+    QLabel *m_pSleepMusicLabel;
 
     QComboBox *m_pSoundThemeCombobox;
     QComboBox *m_pAlertSoundCombobox;
     QComboBox *m_pLagoutCombobox;
-    QComboBox *m_pWindowClosedCombobox;
     QComboBox *m_pVolumeChangeCombobox;
-    QComboBox *m_pSettingSoundCombobox;
     QVBoxLayout *m_pSoundLayout;
     SwitchButton *m_pBootButton;
     SwitchButton *m_pAlertSoundSwitchButton;
+    SwitchButton *m_pWakeupMusicButton;
+    SwitchButton *m_pSleepMusicButton;
     UkmediaVolumeSlider *m_pAlertSlider;
     UkuiButtonDrawSvg *m_pAlertIconBtn;
 };

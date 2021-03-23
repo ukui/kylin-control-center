@@ -28,6 +28,7 @@
 #include <QStyledItemDelegate>
 #include <QFrame>
 #include <QProgressBar>
+#include <QListWidget>
 #include "ukui_custom_style.h"
 
 class UkmediaInputWidget : public QWidget
@@ -49,6 +50,7 @@ private:
     QFrame *m_pVolumeWidget;
     QFrame *m_pInputLevelWidget;
     QFrame *m_pInputPortWidget;
+    QListWidget *m_pInputListWidget;
 
     QLabel *m_pInputLabel;
     QLabel *m_pInputDeviceLabel;

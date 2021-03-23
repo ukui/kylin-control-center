@@ -90,8 +90,7 @@ LoginDialog::LoginDialog(QWidget *parent) : QWidget(parent) {
     m_phoneLogin_btn->setFocusPolicy(Qt::NoFocus);
 
     m_accountLineEdit->setMaxLength(30);
-    m_accountLineEdit->setMaximumSize(338,36);
-    m_accountLineEdit->setMinimumSize(338,36);
+    m_accountLineEdit->setFixedWidth(338);
     m_accountLineEdit->setTextMargins(12,0,0,0);
     m_accountLineEdit->setFocusPolicy(Qt::StrongFocus);
     m_accountLineEdit->setPlaceholderText(tr("Your account/phone here"));
@@ -234,8 +233,7 @@ bool LoginDialog::login_account_thr_number() {
     m_accountLineEdit->setValidator(validator);
 
     m_passwordLineEdit->setPlaceholderText(tr("Your password here"));
-    m_passwordLineEdit->setMaximumSize(338,36);
-    m_passwordLineEdit->setMinimumSize(338,36);
+    m_passwordLineEdit->setFixedWidth(338);
     //m_passwordLineEdit->setTextMargins(12,0,0,0);
     m_passwordLineEdit->setMaxLength(30);
     //account_pass->setStyleSheet("QLineEdit{background-color:#F4F4F4;border-radius: 4px;border:1px none #3D6BE5;font-size: 14px;color: rgba(0,0,0,0.85);lineedit-password-character: 42;}"
@@ -251,7 +249,9 @@ bool LoginDialog::login_account_thr_number() {
                                    "QPushButton:hover{color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}"
                                    "QPushButton:click{color:rgba(61,107,229,0.85);position:relative;border-radius: 4px;}");
     m_forgetPasswordBtn->setFocusPolicy(Qt::NoFocus);
-    m_mcodeNormalLineEdit->setFixedSize(202,36);
+    //m_mcodeNormalLineEdit->setFixedSize(202,36);
+    m_mcodeNormalLineEdit->setFixedWidth(202);
+    m_mcodeNormalLineEdit->setMinimumHeight(36);
 
     //login_submit->setGeometry(31 + sizeoff,350 + sizeoff,338,36);
     //register_account->setGeometry(134 + sizeoff,406 + sizeoff,120,36);
@@ -351,16 +351,13 @@ bool LoginDialog::login_account_thr_phone() {
     QRegExp regx("^1[3-9]\\d{9}$");
     QValidator *validator = new QRegExpValidator(regx, m_accountLineEdit );
     m_accountLineEdit->setValidator(validator);
-    m_mcodePhoneLineEdit->setMaximumSize(192,36);
+    m_mcodePhoneLineEdit->setFixedWidth(192);
     m_mcodePhoneLineEdit->setMaxLength(4);
     m_mcodePhoneLineEdit->setPlaceholderText(tr("Your code here"));
     QRegExp regx_code("[0-9]+$");
     QValidator *validator_code = new QRegExpValidator(regx_code, m_mcodePhoneLineEdit );
     m_mcodePhoneLineEdit->setValidator( validator_code );
-    m_mcodePhoneLineEdit->setMinimumSize(192,36);
-    m_sendMsgBtn->setMinimumSize(130,36);
-    m_sendMsgBtn->setMaximumSize(136,36);
-    m_sendMsgBtn->resize(130,36);
+    m_sendMsgBtn->setFixedWidth(130);
     m_mcodePhoneLineEdit->setTextMargins(12,0,0,0);
     //valid_code->setGeometry(31 + sizeoff,192 + sizeoff,192,36);
     //send_msg_submit->setGeometry(239 + sizeoff,192 + sizeoff,130,36);

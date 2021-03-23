@@ -32,7 +32,6 @@ Audio::~Audio()
 {
     if (!mFirstLoad) {
         delete ui;
-        ui = nullptr;
     }
 }
 

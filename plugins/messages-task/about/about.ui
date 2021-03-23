@@ -137,14 +137,14 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>version</string>
+                  <string>Version</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QLabel" name="versionContent">
                  <property name="text">
-                  <string/>
+                  <string>Kylin Linux Desktop V10 (SP1)</string>
                  </property>
                 </widget>
                </item>
@@ -180,7 +180,7 @@
                <item>
                 <widget class="QLabel" name="label_2">
                  <property name="text">
-                  <string>Copyright 2009-2021 @ Kylinos All rights reserved</string>
+                  <string>Copyright © 2009-2021 KylinSoft. All rights reserved.</string>
                  </property>
                  <property name="wordWrap">
                   <bool>true</bool>

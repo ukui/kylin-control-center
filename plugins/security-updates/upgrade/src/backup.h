@@ -19,6 +19,8 @@ public:
     explicit BackUp(QObject *parent = nullptr);
 
 signals:
+    void backupStartRestult(int);
+    bool calCapacity();
     void bakeupFinish(int);
     void backupProgress(int);
 public slots:
@@ -27,10 +29,12 @@ public slots:
 
 private slots:
     void sendRate(int,int);
+    void receiveStartBackupResult(int result);
 
 private:
     QString timeStamp ="";
     int bakeupState = 0;
+    bool m_isActive = false;
     bool haveBackTool();
     bool readSourceManagerInfo();
     bool readBackToolInfo();

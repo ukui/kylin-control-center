@@ -68,7 +68,22 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_szUuid = QUuid::createUuid().toString();
     m_bTokenValid = false;
 
-    isNetWorkOnline();
+
+    if (isNetWorkOnline() == false) {
+        if (m_autoSyn->get_swbtn()->get_active() == true) {
+            m_autoSyn->get_swbtn()->set_active(false);
+            for (int i = 0;i < m_szItemlist.size(); i ++ ) {
+                m_itemList->get_item(i)->get_swbtn()->set_active(false);
+            }
+        }
+    } else {
+        if (m_autoSyn->get_swbtn()->get_active() == false) {
+            m_autoSyn->get_swbtn()->set_active(true);
+            for (int i = 0;i < m_szItemlist.size(); i ++ ) {
+                m_itemList->get_item(i)->get_swbtn()->set_active(true);
+            }
+        }
+    }
 
 
     init_gui();         //初始化gui
@@ -78,7 +93,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     dbusInterface();
 
     QFile tokenFile(QDir::homePath() + "/.cache/kylinId/token");
-    if (tokenFile.exists()) {
+    if (tokenFile.exists() && tokenFile.size() > 1) {
         m_mainWidget->setCurrentWidget(m_widgetContainer);
     } else {
         m_mainWidget->setCurrentWidget(m_nullWidget);
@@ -116,39 +131,27 @@ void MainWidget::checkNetWork(QVariantMap map) {
 
 bool MainWidget::isNetWorkOnline()
 {
-    QProcess procNet;
-    QStringList options;
-    options << "-c" << "cat /proc/net/dev | awk '{i++; if(i>2){print $1}}' | sed 's/^[\t]*//g' | sed 's/[:]*$//g'";
-    procNet.start("/bin/bash",options);
-    procNet.waitForFinished(-1);
-    procNet.waitForReadyRead(-1);
-    QString data = procNet.readAll();
-    QStringList nwCardList = data.split("\n");
-    if(nwCardList.length() >= 1) {
-        for(QString itemCard : nwCardList) {
-            struct ethtool_value edata;
-            int fd = -1, err = 0;
-            struct ifreq ifr;
-            memset(&ifr, 0, sizeof(ifr));
-            strcpy(ifr.ifr_name, itemCard.toStdString().c_str());
-            fd = socket(AF_INET, SOCK_DGRAM, 0);
-            if (fd >= 0) {
-                edata.cmd = 0x0000000a;
-                ifr.ifr_data = (caddr_t)&edata;
-                err = ioctl(fd, 0x8946, &ifr);
-                if (err == 0) {
-                    if (m_autoSyn->get_swbtn()->get_active() == false) {
-                        m_autoSyn->get_swbtn()->set_active(true);
-                        for (int i = 0;i < m_szItemlist.size(); i ++ ) {
-                            m_itemList->get_item(i)->get_swbtn()->set_active(true);
-                        }
-                        handle_conf();
+    QVariant ret;
+    QDBusMessage message = QDBusMessage::createMethodCall("org.freedesktop.NetworkManager",
+                                                          "/org/freedesktop/NetworkManager",
+                                                          "org.freedesktop.NetworkManager",
+                                                          "CheckConnectivity");
+    QDBusMessage response =  QDBusConnection::systemBus().call(message);
+
+    if (response.type() == QDBusMessage::ReplyMessage) {
+        QDBusVariant value = qvariant_cast<QDBusVariant>(response.arguments().takeFirst());
+        ret = value.variant();
+        if (ret.isValid() == false) {
+            ret = response.arguments().takeFirst();
+            if (ret.toInt() != 3 && ret.toInt() != 1) {
+                if (m_autoSyn->get_swbtn()->get_active() == false) {
+                    m_autoSyn->get_swbtn()->set_active(true);
+                    for (int i = 0;i < m_szItemlist.size(); i ++ ) {
+                        m_itemList->get_item(i)->get_swbtn()->set_active(true);
                     }
-                    m_bIsOnline = true;
-                    return true;
-                } else if (errno != EOPNOTSUPP) {
-                    perror("Cannot get link status");
                 }
+                handle_conf();
+                return true;
             }
         }
     }
@@ -159,7 +162,6 @@ bool MainWidget::isNetWorkOnline()
         }
         handle_conf();
     }
-    m_bIsOnline = false;
     return false;
 
 }
@@ -306,7 +308,7 @@ void MainWidget::dbusInterface() {
             m_cLoginTimer->stop();
         }
         QFile fileConf(m_szConfPath);
-        if (m_pSettings != nullptr && fileConf.exists())
+        if (m_pSettings != nullptr && fileConf.exists() && fileConf.size() > 1)
             m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
         else
             m_syncTimeLabel->setText(tr("Waiting for initialization..."));
@@ -432,7 +434,7 @@ void MainWidget::checkUserName(QString name) {
     if (bIsLogging == false) {
         QFile file (m_szConfPath);
         QFile token (QDir::homePath() + "/.cache/kylinId/token");
-        if (file.exists() == false && token.exists() == true && m_isOpenDialog == false) {
+        if (file.exists() == false && token.exists() == true && m_isOpenDialog == false && token.size() > 1) {
             emit dooss(m_szUuid);
         }
     }
@@ -607,7 +609,7 @@ void MainWidget::initSignalSlots() {
 
     connect(&m_fsWatcher,&QFileSystemWatcher::fileChanged,this,[=] () {
         QFile token(tokenFile);
-        if (!token.exists()) {
+        if (!token.exists() && token.size() > 1) {
             if (m_mainWidget->currentWidget() != m_nullWidget) {
                 m_mainWidget->setCurrentWidget(m_nullWidget);
             }
