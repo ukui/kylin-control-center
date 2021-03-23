@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>540</width>
+    <width>567</width>
     <height>645</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
@@ -18,7 +24,7 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>540</width>
+    <width>567</width>
     <height>645</height>
    </size>
   </property>
@@ -30,16 +36,16 @@
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>32</number>
+    <number>44</number>
    </property>
    <property name="topMargin">
-    <number>32</number>
+    <number>12</number>
    </property>
    <property name="rightMargin">
-    <number>32</number>
+    <number>24</number>
    </property>
    <property name="bottomMargin">
-    <number>24</number>
+    <number>10</number>
    </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -182,7 +188,7 @@
        <property name="sizeHint" stdset="0">
         <size>
          <width>20</width>
-         <height>40</height>
+         <height>18</height>
         </size>
        </property>
       </spacer>
