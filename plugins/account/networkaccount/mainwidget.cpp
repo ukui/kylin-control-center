@@ -68,9 +68,8 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_szUuid = QUuid::createUuid().toString();
     m_bTokenValid = false;
 
-
-    if (isNetWorkOnline() == false) {
-        qDebug() << "sadasda";
+    m_bIsOnline = isNetWorkOnline();
+    if (m_bIsOnline == false) {
         if (m_autoSyn->get_swbtn()->get_active() == true) {
             m_autoSyn->get_swbtn()->set_active(false);
             for (int i = 0;i < m_szItemlist.size(); i ++ ) {
@@ -107,6 +106,7 @@ void MainWidget::checkNetWork(QVariantMap map) {
         return ;
     }
     if (ret.toInt() != 1 && ret.toInt() != 3 ) {
+        m_bIsOnline = true;
         if (m_autoSyn->get_swbtn()->get_active() == false) {
             m_autoSyn->get_swbtn()->set_active(true);
             for (int i = 0;i < m_szItemlist.size(); i ++ ) {
@@ -122,6 +122,7 @@ void MainWidget::checkNetWork(QVariantMap map) {
 
         return ;
     }
+    m_bIsOnline = false;
     if (m_autoSyn->get_swbtn()->get_active() == true) {
         m_autoSyn->get_swbtn()->set_active(false);
         for (int i = 0;i < m_szItemlist.size(); i ++ ) {
@@ -962,7 +963,7 @@ void MainWidget::on_switch_button(int on,int id) {
     if (m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
-    if (isNetWorkOnline() == false) {
+    if (m_bIsOnline == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
