@@ -943,7 +943,7 @@ bool MainWidget::judge_item(const QString &enable,const int &cur) const {
 
 /* 滑动按钮点击后改变功能状态 */
 void MainWidget::handle_write(const int &on,const int &id) {
-    if (isNetWorkOnline() == false) {
+    if (m_bIsOnline == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
