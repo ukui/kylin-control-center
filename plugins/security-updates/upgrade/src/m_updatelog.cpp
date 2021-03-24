@@ -270,7 +270,28 @@ QString m_updatelog::translationVirtualPackage(QString str)
         return "系统内核组件";
     if(str == "kylin-update-desktop-kydroid")
         return "kydroid补丁包";
-    return str;
+
+    /* 从软件商店数据库根据包名获取应用中文名 */
+    QString dst;
+    dst.clear();
+
+    QSqlQuery query(QSqlDatabase::database("B"));
+    bool ret = query.exec(QString("SELECT display_name_cn FROM application WHERE app_name IS '%1'").arg(str));    //执行
+    if (ret == false) {
+        qDebug() << "Error : exec select sql fail , switch chinese pkg name fail";
+        return str;
+    }
+
+    while (query.next()) {
+        dst = query.value(0).toString();
+        qDebug() << "Info : switch chinese pkg name is [" << dst << "]";
+    }
+
+    if (dst.isEmpty()) {
+        return str;
+    } else {
+        return dst;
+    }
 }
 
 

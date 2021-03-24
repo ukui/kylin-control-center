@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QDir>
+#include <QStandardPaths>
 
 static bool CreatConnection()
 {
@@ -30,6 +31,17 @@ static bool CreatConnection()
            return false;
     }
     qDebug()<<"更新管理器数据库打开成功.";
+
+    /* 获取软件商店数据库链接 */
+    QSqlDatabase db2 = QSqlDatabase::addDatabase("QSQLITE" , "B");
+    db2.setDatabaseName(QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + "/.cache/uksc/uksc.db");
+    if (!db2.open()) {
+        qDebug() << "Error : open software database fail";
+        return false;
+    }
+
+    qDebug() << "open software center database success!";
+
     return true;
 }
 
