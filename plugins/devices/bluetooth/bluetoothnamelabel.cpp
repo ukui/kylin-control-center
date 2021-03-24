@@ -104,7 +104,7 @@ void BluetoothNameLabel::set_label_text(const QString &value)
 
     QFont ft;
     QFontMetrics fm(ft);
-    QString text = fm.elidedText(m_lineedit->text(), Qt::ElideRight, 150);
+    QString text = fm.elidedText(m_lineedit->text(), Qt::ElideMiddle, 100);
     m_label->setText(tr("Can now be found as ")+"\""+text+"\"");
     m_label->setVisible(true);
 }

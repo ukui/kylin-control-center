@@ -45,20 +45,6 @@ DeviceInfoItem::DeviceInfoItem(QWidget *parent) : QWidget(parent)
     del_btn->setVisible(false);
     connect(del_btn,SIGNAL(clicked(bool)),this,SLOT(onClick_Delete_Btn(bool)));
 
-    icon_timer = new QTimer(this);
-    icon_timer->setInterval(100);
-
-    connect_timer = new QTimer(this);
-    connect_timer->setInterval(10000);
-
-    connect(connect_timer,&QTimer::timeout,this,[=]{
-        if(icon_timer->isActive()){
-            icon_timer->stop();
-            device_status->setPixmap(QIcon::fromTheme("emblem-danger").pixmap(QSize(24,24)));
-            device_status->update();
-        }
-    });
-
     AnimationInit();
 }
 
@@ -161,21 +147,37 @@ void DeviceInfoItem::leaveEvent(QEvent *event)
 
 void DeviceInfoItem::onClick_Connect_Btn(bool isclicked)
 {
-    qDebug() << Q_FUNC_INFO << icon_timer->interval();
+    icon_timer = new QTimer(this);
+    icon_timer->setInterval(100);
+
+    connect_timer = new QTimer(this);
+    connect_timer->setInterval(10000);
+
+    connect(connect_timer,&QTimer::timeout,this,[=]{
+        if(icon_timer->isActive()){
+            icon_timer->stop();
+            device_status->setPixmap(QIcon::fromTheme("emblem-danger").pixmap(QSize(24,24)));
+            device_status->update();
+        }
+        connect_timer->stop();
+    });
+
     emit sendConnectDevice(device_item->address());
+
+    i = 7;
 
     if(!device_status->isVisible())
         device_status->setVisible(true);
 
     connect(icon_timer,&QTimer::timeout,this,[=]{
-        if(i == 0)
+        if(i == -1)
             i = 7;
         device_status->setPixmap(QIcon::fromTheme("ukui-loading-"+QString::number(i,10)).pixmap(24,24));
         device_status->update();
         i--;
     });
-    connect_timer->start();
-    icon_timer->start();
+    connect_timer->start(10000);
+    icon_timer->start(100);
 }
 
 void DeviceInfoItem::onClick_Disconnect_Btn(bool isclicked)
