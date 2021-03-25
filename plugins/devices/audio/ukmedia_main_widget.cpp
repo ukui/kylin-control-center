@@ -635,8 +635,6 @@ void UkmediaMainWidget::onContextStateNotify (MateMixerContext *m_pContext,GPara
 
     listDevice(m_pWidget,m_pContext);
     if (state == MATE_MIXER_STATE_READY) {
-        updateDefaultInputStream (m_pWidget);
-        qDebug() << "entry updateIconOutput 1111111";
         updateIconOutput(m_pWidget);
         updateIconInput(m_pWidget);
     }
@@ -1198,6 +1196,24 @@ void UkmediaMainWidget::onContextDefaultInputStreamNotify (MateMixerContext *m_p
         m_pWidget->m_pInputWidget->m_pInputListWidget->setCurrentRow(-1);
         return;
     }
+    else {
+        if (index < m_pWidget->m_pInputPortLabelList->count()) {
+            m_pWidget->m_pInputPortLabelList->at(index);
+            int i =0;
+
+            for (i=0;i <m_pWidget->m_pInputWidget->m_pInputListWidget->count();i++) {
+
+                QListWidgetItem *item = m_pWidget->m_pInputWidget->m_pInputListWidget->item(i);
+                UkuiListWidgetItem *wid = (UkuiListWidgetItem *)m_pWidget->m_pInputWidget->m_pInputListWidget->itemWidget(item);
+                //            wid->portLabel
+                if(m_pWidget->m_pInputPortLabelList->at(index) == wid->portLabel->text()) {
+                    m_pWidget->m_pInputWidget->m_pInputListWidget->blockSignals(true);
+                    m_pWidget->m_pInputWidget->m_pInputListWidget->setCurrentItem(item);
+                    m_pWidget->m_pInputWidget->m_pInputListWidget->blockSignals(false);
+                }
+            }
+        }
+    }
     m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->setCurrentIndex(index);
     updateIconInput(m_pWidget);
     m_pWidget->updateInputDevicePort();
@@ -1300,7 +1316,6 @@ void UkmediaMainWidget::onContextDefaultOutputStreamNotify (MateMixerContext *m_
     //修改输出设备时跟随输出设备改变
     MateMixerDevice *pDevice = mate_mixer_stream_get_device(m_pStream);
     const gchar *cardName = mate_mixer_device_get_name(pDevice);
-    int cardIndex = m_pWidget->m_pDeviceNameList->indexOf(cardName);
 
     if (!(MATE_MIXER_IS_STREAM(m_pStream))) {
         return;
@@ -1372,7 +1387,6 @@ void UkmediaMainWidget::onContextDefaultOutputStreamNotify (MateMixerContext *m_
         }
     }
     m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->setCurrentIndex(index);
-    qDebug() << "entry updateIconOutput 2222222";
     updateIconOutput(m_pWidget);
     setOutputStream (m_pWidget, m_pStream);
     m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(true);
@@ -1445,10 +1459,10 @@ void UkmediaMainWidget::outputVolumeDarkThemeImage(int value,bool status)
 {
     QImage image;
     QColor color = QColor(0,0,0,216);
-    if (mThemeName == UKUI_THEME_WHITE) {
+    if (mThemeName == UKUI_THEME_WHITE || mThemeName == "ukui-default") {
         color = QColor(0,0,0,216);
     }
-    else if (mThemeName == UKUI_THEME_BLACK) {
+    else if (mThemeName == UKUI_THEME_BLACK || mThemeName == "ukui-dark") {
         color = QColor(255,255,255,216);
     }
     m_pOutputWidget->m_pOutputIconBtn->mColor = color;
@@ -1478,10 +1492,10 @@ void UkmediaMainWidget::inputVolumeDarkThemeImage(int value,bool status)
 {
     QImage image;
     QColor color = QColor(0,0,0,190);
-    if (mThemeName == UKUI_THEME_WHITE) {
+    if (mThemeName == UKUI_THEME_WHITE || mThemeName == "ukui-default") {
         color = QColor(0,0,0,190);
     }
-    else if (mThemeName == UKUI_THEME_BLACK) {
+    else if (mThemeName == UKUI_THEME_BLACK || mThemeName == "ukui-dark") {
         color = QColor(255,255,255,190);
     }
     m_pInputWidget->m_pInputIconBtn->mColor = color;
@@ -2847,6 +2861,25 @@ void UkmediaMainWidget::inputDeviceComboxIndexChangedSlot(QString str)
         }
         delete time;
     });
+    index = m_pInputWidget->m_pInputDeviceCombobox->currentIndex();
+    if (index >= 0) {
+        if (index < m_pInputPortLabelList->count()) {
+            int i =0;
+
+            for (i=0;i < m_pInputWidget->m_pInputListWidget->count();i++) {
+
+                QListWidgetItem *item = m_pInputWidget->m_pInputListWidget->item(i);
+                UkuiListWidgetItem *wid = (UkuiListWidgetItem *)m_pInputWidget->m_pInputListWidget->itemWidget(item);
+                if(m_pInputPortLabelList->at(index) == wid->portLabel->text()) {
+                    m_pInputWidget->m_pInputListWidget->blockSignals(true);
+                    m_pInputWidget->m_pInputListWidget->setCurrentItem(item);
+                    m_pInputWidget->m_pInputListWidget->blockSignals(false);
+                }
+
+            }
+        }
+    }
+
     if (G_UNLIKELY (stream == nullptr)) {
        g_warn_if_reached ();
        return;
@@ -4660,7 +4693,6 @@ void UkmediaMainWidget::updateCard(const pa_card_info &info) {
                 profileNameMap.insertMulti(p.description.data(),p_profile.data());
             }
             cardProfileMap.insertMulti(info.index,portProfileName);
-            //qDebug() << "output port map inset,info index" <<info.index << p.description.data() << "p.name" << p.name << " map count:"<< outputPortNameMap.count() ;
         }
         else if (p.direction == 2 && p.available != PA_PORT_AVAILABLE_NO){
             inputPortNameMap.insertMulti(info.index,p.name);
@@ -4668,10 +4700,8 @@ void UkmediaMainWidget::updateCard(const pa_card_info &info) {
             for (auto p_profile : p.profiles) {
                 inputPortProfileNameMap.insertMulti(p.description.data(),p_profile.data());
             }
-            //qDebug() << "input port map inset,info index" <<info.index << p.description.data()<< "p.name" << p.name <<"map count:" << inputPortNameMap.count();
         }
         this->ports[p.name] = p;
-        //qDebug() << "port name ***********:" << p.name << p.available  << info.index <<p.direction;
     }
 
     this->profiles.clear();

@@ -34,7 +34,6 @@ AudioSlider::~AudioSlider()
 UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
 {
 //    QFILEDEVICE_H
-
     m_pOutputListWidget = new QListWidget(this);
     m_pOutputListWidget->setFixedHeight(250);
 
@@ -131,16 +130,17 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pOpVolumeSlider->setRange(0,100);
     m_pOutputIconBtn->setFocusPolicy(Qt::NoFocus);
     //输出设备添加布局
+//    QHBoxLayout *noOutputDeviceLayout = new QHBoxLayout();
+//    noOutputDeviceLayout->addWidget(m_pNoAvailableOutputLabel);
+//    m_pOutputDeviceWidget->setLayout(noOutputDeviceLayout);
+
     QVBoxLayout *outputDeviceLayout = new QVBoxLayout();
-
-
 //    m_pOutputDeviceLabel->setFixedSize(115,24);
     m_pOutputDeviceLabel->setFixedSize(150,32);
     m_pOutputDeviceCombobox->setMinimumSize(50,32);
     m_pOutputDeviceCombobox->setMaximumSize(900,32);
     outputDeviceLayout->addWidget(m_pOutputDeviceLabel);
     outputDeviceLayout->addWidget(m_pOutputListWidget);
-
 
 //    outputDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
 //    outputDeviceLayout->addWidget(m_pOutputDeviceLabel);
@@ -150,6 +150,7 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
 //    outputDeviceLayout->setSpacing(0);
     m_pOutputDeviceWidget->setLayout(outputDeviceLayout);
     outputDeviceLayout->layout()->setContentsMargins(16,14,16,14);
+
     //主音量添加布局
     QHBoxLayout *masterLayout = new QHBoxLayout(m_pMasterVolumeWidget);
     m_pOpVolumeLabel->setFixedSize(150,32);
@@ -171,12 +172,12 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     //声道平衡添加布局
     QHBoxLayout *soundLayout = new QHBoxLayout(m_pChannelBalanceWidget);
     m_pOpBalanceLabel->setFixedSize(150,32);
-    m_pLeftBalanceLabel->setFixedSize(37,24);
+    m_pLeftBalanceLabel->setFixedSize(32,24);
     m_pOpBalanceSlider->setFixedHeight(20);
-    m_pRightBalanceLabel->setFixedSize(55,28);
+    m_pRightBalanceLabel->setFixedSize(55,24);
     soundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     soundLayout->addWidget(m_pOpBalanceLabel);
-    soundLayout->addItem(new QSpacerItem(12,20,QSizePolicy::Fixed));
+    soundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     soundLayout->addWidget(m_pLeftBalanceLabel);
     soundLayout->addItem(new QSpacerItem(8,20,QSizePolicy::Fixed));
     soundLayout->addWidget(m_pOpBalanceSlider);
