@@ -39,7 +39,7 @@ addShortcutDialog::addShortcutDialog(QWidget *parent) :
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->noteLabel->setPixmap(QPixmap("://img/plugins/shortcut/note.png"));
     ui->stackedWidget->setCurrentIndex(1);
-
+    limitInput();
     refreshCertainChecked();
 
     gsPath = "";
@@ -101,6 +101,17 @@ void addShortcutDialog::setUpdateEnv(QString path, QString name, QString exec){
     gsPath = path;
     ui->nameLineEdit->setText(name);
     ui->execLineEdit->setText(exec);
+}
+
+void addShortcutDialog::limitInput()
+{
+    // 大小写字母数字中文
+    QRegExp rx("[a-zA-Z0-9\u4e00-\u9fa5]+");
+    QRegExpValidator *regValidator = new QRegExpValidator(rx);
+    // 输入限制
+    ui->nameLineEdit->setValidator(regValidator);
+    // 字符长度限制
+    ui->nameLineEdit->setMaxLength(10);
 }
 
 void addShortcutDialog::paintEvent(QPaintEvent *event) {

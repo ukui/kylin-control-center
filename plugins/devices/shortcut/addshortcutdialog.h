@@ -24,6 +24,7 @@
 #include <QFileDialog>
 #include <QPainter>
 #include <QPainterPath>
+#include <QRegExpValidator>
 
 namespace Ui {
 class addShortcutDialog;
@@ -44,6 +45,7 @@ public:
     void setUpdateEnv(QString path, QString name, QString exec);
 
     void refreshCertainChecked();
+    void limitInput();
 
 protected:
     void paintEvent(QPaintEvent *);
