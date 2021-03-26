@@ -28,7 +28,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QAbstractButton>
-
+#include <QThread>
 #include <QDBusInterface>
 #include <QDBusConnection>
 #include <QDBusError>
@@ -72,7 +72,7 @@ class DateTime : public QObject, CommonInterface
 public:
     DateTime();
     ~DateTime();
-
+    SwitchButton *syncTimeBtn = nullptr; //网络时间同步按钮
     QString get_plugin_name() Q_DECL_OVERRIDE;
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
@@ -84,10 +84,10 @@ public:
     void status_init();
     void connectToServer();
     bool fileIsExits(const QString& filepath);
-
+    QLabel *syncNetworkRetLabel = nullptr;
 private:
     Ui::DateTime *ui;
-
+    QString localizedTimezone;
     QString pluginName;
     int pluginType;
     QWidget * pluginWidget;
@@ -105,6 +105,9 @@ private:
     QLabel *m_formTimeLabel = nullptr;
     QTimer * m_itimer = nullptr;
 
+    QLabel *syncNetworkLabel = nullptr;
+
+
     TimeZoneChooser *m_timezone;
     ZoneInfo* m_zoneinfo;
 
@@ -120,15 +123,44 @@ private slots:
     void changezone_slot();
     void changezone_slot(QString );
     void time_format_clicked_slot(bool, bool);
-    void rsync_with_network_slot();
+    void synctime_format_slot(bool status,bool outChange);  //网络时间同步按钮事件
+    QDBusMessage rsync_with_network_slot();
     void showendLabel();
     void hidendLabel();
     void keyChangedSlot(const QString &key);
-
+    bool getNtpServerConnect();
 private:
     void loadHour();
     void connectGSetting();
     QString getLocalTimezoneName(QString timezone, QString locale);
+};
+
+
+class CGetSyncRes : public QThread{
+    Q_OBJECT
+public:
+    CGetSyncRes(DateTime *dataTimeUI,QString successMSG,QString failMSG);
+    ~CGetSyncRes();
+protected:
+    void run()override;
+private:
+    DateTime *dataTimeUI;
+    QString successMSG;
+    QString failMSG;
+    bool changeLableFlag;
+};
+
+class CSyncTime : public QThread{
+    Q_OBJECT
+public:
+    CSyncTime(DateTime *dataTimeUI,QString successMSG,QString failMSG);
+    ~CSyncTime();
+protected:
+    void run()override;
+private:
+    DateTime *dataTimeUI;
+    QString successMSG;
+    QString failMSG;
 };
 
 #endif // DATETIME_H

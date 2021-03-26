@@ -5,6 +5,11 @@
             <summary>HourSystem status</summary>
             <description>hoursystem used in UKUI Desktop Environment ,ontrol by ukui-panel and ukui-control-center</description>
         </key>
+        <key name="synctime" type="b">
+            <default>true</default>
+            <summary>sync time from network</summary>
+            <description></description>
+        </key>
         <key name="calendar" type="s">
             <default>'lunar'</default>
             <summary>Lunar calendar</summary>
