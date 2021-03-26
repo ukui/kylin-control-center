@@ -306,7 +306,7 @@
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="602"/>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="752"/>
         <source>Update</source>
-        <translation>更新</translation>
+        <translation>安全更新</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="89"/>
@@ -472,7 +472,7 @@
         <location filename="../../../plugins/time-language/area/area.ui" line="26"/>
         <location filename="../../../plugins/time-language/area/area.cpp" line="40"/>
         <source>Area</source>
-        <translation>语言和地区</translation>
+        <translation>区域语言</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.ui" line="127"/>
@@ -501,7 +501,7 @@
     </message>
     <message>
         <source>area</source>
-        <translation type="vanished">语言和地区</translation>
+        <translation type="vanished">区域语言</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.ui" line="53"/>
@@ -1834,12 +1834,12 @@ change system settings</source>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="26"/>
         <source>DateTime</source>
-        <translation>时间和日期</translation>
+        <translation>时间日期</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="59"/>
         <source>current date</source>
-        <translation>时间和日期</translation>
+        <translation>当前时间</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="141"/>
@@ -1849,6 +1849,19 @@ change system settings</source>
     <message>
         <source>Sync system time</source>
         <translation type="vanished">同步系统时间</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="437"/>
+        <source>Sync from network successful</source>
+        <translation>时间同步成功</translation>
+        <extra-contents_path>/date/Sync from network successful</extra-contents_path>
+    </message>
+    <message>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="444"/>
+        <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="438"/>
+        <source>Sync from network failed</source>
+        <translation>时间同步失败</translation>
+        <extra-contents_path>/date/Sync from network failed</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.ui" line="199"/>
@@ -1871,20 +1884,20 @@ change system settings</source>
     </message>
     <message>
         <source>datetime</source>
-        <translation type="vanished">时间和日期</translation>
+        <translation type="vanished">时间日期</translation>
     </message>
     <message>
         <source>Datetime</source>
-        <translation type="vanished">时间和日期</translation>
+        <translation type="vanished">时间日期</translation>
     </message>
     <message>
         <source>Dat</source>
-        <translation type="vanished">时间和日期</translation>
+        <translation type="vanished">时间日期</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="48"/>
         <source>Date</source>
-        <translation>时间和日期</translation>
+        <translation>时间日期</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/datetime.cpp" line="84"/>
@@ -3098,12 +3111,12 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Area</source>
-        <translation>语言和地区</translation>
+        <translation>区域语言</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
         <source>Date/Time</source>
-        <translation>时间和日期</translation>
+        <translation>时间日期</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="42"/>
@@ -3255,7 +3268,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <source>datetime</source>
-        <translation type="vanished">时间和日期</translation>
+        <translation type="vanished">时间日期</translation>
     </message>
     <message>
         <source>update</source>
@@ -3263,7 +3276,7 @@ folder will be deleted!</source>
     </message>
     <message>
         <source>messages</source>
-        <translation type="vanished">通知和操作</translation>
+        <translation type="vanished">通知关于</translation>
     </message>
     <message>
         <location filename="../../utils/keyvalueconverter.cpp" line="46"/>
@@ -3293,17 +3306,17 @@ folder will be deleted!</source>
     <message>
         <location filename="../../utils/keyvalueconverter.cpp" line="61"/>
         <source>Datetime</source>
-        <translation>时间和日期</translation>
+        <translation>时间语言</translation>
     </message>
     <message>
         <location filename="../../utils/keyvalueconverter.cpp" line="64"/>
         <source>Update</source>
-        <translation>更新</translation>
+        <translation>安全更新</translation>
     </message>
     <message>
         <location filename="../../utils/keyvalueconverter.cpp" line="67"/>
         <source>Messages</source>
-        <translation>通知和操作</translation>
+        <translation>通知关于</translation>
     </message>
 </context>
 <context>
@@ -4947,11 +4960,11 @@ Please retry or relogin!</source>
     </message>
     <message>
         <source>datetime</source>
-        <translation type="vanished">时间和日期</translation>
+        <translation type="vanished">时间日期</translation>
     </message>
     <message>
         <source>area</source>
-        <translation type="vanished">语言和地区</translation>
+        <translation type="vanished">区域语言</translation>
     </message>
     <message>
         <source>update</source>
@@ -5163,11 +5176,11 @@ Please retry or relogin!</source>
     <message>
         <location filename="../../utils/functionselect.cpp" line="169"/>
         <source>Date</source>
-        <translation>时间和日期</translation>
+        <translation>时间日期</translation>
     </message>
     <message>
         <source>Dat</source>
-        <translation type="vanished">时间和日期</translation>
+        <translation type="vanished">时间日期</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="186"/>
@@ -5199,12 +5212,12 @@ Please retry or relogin!</source>
     </message>
     <message>
         <source>Datetime</source>
-        <translation type="vanished">时间和日期</translation>
+        <translation type="vanished">时间日期</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="171"/>
         <source>Area</source>
-        <translation>语言和地区</translation>
+        <translation>区域语言</translation>
     </message>
     <message>
         <source>SecurityCenter</source>
@@ -5212,7 +5225,7 @@ Please retry or relogin!</source>
     </message>
     <message>
         <source>Update</source>
-        <translation type="vanished">更新</translation>
+        <translation type="vanished">安全更新</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="188"/>
@@ -5222,7 +5235,7 @@ Please retry or relogin!</source>
     <message>
         <location filename="../../utils/functionselect.cpp" line="190"/>
         <source>Upgrade</source>
-        <translation>更新</translation>
+        <translation>安全更新</translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="205"/>
@@ -5513,7 +5526,7 @@ Please retry or relogin!</source>
     <message>
         <location filename="../../utils/utils.cpp" line="77"/>
         <source>Go to area settings page</source>
-        <translation>语言和地区</translation>
+        <translation>区域语言</translation>
     </message>
     <message>
         <location filename="../../utils/utils.cpp" line="79"/>
@@ -6354,12 +6367,12 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/syncdialog.h" line="44"/>
         <source>Area</source>
-        <translation>语言和地区</translation>
+        <translation>区域语言</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/syncdialog.h" line="44"/>
         <source>Date/Time</source>
-        <translation>时间和日期</translation>
+        <translation>时间日期</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/syncdialog.h" line="44"/>
@@ -6569,7 +6582,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="333"/>
         <source>Update</source>
-        <translation>更新</translation>
+        <translation>安全更新</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="356"/>
@@ -7337,7 +7350,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/upgrade.cpp" line="8"/>
         <source>Upgrade</source>
-        <translation>更新</translation>
+        <translation>安全更新</translation>
         <extra-contents_path>/upgrade/Upgrade</extra-contents_path>
     </message>
 </context>
@@ -7886,7 +7899,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
     <message>
         <location filename="../../../plugins/time-language/datetime/changtime.ui" line="112"/>
         <source>current date</source>
-        <translation>时间和日期</translation>
+        <translation>时间日期</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/datetime/changtime.ui" line="197"/>

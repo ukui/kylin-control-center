@@ -35,14 +35,14 @@
     <plugin name="area">
         <pinyinPlugin>yuyanyudiqu</pinyinPlugin>
         <pinyinfunc>dangqianquyu</pinyinfunc>
-        <ChinesePlugin>语言与地区</ChinesePlugin>
+        <ChinesePlugin>区域语言</ChinesePlugin>
         <ChineseFunc>当前区域</ChineseFunc>
         <EnglishFunc>Current Area</EnglishFunc>
     </plugin>
     <plugin name="area">
         <pinyinPlugin>yuyanyudiqu</pinyinPlugin>
         <pinyinfunc>quyugeshishuju</pinyinfunc>
-        <ChinesePlugin>语言与地区</ChinesePlugin>
+        <ChinesePlugin>区域语言</ChinesePlugin>
         <ChineseFunc>区域格式数据</ChineseFunc>
         <EnglishFunc>Regional Format Data</EnglishFunc>
     </plugin>
@@ -77,28 +77,28 @@
     <plugin name="datetime">
         <pinyinPlugin>shijianheriqi</pinyinPlugin>
         <pinyinfunc>shoudonggenggaishijian</pinyinfunc>
-        <ChinesePlugin>时间和日期</ChinesePlugin>
+        <ChinesePlugin>时间日期</ChinesePlugin>
         <ChineseFunc>手动更改时间</ChineseFunc>
         <EnglishFunc>Change Time</EnglishFunc>
     </plugin>
     <plugin name="datetime">
         <pinyinPlugin>shijianheriqi</pinyinPlugin>
         <pinyinfunc>genggaishiqu</pinyinfunc>
-        <ChinesePlugin>时间和日期</ChinesePlugin>
+        <ChinesePlugin>时间日期</ChinesePlugin>
         <ChineseFunc>更改时区</ChineseFunc>
         <EnglishFunc>Change Time Zone</EnglishFunc>
     </plugin>
     <plugin name="datetime">
         <pinyinPlugin>shijianheriqi</pinyinPlugin>
         <pinyinfunc>xiaoshizhi</pinyinfunc>
-        <ChinesePlugin>时间和日期</ChinesePlugin>
+        <ChinesePlugin>时间日期</ChinesePlugin>
         <ChineseFunc>24小时制</ChineseFunc>
         <EnglishFunc>24-hour Clock</EnglishFunc>
     </plugin>
     <plugin name="datetime">
         <pinyinPlugin>shijianheriqi</pinyinPlugin>
         <pinyinfunc>tongbuwangluoshijian</pinyinfunc>
-        <ChinesePlugin>时间和日期</ChinesePlugin>
+        <ChinesePlugin>时间日期</ChinesePlugin>
         <ChineseFunc>同步网络时间</ChineseFunc>
         <EnglishFunc>Sync Network Time</EnglishFunc>
     </plugin>

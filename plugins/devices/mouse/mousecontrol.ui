@@ -1283,7 +1283,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Fast</string>
+           <string>Slow</string>
           </property>
          </widget>
         </item>
@@ -1306,6 +1306,9 @@
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="invertedAppearance">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -1330,7 +1333,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Slow</string>
+           <string>Fast</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
