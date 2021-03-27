@@ -27,6 +27,7 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QProcess>
+#include <QFileInfo>
 
 const QString kylinUrl = "https://www.ubuntukylin.com/wallpaper.html";
 
@@ -377,9 +378,16 @@ void Wallpaper::setLockBackground(QString bg) {
 void Wallpaper::initPreviewStatus(){
     // 设置图片背景的预览效果
     QString filename = bgsettings->get(FILENAME).toString();
-
-    ui->previewLabel->setPixmap(QPixmap(filename).scaled(ui->previewLabel->size()));
-
+    QFileInfo fileinfo = QFileInfo(filename);
+    if(fileinfo.suffix() == "dib")
+    {
+        QFile::copy(filename,".TEMP.bmp");
+        ui->previewLabel->setPixmap(QPixmap(".TEMP.bmp").scaled(ui->previewLabel->size()));
+    }
+    else
+    {
+        ui->previewLabel->setPixmap(QPixmap(filename).scaled(ui->previewLabel->size()));
+    }
     // 设置纯色背景的预览效果
     QString color = bgsettings->get(PRIMARY).toString();
     if (!color.isEmpty()){

@@ -42,6 +42,8 @@ AddAutoBoot::AddAutoBoot(QWidget *parent) :
 }
 
 void AddAutoBoot::resetBeforeClose() {
+    ui->certainBtn->setEnabled(false);
+    ui->hintLabel->clear();
     ui->nameLineEdit->setText(QString());
     ui->commentLineEdit->setText(QString());
     ui->execLineEdit->setText(QString());
