@@ -207,12 +207,12 @@ void HomePageWidget::initUI(){
             QPixmap cgPix = loadSvg(path, WHITE);
             logoLabel->setPixmap(cgPix);
 
-            titleLabel->setStyleSheet("color: palette(base);");
+            titleLabel->setStyleSheet("color: palette(Light);");
 
 
             QList<ClickLabel *> clabelList = w->findChildren<ClickLabel *>();
             for (ClickLabel * tmpLabel : clabelList) {
-                tmpLabel->setStyleSheet("color: palette(base);");
+                tmpLabel->setStyleSheet("color: palette(Light);");
             }
         });
         //还原状态

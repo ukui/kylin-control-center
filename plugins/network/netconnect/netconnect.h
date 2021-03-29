@@ -101,62 +101,50 @@ public:
     void getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo);
 
 private:
-    Ui::NetConnect *ui;
+    Ui::NetConnect     *ui;
 
-    QString pluginName;
-    int pluginType;
-    QWidget * pluginWidget;
+    QString            pluginName;
+    int                pluginType;
+    QWidget            *pluginWidget;
 
-    SwitchButton *wifiBtn;
+    SwitchButton       *wifiBtn;
 
     QMap<QString, int> connectedWifi;
-    // Wifi list<name,Signal strength>
-    QMap<QString,int> wifiList;
-    // List of wired network
-    QStringList lanList;
-    QString connectedLan;
-    QGSettings *m_gsettings;
+    QMap<QString,int>  wifiList;
 
-    QThread *pThread;
-    NetconnectWork *pNetWorker;
+    QThread            *pThread;
+    NetconnectWork     *pNetWorker;
 
-    QStringList TwifiList;
-    QStringList TlanList;
+    QString            connectedLan;
+    QString            actLanName;
 
-    QString actLanName;
+    QStringList        TwifiList;
+    QStringList        TlanList;
+    QStringList        lanList;
 
-    bool is_refreshed;
-    bool mFirstLoad;
+    bool               is_refreshed;
+    bool               mFirstLoad;
 
 private:
-
-    QMap<QString, QListWidgetItem *> AvailableNetworkMap;
-
-    // Get wifi's strength
-    int setSignal(QString lv);
+    int         setSignal(QString lv);
     QStringList execGetLanList();
-    void getWifiListDone(QStringList wifislist, QStringList lanList);
-    bool getSwitchStatus(QString key);
+    void        getWifiListDone(QStringList wifislist, QStringList lanList);
 
-    // The wifi's origin status
-    bool getInitStatus();
+    bool        getInitStatus();
 
-    // Clear the lan and wifi list
-    void clearContent();
+    void        clearContent();
 
-    void deleteNetworkDone(QString);
-    void addNetworkDone(QString);
-    void _buildWidgetForItem(QString);
-    void initNetworkMap();
-    QString wifiIcon(bool isLock, int strength);
+    void        deleteNetworkDone(QString);
+    void        addNetworkDone(QString);
+    void        _buildWidgetForItem(QString);
+    void        initNetworkMap();
+    void        setWifiBtnDisable();
+    QString     wifiIcon(bool isLock, int strength);
 
 private slots:
-    void wifiSwitchSlot(bool signal);
+    void wifiSwitchSlot(bool status);
     void getNetList();
-
-    void refreshed_signal_changed();
-    void properties_changed_refresh();
-    void reset_bool_is_refreshed();
+    void netPropertiesChangeSlot(QMap<QString, QVariant> property);
 
 signals:
     void refresh();
