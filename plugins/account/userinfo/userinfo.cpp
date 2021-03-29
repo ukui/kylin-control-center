@@ -396,7 +396,7 @@ void UserInfo::initComponent(){
         ui->changeTypeBtn->setEnabled(false);
 //        ui->changeGroupBtn->setEnabled(false);
         ui->autoLoginFrame->setVisible(false);
-        ui->autoLoginFrame_2->setVisible(false);
+        ui->noPwdLoginFrame->setVisible(false);
     }
 
 #ifdef WITHKYSEC
@@ -435,16 +435,13 @@ void UserInfo::initComponent(){
 
     ui->nopwdHorLayout->setSpacing(0);
     ui->nopwdHorLayout->setMargin(0);
-    nopwdSwitchBtn = new SwitchButton(ui->nopwdLoginWidget);
+
+    nopwdSwitchBtn = new SwitchButton(ui->noPwdLoginFrame);
     ui->nopwdHorLayout->addWidget(nopwdSwitchBtn);
 
     autoLoginSwitchBtn = new SwitchButton(ui->autoLoginFrame);
     ui->autoLoginHorLayout->addWidget(autoLoginSwitchBtn);
 
-
-//    ui->listWidget->setStyleSheet("QListWidget{background: #00ffff}");
-//    ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setSpacing(0);
 
     ElipseMaskWidget * mainElipseMaskWidget = new ElipseMaskWidget(ui->currentUserFaceLabel);

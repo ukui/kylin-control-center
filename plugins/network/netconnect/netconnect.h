@@ -122,7 +122,6 @@ private:
     QStringList        TlanList;
     QStringList        lanList;
 
-    bool               is_refreshed;
     bool               mFirstLoad;
 
 private:

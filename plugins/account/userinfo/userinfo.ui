@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>734</height>
+    <height>1073</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -66,13 +66,13 @@
      <property name="minimumSize">
       <size>
        <width>550</width>
-       <height>202</height>
+       <height>150</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>960</width>
-       <height>202</height>
+       <height>150</height>
       </size>
      </property>
      <property name="frameShape">
@@ -435,46 +435,13 @@
           </item>
          </layout>
         </item>
-        <item>
-         <widget class="QWidget" name="nopwdLoginWidget" native="true">
-          <property name="minimumSize">
-           <size>
-            <width>550</width>
-            <height>50</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>960</width>
-            <height>50</height>
-           </size>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-          </layout>
-         </widget>
-        </item>
        </layout>
       </item>
      </layout>
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="autoLoginFrame_2">
+    <widget class="QFrame" name="noPwdLoginFrame">
      <property name="minimumSize">
       <size>
        <width>550</width>
