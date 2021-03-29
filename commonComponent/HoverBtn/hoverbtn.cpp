@@ -44,7 +44,7 @@ void HoverBtn::initAnimation() {
         if (mAnimationFlag) {
             if(mLeaveAction->state() != QAbstractAnimation::Running){
                 mEnterAction->setStartValue(QRect(0, 0, mInfoItem->width(), mInfoItem->height()));
-                mEnterAction->setEndValue(QRect(0, 0, mInfoItem->width() - 85, mInfoItem->height()));
+                mEnterAction->setEndValue(QRect(0, 0, mInfoItem->width() - 102, mInfoItem->height()));
                 mEnterAction->start();
             }
         }
