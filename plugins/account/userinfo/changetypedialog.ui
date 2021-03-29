@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>542</width>
+    <width>527</width>
     <height>542</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>397</width>
+    <width>420</width>
     <height>539</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>542</width>
+    <width>527</width>
     <height>542</height>
    </size>
   </property>
@@ -30,16 +30,16 @@
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>0</number>
+    <number>12</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>6</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>12</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>10</number>
    </property>
    <item>
     <widget class="QFrame" name="frame">
@@ -63,7 +63,7 @@
        <number>32</number>
       </property>
       <property name="bottomMargin">
-       <number>24</number>
+       <number>32</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -292,8 +292,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>472</width>
-             <height>177</height>
+             <width>450</width>
+             <height>185</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout">
@@ -575,7 +575,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>40</height>
+            <height>8</height>
            </size>
           </property>
          </spacer>

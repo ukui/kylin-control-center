@@ -122,46 +122,46 @@
 <context>
     <name>AddAutoBoot</name>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="26"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="32"/>
         <source>Add AutoBoot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="105"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="117"/>
         <source>Add autoboot program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="188"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="206"/>
         <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="96"/>
         <source>Program name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="216"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="234"/>
         <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="97"/>
         <source>Program exec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="313"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="349"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="244"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="262"/>
         <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="98"/>
         <source>Program comment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="376"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="436"/>
         <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="135"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="401"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="461"/>
         <source>Certain</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1074,17 +1074,17 @@ Please authenticate yourself to continue</source>
 <context>
     <name>ChangeGroupDialog</name>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.ui" line="26"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.ui" line="32"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.ui" line="76"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.ui" line="82"/>
         <source>User Group Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.ui" line="211"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.ui" line="217"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1124,37 +1124,37 @@ Please authenticate yourself to continue</source>
 <context>
     <name>ChangePwdDialog</name>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="97"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="103"/>
         <source>Change Pwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="313"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="319"/>
         <source>Pwd type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="388"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="394"/>
         <source>Cur pwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="420"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="426"/>
         <source>New pwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="465"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="471"/>
         <source>New pwd sure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="558"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="548"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="580"/>
+        <location filename="../../../plugins/account/userinfo/changepwddialog.ui" line="570"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1261,32 +1261,32 @@ Please authenticate yourself to continue</source>
 <context>
     <name>ChangeValidDialog</name>
     <message>
-        <location filename="../../../plugins/account/userinfo/changevaliddialog.ui" line="26"/>
+        <location filename="../../../plugins/account/userinfo/changevaliddialog.ui" line="32"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changevaliddialog.ui" line="126"/>
+        <location filename="../../../plugins/account/userinfo/changevaliddialog.ui" line="138"/>
         <source>Password Validity Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changevaliddialog.ui" line="296"/>
+        <location filename="../../../plugins/account/userinfo/changevaliddialog.ui" line="308"/>
         <source>Current passwd validity:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changevaliddialog.ui" line="378"/>
+        <location filename="../../../plugins/account/userinfo/changevaliddialog.ui" line="396"/>
         <source>Adjust date to:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changevaliddialog.ui" line="493"/>
+        <location filename="../../../plugins/account/userinfo/changevaliddialog.ui" line="517"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changevaliddialog.ui" line="500"/>
+        <location filename="../../../plugins/account/userinfo/changevaliddialog.ui" line="524"/>
         <source>Certain</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1403,65 +1403,65 @@ Please authenticate yourself to continue</source>
 <context>
     <name>CreateUserDialog</name>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="91"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="103"/>
         <source>Add New Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="188"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="200"/>
         <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="116"/>
         <source>UserName</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="236"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="248"/>
         <source>PwdType</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="284"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="296"/>
         <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="117"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="332"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="344"/>
         <source>PasswordSure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="407"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="419"/>
         <source>Account Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="505"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="517"/>
         <source>standard user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="518"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="530"/>
         <source>Standard users can use most software, but cannot install the software and 
 change system settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="620"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="632"/>
         <source>administrator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="633"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="645"/>
         <source>Administrators can make any changes they need</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="708"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="720"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="727"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="739"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1548,40 +1548,40 @@ change system settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="94"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="106"/>
         <source>change format of data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="173"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="185"/>
         <location filename="../../../plugins/time-language/area/dataformat.cpp" line="49"/>
         <source>calendar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="250"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="262"/>
         <source>first day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="327"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="339"/>
         <location filename="../../../plugins/time-language/area/dataformat.cpp" line="51"/>
         <source>date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="404"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="416"/>
         <location filename="../../../plugins/time-language/area/dataformat.cpp" line="52"/>
         <source>time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="512"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="524"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/dataformat.ui" line="531"/>
+        <location filename="../../../plugins/time-language/area/dataformat.ui" line="543"/>
         <source>confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3033,132 +3033,132 @@ change system settings</source>
 <context>
     <name>MainWidget</name>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="407"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="409"/>
         <source>Your account：%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="463"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1108"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1129"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="465"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1110"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1131"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="713"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="715"/>
         <source>Sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="474"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="476"/>
         <source>Sign in</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="316"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="414"/>
+        <source>Waiting for initialization...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="390"/>
+        <source>Logout failed,please check your connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="694"/>
+        <source>Stop sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="719"/>
+        <source>Sync your settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="723"/>
+        <source>Your account:%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="724"/>
+        <source>Auto sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="314"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="412"/>
-        <source>Waiting for initialization...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="388"/>
-        <source>Logout failed,please check your connection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="692"/>
-        <source>Stop sync</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="717"/>
-        <source>Sync your settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="721"/>
-        <source>Your account:%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="722"/>
-        <source>Auto sync</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="312"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="410"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1064"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1093"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1116"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1137"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1066"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1095"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1118"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1139"/>
         <source>The latest time sync is: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="318"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="630"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="639"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="670"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="677"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="825"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="853"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="867"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="945"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="965"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1003"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1228"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="320"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="632"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="641"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="672"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="679"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="827"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="855"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="869"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="947"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="967"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1005"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1230"/>
         <source>Network can not reach!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="534"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="536"/>
         <source>Waitting for sync!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="702"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="704"/>
         <source>Synchronize your personalized settings and data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="581"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="583"/>
         <source>The Cloud Account Service version is out of date!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="780"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="782"/>
         <source>KylinID open error!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="873"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="875"/>
         <source>Unauthorized device or OSS falied.
 Please retry or relogin!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="880"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="882"/>
         <source>Authorization failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="986"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="988"/>
         <source>This operation may cover your settings!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1193"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1195"/>
         <source>%1,</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1218"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1220"/>
         <source>Cloud ID desktop message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="300"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="302"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.h" line="93"/>
         <source>Disconnected</source>
         <translation type="unfinished"></translation>
@@ -3293,21 +3293,21 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="757"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="175"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="177"/>
         <source>Acceleration</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/mouse/Acceleration</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="822"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="177"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="179"/>
         <source>Visibility</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/mouse/Visibility</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="900"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="179"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="181"/>
         <source>Pointer size</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/mouse/Pointer size</extra-contents_path>
@@ -3319,7 +3319,7 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1017"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="181"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="183"/>
         <source>Enable flashing on text area</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/mouse/Enable flashing on text area</extra-contents_path>
@@ -3341,7 +3341,7 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/mouse/mousecontrol.ui" line="1261"/>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="183"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="185"/>
         <source>Cursor speed</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/mouse/Cursor speed</extra-contents_path>
@@ -3352,27 +3352,27 @@ Please retry or relogin!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="199"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="207"/>
         <source>Lefthand</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="200"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="208"/>
         <source>Righthand</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="216"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="224"/>
         <source>Default(Recommended)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="217"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="225"/>
         <source>Medium</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="218"/>
+        <location filename="../../../plugins/devices/mouse/mousecontrol.cpp" line="226"/>
         <source>Large</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3535,7 +3535,7 @@ Please retry or relogin!</source>
         <extra-contents_path>/display/screen zoom</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="273"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="268"/>
         <source>%1 Hz</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5554,7 +5554,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../ukccabout.cpp" line="60"/>
         <location filename="../../ukccabout.cpp" line="82"/>
-        <source>UKCC</source>
+        <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6122,82 +6122,82 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="478"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="482"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="478"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="482"/>
         <source>Some applications need to be logouted to take effect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="547"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="551"/>
         <source>unify output</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/display/unify output</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="551"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="555"/>
         <source>night mode</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/display/night mode</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="559"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="563"/>
         <source>Theme follow night mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="569"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="573"/>
         <source>Hint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="570"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="574"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display
 If something goes wrong, the settings will be restored after 9 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="574"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="578"/>
         <source>Save Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="575"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="579"/>
         <source>Restore Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="583"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="587"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display 
 If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="986"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="993"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1001"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1008"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="986"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1001"/>
         <source>please insure at least one output!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="993"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1008"/>
         <source>Open time should be earlier than close time!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1003"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1018"/>
         <source>Warnning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1004"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1019"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation type="unfinished"></translation>
@@ -6211,33 +6211,33 @@ Common reasons are that the overall screen size is too big, or you enabled more 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="103"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="106"/>
         <source>Shortcut name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="152"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="164"/>
         <source>Shortcut exec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="203"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="230"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="287"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="326"/>
         <source>Invalid executable, please re-enter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="364"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="403"/>
         <location filename="../../../plugins/devices/shortcut/addshortcutdialog.cpp" line="158"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="383"/>
+        <location filename="../../../plugins/devices/shortcut/addshortcutdialog.ui" line="428"/>
         <source>Certain</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6265,37 +6265,37 @@ Common reasons are that the overall screen size is too big, or you enabled more 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="100"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="112"/>
         <source>current date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="185"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="197"/>
         <source>time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="306"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="318"/>
         <source>year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="383"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="395"/>
         <source>month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="457"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="469"/>
         <source>day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="559"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="571"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="578"/>
+        <location filename="../../../plugins/time-language/datetime/changtime.ui" line="590"/>
         <source>confirm</source>
         <translation type="unfinished"></translation>
     </message>

@@ -7,19 +7,25 @@
     <x>0</x>
     <y>0</y>
     <width>450</width>
-    <height>660</height>
+    <height>545</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
     <width>450</width>
-    <height>660</height>
+    <height>500</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>637</width>
-    <height>749</height>
+    <height>545</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -43,6 +49,12 @@
    </property>
    <item>
     <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
@@ -54,16 +66,16 @@
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>32</number>
+       <number>42</number>
       </property>
       <property name="topMargin">
-       <number>32</number>
+       <number>36</number>
       </property>
       <property name="rightMargin">
-       <number>32</number>
+       <number>42</number>
       </property>
       <property name="bottomMargin">
-       <number>24</number>
+       <number>42</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -667,7 +679,7 @@ change system settings</string>
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>40</height>
+            <height>30</height>
            </size>
           </property>
          </spacer>

@@ -237,6 +237,7 @@ KScreen::OutputPtr OutputConfig::output() const
 
 void OutputConfig::slotResolutionChanged(const QSize &size)
 {
+    qDebug() << Q_FUNC_INFO << size;
     // Ignore disconnected outputs
     if (!size.isValid()) {
         return;
@@ -248,12 +249,7 @@ void OutputConfig::slotResolutionChanged(const QSize &size)
     QList<KScreen::ModePtr> modes;
     Q_FOREACH (const KScreen::ModePtr &mode, mOutput->modes()) {
         if (mode->size() == size) {
-            if (mIsFirstLoad && mOutput->currentModeId() == mode->id()) {
-                selectedMode = mode;
-                mIsFirstLoad = false;
-            } else if (!mIsFirstLoad){
-                selectedMode = mode;
-            }
+            selectedMode = mode;
             modes << mode;
         }
     }
@@ -283,7 +279,6 @@ void OutputConfig::slotResolutionChanged(const QSize &size)
     }
 
     if (-1 == mRefreshRate->currentIndex() || 0 == mRefreshRate->currentIndex()) {
-        qDebug() << Q_FUNC_INFO;
         modeID = mRefreshRate->itemData(1).toString();
     }
 

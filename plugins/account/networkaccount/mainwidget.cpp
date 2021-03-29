@@ -68,8 +68,8 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_szUuid = QUuid::createUuid().toString();
     m_bTokenValid = false;
 
-
-    if (isNetWorkOnline() == false) {
+    m_bIsOnline = isNetWorkOnline();
+    if (m_bIsOnline == false) {
         if (m_autoSyn->get_swbtn()->get_active() == true) {
             m_autoSyn->get_swbtn()->set_active(false);
             for (int i = 0;i < m_szItemlist.size(); i ++ ) {
@@ -106,6 +106,7 @@ void MainWidget::checkNetWork(QVariantMap map) {
         return ;
     }
     if (ret.toInt() != 1 && ret.toInt() != 3 ) {
+        m_bIsOnline = true;
         if (m_autoSyn->get_swbtn()->get_active() == false) {
             m_autoSyn->get_swbtn()->set_active(true);
             for (int i = 0;i < m_szItemlist.size(); i ++ ) {
@@ -121,6 +122,7 @@ void MainWidget::checkNetWork(QVariantMap map) {
 
         return ;
     }
+    m_bIsOnline = false;
     if (m_autoSyn->get_swbtn()->get_active() == true) {
         m_autoSyn->get_swbtn()->set_active(false);
         for (int i = 0;i < m_szItemlist.size(); i ++ ) {
@@ -677,7 +679,7 @@ void MainWidget::initSignalSlots() {
                    showDesktopNotify(tr("Network can not reach!"));
                    return ;
                }
-               emit doman();
+               emit doquerry(m_szCode);
            }
        } else {
            m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
@@ -941,7 +943,7 @@ bool MainWidget::judge_item(const QString &enable,const int &cur) const {
 
 /* 滑动按钮点击后改变功能状态 */
 void MainWidget::handle_write(const int &on,const int &id) {
-    if (isNetWorkOnline() == false) {
+    if (m_bIsOnline == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -961,7 +963,7 @@ void MainWidget::on_switch_button(int on,int id) {
     if (m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
-    if (isNetWorkOnline() == false) {
+    if (m_bIsOnline == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -999,7 +1001,7 @@ void MainWidget::on_auto_syn(int on, int id) {
         m_itemList->get_item(i)->set_active(m_bAutoSyn);
     }
 
-    if (isNetWorkOnline() == false) {
+    if (m_bIsOnline == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }

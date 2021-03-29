@@ -74,10 +74,13 @@ class QMLScreen : public QQuickItem
 
     void setScreenPos(QMLOutput *output);
 
+    void setScreenCenterPos();
   public Q_SLOTS:
     void setActiveOutput() {
         setActiveOutput(qobject_cast<QMLOutput*>(sender()));
     }
+
+    void setActiveOutputByCombox(int screenId);
     void setScreenPos() {
         setScreenPos(qobject_cast<QMLOutput*>(sender()));
     }
@@ -112,7 +115,7 @@ class QMLScreen : public QQuickItem
     int m_connectedOutputsCount = 0;
     int m_enabledOutputsCount = 0;
 
-    float m_outputScale = 1.0 / 12.0;//缩放比例
+    float m_outputScale = 1.0 / 14.0;//缩放比例
 
     QMLOutput *m_leftmost = nullptr;
     QMLOutput *m_topmost = nullptr;

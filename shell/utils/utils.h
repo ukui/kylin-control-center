@@ -29,6 +29,9 @@
 #include <QCommandLineParser>
 #include <QDesktopWidget>
 #include <QVariantMap>
+#include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusReply>
+#include <QtDBus/QDBusConnection>
 
 namespace Utils
 {    
@@ -37,6 +40,7 @@ namespace Utils
     QVariantMap getModuleHideStatus();
     QString getCpuInfo();
     bool isExistEffect();
+    void setKwinMouseSize(int size);
 
 }
 #endif // UTILS_H

@@ -171,6 +171,8 @@ void MouseControl::initSearchText() {
     ui->delayLabel->setText(tr("Doubleclick  delay"));
     //~ contents_path /mouse/Speed
     ui->speedLabel->setText(tr("Speed"));
+    ui->label_2->setMinimumWidth(50);
+    ui->label_3->setMinimumWidth(50);
     //~ contents_path /mouse/Acceleration
     ui->accelLabel->setText(tr("Acceleration"));
     //~ contents_path /mouse/Visibility
@@ -181,6 +183,12 @@ void MouseControl::initSearchText() {
     ui->flashLabel->setText(tr("Enable flashing on text area"));
     //~ contents_path /mouse/Cursor speed
     ui->cursorspdLabel->setText(tr("Cursor speed"));
+    ui->label_17->setMinimumWidth(50);
+    ui->label_18->setMinimumWidth(50);
+    ui->label_6->setMinimumWidth(50);
+    ui->label_7->setMinimumWidth(50);
+    ui->label_21->setMinimumWidth(50);
+    ui->label_22->setMinimumWidth(50);
 }
 
 void MouseControl::initTitleLabel() {
@@ -411,14 +419,10 @@ void MouseControl::mouseSizeChange() {
     delete mouseSettings;
     mouseSettings = nullptr;
 
-#if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
-
-#else
     QDBusMessage message = QDBusMessage::createSignal("/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange");
     QList<QVariant> args;
     args.append(5);
     args.append(0);
     message.setArguments(args);
     QDBusConnection::sessionBus().send(message);
-#endif
 }

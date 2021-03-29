@@ -235,7 +235,7 @@ Login through Kylin ID login Center.
 #### Tips
 1) When opening the cloud account first time, it will synchronize once by default. If the cloud exists configuration files, it will download them and sync to local; Otherwise, the local configuration files will be uploaded to the cloud.
 
-2) After login, if the automatic synchronization is opened, the cloud will synchronize the local configurations every 2 minutes. And they can be used by different machines, different users.
+2) After login, if the automatic synchronization is opened, the cloud will synchronize the local configurations every 5 minutes. And they can be used by different machines, different users.
 
 3) If the automatic synchronization is closed, all the cloud configurations will keep the last upload status.
 

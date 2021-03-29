@@ -60,7 +60,7 @@ UkmediaVolumeSlider::UkmediaVolumeSlider(QWidget *parent,bool needTip)
         m_pTiplabel = new UkuiMediaSliderTipLabel();
         m_pTiplabel->setWindowFlags(Qt::ToolTip);
     //    qApp->installEventFilter(new AppEventFilter(this));
-        m_pTiplabel->setFixedSize(52,30);
+        //m_pTiplabel->setFixedSize(52,30);
         m_pTiplabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     }
 }
@@ -112,7 +112,8 @@ void UkmediaVolumeSlider::paintEvent(QPaintEvent *e)
         QString percent;
         percent = QString::number(this->value());
         percent.append("%");
-        m_pTiplabel->setText(percent);
+        m_pTiplabel->setText(" "+percent+" ");
+        m_pTiplabel->adjustSize();
         m_pTiplabel->move(gPos.x()-(m_pTiplabel->width()/2)+9,gPos.y()-m_pTiplabel->height()-1);
     }
 

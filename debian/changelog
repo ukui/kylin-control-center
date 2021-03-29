@@ -1,3 +1,35 @@
+ukui-control-center (3.0.1-1-52) v101; urgency=medium
+
+  * 解决bug#43058显示预览没有切换
+  * 解决bug#44293mode id为空导致的闪退出问题
+  * 解决bug#44472屏幕位置错误导致任务错位问题
+
+ -- zhoubin <zhoubin@kylinos.cn>  Wed, 24 Mar 2021 19:01:31 +0800
+
+ukui-control-center (3.0.1-1-51.3) v101; urgency=medium
+
+  * 版权符号错误
+
+ -- zhoubin <zhoubin@kylinos.cn>  Tue, 23 Mar 2021 17:15:11 +0800
+
+ukui-control-center (3.0.1-1-51.2) v101; urgency=medium
+
+  * 版本英文描述更改判断
+
+ -- zhoubin <zhoubin@kylinos.cn>  Tue, 23 Mar 2021 16:24:48 +0800
+
+ukui-control-center (3.0.1-1-51.1) v101; urgency=medium
+
+  * 版本描述增加一个空格
+
+ -- zhoubin <zhoubin@kylinos.cn>  Tue, 23 Mar 2021 13:56:49 +0800
+
+ukui-control-center (3.0.1-1-51) v101; urgency=medium
+
+  * 更新版权信息
+
+ -- zhoubin <zhoubin@kylinos.cn>  Tue, 23 Mar 2021 11:18:59 +0800
+
 ukui-control-center (3.0.1-1-50) v101; urgency=medium
 
   * 解决bug#43396去掉夜间模式，但搜索框中仍然可以搜索到

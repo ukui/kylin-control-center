@@ -57,7 +57,7 @@ void UkccAbout::initUI() {
     mUkccIcon  = new QLabel();
     mUkccIcon->setPixmap(titleIcon.pixmap(titleIcon.actualSize(QSize(24, 24))));
 
-    mUkccTitle = new QLabel(tr("UKCC"));
+    mUkccTitle = new QLabel(tr("Settings"));
 
     mUkccCloseBtn = new QPushButton();
     mUkccCloseBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
@@ -79,7 +79,7 @@ void UkccAbout::initUI() {
     mCenterIconLayout->addWidget(mUkccCenterIcon);
     mCenterIconLayout->addStretch();
 
-    mUkccCenterTitle = new QLabel(tr("UKCC"));
+    mUkccCenterTitle = new QLabel(tr("Settings"));
     mUkccCenterTitle->setFixedHeight(28);
 
     mCenterTitleLayout->addStretch();

@@ -40,7 +40,10 @@ void ResolutionSlider::init()
     this->setMaximumSize(1677215, 30);
     mModes.clear();
     Q_FOREACH (const KScreen::ModePtr &mode, mOutput->modes()) {
-        if (mModes.contains(mode->size())) {
+        if (mModes.contains(mode->size())
+                || mode->size().width() * mode->size().height() < 1024 * 768
+                || mExcludeModes.contains(mode->size())
+                || mode->size().width() < 1024 ) {
             continue;
         }
         mModes << mode->size();
@@ -72,12 +75,6 @@ void ResolutionSlider::init()
         int currentModeIndex = -1;
         int preferredModeIndex = -1;
         Q_FOREACH (const QSize &size, mModes) {
-            if (size.width() * size.height() < 1024 * 768
-                    || mExcludeModes.contains(size)
-                    || size.width() < 1024) {
-                continue;
-            }
-
             mComboBox->addItem(Utils::sizeToString(size));
 
             if (mOutput->currentMode() && (mOutput->currentMode()->size() == size)) {

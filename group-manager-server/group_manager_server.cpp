@@ -197,6 +197,7 @@ bool group_manager_server::addUserToGroup(QString groupName, QString userName)
         args.append(groupName);
     } else {
         command = usermod;
+        args.append("-a");
         args.append("-G");
         args.append(groupName);
         args.append(userName);

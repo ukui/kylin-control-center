@@ -19,9 +19,6 @@
  */
 #include "utils.h"
 
-#include <QtDBus/QDBusInterface>
-#include <QtDBus/QDBusReply>
-#include <QtDBus/QDBusConnection>
 #include <QDebug>
 #include <QDir>
 #include <QSettings>
@@ -223,4 +220,24 @@ bool Utils::isExistEffect() {
         kwinSettings.endGroup();
     }
     return true;
+}
+
+void Utils::setKwinMouseSize(int size) {
+
+    QString filename = QDir::homePath() + "/.config/kcminputrc";
+    QSettings *mouseSettings = new QSettings(filename, QSettings::IniFormat);
+
+    mouseSettings->beginGroup("Mouse");
+    mouseSettings->setValue("cursorSize", size);
+    mouseSettings->endGroup();
+
+    delete mouseSettings;
+    mouseSettings = nullptr;
+
+    QDBusMessage message = QDBusMessage::createSignal("/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange");
+    QList<QVariant> args;
+    args.append(5);
+    args.append(0);
+    message.setArguments(args);
+    QDBusConnection::sessionBus().send(message);
 }

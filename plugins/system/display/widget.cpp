@@ -208,6 +208,10 @@ void Widget::setConfig(const KScreen::ConfigPtr &config) {
     }
     mFirstLoad = false;
     setBrightnesSldierValue();
+
+    if (mIsWayland) {
+        mScreenId = getPrimaryScreenID();
+    }
 }
 
 KScreen::ConfigPtr Widget::currentConfig() const {
@@ -501,6 +505,7 @@ void Widget::writeScale(int scale) {
             scaleGSettings->set(SCALE_KEY, scale);
         }
         cursorSettings.set(CURSOR_SIZE_KEY, cursize);
+        Utils::setKwinMouseSize(cursize);
     }
 }
 
@@ -522,7 +527,11 @@ void Widget::initGSettings() {
         mPowerKeys = mPowerGSettings->keys();
         connect(mPowerGSettings, &QGSettings::changed, this, [=](QString key) {
             if ("brightnessAc" == key || "brightnessBat" == key) {
-                ui->brightnessSlider->setValue(mPowerGSettings->get(key).toInt());
+                int value = mPowerGSettings->get(key).toInt();
+                if (mIsWayland) {
+                    value = (value == 0 ? 0 : value / 10);
+                }
+                ui->brightnessSlider->setValue(value);
             }
         });
     }
@@ -662,6 +671,15 @@ QString Widget::getMonitorType() {
     return type;
 }
 
+bool Widget::isLaptopScreen() {
+    int index  = ui->primaryCombo->currentIndex();
+    KScreen::OutputPtr output = mConfig->output(ui->primaryCombo->itemData(index).toInt());
+    if (output->type() == KScreen::Output::Type::Panel) {
+        return true;
+    }
+    return false;
+}
+
 int Widget::getDDCBrighthess() {
     QString type = getMonitorType();
     QDBusInterface ukccIfc("com.control.center.qt.systemdbus",
@@ -676,6 +694,17 @@ int Widget::getDDCBrighthess() {
         return reply.value();
     }
     return 0;
+}
+
+int Widget::getPrimaryScreenID() {
+    QString primaryScreen = getPrimaryWaylandScreen();
+    int screenId;
+    for (const KScreen::OutputPtr &output : mConfig->outputs()) {
+        if (!output->name().compare(primaryScreen, Qt::CaseInsensitive)) {
+            screenId = output->id();
+        }
+    }
+    return screenId;
 }
 
 
@@ -744,9 +773,12 @@ void Widget::outputAdded(const KScreen::OutputPtr &output) {
             }
         }
     }
+
+    ui->unionframe->setVisible(mConfig->connectedOutputs().count() > 1);
 }
 
 void Widget::outputRemoved(int outputId) {
+
     KScreen::OutputPtr output = mConfig->output(outputId);
     if (!output.isNull()) {
         output->disconnect(this);
@@ -777,6 +809,7 @@ void Widget::outputRemoved(int outputId) {
             qmlOutput->blockSignals(false);
         }
     }
+    ui->unionframe->setVisible(mConfig->connectedOutputs().count() > 1);
 }
 
 void Widget::primaryOutputSelected(int index) {
@@ -922,15 +955,13 @@ void Widget::isWayland() {
 
 void Widget::setDDCBrighthessSlot(int brightnessValue) {
 
-    if (mIsWayland && !mOnBattery) {
-        QString type = getMonitorType();
-        QDBusInterface ukccIfc("com.control.center.qt.systemdbus",
-                               "/",
-                               "com.control.center.interface",
-                               QDBusConnection::systemBus());
+    QString type = getMonitorType();
+    QDBusInterface ukccIfc("com.control.center.qt.systemdbus",
+                           "/",
+                           "com.control.center.interface",
+                           QDBusConnection::systemBus());
 
-        ukccIfc.call("setDDCBrightness", QString::number(brightnessValue), type);
-    }
+    ukccIfc.call("setDDCBrightness", QString::number(brightnessValue), type);
 }
 
 void Widget::shortAddBrightnessSlot() {
@@ -1020,14 +1051,30 @@ void Widget::save() {
         }
     );
 
-    if (mIsWayland && -1 != mScreenId) {
-        config->output(mScreenId)->setPrimary(true);
-        callMethod(config->primaryOutput()->geometry(), config->primaryOutput()->name());
+    int enableScreenCount = 0;
+    KScreen::OutputPtr enableOutput;
+    for (const KScreen::OutputPtr &output : mConfig->outputs()) {
+        if (output->isEnabled()) {
+            enableOutput = output;
+            enableScreenCount++;
+        }
     }
+
+    if (mIsWayland && -1 != mScreenId) {
+        if (enableScreenCount >= 2) {
+            config->output(mScreenId)->setPrimary(true);
+            callMethod(config->primaryOutput()->geometry(), config->primaryOutput()->name());
+        } else {
+            enableOutput->setPrimary(true);
+            callMethod(enableOutput->geometry(), enableOutput->name());
+        }
+    }
+
     mScreen->updateOutputsPlacement();
 
     if (isRestoreConfig()) {
         if (mIsWayland && -1 != mScreenId) {
+            config->output(mScreenId)->setPrimary(true);
             callMethod(mPrevConfig->primaryOutput()->geometry(), config->primaryOutput()->name());
         }
         auto *op = new KScreen::SetConfigOperation(mPrevConfig);
@@ -1250,19 +1297,20 @@ void Widget::mainScreenButtonSelect(int index) {
 
     // 设置是否勾选
     mCloseScreenButton->setEnabled(true);
-    ui->showMonitorframe->setVisible(connectCount > 1 ? true : false);
+    ui->showMonitorframe->setVisible(connectCount > 1);
 
     // 初始化时不要发射信号
     const bool blockded = mCloseScreenButton->blockSignals(true);
     mCloseScreenButton->setChecked(newPrimary->isEnabled());
     mCloseScreenButton->blockSignals(blockded);
     mControlPanel->activateOutput(newPrimary);
+
+    mScreen->setActiveOutputByCombox(newPrimary->id());
 }
 
 
 // 设置主屏按钮
 void Widget::primaryButtonEnable(bool status) {
-
 
     Q_UNUSED(status);
     if (!mConfig) {
@@ -1332,9 +1380,6 @@ void Widget::initConnection() {
     //是否禁用主显示器确认按钮
     connect(ui->primaryCombo, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this, &Widget::mainScreenButtonSelect);
-    connect(ui->primaryCombo, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this, &Widget::mainScreenButtonSelect);
-
 
     //主屏确认按钮
     connect(ui->mainScreenButton, SIGNAL(clicked(bool)), this, SLOT(primaryButtonEnable(bool)));
@@ -1387,11 +1432,10 @@ void Widget::setBrightnessScreen(int value) {
 
 void Widget::setDDCBrightness() {
     int value = ui->brightnessSlider->value() * 10;
-    qDebug() << Q_FUNC_INFO << "Set brightness:" << value;
-    if (mIsWayland && !mIsBattery) {
+    if (!isLaptopScreen()) {
         setDDCBrighthessSlot(value);
     } else {
-        mPowerGSettings->set(POWER_KEY, value);
+        setBrightnessScreen(value);
     }
 }
 

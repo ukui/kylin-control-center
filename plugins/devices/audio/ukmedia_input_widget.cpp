@@ -71,7 +71,7 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     //~ contents_path /audio/Input Device
     m_pInputDeviceLabel = new QLabel(tr("Input Device:"),m_pInputWidget);
     m_pInputDeviceCombobox = new QComboBox(m_pInputDeviceWidget);
-//    m_pInputDeviceCombobox->hide();
+    m_pInputDeviceCombobox->hide();
 
     //~ contents_path /audio/Volume
     m_pIpVolumeLabel = new QLabel(tr("Volume"),m_pVolumeWidget);
@@ -109,16 +109,16 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pIpVolumeLabel->setFixedSize(150,32);
     m_pInputIconBtn->setFixedSize(24,24);
     m_pIpVolumeSlider->setFixedHeight(20);
-    m_pIpVolumePercentLabel->setFixedSize(40,24);
+    m_pIpVolumePercentLabel->setFixedSize(55,24);
     m_pMasterLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     m_pMasterLayout->addWidget(m_pIpVolumeLabel);
     m_pMasterLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     m_pMasterLayout->addWidget(m_pInputIconBtn);
     m_pMasterLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     m_pMasterLayout->addWidget(m_pIpVolumeSlider);
-    m_pMasterLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    m_pMasterLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Maximum));
     m_pMasterLayout->addWidget(m_pIpVolumePercentLabel);
-    m_pMasterLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    m_pMasterLayout->addItem(new QSpacerItem(10,20,QSizePolicy::Maximum));
     m_pMasterLayout->setSpacing(0);
     m_pVolumeWidget->setLayout(m_pMasterLayout);
     m_pVolumeWidget->layout()->setContentsMargins(0,0,0,0);

@@ -568,7 +568,7 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
 
 void BlueToothMain::serviceDiscovered(BluezQt::DevicePtr device)
 {
-    if(device->type() == BluezQt::Device::Uncategorized){
+    if(device->uuids().size() == 0 || device->name().split("-").length() == 6){
         return;
     }
     if(Discovery_device_address.contains(device->address())){
@@ -591,7 +591,7 @@ void BlueToothMain::serviceDiscovered(BluezQt::DevicePtr device)
 
 void BlueToothMain::serviceDiscoveredChange(BluezQt::DevicePtr device)
 {
-    if(device->type() == BluezQt::Device::Uncategorized){
+    if(device->uuids().size() == 0 || device->name().split("-").length() == 6){
         return;
     }
     if(device->isPaired() || device->isConnected()) {

@@ -34,7 +34,6 @@ AudioSlider::~AudioSlider()
 UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
 {
 //    QFILEDEVICE_H
-
     m_pOutputListWidget = new QListWidget(this);
     m_pOutputListWidget->setFixedHeight(250);
 
@@ -131,16 +130,17 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pOpVolumeSlider->setRange(0,100);
     m_pOutputIconBtn->setFocusPolicy(Qt::NoFocus);
     //输出设备添加布局
+//    QHBoxLayout *noOutputDeviceLayout = new QHBoxLayout();
+//    noOutputDeviceLayout->addWidget(m_pNoAvailableOutputLabel);
+//    m_pOutputDeviceWidget->setLayout(noOutputDeviceLayout);
+
     QVBoxLayout *outputDeviceLayout = new QVBoxLayout();
-
-
 //    m_pOutputDeviceLabel->setFixedSize(115,24);
     m_pOutputDeviceLabel->setFixedSize(150,32);
     m_pOutputDeviceCombobox->setMinimumSize(50,32);
     m_pOutputDeviceCombobox->setMaximumSize(900,32);
     outputDeviceLayout->addWidget(m_pOutputDeviceLabel);
     outputDeviceLayout->addWidget(m_pOutputListWidget);
-
 
 //    outputDeviceLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
 //    outputDeviceLayout->addWidget(m_pOutputDeviceLabel);
@@ -150,12 +150,13 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
 //    outputDeviceLayout->setSpacing(0);
     m_pOutputDeviceWidget->setLayout(outputDeviceLayout);
     outputDeviceLayout->layout()->setContentsMargins(16,14,16,14);
+
     //主音量添加布局
     QHBoxLayout *masterLayout = new QHBoxLayout(m_pMasterVolumeWidget);
     m_pOpVolumeLabel->setFixedSize(150,32);
     m_pOutputIconBtn->setFixedSize(24,24);
     m_pOpVolumeSlider->setFixedHeight(20);
-    m_pOpVolumePercentLabel->setFixedSize(40,24);
+    m_pOpVolumePercentLabel->setFixedSize(55,24);
     masterLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     masterLayout->addWidget(m_pOpVolumeLabel);
     masterLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
@@ -164,7 +165,7 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     masterLayout->addWidget(m_pOpVolumeSlider);
     masterLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     masterLayout->addWidget(m_pOpVolumePercentLabel);
-    masterLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    masterLayout->addItem(new QSpacerItem(10,20,QSizePolicy::Fixed));
     masterLayout->setSpacing(0);
     m_pMasterVolumeWidget->setLayout(masterLayout);
     m_pMasterVolumeWidget->layout()->setContentsMargins(0,0,0,0);
@@ -173,7 +174,7 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pOpBalanceLabel->setFixedSize(150,32);
     m_pLeftBalanceLabel->setFixedSize(32,24);
     m_pOpBalanceSlider->setFixedHeight(20);
-    m_pRightBalanceLabel->setFixedSize(40,24);
+    m_pRightBalanceLabel->setFixedSize(55,24);
     soundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     soundLayout->addWidget(m_pOpBalanceLabel);
     soundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
@@ -182,7 +183,7 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     soundLayout->addWidget(m_pOpBalanceSlider);
     soundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
     soundLayout->addWidget(m_pRightBalanceLabel);
-    soundLayout->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    soundLayout->addItem(new QSpacerItem(10,20,QSizePolicy::Fixed));
     soundLayout->setSpacing(0);
     m_pChannelBalanceWidget->setLayout(soundLayout);
     m_pChannelBalanceWidget->layout()->setContentsMargins(0,0,0,0);
