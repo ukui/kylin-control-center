@@ -12,6 +12,7 @@ DESTDIR = ../..
 target.path = $${PLUGIN_INSTALL_DIRS}
 
 include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
+include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 
 INCLUDEPATH += \
     $$PROJECT_COMPONENTSOURCE \
@@ -29,61 +30,37 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    areacodelineedit.cpp \
-    bindphonedialog.cpp \
     blueeffect.cpp \
-    boxitem.cpp \
-    combobox.cpp \
     configfile.cpp \
     dbusutils.cpp \
-    editpushbutton.cpp \
     frameitem.cpp \
-    infolabel.cpp \
     itemlist.cpp \
     logindialog.cpp \
     maindialog.cpp \
     mainwidget.cpp \
     mcodewidget.cpp \
     networkaccount.cpp \
-    passdialog.cpp \
     passwordlineedit.cpp \
-    popupwidget.cpp \
-    regdialog.cpp \
-    successdiaolog.cpp \
     svghandler.cpp \
-    switchbutton.cpp \
     syncdialog.cpp \
     tips.cpp \
-    tooltips.cpp \
     visblebutton.cpp
 
 HEADERS += \
-    areacodelineedit.h \
-    bindphonedialog.h \
     blueeffect.h \
-    boxitem.h \
-    combobox.h \
     configfile.h \
     dbusutils.h \
-    editpushbutton.h \
     frameitem.h \
-    infolabel.h \
     itemlist.h \
     logindialog.h \
     maindialog.h \
     mainwidget.h \
     mcodewidget.h \
     networkaccount.h \
-    passdialog.h \
     passwordlineedit.h \
-    popupwidget.h \
-    regdialog.h \
-    successdiaolog.h \
     svghandler.h \
-    switchbutton.h \
     syncdialog.h \
     tips.h \
-    tooltips.h \
     visblebutton.h
 
 FORMS += \

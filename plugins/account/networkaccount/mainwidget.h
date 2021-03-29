@@ -28,7 +28,6 @@
 #include "frameitem.h"
 #include <QGraphicsDropShadowEffect>
 #include <QColor>
-#include "editpushbutton.h"
 #include "maindialog.h"
 #include <QMessageBox>
 #include "syncdialog.h"
@@ -37,7 +36,6 @@
 #include <QSvgWidget>
 #include "dbusutils.h"
 #include <QtDBus/QtDBus>
-#include "tooltips.h"
 #include <QDir>
 #include "configfile.h"
 #include "svghandler.h"
@@ -61,11 +59,9 @@ public:
     void            dbusInterface();
     void            handle_conf();
     bool            judge_item(const QString &enable,const int &cur) const;
-    void            handle_write(const int &on,const int &id);
     void            showDesktopNotify(const QString &message);
     bool            isNetWorkOnline();
 protected:
-    bool eventFilter(QObject *watched, QEvent *event);
 private:
     ItemList       *m_itemList;
     FrameItem    *m_autoSyn;
@@ -107,10 +103,7 @@ private:
     QString             m_szUuid;
     QFileSystemWatcher m_fsWatcher;
     SVGHandler *m_svgHandler;
-    Tooltips       *m_syncTooltips;
-    QLabel          *m_syncTipsText;
     QHBoxLayout     *m_animateLayout;
-    QHBoxLayout     *m_tipsLayout;
     QMap<QString,QString> m_itemMap;
     QString         m_key;
     QStringList     m_keyInfoList;
@@ -119,7 +112,7 @@ private:
     bool            m_bIsStopped = false;
     QLabel          *m_syncTimeLabel;
     int             m_indexChanged;
-    int             m_statusChanged;
+    bool             m_statusChanged;
     SyncDialog      *m_syncDialog;
     bool            bIsLogging = false;
     QSettings         *m_pSettings;
@@ -132,8 +125,7 @@ public slots:
     void            open_cloud();
     void            finished_load(int ret,QString m_szUuid);
     void            finished_conf(int ret);
-    void            on_switch_button(int on,int id);
-    void            on_auto_syn(int on,int id);
+    void            on_auto_syn(bool checked);
     void            download_files();
     void            push_files();
     void            download_over();
@@ -144,22 +136,24 @@ public slots:
     void            loginSuccess(int ret);
     void            checkNetWork(QVariantMap map);
 signals:
-    void dooss(QString m_szUuid);
+    void dooss(const QString &m_szUuid);
     void doman();
     void dologout();
     void doconf();
-    void dochange(QString name,int flag);
+    void dochange(const QString &name,bool checked);
     void docheck();
-    void dosingle(QString key);
+    void dosingle(const QString &key);
     void doselect(QStringList keyList);
     void closedialog();
     void isRunning();
     void oldVersion();
-    void doquerry(QString name);
-    void dosend(QString info);
+    void doquerry(const QString &name);
+    void dosend(const QString &info);
 
     void kylinIdLogOut();
     void kylinIdCheck();
+
+    void isSync(bool checked);
 };
 
 #endif // CONFIG_LIST_WIDGET_H
