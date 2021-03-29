@@ -32,7 +32,6 @@
 #include <QDebug>
 #include <QStackedWidget>
 #include <QListWidget>
-#include "areacodelineedit.h"
 #include "mcodewidget.h"
 #include "passwordlineedit.h"
 #include "tips.h"

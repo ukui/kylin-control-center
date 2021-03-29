@@ -66,7 +66,9 @@ FrameItem::FrameItem(QWidget *parent) :QFrame(parent)
     m_stackedWidget->setFixedHeight(50);
     m_stackedWidget->adjustSize();
 
-
+    connect(m_switchBtn, &SwitchButton::checkedChanged,this, [=] (bool checked) {
+        emit itemChanged(m_itemName->text(),checked);
+    });
     connect(m_cTimer,&QTimer::timeout, [this] () {
         QPixmap pixmap = m_svgHandler->loadSvgColor(QString(":/new/image/loading1%1.svg").arg(m_cCnt),"black",16);
         m_run->setPixmap(pixmap);
@@ -137,9 +139,10 @@ void FrameItem::set_change(const int &status,const QString &code) {
 /* 让SwitchButton播放打开动画 */
 void FrameItem::make_itemon() {
     if (m_switchBtn != nullptr) {
-        if (m_switchBtn->get_swichbutton_val() != 1) {
-            m_switchBtn->set_swichbutton_val(1);
-            //switch_btn->update();
+        if (m_switchBtn->isChecked() != true) {
+            m_switchBtn->blockSignals(true);
+            m_switchBtn->setChecked(true);
+            m_switchBtn->blockSignals(false);
         }
     } else {
         qDebug() <<"switch button is null ptr";
@@ -154,9 +157,10 @@ FrameItem::~FrameItem() {
 /* 让SwitchButton播放关闭动画 */
 void FrameItem::make_itemoff() {
     if (m_switchBtn != nullptr) {
-        if (m_switchBtn->get_swichbutton_val() != 0) {
-            m_switchBtn->set_swichbutton_val(0);
-            //switch_btn->update();
+        if (m_switchBtn->isChecked() != false) {
+            m_switchBtn->blockSignals(true);
+            m_switchBtn->setChecked(false);
+            m_switchBtn->blockSignals(false);
         }
     } else {
         qDebug() <<"switch button is null ptr";
@@ -165,5 +169,5 @@ void FrameItem::make_itemoff() {
 
 /* 让列表的SwitchButton可用或者不可用，调用一次就是取反 */
 void FrameItem::set_active(const bool &ok) {
-    m_switchBtn->set_active(ok);
+    m_switchBtn->setDisabledFlag(!ok);
 }

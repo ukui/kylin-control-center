@@ -25,7 +25,7 @@
 #include <QDebug>
 #include <QLabel>
 #include <QHBoxLayout>
-#include "switchbutton.h"
+#include <SwitchButton/switchbutton.h>
 #include <QFrame>
 #include <QTimer>
 #include <QStackedWidget>
@@ -61,6 +61,7 @@ private:
     int             m_cCnt = 1;
     SVGHandler      *m_svgHandler;
 signals:
+    void itemChanged(const QString &name, bool checked);
 };
 
 #endif // NETWORK_ITEM_H

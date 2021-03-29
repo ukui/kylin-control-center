@@ -5,21 +5,17 @@
 #include <QWidget>
 #include <QLabel>
 #include "svghandler.h"
-#include "tooltips.h"
 
 class InfoLabel : public QLabel
 {
     Q_OBJECT
 public:
     explicit InfoLabel(QWidget *parent = nullptr);
-    void setTipText(const QString &text);
 
     void            leaveEvent(QEvent *e);
-    void enterEvent(QEvent *e);
+    void            enterEvent(QEvent *e);
 private:
     SVGHandler *m_svgHandler;
-    Tooltips *m_toolTips;
-    QLabel  *m_textLabel;
 signals:
 
 };
