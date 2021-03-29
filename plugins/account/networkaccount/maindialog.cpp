@@ -97,12 +97,12 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     m_delBtn->setGeometry(this->width() - 46,14,30,30);
 //    m_delBtn->setFocusPolicy(Qt::NoFocus);
 
-    m_submitBtn->setStyleSheet("QPushButton {background-color: #3D6BE5;border-radius: 4px;color:rgba(255,255,255,0.85);}"
-                                "QPushButton:hover {background-color: #415FC4;border-radius: 4px;position:relative;color:rgba(255,255,255,0.85);}"
-                                "QPushButton:click {background-color: #415FC4;border-radius: 4px;postion:realative;color:rgba(255,255,255,0.85);}");
+    m_submitBtn->setStyleSheet("QPushButton {background-color: #3790FA;border-radius: 4px;color:rgba(255,255,255,0.85);}"
+                                "QPushButton:hover {background-color: #40A9FB;border-radius: 4px;position:relative;color:rgba(255,255,255,0.85);}"
+                                "QPushButton:click {background-color: #40A9FB;border-radius: 4px;postion:realative;color:rgba(255,255,255,0.85);}");
     m_regBtn->setStyleSheet("QPushButton{background: transparent;border-radius: 4px;} "
-                                    "QPushButton:hover{background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}"
-                                    "QPushButton:click{background: transparent;border-radius: 4px;color:rgba(61,107,229,0.85);}");
+                                    "QPushButton:hover{background: transparent;border-radius: 4px;color:rgba(55,144,250,0.85);}"
+                                    "QPushButton:click{background: transparent;border-radius: 4px;color:rgba(55,144,250,0.85);}");
 
 //    m_delBtn->setFlat(true);
 //    QPixmap pixmap = m_svgHandler->loadSvg(":/new/image/delete.svg");
@@ -227,8 +227,13 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     //对话框模态处理
     //setWindowModality(Qt::ApplicationModal);
     //把对话框放置屏幕中央
-    QDesktopWidget* desktop = QApplication::desktop();
-    move((desktop->width() - this->width())/2, (desktop->height() - this->height())/2);
+    QDesktopWidget* m = QApplication::desktop();
+    QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
+    int desk_x = desk_rect.width();
+    int desk_y = desk_rect.height();
+    int x = this->width();
+    int y = this->height();
+    this->move(desk_x / 2 - x / 2 + desk_rect.left(), desk_y / 2 - y / 2 + desk_rect.top());
 
     //初始化一下验证码计时器激活时间
     timerout_num = 60;

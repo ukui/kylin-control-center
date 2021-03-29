@@ -26,7 +26,6 @@ ItemList::ItemList(QWidget *parent,int itemssize) : QWidget(parent) {
     for(int cur_ptr = 0; cur_ptr < m_cItemCnt; cur_ptr ++) {
         m_itemWidget[cur_ptr] = new FrameItem(this);
         m_itemWidget[cur_ptr]->set_itemname(m_szItemNameList[cur_ptr]);
-        m_itemWidget[cur_ptr]->get_swbtn()->set_id(cur_ptr);
         m_vboxLayout->addWidget(m_itemWidget[cur_ptr]);
     }
     //customize the script on/off area

@@ -32,7 +32,6 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include "passdialog.h"
 #include <QTimer>
 #include <QSizePolicy>
 #include "passwordlineedit.h"

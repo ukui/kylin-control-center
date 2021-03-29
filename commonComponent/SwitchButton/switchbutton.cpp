@@ -27,17 +27,11 @@ SwitchButton::SwitchButton(QWidget *parent) :
     QWidget(parent)
 {
 //    this->resize(QSize(52, 24));
-    this->setFixedSize(QSize(48, 24));
+    this->setFixedSize(QSize(50, 24));
 
     checked = false;
-
-    borderColorOff = QColor("#cccccc");
-
-    bgColorOff = QColor("#cccccc");
-    bgColorOn = QColor("#3D6BE5");
-
-    sliderColorOff = QColor("#ffffff");
-    sliderColorOn = QColor("#ffffff");
+    hover = false;
+    disabled = false;
 
     space = 4;
 //    rectRadius = 5;
@@ -49,7 +43,7 @@ SwitchButton::SwitchButton(QWidget *parent) :
     timer = new QTimer(this);
     timer->setInterval(5);
     connect(timer, SIGNAL(timeout()), this, SLOT(updatevalue()));
-    if(QGSettings::isSchemaInstalled(THEME_GTK_SCHEMA) && QGSettings::isSchemaInstalled(THEME_QT_SCHEMA)) {
+    if (QGSettings::isSchemaInstalled(THEME_GTK_SCHEMA) && QGSettings::isSchemaInstalled(THEME_QT_SCHEMA)) {
         QByteArray qtThemeID(THEME_QT_SCHEMA);
         QByteArray gtkThemeID(THEME_GTK_SCHEMA);
 
@@ -57,20 +51,12 @@ SwitchButton::SwitchButton(QWidget *parent) :
         m_qtThemeSetting = new QGSettings(qtThemeID,QByteArray(),this);
 
         QString style = m_qtThemeSetting->get("styleName").toString();
-        if(style == "ukui-dark" || style == "ukui-black") {
-            bgColorOff = QColor("#3d3d3f");
-        } else {
-            bgColorOff = QColor("#cccccc");
-        }
+        changeColor(style);
 
         connect(m_qtThemeSetting,&QGSettings::changed, [this] (const QString &key) {
             QString style = m_qtThemeSetting->get("styleName").toString();
-            if(key == "styleName") {
-                if(style == "ukui-dark" || style == "ukui-black") {
-                    bgColorOff = QColor("#3d3d3f");
-                } else {
-                    bgColorOff = QColor("#cccccc");
-                }
+            if (key == "styleName") {
+                changeColor(style);
             }
         });
     }
@@ -89,23 +75,57 @@ void SwitchButton::paintEvent(QPaintEvent *){
     drawSlider(&painter);
 }
 
+void SwitchButton::changeColor(const QString &themes) {
+    if (hover) {
+        return ;
+    }
+
+    if (themes == "ukui-dark" || themes == "ukui-black") {
+        bgColorOff = QColor(OFF_BG_DARK_COLOR);
+        bgColorOn = QColor(ON_BG_DARK_COLOR);
+        rectColorEnabled = QColor(ENABLE_RECT_DARK_COLOR);
+        rectColorDisabled = QColor(DISABLE_RECT_DARK_COLOR);
+        sliderColorDisabled = QColor(DISABLE_RECT_DARK_COLOR);
+        sliderColorEnabled = QColor(ENABLE_RECT_DARK_COLOR);
+        bgHoverOnColor = QColor(ON_HOVER_BG_DARK_COLOR);
+        bgHoverOffColor = QColor(OFF_HOVER_BG_DARK_COLOR);
+        bgColorDisabled = QColor(DISABLE_DARK_COLOR);
+    } else {
+        bgColorOff = QColor(OFF_BG_LIGHT_COLOR);
+        bgColorOn = QColor(ON_BG_LIGHT_COLOR);
+        rectColorEnabled = QColor(ENABLE_RECT_LIGHT_COLOR);
+        rectColorDisabled = QColor(DISABLE_RECT_LIGHT_COLOR);
+        sliderColorDisabled = QColor(DISABLE_RECT_LIGHT_COLOR);
+        sliderColorEnabled = QColor(ENABLE_RECT_LIGHT_COLOR);
+        bgHoverOnColor = QColor(ON_HOVER_BG_LIGHT_COLOR);
+        bgHoverOffColor = QColor(OFF_HOVER_BG_LIGHT_COLOR);
+        bgColorDisabled = QColor(DISABLE_LIGHT_COLOR);
+    }
+}
+
 void SwitchButton::drawBg(QPainter *painter){
     painter->save();
 //    painter->setPen(Qt::NoPen);
 
-    if (!checked){
+    if (disabled) {
         painter->setPen(Qt::NoPen);
-        painter->setBrush(bgColorOff);
-    }
-    else{
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(bgColorOn);
+        painter->setBrush(bgColorDisabled);
+    } else {
+        if (!checked){
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(bgColorOff);
+        }
+        else {
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(bgColorOn);
+        }
     }
     //circle out
 //    QRect rect(space, space, width() - space * 2, height() - space * 2);
 //    painter->drawRoundedRect(rect, rectRadius, rectRadius);
 
     //circle in
+
     QRect rect(0, 0, width(), height());
     //半径为高度的一半
     int radius = rect.height() / 2;
@@ -128,11 +148,11 @@ void SwitchButton::drawSlider(QPainter *painter){
     painter->save();
     painter->setPen(Qt::NoPen);
 
-    if (!checked){
-        painter->setBrush(sliderColorOff);
+    if (!disabled){
+        painter->setBrush(sliderColorEnabled);
     }
     else
-        painter->setBrush(sliderColorOn);
+        painter->setBrush(sliderColorDisabled);
     //circle out
 //    QRect rect(0, 0, width() - space, height() - space);
 //    int sliderwidth = rect.height();
@@ -140,6 +160,17 @@ void SwitchButton::drawSlider(QPainter *painter){
 //    painter->drawEllipse(sliderRect);
 
     //circle in
+
+    if (disabled) {
+        if (checked) {
+            QRect smallRect(8, height() / 2 - 2, 10 , 4);
+            painter->drawRoundedRect(smallRect,3,3);
+        } else {
+            QRect smallRect(width() - 8 * 2, height() / 2 - 2, 10 , 4);
+            painter->drawRoundedRect(smallRect,3,3);
+        }
+    }
+
     QRect rect(0, 0, width(), height());
     int sliderWidth = rect.height() - space * 2;
     QRect sliderRect(startX + space, space, sliderWidth, sliderWidth);
@@ -148,22 +179,32 @@ void SwitchButton::drawSlider(QPainter *painter){
     painter->restore();
 }
 
-void SwitchButton::mousePressEvent(QMouseEvent *){
-    checked = !checked;
-    emit checkedChanged(checked);
-
-    step = width() / 40;
-
-    if (checked){
-        //circle out
-//        endX = width() - height() + space;
-        //circle in
-        endX = width() - height();
+void SwitchButton::mousePressEvent(QMouseEvent *event){
+    if (timer->isActive()) {
+        return ;
     }
-    else{
+
+    if (!disabled){
+        checked = !checked;
+        emit checkedChanged(checked);
+
+        step = width() / 40;
+
+        if (checked){
+            //circle out
+    //        endX = width() - height() + space;
+            //circle in
+            endX = width() - height();
+        }
+        else {
+            endX = 0;
+        }
+        timer->start();
+    }
+    else {
         endX = 0;
     }
-    timer->start();
+    return QWidget::mousePressEvent(event);
 }
 
 void SwitchButton::resizeEvent(QResizeEvent *){
@@ -182,20 +223,43 @@ void SwitchButton::resizeEvent(QResizeEvent *){
     update();
 }
 
+void SwitchButton::enterEvent(QEvent *event) {
+    bgColorOn = bgHoverOnColor;
+    bgColorOff = bgHoverOffColor;
+
+    hover = true;
+    update();
+    return QWidget::enterEvent(event);
+}
+
+void SwitchButton::leaveEvent(QEvent *event) {
+    hover = false;
+
+    QString style = m_qtThemeSetting->get("styleName").toString();
+    changeColor(style);
+
+    update();
+    return QWidget::leaveEvent(event);
+}
+
 void SwitchButton::updatevalue(){
+    if (disabled) {
+        return ;
+    }
+
     if (checked)
         if (startX < endX){
             startX = startX + step;
         }
-        else{
+        else {
             startX = endX;
             timer->stop();
         }
-    else{
+    else {
         if (startX > endX){
             startX = startX - step;
         }
-        else{
+        else {
             startX = endX;
             timer->stop();
         }
@@ -218,7 +282,7 @@ void SwitchButton::setChecked(bool checked){
         //circle in
         endX = width() - height();
     }
-    else{
+    else {
         endX = 0;
     }
     timer->start();
@@ -226,6 +290,17 @@ void SwitchButton::setChecked(bool checked){
 
 bool SwitchButton::isChecked(){
     return this->checked;
+}
+
+void SwitchButton::setDisabledFlag(bool value)
+{
+    disabled = value;
+    update();
+}
+
+bool SwitchButton::getDisabledFlag()
+{
+    return disabled;
 }
 
 
