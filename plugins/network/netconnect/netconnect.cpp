@@ -49,14 +49,12 @@ bool sortByVal(const QPair<QString, int> &l, const QPair<QString, int> &r) {
     return (l.second < r.second);
 }
 
-NetConnect::NetConnect() :  mFirstLoad(true)
-{
+NetConnect::NetConnect() :  mFirstLoad(true) {
     pluginName = tr("Connect");
     pluginType = NETWORK;
 }
 
-NetConnect::~NetConnect()
-{
+NetConnect::~NetConnect() {
     if (!mFirstLoad) {
         delete ui;
         ui = nullptr;
@@ -115,10 +113,7 @@ void NetConnect::initSearchText() {
     ui->openLabel->setText(tr("open wifi"));
 }
 
-void NetConnect::initComponent(){
-
-    // 把判断列表是否已刷新的bool值初始化为true
-    this->is_refreshed = true;
+void NetConnect::initComponent() {
 
     // 接收到系统创建网络连接的信号时刷新可用网络列表
     QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager/Settings"), "org.freedesktop.NetworkManager.Settings", "NewConnection", this, SLOT(getNetList(void)));
