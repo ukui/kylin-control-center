@@ -27,6 +27,23 @@
 #include <QEvent>
 #include <QGSettings/QGSettings>
 
+#define OFF_BG_DARK_COLOR "#404040"
+#define OFF_HOVER_BG_DARK_COLOR "#666666"
+#define ON_BG_DARK_COLOR "#3790FA"
+#define ON_HOVER_BG_DARK_COLOR "#40A9FB"
+#define DISABLE_DARK_COLOR "#474747"
+#define DISABLE_RECT_DARK_COLOR "#6E6E6E"
+#define ENABLE_RECT_DARK_COLOR "#FFFFFF"
+
+#define OFF_BG_LIGHT_COLOR "#E0E0E0"
+#define OFF_HOVER_BG_LIGHT_COLOR "#B3B3B3"
+#define ON_BG_LIGHT_COLOR "#3790FA"
+#define ON_HOVER_BG_LIGHT_COLOR "#40A9FB"
+#define DISABLE_LIGHT_COLOR "#E9E9E9"
+#define DISABLE_RECT_LIGHT_COLOR "#B3B3B3"
+#define ENABLE_RECT_LIGHT_COLOR "#FFFFFF"
+
+
 class SwitchButton : public QWidget
 {
     Q_OBJECT
@@ -44,20 +61,30 @@ protected:
     void mousePressEvent(QMouseEvent *);
     void resizeEvent(QResizeEvent *);
     void paintEvent(QPaintEvent *);
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
+
     void drawBg(QPainter * painter);
     void drawSlider(QPainter * painter);
+    void changeColor(const QString &themes);
 
 private:
     bool checked;
-    bool disabled = true;
-
-    QColor borderColorOff;
+    bool disabled;
 
     QColor bgColorOff;
     QColor bgColorOn;
+    QColor bgHoverOnColor;
+    QColor bgHoverOffColor;
+    QColor bgColorDisabled;
 
-    QColor sliderColorOff;
-    QColor sliderColorOn;
+    QColor sliderColorEnabled;
+    QColor sliderColorDisabled;
+
+
+    QColor rectColorEnabled;
+    QColor rectColorDisabled;
+
     QGSettings *m_qtThemeSetting;
     QGSettings *m_gtkThemeSetting;
 
@@ -68,6 +95,7 @@ private:
     int startX;
     int endX;
 
+    bool hover;
     QTimer * timer;
 
 
