@@ -41,6 +41,7 @@
 #include <QGSettings>
 #include <QMenu>
 #include <QShortcut>
+#include <QMouseEvent>
 
 #ifdef WITHKYSEC
 #include <kysec/libkysec.h>
@@ -72,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mate_mixer_init();
     this->setMinimumSize(956, 630);
     logoLabel  = new QLabel(tr("Settings"), this);
+    qApp->installEventFilter(this);
     initUI();
 }
 
@@ -159,6 +161,22 @@ void MainWindow::bootOptionsSwitch(int moduleNum, int funcNum){
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
+    /* clear m_searchWidget's focus
+     * MouseButtonPress event happened but not in m_searchWidget
+     */
+   if(event->type() == QEvent::MouseButtonPress){
+       QMouseEvent *mEvent = static_cast<QMouseEvent*>(event);
+       QPoint mWindowGlobalPoint(this->mapToGlobal(QPoint(0,0)));
+       QPoint mouseGlobalPoint(mEvent->globalPos());
+       QPoint tPoint = mouseGlobalPoint - mWindowGlobalPoint;
+       //qDebug()<<m_searchWidget->geometry()<<  mWindowGlobalPoint << mouseGlobalPoint << tPoint;
+       if( !m_searchWidget->geometry().contains(tPoint) ){
+            if(m_isSearching == true){
+                m_searchWidget->setFocus();
+                m_searchWidget->clearFocus();
+            }
+       }
+   }
     if (this == watched) {
         if (event->type() == QEvent::WindowStateChange) {
             if (this->windowState() == Qt::WindowMaximized) {
@@ -214,7 +232,7 @@ void MainWindow::initUI() {
 
     m_ModuleMap = Utils::getModuleHideStatus();
 
-    this->installEventFilter(this);
+    //this->installEventFilter(this);
 
     const QByteArray id("org.ukui.style");
     m_fontSetting = new QGSettings(id, QByteArray(), this);
@@ -322,7 +340,7 @@ void MainWindow::initTileBar() {
     ui->titleLayout->setSpacing(0);
     m_searchWidget = new SearchWidget(this);
     m_searchWidget->setFocusPolicy(Qt::ClickFocus);
-    m_searchWidget->installEventFilter(this);
+    //m_searchWidget->installEventFilter(this);
 
     m_queryWid = new QWidget;
     m_queryWid->setParent(m_searchWidget);
