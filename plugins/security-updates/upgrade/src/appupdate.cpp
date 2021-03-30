@@ -1,6 +1,7 @@
 #include "appupdate.h"
 #include <QPixmap>
 #include <stdio.h>
+#include <QLocale>
 
 #define CONFIG_FILE_PATH "/usr/share/ukui-control-center/upgrade/"
 
@@ -267,6 +268,10 @@ void AppUpdateWid::showInstallStatues(QString status,QString appAptName, float p
 
     if(QString::compare(appAllMsg.name,appAptName) == 0)
     {
+
+        /* 临时解决方案 , 获取系统语言环境 , 英文加悬浮框 , 中文不加 */
+        QLocale locale;
+
         int pgs = progress;
 //        appVersion->setText(tr("正在安装")+"("+QString::number(pgs)+"%)");
         appVersion->setText(tr("Being installed")+"("+QString::number(pgs)+"%)");
@@ -278,9 +283,19 @@ void AppUpdateWid::showInstallStatues(QString status,QString appAptName, float p
 //            appVersion->setText(tr("更新成功！"));
 
             if (reboot.contains(appAptName)) {
-                appVersion->setText(tr("Update succeeded , please restart the system!"));
+                if (locale.language() == QLocale::Chinese) {
+                    appVersion->setText(tr("Update succeeded , It is recommended that you restart later!"));
+                } else {
+                    appVersion->setText(tr("Update succeeded , It is recommended that you restart later!"));
+                    appVersion->setToolTip(tr("Update succeeded , It is recommended that you restart later!"));
+                }
             } else if (logout.contains(appAptName)) {
-                appVersion->setText(tr("Update succeeded , please log in to the system again!"));
+                if (locale.language() == QLocale::Chinese) {
+                    appVersion->setText(tr("Update succeeded , It is recommended that you log out later and log in again!"));
+                } else {
+                    appVersion->setText(tr("Update succeeded , It is recommended that you log out later and log in again!"));
+                    appVersion->setToolTip(tr("Update succeeded , It is recommended that you log out later and log in again!"));
+                }
             } else {
                 appVersion->setText(tr("Update succeeded!"));
             }
@@ -546,6 +561,10 @@ void AppUpdateWid::showUpdateLog()
 
 void AppUpdateWid::cancelOrUpdate()
 {
+    if(updateAPPBtn->isHidden())
+    {
+        return; 
+    }
     if(updateAPPBtn->text() == tr("Update"))
     {
         if(m_updateMutual->isPointOutNotBackup == true)
@@ -634,7 +653,6 @@ void AppUpdateWid::updateOneApp()
 //        appVersion->setText(tr("获取依赖失败！"));
         appVersion->setText(tr("Get depends failed!"));
         appVersion->setToolTip("");
-        m_updateMutual->installAndUpgrade(appAllMsg.name);
         QIcon icon = QIcon::fromTheme("dialog-error");
         QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(14, 14)));
         appVersionIcon->setPixmap(pixmap);
