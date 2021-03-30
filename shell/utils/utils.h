@@ -41,6 +41,6 @@ namespace Utils
     QString getCpuInfo();
     bool isExistEffect();
     void setKwinMouseSize(int size);
-
+    bool isWayland();
 }
 #endif // UTILS_H

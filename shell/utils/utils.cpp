@@ -241,3 +241,13 @@ void Utils::setKwinMouseSize(int size) {
     message.setArguments(args);
     QDBusConnection::sessionBus().send(message);
 }
+
+bool Utils::isWayland() {
+    QString sessionType = getenv("XDG_SESSION_TYPE");
+
+    if (!sessionType.compare("wayland", Qt::CaseSensitive)) {
+       return true;
+    } else {
+        return false;
+    }
+}
