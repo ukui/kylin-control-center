@@ -50,7 +50,8 @@ BlueToothMain::BlueToothMain(QWidget *parent)
         return;
     }else if(m_manager->adapters().size() == 1){
         m_localDevice = m_manager->adapters().at(0);
-        settings->set("adapter-address",QVariant::fromValue(m_localDevice->address()));
+        if(settings)
+            settings->set("adapter-address",QVariant::fromValue(m_localDevice->address()));
     }else{
         if(adapter_address_list.indexOf(Default_Adapter) != -1){
             m_localDevice = m_manager->adapterForAddress(Default_Adapter);
@@ -205,7 +206,12 @@ void BlueToothMain::InitMainTopUI()
 
     show_panel = new SwitchButton(frame_3);
     frame_3_layout->addWidget(show_panel);
-    show_panel->setChecked(settings->get("tray-show").toBool());
+    if(settings){
+        show_panel->setChecked(settings->get("tray-show").toBool());
+    }else{
+        show_panel->setChecked(false);
+        show_panel->setDisabledFlag(false);
+    }
     connect(show_panel,&SwitchButton::checkedChanged,this,&BlueToothMain::set_tray_visible);
 
     QFrame *frame_4 = new QFrame(frame_top);
@@ -705,7 +711,9 @@ void BlueToothMain::change_device_parent(const QString &address)
 void BlueToothMain::adapterPoweredChanged(bool value)
 {
     qDebug() << Q_FUNC_INFO <<show_flag;
-    settings->set("switch",QVariant::fromValue(value));
+    if(settings)
+        settings->set("switch",QVariant::fromValue(value));
+
     if(value){
         bluetooth_name->set_dev_name(m_localDevice->name());
         bluetooth_name->setVisible(true);
@@ -740,7 +748,8 @@ void BlueToothMain::adapterComboxChanged(int i)
         m_localDevice = m_manager->adapterForAddress(adapter_address_list.at(i));
         m_localDevice->stopDiscovery();
         updateUIWhenAdapterChanged();
-        settings->set("adapter-address",QVariant::fromValue(adapter_address_list.at(i)));
+        if(settings)
+            settings->set("adapter-address",QVariant::fromValue(adapter_address_list.at(i)));
     }else{
         if(open_bluetooth->isChecked()){
             open_bluetooth->setChecked(false);
