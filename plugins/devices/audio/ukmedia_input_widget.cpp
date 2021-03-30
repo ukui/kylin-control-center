@@ -71,7 +71,7 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     //~ contents_path /audio/Input Device
     m_pInputDeviceLabel = new QLabel(tr("Input Device:"),m_pInputWidget);
     m_pInputDeviceCombobox = new QComboBox(m_pInputDeviceWidget);
-//    m_pInputDeviceCombobox->hide();
+    m_pInputDeviceCombobox->hide();
 
     //~ contents_path /audio/Volume
     m_pIpVolumeLabel = new QLabel(tr("Volume"),m_pVolumeWidget);

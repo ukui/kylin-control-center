@@ -99,7 +99,7 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pOutputDeviceLabel = new QLabel(tr("Output Device:"),m_pOutputWidget);
     m_pOutputDeviceCombobox = new QComboBox(m_pOutputDeviceWidget);
     m_pOutputDeviceCombobox->setFixedWidth(300);
-//    m_pOutputDeviceCombobox->hide();
+    m_pOutputDeviceCombobox->hide();
     //~ contents_path /audio/Master Volume
     m_pOpVolumeLabel = new QLabel(tr("Master Volume"),m_pMasterVolumeWidget);
     m_pOutputIconBtn = new UkuiButtonDrawSvg(m_pMasterVolumeWidget);

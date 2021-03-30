@@ -1046,10 +1046,10 @@ void UkmediaMainWidget::setContext(UkmediaMainWidget *m_pWidget,MateMixerContext
                     "notify::default-input-stream",
                     G_CALLBACK (onContextDefaultInputStreamNotify),
                     m_pWidget);
-    g_signal_connect (G_OBJECT (m_pContext),
-                    "notify::default-output-stream",
-                    G_CALLBACK (onContextDefaultOutputStreamNotify),
-                    m_pWidget);
+//    g_signal_connect (G_OBJECT (m_pContext),
+//                    "notify::default-output-stream",
+//                    G_CALLBACK (onContextDefaultOutputStreamNotify),
+//                    m_pWidget);
 
 
     g_signal_connect (G_OBJECT (m_pContext),
