@@ -264,7 +264,11 @@ public:
     bool inputCardListContainBluetooth();
     int indexOfOutputPortInOutputListWidget(QString portName);
     int indexOfInputPortInInputListWidget(QString portName);
-
+    void inputStreamMapCardName(QString streamName,QString cardName);
+    void outputStreamMapCardName(QString streamName,QString cardName);
+    QString findInputStreamCardName(QString streamName);
+    QString findOutputStreamCardName(QString streamName);
+    void setOutputListWidgetRow();
 Q_SIGNALS:
     void appVolumeChangedSignal(bool is_mute,int volume,const QString app_name);
 
@@ -392,7 +396,10 @@ private:
     QMap<QString, QString> inputPortProfileNameMap;
     QMap<int, QList<QString>> cardProfileMap;
     QMap<int, QMap<QString,int>> cardProfilePriorityMap;
+    QMap<QString,QString> inputCardStreamMap;
+    QMap<QString,QString> outputCardStreamMap;
     bool updatePort = true;
+    bool setDefaultstream = true;
     int reconnectTime;
     QTimer *time;
 };
