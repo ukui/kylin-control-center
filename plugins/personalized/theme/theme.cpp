@@ -43,7 +43,7 @@
 #define PEONY_TRAN_KEY   "peony-side-bar-transparency"
 
 // QT图标主题
-#define ICON_QT_KEY "icon-theme-name"
+#define ICON_QT_KEY      "icon-theme-name"
 
 // 窗口管理器Marco主题
 #define MARCO_SCHEMA    "org.gnome.desktop.wm.preferences"
@@ -254,8 +254,7 @@ void Theme::setupComponent() {
 }
 
 void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
-    //设置默认按钮
-
+    // 设置默认按钮
     QVBoxLayout * baseVerLayout = new QVBoxLayout(button);
     baseVerLayout->setSpacing(8);
     baseVerLayout->setMargin(0);
@@ -318,10 +317,10 @@ void Theme::initThemeMode() {
 
     qApp->setStyle(new InternalStyle("ukui"));
 
-    //监听主题改变
+    // 监听主题改变
     connect(qtSettings, &QGSettings::changed, this, [=](const QString &key) {
         if (key == "styleName") {
-            //获取当前主题
+            // 获取当前主题
             QString currentThemeMode = qtSettings->get(key).toString();
             for (QAbstractButton * button : ui->themeModeBtnGroup->buttons()){
                 QVariant valueVariant = button->property("value");
@@ -365,18 +364,19 @@ void Theme::initThemeMode() {
 }
 
 void Theme::initIconTheme() {
-    //获取当前图标主题(以QT为准，后续可以对比GTK两个值)
+    // 获取当前图标主题(以QT为准，后续可以对比GTK两个值)
     QString currentIconTheme = qtSettings->get(ICON_QT_KEY).toString();
 
-    //构建图标主题Widget Group，方便更新选中/非选中状态
+    // 构建图标主题Widget Group，方便更新选中/非选中状态
     iconThemeWidgetGroup = new WidgetGroup;
     connect(iconThemeWidgetGroup, &WidgetGroup::widgetChanged, [=](ThemeWidget * preWidget, ThemeWidget * curWidget){
-        if (preWidget)
+        if (preWidget) {
             preWidget->setSelectedStatus(false);
+        }
         curWidget->setSelectedStatus(true);
 
         QString value = curWidget->getValue();
-        //设置图标主题
+        // 设置图标主题
         qtSettings->set(ICON_QT_KEY, value);
         gtkSettings->set(ICON_GTK_KEY, value);
     });
@@ -385,8 +385,7 @@ void Theme::initIconTheme() {
     QDir themesDir = QDir(ICONTHEMEPATH);
 
     foreach (QString themedir, themesDir.entryList(QDir::Dirs)) {
-        if (themedir.startsWith("ukui-icon-theme-")){
-
+        if (themedir.startsWith("ukui-icon-theme-")) {
             QDir appsDir = QDir(ICONTHEMEPATH + themedir + "/48x48/apps/");
 
             if ("ukui-icon-theme-basic" == themedir) {
@@ -454,7 +453,7 @@ void Theme::setupControlTheme(){
         selectedColorLabel->setSizePolicy(scSizePolicy);
         selectedColorLabel->setScaledContents(true);
         selectedColorLabel->setPixmap(QPixmap("://img/plugins/theme/selected.png"));
-        //初始化选中图标状态
+        // 初始化选中图标状态
         selectedColorLabel->setVisible(button->isChecked());
 
         colorHorLayout->addStretch();
@@ -472,7 +471,7 @@ void Theme::initCursorTheme(){
 
     QStringList cursorThemes = _getSystemCursorThemes();
 
-    //获取当前指针主题
+    // 获取当前指针主题
     QString currentCursorTheme;
     currentCursorTheme = curSettings->get(CURSOR_THEME_KEY).toString();
 
@@ -483,7 +482,7 @@ void Theme::initCursorTheme(){
         curWidget->setSelectedStatus(true);
 
         QString value = curWidget->getValue();
-        //设置光标主题
+        // 设置光标主题
         curSettings->set(CURSOR_THEME_KEY, value);
         kwinCursorSlot(value);
     });
@@ -502,10 +501,10 @@ void Theme::initCursorTheme(){
         ThemeWidget * widget  = new ThemeWidget(QSize(24, 24), dullCursorTranslation(cursor), cursorVec, pluginWidget);
         widget->setValue(cursor);
 
-        //加入Layout
+        // 加入Layout
         ui->cursorVerLayout->addWidget(widget);
 
-        //加入WidgetGround实现获取点击前Widget
+        // 加入WidgetGround实现获取点击前Widget
         cursorThemeWidgetGroup->addWidget(widget);
 
         //初始化指针主题选中界面
@@ -516,10 +515,6 @@ void Theme::initCursorTheme(){
             widget->setSelectedStatus(false);
         }
     }
-}
-
-void Theme::initEffectSettings() {
-
 }
 
 void Theme::initConnection() {
@@ -539,14 +534,6 @@ void Theme::initConnection() {
         ui->transFrame->setVisible(checked);
         writeKwinSettings(checked, currentThemeMode, true);
     });
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
-    ui->transFrame->setVisible(false);
-    ui->effectFrame->setVisible(false);
-    ui->effectLabel->setVisible(false);
-#else
-
-#endif
 }
 
 QStringList Theme::_getSystemCursorThemes() {
@@ -612,7 +599,7 @@ void Theme::setupGSettings() {
     const QByteArray iid(CURSOR_THEME_SCHEMA);
     const QByteArray iiid(PERSONALSIE_SCHEMA);
     gtkSettings = new QGSettings(id, QByteArray(), this);
-    qtSettings = new QGSettings(idd, QByteArray(), this);
+    qtSettings  = new QGSettings(idd, QByteArray(), this);
     curSettings = new QGSettings(iid, QByteArray(), this);
     personliseGsettings = new QGSettings(iiid, QByteArray(), this);
 }
@@ -651,6 +638,10 @@ QString Theme::dullCursorTranslation(QString str) {
     }
 }
 
+QString Theme::getCursorName() {
+   return curSettings->get(CURSOR_THEME_KEY).toString();
+}
+
 QString Theme::dullTranslation(QString str) {
     if (!QString::compare(str, "basic")){
         return QObject::tr("basic");
@@ -663,23 +654,23 @@ QString Theme::dullTranslation(QString str) {
     }
 }
 
-// reset all of themes, include cursor, icon,and etc...
+// 重置设置
 void Theme::resetBtnClickSlot() {
 
     emit ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
-    kwinCursorSlot(kDefCursor);
 
-    // reset cursor default theme
+    // 重置光标主题
     curSettings->reset(CURSOR_THEME_KEY);
     QString cursorTheme = kDefCursor;
-    QString defaultCursor = curSettings->get(CURSOR_THEME_KEY).toString();
+    QString defaultCursor = getCursorName();
     if (defaultCursor.isEmpty()) {
         curSettings->set(CURSOR_THEME_KEY, kDefCursor);
     } else {
         cursorTheme = defaultCursor;
     }
+    kwinCursorSlot(cursorTheme);
 
-    // Reset icon default theme
+    // 重置图标主题
     qtSettings->reset(ICON_QT_KEY);
 
     if (ui->effectFrame->isVisible()) {

@@ -139,8 +139,9 @@ QPixmap CursorTheme::createIcon(int size) const
 }
 
 
-void CursorTheme::setCursorName(qulonglong cursor, const QString &name) const
-{
+void CursorTheme::setCursorName(qulonglong cursor, const QString &name) const {
+    Q_UNUSED(cursor)
+    Q_UNUSED(name)
 #ifdef HAVE_XFIXES
 
     if (haveXfixes())

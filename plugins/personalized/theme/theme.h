@@ -95,7 +95,6 @@ public:
     void initIconTheme();
     void setupControlTheme();
     void initCursorTheme();
-    void initEffectSettings();
     void initConnection();
 
     void buildThemeModeBtn(QPushButton * button, QString name, QString icon);
@@ -114,12 +113,11 @@ private:
     void kwinCursorSlot(QString value);
 
     QString dullCursorTranslation(QString str);
+    QString getCursorName();
 
 private slots:
     void resetBtnClickSlot();
-    // write the kwin's configuration
     void writeKwinSettings(bool change, QString theme, bool effect = false);
-
     void themeBtnClickSlot(QAbstractButton *button);
 };
 
