@@ -364,11 +364,14 @@ void BlueToothMain::adapterChanged()
         qDebug() << Q_FUNC_INFO << adapter_address_list << "===" << adapter_name_list;
         adapter_list->addItem(adapter.data()->name());
 
-        if((adapter_address_list.size() == adapter_name_list.size()) && (adapter_address_list.size() > 1)){
-            if(!frame_2->isVisible())
-                frame_2->setVisible(true);
+        if((adapter_address_list.size() == adapter_name_list.size()) && (adapter_address_list.size() == 1)){
             frame_top->setMinimumSize(582,187);
             frame_top->setMaximumSize(1000,187);
+        }else if((adapter_address_list.size() == adapter_name_list.size()) && (adapter_address_list.size() > 1)){
+            if(!frame_2->isVisible())
+                frame_2->setVisible(true);
+            frame_top->setMinimumSize(582,239);
+            frame_top->setMaximumSize(1000,239);
         }
     });
 }
@@ -439,23 +442,11 @@ void BlueToothMain::updateUIWhenAdapterChanged()
      qDebug() << Q_FUNC_INFO <<m_localDevice->devices().size();
      show_flag = false;
      Discovery_device_address.clear();
+
      for(int i = 0;i < m_localDevice->devices().size(); i++){
          qDebug() << m_localDevice->devices().at(i)->name() << m_localDevice->devices().at(i)->type();
 
-         if (m_localDevice->devices().at(i)->isPaired()) {
-             DeviceInfoItem *item = new DeviceInfoItem();
-             connect(item,SIGNAL(sendConnectDevice(QString)),this,SLOT(receiveConnectsignal(QString)));
-             connect(item,SIGNAL(sendDisconnectDeviceAddress(QString)),this,SLOT(receiveDisConnectSignal(QString)));
-             connect(item,SIGNAL(sendDeleteDeviceAddress(QString)),this,SLOT(receiveRemoveSignal(QString)));
-             connect(item,SIGNAL(sendPairedAddress(QString)),this,SLOT(change_device_parent(QString)));
-             if(m_localDevice->devices().at(i)->isConnected())
-                 item->initInfoPage(m_localDevice->devices().at(i)->name(), DEVICE_STATUS::LINK, m_localDevice->devices().at(i));
-             else
-                 item->initInfoPage(m_localDevice->devices().at(i)->name(), DEVICE_STATUS::UNLINK, m_localDevice->devices().at(i));
-
-             show_flag = true;
-             paired_dev_layout->addWidget(item,Qt::AlignTop);
-         }
+         addMyDeviceItemUI(m_localDevice->devices().at(i));
      }
      device_list_layout->addStretch();
 
@@ -517,6 +508,25 @@ void BlueToothMain::removeDeviceItemUI(QString address)
     }
 }
 
+void BlueToothMain::addMyDeviceItemUI(BluezQt::DevicePtr dev)
+{
+    if (dev && dev->isPaired()) {
+        DeviceInfoItem *item = new DeviceInfoItem();
+        connect(item,SIGNAL(sendConnectDevice(QString)),this,SLOT(receiveConnectsignal(QString)));
+        connect(item,SIGNAL(sendDisconnectDeviceAddress(QString)),this,SLOT(receiveDisConnectSignal(QString)));
+        connect(item,SIGNAL(sendDeleteDeviceAddress(QString)),this,SLOT(receiveRemoveSignal(QString)));
+        connect(item,SIGNAL(sendPairedAddress(QString)),this,SLOT(change_device_parent(QString)));
+        if(dev->isConnected())
+            item->initInfoPage(dev->name(), DEVICE_STATUS::LINK, dev);
+        else
+            item->initInfoPage(dev->name(), DEVICE_STATUS::UNLINK, dev);
+
+        show_flag = true;
+        paired_dev_layout->addWidget(item,Qt::AlignTop);
+    }
+    return;
+}
+
 void BlueToothMain::leaveEvent(QEvent *event)
 {
     qDebug() << Q_FUNC_INFO;
@@ -575,6 +585,11 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
 void BlueToothMain::serviceDiscovered(BluezQt::DevicePtr device)
 {
     qDebug() << Q_FUNC_INFO << device->type() << device->name() << device->address() << device->uuids().size();
+    if(device->isPaired()){
+        addMyDeviceItemUI(device);
+        return;
+    }
+
     if(device->uuids().size() == 0 && device->name().split("-").length() == 6 && device->type() == BluezQt::Device::Uncategorized){
         return;
     }
