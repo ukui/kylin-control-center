@@ -2,6 +2,7 @@
 #include <QPixmap>
 #include <stdio.h>
 #include <QLocale>
+#include <QScrollBar>
 
 #define CONFIG_FILE_PATH "/usr/share/ukui-control-center/upgrade/"
 
@@ -413,6 +414,7 @@ void AppUpdateWid::updateAppUi(QString name)
     mainVLayout->setSpacing(0);
     someInfoEdit = new QTextEdit(this);   //部分changelog  缩略显示
     someInfoEdit->setReadOnly(true);
+    someInfoEdit->verticalScrollBar()->setProperty("drawScrollBarGroove" , false);
     QPalette pl = someInfoEdit->palette();
     someInfoEdit->setFixedHeight(120);
     pl.setBrush(QPalette::Base,QBrush(QColor(255,0,0,0)));
