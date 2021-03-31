@@ -1377,11 +1377,9 @@ void Widget::initConnection() {
     connect(mNightButton, SIGNAL(checkedChanged(bool)), this, SLOT(showNightWidget(bool)));
     connect(mThemeButton, SIGNAL(checkedChanged(bool)), this, SLOT(slotThemeChanged(bool)));
     connect(singleButton, SIGNAL(buttonClicked(int)), this,  SLOT(showCustomWiget(int)));
-    //是否禁用主显示器确认按钮
     connect(ui->primaryCombo, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this, &Widget::mainScreenButtonSelect);
 
-    //主屏确认按钮
     connect(ui->mainScreenButton, SIGNAL(clicked(bool)), this, SLOT(primaryButtonEnable(bool)));
     mControlPanel = new ControlPanel(this);
     connect(mControlPanel, &ControlPanel::changed, this, &Widget::changed);
@@ -1390,7 +1388,6 @@ void Widget::initConnection() {
 
     ui->controlPanelLayout->addWidget(mControlPanel);
 
-    // TODO: Find out why adjusting the screen orientation does not take effect
     connect(ui->applyButton, &QPushButton::clicked, this, [=]() {
         save();
     });
@@ -1408,6 +1405,10 @@ void Widget::initConnection() {
     connect(mCloseScreenButton, &SwitchButton::checkedChanged,
             this, [=](bool checked) {
         checkOutputScreen(checked);
+    });
+
+    connect(QApplication::desktop(), &QDesktopWidget::resized, this, [=] {
+       mUnifyButton->setChecked(isCloneMode());
     });
 
     QDBusConnection::sessionBus().connect(QString(),
