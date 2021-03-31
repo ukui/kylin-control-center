@@ -5992,7 +5992,7 @@ run start-pulseaudio-x11 manually.</source>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.ui" line="81"/>
         <location filename="../../../plugins/security-updates/securitycenter/securitycenter.cpp" line="218"/>
         <source>Computer Security Overview</source>
-        <translation>安全功能预览</translation>
+        <translation>安全功能概览</translation>
         <extra-contents_path>/securitycenter/Computer Security Overview</extra-contents_path>
     </message>
     <message>
