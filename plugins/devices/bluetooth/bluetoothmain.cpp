@@ -574,13 +574,14 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
 
 void BlueToothMain::serviceDiscovered(BluezQt::DevicePtr device)
 {
-    if(device->uuids().size() == 0 || device->name().split("-").length() == 6){
+    qDebug() << Q_FUNC_INFO << device->type() << device->name() << device->address() << device->uuids().size();
+    if(device->uuids().size() == 0 && device->name().split("-").length() == 6 && device->type() == BluezQt::Device::Uncategorized){
         return;
     }
     if(Discovery_device_address.contains(device->address())){
         return;
     }
-    qDebug() << Q_FUNC_INFO << device->type() << device->name() << device->address();
+    qDebug() << Q_FUNC_INFO << device->type() << device->name() << device->address() << device->uuids().size();
 
     DeviceInfoItem *item = new DeviceInfoItem(device_list);
     connect(item,SIGNAL(sendConnectDevice(QString)),this,SLOT(receiveConnectsignal(QString)));
@@ -597,7 +598,8 @@ void BlueToothMain::serviceDiscovered(BluezQt::DevicePtr device)
 
 void BlueToothMain::serviceDiscoveredChange(BluezQt::DevicePtr device)
 {
-    if(device->uuids().size() == 0 || device->name().split("-").length() == 6){
+    qDebug() << Q_FUNC_INFO << device->type() << device->name() << device->address() << device->uuids().size();
+    if(device->uuids().size() == 0 && device->name().split("-").length() == 6 && device->type() == BluezQt::Device::Uncategorized){
         return;
     }
     if(device->isPaired() || device->isConnected()) {
@@ -606,7 +608,7 @@ void BlueToothMain::serviceDiscoveredChange(BluezQt::DevicePtr device)
     if(Discovery_device_address.contains(device->address())){
         return;
     }
-    qDebug() << Q_FUNC_INFO << device->type() << device->name() << device->address();
+    qDebug() << Q_FUNC_INFO << device->type() << device->name() << device->address() << device->uuids().size();
 
     DeviceInfoItem *item = new DeviceInfoItem(device_list);
     connect(item,SIGNAL(sendConnectDevice(QString)),this,SLOT(receiveConnectsignal(QString)));
