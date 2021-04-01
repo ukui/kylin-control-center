@@ -562,7 +562,7 @@ void UserInfo::initComponent(){
 
 void UserInfo::_resetListWidgetHeigh(){
     //设置其他用户控件的总高度
-    ui->listWidget->setFixedHeight((allUserInfoMap.count()) * ITEMHEIGH - allUserInfoMap.count() * 6);
+    ui->listWidget->setFixedHeight((allUserInfoMap.count() - 1 ) * (ITEMHEIGH) + 4);
 }
 
 void UserInfo::initAllUserStatus(){
@@ -794,7 +794,7 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
 
     baseHorLayout->addWidget(widget);
     baseHorLayout->addWidget(delBtn, Qt::AlignVCenter);
-    baseHorLayout->addSpacing(4);
+    //baseHorLayout->addSpacing(4);
 
     baseVerLayout->addLayout(baseHorLayout);
 //    baseVerLayout->addStretch();

@@ -266,7 +266,8 @@ void MouseControl::setupComponent() {
         if (!checked) {
             mThemeSettings->set(CURSOR_BLINK_TIME_KEY, 0);
         } else {
-            mThemeSettings->set(CURSOR_BLINK_TIME_KEY, ui->cursorSpeedSlider->value());
+            int mValue = ui->cursorSpeedSlider->maximum() - ui->cursorSpeedSlider->value() + ui->cursorSpeedSlider->minimum();
+            mThemeSettings->set(CURSOR_BLINK_TIME_KEY, mValue);
         }
     });
 
@@ -310,7 +311,8 @@ void MouseControl::setupComponent() {
     connect(desktopSettings,&QGSettings::changed,[=](const QString &key) {
         if(key == "cursorBlinkTime") {
             ui->cursorSpeedSlider->blockSignals(true);
-            ui->cursorSpeedSlider->setValue(desktopSettings->get(CURSOR_BLINK_TIME_KEY).toInt());
+            int mValue = ui->cursorSpeedSlider->maximum() - desktopSettings->get(CURSOR_BLINK_TIME_KEY).toInt() + ui->cursorSpeedSlider->minimum();
+            ui->cursorSpeedSlider->setValue(mValue);
             ui->cursorSpeedSlider->blockSignals(false);
         } else if(key == "cursorBlink") {
             flashingBtn->blockSignals(true);
@@ -321,8 +323,10 @@ void MouseControl::setupComponent() {
     });
 
     connect(ui->cursorSpeedSlider, &QSlider::sliderReleased, [=] {
-        desktopSettings->set(CURSOR_BLINK_TIME_KEY, ui->cursorSpeedSlider->value());
-        mThemeSettings->set(CURSOR_BLINK_TIME_KEY, ui->cursorSpeedSlider->value());
+        
+        int mValue = ui->cursorSpeedSlider->maximum() - ui->cursorSpeedSlider->value() + ui->cursorSpeedSlider->minimum();
+        desktopSettings->set(CURSOR_BLINK_TIME_KEY, mValue);
+        mThemeSettings->set(CURSOR_BLINK_TIME_KEY, mValue);
     });
 
     connect(mAccelBtn, &SwitchButton::checkedChanged, this, [=] (bool checked) {
@@ -387,7 +391,8 @@ void MouseControl::initCursorStatus() {
     flashingBtn->blockSignals(false);
 
     ui->cursorSpeedSlider->blockSignals(true);
-    ui->cursorSpeedSlider->setValue(desktopSettings->get(CURSOR_BLINK_TIME_KEY).toInt());
+    int mValue = ui->cursorSpeedSlider->maximum() - desktopSettings->get(CURSOR_BLINK_TIME_KEY).toInt() + ui->cursorSpeedSlider->minimum();
+    ui->cursorSpeedSlider->setValue(mValue);
     ui->cursorSpeedSlider->blockSignals(false);
 }
 

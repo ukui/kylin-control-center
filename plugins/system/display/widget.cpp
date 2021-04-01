@@ -323,9 +323,11 @@ void Widget::slotUnifyOutputs() {
         }
     }
 
+    //取消统一输出
     if (base->isCloneMode() && !mUnifyButton->isChecked()) {
 
         QPoint secPoint;
+        QPoint invertedSecPoint;
         QString primaryWaylandScreen = "";
         if (mIsWayland) {
             primaryWaylandScreen = getPrimaryWaylandScreen();
@@ -342,6 +344,7 @@ void Widget::slotUnifyOutputs() {
                 Q_FOREACH(const KScreen::ModePtr &mode, modes) {
                     if (screen->currentModeId() == mode->id()) {
                         secPoint = QPoint(mode->size().width(), 0);
+                        invertedSecPoint = QPoint(mode->size().height(), 0);
                     }
                 }
             }
@@ -352,7 +355,13 @@ void Widget::slotUnifyOutputs() {
         while (secIt != screens.end()) {
             KScreen::OutputPtr screen= secIt.value();
             if (!screen->isPrimary()) {
-                screen->setPos(secPoint);
+                if (screen->rotation() == KScreen::Output::Rotation::Left || \
+                        screen->rotation() == KScreen::Output::Rotation::Right) {
+                    screen->setPos(invertedSecPoint);
+                }
+                else {
+                    screen->setPos(secPoint);
+                }
             }
             secIt++;
         }
