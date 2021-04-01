@@ -82,9 +82,9 @@ const QPixmap CloseButton::renderSvg(const QIcon &icon, QString cgColor) {
     int size = m_cSize;
     const auto ratio = qApp->devicePixelRatio();
     if ( 2 == ratio) {
-        size = 32 ;
+        size = m_cSize * 2;
     } else if (3 == ratio) {
-        size = 96;
+        size = m_cSize * 3;
     }
     QPixmap iconPixmap = icon.pixmap(size,size);
     iconPixmap.setDevicePixelRatio(ratio);

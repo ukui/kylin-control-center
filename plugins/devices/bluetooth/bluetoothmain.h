@@ -54,7 +54,7 @@ public:
     void adapterChanged();
     void updateUIWhenAdapterChanged();
     void removeDeviceItemUI(QString address);
-
+    void addMyDeviceItemUI(BluezQt::DevicePtr);
 protected:
     void leaveEvent(QEvent *event);
 

@@ -195,7 +195,9 @@ void DeviceInfoItem::onClick_Delete_Btn(bool isclicked)
 
 void DeviceInfoItem::changeDevStatus(bool pair)
 {
-    icon_timer->stop();
+    if(icon_timer && icon_timer->isActive())
+        icon_timer->stop();
+
     if(pair){
         if (!device_item->isConnected())
             device_status->setVisible(false);
@@ -208,7 +210,9 @@ void DeviceInfoItem::changeDevStatus(bool pair)
 
 void DeviceInfoItem::setDevConnectedIcon(bool connected)
 {
-    icon_timer->stop();
+    if(icon_timer && icon_timer->isActive())
+        icon_timer->stop();
+
     if(connected){
         d_status = DEVICE_STATUS::LINK;
         device_status->setVisible(true);

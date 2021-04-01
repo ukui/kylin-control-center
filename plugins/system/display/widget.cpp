@@ -573,15 +573,17 @@ void Widget::initNightUI() {
 bool Widget::isRestoreConfig() {
     int cnt = 9;
     int ret;
+    QRect rect =this->topLevelWidget()->geometry();
     QMessageBox msg;
+    int msgX = 0, msgY = 0;
     if (mConfigChanged) {
         msg.setWindowTitle(tr("Hint"));
         msg.setText(tr("After modifying the resolution or refresh rate, "
                        "due to compatibility issues between the display device and the graphics card, "
                        "the display may be abnormal or unable to display\n"
-                       "If something goes wrong, the settings will be restored after 9 seconds"));
-        msg.addButton(tr("Save Config"), QMessageBox::AcceptRole);
-        msg.addButton(tr("Restore Config"), QMessageBox::RejectRole);
+                       "the settings will be saved after 9 seconds"));
+        msg.addButton(tr("Save Config"), QMessageBox::RejectRole);
+        msg.addButton(tr("Restore Config"), QMessageBox::AcceptRole);
 
         QTimer cntDown;
         QObject::connect(&cntDown, &QTimer::timeout, [&msg,&cnt, &cntDown, &ret]()->void{
@@ -592,14 +594,17 @@ bool Widget::isRestoreConfig() {
                 msg.setText(QString(tr("After modifying the resolution or refresh rate, "
                                     "due to compatibility issues between the display device and the graphics card, "
                                     "the display may be abnormal or unable to display \n"
-                                    "If something goes wrong, the settings will be restored after %1 seconds")).arg(cnt));
+                                    "the settings will be saved after %1 seconds")).arg(cnt));
             }
         });
         cntDown.start(1000);
+        msgX = rect.x() + rect.width()/2 - 500/2 -5;
+        msgY = rect.y() + rect.height()/2 - 145/2 + 5;
+        msg.move(msgX, msgY);
         ret = msg.exec();
     }
 
-    bool res = true;
+    bool res = false;
     switch (ret) {
       case QMessageBox::AcceptRole:
           res = false;
@@ -1072,10 +1077,11 @@ void Widget::save() {
 
     mScreen->updateOutputsPlacement();
 
+
     if (isRestoreConfig()) {
         if (mIsWayland && -1 != mScreenId) {
-            config->output(mScreenId)->setPrimary(true);
-            callMethod(mPrevConfig->primaryOutput()->geometry(), config->primaryOutput()->name());
+            mPrevConfig->output(mScreenId)->setPrimary(true);
+            callMethod(mPrevConfig->output(mScreenId)->geometry(), mPrevConfig->output(mScreenId)->name());
         }
         auto *op = new KScreen::SetConfigOperation(mPrevConfig);
         op->exec();

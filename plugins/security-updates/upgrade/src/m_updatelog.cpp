@@ -12,7 +12,7 @@ const int LEFT_MARGIN = 32;//左（右）边距
 
 const int LIST_LEFT = 8;//列表对于其背景，左侧边距
 const int LIST_TOP = 8;//列表对于其背景，顶（底）部边距
-const int LIST_BACKGROUND_WIDTH = 260;//列表背景宽度
+const int LIST_BACKGROUND_WIDTH = 260 + 6;//列表背景宽度
 const int SLIDER_WIDTH = 6;//滑块宽度
 //const int LIST_WIDTH = LIST_BACKGROUND_WIDTH - LIST_LEFT*2 + SLIDER_WIDTH;//列表宽度
 //const int LIST_HEIGHT = 524 - LIST_TOP*2;//列表高度
@@ -93,10 +93,12 @@ void m_updatelog::initUI()
     palette.setBrush(QPalette::Base, QColor (0, 0 , 0, 0));
     mainListwidget->setPalette(palette);
     mainListwidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);  //滑块平滑滚动
+    mainListwidget->verticalScrollBar()->setProperty("drawScrollBarGroove" , false);
     mainListwidget->setSpacing(2);
 
     QPalette palette2 = des->palette();
     palette2.setBrush(QPalette::Base, QColor (0, 0 , 0, 0));
+    des->verticalScrollBar()->setProperty("drawScrollBarGroove" , false);
     des->setPalette(palette2);
     des->setReadOnly(true);
     des->setObjectName(FIND_DES_LABLE_TYPE);

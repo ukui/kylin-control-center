@@ -124,7 +124,7 @@ private slots:
     void changezone_slot(QString );
     void time_format_clicked_slot(bool, bool);
     void synctime_format_slot(bool status,bool outChange);  //网络时间同步按钮事件
-    QDBusMessage rsync_with_network_slot();
+    QDBusMessage rsync_with_network_slot(bool status);
     void showendLabel();
     void hidendLabel();
     void keyChangedSlot(const QString &key);

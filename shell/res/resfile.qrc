@@ -177,6 +177,8 @@
         <file>plugins/upgrade/loading17.svg</file>
         <file>secondaryleftmenu/Date.svg</file>
         <file>secondaryleftmenu/DateWhite.svg</file>
+        <file>plugins/upgrade/kylin-update-desktop-kernel.png</file>
+        <file>plugins/upgrade/linux-generic.png</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

@@ -670,7 +670,6 @@ void Theme::resetBtnClickSlot() {
     }
     kwinCursorSlot(cursorTheme);
 
-    // 重置图标主题
     qtSettings->reset(ICON_QT_KEY);
 
     if (ui->effectFrame->isVisible()) {

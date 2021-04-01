@@ -338,9 +338,9 @@ void DateTime::hidendLabel() {
     ui->endlabel->setVisible(false);
 }
 
-QDBusMessage DateTime::rsync_with_network_slot() {
+QDBusMessage DateTime::rsync_with_network_slot(bool status) {
 
-    return m_datetimeiface->call("SetNTP", true, true);
+    return m_datetimeiface->call("SetNTP", status, true);
 }
 
 void DateTime::loadHour() {
@@ -430,9 +430,10 @@ void DateTime::synctime_format_slot(bool status,bool outChange){
             m_formatsettings->set(SYNC_TIME_KEY, false);
         }
     }
+    QDBusMessage retDBus =  rsync_with_network_slot(status);
     if(status != false){
         ui->chgtimebtn->setEnabled(false);
-        QDBusMessage retDBus =  rsync_with_network_slot();
+
         if(retDBus.type() == QDBusMessage::ReplyMessage){
             QString successMSG = tr("  ");
             QString failMSG = tr("Sync from network failed");
