@@ -25,6 +25,8 @@
 #include <QPainterPath>
 #include <QThread>
 
+#include <QTimer>
+
 #include "pwdcheckthread.h"
 
 #ifdef ENABLEPQ
@@ -90,9 +92,11 @@ private:
 private:
     PwdCheckThread * pcThread;
 
+    QTimer * timerForCheckPwd;
+
 
 private Q_SLOTS:
-    void pwdLegalityCheck(QString pwd);
+    void pwdLegalityCheck();
 
 Q_SIGNALS:
     void passwd_send(QString pwd);

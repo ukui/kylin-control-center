@@ -65,6 +65,10 @@ ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QString _username, QWidget
 
     curPwdTip = "";
 
+    timerForCheckPwd = new QTimer;
+    timerForCheckPwd->setInterval(1000);
+    timerForCheckPwd->setSingleShot(true);
+
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->pwdFrame->setFrameShape(QFrame::Shape::Box);
     ui->tipLabel->setAlignment(Qt::AlignCenter);
@@ -196,7 +200,7 @@ void ChangePwdDialog::setupConnect(){
 
     if (isCurrentUser){
 
-        connect(ui->curPwdLineEdit, &QLineEdit::editingFinished, [=]{
+        connect(timerForCheckPwd, &QTimer::timeout, [=]{
             /* 密码为空不检测 */
             if (ui->curPwdLineEdit->text().isEmpty()){
                 return;
@@ -206,6 +210,14 @@ void ChangePwdDialog::setupConnect(){
 
             pcThread->start();
 
+        });
+
+        connect(ui->curPwdLineEdit, &QLineEdit::textChanged, [=]{
+            pwdLegalityCheck();
+
+            ui->confirmPushBtn->setEnabled(false);
+
+            timerForCheckPwd->start();
         });
 
         connect(ui->confirmPushBtn, &QPushButton::clicked, [=]{
@@ -223,8 +235,8 @@ void ChangePwdDialog::setupConnect(){
 
 
 
-    connect(ui->pwdLineEdit, &QLineEdit::textChanged, [=](QString text){
-        pwdLegalityCheck(text);
+    connect(ui->pwdLineEdit, &QLineEdit::textChanged, [=]{
+        pwdLegalityCheck();
 
         refreshConfirmBtnStatus();
     });
@@ -309,9 +321,9 @@ void ChangePwdDialog::paintEvent(QPaintEvent *event) {
 
 }
 
-void ChangePwdDialog::pwdLegalityCheck(QString pwd){
+void ChangePwdDialog::pwdLegalityCheck(){
     //
-    if (!checkCharLegitimacy(pwd)){
+    if (!checkCharLegitimacy(ui->pwdLineEdit->text())){
         pwdTip = tr("Contains illegal characters!");
     } else if (QString::compare(ui->pwdLineEdit->text(), ui->curPwdLineEdit->text()) == 0 && !ui->pwdLineEdit->text().isEmpty()){
         pwdTip = tr("Same with old pwd");
@@ -323,7 +335,7 @@ void ChangePwdDialog::pwdLegalityCheck(QString pwd){
             const char * msg;
             char buf[256];
 
-            QByteArray ba = pwd.toLatin1();
+            QByteArray ba = ui->pwdLineEdit->text().toLatin1();
             QByteArray ba1 = ui->curPwdLineEdit->text().toLatin1();
 
             if (isCurrentUser){
