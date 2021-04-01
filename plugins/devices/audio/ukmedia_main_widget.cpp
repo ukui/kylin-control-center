@@ -225,13 +225,17 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     //检测设计开关机音乐
     if (QGSettings::isSchemaInstalled(UKUI_SWITCH_SETTING)) {
         m_pBootSetting = new QGSettings(UKUI_SWITCH_SETTING);
-        if (m_pBootSetting->keys().contains("bootMusic")) {
-            m_hasMusic = m_pBootSetting->get(UKUI_BOOT_MUSIC_KEY).toBool();
-            m_pSoundWidget->m_pBootButton->setChecked(m_hasMusic);
+        if (m_pBootSetting->keys().contains("startupMusic")) {
+            bool startup = m_pBootSetting->get(UKUI_STARTUP_MUSIC_KEY).toBool();
+            m_pSoundWidget->m_pStartupButton->setChecked(startup);
         }
-        if (m_pBootSetting->keys().contains("sleepMusic")) {
-            bool m_hasMusic = m_pBootSetting->get(UKUI_SLEEP_MUSIC_KEY).toBool();
-            m_pSoundWidget->m_pSleepMusicButton->setChecked(m_hasMusic);
+        if (m_pBootSetting->keys().contains("poweroffMusic")) {
+            bool poweroff = m_pBootSetting->get(UKUI_POWEROFF_MUSIC_KEY).toBool();
+            m_pSoundWidget->m_pPoweroffButton->setChecked(poweroff);
+        }
+        if (m_pBootSetting->keys().contains("logoutMusic")) {
+            bool logout = m_pBootSetting->get(UKUI_LOGOUT_MUSIC_KEY).toBool();
+            m_pSoundWidget->m_pWakeupMusicButton->setChecked(logout);
         }
         if (m_pBootSetting->keys().contains("weakupMusic")) {
             bool m_hasMusic = m_pBootSetting->get(UKUI_WAKEUP_MUSIC_KEY).toBool();
@@ -250,8 +254,9 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     }
     */
     connect(m_pSoundWidget->m_pAlertIconBtn,SIGNAL(clicked()),this,SLOT(alertSoundVolumeChangedSlot()));
-    connect(m_pSoundWidget->m_pBootButton,SIGNAL(checkedChanged(bool)),this,SLOT(bootButtonSwitchChangedSlot(bool)));
-    connect(m_pSoundWidget->m_pSleepMusicButton,SIGNAL(checkedChanged(bool)),this,SLOT(sleepMusicButtonSwitchChangedSlot(bool)));
+    connect(m_pSoundWidget->m_pStartupButton,SIGNAL(checkedChanged(bool)),this,SLOT(startupButtonSwitchChangedSlot(bool)));
+    connect(m_pSoundWidget->m_pPoweroffButton,SIGNAL(checkedChanged(bool)),this,SLOT(poweroffButtonSwitchChangedSlot(bool)));
+    connect(m_pSoundWidget->m_pLogoutButton,SIGNAL(checkedChanged(bool)),this,SLOT(logoutMusicButtonSwitchChangedSlot(bool)));
     connect(m_pSoundWidget->m_pWakeupMusicButton,SIGNAL(checkedChanged(bool)),this,SLOT(wakeButtonSwitchChangedSlot(bool)));
     connect(m_pSoundWidget->m_pAlertSoundSwitchButton,SIGNAL(checkedChanged(bool)),this,SLOT(alertSoundButtonSwitchChangedSlot(bool)));
     //输出音量控制
@@ -521,29 +526,43 @@ void UkmediaMainWidget::comboboxCurrentTextInit()
 }
 
 /*
-    是否播放开关机音乐
+    是否播放开机音乐
 */
-void UkmediaMainWidget::bootButtonSwitchChangedSlot(bool status)
+void UkmediaMainWidget::startupButtonSwitchChangedSlot(bool status)
 {
     bool bBootStatus = true;
-    if (m_pBootSetting->keys().contains("bootMusic")) {
-        bBootStatus = m_pBootSetting->get(UKUI_BOOT_MUSIC_KEY).toBool();
+    if (m_pBootSetting->keys().contains("startupMusic")) {
+        bBootStatus = m_pBootSetting->get(UKUI_STARTUP_MUSIC_KEY).toBool();
         if (bBootStatus != status) {
-            m_pBootSetting->set(UKUI_BOOT_MUSIC_KEY,status);
+            m_pBootSetting->set(UKUI_STARTUP_MUSIC_KEY,status);
         }
     }
 }
 
 /*
-    是否播放休眠音乐
+    是否播放关机音乐
 */
-void UkmediaMainWidget::sleepMusicButtonSwitchChangedSlot(bool status)
+void UkmediaMainWidget::poweroffButtonSwitchChangedSlot(bool status)
 {
     bool bBootStatus = true;
-    if (m_pBootSetting->keys().contains("sleepMusic")) {
-        bBootStatus = m_pBootSetting->get(UKUI_SLEEP_MUSIC_KEY).toBool();
+    if (m_pBootSetting->keys().contains("poweroffMusic")) {
+        bBootStatus = m_pBootSetting->get(UKUI_POWEROFF_MUSIC_KEY).toBool();
         if (bBootStatus != status) {
-            m_pBootSetting->set(UKUI_SLEEP_MUSIC_KEY,status);
+            m_pBootSetting->set(UKUI_POWEROFF_MUSIC_KEY,status);
+        }
+    }
+}
+
+/*
+    是否播放注销音乐
+*/
+void UkmediaMainWidget::logoutMusicButtonSwitchChangedSlot(bool status)
+{
+    bool bBootStatus = true;
+    if (m_pBootSetting->keys().contains("logoutMusic")) {
+        bBootStatus = m_pBootSetting->get(UKUI_LOGOUT_MUSIC_KEY).toBool();
+        if (bBootStatus != status) {
+            m_pBootSetting->set(UKUI_LOGOUT_MUSIC_KEY,status);
         }
     }
 }
@@ -583,23 +602,29 @@ void UkmediaMainWidget::alertSoundButtonSwitchChangedSlot(bool status)
 void UkmediaMainWidget::bootMusicSettingsChanged()
 {
     bool bBootStatus = true;
-    bool status = m_pSoundWidget->m_pBootButton->isChecked();
-    if (m_pBootSetting->keys().contains("bootMusic")) {
-        bBootStatus = m_pBootSetting->get(UKUI_BOOT_MUSIC_KEY).toBool();
+    bool status;
+    if (m_pBootSetting->keys().contains("startupMusic")) {
+        bBootStatus = m_pBootSetting->get(UKUI_STARTUP_MUSIC_KEY).toBool();
         if (status != bBootStatus ) {
-            m_pSoundWidget->m_pBootButton->setChecked(bBootStatus);
+            m_pSoundWidget->m_pStartupButton->setChecked(bBootStatus);
+        }
+    }
+    if (m_pBootSetting->keys().contains("poweroffMusic")) {
+        bBootStatus = m_pBootSetting->get(UKUI_POWEROFF_MUSIC_KEY).toBool();
+        if (status != bBootStatus ) {
+            m_pSoundWidget->m_pPoweroffButton->setChecked(bBootStatus);
+        }
+    }
+    if (m_pBootSetting->keys().contains("logoutMusic")) {
+        bBootStatus = m_pBootSetting->get(UKUI_LOGOUT_MUSIC_KEY).toBool();
+        if (status != bBootStatus ) {
+            m_pSoundWidget->m_pLogoutButton->setChecked(bBootStatus);
         }
     }
     if (m_pBootSetting->keys().contains("weakupMusic")) {
         bBootStatus = m_pBootSetting->get(UKUI_WAKEUP_MUSIC_KEY).toBool();
         if (status != bBootStatus ) {
             m_pSoundWidget->m_pWakeupMusicButton->setChecked(bBootStatus);
-        }
-    }
-    if (m_pBootSetting->keys().contains("sleepMusic")) {
-        bBootStatus = m_pBootSetting->get(UKUI_SLEEP_MUSIC_KEY).toBool();
-        if (status != bBootStatus ) {
-            m_pSoundWidget->m_pSleepMusicButton->setChecked(bBootStatus);
         }
     }
 }
@@ -1046,10 +1071,10 @@ void UkmediaMainWidget::setContext(UkmediaMainWidget *m_pWidget,MateMixerContext
                     "notify::default-input-stream",
                     G_CALLBACK (onContextDefaultInputStreamNotify),
                     m_pWidget);
-//    g_signal_connect (G_OBJECT (m_pContext),
-//                    "notify::default-output-stream",
-//                    G_CALLBACK (onContextDefaultOutputStreamNotify),
-//                    m_pWidget);
+    g_signal_connect (G_OBJECT (m_pContext),
+                    "notify::default-output-stream",
+                    G_CALLBACK (onContextDefaultOutputStreamNotify),
+                    m_pWidget);
 
 
     g_signal_connect (G_OBJECT (m_pContext),

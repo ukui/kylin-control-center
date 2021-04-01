@@ -71,8 +71,9 @@ extern "C" {
 
 #define KEY_SOUNDS_SCHEMA "org.ukui.sound"
 #define UKUI_SWITCH_SETTING "org.ukui.session"
-#define UKUI_BOOT_MUSIC_KEY "boot-music"
-#define UKUI_SLEEP_MUSIC_KEY "sleep-music"
+#define UKUI_STARTUP_MUSIC_KEY "startup-music"
+#define UKUI_POWEROFF_MUSIC_KEY "poweroff-music"
+#define UKUI_LOGOUT_MUSIC_KEY "logout-music"
 #define UKUI_WAKEUP_MUSIC_KEY "weakup-music"
 
 #define EVENT_SOUNDS_KEY "event-sounds"
@@ -281,9 +282,10 @@ private Q_SLOTS:
     void outputWidgetSliderChangedSlot(int value);
     void inputWidgetSliderChangedSlot(int value);
     void ukuiThemeChangedSlot(const QString &);
-    void bootButtonSwitchChangedSlot(bool status);
+    void startupButtonSwitchChangedSlot(bool status);
+    void poweroffButtonSwitchChangedSlot(bool status);
+    void logoutMusicButtonSwitchChangedSlot(bool status);
     void wakeButtonSwitchChangedSlot(bool status);
-    void sleepMusicButtonSwitchChangedSlot(bool status);
     void alertSoundButtonSwitchChangedSlot(bool status);
     void bootMusicSettingsChanged();
     void inputPortComboxChangedSlot(int index);
