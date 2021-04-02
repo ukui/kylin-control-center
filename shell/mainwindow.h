@@ -57,7 +57,7 @@ public:
 public:
     QMap<QString, QObject *> exportModule(int);
     void setModuleBtnHightLight(int id);
-
+    static bool isExitBluetooth();
     void bootOptionsFilter(QString opt);
     void bootOptionsSwitch(int moduleNum, int funcNum);
 
@@ -111,7 +111,6 @@ private:
 
     bool dblOnEdge(QMouseEvent *event);
     void initStyleSheet();
-    bool isExitBluetooth();
     void changeSearchSlot();
 
 public slots:

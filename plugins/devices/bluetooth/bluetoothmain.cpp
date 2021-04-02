@@ -110,6 +110,7 @@ BlueToothMain::BlueToothMain(QWidget *parent)
  */
 void BlueToothMain::InitMainTopUI()
 {
+    //~ contents_path /bluetooth/Bluetooth
     QLabel *label_1 = new QLabel(tr("Bluetooth"),frame_top);
     label_1->setFixedSize(100,25);
     label_1->setStyleSheet("QLabel{\
@@ -138,6 +139,7 @@ void BlueToothMain::InitMainTopUI()
     frame_1_layout->setSpacing(10);
     frame_1_layout->setContentsMargins(16,0,16,0);
 
+    //~ contents_path /bluetooth/Turn on Bluetooth
     label_2 = new QLabel(frame_1);
     label_2->setStyleSheet("QLabel{\
                            width: 56px;\
@@ -195,6 +197,7 @@ void BlueToothMain::InitMainTopUI()
     frame_3_layout->setSpacing(10);
     frame_3_layout->setContentsMargins(16,0,16,0);
 
+    //~ contents_path /bluetooth/Show icon on taskbar
     QLabel *label_4 = new QLabel(tr("Show icon on taskbar"),frame_3);
     label_4->setStyleSheet("QLabel{\
                            width: 56px;\
@@ -224,6 +227,7 @@ void BlueToothMain::InitMainTopUI()
     frame_4_layout->setSpacing(10);
     frame_4_layout->setContentsMargins(16,0,16,0);
 
+    //~ contents_path /bluetooth/Discoverable
     QLabel *label_5 = new QLabel(tr("Discoverable"),frame_4);
     label_5->setStyleSheet("QLabel{\
                            width: 56px;\
@@ -274,6 +278,7 @@ void BlueToothMain::InitMainbottomUI()
     title_layout->setSpacing(10);
     title_layout->setContentsMargins(0,0,10,0);
 
+    //~ contents_path /bluetooth/Other Devices
     QLabel *label_1 = new QLabel(tr("Other Devices"),frame_bottom);
     label_1->setStyleSheet("QLabel{\
                           width: 72px;\

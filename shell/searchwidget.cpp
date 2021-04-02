@@ -9,6 +9,11 @@
 #include <QXmlStreamReader>
 #include <QCompleter>
 #include <QRegularExpression>
+#include <mainwindow.h>
+
+extern "C" {
+#include <glib.h>
+}
 
 class ukCompleter : public QCompleter
 {
@@ -225,7 +230,9 @@ void SearchWidget::loadxml() {
                                 m_TxtList.append(m_searchBoxStruct.translateContent);
                             }
                         }
-
+                       
+                        if(!g_file_test("/usr/sbin/ksc-defender", G_FILE_TEST_EXISTS) && m_searchBoxStruct.fullPagePath.contains("securitycenter",Qt::CaseInsensitive))break;
+                        else if(!MainWindow::isExitBluetooth() && m_searchBoxStruct.fullPagePath.contains("bluetooth",Qt::CaseInsensitive))break;          
                         m_EnterNewPagelist.append(m_searchBoxStruct);
 
                         // Add search result content
