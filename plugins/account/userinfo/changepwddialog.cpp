@@ -344,7 +344,7 @@ void ChangePwdDialog::pwdLegalityCheck(){
                ret = pwquality_check(settings, ba.data(), NULL, currentUserName.toLatin1().data(), &auxerror);
             }
 
-            if (ret < 0 && pwd.length() > 0){
+            if (ret < 0 && ui->pwdLineEdit->text().length() > 0){
                 msg = pwquality_strerror(buf, sizeof(buf), ret, auxerror);
                 pwdTip = QString(msg);
             } else {
