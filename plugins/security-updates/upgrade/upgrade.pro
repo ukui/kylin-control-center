@@ -1,4 +1,6 @@
 include(../../../env.pri)
+include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+
 
 QT       +=  core gui widgets network dbus sql
 
@@ -26,9 +28,10 @@ target.path = $${PLUGIN_INSTALL_DIRS}
 config.files = ./config_file/*
 config.path = /usr/share/ukui-control-center/upgrade/
 
-INCLUDEPATH   +=  \
-                 $$PROJECT_ROOTDIR \
 
+INCLUDEPATH   +=  \
+                 $$PROJECT_COMPONENTSOURCE \
+                 $$PROJECT_ROOTDIR \
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -48,7 +51,7 @@ SOURCES += \
     src/historyupdatelistwig.cpp \
     src/m_updatelog.cpp \
     src/mylabel.cpp \
-    src/switchbutton.cpp \
+#    src/switchbutton.cpp \
     src/tabwidget.cpp \
     src/traybusthread.cpp \
     src/ukscconn.cpp \
@@ -70,7 +73,7 @@ HEADERS += \
     src/metatypes.h \
     src/mylabel.h \
     src/shadowwidget.h \
-    src/switchbutton.h \
+#    src/switchbutton.h \
     src/tabwidget.h \
     src/traybusthread.h \
     src/ukscconn.h \

@@ -14,13 +14,13 @@
 #include <QFont>
 
 #include "appupdate.h"
-#include "switchbutton.h"
+//#include "switchbutton.h"
 #include "m_updatelog.h"
 #include "updatesource.h"
 #include "ukscconn.h"
 #include "backup.h"
 #include "checkbutton.h"
-
+#include "SwitchButton/switchbutton.h"
 #define CRUCIAL_FILE_PATH "/var/lib/kylin-software-properties/template/crucial.list"
 #define IMPORTANT_FIEL_PATH "/var/lib/kylin-software-properties/template/important.list"
 
