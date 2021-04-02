@@ -32,6 +32,23 @@ BluetoothNameLabel::BluetoothNameLabel(QWidget *parent, int x, int y):
             style_flag = true;
         else
             style_flag = false;
+
+        switch (settings->get("systemFontSize").toInt()) {
+        case 11:
+        case 12:
+        case 13:
+            font_width = 100;
+            break;
+        case 14:
+            font_width = 70;
+            break;
+        case 15:
+        case 16:
+            font_width = 50;
+            break;
+        default:
+            break;
+        }
         qDebug() << Q_FUNC_INFO << connect(settings,&QGSettings::changed,this,&BluetoothNameLabel::settings_changed);
     }
 }
@@ -45,8 +62,8 @@ void BluetoothNameLabel::set_dev_name(const QString &dev_name)
 {
     QFont ft;
     QFontMetrics fm(ft);
-    QString text = fm.elidedText(dev_name, Qt::ElideRight, 150);
-    m_label->setText(tr("Can now be found as ")+"\""+text+"\"");
+    QString text = fm.elidedText(dev_name, Qt::ElideMiddle, font_width);
+    m_label->setText(tr("Can now be found as \"%1\"").arg(text));
 
     m_label->update();
 
@@ -104,8 +121,8 @@ void BluetoothNameLabel::set_label_text(const QString &value)
 
     QFont ft;
     QFontMetrics fm(ft);
-    QString text = fm.elidedText(m_lineedit->text(), Qt::ElideMiddle, 100);
-    m_label->setText(tr("Can now be found as ")+"\""+text+"\"");
+    QString text = fm.elidedText(m_lineedit->text(), Qt::ElideMiddle, font_width);
+    m_label->setText(tr("Can now be found as \"%1\"").arg(text));
     m_label->setVisible(true);
 }
 
@@ -117,5 +134,28 @@ void BluetoothNameLabel::settings_changed(const QString &key)
             style_flag = true;
         else
             style_flag = false;
+    }else if(key == "systemFontSize"){
+        QFont ft;
+        ft.setPixelSize(settings->get("systemFontSize").toInt());
+        switch (settings->get("systemFontSize").toInt()) {
+        case 11:
+        case 12:
+        case 13:
+            font_width = 100;
+            break;
+        case 14:
+            font_width = 70;
+            break;
+        case 15:
+        case 16:
+            font_width = 50;
+            break;
+        default:
+            break;
+        }
+        QFontMetrics fm(ft);
+        QString text = fm.elidedText(device_name, Qt::ElideMiddle, font_width);
+        m_label->setText(tr("Can now be found as \"%1\"").arg(text));
+        m_label->setVisible(true);
     }
 }

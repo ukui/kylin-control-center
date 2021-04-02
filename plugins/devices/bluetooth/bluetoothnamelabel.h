@@ -39,6 +39,7 @@ private:
     QLabel *m_label = nullptr;
     QLineEdit *m_lineedit = nullptr;
     QString device_name;
+    int font_width;
 };
 
 #endif // BLUETOOTHNAMELABEL_H
