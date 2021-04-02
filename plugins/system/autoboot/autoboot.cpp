@@ -693,7 +693,7 @@ void AutoBoot::update_app_status(){
     QMap<QString, AutoApp>::iterator it = appMaps.begin();
     for (; it != appMaps.end(); it++){
         if (/*it.value().hidden || */it.value().no_display || !it.value().shown ||
-                it.value().bname == "browser360-cn_preheat.desktop" ||
+                it.value().bname == "browser360-cn_preheat.desktop" || it.value().bname == "vmware-user.desktop" ||
                 it.value().exec == "/usr/bin/ukui-settings-daemon") //gtk控制面板屏蔽ukui-settings-daemon,猜测禁止用户关闭
             continue;
         statusMaps.insert(it.key(), it.value());
