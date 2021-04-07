@@ -17,10 +17,10 @@ class DBusUtils : public QObject
     Q_OBJECT
 public:
     explicit DBusUtils(QObject *parent = nullptr);
-    const QString callMethod(const QString &methodName,const QList<QVariant> &argList);
-    int connectSignal(const QString &signal, QObject *obejct,const char *slot) const;
-    const QVariant GetProperty(const QString &dbusname,const QString &interface,const QString &path,const QString &property,const int &flag);
-    const QVariant ValueRet(const QString &dbusname, const QString &interface, const QString &path, const QString &method,
+    QString callMethod(const QString &methodName,const QList<QVariant> &argList);
+    int connectSignal(const QString &signal, QObject *obejct,const char *slot);
+    QVariant GetProperty(const QString &dbusname,const QString &interface,const QString &path,const QString &property,const int &flag);
+    QVariant ValueRet(const QString &dbusname, const QString &interface, const QString &path, const QString &method,
                             const int &flag, const QString &value, const QList<QVariant> &argList);
 
 Q_SIGNALS:

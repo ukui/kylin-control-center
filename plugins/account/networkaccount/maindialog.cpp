@@ -18,9 +18,8 @@
  *
  */
 #include "maindialog.h"
-#include <QDesktopWidget>
-#include <QApplication>
 #include <QDesktopServices>
+#include <QApplication>
 #include <QUrl>
 
 
@@ -224,17 +223,6 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
 
     m_stackedWidget->installEventFilter(this);
 
-    //对话框模态处理
-    //setWindowModality(Qt::ApplicationModal);
-    //把对话框放置屏幕中央
-    QDesktopWidget* m = QApplication::desktop();
-    QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
-    int desk_x = desk_rect.width();
-    int desk_y = desk_rect.height();
-    int x = this->width();
-    int y = this->height();
-    this->move(desk_x / 2 - x / 2 + desk_rect.left(), desk_y / 2 - y / 2 + desk_rect.top());
-
     //初始化一下验证码计时器激活时间
     timerout_num = 60;
 }
@@ -251,13 +239,13 @@ QPushButton * MainDialog::get_login_submit() {
 }
 
 /* 设置DBUS客户端 */
-void MainDialog::set_client(DBusUtils *c,QThread *t) {
+void MainDialog::set_client(DBusUtils *c) {
     m_dbusClient = c;
-    m_workThread  = t;
 
     connect(this, &MainDialog::dologin, this, [=] (QString kylinID,QString pass) {
         QList<QVariant> argList;
         argList << kylinID << pass;
+        qDebug() << kylinID << pass;
         m_dbusClient->callMethod("userLogin",argList);
     });
 
@@ -428,6 +416,19 @@ void MainDialog::on_login_btn() {
                m_loginDialog->get_login_pass()->text().trimmed() == ""
                ) {
            m_loginDialog->set_code(messagebox(501));
+           m_loginTips->show();
+           m_baseWidget->setEnabled(true);
+           set_staus(true);
+           m_loginDialog->get_mcode_widget()->set_change(1);
+           m_loginDialog->get_mcode_widget()->repaint();
+           setshow(m_stackedWidget);
+           m_loginDialog->get_mcode_lineedit()->setText("");
+           m_loginDialog->get_mcode_widget()->set_change(0);
+           emit on_login_failed();
+           return ;
+       }
+       if (m_loginDialog->get_user_edit()->text().trimmed().contains("+")) {
+           m_loginDialog->set_code(messagebox(503));
            m_loginTips->show();
            m_baseWidget->setEnabled(true);
            set_staus(true);

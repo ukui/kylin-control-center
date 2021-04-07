@@ -5,7 +5,7 @@ DBusUtils::DBusUtils(QObject *parent) : QObject(parent)
 
 }
 
-const QString DBusUtils::callMethod(const QString &methodName, const QList<QVariant> &argList) {
+QString DBusUtils::callMethod(const QString &methodName, const QList<QVariant> &argList) {
     QVariant ret;
     QDBusMessage message = QDBusMessage::createMethodCall(QString(DBUSNAME),
                            QString(PATH),
@@ -35,12 +35,12 @@ const QString DBusUtils::callMethod(const QString &methodName, const QList<QVari
     return ret.toString();
 }
 
-int DBusUtils::connectSignal(const QString &signal, QObject *object,const char *slot) const {
+int DBusUtils::connectSignal(const QString &signal, QObject *object,const char *slot) {
     QDBusConnection::sessionBus().connect(QString(), QString(PATH), QString(INTERFACE), signal, object, slot);
     return 0;
 }
 
-const QVariant DBusUtils::GetProperty(const QString &dbusname,const QString &interface, const QString &path, const QString &property,const int &flag) {
+QVariant DBusUtils::GetProperty(const QString &dbusname,const QString &interface, const QString &path, const QString &property,const int &flag) {
     QVariant variant = "qwer";
 
     QDBusMessage message = QDBusMessage::createMethodCall(dbusname,path,
@@ -59,7 +59,7 @@ const QVariant DBusUtils::GetProperty(const QString &dbusname,const QString &int
     return variant;
 }
 
-const QVariant DBusUtils::ValueRet(const QString &dbusname, const QString &interface, const QString &path, const QString &method,
+QVariant DBusUtils::ValueRet(const QString &dbusname, const QString &interface, const QString &path, const QString &method,
                                    const int &flag, const QString &value, const QList<QVariant> &argList) {
     QVariant variant = "qwer";
     QDBusMessage message = QDBusMessage::createMethodCall(dbusname,path,
