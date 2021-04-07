@@ -96,6 +96,26 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     } else {
         m_mainWidget->setCurrentWidget(m_nullWidget);
     }
+
+    if (m_szCode == tr("Disconnected")) {
+        m_autoSyn->get_swbtn()->setDisabled(true);
+        m_autoSyn->get_swbtn()->setDisabledFlag(true);
+        for(int itemCnt = 0;itemCnt < m_szItemlist.size(); itemCnt ++) {
+            if(m_itemList->get_item(itemCnt) != nullptr) {
+                m_itemList->get_item(itemCnt)->get_swbtn()->setDisabledFlag(true);
+                m_itemList->get_item(itemCnt)->get_swbtn()->setDisabled(true);
+            }
+        }
+    } else {
+        m_autoSyn->get_swbtn()->setDisabled(false);
+        m_autoSyn->get_swbtn()->setDisabledFlag(false);
+        for(int itemCnt = 0;itemCnt < m_szItemlist.size(); itemCnt ++) {
+            if(m_itemList->get_item(itemCnt) != nullptr) {
+                m_itemList->get_item(itemCnt)->get_swbtn()->setDisabledFlag(false);
+                m_itemList->get_item(itemCnt)->get_swbtn()->setDisabled(false);
+            }
+        }
+    }
 }
 
 void MainWidget::checkNetWork(QVariantMap map) {
@@ -394,6 +414,16 @@ void MainWidget::checkUserName(QString name) {
         }
         return ;
     }
+
+    m_autoSyn->get_swbtn()->setDisabled(false);
+    m_autoSyn->get_swbtn()->setDisabledFlag(false);
+    for(int itemCnt = 0;itemCnt < m_szItemlist.size(); itemCnt ++) {
+        if(m_itemList->get_item(itemCnt) != nullptr) {
+            m_itemList->get_item(itemCnt)->get_swbtn()->setDisabledFlag(false);
+            m_itemList->get_item(itemCnt)->get_swbtn()->setDisabled(false);
+        }
+    }
+
     m_pSettings = new QSettings(m_szConfPath,QSettings::IniFormat);
     m_pSettings->setIniCodec(QTextCodec::codecForName("UTF-8"));
     m_infoTab->setText(tr("Your account：%1").arg(m_szCode));
@@ -844,6 +874,7 @@ void MainWidget::on_login() {
             m_bIsStopped = true;
             bIsLogging = false;
         });
+
 
         connect(m_cLoginTimer,&QTimer::timeout,m_mainWidget,[this]() {
             m_cLoginTimer->stop();
