@@ -258,8 +258,9 @@ private:
     QString pwdMsg;
 
 private:
-    bool getAutomaticLogin(QString username);
+    QString getAutomaticLogin();
     bool getNoPwdStatus();
+    bool isOpenAutoLogin(const QString &userName);
     void initUserPropertyConnection(const QStringList &objPath);
 
 private slots:

@@ -256,8 +256,7 @@ UserInfomation UserInfo::_acquireUserInfo(QString objpath){
         user.iconfile = propertyMap.find("IconFile").value().toString();
         user.passwdtype = propertyMap.find("PasswordMode").value().toInt();
         user.uid = propertyMap.find("Uid").value().toInt();
-//        user.autologin = propertyMap.find("AutomaticLogin").value().toBool();
-        user.autologin = this->getAutomaticLogin(user.username);
+        user.autologin = getAutomaticLogin().contains(user.username, Qt::CaseSensitive);
         user.objpath = objpath;
     }
     else
@@ -511,17 +510,20 @@ void UserInfo::initComponent(){
 
     //修改当前用户自动登录
     if (getuid())
-        connect(autoLoginSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
-            UserInfomation user = allUserInfoMap.value(g_get_user_name());
+        connect(autoLoginSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
 
+            UserInfomation user = allUserInfoMap.value(g_get_user_name());
 
             UserDispatcher * userdispatcher  = new UserDispatcher(user.objpath);
 
+            bool status = getAutomaticLogin().contains(user.username, Qt::CaseSensitive);
 
-            //        bool status = userdispatcher->get_autoLogin_status();
-
-            bool status = this->getAutomaticLogin(user.username);
-
+            if (checked && !isOpenAutoLogin(user.username)) {
+                autoLoginSwitchBtn->blockSignals(true);
+                autoLoginSwitchBtn->setChecked(false);
+                autoLoginSwitchBtn->blockSignals(false);
+                return ;
+            }
 
             if ((checked != status)) {
                 if (checked) {
@@ -530,11 +532,6 @@ void UserInfo::initComponent(){
                     userdispatcher->change_user_autologin("");
                 }
             }
-
-            //        bool lstStatus = userdispatcher->get_autoLogin_status();
-
-            //        bool lstStatus = this->getAutomaticLogin(user.username);
-            //        autoLoginSwitchBtn->setChecked(lstStatus);
         });
 
     //成功删除用户的回调
@@ -650,7 +647,6 @@ void UserInfo::_refreshUserInfoUI(){
         if (user.username == QString(g_get_user_name())){
             //设置用户头像
             QPixmap iconPixmap = QPixmap(user.iconfile).scaled(ui->currentUserFaceLabel->size());
-//            ui->currentUserFaceLabel->setScaledContents(true);
             ui->currentUserFaceLabel->setPixmap(iconPixmap);
 
             //设置用户名
@@ -658,7 +654,9 @@ void UserInfo::_refreshUserInfoUI(){
             //设置用户类型
             ui->userTypeLabel->setText(_accountTypeIntToString(user.accounttype));
             //设置登录状态
+            autoLoginSwitchBtn->blockSignals(true);
             autoLoginSwitchBtn->setChecked(user.autologin);
+            autoLoginSwitchBtn->blockSignals(false);
             //设置免密登录状态
             nopwdSwitchBtn->setChecked(user.noPwdLogin);
 
@@ -910,7 +908,9 @@ void UserInfo::delete_user_slot(bool removefile, QString username){
 
 void UserInfo::pwdAndAutoChangedSlot(QString key) {
     if ("option" == key) {
-        autoLoginSwitchBtn->setChecked(getAutomaticLogin(mUserName));
+        autoLoginSwitchBtn->blockSignals(true);
+        autoLoginSwitchBtn->setChecked(getAutomaticLogin().contains(mUserName, Qt::CaseSensitive));
+        autoLoginSwitchBtn->blockSignals(false);
         nopwdSwitchBtn->setChecked(getNoPwdStatus());
     } else if( "avatar" == key) {
         //重新获取全部用户QMap
@@ -1134,7 +1134,7 @@ bool UserInfo::eventFilter(QObject *watched, QEvent *event){
     return QObject::eventFilter(watched, event);
 }
 
-bool UserInfo::getAutomaticLogin(QString username) {
+QString UserInfo::getAutomaticLogin() {
 
     QString filename = "/etc/lightdm/lightdm.conf";
     autoSettings = new QSettings(filename, QSettings::IniFormat);
@@ -1144,7 +1144,7 @@ bool UserInfo::getAutomaticLogin(QString username) {
 
     autoSettings->endGroup();
 
-    return autoUser == username ? true : false;
+    return autoUser;
 }
 
 bool UserInfo::getNoPwdStatus() {
@@ -1160,6 +1160,33 @@ bool UserInfo::getNoPwdStatus() {
         qDebug() << noPwdres.error();
     }
     return (noPwdres.value().contains(mUserName) ? true : false);
+}
+
+bool UserInfo::isOpenAutoLogin(const QString &userName) {
+    QString autoLoginedUser = this->getAutomaticLogin();
+    bool res = true;
+    int  ret;
+    if (!autoLoginedUser.isEmpty() && userName != autoLoginedUser) {
+        QMessageBox msg(this->pluginWidget);
+        msg.setWindowTitle(tr("Hint"));
+        msg.setText(tr("The system only allows one user to log in automatically."
+                       "After it is turned on, the automatic login of other users will be turned off."
+                       "Is it turned on?"));
+        msg.addButton(tr("Trun on"), QMessageBox::AcceptRole);
+        msg.addButton(tr("Close on"), QMessageBox::RejectRole);
+
+        ret = msg.exec();
+
+        switch (ret) {
+          case QMessageBox::AcceptRole:
+              res = true;
+              break;
+          case QMessageBox::RejectRole:
+              res = false;
+              break;
+        }
+    }
+    return res;
 }
 
 void UserInfo::initUserPropertyConnection(const QStringList &objPath) {

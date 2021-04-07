@@ -571,7 +571,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>enable autoLogin</string>
+           <string>Automatic login at boot</string>
           </property>
           <property name="scaledContents">
            <bool>true</bool>
