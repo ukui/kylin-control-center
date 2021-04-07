@@ -245,7 +245,6 @@ void MainDialog::set_client(DBusUtils *c) {
     connect(this, &MainDialog::dologin, this, [=] (QString kylinID,QString pass) {
         QList<QVariant> argList;
         argList << kylinID << pass;
-        qDebug() << kylinID << pass;
         m_dbusClient->callMethod("userLogin",argList);
     });
 
