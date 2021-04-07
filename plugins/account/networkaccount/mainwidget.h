@@ -60,7 +60,7 @@ public:
     void            handle_conf();
     bool            judge_item(const QString &enable,const int &cur) const;
     void            showDesktopNotify(const QString &message);
-    bool            isNetWorkOnline();
+    void            isNetWorkOnline();
 protected:
 private:
     ItemList       *m_itemList;
@@ -155,6 +155,7 @@ signals:
     void kylinIdCheck();
 
     void isSync(bool checked);
+    void isOnline(bool checked);
 };
 
 #endif // CONFIG_LIST_WIDGET_H
