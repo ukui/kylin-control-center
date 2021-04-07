@@ -68,7 +68,6 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_szUuid = QUuid::createUuid().toString();
     m_bTokenValid = false;
 
-    m_bIsOnline = isNetWorkOnline();
     if (m_bIsOnline == false) {
         if (!m_autoSyn->get_swbtn()->getDisabledFlag() == true) {
             m_autoSyn->get_swbtn()->setDisabledFlag(true);
@@ -87,6 +86,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     init_gui();         //初始化gui
 
     initSignalSlots();
+    isNetWorkOnline();
     layoutUI();
     dbusInterface();
 
@@ -97,7 +97,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
         m_mainWidget->setCurrentWidget(m_nullWidget);
     }
 
-    if (m_szCode == tr("Disconnected")) {
+    if (m_szCode == tr("Disconnected") || m_szCode == "0") {
         m_autoSyn->get_swbtn()->setDisabled(true);
         m_autoSyn->get_swbtn()->setDisabledFlag(true);
         for(int itemCnt = 0;itemCnt < m_szItemlist.size(); itemCnt ++) {
@@ -146,40 +146,31 @@ void MainWidget::checkNetWork(QVariantMap map) {
     }
 }
 
-bool MainWidget::isNetWorkOnline()
+void MainWidget::isNetWorkOnline()
 {
-    QVariant ret;
-    QDBusMessage message = QDBusMessage::createMethodCall("org.freedesktop.NetworkManager",
-                                                          "/org/freedesktop/NetworkManager",
-                                                          "org.freedesktop.NetworkManager",
-                                                          "CheckConnectivity");
-    QDBusMessage response =  QDBusConnection::systemBus().call(message);
+    QtConcurrent::run([=] {
+        QVariant ret;
+        emit isOnline(false);
+        QDBusMessage message = QDBusMessage::createMethodCall("org.freedesktop.NetworkManager",
+                                                              "/org/freedesktop/NetworkManager",
+                                                              "org.freedesktop.NetworkManager",
+                                                              "CheckConnectivity");
+        QDBusMessage response =  QDBusConnection::systemBus().call(message);
 
-    if (response.type() == QDBusMessage::ReplyMessage) {
-        QDBusVariant value = qvariant_cast<QDBusVariant>(response.arguments().takeFirst());
-        ret = value.variant();
-        if (ret.isValid() == false) {
-            ret = response.arguments().takeFirst();
-            if (ret.toInt() != 3 && ret.toInt() != 1) {
-                if (!m_autoSyn->get_swbtn()->getDisabledFlag() == false) {
-                    m_autoSyn->get_swbtn()->setDisabledFlag(false);
-                    for (int i = 0;i < m_szItemlist.size(); i ++ ) {
-                        m_itemList->get_item(i)->get_swbtn()->setDisabledFlag(false);
-                    }
+        if (response.type() == QDBusMessage::ReplyMessage) {
+            QDBusVariant value = qvariant_cast<QDBusVariant>(response.arguments().takeFirst());
+            ret = value.variant();
+            if (ret.isValid() == false) {
+                ret = response.arguments().takeFirst();
+                if (ret.toInt() != 3 && ret.toInt() != 1) {
+                    emit isOnline(true);
+                    return ;
                 }
-                handle_conf();
-                return true;
             }
         }
-    }
-    if (!m_autoSyn->get_swbtn()->getDisabledFlag() == true) {
-        m_autoSyn->get_swbtn()->setDisabledFlag(true);
-        for (int i = 0;i < m_szItemlist.size(); i ++ ) {
-            m_itemList->get_item(i)->get_swbtn()->setDisabledFlag(true);
-        }
-        handle_conf();
-    }
-    return false;
+        emit isOnline(false);
+        return ;
+    });
 
 }
 
@@ -330,7 +321,7 @@ void MainWidget::dbusInterface() {
         else
             m_syncTimeLabel->setText(tr("Waiting for initialization..."));
         if (keyList.size() > 2) {
-            if (isNetWorkOnline() == false) {
+            if (m_bIsOnline == false) {
                 showDesktopNotify(tr("Network can not reach!"));
                 return ;
             }
@@ -583,7 +574,7 @@ void MainWidget::layoutUI() {
 void MainWidget::initSignalSlots() {
     for (int btncnt = 0;btncnt < m_itemList->get_list().size();btncnt ++) {
         connect(m_itemList->get_item(btncnt), &FrameItem::itemChanged, this, [=] (const QString &name,bool checked) {
-
+            isNetWorkOnline();
             if (m_mainWidget->currentWidget() == m_nullWidget) {
                 return ;
             }
@@ -614,6 +605,26 @@ void MainWidget::initSignalSlots() {
             }
         });
     }
+
+    connect(this, &MainWidget::isOnline, [=] (bool checked) {
+        if (checked == true) {
+            if (m_autoSyn->get_swbtn()->getDisabledFlag() == true) {
+                m_autoSyn->get_swbtn()->setDisabledFlag(false);
+                for (int i = 0;i < m_szItemlist.size(); i ++ ) {
+                    m_itemList->get_item(i)->get_swbtn()->setDisabledFlag(false);
+                }
+            }
+            handle_conf();
+        } else {
+            if (m_autoSyn->get_swbtn()->getDisabledFlag() == false) {
+                m_autoSyn->get_swbtn()->setDisabledFlag(true);
+                for (int i = 0;i < m_szItemlist.size(); i ++ ) {
+                    m_itemList->get_item(i)->get_swbtn()->setDisabledFlag(true);
+                }
+                handle_conf();
+            }
+        }
+    });
 
     connect(this, &MainWidget::isSync, [=] (bool checked) {
         if(checked == false) {
@@ -679,7 +690,7 @@ void MainWidget::initSignalSlots() {
 
 
     connect(m_singleTimer, &QTimer::timeout,this, [this] () {
-        if (isNetWorkOnline() == false) {
+        if (m_bIsOnline == false) {
             m_listTimer->stop();
             showDesktopNotify(tr("Network can not reach!"));
             return ;
@@ -704,7 +715,7 @@ void MainWidget::initSignalSlots() {
     });
 
     connect(m_listTimer,&QTimer::timeout,this,[this] () {
-        if (isNetWorkOnline() == false) {
+        if (m_bIsOnline == false) {
             m_listTimer->stop();
             showDesktopNotify(tr("Network can not reach!"));
             return ;
@@ -715,7 +726,7 @@ void MainWidget::initSignalSlots() {
     });
 
     connect(this,&MainWidget::closedialog,this,[this] () {
-        if (isNetWorkOnline() == false) {
+        if (m_bIsOnline == false) {
             showDesktopNotify(tr("Network can not reach!"));
             return ;
         }
@@ -894,7 +905,7 @@ void MainWidget::on_login() {
 
 /* 登录过程处理事件 */
 void MainWidget::open_cloud() {
-    if (isNetWorkOnline() == false) {
+    if (m_bIsOnline == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -907,7 +918,7 @@ void MainWidget::open_cloud() {
 
 
 void MainWidget::finished_conf(int ret) {
-    if (isNetWorkOnline() == false) {
+    if (m_bIsOnline == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -921,7 +932,7 @@ void MainWidget::finished_conf(int ret) {
 /* 登录成功处理事件 */
 void MainWidget::finished_load(int ret, QString uuid) {
 
-    if (isNetWorkOnline() == false) {
+    if (m_bIsOnline == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
@@ -999,6 +1010,7 @@ bool MainWidget::judge_item(const QString &enable,const int &cur) const {
 
 /* 自动同步滑动按钮点击后改变功能状态 */
 void MainWidget::on_auto_syn(bool checked) {
+    isNetWorkOnline();
     if (m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
@@ -1242,7 +1254,7 @@ void MainWidget::showDesktopNotify(const QString &message)
 }
 
 void MainWidget::loginSuccess(int ret) {
-    if (isNetWorkOnline() == false) {
+    if (m_bIsOnline == false) {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
