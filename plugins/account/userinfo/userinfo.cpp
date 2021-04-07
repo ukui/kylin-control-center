@@ -133,8 +133,6 @@ void UserInfo::initSearchText() {
     ui->changePwdBtn->setText(tr("Password"));
     //~ contents_path /userinfo/Type
     ui->changeTypeBtn->setText(tr("Type"));
-    //~ contents_path /userinfo/Valid
-    ui->changeValidBtn->setText(tr("Valid"));
     //~ contents_path /userinfo/Login no passwd
     ui->loginpwdLabel->setText(tr("Login no passwd"));
     //~ contents_path /userinfo/enable autoLogin
@@ -471,14 +469,6 @@ void UserInfo::initComponent(){
 
             showChangeTypeDialog(user.username);
         });
-
-    connect(ui->changeValidBtn, &QPushButton::clicked, this, [=](bool checked){
-        Q_UNUSED(checked)
-        UserInfomation user = allUserInfoMap.value(g_get_user_name());
-
-        showChangeValidDialog(user.username);
-
-    });
 
     connect(ui->changeGroupBtn, &QPushButton::clicked, this, [=](bool checked){
         Q_UNUSED(checked)
