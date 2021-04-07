@@ -54,7 +54,7 @@ public:
     QString         status = tr("Sign in Cloud");
     int             timerout_num = 60;
     QString         messagebox(const int &code) const;
-    void            set_client(DBusUtils *c,QThread *t);
+    void            set_client(DBusUtils *c);
     QPushButton    *get_login_submit();
     QString replace_blank(QString &str);
     LoginDialog     *get_dialog();

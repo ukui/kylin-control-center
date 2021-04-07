@@ -336,25 +336,24 @@ void MainWidget::dbusInterface() {
                 handle_conf();
             } else {
                 m_autoSyn->make_itemoff();
+                m_pSettings->setValue("Auto-sync/enable","false");
                 m_pSettings->sync();
                 m_bAutoSyn = false;
-                m_autoSyn->get_swbtn()->setChecked(false);
                 m_syncDialog = new SyncDialog(m_szCode,m_szConfPath);
                 m_syncDialog->m_List = keyList.isEmpty() ? m_szItemlist : keyList;
                 connect(m_syncDialog, &SyncDialog::sendKeyMap, this,[=] (QStringList keyList) {
                     Q_UNUSED(keyList);
+                    m_bAutoSyn = true;
                     m_autoSyn->make_itemon();
                     m_pSettings->setValue("Auto-sync/enable","true");
                     m_pSettings->sync();
-                    m_bAutoSyn = true;
-                    m_autoSyn->get_swbtn()->setChecked(true);
-                    emit doselect(keyList);
                     m_syncDialog->close();
-                    handle_conf();
+                    m_listTimer->start(1000);
                 });
 
                 connect(m_syncDialog, &SyncDialog::coverMode, this, [=] () {
-                    on_auto_syn(false);
+                    m_autoSyn->make_itemon();
+                    m_pSettings->setValue("Auto-sync/enable","true");
                     emit doman();
                     m_syncDialog->close();
                     handle_conf();
@@ -374,9 +373,6 @@ void MainWidget::dbusInterface() {
     } else {
         emit docheck();
     }
-    connect(thread,&QThread::finished,thread,&QObject::deleteLater);
-    m_dbusClient->moveToThread(thread);
-    thread->start();    //线程开始
 }
 
 void MainWidget::finishedLogout(int ret) {
@@ -442,8 +438,7 @@ void MainWidget::checkUserName(QString name) {
 }
 
 void MainWidget::initMemoryAlloc() {
-    m_dbusClient = new DBusUtils;    //创建一个通信客户端
-    thread  = new QThread();            //为创建的客户端做异步处理
+    m_dbusClient = new DBusUtils(this);    //创建一个通信客户端
 
     m_mainWidget = new QStackedWidget(this);
 
@@ -474,6 +469,7 @@ void MainWidget::initMemoryAlloc() {
     m_cLoginTimer = new QTimer(this);
     m_lazyTimer = new QTimer(this);
     m_listTimer = new QTimer(this);
+    m_singleTimer = new QTimer(this);
     m_pSettings = nullptr;
 
     m_animateLayout = new QHBoxLayout;
@@ -566,6 +562,8 @@ void MainWidget::initSignalSlots() {
                 showDesktopNotify(tr("Network can not reach!"));
                 return ;
             }
+            m_pSettings->setValue(m_itemMap.key(name) + "/enable",checked);
+            m_pSettings->sync();
             if ( m_exitCloud_btn->property("on") == true || !m_bAutoSyn) {
                 if (m_itemList->get_item_by_name(name)->get_swbtn()->getDisabledFlag() == true)
                     m_itemList->get_item_by_name(name)->set_active(false);
@@ -577,13 +575,11 @@ void MainWidget::initSignalSlots() {
                 m_key = m_itemMap.key(name);
                 if (m_key != "") {
                     //QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
-                    emit dosingle(m_key);
+                    m_singleTimer->start(1000);
                 }
 
             }
-            emit dochange(m_itemMap.key(name),checked);
-
-            if (m_itemMap.value(name) == "shortcut" && checked == true) {
+            if (m_itemMap.key(name) == "shortcut" && checked == true) {
                 showDesktopNotify(tr("This operation may cover your settings!"));
             }
         });
@@ -652,6 +648,21 @@ void MainWidget::initSignalSlots() {
     });
 
 
+    connect(m_singleTimer, &QTimer::timeout,this, [this] () {
+        if (isNetWorkOnline() == false) {
+            m_listTimer->stop();
+            showDesktopNotify(tr("Network can not reach!"));
+            return ;
+        }
+        if(m_key == "") {
+            return ;
+        }
+
+        emit dosingle(m_key);
+        m_singleTimer->stop();
+        handle_conf();
+    });
+
     connect(m_lazyTimer,&QTimer::timeout,this,[this] () {
        //emit doman();
         if (m_bIsKylinId) {
@@ -670,6 +681,7 @@ void MainWidget::initSignalSlots() {
         }
         emit doselect(m_syncDialog->m_List);
         m_listTimer->stop();
+        handle_conf();
     });
 
     connect(this,&MainWidget::closedialog,this,[this] () {
@@ -814,7 +826,7 @@ void MainWidget::on_login() {
         m_mainDialog = new MainDialog;
         m_mainDialog->setAttribute(Qt::WA_DeleteOnClose);
         //m_editDialog->m_bIsUsed = false;
-        m_mainDialog->set_client(m_dbusClient,thread);
+        m_mainDialog->set_client(m_dbusClient);
         m_mainDialog->is_used = true;
         m_mainDialog->set_clear();
         m_exitCode->setText(" ");
@@ -919,10 +931,10 @@ void MainWidget::handle_conf() {
         return ;
     }
 
-    if (m_pSettings != nullptr &&  ConfigFile(m_szConfPath).Get("Auto-sync","enable").toString() == "true") {
+    if (m_pSettings != nullptr &&  m_pSettings->value("Auto-sync/enable").toString() == "true") {
         m_stackedWidget->setCurrentWidget(m_itemList);
-        m_autoSyn->make_itemon();
         for (int i  = 0;i < m_szItemlist.size();i ++) {
+            m_itemList->get_item(i)->make_itemon();
             m_itemList->get_item(i)->set_active(true);
         }
         m_bAutoSyn = true;
@@ -981,6 +993,7 @@ void MainWidget::on_login_out() {
         } else {
             emit dologout();
         }
+        m_bTokenValid = false;
 
     } else {
         emit dosend("exit");
@@ -1188,7 +1201,7 @@ void MainWidget::showDesktopNotify(const QString &message)
     QList<QVariant> args;
     args<<(QCoreApplication::applicationName())
     <<((unsigned int) 0)
-    <<QString("/usr/share/icons/ukui/scalable/apps/kylin-cloud-account.svg")
+    <<QString("/usr/share/icons/ukui-icon-theme-default/scalable/apps/kylin-cloud-account.svg")
     <<tr("Cloud ID desktop message") //显示的是什么类型的信息
     <<message //显示的具体信息
     <<QStringList()
@@ -1217,12 +1230,4 @@ MainWidget::~MainWidget() {
     m_itemList = nullptr;
     delete m_welcomeImage;
     m_welcomeImage = nullptr;
-    delete m_dbusClient;
-    m_dbusClient = nullptr;
-    thread->requestInterruption();
-    if (thread != nullptr)
-    {
-        thread->quit();
-    }
-    thread->wait();
 }

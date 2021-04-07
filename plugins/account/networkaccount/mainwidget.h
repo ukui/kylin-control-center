@@ -80,6 +80,7 @@ private:
     QPushButton         *m_login_btn;
     QTimer              *m_lazyTimer;
     QTimer              *m_listTimer;
+    QTimer              *m_singleTimer;
     QLabel              *m_welcomeMsg;
     QSvgWidget              *m_welcomeImage;
     QVBoxLayout         *m_welcomeLayout;
