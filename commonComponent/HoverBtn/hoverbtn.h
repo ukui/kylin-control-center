@@ -16,23 +16,29 @@ class HoverBtn : public QWidget
 {
     Q_OBJECT
 public:
-    HoverBtn(QString mname, QWidget *parent = nullptr);
+    HoverBtn(QString mname, bool isHide, QWidget *parent = nullptr);
+    HoverBtn(QString mname, QString detailName, QWidget *parent = nullptr);
     ~HoverBtn();
 
 public:
     QString mName;
+    QString mDetailName;
     QPushButton *mAbtBtn;
 
     QFrame *mInfoItem;
 
     QLabel *mPitIcon;
     QLabel *mPitLabel;
+    QLabel *mDetailLabel;
 
     QHBoxLayout *mHLayout;
 
     QTimer *mMouseTimer;
 
     bool mAnimationFlag = false;
+    bool mIsHide;
+
+    int  mHideWidth;
 
     QPropertyAnimation *mEnterAction = nullptr;
     QPropertyAnimation *mLeaveAction = nullptr;

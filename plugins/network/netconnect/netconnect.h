@@ -38,9 +38,15 @@
 #include <HoverWidget/hoverwidget.h>
 #include <QMap>
 
+#include <QDBusMessage>
+#include <QDBusObjectPath>
+#include <QDBusInterface>
+#include <QDBusReply>
+
 #include "netconnectwork.h"
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
+#include "netdetail.h"
 
 enum {
     DISCONNECTED,
@@ -68,6 +74,20 @@ typedef struct ActiveConInfo_s {
     QString strConName;
     QString strConUUID;
     QString strConType;
+    QString strSecType;
+    QString strChan;
+    QString strMac;
+    QString strHz;
+
+    QString strIPV4Address;
+    QString strIPV4Prefix;
+    QString strIPV4Dns;
+    QString strIPV4GateWay;
+
+    QString strBandWidth;
+    QString strIPV6Address;
+    QString strIPV6GateWay;
+    QString strIPV6Prefix;
 }ActiveConInfo;
 
 class NetConnect : public QObject, CommonInterface
@@ -124,6 +144,14 @@ private:
 
     bool               mFirstLoad;
 
+    bool               mIsLanVisible = false;
+    bool               mIsWlanVisible = false;
+
+    NetDetail          *mWlanDetail;
+    NetDetail          *mLanDetail;
+
+    QList<ActiveConInfo> mActiveInfo;
+
 private:
     int         setSignal(QString lv);
     QStringList execGetLanList();
@@ -138,15 +166,20 @@ private:
     void        _buildWidgetForItem(QString);
     void        initNetworkMap();
     void        setWifiBtnDisable();
+    void        setNetDetailVisible();                              // 设置网络刷新状态
     QString     wifiIcon(bool isLock, int strength);
+    QList<QVariantMap> getDbusMap(const QDBusMessage &dbusMessage);
 
 private slots:
     void wifiSwitchSlot(bool status);
     void getNetList();
     void netPropertiesChangeSlot(QMap<QString, QVariant> property);
+    void netDetailSlot(QString netName);
 
 signals:
     void refresh();
 };
+
+Q_DECLARE_METATYPE(QList<QDBusObjectPath>);
 
 #endif // NETCONNECT_H

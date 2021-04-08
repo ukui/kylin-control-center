@@ -14,11 +14,12 @@ NetconnectWork::~NetconnectWork() {
 
 void NetconnectWork::run() {
     if (!getWifiIsOpen()) {
+
         emit wifiGerneral(QStringList());
-        return ;
+        return;
     }
     QProcess *wifiPro = new QProcess(this);
-    wifiPro->start("nmcli -f signal,security,ssid, device wifi");
+    wifiPro->start("nmcli -f signal,security,chan,freq,ssid device wifi");
     wifiPro->waitForFinished();
     QString shellOutput = "";
     QString output = wifiPro->readAll();

@@ -2,8 +2,16 @@
 
 #include <QDebug>
 
-HoverBtn::HoverBtn(QString mname, QWidget *parent) :
-    QWidget(parent), mName(mname)
+HoverBtn::HoverBtn(QString mname, bool isHide, QWidget *parent) :
+   mName(mname), mIsHide(isHide), QWidget(parent)
+{
+    this->setMaximumSize(960, 50);
+    this->setMinimumSize(550, 50);
+    initUI();
+}
+
+HoverBtn::HoverBtn(QString mname, QString detailName, QWidget *parent) :
+    mName(mname), mDetailName(detailName), QWidget(parent)
 {
     this->setMaximumSize(960, 50);
     this->setMinimumSize(550, 50);
@@ -15,6 +23,8 @@ HoverBtn::~HoverBtn() {
 }
 
 void HoverBtn::initUI() {
+
+    mIsHide ? (mHideWidth = 0) : (mHideWidth = 102);
 
     mInfoItem = new QFrame(this);
     mInfoItem->setFrameShape(QFrame::Shape::Box);
@@ -28,6 +38,10 @@ void HoverBtn::initUI() {
 
     mPitLabel = new QLabel(mInfoItem);
     mHLayout->addWidget(mPitLabel);
+
+    mDetailLabel = new QLabel(mInfoItem);
+    mHLayout->addWidget(mDetailLabel);
+
     mHLayout->addStretch();
 
     mAbtBtn   = new QPushButton(this);
@@ -44,7 +58,7 @@ void HoverBtn::initAnimation() {
         if (mAnimationFlag) {
             if(mLeaveAction->state() != QAbstractAnimation::Running){
                 mEnterAction->setStartValue(QRect(0, 0, mInfoItem->width(), mInfoItem->height()));
-                mEnterAction->setEndValue(QRect(0, 0, mInfoItem->width() - 102, mInfoItem->height()));
+                mEnterAction->setEndValue(QRect(0, 0, mInfoItem->width() - mHideWidth, mInfoItem->height()));
                 mEnterAction->start();
             }
         }
@@ -57,7 +71,7 @@ void HoverBtn::initAnimation() {
 
     connect(mEnterAction, &QPropertyAnimation::finished, this, [=] {
         mAbtBtn->setGeometry(this->width()-100, 2, 80, 45);
-        mAbtBtn->setVisible(true);
+        mAbtBtn->setVisible(!mIsHide);
     });
 
     mLeaveAction = new QPropertyAnimation(mInfoItem,"geometry");

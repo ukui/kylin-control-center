@@ -31,11 +31,13 @@ PKGCONFIG += gsettings-qt \
 
 SOURCES += \
     netconnect.cpp \
-    netconnectwork.cpp
+    netconnectwork.cpp \
+    netdetail.cpp
 
 HEADERS += \
     netconnect.h \
-    netconnectwork.h
+    netconnectwork.h \
+    netdetail.h
 
 FORMS += \
     netconnect.ui
