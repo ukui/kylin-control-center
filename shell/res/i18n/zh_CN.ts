@@ -4295,7 +4295,7 @@ Please retry or relogin!</source>
     <name>NetConnect</name>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.ui" line="38"/>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="111"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="108"/>
         <source>Netconnect Status</source>
         <translation>网络状态</translation>
         <extra-contents_path>/netconnect/Netconnect Status</extra-contents_path>
@@ -4305,26 +4305,26 @@ Please retry or relogin!</source>
         <translation type="vanished">加载中...</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="116"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="119"/>
         <source>Available Network</source>
         <translation>可用网络</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="139"/>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="264"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="142"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="559"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="189"/>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="113"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="192"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="110"/>
         <source>open wifi</source>
         <translation>打开wifi</translation>
         <extra-contents_path>/netconnect/open wifi</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="237"/>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="81"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.ui" line="240"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="105"/>
         <source>Network settings</source>
         <translation>网络设置</translation>
     </message>
@@ -4345,29 +4345,120 @@ Please retry or relogin!</source>
         <translation type="vanished">连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="522"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="170"/>
+        <source>Connected</source>
+        <translation>已连接</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="172"/>
+        <source>No net</source>
+        <translation>无连接</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="179"/>
+        <source>Detail</source>
+        <translation>网络详情</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="424"/>
+        <source>None</source>
+        <translation>无</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="548"/>
         <source>Refreshing...</source>
         <translation>刷新中...</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="191"/>
         <source>connected</source>
-        <translation>已连接</translation>
+        <translation type="vanished">已连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="193"/>
         <source>No network</source>
-        <translation>无网络连接</translation>
+        <translation type="vanished">无网络连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="53"/>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="291"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="54"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="311"/>
         <source>Connect</source>
         <translation>网络连接</translation>
     </message>
     <message>
         <source>Disconnect</source>
         <translation type="vanished">未连接</translation>
+    </message>
+</context>
+<context>
+    <name>NetDetail</name>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netdetail.cpp" line="88"/>
+        <source>SSID:</source>
+        <translation>SSID：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netdetail.cpp" line="89"/>
+        <source>Protocol</source>
+        <translation>协议：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netdetail.cpp" line="91"/>
+        <source>Security Type:</source>
+        <translation>安全类型：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netdetail.cpp" line="92"/>
+        <source>Hz:</source>
+        <translation>网络频带：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netdetail.cpp" line="93"/>
+        <source>Chan:</source>
+        <translation>网络通道：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netdetail.cpp" line="96"/>
+        <source>BandWidth:</source>
+        <translation>带宽：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netdetail.cpp" line="97"/>
+        <source>IPV4:</source>
+        <translation>IPV4：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netdetail.cpp" line="98"/>
+        <source>IPV4 Dns:</source>
+        <translation>IPV4 Dns:</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netdetail.cpp" line="99"/>
+        <source>IPV4 GateWay:</source>
+        <translation>网关：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netdetail.cpp" line="100"/>
+        <source>IPV4 Prefix:</source>
+        <translation>前缀：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netdetail.cpp" line="101"/>
+        <source>IPV6:</source>
+        <translation>IPV6:</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netdetail.cpp" line="102"/>
+        <source>IPV6 Prefix:</source>
+        <translation>前缀：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netdetail.cpp" line="103"/>
+        <source>IPV6 GateWay:</source>
+        <translation>网关：</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/network/netconnect/netdetail.cpp" line="104"/>
+        <source>Mac:</source>
+        <translation>物理地址：</translation>
     </message>
 </context>
 <context>
