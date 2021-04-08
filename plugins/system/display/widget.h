@@ -114,31 +114,25 @@ class Widget : public QWidget
 
     void slotThemeChanged(bool judge);
 
-    // 按钮选择主屏确认按钮
-    void primaryButtonEnable(bool);
-    // 是否禁用设置主屏按钮
-    void mainScreenButtonSelect(int index);
-    // 是否禁用屏幕
-    void checkOutputScreen(bool judge);
-    // 设置屏幕亮度
-    void setBrightnessScreen(int value);
-    void setDDCBrightness();
 
-    // 设置亮度滑块数值
-    void setBrightnesSldierValue();
-    // 设置夜间模式
-    void setNightMode(const bool nightMode);
-    // 初始化夜间模式
-    void initNightStatus();
+    void primaryButtonEnable(bool);             // 按钮选择主屏确认按钮
+    void mainScreenButtonSelect(int index);     // 是否禁用设置主屏按钮
+    void checkOutputScreen(bool judge);         // 是否禁用屏幕
+    void setBrightnessScreen(int value);        // 设置屏幕亮度
+    void setDDCBrightness();
+    void setBrightSliderVisible();              // 笔记本外接屏幕不可调整亮度
+
+    void setBrightnesSldierValue();             // 设置亮度滑块数值
+    void setNightMode(const bool nightMode);    // 设置夜间模式
+
+    void initNightStatus();                     // 初始化夜间模式
     void nightChangedSlot(QHash<QString, QVariant> nightArg);
 
-    // 设置wayland主屏幕
-    void callMethod(QRect geometry, QString name);
+    void callMethod(QRect geometry, QString name);// 设置wayland主屏幕
     QString getPrimaryWaylandScreen();
     void isWayland();
 
-    // 设置外接显示器亮度
-    void setDDCBrighthessSlot(int brightnessValue);
+    void setDDCBrighthessSlot(int brightnessValue);// 设置外接显示器亮度
 
     void shortAddBrightnessSlot();
     void shortCutBrightnessSlot();
@@ -186,7 +180,6 @@ class Widget : public QWidget
 #else
     KScreen::ConfigPtr mConfig = nullptr;
     KScreen::ConfigPtr mPrevConfig = nullptr;
-    // outPutptr结果
     KScreen::OutputPtr res = nullptr;
 #endif
 

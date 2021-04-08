@@ -1283,6 +1283,8 @@ void Widget::propertiesChangedSlot(QString property, QMap<QString, QVariant> pro
 
 // 是否禁用主屏按钮
 void Widget::mainScreenButtonSelect(int index) {
+    setBrightSliderVisible();
+
     if (!mConfig || ui->primaryCombo->count() <= 0) {
         return;
     }
@@ -1446,6 +1448,12 @@ void Widget::setDDCBrightness() {
         setDDCBrighthessSlot(value);
     } else {
         setBrightnessScreen(value);
+    }
+}
+
+void Widget::setBrightSliderVisible() {
+    if (mIsBattery) {
+        ui->brightnessframe->setVisible(isLaptopScreen());
     }
 }
 
