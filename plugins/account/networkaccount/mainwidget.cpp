@@ -150,7 +150,7 @@ void MainWidget::isNetWorkOnline()
 {
     QtConcurrent::run([=] {
         QVariant ret;
-        emit isOnline(false);
+       // emit isOnline(false);
         QDBusMessage message = QDBusMessage::createMethodCall("org.freedesktop.NetworkManager",
                                                               "/org/freedesktop/NetworkManager",
                                                               "org.freedesktop.NetworkManager",
