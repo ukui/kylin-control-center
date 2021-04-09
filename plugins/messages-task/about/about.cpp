@@ -373,9 +373,7 @@ void About::initSearchText() {
     ui->cpuLabel->setText(tr("CPU"));
     //~ contents_path /about/Memory
     ui->memoryLabel->setText(tr("Memory"));
-    //~ contents_path /about/Disk
     ui->diskLabel->setVisible(false);
-    // ui->diskLabel->setText(tr("Disk"));
 }
 
 void About::initActiveDbus() {

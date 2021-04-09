@@ -236,10 +236,10 @@ void Wallpaper::setupConnect(){
         showLocalWpDialog();
     });
 
-
     connect(ui->browserOnlinewpBtn, &QPushButton::clicked, [=]{
         QDesktopServices::openUrl(QUrl(kylinUrl));
     });
+
     connect(ui->resetBtn, SIGNAL(clicked(bool)), this, SLOT(resetDefaultWallpaperSlot()));
 
     // 纯色背景
