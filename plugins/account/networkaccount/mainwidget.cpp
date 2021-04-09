@@ -798,7 +798,6 @@ void MainWidget::initSignalSlots() {
        }
     });
     connect(m_cLoginTimer,&QTimer::timeout,this,[this]() {
-        qDebug() << "ssss";
         if (m_mainDialog == nullptr) {
             return ;
         }
@@ -914,7 +913,6 @@ void MainWidget::on_login() {
         connect(m_mainDialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
         connect(m_mainDialog, &MainDialog::on_submit_clicked, this, [=] (){
             m_bIsStopped = false;
-            qDebug() << "info";
             bIsLogging = true;
             m_cLoginTimer->setSingleShot(true);
             m_cLoginTimer->setInterval(10000);
