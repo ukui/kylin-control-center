@@ -37,6 +37,15 @@
 #include "buildpicunitsworker.h"
 #include "pictureunit.h"
 
+#ifdef signals
+#undef signals
+#endif
+
+extern "C" {
+#include <glib.h>
+#include <gio/gio.h>
+}
+
 namespace Ui {
 class Screenlock;
 }
@@ -68,7 +77,7 @@ private:
     void setLockBackground(bool status);
     bool getLockStatus();
     void connectToServer();
-    PictureUnit * prePicUnit;
+
 private:
     Ui::Screenlock *ui;
 
@@ -95,10 +104,15 @@ private:
     FlowLayout * flowLayout;
 
     BuildPicUnitsWorker * pWorker;
+    PictureUnit * prePicUnit;
 
     bool mFirstLoad;
+
 public Q_SLOTS:
     void keyChangedSlot(const QString &key);
+
+private slots:
+    void setScreenLockBgSlot();
 };
 
 #endif // SCREENLOCK_H
