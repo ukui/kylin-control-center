@@ -22,6 +22,10 @@
 
 #include <QDebug>
 #include <QBoxLayout>
+#include <QTextEdit>
+#include <QTextBrowser>
+#include <QFileDialog>
+#include "ComboBox/combobox.h"
 
 #define SSTHEMEPATH "/usr/share/applications/screensavers/"
 #define ID_PREFIX "screensavers-ukui-"
@@ -38,6 +42,7 @@
 #define BACKGROUND_SCHEMA "org.mate.background"
 
 const QString BACK_FILENAME_KEY = "pictureFilename";
+const int silderNeverValue = -1;
 
 #define IDLEMIN 1
 #define IDLEMAX 120
@@ -45,25 +50,29 @@ const QString BACK_FILENAME_KEY = "pictureFilename";
 
 typedef enum
 {
-    MODE_BLANK_ONLY,
-    MODE_RANDOM,
-    MODE_SINGLE,
-    MODE_IMAGE,
-    MODE_DEFAULT_UKUI,
+    MODE_BLANK_ONLY,       //纯黑屏保
+    MODE_RANDOM,          //暂无
+    MODE_SINGLE,         //单独的屏保设置(多用于其它屏保)
+    MODE_IMAGE,          //暂无
+    MODE_DEFAULT_UKUI,   //UKUI
+    MODE_CUSTOMIZE,     //自定义
 }SaverMode;
 
-void PreviewWidget::paintEvent(QPaintEvent *e){
-//    QPainter painter(this);
-//    painter.setCompositionMode(QPainter::CompositionMode_DestinationOver);
-//    qDebug() << Q_FUNC_INFO << this->rect();
-//    painter.fillRect(this->rect(), Qt::red);
-}
-
+/*
+ 选择框中的序号     
+*/
+typedef enum
+{
+    INDEX_MODE_DEFAULT_UKUI,
+    INDEX_MODE_BLANK_ONLY,
+}SaverModeIndex;
+static int INDEX_MODE_CUSTOMIZE = -1;
 
 Screensaver::Screensaver() : mFirstLoad(true)
 {
     pluginName = tr("Screensaver");
     pluginType = PERSONALIZED;
+
 }
 
 Screensaver::~Screensaver() {
@@ -91,10 +100,7 @@ QWidget *Screensaver::get_plugin_ui() {
         pluginWidget = new QWidget;
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
-
-        ui->previewWidget->setStyleSheet("#previewWidget{background: black;}");
-        ui->previewWidget->setAutoFillBackground(true);
-
+  
         process = new QProcess();
 
         initTitleLabel();
@@ -114,7 +120,6 @@ void Screensaver::plugin_delay_control() {
 }
 
 const QString Screensaver::name() const {
-
     return QStringLiteral("screensaver");
 }
 
@@ -122,11 +127,21 @@ void Screensaver::initTitleLabel() {
     QFont font;
     font.setPixelSize(18);
     ui->titleLabel->setFont(font);
+    QLabel *previewLabel = new QLabel(ui->previewWidget->topLevelWidget());
+    previewLabel->setStyleSheet("background-color:palette(button);border-radius:0px;");
+    QFont fontLabel;
+    fontLabel.setPixelSize(12);
+    QRect rect = ui->previewWidget->geometry();
+    previewLabel->setFont(fontLabel);
+    previewLabel->setGeometry(rect.x()+rect.width()/2-40/2,rect.y()+rect.height()+23,40,20);
+    previewLabel->setAlignment(Qt::AlignCenter);
+    previewLabel->setText("预览");
+
 }
 
 void Screensaver::initSearchText() {
     //~ contents_path /screensaver/Enable screensaver
-    ui->enableLabel->setText(tr("Enable screensaver"));
+    ui->enableLabel->setText(tr("Lock screen when activating screensaver"));
     //~ contents_path /screensaver/Screensaver program
     ui->programLabel->setText(tr("Screensaver program"));
     //~ contents_path /screensaver/idle time
@@ -134,10 +149,10 @@ void Screensaver::initSearchText() {
 }
 
 void Screensaver::initComponent() {
+    /*
     if (QGSettings::isSchemaInstalled(SCREENSAVER_SCHEMA)) {
         const QByteArray id(SCREENSAVER_SCHEMA);
         screenlock_settings = new QGSettings(id, QByteArray(), this);
-
         connect(screenlock_settings, &QGSettings::changed, [=](QString key) {
             if (key == "lockEnabled") {
                 bool judge = screenlock_settings->get(LOCK_KEY).toBool();
@@ -146,85 +161,99 @@ void Screensaver::initComponent() {
                 }
             }
         });
-    }
-
+    }*/
     if (QGSettings::isSchemaInstalled(SESSION_SCHEMA)) {
         qSessionSetting = new QGSettings(SESSION_SCHEMA, QByteArray(), this);
     }
-
     if (QGSettings::isSchemaInstalled(SCREENSAVER_SCHEMA)) {
         qScreenSaverSetting = new QGSettings(SCREENSAVER_SCHEMA, QByteArray(), this);
     }
-
     screensaver_bin = "/usr/lib/ukui-screensaver/ukui-screensaver-default";
 
     //添加开启屏保按钮
+    ui->enableFrame->setVisible(false); //屏保激活锁屏(原打开屏保按钮)，在锁屏界面实现，这里暂时隐藏处理，保留原打开功能
     enableSwitchBtn = new SwitchButton(ui->enableFrame);
     ui->enableHorLayout->addStretch();
     ui->enableHorLayout->addWidget(enableSwitchBtn);
 
+  
     //添加锁定屏幕开关按钮
-    lockSwitchBtn = new SwitchButton(ui->lockFrame);
-    ui->lockHorLayout->addStretch();
-    ui->lockHorLayout->addWidget(lockSwitchBtn);
+    showTimeBtn = new SwitchButton(ui->showTimeFrame);
+    ui->showTimeLayout->addStretch();
+    ui->showTimeLayout->addWidget(showTimeBtn);
 
+    initCustomizeFrame();
     //初始化屏保程序下拉列表
-    ui->comboBox->addItem(tr("Default_ukui"));
+    ui->comboBox->addItem(tr("UKUI"));
     ui->comboBox->addItem(tr("Blank_Only"));
-//    ui->comboBox->addItem(tr("Random"));
+    // ui->comboBox->addItem(tr("Random"));
     QMap<QString, SSThemeInfo>::iterator it = infoMap.begin();
     for (int index = 2; it != infoMap.end(); it++, index++) {
         SSThemeInfo info = (SSThemeInfo)it.value();
         ui->comboBox->addItem(info.name);
         ui->comboBox->setItemData(index, QVariant::fromValue(info));
     }
-
+    ui->comboBox->addItem(tr("Customize"));
+    INDEX_MODE_CUSTOMIZE = ui->comboBox->count() - 1;  //得到【自定义】在滑动栏中的位置
     //初始化滑动条
     QStringList scaleList;
-    scaleList<< tr("1m") << tr("5m") << tr("10m") << tr("30m") << tr("45m")
-              <<tr("1h") << tr("1.5h") << tr("3h");
+    scaleList<< tr("5min") << tr("10min") << tr("15min") << tr("30min") << tr("1hour")
+              <<tr("Never");
 
     uslider = new Uslider(scaleList);
-    uslider->setRange(1,8);
+    uslider->setRange(1,6);
     uslider->setTickInterval(1);
     uslider->setPageStep(1);
 
     ui->lockhorizontalLayout->addWidget(uslider);
-    ui->lockhorizontalLayout->addSpacing(15);
+    // ui->lockhorizontalLayout->addSpacing(15);
 
+/*
+        暂时废弃掉这个按钮的打开关闭屏保功能
     connect(enableSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked) {
         screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
         g_settings_set_boolean(screensaver_settings, ACTIVE_KEY, checked);
-
-        //刷新LockWidget状态
-//        ui->lockFrame->setVisible(checked);
         g_object_unref(screensaver_settings);
     });
-
+*/
     connect(qScreenSaverSetting, &QGSettings::changed, this, [=](const QString key) {
         if ("idleActivationEnabled" == key) {
             auto status = qScreenSaverSetting->get(ACTIVE_KEY).toBool();
-            enableSwitchBtn->setChecked(status);
+            //enableSwitchBtn->setChecked(status);
+            if (status == false) {
+                uslider->setValue(lockConvertToSlider(silderNeverValue));
+            }
         }
     });
 
     connect(uslider, &QSlider::valueChanged, this, [=] {
         int value = convertToLocktime(uslider->value());
-        session_settings = g_settings_new(SESSION_SCHEMA);
-        g_settings_set_int(session_settings, IDLE_DELAY_KEY, value);
-        g_object_unref(session_settings);
+        if (value == silderNeverValue) {  //关闭锁屏
+            screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);  
+            g_settings_set_boolean(screensaver_settings, ACTIVE_KEY, false);
+            g_object_unref(screensaver_settings);
+        }
+        else {
+            if(qScreenSaverSetting->get(ACTIVE_KEY).toBool() == false) {  //需先打开屏保
+                screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);  
+                g_settings_set_boolean(screensaver_settings, ACTIVE_KEY, true);
+                g_object_unref(screensaver_settings);
+            }
+            session_settings = g_settings_new(SESSION_SCHEMA);
+            g_settings_set_int(session_settings, IDLE_DELAY_KEY, value);
+            g_object_unref(session_settings);
+        }
     });
     connectToServer();
-
     connect(qSessionSetting, &QGSettings::changed, this,[=](const QString& key) {
        if ("idleDelay" == key) {
-           auto value = qSessionSetting->get(key).toInt();
-           uslider->setValue(lockConvertToSlider(value));
+            if (qScreenSaverSetting->get(ACTIVE_KEY).toBool() == true) {
+                auto value = qSessionSetting->get(key).toInt();
+                uslider->setValue(lockConvertToSlider(value));
+            }
        }
     });
-
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(themesComboxChanged(int)));
-
     connect(ui->previewWidget, &QWidget::destroyed, this, [=] {
         closeScreensaver();
     });
@@ -240,27 +269,27 @@ void Screensaver::initEnableBtnStatus() {
     QGSettings * settings = new QGSettings(ba);
 
     //初始化EnableBtn状态
-    bool active;
+    /*bool active;
     active = settings->get(ACTIVE_KEY).toBool();
     enableSwitchBtn->blockSignals(true);
     enableSwitchBtn->setChecked(active);
-    enableSwitchBtn->blockSignals(false);
+    enableSwitchBtn->blockSignals(false);*/
 
     //初始化LockWidget状态
-    ui->lockFrame->setVisible(false);
+    // ui->showTimeFrame->setVisible(false);
 
     bool locked;
     locked = settings->get(LOCK_KEY).toBool();
-    initLockBtnStatus(locked);
+    initShowTimeBtnStatus(locked);
 
     delete settings;
     settings = nullptr;
 }
-
-void Screensaver::initLockBtnStatus(bool status) {
-    lockSwitchBtn->blockSignals(true);
-    lockSwitchBtn->setChecked(status);
-    lockSwitchBtn->blockSignals(false);
+////////////////////////////////////这里要改为显示时间的设置
+void Screensaver::initShowTimeBtnStatus(bool status) {
+    showTimeBtn->blockSignals(true);
+    showTimeBtn->setChecked(status);
+    showTimeBtn->blockSignals(false);
 }
 
 void Screensaver::initThemeStatus() {
@@ -280,15 +309,23 @@ void Screensaver::initThemeStatus() {
     mode = g_settings_get_enum(screensaver_settings, MODE_KEY);
 
     if (mode == MODE_DEFAULT_UKUI) {
-        ui->comboBox->setCurrentIndex(0); //UKUI
+        ui->comboBox->setCurrentIndex(INDEX_MODE_DEFAULT_UKUI); //UKUI
+        hideCustomizeFrame();
     }
     else if (mode == MODE_BLANK_ONLY) {
-        ui->comboBox->setCurrentIndex(1); //Black_Only
+        ui->comboBox->setCurrentIndex(INDEX_MODE_BLANK_ONLY); //Black_Only
+        hideCustomizeFrame();
     }
 //    else if (mode == MODE_RANDOM){
 //        ui->comboBox->setCurrentIndex(2); //Random
 //    }
+    else if (mode == MODE_CUSTOMIZE)
+    {
+        ui->comboBox->setCurrentIndex(INDEX_MODE_CUSTOMIZE); //CUSTOMIZE
+        showCustomizeFrame();
+    }
     else{
+        hideCustomizeFrame();
         gchar ** strv;
         strv = g_settings_get_strv(screensaver_settings, THEMES_KEY);
         if (strv != NULL) {
@@ -297,12 +334,12 @@ void Screensaver::initThemeStatus() {
             QString dest =  (infoMap.find(name) != infoMap.end()) ? infoMap.value(name).name : "";
 
             if (dest == "") {
-                ui->comboBox->setCurrentIndex(1);
+                ui->comboBox->setCurrentIndex(INDEX_MODE_BLANK_ONLY);
             } else {
                 ui->comboBox->setCurrentText(dest);
             }
         } else {
-            ui->comboBox->setCurrentIndex(1); //no data, default Blank_Only
+            ui->comboBox->setCurrentIndex(INDEX_MODE_BLANK_ONLY); //no data, default Blank_Only
         }
         g_strfreev(strv);
     }
@@ -313,22 +350,24 @@ void Screensaver::initThemeStatus() {
 
 void Screensaver::initIdleSliderStatus() {
     int minutes;
+    //先判断是否开启屏保，未开启则[从不]
+    if (qScreenSaverSetting->get(ACTIVE_KEY).toBool() == false) {
+        uslider->blockSignals(true);
+        uslider->setValue(lockConvertToSlider(silderNeverValue));
+        uslider->blockSignals(false);
+    } else {
     session_settings = g_settings_new(SESSION_SCHEMA);
     minutes = g_settings_get_int(session_settings, IDLE_DELAY_KEY);
-
     uslider->blockSignals(true);
     uslider->setValue(lockConvertToSlider(minutes));
     uslider->blockSignals(false);
-
     g_object_unref(session_settings);
 }
-
-void Screensaver::component_init() {
 
 }
 
 void Screensaver::status_init() {
-    int mode;
+   /* int mode;
     char * name;
 
     screensaver_bin = QString(QT_INSTALL_LIBS) + "/ukui-screensaver/ukui-screensaver-default";
@@ -336,13 +375,13 @@ void Screensaver::status_init() {
     screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
     mode = g_settings_get_enum(screensaver_settings, MODE_KEY);
     if (mode == MODE_DEFAULT_UKUI) {
-        ui->comboBox->setCurrentIndex(0); //UKUI
+        ui->comboBox->setCurrentIndex(INDEX_MODE_DEFAULT_UKUI); //UKUI
     }
     else if(mode == MODE_BLANK_ONLY) {
-        ui->comboBox->setCurrentIndex(1); //Black_Only
+        ui->comboBox->setCurrentIndex(INDEX_MODE_BLANK_ONLY); //Black_Only
     }
     else if (mode == MODE_RANDOM) {
-        ui->comboBox->setCurrentIndex(2); //Random
+        ui->comboBox->setCurrentIndex(INDEX_MODE_RANDOM); //Random
     } else {
         gchar ** strv;
         strv = g_settings_get_strv(screensaver_settings, THEMES_KEY);
@@ -352,7 +391,7 @@ void Screensaver::status_init() {
             SSThemeInfo info = (SSThemeInfo)infoMap.find(name).value();
             ui->comboBox->setCurrentText(info.name);
         } else {
-            ui->comboBox->setCurrentIndex(0); //no data, default Blank_Only
+            ui->comboBox->setCurrentIndex(INDEX_MODE_BLANK_ONLY);
         }
         g_strfreev(strv);
     }
@@ -366,21 +405,20 @@ void Screensaver::status_init() {
 
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(combobox_changed_slot(int)));
 
-    connect(mPreviewWidget, SIGNAL(destroyed(QObject*)), this, SLOT(kill_screensaver_preview()));
-
+    connect(mPreviewWidget, SIGNAL(destroyed(QObject*)), this, SLOT(kill_screensaver_preview()));*/
 }
 
 void Screensaver::startupScreensaver() {
     //关闭屏保
     closeScreensaver();
     qDebug() << Q_FUNC_INFO << ui->previewWidget->winId();
-    if (ui->comboBox->currentIndex() == 0) {//UKUI
+    if (ui->comboBox->currentIndex() == INDEX_MODE_DEFAULT_UKUI) {//UKUI
         QStringList args;
         args << "-window-id" << QString::number(ui->previewWidget->winId());
         //启动屏保
         process->startDetached(screensaver_bin, args);
         runStringList.append(screensaver_bin);
-    } else if (ui->comboBox->currentIndex() == 1) {//黑屏
+    } else if (ui->comboBox->currentIndex() == INDEX_MODE_BLANK_ONLY) {//黑屏
         ui->previewWidget->update();
     }
 //    else if (ui->comboBox->currentIndex() == 2){//随机
@@ -402,7 +440,6 @@ void Screensaver::closeScreensaver() {
         process->start(QString("killall"), runStringList);
         process->waitForStarted();
         process->waitForFinished(2000);
-
         runStringList.clear();
     }
 }
@@ -432,63 +469,51 @@ void Screensaver::kill_and_start() {
 int Screensaver::convertToLocktime(const int value) {
     switch (value) {
     case 1:
-        return 1;
-        break;
-    case 2:
         return 5;
         break;
-    case 3:
+    case 2:
         return 10;
+        break;
+    case 3:
+        return 15;
         break;
     case 4:
         return 30;
         break;
     case 5:
-        return 45;
-        break;
-    case 6:
         return 60;
         break;
-    case 7:
-        return 90;
-        break;
-    case 8:
-        return 180;
+    case 6:
+        return silderNeverValue;
         break;
     default:
-        return 1;
+        return silderNeverValue;
         break;
     }
 }
 
 int Screensaver::lockConvertToSlider(const int value) {
     switch (value) {
-    case 1:
-        return 1;
+    case silderNeverValue:
+        return 6;
         break;
     case 5:
-        return 2;
+        return 1;
         break;
     case 10:
+        return 2;
+        break;
+    case 15:
         return 3;
         break;
     case 30:
         return 4;
         break;
-    case 45:
+    case 60:
         return 5;
         break;
-    case 60:
-        return 6;
-        break;
-    case 90:
-        return 7;
-        break;
-    case 180:
-        return 8;
-        break;
     default:
-        return 1;
+        return 6;
         break;
     }
 }
@@ -496,29 +521,29 @@ int Screensaver::lockConvertToSlider(const int value) {
 
 
 void Screensaver::set_idle_gsettings_value(int value) {
-    g_settings_set_int(session_settings, IDLE_DELAY_KEY, value);
+    //g_settings_set_int(session_settings, IDLE_DELAY_KEY, value);
 }
 
 void Screensaver::slider_released_slot() {
-    int minutes;
+   /* int minutes;
 //    minutes = ui->idleSlider->value();
     minutes = convertToLocktime(uslider->value());
-    set_idle_gsettings_value(minutes);
+    set_idle_gsettings_value(minutes);*/
 }
 
 void Screensaver::lockbtn_changed_slot(bool status) {
-    const QByteArray ba(SCREENSAVER_SCHEMA);
+ /*   const QByteArray ba(SCREENSAVER_SCHEMA);
     QGSettings * settings = new QGSettings(ba);
     settings->set(LOCK_KEY, status);
     delete settings;
-    settings = nullptr;
+    settings = nullptr;*/
 }
 
 void Screensaver::activebtn_changed_slot(bool status) {
-    screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
+    /*screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
     g_settings_set_boolean(screensaver_settings, ACTIVE_KEY, status);
 
-    g_object_unref(screensaver_settings);
+    g_object_unref(screensaver_settings);*/
 }
 
 void Screensaver::themesComboxChanged(int index) {
@@ -527,18 +552,24 @@ void Screensaver::themesComboxChanged(int index) {
 
     //设置屏保
     screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
-    if (index == 0){
+    if (index == INDEX_MODE_DEFAULT_UKUI) {
         g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_DEFAULT_UKUI);
-    } else if (index == 1){
+        hideCustomizeFrame();
+    } else if (index == INDEX_MODE_BLANK_ONLY) {
+        hideCustomizeFrame();
         g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_BLANK_ONLY);
+    } else if (index == INDEX_MODE_CUSTOMIZE) {
+        showCustomizeFrame();
+        g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_CUSTOMIZE);
     } else {
+        hideCustomizeFrame();
         g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_SINGLE);
         //获取当前屏保的id
         QVariant variant = ui->comboBox->itemData(index);
         SSThemeInfo info = variant.value<SSThemeInfo>();
         QByteArray ba = info.id.toLatin1();
         strv = g_strsplit(ba.data(), "%%%", 1);
-        qDebug() << Q_FUNC_INFO << "wxy-----------" <<strv;
+        //qDebug() << Q_FUNC_INFO << "wxy-----------" <<strv;
         g_settings_set_strv(screensaver_settings, THEMES_KEY, (const gchar * const*)strv);
     }
     g_object_unref(screensaver_settings);
@@ -549,17 +580,19 @@ void Screensaver::themesComboxChanged(int index) {
 }
 
 void Screensaver::combobox_changed_slot(int index) {
+    /*
     char ** strv = NULL;
-
-
+    qDebug()<<"index = "<<index;
     screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);
-    if (index == 0) { //ukui
+    if (index == INDEX_MODE_DEFAULT_UKUI) { //ukui
+        hideCustomizeFrame();
         g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_DEFAULT_UKUI);
-    } else if (index == 1) { //Blank_Only
-        qDebug()<<"this is Blan_only----------------->"<<endl;
+    } else if (index == INDEX_MODE_BLANK_ONLY) { //Blank_Only
+        hideCustomizeFrame();
         g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_BLANK_ONLY);
     } else if (index == 10000) { //Random not in
-//        int mode = MODE_RANDOM;
+        hideCustomizeFrame();
+//      int mode = MODE_RANDOM;
         g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_RANDOM);
         //REVIEW*** 二维字符数组赋值字符串段错误？
 //        QMap<QString, SSThemeInfo>::iterator it = infoMap.begin();
@@ -582,6 +615,7 @@ void Screensaver::combobox_changed_slot(int index) {
         delete settings;
         settings = nullptr;
     } else {
+        hideCustomizeFrame();
         g_settings_set_enum(screensaver_settings, MODE_KEY, MODE_SINGLE);
         //获取当前屏保的id
         QVariant variant = ui->comboBox->itemData(index);
@@ -596,21 +630,15 @@ void Screensaver::combobox_changed_slot(int index) {
     g_strfreev(strv);
 
     //启动屏保
-    kill_and_start();
+    kill_and_start();*/
 }
 
 void Screensaver::kill_screensaver_preview() {
-    //需要手动杀死分离启动的屏保预览程序
-//    if (!killList.isEmpty()){
-//        process->start(QString("killall"), killList);
-//        process->waitForStarted();
-//        process->waitForFinished(2000);
 
-//        killList.clear();
-//    }
 }
 
 SSThemeInfo Screensaver::_info_new(const char *path) {
+    /*
     SSThemeInfo info;
     GKeyFile * keyfile;
     char * name, * exec;
@@ -630,7 +658,7 @@ SSThemeInfo Screensaver::_info_new(const char *path) {
 
     g_key_file_free(keyfile);
 
-    return info;
+    return info;*/
 }
 
 SSThemeInfo Screensaver::_newThemeinfo(const char * path) {
@@ -680,6 +708,7 @@ void Screensaver::_acquireThemeinfoList() {
 }
 
 void Screensaver::init_theme_info_map() {
+    /*
     GDir * dir;
     const char * name;
 
@@ -698,7 +727,7 @@ void Screensaver::init_theme_info_map() {
         infoMap.insert(info.id, info);
         g_free (desktopfilepath);
     }
-    g_dir_close(dir);
+    g_dir_close(dir);*/
 }
 
 void Screensaver::connectToServer(){
@@ -706,8 +735,7 @@ void Screensaver::connectToServer(){
                                           "/org/kylinssoclient/path",
                                           "org.freedesktop.kylinssoclient.interface",
                                           QDBusConnection::sessionBus());
-    if (!m_cloudInterface->isValid())
-    {
+    if (!m_cloudInterface->isValid()) {
         qDebug() << "fail to connect to service";
         qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
         return;
@@ -721,4 +749,174 @@ void Screensaver::keyChangedSlot(const QString &key) {
     if(key == "ukui-screensaver") {
         initThemeStatus();
     }
+}
+
+void Screensaver::showCustomizeFrame() {
+    ui->customizeFrame->setVisible(true);
+}
+
+void Screensaver::hideCustomizeFrame() {
+    ui->customizeFrame->setVisible(false);
+}
+
+void Screensaver::initCustomizeFrame() {
+    ui->customizeFrame->setStyleSheet("background-color:palette(base);");
+    ui->customizeFrame->setFrameShape(QFrame::NoFrame);
+    ui->customizeFrame->setFixedHeight(306);
+    ui->customizeLayout->setMargin(0);
+    initScreensaverSourceFrame();
+    initTimeSetFrame();
+    initPictureSwitchFrame();
+    initShowTextFrame();
+    initShowTextSetFrame();
+}
+
+void Screensaver::initScreensaverSourceFrame() {
+    QFrame *screensaverSourceFrame = new QFrame();
+    QHBoxLayout *sourceLayout = new QHBoxLayout();
+    QLabel *sourceLabel = new QLabel();
+    QLabel *sourcePathLabel = new QLabel();
+    QPushButton *sourceBtn = new QPushButton();
+    screensaverSourceFrame->setFixedHeight(50);
+    screensaverSourceFrame->setObjectName("screensaverSourceFrame");
+    screensaverSourceFrame->setStyleSheet("QFrame#screensaverSourceFrame{background-color:palette(window);border-radius:6px;}");
+    screensaverSourceFrame->setLayout(sourceLayout);
+    sourceLayout->setContentsMargins(16,0,16,0);
+    sourceLayout->addWidget(sourceLabel);
+    sourceLayout->addWidget(sourcePathLabel);
+    sourceLayout->addWidget(sourceBtn);
+    sourceLabel->setText(tr("Screensaver source"));
+    sourceLabel->setFixedWidth(196);
+    sourceLabel->setStyleSheet("background-color:palette(window);");
+    sourcePathLabel->setText(("/usr/share/"));
+    sourcePathLabel->setFixedHeight(36);
+    sourcePathLabel->setMinimumWidth(252);
+    sourcePathLabel->setStyleSheet("background-color:palette(window);");
+    sourceBtn->setFixedSize(80,36);
+    sourceBtn->setStyleSheet("background-color:palette(button);");
+    sourceBtn->setText(tr("Select"));
+    sourceBtn->raise();
+    connect(sourceBtn,&QPushButton::clicked,this,[=]{
+        QString path = QFileDialog::getExistingDirectory(screensaverSourceFrame,tr("选择屏保来源"),"/usr/share/backgrounds/");
+        qDebug()<<"path = "<<path;
+        if (path != "") {
+            sourcePathLabel->setText(path);
+        }
+    });
+    ui->customizeLayout->addWidget(screensaverSourceFrame);
+}
+
+void Screensaver::initTimeSetFrame() {
+    QFrame *timeSetFrame = new QFrame();
+    QHBoxLayout *timeSetLayout = new QHBoxLayout();
+    QLabel *timeSetLabel = new QLabel();
+    QComboBox *timeCom = new QComboBox();
+    timeSetFrame->setFixedHeight(50);
+    timeSetFrame->setObjectName("timeSetFrame");
+    timeSetFrame->setStyleSheet("QFrame#timeSetFrame{background-color:palette(window);border-radius:6px;}");
+    timeSetFrame->setLayout(timeSetLayout);
+    timeSetLayout->setContentsMargins(16,0,16,0);
+    timeSetLayout->addWidget(timeSetLabel);
+    timeSetLayout->addWidget(timeCom);
+    timeSetLabel->setStyleSheet("background-color:palette(window);");
+    timeSetLabel->setText(tr("Replacement time"));
+    timeSetLabel->setFixedWidth(196);
+    timeCom->setFixedHeight(36);
+    timeCom->setMinimumWidth(340);
+    timeCom->addItem(tr("1min"));
+    timeCom->addItem(tr("5min"));
+    timeCom->addItem(tr("10min"));
+    timeCom->addItem(tr("30min"));
+    /*timeCom->setStyleSheet("QComboBox{background-color:palette(button);} QComboBox::drop-down{ \
+            width: 30px; \
+            background-color:red;\
+            };");*/
+    //timeCom->setStyleSheet(ui->comboBox->styleSheet());
+    ui->customizeLayout->addWidget(timeSetFrame);
+}
+
+void Screensaver::initPictureSwitchFrame() {
+    QFrame *pictureSwitchFrame = new QFrame();
+    QHBoxLayout *randomLayout = new QHBoxLayout();
+    QLabel *randomLabel = new QLabel();
+    SwitchButton *randomBtn = new SwitchButton();
+    pictureSwitchFrame->setFixedHeight(50);
+    pictureSwitchFrame->setStyleSheet("background-color:palette(window);border-radius:6px;");
+    pictureSwitchFrame->setLayout(randomLayout);
+    randomLayout->setContentsMargins(16,0,16,0);
+    randomLayout->addWidget(randomLabel);
+    randomLayout->addStretch();
+    randomLayout->addWidget(randomBtn);
+    randomLabel->setText(tr("Random replacement"));
+    randomLabel->setFixedWidth(196);
+    ui->customizeLayout->addWidget(pictureSwitchFrame);
+}
+
+void Screensaver::initShowTextFrame() {
+    QFrame *showTextFrame = new QFrame();
+    QHBoxLayout *showTextLayout = new QHBoxLayout();
+    QLabel *showLabel = new QLabel();
+    QWidget *textWid = new QWidget();
+    QVBoxLayout *widVLayout = new QVBoxLayout();
+    QTextEdit *inputText = new QTextEdit(); //用户输入文字
+    showTextFrame->setFixedHeight(98);
+    showTextFrame->setStyleSheet("background-color:palette(window);border-radius:6px;");
+    showTextFrame->setLayout(showTextLayout);
+    showTextLayout->setContentsMargins(16,6,15,8);
+    showTextLayout->addWidget(textWid);
+    showTextLayout->addWidget(inputText);
+    textWid->setLayout(widVLayout);
+    textWid->setFixedWidth(196);
+    widVLayout->setMargin(0);
+    widVLayout->addStretch(1);
+    widVLayout->addWidget(showLabel);
+    widVLayout->addStretch(6);
+    showLabel->setText(tr("Display text"));
+    showLabel->setFixedWidth(196);
+    inputText->setFixedHeight(84);
+    inputText->setFontPointSize(14);
+    inputText->setStyleSheet("background-color:palette(button)");
+    inputText->setPlaceholderText(tr("Enter text, up to 30 words"));
+    ui->customizeLayout->addWidget(showTextFrame);
+}
+
+void Screensaver::initShowTextSetFrame() {
+    QFrame *showTextSetFrame = new QFrame();
+    QHBoxLayout *textSetLayout = new QHBoxLayout();
+    QLabel *textSetLabel = new QLabel();
+    SwitchButton *setBtn = new SwitchButton();
+    showTextSetFrame->setFixedHeight(50);
+    showTextSetFrame->setStyleSheet("background-color:palette(window);border-radius:6px;");
+    showTextSetFrame->setLayout(textSetLayout);
+    textSetLayout->addWidget(textSetLabel);
+    textSetLayout->addStretch();
+    textSetLayout->setContentsMargins(16,0,16,0);
+    textSetLabel->setText(tr("Text displayed in the center"));
+    textSetLabel->setFixedWidth(196);
+    textSetLayout->addWidget(setBtn);
+    ui->customizeLayout->addWidget(showTextSetFrame);
+}
+
+PreviewWidget::PreviewWidget(QWidget *parent):QWidget(parent) {
+
+}
+
+PreviewWidget::~PreviewWidget() {
+
+}
+//单机对屏保进行预览
+void PreviewWidget::mousePressEvent(QMouseEvent *e) {
+    static int i = 0;
+    if(e->button() == Qt::LeftButton) {
+        qDebug()<<"   "<< ++i;
+    }
+}
+
+void PreviewWidget::paintEvent(QPaintEvent *event) {
+    Q_UNUSED(event);
+
+    QPainter p(this);
+    p.setPen(Qt::NoPen);
+    p.setBrush(Qt::black);
+    p.drawRect(rect());
 }

@@ -67,13 +67,10 @@ class PreviewWidget : public QWidget
 {
     Q_OBJECT
 public:
-    PreviewWidget()
-    {
-
-    }
-    ~PreviewWidget(){
-
-    }
+    PreviewWidget(QWidget *parent = nullptr);
+    ~PreviewWidget();
+    void mousePressEvent(QMouseEvent *e); //鼠标按下
+        
 protected:
     void paintEvent(QPaintEvent *e);
 };
@@ -102,7 +99,7 @@ public:
     void initEnableBtnStatus();
     void initThemeStatus();
     void initIdleSliderStatus();
-    void initLockBtnStatus(bool status);
+    void initShowTimeBtnStatus(bool status);
 
     void startupScreensaver();
     void closeScreensaver();
@@ -118,6 +115,14 @@ public:
 
     void kill_and_start();
 
+    void showCustomizeFrame();
+    void hideCustomizeFrame();
+    void initCustomizeFrame();
+    void initScreensaverSourceFrame();
+    void initTimeSetFrame();
+    void initPictureSwitchFrame();
+    void initShowTextFrame();
+    void initShowTextSetFrame();
 private:
     int convertToLocktime(const int value);
     int lockConvertToSlider(const int value);
@@ -131,7 +136,7 @@ private:
     PreviewWidget * mPreviewWidget;
 
     SwitchButton * enableSwitchBtn;
-    SwitchButton * lockSwitchBtn;
+    SwitchButton * showTimeBtn;
 
     QMap<QString, SSThemeInfo> infoMap;
 
@@ -155,7 +160,6 @@ private:
     QDBusInterface *m_cloudInterface;
 
     bool mFirstLoad;
-
 private:
     SSThemeInfo _info_new(const char * path);
     void init_theme_info_map();
