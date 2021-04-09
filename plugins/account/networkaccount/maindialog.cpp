@@ -394,6 +394,7 @@ QString MainDialog::messagebox(const int &code) const {
 
 /* 1.登录逻辑处理槽函数 */
 void MainDialog::on_login_btn() {
+    emit on_submit_clicked();
     m_baseWidget->setEnabled(false); //防止用户在登录按钮按完之后到处乱点，下同
     set_staus(false);
     m_delBtn->setEnabled(true);
@@ -859,4 +860,3 @@ void MainDialog::closedialog() {
 
 MainDialog::~MainDialog() {
 }
-

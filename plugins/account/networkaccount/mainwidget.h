@@ -81,6 +81,8 @@ private:
     QTimer              *m_lazyTimer;
     QTimer              *m_listTimer;
     QTimer              *m_singleTimer;
+    QTimer              *m_manTimer;
+    QTimer              *m_checkTimer;
     QLabel              *m_welcomeMsg;
     QSvgWidget              *m_welcomeImage;
     QVBoxLayout         *m_welcomeLayout;
@@ -118,7 +120,8 @@ private:
     bool            bIsLogging = false;
     QSettings         *m_pSettings;
     bool            m_bIsKylinId = false;
-    bool            m_bIsOnline = false;
+    bool            m_bIsOnline = true;
+    bool            m_bIsOldBackEnds = false;
 
 public slots:
     void            on_login_out();
@@ -136,6 +139,7 @@ public slots:
     void            finishedLogout(int ret);
     void            loginSuccess(int ret);
     void            checkNetWork(QVariantMap map);
+    void            checkNetStatus(bool status);
 signals:
     void dooss(const QString &m_szUuid);
     void doman();
@@ -145,7 +149,6 @@ signals:
     void docheck();
     void dosingle(const QString &key);
     void doselect(QStringList keyList);
-    void closedialog();
     void isRunning();
     void oldVersion();
     void doquerry(const QString &name);

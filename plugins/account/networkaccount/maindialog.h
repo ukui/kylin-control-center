@@ -131,6 +131,7 @@ private:
     QString        m_NameLogin;
 
 signals:
+    void on_submit_clicked();
     void on_close_event();
     void on_login_failed();
     void on_login_success();
