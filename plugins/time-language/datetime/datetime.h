@@ -72,41 +72,45 @@ class DateTime : public QObject, CommonInterface
 public:
     DateTime();
     ~DateTime();
-    SwitchButton *syncTimeBtn = nullptr; //网络时间同步按钮
-    QString get_plugin_name() Q_DECL_OVERRIDE;
-    int get_plugin_type() Q_DECL_OVERRIDE;
-    QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
+
+    QString get_plugin_name()   Q_DECL_OVERRIDE;
+    int get_plugin_type()       Q_DECL_OVERRIDE;
+    QWidget * get_plugin_ui()   Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
     const QString name() const  Q_DECL_OVERRIDE;
 
     void initTitleLabel();
-    void component_init();
-    void status_init();
+    void initUI();
+    void initComponent();
+    void initStatus();
     void connectToServer();
     bool fileIsExits(const QString& filepath);
-    QLabel *syncNetworkRetLabel = nullptr;
+
+public:
+    QLabel       *syncNetworkRetLabel = nullptr;
+    SwitchButton *syncTimeBtn         = nullptr; //网络时间同步按钮
+
 private:
     Ui::DateTime *ui;
-    QString localizedTimezone;
-    QString pluginName;
-    int pluginType;
-    QWidget * pluginWidget;
+    QString      localizedTimezone;
+    QString      pluginName;
+    int          pluginType;
+    QWidget      *pluginWidget;
 
-    QGSettings * m_formatsettings  = nullptr;
+    QGSettings     *m_formatsettings      = nullptr;
 
-    QDBusInterface *m_datetimeiface = nullptr;
+    QDBusInterface *m_datetimeiface       = nullptr;
     QDBusInterface *m_datetimeiproperties = nullptr;
     QDBusInterface *m_cloudInterface;
 
     QMap<QString, int> tzindexMapEn;
     QMap<QString, int> tzindexMapCN;
 
-    SwitchButton *m_formTimeBtn = nullptr;
-    QLabel *m_formTimeLabel = nullptr;
-    QTimer * m_itimer = nullptr;
+    SwitchButton *m_formTimeBtn           = nullptr;
+    QLabel       *m_formTimeLabel         = nullptr;
+    QTimer       *m_itimer                = nullptr;
 
-    QLabel *syncNetworkLabel = nullptr;
-
+    QLabel *syncNetworkLabel              = nullptr;
 
     TimeZoneChooser *m_timezone;
     ZoneInfo* m_zoneinfo;
@@ -118,20 +122,19 @@ Q_SIGNALS:
     void changed();
 
 private slots:
-    void datetime_update_slot();
-    void changetime_slot();
-    void changezone_slot();
-    void changezone_slot(QString );
-    void time_format_clicked_slot(bool, bool);
-    void synctime_format_slot(bool status,bool outChange);  //网络时间同步按钮事件
-    QDBusMessage rsync_with_network_slot(bool status);
-    void showendLabel();
-    void hidendLabel();
+    void datetimeUpdateSlot();
+    void changetimeSlot();
+    void changezoneSlot();
+    void changezoneSlot(QString zone);
+    void timeFormatClickedSlot(bool, bool);
+    void synctimeFormatSlot(bool status,bool outChange);
+    QDBusMessage rsyncWithNetworkSlot(bool status);
     void keyChangedSlot(const QString &key);
-    bool getNtpServerConnect();
+
 private:
     void loadHour();
-    void connectGSetting();
+    void setCurrentTime();
+    void initConnect();
     QString getLocalTimezoneName(QString timezone, QString locale);
 };
 
