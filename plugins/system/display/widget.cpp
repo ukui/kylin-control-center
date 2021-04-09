@@ -532,10 +532,12 @@ void Widget::initGSettings() {
         connect(mPowerGSettings, &QGSettings::changed, this, [=](QString key) {
             if ("brightnessAc" == key || "brightnessBat" == key) {
                 int value = mPowerGSettings->get(key).toInt();
-                if (mIsWayland) {
+                if (mIsWayland && !mIsBattery) {
                     value = (value == 0 ? 0 : value / 10);
                 }
+                ui->brightnessSlider->blockSignals(true);
                 ui->brightnessSlider->setValue(value);
+                ui->brightnessSlider->blockSignals(false);
             }
         });
     }
@@ -1372,7 +1374,7 @@ void Widget::checkOutputScreen(bool judge) {
 
 // 亮度调节UI
 void Widget::initBrightnessUI() {
-    if (mIsWayland) {
+    if (mIsWayland && !mIsBattery) {
         ui->brightnessSlider->setRange(0, 10);
         ui->brightnessSlider->setTickInterval(1);
         ui->brightnessSlider->setPageStep(1);
