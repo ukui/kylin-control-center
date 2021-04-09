@@ -64,7 +64,7 @@ void BluetoothNameLabel::set_dev_name(const QString &dev_name)
     QFontMetrics fm(ft);
     QString text = fm.elidedText(dev_name, Qt::ElideMiddle, font_width);
     m_label->setText(tr("Can now be found as \"%1\"").arg(text));
-
+    m_label->setToolTip(tr("Can now be found as \"%1\"").arg(dev_name));
     m_label->update();
 
     device_name = dev_name;
@@ -123,6 +123,7 @@ void BluetoothNameLabel::set_label_text(const QString &value)
     QFontMetrics fm(ft);
     QString text = fm.elidedText(m_lineedit->text(), Qt::ElideMiddle, font_width);
     m_label->setText(tr("Can now be found as \"%1\"").arg(text));
+    m_label->setToolTip(tr("Can now be found as \"%1\"").arg(device_name));
     m_label->setVisible(true);
 }
 

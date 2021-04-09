@@ -199,8 +199,15 @@ void DeviceInfoItem::changeDevStatus(bool pair)
         icon_timer->stop();
 
     if(pair){
-        if (!device_item->isConnected())
+        if (!device_item->isConnected()){
             device_status->setVisible(false);
+            d_status = DEVICE_STATUS::UNLINK;
+        }else{
+            device_status->setVisible(true);
+            d_status = DEVICE_STATUS::LINK;
+            QIcon icon_status = QIcon::fromTheme("ukui-dialog-success");
+            device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
+        }
         emit sendPairedAddress(device_item->address());
     }else{
 //        QIcon icon_status = QIcon::fromTheme("software-installed-symbolic");
@@ -213,7 +220,7 @@ void DeviceInfoItem::setDevConnectedIcon(bool connected)
     if(icon_timer && icon_timer->isActive())
         icon_timer->stop();
 
-    if(connected){
+    if(connected && device_item->isPaired()){
         d_status = DEVICE_STATUS::LINK;
         device_status->setVisible(true);
         QIcon icon_status = QIcon::fromTheme("ukui-dialog-success");
