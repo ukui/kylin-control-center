@@ -8,13 +8,13 @@
 #include <QDBusInterface>
 #include <KF5/KScreen/kscreen/config.h>
 
-ControlPanel::ControlPanel(QWidget *parent)
-    : QFrame(parent)
-    , mUnifiedOutputCfg(nullptr)
+ControlPanel::ControlPanel(QWidget *parent) :
+    QFrame(parent),
+    mUnifiedOutputCfg(nullptr)
 {
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     mLayout = new QVBoxLayout(this);
-    mLayout->setContentsMargins(0,0,0,0);
+    mLayout->setContentsMargins(0, 0, 0, 0);
 
     isWayland();
 }
@@ -25,7 +25,6 @@ ControlPanel::~ControlPanel()
 
 void ControlPanel::setConfig(const KScreen::ConfigPtr &config)
 {
-
     qDeleteAll(mOutputConfigs);
     mOutputConfigs.clear();
     delete mUnifiedOutputCfg;
@@ -48,7 +47,6 @@ void ControlPanel::setConfig(const KScreen::ConfigPtr &config)
 
 void ControlPanel::addOutput(const KScreen::OutputPtr &output)
 {
-
     OutputConfig *outputCfg = new OutputConfig(this);
     outputCfg->setVisible(false);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
@@ -87,7 +85,6 @@ void ControlPanel::removeOutput(int outputId)
 
 void ControlPanel::activateOutput(const KScreen::OutputPtr &output)
 {
-
     // Ignore activateOutput when in unified mode
     if (mUnifiedOutputCfg) {
         return;
@@ -100,10 +97,8 @@ void ControlPanel::activateOutput(const KScreen::OutputPtr &output)
     }
 }
 
-
 void ControlPanel::activateOutputNoParam()
 {
-
     // Ignore activateOutput when in unified mode
     if (mUnifiedOutputCfg) {
         return;
@@ -115,7 +110,8 @@ void ControlPanel::activateOutputNoParam()
     }
 }
 
-void ControlPanel::isWayland() {
+void ControlPanel::isWayland()
+{
     QString sessionType = getenv("XDG_SESSION_TYPE");
 
     if (!sessionType.compare(kSession, Qt::CaseSensitive)) {

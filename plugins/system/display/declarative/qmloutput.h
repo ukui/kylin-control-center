@@ -28,12 +28,11 @@ class QAbstractItemModel;
 class ModesProxyModel;
 class QMLScreen;
 
-
 class QMLOutput : public QQuickItem
 {
     Q_OBJECT
 
-    Q_PROPERTY(KScreen::Output* output
+    Q_PROPERTY(KScreen::Output *output
                READ output
                NOTIFY outputChanged)
 
@@ -101,37 +100,37 @@ class QMLOutput : public QQuickItem
                WRITE setOutputY
                NOTIFY outputYChanged)
 
-  public:
-    enum {
-      ModeRole = Qt::UserRole,
-      ModeIdRole,
-      SizeRole,
-      RefreshRateRole
+public:
+    enum {        
+        ModeRole = Qt::UserRole,
+        ModeIdRole,
+        SizeRole,
+        RefreshRateRole
     };
 
     explicit QMLOutput(QQuickItem *parent = nullptr);
 
-    KScreen::Output* output() const; // For QML
+    KScreen::Output *output() const; // For QML
 
     KScreen::OutputPtr outputPtr() const;
     void setOutputPtr(const KScreen::OutputPtr &output);
 
-    QMLScreen* screen() const;
+    QMLScreen *screen() const;
     void setScreen(QMLScreen *screen);
 
-    QMLOutput* leftDockedTo() const;
+    QMLOutput *leftDockedTo() const;
     void setLeftDockedTo(QMLOutput *output);
     void undockLeft();
 
-    QMLOutput* topDockedTo() const;
+    QMLOutput *topDockedTo() const;
     void setTopDockedTo(QMLOutput *output);
     void undockTop();
 
-    QMLOutput* rightDockedTo() const;
+    QMLOutput *rightDockedTo() const;
     void setRightDockedTo(QMLOutput *output);
     void undockRight();
 
-    QMLOutput* bottomDockedTo() const;
+    QMLOutput *bottomDockedTo() const;
     void setBottomDockedTo(QMLOutput *output);
     void undockBottom();
 
@@ -139,7 +138,7 @@ class QMLOutput : public QQuickItem
     Q_INVOKABLE bool maybeSnapTo(QMLOutput *other);
 
     void setCloneOf(QMLOutput *other);
-    QMLOutput* cloneOf() const;
+    QMLOutput *cloneOf() const;
 
     int currentOutputHeight() const;
     int currentOutputWidth() const;
@@ -155,10 +154,10 @@ class QMLOutput : public QQuickItem
 
     void dockToNeighbours();
 
-  public Q_SLOTS:
+public Q_SLOTS:
     void updateRootProperties();
 
-  Q_SIGNALS:
+Q_SIGNALS:
     void changed();
 
     void moved(const QString &self);
@@ -179,11 +178,11 @@ class QMLOutput : public QQuickItem
 
     void isCloneModeChanged();
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void moved();
     void currentModeIdChanged();
 
-  private:
+private:
     /**
      * Returns the biggest resolution available assuming it's the preferred one
      */
@@ -202,4 +201,3 @@ class QMLOutput : public QQuickItem
 };
 
 #endif // QMLOUTPUT_H
-

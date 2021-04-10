@@ -47,14 +47,13 @@ public:
 
 private:
     KScreen::ConfigPtr mConfig;
-    QList<OutputConfig*> mOutputConfigs;
+    QList<OutputConfig *> mOutputConfigs;
 
     UnifiedOutputConfig *mUnifiedOutputCfg;
 
     KScreen::OutputPtr mCurrentOutput;
 
     bool mIsWayland;
-
 };
 
 #endif // CONTROLPANEL_H

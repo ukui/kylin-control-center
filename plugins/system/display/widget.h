@@ -42,9 +42,7 @@ typedef enum {
     CUSTOM,
 }MODE;
 
-
-namespace KScreen
-{
+namespace KScreen {
 class ConfigOperation;
 }
 
@@ -56,7 +54,7 @@ class Widget : public QWidget
 {
     Q_OBJECT
 
-  public:
+public:
     explicit Widget(QWidget *parent = nullptr);
     ~Widget() override;
 
@@ -72,8 +70,7 @@ class Widget : public QWidget
 
     bool writeFile(const QString &filePath);
     void writeGlobal(const KScreen::OutputPtr &output);
-    bool writeGlobalPart(const KScreen::OutputPtr &output,
-                         QVariantMap &info,
+    bool writeGlobalPart(const KScreen::OutputPtr &output, QVariantMap &info,
                          const KScreen::OutputPtr &fallback);
     QString globalFileName(const QString &hash);
     QVariantMap getGlobalData(KScreen::OutputPtr output);
@@ -83,16 +80,16 @@ class Widget : public QWidget
 
     void initUiComponent();
 
-  protected:
+protected:
     bool eventFilter(QObject *object, QEvent *event) override;
 
-  Q_SIGNALS:
+Q_SIGNALS:
     void changed();
 
     void nightModeChanged(const bool nightMode) const;
     void redShiftValidChanged(const bool isValid) const;
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void slotFocusedOutputChanged(QMLOutput *output);
 
     void slotOutputEnabledChanged();
@@ -113,7 +110,6 @@ class Widget : public QWidget
     void showCustomWiget(int index);
 
     void slotThemeChanged(bool judge);
-
 
     void primaryButtonEnable(bool);             // 按钮选择主屏确认按钮
     void mainScreenButtonSelect(int index);     // 是否禁用设置主屏按钮
@@ -137,13 +133,13 @@ class Widget : public QWidget
     void shortAddBrightnessSlot();
     void shortCutBrightnessSlot();
 
-  public Q_SLOTS:
+public Q_SLOTS:
     void save();
     void scaleChangedSlot(int index);
     void changedSlot();
     void propertiesChangedSlot(QString, QMap<QString, QVariant>, QStringList);
 
-  private:
+private:
     void loadQml();
     void resetPrimaryCombo();
     void addOutputToPrimaryCombo(const KScreen::OutputPtr &output);
@@ -155,8 +151,7 @@ class Widget : public QWidget
     void initGSettings();
     void setcomBoxScale();
     void initNightUI();
-    // 是否恢复应用之前的配置
-    bool isRestoreConfig();
+    bool isRestoreConfig();                       // 是否恢复应用之前的配置
     QString getCpuInfo();
 
     bool isCloneMode();
@@ -168,15 +163,14 @@ class Widget : public QWidget
 
     int getPrimaryScreenID();
 
-  private:
+private:
     Ui::DisplayWindow *ui;
     QMLScreen *mScreen = nullptr;
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    KScreen::ConfigPtr mConfig ;
-    KScreen::ConfigPtr mPrevConfig ;
-    //这是outPutptr结果
-    KScreen::OutputPtr res ;
+    KScreen::ConfigPtr mConfig;
+    KScreen::ConfigPtr mPrevConfig;
+    KScreen::OutputPtr res;                       // 这是outPutptr结果
 #else
     KScreen::ConfigPtr mConfig = nullptr;
     KScreen::ConfigPtr mPrevConfig = nullptr;
@@ -184,30 +178,25 @@ class Widget : public QWidget
 #endif
 
     ControlPanel *mControlPanel = nullptr;
-    // 设置主显示器相关控件
-    OutputConfig *mOutputConfig = nullptr;
 
-    QList<QQuickView*> mOutputIdentifiers;
+    OutputConfig *mOutputConfig = nullptr;        // 设置主显示器相关控件
+
+    QList<QQuickView *> mOutputIdentifiers;
     QTimer *mOutputTimer = nullptr;
-
-    // 亮度配置文件位置
-    QString brightnessFile = nullptr;
 
     QStringList mPowerKeys;
 
-    SwitchButton *mNightButton       = nullptr;
+    SwitchButton *mNightButton = nullptr;
     SwitchButton *mCloseScreenButton = nullptr;
-    SwitchButton *mUnifyButton       = nullptr;
-    SwitchButton *mThemeButton       = nullptr;
+    SwitchButton *mUnifyButton = nullptr;
+    SwitchButton *mThemeButton = nullptr;
 
-    QLabel *nightLabel               = nullptr;
+    QLabel *nightLabel = nullptr;
 
-    Slider *slider;
-
-    QGSettings *mGsettings      = nullptr;
-    QGSettings *scaleGSettings  = nullptr;
+    QGSettings *mGsettings = nullptr;
+    QGSettings *scaleGSettings = nullptr;
     QGSettings *mPowerGSettings = nullptr;
-    QSettings  *mQsettings      = nullptr;
+    QSettings *mQsettings = nullptr;
 
     QButtonGroup *singleButton;
 
@@ -215,19 +204,18 @@ class Widget : public QWidget
     QHash<QString, QVariant> mNightConfig;
 
     int screenScale = 1;
-    int mScreenId  = -1;
+    int mScreenId = -1;
 
-    // 是否为夜间模式
-    bool mIsNightMode     = false;
+    bool mIsNightMode = false;
     bool mRedshiftIsValid = false;
-    bool mIsScaleChanged  = false;
+    bool mIsScaleChanged = false;
     bool mOriApply;
-    bool mConfigChanged   = false;
-    bool mOnBattery       = false;
-    bool mBlockChanges    = false;
-    bool mFirstLoad       = true;
-    bool mIsWayland       = false;
-    bool mIsBattery       = false;
+    bool mConfigChanged = false;
+    bool mOnBattery = false;
+    bool mBlockChanges = false;
+    bool mFirstLoad = true;
+    bool mIsWayland = false;
+    bool mIsBattery = false;
 
     QString mCPU;
 

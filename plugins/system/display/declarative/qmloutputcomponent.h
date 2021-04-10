@@ -23,7 +23,6 @@
 
 #include <KF5/KScreen/kscreen/output.h>
 
-
 class QMLScreen;
 class QMLOutput;
 
@@ -31,15 +30,14 @@ class QMLOutputComponent : public QQmlComponent
 {
     Q_OBJECT
 
-  public:
+public:
     explicit QMLOutputComponent(QQmlEngine *engine, QMLScreen *parent);
     ~QMLOutputComponent() override;
 
-    QMLOutput* createForOutput(const KScreen::OutputPtr &output);
+    QMLOutput *createForOutput(const KScreen::OutputPtr &output);
 
-  private:
+private:
     QQmlEngine *m_engine;
-
 };
 
 #endif // QMLOUTPUTCOMPONENT_H

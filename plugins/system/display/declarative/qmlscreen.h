@@ -51,14 +51,14 @@ class QMLScreen : public QQuickItem
                READ outputScale
                NOTIFY outputScaleChanged)
 
-  public:
+public:
     explicit QMLScreen(QQuickItem *parent = nullptr);
     ~QMLScreen() override;
 
     int connectedOutputsCount() const;
     int enabledOutputsCount() const;
 
-    QMLOutput* primaryOutput() const;
+    QMLOutput *primaryOutput() const;
     QList<QMLOutput*> outputs() const;
 
     QSize maxScreenSize() const;
@@ -75,17 +75,19 @@ class QMLScreen : public QQuickItem
     void setScreenPos(QMLOutput *output);
 
     void setScreenCenterPos();
-  public Q_SLOTS:
-    void setActiveOutput() {
-        setActiveOutput(qobject_cast<QMLOutput*>(sender()));
+public Q_SLOTS:
+    void setActiveOutput()
+    {
+        setActiveOutput(qobject_cast<QMLOutput *>(sender()));
     }
 
     void setActiveOutputByCombox(int screenId);
-    void setScreenPos() {
+    void setScreenPos()
+    {
         setScreenPos(qobject_cast<QMLOutput*>(sender()));
     }
 
-  Q_SIGNALS:
+Q_SIGNALS:
     void connectedOutputsCountChanged();
     void enabledOutputsCountChanged();
 
@@ -93,7 +95,7 @@ class QMLScreen : public QQuickItem
 
     void focusedOutputChanged(QMLOutput *output);
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void addOutput(const KScreen::OutputPtr &output);
     void removeOutput(int outputId);
 
@@ -103,25 +105,24 @@ class QMLScreen : public QQuickItem
 
     void viewSizeChanged();
 
-  private:
+private:
     void qmlOutputMoved(QMLOutput *qmlOutput);
     void updateCornerOutputs();
     void setOutputScale(float scale);
 
     KScreen::ConfigPtr m_config;
-    QHash<KScreen::OutputPtr,QMLOutput*> m_outputMap;
+    QHash<KScreen::OutputPtr, QMLOutput *> m_outputMap;
     QVector<QMLOutput*> m_manuallyMovedOutputs;
-    QVector<QMLOutput*> m_outputFirstAdd;  //热插拔：记录output第一次添加
+    QVector<QMLOutput*> m_outputFirstAdd;  // 热插拔：记录output第一次添加
     int m_connectedOutputsCount = 0;
     int m_enabledOutputsCount = 0;
 
-    float m_outputScale = 1.0 / 14.0;//缩放比例
+    float m_outputScale = 1.0 / 14.0;// 缩放比例
 
     QMLOutput *m_leftmost = nullptr;
     QMLOutput *m_topmost = nullptr;
     QMLOutput *m_rightmost = nullptr;
     QMLOutput *m_bottommost = nullptr;
-
 };
 
 #endif // QMLSCREEN_H
