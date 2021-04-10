@@ -669,16 +669,17 @@ QString Widget::getCpuInfo()
 
 bool Widget::isCloneMode()
 {
-    MateRRScreen *rr_screen;
-    MateRRConfig *rr_config;
-
-    rr_screen = mate_rr_screen_new(gdk_screen_get_default(), NULL);   /* NULL-GError */
-    if (!rr_screen)
+    KScreen::OutputPtr output = mConfig->primaryOutput();
+    if (mConfig->connectedOutputs().count() >= 2) {
+        foreach (KScreen::OutputPtr secOutput, mConfig->connectedOutputs()) {
+            if (secOutput->geometry() != output->geometry()) {
+                return false;
+            }
+        }
+    } else {
         return false;
-
-    rr_config = mate_rr_config_new_current(rr_screen, NULL);
-
-    return mate_rr_config_get_clone(rr_config);
+    }
+    return true;
 }
 
 bool Widget::isBacklight()
