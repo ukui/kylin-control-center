@@ -1012,7 +1012,11 @@ void Widget::setDDCBrighthessSlot(int brightnessValue)
                            "com.control.center.interface",
                            QDBusConnection::systemBus());
 
-    ukccIfc.call("setDDCBrightness", QString::number(brightnessValue), type);
+
+    if (mLock.tryLock()) {
+        ukccIfc.call("setDDCBrightness", QString::number(brightnessValue), type);
+        mLock.unlock();
+    }
 }
 
 void Widget::shortAddBrightnessSlot()
@@ -1116,10 +1120,10 @@ void Widget::save()
     }
 
     if (mIsWayland && -1 != mScreenId) {
-        if (enableScreenCount >= 2) {
+        if (enableScreenCount >= 2 && !config.isNull()) {
             config->output(mScreenId)->setPrimary(true);
             callMethod(config->primaryOutput()->geometry(), config->primaryOutput()->name());
-        } else {
+        } else if (!enableOutput.isNull()) {
             enableOutput->setPrimary(true);
             callMethod(enableOutput->geometry(), enableOutput->name());
         }
@@ -1167,7 +1171,7 @@ QString Widget::globalFileName(const QString &hash)
     if (!QDir().mkpath(dir)) {
         return QString();
     }
-    return dir % hash;
+    return QString();
 }
 
 QVariantMap Widget::getGlobalData(KScreen::OutputPtr output)

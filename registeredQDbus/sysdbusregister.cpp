@@ -173,6 +173,7 @@ void SysdbusRegister::setDDCBrightness(QString brightness, QString type) {
     QProcess *vcpPro = new QProcess(this);
     vcpPro->start(program, arg);
     vcpPro->waitForStarted();
+    vcpPro->waitForFinished();
 }
 
 int SysdbusRegister::getDDCBrightness(QString type) {
@@ -194,6 +195,9 @@ int SysdbusRegister::getDDCBrightness(QString type) {
 }
 
 static void chpasswd_cb(PasswdHandler *passwd_handler, GError *error, gpointer user_data){
+    Q_UNUSED(passwd_handler)
+    Q_UNUSED(error)
+    Q_UNUSED(user_data)
 //    g_warning("error code: '%d'", error->code);
 //    passwd_destroy(passwd_handler);
 //    qDebug("chpasswd_cb run");

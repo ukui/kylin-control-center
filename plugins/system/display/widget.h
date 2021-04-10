@@ -1,6 +1,7 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#include <QMutex>
 #include <QWidget>
 #include <QVariantMap>
 #include <QGSettings>
@@ -151,16 +152,16 @@ private:
     void initGSettings();
     void setcomBoxScale();
     void initNightUI();
-    bool isRestoreConfig();                       // 是否恢复应用之前的配置
-    QString getCpuInfo();
 
+    bool isRestoreConfig();                       // 是否恢复应用之前的配置
     bool isCloneMode();
     bool isBacklight();
-
-    QString getMonitorType();
     bool isLaptopScreen();
-    int getDDCBrighthess();
 
+    QString getCpuInfo();
+    QString getMonitorType();
+
+    int getDDCBrighthess();
     int getPrimaryScreenID();
 
 private:
@@ -184,6 +185,9 @@ private:
     QList<QQuickView *> mOutputIdentifiers;
     QTimer *mOutputTimer = nullptr;
 
+    QMutex      mLock;
+
+    QString     mCPU;
     QStringList mPowerKeys;
 
     SwitchButton *mNightButton = nullptr;
@@ -196,11 +200,13 @@ private:
     QGSettings *mGsettings = nullptr;
     QGSettings *scaleGSettings = nullptr;
     QGSettings *mPowerGSettings = nullptr;
+
     QSettings *mQsettings = nullptr;
 
     QButtonGroup *singleButton;
 
     QSharedPointer<QDBusInterface> mUPowerInterface;
+
     QHash<QString, QVariant> mNightConfig;
 
     int screenScale = 1;
@@ -216,8 +222,6 @@ private:
     bool mFirstLoad = true;
     bool mIsWayland = false;
     bool mIsBattery = false;
-
-    QString mCPU;
 
     QShortcut *mApplyShortcut;
 };
