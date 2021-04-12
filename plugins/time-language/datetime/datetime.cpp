@@ -28,6 +28,7 @@
 #include <locale.h>
 #include <libintl.h>
 #include <QProcess>
+#include <sys/timex.h>
 
 const char kTimezoneDomain[] = "installer-timezones";
 const char kDefaultLocale[] = "en_US.UTF-8";
@@ -412,67 +413,72 @@ QString DateTime::getLocalTimezoneName(QString timezone, QString locale) {
     return (index > -1) ? local_name.mid(index + 1) : local_name;
 }
 
-bool DateTime::getNtpServerConnect(){
+bool DateTime::getNtpServerConnect() {
     // 执行命令并获取结果
 
 }
 
-void DateTime::synctime_format_slot(bool status,bool outChange){
+void DateTime::synctime_format_slot(bool status,bool outChange) {
     if (!m_formatsettings) {
         qDebug()<<"org.ukui.control-center.panel.plugins not installed"<<endl;
         return;
     }
     QStringList keys = m_formatsettings->keys();
     if (keys.contains(SYNC_TIME_KEY) && outChange) {
-        if(status != false) {
+        if (status != false) {
             m_formatsettings->set(SYNC_TIME_KEY, true);
         } else {
             m_formatsettings->set(SYNC_TIME_KEY, false);
         }
     }
     QDBusMessage retDBus =  rsync_with_network_slot(status);
-    if(status != false){
+    if (status != false) {
         ui->chgtimebtn->setEnabled(false);
 
-        if(retDBus.type() == QDBusMessage::ReplyMessage){
+        if (retDBus.type() == QDBusMessage::ReplyMessage) {
             QString successMSG = tr("  ");
             QString failMSG = tr("Sync from network failed");
             CGetSyncRes *syncThread = new CGetSyncRes(this,successMSG,failMSG);
             connect(syncThread,SIGNAL(finished()),syncThread,SLOT(deleteLater()));
             syncThread->start();
-        }
-        else{
+        } else {
             syncNetworkRetLabel->setText(tr("Sync from network failed"));
         }
-    }
-    else{
+    } else {
             ui->chgtimebtn->setEnabled(true);
     }
 }
 
-CGetSyncRes::CGetSyncRes(DateTime *dataTimeUI,QString successMSG,QString failMSG){
+/*同步硬件时钟*/
+void DateTime::syncRTC() {
+    QDBusInterface * changeRTCinterface = new QDBusInterface("com.control.center.qt.systemdbus",
+                                                             "/",
+                                                             "com.control.center.interface",
+                                                             QDBusConnection::systemBus());
+
+    if (!changeRTCinterface->isValid()) {
+        qCritical() << "Create Client Interface Failed When execute gpasswd: " << QDBusConnection::systemBus().lastError();
+        return;
+    }
+    changeRTCinterface->call("changeRTC");
+    delete changeRTCinterface;
+    changeRTCinterface = nullptr;
+}
+
+CGetSyncRes::CGetSyncRes(DateTime *dataTimeUI,QString successMSG,QString failMSG) {
     this -> dataTimeUI = dataTimeUI;
     this -> successMSG = successMSG;
     this -> failMSG = failMSG;
 }
 
-CGetSyncRes::~CGetSyncRes(){
+CGetSyncRes::~CGetSyncRes() {
 
 }
-void CGetSyncRes::run(){
+void CGetSyncRes::run() {
     for(qint8 i = 0;i < 10; ++i)
     {
-        QProcess process;
-        process.start("timedatectl");
-        process.waitForFinished();
-        QString result = process.readAllStandardOutput();
-        //qDebug() << "result-time:" << result;
-        if(result.contains("System clock synchronized: yes",Qt::CaseInsensitive)){
-            this->dataTimeUI->syncNetworkRetLabel->setText(successMSG);
-            this->dataTimeUI->syncTimeBtn->setEnabled(true);
-            return;
-        }
-        else{
+        struct timex txc = {};
+        if (adjtimex(&txc) < 0 || txc.maxerror >= 16000000) {  //未能同步时间
             QString pixName = QString(":/img/plugins/upgrade/loading%1.svg").arg(i+10);
             QPixmap pix(pixName);
             this->dataTimeUI->syncTimeBtn->setEnabled(false);
@@ -480,11 +486,17 @@ void CGetSyncRes::run(){
             this->dataTimeUI->syncNetworkRetLabel->setPixmap(pix);
             msleep(500);
             continue;
+        } else {                                               //同步时间成功
+
+            DateTime::syncRTC();
+            this->dataTimeUI->syncNetworkRetLabel->setText(successMSG);
+            this->dataTimeUI->syncTimeBtn->setEnabled(true);
+            return;
         }
     }
     this->dataTimeUI->syncTimeBtn->setEnabled(true);
     this->dataTimeUI->syncNetworkRetLabel->setText(failMSG);
-    if(syncThreadFlag == false)
+    if(syncThreadFlag == false) //创建线程一直查时间同步是否成功
     {
         CSyncTime *syncTimeThread = new CSyncTime(this->dataTimeUI,successMSG,failMSG);
         connect(syncTimeThread,SIGNAL(finished()),syncTimeThread,SLOT(deleteLater()));
@@ -494,16 +506,16 @@ void CGetSyncRes::run(){
     return;
 }
 
-CSyncTime::CSyncTime(DateTime *dataTimeUI,QString successMSG,QString failMSG){
+CSyncTime::CSyncTime(DateTime *dataTimeUI,QString successMSG,QString failMSG) {
     this -> dataTimeUI = dataTimeUI;
     this -> successMSG = successMSG;
     this -> failMSG = failMSG;
 }
 
-CSyncTime::~CSyncTime(){
+CSyncTime::~CSyncTime() {
 
 }
-void CSyncTime::run(){
+void CSyncTime::run() {
     QDBusInterface *r_datetimeiface = new QDBusInterface("org.freedesktop.timedate1",
                                            "/org/freedesktop/timedate1",
                                            "org.freedesktop.timedate1",
@@ -515,11 +527,9 @@ void CSyncTime::run(){
             return;
         }
         r_datetimeiface->call("SetNTP", true, true);
-        QProcess process;
-        process.start("timedatectl");
-        process.waitForFinished();
-        QString result = process.readAllStandardOutput();
-        if(result.contains("System clock synchronized: yes",Qt::CaseInsensitive)){
+        struct timex txc = {};
+        if (adjtimex(&txc) > 0 && txc.maxerror < 16000000) { //同步时间成功
+            DateTime::syncRTC();
             this->dataTimeUI->syncNetworkRetLabel->setText(successMSG);
             syncThreadFlag = false;
             delete r_datetimeiface;

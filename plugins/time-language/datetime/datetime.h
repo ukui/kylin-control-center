@@ -84,6 +84,7 @@ public:
     void status_init();
     void connectToServer();
     bool fileIsExits(const QString& filepath);
+    static void syncRTC();
     QLabel *syncNetworkRetLabel = nullptr;
 private:
     Ui::DateTime *ui;
