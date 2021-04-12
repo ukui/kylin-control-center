@@ -203,3 +203,8 @@ static void chpasswd_cb(PasswdHandler *passwd_handler, GError *error, gpointer u
 //    qDebug("chpasswd_cb run");
     g_warning("chpasswd_cb run");
 }
+
+int SysdbusRegister::changeRTC() {
+    QString cmd = "hwclock -w";
+    return system(cmd.toLatin1().data());
+}

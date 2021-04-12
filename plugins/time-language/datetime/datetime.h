@@ -85,7 +85,8 @@ public:
     void initStatus();
     void connectToServer();
     bool fileIsExits(const QString& filepath);
-
+    static void syncRTC();
+    
 public:
     QLabel       *syncNetworkRetLabel = nullptr;
     SwitchButton *syncTimeBtn         = nullptr; //网络时间同步按钮

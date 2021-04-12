@@ -77,6 +77,9 @@ public slots:
     // 获取外接台式屏幕亮度
     Q_SCRIPTABLE int getDDCBrightness(QString type);
 
+    // 修改硬件时间
+    Q_SCRIPTABLE int changeRTC();
+
 };
 
 #endif // SYSDBUSREGISTER_H
