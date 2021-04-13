@@ -206,7 +206,7 @@ void ChangePwdDialog::setupConnect(){
                 return;
             }
 
-            pcThread->setArgs(ui->usernameLabel->text(), ui->curPwdLineEdit->text());
+            pcThread->setArgs(currentUserName, ui->curPwdLineEdit->text());
 
             pcThread->start();
 
@@ -266,8 +266,8 @@ void ChangePwdDialog::setFace(QString iconfile){
 
 }
 
-void ChangePwdDialog::setUsername(QString username){
-    ui->usernameLabel->setText(username);
+void ChangePwdDialog::setUsername(QString realname){
+    ui->usernameLabel->setText(realname);
 }
 
 void ChangePwdDialog::setAccountType(QString aType){

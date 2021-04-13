@@ -56,7 +56,7 @@ private:
     bool currentloginstatus;
 
 Q_SIGNALS:
-    void type_send(int type, QString username);
+    void type_send(int type);
 };
 
 #endif // CHANGETYPEDIALOG_H

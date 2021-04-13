@@ -37,6 +37,7 @@ PKGCONFIG     += gio-2.0 \
 
 SOURCES += \
     changegroupdialog.cpp \
+    changeusername.cpp \
     changevaliddialog.cpp \
     creategroupdialog.cpp \
     definegroupitem.cpp \
@@ -62,6 +63,7 @@ SOURCES += \
 
 HEADERS += \
     changegroupdialog.h \
+    changeusername.h \
     changevaliddialog.h \
     creategroupdialog.h \
     definegroupitem.h \
@@ -88,6 +90,7 @@ HEADERS += \
 
 FORMS += \
     changegroupdialog.ui \
+    changeusername.ui \
     changevaliddialog.ui \
     creategroupdialog.ui \
     delgroupdialog.ui \

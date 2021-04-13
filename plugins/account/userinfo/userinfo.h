@@ -37,6 +37,7 @@
 #include "changefacedialog.h"
 #include "changetypedialog.h"
 #include "changevaliddialog.h"
+#include "changeusername.h"
 #include "deluserdialog.h"
 #include "createuserdialog.h"
 #include "HoverWidget/hoverwidget.h"
@@ -60,6 +61,7 @@ enum {
 typedef struct _UserInfomation {
     QString objpath;
     QString username;
+    QString realname;
     QString iconfile;
     QString passwd;
     int accounttype;
@@ -182,6 +184,9 @@ public:
     void showChangeValidDialog(QString username);
 
     void showChangeGroupDialog();
+
+    void showChangeNameDialog();
+    void changeUserName(QString newName);
 
     void get_all_users();
     UserInfomation init_user_info(QString objpath);

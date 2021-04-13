@@ -62,7 +62,7 @@ public:
     void refreshConfirmBtnStatus();
 
     void setFace(QString iconfile);
-    void setUsername(QString username);
+    void setUsername(QString realname);
     void setPwdType(QString type);
     void setAccountType(QString text);
     void haveCurrentPwdEdit(bool have);

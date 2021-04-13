@@ -94,6 +94,11 @@ void UserDispatcher::change_user_face(QString facefile){
     useriface->call("SetIconFile", QVariant(facefile));
 }
 
+
+void UserDispatcher::change_user_name(QString newName){
+    useriface->call("SetRealName", QVariant(newName));
+}
+
 void UserDispatcher::change_user_autologin(QString username){
     QDBusInterface * tmpSysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
                                                           "/",

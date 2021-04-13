@@ -82,7 +82,7 @@ void ChangeTypeDialog::setupComonpent(){
     connect(ui->confirmPushBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
         this->accept();
-        emit type_send(ui->buttonGroup->checkedId(), ui->usernameLabel->text());
+        emit type_send(ui->buttonGroup->checkedId());
     });
 }
 
