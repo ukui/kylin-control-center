@@ -201,6 +201,12 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
            m_NameLogin = changed;
        } else {
            m_PhoneLogin = changed;
+           QRegExp regExp("^1[3-9]\\d{9}$");
+           if(regExp.exactMatch(m_PhoneLogin) == true) {
+               if(m_loginCodeStatusTips->isHidden() == false) {
+                   m_loginCodeStatusTips->hide();
+               }
+           }
        }
     });
 
@@ -585,6 +591,9 @@ void MainDialog::on_send_code_log() {
         m_loginCodeStatusTips->show();
         setshow(m_stackedWidget);
         return ;
+    }
+    if (m_loginCodeStatusTips->isHidden() == false) {
+        m_loginCodeStatusTips->hide();
     }
     if (m_loginDialog->get_user_name() != "") {
         phone = m_loginDialog->get_user_name();

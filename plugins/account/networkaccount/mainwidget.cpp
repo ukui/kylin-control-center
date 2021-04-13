@@ -108,10 +108,10 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
         for (int i = 0;i < m_szItemlist.size(); i ++ ) {
             m_itemList->get_item(i)->get_swbtn()->setDisabledFlag(false);
         }
-        m_checkTimer->setSingleShot(true);
-        m_checkTimer->setInterval(500);
-        m_checkTimer->start();
     }
+    m_checkTimer->setSingleShot(true);
+    m_checkTimer->setInterval(500);
+    m_checkTimer->start();
     layoutUI();
     dbusInterface();
 
