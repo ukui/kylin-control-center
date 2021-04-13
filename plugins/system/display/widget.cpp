@@ -1496,12 +1496,14 @@ void Widget::initConnection()
 
 void Widget::setBrightnessScreen(int value)
 {
+    qDebug() << Q_FUNC_INFO << value;
     mPowerGSettings->set(POWER_KEY, value);
 }
 
 void Widget::setDDCBrightness()
 {
     int value = ui->brightnessSlider->value() * 10;
+    qDebug() << Q_FUNC_INFO << value;
     if (!isLaptopScreen()) {
         setDDCBrighthessSlot(value);
     } else {
