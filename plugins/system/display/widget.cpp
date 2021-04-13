@@ -133,6 +133,8 @@ Widget::Widget(QWidget *parent) :
 
     initConnection();
     loadQml();
+
+    screenScale = scaleGSettings->get(SCALE_KEY).toInt();
 }
 
 Widget::~Widget()

@@ -263,8 +263,17 @@ void OutputConfig::slotResolutionChanged(const QSize &size)
     for (int i = 0, total = modes.count(); i < total; ++i) {
         const KScreen::ModePtr mode = modes.at(i);
         if (!(mode->size() == KRsolution && mode->refreshRate() < 50.0)) {
-            mRefreshRate->addItem(tr("%1 Hz").arg(QLocale().toString(mode->refreshRate())),
+            bool alreadyExisted = false;
+            for (int j = 0; j < mRefreshRate->count(); ++j) {
+                if (tr("%1 Hz").arg(QLocale().toString(mode->refreshRate())) == mRefreshRate->itemText(j)) {
+                    alreadyExisted = true;
+                    break;
+                }
+            }
+            if (alreadyExisted == false) {   //不添加已经存在的项
+                mRefreshRate->addItem(tr("%1 Hz").arg(QLocale().toString(mode->refreshRate())),
                                   mode->id());
+            }
         }
 
         // If selected refresh rate is other then what we consider the "Auto" value
