@@ -93,6 +93,7 @@ void TabWid::backupMessageBox(QString str)
        checkUpdateBtn->stop();
        checkUpdateBtn->setEnabled(true);
 //       checkUpdateBtn->setText(tr("全部更新"));
+       versionInformationLab->setText(tr("Updatable app detected on your system!"));
        checkUpdateBtn->setText(tr("UpdateAll"));
     }
     else if(ret == QMessageBox::Abort)
