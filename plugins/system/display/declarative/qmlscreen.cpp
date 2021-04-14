@@ -122,6 +122,9 @@ void QMLScreen::addOutput(const KScreen::OutputPtr &output)
     connect(qmloutput, SIGNAL(rotationChanged()),
             this, SLOT(setScreenPos()));
 
+    connect(qmloutput, SIGNAL(widthChanged()),
+            this, SLOT(setScreenPos()));
+
     qmloutput->updateRootProperties();
 }
 
@@ -320,7 +323,6 @@ void QMLScreen::outputConnectedChanged()
     int connectedCount = 0;
 
     Q_FOREACH (const KScreen::OutputPtr &output, m_outputMap.keys()) {
-        // qDebug() << output->geometry();
         if (output->isConnected()) {
             ++connectedCount;
         }
@@ -501,8 +503,7 @@ void QMLScreen::updateOutputsPlacement()
         qreal lastY = -1.0;
         Q_FOREACH (QQuickItem *item, childItems()) {
             QMLOutput *qmlOutput = qobject_cast<QMLOutput *>(item);
-            if (!qmlOutput->output()->isConnected() || !qmlOutput->output()->isEnabled()
-                || m_manuallyMovedOutputs.contains(qmlOutput)) {
+            if (!qmlOutput->output()->isConnected() || !qmlOutput->output()->isEnabled()) {
                 continue;
             }
 

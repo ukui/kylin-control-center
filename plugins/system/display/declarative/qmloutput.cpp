@@ -186,7 +186,6 @@ QMLOutput* QMLOutput::cloneOf() const
     return m_cloneOf;
 }
 
-//返回上面小屏幕高度
 int QMLOutput::currentOutputHeight() const
 {
     if (!m_output) {
@@ -205,10 +204,9 @@ int QMLOutput::currentOutputHeight() const
             return 1000;
         }
     }
-    return mode->size().height() ;/// m_output->scale();
+    return mode->size().height() / m_output->scale();
 }
 
-//返回上面小屏幕宽度
 int QMLOutput::currentOutputWidth() const
 {
     if (!m_output) {
@@ -227,12 +225,7 @@ int QMLOutput::currentOutputWidth() const
             return 1000;
         }
     }
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    return mode->size().width();// / m_output->scale();
-#else
     return mode->size().width() / m_output->scale();
-#endif
-
 }
 
 void QMLOutput::currentModeIdChanged()
