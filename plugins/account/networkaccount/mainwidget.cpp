@@ -221,14 +221,13 @@ void MainWidget::dbusInterface() {
     }
     connect(this, &MainWidget::docheck, m_dbusClient, [=]() {
         QList<QVariant> argList;
-        m_szCode = m_dbusClient->callMethod("checkLogin",argList);
+        m_dbusClient->callMethod("checkLogin",argList);
 
     });
 
     connect(m_dbusClient, &DBusUtils::infoFinished,this,[=] (const QString &name) {
         if (name != "0") {
-            m_mainWidget->setCurrentWidget(m_nullWidget);
-            return ;
+            showDesktopNotify(tr("Network can not reach!"));
         }
     });
 
@@ -295,7 +294,6 @@ void MainWidget::dbusInterface() {
         }
 
         if (taskName == "logout") {
-            m_szCode = "";
             m_autoSyn->set_change(0,"0");
             m_autoSyn->set_active(true);
             m_keyInfoList.clear();
@@ -311,17 +309,6 @@ void MainWidget::dbusInterface() {
     connect(m_dbusClient, &DBusUtils::querryFinished, this , [=] (const QStringList &list) {
         QStringList keyList = list;
         m_isOpenDialog = false;
-        if (m_szCode == "" || m_szCode =="201" || m_szCode == "203" ||
-                m_szCode == "401" || m_szCode == "504" || m_szCode == "500" || m_szCode== "502" || m_szCode == tr("Disconnected")) {
-            if (bIsLogging) {
-                m_mainDialog->setnormal();
-            }
-            m_mainWidget->setCurrentWidget(m_nullWidget);
-            return ;
-        }
-        if (m_cLoginTimer->isActive()) {
-            m_cLoginTimer->stop();
-        }
         QFile fileConf(m_szConfPath);
         if (m_pSettings != nullptr && fileConf.exists() && fileConf.size() > 1)
             m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
@@ -336,7 +323,6 @@ void MainWidget::dbusInterface() {
             QFile file(QDir::homePath() + "/.cache/kylinId/keys");
             args << m_szCode;
             QString localDate;
-            m_mainWidget->setCurrentWidget(m_widgetContainer);
             QFile fileFLag(QDir::homePath() + "/.config/gsettings-set/" + m_szCode + "/User_Save_Flag");
             if (fileFLag.exists() && fileFLag.open(QIODevice::ReadOnly)) {
                 fileFLag.waitForReadyRead(-1);
@@ -345,7 +331,6 @@ void MainWidget::dbusInterface() {
                 m_manTimer->setSingleShot(true);
                 m_manTimer->setInterval(1000);
                 m_manTimer->start();
-                m_mainWidget->setCurrentWidget(m_widgetContainer);
                 return;
             }
             if (localDate == keyList.at(0) || !file.exists()) {
@@ -803,9 +788,11 @@ void MainWidget::initSignalSlots() {
         }
 
         if (m_mainWidget->currentWidget()  == m_widgetContainer) {
+            m_cLoginTimer->stop();
+            return ;
         } else if (m_mainWidget->currentWidget() == m_nullWidget) {
             m_mainDialog->setnormal();
-            on_login_out();
+            //on_login_out();
         }
         m_cLoginTimer->stop();
     });
@@ -939,6 +926,8 @@ void MainWidget::open_cloud() {
     m_mainDialog->on_close();
     m_mainDialog = nullptr;
     bIsLogging = false;
+    emit isSync(true);
+    m_mainWidget->setCurrentWidget(m_widgetContainer);
     emit dooss(m_szUuid);
     //m_mainDialog->on_close();
 }
@@ -1285,6 +1274,7 @@ void MainWidget::loginSuccess(int ret) {
         return ;
     }
     if (ret == 0) {
+       m_mainWidget->setCurrentWidget(m_widgetContainer);
        emit kylinIdCheck();
        emit dooss(m_szUuid);
     }
