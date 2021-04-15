@@ -37,7 +37,13 @@
 #include <QStorageInfo>
 #include <QtMath>
 
-const QString vTen = "v10";
+#define THEME_STYLE_SCHEMA "org.ukui.style"
+#define STYLE_NAME_KEY "style-name"
+#define CONTAIN_STYLE_NAME_KEY "styleName"
+#define UKUI_DEFAULT "ukui-default"
+#define UKUI_DARK "ukui-dark"
+
+const QString vTen        = "v10";
 const QString vTenEnhance = "v10.1";
 const QString vFour = "v4";
 
@@ -164,6 +170,13 @@ void About::setupVersionCompenent()
     QString versionID;
     QString version;
 
+    if (QGSettings::isSchemaInstalled(THEME_STYLE_SCHEMA)) {
+            themeStyleQgsettings = new QGSettings(THEME_STYLE_SCHEMA, QByteArray(), this);
+    } else {
+        themeStyleQgsettings = nullptr;
+        qDebug()<<THEME_STYLE_SCHEMA<<" not installed";
+    }
+
     for (QString str : osRes) {
         if (str.contains("VERSION_ID=")) {
             QRegExp rx("VERSION_ID=\"(.*)\"$");
@@ -196,10 +209,24 @@ void About::setupVersionCompenent()
         ui->versionContent->setText(version);
     }
 
-    if (!versionID.compare(vTen, Qt::CaseInsensitive)
-        || !versionID.compare(vTenEnhance, Qt::CaseInsensitive)
-        || !versionID.compare(vFour, Qt::CaseInsensitive)) {
-        ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/galaxyUnicorn.png"));
+    if (!versionID.compare(vTen, Qt::CaseInsensitive) ||
+            !versionID.compare(vTenEnhance, Qt::CaseInsensitive) ||
+            !versionID.compare(vFour, Qt::CaseInsensitive)) {
+        ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/logo-light.svg")); //默认设置为light
+        if (themeStyleQgsettings != nullptr && themeStyleQgsettings->keys().contains(CONTAIN_STYLE_NAME_KEY)) {
+            if (themeStyleQgsettings->get(STYLE_NAME_KEY).toString() == UKUI_DARK) { //深色模式改为dark
+                ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/logo-dark.svg"));
+            }
+            connect(themeStyleQgsettings,&QGSettings::changed,this,[=](QString changedKey) {  //监听主题变化
+                if (changedKey == CONTAIN_STYLE_NAME_KEY) {
+                    if (themeStyleQgsettings->get(STYLE_NAME_KEY).toString() == UKUI_DARK) {
+                        ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/logo-dark.svg"));
+                    } else {
+                        ui->logoLabel->setPixmap(QPixmap("://img/plugins/about/logo-light.svg"));
+                    }
+                }
+            });
+       }
     } else {
         ui->activeFrame->setVisible(false);
         ui->trialButton->setVisible(false);

@@ -179,6 +179,8 @@
         <file>secondaryleftmenu/DateWhite.svg</file>
         <file>plugins/upgrade/kylin-update-desktop-kernel.png</file>
         <file>plugins/upgrade/linux-generic.png</file>
+        <file>plugins/about/logo-light.svg</file>
+        <file>plugins/about/logo-dark.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

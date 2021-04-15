@@ -30,6 +30,7 @@
 #include <QLabel>
 #include <QStringList>
 #include <QSharedPointer>
+#include <QGSettings/QGSettings>
 
 #include "shell/interface.h"
 
@@ -88,6 +89,7 @@ private:
 
     bool mFirstLoad;
 
+    QGSettings *themeStyleQgsettings;
 private slots:
     void runActiveWindow();
     void showPdf();
