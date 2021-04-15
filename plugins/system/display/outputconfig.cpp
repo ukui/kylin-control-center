@@ -235,7 +235,6 @@ KScreen::OutputPtr OutputConfig::output() const
 
 void OutputConfig::slotResolutionChanged(const QSize &size)
 {
-    qDebug() << Q_FUNC_INFO << size;
     // Ignore disconnected outputs
     if (!size.isValid()) {
         return;

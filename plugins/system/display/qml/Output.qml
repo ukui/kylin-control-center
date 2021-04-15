@@ -38,6 +38,24 @@ QMLOutput {
     property bool isToggleButtonVisible: false;
     property bool hasMoved: false;
 
+    property var screenName:[
+        "Unknown",
+        "VGA",
+        "DVI",
+        "DVII",
+        "DVIA",
+        "DVID",
+        "HDMI",
+        "Laptop Screen",
+        "TV",
+        "TVComposite",
+        "TVSVideo",
+        "TVComponent",
+        "TVSCART",
+        "TVC4",
+        "DisplayPort"
+    ];
+
     width: monitorMouseArea.width;
     height: monitorMouseArea.height;
 
@@ -203,10 +221,8 @@ QMLOutput {
                     id: labelVendor;
                     text: if (root.isCloneMode) {
                             return ("Unified Outputs");
-                          } else if (root.output.type === KScreenOutput.Panel) {
-                            return ("Laptop Screen");
                           } else {
-                            return root.output.name;
+                            return screenName[root.output.type];
                           }
 
                     anchors {

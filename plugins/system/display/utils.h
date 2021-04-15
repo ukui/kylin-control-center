@@ -3,11 +3,29 @@
 
 #include <QString>
 #include <QSize>
+#include <QStringList>
 
 #include <KF5/KScreen/kscreen/types.h>
 #include <KF5/KScreen/kscreen/output.h>
 
-// 获取显示器名字和ID类
+const QStringList kOutput {
+    "Unknown",
+    "VGA",
+    "DVI",
+    "DVII",
+    "DVIA",
+    "DVID",
+    "HDMI",
+    "Laptop Screen",
+    "TV",
+    "TVComposite",
+    "TVSVideo",
+    "TVComponent",
+    "TVSCART",
+    "TVC4",
+    "DisplayPort"
+};
+
 namespace Utils {
 QString outputName(const KScreen::Output *output);
 QString outputName(const KScreen::OutputPtr &output);
