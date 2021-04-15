@@ -213,9 +213,10 @@ int UserInfo::_userCanDel(QString user){
 
     pclose(stream);
 
-    int num = output.split(",").length();
+    QStringList users = output.split(",");
+    int num = users.length();
 
-    if (output.contains(user)){
+    if (users.contains(user)){
         if (num > 1){
             return 1;
         } else {
