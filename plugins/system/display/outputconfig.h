@@ -41,6 +41,7 @@ protected Q_SLOTS:
     void slotRotationChanged(int index);
     void slotRefreshRateChanged(int index);
     void slotScaleChanged(int index);
+    void slotDPIChanged(QString key);
 
 Q_SIGNALS:
     void changed();
@@ -49,6 +50,9 @@ Q_SIGNALS:
 protected:
     virtual void initUi();
     int getScreenScale();
+
+private:
+    void initDpiConnection();
 
 protected:
     KScreen::OutputPtr mOutput;
@@ -60,8 +64,7 @@ protected:
     QComboBox *mScale = nullptr;
     QComboBox *mRefreshRate = nullptr;
     QComboBox *mMonitor = nullptr;
-    QComboBox *tmpResolution = nullptr;
-    QComboBox *scaleCombox = nullptr;
+    QComboBox *mScaleCombox = nullptr;
 
     bool mShowScaleOption = false;
     bool mIsWayland = false;
@@ -73,7 +76,7 @@ protected:
     KScreen::ConfigPtr mConfig = nullptr;
 #endif
 
-    QGSettings *m_gsettings = nullptr;
+    QGSettings *mDpiSettings = nullptr;
 };
 
 #endif // OUTPUTCONFIG_H
