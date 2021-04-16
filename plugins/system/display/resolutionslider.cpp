@@ -75,6 +75,11 @@ void ResolutionSlider::init()
         int currentModeIndex = -1;
         int preferredModeIndex = -1;
         Q_FOREACH (const QSize &size, mModes) {
+#ifdef __sw_64__
+            if (size.width() <= int(1600)) {
+                continue;
+            }
+#endif
             mComboBox->addItem(Utils::sizeToString(size));
 
             if (mOutput->currentMode() && (mOutput->currentMode()->size() == size)) {
