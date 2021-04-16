@@ -23,6 +23,9 @@
 #include <QHBoxLayout>
 #include <QAbstractButton>
 
+#include <QDBusInterface>
+#include <QDBusConnection>
+
 ShareMain::ShareMain(QWidget *parent) :
     QWidget(parent)
 {
@@ -134,9 +137,6 @@ void ShareMain::initConnection()
     QByteArray id(kVinoSchemas);
     if (QGSettings::isSchemaInstalled(id)) {
         mVinoGsetting = new QGSettings(kVinoSchemas, QByteArray(), this);
-        mUkccVino = new QGSettings(kUkccVnoSchmas, QByteArray(), this);
-
-        enableSlot(mUkccVino->get(kUkccPromptKey).toBool());
 
         initEnableStatus();
 
@@ -176,7 +176,6 @@ void ShareMain::initEnableStatus()
 
 void ShareMain::setFrameVisible(bool visible)
 {
-    qDebug() << Q_FUNC_INFO << visible;
     mEnableBtn->setChecked(visible);
 
     mViewFrame->setVisible(visible);
@@ -185,23 +184,25 @@ void ShareMain::setFrameVisible(bool visible)
     mSecurityTitleLabel->setVisible(visible);
 }
 
+void ShareMain::setVinoService(bool status)
+{
+    QDBusInterface vinoIfc("org.ukui.SettingsDaemon.Sharing",
+                           "/org/ukui/SettingsDaemon/Sharing",
+                           "org.ukui.SettingsDaemon.Sharing",
+                           QDBusConnection::sessionBus());
+    if (vinoIfc.isValid()) {
+        if (status) {
+            vinoIfc.call("EnableService", "vino-server");
+        } else {
+            vinoIfc.call("DisableService", "vino-server");
+        }
+    }
+}
+
 void ShareMain::enableSlot(bool status)
 {
-    QProcess *process = new QProcess;
-    QString cmd;
-
-    if (status) {
-        cmd = "start";
-    } else {
-        cmd = "stop";
-    }
-    process->start("systemctl", QStringList() << "--user" << cmd << "vino-server.service");
-    process->waitForFinished();
-    delete process;
-
     setFrameVisible(status);
-
-    mUkccVino->set(kUkccPromptKey, status);
+    setVinoService(status);
 }
 
 void ShareMain::viewBoxSlot(bool status)

@@ -90,7 +90,6 @@ private:
     QVBoxLayout *mVlayout;
 
     QGSettings *mVinoGsetting;
-    QGSettings *mUkccVino;
 
 private:
     void initTitleLabel();
@@ -99,6 +98,7 @@ private:
     void initShareStatus(bool isConnnect, bool isPwd);
     void initEnableStatus();
     void setFrameVisible(bool visible);
+    void setVinoService(bool status);
 
 private slots:
     void enableSlot(bool status);

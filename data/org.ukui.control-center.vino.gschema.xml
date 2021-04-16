@@ -1,9 +1,0 @@
-<schemalist gettext-domain="ukui-control-center">
-  <schema id="org.ukui.control-center.vino" path="/org/ukui/control-center/vino/">
-    <key type="b" name="remote">
-      <default>false</default>
-      <summary>Turn Vino on or off</summary>
-      <description>If true, remote users accessing the desktop are not allowed</description>
-    </key>
-  </schema>
-</schemalist>
