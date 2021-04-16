@@ -378,6 +378,7 @@ void Widget::slotUnifyOutputs()
         ui->primaryCombo->setEnabled(true);
         mCloseScreenButton->setEnabled(true);
         ui->showMonitorframe->setVisible(true);
+        ui->brightnessframe->setVisible(true);
         ui->primaryCombo->setEnabled(true);
     } else if (!base->isCloneMode() && mUnifyButton->isChecked()) {
         // Clone the current config, so that we can restore it in case user
@@ -423,6 +424,7 @@ void Widget::slotUnifyOutputs()
         // 关闭开关
         mCloseScreenButton->setEnabled(false);
         ui->showMonitorframe->setVisible(false);
+        ui->brightnessframe->setVisible(false);
         ui->primaryCombo->setEnabled(false);
         ui->mainScreenButton->setEnabled(false);
         mControlPanel->setUnifiedOutput(base->outputPtr());
