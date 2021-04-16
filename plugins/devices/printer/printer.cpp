@@ -34,22 +34,26 @@ Printer::Printer() : mFirstLoad(true)
     pluginType = DEVICES;
 }
 
-Printer::~Printer() {
+Printer::~Printer()
+{
     if (!mFirstLoad) {
         delete ui;
         ui = nullptr;
     }
 }
 
-QString Printer::get_plugin_name() {
+QString Printer::get_plugin_name()
+{
     return pluginName;
 }
 
-int Printer::get_plugin_type() {
+int Printer::get_plugin_type()
+{
     return pluginType;
 }
 
-QWidget *Printer::get_plugin_ui() {
+QWidget *Printer::get_plugin_ui()
+{
     if (mFirstLoad) {
         mFirstLoad = false;
         ui = new Ui::Printer;
@@ -57,50 +61,54 @@ QWidget *Printer::get_plugin_ui() {
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
 
-        //~ contents_path /printer/Add Printers And Scanners
+        // ~ contents_path /printer/Add Printers And Scanners
         ui->titleLabel->setText(tr("Add Printers And Scanners"));
 
-        //禁用选中效果
+        // 禁用选中效果
         ui->listWidget->setFocusPolicy(Qt::NoFocus);
         ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);
 
-        refreshPrinterDev();
-
         initTitleLabel();
         initComponent();
+
+        refreshPrinterDevSlot();
     }
     return pluginWidget;
 }
 
-void Printer::plugin_delay_control() {
-
+void Printer::plugin_delay_control()
+{
 }
 
-const QString Printer::name() const {
-
+const QString Printer::name() const
+{
     return QStringLiteral("printer");
 }
 
-void Printer::initTitleLabel() {
+void Printer::initTitleLabel()
+{
     QFont font;
     font.setPixelSize(18);
     ui->titleLabel->setFont(font);
+
+    ui->listWidget->setSpacing(1);
 }
 
-void Printer::initComponent(){
-
+void Printer::initComponent()
+{
     mAddWgt = new HoverWidget("", pluginWidget);
     mAddWgt->setObjectName("addwgt");
     mAddWgt->setMinimumSize(QSize(580, 50));
     mAddWgt->setMaximumSize(QSize(960, 50));
-    mAddWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
+    mAddWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button);border-radius: 4px;}"
+                           "HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
 
     ui->listWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
 
     QHBoxLayout *addLyt = new QHBoxLayout;
 
-    QLabel * iconLabel = new QLabel();
-    QLabel * textLabel = new QLabel(tr("Add printers and scanners"));
+    QLabel *iconLabel = new QLabel();
+    QLabel *textLabel = new QLabel(tr("Add printers and scanners"));
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);
     iconLabel->setProperty("useIconHighlightEffect", true);
@@ -117,35 +125,40 @@ void Printer::initComponent(){
     });
     ui->addLyt->addWidget(mAddWgt);
 
+    mTimer = new QTimer(this);
+    connect(mTimer, &QTimer::timeout, this, [=] {
+        refreshPrinterDevSlot();
+    });
+
+    mTimer->start(1000);
 }
 
-void Printer::refreshPrinterDev(){
-
+void Printer::refreshPrinterDevSlot()
+{
     ui->listWidget->clear();
 
-    QStringList printer = QPrinterInfo::availablePrinterNames();
+ QStringList printer = QPrinterInfo::availablePrinterNames();
 
     for (int num = 0; num < printer.count(); num++) {
-
-        HoverBtn * printerItem = new HoverBtn(printer.at(num), pluginWidget);
+        HoverBtn *printerItem = new HoverBtn(printer.at(num), pluginWidget);
         printerItem->mPitLabel->setText(printer.at(num));
         printerItem->mAbtBtn->setText(tr("Attrs"));
         QIcon printerIcon = QIcon::fromTheme("printer");
         printerItem->mPitIcon->setPixmap(printerIcon.pixmap(printerIcon.actualSize(QSize(24, 24))));
 
-        connect(printerItem->mAbtBtn, &QPushButton::clicked, this, [=]{
+        connect(printerItem->mAbtBtn, &QPushButton::clicked, this, [=] {
             runExternalApp();
         });
-        QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
+        QListWidgetItem *item = new QListWidgetItem(ui->listWidget);
         item->setSizeHint(QSize(QSizePolicy::Expanding, 50));
         ui->listWidget->setItemWidget(item, printerItem);
     }
 }
 
-void Printer::runExternalApp(){
+void Printer::runExternalApp()
+{
     QString cmd = "system-config-printer";
 
     QProcess process(this);
     process.startDetached(cmd);
 }
-

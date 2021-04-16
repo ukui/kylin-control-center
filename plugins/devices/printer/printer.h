@@ -64,8 +64,10 @@ private:
 
     bool mFirstLoad;
 
+    QTimer *mTimer;
+
 public slots:
-    void refreshPrinterDev();
+    void refreshPrinterDevSlot();
 
 };
 
