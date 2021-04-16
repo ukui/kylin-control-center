@@ -1207,7 +1207,7 @@ void MainWidget::get_key_info(QString info) {
         m_keyInfoList << info;
     }
 
-    if (m_keyInfoList.size() == 1  /* && m_szItemlist.contains(m_keyInfoList[0]) */) {
+    if (m_keyInfoList.size() == 1  && m_szItemlist.contains(m_keyInfoList[0]) ) {
         m_autoSyn->set_change(-1,m_keyInfoList[0]);
         m_autoSyn->make_itemoff();
         emit dochange("Auto-sync",false);
