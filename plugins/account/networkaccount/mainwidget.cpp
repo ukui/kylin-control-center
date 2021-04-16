@@ -433,7 +433,6 @@ void MainWidget::checkUserName(QString name) {
             }
         });
     }
-    m_autoSyn->set_change(0,"0");
     if (bIsLogging == false) {
         QFile file (m_szConfPath);
         QFile token (QDir::homePath() + "/.cache/kylinId/token");
@@ -443,8 +442,11 @@ void MainWidget::checkUserName(QString name) {
     }
 
     //dooss(m_szUuid);
-    for (int i = 0;i < m_szItemlist.size();i ++) {
-       m_itemList->get_item(i)->set_change(0,"0");
+    if(m_autoSyn->get_swbtn()->isChecked() == true) {
+        m_autoSyn->set_change(0,"0");
+        for (int i = 0;i < m_szItemlist.size();i ++) {
+           m_itemList->get_item(i)->set_change(0,"0");
+        }
     }
     handle_conf();
 }
@@ -1205,13 +1207,11 @@ void MainWidget::get_key_info(QString info) {
         m_keyInfoList << info;
     }
 
-    if (m_keyInfoList.size() == 1) {
+    if (m_keyInfoList.size() == 1  /* && m_szItemlist.contains(m_keyInfoList[0]) */) {
         m_autoSyn->set_change(-1,m_keyInfoList[0]);
         m_autoSyn->make_itemoff();
-        for (int i = 0;i < m_szItemlist.size();i ++) {
-            m_itemList->get_item(i)->set_active(false);
-        }
         emit dochange("Auto-sync",false);
+        m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
         __once__ = true;
         return ;
     } else if (m_keyInfoList.size() > 1){
