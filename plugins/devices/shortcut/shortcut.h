@@ -29,7 +29,6 @@
 #include <QPushButton>
 
 #include "shell/interface.h"
-
 #include "keymap.h"
 #include "addshortcutdialog.h"
 #include "getshortcutworker.h"
@@ -37,25 +36,10 @@
 #include "ImageUtil/imageutil.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class Shortcut; }
+namespace Ui {
+class Shortcut;
+}
 QT_END_NAMESPACE
-
-typedef struct _KeyEntry KeyEntry;
-
-struct _KeyEntry{
-//    int keyval;
-    QString gsSchema;
-    QString keyStr;
-    QString valueStr;
-    QString descStr;
-
-    QString gsPath;
-    QString nameStr;
-    QString bindingStr;
-    QString actionStr;
-};
-
-Q_DECLARE_METATYPE(KeyEntry *)
 
 class Shortcut : public QObject, CommonInterface
 {
@@ -72,7 +56,7 @@ public:
     int get_plugin_type() Q_DECL_OVERRIDE;
     QWidget *get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
-    const QString name() const  Q_DECL_OVERRIDE;
+    const QString name() const Q_DECL_OVERRIDE;
 
 public:
     void initTitleLabel();
@@ -82,42 +66,34 @@ public:
 
     void appendGeneralItems(QMap<QString, QMap<QString, QString> > shortcutsMap);
     void appendCustomItems();
-    void buildCustomItem(KeyEntry * nkeyEntry);
-    QWidget * buildGeneralWidget(QString schema, QMap<QString, QString> subShortcutsMap);
+    void buildCustomItem(KeyEntry *nkeyEntry);
+    QWidget *buildGeneralWidget(QString schema, QMap<QString, QString> subShortcutsMap);
 
-    void initItemsStyle(QListWidget * listWidget);
-    void initCustomItemsStyle();
-
-    void createNewShortcut(QString path, QString name, QString exec);
+    void createNewShortcut(QString path, QString name, QString exec, QString key);
     void deleteCustomShortcut(QString path);
 
-    void newBindingRequest(QList<int> keyCode);
-
-    QString getBindingName(QList<int> keyCode);
     bool keyIsForbidden(QString key);
     void connectToServer();
     QMap<QString, QString> MergerOfTheSamekind(QMap<QString, QString> desktopMap);
 
-protected:
-//    bool event(QEvent *event);
-//    bool eventFilter(QObject *watched, QEvent *event);
+    QString keyToUI(QString key);
+    QString keyToLib(QString key);
 
 private:
     Ui::Shortcut *ui;
 
     QString pluginName;
     int pluginType;
-    QWidget * pluginWidget;
+    QWidget *pluginWidget;
 
     HoverWidget *addWgt;
 
 private:
-    QThread * pThread;
-    GetShortcutWorker * pWorker;
+    QThread *pThread;
+    GetShortcutWorker *pWorker;
 
-    KeyMap * pKeyMap;
+    KeyMap *pKeyMap;
 
-    addShortcutDialog * addDialog;
     QDBusInterface *cloudInterface;
     bool isCloudService;
 
@@ -128,7 +104,5 @@ private slots:
 
 Q_SIGNALS:
     void hideDelBtn();
-
-
 };
 #endif // SHORTCUT_H
