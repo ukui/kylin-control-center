@@ -231,10 +231,10 @@ void SearchWidget::loadxml() {
                             }
                         }
                        
-                        if (!g_file_test("/usr/sbin/ksc-defender", G_FILE_TEST_EXISTS) && m_searchBoxStruct.fullPagePath.contains("securitycenter",Qt::CaseInsensitive)) {
+                        if ((!g_file_test("/usr/sbin/ksc-defender", G_FILE_TEST_EXISTS) && m_searchBoxStruct.fullPagePath.contains("securitycenter",Qt::CaseInsensitive))
+                                || (!MainWindow::isExitBluetooth() && m_searchBoxStruct.fullPagePath.contains("bluetooth",Qt::CaseInsensitive))
+                                || (!Utils::isCommunity() && m_searchBoxStruct.fullPagePath.contains("update")) ) {
                             break;
-                        } else if(!MainWindow::isExitBluetooth() && m_searchBoxStruct.fullPagePath.contains("bluetooth",Qt::CaseInsensitive)) {
-                            break;          
                         }
                         m_EnterNewPagelist.append(m_searchBoxStruct);
 
