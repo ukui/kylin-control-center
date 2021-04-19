@@ -3,7 +3,7 @@ include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
 include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
 include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
 
-QT       += widgets dbus
+QT       += widgets dbus KXmlGui KGlobalAccel
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TEMPLATE = lib
@@ -16,7 +16,8 @@ target.path = $${PLUGIN_INSTALL_DIRS}
 INCLUDEPATH += \
                $$PROJECT_COMPONENTSOURCE \
                $$PROJECT_ROOTDIR \
-               /usr/include/dconf
+               /usr/include/dconf \
+               /usr/include/KF5
 
 LIBS        += -L$$[QT_INSTALL_LIBS] -lgsettings-qt -ldconf
 
