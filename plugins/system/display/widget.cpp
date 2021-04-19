@@ -183,7 +183,7 @@ void Widget::setConfig(const KScreen::ConfigPtr &config)
     // 上面屏幕拿取配置
     mScreen->setConfig(mConfig);
     mControlPanel->setConfig(mConfig);
-    mUnifyButton->setEnabled(mConfig->outputs().count() > 1);
+    mUnifyButton->setEnabled(mConfig->connectedOutputs().count() > 1);
     ui->unionframe->setVisible(mConfig->outputs().count() > 1);
 
     for (const KScreen::OutputPtr &output : mConfig->outputs()) {
@@ -822,6 +822,12 @@ void Widget::outputAdded(const KScreen::OutputPtr &output)
     }
 
     ui->unionframe->setVisible(mConfig->connectedOutputs().count() > 1);
+
+    if (!mFirstLoad) {
+        QTimer::singleShot(2000, this, [=] {
+            mUnifyButton->setChecked(isCloneMode());
+        });
+    }
 }
 
 void Widget::outputRemoved(int outputId)
@@ -857,6 +863,9 @@ void Widget::outputRemoved(int outputId)
         }
     }
     ui->unionframe->setVisible(mConfig->connectedOutputs().count() > 1);
+    mUnifyButton->blockSignals(true);
+    mUnifyButton->setChecked(mConfig->connectedOutputs().count() > 1);
+    mUnifyButton->blockSignals(false);
 }
 
 void Widget::primaryOutputSelected(int index)
@@ -1480,7 +1489,9 @@ void Widget::initConnection()
     });
 
     connect(QApplication::desktop(), &QDesktopWidget::resized, this, [=] {
-        mUnifyButton->setChecked(isCloneMode());
+        QTimer::singleShot(2000, this, [=] {
+            mUnifyButton->setChecked(isCloneMode());
+        });
     });
 
     QDBusConnection::sessionBus().connect(QString(),

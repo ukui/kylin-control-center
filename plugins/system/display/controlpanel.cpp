@@ -49,11 +49,7 @@ void ControlPanel::addOutput(const KScreen::OutputPtr &output)
 {
     OutputConfig *outputCfg = new OutputConfig(this);
     outputCfg->setVisible(false);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
     outputCfg->setShowScaleOption(mConfig->supportedFeatures().testFlag(KScreen::Config::Feature::PerOutputScaling));
-#else
-
-#endif
 
     outputCfg->setOutput(output);
     connect(outputCfg, &OutputConfig::changed,
@@ -73,12 +69,18 @@ void ControlPanel::addOutput(const KScreen::OutputPtr &output)
 
 void ControlPanel::removeOutput(int outputId)
 {
+    if (mUnifiedOutputCfg) {
+        mUnifiedOutputCfg->setVisible(false);
+    }
+
     for (OutputConfig *outputCfg : mOutputConfigs) {
         if (outputCfg->output()->id() == outputId) {
             mOutputConfigs.removeOne(outputCfg);
             delete outputCfg;
             outputCfg = nullptr;
             return;
+        } else {
+            outputCfg->setVisible(true);
         }
     }
 }
