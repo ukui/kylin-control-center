@@ -108,8 +108,10 @@ void OutputConfig::initUi()
     connect(mResolution, &ResolutionSlider::resolutionChanged,
             this, &OutputConfig::slotResolutionChanged);
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
     connect(mResolution, &ResolutionSlider::resolutionChanged,
             this, &OutputConfig::slotScaleIndex);
+#endif
 
     // 方向下拉框
     mRotation = new QComboBox(this);
