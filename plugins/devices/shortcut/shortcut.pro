@@ -3,7 +3,7 @@ include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
 include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
 include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
 
-QT       += widgets dbus
+QT       += widgets dbus KXmlGui KGlobalAccel
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TEMPLATE = lib

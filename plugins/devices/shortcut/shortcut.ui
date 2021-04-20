@@ -25,10 +25,7 @@
   <property name="windowTitle">
    <string notr="true">Shortcut</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
-   <property name="spacing">
-    <number>16</number>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout_4">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -37,9 +34,6 @@
    </property>
    <property name="rightMargin">
     <number>32</number>
-   </property>
-   <property name="bottomMargin">
-    <number>48</number>
    </property>
    <item>
     <widget class="QLabel" name="systemLabel">
@@ -73,10 +67,17 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <property name="spacing">
-      <number>16</number>
+      <number>6</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
      </property>
      <item>
-      <widget class="QListWidget" name="customListWidget"/>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+      </layout>
      </item>
      <item>
       <widget class="QWidget" name="addWidget" native="true">
