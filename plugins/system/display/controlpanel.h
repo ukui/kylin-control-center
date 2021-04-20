@@ -36,7 +36,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void changed();
-    void scaleChanged(int index);
+    void scaleChanged(double scale);
 
 private Q_SLOTS:
     void addOutput(const KScreen::OutputPtr &output);

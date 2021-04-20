@@ -43,16 +43,20 @@ protected Q_SLOTS:
     void slotScaleChanged(int index);
     void slotDPIChanged(QString key);
 
+private Q_SLOTS:
+    void slotScaleIndex(const QSize &size);
+
 Q_SIGNALS:
     void changed();
-    void scaleChanged(int index);
+    void scaleChanged(double scale);
 
 protected:
     virtual void initUi();
-    int getScreenScale();
+    double getScreenScale();
 
 private:
     void initDpiConnection();
+    QString scaleToString(double scale);
 
 protected:
     KScreen::OutputPtr mOutput;

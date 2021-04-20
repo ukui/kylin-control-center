@@ -25,6 +25,18 @@
 
 const QSize KRsolution(1920, 1080);
 
+const QVector<QSize> k150Scale{QSize(1280, 1024), QSize(1440, 900), QSize(1600, 900),
+                               QSize(1680, 1050), QSize(1920, 1080), QSize(1920, 1200),
+                               QSize(2048, 1080), QSize(2048, 1280), QSize(2160, 1440),
+                               QSize(2560, 1440),QSize(3840, 2160)};
+
+const QVector<QSize> k175Scale{QSize(1680, 1050), QSize(1920, 1080), QSize(1920, 1200),
+                               QSize(2048, 1080), QSize(2048, 1280), QSize(2160, 1440),
+                               QSize(2560, 1440), QSize(3840, 2160)};
+
+const QVector<QSize> k200Scale{QSize(1920, 1200), QSize(2048, 1280), QSize(2160, 1440),
+                               QSize(2560, 1440), QSize(3840, 2160)};
+
 OutputConfig::OutputConfig(QWidget *parent) :
     QWidget(parent),
     mOutput(nullptr)
@@ -96,6 +108,9 @@ void OutputConfig::initUi()
     connect(mResolution, &ResolutionSlider::resolutionChanged,
             this, &OutputConfig::slotResolutionChanged);
 
+    connect(mResolution, &ResolutionSlider::resolutionChanged,
+            this, &OutputConfig::slotScaleIndex);
+
     // 方向下拉框
     mRotation = new QComboBox(this);
     mRotation->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -160,12 +175,32 @@ void OutputConfig::initUi()
     mScaleCombox = new QComboBox(this);
     mScaleCombox->setObjectName("scaleCombox");
 
+    double scale = getScreenScale();
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+    slotScaleIndex(mResolution->currentResolution());
+#else
     int maxReslu = mResolution->getMaxResolution().width();
 
-    mScaleCombox->addItem(tr("100%"));
+    mScaleCombox->addItem("100%", 1.0);
     if (maxReslu >= 2000) {
-        mScaleCombox->addItem(tr("200%"));
+        mScaleCombox->addItem("200%", 2.0);
     }
+
+    mScaleCombox->setCurrentIndex(0);
+    if (mScaleCombox->findData(scale) == -1) {
+        mScaleCombox->addItem("200%", 2.0);
+    }
+#endif
+    mScaleCombox->setCurrentText(scaleToString(scale));
+
+    if (mScaleCombox->findData(scale) == -1) {
+        mScaleCombox->addItem(scaleToString(scale), scale);
+        mScaleCombox->setCurrentText(scaleToString(scale));
+    }
+
+    connect(mScaleCombox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this, &OutputConfig::slotScaleChanged);
 
     QLabel *scaleLabel = new QLabel(this);
     // ~ contents_path /display/screen zoom
@@ -185,27 +220,14 @@ void OutputConfig::initUi()
     scaleFrame->setMinimumSize(550, 50);
     scaleFrame->setMaximumSize(960, 50);
     vbox->addWidget(scaleFrame);
-
-    int scale = getScreenScale();
-
-    mScaleCombox->setCurrentIndex(0);
-    if (scale > mScaleCombox->count()) {
-        mScaleCombox->addItem(tr("200%"));
-    }
-
-    mScaleCombox->setCurrentIndex(scale - 1);
-    slotScaleChanged(scale - 1);
-
-    connect(mScaleCombox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this, &OutputConfig::slotScaleChanged);
 }
 
-int OutputConfig::getScreenScale()
+double OutputConfig::getScreenScale()
 {
-    int scale = 1;
+    double scale = 1.0;
     if (QGSettings::isSchemaInstalled(SCALE_SCHEMAS)) {
         if (mDpiSettings->keys().contains("scalingFactor")) {
-            scale = mDpiSettings->get(SCALE_KEY).toInt();
+            scale = mDpiSettings->get(SCALE_KEY).toDouble();
         }
     }
     return scale;
@@ -220,6 +242,11 @@ void OutputConfig::initDpiConnection()
             slotDPIChanged(key);
         });
     }
+}
+
+QString OutputConfig::scaleToString(double scale)
+{
+    return QString::number(scale * 100) + "%";
 }
 
 void OutputConfig::setOutput(const KScreen::OutputPtr &output)
@@ -322,19 +349,36 @@ void OutputConfig::slotRefreshRateChanged(int index)
 
 void OutputConfig::slotScaleChanged(int index)
 {
-    Q_EMIT scaleChanged(index);
+    Q_EMIT scaleChanged(mScaleCombox->itemData(index).toDouble());
 }
 
 void OutputConfig::slotDPIChanged(QString key)
 {
     if (!key.compare("scalingFactor", Qt::CaseSensitive)) {
-        int scale = mDpiSettings->get(key).toInt();
-        if (scale > mScaleCombox->count()) {
-            mScaleCombox->addItem(tr("200%"));
+        double scale = mDpiSettings->get(key).toDouble();
+        if (mScaleCombox->findData(scale) == -1) {
+            mScaleCombox->addItem(scaleToString(scale), scale);
         }
         mScaleCombox->blockSignals(true);
-        mScaleCombox->setCurrentIndex(scale - 1);
+        mScaleCombox->setCurrentText(scaleToString(scale));
         mScaleCombox->blockSignals(false);
+    }
+}
+
+void OutputConfig::slotScaleIndex(const QSize &size)
+{
+    mScaleCombox->clear();
+    mScaleCombox->addItem("100%", 1.0);
+
+    if (k150Scale.contains(size)) {
+        mScaleCombox->addItem("125%", 1.25);
+        mScaleCombox->addItem("150%", 1.5);
+    }
+    if (k175Scale.contains(size)) {
+        mScaleCombox->addItem("175%", 1.75);
+    }
+    if (k200Scale.contains(size)) {
+        mScaleCombox->addItem("200%", 2.0);
     }
 }
 

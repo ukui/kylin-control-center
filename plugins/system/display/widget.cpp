@@ -134,7 +134,7 @@ Widget::Widget(QWidget *parent) :
     initConnection();
     loadQml();
 
-    screenScale = scaleGSettings->get(SCALE_KEY).toInt();
+    mScreenScale = scaleGSettings->get(SCALE_KEY).toDouble();
 }
 
 Widget::~Widget()
@@ -496,9 +496,9 @@ void Widget::setTitleLabel()
     ui->titleLabel->setFont(font);
 }
 
-void Widget::writeScale(int scale)
+void Widget::writeScale(double scale)
 {
-    if (scale != scaleGSettings->get(SCALE_KEY).toInt()) {
+    if (scale != scaleGSettings->get(SCALE_KEY).toDouble()) {
         mIsScaleChanged = true;
     }
 
@@ -508,25 +508,26 @@ void Widget::writeScale(int scale)
     } else {
         return;
     }
+
     mIsScaleChanged = false;
     int cursize;
     QByteArray iid(MOUSE_SIZE_SCHEMAS);
     if (QGSettings::isSchemaInstalled(MOUSE_SIZE_SCHEMAS)) {
         QGSettings cursorSettings(iid);
 
-        if (1 == scale) {
+        if (1.0 == scale) {
             cursize = 24;
-        } else if (2 == scale) {
+        } else if (2.0 == scale) {
             cursize = 48;
-        } else if (3 == scale) {
+        } else if (3.0 == scale) {
             cursize = 96;
         } else {
-            scale = 1;
             cursize = 24;
         }
 
         QStringList keys = scaleGSettings->keys();
         if (keys.contains("scalingFactor")) {
+
             scaleGSettings->set(SCALE_KEY, scale);
         }
         cursorSettings.set(CURSOR_SIZE_KEY, cursize);
@@ -1099,7 +1100,7 @@ void Widget::save()
         return;
     }
 
-    writeScale(this->screenScale);
+    writeScale(this->mScreenScale);
     setNightMode(mNightButton->isChecked());
 
     if (!KScreen::Config::canBeApplied(config)) {
@@ -1309,23 +1310,10 @@ bool Widget::writeFile(const QString &filePath)
     return true;
 }
 
-void Widget::scaleChangedSlot(int index)
+void Widget::scaleChangedSlot(double scale)
 {
-    switch (index) {
-    case 0:
-        this->screenScale = 1;
-        break;
-    case 1:
-        this->screenScale = 2;
-        break;
-    case 2:
-        this->screenScale = 3;
-        break;
-    default:
-        this->screenScale = 1;
-        break;
-    }
-    if (scaleGSettings->get(SCALE_KEY).toInt() != this->screenScale) {
+    this->mScreenScale = scale;
+    if (scaleGSettings->get(SCALE_KEY).toDouble() != this->mScreenScale) {
         mIsScaleChanged = true;
     } else {
         mIsScaleChanged = false;

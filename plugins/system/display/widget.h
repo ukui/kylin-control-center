@@ -136,7 +136,7 @@ private Q_SLOTS:
 
 public Q_SLOTS:
     void save();
-    void scaleChangedSlot(int index);
+    void scaleChangedSlot(double scale);
     void changedSlot();
     void propertiesChangedSlot(QString, QMap<QString, QVariant>, QStringList);
 
@@ -148,7 +148,7 @@ private:
 
     void setHideModuleInfo();
     void setTitleLabel();
-    void writeScale(int scale);
+    void writeScale(double scale);
     void initGSettings();
     void setcomBoxScale();
     void initNightUI();
@@ -209,7 +209,7 @@ private:
 
     QHash<QString, QVariant> mNightConfig;
 
-    int screenScale = 1;
+    double mScreenScale = 1.0;
     int mScreenId = -1;
 
     bool mIsNightMode = false;
