@@ -55,9 +55,9 @@ void ShareMain::initUI() {
 
     mEnableBtn = new SwitchButton(this);
     mEnableLabel = new QLabel(tr("Allow others to view your desktop"), this);
-    enableHLayout->addWidget(mEnableBtn);
     enableHLayout->addWidget(mEnableLabel);
     enableHLayout->addStretch();
+    enableHLayout->addWidget(mEnableBtn);
 
     mEnableFrame->setLayout(enableHLayout);
 
@@ -70,9 +70,9 @@ void ShareMain::initUI() {
 
     mViewBtn = new SwitchButton(this);
     mViewLabel = new QLabel(tr("Allow connection to control screen"), this);
-    viewHLayout->addWidget(mViewBtn);
     viewHLayout->addWidget(mViewLabel);
     viewHLayout->addStretch();
+    viewHLayout->addWidget(mViewBtn);
 
     mViewFrame->setLayout(viewHLayout);
 
@@ -87,9 +87,9 @@ void ShareMain::initUI() {
 
     mAccessBtn = new SwitchButton(this);
     mAccessLabel = new QLabel(tr("You must confirm every visit for this machine"), this);
-    secHLayout->addWidget(mAccessBtn);
     secHLayout->addWidget(mAccessLabel);
     secHLayout->addStretch();
+    secHLayout->addWidget(mAccessBtn);
 
     mSecurityFrame->setLayout(secHLayout);
 
@@ -107,12 +107,12 @@ void ShareMain::initUI() {
     mHintLabel->setStyleSheet("color:red;");
 
     mPwdLineEdit = new QLineEdit(this);
-    pwdHLayout->addWidget(mPwdBtn);
     pwdHLayout->addWidget(mPwdsLabel);
     pwdHLayout->addStretch();
-    pwdHLayout->addWidget(mHintLabel);
-    pwdHLayout->addStretch();
     pwdHLayout->addWidget(mPwdLineEdit);
+    pwdHLayout->addStretch();
+    pwdHLayout->addWidget(mHintLabel);
+    pwdHLayout->addWidget(mPwdBtn);
 
     mSecurityPwdFrame->setLayout(pwdHLayout);
 

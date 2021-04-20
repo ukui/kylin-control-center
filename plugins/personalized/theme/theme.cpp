@@ -70,6 +70,9 @@ const QString kXder =                "XRender";
 
 const int transparency = 75;
 
+//保存关闭特效模式之前的透明度
+int save_trans = 0;
+
 const QStringList effectList {"blur", "kwin4_effect_translucency", "kwin4_effect_maximize", "zoom"};
 const QStringList kIconsList {"blueman", "disk-burner", "firefox", "kylin-video", "kylin-assistant", "kylin-scanner", "kylin-ipmsg"};
 
@@ -243,7 +246,6 @@ void Theme::setupComponent() {
         qtSettings->set(THEME_TRAN_KEY, ui->tranSlider->value());
         qtSettings->set(PEONY_TRAN_KEY, ui->tranSlider->value());
     });
-    setupControlTheme();
 
     //构建并填充特效开关按钮
     effectSwitchBtn = new SwitchButton(pluginWidget);
@@ -523,10 +525,15 @@ void Theme::initConnection() {
 
     connect(effectSwitchBtn, &SwitchButton::checkedChanged, [this](bool checked) {
         if (!checked) {
+            save_trans = static_cast<int>(personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble() * 100.0);
             personliseGsettings->set(PERSONALSIE_TRAN_KEY, 1.0);
             qtSettings->set(THEME_TRAN_KEY, 100);
             qtSettings->set(PEONY_TRAN_KEY, 100);
             ui->tranSlider->setValue(100);
+        }
+        else
+        {
+            ui->tranSlider->setValue(save_trans);
         }
         // 提供给外部监听特效接口
         personliseGsettings->set(PERSONALSIE_EFFECT_KEY, checked);
