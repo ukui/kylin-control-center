@@ -205,6 +205,8 @@ void FunctionSelect::initValue(){
 
     natList[NOTICE].nameString = QString("Notice");
     natList[NOTICE].namei18nString = QObject::tr("Notice");
+    natList[SEARCH].nameString = QString("Search");
+    natList[SEARCH].namei18nString = QObject::tr("Search");
     natList[ABOUT].nameString = QString("About");
     natList[ABOUT].namei18nString = QObject::tr("About");
     natList[EXPERIENCEPLAN].nameString = QString("Experienceplan");

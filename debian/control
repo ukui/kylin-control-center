@@ -42,7 +42,7 @@ Build-Depends: debhelper-compat (= 12),
 	       xserver-xorg-dev,
                libupower-glib-dev,
                libpam0g-dev,
-               yhkylin-backup-tools-dev(>=4.0.13-kylin19)
+               yhkylin-backup-tools-dev(>=4.0.13-kylin19),
                libukui-log4qt-dev
 Standards-Version: 4.5.0
 Rules-Requires-Root: no

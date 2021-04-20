@@ -142,6 +142,8 @@ void MainWindow::bootOptionsFilter(QString opt) {
         bootOptionsSwitch(NOTICEANDTASKS, NOTICE);
     } else if (opt == "--about" || opt == "-a") {
         bootOptionsSwitch(NOTICEANDTASKS, ABOUT);
+    } else if (opt == "--search") {
+        bootOptionsSwitch(NOTICEANDTASKS, SEARCH);
     }
 }
 
@@ -516,7 +518,6 @@ void MainWindow::loadPlugins(){
                 continue;
         }
 #endif
-
         if (!fileName.endsWith(".so")) {
             continue;
         } else if (fileName == "libexperienceplan.so") {
