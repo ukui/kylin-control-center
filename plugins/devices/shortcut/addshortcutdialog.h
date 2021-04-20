@@ -25,6 +25,24 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QRegExpValidator>
+#include <KActionCollection>
+#include <KGlobalAccel>
+
+typedef struct _KeyEntry KeyEntry;
+
+struct _KeyEntry {
+    QString gsSchema;
+    QString keyStr;
+    QString valueStr;
+    QString descStr;
+
+    QString gsPath;
+    QString nameStr;
+    QString bindingStr;
+    QString actionStr;
+};
+
+Q_DECLARE_METATYPE(KeyEntry *)
 
 namespace Ui {
 class addShortcutDialog;
@@ -35,10 +53,13 @@ class addShortcutDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit addShortcutDialog(QWidget *parent = nullptr);
+    explicit addShortcutDialog(QList<KeyEntry *> generalEntries, QList<KeyEntry *> customEntries,
+                               QWidget *parent = nullptr);
     ~addShortcutDialog();
 
 public:
+    void initSetup();
+    void slotsSetup();
     void setTitleText(QString text);
     void openProgramFileDialog();
 
@@ -46,10 +67,15 @@ public:
 
     void refreshCertainChecked();
     void limitInput();
+    bool conflictWithStandardShortcuts(const QKeySequence &seq);
+    bool conflictWithGlobalShortcuts(const QKeySequence &seq);
+    bool conflictWithSystemShortcuts(const QKeySequence &seq);
+    bool conflictWithCustomShortcuts(const QKeySequence &seq);
+    bool isKeyAvailable(const QKeySequence &seq);
+    QString keyToLib(QString key);
 
 protected:
     void paintEvent(QPaintEvent *);
-
 
 private:
     Ui::addShortcutDialog *ui;
@@ -57,10 +83,12 @@ private:
 private:
     QString gsPath;
     QString selectedfile;
-
+    QList<KeyEntry *> systemEntry;
+    QList<KeyEntry *> customEntry;
+    bool keyIsAvailable;
 
 Q_SIGNALS:
-    void shortcutInfoSignal(QString path, QString name, QString exec);
+    void shortcutInfoSignal(QString path, QString name, QString exec, QString key);
 };
 
 #endif // ADDSHORTCUTDIALOG_H

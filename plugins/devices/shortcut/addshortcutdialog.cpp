@@ -17,45 +17,102 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
+
 #include "addshortcutdialog.h"
 #include "ui_addshortcutdialog.h"
 #include "CloseButton/closebutton.h"
-
 #include "realizeshortcutwheel.h"
+
+#include <QDebug>
 
 #define DEFAULTPATH "/usr/share/applications/"
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
-addShortcutDialog::addShortcutDialog(QWidget *parent) :
+addShortcutDialog::addShortcutDialog(QList<KeyEntry *> generalEntries,
+                                     QList<KeyEntry *> customEntries, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::addShortcutDialog)
+    ui(new Ui::addShortcutDialog),
+    gsPath(""),
+    systemEntry(generalEntries),
+    customEntry(customEntries),
+    keyIsAvailable(false)
 {
     ui->setupUi(this);
+
+    initSetup();
+    slotsSetup();
+    limitInput();
+    refreshCertainChecked();
+}
+
+addShortcutDialog::~addShortcutDialog()
+{
+    delete ui;
+    ui = nullptr;
+}
+
+void addShortcutDialog::initSetup()
+{
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
+    setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(tr("Add custom shortcut"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->noteLabel->setPixmap(QPixmap("://img/plugins/shortcut/note.png"));
+    ui->execLineEdit->setReadOnly(true);
+
     ui->stackedWidget->setCurrentIndex(1);
-    limitInput();
-    refreshCertainChecked();
+    ui->kkeysequencewidget->setClearButtonShown(false);
+    ui->kkeysequencewidget->setMultiKeyShortcutsAllowed(false);
+    ui->kkeysequencewidget->setModifierlessAllowed(false);
+    ui->kkeysequencewidget->setCheckForConflictsAgainst(KKeySequenceWidget::None);
+}
 
-    gsPath = "";
-
+void addShortcutDialog::slotsSetup()
+{
+    connect(ui->kkeysequencewidget, &KKeySequenceWidget::keySequenceChanged, this,
+            [=](QKeySequence seq){
+        qDebug() << seq.toString() << keyToLib(seq.toString());
+        if (ui->kkeysequencewidget->isKeySequenceAvailable(seq)) {
+            if (conflictWithGlobalShortcuts(seq) || conflictWithStandardShortcuts(seq)
+                || conflictWithSystemShortcuts(seq) || conflictWithCustomShortcuts(seq)) {
+                ui->kkeysequencewidget->clearKeySequence();
+                ui->kkeysequencewidget->clearFocus();
+                ui->label_4->setText(tr("shortcut conflict"));
+                ui->stackedWidget->setCurrentIndex(0);
+                keyIsAvailable = false;
+                refreshCertainChecked();
+            } else if (!isKeyAvailable(seq)) {
+                ui->kkeysequencewidget->clearKeySequence();
+                ui->kkeysequencewidget->clearFocus();
+                ui->label_4->setText(tr("invaild shortcut"));
+                ui->stackedWidget->setCurrentIndex(0);
+                keyIsAvailable = false;
+                refreshCertainChecked();
+            } else {
+                ui->stackedWidget->setCurrentIndex(1);
+                keyIsAvailable = true;
+                refreshCertainChecked();
+            }
+        }
+        qDebug() << "keySequenceChanged" << seq <<
+            ui->kkeysequencewidget->isKeySequenceAvailable(seq);
+    });
     connect(ui->openBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
         openProgramFileDialog();
     });
 
     connect(ui->execLineEdit, &QLineEdit::textChanged, [=](QString text){
-        if (text.endsWith("desktop") ||
-                (!g_file_test(text.toLatin1().data(), G_FILE_TEST_IS_DIR) && g_file_test(text.toLatin1().data(), G_FILE_TEST_IS_EXECUTABLE))){
+        if (text.endsWith("desktop")
+            || (!g_file_test(text.toLatin1().data(),
+                             G_FILE_TEST_IS_DIR)
+                && g_file_test(text.toLatin1().data(), G_FILE_TEST_IS_EXECUTABLE))) {
             ui->certainBtn->setChecked(true);
             ui->stackedWidget->setCurrentIndex(1);
-
-        } else{
+        } else {
             ui->certainBtn->setChecked(false);
             ui->stackedWidget->setCurrentIndex(0);
         }
@@ -64,19 +121,30 @@ addShortcutDialog::addShortcutDialog(QWidget *parent) :
     });
 
     connect(ui->nameLineEdit, &QLineEdit::textChanged, [=](QString text){
+        QStringList customName;
+        for (KeyEntry *ckeyEntry : customEntry) {
+            customName << ckeyEntry->nameStr;
+            if (customName.contains(text)) {
+                ui->stackedWidget->setCurrentIndex(0);
+                ui->label_4->setText(tr("repeated naming"));
+            } else {
+                ui->stackedWidget->setCurrentIndex(1);
+            }
+        }
         refreshCertainChecked();
     });
 
-    connect(ui->cancelBtn, &QPushButton::clicked, [=]{
+    connect(ui->cancelBtn, &QPushButton::clicked, [=] {
         close();
     });
-    connect(ui->certainBtn, &QPushButton::clicked, [=]{
-        emit shortcutInfoSignal(gsPath, ui->nameLineEdit->text(), selectedfile);
+    connect(ui->certainBtn, &QPushButton::clicked, [=] {
+        emit shortcutInfoSignal(gsPath, ui->nameLineEdit->text(), selectedfile,
+                                ui->kkeysequencewidget->keySequence().toString());
 
         close();
     });
 
-    connect(this, &addShortcutDialog::finished, [=]{
+    connect(this, &addShortcutDialog::finished, [=] {
         gsPath = "";
         ui->nameLineEdit->clear();
         ui->execLineEdit->clear();
@@ -87,17 +155,13 @@ addShortcutDialog::addShortcutDialog(QWidget *parent) :
     });
 }
 
-addShortcutDialog::~addShortcutDialog()
+void addShortcutDialog::setTitleText(QString text)
 {
-    delete ui;
-    ui = nullptr;
-}
-
-void addShortcutDialog::setTitleText(QString text){
     ui->titleLabel->setText(text);
 }
 
-void addShortcutDialog::setUpdateEnv(QString path, QString name, QString exec){
+void addShortcutDialog::setUpdateEnv(QString path, QString name, QString exec)
+{
     gsPath = path;
     ui->nameLineEdit->setText(name);
     ui->execLineEdit->setText(exec);
@@ -111,10 +175,31 @@ void addShortcutDialog::limitInput()
     // 输入限制
     ui->nameLineEdit->setValidator(regValidator);
     // 字符长度限制
-    ui->nameLineEdit->setMaxLength(10);
+    // ui->nameLineEdit->setMaxLength(10);
 }
 
-void addShortcutDialog::paintEvent(QPaintEvent *event) {
+QString addShortcutDialog::keyToLib(QString key)
+{
+    if (key.contains("+")) {
+        QStringList keys = key.split("+");
+        if (keys.count() == 2) {
+            QString lower = keys.at(1);
+            QString keyToLib = "<" + keys.at(0) + ">" + lower.toLower();
+            qDebug() << "count = 2,keyToLib = " << keyToLib;
+            return keyToLib;
+        } else if (keys.count() == 3) {
+            QString lower = keys.at(2);
+            QString keyToLib = "<" + keys.at(0) + ">" + "<" + keys.at(1) + ">" + lower.toLower();
+            qDebug() << "count = 3,keyToLib = " << keyToLib;
+            return keyToLib;
+        }
+    }
+    qDebug() << "count = 1,keyToLib = " << key;
+    return key;
+}
+
+void addShortcutDialog::paintEvent(QPaintEvent *event)
+{
     Q_UNUSED(event);
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
@@ -137,7 +222,6 @@ void addShortcutDialog::paintEvent(QPaintEvent *event) {
     QImage img = pixmap.toImage();
     qt_blurImage(img, 10, false, false);
 
-
     // 挖掉中心
     pixmap = QPixmap::fromImage(img);
     QPainter pixmapPainter2(&pixmap);
@@ -152,11 +236,12 @@ void addShortcutDialog::paintEvent(QPaintEvent *event) {
 
     // 绘制一个背景
     p.save();
-    p.fillPath(rectPath,palette().color(QPalette::Base));
+    p.fillPath(rectPath, palette().color(QPalette::Base));
     p.restore();
 }
 
-void addShortcutDialog::openProgramFileDialog(){
+void addShortcutDialog::openProgramFileDialog()
+{
     QString filters = tr("Desktop files(*.desktop)");
     QFileDialog fd;
     fd.setDirectory(DEFAULTPATH);
@@ -165,7 +250,6 @@ void addShortcutDialog::openProgramFileDialog(){
     fd.setNameFilter(filters);
     fd.setFileMode(QFileDialog::ExistingFile);
     fd.setWindowTitle(tr("select desktop"));
-//    fd.setLabelText(QFileDialog::Accept, "Select");
     fd.setLabelText(QFileDialog::Reject, tr("Cancel"));
 
     if (fd.exec() != QDialog::Accepted)
@@ -174,14 +258,96 @@ void addShortcutDialog::openProgramFileDialog(){
     selectedfile = fd.selectedFiles().first();
 
     QString exec = selectedfile.section("/", -1, -1);
-//    exec.replace(".desktop", "");
     ui->execLineEdit->setText(exec);
 }
 
-void addShortcutDialog::refreshCertainChecked(){
-    if (ui->nameLineEdit->text().isEmpty() || ui->execLineEdit->text().isEmpty() || ui->stackedWidget->currentIndex() == 0){
-        ui->certainBtn->setEnabled(false);
+void addShortcutDialog::refreshCertainChecked()
+{
+    if (ui->nameLineEdit->text().isEmpty() || ui->execLineEdit->text().isEmpty()
+        || ui->stackedWidget->currentIndex() == 0
+        || !keyIsAvailable) {
+        ui->certainBtn->setDisabled(true);
     } else {
-        ui->certainBtn->setEnabled(true);
+        ui->certainBtn->setDisabled(false);
     }
+}
+
+bool addShortcutDialog::conflictWithGlobalShortcuts(const QKeySequence &keySequence)
+{
+    qDebug() << "conflictWithGlobalShortcuts" << keySequence;
+
+    QHash<QKeySequence, QList<KGlobalShortcutInfo> > clashing;
+    for (int i = 0; i < keySequence.count(); ++i) {
+        QKeySequence keys(keySequence[i]);
+        qDebug() << "KGlobalAccel::isGlobalShortcutAvailable ::"
+                 << keySequence
+                 << KGlobalAccel::isGlobalShortcutAvailable(keySequence);
+        if (!KGlobalAccel::isGlobalShortcutAvailable(keySequence)) {
+            clashing.insert(keySequence, KGlobalAccel::getGlobalShortcutsByKey(keys));
+        }
+    }
+
+    if (clashing.isEmpty()) {
+        qDebug() << "not conflict With Global Shortcuts";
+        return false;
+    } else {
+        qDebug() << "conflict With Global Shortcuts";
+    }
+
+    return true;
+}
+
+bool addShortcutDialog::conflictWithStandardShortcuts(const QKeySequence &seq)
+{
+    qDebug() << "conflictWithStandardShortcuts" << seq;
+
+    KStandardShortcut::StandardShortcut ssc = KStandardShortcut::find(seq);
+    if (ssc != KStandardShortcut::AccelNone) {
+        qDebug() << "conflict With Standard Shortcuts";
+        return true;
+    } else {
+        qDebug() << "not conflict With Standard Shortcuts";
+    }
+    return false;
+}
+
+bool addShortcutDialog::conflictWithSystemShortcuts(const QKeySequence &seq)
+{
+    QString systemKeyStr = keyToLib(seq.toString());
+
+    for (KeyEntry *ckeyEntry : systemEntry) {
+        if (systemKeyStr == ckeyEntry->valueStr) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool addShortcutDialog::conflictWithCustomShortcuts(const QKeySequence &seq)
+{
+    QString customKeyStr = keyToLib(seq.toString());
+
+    for (KeyEntry *ckeyEntry : customEntry) {
+        if (customKeyStr == ckeyEntry->bindingStr) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool addShortcutDialog::isKeyAvailable(const QKeySequence &seq)
+{
+    QString keyStr = seq.toString();
+
+    if (!keyStr.contains("+")) {
+        return false;
+    } else if (keyStr.contains("Num") || keyStr.contains("Space") || keyStr.contains("Meta")) {
+        return false;
+    } else {
+        QStringList keys = keyStr.split("+");
+        if (keys.count() == 4) {
+            return false;
+        }
+    }
+    return true;
 }
