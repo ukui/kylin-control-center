@@ -822,6 +822,7 @@ void Widget::outputAdded(const KScreen::OutputPtr &output)
     }
 
     ui->unionframe->setVisible(mConfig->connectedOutputs().count() > 1);
+    mUnifyButton->setEnabled(mConfig->connectedOutputs().count() > 1);
 
     if (!mFirstLoad) {
         QTimer::singleShot(2000, this, [=] {
@@ -1137,6 +1138,9 @@ void Widget::save()
         if (enableScreenCount >= 2 && !config.isNull()) {
             config->output(mScreenId)->setPrimary(true);
             callMethod(config->primaryOutput()->geometry(), config->primaryOutput()->name());
+            if (mScreen->primaryOutput()) {
+                mScreen->primaryOutput()->setIsCloneMode(mUnifyButton->isChecked());
+            }
         } else if (!enableOutput.isNull()) {
             enableOutput->setPrimary(true);
             callMethod(enableOutput->geometry(), enableOutput->name());
@@ -1356,8 +1360,7 @@ void Widget::mainScreenButtonSelect(int index)
         return;
     }
 
-    const KScreen::OutputPtr newPrimary
-        = mConfig->output(ui->primaryCombo->itemData(index).toInt());
+    const KScreen::OutputPtr newPrimary = mConfig->output(ui->primaryCombo->itemData(index).toInt());
     int connectCount = mConfig->connectedOutputs().count();
 
     if (mIsWayland) {
@@ -1376,12 +1379,12 @@ void Widget::mainScreenButtonSelect(int index)
 
     // 设置是否勾选
     mCloseScreenButton->setEnabled(true);
-    ui->showMonitorframe->setVisible(connectCount > 1);
+    ui->showMonitorframe->setVisible(connectCount > 1 && !mUnifyButton->isChecked());
 
     // 初始化时不要发射信号
-    const bool blockded = mCloseScreenButton->blockSignals(true);
+    mCloseScreenButton->blockSignals(true);
     mCloseScreenButton->setChecked(newPrimary->isEnabled());
-    mCloseScreenButton->blockSignals(blockded);
+    mCloseScreenButton->blockSignals(false);
     mControlPanel->activateOutput(newPrimary);
 
     mScreen->setActiveOutputByCombox(newPrimary->id());
@@ -1528,7 +1531,7 @@ void Widget::setDDCBrightness()
 
 void Widget::setBrightSliderVisible()
 {
-    if (mIsBattery) {
+    if (mIsBattery && !mUnifyButton->isChecked()) {
         ui->brightnessframe->setVisible(isLaptopScreen());
     }
 }
