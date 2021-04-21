@@ -530,7 +530,7 @@
     <message>
         <location filename="../../../plugins/time-language/area/area.cpp" line="179"/>
         <source>addwgt</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.cpp" line="187"/>
@@ -557,7 +557,7 @@
     <message>
         <location filename="../../../plugins/time-language/area/area.ui" line="355"/>
         <source>2019/12/17</source>
-        <translation type="unfinished"></translation>
+        <translation>2019/12/17</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.ui" line="384"/>
@@ -568,7 +568,7 @@
     <message>
         <location filename="../../../plugins/time-language/area/area.ui" line="391"/>
         <source>9:52</source>
-        <translation type="unfinished"></translation>
+        <translation>9:52</translation>
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.ui" line="420"/>
@@ -894,7 +894,7 @@ Please authenticate yourself to continue</source>
     <message>
         <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="26"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/biometricmoreinfo.ui" line="76"/>
@@ -2972,22 +2972,22 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="201"/>
         <source>11</source>
-        <translation type="unfinished"></translation>
+        <translation>11</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="201"/>
         <source>12</source>
-        <translation type="unfinished"></translation>
+        <translation>12</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="201"/>
         <source>13</source>
-        <translation type="unfinished"></translation>
+        <translation>13</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="201"/>
         <source>14</source>
-        <translation type="unfinished"></translation>
+        <translation>14</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="201"/>
@@ -2997,7 +2997,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="202"/>
         <source>16</source>
-        <translation type="unfinished"></translation>
+        <translation>16</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/fonts/fonts.cpp" line="301"/>
@@ -3496,7 +3496,7 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/devices/keyboard/layoutmanager.ui" line="26"/>
         <source>Dialog</source>
-        <translation type="unfinished">更改时间</translation>
+        <translation>更改时间</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/keyboard/layoutmanager.ui" line="121"/>
@@ -4061,7 +4061,7 @@ Please retry or relogin!</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../mainwindow.cpp" line="360"/>
+        <location filename="../../mainwindow.cpp" line="362"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
@@ -4071,43 +4071,43 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../mainwindow.cpp" line="75"/>
-        <location filename="../../mainwindow.cpp" line="380"/>
-        <location filename="../../mainwindow.cpp" line="748"/>
+        <location filename="../../mainwindow.cpp" line="382"/>
+        <location filename="../../mainwindow.cpp" line="749"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="389"/>
+        <location filename="../../mainwindow.cpp" line="391"/>
         <source>Main menu</source>
         <translation>主菜单</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="390"/>
+        <location filename="../../mainwindow.cpp" line="392"/>
         <source>Minimize</source>
         <translation>最小化</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="391"/>
+        <location filename="../../mainwindow.cpp" line="393"/>
         <source>Maximize/Normal</source>
         <translation>最大化/正常</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="392"/>
+        <location filename="../../mainwindow.cpp" line="394"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="450"/>
+        <location filename="../../mainwindow.cpp" line="452"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="452"/>
+        <location filename="../../mainwindow.cpp" line="454"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="454"/>
+        <location filename="../../mainwindow.cpp" line="456"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
@@ -4116,17 +4116,17 @@ Please retry or relogin!</source>
         <translation type="vanished">控制面板</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="851"/>
+        <location filename="../../mainwindow.cpp" line="852"/>
         <source>Warnning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="851"/>
+        <location filename="../../mainwindow.cpp" line="852"/>
         <source>This function has been controlled</source>
         <translation>该功能已被管控</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="580"/>
+        <location filename="../../mainwindow.cpp" line="581"/>
         <source>Home</source>
         <translation>首页</translation>
     </message>
@@ -5361,11 +5361,16 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="209"/>
+        <source>Search</source>
+        <translation>搜索</translation>
+    </message>
+    <message>
+        <location filename="../../utils/functionselect.cpp" line="211"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="211"/>
+        <location filename="../../utils/functionselect.cpp" line="213"/>
         <source>Experienceplan</source>
         <translation>体验计划</translation>
     </message>
@@ -5379,22 +5384,22 @@ Please retry or relogin!</source>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="59"/>
         <source>10min</source>
-        <translation type="unfinished"></translation>
+        <translation>10min</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="59"/>
         <source>20min</source>
-        <translation type="unfinished"></translation>
+        <translation>20min</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="60"/>
         <source>40min</source>
-        <translation type="unfinished"></translation>
+        <translation>40min</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="60"/>
         <source>80min</source>
-        <translation type="unfinished"></translation>
+        <translation>80min</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="63"/>
@@ -5666,6 +5671,11 @@ Please retry or relogin!</source>
         <translation>此系统的信息</translation>
     </message>
     <message>
+        <location filename="../../utils/utils.cpp" line="82"/>
+        <source>Go to search settings page</source>
+        <translation>搜索</translation>
+    </message>
+    <message>
         <location filename="../../utils/utils.cpp" line="47"/>
         <source>Go to power settings page</source>
         <translation>配置电源管理</translation>
@@ -5883,7 +5893,7 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="277"/>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="113"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="109"/>
         <source>Lock screen when screensaver boot</source>
         <translation>激活屏保时锁定屏幕</translation>
         <extra-contents_path>/screenlock/Lock screen when screensaver boot</extra-contents_path>
@@ -5914,7 +5924,7 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="205"/>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="111"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="107"/>
         <source>Show picture of screenlock on screenlogin</source>
         <translation>显示锁屏壁纸在登录页面</translation>
         <extra-contents_path>/screenlock/Show picture of screenlock on screenlogin</extra-contents_path>
@@ -5940,44 +5950,44 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="vanished">从不</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="133"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="129"/>
         <source>1m</source>
-        <translation type="unfinished"></translation>
+        <translation>1m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="133"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="129"/>
         <source>5m</source>
-        <translation type="unfinished"></translation>
+        <translation>5m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="133"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="129"/>
         <source>10m</source>
-        <translation type="unfinished"></translation>
+        <translation>10m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="133"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="129"/>
         <source>30m</source>
-        <translation type="unfinished"></translation>
+        <translation>30m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="133"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="129"/>
         <source>45m</source>
-        <translation type="unfinished"></translation>
+        <translation>45m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="134"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="130"/>
         <source>1h</source>
-        <translation type="unfinished"></translation>
+        <translation>1h</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="134"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="130"/>
         <source>1.5h</source>
-        <translation type="unfinished"></translation>
+        <translation>1.5h</translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="134"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="130"/>
         <source>3h</source>
-        <translation type="unfinished"></translation>
+        <translation>3h</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="414"/>
@@ -6075,42 +6085,42 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="184"/>
         <source>1m</source>
-        <translation type="unfinished"></translation>
+        <translation>1m</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="184"/>
         <source>5m</source>
-        <translation type="unfinished"></translation>
+        <translation>5m</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="184"/>
         <source>10m</source>
-        <translation type="unfinished"></translation>
+        <translation>10m</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="184"/>
         <source>30m</source>
-        <translation type="unfinished"></translation>
+        <translation>30m</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="184"/>
         <source>45m</source>
-        <translation type="unfinished"></translation>
+        <translation>45m</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="185"/>
         <source>1h</source>
-        <translation type="unfinished"></translation>
+        <translation>1h</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="185"/>
         <source>1.5h</source>
-        <translation type="unfinished"></translation>
+        <translation>1.5h</translation>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="185"/>
         <source>3h</source>
-        <translation type="unfinished"></translation>
+        <translation>3h</translation>
     </message>
     <message>
         <source>Random</source>
@@ -6119,6 +6129,55 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <source>Never</source>
         <translation type="vanished">从不</translation>
+    </message>
+</context>
+<context>
+    <name>Search</name>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.ui" line="14"/>
+        <source>Form</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="6"/>
+        <source>Search</source>
+        <translation>搜索</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="106"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="118"/>
+        <source>Create Index</source>
+        <translation>创建索引</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="109"/>
+        <source>Creating index can help you getting results quickly.</source>
+        <translation>创建索引可以帮助您快速获取搜索结果</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="129"/>
+        <source>Web Engine</source>
+        <translation>搜索引擎</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="130"/>
+        <source>Default web searching engine</source>
+        <translation>默认互联网搜索引擎</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="134"/>
+        <source>baidu</source>
+        <translation>百度</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="135"/>
+        <source>sougou</source>
+        <translation>搜狗</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="136"/>
+        <source>360</source>
+        <translation>360</translation>
     </message>
 </context>
 <context>
@@ -8007,18 +8066,18 @@ If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation type="vanished">修改分辨率或刷新率后，由于显示设备与显卡存在兼容性问题，有可能显示不正常或者无法显示．如果出现异常，系统将在%1秒后还原设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1089"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1090"/>
         <source>please insure at least one output!</source>
         <translation>请确保至少开启一个屏幕!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1089"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1096"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1090"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1097"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1097"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1098"/>
         <source>Open time should be earlier than close time!</source>
         <translation>开启时间必须大于关闭时间！</translation>
     </message>
@@ -8027,12 +8086,12 @@ If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation type="vanished">早晨时刻应早于晚上的时刻!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1107"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1108"/>
         <source>Warnning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1108"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1109"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation>抱歉，配置不能应用.</translation>
@@ -8049,7 +8108,7 @@ Common reasons are that the overall screen size is too big, or you enabled more 
     <message>
         <location filename="../../../plugins/system/touchscreen/widget.cpp" line="473"/>
         <source>%1</source>
-        <translation type="unfinished">%1</translation>
+        <translation>%1</translation>
     </message>
 </context>
 <context>

@@ -3164,63 +3164,63 @@ Please retry or relogin!</source>
     <name>MainWindow</name>
     <message>
         <location filename="../../mainwindow.cpp" line="75"/>
-        <location filename="../../mainwindow.cpp" line="380"/>
-        <location filename="../../mainwindow.cpp" line="748"/>
+        <location filename="../../mainwindow.cpp" line="382"/>
+        <location filename="../../mainwindow.cpp" line="749"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="360"/>
+        <location filename="../../mainwindow.cpp" line="362"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="389"/>
+        <location filename="../../mainwindow.cpp" line="391"/>
         <source>Main menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="390"/>
+        <location filename="../../mainwindow.cpp" line="392"/>
         <source>Minimize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="391"/>
+        <location filename="../../mainwindow.cpp" line="393"/>
         <source>Maximize/Normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="392"/>
+        <location filename="../../mainwindow.cpp" line="394"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="450"/>
+        <location filename="../../mainwindow.cpp" line="452"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="452"/>
+        <location filename="../../mainwindow.cpp" line="454"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="454"/>
+        <location filename="../../mainwindow.cpp" line="456"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="580"/>
+        <location filename="../../mainwindow.cpp" line="581"/>
         <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="851"/>
+        <location filename="../../mainwindow.cpp" line="852"/>
         <source>Warnning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="851"/>
+        <location filename="../../mainwindow.cpp" line="852"/>
         <source>This function has been controlled</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4109,11 +4109,16 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="209"/>
-        <source>About</source>
+        <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="211"/>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../utils/functionselect.cpp" line="213"/>
         <source>Experienceplan</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4260,6 +4265,11 @@ Please retry or relogin!</source>
     <message>
         <location filename="../../utils/utils.cpp" line="81"/>
         <source>Go to about settings page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="82"/>
+        <source>Go to search settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4572,14 +4582,14 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="205"/>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="111"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="107"/>
         <source>Show picture of screenlock on screenlogin</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/screenlock/Show picture of screenlock on screenlogin</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/personalized/screenlock/screenlock.ui" line="277"/>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="113"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="109"/>
         <source>Lock screen when screensaver boot</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/screenlock/Lock screen when screensaver boot</extra-contents_path>
@@ -4605,42 +4615,42 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="133"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="129"/>
         <source>1m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="133"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="129"/>
         <source>5m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="133"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="129"/>
         <source>10m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="133"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="129"/>
         <source>30m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="133"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="129"/>
         <source>45m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="134"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="130"/>
         <source>1h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="134"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="130"/>
         <source>1.5h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="134"/>
+        <location filename="../../../plugins/personalized/screenlock/screenlock.cpp" line="130"/>
         <source>3h</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4767,6 +4777,55 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="185"/>
         <source>3h</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Search</name>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="6"/>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="106"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="118"/>
+        <source>Create Index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="109"/>
+        <source>Creating index can help you getting results quickly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="129"/>
+        <source>Web Engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="130"/>
+        <source>Default web searching engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="134"/>
+        <source>baidu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="135"/>
+        <source>sougou</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="136"/>
+        <source>360</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6231,28 +6290,28 @@ the settings will be saved after 9 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1089"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1096"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1090"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1097"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1089"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1090"/>
         <source>please insure at least one output!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1097"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1098"/>
         <source>Open time should be earlier than close time!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1107"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1108"/>
         <source>Warnning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1108"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1109"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation type="unfinished"></translation>
