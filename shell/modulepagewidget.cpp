@@ -151,34 +151,6 @@ void ModulePageWidget::initUI() {
 
         }
 
-//        QStringList functionStringList = FunctionSelect::funcsList[moduleIndex];
-//        for (int funcIndex = 0; funcIndex < functionStringList.size(); funcIndex++){
-//            QString funcnameString = functionStringList.at(funcIndex);
-//            //跳过插件不存在的功能项
-//            if (!moduleMap.contains(funcnameString))
-//                continue;
-
-//            //填充左侧二级菜单
-//            LeftWidgetItem * leftWidgetItem = new LeftWidgetItem(this);
-//            leftWidgetItem->setLabelText(funcnameString);
-//            leftWidgetItem->setLabelPixmap(QString("://img/secondaryleftmenu/%1.png").arg(funcnameString));
-
-//            QListWidgetItem * item = new QListWidgetItem(leftListWidget);
-//            item->setSizeHint(QSize(120, 40)); //测试数据
-//            leftListWidget->setItemWidget(item, leftWidgetItem);
-
-//            //填充上侧二级菜单
-//            QListWidgetItem * topitem = new QListWidgetItem(topListWidget);
-//            topitem->setSizeHint(QSize(60, 60));
-//            topitem->setText(funcnameString);
-//            topListWidget->addItem(topitem);
-
-//            CommonInterface * pluginInstance = qobject_cast<CommonInterface *>(moduleMap.value(funcnameString));
-
-//            pluginInstanceMap.insert(funcnameString, pluginInstance);
-
-//        }
-
         ui->leftStackedWidget->addWidget(leftListWidget);
         ui->topStackedWidget->addWidget(topListWidget);
     }

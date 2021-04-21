@@ -20,3 +20,10 @@ void LeftMenuList::resizeEvent(QResizeEvent *event) {
 
     QListWidget::resizeEvent(event);
 }
+
+void LeftMenuList::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        QListWidget::mousePressEvent(event);
+    }
+}
