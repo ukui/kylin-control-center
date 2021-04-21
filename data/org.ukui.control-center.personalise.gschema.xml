@@ -4,6 +4,11 @@
       <default>0.75</default>
       <summary>Control the transparency of all components</summary>
       <description>Control the transparency of all components</description>
+	 </key>
+    <key type="i" name="save-transparency">
+      <default>75</default>
+      <summary>Save the transparency before the special effects mode is turned off  </summary>
+      <description>Save the transparency before the special effects mode is turned off </description>
     </key>
     <key type="i" name="blurry">
       <default>3</default>
