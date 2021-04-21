@@ -51,10 +51,6 @@ Screenlock::~Screenlock()
     if (!mFirstLoad) {
         delete ui;
         ui = nullptr;
-        delete lSetting;
-        lSetting = nullptr;
-        delete lockSetting;
-        lockSetting = nullptr;
     }
 }
 
@@ -83,7 +79,7 @@ QWidget *Screenlock::get_plugin_ui()
         ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
         const QByteArray id(SCREENLOCK_BG_SCHEMA);
-        lSetting = new QGSettings(id);
+        lSetting = new QGSettings(id, QByteArray(), this);
 
         connectToServer();
         initSearchText();
@@ -115,8 +111,8 @@ void Screenlock::initSearchText() {
 
 void Screenlock::setupComponent()
 {
-    QString filename = QDir::homePath() + "/.config/ukui/ukui-control-center.conf";
-    lockSetting = new QSettings(filename, QSettings::IniFormat);
+    mUKCConfig = QDir::homePath() + "/.config/ukui/ukui-control-center.conf";
+    lockSetting = new QSettings(mUKCConfig, QSettings::IniFormat, this);
 
     //锁屏延时暂时不可用，屏蔽
     ui->enableFrame->hide();
@@ -361,6 +357,10 @@ void Screenlock::setLockBackground(bool status)
 
 bool Screenlock::getLockStatus()
 {
+    if (!QFile::exists(mUKCConfig)) {
+        setLockBackground(true);
+    }
+
     lockSetting->beginGroup("ScreenLock");
     lockSetting->sync();
     bool status = lockSetting->value("lockStatus").toBool();
