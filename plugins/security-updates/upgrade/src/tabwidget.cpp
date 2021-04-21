@@ -253,8 +253,8 @@ void TabWid::slotUpdateCache(QVariantList sta)
             }
             QString str =  file.readAll();
             QStringList list;
-            str.replace("/n","");
-            if (!str.isEmpty() && str.contains(" ")) {
+            str = str.simplified();
+            if (!str.isEmpty()) {
                 list = str.split(" ");
             }
             qDebug() << "slotUpdateCache函数：获取到的包列表：" << list;
