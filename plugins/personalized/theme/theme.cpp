@@ -177,7 +177,8 @@ void Theme::setupSettings() {
     kwinSettings = new QSettings(filename, QSettings::IniFormat, this);
 
     QStringList keys = kwinSettings->childGroups();
-
+    //从配置文件中读取控制面板关闭前透明度的值
+    save_trans = kwinSettings->value("/SAVE_TRANS/save_trans").toInt();
     kwinSettings->beginGroup("Plugins");
     bool kwin = kwinSettings->value("blurEnabled", kwin).toBool();
 
@@ -527,6 +528,8 @@ void Theme::initConnection() {
     connect(effectSwitchBtn, &SwitchButton::checkedChanged, [this](bool checked) {
         if (!checked) {
             save_trans = static_cast<int>(personliseGsettings->get(PERSONALSIE_TRAN_KEY).toDouble() * 100.0);
+            //将改变后的透明度的值写入配置文件
+            kwinSettings->setValue("/SAVE_TRANS/save_trans",save_trans);
             personliseGsettings->set(PERSONALSIE_TRAN_KEY, 1.0);
             qtSettings->set(THEME_TRAN_KEY, 100);
             qtSettings->set(PEONY_TRAN_KEY, 100);
