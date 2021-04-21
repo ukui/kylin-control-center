@@ -181,6 +181,11 @@
         <file>plugins/upgrade/linux-generic.png</file>
         <file>plugins/about/logo-light.svg</file>
         <file>plugins/about/logo-dark.svg</file>
+        <file>secondaryleftmenu/Search.svg</file>
+        <file>secondaryleftmenu/SearchWhite.svg</file>
+        <file>plugins/search/360.svg</file>
+        <file>plugins/search/baidu.svg</file>
+        <file>plugins/search/sougou.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

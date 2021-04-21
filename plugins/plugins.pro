@@ -4,6 +4,7 @@ SUBDIRS = \
           devices/shortcut \
           messages-task/experienceplan \
           messages-task/notice \
+          messages-task/search \
           network/vino \
           system/defaultapp \
           system/power \

@@ -96,6 +96,7 @@ enum SeUpdatesIndex{
 
 enum NoticeAndTasksIndex{
     NOTICE,
+    SEARCH,
     ABOUT,
     EXPERIENCEPLAN,
     TOTALNATFUNC,

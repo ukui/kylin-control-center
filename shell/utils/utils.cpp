@@ -79,6 +79,7 @@ void Utils::setCLIName(QCommandLineParser &parser) {
 
     QCommandLineOption noticeRoleOption(QStringList() << "n" << "notice", QObject::tr("Go to notice settings page"));
     QCommandLineOption aboutRoleOption(QStringList() << "a" << "about", QObject::tr("Go to about settings page"));
+    QCommandLineOption searchRoleOption("search", QObject::tr("Go to search settings page"));
 
     parser.addHelpOption();
     parser.addVersionOption();
@@ -148,6 +149,7 @@ void Utils::setCLIName(QCommandLineParser &parser) {
 
     parser.addOption(noticeRoleOption);
     parser.addOption(aboutRoleOption);
+    parser.addOption(searchRoleOption);
 }
 
 QVariantMap Utils::getModuleHideStatus() {
