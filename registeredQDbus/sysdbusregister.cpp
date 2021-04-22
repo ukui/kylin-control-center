@@ -166,10 +166,13 @@ int SysdbusRegister::changeOtherUserPasswd(QString username, QString pwd){
 }
 
 void SysdbusRegister::setDDCBrightness(QString brightness, QString type) {
-
-    QString program = "ddcutil";
+    QString program = "/usr/sbin/i2ctransfer";
     QStringList arg;
-    arg << "setvcp" << "10" << brightness << "--bus" << type;
+    int br=brightness.toInt();
+    QString light = "0x" + QString::number(br,16);
+    QString c = "0x" + QString::number(168^br,16);
+    arg << "-f" << "-y" << type << "w7@0x37" << "0x51" << "0x84" << "0x03"
+        << "0x10" << "0x00" << light << c;
     QProcess *vcpPro = new QProcess(this);
     vcpPro->start(program, arg);
     vcpPro->waitForStarted();
@@ -198,9 +201,6 @@ static void chpasswd_cb(PasswdHandler *passwd_handler, GError *error, gpointer u
     Q_UNUSED(passwd_handler)
     Q_UNUSED(error)
     Q_UNUSED(user_data)
-//    g_warning("error code: '%d'", error->code);
-//    passwd_destroy(passwd_handler);
-//    qDebug("chpasswd_cb run");
     g_warning("chpasswd_cb run");
 }
 
