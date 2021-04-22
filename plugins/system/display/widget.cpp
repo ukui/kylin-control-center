@@ -629,8 +629,8 @@ bool Widget::isRestoreConfig()
             }
         });
         cntDown.start(1000);
-        msgX = rect.x() + rect.width()/2 - 500/2 -5;
-        msgY = rect.y() + rect.height()/2 - 145/2 + 5;
+        msgX = rect.x() + rect.width()/2 - 500/2 - 2;
+        msgY = rect.y() + rect.height()/2 - 145/2 + 35;
         msg.move(msgX, msgY);
         ret = msg.exec();
     }
@@ -1145,24 +1145,26 @@ void Widget::save()
 
     mScreen->updateOutputsPlacement();
 
-    if (isRestoreConfig()) {
-        if (mIsWayland && -1 != mScreenId) {
-            mPrevConfig->output(mScreenId)->setPrimary(true);
-            callMethod(mPrevConfig->output(mScreenId)->geometry(), mPrevConfig->output(mScreenId)->name());
+    QTimer::singleShot(500,this,[=]() {
+        if (isRestoreConfig()) {
+            if (mIsWayland && -1 != mScreenId) {
+                mPrevConfig->output(mScreenId)->setPrimary(true);
+                callMethod(mPrevConfig->output(mScreenId)->geometry(), mPrevConfig->output(mScreenId)->name());
+            }
+            auto *op = new KScreen::SetConfigOperation(mPrevConfig);
+            op->exec();
+        } else {
+            mPrevConfig = config->clone();
+            writeScreenXml();
+            if (mIsWayland) {
+                QString dir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
+                            %QStringLiteral("/kscreen/")
+                            %QStringLiteral("" /*"configs/"*/);
+                QString hash = mPrevConfig->connectedOutputsHash();
+                writeFile(dir % hash);
+            }
         }
-        auto *op = new KScreen::SetConfigOperation(mPrevConfig);
-        op->exec();
-    } else {
-        mPrevConfig = config->clone();
-        writeScreenXml();
-        if (mIsWayland) {
-            QString dir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
-                          %QStringLiteral("/kscreen/")
-                          %QStringLiteral("" /*"configs/"*/);
-            QString hash = mPrevConfig->connectedOutputsHash();
-            writeFile(dir % hash);
-        }
-    }
+    });
 }
 
 QVariantMap metadata(const KScreen::OutputPtr &output)
