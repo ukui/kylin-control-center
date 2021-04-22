@@ -76,7 +76,7 @@ void ResolutionSlider::init()
         int preferredModeIndex = -1;
         Q_FOREACH (const QSize &size, mModes) {
 #ifdef __sw_64__
-            if (size.width() <= int(1600)) {
+            if (size.width() < int(1920)) {
                 continue;
             }
 #endif
