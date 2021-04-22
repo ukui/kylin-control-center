@@ -32,6 +32,7 @@ QMLOutput {
     signal positionChanged();
     signal rotationChanged();
     signal widthChanged();
+    signal heightChanged();
 
     property bool isDragged: monitorMouseArea.drag.active;
     property bool isDragEnabled: true;
@@ -118,6 +119,7 @@ QMLOutput {
         onReleased: root.mouseReleased()
         onRotationChanged: root.rotationChanged();
         onWidthChanged: root.widthChanged();
+        onHeightChanged: root.heightChanged();
 
         /* FIXME: This could be in 'Behavior', but MouseArea had
          * some complaints...to tired to investigate */

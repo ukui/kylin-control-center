@@ -127,6 +127,9 @@ void QMLScreen::addOutput(const KScreen::OutputPtr &output)
     connect(qmloutput, SIGNAL(widthChanged()),
             this, SLOT(setScreenPos()));
 
+    connect(qmloutput, SIGNAL(heightChanged()),
+            this, SLOT(setScreenPos()));
+
     qmloutput->updateRootProperties();
 }
 
