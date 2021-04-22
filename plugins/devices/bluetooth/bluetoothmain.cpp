@@ -228,7 +228,7 @@ void BlueToothMain::InitMainTopUI()
     frame_4_layout->setContentsMargins(16,0,16,0);
 
     //~ contents_path /bluetooth/Discoverable
-    QLabel *label_5 = new QLabel(tr("Discoverable"),frame_4);
+    QLabel *label_5 = new QLabel(tr("Allow Bluetooth devices to be discoverable"),frame_4);
     label_5->setStyleSheet("QLabel{\
                            width: 56px;\
                            height: 20px;\

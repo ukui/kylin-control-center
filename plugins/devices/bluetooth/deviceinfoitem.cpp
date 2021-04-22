@@ -31,21 +31,16 @@ DeviceInfoItem::DeviceInfoItem(QWidget *parent) : QWidget(parent)
     info_page_layout->addWidget(device_status);
 
     connect_btn = new QPushButton(tr("Connect"),this);
-//    connect_btn->setStyleSheet("QPushButton{background: #E7E7E7;border-radius: 6px;}");
     connect_btn->setVisible(false);
     connect(connect_btn,SIGNAL(clicked(bool)),this,SLOT(onClick_Connect_Btn(bool)));
 
     disconnect_btn = new QPushButton(tr("Disconnect"),this);
-//    disconnect_btn->setStyleSheet("QPushButton{background: #E7E7E7;border-radius: 6px;}");
     disconnect_btn->setVisible(false);
     connect(disconnect_btn,SIGNAL(clicked(bool)),this,SLOT(onClick_Disconnect_Btn(bool)));
 
     del_btn = new QPushButton(tr("Remove"),this);
-//    del_btn->setStyleSheet("QPushButton{background: #E7E7E7;border-radius: 6px;}");
     del_btn->setVisible(false);
     connect(del_btn,SIGNAL(clicked(bool)),this,SLOT(onClick_Delete_Btn(bool)));
-
-    AnimationInit();
 }
 
 DeviceInfoItem::~DeviceInfoItem()
@@ -110,6 +105,8 @@ void DeviceInfoItem::initInfoPage(QString d_name, DEVICE_STATUS status, BluezQt:
         device_status->setProperty("setIconHighlightEffectDefaultColor", QColor(Qt::white));
         device_status->setProperty("useIconHighlightEffect", 0x10);
     }
+
+    AnimationInit();
 }
 
 QString DeviceInfoItem::get_dev_name()
@@ -225,7 +222,20 @@ void DeviceInfoItem::setDevConnectedIcon(bool connected)
         device_status->setVisible(true);
         QIcon icon_status = QIcon::fromTheme("ukui-dialog-success");
         device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
+
+        if(connect_btn->isVisible()){
+            connect_btn->setVisible(false);
+            disconnect_btn->setGeometry(this->width()-BTN_1_X,2,BTN_1_WIDTH,45);
+            disconnect_btn->setVisible(true);
+        }
+
     }else{
+        if(disconnect_btn->isVisible()){
+            disconnect_btn->setVisible(false);
+            connect_btn->setGeometry(this->width()-BTN_1_X,2,BTN_1_WIDTH,45);
+            connect_btn->setVisible(true);
+        }
+
         d_status = DEVICE_STATUS::UNLINK;
         device_status->setVisible(false);
     }
@@ -240,7 +250,7 @@ void DeviceInfoItem::AnimationInit()
         if(AnimationFlag){
             if(leave_action->state() != QAbstractAnimation::Running){
                 enter_action->setStartValue(QRect(0, 0, info_page->width(), info_page->height()));
-                enter_action->setEndValue(QRect(0, 0, info_page->width()-ITEM_WIDTH, info_page->height()));
+                enter_action->setEndValue(QRect(0, 0, info_page->width()-((device_item->isPaired() && device_item->type() != BluezQt::Device::Mouse && device_item->type() != BluezQt::Device::Keyboard)?ITEM_WIDTH:ITEM_WIDTH1), info_page->height()));
                 enter_action->start();
             }
         }
@@ -252,16 +262,25 @@ void DeviceInfoItem::AnimationInit()
     enter_action->setEasingCurve(QEasingCurve::OutQuad);
 
     connect(enter_action,&QPropertyAnimation::finished,this,[=]{
-        if (d_status == DEVICE_STATUS::LINK){
-            disconnect_btn->setGeometry(this->width()-BTN_1_X,2,BTN_1_WIDTH,45);
-            disconnect_btn->setVisible(true);
-        }else if (d_status == DEVICE_STATUS::UNLINK){
-            connect_btn->setGeometry(this->width()-BTN_1_X,2,BTN_1_WIDTH,45);
+        if (device_item->isPaired()) {
+            if (device_item->type() != BluezQt::Device::Mouse && device_item->type() != BluezQt::Device::Keyboard) {
+                if (d_status == DEVICE_STATUS::LINK){
+                    disconnect_btn->setGeometry(this->width()-BTN_1_X,2,BTN_1_WIDTH,45);
+                    disconnect_btn->setVisible(true);
+                }else if (d_status == DEVICE_STATUS::UNLINK){
+                    connect_btn->setGeometry(this->width()-BTN_1_X,2,BTN_1_WIDTH,45);
+                    connect_btn->setVisible(true);
+                }
+                del_btn->setGeometry(this->width()-BTN_2_X,2,BTN_2_WIDTH,45);
+                del_btn->setVisible(true);
+            }else{
+                del_btn->setGeometry(this->width()-125,2,BTN_1_WIDTH,45);
+                del_btn->setVisible(true);
+            }
+        } else {
+            connect_btn->setGeometry(this->width()-125,2,BTN_1_WIDTH,45);
             connect_btn->setVisible(true);
         }
-
-        del_btn->setGeometry(this->width()-BTN_2_X,2,BTN_2_WIDTH,45);
-        del_btn->setVisible(true);
     });
 
 
