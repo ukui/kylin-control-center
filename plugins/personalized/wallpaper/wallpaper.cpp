@@ -30,6 +30,8 @@
 #include <QFileInfo>
 
 const QString kylinUrl = "https://www.ubuntukylin.com/wallpaper.html";
+const QString kylinBackgroundName1 = "/usr/share/backgrounds/warty-final-ubuntukylin.jpg";
+const QString kylinBackgroundName2 = "/usr/share/backgrounds/aurora.jpg";
 
 enum{
     PICTURE,   // 图片背景
@@ -192,10 +194,23 @@ void Wallpaper::setupConnect(){
     //使用线程构建本地壁纸文件；获取壁纸压缩QPixmap
     pThread = new QThread;
     pObject = new WorkerObject;
+    QString bgFileName = bgsettings->get(FILENAME).toString();
     connect(pObject, &WorkerObject::pixmapGenerate, this, [=](QPixmap pixmap, QString filename){
         PictureUnit * picUnit = new PictureUnit;
         picUnit->setPixmap(pixmap);
         picUnit->setFilenameText(filename);
+        if (bgFileName == filename || \
+                (bgFileName == kylinBackgroundName1 && filename == kylinBackgroundName2)) {
+            if (prePicUnit != nullptr) {
+                prePicUnit->changeClickedFlag(false);
+                prePicUnit->setStyleSheet("border-width: 0px;");
+            }
+            picUnit->changeClickedFlag(true);
+            prePicUnit = picUnit;
+            picUnit->setFrameShape(QFrame::Box);
+            picUnit->setStyleSheet(picUnit->clickedStyleSheet);
+        }
+
         connect(picUnit, &PictureUnit::clicked, [=](QString fn){
             if(prePicUnit != nullptr)
             {
@@ -204,7 +219,7 @@ void Wallpaper::setupConnect(){
             }
             picUnit->changeClickedFlag(true);
             prePicUnit = picUnit;
-            picUnit->setFrameShape (QFrame::Box);
+            picUnit->setFrameShape(QFrame::Box);
             picUnit->setStyleSheet(picUnit->clickedStyleSheet);
             bgsettings->set(FILENAME, fn);
             setLockBackground("");
@@ -446,6 +461,7 @@ void Wallpaper::resetDefaultWallpaperSlot(){
     g_object_unref(wpgsettings);
 
     bgsettings->set(FILENAME, QVariant(QString(dwp)));
+    setClickedPic(kylinBackgroundName2);//默认背景图片和aurora.jpg一样，暂时特殊标记
 }
 
 void Wallpaper::showLocalWpDialog(){
@@ -526,4 +542,21 @@ void Wallpaper::add_custom_wallpaper(){
 void Wallpaper::del_wallpaper(){
     // 将改动保存至文件
     xmlhandleObj->xmlUpdate(wallpaperinfosMap);
+}
+
+void Wallpaper::setClickedPic(QString fileName) {
+    for (int i = picFlowLayout->count() - 1; i >= 0; --i) { 
+        QLayoutItem *it      = picFlowLayout->itemAt(i);
+        PictureUnit *picUnit = static_cast<PictureUnit*>(it->widget());
+        if (fileName == picUnit->filenameText()) {
+            if (prePicUnit != nullptr) {
+                prePicUnit->changeClickedFlag(false);
+                prePicUnit->setStyleSheet("border-width: 0px;");
+            }
+            picUnit->changeClickedFlag(true);
+            prePicUnit = picUnit;
+            picUnit->setFrameShape(QFrame::Box);
+            picUnit->setStyleSheet(picUnit->clickedStyleSheet);
+        }
+    }
 }

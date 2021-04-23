@@ -29,6 +29,7 @@
 #include <libintl.h>
 #include <QProcess>
 #include <sys/timex.h>
+#include <qmath.h>
 
 const char kTimezoneDomain[] = "installer-timezones";
 const char kDefaultLocale[]  = "en_US.UTF-8";
@@ -470,15 +471,16 @@ CGetSyncRes::~CGetSyncRes()
 }
 void CGetSyncRes::run()
 {
-    for(qint8 i = 0;i < 10; ++i) {
+    for(qint8 i = 0;i < 80; ++i) {
         struct timex txc = {};
         if (adjtimex(&txc) < 0 || txc.maxerror >= 16000000) {  //未能同步时间
-            QString pixName = QString(":/img/plugins/upgrade/loading%1.svg").arg(i+10);
+            int picNum = i - qFloor(i/8)*8; //限制在0~7
+            QString pixName = QString(":/img/plugins/upgrade/loading%1.svg").arg(picNum+10);
             QPixmap pix(pixName);
             this->dataTimeUI->syncTimeBtn->setEnabled(false);
             qApp->processEvents();
             this->dataTimeUI->syncNetworkRetLabel->setPixmap(pix);
-            msleep(500);
+            msleep(70);
             continue;
         } else {                                               //同步时间成功
             DateTime::syncRTC();

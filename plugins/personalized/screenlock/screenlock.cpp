@@ -223,15 +223,23 @@ void Screenlock::initScreenlockStatus()
     pThread = new QThread;
     pWorker = new BuildPicUnitsWorker;
     connect(pWorker, &BuildPicUnitsWorker::pixmapGeneral, this, [=](QPixmap pixmap, BgInfo bgInfo){
-        // 设置当前锁屏壁纸的预览
-        if (bgInfo.filename == bgStr){
-            ui->previewLabel->setPixmap(QPixmap(bgStr).scaled(ui->previewLabel->size()));
-        }
-
         // 线程中构建控件传递会报告event无法install 的警告
         PictureUnit * picUnit = new PictureUnit;
         picUnit->setPixmap(pixmap);
         picUnit->setFilenameText(bgInfo.filename);
+
+        // 设置当前锁屏壁纸的预览
+        if (bgInfo.filename == bgStr){
+            ui->previewLabel->setPixmap(QPixmap(bgStr).scaled(ui->previewLabel->size()));
+            if (prePicUnit != nullptr) {
+                prePicUnit->changeClickedFlag(false);
+                prePicUnit->setStyleSheet("border-width: 0px;");
+            }
+            picUnit->changeClickedFlag(true);
+            prePicUnit = picUnit;
+            picUnit->setFrameShape(QFrame::Box);
+            picUnit->setStyleSheet(picUnit->clickedStyleSheet);
+        }
 
         connect(picUnit, &PictureUnit::clicked, [=](QString filename){
             if (prePicUnit != nullptr) {

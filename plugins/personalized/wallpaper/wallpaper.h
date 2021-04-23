@@ -100,6 +100,7 @@ public:
 
     void showComponent(int index);
 
+    void setClickedPic(QString fileName);
 private:
     void setLockBackground(QString bg);
 
