@@ -1578,7 +1578,8 @@ void UserInfo::showEnrollDialog()
         return ;
 
     BiometricEnrollDialog * dialog = new BiometricEnrollDialog(serviceInterface,deviceInfo->deviceType,deviceInfo->id,getuid());
-    if(deviceInfo->shortName == "huawei")
+    //gdxfp显示指纹图片
+    if(deviceInfo->shortName == "gdxfp")
         dialog->setProcessed(true);
 
     int num=1;
@@ -1762,7 +1763,9 @@ void UserInfo::addFeature(FeatureInfo *featureinfo)
     connect(baseWidget, &HoverWidget::enterWidget, this, [=](QString name){
         Q_UNUSED(name)
         renameBtn->show();
-        verifyBtn->show();
+	//驱动gdxfp不支持验证
+        if(featureinfo->device_shortname != "gdxfp")
+	    verifyBtn->show();
         delBtn->show();
     });
     connect(baseWidget, &HoverWidget::leaveWidget, this, [=](QString name){

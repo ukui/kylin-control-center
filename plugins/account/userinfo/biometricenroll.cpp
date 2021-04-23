@@ -249,7 +249,8 @@ void BiometricEnrollDialog::verifyCallBack(const QDBusMessage &reply)
         showFinishPrompt();
     } else if(result == DBUS_RESULT_NOTMATCH) {
         setPrompt(tr("Not Match"));
-        showFinishPrompt();
+        ui->biometricEnrollLable->setPixmap(QIcon::fromTheme("dialog-error").pixmap(QSize(64,64)));
+	//showFinishPrompt();
     } else {
         handleErrorResult(result);
     }
