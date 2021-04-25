@@ -104,13 +104,15 @@ const QString DateTime::name() const
 
 void DateTime::initTitleLabel()
 {
+    QGSettings *m_fontSetting = new QGSettings("org.ukui.style");
     QFont font;
-    font.setPixelSize(18);
+    font.setFamily(m_fontSetting->get("systemFont").toString());
+    font.setPointSize(m_fontSetting->get("systemFontSize").toInt());
     ui->titleLabel->setFont(font);
-    ui->dateLabel->setStyleSheet("font-size: 15px;");
-    ui->chgtimebtn->setStyleSheet("font-size: 15px;");
-    ui->chgzonebtn->setStyleSheet("font-size: 15px;");
-    ui->timeClockLable->setStyleSheet("QLabel{font-size: 24px; color: palette(windowText);}");
+    ui->timeClockLable->setObjectName("timeClockLable");
+    font.setPointSize(font.pointSize() + 8);
+    font.setBold(true);
+    ui->timeClockLable->setFont(font);
 }
 
 void DateTime::initUI()

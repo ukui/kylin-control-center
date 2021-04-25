@@ -244,7 +244,14 @@ void MainWindow::initUI() {
             QFont font = this->font();
             int width = font.pointSize();
             for (auto widget : qApp->allWidgets()) {
-                widget->setFont(font);
+                if (widget->objectName() == "timeClockLable") {
+                    QFont fontTime;
+                    fontTime.setPointSize(font.pointSize() + 8);
+                    fontTime.setBold(true);
+                    widget->setFont(fontTime);
+                } else {
+                    widget->setFont(font);
+                }
             }
             ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
         }

@@ -154,7 +154,9 @@ void Shortcut::connectToServer()
 
 void Shortcut::setupComponent()
 {
+    //~ contents_path /shortcut/System Shortcut
     ui->systemLabel->setText(tr("System Shortcut"));
+    //~ contents_path /shortcut/Customize Shortcut
     ui->customLabel->setText(tr("Customize Shortcut"));
 
     QWidget *systemTitleWidget = new QWidget;
@@ -183,6 +185,7 @@ void Shortcut::setupComponent()
     QHBoxLayout *addLyt = new QHBoxLayout;
 
     QLabel *iconLabel = new QLabel();
+    //~ contents_path /shortcut/Add custom shortcut
     QLabel *textLabel = new QLabel(tr("Add custom shortcut"));
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
 
