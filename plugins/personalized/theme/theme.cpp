@@ -534,7 +534,7 @@ void Theme::initConnection() {
         }
         else
         {
-            save_trans = static_cast<int>(personliseGsettings->get(PERSONALSIE_SAVE_TRAN_KEY).toInt());
+            save_trans = personliseGsettings->get(PERSONALSIE_SAVE_TRAN_KEY).toInt();
             ui->tranSlider->setValue(save_trans);
         }
         // 提供给外部监听特效接口
