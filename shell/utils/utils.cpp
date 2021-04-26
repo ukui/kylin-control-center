@@ -79,6 +79,7 @@ void Utils::setCLIName(QCommandLineParser &parser) {
 
     QCommandLineOption noticeRoleOption(QStringList() << "n" << "notice", QObject::tr("Go to notice settings page"));
     QCommandLineOption aboutRoleOption(QStringList() << "a" << "about", QObject::tr("Go to about settings page"));
+    QCommandLineOption searchRoleOption("search", QObject::tr("Go to search settings page"));
 
     parser.addHelpOption();
     parser.addVersionOption();
@@ -148,6 +149,7 @@ void Utils::setCLIName(QCommandLineParser &parser) {
 
     parser.addOption(noticeRoleOption);
     parser.addOption(aboutRoleOption);
+    parser.addOption(searchRoleOption);
 }
 
 QVariantMap Utils::getModuleHideStatus() {
@@ -250,4 +252,17 @@ bool Utils::isWayland() {
     } else {
         return false;
     }
+}
+
+bool Utils::isCommunity()
+{
+    QString filename = "/etc/os-release";
+    QSettings osSettings(filename, QSettings::IniFormat);
+
+    QString versionID = osSettings.value("VERSION_ID").toString();
+
+    if (versionID.compare("20.04", Qt::CaseSensitive)) {
+        return false;
+    }
+    return true;
 }

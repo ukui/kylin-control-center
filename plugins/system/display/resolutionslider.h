@@ -15,7 +15,7 @@ class ResolutionSlider : public QWidget
 {
     Q_OBJECT
 
-  public:
+public:
     explicit ResolutionSlider(const KScreen::OutputPtr &output, QWidget *parent = nullptr);
     ~ResolutionSlider() override;
 
@@ -24,30 +24,29 @@ class ResolutionSlider : public QWidget
 
     void setResolution(const QSize &size);
 
-  Q_SIGNALS:
+Q_SIGNALS:
     void resolutionChanged(const QSize &size);
 
-  public Q_SLOTS:
+public Q_SLOTS:
     void slotValueChanged(int);
     void slotOutputModeChanged();
 
-  private:
+private:
     void init();
 
-  private:
+private:
     KScreen::OutputPtr mOutput;
 
     QList<QSize> mModes;
     QList<QSize> mExcludeModes;
 
-    QLabel    *mSmallestLabel = nullptr;
-    QLabel    *mBiggestLabel  = nullptr;
-    QLabel    *mCurrentLabel  = nullptr;
-    QSlider   *mSlider        = nullptr;
-    QComboBox *mComboBox      = nullptr;
+    QLabel *mSmallestLabel = nullptr;
+    QLabel *mBiggestLabel = nullptr;
+    QLabel *mCurrentLabel = nullptr;
+    QSlider *mSlider = nullptr;
+    QComboBox *mComboBox = nullptr;
 
-    bool      mIsWayland      = false;
-
+    bool mIsWayland = false;
 };
 
 #endif // RESOLUTIONSLIDER_H

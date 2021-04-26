@@ -66,16 +66,16 @@
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>42</number>
+       <number>32</number>
       </property>
       <property name="topMargin">
-       <number>36</number>
+       <number>32</number>
       </property>
       <property name="rightMargin">
-       <number>42</number>
+       <number>32</number>
       </property>
       <property name="bottomMargin">
-       <number>40</number>
+       <number>32</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -396,7 +396,20 @@
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="curPwdLineEdit"/>
+                <widget class="QLineEdit" name="curPwdLineEdit">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>36</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>36</height>
+                  </size>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
@@ -432,13 +445,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
-                   <height>0</height>
+                   <height>36</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
-                   <height>16777215</height>
+                   <height>36</height>
                   </size>
                  </property>
                 </widget>
@@ -477,13 +490,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
-                   <height>0</height>
+                   <height>36</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
-                   <height>16777215</height>
+                   <height>36</height>
                   </size>
                  </property>
                 </widget>

@@ -3,14 +3,16 @@
 #include <KF5/KScreen/kscreen/output.h>
 #include <KF5/KScreen/kscreen/edid.h>
 
-QString Utils::outputName(const KScreen::OutputPtr& output)
+#include "../../../shell/utils/utils.h"
+
+QString Utils::outputName(const KScreen::OutputPtr &output)
 {
     return outputName(output.data());
 }
 
 QString Utils::outputName(const KScreen::Output *output)
 {
-    return output->name();
+    return kOutput.at(output->type());
 }
 
 QString Utils::sizeToString(const QSize &size)

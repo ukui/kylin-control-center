@@ -28,6 +28,7 @@
 #include "SwitchButton/switchbutton.h"
 #include "cursor/xcursortheme.h"
 #include "../../../shell/customstyle.h"
+#include "../../../shell/utils/utils.h"
 
 // GTK主题
 #define THEME_GTK_SCHEMA "org.mate.interface"
@@ -386,14 +387,14 @@ void Theme::initIconTheme() {
     QDir themesDir = QDir(ICONTHEMEPATH);
 
     foreach (QString themedir, themesDir.entryList(QDir::Dirs)) {
-        if (themedir.startsWith("ukui-icon-theme-")) {
-            QDir appsDir = QDir(ICONTHEMEPATH + themedir + "/48x48/apps/");
 
+        if ((Utils::isCommunity() && (!themedir.compare("ukui") || !themedir.compare("ukui-classical")))
+                || (!Utils::isCommunity() && themedir.startsWith("ukui-icon-theme-"))) {
+            QDir appsDir = QDir(ICONTHEMEPATH + themedir + "/48x48/apps/");
             if ("ukui-icon-theme-basic" == themedir) {
                 continue;
             }
             appsDir.setFilter(QDir::Files | QDir::NoSymLinks);
-            QStringList appIconsList = appsDir.entryList();
 
             QStringList showIconsList;
             for (int i = 0; i < kIconsList.size(); i++) {
@@ -533,7 +534,7 @@ void Theme::initConnection() {
         }
         else
         {
-            save_trans = static_cast<int>(personliseGsettings->get(PERSONALSIE_SAVE_TRAN_KEY).toInt());
+            save_trans = personliseGsettings->get(PERSONALSIE_SAVE_TRAN_KEY).toInt();
             ui->tranSlider->setValue(save_trans);
         }
         // 提供给外部监听特效接口
@@ -658,7 +659,7 @@ QString Theme::dullTranslation(QString str) {
     } else if (!QString::compare(str, "default")) {
         return QObject::tr("default");
     } else {
-        return QObject::tr("Unknown");
+        return QObject::tr("default");
     }
 }
 

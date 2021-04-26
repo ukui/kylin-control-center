@@ -14,7 +14,6 @@ class ResolutionSlider;
 class QLabel;
 class QStyledItemDelegate;
 
-
 namespace Ui {
 class KScreenWidget;
 }
@@ -23,7 +22,7 @@ class OutputConfig : public QWidget
 {
     Q_OBJECT
 
-  public:
+public:
     explicit OutputConfig(QWidget *parent);
     explicit OutputConfig(const KScreen::OutputPtr &output, QWidget *parent = nullptr);
     ~OutputConfig() override;
@@ -37,44 +36,51 @@ class OutputConfig : public QWidget
 
     void initConfig(const KScreen::ConfigPtr &config);
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     void slotResolutionChanged(const QSize &size);
     void slotRotationChanged(int index);
     void slotRefreshRateChanged(int index);
     void slotScaleChanged(int index);
+    void slotDPIChanged(QString key);
 
-  Q_SIGNALS:
+private Q_SLOTS:
+    void slotScaleIndex(const QSize &size);
+
+Q_SIGNALS:
     void changed();
-    void scaleChanged(int index);
+    void scaleChanged(double scale);
 
-  protected:
+protected:
     virtual void initUi();
-    int getScreenScale();
+    double getScreenScale();
 
-  protected:
+private:
+    void initDpiConnection();
+    QString scaleToString(double scale);
+
+protected:
     KScreen::OutputPtr mOutput;
-    QLabel           *mTitle      = nullptr;
-    QCheckBox        *mEnabled    = nullptr;
+    QLabel *mTitle = nullptr;
+    QCheckBox *mEnabled = nullptr;
     ResolutionSlider *mResolution = nullptr;
 
-    QComboBox *mRotation     = nullptr;
-    QComboBox *mScale        = nullptr;
-    QComboBox *mRefreshRate  = nullptr;
-    QComboBox *mMonitor      = nullptr;
-    QComboBox *tmpResolution = nullptr;
-    QComboBox *scaleCombox   = nullptr;
+    QComboBox *mRotation = nullptr;
+    QComboBox *mScale = nullptr;
+    QComboBox *mRefreshRate = nullptr;
+    QComboBox *mMonitor = nullptr;
+    QComboBox *mScaleCombox = nullptr;
 
-    bool mShowScaleOption  = false;
-    bool mIsWayland        = false;
-    bool mIsFirstLoad      = true;
+    bool mShowScaleOption = false;
+    bool mIsWayland = false;
+    bool mIsFirstLoad = true;
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    KScreen::ConfigPtr mConfig ;
+    KScreen::ConfigPtr mConfig;
 #else
     KScreen::ConfigPtr mConfig = nullptr;
 #endif
 
-    QGSettings *m_gsettings = nullptr;
+    QGSettings *mDpiSettings = nullptr;
 };
 
 #endif // OUTPUTCONFIG_H

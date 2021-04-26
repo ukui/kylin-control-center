@@ -382,7 +382,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <layout class="QHBoxLayout" name="brightnessLayout">
         <item>
          <widget class="QLabel" name="label_3">
           <property name="minimumSize">
@@ -403,7 +403,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_4">
+         <widget class="QLabel" name="darkLabel">
           <property name="text">
            <string>dark</string>
           </property>
@@ -426,9 +426,16 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_5">
+         <widget class="QLabel" name="brihghtLabel">
           <property name="text">
            <string>bright</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="brightValueLabel">
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>

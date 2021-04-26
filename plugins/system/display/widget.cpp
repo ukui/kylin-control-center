@@ -69,22 +69,22 @@ extern "C" {
 #define ADVANCED_SCHEMAS                 "org.ukui.session.required-components"
 #define ADVANCED_KEY                     "windowmanager"
 
-const QString kCpu     = "ZHAOXIN";
-const QString kLoong   = "Loongson";
-const QString tempDayBrig  = "6500";
+const QString kCpu = "ZHAOXIN";
+const QString kLoong = "Loongson";
+const QString tempDayBrig = "6500";
 
 Q_DECLARE_METATYPE(KScreen::OutputPtr)
 
-Widget::Widget(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::DisplayWindow()), slider(new Slider())
+Widget::Widget(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::DisplayWindow())
 {
-    qRegisterMetaType<QQuickView*>();
+    qRegisterMetaType<QQuickView *>();
     gdk_init(NULL, NULL);
 
     ui->setupUi(this);
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
-    ui->quickWidget->setContentsMargins(0,0,0,9);
+    ui->quickWidget->setContentsMargins(0, 0, 0, 9);
 
     mCloseScreenButton = new SwitchButton(this);
     ui->showScreenLayout->addWidget(mCloseScreenButton);
@@ -96,18 +96,18 @@ Widget::Widget(QWidget *parent)
     initNightUI();
     isWayland();
 
-    QProcess * process = new QProcess;
+    QProcess *process = new QProcess;
     process->start("lsb_release -r");
     process->waitForFinished();
 
     QByteArray ba = process->readAllStandardOutput();
     QString osReleaseCrude = QString(ba.data());
     QStringList res = osReleaseCrude.split(":");
-    QString osRelease = res.length() >= 2 ?  res.at(1) : "";
+    QString osRelease = res.length() >= 2 ? res.at(1) : "";
     osRelease = osRelease.simplified();
 
     const QByteArray idd(ADVANCED_SCHEMAS);
-    if (QGSettings::isSchemaInstalled(idd) && osRelease == "V10"){
+    if (QGSettings::isSchemaInstalled(idd) && osRelease == "V10") {
         ui->advancedBtn->show();
         ui->advancedHorLayout->setContentsMargins(9, 8, 9, 32);
     } else {
@@ -122,7 +122,7 @@ Widget::Widget(QWidget *parent)
     initNightStatus();
     initBrightnessUI();
 
-#if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     ui->nightframe->setVisible(false);
 #else
     ui->nightframe->setVisible(this->mRedshiftIsValid);
@@ -133,30 +133,34 @@ Widget::Widget(QWidget *parent)
 
     initConnection();
     loadQml();
+
+    mScreenScale = scaleGSettings->get(SCALE_KEY).toDouble();
 }
 
-Widget::~Widget() {
+Widget::~Widget()
+{
     clearOutputIdentifiers();
     delete ui;
     ui = nullptr;
 }
 
-bool Widget::eventFilter(QObject* object, QEvent* event) {
+bool Widget::eventFilter(QObject *object, QEvent *event)
+{
     if (event->type() == QEvent::Resize) {
-        if (mOutputIdentifiers.contains(qobject_cast<QQuickView*>(object))) {
-            QResizeEvent *e = static_cast<QResizeEvent*>(event);
+        if (mOutputIdentifiers.contains(qobject_cast<QQuickView *>(object))) {
+            QResizeEvent *e = static_cast<QResizeEvent *>(event);
             const QRect screenSize = object->property("screenSize").toRect();
             QRect geometry(QPoint(0, 0), e->size());
             geometry.moveCenter(screenSize.center());
-            static_cast<QQuickView*>(object)->setGeometry(geometry);
+            static_cast<QQuickView *>(object)->setGeometry(geometry);
             // Pass the event further
         }
     }
     return QObject::eventFilter(object, event);
 }
 
-
-void Widget::setConfig(const KScreen::ConfigPtr &config) {
+void Widget::setConfig(const KScreen::ConfigPtr &config)
+{
     if (mConfig) {
         KScreen::ConfigMonitor::instance()->removeConfig(mConfig);
         for (const KScreen::OutputPtr &output : mConfig->outputs()) {
@@ -179,14 +183,14 @@ void Widget::setConfig(const KScreen::ConfigPtr &config) {
     // 上面屏幕拿取配置
     mScreen->setConfig(mConfig);
     mControlPanel->setConfig(mConfig);
-    mUnifyButton->setEnabled(mConfig->outputs().count() > 1);
+    mUnifyButton->setEnabled(mConfig->connectedOutputs().count() > 1);
     ui->unionframe->setVisible(mConfig->outputs().count() > 1);
 
     for (const KScreen::OutputPtr &output : mConfig->outputs()) {
         outputAdded(output);
     }
 
-    // 选择主屏幕输出
+    // 择主屏幕输出
     QMLOutput *qmlOutput = mScreen->primaryOutput();
 
     if (qmlOutput) {
@@ -194,7 +198,7 @@ void Widget::setConfig(const KScreen::ConfigPtr &config) {
     } else {
         if (!mScreen->outputs().isEmpty()) {
             mScreen->setActiveOutput(mScreen->outputs().at(0));
-            //选择一个主屏幕，避免闪退现象
+            // 择一个主屏幕，避免闪退现象
             primaryButtonEnable(true);
         }
     }
@@ -214,11 +218,13 @@ void Widget::setConfig(const KScreen::ConfigPtr &config) {
     }
 }
 
-KScreen::ConfigPtr Widget::currentConfig() const {
+KScreen::ConfigPtr Widget::currentConfig() const
+{
     return mConfig;
 }
 
-void Widget::loadQml() {
+void Widget::loadQml()
+{
     qmlRegisterType<QMLOutput>("org.kde.kscreen", 1, 0, "QMLOutput");
     qmlRegisterType<QMLScreen>("org.kde.kscreen", 1, 0, "QMLScreen");
 
@@ -228,8 +234,8 @@ void Widget::loadQml() {
 
     ui->quickWidget->setSource(QUrl("qrc:/qml/main.qml"));
 
-    QQuickItem* rootObject = ui->quickWidget->rootObject();
-    mScreen = rootObject->findChild<QMLScreen*>(QStringLiteral("outputView"));
+    QQuickItem *rootObject = ui->quickWidget->rootObject();
+    mScreen = rootObject->findChild<QMLScreen *>(QStringLiteral("outputView"));
     if (!mScreen) {
         return;
     }
@@ -237,7 +243,8 @@ void Widget::loadQml() {
             this, &Widget::slotFocusedOutputChanged);
 }
 
-void Widget::resetPrimaryCombo() {
+void Widget::resetPrimaryCombo()
+{
     // Don't emit currentIndexChanged when resetting
     bool blocked = ui->primaryCombo->blockSignals(true);
     ui->primaryCombo->clear();
@@ -252,7 +259,8 @@ void Widget::resetPrimaryCombo() {
     }
 }
 
-void Widget::addOutputToPrimaryCombo(const KScreen::OutputPtr &output) {
+void Widget::addOutputToPrimaryCombo(const KScreen::OutputPtr &output)
+{
     // 注释后让他显示全部屏幕下拉框
     if (!output->isConnected()) {
         return;
@@ -266,26 +274,29 @@ void Widget::addOutputToPrimaryCombo(const KScreen::OutputPtr &output) {
     }
 }
 
-//这里从屏幕点击来读取输出
-void Widget::slotFocusedOutputChanged(QMLOutput *output) {
+// 这里从屏幕点击来读取输出
+void Widget::slotFocusedOutputChanged(QMLOutput *output)
+{
     mControlPanel->activateOutput(output->outputPtr());
 
-    //读取屏幕点击选择下拉框
+    // 读取屏幕点击选择下拉框
     Q_ASSERT(mConfig);
-    int index = output->outputPtr().isNull() ? 0 : ui->primaryCombo->findData(output->outputPtr()->id());
+    int index = output->outputPtr().isNull() ? 0 : ui->primaryCombo->findData(
+        output->outputPtr()->id());
     if (index == -1 || index == ui->primaryCombo->currentIndex()) {
         return;
     }
     ui->primaryCombo->setCurrentIndex(index);
 }
 
-void Widget::slotFocusedOutputChangedNoParam() {
+void Widget::slotFocusedOutputChangedNoParam()
+{
     mControlPanel->activateOutput(res);
 }
 
-
-void Widget::slotOutputEnabledChanged() {
-    // 这里为点击禁用屏幕输出后的改变
+void Widget::slotOutputEnabledChanged()
+{
+    // 点击禁用屏幕输出后的改变
     resetPrimaryCombo();
     int enabledOutputsCount = 0;
     Q_FOREACH (const KScreen::OutputPtr &output, mConfig->outputs()) {
@@ -300,12 +311,13 @@ void Widget::slotOutputEnabledChanged() {
     ui->unionframe->setVisible(enabledOutputsCount > 1);
 }
 
-void Widget::slotOutputConnectedChanged() {
+void Widget::slotOutputConnectedChanged()
+{
     resetPrimaryCombo();
 }
 
-void Widget::slotUnifyOutputs() {
-
+void Widget::slotUnifyOutputs()
+{
     QMLOutput *base = mScreen->primaryOutput();
 
     QList<int> clones;
@@ -323,9 +335,8 @@ void Widget::slotUnifyOutputs() {
         }
     }
 
-    //取消统一输出
+    // 取消统一输出
     if (base->isCloneMode() && !mUnifyButton->isChecked()) {
-
         QPoint secPoint;
         QPoint invertedSecPoint;
         QString primaryWaylandScreen = "";
@@ -333,13 +344,13 @@ void Widget::slotUnifyOutputs() {
             primaryWaylandScreen = getPrimaryWaylandScreen();
         }
 
-        KScreen::OutputList screens =  mPrevConfig->connectedOutputs();
+        KScreen::OutputList screens = mPrevConfig->connectedOutputs();
         QMap<int, KScreen::OutputPtr>::iterator it = screens.begin();
         while (it != screens.end()) {
-            KScreen::OutputPtr screen= it.value();
+            KScreen::OutputPtr screen = it.value();
             if (screen->isPrimary()) {
                 KScreen::ModeList modes = screen->modes();
-                Q_FOREACH(const KScreen::ModePtr &mode, modes) {
+                Q_FOREACH (const KScreen::ModePtr &mode, modes) {
                     if (screen->currentModeId() == mode->id()) {
                         secPoint = QPoint(screen->pos().x() + mode->size().width(), 0);
                         invertedSecPoint = QPoint(mode->size().height(), 0);
@@ -351,10 +362,10 @@ void Widget::slotUnifyOutputs() {
 
         QMap<int, KScreen::OutputPtr>::iterator secIt = screens.begin();
         while (secIt != screens.end()) {
-            KScreen::OutputPtr screen= secIt.value();
+            KScreen::OutputPtr screen = secIt.value();
             if (!screen->isPrimary()) {
-                if (screen->rotation() == KScreen::Output::Rotation::Left || \
-                        screen->rotation() == KScreen::Output::Rotation::Right) {
+                if (screen->rotation() == KScreen::Output::Rotation::Left    \
+                    || screen->rotation() == KScreen::Output::Rotation::Right) {
                     screen->setPos(invertedSecPoint);
                 } else {
                     screen->setPos(secPoint);
@@ -367,6 +378,7 @@ void Widget::slotUnifyOutputs() {
         ui->primaryCombo->setEnabled(true);
         mCloseScreenButton->setEnabled(true);
         ui->showMonitorframe->setVisible(true);
+        ui->brightnessframe->setVisible(true);
         ui->primaryCombo->setEnabled(true);
     } else if (!base->isCloneMode() && mUnifyButton->isChecked()) {
         // Clone the current config, so that we can restore it in case user
@@ -383,7 +395,6 @@ void Widget::slotUnifyOutputs() {
             }
 
             if (!output->output()->isEnabled()) {
-
                 output->setVisible(false);
                 continue;
             }
@@ -410,9 +421,10 @@ void Widget::slotUnifyOutputs() {
 
         mScreen->updateOutputsPlacement();
 
-        //关闭开关
+        // 关闭开关
         mCloseScreenButton->setEnabled(false);
         ui->showMonitorframe->setVisible(false);
+        ui->brightnessframe->setVisible(false);
         ui->primaryCombo->setEnabled(false);
         ui->mainScreenButton->setEnabled(false);
         mControlPanel->setUnifiedOutput(base->outputPtr());
@@ -421,14 +433,17 @@ void Widget::slotUnifyOutputs() {
 }
 
 // FIXME: Copy-pasted from KDED's Serializer::findOutput()
-KScreen::OutputPtr Widget::findOutput(const KScreen::ConfigPtr &config, const QVariantMap &info) {
+KScreen::OutputPtr Widget::findOutput(const KScreen::ConfigPtr &config, const QVariantMap &info)
+{
     KScreen::OutputList outputs = config->outputs();
-    Q_FOREACH(const KScreen::OutputPtr &output, outputs) {
+    Q_FOREACH (const KScreen::OutputPtr &output, outputs) {
         if (!output->isConnected()) {
             continue;
         }
 
-        const QString outputId = (output->edid() && output->edid()->isValid()) ? output->edid()->hash() : output->name();
+        const QString outputId
+            = (output->edid()
+               && output->edid()->isValid()) ? output->edid()->hash() : output->name();
         if (outputId != info[QStringLiteral("id")].toString()) {
             continue;
         }
@@ -438,18 +453,21 @@ KScreen::OutputPtr Widget::findOutput(const KScreen::ConfigPtr &config, const QV
         output->setPos(point);
         output->setPrimary(info[QStringLiteral("primary")].toBool());
         output->setEnabled(info[QStringLiteral("enabled")].toBool());
-        output->setRotation(static_cast<KScreen::Output::Rotation>(info[QStringLiteral("rotation")].toInt()));
+        output->setRotation(static_cast<KScreen::Output::Rotation>(info[QStringLiteral("rotation")].
+                                                                   toInt()));
 
         QVariantMap modeInfo = info[QStringLiteral("mode")].toMap();
         QVariantMap modeSize = modeInfo[QStringLiteral("size")].toMap();
-        QSize size(modeSize[QStringLiteral("width")].toInt(), modeSize[QStringLiteral("height")].toInt());
+        QSize size(modeSize[QStringLiteral("width")].toInt(),
+                   modeSize[QStringLiteral("height")].toInt());
 
         const KScreen::ModeList modes = output->modes();
-        Q_FOREACH(const KScreen::ModePtr &mode, modes) {
+        Q_FOREACH (const KScreen::ModePtr &mode, modes) {
             if (mode->size() != size) {
                 continue;
             }
-            if (QString::number(mode->refreshRate()) != modeInfo[QStringLiteral("refresh")].toString()) {
+            if (QString::number(mode->refreshRate())
+                != modeInfo[QStringLiteral("refresh")].toString()) {
                 continue;
             }
 
@@ -462,7 +480,8 @@ KScreen::OutputPtr Widget::findOutput(const KScreen::ConfigPtr &config, const QV
     return KScreen::OutputPtr();
 }
 
-void Widget::setHideModuleInfo() {
+void Widget::setHideModuleInfo()
+{
     mCPU = getCpuInfo();
     if (!mCPU.startsWith(kCpu, Qt::CaseInsensitive)) {
         ui->quickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
@@ -470,42 +489,45 @@ void Widget::setHideModuleInfo() {
     }
 }
 
-void Widget::setTitleLabel() {
+void Widget::setTitleLabel()
+{
     QFont font;
     font.setPixelSize(18);
     ui->titleLabel->setFont(font);
 }
 
-void Widget::writeScale(int scale) {
-
-    if (scale != scaleGSettings->get(SCALE_KEY).toInt()) {
+void Widget::writeScale(double scale)
+{
+    if (scale != scaleGSettings->get(SCALE_KEY).toDouble()) {
         mIsScaleChanged = true;
     }
 
     if (mIsScaleChanged) {
-        QMessageBox::information(this, tr("Information"), tr("Some applications need to be logouted to take effect"));
+        QMessageBox::information(this, tr("Information"),
+                                 tr("Some applications need to be logouted to take effect"));
     } else {
         return;
     }
+
     mIsScaleChanged = false;
     int cursize;
     QByteArray iid(MOUSE_SIZE_SCHEMAS);
     if (QGSettings::isSchemaInstalled(MOUSE_SIZE_SCHEMAS)) {
         QGSettings cursorSettings(iid);
 
-        if (1 == scale)  {
+        if (1.0 == scale) {
             cursize = 24;
-        } else if (2 == scale) {
+        } else if (2.0 == scale) {
             cursize = 48;
-        } else if (3 == scale) {
+        } else if (3.0 == scale) {
             cursize = 96;
         } else {
-            scale = 1;
             cursize = 24;
         }
 
         QStringList keys = scaleGSettings->keys();
         if (keys.contains("scalingFactor")) {
+
             scaleGSettings->set(SCALE_KEY, scale);
         }
         cursorSettings.set(CURSOR_SIZE_KEY, cursize);
@@ -513,9 +535,10 @@ void Widget::writeScale(int scale) {
     }
 }
 
-void Widget::initGSettings() {
+void Widget::initGSettings()
+{
     QByteArray id(UKUI_CONTORLCENTER_PANEL_SCHEMAS);
-    if(QGSettings::isSchemaInstalled(id)) {
+    if (QGSettings::isSchemaInstalled(id)) {
         mGsettings = new QGSettings(id, QByteArray(), this);
         if (mGsettings->keys().contains(THEME_NIGHT_KEY)) {
             mThemeButton->setChecked(mGsettings->get(THEME_NIGHT_KEY).toBool());
@@ -532,10 +555,12 @@ void Widget::initGSettings() {
         connect(mPowerGSettings, &QGSettings::changed, this, [=](QString key) {
             if ("brightnessAc" == key || "brightnessBat" == key) {
                 int value = mPowerGSettings->get(key).toInt();
-                if (mIsWayland) {
+                if (mIsWayland && !mIsBattery) {
                     value = (value == 0 ? 0 : value / 10);
                 }
+                ui->brightnessSlider->blockSignals(true);
                 ui->brightnessSlider->setValue(value);
+                ui->brightnessSlider->blockSignals(false);
             }
         });
     }
@@ -546,21 +571,23 @@ void Widget::initGSettings() {
     }
 }
 
-void Widget::setcomBoxScale() {
+void Widget::setcomBoxScale()
+{
     int scale = 1;
-    QComboBox *scaleCombox = findChild<QComboBox*>(QString("scaleCombox"));
+    QComboBox *scaleCombox = findChild<QComboBox *>(QString("scaleCombox"));
     if (scaleCombox) {
         scale = ("100%" == scaleCombox->currentText() ? 1 : 2);
     }
     writeScale(scale);
 }
 
-void Widget::initNightUI() {
-    //~ contents_path /display/unify output
+void Widget::initNightUI()
+{
+    // ~ contents_path /display/unify output
     ui->unifyLabel->setText(tr("unify output"));
 
     QHBoxLayout *nightLayout = new QHBoxLayout(ui->nightframe);
-    //~ contents_path /display/night mode
+    // ~ contents_path /display/night mode
     nightLabel = new QLabel(tr("night mode"), this);
     mNightButton = new SwitchButton(this);
     nightLayout->addWidget(nightLabel);
@@ -574,10 +601,11 @@ void Widget::initNightUI() {
     themeLayout->addWidget(mThemeButton);
 }
 
-bool Widget::isRestoreConfig() {
+bool Widget::isRestoreConfig()
+{
     int cnt = 9;
     int ret;
-    QRect rect =this->topLevelWidget()->geometry();
+    QRect rect = this->topLevelWidget()->geometry();
     QMessageBox msg;
     int msgX = 0, msgY = 0;
     if (mConfigChanged) {
@@ -590,49 +618,51 @@ bool Widget::isRestoreConfig() {
         msg.addButton(tr("Restore Config"), QMessageBox::AcceptRole);
 
         QTimer cntDown;
-        QObject::connect(&cntDown, &QTimer::timeout, [&msg,&cnt, &cntDown, &ret]()->void{
+        QObject::connect(&cntDown, &QTimer::timeout, [&msg, &cnt, &cntDown, &ret]()->void {
             if (--cnt < 0) {
                 cntDown.stop();
                 msg.close();
             } else {
                 msg.setText(QString(tr("After modifying the resolution or refresh rate, "
-                                    "due to compatibility issues between the display device and the graphics card, "
-                                    "the display may be abnormal or unable to display \n"
-                                    "the settings will be saved after %1 seconds")).arg(cnt));
+                                       "due to compatibility issues between the display device and the graphics card, "
+                                       "the display may be abnormal or unable to display \n"
+                                       "the settings will be saved after %1 seconds")).arg(cnt));
             }
         });
         cntDown.start(1000);
-        msgX = rect.x() + rect.width()/2 - 500/2 -5;
-        msgY = rect.y() + rect.height()/2 - 145/2 + 5;
+        msgX = rect.x() + rect.width()/2 - 500/2 - 2;
+        msgY = rect.y() + rect.height()/2 - 145/2 + 35;
         msg.move(msgX, msgY);
         ret = msg.exec();
     }
 
     bool res = false;
     switch (ret) {
-      case QMessageBox::AcceptRole:
-          res = false;
-          break;
-      case QMessageBox::RejectRole:
-          res = true;
-          break;
+    case QMessageBox::AcceptRole:
+        res = false;
+        break;
+    case QMessageBox::RejectRole:
+        res = true;
+        break;
     }
     return res;
 }
 
-QString Widget::getCpuInfo() {
+QString Widget::getCpuInfo()
+{
     QDBusInterface youkerInterface("com.kylin.assistant.systemdaemon",
                                    "/com/kylin/assistant/systemdaemon",
                                    "com.kylin.assistant.systemdaemon",
                                    QDBusConnection::systemBus());
     if (!youkerInterface.isValid()) {
-        qCritical() << "Create youker Interface Failed When Get Computer info: " << QDBusConnection::systemBus().lastError();
+        qCritical() << "Create youker Interface Failed When Get Computer info: " <<
+            QDBusConnection::systemBus().lastError();
         return QString();
     }
 
-    QDBusReply<QMap<QString, QVariant>> cpuinfo;
+    QDBusReply<QMap<QString, QVariant> > cpuinfo;
     QString cpuType;
-    cpuinfo  = youkerInterface.call("get_cpu_info");
+    cpuinfo = youkerInterface.call("get_cpu_info");
     if (!cpuinfo.isValid()) {
         qDebug() << "cpuinfo is invalid" << endl;
     } else {
@@ -644,19 +674,21 @@ QString Widget::getCpuInfo() {
 
 bool Widget::isCloneMode()
 {
-    MateRRScreen *rr_screen;
-    MateRRConfig *rr_config;
-
-    rr_screen = mate_rr_screen_new (gdk_screen_get_default (), NULL); /* NULL-GError */
-    if (!rr_screen)
-            return false;
-
-    rr_config = mate_rr_config_new_current (rr_screen, NULL);
-
-    return mate_rr_config_get_clone(rr_config);
+    KScreen::OutputPtr output = mConfig->primaryOutput();
+    if (mConfig->connectedOutputs().count() >= 2) {
+        foreach (KScreen::OutputPtr secOutput, mConfig->connectedOutputs()) {
+            if (secOutput->geometry() != output->geometry()) {
+                return false;
+            }
+        }
+    } else {
+        return false;
+    }
+    return true;
 }
 
-bool Widget::isBacklight() {
+bool Widget::isBacklight()
+{
     QString cmd = "ukui-power-backlight-helper --get-max-brightness";
     QProcess process;
     process.start(cmd);
@@ -669,19 +701,21 @@ bool Widget::isBacklight() {
     return reg.exactMatch(result);
 }
 
-QString Widget::getMonitorType() {
+QString Widget::getMonitorType()
+{
     QString monitor = ui->primaryCombo->currentText();
     QString type;
     if (monitor.contains("VGA", Qt::CaseInsensitive)) {
         type = "4";
     } else {
-        type = "9";
+        type = "8";
     }
     return type;
 }
 
-bool Widget::isLaptopScreen() {
-    int index  = ui->primaryCombo->currentIndex();
+bool Widget::isLaptopScreen()
+{
+    int index = ui->primaryCombo->currentIndex();
     KScreen::OutputPtr output = mConfig->output(ui->primaryCombo->itemData(index).toInt());
     if (output->type() == KScreen::Output::Type::Panel) {
         return true;
@@ -689,13 +723,13 @@ bool Widget::isLaptopScreen() {
     return false;
 }
 
-int Widget::getDDCBrighthess() {
+int Widget::getDDCBrighthess()
+{
     QString type = getMonitorType();
     QDBusInterface ukccIfc("com.control.center.qt.systemdbus",
                            "/",
                            "com.control.center.interface",
                            QDBusConnection::systemBus());
-
 
     QDBusReply<int> reply = ukccIfc.call("getDDCBrightness", type);
 
@@ -705,7 +739,8 @@ int Widget::getDDCBrighthess() {
     return 0;
 }
 
-int Widget::getPrimaryScreenID() {
+int Widget::getPrimaryScreenID()
+{
     QString primaryScreen = getPrimaryWaylandScreen();
     int screenId;
     for (const KScreen::OutputPtr &output : mConfig->outputs()) {
@@ -716,8 +751,8 @@ int Widget::getPrimaryScreenID() {
     return screenId;
 }
 
-
-void Widget::showNightWidget(bool judge) {
+void Widget::showNightWidget(bool judge)
+{
     if (judge) {
         ui->sunframe->setVisible(true);
         ui->customframe->setVisible(true);
@@ -730,36 +765,40 @@ void Widget::showNightWidget(bool judge) {
         ui->themeFrame->setVisible(false);
     }
 
-   if (judge && ui->customradioBtn->isChecked()) {
-       showCustomWiget(CUSTOM);
-   } else {
-       showCustomWiget(SUN);
-   }
+    if (judge && ui->customradioBtn->isChecked()) {
+        showCustomWiget(CUSTOM);
+    } else {
+        showCustomWiget(SUN);
+    }
 }
 
-void Widget::showCustomWiget(int index) {
+void Widget::showCustomWiget(int index)
+{
     if (SUN == index) {
         ui->opframe->setVisible(false);
         ui->clsframe->setVisible(false);
     } else if (CUSTOM == index) {
-        ui->opframe->setVisible(true);;
+        ui->opframe->setVisible(true);
         ui->clsframe->setVisible(true);
     }
 }
 
-void Widget::slotThemeChanged(bool judge) {
+void Widget::slotThemeChanged(bool judge)
+{
     if (mGsettings->keys().contains(THEME_NIGHT_KEY)) {
         mGsettings->set(THEME_NIGHT_KEY, judge);
     }
 }
 
-void Widget::clearOutputIdentifiers() {
+void Widget::clearOutputIdentifiers()
+{
     mOutputTimer->stop();
     qDeleteAll(mOutputIdentifiers);
     mOutputIdentifiers.clear();
 }
 
-void Widget::outputAdded(const KScreen::OutputPtr &output) {
+void Widget::outputAdded(const KScreen::OutputPtr &output)
+{
     connect(output.data(), &KScreen::Output::isConnectedChanged,
             this, &Widget::slotOutputConnectedChanged);
     connect(output.data(), &KScreen::Output::isEnabledChanged,
@@ -769,13 +808,13 @@ void Widget::outputAdded(const KScreen::OutputPtr &output) {
 
     addOutputToPrimaryCombo(output);
 
-    //检查统一输出-防止多显示屏幕
-    if(mUnifyButton->isChecked()) {
+    // 检查统一输出-防止多显示屏幕
+    if (mUnifyButton->isChecked()) {
         for (QMLOutput *qmlOutput: mScreen->outputs()) {
             if (!qmlOutput->output()->isConnected()) {
                 continue;
             }
-            if(!qmlOutput->isCloneMode()) {
+            if (!qmlOutput->isCloneMode()) {
                 qmlOutput->blockSignals(true);
                 qmlOutput->setVisible(false);
                 qmlOutput->blockSignals(false);
@@ -784,10 +823,17 @@ void Widget::outputAdded(const KScreen::OutputPtr &output) {
     }
 
     ui->unionframe->setVisible(mConfig->connectedOutputs().count() > 1);
+    mUnifyButton->setEnabled(mConfig->connectedOutputs().count() > 1);
+
+    if (!mFirstLoad) {
+        QTimer::singleShot(2000, this, [=] {
+            mUnifyButton->setChecked(isCloneMode());
+        });
+    }
 }
 
-void Widget::outputRemoved(int outputId) {
-
+void Widget::outputRemoved(int outputId)
+{
     KScreen::OutputPtr output = mConfig->output(outputId);
     if (!output.isNull()) {
         output->disconnect(this);
@@ -807,8 +853,8 @@ void Widget::outputRemoved(int outputId) {
     }
     ui->primaryCombo->removeItem(index);
 
-    //检查统一输出-防止移除后没有屏幕可显示
-    if(mUnifyButton->isChecked()) {
+    // 检查统一输出-防止移除后没有屏幕可显示
+    if (mUnifyButton->isChecked()) {
         for (QMLOutput *qmlOutput: mScreen->outputs()) {
             if (!qmlOutput->output()->isConnected()) {
                 continue;
@@ -819,14 +865,19 @@ void Widget::outputRemoved(int outputId) {
         }
     }
     ui->unionframe->setVisible(mConfig->connectedOutputs().count() > 1);
+    mUnifyButton->blockSignals(true);
+    mUnifyButton->setChecked(mConfig->connectedOutputs().count() > 1);
+    mUnifyButton->blockSignals(false);
 }
 
-void Widget::primaryOutputSelected(int index) {
+void Widget::primaryOutputSelected(int index)
+{
     if (!mConfig) {
         return;
     }
 
-    const KScreen::OutputPtr newPrimary = index == 0 ? KScreen::OutputPtr() : mConfig->output(ui->primaryCombo->itemData(index).toInt());
+    const KScreen::OutputPtr newPrimary = index == 0 ? KScreen::OutputPtr() : mConfig->output(ui->primaryCombo->itemData(
+                                                                                                  index).toInt());
     if (newPrimary == mConfig->primaryOutput()) {
         return;
     }
@@ -835,8 +886,9 @@ void Widget::primaryOutputSelected(int index) {
     Q_EMIT changed();
 }
 
-//主输出
-void Widget::primaryOutputChanged(const KScreen::OutputPtr &output) {
+// 主输出
+void Widget::primaryOutputChanged(const KScreen::OutputPtr &output)
+{
     Q_ASSERT(mConfig);
     int index = output.isNull() ? 0 : ui->primaryCombo->findData(output->id());
     if (index == -1 || index == ui->primaryCombo->currentIndex()) {
@@ -845,18 +897,20 @@ void Widget::primaryOutputChanged(const KScreen::OutputPtr &output) {
     ui->primaryCombo->setCurrentIndex(index);
 }
 
-void Widget::slotIdentifyButtonClicked(bool checked) {
+void Widget::slotIdentifyButtonClicked(bool checked)
+{
     Q_UNUSED(checked);
     connect(new KScreen::GetConfigOperation(), &KScreen::GetConfigOperation::finished,
             this, &Widget::slotIdentifyOutputs);
 }
 
-void Widget::slotIdentifyOutputs(KScreen::ConfigOperation *op) {
+void Widget::slotIdentifyOutputs(KScreen::ConfigOperation *op)
+{
     if (op->hasError()) {
         return;
     }
 
-    const KScreen::ConfigPtr config = qobject_cast<KScreen::GetConfigOperation*>(op)->config();
+    const KScreen::ConfigPtr config = qobject_cast<KScreen::GetConfigOperation *>(op)->config();
 
     const QString qmlPath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral(QML_PATH "OutputIdentifier.qml"));
 
@@ -920,39 +974,43 @@ void Widget::slotIdentifyOutputs(KScreen::ConfigOperation *op) {
     mOutputTimer->start(2500);
 }
 
-void Widget::callMethod(QRect geometry, QString name) {
+void Widget::callMethod(QRect geometry, QString name)
+{
     auto scale = 1;
     QDBusInterface waylandIfc("org.ukui.SettingsDaemon",
                               "/org/ukui/SettingsDaemon/wayland",
                               "org.ukui.SettingsDaemon.wayland",
                               QDBusConnection::sessionBus());
 
-    QDBusReply<int> reply =  waylandIfc.call("scale");
+    QDBusReply<int> reply = waylandIfc.call("scale");
     if (reply.isValid()) {
         scale = reply.value();
     }
 
     QDBusMessage message = QDBusMessage::createMethodCall("org.ukui.SettingsDaemon",
-                                           "/org/ukui/SettingsDaemon/wayland",
-                                           "org.ukui.SettingsDaemon.wayland",
-                                           "priScreenChanged");
-    message << geometry.x() / scale << geometry.y() / scale << geometry.width() / scale << geometry.height() / scale << name;
+                                                          "/org/ukui/SettingsDaemon/wayland",
+                                                          "org.ukui.SettingsDaemon.wayland",
+                                                          "priScreenChanged");
+    message << geometry.x() / scale << geometry.y() / scale << geometry.width() / scale <<
+        geometry.height() / scale << name;
     QDBusConnection::sessionBus().send(message);
 }
 
-QString Widget::getPrimaryWaylandScreen() {
+QString Widget::getPrimaryWaylandScreen()
+{
     QDBusInterface screenIfc("org.ukui.SettingsDaemon",
                              "/org/ukui/SettingsDaemon/wayland",
                              "org.ukui.SettingsDaemon.wayland",
                              QDBusConnection::sessionBus());
-    QDBusReply<QString> screenReply =  screenIfc.call("priScreenName");
+    QDBusReply<QString> screenReply = screenIfc.call("priScreenName");
     if (screenReply.isValid()) {
         return screenReply.value();
     }
     return QString();
 }
 
-void Widget::isWayland() {
+void Widget::isWayland()
+{
     QString sessionType = getenv("XDG_SESSION_TYPE");
 
     if (!sessionType.compare(kSession, Qt::CaseSensitive)) {
@@ -962,36 +1020,23 @@ void Widget::isWayland() {
     }
 }
 
-void Widget::setDDCBrighthessSlot(int brightnessValue) {
-
+void Widget::setDDCBrighthessSlot(int brightnessValue)
+{
     QString type = getMonitorType();
     QDBusInterface ukccIfc("com.control.center.qt.systemdbus",
                            "/",
                            "com.control.center.interface",
                            QDBusConnection::systemBus());
 
-    ukccIfc.call("setDDCBrightness", QString::number(brightnessValue), type);
-}
 
-void Widget::shortAddBrightnessSlot() {
-    int value = ui->brightnessSlider->value();
-    if (value < 100) {
-        value = (value + 10) <= 100 ? (value + 10) : 100;
-        ui->brightnessSlider->setValue(value);
-        setDDCBrightness();
+    if (mLock.tryLock()) {
+        ukccIfc.call("setDDCBrightness", QString::number(brightnessValue), type);
+        mLock.unlock();
     }
 }
 
-void Widget::shortCutBrightnessSlot() {
-    int value = ui->brightnessSlider->value();
-    if (value > 0) {
-        value = (value - 10) >= 0 ? (value - 10) : 0;
-        ui->brightnessSlider->setValue(value);
-        setDDCBrightness();
-    }
-}
-
-void Widget::save() {
+void Widget::save()
+{
     if (!this) {
         return;
     }
@@ -999,7 +1044,7 @@ void Widget::save() {
     const KScreen::ConfigPtr &config = this->currentConfig();
 
     bool atLeastOneEnabledOutput = false;
-    Q_FOREACH(const KScreen::OutputPtr &output, config->outputs()) {
+    Q_FOREACH (const KScreen::OutputPtr &output, config->outputs()) {
         if (output->isEnabled()) {
             atLeastOneEnabledOutput = true;
         }
@@ -1022,26 +1067,28 @@ void Widget::save() {
         }
     }
 
-    if (!atLeastOneEnabledOutput ) {
+    if (!atLeastOneEnabledOutput) {
         QMessageBox::warning(this, tr("Warning"), tr("please insure at least one output!"));
         mCloseScreenButton->setChecked(true);
-        return ;
-    } else if (((ui->opHourCom->currentIndex() < ui->clHourCom->currentIndex()) ||
-               (ui->opHourCom->currentIndex() == ui->clHourCom->currentIndex()  &&
-                ui->opMinCom->currentIndex() <= ui->clMinCom->currentIndex()))  &&
-               CUSTOM == singleButton->checkedId() && mNightButton->isChecked()) {
-        QMessageBox::warning(this, tr("Warning"), tr("Open time should be earlier than close time!"));
+        return;
+    } else if (((ui->opHourCom->currentIndex() < ui->clHourCom->currentIndex())
+                || (ui->opHourCom->currentIndex() == ui->clHourCom->currentIndex()
+                    && ui->opMinCom->currentIndex() <= ui->clMinCom->currentIndex()))
+               && CUSTOM == singleButton->checkedId() && mNightButton->isChecked()) {
+        QMessageBox::warning(this, tr("Warning"),
+                             tr("Open time should be earlier than close time!"));
         mCloseScreenButton->setChecked(true);
-        return ;
+        return;
     }
 
-    writeScale(this->screenScale);
+    writeScale(this->mScreenScale);
     setNightMode(mNightButton->isChecked());
 
     if (!KScreen::Config::canBeApplied(config)) {
         QMessageBox::information(this,
                                  tr("Warnning"),
-                                 tr("Sorry, your configuration could not be applied.\nCommon reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU."));
+                                 tr(
+                                     "Sorry, your configuration could not be applied.\nCommon reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU."));
         return;
     }
     mBlockChanges = true;
@@ -1055,10 +1102,9 @@ void Widget::save() {
     // The 1000ms is a bit "random" here, it's what works on the systems I've tested, but ultimately, this is a hack
     // due to the fact that we just can't be sure when xrandr is done changing things, 1000 doesn't seem to get in the way
     QTimer::singleShot(1000, this,
-        [this] () {
-            mBlockChanges = false;
-        }
-    );
+                       [this]() {
+        mBlockChanges = false;
+    });
 
     int enableScreenCount = 0;
     KScreen::OutputPtr enableOutput;
@@ -1070,10 +1116,13 @@ void Widget::save() {
     }
 
     if (mIsWayland && -1 != mScreenId) {
-        if (enableScreenCount >= 2) {
+        if (enableScreenCount >= 2 && !config.isNull()) {
             config->output(mScreenId)->setPrimary(true);
             callMethod(config->primaryOutput()->geometry(), config->primaryOutput()->name());
-        } else {
+            if (mScreen->primaryOutput()) {
+                mScreen->primaryOutput()->setIsCloneMode(mUnifyButton->isChecked());
+            }
+        } else if (!enableOutput.isNull()) {
             enableOutput->setPrimary(true);
             callMethod(enableOutput->geometry(), enableOutput->name());
         }
@@ -1081,24 +1130,26 @@ void Widget::save() {
 
     mScreen->updateOutputsPlacement();
 
-    if (isRestoreConfig()) {
-        if (mIsWayland && -1 != mScreenId) {
-            mPrevConfig->output(mScreenId)->setPrimary(true);
-            callMethod(mPrevConfig->output(mScreenId)->geometry(), mPrevConfig->output(mScreenId)->name());
+    QTimer::singleShot(500,this,[=]() {
+        if (isRestoreConfig()) {
+            if (mIsWayland && -1 != mScreenId) {
+                mPrevConfig->output(mScreenId)->setPrimary(true);
+                callMethod(mPrevConfig->output(mScreenId)->geometry(), mPrevConfig->output(mScreenId)->name());
+            }
+            auto *op = new KScreen::SetConfigOperation(mPrevConfig);
+            op->exec();
+        } else {
+            mPrevConfig = config->clone();
+            writeScreenXml();
+            if (mIsWayland) {
+                QString dir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
+                            %QStringLiteral("/kscreen/")
+                            %QStringLiteral("" /*"configs/"*/);
+                QString hash = mPrevConfig->connectedOutputsHash();
+                writeFile(dir % hash);
+            }
         }
-        auto *op = new KScreen::SetConfigOperation(mPrevConfig);
-        op->exec();
-    } else {
-        mPrevConfig = config->clone();
-        writeScreenXml();
-        if (mIsWayland) {
-            QString dir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) %
-                                                            QStringLiteral("/kscreen/") %
-                                                            QStringLiteral("" /*"configs/"*/);
-            QString hash = mPrevConfig->connectedOutputsHash();
-            writeFile(dir % hash);
-        }
-    } 
+    });
 }
 
 QVariantMap metadata(const KScreen::OutputPtr &output)
@@ -1115,13 +1166,13 @@ QVariantMap metadata(const KScreen::OutputPtr &output)
 
 QString Widget::globalFileName(const QString &hash)
 {
-    QString s_dirPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) %
-                                                         QStringLiteral("/kscreen/");
+    QString s_dirPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
+                        %QStringLiteral("/kscreen/");
     QString dir = s_dirPath  % QStringLiteral("outputs/");
     if (!QDir().mkpath(dir)) {
         return QString();
     }
-    return dir % hash;
+    return QString();
 }
 
 QVariantMap Widget::getGlobalData(KScreen::OutputPtr output)
@@ -1155,7 +1206,6 @@ void Widget::writeGlobal(const KScreen::OutputPtr &output)
 bool Widget::writeGlobalPart(const KScreen::OutputPtr &output, QVariantMap &info,
                              const KScreen::OutputPtr &fallback)
 {
-
     info[QStringLiteral("id")] = output->hash();
     info[QStringLiteral("metadata")] = metadata(output);
     info[QStringLiteral("rotation")] = output->rotation();
@@ -1203,35 +1253,35 @@ bool Widget::writeFile(const QString &filePath)
         QVariantMap info;
         const auto oldOutputIt = std::find_if(oldOutputs.constBegin(), oldOutputs.constEnd(),
                                               [output](const KScreen::OutputPtr &out) {
-                                                  return out->hashMd5() == output->hashMd5();
-                                               }
-        );
-        const KScreen::OutputPtr oldOutput = oldOutputIt != oldOutputs.constEnd() ? *oldOutputIt :
-                                                                                    nullptr;
+            return out->hashMd5() == output->hashMd5();
+        });
+        const KScreen::OutputPtr oldOutput = oldOutputIt != oldOutputs.constEnd() ? *oldOutputIt
+                                             : nullptr;
         if (!output->isConnected()) {
             continue;
         }
 
         writeGlobalPart(output, info, oldOutput);
-        info[QStringLiteral("primary")] = !output->name().compare(getPrimaryWaylandScreen(), Qt::CaseInsensitive);
+        info[QStringLiteral("primary")] = !output->name().compare(
+            getPrimaryWaylandScreen(), Qt::CaseInsensitive);
         info[QStringLiteral("enabled")] = output->isEnabled();
 
         auto setOutputConfigInfo = [&info](const KScreen::OutputPtr &out) {
-            if (!out) {
-                return;
-            }
+                                       if (!out) {
+                                           return;
+                                       }
 
-            QVariantMap pos;
-            pos[QStringLiteral("x")] = out->pos().x();
-            pos[QStringLiteral("y")] = out->pos().y();
-            info[QStringLiteral("pos")] = pos;
-        };
+                                       QVariantMap pos;
+                                       pos[QStringLiteral("x")] = out->pos().x();
+                                       pos[QStringLiteral("y")] = out->pos().y();
+                                       info[QStringLiteral("pos")] = pos;
+                                   };
         setOutputConfigInfo(output->isEnabled() ? output : oldOutput);
 
         if (output->isEnabled()) {
-                // try to update global output data
-                writeGlobal(output);
-            }
+            // try to update global output data
+            writeGlobal(output);
+        }
         outputList.append(info);
     }
 
@@ -1246,34 +1296,24 @@ bool Widget::writeFile(const QString &filePath)
     return true;
 }
 
-
-void Widget::scaleChangedSlot(int index) {
-    switch (index) {
-    case 0:
-        this->screenScale = 1;
-        break;
-    case 1:
-        this->screenScale = 2;
-        break;
-    case 2:
-        this->screenScale = 3;
-        break;
-    default:
-        this->screenScale = 1;
-        break;
-    }
-    if (scaleGSettings->get(SCALE_KEY).toInt() != this->screenScale) {
+void Widget::scaleChangedSlot(double scale)
+{
+    this->mScreenScale = scale;
+    if (scaleGSettings->get(SCALE_KEY).toDouble() != this->mScreenScale) {
         mIsScaleChanged = true;
     } else {
         mIsScaleChanged = false;
     }
 }
 
-void Widget::changedSlot() {
+void Widget::changedSlot()
+{
     mConfigChanged = true;
 }
 
-void Widget::propertiesChangedSlot(QString property, QMap<QString, QVariant> propertyMap, QStringList propertyList) {
+void Widget::propertiesChangedSlot(QString property, QMap<QString, QVariant> propertyMap,
+                                   QStringList propertyList)
+{
     Q_UNUSED(property);
     Q_UNUSED(propertyList);
     if (propertyMap.keys().contains("OnBattery")) {
@@ -1282,13 +1322,16 @@ void Widget::propertiesChangedSlot(QString property, QMap<QString, QVariant> pro
 }
 
 // 是否禁用主屏按钮
-void Widget::mainScreenButtonSelect(int index) {
+void Widget::mainScreenButtonSelect(int index)
+{
+    setBrightSliderVisible();
+
     if (!mConfig || ui->primaryCombo->count() <= 0) {
         return;
     }
 
     const KScreen::OutputPtr newPrimary = mConfig->output(ui->primaryCombo->itemData(index).toInt());
-    int connectCount  = mConfig->connectedOutputs().count();
+    int connectCount = mConfig->connectedOutputs().count();
 
     if (mIsWayland) {
         if (!getPrimaryWaylandScreen().compare(newPrimary->name(), Qt::CaseInsensitive)) {
@@ -1306,28 +1349,28 @@ void Widget::mainScreenButtonSelect(int index) {
 
     // 设置是否勾选
     mCloseScreenButton->setEnabled(true);
-    ui->showMonitorframe->setVisible(connectCount > 1);
+    ui->showMonitorframe->setVisible(connectCount > 1 && !mUnifyButton->isChecked());
 
     // 初始化时不要发射信号
-    const bool blockded = mCloseScreenButton->blockSignals(true);
+    mCloseScreenButton->blockSignals(true);
     mCloseScreenButton->setChecked(newPrimary->isEnabled());
-    mCloseScreenButton->blockSignals(blockded);
+    mCloseScreenButton->blockSignals(false);
     mControlPanel->activateOutput(newPrimary);
 
     mScreen->setActiveOutputByCombox(newPrimary->id());
 }
 
-
 // 设置主屏按钮
-void Widget::primaryButtonEnable(bool status) {
-
+void Widget::primaryButtonEnable(bool status)
+{
     Q_UNUSED(status);
     if (!mConfig) {
         return;
     }
-    int index  = ui->primaryCombo->currentIndex();
+    int index = ui->primaryCombo->currentIndex();
     ui->mainScreenButton->setEnabled(false);
-    const KScreen::OutputPtr newPrimary = mConfig->output(ui->primaryCombo->itemData(index).toInt());
+    const KScreen::OutputPtr newPrimary
+        = mConfig->output(ui->primaryCombo->itemData(index).toInt());
     mConfig->setPrimaryOutput(newPrimary);
 
     mScreenId = newPrimary->id();
@@ -1335,58 +1378,64 @@ void Widget::primaryButtonEnable(bool status) {
     Q_EMIT changed();
 }
 
-void Widget::checkOutputScreen(bool judge) {
-   int index  = ui->primaryCombo->currentIndex();
-   KScreen::OutputPtr newPrimary = mConfig->output(ui->primaryCombo->itemData(index).toInt());
+void Widget::checkOutputScreen(bool judge)
+{
+    int index = ui->primaryCombo->currentIndex();
+    KScreen::OutputPtr newPrimary = mConfig->output(ui->primaryCombo->itemData(index).toInt());
 
-   KScreen::OutputPtr mainScreen = mConfig->primaryOutput();
+    KScreen::OutputPtr mainScreen = mConfig->primaryOutput();
 
-   if (!mainScreen) {
-       mConfig->setPrimaryOutput(newPrimary);
-   }
-   mainScreen = mConfig->primaryOutput();
+    if (!mainScreen) {
+        mConfig->setPrimaryOutput(newPrimary);
+    }
+    mainScreen = mConfig->primaryOutput();
 
-   newPrimary->setEnabled(judge);
+    newPrimary->setEnabled(judge);
 
-   int enabledOutput = 0;
-   Q_FOREACH(KScreen::OutputPtr outptr, mConfig->outputs()) {
-       if (outptr->isEnabled()) {
-           enabledOutput++;
-       }
-       if (mainScreen != outptr && outptr->isConnected()) {
-           newPrimary = outptr;
-       }
+    int enabledOutput = 0;
+    Q_FOREACH (KScreen::OutputPtr outptr, mConfig->outputs()) {
+        if (outptr->isEnabled()) {
+            enabledOutput++;
+        }
+        if (mainScreen != outptr && outptr->isConnected()) {
+            newPrimary = outptr;
+        }
 
-       if (enabledOutput >= 2) {
-           // 设置副屏在主屏右边
-           newPrimary->setPos(QPoint(mainScreen->pos().x() + mainScreen->geometry().width(),
-                               mainScreen->pos().y()));
-       }
-   }
+        if (enabledOutput >= 2) {
+            // 设置副屏在主屏右边
+            newPrimary->setPos(QPoint(mainScreen->pos().x() + mainScreen->geometry().width(),
+                                      mainScreen->pos().y()));
+        }
+    }
 
-   ui->primaryCombo->setCurrentIndex(index);
-   Q_EMIT changed();
+    ui->primaryCombo->setCurrentIndex(index);
+    Q_EMIT changed();
 }
 
 // 亮度调节UI
-void Widget::initBrightnessUI() {
-    if (mIsWayland) {
-        ui->brightnessSlider->setRange(0, 10);
-        ui->brightnessSlider->setTickInterval(1);
-        ui->brightnessSlider->setPageStep(1);
+void Widget::initBrightnessUI()
+{
+    ui->brightnessSlider->setRange(0, 100);
+    if (mIsWayland && !mIsBattery) {
         connect(ui->brightnessSlider, &QSlider::valueChanged, this, &Widget::setDDCBrightness);
     } else {
-        ui->brightnessSlider->setRange(0, 100);
         connect(ui->brightnessSlider, &QSlider::valueChanged, this, &Widget::setBrightnessScreen);
+    }
+
+    if (mIsWayland) {
+        ui->darkLabel->setVisible(false);
+        ui->brihghtLabel->setVisible(false);
+    } else {
+        ui->brightValueLabel->setVisible(false);
     }
 }
 
-void Widget::initConnection() {
-
+void Widget::initConnection()
+{
     connect(mNightButton, SIGNAL(checkedChanged(bool)), this, SLOT(showNightWidget(bool)));
     connect(mThemeButton, SIGNAL(checkedChanged(bool)), this, SLOT(slotThemeChanged(bool)));
-    connect(singleButton, SIGNAL(buttonClicked(int)), this,  SLOT(showCustomWiget(int)));
-    connect(ui->primaryCombo, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+    connect(singleButton, SIGNAL(buttonClicked(int)), this, SLOT(showCustomWiget(int)));
+    connect(ui->primaryCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this, &Widget::mainScreenButtonSelect);
 
     connect(ui->mainScreenButton, SIGNAL(clicked(bool)), this, SLOT(primaryButtonEnable(bool)));
@@ -1402,12 +1451,12 @@ void Widget::initConnection() {
     });
 
     connect(ui->advancedBtn, &QPushButton::clicked, this, [=] {
-        DisplayPerformanceDialog * dialog = new DisplayPerformanceDialog;
+        DisplayPerformanceDialog *dialog = new DisplayPerformanceDialog;
         dialog->exec();
     });
 
-    connect(mUnifyButton,&SwitchButton::checkedChanged,
-            [this]{
+    connect(mUnifyButton, &SwitchButton::checkedChanged,
+            [this] {
         slotUnifyOutputs();
     });
 
@@ -1417,7 +1466,9 @@ void Widget::initConnection() {
     });
 
     connect(QApplication::desktop(), &QDesktopWidget::resized, this, [=] {
-        mUnifyButton->setChecked(isCloneMode());
+        QTimer::singleShot(2000, this, [=] {
+            mUnifyButton->setChecked(isCloneMode());
+        });
     });
 
     QDBusConnection::sessionBus().connect(QString(),
@@ -1435,13 +1486,17 @@ void Widget::initConnection() {
     connect(mApplyShortcut, SIGNAL(activated()), this, SLOT(save()));
 }
 
-
-void Widget::setBrightnessScreen(int value) {
+void Widget::setBrightnessScreen(int value)
+{
+    qDebug() << Q_FUNC_INFO << value;
+    ui->brightValueLabel->setText(QString::number(value));
     mPowerGSettings->set(POWER_KEY, value);
 }
 
-void Widget::setDDCBrightness() {
-    int value = ui->brightnessSlider->value() * 10;
+void Widget::setDDCBrightness(int value)
+{
+    qDebug() << Q_FUNC_INFO << value;
+    ui->brightValueLabel->setText(QString::number(value));
     if (!isLaptopScreen()) {
         setDDCBrighthessSlot(value);
     } else {
@@ -1449,20 +1504,31 @@ void Widget::setDDCBrightness() {
     }
 }
 
-//滑块改变
-void Widget::setBrightnesSldierValue() {
+void Widget::setBrightSliderVisible()
+{
+    if (mIsBattery && !mUnifyButton->isChecked()) {
+        ui->brightnessframe->setVisible(isLaptopScreen());
+    }
+}
+
+// 滑块改变
+void Widget::setBrightnesSldierValue()
+{
     int value = 99;
     value = mPowerGSettings->get(POWER_KEY).toInt();
 
     if (mIsWayland && !mIsBattery) {
-        int realValue = getDDCBrighthess() == 0 ? 0 : getDDCBrighthess() / 10;
+        int realValue = getDDCBrighthess();
+        ui->brightValueLabel->setText(QString::number(realValue));
         ui->brightnessSlider->setValue(realValue);
     } else {
+        ui->brightValueLabel->setText(QString::number(value));
         ui->brightnessSlider->setValue(value);
     }
 }
 
-void Widget::initTemptSlider() {
+void Widget::initTemptSlider()
+{
     ui->temptSlider->setRange(1.1*1000, 6500);
     ui->temptSlider->setTracking(true);
 
@@ -1477,7 +1543,8 @@ void Widget::initTemptSlider() {
     }
 }
 
-void Widget::writeScreenXml() {
+void Widget::writeScreenXml()
+{
     MateRRScreen *rr_screen;
     MateRRConfig *rr_config;
 
@@ -1489,25 +1556,26 @@ void Widget::writeScreenXml() {
      * that there *will* be a backup file in the end.
      */
 
-    rr_screen = mate_rr_screen_new (gdk_screen_get_default (), NULL); /* NULL-GError */
+    rr_screen = mate_rr_screen_new(gdk_screen_get_default(), NULL);   /* NULL-GError */
     if (!rr_screen)
-            return;
+        return;
 
-    rr_config = mate_rr_config_new_current (rr_screen, NULL);
-    mate_rr_config_save (rr_config, NULL); /* NULL-GError */
+    rr_config = mate_rr_config_new_current(rr_screen, NULL);
+    mate_rr_config_save(rr_config, NULL);  /* NULL-GError */
 
     char *backup_filename = mate_rr_config_get_backup_filename();
     unlink(backup_filename);
 
-    g_object_unref (rr_config);
-    g_object_unref (rr_screen);
+    g_object_unref(rr_config);
+    g_object_unref(rr_screen);
 }
 
-void Widget::setNightMode(const bool nightMode) {
+void Widget::setNightMode(const bool nightMode)
+{
     QDBusInterface colorIft("org.ukui.KWin",
-                             "/ColorCorrect",
-                             "org.ukui.kwin.ColorCorrect",
-                             QDBusConnection::sessionBus());
+                            "/ColorCorrect",
+                            "org.ukui.kwin.ColorCorrect",
+                            QDBusConnection::sessionBus());
     if (!colorIft.isValid()) {
         qWarning() << "create org.ukui.kwin.ColorCorrect failed";
         return;
@@ -1523,16 +1591,19 @@ void Widget::setNightMode(const bool nightMode) {
             mNightConfig["EveningBeginFixed"] = "17:55:00";
             mNightConfig["MorningBeginFixed"] = "05:55:04";
         } else if (ui->customradioBtn->isChecked()) {
-            mNightConfig["EveningBeginFixed"] = ui->opHourCom->currentText() + ":" + ui->opMinCom->currentText() + ":00";
-            mNightConfig["MorningBeginFixed"] = ui->clHourCom->currentText() + ":" + ui->clMinCom->currentText() + ":00";
+            mNightConfig["EveningBeginFixed"] = ui->opHourCom->currentText() + ":"
+                                                + ui->opMinCom->currentText() + ":00";
+            mNightConfig["MorningBeginFixed"] = ui->clHourCom->currentText() + ":"
+                                                + ui->clMinCom->currentText() + ":00";
         }
         mNightConfig["NightTemperature"] = ui->temptSlider->value();
     }
 
-    colorIft.call("setNightColorConfig", mNightConfig) ;
+    colorIft.call("setNightColorConfig", mNightConfig);
 }
 
-void Widget::initUiComponent() {
+void Widget::initUiComponent()
+{
     singleButton = new QButtonGroup();
     singleButton->addButton(ui->sunradioBtn);
     singleButton->addButton(ui->customradioBtn);
@@ -1547,16 +1618,16 @@ void Widget::initUiComponent() {
     }
 
     QDBusInterface brightnessInterface("org.freedesktop.UPower",
-                                     "/org/freedesktop/UPower/devices/DisplayDevice",
-                                     "org.freedesktop.DBus.Properties",
-                                     QDBusConnection::systemBus());
+                                       "/org/freedesktop/UPower/devices/DisplayDevice",
+                                       "org.freedesktop.DBus.Properties",
+                                       QDBusConnection::systemBus());
     if (!brightnessInterface.isValid()) {
         qDebug() << "Create UPower Interface Failed : " << QDBusConnection::systemBus().lastError();
         return;
     }
 
     QDBusReply<QVariant> briginfo;
-    briginfo  = brightnessInterface.call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
+    briginfo = brightnessInterface.call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
     mIsBattery = briginfo.value().toBool();
     if (!mIsBattery && !mIsWayland) {
         ui->brightnessframe->setVisible(true);
@@ -1565,18 +1636,19 @@ void Widget::initUiComponent() {
     }
 
     mUPowerInterface = QSharedPointer<QDBusInterface>(
-                new QDBusInterface("org.freedesktop.UPower",
-                                   "/org/freedesktop/UPower",
-                                   "org.freedesktop.DBus.Properties",
-                                   QDBusConnection::systemBus()));
+        new QDBusInterface("org.freedesktop.UPower",
+                           "/org/freedesktop/UPower",
+                           "org.freedesktop.DBus.Properties",
+                           QDBusConnection::systemBus()));
 
     if (!mUPowerInterface.get()->isValid()) {
-        qDebug() << "Create UPower Battery Interface Failed : " << QDBusConnection::systemBus().lastError();
+        qDebug() << "Create UPower Battery Interface Failed : " <<
+            QDBusConnection::systemBus().lastError();
         return;
     }
 
     QDBusReply<QVariant> batteryInfo;
-    batteryInfo  = mUPowerInterface.get()->call("Get", "org.freedesktop.UPower", "OnBattery");
+    batteryInfo = mUPowerInterface.get()->call("Get", "org.freedesktop.UPower", "OnBattery");
     if (batteryInfo.isValid()) {
         mOnBattery = batteryInfo.value().toBool();
     }
@@ -1586,14 +1658,17 @@ void Widget::initUiComponent() {
                                                  "org.freedesktop.DBus.Properties",
                                                  "PropertiesChanged",
                                                  this,
-                                                 SLOT(propertiesChangedSlot(QString, QMap<QString, QVariant>, QStringList)));
+                                                 SLOT(propertiesChangedSlot(QString,QMap<QString,
+                                                                                         QVariant>,
+                                                                            QStringList)));
 }
 
-void Widget::initNightStatus() {
+void Widget::initNightStatus()
+{
     QDBusInterface colorIft("org.ukui.KWin",
-                             "/ColorCorrect",
-                             "org.ukui.kwin.ColorCorrect",
-                             QDBusConnection::sessionBus());
+                            "/ColorCorrect",
+                            "org.ukui.kwin.ColorCorrect",
+                            QDBusConnection::sessionBus());
     if (colorIft.isValid() && Utils::isExistEffect() && !mIsWayland) {
         this->mRedshiftIsValid = true;
     } else {
@@ -1645,7 +1720,8 @@ void Widget::initNightStatus() {
     }
 }
 
-void Widget::nightChangedSlot(QHash<QString, QVariant> nightArg) {
+void Widget::nightChangedSlot(QHash<QString, QVariant> nightArg)
+{
     if (this->mRedshiftIsValid) {
         mNightButton->setChecked(nightArg["Active"].toBool());
     }

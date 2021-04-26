@@ -201,6 +201,12 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
            m_NameLogin = changed;
        } else {
            m_PhoneLogin = changed;
+           QRegExp regExp("^1[3-9]\\d{9}$");
+           if(regExp.exactMatch(m_PhoneLogin) == true) {
+               if(m_loginCodeStatusTips->isHidden() == false) {
+                   m_loginCodeStatusTips->hide();
+               }
+           }
        }
     });
 
@@ -394,6 +400,7 @@ QString MainDialog::messagebox(const int &code) const {
 
 /* 1.登录逻辑处理槽函数 */
 void MainDialog::on_login_btn() {
+    emit on_submit_clicked();
     m_baseWidget->setEnabled(false); //防止用户在登录按钮按完之后到处乱点，下同
     set_staus(false);
     m_delBtn->setEnabled(true);
@@ -584,6 +591,9 @@ void MainDialog::on_send_code_log() {
         m_loginCodeStatusTips->show();
         setshow(m_stackedWidget);
         return ;
+    }
+    if (m_loginCodeStatusTips->isHidden() == false) {
+        m_loginCodeStatusTips->hide();
     }
     if (m_loginDialog->get_user_name() != "") {
         phone = m_loginDialog->get_user_name();
@@ -859,4 +869,3 @@ void MainDialog::closedialog() {
 
 MainDialog::~MainDialog() {
 }
-

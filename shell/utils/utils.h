@@ -24,6 +24,7 @@
 #include <QCursor>
 #include <QObject>
 #include <QWidget>
+#include <QSettings>
 #include <QApplication>
 #include <QCommandLineOption>
 #include <QCommandLineParser>
@@ -42,5 +43,6 @@ namespace Utils
     bool isExistEffect();
     void setKwinMouseSize(int size);
     bool isWayland();
+    bool isCommunity();
 }
 #endif // UTILS_H

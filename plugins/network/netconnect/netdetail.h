@@ -8,6 +8,7 @@
 
 class NetDetail : public QFrame
 {
+    Q_OBJECT
 public:
     NetDetail(bool isWlan, QWidget *parent = nullptr);
 

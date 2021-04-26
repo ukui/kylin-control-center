@@ -31,7 +31,7 @@ LIBS += -L$$[QT_INSTALL_LIBS] -lgsettings-qt
 CONFIG        += link_pkgconfig \
                  C++11
 PKGCONFIG     += gsettings-qt \
-#PKGCONFIG     += gio-2.0 \
+                 gio-2.0 \
 #                 gio-unix-2.0
 
 #DEFINES += QT_DEPRECATED_WARNINGS

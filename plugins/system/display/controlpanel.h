@@ -36,7 +36,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void changed();
-    void scaleChanged(int index);
+    void scaleChanged(double scale);
 
 private Q_SLOTS:
     void addOutput(const KScreen::OutputPtr &output);
@@ -47,14 +47,13 @@ public:
 
 private:
     KScreen::ConfigPtr mConfig;
-    QList<OutputConfig*> mOutputConfigs;
+    QList<OutputConfig *> mOutputConfigs;
 
     UnifiedOutputConfig *mUnifiedOutputCfg;
 
     KScreen::OutputPtr mCurrentOutput;
 
     bool mIsWayland;
-
 };
 
 #endif // CONTROLPANEL_H

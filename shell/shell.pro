@@ -137,4 +137,5 @@ DISTFILES += \
     ../data/org.ukui.control-center.panel.plugins.gschema.xml \
     ../data/org.ukui.control-center.personalise.gschema.xml \
     ../data/org.ukui.control-center.wifi.switch.gschema.xml \
+    ../data/org.ukui.control-center.vino.xml \
     res/search.xml

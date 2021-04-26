@@ -23,9 +23,12 @@
 #include <QHBoxLayout>
 #include <QAbstractButton>
 
-ShareMain::ShareMain(QWidget *parent)
-    : QWidget(parent) {
+#include <QDBusInterface>
+#include <QDBusConnection>
 
+ShareMain::ShareMain(QWidget *parent) :
+    QWidget(parent)
+{
     mVlayout = new QVBoxLayout(this);
     mVlayout->setContentsMargins(0, 0, 32, 0);
     initUI();
@@ -33,17 +36,19 @@ ShareMain::ShareMain(QWidget *parent)
     initTitleLabel();
 }
 
-ShareMain::~ShareMain() {
-
+ShareMain::~ShareMain()
+{
 }
 
-void ShareMain::initTitleLabel() {
+void ShareMain::initTitleLabel()
+{
     QFont font;
     font.setPixelSize(18);
     mShareTitleLabel->setFont(font);
 }
 
-void ShareMain::initUI() {
+void ShareMain::initUI()
+{
     mShareTitleLabel = new QLabel(tr("Share"), this);
 
     mEnableFrame = new QFrame(this);
@@ -51,7 +56,7 @@ void ShareMain::initUI() {
     mEnableFrame->setMinimumSize(550, 50);
     mEnableFrame->setMaximumSize(960, 50);
 
-    QHBoxLayout * enableHLayout = new QHBoxLayout();
+    QHBoxLayout *enableHLayout = new QHBoxLayout();
 
     mEnableBtn = new SwitchButton(this);
     mEnableLabel = new QLabel(tr("Allow others to view your desktop"), this);
@@ -66,7 +71,7 @@ void ShareMain::initUI() {
     mViewFrame->setMinimumSize(550, 50);
     mViewFrame->setMaximumSize(960, 50);
 
-    QHBoxLayout * viewHLayout = new QHBoxLayout();
+    QHBoxLayout *viewHLayout = new QHBoxLayout();
 
     mViewBtn = new SwitchButton(this);
     mViewLabel = new QLabel(tr("Allow connection to control screen"), this);
@@ -83,7 +88,7 @@ void ShareMain::initUI() {
     mSecurityFrame->setMinimumSize(550, 50);
     mSecurityFrame->setMaximumSize(960, 50);
 
-    QHBoxLayout * secHLayout = new QHBoxLayout();
+    QHBoxLayout *secHLayout = new QHBoxLayout();
 
     mAccessBtn = new SwitchButton(this);
     mAccessLabel = new QLabel(tr("You must confirm every visit for this machine"), this);
@@ -98,7 +103,7 @@ void ShareMain::initUI() {
     mSecurityPwdFrame->setMinimumSize(550, 50);
     mSecurityPwdFrame->setMaximumSize(960, 50);
 
-    QHBoxLayout * pwdHLayout = new QHBoxLayout();
+    QHBoxLayout *pwdHLayout = new QHBoxLayout();
 
     mPwdBtn = new SwitchButton(this);
     mPwdsLabel = new QLabel(tr("Require user to enter this password: "), this);
@@ -127,7 +132,8 @@ void ShareMain::initUI() {
     mVlayout->addStretch();
 }
 
-void ShareMain::initConnection() {
+void ShareMain::initConnection()
+{
     QByteArray id(kVinoSchemas);
     if (QGSettings::isSchemaInstalled(id)) {
         mVinoGsetting = new QGSettings(kVinoSchemas, QByteArray(), this);
@@ -142,7 +148,8 @@ void ShareMain::initConnection() {
     }
 }
 
-void ShareMain::initEnableStatus() {
+void ShareMain::initEnableStatus()
+{
     bool isShared = mVinoGsetting->get(kVinoViewOnlyKey).toBool();
     bool secPwd = mVinoGsetting->get(kVinoPromptKey).toBool();
     QString pwd = mVinoGsetting->get(kAuthenticationKey).toString();
@@ -162,12 +169,13 @@ void ShareMain::initEnableStatus() {
 
     process->start("systemctl", QStringList() << "--user" << "is-active" << "vino-server.service");
     process->waitForFinished();
-    setFrameVisible((process->readAllStandardOutput().replace("\n","") == "active"));
 
-    process->close();
+    setFrameVisible((process->readAllStandardOutput().replace("\n", "") == "active"));
+    delete process;
 }
 
-void ShareMain::setFrameVisible(bool visible) {
+void ShareMain::setFrameVisible(bool visible)
+{
     mEnableBtn->setChecked(visible);
 
     mViewFrame->setVisible(visible);
@@ -176,25 +184,34 @@ void ShareMain::setFrameVisible(bool visible) {
     mSecurityTitleLabel->setVisible(visible);
 }
 
-void ShareMain::enableSlot(bool status) {
-    QProcess process;
-    QString cmd;
-
-    if(status) {
-        cmd = "start";
-    } else {
-        cmd = "stop";
+void ShareMain::setVinoService(bool status)
+{
+    QDBusInterface vinoIfc("org.ukui.SettingsDaemon.Sharing",
+                           "/org/ukui/SettingsDaemon/Sharing",
+                           "org.ukui.SettingsDaemon.Sharing",
+                           QDBusConnection::sessionBus());
+    if (vinoIfc.isValid()) {
+        if (status) {
+            vinoIfc.call("EnableService", "vino-server");
+        } else {
+            vinoIfc.call("DisableService", "vino-server");
+        }
     }
-    process.startDetached("systemctl", QStringList() << "--user" << cmd << "vino-server.service");
-
-    setFrameVisible(status);
 }
 
-void ShareMain::viewBoxSlot(bool status) {
+void ShareMain::enableSlot(bool status)
+{
+    setFrameVisible(status);
+    setVinoService(status);
+}
+
+void ShareMain::viewBoxSlot(bool status)
+{
     mVinoGsetting->set(kVinoViewOnlyKey, !status);
 }
 
-void ShareMain::accessSlot(bool status) {
+void ShareMain::accessSlot(bool status)
+{
     if (status) {
         mVinoGsetting->set(kVinoPromptKey, true);
     } else {
@@ -202,7 +219,8 @@ void ShareMain::accessSlot(bool status) {
     }
 }
 
-void ShareMain::pwdEnableSlot(bool status) {
+void ShareMain::pwdEnableSlot(bool status)
+{
     if (status) {
         mVinoGsetting->set(kAuthenticationKey, "vnc");
         mPwdLineEdit->setVisible(true);
@@ -214,9 +232,10 @@ void ShareMain::pwdEnableSlot(bool status) {
     }
 }
 
-void ShareMain::pwdInputSlot(const QString &pwd) {
+void ShareMain::pwdInputSlot(const QString &pwd)
+{
     Q_UNUSED(pwd);
-    
+
     if (pwd.length() <= 8 && !pwd.isEmpty()) {
         mHintLabel->setText(tr(""));
         mHintLabel->setVisible(false);

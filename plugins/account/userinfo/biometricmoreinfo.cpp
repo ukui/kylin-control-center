@@ -18,7 +18,7 @@
  *
  */
 
-#include "biometricmoreinfo.h".h"
+#include "biometricmoreinfo.h"
 #include "ui_biometricmoreinfo.h"
 #include <QPixmap>
 

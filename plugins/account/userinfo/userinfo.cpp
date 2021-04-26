@@ -169,6 +169,7 @@ void UserInfo::_acquireAllUsersInfo(){
     if (!getuid()){
         UserInfomation root;
         root.username = g_get_user_name();
+        root.realname = g_get_real_name();
         root.current = true;
         root.logined = true;
         root.autologin = false;
@@ -213,9 +214,10 @@ int UserInfo::_userCanDel(QString user){
 
     pclose(stream);
 
-    int num = output.split(",").length();
+    QStringList users = output.split(",");
+    int num = users.length();
 
-    if (output.contains(user)){
+    if (users.contains(user)){
         if (num > 1){
             return 1;
         } else {
@@ -243,14 +245,18 @@ UserInfomation UserInfo::_acquireUserInfo(QString objpath){
         QMap<QString, QVariant> propertyMap;
         propertyMap = reply.value();
         user.username = propertyMap.find("UserName").value().toString();
+        user.realname = propertyMap.find("RealName").value().toString();
+
+        if (user.realname.isEmpty()){
+            user.realname = propertyMap.find("UserName").value().toString();
+        }
+
         if (user.username == QString(g_get_user_name())) {
             user.current = true;
             user.logined = true;
             user.noPwdLogin = getNoPwdStatus();
         }
         user.accounttype = propertyMap.find("AccountType").value().toInt();
-//        if (user.accounttype == ADMINISTRATOR)
-//            adminnum++;
         user.iconfile = propertyMap.find("IconFile").value().toString();
         user.passwdtype = propertyMap.find("PasswordMode").value().toInt();
         user.uid = propertyMap.find("Uid").value().toInt();
@@ -444,14 +450,10 @@ void UserInfo::initComponent(){
     ElipseMaskWidget * mainElipseMaskWidget = new ElipseMaskWidget(ui->currentUserFaceLabel);
     mainElipseMaskWidget->setGeometry(0, 0, ui->currentUserFaceLabel->width(), ui->currentUserFaceLabel->height());
 
-    //设置添加用户的图标
-//    ui->addBtn->setIcon(QIcon("://img/plugins/userinfo/add.png"));
-//    ui->addBtn->setIconSize(ui->addBtn->size());
-//    ui->addBtn->setStyleSheet("QPushButton{background-color:transparent;}");
-
-    if (getuid())
+    if (getuid()){
         ui->currentUserFaceLabel->installEventFilter(this);
-//    ui->addUserFrame->installEventFilter(this);
+        ui->userNameLabel->installEventFilter(this);
+    }
 
     //修改当前用户密码的回调
     connect(ui->changePwdBtn, &QPushButton::clicked, this, [=](bool checked){
@@ -640,7 +642,8 @@ void UserInfo::_refreshUserInfoUI(){
             ui->currentUserFaceLabel->setPixmap(iconPixmap);
 
             //设置用户名
-            ui->userNameLabel->setText(user.username);
+            ui->userNameLabel->setText(user.realname);
+            ui->userNameChangeLabel->setPixmap(QIcon::fromTheme("document-edit-symbolic").pixmap(ui->userNameChangeLabel->size()));
             //设置用户类型
             ui->userTypeLabel->setText(_accountTypeIntToString(user.accounttype));
             //设置登录状态
@@ -704,7 +707,7 @@ void UserInfo::_buildWidgetForItem(UserInfomation user){
     nameSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
     nameSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
     nameLabel->setSizePolicy(nameSizePolicy);
-    nameLabel->setText(user.username);
+    nameLabel->setText(user.realname);
 
     QString btnQss = QString("QPushButton{background: #ffffff; border-radius: 4px;}");
 
@@ -915,10 +918,7 @@ void UserInfo::propertyChangedSlot(QString property, QMap<QString, QVariant> pro
     Q_UNUSED(property);
     Q_UNUSED(propertyList);
     if (propertyMap.keys().contains("IconFile") && getuid() &&
-            propertyMap.value("UserName").toString() == mUserName) {
-//        QString iconFile = propertyMap.value("IconFile").toString();
-//        QPixmap iconPixmap = QPixmap(iconFile).scaled(ui->currentUserFaceLabel->size());
-//        ui->currentUserFaceLabel->setPixmap(iconPixmap);
+            propertyMap.value("RealName").toString() == mUserName) {
         if (propertyMap.keys().contains("AccountType")) {
             int type = propertyMap.value("AccountType").toInt();
             ui->userTypeLabel->setText(_accountTypeIntToString(type));
@@ -969,13 +969,13 @@ void UserInfo::showChangeTypeDialog(QString username){
 
         ChangeTypeDialog * dialog = new ChangeTypeDialog;
         dialog->setFace(user.iconfile);
-        dialog->setUsername(user.username);
+        dialog->setUsername(user.realname);
         dialog->setCurrentAccountTypeLabel(_accountTypeIntToString(user.accounttype));
         dialog->setCurrentAccountTypeBtn(user.accounttype);
         dialog->forbidenChange(_userCanDel(username));
 //        connect(dialog, SIGNAL(type_send(int,QString,bool)), this, SLOT(change_accounttype_slot(int,QString,bool)));
-        connect(dialog, &ChangeTypeDialog::type_send, this, [=](int atype, QString userName){
-            changeUserType(atype, userName);
+        connect(dialog, &ChangeTypeDialog::type_send, this, [=](int atype){
+            changeUserType(atype, username);
         });
         dialog->exec();
 
@@ -1000,19 +1000,46 @@ void UserInfo::changeUserType(int atype, QString username){
     _refreshUserInfoUI();
 }
 
-
-void UserInfo::showChangeFaceDialog(QString username){
-    UserInfomation user = (UserInfomation)(allUserInfoMap.find(username).value());
-
-    ChangeFaceDialog * dialog = new ChangeFaceDialog;
-    dialog->setFace(user.iconfile);
-    dialog->setUsername(user.username);
-    dialog->setAccountType(_accountTypeIntToString(user.accounttype));
-//    dialog->set_face_list_status(user.iconfile);
-    connect(dialog, &ChangeFaceDialog::face_file_send, [=](QString faceFile){
-        changeUserFace(faceFile, user.username);
+void UserInfo::showChangeNameDialog(){
+    ChangeUserName * dialog = new ChangeUserName;
+    connect(dialog, &ChangeUserName::sendNewName, [=](QString name){
+        changeUserName(name);
     });
     dialog->exec();
+}
+
+void UserInfo::changeUserName(QString newName){
+    UserInfomation user = (UserInfomation)(allUserInfoMap.find(QString(g_get_user_name())).value());
+
+    UserDispatcher * userdispatcher  = new UserDispatcher(user.objpath);
+
+    userdispatcher->change_user_name(newName);
+
+    //重新获取全部用户QMap
+    _acquireAllUsersInfo();
+
+    //更新界面显示
+    _refreshUserInfoUI();
+}
+
+
+void UserInfo::showChangeFaceDialog(QString username){
+    if (allUserInfoMap.keys().contains(username)){
+        UserInfomation user = allUserInfoMap.value(username);
+
+        ChangeFaceDialog * dialog = new ChangeFaceDialog;
+        dialog->setFace(user.iconfile);
+        dialog->setUsername(user.realname);
+        dialog->setAccountType(_accountTypeIntToString(user.accounttype));
+    //    dialog->set_face_list_status(user.iconfile);
+        connect(dialog, &ChangeFaceDialog::face_file_send, [=](QString faceFile){
+            changeUserFace(faceFile, user.username);
+        });
+        dialog->exec();
+    } else {
+        qDebug() << "User Data Error When Change User Face!";
+    }
+
 }
 
 void UserInfo::changeUserFace(QString facefile, QString username){
@@ -1020,7 +1047,6 @@ void UserInfo::changeUserFace(QString facefile, QString username){
 
     UserDispatcher * userdispatcher  = new UserDispatcher(user.objpath);
     userdispatcher->change_user_face(facefile);
-//    userdispatcher->change_user_face(QString("/home/%1/.face").arg(user.username));
 
     //拷贝设置的头像文件到~/.face
     sysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
@@ -1050,7 +1076,7 @@ void UserInfo::showChangePwdDialog(QString username){
         UserInfomation user = allUserInfoMap.value(username);
         ChangePwdDialog * dialog = new ChangePwdDialog(user.current, user.username);
         dialog->setFace(user.iconfile);
-        dialog->setUsername(user.username);
+        dialog->setUsername(user.realname);
         dialog->setAccountType(_accountTypeIntToString(user.accounttype));
         if (!getuid() || !user.current)
             dialog->haveCurrentPwdEdit(false);
@@ -1112,11 +1138,18 @@ bool UserInfo::eventFilter(QObject *watched, QEvent *event){
             QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
             if (mouseEvent->button() == Qt::LeftButton ){
                 if(watched == ui->currentUserFaceLabel){
-                    showChangeFaceDialog(ui->userNameLabel->text());
+                    showChangeFaceDialog(g_get_user_name());
                 }
                 return true;
             } else {
                 return false;
+            }
+        }
+    } else if (watched == ui->userNameLabel){
+        if (event->type() == QEvent::MouseButtonPress){
+            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
+            if (mouseEvent->button() == Qt::LeftButton ){
+                showChangeNameDialog();
             }
         }
     }
@@ -1545,7 +1578,8 @@ void UserInfo::showEnrollDialog()
         return ;
 
     BiometricEnrollDialog * dialog = new BiometricEnrollDialog(serviceInterface,deviceInfo->deviceType,deviceInfo->id,getuid());
-    if(deviceInfo->shortName == "huawei")
+    //gdxfp显示指纹图片
+    if(deviceInfo->shortName == "gdxfp")
         dialog->setProcessed(true);
 
     int num=1;
@@ -1729,7 +1763,9 @@ void UserInfo::addFeature(FeatureInfo *featureinfo)
     connect(baseWidget, &HoverWidget::enterWidget, this, [=](QString name){
         Q_UNUSED(name)
         renameBtn->show();
-        verifyBtn->show();
+	//驱动gdxfp不支持验证
+        if(featureinfo->device_shortname != "gdxfp")
+	    verifyBtn->show();
         delBtn->show();
     });
     connect(baseWidget, &HoverWidget::leaveWidget, this, [=](QString name){
@@ -1744,7 +1780,6 @@ void UserInfo::addFeature(FeatureInfo *featureinfo)
     baseHorLayout->addSpacing(4);
 
     baseVerLayout->addLayout(baseHorLayout);
-//    baseVerLayout->addStretch();
 
     baseWidget->setLayout(baseVerLayout);
 

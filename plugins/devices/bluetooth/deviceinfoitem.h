@@ -25,6 +25,7 @@
 
 
 #define ITEM_WIDTH 220
+#define ITEM_WIDTH1 130
 #define BTN_1_X 215
 #define BTN_2_X 90
 #define BTN_1_WIDTH 120

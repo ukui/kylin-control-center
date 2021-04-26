@@ -11,6 +11,7 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 };
 
 #endif // LEFTMENULIST_H

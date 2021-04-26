@@ -37,6 +37,15 @@
 #include "buildpicunitsworker.h"
 #include "pictureunit.h"
 
+#ifdef signals
+#undef signals
+#endif
+
+extern "C" {
+#include <glib.h>
+#include <gio/gio.h>
+}
+
 namespace Ui {
 class Screenlock;
 }
@@ -51,9 +60,9 @@ public:
     Screenlock();
     ~Screenlock();
 
-    QString get_plugin_name() Q_DECL_OVERRIDE;
-    int get_plugin_type() Q_DECL_OVERRIDE;
-    QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
+    QString get_plugin_name()   Q_DECL_OVERRIDE;
+    int get_plugin_type()       Q_DECL_OVERRIDE;
+    QWidget * get_plugin_ui()   Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
     const QString name() const  Q_DECL_OVERRIDE;
 
@@ -68,37 +77,44 @@ private:
     void setLockBackground(bool status);
     bool getLockStatus();
     void connectToServer();
-    PictureUnit * prePicUnit;
+
 private:
     Ui::Screenlock *ui;
 
     QString pluginName;
     int pluginType;
-    QWidget * pluginWidget;
+    QWidget *pluginWidget;
 
-    SwitchButton * loginbgSwitchBtn;
-    SwitchButton * lockSwitchBtn;
+    SwitchButton *loginbgSwitchBtn; // 显示锁屏壁纸在登录页面
+    SwitchButton *lockSwitchBtn;    // 激活屏保时锁定屏幕
 
-    Uslider * uslider;
+    Uslider *uslider;
 
-    QGSettings * lSetting;
-    QSettings * lockSetting; //锁屏状态QSettings
-    QSettings * lockLoginSettings;
+    QGSettings *lSetting;
+    QSettings *lockSetting;         // 锁屏状态QSettings
+    QSettings *lockLoginSettings;
 
     QSize lockbgSize;
 
-    QThread * pThread;
+    QThread *pThread;
 
     QDBusInterface *m_cloudInterface;
     bool bIsCloudService;
 
-    FlowLayout * flowLayout;
+    FlowLayout *flowLayout;
 
-    BuildPicUnitsWorker * pWorker;
+    BuildPicUnitsWorker *pWorker;
+    PictureUnit *prePicUnit;
 
     bool mFirstLoad;
+
+    QString mUKCConfig;
+
 public Q_SLOTS:
     void keyChangedSlot(const QString &key);
+
+private slots:
+    void setScreenLockBgSlot();
 };
 
 #endif // SCREENLOCK_H

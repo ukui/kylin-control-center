@@ -3,8 +3,7 @@
 
 #include "outputconfig.h"
 
-namespace KScreen
-{
+namespace KScreen {
 class Output;
 class Config;
 }
@@ -12,13 +11,13 @@ class Config;
 class UnifiedOutputConfig : public OutputConfig
 {
     Q_OBJECT
-  public:
+public:
     explicit UnifiedOutputConfig(const KScreen::ConfigPtr &config, QWidget *parent);
     ~UnifiedOutputConfig() override;
 
     void setOutput(const KScreen::OutputPtr &output) override;
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void slotResolutionChanged(const QSize &size);
 
     // 统一输出后调整屏幕方向统一代码
@@ -27,12 +26,12 @@ class UnifiedOutputConfig : public OutputConfig
     void slotRestoreResoltion();
     void slotRestoreRatation();
 
-  private:
+private:
     void initUi() override;
     KScreen::OutputPtr createFakeOutput();
     QString findBestMode(const KScreen::OutputPtr &output, const QSize &size);
 
-  private:
+private:
     KScreen::ConfigPtr mConfig;
     QList<KScreen::OutputPtr> mClones;
 };

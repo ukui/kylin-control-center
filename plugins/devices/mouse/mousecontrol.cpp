@@ -81,6 +81,7 @@ MyLabel::MyLabel() {
     if (QGSettings::isSchemaInstalled(id)){
         mSettings = new QGSettings(id, QByteArray(), this);
     }
+    this->setToolTip(tr("double-click to test"));
 }
 
 MyLabel::~MyLabel() {

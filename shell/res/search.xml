@@ -312,6 +312,20 @@
         <ChineseFunc>设置通知来源</ChineseFunc>
         <EnglishFunc>Notice Origin</EnglishFunc>
     </plugin>
+    <plugin name="search">
+        <pinyinPlugin>sousuo</pinyinPlugin>
+        <pinyinfunc>sousuomoshi</pinyinfunc>
+        <ChinesePlugin>搜索</ChinesePlugin>
+        <ChineseFunc>搜索模式</ChineseFunc>
+        <EnglishFunc>Search Method</EnglishFunc>
+    </plugin>
+    <plugin name="search">
+        <pinyinPlugin>sousuo</pinyinPlugin>
+        <pinyinfunc>sousuoyinqing</pinyinfunc>
+        <ChinesePlugin>搜索</ChinesePlugin>
+        <ChineseFunc>搜索引擎</ChineseFunc>
+        <EnglishFunc>Web Engine</EnglishFunc>
+    </plugin>
     <plugin name="display">
         <pinyinPlugin>xianshiqi</pinyinPlugin>
         <pinyinfunc>fenbianlv</pinyinfunc>

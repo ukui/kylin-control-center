@@ -25,43 +25,47 @@
 
 #include <QDebug>
 #include <QDir>
+#include <QFileDialog>
+#include <QDesktopServices>
 
-#define BGPATH                "/usr/share/backgrounds/"
-#define SCREENLOCK_BG_SCHEMA  "org.ukui.screensaver"
-#define SCREENLOCK_BG_KEY     "background"
-#define SCREENLOCK_DELAY_KEY  "lock-delay"
-#define SCREENLOCK_LOCK_KEY   "lock-enabled"
-#define SCREENLOCK_ACTIVE_KEY "idle-activation-enabled"
+#define BGPATH                  "/usr/share/backgrounds/"
+#define SCREENLOCK_BG_SCHEMA    "org.ukui.screensaver"
+#define SCREENLOCK_BG_KEY       "background"
+#define SCREENLOCK_DELAY_KEY    "lock-delay"
+#define SCREENLOCK_LOCK_KEY     "lock-enabled"
+#define SCREENLOCK_ACTIVE_KEY   "idle-activation-enabled"
 
 #define MATE_BACKGROUND_SCHEMAS "org.mate.background"
 #define FILENAME                "picture-filename"
+const QString kylinUrl        = "https://www.ubuntukylin.com/wallpaper.html";
 
-Screenlock::Screenlock() : mFirstLoad(true) {
+Screenlock::Screenlock() : mFirstLoad(true)
+{
     pluginName = tr("Screenlock");
     pluginType = PERSONALIZED;
     prePicUnit = nullptr;
 }
 
-Screenlock::~Screenlock() {
+Screenlock::~Screenlock()
+{
     if (!mFirstLoad) {
         delete ui;
         ui = nullptr;
-        delete lSetting;
-        lSetting = nullptr;
-        delete lockSetting;
-        lockSetting = nullptr;
     }
 }
 
-QString Screenlock::get_plugin_name() {
+QString Screenlock::get_plugin_name()
+{
     return pluginName;
 }
 
-int Screenlock::get_plugin_type() {
+int Screenlock::get_plugin_type()
+{
     return pluginType;
 }
 
-QWidget *Screenlock::get_plugin_ui() {
+QWidget *Screenlock::get_plugin_ui()
+{
     if (mFirstLoad) {
         mFirstLoad = false;
 
@@ -75,7 +79,7 @@ QWidget *Screenlock::get_plugin_ui() {
         ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
         const QByteArray id(SCREENLOCK_BG_SCHEMA);
-        lSetting = new QGSettings(id);
+        lSetting = new QGSettings(id, QByteArray(), this);
 
         connectToServer();
         initSearchText();
@@ -88,12 +92,13 @@ QWidget *Screenlock::get_plugin_ui() {
     return pluginWidget;
 }
 
-void Screenlock::plugin_delay_control(){
+void Screenlock::plugin_delay_control()
+{
 
 }
 
-const QString Screenlock::name() const {
-
+const QString Screenlock::name() const
+{
     return QStringLiteral("screenlock");
 }
 
@@ -104,9 +109,10 @@ void Screenlock::initSearchText() {
     ui->activepicLabel->setText(tr("Lock screen when screensaver boot"));
 }
 
-void Screenlock::setupComponent(){
-    QString filename = QDir::homePath() + "/.config/ukui/ukui-control-center.conf";
-    lockSetting = new QSettings(filename, QSettings::IniFormat);
+void Screenlock::setupComponent()
+{
+    mUKCConfig = QDir::homePath() + "/.config/ukui/ukui-control-center.conf";
+    lockSetting = new QSettings(mUKCConfig, QSettings::IniFormat, this);
 
     //锁屏延时暂时不可用，屏蔽
     ui->enableFrame->hide();
@@ -129,9 +135,6 @@ void Screenlock::setupComponent(){
     uslider->setPageStep(1);
 
     ui->lockhorizontalLayout->addWidget(uslider);
-
-    ui->browserLocalwpBtn->hide();
-    ui->browserOnlinewpBtn->hide();
 
     loginbgSwitchBtn = new SwitchButton(pluginWidget);
     ui->loginbgHorLayout->addWidget(loginbgSwitchBtn);
@@ -177,7 +180,8 @@ void Screenlock::setupComponent(){
     ui->backgroundsWidget->setLayout(flowLayout);
 }
 
-void Screenlock::setupConnect(){
+void Screenlock::setupConnect()
+{
     connect(loginbgSwitchBtn, &SwitchButton::checkedChanged, this, [=](bool checked) {
         setLockBackground(checked);
     });
@@ -194,9 +198,16 @@ void Screenlock::setupConnect(){
         int value = lockConvertToSlider(lSetting->get(SCREENLOCK_DELAY_KEY).toInt());
         uslider->setValue(value);
     }
+
+    connect(ui->browserLocalwpBtn, &QPushButton::clicked, this, &Screenlock::setScreenLockBgSlot);
+
+    connect(ui->browserOnlinewpBtn, &QPushButton::clicked, [=] {
+        QDesktopServices::openUrl(QUrl(kylinUrl));
+    });
 }
 
-void Screenlock::initScreenlockStatus(){
+void Screenlock::initScreenlockStatus()
+{
     // 获取当前锁屏壁纸
     QString bgStr = lSetting->get(SCREENLOCK_BG_KEY).toString();
     if (bgStr.isEmpty()) {
@@ -207,10 +218,6 @@ void Screenlock::initScreenlockStatus(){
     }
 
     ui->previewLabel->setPixmap(QPixmap(bgStr).scaled(ui->previewLabel->size()));
-
-    // 遮罩
-//    MaskWidget * maskWidget = new MaskWidget(ui->previewLabel);
-//    maskWidget->setGeometry(0, 0, ui->previewLabel->width(), ui->previewLabel->height());
 
     // 使用线程解析本地壁纸文件；获取壁纸单元
     pThread = new QThread;
@@ -227,14 +234,13 @@ void Screenlock::initScreenlockStatus(){
         picUnit->setFilenameText(bgInfo.filename);
 
         connect(picUnit, &PictureUnit::clicked, [=](QString filename){
-            if(prePicUnit != nullptr)
-            {
+            if (prePicUnit != nullptr) {
                 prePicUnit->changeClickedFlag(false);
                 prePicUnit->setStyleSheet("border-width: 0px;");
             }
             picUnit->changeClickedFlag(true);
             prePicUnit = picUnit;
-            picUnit->setFrameShape (QFrame::Box);
+            picUnit->setFrameShape(QFrame::Box);
             picUnit->setStyleSheet(picUnit->clickedStyleSheet);
             ui->previewLabel->setPixmap(QPixmap(filename).scaled(ui->previewLabel->size()));
             lSetting->set(SCREENLOCK_BG_KEY, filename);
@@ -259,16 +265,14 @@ void Screenlock::initScreenlockStatus(){
 
     // 设置锁屏时间，屏保激活后多久锁定屏幕
     int lDelay = lSetting->get(SCREENLOCK_DELAY_KEY).toInt();
-//    ui->delaySlider->blockSignals(true);
-//    ui->delaySlider->setValue(lDelay);
-//    ui->delaySlider->blockSignals(false);
 
     uslider->blockSignals(true);
     uslider->setValue(lockConvertToSlider(lDelay));
     uslider->blockSignals(false);
 }
 
-int Screenlock::convertToLocktime(const int value) {
+int Screenlock::convertToLocktime(const int value)
+{
     switch (value) {
     case 1:
         return 1;
@@ -300,7 +304,8 @@ int Screenlock::convertToLocktime(const int value) {
     }
 }
 
-int Screenlock::lockConvertToSlider(const int value) {
+int Screenlock::lockConvertToSlider(const int value)
+{
     switch (value) {
     case 1:
         return 1;
@@ -352,6 +357,10 @@ void Screenlock::setLockBackground(bool status)
 
 bool Screenlock::getLockStatus()
 {
+    if (!QFile::exists(mUKCConfig)) {
+        setLockBackground(true);
+    }
+
     lockSetting->beginGroup("ScreenLock");
     lockSetting->sync();
     bool status = lockSetting->value("lockStatus").toBool();
@@ -359,7 +368,8 @@ bool Screenlock::getLockStatus()
     return  status;
 }
 
-void Screenlock::connectToServer(){
+void Screenlock::connectToServer()
+{
     m_cloudInterface = new QDBusInterface("org.kylinssoclient.dbus",
                                           "/org/kylinssoclient/path",
                                           "org.freedesktop.kylinssoclient.interface",
@@ -370,13 +380,13 @@ void Screenlock::connectToServer(){
         qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
         return;
     }
-//    QDBusConnection::sessionBus().connect(cloudInterface, SIGNAL(shortcutChanged()), this, SLOT(shortcutChangedSlot()));
     QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "keyChanged", this, SLOT(keyChangedSlot(QString)));
     // 将以后所有DBus调用的超时设置为 milliseconds
     m_cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时
 }
 
-void Screenlock::keyChangedSlot(const QString &key) {
+void Screenlock::keyChangedSlot(const QString &key)
+{
     if(key == "ukui-screensaver") {
         if(!bIsCloudService)
             bIsCloudService = true;
@@ -396,4 +406,38 @@ void Screenlock::keyChangedSlot(const QString &key) {
         }
         loginbgSwitchBtn->setChecked(getLockStatus());
     }
+}
+
+void Screenlock::setScreenLockBgSlot()
+{
+    QStringList filters;
+    filters<<tr("Wallpaper files(*.jpg *.jpeg *.bmp *.dib *.png *.jfif *.jpe *.gif *.tif *.tiff *.wdp)")<<tr("allFiles(*.*)");
+    QFileDialog fd;
+    fd.setDirectory(QString(const_cast<char *>(g_get_user_special_dir(G_USER_DIRECTORY_PICTURES))));
+    fd.setAcceptMode(QFileDialog::AcceptOpen);
+    fd.setViewMode(QFileDialog::List);
+    fd.setNameFilters(filters);
+    fd.setFileMode(QFileDialog::ExistingFile);
+    fd.setWindowTitle(tr("select custom wallpaper file"));
+    fd.setLabelText(QFileDialog::Accept, tr("Select"));
+    fd.setLabelText(QFileDialog::LookIn, tr("Position: "));
+    fd.setLabelText(QFileDialog::FileName, tr("FileName: "));
+    fd.setLabelText(QFileDialog::FileType, tr("FileType: "));
+    fd.setLabelText(QFileDialog::Reject, tr("Cancel"));
+
+    if (fd.exec() != QDialog::Accepted)
+        return;
+    QString selectedfile;
+    selectedfile = fd.selectedFiles().first();
+
+    QStringList fileRes = selectedfile.split("/");
+
+    QProcess * process = new QProcess(this);
+    QString program("cp");
+    QStringList arguments;
+    arguments << selectedfile ;
+    arguments << "/tmp";
+    process->start(program, arguments);
+
+    lSetting->set(SCREENLOCK_BG_KEY, selectedfile);
 }

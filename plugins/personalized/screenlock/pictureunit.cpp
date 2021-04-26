@@ -55,6 +55,7 @@ void PictureUnit::mousePressEvent(QMouseEvent *e){
 
 void PictureUnit::enterEvent(QEvent *e)
 {
+    Q_UNUSED(e)
     if(getClickedFlag() == false)
     {
         setFrameShape (QFrame::Box);
@@ -63,6 +64,7 @@ void PictureUnit::enterEvent(QEvent *e)
 }
 void PictureUnit::leaveEvent(QEvent *e)
 {
+    Q_UNUSED(e)
     if(getClickedFlag() == false)
         setStyleSheet("border-width: 0px;");
 }

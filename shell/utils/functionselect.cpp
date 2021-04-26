@@ -186,6 +186,8 @@ void FunctionSelect::initValue(){
     seupdatesList[SECURITYCENTER].namei18nString = QObject::tr("Security Center");
     seupdatesList[BACKUP].nameString = QString("Backup");
     seupdatesList[BACKUP].namei18nString = QObject::tr("Backup");
+    seupdatesList[UPDATES].nameString = QString("Update");
+    seupdatesList[UPDATES].namei18nString = QObject::tr("Update");
     seupdatesList[UPGRADE].nameString = QString("Upgrade");
     seupdatesList[UPGRADE].namei18nString = QObject::tr("Upgrade");
 
@@ -203,6 +205,8 @@ void FunctionSelect::initValue(){
 
     natList[NOTICE].nameString = QString("Notice");
     natList[NOTICE].namei18nString = QObject::tr("Notice");
+    natList[SEARCH].nameString = QString("Search");
+    natList[SEARCH].namei18nString = QObject::tr("Search");
     natList[ABOUT].nameString = QString("About");
     natList[ABOUT].namei18nString = QObject::tr("About");
     natList[EXPERIENCEPLAN].nameString = QString("Experienceplan");

@@ -28,8 +28,8 @@
 
 Q_DECLARE_METATYPE(KScreen::OutputPtr)
 
-QMLScreen::QMLScreen(QQuickItem *parent)
-    : QQuickItem(parent)
+QMLScreen::QMLScreen(QQuickItem *parent) :
+    QQuickItem(parent)
 {
     connect(this, &QMLScreen::widthChanged, this, &QMLScreen::viewSizeChanged);
     connect(this, &QMLScreen::heightChanged, this, &QMLScreen::viewSizeChanged);
@@ -63,9 +63,11 @@ void QMLScreen::setConfig(const KScreen::ConfigPtr &config)
     m_config = config;
     connect(m_config.data(), &KScreen::Config::outputAdded,
             this, [this](const KScreen::OutputPtr &output) {
-                addOutput(output);
-                updateOutputsPlacement();
-            });
+        QTimer::singleShot(1000, this, [=]{
+            addOutput(output);
+            updateOutputsPlacement();
+        });
+    });
     connect(m_config.data(), &KScreen::Config::outputRemoved,
             this, &QMLScreen::removeOutput);
 
@@ -106,13 +108,13 @@ void QMLScreen::addOutput(const KScreen::OutputPtr &output)
             this, &QMLScreen::outputPositionChanged);
     connect(qmloutput, &QMLOutput::yChanged,
             [this, qmloutput]() {
-                qmlOutputMoved(qmloutput);
-            });
+        qmlOutputMoved(qmloutput);
+    });
     connect(qmloutput, &QMLOutput::xChanged,
             [this, qmloutput]() {
-                qmlOutputMoved(qmloutput);
-            });
-    //在这里点击上面小屏幕
+        qmlOutputMoved(qmloutput);
+    });
+    // 在这里点击上面小屏幕
     connect(qmloutput, SIGNAL(clicked()),
             this, SLOT(setActiveOutput()));
 
@@ -120,6 +122,12 @@ void QMLScreen::addOutput(const KScreen::OutputPtr &output)
             this, SLOT(setScreenPos()));
 
     connect(qmloutput, SIGNAL(rotationChanged()),
+            this, SLOT(setScreenPos()));
+
+    connect(qmloutput, SIGNAL(widthChanged()),
+            this, SLOT(setScreenPos()));
+
+    connect(qmloutput, SIGNAL(heightChanged()),
             this, SLOT(setScreenPos()));
 
     qmloutput->updateRootProperties();
@@ -137,7 +145,6 @@ void QMLScreen::removeOutput(int outputId)
         }
     }
 }
-
 
 int QMLScreen::connectedOutputsCount() const
 {
@@ -160,11 +167,10 @@ QMLOutput *QMLScreen::primaryOutput() const
     return nullptr;
 }
 
-QList<QMLOutput*> QMLScreen::outputs() const
+QList<QMLOutput *> QMLScreen::outputs() const
 {
     return m_outputMap.values();
 }
-
 
 void QMLScreen::setActiveOutput(QMLOutput *output)
 {
@@ -175,36 +181,31 @@ void QMLScreen::setActiveOutput(QMLOutput *output)
     }
 
     output->setZ(m_outputMap.count());
-    //选中屏幕
+    // 中屏幕
     output->setFocus(true);
     Q_EMIT focusedOutputChanged(output);
 }
 
-
 void QMLScreen::setScreenCenterPos()
 {
-    //组成最大矩形四个边的位置，分别对应左上(1)，右下(2)的xy坐标值
+    // 组成最大矩形四个边的位置，分别对应左上(1)，右下(2)的xy坐标值
     qreal localX1 = -1, localX2 = -1, localY1 = -1, localY2 = -1;
-    qreal mX1 = 0, mY1 = 0, mX2 = 0, mY2 = 0; //矩形中点坐标
-    qreal moveX = 0,moveY = 0;//移动的值
+    qreal mX1 = 0, mY1 = 0, mX2 = 0, mY2 = 0; // 矩形中点坐标
+    qreal moveX = 0, moveY = 0;// 移动的值
     bool firstFlag = true;
     Q_FOREACH (QMLOutput *qmlOutput, m_outputMap) {
         if (qmlOutput->output()->isConnected()) {
-            //double aa = qmlOutput->width();
-            //double bb = qmlOutput->height();
-            //qDebug() << "the widht and height" << aa << bb;
-            //printf("aa = %f bb = %f\n",aa,bb);
-            if(firstFlag == true || localX1 > qmlOutput->x()){
+            if (firstFlag == true || localX1 > qmlOutput->x()) {
                 localX1 = qmlOutput->x();
             }
-            if(firstFlag == true || localX2 < qmlOutput->x() + qmlOutput->width()){
+            if (firstFlag == true || localX2 < qmlOutput->x() + qmlOutput->width()) {
                 localX2 = qmlOutput->x() + qmlOutput->width();
             }
-            if(firstFlag == true || localY1 > qmlOutput->y()){
+            if (firstFlag == true || localY1 > qmlOutput->y()) {
                 localY1 = qmlOutput->y();
             }
-            if(firstFlag == true || localY2 < qmlOutput->y() + qmlOutput->height()){
-                localY2 =  qmlOutput->y() + qmlOutput->height();
+            if (firstFlag == true || localY2 < qmlOutput->y() + qmlOutput->height()) {
+                localY2 = qmlOutput->y() + qmlOutput->height();
             }
             firstFlag = false;
         }
@@ -219,19 +220,17 @@ void QMLScreen::setScreenCenterPos()
     moveX = mX2 - mX1;
     moveY = mY2 - mY1;
 
-    Q_FOREACH (QMLOutput *qmlOutput, m_outputMap){
+    Q_FOREACH (QMLOutput *qmlOutput, m_outputMap) {
         qmlOutput->setX(qmlOutput->x() + moveX);
         qmlOutput->setY(qmlOutput->y() + moveY);
     }
 }
 
-
-
-void QMLScreen::setScreenPos(QMLOutput *output) {
-
+void QMLScreen::setScreenPos(QMLOutput *output)
+{
     // 镜像模式下跳过屏幕旋转处理
     if (this->primaryOutput() && this->primaryOutput()->isCloneMode()) {
-        return ;
+        return;
     }
 
     int x1 = 0, y1 = 0;
@@ -262,7 +261,7 @@ void QMLScreen::setScreenPos(QMLOutput *output) {
 
     if (connectedScreen < 2) {
         setScreenCenterPos();
-        return ;
+        return;
     }
 
     if (!((x1 + width1 == x2)
@@ -284,18 +283,17 @@ void QMLScreen::setScreenPos(QMLOutput *output) {
         }
 
         // 矩形是否相交
-        if (!(x1 + width1 < x2 ||  x2 + width2 < x1 ||
-              y1 > y2 +height2 || y2 > y1 + height1) &&
-                (x1 != x2 || y1 != y2) && other != NULL &&
-                other->output()->isConnected()) {
-
+        if (!(x1 + width1 < x2 || x2 + width2 < x1
+              || y1 > y2 +height2 || y2 > y1 + height1)
+            && (x1 != x2 || y1 != y2) && other != NULL
+            && other->output()->isConnected()) {
             if ((x1 + width1 > x2) && (x1 < x2)) {
                 output->setX(x2 - width1);
             } else if ((x1 < x2 + width2) && (x1 + width1 > x2 + width2)) {
                 output->setX(x2 + width2);
             } else if ((y1 + height() > y2) && (y1 < y2 + height2)) {
                 output->setY(y2 - height1);
-            } else if ((y1  <  y2  + height2) && (y1 + height1 > y2 + height2)) {
+            } else if ((y1 < y2  + height2) && (y1 + height1 > y2 + height2)) {
                 output->setY(y2 + height2);
             }
         }
@@ -303,17 +301,17 @@ void QMLScreen::setScreenPos(QMLOutput *output) {
     setScreenCenterPos();
 }
 
-void QMLScreen::setActiveOutputByCombox(int screenId) {
-    QHash<KScreen::OutputPtr, QMLOutput*>::const_iterator it = m_outputMap.constBegin();
+void QMLScreen::setActiveOutputByCombox(int screenId)
+{
+    QHash<KScreen::OutputPtr, QMLOutput *>::const_iterator it = m_outputMap.constBegin();
     while (it != m_outputMap.constEnd()) {
         if (screenId == it.key()->id()) {
             setActiveOutput(it.value());
-            return ;
+            return;
         }
         it++;
     }
 }
-
 
 QSize QMLScreen::maxScreenSize() const
 {
@@ -330,7 +328,6 @@ void QMLScreen::outputConnectedChanged()
     int connectedCount = 0;
 
     Q_FOREACH (const KScreen::OutputPtr &output, m_outputMap.keys()) {
-        //qDebug() << output->geometry();
         if (output->isConnected()) {
             ++connectedCount;
         }
@@ -340,13 +337,14 @@ void QMLScreen::outputConnectedChanged()
         m_connectedOutputsCount = connectedCount;
         Q_EMIT connectedOutputsCountChanged();
         updateOutputsPlacement();
-        //setScreenCenterPos();
+        // setScreenCenterPos();
     }
 }
 
 void QMLScreen::outputEnabledChanged()
 {
-    const KScreen::OutputPtr output(qobject_cast<KScreen::Output*>(sender()), [](void *){});
+    const KScreen::OutputPtr output(qobject_cast<KScreen::Output *>(sender()), [](void *){
+        });
     if (output->isEnabled()) {
         updateOutputsPlacement();
     }
@@ -375,8 +373,8 @@ void QMLScreen::qmlOutputMoved(QMLOutput *qmlOutput)
         return;
     }
 
-    //新添加的output不处理
-    if(m_outputFirstAdd.contains(qmlOutput)) {
+    // 新添加的output不处理
+    if (m_outputFirstAdd.contains(qmlOutput)) {
         return;
     }
 
@@ -479,16 +477,20 @@ void QMLScreen::updateOutputsPlacement()
     QSizeF initialActiveScreenSize;
 
     Q_FOREACH (QQuickItem *item, childItems()) {
-        QMLOutput *qmlOutput = qobject_cast<QMLOutput*>(item);
+        QMLOutput *qmlOutput = qobject_cast<QMLOutput *>(item);
         if (!qmlOutput->output()->isConnected() || !qmlOutput->output()->isEnabled()) {
             continue;
         }
 
-        if (qmlOutput->outputX() + qmlOutput->currentOutputWidth() > initialActiveScreenSize.width()) {
-            initialActiveScreenSize.setWidth(qmlOutput->outputX() + qmlOutput->currentOutputWidth());
+        if (qmlOutput->outputX() + qmlOutput->currentOutputWidth()
+            > initialActiveScreenSize.width()) {
+            initialActiveScreenSize.setWidth(qmlOutput->outputX()
+                                             + qmlOutput->currentOutputWidth());
         }
-        if (qmlOutput->outputY() + qmlOutput->currentOutputHeight() > initialActiveScreenSize.height()) {
-            initialActiveScreenSize.setHeight(qmlOutput->outputY() + qmlOutput->currentOutputHeight());
+        if (qmlOutput->outputY() + qmlOutput->currentOutputHeight()
+            > initialActiveScreenSize.height()) {
+            initialActiveScreenSize.setHeight(
+                qmlOutput->outputY() + qmlOutput->currentOutputHeight());
         }
     }
 
@@ -505,24 +507,24 @@ void QMLScreen::updateOutputsPlacement()
         lastX = -1.0;
         qreal lastY = -1.0;
         Q_FOREACH (QQuickItem *item, childItems()) {
-            QMLOutput *qmlOutput = qobject_cast<QMLOutput*>(item);
-            if (!qmlOutput->output()->isConnected() || !qmlOutput->output()->isEnabled() ||
-                m_manuallyMovedOutputs.contains(qmlOutput)) {
+            QMLOutput *qmlOutput = qobject_cast<QMLOutput *>(item);
+            if (!qmlOutput->output()->isConnected() || !qmlOutput->output()->isEnabled()) {
                 continue;
             }
 
             qmlOutput->blockSignals(true);
             qmlOutput->setPosition(QPointF(offset.x() + (qmlOutput->outputX() * scale),
-                              offset.y() + (qmlOutput->outputY() * scale)));
-            lastX = qMax(lastX, qmlOutput->position().x() + qmlOutput->width() / initialScale * scale);
+                                           offset.y() + (qmlOutput->outputY() * scale)));
+            lastX = qMax(lastX,
+                         qmlOutput->position().x() + qmlOutput->width() / initialScale * scale);
             lastY = qMax(lastY, qmlOutput->position().y());
             qmlOutput->blockSignals(false);
         }
 
         Q_FOREACH (QQuickItem *item, childItems()) {
-            QMLOutput *qmlOutput = qobject_cast<QMLOutput*>(item);
-            if (qmlOutput->output()->isConnected() && !qmlOutput->output()->isEnabled() &&
-                !m_manuallyMovedOutputs.contains(qmlOutput)) {
+            QMLOutput *qmlOutput = qobject_cast<QMLOutput *>(item);
+            if (qmlOutput->output()->isConnected() && !qmlOutput->output()->isEnabled()
+                && !m_manuallyMovedOutputs.contains(qmlOutput)) {
                 qmlOutput->blockSignals(true);
                 qmlOutput->setPosition(QPointF(lastX, lastY));
                 lastX += qmlOutput->width() / initialScale * scale;
@@ -539,6 +541,6 @@ void QMLScreen::updateOutputsPlacement()
         setOutputScale(scale);
     });
 
-    //坐标更新，清空
+    // 坐标更新，清空
     m_outputFirstAdd.clear();
 }

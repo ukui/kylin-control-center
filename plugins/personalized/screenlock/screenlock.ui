@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>673</width>
-    <height>664</height>
+    <height>978</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -416,25 +416,6 @@
          <number>16</number>
         </property>
         <item>
-         <widget class="QPushButton" name="browserOnlinewpBtn">
-          <property name="minimumSize">
-           <size>
-            <width>132</width>
-            <height>36</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>132</width>
-            <height>36</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Browser online wp</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QPushButton" name="browserLocalwpBtn">
           <property name="minimumSize">
            <size>
@@ -450,6 +431,25 @@
           </property>
           <property name="text">
            <string>Browser local wp</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="browserOnlinewpBtn">
+          <property name="minimumSize">
+           <size>
+            <width>132</width>
+            <height>36</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>132</width>
+            <height>36</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Browser online wp</string>
           </property>
          </widget>
         </item>

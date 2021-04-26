@@ -45,14 +45,14 @@ public:
     void changeConfValue();
 
 private:
-    void paintEvent(QPaintEvent * event);
+    void paintEvent(QPaintEvent *event);
 
 private:
     Ui::DisplayPerformanceDialog *ui;
 
 private:
-    QGSettings * settings;
-    QSettings * confSettings;
+    QGSettings *settings;
+    QSettings *confSettings;
 };
 
 #endif // DISPLAYPERFORMANCEDIALOG_H

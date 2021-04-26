@@ -28,12 +28,10 @@ bool qMapLessThanKey(const QSize &s1, const QSize &s2)
     return s1 < s2;
 }
 
-
-UnifiedOutputConfig::UnifiedOutputConfig(const KScreen::ConfigPtr &config, QWidget *parent)
-    : OutputConfig(parent)
-    , mConfig(config)
-{    
-
+UnifiedOutputConfig::UnifiedOutputConfig(const KScreen::ConfigPtr &config, QWidget *parent) :
+    OutputConfig(parent),
+    mConfig(config)
+{
 }
 
 UnifiedOutputConfig::~UnifiedOutputConfig()
@@ -57,15 +55,14 @@ void UnifiedOutputConfig::setOutput(const KScreen::OutputPtr &output)
 void UnifiedOutputConfig::initUi()
 {
     QVBoxLayout *vbox = new QVBoxLayout(this);
-    vbox->setContentsMargins(0,0,0,0);
+    vbox->setContentsMargins(0, 0, 0, 0);
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
     KScreen::OutputPtr fakeOutput = createFakeOutput();
     mResolution = new ResolutionSlider(fakeOutput, this);
 
-    mResolution->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
-    mResolution->setMinimumSize(402,30);
-
+    mResolution->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    mResolution->setMinimumSize(402, 30);
 
     connect(mOutput.data(), &KScreen::Output::currentModeIdChanged,
             this, &UnifiedOutputConfig::slotRestoreResoltion);
@@ -75,9 +72,9 @@ void UnifiedOutputConfig::initUi()
 
     QLabel *resLabel = new QLabel(this);
     resLabel->setText(tr("resolution"));
-    resLabel->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
-    resLabel->setMinimumSize(118,30);
-    resLabel->setMaximumSize(118,30);
+    resLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    resLabel->setMinimumSize(118, 30);
+    resLabel->setMaximumSize(118, 30);
 
     QHBoxLayout *resLayout = new QHBoxLayout();
     resLayout->addWidget(resLabel);
@@ -87,9 +84,9 @@ void UnifiedOutputConfig::initUi()
     resFrame->setFrameShape(QFrame::Shape::Box);
     resFrame->setLayout(resLayout);
 
-    resFrame->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
-    resFrame->setMinimumSize(552,50);
-    resFrame->setMaximumSize(960,50);
+    resFrame->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    resFrame->setMinimumSize(552, 50);
+    resFrame->setMaximumSize(960, 50);
 
     vbox->addWidget(resFrame);
     connect(mResolution, &ResolutionSlider::resolutionChanged,
@@ -97,18 +94,18 @@ void UnifiedOutputConfig::initUi()
 
     slotResolutionChanged(mResolution->currentResolution());
 
-    //方向下拉框
+    // 方向下拉框
     mRotation = new QComboBox(this);
 
-    mRotation->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
-    mRotation->setMinimumSize(402,30);
-    mRotation->setMaximumSize(16777215,30);
+    mRotation->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    mRotation->setMinimumSize(402, 30);
+    mRotation->setMaximumSize(16777215, 30);
 
     QLabel *rotateLabel = new QLabel(this);
     rotateLabel->setText(tr("orientation"));
-    rotateLabel->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
-    rotateLabel->setMinimumSize(118,30);
-    rotateLabel->setMaximumSize(118,30);
+    rotateLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    rotateLabel->setMinimumSize(118, 30);
+    rotateLabel->setMaximumSize(118, 30);
 
     mRotation->addItem(tr("arrow-up"), KScreen::Output::None);
     mRotation->addItem(tr("90° arrow-right"), KScreen::Output::Right);
@@ -118,7 +115,7 @@ void UnifiedOutputConfig::initUi()
     int index = mRotation->findData(mOutput->rotation());
     mRotation->setCurrentIndex(index);
 
-    connect(mRotation, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+    connect(mRotation, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this, &UnifiedOutputConfig::slotRotationChangedDerived);
 
     QHBoxLayout *roatateLayout = new QHBoxLayout();
@@ -129,23 +126,23 @@ void UnifiedOutputConfig::initUi()
     rotateFrame->setFrameShape(QFrame::Shape::Box);
     rotateFrame->setLayout(roatateLayout);
 
-    rotateFrame->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
-    rotateFrame->setMinimumSize(552,50);
-    rotateFrame->setMaximumSize(960,50);
+    rotateFrame->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    rotateFrame->setMinimumSize(552, 50);
+    rotateFrame->setMaximumSize(960, 50);
 
     vbox->addWidget(rotateFrame);
 
-    //统一输出刷新率下拉框
+    // 统一输出刷新率下拉框
     mRefreshRate = new QComboBox(this);
-    mRefreshRate->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
-    mRefreshRate->setMinimumSize(402,30);
-    mRefreshRate->setMaximumSize(16777215,30);
+    mRefreshRate->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    mRefreshRate->setMinimumSize(402, 30);
+    mRefreshRate->setMaximumSize(16777215, 30);
 
     QLabel *freshLabel = new QLabel(this);
     freshLabel->setText(tr("frequency"));
-    freshLabel->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
-    freshLabel->setMinimumSize(118,30);
-    freshLabel->setMaximumSize(118,30);
+    freshLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    freshLabel->setMinimumSize(118, 30);
+    freshLabel->setMaximumSize(118, 30);
 
     mRefreshRate->addItem(tr("auto"), -1);
 
@@ -159,9 +156,9 @@ void UnifiedOutputConfig::initUi()
 
     vbox->addWidget(freshFrame);
 
-    freshFrame->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
-    freshFrame->setMinimumSize(552,50);
-    freshFrame->setMaximumSize(960,50);
+    freshFrame->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    freshFrame->setMinimumSize(552, 50);
+    freshFrame->setMaximumSize(960, 50);
 
     mRefreshRate->setEnabled(false);
 }
@@ -225,7 +222,7 @@ KScreen::OutputPtr UnifiedOutputConfig::createFakeOutput()
 
 void UnifiedOutputConfig::slotResolutionChanged(const QSize &size)
 {
-   // Ignore disconnected outputs
+    // Ignore disconnected outputs
     if (!size.isValid()) {
         return;
     }
@@ -257,10 +254,10 @@ QString UnifiedOutputConfig::findBestMode(const KScreen::OutputPtr &output, cons
     return id;
 }
 
-//统一输出方向信号改变
-void UnifiedOutputConfig::slotRotationChangedDerived(int index){
-    KScreen::Output::Rotation rotation =
-        static_cast<KScreen::Output::Rotation>(mRotation->itemData(index).toInt());
+// 统一输出方向信号改变
+void UnifiedOutputConfig::slotRotationChangedDerived(int index)
+{
+    KScreen::Output::Rotation rotation = static_cast<KScreen::Output::Rotation>(mRotation->itemData(index).toInt());
     Q_FOREACH (const KScreen::OutputPtr &clone, mClones) {
         if (clone->isConnected() && clone->isEnabled()) {
             clone->setRotation(rotation);
@@ -270,15 +267,14 @@ void UnifiedOutputConfig::slotRotationChangedDerived(int index){
     Q_EMIT changed();
 }
 
-void UnifiedOutputConfig::slotRestoreResoltion() {
-
+void UnifiedOutputConfig::slotRestoreResoltion()
+{
     if (!(mResolution->currentResolution() == mOutput->currentMode()->size())) {
         mResolution->setResolution(mOutput->currentMode()->size());
     }
 }
 
-void UnifiedOutputConfig::slotRestoreRatation() {
+void UnifiedOutputConfig::slotRestoreRatation()
+{
     mRotation->setCurrentIndex(mRotation->findData(mOutput->rotation()));
 }
-
-

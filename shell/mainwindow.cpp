@@ -142,6 +142,8 @@ void MainWindow::bootOptionsFilter(QString opt) {
         bootOptionsSwitch(NOTICEANDTASKS, NOTICE);
     } else if (opt == "--about" || opt == "-a") {
         bootOptionsSwitch(NOTICEANDTASKS, ABOUT);
+    } else if (opt == "--search") {
+        bootOptionsSwitch(NOTICEANDTASKS, SEARCH);
     }
 }
 
@@ -242,7 +244,14 @@ void MainWindow::initUI() {
             QFont font = this->font();
             int width = font.pointSize();
             for (auto widget : qApp->allWidgets()) {
-                widget->setFont(font);
+                if (widget->objectName() == "timeClockLable") {
+                    QFont fontTime;
+                    fontTime.setPointSize(font.pointSize() + 8);
+                    fontTime.setBold(true);
+                    widget->setFont(fontTime);
+                } else {
+                    widget->setFont(font);
+                }
             }
             ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
         }
@@ -516,18 +525,13 @@ void MainWindow::loadPlugins(){
                 continue;
         }
 #endif
-
-        if (!fileName.endsWith(".so")) {
-            continue;
-        } else if (fileName == "libexperienceplan.so") {
-            continue;
-        } else if ("libnetworkaccount.so" == fileName && !isExitsCloudAccount()) {
-            continue;
-        } else if (!QGSettings::isSchemaInstalled(kVinoSchemas) && "libvino.so" == fileName) {
-            continue;
-        } else if ("libbluetooth.so" == fileName && !isExitBluetooth()) {
-            continue;
-        }else if ("libtouchscreen.so" == fileName && !isExitTouchScreen()) {
+        if (!fileName.endsWith(".so")
+                || (fileName == "libexperienceplan.so")
+                || ("libnetworkaccount.so" == fileName && !isExitsCloudAccount())
+                || (!QGSettings::isSchemaInstalled(kVinoSchemas) && "libvino.so" == fileName)
+                || ("libbluetooth.so" == fileName && !isExitBluetooth())
+                || ("libtouchscreen.so" == fileName && !isExitTouchScreen())
+                || ("libupdate.so" == fileName && !Utils::isCommunity())) {
             continue;
         }
 

@@ -72,7 +72,7 @@
      <property name="minimumSize">
       <size>
        <width>552</width>
-       <height>140</height>
+       <height>145</height>
       </size>
      </property>
      <property name="maximumSize">
@@ -93,7 +93,7 @@
         <x>16</x>
         <y>14</y>
         <width>581</width>
-        <height>38</height>
+        <height>45</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -129,9 +129,9 @@
       <property name="geometry">
        <rect>
         <x>16</x>
-        <y>52</y>
+        <y>59</y>
         <width>521</width>
-        <height>20</height>
+        <height>25</height>
        </rect>
       </property>
       <property name="minimumSize">
@@ -146,7 +146,7 @@
          <x>0</x>
          <y>0</y>
          <width>421</width>
-         <height>20</height>
+         <height>25</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -176,7 +176,7 @@
       <property name="geometry">
        <rect>
         <x>161</x>
-        <y>88</y>
+        <y>95</y>
         <width>130</width>
         <height>36</height>
        </rect>
@@ -201,7 +201,7 @@
       <property name="geometry">
        <rect>
         <x>16</x>
-        <y>88</y>
+        <y>95</y>
         <width>130</width>
         <height>36</height>
        </rect>
@@ -273,64 +273,6 @@
         <enum>QFrame::Box</enum>
        </property>
       </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="topMargin">
-      <number>32</number>
-     </property>
-     <item>
-      <widget class="QLabel" name="syslabel">
-       <property name="minimumSize">
-        <size>
-         <width>120</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>120</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="endlabel">
-       <property name="minimumSize">
-        <size>
-         <width>120</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="sizeIncrement">
-        <size>
-         <width>120</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Sync complete</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </item>

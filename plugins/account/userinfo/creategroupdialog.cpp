@@ -51,41 +51,44 @@ CreateGroupDialog::~CreateGroupDialog()
 void CreateGroupDialog::limitInput()
 {
     QIntValidator *intValidator = new QIntValidator;
-    //QRegExp rx("^[a-zA-z]+$");// 首字符为字母
-    QRegExp rx("[a-zA-z]{32}");
+    // QRegExp rx("^[a-zA-z]+$");// 首字符为字母
+    QRegExp rx("^[a-zA-Z][a-zA-Z0-9_-]*${32}");
     QRegExpValidator *regValidator = new QRegExpValidator(rx);
-    //intValidator->setRange(0, 65535);
+    // intValidator->setRange(0, 65535);
     intValidator->setBottom(0);
     // 整形输入限制
     ui->lineEdit_id->setValidator(intValidator);
     // 字母输入限制
     ui->lineEdit_name->setValidator(regValidator);
     // 字符长度限制
-    //ui->lineEdit_name->setMaxLength(4);
+    // ui->lineEdit_name->setMaxLength(4);
 }
 
-void CreateGroupDialog::refreshCertainBtnStatus(){
-    if (ui->lineEdit_name->text().isEmpty() ||
-            ui->lineEdit_id->text().isEmpty())
+void CreateGroupDialog::refreshCertainBtnStatus()
+{
+    if (ui->lineEdit_name->text().isEmpty()
+        || ui->lineEdit_id->text().isEmpty())
         ui->certainBtn->setEnabled(false);
     else
         ui->certainBtn->setEnabled(_nameHasModified || _idHasModified);
 }
 
-UserInfomationss CreateGroupDialog::_acquireUserInfo(QString objpath){
+UserInfomationss CreateGroupDialog::_acquireUserInfo(QString objpath)
+{
     UserInfomationss user;
 
-    //默认值
+    // 默认值
     user.current = false;
     user.logined = false;
     user.autologin = false;
 
-    QDBusInterface * iproperty = new QDBusInterface("org.freedesktop.Accounts",
-                                            objpath,
-                                            "org.freedesktop.DBus.Properties",
-                                            QDBusConnection::systemBus());
-    QDBusReply<QMap<QString, QVariant> > reply = iproperty->call("GetAll", "org.freedesktop.Accounts.User");
-    if (reply.isValid()){
+    QDBusInterface *iproperty = new QDBusInterface("org.freedesktop.Accounts",
+                                                   objpath,
+                                                   "org.freedesktop.DBus.Properties",
+                                                   QDBusConnection::systemBus());
+    QDBusReply<QMap<QString, QVariant> > reply = iproperty->call("GetAll",
+                                                                 "org.freedesktop.Accounts.User");
+    if (reply.isValid()) {
         QMap<QString, QVariant> propertyMap;
         propertyMap = reply.value();
         user.username = propertyMap.find("UserName").value().toString();
@@ -93,8 +96,7 @@ UserInfomationss CreateGroupDialog::_acquireUserInfo(QString objpath){
             user.current = true;
             user.logined = true;
         }
-    }
-    else
+    } else
         qDebug() << "reply failed";
 
     delete iproperty;
@@ -111,8 +113,8 @@ void CreateGroupDialog::getUsersList()
 
     QStringList objectpaths = sysdispatcher->list_cached_users();
     allUserInfoMap.clear();
-    //root
-    if (!getuid()){
+    // root
+    if (!getuid()) {
         UserInfomationss root;
         root.username = g_get_user_name();
         root.current = true;
@@ -120,25 +122,24 @@ void CreateGroupDialog::getUsersList()
         root.autologin = false;
         root.uid = 0;
         root.accounttype = ADMINISTRATOR;
-        //        root.iconfile = DEFAULTFACE;
+        // root.iconfile = DEFAULTFACE;
         allUserInfoMap.insert(root.username, root);
     }
-    for (QString objectpath : objectpaths){
+    for (QString objectpath : objectpaths) {
         UserInfomationss user;
         user = _acquireUserInfo(objectpath);
         allUserInfoMap.insert(user.username, user);
     }
-    for (QVariant tmp : allUserInfoMap.keys()){
+    for (QVariant tmp : allUserInfoMap.keys()) {
         allUsers << tmp.toString();
-
     }
     QStringList usersList = allUsers;
 
-    for(int i = 0; i < usersList.size(); i++){
-        QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
+    for (int i = 0; i < usersList.size(); i++) {
+        QListWidgetItem *item = new QListWidgetItem(ui->listWidget);
         item->setSizeHint(QSize(ui->listWidget->width(), 36));
         item->setData(Qt::UserRole, "");
-        QCheckBox * box = new QCheckBox(usersList.at(i));
+        QCheckBox *box = new QCheckBox(usersList.at(i));
         ui->listWidget->addItem(item);
         ui->listWidget->setItemWidget(item, box);
         connect(box, &QCheckBox::clicked, this, [=](bool checked){
@@ -171,31 +172,29 @@ QListWidget *CreateGroupDialog::listWidgetComponent()
 
 void CreateGroupDialog::signalsBind()
 {
-    connect(ui->cancelBtn,&QPushButton::clicked,[=](){
+    connect(ui->cancelBtn, &QPushButton::clicked, [=](){
         close();
     });
-    connect(ui->lineEdit_name,&QLineEdit::textChanged,[=](QString txt){
+    connect(ui->lineEdit_name, &QLineEdit::textChanged, [=](QString txt){
         Q_UNUSED(txt);
         refreshCertainBtnStatus();
     });
-    connect(ui->lineEdit_id,&QLineEdit::textChanged,[=](QString txt){
+    connect(ui->lineEdit_id, &QLineEdit::textChanged, [=](QString txt){
         Q_UNUSED(txt);
         refreshCertainBtnStatus();
     });
-    connect(ui->lineEdit_id, &QLineEdit::textEdited,[=](){
-        for (int j = 0; j < cgDialog->groupList->size(); j++){
-            if(ui->lineEdit_id->text() == cgDialog->groupList->at(j)->groupid){
+    connect(ui->lineEdit_id, &QLineEdit::textEdited, [=](){
+        for (int j = 0; j < cgDialog->groupList->size(); j++) {
+            if (ui->lineEdit_id->text() == cgDialog->groupList->at(j)->groupid) {
                 _idHasModified = false;
-                return;
             }
         }
         _idHasModified = true;
     });
-    connect(ui->lineEdit_name, &QLineEdit::textEdited,[=](){
-        for (int j = 0; j < cgDialog->groupList->size(); j++){
-            if(ui->lineEdit_id->text() == cgDialog->groupList->at(j)->groupname){
+    connect(ui->lineEdit_name, &QLineEdit::textEdited, [=](){
+        for (int j = 0; j < cgDialog->groupList->size(); j++) {
+            if (ui->lineEdit_id->text() == cgDialog->groupList->at(j)->groupname) {
                 _nameHasModified = false;
-                return;
             }
         }
         _nameHasModified = true;
@@ -223,7 +222,8 @@ void CreateGroupDialog::setupInit()
     limitInput();
 }
 
-void CreateGroupDialog::paintEvent(QPaintEvent *event) {
+void CreateGroupDialog::paintEvent(QPaintEvent *event)
+{
     Q_UNUSED(event);
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
@@ -257,7 +257,6 @@ void CreateGroupDialog::paintEvent(QPaintEvent *event) {
 
     // 绘制一个背景
     p.save();
-    p.fillPath(rectPath,palette().color(QPalette::Base));
+    p.fillPath(rectPath, palette().color(QPalette::Base));
     p.restore();
-
 }

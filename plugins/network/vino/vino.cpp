@@ -19,24 +19,28 @@
  */
 #include "vino.h"
 
-Vino::Vino() : mFirstLoad(true) {
+Vino::Vino() : mFirstLoad(true)
+{
     pluginName = tr("Vino");
     pluginType = NETWORK;
 }
 
-Vino::~Vino() {
-
+Vino::~Vino()
+{
 }
 
-QString Vino::get_plugin_name() {
+QString Vino::get_plugin_name()
+{
     return pluginName;
 }
 
-int Vino::get_plugin_type() {
+int Vino::get_plugin_type()
+{
     return pluginType;
 }
 
-QWidget *Vino::get_plugin_ui() {
+QWidget *Vino::get_plugin_ui()
+{
     if (mFirstLoad) {
         mFirstLoad = false;
         // will delete by takewidget
@@ -46,11 +50,11 @@ QWidget *Vino::get_plugin_ui() {
     return pluginWidget;
 }
 
-void Vino::plugin_delay_control() {
-
+void Vino::plugin_delay_control()
+{
 }
 
-const QString Vino::name() const {
+const QString Vino::name() const
+{
     return QStringLiteral("vino");
 }
-

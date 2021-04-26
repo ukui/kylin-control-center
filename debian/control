@@ -20,6 +20,8 @@ Build-Depends: debhelper-compat (= 12),
                libkf5windowsystem-dev,
                libkf5guiaddons-dev,
                libkf5coreaddons-dev,
+               libkf5xmlgui-dev,
+               libkf5globalaccel-dev,
                qtdeclarative5-dev,
                libdconf-dev,
                libmatemixer-dev,
@@ -42,7 +44,8 @@ Build-Depends: debhelper-compat (= 12),
 	       xserver-xorg-dev,
                libupower-glib-dev,
                libpam0g-dev,
-               yhkylin-backup-tools-dev(>=4.0.13-kylin19)
+               yhkylin-backup-tools-dev(>=4.0.13-kylin19),
+               libukui-log4qt-dev
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Homepage: https://github.com/ukui/ukui-control-center
@@ -61,6 +64,7 @@ Depends: ${shlibs:Depends},
          kylin-update-manager(>=5.5.1kord),
          language-selector-gnome,
          kylin-xinput-calibrator,
+         ukui-bluetooth,
 Suggests: gsettings-desktop-schemas,
           mate-desktop-common,
           ukui-power-manager,

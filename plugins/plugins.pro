@@ -4,6 +4,7 @@ SUBDIRS = \
           devices/shortcut \
           messages-task/experienceplan \
           messages-task/notice \
+          messages-task/search \
           network/vino \
           system/defaultapp \
           system/power \
@@ -27,6 +28,7 @@ SUBDIRS = \
           account/networkaccount \
           security-updates/securitycenter \
           security-updates/backup \
+          security-updates/update \
 #          security-updates/upgrade \
           messages-task/about \
           system/touchscreen \

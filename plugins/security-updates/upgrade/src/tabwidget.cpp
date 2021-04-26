@@ -93,6 +93,7 @@ void TabWid::backupMessageBox(QString str)
        checkUpdateBtn->stop();
        checkUpdateBtn->setEnabled(true);
 //       checkUpdateBtn->setText(tr("全部更新"));
+       versionInformationLab->setText(tr("Updatable app detected on your system!"));
        checkUpdateBtn->setText(tr("UpdateAll"));
     }
     else if(ret == QMessageBox::Abort)
@@ -252,8 +253,8 @@ void TabWid::slotUpdateCache(QVariantList sta)
             }
             QString str =  file.readAll();
             QStringList list;
-            str.replace("/n","");
-            if (!str.isEmpty() && str.contains(" ")) {
+            str = str.simplified();
+            if (!str.isEmpty()) {
                 list = str.split(" ");
             }
             qDebug() << "slotUpdateCache函数：获取到的包列表：" << list;

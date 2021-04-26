@@ -17,9 +17,9 @@ static bool sizeLessThan(const QSize &sizeA, const QSize &sizeB)
     return sizeA.width() * sizeA.height() < sizeB.width() * sizeB.height();
 }
 
-ResolutionSlider::ResolutionSlider(const KScreen::OutputPtr &output, QWidget *parent)
-    : QWidget(parent)
-    , mOutput(output)
+ResolutionSlider::ResolutionSlider(const KScreen::OutputPtr &output, QWidget *parent) :
+    QWidget(parent),
+    mOutput(output)
 {
     mExcludeModes.push_back(QSize(1152, 864));
 
@@ -36,14 +36,14 @@ ResolutionSlider::~ResolutionSlider()
 
 void ResolutionSlider::init()
 {
-    this->setMinimumSize(402,30);
+    this->setMinimumSize(402, 30);
     this->setMaximumSize(1677215, 30);
     mModes.clear();
     Q_FOREACH (const KScreen::ModePtr &mode, mOutput->modes()) {
         if (mModes.contains(mode->size())
-                || mode->size().width() * mode->size().height() < 1024 * 768
-                || mExcludeModes.contains(mode->size())
-                || mode->size().width() < 1024 ) {
+            || mode->size().width() * mode->size().height() < 1024 * 768
+            || mExcludeModes.contains(mode->size())
+            || mode->size().width() < 1024) {
             continue;
         }
         mModes << mode->size();
@@ -69,12 +69,17 @@ void ResolutionSlider::init()
     if (!mModes.empty()) {
         std::reverse(mModes.begin(), mModes.end());
         mComboBox = new QComboBox(this);
-        mComboBox->setMinimumSize(402,30);
+        mComboBox->setMinimumSize(402, 30);
         mComboBox->setMaximumSize(1677215, 30);
 
         int currentModeIndex = -1;
         int preferredModeIndex = -1;
         Q_FOREACH (const QSize &size, mModes) {
+#ifdef __sw_64__
+            if (size.width() < int(1920)) {
+                continue;
+            }
+#endif
             mComboBox->addItem(Utils::sizeToString(size));
 
             if (mOutput->currentMode() && (mOutput->currentMode()->size() == size)) {
@@ -90,7 +95,7 @@ void ResolutionSlider::init()
         }
 
         layout->addWidget(mComboBox, 0, 0, 1, 1);
-        connect(mComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        connect(mComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
                 this, &ResolutionSlider::slotValueChanged, Qt::UniqueConnection);
         Q_EMIT resolutionChanged(mModes.at(mComboBox->currentIndex()));
     } else {
@@ -156,14 +161,16 @@ QSize ResolutionSlider::currentResolution() const
     }
 }
 
-QSize ResolutionSlider::getMaxResolution() const {
+QSize ResolutionSlider::getMaxResolution() const
+{
     if (mModes.isEmpty()) {
         return QSize();
     }
     return mModes.first();
 }
 
-void ResolutionSlider::setResolution(const QSize &size) {
+void ResolutionSlider::setResolution(const QSize &size)
+{
     mComboBox->blockSignals(true);
     mComboBox->setCurrentIndex(mModes.indexOf(size));
     mComboBox->blockSignals(false);

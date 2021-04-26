@@ -32,19 +32,24 @@
 #include <QDebug>
 #include <QGSettings/QGSettings>
 #include "SwitchButton/switchbutton.h"
+
 const QByteArray kVinoSchemas    = "org.gnome.Vino";
 const QString kVinoViewOnlyKey   = "view-only";
 const QString kVinoPromptKey     = "prompt-enabled";
 const QString kAuthenticationKey = "authentication-methods";
 const QString kVncPwdKey         = "vnc-password";
 
+const QByteArray kUkccVnoSchmas  = "org.ukui.control-center.vino";
+const QString kUkccPromptKey     = "remote";
+
+
 enum RequestPwd {
     NOPWD,
     NEEDPWD
 };
 
-
-class ShareMain : public QWidget {
+class ShareMain : public QWidget
+{
     Q_OBJECT
 public:
     ShareMain(QWidget *parent = nullptr);
@@ -80,11 +85,11 @@ private:
     QLabel *mNoticeNLabel;
     QLabel *mHintLabel;
 
-    QLineEdit * mPwdLineEdit;
+    QLineEdit *mPwdLineEdit;
 
-    QVBoxLayout * mVlayout;
+    QVBoxLayout *mVlayout;
 
-    QGSettings * mVinoGsetting;
+    QGSettings *mVinoGsetting;
 
 private:
     void initTitleLabel();
@@ -93,6 +98,7 @@ private:
     void initShareStatus(bool isConnnect, bool isPwd);
     void initEnableStatus();
     void setFrameVisible(bool visible);
+    void setVinoService(bool status);
 
 private slots:
     void enableSlot(bool status);

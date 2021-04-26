@@ -31,11 +31,31 @@ QMLOutput {
     signal mouseReleased();
     signal positionChanged();
     signal rotationChanged();
+    signal widthChanged();
+    signal heightChanged();
 
     property bool isDragged: monitorMouseArea.drag.active;
     property bool isDragEnabled: true;
     property bool isToggleButtonVisible: false;
     property bool hasMoved: false;
+
+    property var screenName:[
+        "Unknown",
+        "VGA",
+        "DVI",
+        "DVII",
+        "DVIA",
+        "DVID",
+        "HDMI",
+        "Laptop Screen",
+        "TV",
+        "TVComposite",
+        "TVSVideo",
+        "TVComponent",
+        "TVSCART",
+        "TVC4",
+        "DisplayPort"
+    ];
 
     width: monitorMouseArea.width;
     height: monitorMouseArea.height;
@@ -98,6 +118,8 @@ QMLOutput {
         onPressed: root.clicked();
         onReleased: root.mouseReleased()
         onRotationChanged: root.rotationChanged();
+        onWidthChanged: root.widthChanged();
+        onHeightChanged: root.heightChanged();
 
         /* FIXME: This could be in 'Behavior', but MouseArea had
          * some complaints...to tired to investigate */
@@ -201,10 +223,8 @@ QMLOutput {
                     id: labelVendor;
                     text: if (root.isCloneMode) {
                             return ("Unified Outputs");
-                          } else if (root.output.type === KScreenOutput.Panel) {
-                            return ("Laptop Screen");
                           } else {
-                            return root.output.name;
+                            return screenName[root.output.type];
                           }
 
                     anchors {

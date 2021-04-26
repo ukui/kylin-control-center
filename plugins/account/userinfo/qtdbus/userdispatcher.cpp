@@ -60,9 +60,14 @@ QString UserDispatcher::make_crypted (const gchar *plain){
 
 //    /* SHA 256 */
     g_string_append (salt, "$6$");
-    for (i = 0; i < 16; i++) {
-        g_string_append_c (salt, salt_char[g_rand_int_range(rand, 0, G_N_ELEMENTS (salt_char) )]);
+    if (g_file_test("/dev/kyee0", G_FILE_TEST_EXISTS)){
+        g_string_append(salt, "KylinSoftKyee");
+    } else {
+        for (i = 0; i < 16; i++) {
+            g_string_append_c (salt, salt_char[g_rand_int_range(rand, 0, G_N_ELEMENTS (salt_char) )]);
+        }
     }
+
     g_string_append_c (salt, '$');
 
     result = g_strdup ((const gchar *)crypt(plain, salt->str)); //运行后找不到crypt undefined symbol: crypt
@@ -92,6 +97,11 @@ void UserDispatcher::change_user_type(int atype){
 
 void UserDispatcher::change_user_face(QString facefile){
     useriface->call("SetIconFile", QVariant(facefile));
+}
+
+
+void UserDispatcher::change_user_name(QString newName){
+    useriface->call("SetRealName", QVariant(newName));
 }
 
 void UserDispatcher::change_user_autologin(QString username){

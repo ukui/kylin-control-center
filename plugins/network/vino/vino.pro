@@ -2,7 +2,7 @@ include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 QT       += widgets
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets dbus
 
 TEMPLATE = lib
 CONFIG += plugin link_pkgconfig
