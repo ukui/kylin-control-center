@@ -432,6 +432,7 @@ void Shortcut::buildCustomItem(KeyEntry *nkeyEntry)
     connect(del, &QAction::triggered, this, [=](){
         customBtn->deleteLater();
         deleteCustomShortcut(nkeyEntry->gsPath);
+        customEntries.removeOne(nkeyEntry);
     });
 }
 

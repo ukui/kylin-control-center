@@ -82,7 +82,7 @@ void GetShortcutWorker::run()
                 value = "<Ctrl><Alt>Del";
                 generalShortcutGenerate(KEYBINDINGS_DESKTOP_SCHEMA, key, value);
             }
-            if (value != "" && !value.contains("XF86")) {
+            if (value != "" && !value.contains("XF86") && !value.contains("KP_")) {
                 generalShortcutGenerate(KEYBINDINGS_DESKTOP_SCHEMA, key, value);
             }
         }

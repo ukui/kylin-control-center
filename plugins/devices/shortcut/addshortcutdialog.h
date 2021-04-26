@@ -27,6 +27,7 @@
 #include <QRegExpValidator>
 #include <KActionCollection>
 #include <KGlobalAccel>
+#include <QDebug>
 
 typedef struct _KeyEntry KeyEntry;
 

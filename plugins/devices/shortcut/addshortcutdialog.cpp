@@ -23,8 +23,6 @@
 #include "CloseButton/closebutton.h"
 #include "realizeshortcutwheel.h"
 
-#include <QDebug>
-
 #define DEFAULTPATH "/usr/share/applications/"
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
@@ -97,8 +95,6 @@ void addShortcutDialog::slotsSetup()
                 refreshCertainChecked();
             }
         }
-        qDebug() << "keySequenceChanged" << seq <<
-            ui->kkeysequencewidget->isKeySequenceAvailable(seq);
     });
     connect(ui->openBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
@@ -185,16 +181,16 @@ QString addShortcutDialog::keyToLib(QString key)
         if (keys.count() == 2) {
             QString lower = keys.at(1);
             QString keyToLib = "<" + keys.at(0) + ">" + lower.toLower();
-            qDebug() << "count = 2,keyToLib = " << keyToLib;
+
             return keyToLib;
         } else if (keys.count() == 3) {
             QString lower = keys.at(2);
             QString keyToLib = "<" + keys.at(0) + ">" + "<" + keys.at(1) + ">" + lower.toLower();
-            qDebug() << "count = 3,keyToLib = " << keyToLib;
+
             return keyToLib;
         }
     }
-    qDebug() << "count = 1,keyToLib = " << key;
+
     return key;
 }
 
@@ -274,21 +270,16 @@ void addShortcutDialog::refreshCertainChecked()
 
 bool addShortcutDialog::conflictWithGlobalShortcuts(const QKeySequence &keySequence)
 {
-    qDebug() << "conflictWithGlobalShortcuts" << keySequence;
-
     QHash<QKeySequence, QList<KGlobalShortcutInfo> > clashing;
     for (int i = 0; i < keySequence.count(); ++i) {
         QKeySequence keys(keySequence[i]);
-        qDebug() << "KGlobalAccel::isGlobalShortcutAvailable ::"
-                 << keySequence
-                 << KGlobalAccel::isGlobalShortcutAvailable(keySequence);
+
         if (!KGlobalAccel::isGlobalShortcutAvailable(keySequence)) {
             clashing.insert(keySequence, KGlobalAccel::getGlobalShortcutsByKey(keys));
         }
     }
 
     if (clashing.isEmpty()) {
-        qDebug() << "not conflict With Global Shortcuts";
         return false;
     } else {
         qDebug() << "conflict With Global Shortcuts";
@@ -299,15 +290,12 @@ bool addShortcutDialog::conflictWithGlobalShortcuts(const QKeySequence &keySeque
 
 bool addShortcutDialog::conflictWithStandardShortcuts(const QKeySequence &seq)
 {
-    qDebug() << "conflictWithStandardShortcuts" << seq;
-
     KStandardShortcut::StandardShortcut ssc = KStandardShortcut::find(seq);
     if (ssc != KStandardShortcut::AccelNone) {
         qDebug() << "conflict With Standard Shortcuts";
         return true;
-    } else {
-        qDebug() << "not conflict With Standard Shortcuts";
     }
+
     return false;
 }
 
@@ -315,8 +303,12 @@ bool addShortcutDialog::conflictWithSystemShortcuts(const QKeySequence &seq)
 {
     QString systemKeyStr = keyToLib(seq.toString());
 
+    if (systemKeyStr.contains("Ctrl")) {
+        systemKeyStr.replace("Ctrl", "Control");
+    }
     for (KeyEntry *ckeyEntry : systemEntry) {
         if (systemKeyStr == ckeyEntry->valueStr) {
+            qDebug() << "conflictWithSystemShortcuts" << seq;
             return true;
         }
     }
@@ -329,6 +321,7 @@ bool addShortcutDialog::conflictWithCustomShortcuts(const QKeySequence &seq)
 
     for (KeyEntry *ckeyEntry : customEntry) {
         if (customKeyStr == ckeyEntry->bindingStr) {
+            qDebug() << "conflictWithCustomShortcuts" << seq;
             return true;
         }
     }
@@ -340,14 +333,34 @@ bool addShortcutDialog::isKeyAvailable(const QKeySequence &seq)
     QString keyStr = seq.toString();
 
     if (!keyStr.contains("+")) {
+        qDebug() << "is not Available";
         return false;
-    } else if (keyStr.contains("Num") || keyStr.contains("Space") || keyStr.contains("Meta")) {
+    } else if (keyStr.contains("Num") || keyStr.contains("Space")
+               || keyStr.contains("Meta") || keyStr.contains("Ins") || keyStr.contains("Home")
+               || keyStr.contains("PgUp") || keyStr.contains("Del") || keyStr.contains("End")
+               || keyStr.contains("PgDown") || keyStr.contains("Print")
+               || keyStr.contains("Backspace") || keyStr.contains("ScrollLock")
+               || keyStr.contains("Return") || keyStr.contains("Enter")
+               || keyStr.contains("Tab") || keyStr.contains("CapsLock")
+               || keyStr.contains("Left") || keyStr.contains("Right")
+               || keyStr.contains("Up") || keyStr.contains("Down")
+               || keyStr.contains("Clear Grab")) {
+        qDebug() << "is not Available";
         return false;
     } else {
         QStringList keys = keyStr.split("+");
         if (keys.count() == 4) {
+            qDebug() << "is not Available";
             return false;
+        } else {
+            QString key = keys.at(keys.count() - 1);
+            if (!key.contains(QRegExp("[A-Z]")) && !key.contains(QRegExp("[a-z]"))
+                && !key.contains(QRegExp("[0-9]"))) {
+                qDebug() << "is not Available";
+                return false;
+            }
         }
     }
+
     return true;
 }
