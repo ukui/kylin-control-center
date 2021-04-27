@@ -72,7 +72,7 @@
      <property name="minimumSize">
       <size>
        <width>552</width>
-       <height>145</height>
+       <height>150</height>
       </size>
      </property>
      <property name="maximumSize">
@@ -131,7 +131,7 @@
         <x>16</x>
         <y>59</y>
         <width>521</width>
-        <height>25</height>
+        <height>30</height>
        </rect>
       </property>
       <property name="minimumSize">
@@ -146,7 +146,7 @@
          <x>0</x>
          <y>0</y>
          <width>421</width>
-         <height>25</height>
+         <height>30</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -175,9 +175,9 @@
      <widget class="QPushButton" name="chgzonebtn">
       <property name="geometry">
        <rect>
-        <x>161</x>
-        <y>95</y>
-        <width>130</width>
+        <x>220</x>
+        <y>100</y>
+        <width>188</width>
         <height>36</height>
        </rect>
       </property>
@@ -201,8 +201,8 @@
       <property name="geometry">
        <rect>
         <x>16</x>
-        <y>95</y>
-        <width>130</width>
+        <y>100</y>
+        <width>188</width>
         <height>36</height>
        </rect>
       </property>

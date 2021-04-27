@@ -90,7 +90,7 @@ void Printer::initTitleLabel()
     QFont font;
     font.setPixelSize(18);
     ui->titleLabel->setFont(font);
-
+    ui->title2Label->setFont(font);
     ui->listWidget->setSpacing(1);
 }
 

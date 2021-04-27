@@ -136,6 +136,7 @@ void ModulePageWidget::initUI() {
             leftListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
             strItemsMap.insert(single.namei18nString, item);
+            leftListWidget->setGridSize(QSize(ui->leftStackedWidget->width() + 20,48));
 
             //填充上侧二级菜单
             QListWidgetItem * topitem = new QListWidgetItem(topListWidget);

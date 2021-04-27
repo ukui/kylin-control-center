@@ -21,7 +21,10 @@ ResolutionSlider::ResolutionSlider(const KScreen::OutputPtr &output, QWidget *pa
     QWidget(parent),
     mOutput(output)
 {
-    mExcludeModes.push_back(QSize(1152, 864));
+    QString sessionType = getenv("XDG_SESSION_TYPE");
+    if (sessionType.compare("wayland", Qt::CaseSensitive)) {
+       mExcludeModes.push_back(QSize(1152, 864));
+    }
 
     connect(output.data(), &KScreen::Output::currentModeIdChanged,
             this, &ResolutionSlider::slotOutputModeChanged);
