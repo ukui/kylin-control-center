@@ -321,6 +321,13 @@
     </plugin>
     <plugin name="search">
         <pinyinPlugin>sousuo</pinyinPlugin>
+        <pinyinfunc>pingbiwenjianjia</pinyinfunc>
+        <ChinesePlugin>搜索</ChinesePlugin>
+        <ChineseFunc>屏蔽文件夹</ChineseFunc>
+        <EnglishFunc>Block Folders</EnglishFunc>
+    </plugin>
+    <plugin name="search">
+        <pinyinPlugin>sousuo</pinyinPlugin>
         <pinyinfunc>sousuoyinqing</pinyinfunc>
         <ChinesePlugin>搜索</ChinesePlugin>
         <ChineseFunc>搜索引擎</ChineseFunc>
