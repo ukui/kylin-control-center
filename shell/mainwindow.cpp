@@ -71,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_searchWidget(nullptr)
 {
     mate_mixer_init();
-    this->setMinimumSize(970, 630);
+    this->setMinimumSize(958, 630);
     logoLabel  = new QLabel(tr("Settings"), this);
     qApp->installEventFilter(this);
     initUI();
@@ -774,7 +774,7 @@ void MainWindow::initStyleSheet() {
     closeBtn->setProperty("isWindowButton", 0x02);
     closeBtn->setProperty("useIconHighlightEffect", 0x08);
     closeBtn->setFlat(true);
-    ui->leftsidebarWidget->setMinimumWidth(175);
+    ui->leftsidebarWidget->setMinimumWidth(153);
     ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(window);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
 
     // 设置左上角按钮图标
