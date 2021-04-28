@@ -294,7 +294,7 @@
     <widget class="QFrame" name="manualFrame">
      <property name="minimumSize">
       <size>
-       <width>550</width>
+       <width>610</width>
        <height>50</height>
       </size>
      </property>
