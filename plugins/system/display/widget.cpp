@@ -559,6 +559,7 @@ void Widget::initGSettings()
                     value = (value == 0 ? 0 : value / 10);
                 }
                 ui->brightnessSlider->blockSignals(true);
+                ui->brightValueLabel->setText(QString::number(value));
                 ui->brightnessSlider->setValue(value);
                 ui->brightnessSlider->blockSignals(false);
             }
