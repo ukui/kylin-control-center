@@ -185,6 +185,7 @@ private:
     QMutex      mLock;
 
     QString     mCPU;
+    QString     mDir;
     QStringList mPowerKeys;
 
     SwitchButton *mNightButton = nullptr;

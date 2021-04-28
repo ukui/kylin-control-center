@@ -1102,7 +1102,11 @@ void Widget::save()
     // The 1000ms is a bit "random" here, it's what works on the systems I've tested, but ultimately, this is a hack
     // due to the fact that we just can't be sure when xrandr is done changing things, 1000 doesn't seem to get in the way
     QTimer::singleShot(1000, this,
-                       [this]() {
+                       [=]() {
+        if (mIsWayland) {
+            QString hash = config->connectedOutputsHash();
+            writeFile(mDir % hash);
+        }
         mBlockChanges = false;
     });
 
@@ -1130,7 +1134,7 @@ void Widget::save()
 
     mScreen->updateOutputsPlacement();
 
-    QTimer::singleShot(500,this,[=]() {
+    QTimer::singleShot(500, this, [=]() {
         if (isRestoreConfig()) {
             if (mIsWayland && -1 != mScreenId) {
                 mPrevConfig->output(mScreenId)->setPrimary(true);
@@ -1138,16 +1142,14 @@ void Widget::save()
             }
             auto *op = new KScreen::SetConfigOperation(mPrevConfig);
             op->exec();
+
+            // 无法知道什么时候执行完操作
+            QTimer::singleShot(1000, this, [=]() {
+                writeFile(mDir % mPrevConfig->connectedOutputsHash());
+            });
         } else {
             mPrevConfig = config->clone();
             writeScreenXml();
-            if (mIsWayland) {
-                QString dir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
-                            %QStringLiteral("/kscreen/")
-                            %QStringLiteral("" /*"configs/"*/);
-                QString hash = mPrevConfig->connectedOutputsHash();
-                writeFile(dir % hash);
-            }
         }
     });
 }
@@ -1604,6 +1606,10 @@ void Widget::setNightMode(const bool nightMode)
 
 void Widget::initUiComponent()
 {
+    mDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
+            %QStringLiteral("/kscreen/")
+            %QStringLiteral("" /*"configs/"*/);
+
     singleButton = new QButtonGroup();
     singleButton->addButton(ui->sunradioBtn);
     singleButton->addButton(ui->customradioBtn);
