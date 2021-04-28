@@ -75,7 +75,7 @@ const int transparency = 75;
 int save_trans = 0;
 
 const QStringList effectList {"blur", "kwin4_effect_translucency", "kwin4_effect_maximize", "zoom"};
-const QStringList kIconsList {"blueman", "disk-burner", "firefox", "kylin-video", "kylin-assistant", "kylin-scanner", "kylin-ipmsg"};
+const QStringList kIconsList {"computer", "user-trash", "folder", "ukui-control-center", "kylin-software-center", "kylin-video", "kylin-assistant"};
 
 namespace {
 
@@ -391,14 +391,20 @@ void Theme::initIconTheme() {
         if ((Utils::isCommunity() && (!themedir.compare("ukui") || !themedir.compare("ukui-classical")))
                 || (!Utils::isCommunity() && themedir.startsWith("ukui-icon-theme-"))) {
             QDir appsDir = QDir(ICONTHEMEPATH + themedir + "/48x48/apps/");
+            QDir placesDir = QDir(ICONTHEMEPATH + themedir + "/48x48/places/");
+            QDir devicesDir = QDir(ICONTHEMEPATH + themedir + "/48x48/devices/");
             if ("ukui-icon-theme-basic" == themedir) {
                 continue;
             }
             appsDir.setFilter(QDir::Files | QDir::NoSymLinks);
-
+            devicesDir.setFilter(QDir::Files | QDir::NoSymLinks);
+            placesDir.setFilter(QDir::Files | QDir::NoSymLinks);
             QStringList showIconsList;
             for (int i = 0; i < kIconsList.size(); i++) {
+                showIconsList.append(devicesDir.path() + "/" + kIconsList.at(i));
+                showIconsList.append(placesDir.path() + "/" + kIconsList.at(i));
                 showIconsList.append(appsDir.path() + "/" + kIconsList.at(i));
+
             }
 
             ThemeWidget * widget = new ThemeWidget(QSize(48, 48), dullTranslation(themedir.section("-", -1, -1, QString::SectionSkipEmpty)), showIconsList, pluginWidget);
@@ -658,6 +664,8 @@ QString Theme::dullTranslation(QString str) {
         return QObject::tr("classical");
     } else if (!QString::compare(str, "default")) {
         return QObject::tr("default");
+    } else if (!QString::compare(str, "fashion")) {
+        return QObject::tr("fashion");
     } else {
         return QObject::tr("default");
     }
