@@ -27,6 +27,8 @@
 #include <QDBusConnection>
 #include <QSettings>
 
+#include "../../../shell/utils/utils.h"
+
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
  **/
@@ -518,7 +520,7 @@ int Power::getIdleTime() {
 
 void Power::initGeneralSet() {
 
-    if (isExitsPower) {
+    if (isExitsPower || Utils::isWayland()) {
         // 电源按钮操作
         mPowerBtn = new ComboxFrame(tr("When the power button is pressed:"), pluginWidget);
 
@@ -539,7 +541,10 @@ void Power::initGeneralSet() {
         connect(mPowerBtn->mCombox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
             settings->set(BUTTON_POWER_KEY, mPowerBtn->mCombox->itemData(index));
         });
+    }
 
+
+    if (isExitsPower) {
 
         // 低电量操作
         mBatteryAct = new ComboxFrame(true, tr("Perform operations when battery is low:"), pluginWidget);
