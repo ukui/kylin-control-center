@@ -658,6 +658,8 @@ QString Theme::dullTranslation(QString str) {
         return QObject::tr("classical");
     } else if (!QString::compare(str, "default")) {
         return QObject::tr("default");
+    } else if (!QString::compare(str, "fashion")) {
+        return QObject::tr("fashion");
     } else {
         return QObject::tr("default");
     }

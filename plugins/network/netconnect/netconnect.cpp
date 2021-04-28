@@ -493,7 +493,7 @@ void NetConnect::getWifiListDone(QStringList getwifislist, QStringList getlanLis
     }
 
     if (this->connectedWifi.isEmpty() && this->actLanName.isEmpty()) {
-        rebuildNetStatusComponent(NoNetSymbolic , "No Net");
+        rebuildNetStatusComponent(NoNetSymbolic , tr("No net"));
     }
 }
 
