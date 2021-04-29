@@ -1509,7 +1509,9 @@ void Widget::setDDCBrightness(int value)
 
 void Widget::setBrightSliderVisible()
 {
+    ui->brightnessSlider->blockSignals(true);
     ui->brightnessSlider->setValue(getDDCBrighthess());
+    ui->brightnessSlider->blockSignals(false);
     if (mIsBattery && !mUnifyButton->isChecked()) {
         ui->brightnessframe->setVisible(isLaptopScreen());
     }
