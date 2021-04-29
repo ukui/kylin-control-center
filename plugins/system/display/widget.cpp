@@ -740,6 +740,11 @@ int Widget::getDDCBrighthess()
     return 0;
 }
 
+int Widget::getLaptopBrightness() const
+{
+    return mPowerGSettings->get(POWER_KEY).toInt();
+}
+
 int Widget::getPrimaryScreenID()
 {
     QString primaryScreen = getPrimaryWaylandScreen();
@@ -1509,19 +1514,26 @@ void Widget::setDDCBrightness(int value)
 
 void Widget::setBrightSliderVisible()
 {
-    ui->brightnessSlider->blockSignals(true);
-    ui->brightnessSlider->setValue(getDDCBrighthess());
-    ui->brightnessSlider->blockSignals(false);
+    int value;
     if (mIsBattery && !mUnifyButton->isChecked()) {
         ui->brightnessframe->setVisible(isLaptopScreen());
+        if (isLaptopScreen()) {
+            value = getLaptopBrightness();
+        }
+    } else {
+        value = getDDCBrighthess();
     }
+    ui->brightnessSlider->blockSignals(true);
+    ui->brightnessSlider->setValue(value);
+    ui->brightnessSlider->blockSignals(false);
+    ui->brihghtLabel->setText(QString::number(value));
 }
 
 // 滑块改变
 void Widget::setBrightnesSldierValue()
 {
     int value = 99;
-    value = mPowerGSettings->get(POWER_KEY).toInt();
+    value = getLaptopBrightness();
 
     if (mIsWayland && !mIsBattery) {
         int realValue = getDDCBrighthess();

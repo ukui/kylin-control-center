@@ -159,6 +159,7 @@ private:
     QString getMonitorType();
 
     int getDDCBrighthess();
+    int getLaptopBrightness() const;
     int getPrimaryScreenID();
 
 private:
