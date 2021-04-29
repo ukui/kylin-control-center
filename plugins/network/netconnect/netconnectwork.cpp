@@ -35,7 +35,7 @@ bool NetconnectWork::getWifiIsOpen() {
                               "/org/freedesktop/NetworkManager",
                               "org.freedesktop.DBus.Properties",
                               QDBusConnection::systemBus() );
-    //　获取当前wifi是否打开
+    // 获取当前wifi是否打开
     QDBusReply<QVariant> m_result = interface.call("Get", "org.freedesktop.NetworkManager", "WirelessEnabled");
 
     if (m_result.isValid()) {

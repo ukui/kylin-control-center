@@ -130,16 +130,21 @@ void NetConnect::initComponent() {
     // 接收到系统更改网络连接属性时把判断是否已刷新的bool值置为false
     QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager"), "org.freedesktop.NetworkManager", "PropertiesChanged", this, SLOT(netPropertiesChangeSlot(QMap<QString,QVariant>)));
 
-    connect(ui->RefreshBtn, &QPushButton::clicked, this, [=](bool checked){
+    connect(ui->RefreshBtn, &QPushButton::clicked, this, [=](bool checked) {
         Q_UNUSED(checked)
         setWifiBtnDisable();
         getNetList();
     });
 
+    connect(ui->detailBtn, &QPushButton::clicked, this, [=](bool checked) {
+        Q_UNUSED(checked)
+        runExternalApp();
+    });
+
     if (getwifiisEnable()) {
         wifiBtn->setChecked(getInitStatus());
     }
-    connect(wifiBtn, &SwitchButton::checkedChanged, this,[=](bool checked){
+    connect(wifiBtn, &SwitchButton::checkedChanged, this,[=](bool checked) {
         wifiBtn->blockSignals(true);
         wifiSwitchSlot(checked);
         wifiBtn->blockSignals(false);
