@@ -72,6 +72,8 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, QStringList iStringList, QWi
     for (QString icon : iStringList){
         QLabel * label = new QLabel(this);
         label->setFixedSize(iSize);
+        if (QPixmap(icon).isNull())
+        continue;
         label->setPixmap(QPixmap(icon));
         iconHorLayout->addWidget(label);
     }
