@@ -14,6 +14,7 @@
     You should have received a copy of the GNU Lesser General Public
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
 */
 
 import QtQuick 2.1
@@ -32,36 +33,43 @@ Item {
         id: palette;
     }
 
-    Rectangle {
-        id: background;
-
+    MouseArea {
         anchors.fill: parent;
         focus: true;
 
-        color: "transparent";
-
-        FocusScope {
-
-            id: outputViewFocusScope;
+        Rectangle {
+            id: background;
 
             anchors.fill: parent;
             focus: true;
 
-            QMLScreen {
-                id: outputView;
+            color: "transparent";
+
+            FocusScope {
+
+                id: outputViewFocusScope;
+
                 anchors.fill: parent;
-                clip: true;
-                objectName: "outputView";
+                focus: true;
+
+                QMLScreen {
+                    id: outputView;
+                    anchors.fill: parent;
+                    clip: true;
+                    objectName: "outputView";
+                }
+            }
+
+            Column {
+                anchors {
+                    left: parent.left;
+                    bottom: parent.bottom;
+                    margins: 5;
+                }
+                spacing: 5;
             }
         }
 
-        Column {
-            anchors {
-                left: parent.left;
-                bottom: parent.bottom;
-                margins: 5;
-            }
-            spacing: 5;
-        }
     }
+
 }
