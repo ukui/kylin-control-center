@@ -26,6 +26,7 @@
 #include <QDebug>
 #include <QVector>
 #include <QGSettings>
+#include <QVBoxLayout>
 
 #include <shell/interface.h>
 #include "SwitchButton/switchbutton.h"
@@ -69,7 +70,8 @@ public:
     void setupGSettings();
     void initNoticeStatus();
     void initOriNoticeStatus();
-    void initGSettings();
+
+
 
 private:
     void changeAppstatus(bool checked, QString name,SwitchButton *appBtn);
@@ -92,6 +94,7 @@ private:
     QStringList appsName;
     QStringList appsKey;
     QVector<QGSettings*> vecGsettins;
+    QVBoxLayout * applistverticalLayout;
 
     bool mFirstLoad;
 };
