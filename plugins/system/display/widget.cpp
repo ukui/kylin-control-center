@@ -177,8 +177,10 @@ void Widget::setConfig(const KScreen::ConfigPtr &config)
             this, &Widget::outputAdded);
     connect(mConfig.data(), &KScreen::Config::outputRemoved,
             this, &Widget::outputRemoved);
-    connect(mConfig.data(), &KScreen::Config::primaryOutputChanged,
-            this, &Widget::primaryOutputChanged);
+    if (!mIsWayland) {
+        connect(mConfig.data(), &KScreen::Config::primaryOutputChanged,
+                this, &Widget::primaryOutputChanged);
+    }
 
     // 上面屏幕拿取配置
     mScreen->setConfig(mConfig);
@@ -281,8 +283,7 @@ void Widget::slotFocusedOutputChanged(QMLOutput *output)
 
     // 读取屏幕点击选择下拉框
     Q_ASSERT(mConfig);
-    int index = output->outputPtr().isNull() ? 0 : ui->primaryCombo->findData(
-        output->outputPtr()->id());
+    int index = output->outputPtr().isNull() ? 0 : ui->primaryCombo->findData(output->outputPtr()->id());
     if (index == -1 || index == ui->primaryCombo->currentIndex()) {
         return;
     }
@@ -882,8 +883,7 @@ void Widget::primaryOutputSelected(int index)
         return;
     }
 
-    const KScreen::OutputPtr newPrimary = index == 0 ? KScreen::OutputPtr() : mConfig->output(ui->primaryCombo->itemData(
-                                                                                                  index).toInt());
+    const KScreen::OutputPtr newPrimary = index == 0 ? KScreen::OutputPtr() : mConfig->output(ui->primaryCombo->itemData(index).toInt());
     if (newPrimary == mConfig->primaryOutput()) {
         return;
     }
@@ -1377,8 +1377,7 @@ void Widget::primaryButtonEnable(bool status)
     }
     int index = ui->primaryCombo->currentIndex();
     ui->mainScreenButton->setEnabled(false);
-    const KScreen::OutputPtr newPrimary
-        = mConfig->output(ui->primaryCombo->itemData(index).toInt());
+    const KScreen::OutputPtr newPrimary = mConfig->output(ui->primaryCombo->itemData(index).toInt());
     mConfig->setPrimaryOutput(newPrimary);
 
     mScreenId = newPrimary->id();
