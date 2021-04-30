@@ -24,6 +24,7 @@
 
 #include <KFormat>
 #include <unistd.h>
+#include <QFile>
 
 #ifdef Q_OS_LINUX
 #include <sys/sysinfo.h>
@@ -424,10 +425,21 @@ void About::showPdf()
     QStringList res = getUserDefaultLanguage();
     QString lang = res.at(1);
     QString cmd;
+    QFile pdfFile_zh("/usr/share/kylin-verify-gui/免责协议.pdf");
+    QFile pdfFile_en("/usr/share/kylin-verify-gui/disclaimers.pdf");
     if (lang.split(':').at(0) == "zh_CN") {
-        cmd = "atril /usr/share/kylin-verify-gui/免责协议.pdf";
+        if (pdfFile_zh.exists()) {
+            cmd = "atril /usr/share/kylin-verify-gui/免责协议.pdf";
+        } else {
+            cmd = "atril /usr/share/man/statement.pdf.gz";
+        }
     } else {
-        cmd = "atril /usr/share/kylin-verify-gui/disclaimers.pdf";
+        if (pdfFile_en.exists()) {
+            cmd = "atril /usr/share/kylin-verify-gui/disclaimers.pdf";
+        }
+        else {
+            cmd = "atril /usr/share/man/statement_en.pdf.gz";
+        }
     }
 
     QProcess process(this);
