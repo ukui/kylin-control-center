@@ -22,7 +22,7 @@
 
 #include <QObject>
 #include <QtPlugin>
-
+#include <QFileSystemWatcher>
 #include <QSignalMapper>
 #include <QMouseEvent>
 #include <QSettings>
@@ -218,6 +218,7 @@ private:
     DeviceInfoPtr       currentDevice;
     BiometricProxy      *m_biometricProxy;
     QDBusInterface      *serviceInterface;
+    QFileSystemWatcher  *mBiometricWatcher;
 
     SwitchButton * nopwdSwitchBtn;
     SwitchButton * autoLoginSwitchBtn;

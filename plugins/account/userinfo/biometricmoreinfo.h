@@ -27,6 +27,7 @@
 #include <QListWidget>
 #include <QDebug>
 #include <QPushButton>
+#include <QFileSystemWatcher>
 #include <QMovie>
 #include <QDBusInterface>
 #include <QDBusArgument>
@@ -74,6 +75,7 @@ private:
 
     DeviceInfoPtr deviceInfo;
     SwitchButton  *defaultDeviceBtn;
+    QFileSystemWatcher  *mWatcher;
 
 private slots:
 

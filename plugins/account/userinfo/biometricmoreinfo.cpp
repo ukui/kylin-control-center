@@ -97,6 +97,21 @@ BiometricMoreInfoDialog::BiometricMoreInfoDialog( DeviceInfoPtr deviceinfo, QWid
         else
             setDefaultDevice("");
     });
+
+    mWatcher = nullptr;
+    if(!mWatcher){
+        mWatcher = new QFileSystemWatcher(this);
+        mWatcher->addPath(QDir::homePath() + "/" + UKUI_BIOMETRIC_CONFIG_PATH);
+        connect(mWatcher,&QFileSystemWatcher::fileChanged,this,[=](const QString &path){
+            mWatcher->addPath(QDir::homePath() + "/" + UKUI_BIOMETRIC_CONFIG_PATH);
+            defaultDeviceBtn->blockSignals(true);
+            if(getDefaultDevice() == deviceinfo->shortName)
+                defaultDeviceBtn->setChecked(true);
+            else
+                defaultDeviceBtn->setChecked(false);
+            defaultDeviceBtn->blockSignals(false);
+        });
+    }
 }
 
 BiometricMoreInfoDialog::~BiometricMoreInfoDialog()

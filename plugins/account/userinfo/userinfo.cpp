@@ -1322,13 +1322,26 @@ void UserInfo::initBioComonent()
     connect(enableBiometricBtn, &SwitchButton::checkedChanged, [=](bool checked){
         QProcess process;
         if(checked){
-           process.start("bioctl enable");
-           process.waitForFinished(3000);
+            process.start("bioctl enable");
+            process.waitForFinished(3000);
         }else{
-           process.start("bioctl disable");
-           process.waitForFinished(3000);
+            process.start("bioctl disable");
+            process.waitForFinished(3000);
         }
     });
+
+    mBiometricWatcher = nullptr;
+    if(!mBiometricWatcher){
+        mBiometricWatcher = new QFileSystemWatcher(this);
+        mBiometricWatcher->addPath(UKUI_BIOMETRIC_SYS_CONFIG_PATH);
+        connect(mBiometricWatcher,&QFileSystemWatcher::fileChanged,this,[=](const QString &path){
+            mBiometricWatcher->addPath(UKUI_BIOMETRIC_SYS_CONFIG_PATH);
+            enableBiometricBtn->blockSignals(true);
+            enableBiometricBtn->setChecked(getBioStatus());
+            enableBiometricBtn->blockSignals(false);
+        });
+    }
+
 }
 
 bool UserInfo::getBioStatus()
