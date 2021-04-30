@@ -269,7 +269,7 @@ void Widget::addOutputToPrimaryCombo(const KScreen::OutputPtr &output)
     }
 
     ui->primaryCombo->addItem(Utils::outputName(output), output->id());
-    if (output->isPrimary()) {
+    if (output->isPrimary() && !mIsWayland) {
         Q_ASSERT(mConfig);
         int lastIndex = ui->primaryCombo->count() - 1;
         ui->primaryCombo->setCurrentIndex(lastIndex);
