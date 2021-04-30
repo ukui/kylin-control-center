@@ -299,6 +299,25 @@
              </widget>
             </item>
             <item>
+             <widget class="QPushButton" name="changeValidBtn">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Valid</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QPushButton" name="changeGroupBtn">
               <property name="minimumSize">
                <size>

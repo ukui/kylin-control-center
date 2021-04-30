@@ -408,6 +408,12 @@ void UserInfo::initComponent(){
     }
 #endif
 
+#ifdef __sw_64__
+    ui->changeValidBtn->show();
+#else
+    ui->changeValidBtn->hide();
+#endif
+
     ui->listWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
 
     addWgt = new HoverWidget("");
@@ -475,6 +481,14 @@ void UserInfo::initComponent(){
     connect(ui->changeGroupBtn, &QPushButton::clicked, this, [=](bool checked){
         Q_UNUSED(checked)
         showChangeGroupDialog();
+    });
+
+    connect(ui->changeValidBtn, &QPushButton::clicked, this, [=](bool checked){
+        Q_UNUSED(checked)
+        UserInfomation user = allUserInfoMap.value(g_get_user_name());
+
+        showChangeValidDialog(user.username);
+
     });
 
     //修改当前用户免密登录
