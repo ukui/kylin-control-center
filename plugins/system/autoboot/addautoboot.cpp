@@ -44,6 +44,9 @@ AddAutoBoot::AddAutoBoot(QWidget *parent) :
 void AddAutoBoot::resetBeforeClose() {
     ui->certainBtn->setEnabled(false);
     ui->hintLabel->clear();
+    ui->nameLineEdit->setToolTip("");
+    ui->commentLineEdit->setToolTip("");
+    ui->execLineEdit->setToolTip("");
     ui->nameLineEdit->setText(QString());
     ui->commentLineEdit->setText(QString());
     ui->execLineEdit->setText(QString());
@@ -199,11 +202,11 @@ void AddAutoBoot::execLinEditSlot(const QString &fileName) {
         comment = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
 
         if (ui->nameLineEdit->text().isEmpty()) {
-            ui->nameLineEdit->setText(QString(name));
+            stringHandle(ui->nameLineEdit, QString(name));
         }
 
-        ui->execLineEdit->setText(QString(fileName));
-        ui->commentLineEdit->setText(QString(comment));
+        stringHandle(ui->execLineEdit, fileName);
+        stringHandle(ui->commentLineEdit, QString(comment));
 
         g_key_file_free(keyfile);
     } else {
@@ -211,5 +214,17 @@ void AddAutoBoot::execLinEditSlot(const QString &fileName) {
         ui->hintLabel->setAlignment(Qt::AlignCenter);
         ui->hintLabel->setStyleSheet("color:red;");
         ui->certainBtn->setEnabled(false);
+    }
+}
+
+void AddAutoBoot::stringHandle(QLineEdit *mLineEdit, QString stringText) {
+    QFontMetrics fontMetrics(mLineEdit->font());
+    int fontSize = fontMetrics.width(stringText);
+    if (fontSize > ui->execLineEdit->width()) {
+        mLineEdit->setText(fontMetrics.elidedText(stringText, Qt::ElideNone, mLineEdit->width())); //不要省略号
+        mLineEdit->setToolTip(stringText);
+    } else {
+        mLineEdit->setText(stringText);
+        mLineEdit->setToolTip("");
     }
 }

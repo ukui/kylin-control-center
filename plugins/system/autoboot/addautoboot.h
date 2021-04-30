@@ -24,7 +24,7 @@
 #include <QFileDialog>
 #include <QPainter>
 #include <QPainterPath>
-
+#include <QLineEdit>
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
  **/
@@ -52,6 +52,7 @@ public:
     ~AddAutoBoot();
 
     void resetBeforeClose();
+    void stringHandle(QLineEdit*, QString);
 
 protected:
     void paintEvent(QPaintEvent *);

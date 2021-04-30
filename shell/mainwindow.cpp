@@ -168,11 +168,10 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
      */
    if(event->type() == QEvent::MouseButtonPress){
        QMouseEvent *mEvent = static_cast<QMouseEvent*>(event);
-       QPoint mWindowGlobalPoint(this->mapToGlobal(QPoint(0,0)));
-       QPoint mouseGlobalPoint(mEvent->globalPos());
-       QPoint tPoint = mouseGlobalPoint - mWindowGlobalPoint;
+       QWidget *searchParentWid = static_cast<QWidget*>(m_searchWidget->parent());
+       QPoint  searchPoint      = searchParentWid->mapFromGlobal(mEvent->globalPos());
        //qDebug()<<m_searchWidget->geometry()<<  mWindowGlobalPoint << mouseGlobalPoint << tPoint;
-       if( !m_searchWidget->geometry().contains(tPoint) ){
+       if( !m_searchWidget->geometry().contains(searchPoint) ){
             if(m_isSearching == true){
                 m_searchWidget->setFocus();
                 m_searchWidget->clearFocus();

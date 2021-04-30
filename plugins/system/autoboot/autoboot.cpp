@@ -727,7 +727,9 @@ void AutoBoot::update_app_status(){
 
 
 void AutoBoot::add_autoboot_realize_slot(QString path, QString name, QString exec, QString comment, QString icon) {
-
+    if (path.section("/", -1, -1).toUtf8().contains("ukui-search-menu.desktop")) { //系统自启动目录下存在ukui-search.desktop,这里直接过滤
+        return;
+    }
     if(exec.contains("kylin-screenshot")){
         QStringList screenshotExec = exec.split(" ");
         exec = screenshotExec.at(0);
