@@ -72,6 +72,7 @@ private:
 
     QString getTotalMemory();
 
+    QStringList getUserDefaultLanguage();
 private:
     Ui::About *ui;
     QString pluginName;

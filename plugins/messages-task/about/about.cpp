@@ -23,6 +23,7 @@
 #include "ui_about.h"
 
 #include <KFormat>
+#include <unistd.h>
 
 #ifdef Q_OS_LINUX
 #include <sys/sysinfo.h>
@@ -420,7 +421,15 @@ void About::runActiveWindow()
 
 void About::showPdf()
 {
-    QString cmd = "atril /usr/share/man/statement.pdf.gz";
+    QStringList res = getUserDefaultLanguage();
+    QString lang = res.at(1);
+    QString cmd;
+    if (lang.split(':').at(0) == "zh_CN") {
+        cmd = "atril /usr/share/kylin-verify-gui/免责协议.pdf";
+    } else {
+        cmd = "atril /usr/share/kylin-verify-gui/disclaimers.pdf";
+    }
+
     QProcess process(this);
     process.startDetached(cmd);
 }
@@ -430,4 +439,35 @@ void About::activeSlot(int activeSignal)
     if (!activeSignal) {
         setupSerialComponent();
     }
+}
+
+
+QStringList About::getUserDefaultLanguage() {
+    QString formats;
+    QString language;
+    QStringList result;
+
+    unsigned int uid = getuid();
+    QString objpath = "/org/freedesktop/Accounts/User"+QString::number(uid);
+
+    QDBusInterface iproperty("org.freedesktop.Accounts",
+                             objpath,
+                             "org.freedesktop.DBus.Properties",
+                             QDBusConnection::systemBus());
+    QDBusReply<QMap<QString, QVariant> > reply = iproperty.call("GetAll", "org.freedesktop.Accounts.User");
+    if (reply.isValid()) {
+        QMap<QString, QVariant> propertyMap;
+        propertyMap = reply.value();
+        if (propertyMap.keys().contains("FormatsLocale")) {
+            formats = propertyMap.find("FormatsLocale").value().toString();
+        }
+        if(language.isEmpty() && propertyMap.keys().contains("Language")) {
+            language = propertyMap.find("Language").value().toString();
+        }
+    } else {
+        //qDebug() << "reply failed";
+    }
+    result.append(formats);
+    result.append(language);
+    return result;
 }
