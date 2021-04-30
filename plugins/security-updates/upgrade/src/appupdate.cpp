@@ -67,7 +67,7 @@ void AppUpdateWid::changeDownloadState(int state)
 //        appVersion->setText(tr("磁盘空间不足！"));
         appVersion->setText(tr("Lack of local disk space!"));
         appVersion->setToolTip("");
-        QIcon icon = QIcon::fromTheme("emblem-danger");
+        QIcon icon = QIcon::fromTheme("dialog-info");
         QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(14, 14)));
         appVersionIcon->setPixmap(pixmap);
 //        updateAPPBtn->setText(tr("更新"));
@@ -90,7 +90,7 @@ void AppUpdateWid::changeDownloadState(int state)
 //            appVersion->setText(tr("网络异常！"));
             appVersion->setText(tr("Network abnormal!"));
             appVersion->setToolTip("");
-            QIcon icon = QIcon::fromTheme("emblem-danger");
+            QIcon icon = QIcon::fromTheme("dialog-info");
             QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(16, 16)));
             appVersionIcon->setPixmap(pixmap);
 //            updateAPPBtn->setText(tr("更新"));
@@ -106,7 +106,7 @@ void AppUpdateWid::changeDownloadState(int state)
         appVersion->setText(tr("Download failed!"));
         QString str = urlmsg.name;
         appVersion->setToolTip(str+tr("failed to get from the source!"));
-        QIcon icon = QIcon::fromTheme("emblem-danger");
+        QIcon icon = QIcon::fromTheme("dialog-info");
         QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(16, 16)));
         appVersionIcon->setPixmap(pixmap);
         updateAPPBtn->hide();
@@ -122,7 +122,7 @@ void AppUpdateWid::changeDownloadState(int state)
         appVersion->setText(tr("Download failed!"));
 //        appVersion->setToolTip(tr("下载缓存已被删除"));
         appVersion->setToolTip(tr("The download cache has been removed"));
-        QIcon icon = QIcon::fromTheme("emblem-danger");
+        QIcon icon = QIcon::fromTheme("dialog-info");
         QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(16, 16)));
         appVersionIcon->setPixmap(pixmap);
         updateAPPBtn->hide();
@@ -323,7 +323,7 @@ void AppUpdateWid::showInstallStatues(QString status,QString appAptName, float p
             appVersion->setToolTip(tr("Failure reason:")+ "\r\n"+(appNameLab->dealMessage(errormsg)));
             m_updateMutual->importantList.removeOne(appAllMsg.name);
             m_updateMutual->failedList.append(appAllMsg.name);
-            QIcon icon = QIcon::fromTheme("emblem-unreadable");
+            QIcon icon = QIcon::fromTheme("dialog-error");
             QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(14, 14)));
             appVersionIcon->setPixmap(pixmap);
 //            QString message = QString("%1"+tr("更新失败！")).arg(dispalyName);
@@ -371,7 +371,7 @@ void AppUpdateWid::updateAppUi(QString name)
     appVersionIcon->setFixedSize(16,16);
     appVersionIcon->setPixmap(QPixmap());
     appVersion->setMinimumWidth(180);
-//    QIcon icon = QIcon::fromTheme("emblem-unreadable");
+//    QIcon icon = QIcon::fromTheme("dialog-error");
 //    QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(14, 14)));
 //    appVersionIcon->setPixmap(pixmap);
 
@@ -445,7 +445,7 @@ void AppUpdateWid::updateAppUi(QString name)
     AppFrame->setLayout(mainVLayout);
     dispalyName = translationVirtualPackage(name);
     appNameLab->setText(dispalyName);
-    if(name.contains("kylin-update-desktop")||name == "linux-generic")
+    if(name.contains("kylin-update-desktop-")||name == "linux-generic")
     {
         pkgIconPath = QString(":/img/plugins/upgrade/%1.png").arg(name);
         appIcon->setPixmap(QPixmap(pkgIconPath));
@@ -655,7 +655,7 @@ void AppUpdateWid::updateOneApp()
 //        appVersion->setText(tr("获取依赖失败！"));
         appVersion->setText(tr("Get depends failed!"));
         appVersion->setToolTip("");
-        QIcon icon = QIcon::fromTheme("emblem-unreadable");
+        QIcon icon = QIcon::fromTheme("dialog-error");
         QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(14, 14)));
         appVersionIcon->setPixmap(pixmap);
         m_updateMutual->importantList.removeOne(appAllMsg.name);
