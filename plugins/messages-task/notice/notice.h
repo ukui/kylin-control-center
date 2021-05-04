@@ -45,7 +45,9 @@ extern "C" {
 }
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class Notice; }
+namespace Ui {
+class Notice;
+}
 QT_END_NAMESPACE
 
 class Notice : public QObject, CommonInterface
@@ -60,9 +62,9 @@ public:
 
     QString get_plugin_name() Q_DECL_OVERRIDE;
     int get_plugin_type() Q_DECL_OVERRIDE;
-    QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
+    QWidget *get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
-    const QString name() const  Q_DECL_OVERRIDE;
+    const QString name() const Q_DECL_OVERRIDE;
 
     void initTitleLabel();
     void initSearchText();
@@ -71,30 +73,25 @@ public:
     void initNoticeStatus();
     void initOriNoticeStatus();
 
-
-
 private:
-    void changeAppstatus(bool checked, QString name,SwitchButton *appBtn);
     void setHiddenNoticeApp(bool status);
 
 private:
     Ui::Notice *ui;
     QString pluginName;
     int pluginType;
-    QWidget * pluginWidget;
+    QWidget *pluginWidget;
 
-    SwitchButton * newfeatureSwitchBtn;
-    SwitchButton * enableSwitchBtn;
-    SwitchButton * lockscreenSwitchBtn;       
+    SwitchButton *newfeatureSwitchBtn;
+    SwitchButton *enableSwitchBtn;
+    SwitchButton *lockscreenSwitchBtn;
 
     QMap<QString, bool> appMap;
 
-    QGSettings * nSetting;
-    QGSettings * oriSettings;
-    QStringList appsName;
-    QStringList appsKey;
-    QVector<QGSettings*> vecGsettins;
-    QVBoxLayout * applistverticalLayout;
+    QGSettings *nSetting;
+    QGSettings *oriSettings;
+    QVector<QGSettings *> vecGsettins;
+    QVBoxLayout *applistverticalLayout;
 
     bool mFirstLoad;
 };

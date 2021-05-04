@@ -68,3 +68,4 @@ QString findFreePath(){
 
     return QString("%1%2").arg(NOTICE_ORIGIN_PATH).arg(QString(dir));
 }
+

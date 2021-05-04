@@ -176,7 +176,7 @@
          <widget class="QFrame" name="enableFrame">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>600</width>
             <height>56</height>
            </size>
           </property>
@@ -352,11 +352,17 @@
       </item>
       <item>
        <widget class="QFrame" name="frame">
+        <property name="minimumSize">
+         <size>
+          <width>600</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
+         <enum>QFrame::Box</enum>
         </property>
         <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
+         <enum>QFrame::Plain</enum>
         </property>
        </widget>
       </item>
