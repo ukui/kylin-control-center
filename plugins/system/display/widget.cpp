@@ -348,11 +348,12 @@ void Widget::slotUnifyOutputs()
             nowIt.value()->setPos(QPoint(preIt.value()->pos().x() + preIt.value()->size().width(), 0));
             KScreen::ModeList modes = preIt.value()->modes();
             Q_FOREACH (const KScreen::ModePtr &mode, modes) {
-                if (preIt.value()->currentModeId() == mode->id()
-                        && (preIt.value()->rotation() != KScreen::Output::Rotation::Left && preIt.value()->rotation() != KScreen::Output::Rotation::Right)) {
-                    nowIt.value()->setPos(QPoint(preIt.value()->pos().x() + mode->size().width(), 0));
-                } else {
-                    nowIt.value()->setPos(QPoint(preIt.value()->pos().x() + mode->size().height(), 0));
+                if (preIt.value()->currentModeId() == mode->id()) {
+                    if (preIt.value()->rotation() != KScreen::Output::Rotation::Left && preIt.value()->rotation() != KScreen::Output::Rotation::Right) {
+                        nowIt.value()->setPos(QPoint(preIt.value()->pos().x() + mode->size().width(), 0));
+                    } else {
+                        nowIt.value()->setPos(QPoint(preIt.value()->pos().x() + mode->size().height(), 0));
+                    }
                 }
             }
             preIt = nowIt;
