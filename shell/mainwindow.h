@@ -94,7 +94,7 @@ private:
     QLabel            *m_queryText  = nullptr;
     QPropertyAnimation *m_animation = nullptr;
     QWidget           *m_queryWid   = nullptr;
-    bool              m_isSearching;
+    bool              m_isSearching = false;
     QString           m_searchKeyWords;
     QVariantMap       m_ModuleMap;
     QGSettings       *m_fontSetting;

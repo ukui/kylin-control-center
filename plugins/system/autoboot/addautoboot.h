@@ -52,7 +52,6 @@ public:
     ~AddAutoBoot();
 
     void resetBeforeClose();
-    void stringHandle(QLineEdit*, QString);
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -62,6 +61,8 @@ private:
     QString selectFile;
     QString mDesktopExec;
     QString mDesktopIcon;
+    bool userEditNameFlag    = false;
+    bool userEditCommentFlag = false;
 
 private:
     void initStyle();

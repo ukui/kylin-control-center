@@ -42,6 +42,8 @@ AddAutoBoot::AddAutoBoot(QWidget *parent) :
 }
 
 void AddAutoBoot::resetBeforeClose() {
+    userEditNameFlag    = false;
+    userEditCommentFlag = false;
     ui->certainBtn->setEnabled(false);
     ui->hintLabel->clear();
     ui->nameLineEdit->setToolTip("");
@@ -120,6 +122,31 @@ void AddAutoBoot::initConnection() {
         emit autoboot_adding_signals(selectFile, ui->nameLineEdit->text(), mDesktopExec, ui->commentLineEdit->text(), mDesktopIcon);
         resetBeforeClose();
     });
+
+    connect(ui->nameLineEdit, &QLineEdit::editingFinished, this, [=](){
+        if (ui->nameLineEdit->text().isEmpty()) {
+            userEditNameFlag = false;
+        } else {        //用户输入了程序名
+            userEditNameFlag = true;
+        }
+    });
+    connect(ui->commentLineEdit,&QLineEdit::editingFinished,this,[=](){
+        if (ui->commentLineEdit->text().isEmpty()) {
+            userEditCommentFlag = false;
+        } else {        //用户输入了描述
+            userEditCommentFlag = true;
+        }
+    });
+
+    connect(ui->nameLineEdit, &QLineEdit::textChanged, this, [=](){
+        ui->nameLineEdit->setToolTip(ui->nameLineEdit->text());
+    });
+    connect(ui->commentLineEdit, &QLineEdit::textChanged, this, [=](){
+        ui->commentLineEdit->setToolTip(ui->commentLineEdit->text());
+    });
+    connect(ui->execLineEdit, &QLineEdit::textChanged, this, [=](){
+        ui->execLineEdit->setToolTip(ui->execLineEdit->text());
+    });
 }
 
 AddAutoBoot::~AddAutoBoot() {
@@ -164,19 +191,20 @@ void AddAutoBoot::open_desktop_dir_slots() {
     mDesktopExec = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_EXEC, NULL);
     mDesktopIcon = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, NULL);
 
-    if (ui->nameLineEdit->text().isEmpty()) {
+    if (userEditNameFlag == false) {   //用户输入了程序名，以用户输入为准，否则以自带的为准
         ui->nameLineEdit->setText(QString(name));
     }
 
     ui->execLineEdit->setText(QString(selectedfile));
-    ui->commentLineEdit->setText(QString(comment));
+    if (userEditCommentFlag == false) {   //用户输入了程序描述，以用户输入为准，否则以自带的为准
+        ui->commentLineEdit->setText(QString(comment));
+    }
 
     emit ui->execLineEdit->textEdited(QString(selectedfile));
     g_key_file_free(keyfile);
 }
 
 void AddAutoBoot::execLinEditSlot(const QString &fileName) {
-
     selectFile = fileName;
     QFileInfo fileInfo(fileName);
     if (fileInfo.isFile() && fileName.endsWith("desktop")) {
@@ -201,12 +229,14 @@ void AddAutoBoot::execLinEditSlot(const QString &fileName) {
         mDesktopIcon = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, NULL);
         comment = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
 
-        if (ui->nameLineEdit->text().isEmpty()) {
-            stringHandle(ui->nameLineEdit, QString(name));
+        if (userEditNameFlag == false) {   //用户输入了程序名，以用户输入为准，否则以自带的为准
+            ui->nameLineEdit->setText(QString(name));
         }
 
-        stringHandle(ui->execLineEdit, fileName);
-        stringHandle(ui->commentLineEdit, QString(comment));
+        ui->execLineEdit->setText(fileName);
+        if (userEditCommentFlag == false) {   //用户输入了程序描述，以用户输入为准，否则以自带的为准
+            ui->commentLineEdit->setText(QString(comment));
+        }
 
         g_key_file_free(keyfile);
     } else {
@@ -214,17 +244,5 @@ void AddAutoBoot::execLinEditSlot(const QString &fileName) {
         ui->hintLabel->setAlignment(Qt::AlignCenter);
         ui->hintLabel->setStyleSheet("color:red;");
         ui->certainBtn->setEnabled(false);
-    }
-}
-
-void AddAutoBoot::stringHandle(QLineEdit *mLineEdit, QString stringText) {
-    QFontMetrics fontMetrics(mLineEdit->font());
-    int fontSize = fontMetrics.width(stringText);
-    if (fontSize > ui->execLineEdit->width()) {
-        mLineEdit->setText(fontMetrics.elidedText(stringText, Qt::ElideNone, mLineEdit->width())); //不要省略号
-        mLineEdit->setToolTip(stringText);
-    } else {
-        mLineEdit->setText(stringText);
-        mLineEdit->setToolTip("");
     }
 }
