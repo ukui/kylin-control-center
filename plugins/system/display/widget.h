@@ -130,6 +130,7 @@ private Q_SLOTS:
     void isWayland();
 
     void setDDCBrighthessSlot(int brightnessValue);// 设置外接显示器亮度
+    void kdsScreenchangeSlot();
 
 public Q_SLOTS:
     void save();

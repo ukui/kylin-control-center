@@ -206,7 +206,7 @@ void Widget::setConfig(const KScreen::ConfigPtr &config)
     }
     slotOutputEnabledChanged();
 
-    if (isCloneMode() && mFirstLoad) {
+    if (mFirstLoad && isCloneMode()) {
         mUnifyButton->blockSignals(true);
         mUnifyButton->setChecked(true);
         mUnifyButton->blockSignals(false);
@@ -338,41 +338,25 @@ void Widget::slotUnifyOutputs()
 
     // 取消统一输出
     if (base->isCloneMode() && !mUnifyButton->isChecked()) {
-        QPoint secPoint;
-        QPoint invertedSecPoint;
-        QString primaryWaylandScreen = "";
-        if (mIsWayland) {
-            primaryWaylandScreen = getPrimaryWaylandScreen();
-        }
 
         KScreen::OutputList screens = mPrevConfig->connectedOutputs();
-        QMap<int, KScreen::OutputPtr>::iterator it = screens.begin();
-        while (it != screens.end()) {
-            KScreen::OutputPtr screen = it.value();
-            if (screen->isPrimary()) {
-                KScreen::ModeList modes = screen->modes();
-                Q_FOREACH (const KScreen::ModePtr &mode, modes) {
-                    if (screen->currentModeId() == mode->id()) {
-                        secPoint = QPoint(screen->pos().x() + mode->size().width(), 0);
-                        invertedSecPoint = QPoint(mode->size().height(), 0);
-                    }
-                }
-            }
-            it++;
-        }
 
-        QMap<int, KScreen::OutputPtr>::iterator secIt = screens.begin();
-        while (secIt != screens.end()) {
-            KScreen::OutputPtr screen = secIt.value();
-            if (!screen->isPrimary()) {
-                if (screen->rotation() == KScreen::Output::Rotation::Left    \
-                    || screen->rotation() == KScreen::Output::Rotation::Right) {
-                    screen->setPos(invertedSecPoint);
+        QMap<int, KScreen::OutputPtr>::iterator preIt = screens.begin();
+        QMap<int, KScreen::OutputPtr>::iterator nowIt = screens.begin();
+        nowIt++;
+        while (nowIt != screens.end()) {
+            nowIt.value()->setPos(QPoint(preIt.value()->pos().x() + preIt.value()->size().width(), 0));
+            KScreen::ModeList modes = preIt.value()->modes();
+            Q_FOREACH (const KScreen::ModePtr &mode, modes) {
+                if (preIt.value()->currentModeId() == mode->id()
+                        && (preIt.value()->rotation() != KScreen::Output::Rotation::Left && preIt.value()->rotation() != KScreen::Output::Rotation::Right)) {
+                    nowIt.value()->setPos(QPoint(preIt.value()->pos().x() + mode->size().width(), 0));
                 } else {
-                    screen->setPos(secPoint);
+                    nowIt.value()->setPos(QPoint(preIt.value()->pos().x() + mode->size().height(), 0));
                 }
             }
-            secIt++;
+            preIt = nowIt;
+            nowIt++;
         }
         setConfig(mPrevConfig);
 
@@ -679,6 +663,7 @@ bool Widget::isCloneMode()
     KScreen::OutputPtr output = mConfig->primaryOutput();
     if (mConfig->connectedOutputs().count() >= 2) {
         foreach (KScreen::OutputPtr secOutput, mConfig->connectedOutputs()) {
+
             if (secOutput->geometry() != output->geometry()) {
                 return false;
             }
@@ -1039,6 +1024,26 @@ void Widget::setDDCBrighthessSlot(int brightnessValue)
         ukccIfc.call("setDDCBrightness", QString::number(brightnessValue), type);
         mLock.unlock();
     }
+}
+
+void Widget::kdsScreenchangeSlot()
+{
+    connect(new KScreen::GetConfigOperation(), &KScreen::GetConfigOperation::finished,
+            [&](KScreen::ConfigOperation *op) {
+        bool cloneMode = true;
+        KScreen::ConfigPtr config = qobject_cast<KScreen::GetConfigOperation *>(op)->config();
+        KScreen::OutputPtr output = config->primaryOutput();
+        if (config->connectedOutputs().count() >= 2) {
+            foreach (KScreen::OutputPtr secOutput, config->connectedOutputs()) {
+                if (secOutput->geometry() != output->geometry()) {
+                    cloneMode = false;
+                }
+            }
+        } else {
+            cloneMode = false;
+        }
+        mUnifyButton->setChecked(cloneMode);
+    });
 }
 
 void Widget::save()
@@ -1473,8 +1478,8 @@ void Widget::initConnection()
     });
 
     connect(QApplication::desktop(), &QDesktopWidget::resized, this, [=] {
-        QTimer::singleShot(2000, this, [=] {
-            mUnifyButton->setChecked(isCloneMode());
+        QTimer::singleShot(1000, this, [=]{
+            kdsScreenchangeSlot();
         });
     });
 
