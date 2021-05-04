@@ -498,6 +498,10 @@ void Wallpaper::showLocalWpDialog(){
 
     // TODO: chinese and space support
     bgsettings->set(FILENAME, selectedfile);
+    if (prePicUnit != nullptr) {  //去掉选定标记
+        prePicUnit->changeClickedFlag(false);
+        prePicUnit->setStyleSheet("border-width: 0px;");
+    }
 }
 
 void Wallpaper::add_custom_wallpaper(){

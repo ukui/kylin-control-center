@@ -27,6 +27,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QDesktopServices>
+#include <sys/stat.h>
 
 #define BGPATH                  "/usr/share/backgrounds/"
 #define SCREENLOCK_BG_SCHEMA    "org.ukui.screensaver"
@@ -228,7 +229,7 @@ void Screenlock::initScreenlockStatus()
         picUnit->setPixmap(pixmap);
         picUnit->setFilenameText(bgInfo.filename);
 
-        // 设置当前锁屏壁纸的预览
+        // 选定当前锁屏壁纸
         if (bgInfo.filename == bgStr){
             ui->previewLabel->setPixmap(QPixmap(bgStr).scaled(ui->previewLabel->size()));
             if (prePicUnit != nullptr) {
@@ -345,15 +346,20 @@ int Screenlock::lockConvertToSlider(const int value)
     }
 }
 
+//设置登录界面显示锁屏壁纸
 void Screenlock::setLockBackground(bool status)
 {
     QString bgStr;
+    struct stat fileStat;
     if (lSetting && status) {
-        bgStr= lSetting->get(SCREENLOCK_BG_KEY).toString();
+        bgStr = lSetting->get(SCREENLOCK_BG_KEY).toString();
+        stat(bgStr.toStdString().c_str(),&fileStat);
+        if (fileStat.st_uid != 0) {  //在普通用户下
+            bgStr = copyLoginFile(bgStr);
+        }
     } else if (!status) {
         bgStr = "";
     }
-
     lockSetting->beginGroup("ScreenLock");
     lockSetting->setValue("lockStatus", status);
     lockSetting->endGroup();
@@ -448,4 +454,21 @@ void Screenlock::setScreenLockBgSlot()
     process->start(program, arguments);
 
     lSetting->set(SCREENLOCK_BG_KEY, selectedfile);
+    setLockBackground(loginbgSwitchBtn->isChecked());
+    if (prePicUnit != nullptr) {  //去掉选定标记
+        prePicUnit->changeClickedFlag(false);
+        prePicUnit->setStyleSheet("border-width: 0px;");
+    }
+}
+
+QString Screenlock::copyLoginFile(QString fileName) {
+    QString name = qgetenv("USER");
+    if (name.isEmpty()) {
+        name = qgetenv("USERNAME");
+    }
+    QString loginFilename = "/var/lib/lightdm-data/" + name + "/" + "loginBackground";
+    QProcess process;
+    QString loginCmd = QString("cp %1 %2").arg(fileName).arg(loginFilename);
+    process.startDetached(loginCmd);
+    return loginFilename;
 }

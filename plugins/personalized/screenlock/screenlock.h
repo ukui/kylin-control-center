@@ -77,6 +77,7 @@ private:
     void setLockBackground(bool status);
     bool getLockStatus();
     void connectToServer();
+    QString copyLoginFile(QString fileName);
 
 private:
     Ui::Screenlock *ui;
