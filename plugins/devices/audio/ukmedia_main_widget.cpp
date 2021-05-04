@@ -1805,10 +1805,16 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
     if (flags&MATE_MIXER_STREAM_CONTROL_VOLUME_READABLE) {
         volume = mate_mixer_stream_control_get_volume(m_pControl);
     }
+    MateMixerStream *outputStream = mate_mixer_context_get_default_output_stream(m_pWidget->m_pContext);
+    MateMixerStream *inputStream = mate_mixer_context_get_default_input_stream(m_pWidget->m_pContext);
 
     decscription = mate_mixer_stream_control_get_label(m_pControl);
     MateMixerDirection direction;
     MateMixerStream *m_pStream = mate_mixer_stream_control_get_stream(m_pControl);
+
+    if (outputStream != m_pStream && inputStream != m_pStream) {
+        return;
+    }
 
     MateMixerSwitch *portSwitch;
     MateMixerStream *stream = mate_mixer_stream_control_get_stream(m_pControl);
