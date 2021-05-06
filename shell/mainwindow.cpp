@@ -546,6 +546,11 @@ void MainWindow::loadPlugins(){
              !g_file_test(sessionFile, G_FILE_TEST_EXISTS)) &&
                 (fileName == "libscreensaver.so" || fileName == "libscreenlock.so"))
             continue;
+#ifdef __sw_64__
+        if ("libpower.so" == fileName) {
+            continue;
+        }
+#endif
 
         const char * securityCmd = "/usr/sbin/ksc-defender";
 
