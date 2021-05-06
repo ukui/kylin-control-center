@@ -29,6 +29,7 @@
 #include <QMessageBox>
 #include <QDBusConnection>
 #include <QJsonDocument>
+#include <QtConcurrent>
 
 #include <KF5/KScreen/kscreen/output.h>
 #include <KF5/KScreen/kscreen/edid.h>
@@ -213,7 +214,7 @@ void Widget::setConfig(const KScreen::ConfigPtr &config)
         slotUnifyOutputs();
     }
     mFirstLoad = false;
-    setBrightnesSldierValue();
+    QtConcurrent::run(std::mem_fn(&Widget::setBrightnesSldierValue), this);
 
     if (mIsWayland) {
         mScreenId = getPrimaryScreenID();
@@ -1116,6 +1117,7 @@ void Widget::save()
     QTimer::singleShot(1000, this,
                        [=]() {
         if (mIsWayland) {
+            QtConcurrent::run(std::mem_fn(&Widget::setBrightnesSldierValue), this);
             QString hash = config->connectedOutputsHash();
             writeFile(mDir % hash);
         }
@@ -1164,6 +1166,7 @@ void Widget::save()
             writeScreenXml();
         }
     });
+
 }
 
 QVariantMap metadata(const KScreen::OutputPtr &output)
@@ -1338,7 +1341,7 @@ void Widget::propertiesChangedSlot(QString property, QMap<QString, QVariant> pro
 // 是否禁用主屏按钮
 void Widget::mainScreenButtonSelect(int index)
 {
-    setBrightSliderVisible();
+    QtConcurrent::run(std::mem_fn(&Widget::setBrightSliderVisible), this);
 
     if (!mConfig || ui->primaryCombo->count() <= 0) {
         return;
@@ -1369,6 +1372,8 @@ void Widget::mainScreenButtonSelect(int index)
     mCloseScreenButton->blockSignals(true);
     mCloseScreenButton->setChecked(newPrimary->isEnabled());
     mCloseScreenButton->blockSignals(false);
+
+    ui->brightnessframe->setVisible(newPrimary->isEnabled());
     mControlPanel->activateOutput(newPrimary);
 
     mScreen->setActiveOutputByCombox(newPrimary->id());
@@ -1528,10 +1533,10 @@ void Widget::setBrightSliderVisible()
     } else {
         value = getDDCBrighthess();
     }
+    ui->brightValueLabel->setText(QString::number(value));
     ui->brightnessSlider->blockSignals(true);
     ui->brightnessSlider->setValue(value);
     ui->brightnessSlider->blockSignals(false);
-    ui->brihghtLabel->setText(QString::number(value));
 }
 
 // 滑块改变
