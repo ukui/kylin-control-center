@@ -48,7 +48,9 @@ int main(int argc, char *argv[])
 {
 
 #ifdef KYDEBUG
+#ifndef __sw_64__
     initUkuiLog4qt("ukui-control-center");
+#endif
 #endif
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
