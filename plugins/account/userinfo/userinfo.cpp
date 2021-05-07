@@ -458,7 +458,7 @@ void UserInfo::initComponent(){
 
     if (getuid()){
         ui->currentUserFaceLabel->installEventFilter(this);
-        ui->userNameLabel->installEventFilter(this);
+        ui->nameChangeWidget->installEventFilter(this);
     }
 
     //修改当前用户密码的回调
@@ -1159,7 +1159,7 @@ bool UserInfo::eventFilter(QObject *watched, QEvent *event){
                 return false;
             }
         }
-    } else if (watched == ui->userNameLabel){
+    } else if (watched == ui->nameChangeWidget){
         if (event->type() == QEvent::MouseButtonPress){
             QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
             if (mouseEvent->button() == Qt::LeftButton ){
