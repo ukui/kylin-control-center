@@ -127,7 +127,7 @@ void ModulePageWidget::initUI() {
             LeftWidgetItem * leftWidgetItem = new LeftWidgetItem(this);
             leftWidgetItem->setAttribute(Qt::WA_DeleteOnClose);
             leftWidgetItem->setLabelText(single.namei18nString);
-            leftWidgetItem->setMinimumWidth(ui->leftbarWidget->minimumWidth()-20); //margin
+            leftWidgetItem->setMinimumWidth(ui->leftbarWidget->minimumWidth()-40); //margin
             leftWidgetItem->setMaximumWidth(ui->leftbarWidget->maximumWidth()-20);
             leftWidgetItem->setLabelPixmap(QString("://img/secondaryleftmenu/%1.svg").arg(single.nameString), single.nameString, "default");
 

@@ -178,7 +178,7 @@ void DateTime::initComponent()
     syncLayout->addWidget(syncTimeBtn);
 
     QDateTime currentime = QDateTime::currentDateTime();
-    QString timeAndWeek = currentime.toString("yyyy-MM-dd  ddd").replace("周","星期");
+    QString timeAndWeek = currentime.toString("yyyy/MM/dd  ddd").replace("周","星期");
     ui->dateLabel->setText(timeAndWeek + "     " + localizedTimezone);
 
     QFile tzfile("://zoneUtc");
@@ -253,7 +253,7 @@ void DateTime::datetimeUpdateSlot()
 
     QString timeAndWeek;
     if ("cn" == dateformat) {
-       timeAndWeek = current.toString("yyyy-MM-dd  ddd").replace("周","星期");
+       timeAndWeek = current.toString("yyyy/MM/dd  ddd").replace("周","星期");
     } else {
        timeAndWeek = current.toString("yyyy-MM-dd  ddd");
     }
