@@ -119,7 +119,7 @@ void Widget::loadQml() {
 Widget::~Widget() {
     //clearOutputIdentifiers();
     delete ui;
-    ui == nullptr;
+    ui = nullptr;
 }
 
 //接收触摸事件
