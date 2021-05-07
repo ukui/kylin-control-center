@@ -1,41 +1,12 @@
 extern "C"{
 #include <libudev.h>
 #include <X11/extensions/XInput2.h>
+#include <X11/extensions/XInput.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
-#include <xorg/xserver-properties.h>
-}
-/* Get device node for gudev
-   node like "/dev/input/event6"
- */
-unsigned char *
-get_device_node (XIDeviceInfo devinfo)
-{
-    Atom  prop;
-    Atom act_type;
-    int  act_format;
-    unsigned long nitems, bytes_after;
-    unsigned char *data;
-
-
-    prop = XInternAtom(GDK_DISPLAY_XDISPLAY (gdk_display_get_default()), XI_PROP_DEVICE_NODE, False);
-    if (!prop)
-        return NULL;
-
-    gdk_x11_display_error_trap_push (gdk_display_get_default ());
-    if (XIGetProperty(GDK_DISPLAY_XDISPLAY (gdk_display_get_default()), devinfo.deviceid, prop, 0, 1000, False,
-                      AnyPropertyType, &act_type, &act_format, &nitems, &bytes_after, &data) == Success)
-    {
-        gdk_x11_display_error_trap_pop (gdk_display_get_default ());
-        return data;
-    }
-    gdk_x11_display_error_trap_pop (gdk_display_get_default ());
-
-    XFree(data);
-    return NULL;
 }
 
-static int find_event_from_touchId(int pId ,char *_event, int max_len)
+static int find_event_from_touchId(int pId ,char *_event,char *devnode,int max_len)
 {
     Display *_dpy = XOpenDisplay(NULL);
     int ret = -1;
@@ -45,26 +16,53 @@ static int find_event_from_touchId(int pId ,char *_event, int max_len)
         return ret;
     }
     int         	i           = 0;
+    int         	j           = 0;
     int         	num_devices = 0;
-    XIDeviceInfo 	*devs_info;
+    XDeviceInfo 	*pXDevs_info = NULL;
+    XDevice         *pXDev       = NULL;
     unsigned char 	*cNode      = NULL;
     const char  	cName[]     = "event";
     const char      *cEvent     = NULL;
+    int             nprops       = 0;
+    Atom            *props       = NULL;
+    char            *name;
+    Atom            act_type;
+    int             act_format;
+    unsigned long   nitems, bytes_after;
+    unsigned char   *data;
 
-    devs_info = XIQueryDevice(_dpy, XIAllDevices, &num_devices);
 
+    pXDevs_info = XListInputDevices(_dpy, &num_devices);
     for(i = 0; i < num_devices; i++)
     {
-        cNode = get_device_node(devs_info[i]);
-        if(NULL == cNode)
+        pXDev = XOpenDevice(_dpy, pXDevs_info[i].id);
+        if (!pXDev)
         {
+            printf("unable to open device '%s'\n", pXDevs_info[i].name);
             continue;
         }
-        printf("[%s%d] cNode:%s ptr:%s\n",__FUNCTION__, __LINE__, cNode, cEvent);
 
-        if( pId == devs_info[i].deviceid)
+        props = XListDeviceProperties(_dpy, pXDev, &nprops);
+        if (!props)
         {
-            cNode = get_device_node(devs_info[i]);
+            printf("Device '%s' does not report any properties.\n", pXDevs_info[i].name);
+            continue;
+        }
+        //printf("pId=%d, pXDevs_info[i].id=%d \n",pId,pXDevs_info[i].id);
+        if(pId == pXDevs_info[i].id)
+        {
+            for(j = 0; j < nprops; j++)
+            {
+                name = XGetAtomName(_dpy, props[j]);
+                if(0 != strcmp(name, "Device Node"))
+                {
+                    continue;
+                }
+                XGetDeviceProperty(_dpy, pXDev, props[j], 0, 1000, False,
+                                    AnyPropertyType, &act_type, &act_format,
+                                    &nitems, &bytes_after, &data);
+                cNode = data;
+            }
             if(NULL == cNode)
             {
                 continue;
@@ -74,12 +72,13 @@ static int find_event_from_touchId(int pId ,char *_event, int max_len)
             {
                 continue;
             }
-
+            strcpy(devnode,(const char*)cNode);
             strncpy(_event, cEvent, max_len>0?(max_len-1):max_len);
-            //printf("cEvent=%s,_event=%s\n",cEvent,_event);
+            //printf("cNode=%s,cEvent=%s,_event=%s\n",cNode,cEvent,_event);
             ret = Success;
             break;
         }
+
     }
 
     return ret;
@@ -156,10 +155,10 @@ static int find_serial_from_event(char *_name, char *_event, char *_serial, int 
     return ret;
 }
 
-int findSerialFromId(int touchid,char *touchname,char *_touchserial,int maxlen)
+int findSerialFromId(int touchid,char *touchname,char *_touchserial,char *devnode,int maxlen)
 {
     char event[32]={0};
-    int ret=find_event_from_touchId(touchid, event, 32);
+    int ret=find_event_from_touchId(touchid, event,devnode, 32);
     ret=find_serial_from_event(touchname, event,_touchserial,maxlen);
     if(!strcmp(_touchserial,""))
         strncpy(_touchserial,"kydefault",maxlen>0?(maxlen-1):maxlen);
