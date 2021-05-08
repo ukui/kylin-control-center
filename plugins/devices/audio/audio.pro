@@ -11,6 +11,8 @@ QT       += widgets xml
 TEMPLATE = lib
 CONFIG += plugin
 
+include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+
 INCLUDEPATH += ../../.. \
                $$PROJECT_COMPONENTSOURCE \
 
@@ -39,7 +41,6 @@ SOURCES += \
     ukmedia_output_widget.cpp \
     ukmedia_sound_effects_widget.cpp \
     ukui_custom_style.cpp \
-    switchbutton.cpp \
     customstyle.cpp \
     ukmedia_slider_tip_label_helper.cpp \
     ukui_list_widget_item.cpp
@@ -51,7 +52,6 @@ HEADERS += \
     ukmedia_output_widget.h \
     ukmedia_sound_effects_widget.h \
     ukui_custom_style.h \
-    switchbutton.h \
     customstyle.h \
     ukmedia_slider_tip_label_helper.h \
     ukui_list_widget_item.h

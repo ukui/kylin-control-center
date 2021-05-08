@@ -99,7 +99,7 @@ private:
     QTimer * timer;
 
 
-private slots:
+private Q_SLOTS:
     void updatevalue();
 
 

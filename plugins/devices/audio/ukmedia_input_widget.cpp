@@ -36,6 +36,7 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pInputListWidget->setStyleSheet(
                 
                 "QListWidget{"
+                "background-color:palette(base);"
                 "padding-left:8;"
                 "padding-right:20;"
                 "padding-top:8;"

@@ -26,8 +26,8 @@
 #include <QMessageBox>
 #include <QHBoxLayout>
 #include <QStyledItemDelegate>
-#include "switchbutton.h"
 #include "ukui_custom_style.h"
+#include "SwitchButton/switchbutton.h"
 
 class UkuiMessageBox : public QMessageBox
 {
