@@ -124,7 +124,6 @@ void Printer::initComponent()
         runExternalApp();
     });
     ui->addLyt->addWidget(mAddWgt);
-
     mTimer = new QTimer(this);
     connect(mTimer, &QTimer::timeout, this, [=] {
         refreshPrinterDevSlot();
@@ -137,9 +136,22 @@ void Printer::refreshPrinterDevSlot()
 {
     ui->listWidget->clear();
 
- QStringList printer = QPrinterInfo::availablePrinterNames();
+    QStringList printer = QPrinterInfo::availablePrinterNames();
 
     for (int num = 0; num < printer.count(); num++) {
+        QProcess *process = new QProcess;
+        process->start("lpstat -p "+printer.at(num));
+        process->waitForFinished();
+
+        QByteArray ba = process->readAllStandardOutput();
+        QString printer_stat = QString(ba.data());
+        if (printer_stat.contains(printer.at(num), Qt::CaseSensitive)) {
+            if (printer_stat.contains(tr("禁用"),
+                                      Qt::CaseSensitive)
+                || printer_stat.contains(tr("正在等待打印机变得可用"), Qt::CaseSensitive)) {
+                continue;
+            }
+        }
         HoverBtn *printerItem = new HoverBtn(printer.at(num), pluginWidget);
         printerItem->mPitLabel->setText(printer.at(num));
         printerItem->mAbtBtn->setText(tr("Attrs"));
@@ -149,6 +161,7 @@ void Printer::refreshPrinterDevSlot()
         connect(printerItem->mAbtBtn, &QPushButton::clicked, this, [=] {
             runExternalApp();
         });
+
         QListWidgetItem *item = new QListWidgetItem(ui->listWidget);
         item->setSizeHint(QSize(QSizePolicy::Expanding, 50));
         ui->listWidget->setItemWidget(item, printerItem);
