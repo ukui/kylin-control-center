@@ -127,11 +127,12 @@ private:
     int                pluginType;
     QWidget            *pluginWidget;
 
+    QDBusInterface     *m_interface = nullptr;
     SwitchButton       *wifiBtn;
 
     QMap<QString, int> connectedWifi;
     QMap<QString,int>  wifiList;
-
+    QMap<QString,int>  wifiLists;
     QThread            *pThread;
     NetconnectWork     *pNetWorker;
 
@@ -155,7 +156,7 @@ private:
 private:
     int         setSignal(QString lv);
     QStringList execGetLanList();
-    void        getWifiListDone(QStringList wifislist, QStringList lanList);
+    void        getWifiListDone(QVector<QStringList> wifislist, QStringList lanList);
 
     bool        getInitStatus();
 
@@ -173,6 +174,7 @@ private:
 private slots:
     void wifiSwitchSlot(bool status);
     void getNetList();
+    void getWifiList();
     void netPropertiesChangeSlot(QMap<QString, QVariant> property);
     void netDetailSlot(QString netName);
 
