@@ -132,7 +132,7 @@ void NetConnect::initComponent() {
     // 接收到系统删除网络连接的信号时刷新可用网络列表
     //QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager/Settings"), "org.freedesktop.NetworkManager.Settings", "ConnectionRemoved", this, SLOT(getNetList(void)));
     // 接收到系统更改网络连接属性时把判断是否已刷新的bool值置为false
-    //QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager"), "org.freedesktop.NetworkManager", "PropertiesChanged", this, SLOT(netPropertiesChangeSlot(QMap<QString,QVariant>)));
+    QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager"), "org.freedesktop.NetworkManager", "PropertiesChanged", this, SLOT(netPropertiesChangeSlot(QMap<QString,QVariant>)));
     connect(m_interface, SIGNAL(getWifiListFinished()), this, SLOT(getWifiList()));
 
     connect(ui->RefreshBtn, &QPushButton::clicked, this, [=](bool checked) {
@@ -316,7 +316,10 @@ void NetConnect::netPropertiesChangeSlot(QMap<QString, QVariant> property) {
 
     if (property.keys().contains("WirelessEnabled")) {
         setWifiBtnDisable();
-        QTimer::singleShot(2800, this, SLOT(getNetList()));
+        if (m_interface) {
+            m_interface->call("requestRefreshWifiList");
+        }
+//        QTimer::singleShot(2800, this, SLOT(getNetList()));
     }
 }
 
