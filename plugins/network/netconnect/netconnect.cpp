@@ -467,12 +467,16 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
             }
             index++;
         }
+        QString wname;
         for (int i = 0; i < getwifislist.size(); ++i) {
             if (getwifislist.at(i).at(0) == actWifiName) {
-                connectedWifi.insert(getwifislist.at(i).at(0), this->setSignal(getwifislist.at(i).at(1)));
+                wname = getwifislist.at(i).at(0);
+                if (getwifislist.at(i).at(2) != NULL && getwifislist.at(i).at(2) != "--") {
+                    wname += "lock";
+                }
+                connectedWifi.insert(wname, this->setSignal(getwifislist.at(i).at(1)));
             }
         }
-
 //        // 填充可用网络列表
 //        QString headLine = getwifislist.at(0);
 //        headLine = headLine.trimmed();
