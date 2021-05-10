@@ -591,7 +591,7 @@ void Widget::initNightUI()
 
 bool Widget::isRestoreConfig()
 {
-    int cnt = 9;
+    int cnt = 15;
     int ret;
     QRect rect = this->topLevelWidget()->geometry();
     QMessageBox msg;
@@ -601,7 +601,7 @@ bool Widget::isRestoreConfig()
         msg.setText(tr("After modifying the resolution or refresh rate, "
                        "due to compatibility issues between the display device and the graphics card, "
                        "the display may be abnormal or unable to display\n"
-                       "the settings will be saved after 9 seconds"));
+                       "the settings will be saved after 14 seconds"));
         msg.addButton(tr("Save Config"), QMessageBox::RejectRole);
         msg.addButton(tr("Restore Config"), QMessageBox::AcceptRole);
 
