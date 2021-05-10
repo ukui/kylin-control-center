@@ -157,7 +157,7 @@ private:
     int         setSignal(QString lv);
     QStringList execGetLanList();
     void        getWifiListDone(QVector<QStringList> wifislist, QStringList lanList);
-
+    QString     geiWifiChan();
     bool        getInitStatus();
 
     void        clearContent();
@@ -173,7 +173,6 @@ private:
 
 private slots:
     void wifiSwitchSlot(bool status);
-    void getNetList();
     void getWifiList();
     void netPropertiesChangeSlot(QMap<QString, QVariant> property);
     void netDetailSlot(QString netName);

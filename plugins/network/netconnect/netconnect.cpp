@@ -255,63 +255,6 @@ void NetConnect::getWifiList() {
     setNetDetailVisible();
 }
 
-void NetConnect::getNetList() {
-//    wifiBtn->blockSignals(true);
-//    wifiBtn->setChecked(getInitStatus());
-//    wifiBtn->blockSignals(false);
-
-//    pThread = new QThread;
-//    pNetWorker = new NetconnectWork;
-//    pNetWorker->moveToThread(pThread);
-
-//    connect(pThread, &QThread::started, pNetWorker, &NetconnectWork::run);
-
-//    connect(pNetWorker, &NetconnectWork::wifiGerneral, this, [&](QStringList list) {
-
-//        this->TwifiList = list;
-//        this->TlanList  = execGetLanList();
-
-//        getWifiListDone(this->TwifiList, this->TlanList);
-
-//        QMap<QString, int>::iterator iter = this->wifiList.begin();
-//        QVector<QPair<QString, int>> vec;
-//        QString iconamePah;
-
-//        while (iter != this->wifiList.end()) {
-//            vec.push_back(qMakePair(iter.key(), iter.value()));
-//            iter++;
-//        }
-//        qSort(vec.begin(), vec.end(), sortByVal);
-//        for (int i = 0; i < vec.size(); i++) {
-//            if (!wifiBtn->isChecked()) {
-//                break;
-//            }
-//            bool isLock = vec[i].first.contains("lock");
-//            QString wifiName = isLock ? vec[i].first.remove("lock") : vec[i].first;
-//            iconamePah = wifiIcon(isLock, vec[i].second);
-
-//            rebuildAvailComponent(iconamePah, wifiName);
-//        }
-
-//        for (int i = 0; i < this->lanList.length(); i++) {
-//            iconamePah = KLanSymbolic;
-//            rebuildAvailComponent(iconamePah , lanList.at(i));
-//        }
-
-//        pThread->quit();
-//        pThread->wait();
-//    });
-
-//    connect(pThread, &QThread::finished, this, [=] {
-//        setNetDetailVisible();
-//        pNetWorker->deleteLater();
-//    });
-
-//    connect(pNetWorker, &NetconnectWork::destroyed, pThread, &QThread::deleteLater);
-
-//    pThread->start();
-}
-
 void NetConnect::netPropertiesChangeSlot(QMap<QString, QVariant> property) {
 
     if (property.keys().contains("WirelessEnabled")) {
@@ -468,58 +411,25 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
             index++;
         }
         QString wname;
+        QString lockType;
+        QString chan;
+        QString freq;
         for (int i = 0; i < getwifislist.size(); ++i) {
             if (getwifislist.at(i).at(0) == actWifiName) {
                 wname = getwifislist.at(i).at(0);
+                lockType = getwifislist.at(i).at(2);
+                freq = getwifislist.at(i).at(3) + " MHz";
+                chan = geiWifiChan();
+                mActiveInfo[index].strSecType = (lockType == "--" ? tr("None") : lockType);
+                mActiveInfo[index].strChan = chan;
+                mActiveInfo[index].strHz = freq;
                 if (getwifislist.at(i).at(2) != NULL && getwifislist.at(i).at(2) != "--") {
                     wname += "lock";
                 }
                 connectedWifi.insert(wname, this->setSignal(getwifislist.at(i).at(1)));
             }
         }
-//        // 填充可用网络列表
-//        QString headLine = getwifislist.at(0);
-//        headLine = headLine.trimmed();
-//        int indexLock = headLine.indexOf("SECURITY");
-//        int indexChan = headLine.indexOf("CHAN");
-//        int indexFreq = headLine.indexOf("FREQ");
-//        int indexName = headLine.indexOf("SSID");
-
-//        QStringList wnames;
-
-//        for (int i = 1; i < getwifislist.size(); i ++) {
-//            QString line = getwifislist.at(i);
-//            QString wsignal  = line.mid(0, indexLock).trimmed();
-//            QString lockType = line.mid(indexLock, indexChan -indexLock).trimmed();
-//            QString chan     = line.mid(indexChan, indexFreq - indexChan).trimmed();
-//            QString freq     = line.mid(indexFreq, indexName - indexFreq).trimmed();
-//            QString wname    = line.mid(indexName).trimmed();
-
-//            // 过滤重复wifi
-//            if (wnames.contains(wname, Qt::CaseInsensitive)) {
-//                continue;
-//            }
-//            if (!wname.isEmpty() && wname != "--") {
-//                int strength = this->setSignal(wsignal);
-//                if (wname == actWifiName) {
-//                    mActiveInfo[index].strSecType = (lockType == "--" ? tr("None") : lockType);
-//                    mActiveInfo[index].strChan = chan;
-//                    mActiveInfo[index].strHz = freq;
-
-//                    if ("--" != lockType && !lockType.isEmpty()) {
-//                        wname += "lock";
-//                    }
-//                    connectedWifi.insert(wname, strength);
-//                }
-//                if ("--" != lockType && !lockType.isEmpty()) {
-//                    wname += "lock";
-//                }
-//                wifiList.insert(wname, strength);
-//                wnames.append(wname);
-//            }
-//        }
     }
-
     if (!getlanList.isEmpty()) {
         lanList.clear();
         connectedLan.clear();
@@ -578,7 +488,24 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
     }
 }
 
-
+QString NetConnect::geiWifiChan() {
+    QProcess *lanPro = new QProcess(this);
+    QStringList slist;
+    lanPro->start("nmcli -f in-use,chan device wifi");
+    lanPro->waitForFinished();
+    QString output = lanPro->readAll();
+    foreach (QString line, output.split("\n")) {
+        line.replace(QRegExp("[\\s]+"), "");
+        slist.append(line);
+    }
+    for (int i = 0; i < slist.length(); i++) {
+        QString str = slist.at(i);
+        if (str.contains("*")) {
+            str.remove("*");
+            return str;
+        }
+    }
+}
 bool NetConnect::getInitStatus() {
 
     QDBusInterface interface( "org.freedesktop.NetworkManager",
