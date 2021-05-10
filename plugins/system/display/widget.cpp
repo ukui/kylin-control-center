@@ -339,7 +339,6 @@ void Widget::slotUnifyOutputs()
 
     // 取消统一输出
     if (base->isCloneMode() && !mUnifyButton->isChecked()) {
-
         KScreen::OutputList screens = mPrevConfig->connectedOutputs();
 
         QMap<int, KScreen::OutputPtr>::iterator preIt = screens.begin();
@@ -853,6 +852,7 @@ void Widget::outputRemoved(int outputId)
             if (!qmlOutput->output()->isConnected()) {
                 continue;
             }
+            qmlOutput->setIsCloneMode(false);
             qmlOutput->blockSignals(true);
             qmlOutput->setVisible(true);
             qmlOutput->blockSignals(false);
@@ -1100,8 +1100,7 @@ void Widget::save()
     if (!KScreen::Config::canBeApplied(config)) {
         QMessageBox::information(this,
                                  tr("Warnning"),
-                                 tr(
-                                     "Sorry, your configuration could not be applied.\nCommon reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU."));
+                                 tr("Sorry, your configuration could not be applied.\nCommon reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU."));
         return;
     }
     mBlockChanges = true;
