@@ -31,7 +31,8 @@ enum ReturnCode {
     Succeed,
     PathEmpty,
     NotInHomeDir,
-    ParentExist
+    ParentExist,
+    HasBeenBlocked
 };
 
 class Search : public QObject, CommonInterface

@@ -663,6 +663,7 @@
         <EnglishFunc>Unify Output</EnglishFunc>
     </plugin>
     <plugin name="display">
+        <Environment>v101</Environment>
         <pinyinPlugin>xianshiqi</pinyinPlugin>
         <pinyinfunc>yejianmoshi</pinyinfunc>
         <ChinesePlugin>显示器</ChinesePlugin>

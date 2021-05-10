@@ -212,6 +212,10 @@ int Search::setBlockDir(const QString &dirPath, const bool &is_add)
     QString pathKey = dirPath.right(dirPath.length() - 1);
 
     for (QString dir : m_blockDirs) {
+        if (pathKey == dir) {
+            return ReturnCode::HasBeenBlocked;
+        }
+
         if (pathKey.startsWith(dir)) {
             return ReturnCode::ParentExist;
         }
@@ -275,6 +279,7 @@ void Search::appendBlockDirToList(const QString &path)
     delBtn->hide();
     connect(delBtn, &QPushButton::clicked, this, [ = ]() {
         setBlockDir(path, false);
+        getBlockDirs();
     });
     connect(dirWidget, &HoverWidget::enterWidget, this, [ = ]() {
         delBtn->show();
@@ -339,6 +344,10 @@ void Search::onBtnAddFolderClicked()
     case ReturnCode::ParentExist :
         qWarning() << "Add blocked folder failed, its parent dir is exist! path = " << selectedDir;
         QMessageBox::warning(m_plugin_widget, tr("Warning"), tr("Add blocked folder failed, its parent dir is exist!"));
+        break;
+    case ReturnCode::HasBeenBlocked :
+        qWarning() << "Add blocked folder failed, it has been already blocked! path = " << selectedDir;
+        QMessageBox::warning(m_plugin_widget, tr("Warning"), tr("Add blocked folder failed, it has been already blocked!"));
         break;
     default:
         break;

@@ -6255,6 +6255,11 @@ run start-pulseaudio-x11 manually.</source>
         <source>Add blocked folder failed, its parent dir is exist!</source>
         <translation>添加文件夹失败，父文件夹已被屏蔽！</translation>
     </message>
+    <message>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="350"/>
+        <source>Add blocked folder failed, it has been already blocked!</source>
+        <translation>添加文件夹失败，该文件夹已被屏蔽！</translation>
+    </message>
 </context>
 <context>
     <name>SearchWidget</name>
