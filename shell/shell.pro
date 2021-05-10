@@ -46,8 +46,13 @@ face.path = /usr/share/ukui/
 mo.files += $$PROJECT_ROOTDIR/data/installer-timezones.mo
 mo.path = /usr/share/locale/zh_CN/LC_MESSAGES/
 
-guideCN.files += $$PROJECT_ROOTDIR/data/zh_CN/
-guideCN.path += /usr/share/kylin-user-guide/data/guide/ukui-control-center/
+contains(QMAKE_HOST.arch, sw_64){
+    guideCN.files += $$PROJECT_ROOTDIR/data/zh_CN_SW/zh_CN/
+    guideCN.path += /usr/share/kylin-user-guide/data/guide/ukui-control-center/
+}else{
+    guideCN.files += $$PROJECT_ROOTDIR/data/zh_CN/
+    guideCN.path += /usr/share/kylin-user-guide/data/guide/ukui-control-center/
+}
 
 guideEN.files += $$PROJECT_ROOTDIR/data/en_US/
 guideEN.path += /usr/share/kylin-user-guide/data/guide/ukui-control-center/
