@@ -139,16 +139,22 @@ void Printer::refreshPrinterDevSlot()
     QStringList printer = QPrinterInfo::availablePrinterNames();
 
     for (int num = 0; num < printer.count(); num++) {
+        QStringList env = QProcess::systemEnvironment();
+
+        env << "LANG=en_US.UTF-8";
+
         QProcess *process = new QProcess;
+        process->setEnvironment(env);
         process->start("lpstat -p "+printer.at(num));
         process->waitForFinished();
 
-        QByteArray ba = process->readAllStandardOutput();
+        QString ba = process->readAllStandardOutput();
+        delete process;
         QString printer_stat = QString(ba.data());
         if (printer_stat.contains(printer.at(num), Qt::CaseSensitive)) {
-            if (printer_stat.contains(tr("禁用"),
+            if (printer_stat.contains(tr("disable"),
                                       Qt::CaseSensitive)
-                || printer_stat.contains(tr("正在等待打印机变得可用"), Qt::CaseSensitive)) {
+                || printer_stat.contains(tr("Unplugged or turned off"), Qt::CaseSensitive)) {
                 continue;
             }
         }
