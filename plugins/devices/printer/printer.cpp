@@ -152,9 +152,9 @@ void Printer::refreshPrinterDevSlot()
         delete process;
         QString printer_stat = QString(ba.data());
         if (printer_stat.contains(printer.at(num), Qt::CaseSensitive)) {
-            if (printer_stat.contains(tr("disable"),
+            if (printer_stat.contains("disable",
                                       Qt::CaseSensitive)
-                || printer_stat.contains(tr("Unplugged or turned off"), Qt::CaseSensitive)) {
+                || printer_stat.contains("Unplugged or turned off", Qt::CaseSensitive)) {
                 continue;
             }
         }
