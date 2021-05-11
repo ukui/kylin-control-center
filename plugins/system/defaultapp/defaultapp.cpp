@@ -68,7 +68,11 @@ QWidget *DefaultApp::get_plugin_ui() {
 
         initUI();
         connectToServer();
-
+#ifdef __sw_64__
+        ui->ResetBtn->show();
+#else
+        ui->ResetBtn->hide();
+#endif
         connect(ui->ResetBtn, SIGNAL(clicked(bool)), this, SLOT(resetDefaultApp()));
     }
     return pluginWidget;
