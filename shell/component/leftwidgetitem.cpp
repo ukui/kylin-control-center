@@ -35,7 +35,6 @@ LeftWidgetItem::LeftWidgetItem(QWidget *parent) :
     iconLabel = new QLabel(widget);
 
     textLabel = new QLabel(widget);
-    textLabel->setMaximumWidth(100);
     QSizePolicy policy1 = textLabel->sizePolicy();
     policy1.setHorizontalPolicy(QSizePolicy::Fixed);
     policy1.setVerticalPolicy(QSizePolicy::Fixed);
@@ -76,7 +75,7 @@ void LeftWidgetItem::setLabelPixmap(QString filename, QString icoName, QString c
     this->icoName = icoName;
 
     QPixmap pix = loadSvg(filename, color);
-    iconLabel->setFixedSize(pix.size());
+    iconLabel->setFixedSize(24,24);//使用pix.size()时，多倍显示(200%)会有问题
     iconLabel->setPixmap(pix);
 }
 
@@ -171,6 +170,7 @@ QPixmap LeftWidgetItem::drawSymbolicColoredPixmap(const QPixmap &source, QString
 }
 
 void LeftWidgetItem::resizeEvent(QResizeEvent *event) {
+    this->textLabel->setFixedWidth(this->width() - 40);
     changedLabelSlot();
     QWidget::resizeEvent(event);
 }
