@@ -752,7 +752,7 @@ void MainWindow::initStyleSheet() {
     if (QIcon::hasThemeIcon("ukui-control-center"))
         panelicon = QIcon::fromTheme("ukui-control-center");
 
-    this->setWindowIcon(panelicon);
+    qApp->setWindowIcon(panelicon);
     this->setWindowTitle(tr("Settings"));
 
     // 中部内容区域
