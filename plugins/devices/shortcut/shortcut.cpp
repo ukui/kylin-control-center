@@ -413,6 +413,7 @@ void Shortcut::buildCustomItem(KeyEntry *nkeyEntry)
     QFontMetrics fm(ft);
     QString nameStr = fm.elidedText(nkeyEntry->nameStr, Qt::ElideRight, 300);
     nameLabel->setText(nameStr);
+    nameLabel->setToolTip(nkeyEntry->nameStr);
 
     bindingLabel->setText(nkeyEntry->bindingStr);
     bindingLabel->setFixedWidth(240);
