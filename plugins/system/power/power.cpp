@@ -230,13 +230,20 @@ void Power::setupComponent() {
     ui->closeComboBox->insertItem(7, closeStringList.at(7), QVariant::fromValue(120));
 
     // 合盖
-    closeLidStringList << tr("nothing") << tr("blank") << tr("suspend") << tr("hibernate") << tr("shutdown");
-    ui->closeLidCombo->insertItem(0, closeLidStringList.at(0), "nothing");
-    ui->closeLidCombo->insertItem(1, closeLidStringList.at(1), "blank");
-    ui->closeLidCombo->insertItem(2, closeLidStringList.at(2), "suspend");
-    ui->closeLidCombo->insertItem(3, closeLidStringList.at(3), "hibernate");
-    ui->closeLidCombo->insertItem(4, closeLidStringList.at(4), "shutdown");
-
+    if (!Utils::isWayland()){
+        closeLidStringList << tr("nothing") << tr("blank") << tr("suspend") << tr("hibernate") << tr("shutdown");
+        ui->closeLidCombo->insertItem(0, closeLidStringList.at(0), "nothing");
+        ui->closeLidCombo->insertItem(1, closeLidStringList.at(1), "blank");
+        ui->closeLidCombo->insertItem(2, closeLidStringList.at(2), "suspend");
+        ui->closeLidCombo->insertItem(3, closeLidStringList.at(3), "hibernate");
+        ui->closeLidCombo->insertItem(4, closeLidStringList.at(4), "shutdown");
+     } else {
+        closeLidStringList << tr("nothing") << tr("blank") << tr("suspend") << tr("shutdown");
+        ui->closeLidCombo->insertItem(0, closeLidStringList.at(0), "nothing");
+        ui->closeLidCombo->insertItem(1, closeLidStringList.at(1), "blank");
+        ui->closeLidCombo->insertItem(2, closeLidStringList.at(2), "suspend");
+        ui->closeLidCombo->insertItem(3, closeLidStringList.at(3), "shutdown");
+    }
     // 使用电池时屏幕变暗
     darkenStringList << tr("never") << tr("1 min") << tr("5 min") << tr("10 min") << tr("20 min");
     ui->darkenCombo->insertItem(0, darkenStringList.at(0), QVariant::fromValue(0));
@@ -391,7 +398,8 @@ void Power::setupConnect() {
     });
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    connect(ui->darkenCombo,static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index) {
+
+    connect(ui->darkenCombo,static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
 #else
     connect(ui->darkenCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
 #endif
