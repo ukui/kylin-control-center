@@ -33,15 +33,14 @@
 #include <QGSettings/QGSettings>
 #include "SwitchButton/switchbutton.h"
 
-const QByteArray kVinoSchemas    = "org.gnome.Vino";
-const QString kVinoViewOnlyKey   = "view-only";
-const QString kVinoPromptKey     = "prompt-enabled";
+const QByteArray kVinoSchemas = "org.gnome.Vino";
+const QString kVinoViewOnlyKey = "view-only";
+const QString kVinoPromptKey = "prompt-enabled";
 const QString kAuthenticationKey = "authentication-methods";
-const QString kVncPwdKey         = "vnc-password";
+const QString kVncPwdKey = "vnc-password";
 
-const QByteArray kUkccVnoSchmas  = "org.ukui.control-center.vino";
-const QString kUkccPromptKey     = "remote";
-
+const QByteArray kUkccVnoSchmas = "org.ukui.control-center.vino";
+const QString kUkccPromptKey = "remote";
 
 enum RequestPwd {
     NOPWD,

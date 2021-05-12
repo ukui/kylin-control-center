@@ -108,7 +108,8 @@ void ShareMain::initUI()
     mPwdBtn = new SwitchButton(this);
     mPwdsLabel = new QLabel(tr("Require user to enter this password: "), this);
 
-    mHintLabel = new QLabel(tr("Password can not be blank"), this);
+    // mHintLabel = new QLabel(tr("Password can not be blank"), this);
+    mHintLabel = new QLabel(this);
     mHintLabel->setStyleSheet("color:red;");
 
     mPwdLineEdit = new QLineEdit(this);
@@ -153,12 +154,20 @@ void ShareMain::initEnableStatus()
     bool isShared = mVinoGsetting->get(kVinoViewOnlyKey).toBool();
     bool secPwd = mVinoGsetting->get(kVinoPromptKey).toBool();
     QString pwd = mVinoGsetting->get(kAuthenticationKey).toString();
+    QString secpwd = mVinoGsetting->get(kVncPwdKey).toString();
 
     mAccessBtn->setChecked(secPwd);
     mViewBtn->setChecked(!isShared);
     if (pwd == "vnc") {
         mPwdBtn->setChecked(true);
         mHintLabel->setVisible(true);
+        mPwdLineEdit->setText(QByteArray::fromBase64(secpwd.toLatin1()));
+
+        if (secpwd == NULL) {
+            mHintLabel->setText(tr("Password can not be blank"));
+        } else if (QByteArray::fromBase64(secpwd.toLatin1()).length() == 8) {
+            mHintLabel->setText(tr("Password length must be less than or equal to 8"));
+        }
     } else {
         mPwdBtn->setChecked(false);
         mPwdLineEdit->setVisible(false);
@@ -240,9 +249,12 @@ void ShareMain::pwdInputSlot(const QString &pwd)
         QByteArray text = pwd.toLocal8Bit();
         QByteArray secPwd = text.toBase64();
         mVinoGsetting->set(kVncPwdKey, secPwd);
-    } else if (pwd.isEmpty()) {
+    } else if (pwd.isEmpty() && mPwdLineEdit->text().isEmpty()) {
         mHintLabel->setText(tr("Password can not be blank"));
         mHintLabel->setVisible(true);
+        QByteArray text = pwd.toLocal8Bit();
+        QByteArray secPwd = text.toBase64();
+        mVinoGsetting->set(kVncPwdKey, secPwd);
     } else {
         mHintLabel->setText(tr("Password length must be less than or equal to 8"));
         mHintLabel->setVisible(true);
