@@ -820,6 +820,7 @@ void Widget::outputAdded(const KScreen::OutputPtr &output)
 
     if (!mFirstLoad) {
         QTimer::singleShot(2000, this, [=] {
+            mainScreenButtonSelect(ui->primaryCombo->currentIndex());
             mUnifyButton->setChecked(isCloneMode());
         });
     }
@@ -862,6 +863,7 @@ void Widget::outputRemoved(int outputId)
     mUnifyButton->blockSignals(true);
     mUnifyButton->setChecked(mConfig->connectedOutputs().count() > 1);
     mUnifyButton->blockSignals(false);
+    mainScreenButtonSelect(ui->primaryCombo->currentIndex());
 }
 
 void Widget::primaryOutputSelected(int index)
