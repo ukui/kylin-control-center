@@ -756,6 +756,18 @@ bool MainDialog::eventFilter(QObject *w, QEvent *e) {
                 if (keyEvent->matches(QKeySequence::Paste)) {   
                     return true;   
                 }   
+                if (keyEvent->matches(QKeySequence::Cut)) {   
+                    return true;   
+                }   
+                if (keyEvent->matches(QKeySequence::Copy)) {   
+                    return true;   
+                }   
+                if (keyEvent->matches(QKeySequence::Undo)) {   
+                    return true;   
+                }   
+                if (keyEvent->matches(QKeySequence::Redo)) {   
+                    return true;   
+                }   
             }   
             if (e->type() == QEvent::MouseButtonRelease) {   
                 QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(e);   
