@@ -109,11 +109,12 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
             m_itemList->get_item(i)->get_swbtn()->setDisabledFlag(false);
         }
     }
+    
+    layoutUI();
+    dbusInterface();
     m_checkTimer->setSingleShot(true);
     m_checkTimer->setInterval(500);
     m_checkTimer->start();
-    layoutUI();
-    dbusInterface();
 
     QFile tokenFile(QDir::homePath() + "/.cache/kylinId/token");
     if (tokenFile.exists() && tokenFile.size() > 1) {
