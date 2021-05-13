@@ -172,6 +172,7 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     //登录错误提示
     m_loginCodeStatusTips = m_loginDialog->get_tips_code();
     m_loginTips = m_loginDialog->get_tips_pass();
+    m_loginPassLineEdit ->setContextMenuPolicy (Qt::NoContextMenu);
 
     //注册输入提示
     //m_errorPassTips = m_passDialog->get_tips();
@@ -750,6 +751,18 @@ bool MainDialog::eventFilter(QObject *w, QEvent *e) {
 
                // setshow(m_stackedWidget);
             }
+            if (e->type() == QEvent::KeyPress) {   
+                QKeyEvent *keyEvent = static_cast<QKeyEvent *>(e);   
+                if (keyEvent->matches(QKeySequence::Paste)) {   
+                    return true;   
+                }   
+            }   
+            if (e->type() == QEvent::MouseButtonRelease) {   
+                QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(e);   
+                if (mouseEvent->button() == Qt::MidButton) {   
+                    return true;   
+                }   
+            }   
         }
         if (w ==m_loginAccountLineEdit) {
             if (e->type() == QEvent::FocusIn && !m_loginTips->isHidden()) {
