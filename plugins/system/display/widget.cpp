@@ -1163,7 +1163,6 @@ void Widget::save()
                 writeFile(mDir % mPrevConfig->connectedOutputsHash());
             });
         } else {
-            mPrevConfig = config->clone();
             writeScreenXml();
         }
     });
