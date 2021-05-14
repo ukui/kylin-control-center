@@ -152,7 +152,7 @@ private:
     NetDetail          *mLanDetail;
 
     QList<ActiveConInfo> mActiveInfo;
-
+    QString             prefreChan;
 private:
     int         setSignal(QString lv);
     QStringList execGetLanList();
@@ -170,10 +170,10 @@ private:
     void        setNetDetailVisible();                              // 设置网络刷新状态
     QString     wifiIcon(bool isLock, int strength);
     QList<QVariantMap> getDbusMap(const QDBusMessage &dbusMessage);
-
+    
 private slots:
     void wifiSwitchSlot(bool status);
-    void getWifiList();
+    void getNetList();
     void netPropertiesChangeSlot(QMap<QString, QVariant> property);
     void netDetailSlot(QString netName);
 

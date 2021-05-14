@@ -58,6 +58,7 @@ NetConnect::~NetConnect() {
         delete ui;
         ui = nullptr;
     }
+    delete m_interface;
 }
 
 QString NetConnect::get_plugin_name() {
@@ -76,6 +77,9 @@ QWidget *NetConnect::get_plugin_ui() {
         pluginWidget = new QWidget;
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
+        
+      
+      = new QTimer();
         qDBusRegisterMetaType<QVector<QStringList>>();
         m_interface = new QDBusInterface("com.kylin.network", "/com/kylin/network",
                                          "com.kylin.network",
@@ -107,7 +111,6 @@ void NetConnect::initTitleLabel() {
 
 void NetConnect::initSearchText() {
     ui->detailBtn->setText(tr("Network settings"));
-
     //~ contents_path /netconnect/Netconnect Status
     ui->titleLabel->setText(tr("Netconnect Status"));
     //~ contents_path /netconnect/open wifi
@@ -128,12 +131,12 @@ void NetConnect::initComponent() {
     mWlanDetail->setVisible(false);
 
     // 接收到系统创建网络连接的信号时刷新可用网络列表
-    //QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager/Settings"), "org.freedesktop.NetworkManager.Settings", "NewConnection", this, SLOT(getWifiList(void)));
+    QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager/Settings"), "org.freedesktop.NetworkManager.Settings", "NewConnection", this, SLOT(getNetList(void)));
     // 接收到系统删除网络连接的信号时刷新可用网络列表
-    //QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager/Settings"), "org.freedesktop.NetworkManager.Settings", "ConnectionRemoved", this, SLOT(getNetList(void)));
+    QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager/Settings"), "org.freedesktop.NetworkManager.Settings", "ConnectionRemoved", this, SLOT(getNetList(void)));
     // 接收到系统更改网络连接属性时把判断是否已刷新的bool值置为false
     QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager"), "org.freedesktop.NetworkManager", "PropertiesChanged", this, SLOT(netPropertiesChangeSlot(QMap<QString,QVariant>)));
-    connect(m_interface, SIGNAL(getWifiListFinished()), this, SLOT(getWifiList()));
+    connect(m_interface, SIGNAL(getWifiListFinished()), this, SLOT(getNetList()));
 
     connect(ui->RefreshBtn, &QPushButton::clicked, this, [=](bool checked) {
         Q_UNUSED(checked)
@@ -147,7 +150,6 @@ void NetConnect::initComponent() {
         if (m_interface) {
             m_interface->call("requestRefreshWifiList");
         }
-//        getNetList();
     });
 
     connect(ui->detailBtn, &QPushButton::clicked, this, [=](bool checked) {
@@ -183,7 +185,7 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
     if (!hasNet || Utils::isWayland()) {
         deviceItem = new HoverBtn(netName, false, pluginWidget);
     } else {
-        deviceItem = new HoverBtn(netName, true, pluginWidget);
+        deviceItem = new HoverBtn(netName, false, pluginWidget);
     }
 
     deviceItem->mPitLabel->setText(netName);
@@ -193,7 +195,6 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
     } else {
         deviceItem->mDetailLabel->setText(tr("No net"));
     }
-
     QIcon searchIcon = QIcon::fromTheme(iconPath);
     deviceItem->mPitIcon->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(24, 24))));
 
@@ -206,7 +207,8 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
 
     ui->statusLayout->addWidget(deviceItem);
 }
-void NetConnect::getWifiList() {
+
+void NetConnect::getNetList() {
     wifiBtn->blockSignals(true);
     wifiBtn->setChecked(getInitStatus());
     wifiBtn->blockSignals(false);
@@ -262,16 +264,13 @@ void NetConnect::netPropertiesChangeSlot(QMap<QString, QVariant> property) {
         if (m_interface) {
             m_interface->call("requestRefreshWifiList");
         }
-//        QTimer::singleShot(2800, this, SLOT(getNetList()));
     }
 }
 
 void NetConnect::netDetailSlot(QString netName) {
     foreach (ActiveConInfo netInfo, mActiveInfo) {
         if (!netInfo.strConName.compare(netName, Qt::CaseInsensitive)) {
-
             if (!netInfo.strConType.compare("802-3-ethernet", Qt::CaseInsensitive)) {
-
                 mIsLanVisible = !mIsLanVisible;
                 mLanDetail->setSSID(netInfo.strConName);
                 mLanDetail->setProtocol(netInfo.strConType);
@@ -390,7 +389,6 @@ QStringList NetConnect::execGetLanList() {
 }
 
 void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList getlanList) {
-
     clearContent();
     mActiveInfo.clear();
     getActiveConInfo(mActiveInfo);
@@ -414,12 +412,12 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
         QString lockType;
         QString chan;
         QString freq;
+        chan = geiWifiChan();
         for (int i = 0; i < getwifislist.size(); ++i) {
             if (getwifislist.at(i).at(0) == actWifiName) {
                 wname = getwifislist.at(i).at(0);
                 lockType = getwifislist.at(i).at(2);
                 freq = getwifislist.at(i).at(3) + " MHz";
-                chan = geiWifiChan();
                 mActiveInfo[index].strSecType = (lockType == "--" ? tr("None") : lockType);
                 mActiveInfo[index].strChan = chan;
                 mActiveInfo[index].strHz = freq;
@@ -490,6 +488,7 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
 
 QString NetConnect::geiWifiChan() {
     QProcess *lanPro = new QProcess(this);
+    bool isHas = false;
     QStringList slist;
     lanPro->start("nmcli -f in-use,chan device wifi");
     lanPro->waitForFinished();
@@ -501,9 +500,20 @@ QString NetConnect::geiWifiChan() {
     for (int i = 0; i < slist.length(); i++) {
         QString str = slist.at(i);
         if (str.contains("*")) {
-            str.remove("*");
-            return str;
+            isHas = true;
         }
+    }
+    if (isHas) {
+        for (int i = 0; i < slist.length(); i++) {
+            QString str = slist.at(i);
+            if (str.contains("*")) {
+                str.remove("*");
+                prefreChan = str;
+                return str;
+            }
+        }
+    } else {
+        return prefreChan;
     }
 }
 bool NetConnect::getInitStatus() {
@@ -654,7 +664,6 @@ void NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
 
     while (!dbusArgs.atEnd()) {
         dbusArgs >> objPath;
-
         QDBusInterface interfacePro("org.freedesktop.NetworkManager",
                                     objPath.path(),
                                     "org.freedesktop.NetworkManager.Connection.Active",
