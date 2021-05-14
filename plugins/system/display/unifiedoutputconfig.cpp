@@ -13,6 +13,7 @@
 #include <QFormLayout>
 #include <QStyledItemDelegate>
 #include <QFile>
+#include <QVector>
 
 #include <KF5/KScreen/kscreen/output.h>
 #include <KF5/KScreen/kscreen/config.h>
@@ -92,8 +93,6 @@ void UnifiedOutputConfig::initUi()
     connect(mResolution, &ResolutionSlider::resolutionChanged,
             this, &UnifiedOutputConfig::slotResolutionChanged);
 
-    slotResolutionChanged(mResolution->currentResolution());
-
     // 方向下拉框
     mRotation = new QComboBox(this);
 
@@ -160,7 +159,9 @@ void UnifiedOutputConfig::initUi()
     freshFrame->setMinimumSize(552, 50);
     freshFrame->setMaximumSize(960, 50);
 
-    mRefreshRate->setEnabled(false);
+    slotResolutionChanged(mResolution->currentResolution());
+    connect(mRefreshRate, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated),
+        this, &UnifiedOutputConfig::slotRefreshRateChanged);
 }
 
 KScreen::OutputPtr UnifiedOutputConfig::createFakeOutput()
@@ -226,7 +227,10 @@ void UnifiedOutputConfig::slotResolutionChanged(const QSize &size)
     if (!size.isValid()) {
         return;
     }
-
+    QVector<QString>Vrefresh;
+    for (int i = mRefreshRate->count(); i >= 2; --i) {
+            mRefreshRate->removeItem(i - 1);
+    }
     Q_FOREACH (const KScreen::OutputPtr &clone, mClones) {
         const QString &id = findBestMode(clone, size);
         if (id.isEmpty()) {
@@ -236,8 +240,67 @@ void UnifiedOutputConfig::slotResolutionChanged(const QSize &size)
 
         clone->setCurrentModeId(id);
         clone->setPos(QPoint(0, 0));
+
+        QList<KScreen::ModePtr> modes;
+        Q_FOREACH (const KScreen::ModePtr &mode, clone->modes()) {
+            if (mode->size() == size) {
+                modes << mode;
+            }
+        }
+
+        QVector<QString>VrefreshTemp;
+        for (int i = 0, total = modes.count(); i < total; ++i) {
+           const KScreen::ModePtr mode = modes.at(i);
+
+           bool alreadyExisted = false; //判断该显示器的刷新率是否有重复的，确保同一刷新率在一个屏幕上只出现一次
+           for (int j = 0; j < VrefreshTemp.size(); ++j) {
+               if (tr("%1 Hz").arg(QLocale().toString(mode->refreshRate())) == VrefreshTemp[j]) {
+                   alreadyExisted = true;
+                   break;
+               }
+           }
+           if (alreadyExisted == false) {   //不添加重复的项
+               VrefreshTemp.append(tr("%1 Hz").arg(QLocale().toString(mode->refreshRate())));
+           }
+        }
+
+        for (int i = 0; i < VrefreshTemp.size(); ++i) {
+            Vrefresh.append(VrefreshTemp[i]);
+        }
     }
 
+    for (int i = 0; i< Vrefresh.size(); ++i) {
+        if (Vrefresh.count(Vrefresh[i]) == mClones.size()) { //该刷新率出现次数等于屏幕数，即每个屏幕都有该刷新率
+            bool existFlag = false;
+            for (int j = 0; j< mRefreshRate->count(); ++j) {  //已经存在就不再添加
+                if (Vrefresh[i] == mRefreshRate->itemText(j)) {
+                    existFlag == true;
+                    break;
+                }
+            }
+            if (existFlag == false) {  //不存在添加到容器中
+               // QString temp = Vrefresh[i];
+                mRefreshRate->addItem(Vrefresh[i]);
+            }
+        }
+    }
+    //mRefreshRate->addItem(tr("%1 Hz").arg(QLocale().toString(59.963)));
+    Q_EMIT changed();
+}
+
+void UnifiedOutputConfig::slotRefreshRateChanged(int index)
+{
+    if (index == 0) {
+        index = 1;
+    }
+    Q_FOREACH (const KScreen::OutputPtr &clone, mClones) {
+        Q_FOREACH (const KScreen::ModePtr &mode, clone->modes()) {
+            if (mode->size() == mResolution->currentResolution() && \
+                    tr("%1 Hz").arg(QLocale().toString(mode->refreshRate())) == mRefreshRate->itemText(index)) {
+                clone->setCurrentModeId(mode->id());
+            }
+        }
+    }
     Q_EMIT changed();
 }
 

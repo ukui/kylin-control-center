@@ -25,6 +25,7 @@ private Q_SLOTS:
 
     void slotRestoreResoltion();
     void slotRestoreRatation();
+    void slotRefreshRateChanged(int index);
 
 private:
     void initUi() override;
