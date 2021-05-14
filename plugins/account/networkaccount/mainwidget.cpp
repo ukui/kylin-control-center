@@ -1258,9 +1258,9 @@ void MainWidget::showDesktopNotify(const QString &message)
                          "org.freedesktop.Notifications",
                          QDBusConnection::sessionBus());
     QList<QVariant> args;
-    args<<(QCoreApplication::applicationName())
+    args<<(tr("Kylin Cloud Account"))
     <<((unsigned int) 0)
-    <<QString("/usr/share/icons/ukui-icon-theme-default/scalable/apps/kylin-cloud-account.svg")
+    <<QString("kylin-cloud-account")
     <<tr("Cloud ID desktop message") //显示的是什么类型的信息
     <<message //显示的具体信息
     <<QStringList()
