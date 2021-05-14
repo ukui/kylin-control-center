@@ -6,6 +6,7 @@
 #include <QProcess>
 #include <QDebug>
 
+
 class NetconnectWork : public QObject
 {
     Q_OBJECT
@@ -18,9 +19,8 @@ public:
 
 private:
     bool getWifiIsOpen();
-
 Q_SIGNALS:
-    void wifiGerneral(QStringList wifiList);
+    void success();
 };
 
 #endif // NETCONNECTWORK_H

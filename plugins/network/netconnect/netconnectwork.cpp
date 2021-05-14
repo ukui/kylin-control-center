@@ -2,6 +2,7 @@
 
 #include <QDBusInterface>
 #include <QDBusReply>
+#include <QTime>
 
 NetconnectWork::NetconnectWork()
 {
@@ -13,20 +14,10 @@ NetconnectWork::~NetconnectWork() {
 }
 
 void NetconnectWork::run() {
-    if (!getWifiIsOpen()) {
-
-        emit wifiGerneral(QStringList());
-        return;
+    QTime dieTime = QTime::currentTime().addMSecs(3500);
+    while( QTime::currentTime() < dieTime ) {
     }
-    QProcess *wifiPro = new QProcess(this);
-    wifiPro->start("nmcli -f signal,security,chan,freq,ssid device wifi");
-    wifiPro->waitForFinished();
-    QString shellOutput = "";
-    QString output = wifiPro->readAll();
-    shellOutput += output;
-    QStringList slist = shellOutput.split("\n");
-
-    emit wifiGerneral(slist);
+    emit success();
 }
 
 bool NetconnectWork::getWifiIsOpen() {

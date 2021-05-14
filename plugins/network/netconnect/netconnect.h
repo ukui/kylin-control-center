@@ -127,6 +127,7 @@ private:
     int                pluginType;
     QWidget            *pluginWidget;
 
+
     QDBusInterface     *m_interface = nullptr;
     SwitchButton       *wifiBtn;
 
@@ -152,6 +153,7 @@ private:
     NetDetail          *mLanDetail;
 
     QList<ActiveConInfo> mActiveInfo;
+    QTimer             *refreshTimer;
     QString             prefreChan;
 private:
     int         setSignal(QString lv);
@@ -170,13 +172,13 @@ private:
     void        setNetDetailVisible();                              // 设置网络刷新状态
     QString     wifiIcon(bool isLock, int strength);
     QList<QVariantMap> getDbusMap(const QDBusMessage &dbusMessage);
-    
 private slots:
     void wifiSwitchSlot(bool status);
     void getNetList();
     void netPropertiesChangeSlot(QMap<QString, QVariant> property);
     void netDetailSlot(QString netName);
-
+    void refreshNetInfoTimerSlot();
+    void refreshNetInfoSlot();
 signals:
     void refresh();
 };

@@ -77,7 +77,7 @@ QWidget *NetConnect::get_plugin_ui() {
         pluginWidget = new QWidget;
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
-        
+        refreshTimer = new QTimer();
         qDBusRegisterMetaType<QVector<QStringList>>();
         m_interface = new QDBusInterface("com.kylin.network", "/com/kylin/network",
                                          "com.kylin.network",
@@ -135,6 +135,8 @@ void NetConnect::initComponent() {
     // 接收到系统更改网络连接属性时把判断是否已刷新的bool值置为false
     QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager"), "org.freedesktop.NetworkManager", "PropertiesChanged", this, SLOT(netPropertiesChangeSlot(QMap<QString,QVariant>)));
     connect(m_interface, SIGNAL(getWifiListFinished()), this, SLOT(getNetList()));
+    connect(refreshTimer, SIGNAL(timeout()), this, SLOT(refreshNetInfoTimerSlot()));
+    connect(m_interface,SIGNAL(configurationChanged()), this, SLOT(refreshNetInfoSlot()));
 
     connect(ui->RefreshBtn, &QPushButton::clicked, this, [=](bool checked) {
         Q_UNUSED(checked)
@@ -175,6 +177,38 @@ void NetConnect::initComponent() {
     ui->verticalLayout_2->setContentsMargins(0, 0, 32, 0);
 }
 
+void NetConnect::refreshNetInfoTimerSlot() {
+    refreshTimer->start(500);
+}
+
+void NetConnect::refreshNetInfoSlot() {
+    refreshTimer->stop();
+    pThread = new QThread;
+    pNetWorker = new NetconnectWork;
+    pNetWorker->moveToThread(pThread);
+
+    connect(pThread, &QThread::started, pNetWorker, &NetconnectWork::run);
+    connect(pNetWorker, &NetconnectWork::success,this, [&] () {
+        emit ui->RefreshBtn->clicked(true);
+        pThread->quit();
+        pThread->wait();
+    });
+
+    connect(pThread, &QThread::finished, this, [=] {
+        pNetWorker->deleteLater();
+    });
+
+    connect(pNetWorker, &NetconnectWork::destroyed, pThread, &QThread::deleteLater);
+
+    pThread->start();
+
+    if (mLanDetail->isVisible()) {
+        mLanDetail->setVisible(false);
+    } else if (mWlanDetail->isVisible()) {
+        mWlanDetail->setVisible(false);
+    }
+
+}
 void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
 
     bool hasNet = netName.compare("No Net", Qt::CaseInsensitive);
@@ -256,7 +290,6 @@ void NetConnect::getNetList() {
 }
 
 void NetConnect::netPropertiesChangeSlot(QMap<QString, QVariant> property) {
-
     if (property.keys().contains("WirelessEnabled")) {
         setWifiBtnDisable();
         if (m_interface) {
@@ -645,11 +678,11 @@ void NetConnect::wifiSwitchSlot(bool status) {
 void NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
     ActiveConInfo activeNet;
 
+
     QDBusInterface interface( "org.freedesktop.NetworkManager",
                               "/org/freedesktop/NetworkManager",
                               "org.freedesktop.DBus.Properties",
                               QDBusConnection::systemBus() );
-
     QDBusMessage result = interface.call("Get", "org.freedesktop.NetworkManager", "ActiveConnections");
     QList<QVariant> outArgs = result.arguments();
     QVariant first = outArgs.at(0);
@@ -666,7 +699,6 @@ void NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
                                     objPath.path(),
                                     "org.freedesktop.NetworkManager.Connection.Active",
                                     QDBusConnection::systemBus());
-
         QVariant replyType = interfacePro.property("Type");
         QVariant replyUuid = interfacePro.property("Uuid");
         QVariant replyId   = interfacePro.property("Id");
@@ -681,7 +713,7 @@ void NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
 
         // IPV4信息
         QDBusInterface IPV4ifc("org.freedesktop.NetworkManager",
-                               replyIPV4Path,
+                               replyIpv4Path,
                                "org.freedesktop.DBus.Properties",
                                QDBusConnection::systemBus());
 
@@ -694,7 +726,6 @@ void NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
         }
 
         QDBusMessage replyIPV4Dns = IPV4ifc.call("Get", "org.freedesktop.NetworkManager.IP4Config", "NameserverData");
-
         QList<QVariantMap> datasIpv4Dns = getDbusMap(replyIPV4Dns);
         if (!datasIpv4Dns.isEmpty()) {
             activeNet.strIPV4Dns = datasIpv4Dns.at(0).value("address").toString();
@@ -710,12 +741,12 @@ void NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
         activeNet.strIPV4GateWay = ipv4Gt.toString();
 
         // IPV6信息
-        QString replyIPV6Path = interfacePro.property("Ip6Config")
+        QString replyIpv6Path = interfacePro.property("Ip6Config")
                 .value<QDBusObjectPath>()
                 .path();
 
         QDBusInterface IPV6ifc("org.freedesktop.NetworkManager",
-                               replyIPV6Path,
+                               replyIpv6Path,
                                "org.freedesktop.DBus.Properties",
                                QDBusConnection::systemBus());
         QDBusMessage replyIPV6 = IPV6ifc.call("Get", "org.freedesktop.NetworkManager.IP6Config", "AddressData");
