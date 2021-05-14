@@ -235,7 +235,7 @@ void Power::setupComponent() {
     ui->closeLidCombo->insertItem(1, closeLidStringList.at(1), "blank");
     ui->closeLidCombo->insertItem(2, closeLidStringList.at(2), "suspend");
     ui->closeLidCombo->insertItem(3, closeLidStringList.at(3), "shutdown");
-    closeLidStringList << tr("nothing") << tr("blank") << tr("suspend") << tr("hibernate") << tr("shutdown");
+    closeLidStringList << tr("nothing") << tr("blank") << tr("suspend") << tr("shutdown");
     if (!Utils::isWayland()){
         closeLidStringList << tr("hibernate");
         ui->closeLidCombo->insertItem(4, closeLidStringList.at(4), "hibernate");
