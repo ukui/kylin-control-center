@@ -140,7 +140,8 @@ void QMLScreen::removeOutput(int outputId)
             QMLOutput *qmlOutput = m_outputMap.take(output);
             qmlOutput->setParentItem(nullptr);
             qmlOutput->setParent(nullptr);
-            qmlOutput->deleteLater();
+            // TODO:bug51346
+            // qmlOutput->deleteLater();
             return;
         }
     }

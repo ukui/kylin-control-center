@@ -74,8 +74,6 @@ void QMLOutput::setOutputPtr(const KScreen::OutputPtr &output)
             this, &QMLOutput::updateRootProperties);
     connect(m_output.data(), &KScreen::Output::currentModeIdChanged,
             this, &QMLOutput::currentModeIdChanged);
-//    connect(m_output.data(), &KScreen::Output::scaleChanged,
-//            this, &QMLOutput::currentModeIdChanged);
 }
 
 QMLScreen *QMLOutput::screen() const
