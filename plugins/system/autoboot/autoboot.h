@@ -97,7 +97,6 @@ private:
     bool mFirstLoad;
 
     QGSettings *mQtSettings;
-    QGSettings *mGTKSettings;
 
 public slots:
     void checkbox_changed_cb(QString bname);

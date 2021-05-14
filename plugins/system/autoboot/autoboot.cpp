@@ -120,9 +120,7 @@ const QString AutoBoot::name() const
 void AutoBoot::setupGSettings()
 {
     const QByteArray id(THEME_QT_SCHEMA);
-    const QByteArray iid(THEME_GTK_SCHEMA);
     mQtSettings = new QGSettings(id, QByteArray(), this);
-    mGTKSettings = new QGSettings(iid, QByteArray(), this);
 }
 
 void AutoBoot::initAddBtn()
@@ -333,7 +331,6 @@ void AutoBoot::initConnection()
             child->widget()->setParent(nullptr);
             delete child;
         }
-        qDebug()<<"hello";
         initUI();
     });
     connect(dialog, SIGNAL(autoboot_adding_signals(QString,QString,QString,QString,QString)),
