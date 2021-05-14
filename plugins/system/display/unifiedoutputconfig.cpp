@@ -269,22 +269,20 @@ void UnifiedOutputConfig::slotResolutionChanged(const QSize &size)
         }
     }
 
-    for (int i = 0; i< Vrefresh.size(); ++i) {
+    for (int i = 0; i < Vrefresh.size(); ++i) {
         if (Vrefresh.count(Vrefresh[i]) == mClones.size()) { //该刷新率出现次数等于屏幕数，即每个屏幕都有该刷新率
             bool existFlag = false;
-            for (int j = 0; j< mRefreshRate->count(); ++j) {  //已经存在就不再添加
+            for (int j = 0; j < mRefreshRate->count(); ++j) {  //已经存在就不再添加
                 if (Vrefresh[i] == mRefreshRate->itemText(j)) {
-                    existFlag == true;
+                    existFlag = true;
                     break;
                 }
             }
             if (existFlag == false) {  //不存在添加到容器中
-               // QString temp = Vrefresh[i];
                 mRefreshRate->addItem(Vrefresh[i]);
             }
         }
     }
-    //mRefreshRate->addItem(tr("%1 Hz").arg(QLocale().toString(59.963)));
     Q_EMIT changed();
 }
 
