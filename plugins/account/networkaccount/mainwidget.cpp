@@ -332,12 +332,14 @@ void MainWidget::dbusInterface() {
                 m_manTimer->setSingleShot(true);
                 m_manTimer->setInterval(1000);
                 m_manTimer->start();
+                emit isSync(true);
                 return;
             }
             if (localDate == keyList.at(0) || !file.exists()) {
                 m_manTimer->setSingleShot(true);
                 m_manTimer->setInterval(1000);
                 m_manTimer->start();
+                emit isSync(true);
             } else {
                 m_autoSyn->make_itemoff();
                 m_pSettings->setValue("Auto-sync/enable","false");
@@ -366,6 +368,7 @@ void MainWidget::dbusInterface() {
                     m_manTimer->setSingleShot(true);
                     m_manTimer->setInterval(1000);
                     m_manTimer->start();
+                    emit isSync(true);
                 });
                 m_syncDialog->checkOpt();
                 m_syncDialog->show();
@@ -375,6 +378,7 @@ void MainWidget::dbusInterface() {
             m_manTimer->setSingleShot(true);
             m_manTimer->setInterval(1000);
             m_manTimer->start();
+            emit isSync(true);
         }
     });
 }
