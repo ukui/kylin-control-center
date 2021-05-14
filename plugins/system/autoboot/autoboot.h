@@ -28,6 +28,7 @@
 #include "addautoboot.h"
 #include "HoverWidget/hoverwidget.h"
 #include <QtDBus>
+#include <QGSettings>
 
 namespace Ui {
 class AutoBoot;
@@ -45,9 +46,9 @@ public:
 
     QString get_plugin_name() Q_DECL_OVERRIDE;
     int get_plugin_type() Q_DECL_OVERRIDE;
-    QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
+    QWidget *get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
-    const QString name() const  Q_DECL_OVERRIDE;
+    const QString name() const Q_DECL_OVERRIDE;
 
 private:
     void initAddBtn();
@@ -59,29 +60,29 @@ private:
     void del_autoboot_realize(QString bname);
     void connectToServer();
     void initConfig();
+    void setupGSettings();
 
     void _walk_config_dirs();
-    AutoApp _app_new(const char * path);
-    gboolean _key_file_get_boolean(GKeyFile * keyfile, const gchar * key, gboolean defaultvalue);
-    gboolean _key_file_get_shown(GKeyFile * keyfile, const char * currentdesktop);
+    AutoApp _app_new(const char *path);
+    gboolean _key_file_get_boolean(GKeyFile *keyfile, const gchar *key, gboolean defaultvalue);
+    gboolean _key_file_get_shown(GKeyFile *keyfile, const char *currentdesktop);
     bool _stop_autoapp(QString bname);
     bool _delete_autoapp(QString bname);
     bool _enable_autoapp(QString bname, bool status);
     bool _delete_local_autoapp(QString bname);
-    gboolean _key_file_to_file(GKeyFile * keyfile, const gchar * path);
+    gboolean _key_file_to_file(GKeyFile *keyfile, const gchar *path);
     bool _copy_desktop_file_to_local(QString bname);
 
     void clearAutoItem();
-
 
 private:
     Ui::AutoBoot *ui;
 
     QString pluginName;
     int pluginType;
-    QWidget * pluginWidget;
+    QWidget *pluginWidget;
 
-    AddAutoBoot * dialog;
+    AddAutoBoot *dialog;
     QDBusInterface *m_cloudInterface;
 
     QMap<QString, AutoApp> appMaps;
@@ -89,16 +90,20 @@ private:
     QMap<QString, AutoApp> statusMaps;
     QMultiMap<QString, QWidget *> appgroupMultiMaps;
 
-    char * localconfigdir;
+    char *localconfigdir;
 
     HoverWidget *addWgt;
 
     bool mFirstLoad;
 
+    QGSettings *mQtSettings;
+    QGSettings *mGTKSettings;
+
 public slots:
     void checkbox_changed_cb(QString bname);
     void keyChangedSlot(const QString &key);
-    void add_autoboot_realize_slot(QString path, QString name, QString exec, QString comment, QString icon);
+    void add_autoboot_realize_slot(QString path, QString name, QString exec, QString comment,
+                                   QString icon);
 };
 
 #endif // AUTOBOOT_H
