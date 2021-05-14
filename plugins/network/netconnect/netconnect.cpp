@@ -78,8 +78,6 @@ QWidget *NetConnect::get_plugin_ui() {
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
         
-      
-      = new QTimer();
         qDBusRegisterMetaType<QVector<QStringList>>();
         m_interface = new QDBusInterface("com.kylin.network", "/com/kylin/network",
                                          "com.kylin.network",
@@ -185,7 +183,7 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
     if (!hasNet || Utils::isWayland()) {
         deviceItem = new HoverBtn(netName, false, pluginWidget);
     } else {
-        deviceItem = new HoverBtn(netName, false, pluginWidget);
+        deviceItem = new HoverBtn(netName, true, pluginWidget);
     }
 
     deviceItem->mPitLabel->setText(netName);
