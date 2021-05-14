@@ -713,7 +713,7 @@ void NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
 
         // IPV4信息
         QDBusInterface IPV4ifc("org.freedesktop.NetworkManager",
-                               replyIpv4Path,
+                               replyIPV4Path,
                                "org.freedesktop.DBus.Properties",
                                QDBusConnection::systemBus());
 
