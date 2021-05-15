@@ -24,15 +24,15 @@
 #include <QDebug>
 #include <QFileInfo>
 
-//#define DESKTOPPATH "/etc/xdg/autostart/"
+// #define DESKTOPPATH "/etc/xdg/autostart/"
 #define DESKTOPPATH "/usr/share/applications/"
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
 AddAutoBoot::AddAutoBoot(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::AddAutoBoot) {
-
+    ui(new Ui::AddAutoBoot)
+{
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
@@ -41,8 +41,9 @@ AddAutoBoot::AddAutoBoot(QWidget *parent) :
     initConnection();
 }
 
-void AddAutoBoot::resetBeforeClose() {
-    userEditNameFlag    = false;
+void AddAutoBoot::resetBeforeClose()
+{
+    userEditNameFlag = false;
     userEditCommentFlag = false;
     ui->certainBtn->setEnabled(false);
     ui->hintLabel->clear();
@@ -55,7 +56,8 @@ void AddAutoBoot::resetBeforeClose() {
     close();
 }
 
-void AddAutoBoot::paintEvent(QPaintEvent *event) {
+void AddAutoBoot::paintEvent(QPaintEvent *event)
+{
     Q_UNUSED(event);
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
@@ -91,11 +93,12 @@ void AddAutoBoot::paintEvent(QPaintEvent *event) {
 
     // 绘制一个背景
     p.save();
-    p.fillPath(rectPath,palette().color(QPalette::Base));
+    p.fillPath(rectPath, palette().color(QPalette::Base));
     p.restore();
 }
 
-void AddAutoBoot::initStyle() {
+void AddAutoBoot::initStyle()
+{
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
 
     selectFile = "";
@@ -109,8 +112,8 @@ void AddAutoBoot::initStyle() {
     ui->certainBtn->setEnabled(false);
 }
 
-void AddAutoBoot::initConnection() {
-
+void AddAutoBoot::initConnection()
+{
     connect(ui->openBtn, SIGNAL(clicked(bool)), this, SLOT(open_desktop_dir_slots()));
     connect(ui->cancelBtn, SIGNAL(clicked(bool)), this, SLOT(close()));
     connect(ui->execLineEdit, SIGNAL(textEdited(QString)), this, SLOT(execLinEditSlot(QString)));
@@ -119,21 +122,22 @@ void AddAutoBoot::initConnection() {
         resetBeforeClose();
     });
     connect(ui->certainBtn, &QPushButton::clicked, this, [=] {
-        emit autoboot_adding_signals(selectFile, ui->nameLineEdit->text(), mDesktopExec, ui->commentLineEdit->text(), mDesktopIcon);
+        emit autoboot_adding_signals(selectFile, ui->nameLineEdit->text(), mDesktopExec,
+                                     ui->commentLineEdit->text(), mDesktopIcon);
         resetBeforeClose();
     });
 
     connect(ui->nameLineEdit, &QLineEdit::editingFinished, this, [=](){
         if (ui->nameLineEdit->text().isEmpty()) {
             userEditNameFlag = false;
-        } else {        //用户输入了程序名
+        } else {        // 用户输入了程序名
             userEditNameFlag = true;
         }
     });
-    connect(ui->commentLineEdit,&QLineEdit::editingFinished,this,[=](){
+    connect(ui->commentLineEdit, &QLineEdit::editingFinished, this, [=](){
         if (ui->commentLineEdit->text().isEmpty()) {
             userEditCommentFlag = false;
-        } else {        //用户输入了描述
+        } else {        // 用户输入了描述
             userEditCommentFlag = true;
         }
     });
@@ -149,12 +153,14 @@ void AddAutoBoot::initConnection() {
     });
 }
 
-AddAutoBoot::~AddAutoBoot() {
+AddAutoBoot::~AddAutoBoot()
+{
     delete ui;
     ui = nullptr;
 }
 
-void AddAutoBoot::open_desktop_dir_slots() {
+void AddAutoBoot::open_desktop_dir_slots()
+{
     QString filters = tr("Desktop files(*.desktop)");
     QFileDialog fd;
     fd.setDirectory(DESKTOPPATH);
@@ -176,35 +182,48 @@ void AddAutoBoot::open_desktop_dir_slots() {
     QByteArray ba;
     ba = selectedfile.toUtf8();
 
-    //解析desktop文件
-    GKeyFile * keyfile;
-    char *name, * comment;
+    // 解析desktop文件
+    GKeyFile *keyfile;
+    char *name, *comment;
+    bool no_display;
 
     keyfile = g_key_file_new();
-    if (!g_key_file_load_from_file(keyfile, ba.data(), G_KEY_FILE_NONE, NULL)){
-        g_key_file_free (keyfile);
+    if (!g_key_file_load_from_file(keyfile, ba.data(), G_KEY_FILE_NONE, NULL)) {
+        g_key_file_free(keyfile);
         return;
     }
+    no_display = g_key_file_get_boolean(keyfile, G_KEY_FILE_DESKTOP_GROUP,
+                                        G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, FALSE);
+    name = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP,
+                                        G_KEY_FILE_DESKTOP_KEY_NAME, NULL, NULL);
+    comment = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP,
+                                           G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
+    mDesktopExec = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP,
+                                         G_KEY_FILE_DESKTOP_KEY_EXEC, NULL);
+    mDesktopIcon = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP,
+                                         G_KEY_FILE_DESKTOP_KEY_ICON, NULL);
 
-    name = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NAME, NULL, NULL);
-    comment = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
-    mDesktopExec = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_EXEC, NULL);
-    mDesktopIcon = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, NULL);
-
-    if (userEditNameFlag == false) {   //用户输入了程序名，以用户输入为准，否则以自带的为准
+    if (userEditNameFlag == false) {   // 用户输入了程序名，以用户输入为准，否则以自带的为准
         ui->nameLineEdit->setText(QString(name));
     }
 
     ui->execLineEdit->setText(QString(selectedfile));
-    if (userEditCommentFlag == false) {   //用户输入了程序描述，以用户输入为准，否则以自带的为准
+    if (userEditCommentFlag == false) {   // 用户输入了程序描述，以用户输入为准，否则以自带的为准
         ui->commentLineEdit->setText(QString(comment));
     }
 
     emit ui->execLineEdit->textEdited(QString(selectedfile));
+    if (no_display) {
+        ui->hintLabel->setText(tr("desktop file not allowed add"));
+        ui->hintLabel->setAlignment(Qt::AlignCenter);
+        ui->hintLabel->setStyleSheet("color:red;");
+        ui->certainBtn->setEnabled(false);
+    }
     g_key_file_free(keyfile);
 }
 
-void AddAutoBoot::execLinEditSlot(const QString &fileName) {
+void AddAutoBoot::execLinEditSlot(const QString &fileName)
+{
     selectFile = fileName;
     QFileInfo fileInfo(fileName);
     if (fileInfo.isFile() && fileName.endsWith("desktop")) {
@@ -214,27 +233,31 @@ void AddAutoBoot::execLinEditSlot(const QString &fileName) {
         QByteArray ba;
         ba = fileName.toUtf8();
 
-        //解析desktop文件
-        GKeyFile * keyfile;
-        char *name, * comment;
+        // 解析desktop文件
+        GKeyFile *keyfile;
+        char *name, *comment;
 
         keyfile = g_key_file_new();
-        if (!g_key_file_load_from_file(keyfile, ba.data(), G_KEY_FILE_NONE, NULL)){
-            g_key_file_free (keyfile);
+        if (!g_key_file_load_from_file(keyfile, ba.data(), G_KEY_FILE_NONE, NULL)) {
+            g_key_file_free(keyfile);
             return;
         }
 
-        name = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NAME, NULL, NULL);
-        mDesktopExec = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_EXEC, NULL);
-        mDesktopIcon = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, NULL);
-        comment = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
+        name = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP,
+                                            G_KEY_FILE_DESKTOP_KEY_NAME, NULL, NULL);
+        mDesktopExec = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP,
+                                             G_KEY_FILE_DESKTOP_KEY_EXEC, NULL);
+        mDesktopIcon = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP,
+                                             G_KEY_FILE_DESKTOP_KEY_ICON, NULL);
+        comment = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP,
+                                               G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
 
-        if (userEditNameFlag == false) {   //用户输入了程序名，以用户输入为准，否则以自带的为准
+        if (userEditNameFlag == false) {   // 用户输入了程序名，以用户输入为准，否则以自带的为准
             ui->nameLineEdit->setText(QString(name));
         }
 
         ui->execLineEdit->setText(fileName);
-        if (userEditCommentFlag == false) {   //用户输入了程序描述，以用户输入为准，否则以自带的为准
+        if (userEditCommentFlag == false) {   // 用户输入了程序描述，以用户输入为准，否则以自带的为准
             ui->commentLineEdit->setText(QString(comment));
         }
 
