@@ -1402,9 +1402,8 @@ Please authenticate yourself to continue</source>
         <translation>请确保该计算机上至少有一个管理员用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="411"/>
         <source>Standard users can use most software, but cannot install software and change system settings</source>
-        <translation>标准账户可以使用大多数软件，但是不能安装软件和更改系统配置</translation>
+        <translation type="vanished">标准账户可以使用大多数软件，但是不能安装软件和更改系统配置</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="91"/>
@@ -1415,6 +1414,11 @@ Please authenticate yourself to continue</source>
         <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="398"/>
         <source>standard user</source>
         <translation>标准用户</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="411"/>
+        <source>Standard users can use most software, but cannot change system settings</source>
+        <translation>标准账户可以使用大多数软件，但是不能修改系统配置</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/changetypedialog.ui" line="521"/>
@@ -1679,27 +1683,31 @@ Please authenticate yourself to continue</source>
     </message>
     <message>
         <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="526"/>
-        <source>Standard users can use most software, but cannot install the software and 
-change system settings</source>
-        <translation>标准账户可以使用大多数软件，但是不能安装软件和更改系统配置</translation>
+        <source>Standard users can use most software, but cannot change system settings</source>
+        <translation>标准账户可以使用大多数软件，但是不能修改系统配置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="628"/>
+        <source>Standard users can use most software, but cannot install the software and 
+change system settings</source>
+        <translation type="vanished">标准账户可以使用大多数软件，但是不能安装软件和更改系统配置</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="627"/>
         <source>administrator</source>
         <translation>管理员用户</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="641"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="640"/>
         <source>Administrators can make any changes they need</source>
         <translation>管理员账户可以更改任何系统配置，包括安装软件和升级软件</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="716"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="715"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="735"/>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.ui" line="734"/>
         <source>Confirm</source>
         <translation>确定</translation>
     </message>
@@ -1718,6 +1726,41 @@ change system settings</source>
         <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="291"/>
         <source>Inconsistency with pwd</source>
         <translation>和密码不一致</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="396"/>
+        <source>Must be begin with lower letters!</source>
+        <translation>用户名必须以小写字母开始！</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="399"/>
+        <source>Can not contain capital letters!</source>
+        <translation>用户名不能包含大写字母！</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="421"/>
+        <source>Name already in use, change another one.</source>
+        <translation>该用户名已存在，请更改。</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="423"/>
+        <source>Name corresponds to group already exists.</source>
+        <translation>用户名对应组已存在，请更改。</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="428"/>
+        <source>Name length must less than %1 letters!</source>
+        <translation>用户名长度必须小于%1！</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="430"/>
+        <source>Can only contain letters,digits,underline!</source>
+        <translation>用户名仅能包含字母，数字及下划线</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="435"/>
+        <source>Username&apos;s folder exists, change another one</source>
+        <translation>用户目录已存在，请更改</translation>
     </message>
     <message>
         <source>Password length needs to more than %1 character!</source>
@@ -1747,39 +1790,32 @@ change system settings</source>
         <translation>用户名不能为空</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="396"/>
         <source>The first character must be lowercase letters!</source>
-        <translation>首字符必须为小写字符！</translation>
+        <translation type="vanished">首字符必须为小写字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="399"/>
         <source>User name can not contain capital letters!</source>
-        <translation>用户名不能包含大写字符！</translation>
+        <translation type="vanished">用户名不能包含大写字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="421"/>
         <source>The user name is already in use, please use a different one.</source>
-        <translation>用户名已存在，请换用其他用户名。</translation>
+        <translation type="vanished">用户名已存在，请换用其他用户名。</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="423"/>
         <source>The name corresponds to the group already exists.</source>
-        <translation>用户名对应组已存在，请更换用户名.</translation>
+        <translation type="vanished">用户名对应组已存在，请更换用户名.</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="428"/>
         <source>User name length need to less than %1 letters!</source>
-        <translation>用户名长度需要小于%1个字符！</translation>
+        <translation type="vanished">用户名长度需要小于%1个字符！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="430"/>
         <source>The user name can only be composed of letters, numbers and underline!</source>
-        <translation>用户名只能由字母、数字以及下划线组成！</translation>
+        <translation type="vanished">用户名只能由字母、数字以及下划线组成！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/createuserdialog.cpp" line="435"/>
         <source>The username is configured, please change the username</source>
-        <translation>用户配置已存在，请更换用户名</translation>
+        <translation type="vanished">用户配置已存在，请更换用户名</translation>
     </message>
 </context>
 <context>
@@ -6444,13 +6480,14 @@ run start-pulseaudio-x11 manually.</source>
         <translation>要求用户输入此密码: </translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/vino/sharemain.cpp" line="111"/>
-        <location filename="../../../plugins/network/vino/sharemain.cpp" line="244"/>
+        <location filename="../../../plugins/network/vino/sharemain.cpp" line="167"/>
+        <location filename="../../../plugins/network/vino/sharemain.cpp" line="253"/>
         <source>Password can not be blank</source>
         <translation>密码不能为空</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/vino/sharemain.cpp" line="247"/>
+        <location filename="../../../plugins/network/vino/sharemain.cpp" line="169"/>
+        <location filename="../../../plugins/network/vino/sharemain.cpp" line="259"/>
         <source>Password length must be less than or equal to 8</source>
         <translation>密码长度需小于等于8</translation>
     </message>

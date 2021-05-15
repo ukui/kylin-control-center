@@ -393,10 +393,10 @@ void CreateUserDialog::nameLegalityCheck(QString username){
     if (username.isEmpty())
         nameTip = tr("The user name cannot be empty");
     else if (username.startsWith("_") || username.left(1).contains((QRegExp("[0-9]")))){
-        nameTip = tr("The first character must be lowercase letters!");
+        nameTip = tr("Must be begin with lower letters!");
     }
     else if (username.contains(QRegExp("[A-Z]"))){
-        nameTip = tr("User name can not contain capital letters!");
+        nameTip = tr("Can not contain capital letters!");
     }
     else if (nameTraverse(username))
         if (username.length() > 0 && username.length() < USER_LENGTH){
@@ -418,21 +418,21 @@ void CreateUserDialog::nameLegalityCheck(QString username){
             pclose(stream);
 
             if (usersStringList.contains(username)){
-                nameTip = tr("The user name is already in use, please use a different one.");
+                nameTip = tr("Name already in use, change another one.");
             } else if (!output.isEmpty()) {
-                nameTip = tr("The name corresponds to the group already exists.");
+                nameTip = tr("Name corresponds to group already exists.");
             }else {
                 nameTip = "";
             }
         } else {
-            nameTip = tr("User name length need to less than %1 letters!").arg(USER_LENGTH);
+            nameTip = tr("Name length must less than %1 letters!").arg(USER_LENGTH);
     } else {
-        nameTip = tr("The user name can only be composed of letters, numbers and underline!");
+        nameTip = tr("Can only contain letters,digits,underline!");
     }
 
      QStringList homeDir = getHomeUser();
      if (homeDir.contains(username) && nameTip.isEmpty()) {
-         nameTip = tr("The username is configured, please change the username");
+         nameTip = tr("Username's folder exists, change another one");
      }
 
     ui->tipLabel->setText(nameTip);

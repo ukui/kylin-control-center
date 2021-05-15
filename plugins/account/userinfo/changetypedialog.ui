@@ -408,7 +408,7 @@
                       </sizepolicy>
                      </property>
                      <property name="text">
-                      <string>Standard users can use most software, but cannot install software and change system settings</string>
+                      <string>Standard users can use most software, but cannot change system settings</string>
                      </property>
                      <property name="wordWrap">
                       <bool>true</bool>
