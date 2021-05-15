@@ -363,6 +363,7 @@ void MainWindow::initTileBar() {
     QIcon searchIcon = QIcon::fromTheme("edit-find-symbolic");
     m_queryIcon = new QLabel(this);
     m_queryIcon->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(16, 16))));
+    m_queryIcon->setProperty("useIconHighlightEffect",0x10);
 
     m_queryText = new QLabel(this);
     m_queryText->setText(tr("Search"));
