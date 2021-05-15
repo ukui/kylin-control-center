@@ -26,6 +26,10 @@ void NetDetail::setChan(const QString &chan) {
     this->mChan->setText(chan);
 }
 
+void NetDetail::setSpeed(const QString &speed) {
+    this->mSpeed->setText(speed);
+}
+
 void NetDetail::setBandWidth(const QString &bd) {
     this->mBandWidth->setText(bd);
 }
@@ -72,6 +76,7 @@ void NetDetail::initUI() {
     mSecType   = new QLabel(this);
     mHz        = new QLabel(this);
     mChan      = new QLabel(this);
+    mSpeed     = new QLabel(this);
 
     mBandWidth = new QLabel(this);
     mIPV4      = new QLabel(this);
@@ -91,6 +96,7 @@ void NetDetail::initUI() {
         mDetailLayout->addRow(tr("Security Type:"), mSecType);
         mDetailLayout->addRow(tr("Hz:"), mHz);
         mDetailLayout->addRow(tr("Chan:"), mChan);
+        mDetailLayout->addRow(tr("Link Speed(rx/tx)"), mSpeed);
     }
 
     mDetailLayout->addRow(tr("BandWidth:"), mBandWidth);
