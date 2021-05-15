@@ -558,6 +558,8 @@ void AppUpdateWid::showDetails()
 
 void AppUpdateWid::showUpdateLog()
 {
+    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
+    updatelog1->move((availableGeometry.width()-updatelog1->width())/2,(availableGeometry.height()- updatelog1->height())/2);
     updatelog1->exec();
 }
 
