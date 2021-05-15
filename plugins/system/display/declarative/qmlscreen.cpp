@@ -51,7 +51,6 @@ void QMLScreen::setConfig(const KScreen::ConfigPtr &config)
     qDeleteAll(m_outputMap);
     m_outputMap.clear();
     m_manuallyMovedOutputs.clear();
-    m_outputFirstAdd.clear();
     m_bottommost = m_leftmost = m_rightmost = m_topmost = nullptr;
     m_connectedOutputsCount = 0;
     m_enabledOutputsCount = 0;
@@ -98,7 +97,6 @@ void QMLScreen::addOutput(const KScreen::OutputPtr &output)
 
     qmloutput->setParentItem(this);
     qmloutput->setZ(m_outputMap.count());
-    m_outputFirstAdd.append(qmloutput);
 
     connect(output.data(), &KScreen::Output::isConnectedChanged,
             this, &QMLScreen::outputConnectedChanged);
@@ -374,11 +372,6 @@ void QMLScreen::qmlOutputMoved(QMLOutput *qmlOutput)
         return;
     }
 
-    // 新添加的output不处理
-    if (m_outputFirstAdd.contains(qmlOutput)) {
-        return;
-    }
-
     if (!m_manuallyMovedOutputs.contains(qmlOutput))
         m_manuallyMovedOutputs.append(qmlOutput);
 
@@ -509,7 +502,8 @@ void QMLScreen::updateOutputsPlacement()
         qreal lastY = -1.0;
         Q_FOREACH (QQuickItem *item, childItems()) {
             QMLOutput *qmlOutput = qobject_cast<QMLOutput *>(item);
-            if (!qmlOutput->output()->isConnected() || !qmlOutput->output()->isEnabled()) {
+            if (!qmlOutput->output()->isConnected() || !qmlOutput->output()->isEnabled()
+                    || m_manuallyMovedOutputs.contains(qmlOutput)) {
                 continue;
             }
 
@@ -541,7 +535,4 @@ void QMLScreen::updateOutputsPlacement()
     QTimer::singleShot(0, this, [scale, this] {
         setOutputScale(scale);
     });
-
-    // 坐标更新，清空
-    m_outputFirstAdd.clear();
 }

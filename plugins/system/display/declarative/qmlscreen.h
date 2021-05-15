@@ -113,7 +113,6 @@ private:
     KScreen::ConfigPtr m_config;
     QHash<KScreen::OutputPtr, QMLOutput *> m_outputMap;
     QVector<QMLOutput*> m_manuallyMovedOutputs;
-    QVector<QMLOutput*> m_outputFirstAdd;  // 热插拔：记录output第一次添加
     int m_connectedOutputsCount = 0;
     int m_enabledOutputsCount = 0;
 
