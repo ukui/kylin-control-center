@@ -542,9 +542,4 @@ void QMLScreen::updateOutputsPlacement()
 
     // 坐标更新，清空
     m_outputFirstAdd.clear();
-
-    Q_FOREACH (QQuickItem *item, childItems()) {
-            QMLOutput *qmlOutput = qobject_cast<QMLOutput *>(item);
-            setScreenPos(qmlOutput);   
-    }
 }

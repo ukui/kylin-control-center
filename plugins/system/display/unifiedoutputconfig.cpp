@@ -17,6 +17,7 @@
 
 #include <KF5/KScreen/kscreen/output.h>
 #include <KF5/KScreen/kscreen/config.h>
+#include <KF5/KScreen/kscreen/getconfigoperation.h>
 
 bool operator<(const QSize &s1, const QSize &s2)
 {
@@ -162,6 +163,18 @@ void UnifiedOutputConfig::initUi()
     slotResolutionChanged(mResolution->currentResolution());
     connect(mRefreshRate, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated),
         this, &UnifiedOutputConfig::slotRefreshRateChanged);
+
+    QObject::connect(new KScreen::GetConfigOperation(), &KScreen::GetConfigOperation::finished,
+                         [&](KScreen::ConfigOperation *op) {
+        KScreen::ConfigPtr sConfig = qobject_cast<KScreen::GetConfigOperation *>(op)->config();
+        KScreen::OutputPtr sOutput = sConfig -> primaryOutput();
+
+        for (int i = 0; i < mRefreshRate->count(); ++i) {
+            if (mRefreshRate->itemText(i) == tr("%1 Hz").arg(QLocale().toString(sOutput->currentMode()->refreshRate()))) {
+                mRefreshRate->setCurrentIndex(i);
+            }
+        }
+    });
 }
 
 KScreen::OutputPtr UnifiedOutputConfig::createFakeOutput()
@@ -228,8 +241,8 @@ void UnifiedOutputConfig::slotResolutionChanged(const QSize &size)
         return;
     }
     QVector<QString>Vrefresh;
-    for (int i = mRefreshRate->count(); i >= 2; --i) {
-            mRefreshRate->removeItem(i - 1);
+    for (int i = mRefreshRate->count(); i >= 0; --i) {
+            mRefreshRate->removeItem(i);
     }
     Q_FOREACH (const KScreen::OutputPtr &clone, mClones) {
         const QString &id = findBestMode(clone, size);
@@ -282,6 +295,9 @@ void UnifiedOutputConfig::slotResolutionChanged(const QSize &size)
                 mRefreshRate->addItem(Vrefresh[i]);
             }
         }
+    }
+    if (mRefreshRate->count() == 0) {
+        mRefreshRate->addItem(tr("auto"), -1);    
     }
     Q_EMIT changed();
 }
