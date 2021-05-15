@@ -105,6 +105,7 @@ QWidget * Power::get_plugin_ui() {
         initDbus();
         initDeviceStatus();
         isPowerSupply();
+        isLidPresent();
         setupComponent();
 
         if (QGSettings::isSchemaInstalled(id)) {
@@ -167,12 +168,32 @@ void Power::isPowerSupply() {
     if (!briginfo.value().toBool()) {
         isExitsPower = false ;
         ui->batteryBtn->setVisible(false);
-        ui->closeLidFrame->setVisible(false);
         ui->verticalSpacer_2->changeSize(0, 0);
     } else {
         isExitsPower = true ;
         bool status = briginfo.value().toBool();
         ui->batteryBtn->setVisible(status);
+    }
+}
+
+void Power::isLidPresent() {
+    QDBusInterface *LidInterface = new QDBusInterface("org.freedesktop.UPower",
+                       "/org/freedesktop/UPower",
+                       "org.freedesktop.DBus.Properties",
+                        QDBusConnection::systemBus());
+
+
+    if (!LidInterface->isValid()) {
+        qDebug() << "Create UPower Lib Interface Failed : " <<
+            QDBusConnection::systemBus().lastError();
+        return;
+    }
+    QDBusReply<QVariant> LidInfo;
+    LidInfo = LidInterface->call("Get", "org.freedesktop.UPower", "LidIsPresent");
+    if (!LidInfo.value().toBool()) {
+        isExitsLid = false ;
+    } else {
+        isExitsLid = true ;
     }
 }
 
@@ -512,7 +533,7 @@ void Power::refreshUI() {
     } else {
         ui->custom1Frame->show();
         ui->custom2Frame->show();
-        ui->closeLidFrame->setVisible(isExitsPower);
+        ui->closeLidFrame->setVisible(isExitsLid);
     }
 }
 

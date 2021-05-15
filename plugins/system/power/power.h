@@ -35,7 +35,8 @@ namespace Ui {
 class Power;
 }
 
-class Power : public QObject, CommonInterface {
+class Power : public QObject, CommonInterface
+{
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.kycc.CommonInterface")
     Q_INTERFACES(CommonInterface)
@@ -47,9 +48,9 @@ public:
 public:
     QString get_plugin_name()   Q_DECL_OVERRIDE;
     int get_plugin_type()       Q_DECL_OVERRIDE;
-    QWidget * get_plugin_ui()   Q_DECL_OVERRIDE;
+    QWidget *get_plugin_ui()   Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
-    const QString name() const  Q_DECL_OVERRIDE;
+    const QString name() const Q_DECL_OVERRIDE;
 
 public:
     void initTitleLabel();
@@ -61,13 +62,14 @@ public:
     void resetCustomPlanStatus();
     void initPowerOtherStatus();
     void isPowerSupply();
+    void isLidPresent();
     void refreshUI();
     int  getIdleTime();
 
 private:
     Ui::Power *ui;
 
-    QWidget * pluginWidget;
+    QWidget *pluginWidget;
 
     QGSettings *settings;
     QGSettings *sessionSetting;
@@ -89,6 +91,7 @@ private:
     bool settingsCreate;
     bool isExitsPower;
     bool mFirstLoad;
+    bool isExitsLid;
 
     bool hasBat;
 
