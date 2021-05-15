@@ -174,6 +174,7 @@ void Power::isPowerSupply() {
         bool status = briginfo.value().toBool();
         ui->batteryBtn->setVisible(status);
     }
+    delete brightnessInterface;
 }
 
 void Power::isLidPresent() {
@@ -195,6 +196,7 @@ void Power::isLidPresent() {
     } else {
         isExitsLid = true ;
     }
+    delete LidInterface;
 }
 
 void Power::setIdleTime(int idleTime) {
