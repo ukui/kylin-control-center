@@ -572,6 +572,7 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
             m_localDevice->stopDiscovery();
         }
         BluezQt::PendingCall *call = m_localDevice->setPowered(false);
+        m_manager->setBluetoothBlocked(true);
         connect(call,&BluezQt::PendingCall::finished,this,[=](BluezQt::PendingCall *v){
             if(v->error() == 0){
                 bluetooth_name->setVisible(false);
