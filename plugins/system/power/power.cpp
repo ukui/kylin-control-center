@@ -317,29 +317,14 @@ void Power::setupConnect() {
         // 平衡模式
         if (id == BALANCE) {
             mUkccpersonpersonalize->set("custompower", false);
-            // 设置显示器关闭
-            settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_AC_BALANCE);
-            settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_BAT_BALANCE);
-            // 设置计算机睡眠
-            settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_BALANCE);
-            settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_BALANCE);
-
             // 省电模式
             settings->set(POWER_POLICY_KEY, 1);
         } else if (id == SAVING) {
             mUkccpersonpersonalize->set("custompower", false);
-            // 设置显示器关闭
-            settings->set(SLEEP_DISPLAY_AC_KEY, DISPLAY_SAVING);
-            settings->set(SLEEP_DISPLAY_BATT_KEY, DISPLAY_SAVING);
-            // 设置计算机睡眠
-            settings->set(SLEEP_COMPUTER_AC_KEY, COMPUTER_SAVING);
-            settings->set(SLEEP_COMPUTER_BATT_KEY, COMPUTER_SAVING);
-
             // 省电模式
             settings->set(POWER_POLICY_KEY, 2);
         } else {
-            // 省电模式
-            settings->set(POWER_POLICY_KEY, 1);
+            //自定义模式下的POWER_POLICY_KEY的值与切换前的模式有关，这里不做设置
             mUkccpersonpersonalize->set("custompower", true);
             initCustomPlanStatus();
         }
@@ -429,18 +414,11 @@ void Power::setupConnect() {
 }
 
 void Power::initModeStatus() {
-    int acsleep = settings->get(SLEEP_COMPUTER_AC_KEY).toInt();
-    int acclose = settings->get(SLEEP_DISPLAY_AC_KEY).toInt();
-
-    int batsleep = settings->get(SLEEP_COMPUTER_BATT_KEY).toInt();
-    int batclose = settings->get(SLEEP_DISPLAY_BATT_KEY).toInt();
-
+    int power_policy = settings->get(POWER_POLICY_KEY).toInt();
     bool powerStatus = mUkccpersonpersonalize->get("custompower").toBool();
-    if (acsleep == COMPUTER_BALANCE && batsleep == COMPUTER_BALANCE &&
-            acclose == DISPLAY_AC_BALANCE && batclose == DISPLAY_BAT_BALANCE && !powerStatus) {
+    if (power_policy == 1 && !powerStatus) {
         ui->balanceRadioBtn->setChecked(true);
-    } else if (acsleep == COMPUTER_SAVING && batsleep == COMPUTER_SAVING &&
-               acclose == DISPLAY_SAVING && batclose == DISPLAY_SAVING && !powerStatus) {
+    } else if (power_policy == 2 && !powerStatus) {
         ui->savingRadioBtn->setChecked(true);
     } else {
         ui->custdomRadioBtn->setChecked(true);
