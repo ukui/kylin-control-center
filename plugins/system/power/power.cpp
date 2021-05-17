@@ -258,10 +258,7 @@ void Power::setupComponent() {
     ui->closeLidCombo->insertItem(1, closeLidStringList.at(1), "blank");
     ui->closeLidCombo->insertItem(2, closeLidStringList.at(2), "suspend");
     ui->closeLidCombo->insertItem(3, closeLidStringList.at(3), "shutdown");
-    if (!Utils::isWayland()){
-        closeLidStringList << tr("hibernate");
-        ui->closeLidCombo->insertItem(4, closeLidStringList.at(4), "hibernate");
-     }
+
     // 使用电池时屏幕变暗
     darkenStringList << tr("never") << tr("1 min") << tr("5 min") << tr("10 min") << tr("20 min");
     ui->darkenCombo->insertItem(0, darkenStringList.at(0), QVariant::fromValue(0));
