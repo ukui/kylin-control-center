@@ -228,7 +228,7 @@ int Search::setBlockDir(const QString &dirPath, const bool &is_add)
         }
     }
     m_dirSettings->setValue(pathKey, "0");
-    appendBlockDirToList(pathKey);
+    appendBlockDirToList(dirPath);
     return ReturnCode::Succeed;
 }
 
@@ -239,7 +239,10 @@ void Search::initBlockDirsList()
 {
     getBlockDirs();
     foreach (QString path, m_blockDirs) {
-        appendBlockDirToList(path);
+        QString wholePath = QString("/%1").arg(path);
+        if (QFileInfo(wholePath).isDir() && path.startsWith("home")) {
+            appendBlockDirToList(wholePath);
+        }
     }
 }
 
