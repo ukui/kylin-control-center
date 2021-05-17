@@ -155,6 +155,7 @@ private:
     bool isCloneMode();
     bool isBacklight();
     bool isLaptopScreen();
+    bool isVisibleBrightness();
 
     QString getCpuInfo();
     QString getMonitorType();
