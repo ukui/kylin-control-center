@@ -269,7 +269,10 @@ public:
     void outputStreamMapCardName(QString streamName,QString cardName);
     QString findInputStreamCardName(QString streamName);
     QString findOutputStreamCardName(QString streamName);
-    void setOutputListWidgetRow();
+    void setOutputListWidgetRow(); //设置输出设备
+    bool exitBluetoochDevice();
+    QString blueCardName(); //记录蓝牙声卡名称
+
 Q_SIGNALS:
     void appVolumeChangedSignal(bool is_mute,int volume,const QString app_name);
 

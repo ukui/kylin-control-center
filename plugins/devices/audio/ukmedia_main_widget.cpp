@@ -1236,12 +1236,11 @@ void UkmediaMainWidget::onContextDefaultInputStreamNotify (MateMixerContext *m_p
     Q_UNUSED(pspec);
     g_debug ("on context default input stream notify");
     MateMixerStream *m_pStream;
-    m_pStream = mate_mixer_context_get_default_input_stream (m_pContext);
+    m_pStream = mate_mixer_context_get_default_input_stream (m_pWidget->m_pContext);
+    qDebug() << "onContextDefaultInputStreamNotify" << mate_mixer_stream_get_name(m_pStream);
 
-    if (m_pStream == nullptr) {
-        //当输入流更改异常时，使用默认的输入流，不应该发生这种情况
-        m_pStream = m_pWidget->m_pInputStream;
-    }
+    if(!MATE_MIXER_IS_STREAM(m_pStream))
+        return;
     QString deviceName = mate_mixer_stream_get_name(m_pStream);
     int index = m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->findText(deviceName);
     if (index < 0) {
@@ -3264,11 +3263,18 @@ void UkmediaMainWidget::outputListWidgetCurrentRowChangedSlot(int row)
         qDebug() <<"output current item is null";
     }
     UkuiListWidgetItem *wid = (UkuiListWidgetItem *)m_pOutputWidget->m_pOutputListWidget->itemWidget(item);
+    QListWidgetItem *inputCurrrentItem = m_pInputWidget->m_pInputListWidget->currentItem();
+    UkuiListWidgetItem *inputWid = (UkuiListWidgetItem *)m_pInputWidget->m_pInputListWidget->itemWidget(inputCurrrentItem);
 
     bool isContainBlue = inputCardListContainBluetooth();
-    QListWidgetItem *inputCurrrentItem = m_pInputWidget->m_pInputListWidget->currentItem();
-
-    UkuiListWidgetItem *inputWid = (UkuiListWidgetItem *)m_pInputWidget->m_pInputListWidget->itemWidget(inputCurrrentItem);
+    MateMixerStream *stream = mate_mixer_context_get_default_output_stream(m_pContext);
+    const gchar *streamName = mate_mixer_stream_get_name(stream);
+    //当输出设备从蓝牙切换到其他设备时，需将蓝牙声卡的配置文件切换为a2dp-sink
+    if (isContainBlue && (strstr(streamName,"headset_head_unit") || strstr(streamName,"bt_sco_sink"))) {
+        QString cardName = blueCardName();
+        QString cmd = "pactl set-card-profile "+cardName+" a2dp_sink";
+        system(cmd.toLocal8Bit().data());
+    }
 
     QMap<QString,QString>::iterator it;
     QMap<QString,QString>::iterator inputProfileMap;
@@ -3367,14 +3373,24 @@ void UkmediaMainWidget::outputListWidgetCurrentRowChangedSlot(int row)
 void UkmediaMainWidget::inputListWidgetCurrentRowChangedSlot(int row)
 {
     //当所有可用的输入设备全部移除，台式机才会出现该情况
+    qDebug() << "inputListWidgetCurrentRowChangedSlot" << row;
     if (row == -1)
         return;
     QListWidgetItem *item = m_pInputWidget->m_pInputListWidget->item(row);
     UkuiListWidgetItem *wid = (UkuiListWidgetItem *)m_pInputWidget->m_pInputListWidget->itemWidget(item);
-
     QListWidgetItem *outputCurrrentItem = m_pOutputWidget->m_pOutputListWidget->currentItem();
-
     UkuiListWidgetItem *outputWid = (UkuiListWidgetItem *)m_pOutputWidget->m_pOutputListWidget->itemWidget(outputCurrrentItem);
+
+    bool isContainBlue = inputCardListContainBluetooth();
+    MateMixerStream *stream = mate_mixer_context_get_default_input_stream(m_pContext);
+    const gchar *streamName = mate_mixer_stream_get_name(stream);
+    //当输出设备从蓝牙切换到其他设备时，需将蓝牙声卡的配置文件切换为a2dp-sink
+    if (isContainBlue && (strstr(streamName,"headset_head_unit") || strstr(streamName,"bt_sco_source"))) {
+        QString cardName = blueCardName();
+        QString cmd = "pactl set-card-profile "+cardName+" a2dp_sink";
+        system(cmd.toLocal8Bit().data());
+    }
+
     QMap<QString,QString>::iterator it;
     QString endOutputProfile = "";
     QString endInputProfile = "";
@@ -4825,6 +4841,7 @@ void UkmediaMainWidget::updateCard(const pa_card_info &info) {
         p.available = info.ports[i]->available;
         p.direction = info.ports[i]->direction;
         p.latency_offset = info.ports[i]->latency_offset;
+        if (info.ports[i]->profiles2 != nullptr)
         for (pa_card_profile_info2 ** p_profile = info.ports[i]->profiles2; *p_profile != nullptr; ++p_profile) {
             p.profiles.push_back((*p_profile)->name);
 
@@ -5324,6 +5341,16 @@ bool UkmediaMainWidget::inputCardListContainBluetooth()
     return false;
 }
 
+QString UkmediaMainWidget::blueCardName()
+{
+    for (int i=0;i<m_pInputCardNameList->count();i++) {
+        QString cardName = m_pInputCardNameList->at(i);
+        if (strstr(cardName.toLocal8Bit().data(),"bluez"))
+            return cardName;
+    }
+    return "";
+}
+
 int UkmediaMainWidget::indexOfOutputPortInOutputListWidget(QString portName)
 {
     for (int row=0;row<m_pOutputWidget->m_pOutputListWidget->count();row++) {
@@ -5428,3 +5455,4 @@ QString UkmediaMainWidget::findOutputStreamCardName(QString streamName)
     }
     return cardName;
 }
+
