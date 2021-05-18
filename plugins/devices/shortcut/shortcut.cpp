@@ -371,7 +371,7 @@ QWidget *Shortcut::buildGeneralWidget(QString schema, QMap<QString, QString> sub
         const QByteArray styleID(UKUI_STYLE_SCHEMA);
 
         if (QGSettings::isSchemaInstalled(styleID)) {
-            QGSettings *styleUKUI = new QGSettings(styleID);
+            QGSettings *styleUKUI = new QGSettings(styleID, QByteArray(), this);
 
             connect(styleUKUI, &QGSettings::changed, this, [=](const QString &key){
                 if (key == "systemFontSize") {
@@ -448,7 +448,7 @@ void Shortcut::buildCustomItem(KeyEntry *nkeyEntry)
     const QByteArray styleID(UKUI_STYLE_SCHEMA);
 
     if (QGSettings::isSchemaInstalled(styleID)) {
-        QGSettings *styleUKUI = new QGSettings(styleID);
+        QGSettings *styleUKUI = new QGSettings(styleID, QByteArray(), this);
 
         connect(styleUKUI, &QGSettings::changed, this, [=](const QString &key){
             if (key == "systemFontSize") {
@@ -542,7 +542,7 @@ void Shortcut::createNewShortcut(QString path, QString name, QString exec, QStri
 
     const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
     const QByteArray idd(availablepath.toLatin1().data());
-    QGSettings *settings = new QGSettings(id, idd);
+    QGSettings *settings = new QGSettings(id, idd, this);
 
     settings->set(BINDING_KEY, keyToLib(key));
     settings->set(NAME_KEY, name);

@@ -99,7 +99,7 @@ void GetShortcutWorker::run()
 
         const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
         const QByteArray bba(strFullPath.toLatin1().data());
-        QGSettings *settings = new QGSettings(ba, bba);
+        QGSettings *settings = new QGSettings(ba, bba, this);
 
         QString pathStr = strFullPath;
         QString actionStr = settings->get(ACTION_KEY).toString();
