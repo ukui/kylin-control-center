@@ -1609,7 +1609,9 @@ void UkmediaMainWidget::updateIconInput (UkmediaMainWidget *m_pWidget)
     int volume = mate_mixer_stream_control_get_volume(m_pControl);
     bool status = mate_mixer_stream_control_get_mute(m_pControl);
     int value = volume *100 /65536.0+0.5;
+    m_pWidget->m_pInputWidget->m_pIpVolumeSlider->blockSignals(true);
     m_pWidget->m_pInputWidget->m_pIpVolumeSlider->setValue(value);
+    m_pWidget->m_pInputWidget->m_pIpVolumeSlider->blockSignals(false);
     QString percent = QString::number(value);
     percent.append("%");
     m_pWidget->m_pInputWidget->m_pIpVolumePercentLabel->setText(percent);
@@ -1891,7 +1893,9 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
         m_pWidget->m_pOutputWidget->m_pOpVolumePercentLabel->setText(percentStr);
     }
     else if (direction == MATE_MIXER_DIRECTION_INPUT) {
+        m_pWidget->m_pInputWidget->m_pIpVolumeSlider->blockSignals(true);
         m_pWidget->m_pInputWidget->m_pIpVolumeSlider->setValue(value);
+        m_pWidget->m_pInputWidget->m_pIpVolumeSlider->blockSignals(false);
     }
 }
 
