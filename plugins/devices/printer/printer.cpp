@@ -30,7 +30,7 @@
 
 Printer::Printer() : mFirstLoad(true)
 {
-     //~ contents_path /printer/Printer
+    // ~ contents_path /printer/Printer
     pluginName = tr("Printer");
     pluginType = DEVICES;
 }
@@ -62,7 +62,7 @@ QWidget *Printer::get_plugin_ui()
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
 
-        //~ contents_path /printer/Add Printers And Scanners
+        // ~ contents_path /printer/Add Printers And Scanners
         ui->titleLabel->setText(tr("Add Printers And Scanners"));
 
         // 禁用选中效果
@@ -135,8 +135,6 @@ void Printer::initComponent()
 
 void Printer::refreshPrinterDevSlot()
 {
-    ui->listWidget->clear();
-
     QStringList printer = QPrinterInfo::availablePrinterNames();
 
     for (int num = 0; num < printer.count(); num++) {
@@ -152,26 +150,44 @@ void Printer::refreshPrinterDevSlot()
         QString ba = process->readAllStandardOutput();
         delete process;
         QString printer_stat = QString(ba.data());
-        if (printer_stat.contains(printer.at(num), Qt::CaseSensitive)) {
-            if (printer_stat.contains("disable",
-                                      Qt::CaseSensitive)
-                || printer_stat.contains("Unplugged or turned off", Qt::CaseSensitive)) {
-                continue;
-            }
-        }
+
         HoverBtn *printerItem = new HoverBtn(printer.at(num), pluginWidget);
         printerItem->mPitLabel->setText(printer.at(num));
         printerItem->mAbtBtn->setText(tr("Attrs"));
         QIcon printerIcon = QIcon::fromTheme("printer");
         printerItem->mPitIcon->setPixmap(printerIcon.pixmap(printerIcon.actualSize(QSize(24, 24))));
-
         connect(printerItem->mAbtBtn, &QPushButton::clicked, this, [=] {
             runExternalApp();
         });
 
-        QListWidgetItem *item = new QListWidgetItem(ui->listWidget);
-        item->setSizeHint(QSize(QSizePolicy::Expanding, 50));
-        ui->listWidget->setItemWidget(item, printerItem);
+        // 标志位flag用来判断该打印机是否可用，flag1用来决定是否新增窗口(为真则加)
+        bool flag = printer_stat.contains("disable", Qt::CaseSensitive)
+                    || printer_stat.contains("Unplugged or turned off", Qt::CaseSensitive);
+
+        bool flag1 = true;
+
+        // 遍历窗口列表，判断列表中是否已经存在该打印机，若存在，便判断该打印机是否可用，不可用则从列表中删除该打印机窗口
+        for (int j = 0; j < ui->listWidget->count(); j++) {
+            QString itemData = ui->listWidget->item(j)->data(Qt::UserRole).toString();
+            if (!itemData.compare(printer.at(num))) {
+                if (flag) {
+                    ui->listWidget->takeItem(j);
+                    flag1 = false;
+                    break;
+                }
+                flag1 = false;
+                break;
+            }
+        }
+
+        //
+        if (!flag && flag1) {
+            QListWidgetItem *item = new QListWidgetItem(ui->listWidget);
+            item->setData(Qt::UserRole, printer.at(num));
+
+            item->setSizeHint(QSize(QSizePolicy::Expanding, 50));
+            ui->listWidget->setItemWidget(item, printerItem);
+        }
     }
 }
 
