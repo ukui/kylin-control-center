@@ -43,6 +43,8 @@ extern "C" {
 #define ITEMHEIGH 36
 #define TITLEWIDGETHEIGH 40
 #define SYSTEMTITLEWIDGETHEIGH 50
+#define UKUI_STYLE_SCHEMA          "org.ukui.style"
+#define SYSTEM_FONT_EKY            "system-font-size"
 
 // 快捷键屏蔽键
 QStringList forbiddenKeys = {
@@ -329,7 +331,6 @@ QWidget *Shortcut::buildGeneralWidget(QString schema, QMap<QString, QString> sub
     pWidget->setAttribute(Qt::WA_DeleteOnClose);
     QVBoxLayout *pVerLayout = new QVBoxLayout(pWidget);
     pVerLayout->setSpacing(2);
-    // pVerLayout->setMargin(0);
     pVerLayout->setContentsMargins(0, 0, 0, 16);
 
     pWidget->setLayout(pVerLayout);
@@ -343,7 +344,7 @@ QWidget *Shortcut::buildGeneralWidget(QString schema, QMap<QString, QString> sub
             "QWidget{background: palette(window); border: none; border-radius: 4px}");
 
         QHBoxLayout *gHorLayout = new QHBoxLayout(gWidget);
-        gHorLayout->setSpacing(0);
+        gHorLayout->setSpacing(24);
         gHorLayout->setContentsMargins(16, 0, 19, 0);
 
         QByteArray ba = domain.toLatin1();
@@ -355,14 +356,40 @@ QWidget *Shortcut::buildGeneralWidget(QString schema, QMap<QString, QString> sub
         QLabel *nameLabel = new QLabel(gWidget);
         i18nKey = const_cast<char *>(g_dgettext(ba.data(), g_settings_schema_key_get_summary(
                                                     keyObj)));
+
         nameLabel->setText(QString(i18nKey));
+        nameLabel->setToolTip(QString(i18nKey));
 
+        QFontMetrics  fontMetrics(nameLabel->font());
         QLabel *bindingLabel = new QLabel(gWidget);
-        bindingLabel->setText(it.value());
 
+        bindingLabel->setText(it.value());
+        bindingLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+
+        nameLabel->setText(fontMetrics.elidedText(QString(i18nKey), Qt::ElideRight, 180));
+
+        const QByteArray styleID(UKUI_STYLE_SCHEMA);
+
+        if (QGSettings::isSchemaInstalled(styleID)) {
+            QGSettings *styleUKUI = new QGSettings(styleID);
+
+            connect(styleUKUI, &QGSettings::changed, this, [=](const QString &key){
+                if (key == "systemFontSize") {
+                    QFontMetrics  fm(nameLabel->font());
+                    nameLabel->setText(fm.elidedText(QString(i18nKey), Qt::ElideRight, 180));
+                }
+            });
+        }
+
+        QHBoxLayout *tHorLayout = new QHBoxLayout();
+        QSpacerItem *horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        tHorLayout->addItem(horizontalSpacer);
+        tHorLayout->addWidget(bindingLabel);
+        tHorLayout->setMargin(0);
         gHorLayout->addWidget(nameLabel);
         gHorLayout->addStretch();
-        gHorLayout->addWidget(bindingLabel);
+        gHorLayout->addLayout(tHorLayout);
 
         gWidget->setLayout(gHorLayout);
 
@@ -409,15 +436,27 @@ void Shortcut::buildCustomItem(KeyEntry *nkeyEntry)
     QLabel *nameLabel = new QLabel(customBtn);
     QLabel *bindingLabel = new QLabel(customBtn);
 
-    QFont ft;
-    QFontMetrics fm(ft);
-    QString nameStr = fm.elidedText(nkeyEntry->nameStr, Qt::ElideRight, 300);
+    QFontMetrics fm(nameLabel->font());
+    QString nameStr = fm.elidedText(nkeyEntry->nameStr, Qt::ElideRight, 180);
     nameLabel->setText(nameStr);
     nameLabel->setToolTip(nkeyEntry->nameStr);
 
     bindingLabel->setText(nkeyEntry->bindingStr);
     bindingLabel->setFixedWidth(240);
     bindingLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+
+    const QByteArray styleID(UKUI_STYLE_SCHEMA);
+
+    if (QGSettings::isSchemaInstalled(styleID)) {
+        QGSettings *styleUKUI = new QGSettings(styleID);
+
+        connect(styleUKUI, &QGSettings::changed, this, [=](const QString &key){
+            if (key == "systemFontSize") {
+                QFontMetrics  fontMetrics(nameLabel->font());
+                nameLabel->setText(fontMetrics.elidedText(nkeyEntry->nameStr, Qt::ElideRight, 180));
+            }
+        });
+    }
 
     customHorLayout->addWidget(nameLabel);
     customHorLayout->addStretch();
