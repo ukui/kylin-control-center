@@ -188,6 +188,7 @@ void Widget::setConfig(const KScreen::ConfigPtr &config)
     mControlPanel->setConfig(mConfig);
     mUnifyButton->setEnabled(mConfig->connectedOutputs().count() > 1);
     ui->unionframe->setVisible(mConfig->outputs().count() > 1);
+    ui->brightnessframe->setVisible(isVisibleBrightness());
 
     for (const KScreen::OutputPtr &output : mConfig->outputs()) {
         outputAdded(output);
@@ -1677,7 +1678,6 @@ void Widget::initUiComponent()
     QDBusReply<QVariant> briginfo;
     briginfo = brightnessInterface.call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
     mIsBattery = briginfo.value().toBool();
-    ui->brightnessframe->setVisible(isVisibleBrightness());
 
     mUPowerInterface = QSharedPointer<QDBusInterface>(
         new QDBusInterface("org.freedesktop.UPower",
