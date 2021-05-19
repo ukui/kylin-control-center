@@ -1117,7 +1117,7 @@ void Widget::save()
     QTimer::singleShot(1000, this,
                        [=]() {
         if (mIsWayland) {
-            QtConcurrent::run(std::mem_fn(&Widget::setBrightnesSldierValue), this);
+            QtConcurrent::run(std::mem_fn(&Widget::setBrightSliderVisible), this);
             QString hash = config->connectedOutputsHash();
             writeFile(mDir % hash);
         }
@@ -1527,21 +1527,34 @@ void Widget::setDDCBrightness(int value)
     }
 }
 
-void Widget::setBrightSliderVisible()
+void Widget::setBrightSliderVisible()  //放在独立线程中运行
 {
     int value;
     if (mIsBattery && !mUnifyButton->isChecked()) {
         ui->brightnessframe->setVisible(isLaptopScreen());
         if (isLaptopScreen()) {
             value = getLaptopBrightness();
+            ui->brightValueLabel->setText(QString::number(value));
+            ui->brightnessSlider->blockSignals(true);
+            ui->brightnessSlider->setValue(value);
+            ui->brightnessSlider->blockSignals(false);
         }
     } else {
-        value = getDDCBrighthess();
+        int times = 100;
+        while(times--) {
+            value = getDDCBrighthess();
+            if ((times == 99 && value == 0) || value > 0){
+                ui->brightValueLabel->setText(QString::number(value));
+                ui->brightnessSlider->blockSignals(true);
+                ui->brightnessSlider->setValue(value);
+                ui->brightnessSlider->blockSignals(false);
+                if (value > 0)
+                    return;
+            }
+            usleep(100000);
+        }
     }
-    ui->brightValueLabel->setText(QString::number(value));
-    ui->brightnessSlider->blockSignals(true);
-    ui->brightnessSlider->setValue(value);
-    ui->brightnessSlider->blockSignals(false);
+    return;
 }
 
 // 滑块改变
