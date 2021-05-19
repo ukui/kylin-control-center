@@ -857,4 +857,5 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
 
     }
     dbusArgs.endArray();
+    return 1;
 }
