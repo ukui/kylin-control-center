@@ -30,7 +30,7 @@
 
 Printer::Printer() : mFirstLoad(true)
 {
-    // ~ contents_path /printer/Printer
+    //~ contents_path /printer/Printer
     pluginName = tr("Printer");
     pluginType = DEVICES;
 }
@@ -62,7 +62,7 @@ QWidget *Printer::get_plugin_ui()
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
 
-        // ~ contents_path /printer/Add Printers And Scanners
+        //~ contents_path /printer/Add Printers And Scanners
         ui->titleLabel->setText(tr("Add Printers And Scanners"));
 
         // 禁用选中效果
