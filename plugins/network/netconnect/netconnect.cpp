@@ -45,6 +45,16 @@ const QString KWifiLockLow      = "network-wireless-secure-signal-low";
 const QString KLanSymbolic      = ":/img/plugins/netconnect/eth.svg";
 const QString NoNetSymbolic     = ":/img/plugins/netconnect/nonet.svg";
 
+const QString KWifi6LockSymbolic = ":/img/plugins/netconnect/wifi6-full-pwd.svg";
+const QString KWifi6LockGood     = ":/img/plugins/netconnect/wifi6-high-pwd.svg";
+const QString KWifi6LockOK       = ":/img/plugins/netconnect/wifi6-medium-pwd.svg";
+const QString KWifi6LockLow      = ":/img/plugins/netconnect/wifi6-low-pwd.svg";
+
+const QString KWifi6ProLockSymbolic = ":/img/plugins/netconnect/wifi6+-full-pwd.svg";
+const QString KWifi6ProLockGood     = ":/img/plugins/netconnect/wifi6+-high-pwd.svg";
+const QString KWifi6ProLockOK       = ":/img/plugins/netconnect/wifi6+-medium-pwd.svg";
+const QString KWifi6ProLockLow      = ":/img/plugins/netconnect/wifi6+-low-pwd.svg";
+
 bool sortByVal(const QPair<QString, int> &l, const QPair<QString, int> &r) {
     return (l.second < r.second);
 }
@@ -178,7 +188,7 @@ void NetConnect::initComponent() {
 }
 
 void NetConnect::refreshNetInfoTimerSlot() {
-    refreshTimer->start(500);
+    refreshTimer->start();
 }
 
 void NetConnect::refreshNetInfoSlot() {
@@ -191,22 +201,22 @@ void NetConnect::refreshNetInfoSlot() {
     }
 }
 void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
-
-    bool hasNet = netName.compare("No Net", Qt::CaseInsensitive);
-
+    bool hasNet = false;
+    if (netName == "无连接" || netName == "No net") {
+        hasNet = true;
+    }
     HoverBtn * deviceItem;
     if (!hasNet || Utils::isWayland()) {
         deviceItem = new HoverBtn(netName, false, pluginWidget);
     } else {
         deviceItem = new HoverBtn(netName, true, pluginWidget);
     }
-
     deviceItem->mPitLabel->setText(netName);
 
-    if (hasNet) {
+    if (!hasNet) {
         deviceItem->mDetailLabel->setText(tr("Connected"));
     } else {
-        deviceItem->mDetailLabel->setText(tr("No net"));
+        deviceItem->mDetailLabel->setText("");
     }
     QIcon searchIcon = QIcon::fromTheme(iconPath);
     deviceItem->mPitIcon->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(24, 24))));
@@ -238,7 +248,7 @@ void NetConnect::getNetList() {
         if (reply.value().at(i).at(0) == "--") {
             continue;
         }
-        wifiName = reply.value().at(i).at(0);
+        wifiName = reply.value().at(i).at(0) + reply.value().at(i).at(5);
         if (reply.value().at(i).at(2) != NULL && reply.value().at(i).at(2) != "--") {
             wifiName += "lock";
         }
@@ -260,7 +270,9 @@ void NetConnect::getNetList() {
         }
         bool isLock = vector[i].first.contains("lock");
         QString wifiName = isLock ? vector[i].first.remove("lock") : vector[i].first;
-        iconamePath = wifiIcon(isLock, vector[i].second);
+        int category = wifiName.right(1).toInt();
+        wifiName = wifiName.left(wifiName.size() - 1);
+        iconamePath = wifiIcon(isLock, vector[i].second, category);
         rebuildAvailComponent(iconamePath, wifiName);
     }
 
@@ -325,7 +337,6 @@ void NetConnect::netDetailSlot(QString netName) {
 }
 
 void NetConnect::rebuildAvailComponent(QString iconPath, QString netName) {
-
     HoverBtn * wifiItem = new HoverBtn(netName, false, pluginWidget);
     wifiItem->mPitLabel->setText(netName);
 
@@ -425,11 +436,11 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
     QString speed = getWifiSpeed();
     if (!speed.contains("/") && secondCount < 1) {
         QTimer::singleShot(1000,this, [=] {
-            getNetList();
+            getWifiSpeed();
             secondCount ++;
         });
     } else {
-        if (getActiveConInfo(mActiveInfo) == -1 || speed == "/" && firstCount <= 4 && !getWifiStatus()) {
+        if (getActiveConInfo(mActiveInfo) == -1 || speed == "/" && firstCount < 4 && !getWifiStatus()) {
             QTimer::singleShot(500,this, [=] {
                 getNetList();
                 firstCount++;
@@ -437,8 +448,11 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
         } else {
             firstCount = 0;
             secondCount = 0;
+            bool isNullSpeed = false;
             if (!speed.contains("/")) {
                 speed = "null/" + speed;
+            } else if (speed == "/") {
+                isNullSpeed = true;
             }
             if (!getwifislist.isEmpty()) {
                 connectedWifi.clear();
@@ -456,6 +470,7 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
                     index++;
                 }
                 QString wname;
+                QString category;
                 QString lockType;
                 QString chan = geiWifiChan();
                 QString freq;
@@ -463,12 +478,18 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
                 for (int i = 0; i < getwifislist.size(); ++i) {
                     if (getwifislist.at(i).at(0) == actWifiName) {
                         wname = getwifislist.at(i).at(0);
+                        category = getwifislist.at(i).at(5);
                         lockType = getwifislist.at(i).at(2);
                         freq = getwifislist.at(i).at(3) + " MHz";
+                        wname = wname + category;
                         mActiveInfo[index].strSecType = (lockType == "--" ? tr("None") : lockType);
                         mActiveInfo[index].strChan = chan;
                         mActiveInfo[index].strHz = freq;
-                        mActiveInfo[index].strSpeed = speed + " (Mbps)";
+                        if (isNullSpeed) {
+                            mActiveInfo[index].strSpeed = "null";
+                        } else {
+                            mActiveInfo[index].strSpeed = speed + " (Mbps)";
+                        }
                         if (getwifislist.at(i).at(2) != NULL && getwifislist.at(i).at(2) != "--") {
                             wname += "lock";
                         }
@@ -521,7 +542,9 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
 
                 bool isLock = connectedWifiName.contains("lock");
                 connectedWifiName = isLock ? connectedWifiName.remove("lock") : connectedWifiName;
-                QString iconamePah = wifiIcon(isLock, strength);
+                int category = connectedWifiName.right(1).toInt();
+                connectedWifiName = connectedWifiName.left(connectedWifiName.size() - 1);
+                QString iconamePah = wifiIcon(isLock, strength, category);
                 rebuildNetStatusComponent(iconamePah, connectedWifiName);
             }
             if (!this->actLanName.isEmpty()) {
@@ -551,6 +574,7 @@ QString NetConnect::getWifiSpeed() {
         line.replace(QRegExp("[\\s]+"), "");
         slist.append(line);
     }
+
     for (int i = 0; i < slist.length(); i++) {
         QString str = slist.at(i);
         if (str.contains("rxbitrate:")) {
@@ -700,19 +724,51 @@ QList<QVariantMap> NetConnect::getDbusMap(const QDBusMessage &dbusMessage) {
     return mDatasIpv4;
 }
 
-QString NetConnect::wifiIcon(bool isLock, int strength) {
-    switch (strength) {
+QString NetConnect::wifiIcon(bool isLock, int strength, int category) {
+    switch (category) {
+    case 0:
+        switch (strength) {
+        case 1:
+            return isLock ? KWifiLockSymbolic : KWifiSymbolic;
+        case 2:
+            return isLock ? KWifiLockGood : KWifiGood;
+        case 3:
+            return isLock ? KWifiLockOK : KWifiOK;
+        case 4:
+            return isLock ? KWifiLockLow : KWifiLow;
+        default:
+            return "";
+        }
     case 1:
-        return isLock ? KWifiLockSymbolic : KWifiSymbolic;
+        switch (strength) {
+        case 1:
+            return KWifi6LockSymbolic;
+        case 2:
+            return KWifi6LockGood;
+        case 3:
+            return KWifi6LockOK;
+        case 4:
+            return KWifi6LockLow;
+        default:
+            return "";
+        }
     case 2:
-        return isLock ? KWifiLockGood : KWifiGood;
-    case 3:
-        return isLock ? KWifiLockOK : KWifiOK;
-    case 4:
-        return isLock ? KWifiLockLow : KWifiLow;
+        switch (strength) {
+        case 1:
+            return KWifi6ProLockSymbolic;
+        case 2:
+            return KWifi6ProLockGood;
+        case 3:
+            return KWifi6ProLockOK;
+        case 4:
+            return KWifi6ProLockLow;
+        default:
+            return "";
+        }
     default:
         return "";
     }
+
 }
 
 int NetConnect::setSignal(QString lv) {

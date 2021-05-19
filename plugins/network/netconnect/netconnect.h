@@ -174,7 +174,7 @@ private:
     void        initNetworkMap();
     void        setWifiBtnDisable();
     void        setNetDetailVisible();                              // 设置网络刷新状态
-    QString     wifiIcon(bool isLock, int strength);
+    QString     wifiIcon(bool isLock, int strength,int category);
     QList<QVariantMap> getDbusMap(const QDBusMessage &dbusMessage);
 private slots:
     void wifiSwitchSlot(bool status);
