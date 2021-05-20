@@ -600,7 +600,7 @@ bool Widget::isRestoreConfig()
     MainWindow *mainWindow = static_cast<MainWindow*>(this->topLevelWidget());
     QMessageBox msg;
     connect(mainWindow, &MainWindow::posChanged, this, [=,&msg]() {
-        QTimer::singleShot(600, this, [=,&msg]() { //窗管会移动窗口，等待600ms
+        QTimer::singleShot(8, this, [=,&msg]() { //窗管会移动窗口，等待8ms,确保在窗管移动之后再move，时间不能太长，否则会看到移动的路径
             QRect rect = this->topLevelWidget()->geometry();
             int msgX = 0, msgY = 0;
             msgX = rect.x() + rect.width()/2 - 500/2;
