@@ -109,7 +109,6 @@ private:
     void qmlOutputMoved(QMLOutput *qmlOutput);
     void updateCornerOutputs();
     void setOutputScale(float scale);
-    bool isIntersect(QRect rect1, QRect rect2);
 
     KScreen::ConfigPtr m_config;
     QHash<KScreen::OutputPtr, QMLOutput *> m_outputMap;

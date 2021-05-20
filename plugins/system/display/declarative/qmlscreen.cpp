@@ -366,15 +366,7 @@ void QMLScreen::outputEnabledChanged()
 
 void QMLScreen::outputPositionChanged()
 {
-    QVector<QRect> vecRect;
-    Q_FOREACH (QQuickItem *item , childItems()) {
-        vecRect.push_back(QRect(item->x(), item->y(), item->width(), item->height()));
-    }
-    if (childItems().count() < 2)  {
-        return;
-    } else if (isIntersect(vecRect.at(0), vecRect.at(1))) {
-        setScreenCenterPos();
-    }
+    /* TODO: Reposition the QMLOutputs */
 }
 
 void QMLScreen::qmlOutputMoved(QMLOutput *qmlOutput)
@@ -473,27 +465,6 @@ void QMLScreen::setOutputScale(float scale)
     emit outputScaleChanged();
 }
 
-// 是否相交
-bool QMLScreen::isIntersect(QRect rect1, QRect rect2)
-{
-    int x1 = rect1.x();
-    int y1 = rect1.y();
-    int width1 = rect1.width();
-    int height1 = rect1.height();
-    int x2 = rect2.x();
-    int y2 = rect2.y();
-    int width2 = rect2.width();
-    int height2 = rect2.height();
-
-    if (!(x1 + width1 < x2 || x2 + width2 < x1
-          || y1 > y2 +height2 || y2 > y1 + height1)
-        && (x1 != x2 || y1 != y2)) {
-        return false;
-    }
-    return true;
-}
-
-
 // 画坐标
 void QMLScreen::updateOutputsPlacement()
 {
@@ -564,7 +535,6 @@ void QMLScreen::updateOutputsPlacement()
         }
     } while (lastX > width());
 
-    outputPositionChanged();
     // Use a timer to avoid binding loop on width()
     QTimer::singleShot(0, this, [scale, this] {
         setOutputScale(scale);
