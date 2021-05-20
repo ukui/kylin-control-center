@@ -206,7 +206,7 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
         hasNet = true;
     }
     HoverBtn * deviceItem;
-    if (!hasNet || Utils::isWayland()) {
+    if (hasNet || Utils::isWayland()) {
         deviceItem = new HoverBtn(netName, false, pluginWidget);
     } else {
         deviceItem = new HoverBtn(netName, true, pluginWidget);
@@ -235,20 +235,28 @@ void NetConnect::getNetList() {
     wifiBtn->blockSignals(true);
     wifiBtn->setChecked(getInitStatus());
     wifiBtn->blockSignals(false);
-
+    bool isWayland = false;
+    if (Utils::isWayland()) {
+        isWayland = true;
+    }
     QDBusReply<QVector<QStringList>> reply = m_interface->call("getWifiList");
     if (!reply.isValid()) {
         qWarning() << "value method called failed!";
     }
     this->TlanList  = execGetLanList();
-    getWifiListDone(reply, this->TlanList);
+    getWifiListDone(reply, this->TlanList, isWayland);
 
     for (int i = 0; i < reply.value().length(); i++) {
         QString wifiName;
         if (reply.value().at(i).at(0) == "--") {
             continue;
         }
-        wifiName = reply.value().at(i).at(0) + reply.value().at(i).at(5);
+        if (isWayland) {
+            wifiName = reply.value().at(i).at(0) + reply.value().at(i).at(5);
+        } else {
+            wifiName = reply.value().at(i).at(0);
+        }
+
         if (reply.value().at(i).at(2) != NULL && reply.value().at(i).at(2) != "--") {
             wifiName += "lock";
         }
@@ -270,9 +278,13 @@ void NetConnect::getNetList() {
         }
         bool isLock = vector[i].first.contains("lock");
         QString wifiName = isLock ? vector[i].first.remove("lock") : vector[i].first;
-        int category = wifiName.right(1).toInt();
-        wifiName = wifiName.left(wifiName.size() - 1);
-        iconamePath = wifiIcon(isLock, vector[i].second, category);
+        if (isWayland) {
+            int category = wifiName.right(1).toInt();
+            wifiName = wifiName.left(wifiName.size() - 1);
+            iconamePath = wifiIcon(isLock, vector[i].second, category);
+        } else {
+            iconamePath = wifiIcon(isLock, vector[i].second);
+        }
         rebuildAvailComponent(iconamePath, wifiName);
     }
 
@@ -430,7 +442,7 @@ bool NetConnect::getWifiStatus() {
     }
 }
 
-void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList getlanList) {
+void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList getlanList, bool isWayland) {
     clearContent();
     mActiveInfo.clear();
     QString speed = getWifiSpeed();
@@ -470,18 +482,21 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
                     index++;
                 }
                 QString wname;
-                QString category;
+
                 QString lockType;
                 QString chan = geiWifiChan();
                 QString freq;
-
                 for (int i = 0; i < getwifislist.size(); ++i) {
                     if (getwifislist.at(i).at(0) == actWifiName) {
                         wname = getwifislist.at(i).at(0);
-                        category = getwifislist.at(i).at(5);
                         lockType = getwifislist.at(i).at(2);
                         freq = getwifislist.at(i).at(3) + " MHz";
-                        wname = wname + category;
+                        if (isWayland) {
+                            QString category = getwifislist.at(i).at(5);
+                            wname = wname + category;
+                        } else {
+                            wname = wname;
+                        }
                         mActiveInfo[index].strSecType = (lockType == "--" ? tr("None") : lockType);
                         mActiveInfo[index].strChan = chan;
                         mActiveInfo[index].strHz = freq;
@@ -542,9 +557,14 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
 
                 bool isLock = connectedWifiName.contains("lock");
                 connectedWifiName = isLock ? connectedWifiName.remove("lock") : connectedWifiName;
-                int category = connectedWifiName.right(1).toInt();
-                connectedWifiName = connectedWifiName.left(connectedWifiName.size() - 1);
-                QString iconamePah = wifiIcon(isLock, strength, category);
+                QString iconamePah;
+                if (isWayland) {
+                    int category = connectedWifiName.right(1).toInt();
+                    connectedWifiName = connectedWifiName.left(connectedWifiName.size() - 1);
+                    iconamePah = wifiIcon(isLock, strength, category);
+                } else {
+                    iconamePah = wifiIcon(isLock, strength);
+                }
                 rebuildNetStatusComponent(iconamePah, connectedWifiName);
             }
             if (!this->actLanName.isEmpty()) {
@@ -768,7 +788,21 @@ QString NetConnect::wifiIcon(bool isLock, int strength, int category) {
     default:
         return "";
     }
+}
 
+QString NetConnect::wifiIcon(bool isLock, int strength) {
+    switch (strength) {
+    case 1:
+        return isLock ? KWifiLockSymbolic : KWifiSymbolic;
+    case 2:
+        return isLock ? KWifiLockGood : KWifiGood;
+    case 3:
+        return isLock ? KWifiLockOK : KWifiOK;
+    case 4:
+        return isLock ? KWifiLockLow : KWifiLow;
+    default:
+        return "";
+    }
 }
 
 int NetConnect::setSignal(QString lv) {

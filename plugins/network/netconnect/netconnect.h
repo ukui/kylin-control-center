@@ -160,7 +160,7 @@ private:
 private:
     int         setSignal(QString lv);
     QStringList execGetLanList();
-    void        getWifiListDone(QVector<QStringList> wifislist, QStringList lanList);
+    void        getWifiListDone(QVector<QStringList> wifislist, QStringList lanList, bool getWifiListDone);
     QString     geiWifiChan();
     QString     getWifiSpeed();
     bool        getInitStatus();
@@ -175,6 +175,7 @@ private:
     void        setWifiBtnDisable();
     void        setNetDetailVisible();                              // 设置网络刷新状态
     QString     wifiIcon(bool isLock, int strength,int category);
+    QString     wifiIcon(bool isLock, int strength);
     QList<QVariantMap> getDbusMap(const QDBusMessage &dbusMessage);
 private slots:
     void wifiSwitchSlot(bool status);
