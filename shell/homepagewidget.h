@@ -23,7 +23,6 @@
 #include <QWidget>
 #include <QPixmap>
 #include <QPainter>
-#include <QSvgRenderer>
 #include <QVariantMap>
 
 enum COLOR{

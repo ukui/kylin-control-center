@@ -7,6 +7,7 @@
 #include "displayperformancedialog.h"
 #include "colorinfo.h"
 #include "../../../shell/utils/utils.h"
+#include "../../../shell/mainwindow.h"
 
 #include <QHBoxLayout>
 #include <QTimer>
@@ -596,9 +597,17 @@ bool Widget::isRestoreConfig()
 {
     int cnt = 15;
     int ret;
-    QRect rect = this->topLevelWidget()->geometry();
+    MainWindow *mainWindow = static_cast<MainWindow*>(this->topLevelWidget());
     QMessageBox msg;
-    int msgX = 0, msgY = 0;
+    connect(mainWindow, &MainWindow::posChanged, this, [=,&msg]() {
+        QTimer::singleShot(600, this, [=,&msg]() { //窗管会移动窗口，等待600ms
+            QRect rect = this->topLevelWidget()->geometry();
+            int msgX = 0, msgY = 0;
+            msgX = rect.x() + rect.width()/2 - 500/2;
+            msgY = rect.y() + rect.height()/2 - 150/2;
+            msg.move(msgX, msgY);
+        });
+    });
     if (mConfigChanged) {
         msg.setWindowTitle(tr("Hint"));
         msg.setText(tr("After modifying the resolution or refresh rate, "
@@ -621,12 +630,14 @@ bool Widget::isRestoreConfig()
             }
         });
         cntDown.start(1000);
-        msgX = rect.x() + rect.width()/2 - 500/2 - 2;
-        msgY = rect.y() + rect.height()/2 - 145/2 + 35;
+        QRect rect = this->topLevelWidget()->geometry();
+        int msgX = 0, msgY = 0;
+        msgX = rect.x() + rect.width()/2 - 500/2;
+        msgY = rect.y() + rect.height()/2 - 150/2;
         msg.move(msgX, msgY);
         ret = msg.exec();
     }
-
+    disconnect(mainWindow, &MainWindow::posChanged, 0, 0);
     bool res = false;
     switch (ret) {
     case QMessageBox::AcceptRole:
@@ -1161,23 +1172,21 @@ void Widget::save()
 
     mScreen->updateOutputsPlacement();
 
-    QTimer::singleShot(500, this, [=]() {
-        if (isRestoreConfig()) {
-            if (mIsWayland && -1 != mScreenId) {
-                mPrevConfig->output(mScreenId)->setPrimary(true);
-                callMethod(mPrevConfig->output(mScreenId)->geometry(), mPrevConfig->output(mScreenId)->name());
-            }
-            auto *op = new KScreen::SetConfigOperation(mPrevConfig);
-            op->exec();
-
-            // 无法知道什么时候执行完操作
-            QTimer::singleShot(1000, this, [=]() {
-                writeFile(mDir % mPrevConfig->connectedOutputsHash());
-            });
-        } else {
-            writeScreenXml();
+    if (isRestoreConfig()) {
+        if (mIsWayland && -1 != mScreenId) {
+            mPrevConfig->output(mScreenId)->setPrimary(true);
+            callMethod(mPrevConfig->output(mScreenId)->geometry(), mPrevConfig->output(mScreenId)->name());
         }
-    });
+        auto *op = new KScreen::SetConfigOperation(mPrevConfig);
+        op->exec();
+
+        // 无法知道什么时候执行完操作
+        QTimer::singleShot(1000, this, [=]() {
+            writeFile(mDir % mPrevConfig->connectedOutputsHash());
+        });
+    } else {
+        writeScreenXml();
+    }
 
 }
 

@@ -60,7 +60,8 @@ public:
     static bool isExitBluetooth();
     void bootOptionsFilter(QString opt);
     void bootOptionsSwitch(int moduleNum, int funcNum);
-
+    void moveEvent(QMoveEvent *event);
+    void resizeEvent(QResizeEvent *event);
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
 
@@ -120,6 +121,10 @@ public slots:
     void animationFinishedSlot();
     void showUkccAboutSlot();
     void onF1ButtonClicked();
+
+Q_SIGNALS:
+    void posChanged();
+
 };
 
 #endif // MAINWINDOW_H

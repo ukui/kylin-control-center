@@ -1,7 +1,7 @@
 #ifndef SEARCHWIDGET_H
 #define SEARCHWIDGET_H
 
-#include "../utils/utils.h"
+#include "./utils/utils.h"
 
 #include <QWidget>
 #include <QList>

@@ -861,3 +861,15 @@ void MainWindow::switchPage(QString moduleName, QString jumpMoudle) {
     QMessageBox::information(this, tr("Warnning"), tr("This function has been controlled"));
     return;
 }
+
+void MainWindow::moveEvent(QMoveEvent *event)
+{
+    Q_UNUSED(event);
+    Q_EMIT posChanged();
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    QMainWindow::resizeEvent(event);
+    Q_EMIT posChanged();
+}

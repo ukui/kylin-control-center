@@ -28,6 +28,7 @@
 #include <QDBusInterface>
 #include <QDebug>
 
+#include <QSvgRenderer>
 #include "mainwindow.h"
 #include "utils/keyvalueconverter.h"
 #include "component/clicklabel.h"
