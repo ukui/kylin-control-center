@@ -220,8 +220,10 @@ void QMLScreen::setScreenCenterPos()
     moveY = mY2 - mY1;
 
     Q_FOREACH (QMLOutput *qmlOutput, m_outputMap) {
+        qmlOutput->blockSignals(true);
         qmlOutput->setX(qmlOutput->x() + moveX);
         qmlOutput->setY(qmlOutput->y() + moveY);
+        qmlOutput->blockSignals(false);
     }
 }
 
@@ -262,7 +264,7 @@ void QMLScreen::setScreenPos(QMLOutput *output)
         setScreenCenterPos();
         return;
     }
-
+    output->blockSignals(true);
     if (!((x1 + width1 == x2)
           || (y1 == y2 + height2)
           || (x1 == x2 + width2)
@@ -282,8 +284,8 @@ void QMLScreen::setScreenPos(QMLOutput *output)
         }
 
         // 矩形是否相交
-        if (!(x1 + width1 < x2 || x2 + width2 < x1
-              || y1 > y2 +height2 || y2 > y1 + height1)
+        if (!(x1 + width1 <= x2 || x2 + width2 <= x1
+              || y1 >= y2 +height2 || y2 >= y1 + height1)
             && (x1 != x2 || y1 != y2) && other != NULL
             && other->output()->isConnected()) {
             if ((x1 + width1 > x2) && (x1 < x2)) {
@@ -297,6 +299,8 @@ void QMLScreen::setScreenPos(QMLOutput *output)
             }
         }
     }
+    output->blockSignals(false);
+
     setScreenCenterPos();
 }
 
