@@ -188,11 +188,12 @@ void Widget::setConfig(const KScreen::ConfigPtr &config)
     mControlPanel->setConfig(mConfig);
     mUnifyButton->setEnabled(mConfig->connectedOutputs().count() > 1);
     ui->unionframe->setVisible(mConfig->outputs().count() > 1);
-    ui->brightnessframe->setVisible(isVisibleBrightness());
 
     for (const KScreen::OutputPtr &output : mConfig->outputs()) {
         outputAdded(output);
     }
+
+    ui->brightnessframe->setVisible(isVisibleBrightness());
 
     // 择主屏幕输出
     QMLOutput *qmlOutput = mScreen->primaryOutput();
@@ -706,9 +707,8 @@ QString Widget::getMonitorType()
 
 bool Widget::isLaptopScreen()
 {
-    int index = ui->primaryCombo->currentIndex();
-    KScreen::OutputPtr output = mConfig->output(ui->primaryCombo->itemData(index).toInt());
-    if (output->type() == KScreen::Output::Type::Panel) {
+    const QString &monitor = ui->primaryCombo->currentText();
+    if (monitor == "eDP-1") {
         return true;
     }
     return false;
