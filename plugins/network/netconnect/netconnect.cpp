@@ -151,12 +151,6 @@ void NetConnect::initComponent() {
     connect(ui->RefreshBtn, &QPushButton::clicked, this, [=](bool checked) {
         Q_UNUSED(checked)
         setWifiBtnDisable();
-        QTimer::singleShot(5*1000, this, [ = ]() { //超时时间
-            if (!ui->RefreshBtn->isEnabled()) {
-                ui->RefreshBtn->setEnabled(true);
-                ui->RefreshBtn->setText(tr("Refresh"));
-            }
-        });
         if (m_interface) {
             m_interface->call("requestRefreshWifiList");
         }
@@ -245,7 +239,6 @@ void NetConnect::getNetList() {
     }
     this->TlanList  = execGetLanList();
     getWifiListDone(reply, this->TlanList, isWayland);
-
     for (int i = 0; i < reply.value().length(); i++) {
         QString wifiName;
         if (reply.value().at(i).at(0) == "--") {
@@ -447,16 +440,18 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
     mActiveInfo.clear();
     QString speed = getWifiSpeed();
     if (!speed.contains("/") && secondCount < 1) {
-        QTimer::singleShot(1000,this, [=] {
-            getWifiSpeed();
-            secondCount ++;
-        });
+        QEventLoop eventloop;
+        QTimer::singleShot(500, &eventloop, SLOT(quit()));
+        eventloop.exec();
+        getNetList();
+        secondCount ++;
     } else {
-        if (getActiveConInfo(mActiveInfo) == -1 || speed == "/" && firstCount < 4 && !getWifiStatus()) {
-            QTimer::singleShot(500,this, [=] {
-                getNetList();
-                firstCount++;
-            });
+        if (getActiveConInfo(mActiveInfo) == -1 || speed == "/" && firstCount <= 4 && !getWifiStatus()) {
+            QEventLoop eventloop;
+            QTimer::singleShot(200, &eventloop, SLOT(quit()));
+            eventloop.exec();
+            getNetList();
+            firstCount++;
         } else {
             firstCount = 0;
             secondCount = 0;
