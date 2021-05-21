@@ -11,6 +11,7 @@ Uslider::Uslider(QStringList list) : QSlider(Qt::Horizontal), scaleList(list)
 {
     this->setMinimumHeight(50);
     this->setMaximumHeight(100);
+    this->setTickPosition(QSlider::TicksAbove);
 }
 
 void Uslider::paintEvent(QPaintEvent *e)

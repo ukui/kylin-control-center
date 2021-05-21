@@ -69,7 +69,7 @@
           <number>0</number>
          </property>
          <property name="topMargin">
-          <number>30</number>
+          <number>11</number>
          </property>
         </layout>
        </item>
@@ -91,11 +91,7 @@
        <number>0</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="titleLayout">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-       </layout>
+       <widget class="QWidget" name="titleWidget" native="true"/>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">

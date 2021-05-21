@@ -43,6 +43,13 @@
 #include <QShortcut>
 #include <QMouseEvent>
 
+#define THEME_STYLE_SCHEMA "org.ukui.style"
+#define STYLE_NAME_KEY "style-name"
+#define CONTAIN_STYLE_NAME_KEY "styleName"
+#define PERSONALSIE_SCHEMA     "org.ukui.control-center.personalise"
+#define PERSONALSIE_TRAN_KEY   "transparency"
+#define CONTAIN_PERSONALSIE_TRAN_KEY   "transparency"
+
 #ifdef WITHKYSEC
 #include <kysec/libkysec.h>
 #include <kysec/status.h>
@@ -72,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     mate_mixer_init();
     this->setMinimumSize(958, 630);
-    logoLabel  = new QLabel(tr("Settings"), this);
+    //logoLabel  = new QLabel(tr("Settings"), this);
     qApp->installEventFilter(this);
     initUI();
 }
@@ -344,12 +351,16 @@ void MainWindow::initUI() {
 
 void MainWindow::initTileBar() {
 
-    ui->titleLayout->setContentsMargins(8, 4, 4, 0);
-    ui->titleLayout->setSpacing(0);
+    titleLayout = new QHBoxLayout(ui->titleWidget);
+    ui->titleWidget->setLayout(titleLayout);
+    ui->titleWidget->setObjectName("titleWidget");
+    ui->titleWidget->setStyleSheet("QWidget#titleWidget{background-color:palette(base)}");
+    titleLayout->setContentsMargins(8, 4, 4, 0);
+    titleLayout->setSpacing(0);
     m_searchWidget = new SearchWidget(this);
+    m_searchWidget->setStyleSheet("background-color:palette(windowtext)");
     m_searchWidget->setFocusPolicy(Qt::ClickFocus);
-    //m_searchWidget->installEventFilter(this);
-
+    
     m_queryWid = new QWidget;
     m_queryWid->setParent(m_searchWidget);
     m_queryWid->setFocusPolicy(Qt::NoFocus);
@@ -375,7 +386,7 @@ void MainWindow::initTileBar() {
     m_searchWidget->setContextMenuPolicy(Qt::NoContextMenu);
     m_animation= new QPropertyAnimation(m_queryWid, "geometry", this);
     m_animation->setDuration(100);
-    ui->titleLayout->addWidget(m_searchWidget,Qt::AlignCenter);
+    titleLayout->addWidget(m_searchWidget,Qt::AlignCenter);
     connect(m_animation,&QPropertyAnimation::finished,this,&MainWindow::animationFinishedSlot);
 
     connect(m_searchWidget, &SearchWidget::notifyModuleSearch, this, &MainWindow::switchPage);
@@ -408,20 +419,20 @@ void MainWindow::initTileBar() {
     changeSearchSlot();
     m_searchWidget->setFixedWidth(350);
 
-    ui->titleLayout->addWidget(mTitleIcon);
-    ui->titleLayout->addSpacing(8);
-    ui->titleLayout->addWidget(titleLabel);
-    ui->titleLayout->addWidget(backBtn);
-    ui->titleLayout->addStretch();
-    ui->titleLayout->addWidget(m_searchWidget);
-    ui->titleLayout->addStretch();
-    ui->titleLayout->addWidget(mOptionBtn);
-    ui->titleLayout->addSpacing(4);
-    ui->titleLayout->addWidget(minBtn);
-    ui->titleLayout->addSpacing(4);
-    ui->titleLayout->addWidget(maxBtn);
-    ui->titleLayout->addSpacing(4);
-    ui->titleLayout->addWidget(closeBtn);
+    titleLayout->addWidget(mTitleIcon);
+    titleLayout->addSpacing(8);
+    titleLayout->addWidget(titleLabel);
+    titleLayout->addWidget(backBtn);
+    titleLayout->addStretch();
+    titleLayout->addWidget(m_searchWidget);
+    titleLayout->addStretch();
+    titleLayout->addWidget(mOptionBtn);
+    titleLayout->addSpacing(4);
+    titleLayout->addWidget(minBtn);
+    titleLayout->addSpacing(4);
+    titleLayout->addWidget(maxBtn);
+    titleLayout->addSpacing(4);
+    titleLayout->addWidget(closeBtn);
 }
 void MainWindow::animationFinishedSlot()
 {
@@ -585,13 +596,29 @@ void MainWindow::initLeftsideBar(){
     leftBtnGroup = new QButtonGroup();
     leftMicBtnGroup = new QButtonGroup();
 
+    QHBoxLayout *setLayout = new QHBoxLayout(this);
+    QLabel  *logoSetLabel  = new QLabel(this);
+    QLabel  *textSetLable  = new QLabel(this);
+    QWidget *setWidget     = new QWidget(this);
+
+    ui->leftsidebarVerLayout->setSpacing(5);
+    ui->leftsidebarVerLayout->setContentsMargins(7,0,9,0);
+    ui->leftsidebarVerLayout->addWidget(setWidget);
+    setWidget->setLayout(setLayout);
+    setLayout->addWidget(logoSetLabel);
+    setLayout->addWidget(textSetLable);
+    logoSetLabel->setFixedSize(24,24);
+    logoSetLabel->setPixmap(QPixmap::fromImage(QIcon::fromTheme("ukui-control-center").pixmap(24,24).toImage()));
+    textSetLable->setText(tr("Settings"));
+    textSetLable->setAlignment(Qt::AlignLeft);
+
     //构建左侧边栏返回首页按钮
     QPushButton * hBtn = buildLeftsideBtn("homepage",tr("Home"));
     hBtn->setObjectName("homepage");
     connect(hBtn, &QPushButton::clicked, this, [=]{
         ui->stackedWidget->setCurrentIndex(0);
     });
-    hBtn->setStyleSheet("QPushButton#homepage{background: palette(window); border: none;}");
+    hBtn->setStyleSheet("QPushButton#homepage{border-radius: 4px;}");
     ui->leftsidebarVerLayout->addWidget(hBtn);
 
     for(int type = 0; type < TOTALMODULES; type++) {
@@ -615,8 +642,9 @@ void MainWindow::initLeftsideBar(){
             button->setCheckable(true);
             leftBtnGroup->addButton(button, type);
 
-            button->setStyleSheet("QPushButton::checked{background: palette(base); border-top-left-radius: 6px;border-bottom-left-radius: 6px;}"
-                                  "QPushButton::!checked{background: palette(window);border: none;}");
+            button->setStyleSheet("QPushButton:hover{background-color: rgba(55,144,250,0.30);border-radius: 4px;}"
+                                 "QPushButton:checked{background-color: palette(highlight);border-radius: 4px;}"
+                                 "QPushButton:!checked{border: none;}");
 
             connect(button, &QPushButton::clicked, this, [=]{
                 QPushButton * btn = dynamic_cast<QPushButton *>(QObject::sender());
@@ -652,16 +680,16 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName) {
     leftsidebarBtn->setAttribute(Qt::WA_DeleteOnClose);
     leftsidebarBtn->setCheckable(true);
     //    leftsidebarBtn->setFixedSize(QSize(60, 56)); //Widget Width 60
-    leftsidebarBtn->setFixedHeight(56);
+    leftsidebarBtn->setFixedSize(135,40);
 
     QPushButton * iconBtn = new QPushButton(leftsidebarBtn);
     iconBtn->setCheckable(true);
     iconBtn->setFixedSize(QSize(24, 24));
     iconBtn->setFocusPolicy(Qt::NoFocus);
 
-    QString iconHomePageBtnQss = QString("QPushButton{background: palette(window); border: none;}");
-    QString iconBtnQss = QString("QPushButton:checked{background: palette(base); border: none;}"
-                                 "QPushButton:!checked{background: palette(window); border: none;}");
+    QString iconHomePageBtnQss = QString("QPushButton{background:  border: none;}");
+    QString iconBtnQss = QString("QPushButton:checked{background:  border: none;}"
+                                 "QPushButton:!checked{background: border: none;}");
     QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
     QPixmap pix = ImageUtil::loadSvg(path, "default");
     //单独设置HomePage按钮样式
@@ -673,15 +701,25 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName) {
     }
     iconBtn->setIcon(pix);
 
+    QLabel * textLabel = new QLabel(leftsidebarBtn);
+    textLabel->setText(tipName);
+    QSizePolicy textLabelPolicy = textLabel->sizePolicy();
+    textLabelPolicy.setHorizontalPolicy(QSizePolicy::Fixed);
+    textLabelPolicy.setVerticalPolicy(QSizePolicy::Fixed);
+    textLabel->setSizePolicy(textLabelPolicy);
+    textLabel->setScaledContents(true);
+
     leftMicBtnGroup->addButton(iconBtn, itype);
 
     connect(iconBtn, &QPushButton::toggled, this, [=] (bool checked) {
         QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
         QPixmap pix;
         if (checked) {
-            pix = ImageUtil::loadSvg(path, "blue");
+            pix = ImageUtil::loadSvg(path, "white");
+            textLabel->setStyleSheet("color:white");
         } else {
             pix = ImageUtil::loadSvg(path, "default");
+            textLabel->setStyleSheet("color:palette(windowText)");
         }
         iconBtn->setIcon(pix);
     });
@@ -693,20 +731,13 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName) {
         QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
         QPixmap pix;
         if (checked) {
-            pix = ImageUtil::loadSvg(path, "blue");
+            pix = ImageUtil::loadSvg(path, "white");
+            textLabel->setStyleSheet("color:white");
         } else {
-            pix = ImageUtil::loadSvg(path, "default");
+            textLabel->setStyleSheet("color:palette(windowText)");
         }
         iconBtn->setIcon(pix);
     });
-
-    QLabel * textLabel = new QLabel(leftsidebarBtn);
-    textLabel->setText(tipName);
-    QSizePolicy textLabelPolicy = textLabel->sizePolicy();
-    textLabelPolicy.setHorizontalPolicy(QSizePolicy::Fixed);
-    textLabelPolicy.setVerticalPolicy(QSizePolicy::Fixed);
-    textLabel->setSizePolicy(textLabelPolicy);
-    textLabel->setScaledContents(true);
 
     QHBoxLayout * btnHorLayout = new QHBoxLayout();
     btnHorLayout->addWidget(iconBtn, Qt::AlignCenter);
@@ -781,6 +812,36 @@ void MainWindow::initStyleSheet() {
     closeBtn->setFlat(true);
     ui->leftsidebarWidget->setMinimumWidth(153);
     ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(window);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
+
+    ui->centralWidget->setAttribute(Qt::WA_TranslucentBackground);
+    ui->leftsidebarWidget->setMinimumWidth(156);
+
+    if (QGSettings::isSchemaInstalled(PERSONALSIE_SCHEMA)) {
+        personalQgsettings = new QGSettings(PERSONALSIE_SCHEMA, QByteArray(), this);
+        connect(personalQgsettings,&QGSettings::changed,this,[=](QString changedKey) {  //监听透明度变化
+                        if (changedKey == CONTAIN_PERSONALSIE_TRAN_KEY) {
+                           setLeftsidebarWidgetStyle();
+                        }
+                });
+    } else {
+        personalQgsettings = nullptr;
+        qDebug()<<PERSONALSIE_SCHEMA<<" not installed";
+    }
+
+    QGSettings *themeStyleQgsettings = nullptr;
+    if (QGSettings::isSchemaInstalled(THEME_STYLE_SCHEMA)) {
+        themeStyleQgsettings = new QGSettings(THEME_STYLE_SCHEMA, QByteArray(), this);
+        connect(themeStyleQgsettings,&QGSettings::changed,this,[=](QString changedKey) {  //监听主题变化
+                        if (changedKey == CONTAIN_STYLE_NAME_KEY) {
+                           setLeftsidebarWidgetStyle();
+                        }
+                });
+    } else {
+        themeStyleQgsettings = nullptr;
+        qDebug()<<THEME_STYLE_SCHEMA<<" not installed";
+    }
+
+    setLeftsidebarWidgetStyle();
 
     // 设置左上角按钮图标
     backBtn->setIcon(QIcon("://img/titlebar/back.svg"));
@@ -873,4 +934,24 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 {
     QMainWindow::resizeEvent(event);
     Q_EMIT posChanged();
+}
+
+void MainWindow::setLeftsidebarWidgetStyle() {
+    qApp->processEvents(); //不刷新会有问题
+    double tranValue = 0;
+    if (personalQgsettings != nullptr) {
+        tranValue = personalQgsettings->get(PERSONALSIE_TRAN_KEY).toDouble();
+    }
+    /*利用rgba设置透明度，其它设置透明度方式如setWindowOpacity均失败*/
+    QPalette pal;
+    QBrush brush = pal.window();
+    QColor windowColor = brush.color();
+    QString stringColor = QString("rgba(%1,%2,%3,%4)")
+           .arg(windowColor.red())
+           .arg(windowColor.green())
+           .arg(windowColor.blue())
+           .arg(tranValue);
+    ui->leftsidebarWidget->setStyleSheet(QString("QWidget#leftsidebarWidget{background-color: %1;\
+                                         border: none; border-top-left-radius: 6px; \
+                                         border-bottom-left-radius: 6px;}").arg(stringColor));
 }

@@ -30,6 +30,7 @@
 #include <QQuickWidget>
 #include <QStandardPaths>
 #include <QTime>
+#include <KWindowEffects>
 
 #include <stdlib.h>
 
@@ -86,6 +87,9 @@ int main(int argc, char *argv[])
 
         MainWindow w;
         Utils::centerToScreen(&w);
+
+        w.setAttribute(Qt::WA_TranslucentBackground);
+        KWindowEffects::enableBlurBehind(w.winId(),true);
 
         MotifWmHints hints;
         hints.flags = MWM_HINTS_FUNCTIONS | MWM_HINTS_DECORATIONS;
