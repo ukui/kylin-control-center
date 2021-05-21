@@ -443,15 +443,15 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
         QEventLoop eventloop;
         QTimer::singleShot(500, &eventloop, SLOT(quit()));
         eventloop.exec();
-        getNetList();
         secondCount ++;
+        getNetList();
     } else {
         if (getActiveConInfo(mActiveInfo) == -1 || speed == "/" && firstCount <= 4 && !getWifiStatus()) {
             QEventLoop eventloop;
             QTimer::singleShot(200, &eventloop, SLOT(quit()));
             eventloop.exec();
-            getNetList();
             firstCount++;
+            getNetList();
         } else {
             firstCount = 0;
             secondCount = 0;
