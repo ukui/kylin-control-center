@@ -196,6 +196,16 @@
         <file>plugins/netconnect/wifi6+-low-pwd.svg</file>
         <file>plugins/netconnect/wifi6+-medium-pwd.svg</file>
         <file>plugins/netconnect/wifi6+-none-pwd.svg</file>
+        <file>plugins/netconnect/wifi6-full.svg</file>
+        <file>plugins/netconnect/wifi6-high.svg</file>
+        <file>plugins/netconnect/wifi6-low.svg</file>
+        <file>plugins/netconnect/wifi6-medium.svg</file>
+        <file>plugins/netconnect/wifi6-none.svg</file>
+        <file>plugins/netconnect/wifi6+-full.svg</file>
+        <file>plugins/netconnect/wifi6+-high.svg</file>
+        <file>plugins/netconnect/wifi6+-low.svg</file>
+        <file>plugins/netconnect/wifi6+-medium.svg</file>
+        <file>plugins/netconnect/wifi6+-none.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

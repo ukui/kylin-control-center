@@ -45,14 +45,22 @@ const QString KWifiLockLow      = "network-wireless-secure-signal-low";
 const QString KLanSymbolic      = ":/img/plugins/netconnect/eth.svg";
 const QString NoNetSymbolic     = ":/img/plugins/netconnect/nonet.svg";
 
+const QString KWifi6Symbolic     = ":/img/plugins/netconnect/wifi6-full.svg";
 const QString KWifi6LockSymbolic = ":/img/plugins/netconnect/wifi6-full-pwd.svg";
+const QString KWifi6Good         = ":/img/plugins/netconnect/wifi6-high.svg";
 const QString KWifi6LockGood     = ":/img/plugins/netconnect/wifi6-high-pwd.svg";
+const QString KWifi6OK           = ":/img/plugins/netconnect/wifi6-medium.svg";
 const QString KWifi6LockOK       = ":/img/plugins/netconnect/wifi6-medium-pwd.svg";
+const QString KWifi6Low          = ":/img/plugins/netconnect/wifi6-low.svg";
 const QString KWifi6LockLow      = ":/img/plugins/netconnect/wifi6-low-pwd.svg";
 
+const QString KWifi6ProSymbolic     = ":/img/plugins/netconnect/wifi6+-full.svg";
 const QString KWifi6ProLockSymbolic = ":/img/plugins/netconnect/wifi6+-full-pwd.svg";
+const QString KWifi6ProGood         = ":/img/plugins/netconnect/wifi6+-high.svg";
 const QString KWifi6ProLockGood     = ":/img/plugins/netconnect/wifi6+-high-pwd.svg";
+const QString KWifi6ProOK           = ":/img/plugins/netconnect/wifi6+-medium.svg";
 const QString KWifi6ProLockOK       = ":/img/plugins/netconnect/wifi6+-medium-pwd.svg";
+const QString KWifi6ProLow          = ":/img/plugins/netconnect/wifi6+-low.svg";
 const QString KWifi6ProLockLow      = ":/img/plugins/netconnect/wifi6+-low-pwd.svg";
 
 bool sortByVal(const QPair<QString, int> &l, const QPair<QString, int> &r) {
@@ -762,26 +770,26 @@ QString NetConnect::wifiIcon(bool isLock, int strength, int category) {
     case 1:
         switch (strength) {
         case 1:
-            return KWifi6LockSymbolic;
+            return isLock ? KWifi6LockSymbolic : KWifi6Symbolic;
         case 2:
-            return KWifi6LockGood;
+            return isLock ? KWifi6LockGood : KWifi6Good;
         case 3:
-            return KWifi6LockOK;
+            return isLock ? KWifi6LockOK : KWifiOK;
         case 4:
-            return KWifi6LockLow;
+            return isLock ? KWifi6LockLow : KWifi6Low;
         default:
             return "";
         }
     case 2:
         switch (strength) {
         case 1:
-            return KWifi6ProLockSymbolic;
+            return isLock ? KWifi6ProLockSymbolic : KWifi6ProSymbolic;
         case 2:
-            return KWifi6ProLockGood;
+            return isLock ? KWifi6ProLockGood : KWifi6ProGood;
         case 3:
-            return KWifi6ProLockOK;
+            return isLock ? KWifi6ProLockOK : KWifi6ProOK;
         case 4:
-            return KWifi6ProLockLow;
+            return isLock ? KWifi6ProLockLow : KWifi6ProLow;
         default:
             return "";
         }
