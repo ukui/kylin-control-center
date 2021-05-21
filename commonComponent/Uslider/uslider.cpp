@@ -34,7 +34,7 @@ void Uslider::paintEvent(QPaintEvent *e)
     if (this->orientation() == Qt::Horizontal) {
         int fontHeight = fontMetrics.height();
         int tickX = 1;
-        int tickY = rect.height() / 2 + fontHeight + 5;
+        int tickY = rect.height() / 2 + fontHeight - 4;
         for (int i=0; i <= numTicks; i++) {
             QRect fontRect = fontMetrics.boundingRect(scaleList.at(i));
 

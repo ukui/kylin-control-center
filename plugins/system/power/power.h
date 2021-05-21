@@ -26,8 +26,12 @@
 #include <QGSettings>
 #include <QDBusInterface>
 #include <QDBusReply>
+#include <QWidget>
+#include <QPushButton>
+#include <QButtonGroup>
 
 #include "shell/interface.h"
+#include "Uslider/uslider.h"
 
 #include "commonComponent/ComboxFrame/comboxframe.h"
 
@@ -53,18 +57,21 @@ public:
     const QString name() const Q_DECL_OVERRIDE;
 
 public:
+    void InitUI(QWidget *power);
+    void retranslateUi();
     void initTitleLabel();
+
     void initSearText();
     void setupComponent();
     void setupConnect();
     void initModeStatus();
     void initCustomPlanStatus();
-    void resetCustomPlanStatus();
-    void initPowerOtherStatus();
+    void buildPowerModeBtn(QPushButton *button,QString Btn_name,QString BtnFun_name);
     void isPowerSupply();
     void isLidPresent();
+    void isHibernateSupply();
     void refreshUI();
-    int  getIdleTime();
+    bool QLabelSetText(QLabel *label, QString string);
 
 private:
     Ui::Power *ui;
@@ -72,45 +79,52 @@ private:
     QWidget *pluginWidget;
 
     QGSettings *settings;
-    QGSettings *sessionSetting;
-    QGSettings *mUkccpersonpersonalize;
 
     QString pluginName;
     int pluginType;
 
-    QStringList sleepStringList;
+    QStringList mSlptohtbStringList;
     QStringList closeStringList;
     QStringList closeLidStringList;
-    QStringList darkenStringList;
-    QStringList lidStringList;
-    QStringList buttonStringList;
-    QStringList iconShowList;
 
     QStringList mPowerKeys;
 
-    bool settingsCreate;
     bool isExitsPower;
     bool mFirstLoad;
     bool isExitsLid;
+    bool isExitHibernate;
 
-    bool hasBat;
 
-    ComboxFrame *mHibernate;
-    ComboxFrame *mPowerBtn;
-    ComboxFrame *mBatteryAct;
+    QComboBox *mslptohbtComboBox;
+    QComboBox *mEnterPowerComboBox;
+    QComboBox *mCloselidComboBox;
 
-    QDBusInterface *mUkccInterface;
+    QButtonGroup *powerModeBtnGroup;
+
+    QFrame *mSleepFrame;
+    QFrame *mCloseFrame;
+    QFrame *mslptohbtFrame;
+    QFrame *mEnterPowerFrame;
+    QFrame *mCloselidFrame;
+
+    QLabel *PowertitleLabel;
+    QLabel *mCustomtitleLabel;
+    QLabel *msleepLabel;
+    QLabel *mCloseLabel;
+    QLabel *mslptohbtlabel;
+    QLabel *mEnterPowerlabel;
+    QLabel *mCloselidlabel;
+
+    QPushButton *mBalanceBtn;
+    QPushButton *mSaveBtn;
+
+    Uslider *sleepuslider;
+    Uslider *CloseUslider;
 
 private:
     void initGeneralSet();
-    bool getHibernateStatus();
-    QString  getHibernateTime();
-    void initDbus();
-    void initDeviceStatus();
 
-private slots:
-    void setIdleTime(int idleTime);
-    void setHibernateTime(QString hibernate);
+
 };
 
 #endif // POWER_H

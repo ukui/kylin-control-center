@@ -4,6 +4,7 @@ TEMPLATE = lib
 CONFIG   += plugin
 
 include($$PROJECT_COMPONENTSOURCE/comboxframe.pri)
+include($$PROJECT_COMPONENTSOURCE/uslider.pri)
 
 TARGET = $$qtLibraryTarget(power)
 DESTDIR = ../..
@@ -11,6 +12,7 @@ target.path = $${PLUGIN_INSTALL_DIRS}
 INSTALLS += target
 
 INCLUDEPATH += \
+               $$PROJECT_COMPONENTSOURCE \
                $$PROJECT_ROOTDIR \
 
 LIBS     += -L$$[QT_INSTALL_LIBS] -lgsettings-qt -lupower-glib
@@ -29,7 +31,7 @@ FORMS += \
 
 HEADERS += \
     power.h \
-    powermacrodata.h
+    powermacrodata.h \
 
 SOURCES += \
     power.cpp
