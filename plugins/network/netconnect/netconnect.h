@@ -145,7 +145,6 @@ private:
     QStringList        lanList;
 
     bool               mFirstLoad;
-
     bool               mIsLanVisible = false;
     bool               mIsWlanVisible = false;
 
@@ -160,7 +159,7 @@ private:
 private:
     int         setSignal(QString lv);
     QStringList execGetLanList();
-    void        getWifiListDone(QVector<QStringList> wifislist, QStringList lanList, bool getWifiListDone);
+    int         getWifiListDone(QVector<QStringList> wifislist, QStringList lanList, bool getWifiListDone);
     QString     geiWifiChan();
     QString     getWifiSpeed();
     bool        getInitStatus();
