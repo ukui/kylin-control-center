@@ -32,6 +32,8 @@
 #include <QMoveEvent>
 #include <QtDBus>
 #include <QHideEvent>
+#include <QTextEdit>
+#include <QWindow>
 
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
@@ -67,18 +69,26 @@ class PreviewWidget : public QWidget
 {
     Q_OBJECT
 public:
-    PreviewWidget()
-    {
-
-    }
-    ~PreviewWidget(){
-
-    }
+    PreviewWidget(QWidget *parent = nullptr);
+    ~PreviewWidget();
 protected:
     void paintEvent(QPaintEvent *e);
+private:
+    void mousePressEvent(QMouseEvent *e);
 };
 
-class Screensaver : public QObject, CommonInterface
+class PreviewWindow : public QWindow
+{
+    Q_OBJECT
+public:
+    PreviewWindow();
+    ~PreviewWindow();
+    static void previewScreensaver();
+private:
+    void mousePressEvent(QMouseEvent *e);
+};
+
+class Screensaver : public QWidget, CommonInterface
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.kycc.CommonInterface")
@@ -102,7 +112,7 @@ public:
     void initEnableBtnStatus();
     void initThemeStatus();
     void initIdleSliderStatus();
-    void initLockBtnStatus(bool status);
+    void initShowTimeBtnStatus();
 
     void startupScreensaver();
     void closeScreensaver();
@@ -111,17 +121,24 @@ public:
     SSThemeInfo _newThemeinfo(const char *path);
 
     void component_init();
-    void status_init();
 
-    void set_idle_gsettings_value(int value);
     void screensaver_switch();
 
     void kill_and_start();
 
+    void showCustomizeFrame();
+    void hideCustomizeFrame();
+    void initCustomizeFrame();
+    void initScreensaverSourceFrame();
+    void initTimeSetFrame();
+    void initPictureSwitchFrame();
+    void initShowTextFrame();
+    void initShowTextSetFrame();
 private:
     int convertToLocktime(const int value);
     int lockConvertToSlider(const int value);
     void connectToServer();
+    bool eventFilter(QObject *watched, QEvent *event);
 
 private:
     Ui::Screensaver *ui;
@@ -131,11 +148,12 @@ private:
     PreviewWidget * mPreviewWidget;
 
     SwitchButton * enableSwitchBtn;
-    SwitchButton * lockSwitchBtn;
+    SwitchButton * showTimeBtn;
 
     QMap<QString, SSThemeInfo> infoMap;
 
     GSettings  * screensaver_settings;
+    QGSettings * qScreensaverDefaultSetting;
     GSettings  * session_settings;
     QGSettings * screenlock_settings = nullptr;
     QGSettings * qSessionSetting = nullptr;
@@ -155,17 +173,12 @@ private:
     QDBusInterface *m_cloudInterface;
 
     bool mFirstLoad;
-
-private:
-    SSThemeInfo _info_new(const char * path);
-    void init_theme_info_map();
+    QLineEdit *sourcePathLine;
+    QTextEdit *inputText;
+    PreviewWindow *previewWind;
 
 private slots:
     void themesComboxChanged(int index);
-    void combobox_changed_slot(int index);
-    void activebtn_changed_slot(bool status);
-    void lockbtn_changed_slot(bool status);
-    void slider_released_slot();
     void kill_screensaver_preview();
     void keyChangedSlot(const QString &key);
 
