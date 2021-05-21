@@ -445,6 +445,21 @@ void UkmediaMainWidget::alertIconButtonSetIcon(bool state,int value)
 void UkmediaMainWidget::createAlertSound(UkmediaMainWidget *pWidget)
 {
     const GList   *list;
+    m_pOutputWidget->m_pOutputListWidget->clear();
+    m_pInputWidget->m_pInputListWidget->clear();
+    cardMap.clear();
+    outputPortNameMap.clear();
+    inputPortNameMap.clear();
+    outputPortLabelMap.clear();
+    currentOutputPortLabelMap.clear();
+    currentInputPortLabelMap.clear();
+    inputPortLabelMap.clear();
+    profileNameMap.clear();
+    inputPortProfileNameMap.clear();
+    cardProfileMap.clear();
+    cardProfilePriorityMap.clear();
+    inputCardStreamMap.clear();
+    outputCardStreamMap.clear();
     connect_to_pulse(this);
 
     /* Find an event role stored control */
@@ -4908,7 +4923,7 @@ void UkmediaMainWidget::updateCard(const pa_card_info &info) {
     qDebug() << "this->active profile -----------------" << info.name <<info.active_profile->name << info.active_profile2->name;
     /* Because the port info for sinks and sources is discontinued we need
      * to update the port info for them here. */
-    if (this->hasSinks || hasSources) {
+    if (this->hasSinks || this->hasSources) {
         updatePorts(this, info, this->ports);
     }
 }
