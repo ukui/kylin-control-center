@@ -64,12 +64,14 @@ public:
     void initSearText();
     void setupComponent();
     void setupConnect();
+    void initDbus();
     void initModeStatus();
     void initCustomPlanStatus();
     void buildPowerModeBtn(QPushButton *button,QString Btn_name,QString BtnFun_name);
     void isPowerSupply();
     void isLidPresent();
     void isHibernateSupply();
+    void isSlptoHbtSupply();
     void refreshUI();
     bool QLabelSetText(QLabel *label, QString string);
 
@@ -89,13 +91,14 @@ private:
 
     QStringList mPowerKeys;
 
+
     bool isExitsPower;
     bool mFirstLoad;
     bool isExitsLid;
     bool isExitHibernate;
+    bool isExitslptoHbt;
 
 
-    QComboBox *mslptohbtComboBox;
     QComboBox *mEnterPowerComboBox;
     QComboBox *mCloselidComboBox;
 
@@ -120,9 +123,13 @@ private:
 
     Uslider *sleepuslider;
     Uslider *CloseUslider;
+    Uslider *slptohbtslider;
+
+    QDBusInterface *mUkccInterface;
 
 private:
     void initGeneralSet();
+    QString getHibernateTime();
 
 
 };

@@ -85,10 +85,11 @@ QWidget * Power::get_plugin_ui() {
 
         const QByteArray id(POWERMANAGER_SCHEMA);
 
-
+        initDbus();
         isPowerSupply();
         isLidPresent();
         isHibernateSupply();
+        isSlptoHbtSupply();
         initTitleLabel();
         setupComponent();
 
@@ -98,8 +99,11 @@ QWidget * Power::get_plugin_ui() {
             mPowerKeys = settings->keys();
 
             initGeneralSet();
+
             initCustomPlanStatus();
+
             initModeStatus();
+
             setupConnect();
         } else {
             qCritical() << POWERMANAGER_SCHEMA << "not installed!\n";
@@ -294,32 +298,27 @@ void Power::InitUI(QWidget *power)
 
     mslptohbtFrame = new QFrame(powerwidget);
     mslptohbtFrame->setObjectName(QString::fromUtf8("mslptohbtFrame"));
-    mslptohbtFrame->setMinimumSize(QSize(0, 50));
-    mslptohbtFrame->setMaximumSize(QSize(16777215, 50));
+    mslptohbtFrame->setMinimumSize(QSize(550, 60));
+    mslptohbtFrame->setMaximumSize(QSize(960, 60));
     mslptohbtFrame->setFrameShape(QFrame::Box);
 
     QFormLayout *mslptohbtLayout = new QFormLayout(mslptohbtFrame);
-    mslptohbtLayout->setContentsMargins(16, 7, 16, 0);
+    mslptohbtLayout->setContentsMargins(16, 0, 16, 0);
 
     mslptohbtlabel = new QLabel(mslptohbtFrame);
     mslptohbtlabel->setObjectName(QString::fromUtf8("mslptohbtlabel"));
     sizePolicy.setHeightForWidth(mslptohbtlabel->sizePolicy().hasHeightForWidth());
     mslptohbtlabel->setSizePolicy(sizePolicy);
-    mslptohbtlabel->setMinimumSize(QSize(220, 0));
-    mslptohbtlabel->setMaximumSize(QSize(220, 16777215));
+    mslptohbtlabel->setMinimumSize(QSize(182, 60));
+    mslptohbtlabel->setMaximumSize(QSize(182, 60));
 
-    mslptohbtComboBox = new QComboBox(mslptohbtFrame);
-    mslptohbtComboBox->setObjectName(QString::fromUtf8("mslptohbtComboBox"));
-    QSizePolicy sizePolicy_2(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    sizePolicy_2.setHorizontalStretch(0);
-    sizePolicy_2.setVerticalStretch(0);
-    sizePolicy_2.setHeightForWidth(mslptohbtComboBox->sizePolicy().hasHeightForWidth());
-    mslptohbtComboBox->setSizePolicy(sizePolicy2);
-    mslptohbtComboBox->setMinimumSize(QSize(0, 36));
-    mslptohbtComboBox->setMaximumSize(QSize(16777215, 36));
-    mslptohbtComboBox->setStyleSheet(QString::fromUtf8(""));
+    slptohbtslider = new Uslider(mCloseTime);
+    slptohbtslider->setRange(1,6);
+    slptohbtslider->setTickInterval(1);
+    slptohbtslider->setPageStep(1);
 
-    mslptohbtLayout->addRow(mslptohbtlabel,mslptohbtComboBox);
+
+    mslptohbtLayout->addRow(mslptohbtlabel,slptohbtslider);
     mslptohbtLayout->setHorizontalSpacing(50);
 
     PowerLayout->addWidget(mslptohbtFrame);
@@ -345,7 +344,7 @@ void Power::InitUI(QWidget *power)
 
 
     mEnterPowerComboBox = new QComboBox(mEnterPowerFrame);
-    mEnterPowerComboBox->setObjectName(QString::fromUtf8("mslptohbtComboBox"));
+    mEnterPowerComboBox->setObjectName(QString::fromUtf8("mEnterPowerComboBox"));
     sizePolicy2.setHeightForWidth(mEnterPowerComboBox->sizePolicy().hasHeightForWidth());
     mEnterPowerComboBox->setSizePolicy(sizePolicy2);
     mEnterPowerComboBox->setMinimumSize(QSize(0, 36));
@@ -377,7 +376,7 @@ void Power::InitUI(QWidget *power)
 
 
     mCloselidComboBox = new QComboBox(mCloselidFrame);
-    mCloselidComboBox->setObjectName(QString::fromUtf8("mslptohbtComboBox"));
+    mCloselidComboBox->setObjectName(QString::fromUtf8("mCloselidComboBox"));
     sizePolicy2.setHeightForWidth(mCloselidComboBox->sizePolicy().hasHeightForWidth());
     mCloselidComboBox->setSizePolicy(sizePolicy2);
     mCloselidComboBox->setMinimumSize(QSize(0, 36));
@@ -451,13 +450,6 @@ void Power::setupComponent()
     powerModeBtnGroup->setId(mBalanceBtn, BALANCE);
     powerModeBtnGroup->setId(mSaveBtn, SAVING);
 
-    // 电脑睡眠转休眠
-    mSlptohtbStringList << QObject::tr("interactive") << QObject::tr("suspend") << QObject::tr("hibernate") << QObject::tr("shutdown");
-    mslptohbtComboBox->insertItem(0, mSlptohtbStringList.at(0), "interactive");
-    mslptohbtComboBox->insertItem(1, mSlptohtbStringList.at(1), "suspend");
-    mslptohbtComboBox->insertItem(2, mSlptohtbStringList.at(2), "hibernate");
-    mslptohbtComboBox->insertItem(3, mSlptohtbStringList.at(3), "shutdown");
-
     // 合盖
     closeLidStringList << tr("nothing") << tr("blank") << tr("suspend") << tr("shutdown");
     mCloselidComboBox->insertItem(0, closeLidStringList.at(0), "nothing");
@@ -474,6 +466,7 @@ void Power::setupComponent()
         if (kEnkLid.at(i) == "hibernate" && !isExitHibernate){
             continue;
         }
+
         mEnterPowerComboBox->insertItem(i, kLid.at(i), kEnkLid.at(i));
     }
 
@@ -490,12 +483,8 @@ void Power::setupConnect()
 #endif
         // 平衡模式
         if (id == BALANCE) {
-            //mUkccpersonpersonalize->set("custompower", false);
-            // 省电模式
             settings->set(POWER_POLICY_KEY, 1);
         } else  {
-            //mUkccpersonpersonalize->set("custompower", false);
-            // 省电模式
             settings->set(POWER_POLICY_KEY, 2);
         }
     });
@@ -590,12 +579,13 @@ void Power::initCustomPlanStatus()
     // 信号阻塞
     sleepuslider->blockSignals(true);
     CloseUslider->blockSignals(true);
-    mslptohbtComboBox->blockSignals(true);
     mCloselidComboBox->blockSignals(true);
 
     // 计算机睡眠延迟
     int acsleep = settings->get(SLEEP_COMPUTER_AC_KEY).toInt() / FIXES;
     int acclose = settings->get(SLEEP_DISPLAY_AC_KEY).toInt() / FIXES;
+
+
     int value ;
     if (acsleep == 10) {
         value = 1;
@@ -635,7 +625,6 @@ void Power::initCustomPlanStatus()
     // 信号阻塞解除
     sleepuslider->blockSignals(false);
     CloseUslider->blockSignals(false);
-    mslptohbtComboBox->blockSignals(false);
     mCloselidComboBox->blockSignals(false);
 }
 
@@ -705,14 +694,7 @@ void Power::isPowerSupply()
 
     QDBusReply<QVariant> briginfo;
     briginfo  = brightnessInterface ->call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
-
-    if (!briginfo.value().toBool()) {
-        isExitsPower = false ;
-
-    } else {
-        isExitsPower = true ;
-
-    }
+    isExitsPower = briginfo.value().toBool();
 }
 
 void Power::isLidPresent()
@@ -720,7 +702,8 @@ void Power::isLidPresent()
     QDBusInterface *LidInterface = new QDBusInterface("org.freedesktop.UPower",
                        "/org/freedesktop/UPower",
                        "org.freedesktop.DBus.Properties",
-                        QDBusConnection::systemBus());
+                        QDBusConnection::systemBus(),
+                        this);
 
 
     if (!LidInterface->isValid()) {
@@ -730,11 +713,8 @@ void Power::isLidPresent()
     }
     QDBusReply<QVariant> LidInfo;
     LidInfo = LidInterface->call("Get", "org.freedesktop.UPower", "LidIsPresent");
-    if (!LidInfo.value().toBool()) {
-        isExitsLid = false ;
-    } else {
-        isExitsLid = true ;
-    }
+    isExitsLid = LidInfo.value().toBool();
+
 }
 
 void Power::isHibernateSupply()
@@ -745,23 +725,38 @@ void Power::isHibernateSupply()
                         QDBusConnection::systemBus(),
                         this);
     if (!HibernateInterface->isValid()) {
-        qDebug() << "Create UPower Hibernate Interface Failed : " <<
+        qDebug() << "Create login1 Hibernate Interface Failed : " <<
             QDBusConnection::systemBus().lastError();
         return;
     }
     QDBusReply<QString> HibernateInfo;
     HibernateInfo = HibernateInterface->call("CanHibernate");
-    if (HibernateInfo == "yes")
-    {
-        isExitHibernate = true;
-    } else {
-        isExitHibernate = false;
-    }
+    isExitHibernate = HibernateInfo == "yes"?true:false;
 }
+
+void Power::isSlptoHbtSupply()
+{
+    QDBusInterface *loginInterface = new QDBusInterface("org.freedesktop.login1",
+                       "/org/freedesktop/login1",
+                       "org.freedesktop.login1.Manager",
+                        QDBusConnection::systemBus(),
+                        this);
+    if (!loginInterface->isValid()) {
+        qDebug() << "Create login1 Interface Failed : " <<
+            QDBusConnection::systemBus().lastError();
+        return;
+    }
+    QDBusReply<QString> SlptohbtInfo;
+    SlptohbtInfo = loginInterface->call("CanSuspendThenHibernate");
+    isExitslptoHbt = SlptohbtInfo == "yes"?true:false;
+}
+
 
 void Power::refreshUI()
 {
     mCloselidFrame->setVisible(isExitsLid);
+
+    mslptohbtFrame->setVisible(isExitHibernate);
 
 }
 
@@ -794,8 +789,75 @@ void Power::initGeneralSet()
     }else {
        mEnterPowerFrame->hide();
     }
+
+    if (isExitslptoHbt && mPowerKeys.contains("afterIdleAction")) {
+        slptohbtslider->blockSignals(true);
+        if (getHibernateTime().isEmpty()) {
+            slptohbtslider->setValue(6);
+        } else {
+            QString mhibernate = getHibernateTime();
+            if (mhibernate == "5min") {
+                slptohbtslider->setValue(1);
+            }else if (mhibernate == "10min"){
+                slptohbtslider->setValue(2);
+            }else if (mhibernate == "30min"){
+                slptohbtslider->setValue(3);
+            }else if (mhibernate == "60min"){
+                slptohbtslider->setValue(4);
+            }else if (mhibernate == "120min"){
+                slptohbtslider->setValue(5);
+            }
+
+        }
+        slptohbtslider->blockSignals(false);
+        connect(CloseUslider, &QSlider::valueChanged, [=](int value) {
+            QString hibernate;
+            switch (value) {
+            case 1:
+                hibernate = "5min";
+                break;
+            case 2:
+                hibernate = "10min";
+                break;
+            case 3:
+                hibernate = "30min";
+                break;
+            case 4:
+                hibernate = "60min";
+                break;
+            case 5:
+                hibernate = "120min";
+                break;
+            case 6:
+                hibernate = "";
+                break;
+
+            }
+
+            mUkccInterface->call("setSuspendThenHibernate", hibernate);
+            if (value == 6) {
+                settings->set(HIBERNATE_KEY, "suspend-then-hibernate");
+            } else {
+                settings->set(HIBERNATE_KEY, "suspend");
+            }
+        });
+    }
+
+}
+QString Power::getHibernateTime() {
+    QDBusReply<QString> hibernateTime = mUkccInterface->call("getSuspendThenHibernate");
+    if (hibernateTime.isValid()) {
+        return hibernateTime.value();
+    }
+    return "";
 }
 
+void Power::initDbus() {
+    mUkccInterface = new QDBusInterface("com.control.center.qt.systemdbus",
+                                        "/",
+                                        "com.control.center.interface",
+                                        QDBusConnection::systemBus());
+}
 
 
 
