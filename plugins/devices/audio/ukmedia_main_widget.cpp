@@ -445,6 +445,21 @@ void UkmediaMainWidget::alertIconButtonSetIcon(bool state,int value)
 void UkmediaMainWidget::createAlertSound(UkmediaMainWidget *pWidget)
 {
     const GList   *list;
+    m_pOutputWidget->m_pOutputListWidget->clear();
+    m_pInputWidget->m_pInputListWidget->clear();
+    cardMap.clear();
+    outputPortNameMap.clear();
+    inputPortNameMap.clear();
+    outputPortLabelMap.clear();
+    currentOutputPortLabelMap.clear();
+    currentInputPortLabelMap.clear();
+    inputPortLabelMap.clear();
+    profileNameMap.clear();
+    inputPortProfileNameMap.clear();
+    cardProfileMap.clear();
+    cardProfilePriorityMap.clear();
+    inputCardStreamMap.clear();
+    outputCardStreamMap.clear();
     connect_to_pulse(this);
 
     /* Find an event role stored control */
