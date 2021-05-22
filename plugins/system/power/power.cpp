@@ -187,7 +187,7 @@ void Power::InitUI(QWidget *power)
     mBalanceBtn->setSizePolicy(sizePolicy1);
     mBalanceBtn->setMinimumSize(QSize(550, 50));
     mBalanceBtn->setMaximumSize(QSize(960, 50));
-    mBalanceBtn->setStyleSheet("QPushButton{background-color:#F4F4F4;}");
+    mBalanceBtn->setStyleSheet("QPushButton{background-color:#F4F4F4;border:none;}");
 
 
 
@@ -205,7 +205,7 @@ void Power::InitUI(QWidget *power)
     mSaveBtn->setSizePolicy(sizePolicy2);
     mSaveBtn->setMinimumSize(QSize(550, 50));
     mSaveBtn->setMaximumSize(QSize(960, 50));
-    mSaveBtn->setStyleSheet("QPushButton{background-color:#F4F4F4;}");
+    mSaveBtn->setStyleSheet("QPushButton{background-color:#F4F4F4;border:none;}");
 
 
     QSpacerItem *verticalSpacer_2 = new QSpacerItem(20, 8, QSizePolicy::Minimum, QSizePolicy::Fixed);
@@ -764,7 +764,7 @@ void Power::refreshUI()
 {
     mCloselidFrame->setVisible(isExitsLid);
 
-    mslptohbtFrame->setVisible(isExitHibernate);
+    mslptohbtFrame->setVisible(isExitslptoHbt);
 
 }
 
