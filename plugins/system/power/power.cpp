@@ -64,7 +64,6 @@ Power::Power() : mFirstLoad(true)
 Power::~Power() {
 
     if (!mFirstLoad) {
-        qDebug()<<"-----------";
         delete ui;
         ui = nullptr;
     }
@@ -695,7 +694,7 @@ void Power::isPowerSupply()
     QDBusInterface *brightnessInterface = new QDBusInterface("org.freedesktop.UPower",
                                      "/org/freedesktop/UPower/devices/DisplayDevice",
                                      "org.freedesktop.DBus.Properties",
-                                     QDBusConnection::systemBus());
+                                     QDBusConnection::systemBus(),this);
     if (!brightnessInterface->isValid()) {
         qDebug() << "Create UPower Interface Failed : " << QDBusConnection::systemBus().lastError();
         return;
@@ -704,7 +703,7 @@ void Power::isPowerSupply()
     QDBusReply<QVariant> briginfo;
     briginfo  = brightnessInterface ->call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
     isExitsPower = briginfo.value().toBool();
-    delete brightnessInterface;
+
 }
 
 void Power::isLidPresent()
@@ -712,7 +711,7 @@ void Power::isLidPresent()
     QDBusInterface *LidInterface = new QDBusInterface("org.freedesktop.UPower",
                        "/org/freedesktop/UPower",
                        "org.freedesktop.DBus.Properties",
-                        QDBusConnection::systemBus());
+                        QDBusConnection::systemBus(),this);
 
 
     if (!LidInterface->isValid()) {
@@ -723,7 +722,6 @@ void Power::isLidPresent()
     QDBusReply<QVariant> LidInfo;
     LidInfo = LidInterface->call("Get", "org.freedesktop.UPower", "LidIsPresent");
     isExitsLid = LidInfo.value().toBool();
-    delete LidInterface;
 
 }
 
@@ -732,7 +730,7 @@ void Power::isHibernateSupply()
     QDBusInterface *HibernateInterface = new QDBusInterface("org.freedesktop.login1",
                        "/org/freedesktop/login1",
                        "org.freedesktop.login1.Manager",
-                        QDBusConnection::systemBus());
+                        QDBusConnection::systemBus(),this);
     if (!HibernateInterface->isValid()) {
         qDebug() << "Create login1 Hibernate Interface Failed : " <<
             QDBusConnection::systemBus().lastError();
@@ -741,7 +739,7 @@ void Power::isHibernateSupply()
     QDBusReply<QString> HibernateInfo;
     HibernateInfo = HibernateInterface->call("CanHibernate");
     isExitHibernate = HibernateInfo == "yes"?true:false;
-    delete HibernateInterface;
+
 }
 
 void Power::isSlptoHbtSupply()
@@ -749,7 +747,7 @@ void Power::isSlptoHbtSupply()
     QDBusInterface *loginInterface = new QDBusInterface("org.freedesktop.login1",
                        "/org/freedesktop/login1",
                        "org.freedesktop.login1.Manager",
-                        QDBusConnection::systemBus());
+                        QDBusConnection::systemBus(),this);
     if (!loginInterface->isValid()) {
         qDebug() << "Create login1 Interface Failed : " <<
             QDBusConnection::systemBus().lastError();
@@ -758,7 +756,7 @@ void Power::isSlptoHbtSupply()
     QDBusReply<QString> SlptohbtInfo;
     SlptohbtInfo = loginInterface->call("CanSuspendThenHibernate");
     isExitslptoHbt = SlptohbtInfo == "yes"?true:false;
-    delete loginInterface;
+
 }
 
 
