@@ -78,14 +78,9 @@ CloseButton::CloseButton(QWidget *parent, const QString &filePath, const QString
     }
 }
 
-const QPixmap CloseButton::renderSvg(const QIcon &icon, QString cgColor) {
-    int size = m_cSize;
+const QPixmap CloseButton::renderSvg(const QIcon &icon, QString cgColor) { 
     const auto ratio = qApp->devicePixelRatio();
-    if ( 2 == ratio) {
-        size = 32 ;
-    } else if (3 == ratio) {
-        size = 96;
-    }
+    int size = m_cSize * ratio;
     QPixmap iconPixmap = icon.pixmap(size,size);
     iconPixmap.setDevicePixelRatio(ratio);
     QImage img = iconPixmap.toImage();

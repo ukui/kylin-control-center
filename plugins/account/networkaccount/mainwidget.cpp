@@ -129,11 +129,13 @@ void MainWidget::checkNetStatus(bool status) {
 }
 
 void MainWidget::checkNetWork(QVariantMap map) {
+
     QVariant ret = map.value("Connectivity");
     if (ret.toInt() == 0) {
         return ;
     }
-    if (ret.toInt() != 1 && ret.toInt() != 3 ) {
+
+    if (ret.toInt() != 1 && ret.toInt() != 3 && m_bIsFailed == false) {
         m_bIsOnline = true;
         m_autoSyn->get_swbtn()->setDisabledFlag(false);
         for (int i = 0;i < m_szItemlist.size(); i ++ ) {
@@ -610,7 +612,7 @@ void MainWidget::initSignalSlots() {
     }
 
     connect(this, &MainWidget::isOnline, [=] (bool checked) {
-        if (checked == true) {
+        if (checked == true && m_bIsFailed == false) {
             if(m_bIsOnline  == true) {
                 m_checkTimer->setSingleShot(true);
                 m_checkTimer->setInterval(500);
@@ -622,7 +624,7 @@ void MainWidget::initSignalSlots() {
             for (int i = 0;i < m_szItemlist.size(); i ++ ) {
                 m_itemList->get_item(i)->get_swbtn()->setDisabledFlag(false);
             }
-        } else {
+        } else if(m_bIsFailed == false){
             m_bIsOnline = false;
             m_autoSyn->get_swbtn()->setDisabledFlag(true);
             for (int i = 0;i < m_szItemlist.size(); i ++ ) {
@@ -800,6 +802,10 @@ void MainWidget::initSignalSlots() {
         } else if (m_mainWidget->currentWidget() == m_nullWidget) {
             m_mainDialog->setnormal();
             //on_login_out();
+            QFile token(QDir::homePath() + "/.cache/kylinId/token");
+            if (token.exists()) {
+                token.remove();
+            }
         }
         m_cLoginTimer->stop();
     });
@@ -1151,6 +1157,7 @@ void MainWidget::download_over() {
     //emit docheck();
     if (m_pSettings == nullptr) return;
 
+
     if (m_exitCloud_btn->property("on") == true) {
         m_blueEffect_sync->stop();
         m_exitCloud_btn->setText(tr("Exit"));
@@ -1163,6 +1170,8 @@ void MainWidget::download_over() {
         emit isSync(false);
         //showDesktopNotify("同步结束");
     }
+
+    if(m_bIsFailed == true) return ;
      m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
     if (__once__ == false) {
 
@@ -1174,6 +1183,7 @@ void MainWidget::download_over() {
 void MainWidget::push_over() {
     //emit docheck();
      if (m_pSettings == nullptr) return;
+
     if (m_exitCloud_btn->property("on") == true) {
         m_blueEffect_sync->stop();
         m_exitCloud_btn->setText(tr("Exit"));
@@ -1186,6 +1196,8 @@ void MainWidget::push_over() {
         emit isSync(false);
         //showDesktopNotify("同步结束");
     }
+
+    if(m_bIsFailed == true) return ;
     m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
     if (__once__ == false) {
         m_autoSyn->set_change(0,"0");
@@ -1213,27 +1225,21 @@ void MainWidget::get_key_info(QString info) {
     }
 
     if (m_keyInfoList.size() == 1  && m_szItemlist.contains(m_keyInfoList[0]) ) {
-        m_autoSyn->set_change(-1,m_keyInfoList[0]);
+        //m_autoSyn->set_change(-1,m_keyInfoList[0]);
         m_autoSyn->make_itemoff();
         emit dochange("Auto-sync",false);
         m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
+        m_bIsFailed = true;
         __once__ = true;
         return ;
     } else if (m_keyInfoList.size() > 1){
         bIsFailed = true;
-    } else {
-         m_autoSyn->set_change(0,"0");
-         for (int i  = 0;i < m_szItemlist.size();i ++) {
-             if (m_itemList->get_item(i)->get_swbtn()->getDisabledFlag() == false) {
-                 m_itemList->get_item(i)->set_change(0,"0");
-             }
-         }
-         return ;
     }
 
     //m_keyInfoList.size() > 1的情况
     //说明size大于2
     if (bIsFailed) {
+        m_bIsFailed = true;
         QString keys = "";
         for (QString key : m_keyInfoList) {
             if (key != m_keyInfoList.last()) {
@@ -1248,10 +1254,11 @@ void MainWidget::get_key_info(QString info) {
         for (int i = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(false);
         }
-        m_autoSyn->set_change(-1,"Failed!");
+        //m_autoSyn->set_change(-1,"Failed!");
         emit dochange("Auto-sync",false);
         __once__ = true;
     }
+    m_bIsFailed = true;
     m_keyInfoList.clear();
 }
 
