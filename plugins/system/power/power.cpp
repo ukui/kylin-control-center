@@ -62,7 +62,9 @@ Power::Power() : mFirstLoad(true)
 }
 
 Power::~Power() {
+
     if (!mFirstLoad) {
+        qDebug()<<"-----------";
         delete ui;
         ui = nullptr;
     }
@@ -78,8 +80,9 @@ int Power::get_plugin_type() {
 
 QWidget * Power::get_plugin_ui() {
     if (mFirstLoad) {
+        mFirstLoad = false;
         ui = new Ui::Power;
-        pluginWidget = new QWidget;
+        pluginWidget = new QWidget();
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         InitUI(pluginWidget);
 
@@ -206,8 +209,9 @@ void Power::InitUI(QWidget *power)
     mSaveBtn->setStyleSheet("QPushButton{background-color:#F4F4F4;}");
 
 
+    QSpacerItem *verticalSpacer_2 = new QSpacerItem(20, 8, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-    mPowerModeLayout->addItem(verticalSpacer_1);
+    mPowerModeLayout->addItem(verticalSpacer_2);
     mPowerModeLayout->addWidget(mSaveBtn);
 
     PowerLayout->addWidget(PowerModeWidget);
@@ -224,8 +228,9 @@ void Power::InitUI(QWidget *power)
     mCustomtitleLabel->setScaledContents(true);
 
     PowerLayout->addWidget(mCustomtitleLabel);
+    QSpacerItem *verticalSpacer_4 = new QSpacerItem(20, 8, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-    PowerLayout->addItem(verticalSpacer_1);
+    PowerLayout->addItem(verticalSpacer_4);
 
     mSleepFrame = new QFrame(powerwidget);
     mSleepFrame->setObjectName(QString::fromUtf8("mSleepFrame"));
@@ -259,7 +264,9 @@ void Power::InitUI(QWidget *power)
 
     PowerLayout->addWidget(mSleepFrame);
 
-    PowerLayout->addItem(verticalSpacer_1);
+    QSpacerItem *verticalSpacer_5 = new QSpacerItem(20, 8, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+    PowerLayout->addItem(verticalSpacer_5);
 
 
 
@@ -294,7 +301,8 @@ void Power::InitUI(QWidget *power)
     mCloseLayout->setHorizontalSpacing(50);
     PowerLayout->addWidget(mCloseFrame);
 
-    PowerLayout->addItem(verticalSpacer_1);
+    QSpacerItem *verticalSpacer_6 = new QSpacerItem(20, 8, QSizePolicy::Minimum, QSizePolicy::Fixed);
+    PowerLayout->addItem(verticalSpacer_6);
 
     mslptohbtFrame = new QFrame(powerwidget);
     mslptohbtFrame->setObjectName(QString::fromUtf8("mslptohbtFrame"));
@@ -323,7 +331,8 @@ void Power::InitUI(QWidget *power)
 
     PowerLayout->addWidget(mslptohbtFrame);
 
-    PowerLayout->addItem(verticalSpacer_1);
+    QSpacerItem *verticalSpacer_7 = new QSpacerItem(20, 8, QSizePolicy::Minimum, QSizePolicy::Fixed);
+    PowerLayout->addItem(verticalSpacer_7);
 
     mEnterPowerFrame = new QFrame(powerwidget);
     mEnterPowerFrame->setObjectName(QString::fromUtf8("mEnterPowerFrame"));
@@ -357,7 +366,8 @@ void Power::InitUI(QWidget *power)
 
     PowerLayout->addWidget(mEnterPowerFrame);
 
-    PowerLayout->addItem(verticalSpacer_1);
+    QSpacerItem *verticalSpacer_8 = new QSpacerItem(20, 8, QSizePolicy::Minimum, QSizePolicy::Fixed);
+    PowerLayout->addItem(verticalSpacer_8);
 
     mCloselidFrame = new QFrame(powerwidget);
     mCloselidFrame->setObjectName(QString::fromUtf8("mCloselidFrame"));
@@ -393,9 +403,9 @@ void Power::InitUI(QWidget *power)
 
     mverticalLayout->addWidget(powerwidget);
 
-    QSpacerItem *verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    QSpacerItem *verticalSpacer_9 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-    mverticalLayout->addItem(verticalSpacer_4);
+    mverticalLayout->addItem(verticalSpacer_9);
 
     retranslateUi();
     buildPowerModeBtn(mBalanceBtn,tr("Balance"),tr("Autobalance energy and performance with available hardware"));
@@ -685,8 +695,7 @@ void Power::isPowerSupply()
     QDBusInterface *brightnessInterface = new QDBusInterface("org.freedesktop.UPower",
                                      "/org/freedesktop/UPower/devices/DisplayDevice",
                                      "org.freedesktop.DBus.Properties",
-                                     QDBusConnection::systemBus(),
-                                     this);
+                                     QDBusConnection::systemBus());
     if (!brightnessInterface->isValid()) {
         qDebug() << "Create UPower Interface Failed : " << QDBusConnection::systemBus().lastError();
         return;
@@ -695,6 +704,7 @@ void Power::isPowerSupply()
     QDBusReply<QVariant> briginfo;
     briginfo  = brightnessInterface ->call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
     isExitsPower = briginfo.value().toBool();
+    delete brightnessInterface;
 }
 
 void Power::isLidPresent()
@@ -702,8 +712,7 @@ void Power::isLidPresent()
     QDBusInterface *LidInterface = new QDBusInterface("org.freedesktop.UPower",
                        "/org/freedesktop/UPower",
                        "org.freedesktop.DBus.Properties",
-                        QDBusConnection::systemBus(),
-                        this);
+                        QDBusConnection::systemBus());
 
 
     if (!LidInterface->isValid()) {
@@ -714,6 +723,7 @@ void Power::isLidPresent()
     QDBusReply<QVariant> LidInfo;
     LidInfo = LidInterface->call("Get", "org.freedesktop.UPower", "LidIsPresent");
     isExitsLid = LidInfo.value().toBool();
+    delete LidInterface;
 
 }
 
@@ -722,8 +732,7 @@ void Power::isHibernateSupply()
     QDBusInterface *HibernateInterface = new QDBusInterface("org.freedesktop.login1",
                        "/org/freedesktop/login1",
                        "org.freedesktop.login1.Manager",
-                        QDBusConnection::systemBus(),
-                        this);
+                        QDBusConnection::systemBus());
     if (!HibernateInterface->isValid()) {
         qDebug() << "Create login1 Hibernate Interface Failed : " <<
             QDBusConnection::systemBus().lastError();
@@ -732,6 +741,7 @@ void Power::isHibernateSupply()
     QDBusReply<QString> HibernateInfo;
     HibernateInfo = HibernateInterface->call("CanHibernate");
     isExitHibernate = HibernateInfo == "yes"?true:false;
+    delete HibernateInterface;
 }
 
 void Power::isSlptoHbtSupply()
@@ -739,8 +749,7 @@ void Power::isSlptoHbtSupply()
     QDBusInterface *loginInterface = new QDBusInterface("org.freedesktop.login1",
                        "/org/freedesktop/login1",
                        "org.freedesktop.login1.Manager",
-                        QDBusConnection::systemBus(),
-                        this);
+                        QDBusConnection::systemBus());
     if (!loginInterface->isValid()) {
         qDebug() << "Create login1 Interface Failed : " <<
             QDBusConnection::systemBus().lastError();
@@ -749,6 +758,7 @@ void Power::isSlptoHbtSupply()
     QDBusReply<QString> SlptohbtInfo;
     SlptohbtInfo = loginInterface->call("CanSuspendThenHibernate");
     isExitslptoHbt = SlptohbtInfo == "yes"?true:false;
+    delete loginInterface;
 }
 
 
