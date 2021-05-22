@@ -83,6 +83,8 @@ private:
     QStringList paired_device_address;
     QString finally_connect_the_device;
     QStringList Discovery_device_address;
+    QStringList last_discovery_device_address;
+
     QStringList adapter_address_list;
     QStringList adapter_name_list;
 
@@ -117,6 +119,10 @@ private:
     QTimer *discovering_timer =nullptr;
     int i = 7;
     bool show_flag = false;
+
+    void clearUiShowDeviceList();
+    void addOneBluetoothDeviceItemUi(BluezQt::DevicePtr);
+
 };
 
 #endif // BLUETOOTHMAIN_H

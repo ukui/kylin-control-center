@@ -123,6 +123,24 @@ void DeviceInfoItem::resizeEvent(QResizeEvent *event)
 void DeviceInfoItem::enterEvent(QEvent *event)
 {
     AnimationFlag = true;
+
+    if (device_status->isVisible())
+    {
+        if (LINK == d_status)
+        {
+            device_status->setToolTip(tr("Device connected"));
+        }
+        else
+        {
+            device_status->setToolTip(tr("Device not connected"));
+        }
+        //else //正在连接状态为做对一切换，暂时不加入
+        //{
+        //    device_status->setToolTip(tr("Connecting device"));
+        //}
+
+    }
+
     mouse_timer->start();
 }
 
