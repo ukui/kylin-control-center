@@ -598,7 +598,7 @@ QStringList UserInfo::getLoginedUsers() {
                                   QDBusConnection::systemBus());
 
     if (loginInterface.isValid()) {
-        qDebug() << "create interface sucess";
+//        qDebug() << "create interface sucess";
     }
 
     QDBusMessage result = loginInterface.call("ListUsers");
@@ -657,6 +657,7 @@ void UserInfo::_refreshUserInfoUI(){
 
             //设置用户名
             ui->userNameLabel->setText(user.realname);
+            ui->userNameChangeLabel->setProperty("useIconHighlightEffect", 0x8);
             ui->userNameChangeLabel->setPixmap(QIcon::fromTheme("document-edit-symbolic").pixmap(ui->userNameChangeLabel->size()));
             //设置用户类型
             ui->userTypeLabel->setText(_accountTypeIntToString(user.accounttype));
@@ -855,6 +856,7 @@ void UserInfo::createUser(QString username, QString pwd, QString pin, int atype)
 
     //使用全局变量传递新建用户密码
     _newUserPwd = pwd;
+    _newUserName = username;
 }
 
 void UserInfo::createUserDone(QString objpath){
@@ -862,7 +864,20 @@ void UserInfo::createUserDone(QString objpath){
     //设置默认头像
     userdispatcher->change_user_face(DEFAULTFACE);
     //设置默认密码
-    userdispatcher->change_user_pwd(_newUserPwd, "");
+//    userdispatcher->change_user_pwd(_newUserPwd, "");
+    QDBusInterface * tmpSysinterface = new QDBusInterface("com.control.center.qt.systemdbus",
+                                                          "/",
+                                                          "com.control.center.interface",
+                                                          QDBusConnection::systemBus());
+
+    if (!tmpSysinterface->isValid()){
+        qCritical() << "Create Client Interface Failed When : " << QDBusConnection::systemBus().lastError();
+        return;
+    }
+    tmpSysinterface->call("changeOtherUserPasswd", _newUserName, _newUserPwd);
+
+    delete tmpSysinterface;
+    tmpSysinterface = nullptr;
 
     //刷新全部用户信息
     _acquireAllUsersInfo();
@@ -896,7 +911,7 @@ void UserInfo::showDeleteUserDialog(QString username){
 }
 
 void UserInfo::deleteUser(bool removefile, QString username){
-    qDebug() << allUserInfoMap.keys() << username;
+//    qDebug() << allUserInfoMap.keys() << username;
 
     UserInfomation user = (UserInfomation)(allUserInfoMap.find(username).value());
 

@@ -244,6 +244,7 @@ private:
 
     QString pwdcreate;
     QString _newUserPwd;
+    QString _newUserName;
     QString mUserName;
 
     QStringList m_loginedUser;
