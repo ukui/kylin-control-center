@@ -154,6 +154,9 @@ void NetConnect::initComponent() {
         if (m_interface) {
             m_interface->call("requestRefreshWifiList");
         }
+        if (!getWifiStatus()) {
+            getNetList();
+        }
     });
 
     connect(ui->detailBtn, &QPushButton::clicked, this, [=](bool checked) {
@@ -213,6 +216,7 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
         deviceItem->mDetailLabel->setText("");
     }
     QIcon searchIcon = QIcon::fromTheme(iconPath);
+    deviceItem->mPitIcon->setProperty("useIconHighlightEffect", 0x10);
     deviceItem->mPitIcon->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(24, 24))));
 
     deviceItem->mAbtBtn->setMinimumWidth(100);
@@ -464,7 +468,7 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
             } else if (speed == "/") {
                 isNullSpeed = true;
             }
-            if (!getwifislist.isEmpty()) {
+            if (!getwifislist.isEmpty() && getwifislist.length() != 1) {
                 connectedWifi.clear();
                 wifiList.clear();
 
