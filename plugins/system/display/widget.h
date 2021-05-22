@@ -18,6 +18,7 @@
 #include <QScreen>
 #include <QMultiMap>
 #include <QShortcut>
+#include <QFuture>
 
 #include <KF5/KScreen/kscreen/config.h>
 
@@ -223,6 +224,9 @@ private:
     bool mFirstLoad = true;
     bool mIsWayland = false;
     bool mIsBattery = false;
+
+    bool threadRunExit = false;
+    QFuture<void> threadRun;
 
     QShortcut *mApplyShortcut;
 };

@@ -687,9 +687,9 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName) {
     iconBtn->setFixedSize(QSize(24, 24));
     iconBtn->setFocusPolicy(Qt::NoFocus);
 
-    QString iconHomePageBtnQss = QString("QPushButton{background:  border: none;}");
-    QString iconBtnQss = QString("QPushButton:checked{background:  border: none;}"
-                                 "QPushButton:!checked{background: border: none;}");
+    QString iconHomePageBtnQss = QString("QPushButton{border:  none;}");
+    QString iconBtnQss = QString("QPushButton:checked{border:  none;}"
+                                 "QPushButton:!checked{border: none;}");
     QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
     QPixmap pix = ImageUtil::loadSvg(path, "default");
     //单独设置HomePage按钮样式

@@ -141,6 +141,8 @@ Widget::Widget(QWidget *parent) :
 
 Widget::~Widget()
 {
+    threadRunExit = true;
+    threadRun.waitForFinished();
     clearOutputIdentifiers();
     delete ui;
     ui = nullptr;
@@ -1141,7 +1143,7 @@ void Widget::save()
     QTimer::singleShot(1000, this,
                        [=]() {
         if (mIsWayland) {
-            QtConcurrent::run(std::mem_fn(&Widget::setBrightSliderVisible), this);
+            threadRun = QtConcurrent::run(std::mem_fn(&Widget::setBrightSliderVisible), this);
             QString hash = config->connectedOutputsHash();
             writeFile(mDir % hash);
         }
@@ -1362,7 +1364,7 @@ void Widget::propertiesChangedSlot(QString property, QMap<QString, QVariant> pro
 // 是否禁用主屏按钮
 void Widget::mainScreenButtonSelect(int index)
 {
-    QtConcurrent::run(std::mem_fn(&Widget::setBrightSliderVisible), this);
+    threadRun = QtConcurrent::run(std::mem_fn(&Widget::setBrightSliderVisible), this);
 
     if (!mConfig || ui->primaryCombo->count() <= 0) {
         return;
@@ -1563,7 +1565,7 @@ void Widget::setBrightSliderVisible()  //放在独立线程中运行
         }
     } else {
         int times = 100;
-        while(times--) {
+        while(times-- && !threadRunExit) {
             value = getDDCBrighthess();
             if ((times == 99 && value == 0) || value > 0){
                 ui->brightValueLabel->setText(QString::number(value));

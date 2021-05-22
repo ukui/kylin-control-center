@@ -7,7 +7,6 @@
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 include($$PROJECT_COMPONENTSOURCE/uslider.pri)
-include($$PROJECT_COMPONENTSOURCE/combobox.pri)
 
 QT       += widgets dbus
 
