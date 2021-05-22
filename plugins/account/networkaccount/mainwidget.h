@@ -122,6 +122,7 @@ private:
     bool            m_bIsKylinId = false;
     bool            m_bIsOnline = true;
     bool            m_bIsOldBackEnds = false;
+    bool            m_bIsFailed = false;
 
 public slots:
     void            on_login_out();
