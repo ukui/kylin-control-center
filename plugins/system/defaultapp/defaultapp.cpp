@@ -62,10 +62,7 @@ QWidget *DefaultApp::get_plugin_ui() {
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
 
-        isCloudEmitted = false;
-
         ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-
         initUI();
         connectToServer();
 #ifdef __sw_64__
@@ -124,6 +121,8 @@ void DefaultApp::initUI() {
     });
 
     QtConcurrent::run([this] {
+        QTime timedebuge;//声明一个时钟对象
+        timedebuge.start();//开始计时
         // BROWSER
         int browserindex = -1;
         QString currentbrowser(getDefaultAppId(BROWSERTYPE)); //获取当前
@@ -145,31 +144,6 @@ void DefaultApp::initUI() {
                 }
                 if("qaxbrowser-safe.desktop" == single) {
                     mDefaultBrowser = appname;
-                }
-            }
-        }
-
-        // MAIL
-        int mailindex = -1;
-        QString currentmail(getDefaultAppId(MAILTYPE));
-        QVector<AppList> maillist = getAppIdList(MAILTYPE);
-        if (!maillist.isEmpty()) {
-            for (int i = 0; i < maillist.size(); i++) {
-                QString single(maillist[i].strAppid);
-                QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
-                GDesktopAppInfo * mailinfo = g_desktop_app_info_new_from_filename(ba.constData());
-                QString appname = g_app_info_get_name(G_APP_INFO(mailinfo));
-                const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(mailinfo)));
-                QIcon appicon;
-                appicon = QIcon::fromTheme(QString(iconname));
-
-                ui->mailComBoBox->addItem(appicon, appname, single);
-                if (currentmail == single) {
-                    mailindex = i;
-                    emit appInitDone(mailindex, MAILTYPE);
-                }
-                if ("claws-mail.desktop" == single) {
-                    mDefaultMail = appname;
                 }
             }
         }
@@ -209,7 +183,42 @@ void DefaultApp::initUI() {
                 emit appInitDone(imageindex, IMAGETYPE);
             }
         }
+        qDebug()<<"browser线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+    });
 
+    QtConcurrent::run([this] {
+        QTime timedebuge;//声明一个时钟对象
+        timedebuge.start();//开始计时
+        // MAIL
+        int mailindex = -1;
+        QString currentmail(getDefaultAppId(MAILTYPE));
+        QVector<AppList> maillist = getAppIdList(MAILTYPE);
+        if (!maillist.isEmpty()) {
+            for (int i = 0; i < maillist.size(); i++) {
+                QString single(maillist[i].strAppid);
+                QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
+                GDesktopAppInfo * mailinfo = g_desktop_app_info_new_from_filename(ba.constData());
+                QString appname = g_app_info_get_name(G_APP_INFO(mailinfo));
+                const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(mailinfo)));
+                QIcon appicon;
+                appicon = QIcon::fromTheme(QString(iconname));
+
+                ui->mailComBoBox->addItem(appicon, appname, single);
+                if (currentmail == single) {
+                    mailindex = i;
+                    emit appInitDone(mailindex, MAILTYPE);
+                }
+                if ("claws-mail.desktop" == single) {
+                    mDefaultMail = appname;
+                }
+            }
+        }
+        qDebug()<<"mail线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+    });
+
+    QtConcurrent::run([this] {
+        QTime timedebuge;//声明一个时钟对象
+        timedebuge.start();//开始计时
         // AUDIO
         int audioindex = -1;
         QString currentaudio(getDefaultAppId(AUDIOTYPE));
@@ -234,7 +243,12 @@ void DefaultApp::initUI() {
                 }
             }
         }
+        qDebug()<<"audio线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+    });
 
+    QtConcurrent::run([this] {
+        QTime timedebuge;//声明一个时钟对象
+        timedebuge.start();//开始计时
         // VIDEO
         int videoindex =-1;
         QString currentvideo(getDefaultAppId(VIDEOTYPE));
@@ -259,7 +273,12 @@ void DefaultApp::initUI() {
                 }
             }
         }
+        qDebug()<<"video线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+    });
 
+    QtConcurrent::run([this] {
+        QTime timedebuge;//声明一个时钟对象
+        timedebuge.start();//开始计时
         // TEXT
         int textindex = -1;
         QString currenttext(getDefaultAppId(TEXTTYPE));
@@ -284,7 +303,7 @@ void DefaultApp::initUI() {
                 }
             }
         }
-        isCloudEmitted = false;
+        qDebug()<<"text线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
     });
 }
 
@@ -304,104 +323,75 @@ void DefaultApp::initSearchText() {
 }
 
 void DefaultApp::browserComBoBox_changed_cb(int index) {
-    QString appid = ui->browserComBoBox->itemData(index).toString();
-    QByteArray ba = appid.toUtf8(); // QString to char *
 
-    bool bRunSync = false;
-
-    isCloudEmitted == false ? setWebBrowsersDefaultProgram(ba.data()):bRunSync = true;
-
-    if(bRunSync == true) {
-        QtConcurrent::run([=] {
-            QString appid = ui->browserComBoBox->itemData(index).toString();
-            QByteArray ba = appid.toUtf8(); // QString to char *
-            setWebBrowsersDefaultProgram(ba.data());
-        });
-    }
+    QtConcurrent::run([=] {
+        QTime timedebuge;//声明一个时钟对象
+        timedebuge.start();//开始计时
+        QString appid = ui->browserComBoBox->itemData(index).toString();
+        QByteArray ba = appid.toUtf8(); // QString to char *
+        setWebBrowsersDefaultProgram(ba.data());
+        qDebug()<<"browserComBoBox_changed_cb线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+    });
 }
 
 void DefaultApp::mailComBoBox_changed_cb(int index) {
-    QString appid = ui->mailComBoBox->itemData(index).toString();
-    QByteArray ba = appid.toUtf8(); // QString to char *
-    bool bRunSync = false;
 
-    isCloudEmitted == false ? setMailReadersDefaultProgram(ba.data()):bRunSync = true;
-
-    if(bRunSync == true) {
-        QtConcurrent::run([=] {
-            QString appid = ui->mailComBoBox->itemData(index).toString();
-            QByteArray ba = appid.toUtf8(); // QString to char *
-            setMailReadersDefaultProgram(ba.data());
-        });
-    }
+    QtConcurrent::run([=] {
+        QTime timedebuge;//声明一个时钟对象
+        timedebuge.start();//开始计时
+        QString appid = ui->mailComBoBox->itemData(index).toString();
+        QByteArray ba = appid.toUtf8(); // QString to char *
+        setMailReadersDefaultProgram(ba.data());
+        qDebug()<<"mailComBoBox_changed_cb线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+    });
 }
 
 void DefaultApp::imageComBoBox_changed_cb(int index) {
-    QString appid = ui->imageComBoBox->itemData(index).toString();
-    QByteArray ba = appid.toUtf8(); // QString to char *
 
-    bool bRunSync = false;
-
-    isCloudEmitted == false ? setImageViewersDefaultProgram(ba.data()):bRunSync = true;
-
-    if(bRunSync == true) {
-        QtConcurrent::run([=] {
-            QString appid = ui->imageComBoBox->itemData(index).toString();
-            QByteArray ba = appid.toUtf8(); // QString to char *
-            setImageViewersDefaultProgram(ba.data());
-        });
-    }
+    QtConcurrent::run([=] {
+        QTime timedebuge;//声明一个时钟对象
+        timedebuge.start();//开始计时
+        QString appid = ui->imageComBoBox->itemData(index).toString();
+        QByteArray ba = appid.toUtf8(); // QString to char *
+        setImageViewersDefaultProgram(ba.data());
+        qDebug()<<"imageComBoBox_changed_cb线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+    });
 }
 
 void DefaultApp::audioComBoBox_changed_cb(int  index) {
-    QString appid = ui->audioComBoBox->itemData(index).toString();
-    QByteArray ba = appid.toUtf8(); // QString to char *
 
-    bool bRunSync = false;
-
-    isCloudEmitted == false ? setAudioPlayersDefaultProgram(ba.data()):bRunSync = true;
-
-    if(bRunSync == true) {
-        QtConcurrent::run([=] {
-            QString appid = ui->audioComBoBox->itemData(index).toString();
-            QByteArray ba = appid.toUtf8(); // QString to char *
-            setAudioPlayersDefaultProgram(ba.data());
-        });
-    }
+    QtConcurrent::run([=] {
+        QTime timedebuge;//声明一个时钟对象
+        timedebuge.start();//开始计时
+        QString appid = ui->audioComBoBox->itemData(index).toString();
+        QByteArray ba = appid.toUtf8(); // QString to char *
+        setAudioPlayersDefaultProgram(ba.data());
+        qDebug()<<"audioComBoBox_changed_cb线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+    });
 }
 
 void DefaultApp::videoComBoBox_changed_cb(int index) {
-    QString appid = ui->videoComBoBox->itemData(index).toString();
-    QByteArray ba = appid.toUtf8(); // QString to char *
 
-    bool bRunSync = false;
-
-    isCloudEmitted == false ? setVideoPlayersDefaultProgram(ba.data()):bRunSync = true;
-
-    if(bRunSync == true) {
-        QtConcurrent::run([=] {
-            QString appid = ui->videoComBoBox->itemData(index).toString();
-            QByteArray ba = appid.toUtf8(); // QString to char *
-            setVideoPlayersDefaultProgram(ba.data());
-        });
-    }
+    QtConcurrent::run([=] {
+        QTime timedebuge;//声明一个时钟对象
+        timedebuge.start();//开始计时
+        QString appid = ui->videoComBoBox->itemData(index).toString();
+        QByteArray ba = appid.toUtf8(); // QString to char *
+        setVideoPlayersDefaultProgram(ba.data());
+        qDebug()<<"videoComBoBox_changed_cb线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+    });
 }
 
 void DefaultApp::textComBoBox_changed_cb(int index) {
-    QString appid = ui->textComBoBox->itemData(index).toString();
-    QByteArray ba = appid.toUtf8(); // QString to char *
 
-    bool bRunSync = false;
-
-    isCloudEmitted == false ? setTextEditorsDefautlProgram(ba.data()):bRunSync = true;
-
-    if(bRunSync == true) {
-        QtConcurrent::run([=] {
-            QString appid = ui->textComBoBox->itemData(index).toString();
-            QByteArray ba = appid.toUtf8(); // QString to char *
-            setTextEditorsDefautlProgram(ba.data());
-        });
-    }
+    QtConcurrent::run([=] {
+        QTime timedebuge;//声明一个时钟对象
+        timedebuge.start();//开始计时
+        QString appid = ui->textComBoBox->itemData(index).toString();
+        QByteArray ba = appid.toUtf8(); // QString to char *
+        setTextEditorsDefautlProgram(ba.data());
+        qDebug()<<"textComBoBox_changed_cb线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+    });
 }
 
 void DefaultApp::resetDefaultApp() {
@@ -690,7 +680,6 @@ void DefaultApp::connectToServer(){
 
 void DefaultApp::keyChangedSlot(const QString &key) {
     if(key == "default-open") {
-        isCloudEmitted = true;
         ui->browserComBoBox->clear();
         ui->audioComBoBox->clear();
         ui->imageComBoBox->clear();

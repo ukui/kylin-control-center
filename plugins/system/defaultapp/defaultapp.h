@@ -27,6 +27,7 @@
 #include <QStyledItemDelegate>
 #include <QtDBus>
 #include <QtConcurrent>
+#include <QTime>
 
 #include "shell/interface.h"
 
@@ -106,7 +107,6 @@ private:
     QString mDefaultVideo;
     QString mDefaultText;
 
-    bool isCloudEmitted;
     bool mFirstLoad;
 
 public slots:
