@@ -4908,7 +4908,7 @@ void UkmediaMainWidget::updateCard(const pa_card_info &info) {
     qDebug() << "this->active profile -----------------" << info.name <<info.active_profile->name << info.active_profile2->name;
     /* Because the port info for sinks and sources is discontinued we need
      * to update the port info for them here. */
-    if (this->hasSinks) {
+    if (this->hasSinks || this->hasSources) {
         updatePorts(this, info, this->ports);
     }
 }
