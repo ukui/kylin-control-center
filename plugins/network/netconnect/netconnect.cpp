@@ -742,15 +742,19 @@ void NetConnect::setNetDetailVisible() {
 
 QList<QVariantMap> NetConnect::getDbusMap(const QDBusMessage &dbusMessage) {
     QList<QVariant> outArgsIpv4 = dbusMessage.arguments();
-    QVariant firstIpv4 = outArgsIpv4.at(0);
-    QDBusVariant dbvFirstIpv4 = firstIpv4.value<QDBusVariant>();
-    QVariant vFirstIpv4 = dbvFirstIpv4.variant();
+    if (!outArgsIpv4.isEmpty()) {
+        QVariant firstIpv4 = outArgsIpv4.at(0);
+        QDBusVariant dbvFirstIpv4 = firstIpv4.value<QDBusVariant>();
+        QVariant vFirstIpv4 = dbvFirstIpv4.variant();
 
-    const QDBusArgument &dbusArgIpv4 = vFirstIpv4.value<QDBusArgument>();
-    QList<QVariantMap> mDatasIpv4;
-    dbusArgIpv4 >> mDatasIpv4;
-
-    return mDatasIpv4;
+        const QDBusArgument &dbusArgIpv4 = vFirstIpv4.value<QDBusArgument>();
+        QList<QVariantMap> mDatasIpv4;
+        dbusArgIpv4 >> mDatasIpv4;
+        return mDatasIpv4;
+    } else {
+        QList<QVariantMap> emptyList;
+        return emptyList;
+    }
 }
 
 QString NetConnect::wifiIcon(bool isLock, int strength, int category) {
@@ -844,8 +848,6 @@ void NetConnect::wifiSwitchSlot(bool status) {
 
 int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
     ActiveConInfo activeNet;
-
-
     QDBusInterface interface( "org.freedesktop.NetworkManager",
                               "/org/freedesktop/NetworkManager",
                               "org.freedesktop.DBus.Properties",
@@ -888,27 +890,37 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
                                    QDBusConnection::systemBus());
 
             QDBusMessage replyIpv4 = IPV4ifc.call("Get", "org.freedesktop.NetworkManager.IP4Config", "AddressData");
+            if (!IPV4ifc.isValid()) {
+                qWarning() << qPrintable(QDBusConnection::sessionBus().lastError().message());
+            }
             QList<QVariantMap> datasIpv4 = getDbusMap(replyIpv4);
-
             if (!datasIpv4.isEmpty()) {
                 activeNet.strIPV4Address = datasIpv4.at(0).value("address").toString();
                 activeNet.strIPV4Prefix = datasIpv4.at(0).value("prefix").toString();
+            } else {
+                qWarning()<<"Ipv4 data reply empty!";
+                return -1;
             }
 
             QDBusMessage replyIPV4Dns = IPV4ifc.call("Get", "org.freedesktop.NetworkManager.IP4Config", "NameserverData");
             QList<QVariantMap> datasIpv4Dns = getDbusMap(replyIPV4Dns);
             if (!datasIpv4Dns.isEmpty()) {
                 activeNet.strIPV4Dns = datasIpv4Dns.at(0).value("address").toString();
+            } else {
+                qWarning()<<"Ipv4 Dns data reply empty!";
+                return -1;
             }
 
             QDBusMessage replyIPV4Gt = IPV4ifc.call("Get", "org.freedesktop.NetworkManager.IP4Config", "Gateway");
-
-            QVariant ipv4Gt  = replyIPV4Gt.arguments().at(0)
-                    .value<QDBusVariant>()
-                    .variant();
-
-
-            activeNet.strIPV4GateWay = ipv4Gt.toString();
+            if (!replyIPV4Gt.arguments().isEmpty()) {
+                QVariant ipv4Gt  = replyIPV4Gt.arguments().at(0)
+                        .value<QDBusVariant>()
+                        .variant();
+                activeNet.strIPV4GateWay = ipv4Gt.toString();
+            } else {
+                qWarning()<<"Ipv4 reply empty!";
+                return -1;
+            }
 
             // IPV6信息
             QString replyIpv6Path = interfacePro.property("Ip6Config")
@@ -919,37 +931,51 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
                                    replyIpv6Path,
                                    "org.freedesktop.DBus.Properties",
                                    QDBusConnection::systemBus());
+            if (!IPV6ifc.isValid()) {
+                qWarning() << qPrintable(QDBusConnection::sessionBus().lastError().message());
+            }
             QDBusMessage replyIPV6 = IPV6ifc.call("Get", "org.freedesktop.NetworkManager.IP6Config", "AddressData");
             QList<QVariantMap> dataIPV6 = getDbusMap(replyIPV6);
             if (!dataIPV6.isEmpty()) {
                 activeNet.strIPV6Address = dataIPV6.at(0).value("address").toString();
                 activeNet.strIPV6Prefix = dataIPV6.at(0).value("prefix").toString();
+            } else {
+                qWarning()<<"Ipv6 data reply empty!";
+                return -1;
             }
 
             QDBusMessage replyIPV6Gt = IPV6ifc.call("Get", "org.freedesktop.NetworkManager.IP6Config", "GateWay");
-            QVariant IPV6Gt  = replyIPV6Gt.arguments().at(0)
-                    .value<QDBusVariant>()
-                    .variant();
-            activeNet.strIPV6GateWay = IPV6Gt.toString().isEmpty() ? activeNet.strIPV6Address : IPV6Gt.toString();
-
+            if (!replyIPV6Gt.arguments().isEmpty()) {
+                QVariant IPV6Gt  = replyIPV6Gt.arguments().at(0)
+                        .value<QDBusVariant>()
+                        .variant();
+                activeNet.strIPV6GateWay = IPV6Gt.toString().isEmpty() ? activeNet.strIPV6Address : IPV6Gt.toString();
+            } else {
+                qWarning()<<"Ipv6 info reply empty!";
+                return -1;
+            }
             // 设备信息
             auto replyDevicesPaths = interfacePro.property("Devices")
                     .value<QList<QDBusObjectPath>>();
-
-            if (!activeNet.strConType.compare("802-3-ethernet", Qt::CaseInsensitive)) {
-                QDBusInterface netDeviceifc("org.freedesktop.NetworkManager",
-                                            replyDevicesPaths.at(0).path(),
-                                            "org.freedesktop.NetworkManager.Device.Wired",
-                                            QDBusConnection::systemBus());
-                activeNet.strBandWidth = netDeviceifc.property("Speed").toString();
-                activeNet.strMac = netDeviceifc.property("HwAddress").toString().toLower();
+            if (!replyDevicesPaths.isEmpty()) {
+                if (!activeNet.strConType.compare("802-3-ethernet", Qt::CaseInsensitive)) {
+                    QDBusInterface netDeviceifc("org.freedesktop.NetworkManager",
+                                                replyDevicesPaths.at(0).path(),
+                                                "org.freedesktop.NetworkManager.Device.Wired",
+                                                QDBusConnection::systemBus());
+                    activeNet.strBandWidth = netDeviceifc.property("Speed").toString();
+                    activeNet.strMac = netDeviceifc.property("HwAddress").toString().toLower();
+                } else {
+                    QDBusInterface netDeviceifc("org.freedesktop.NetworkManager",
+                                                replyDevicesPaths.at(0).path(),
+                                                "org.freedesktop.NetworkManager.Device.Wireless",
+                                                QDBusConnection::systemBus());
+                    activeNet.strBandWidth = netDeviceifc.property("Bitrate").toString();
+                    activeNet.strMac = netDeviceifc.property("HwAddress").toString().toLower();
+                }
             } else {
-                QDBusInterface netDeviceifc("org.freedesktop.NetworkManager",
-                                            replyDevicesPaths.at(0).path(),
-                                            "org.freedesktop.NetworkManager.Device.Wireless",
-                                            QDBusConnection::systemBus());
-                activeNet.strBandWidth = netDeviceifc.property("Bitrate").toString();
-                activeNet.strMac = netDeviceifc.property("HwAddress").toString().toLower();
+                qWarning()<<"Reply for Devices Paths empty!";
+                return -1;
             }
             qlActiveConInfo.append(activeNet);
         }
