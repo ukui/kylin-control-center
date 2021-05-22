@@ -4584,6 +4584,7 @@ void UkmediaMainWidget::subscribe_cb(pa_context *c, pa_subscription_event_type_t
                  w->m_pCurrentOutputPortLabelList->clear();
                  w->m_pCurrentInputPortLabelList->clear();
                  w->currentOutputPortLabelMap.clear();
+                 int removeIndex = index;
                 //将移除的声卡信息在map删除
                 QMap<int,QString>::iterator it;
                 QMap<int,QList<QString>>::iterator temp;
@@ -4593,6 +4594,7 @@ void UkmediaMainWidget::subscribe_cb(pa_context *c, pa_subscription_event_type_t
                     if(it.key() == index)
                     {
                         it = w->cardMap.erase(it);
+
                         continue;
                     }
                     ++it;
@@ -4652,7 +4654,7 @@ void UkmediaMainWidget::subscribe_cb(pa_context *c, pa_subscription_event_type_t
                             ++removeProfileMap;
                         }
                         it = w->inputPortLabelMap.erase(it);
-                        //qDebug() << "remove input port label map index" << index << w->inputPortLabelMap.count();
+                        qDebug() << "remove input port label map index" << index << w->inputPortLabelMap.count();
                         continue;
                     }
                     ++it;
@@ -4684,16 +4686,25 @@ void UkmediaMainWidget::subscribe_cb(pa_context *c, pa_subscription_event_type_t
                     QListWidgetItem *item = w->m_pOutputWidget->m_pOutputListWidget->item(i);
                     UkuiListWidgetItem *wid = (UkuiListWidgetItem *)w->m_pOutputWidget->m_pOutputListWidget->itemWidget(item);
                     int index;
+                    int count = 0;
                     for (it=w->cardMap.begin();it!=w->cardMap.end();) {
                         if (wid->deviceLabel->text() == it.value()) {
                             index = it.key();
                             break;
                         }
                         ++it;
+                        ++count;
                     }
-                    w->currentOutputPortLabelMap.insertMulti(index,wid->portLabel->text());
-                    w->m_pCurrentOutputPortLabelList->append(wid->portLabel->text());
-                    w->m_pCurrentOutputCardList->append(wid->deviceLabel->text());
+                    if (count < w->cardMap.count()) {
+                        w->currentOutputPortLabelMap.insertMulti(index,wid->portLabel->text());
+                        w->m_pCurrentOutputPortLabelList->append(wid->portLabel->text());
+                        w->m_pCurrentOutputCardList->append(wid->deviceLabel->text());
+                    }
+                    else { //在cardMap没找到，已经被删除
+                        w->currentOutputPortLabelMap.insertMulti(removeIndex,wid->portLabel->text());
+                        w->m_pCurrentOutputPortLabelList->append(wid->portLabel->text());
+                        w->m_pCurrentOutputCardList->append(wid->deviceLabel->text());
+                    }
                     //qDebug() << index << "current output item ************" << item->text() <<wid->portLabel->text() << w->m_pOutputPortLabelList->count() ;//<< w->m_pOutputPortLabelList->at(i);
                 }
 
@@ -4702,16 +4713,28 @@ void UkmediaMainWidget::subscribe_cb(pa_context *c, pa_subscription_event_type_t
                     QListWidgetItem *item = w->m_pInputWidget->m_pInputListWidget->item(i);
                     UkuiListWidgetItem *wid = (UkuiListWidgetItem *)w->m_pInputWidget->m_pInputListWidget->itemWidget(item);
                     int index;
+                    int count = 0;
                     for (it=w->cardMap.begin();it!=w->cardMap.end();) {
                         if (wid->deviceLabel->text() == it.value()) {
                             index = it.key();
                             break;
                         }
+
+                        ++count;
                         ++it;
                     }
-                    w->currentInputPortLabelMap.insertMulti(index,wid->portLabel->text());
-                    w->m_pCurrentInputPortLabelList->append(wid->portLabel->text());
-                    w->m_pCurrentInputCardList->append(wid->deviceLabel->text());
+                    if (count < w->cardMap.count()) {
+                        w->currentInputPortLabelMap.insertMulti(index,wid->portLabel->text());
+                        w->m_pCurrentInputPortLabelList->append(wid->portLabel->text());
+                        w->m_pCurrentInputCardList->append(wid->deviceLabel->text());
+                    }
+                    else { //在cardMap中没找到意味着已经被移除了
+                        w->currentInputPortLabelMap.insertMulti(removeIndex,wid->portLabel->text());
+                        w->m_pCurrentInputPortLabelList->append(wid->portLabel->text());
+                        w->m_pCurrentInputCardList->append(wid->deviceLabel->text());
+                    }
+                    qDebug() <<"current input port label insert" << index << wid->deviceLabel->text() << w->cardMap.count() << "count= " << count;
+
                     //qDebug() << i << "current input item ************" << item->text() <<wid->portLabel->text() ;
                 }
                 w->deleteNotAvailableInputPort();
@@ -4787,68 +4810,10 @@ void UkmediaMainWidget::updateCard(const pa_card_info &info) {
     }
     cardProfilePriorityMap.insertMulti(info.index,profilePriorityMap);
 
-    //拔插耳机的时候删除端口
-    QMap<int,QString>::iterator it;
-    for(it = outputPortNameMap.begin();it!=outputPortNameMap.end();)
-    {
-        if(it.key() == info.index)
-        {
-
-            qDebug() << "remove output port name map index" << info.index << outputPortNameMap.count() << it.value();
-            it = outputPortNameMap.erase(it);
-            continue;
-        }
-        ++it;
-    }
-    for(it = outputPortLabelMap.begin();it!=outputPortLabelMap.end();)
-    {
-        if(it.key() == info.index)
-        {
-            QString removePortLabel = it.value();
-            QMap<QString,QString>::iterator removeProfileMap;
-            for (removeProfileMap = profileNameMap.begin();removeProfileMap!= profileNameMap.end();) {
-                if (removeProfileMap.key() == removePortLabel) {
-                    removeProfileMap = profileNameMap.erase(removeProfileMap);
-                    continue;
-                }
-                ++removeProfileMap;
-            }
-
-            it = outputPortLabelMap.erase(it);
-
-            continue;
-        }
-        ++it;
-    }
-    for(it = inputPortNameMap.begin();it!=inputPortNameMap.end();)
-    {
-        if(it.key() == info.index)
-        {
-            it = inputPortNameMap.erase(it);
-            //qDebug() << "remove input port map index" << info.index << inputPortNameMap.count();
-            continue;
-        }
-        ++it;
-    }
-    for(it = inputPortLabelMap.begin();it!=inputPortLabelMap.end();)
-    {
-        if(it.key() == info.index)
-        {
-            QString removePortLabel = it.value();
-            QMap<QString,QString>::iterator removeProfileMap;
-            for (removeProfileMap = inputPortProfileNameMap.begin();removeProfileMap!= inputPortProfileNameMap.end();) {
-                if (removeProfileMap.key() == removePortLabel) {
-                    removeProfileMap = inputPortProfileNameMap.erase(removeProfileMap);
-                    continue;
-                }
-                ++removeProfileMap;
-            }
-            it = inputPortLabelMap.erase(it);
-            //qDebug() << "remove input port Label map index" << info.index << inputPortLabelMap.count();
-            continue;
-        }
-        ++it;
-    }
+    removeOutputPortName(info);
+    removeOutputPortLabel(info);
+    removeInputPortName(info);
+    removeInputPortLabel(info);
 
     this->ports.clear();
     for (uint32_t i = 0; i < info.n_ports; ++i) {
@@ -5049,7 +5014,6 @@ void UkmediaMainWidget::updatePorts(UkmediaMainWidget *w, const pa_card_info &in
                 }
                 ++cardNameMap;
             }
-            //qDebug() << "aaaaaaaaaaaaaaainsert input list widget " << cardName << at.value() << at.key()<< w->cardMap.count();
             itemW->setLabelText(at.value(),cardName);
             w->m_pInputWidget->m_pInputListWidget->insertItem(i++,item);
 
@@ -5082,16 +5046,20 @@ void UkmediaMainWidget::updatePorts(UkmediaMainWidget *w, const pa_card_info &in
             QListWidgetItem *item = w->m_pInputWidget->m_pInputListWidget->item(i);
             UkuiListWidgetItem *wid = (UkuiListWidgetItem *)w->m_pInputWidget->m_pInputListWidget->itemWidget(item);
             int index;
+            int count;
             for (at=w->cardMap.begin();at!=w->cardMap.end();) {
                 if (wid->deviceLabel->text() == at.value()) {
                     index = at.key();
                     break;
                 }
                 ++at;
+                ++count;
             }
             w->currentInputPortLabelMap.insertMulti(index,wid->portLabel->text());
             w->m_pCurrentInputPortLabelList->append(wid->portLabel->text());
             w->m_pCurrentInputCardList->append(wid->deviceLabel->text());
+            qDebug() <<"current input port label insert " << index << wid->deviceLabel->text();
+
             //qDebug() << i << "current input item ************" << item->text() <<wid->portLabel->text() ;
         }
 
@@ -5101,7 +5069,7 @@ void UkmediaMainWidget::updatePorts(UkmediaMainWidget *w, const pa_card_info &in
         w->addAvailableInputPort();
     }
 
-    if (w->m_pOutputWidget->m_pOutputListWidget->count() > 0) {
+    if (w->m_pOutputWidget->m_pOutputListWidget->count() > 0 || w->m_pInputWidget->m_pInputListWidget->count()) {
 
         w->firstEntry = false;
     }
@@ -5166,13 +5134,18 @@ void UkmediaMainWidget::deleteNotAvailableInputPort()
             count ++;
         }
         //没找到，需要删除
+
+        qDebug() << "input label" <<it.key() << it.value();
         if (count == inputPortLabelMap.count()) {
             int index = indexOfInputPortInInputListWidget(it.value());
             if (index == -1)
                 return;
             QListWidgetItem *item = m_pInputWidget->m_pInputListWidget->takeItem(index);
+            m_pInputWidget->m_pInputListWidget->blockSignals(true);
             m_pInputWidget->m_pInputListWidget->removeItemWidget(item);
+            m_pInputWidget->m_pInputListWidget->blockSignals(false);
             m_pCurrentInputPortLabelList->removeAt(index);
+            qDebug() <<"remove current output label" <<it.key() << it.value() <<inputPortLabelMap.count();
             it = currentInputPortLabelMap.erase(it);
             continue;
         }
@@ -5248,20 +5221,21 @@ void UkmediaMainWidget::addAvailableInputPort()
             item->setSizeHint(QSize(200,50)); //QSize(120, 40) spacing: 12px;
             m_pInputWidget->m_pInputListWidget->setItemWidget(item, itemW);
             QString cardName;
+            int count;
             for(cardNameMap = cardMap.begin();cardNameMap!=cardMap.end();)
             {
                 if (cardNameMap.key() == it.key()) {
                     cardName = cardNameMap.value();
                     break;
                 }
+                ++count;
                 ++cardNameMap;
             }
-
             itemW->setLabelText(it.value(),cardName);
-            m_pCurrentOutputPortLabelList->append(it.value());
+            m_pCurrentInputPortLabelList->append(it.value());
             currentInputPortLabelMap.insertMulti(it.key(),it.value());
-            m_pOutputWidget->m_pOutputListWidget->insertItem(i++,item);
-
+            qDebug() <<"current input port label insert " << it.value()<< it.key();
+            m_pInputWidget->m_pInputListWidget->insertItem(i++,item);
         }
 
         ++it;
@@ -5475,3 +5449,91 @@ QString UkmediaMainWidget::findOutputStreamCardName(QString streamName)
     return cardName;
 }
 
+
+/*
+    移除不可用的输出端口name
+*/
+void UkmediaMainWidget::removeOutputPortName(const pa_card_info &info)
+{
+    //拔插耳机的时候删除端口
+    QMap<int,QString>::iterator it;
+    for(it = outputPortNameMap.begin();it!=outputPortNameMap.end();)
+    {
+        if(it.key() == info.index)
+        {
+            qDebug() << "remove output port name map index" << info.index << outputPortNameMap.count() << it.value();
+            it = outputPortNameMap.erase(it);
+            continue;
+        }
+        ++it;
+    }
+}
+
+/*
+    移除不可用的输出端口label
+*/
+void UkmediaMainWidget::removeOutputPortLabel(const pa_card_info &info)
+{
+    QMap<int,QString>::iterator it;
+    for(it = outputPortLabelMap.begin();it!=outputPortLabelMap.end();)
+    {
+        if(it.key() == info.index)
+        {
+            QString removePortLabel = it.value();
+            QMap<QString,QString>::iterator removeProfileMap;
+            for (removeProfileMap = profileNameMap.begin();removeProfileMap!= profileNameMap.end();) {
+                if (removeProfileMap.key() == removePortLabel) {
+                    removeProfileMap = profileNameMap.erase(removeProfileMap);
+                    continue;
+                }
+                ++removeProfileMap;
+            }
+            it = outputPortLabelMap.erase(it);
+
+            continue;
+        }
+        ++it;
+    }
+}
+
+/*
+    移除不可用的输出端口Name
+*/
+void UkmediaMainWidget::removeInputPortName(const pa_card_info &info)
+{
+    QMap<int,QString>::iterator it;
+    for(it = inputPortNameMap.begin();it!=inputPortNameMap.end();)
+    {
+        if(it.key() == info.index)
+        {
+            it = inputPortNameMap.erase(it);
+            //qDebug() << "remove input port map index" << info.index << inputPortNameMap.count();
+            continue;
+        }
+        ++it;
+    }
+}
+
+void UkmediaMainWidget::removeInputPortLabel(const pa_card_info &info)
+{
+    QMap<int,QString>::iterator it;
+    for(it = inputPortLabelMap.begin();it!=inputPortLabelMap.end();)
+    {
+        if(it.key() == info.index)
+        {
+            QString removePortLabel = it.value();
+            QMap<QString,QString>::iterator removeProfileMap;
+            for (removeProfileMap = inputPortProfileNameMap.begin();removeProfileMap!= inputPortProfileNameMap.end();) {
+                if (removeProfileMap.key() == removePortLabel) {
+                    removeProfileMap = inputPortProfileNameMap.erase(removeProfileMap);
+                    continue;
+                }
+                ++removeProfileMap;
+            }
+            it = inputPortLabelMap.erase(it);
+            qDebug() << "remove input port Label map index" << info.index << inputPortLabelMap.count();
+            continue;
+        }
+        ++it;
+    }
+}

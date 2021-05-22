@@ -258,6 +258,12 @@ public:
     void deleteNotAvailableInputPort();
     void addAvailableOutputPort();
     void addAvailableInputPort();
+
+    void removeOutputPortName(const pa_card_info &info);  //移除不可用输出端口name
+    void removeOutputPortLabel(const pa_card_info &info);  //移除不可用的输出端口label
+    void removeInputPortName(const pa_card_info &info);  //移除不可用输入端口Name
+    void removeInputPortLabel(const pa_card_info &info);  //移除不可用输入端口Label
+
     int findCardIndex(QString cardName);
     QString findHighPriorityProfile(int index,QString profile);
     void findOutputListWidgetItem(QString cardName,MateMixerStream *stream);
