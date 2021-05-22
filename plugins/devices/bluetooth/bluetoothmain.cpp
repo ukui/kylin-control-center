@@ -401,6 +401,14 @@ void BlueToothMain::updateUIWhenAdapterChanged()
            discovering_timer->stop();
        }
     });
+
+    if (m_localDevice->isDiscovering()) {
+        loadLabel->setVisible(true);
+        m_timer->start();
+        discover_refresh->setEnabled(false);
+        discovering_timer->start();
+    }
+
     //==============初始化蓝牙信息和基础信息====================================
      bluetooth_name->set_dev_name(m_localDevice->name());
 

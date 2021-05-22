@@ -181,6 +181,8 @@ void DeviceInfoItem::onClick_Connect_Btn(bool isclicked)
         emit sendConnectDevice(device_item->address());
         connect_timer->start(10000);
         icon_timer->start(100);
+        if(!device_status->isVisible())
+            device_status->setVisible(true);
     }
 }
 
