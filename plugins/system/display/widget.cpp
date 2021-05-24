@@ -344,22 +344,27 @@ void Widget::slotUnifyOutputs()
     if (base->isCloneMode() && !mUnifyButton->isChecked()) {
         KScreen::OutputList screens = mPrevConfig->connectedOutputs();
 
-        QMap<int, KScreen::OutputPtr>::iterator preIt = screens.begin();
+        KScreen::OutputPtr mainScreen = mPrevConfig->output(getPrimaryScreenID());
+        mainScreen->setPos(QPoint(0, 0));
+
+        KScreen::OutputPtr preIt = mainScreen;
         QMap<int, KScreen::OutputPtr>::iterator nowIt = screens.begin();
         nowIt++;
         while (nowIt != screens.end()) {
-            nowIt.value()->setPos(QPoint(preIt.value()->pos().x() + preIt.value()->size().width(), 0));
-            KScreen::ModeList modes = preIt.value()->modes();
-            Q_FOREACH (const KScreen::ModePtr &mode, modes) {
-                if (preIt.value()->currentModeId() == mode->id()) {
-                    if (preIt.value()->rotation() != KScreen::Output::Rotation::Left && preIt.value()->rotation() != KScreen::Output::Rotation::Right) {
-                        nowIt.value()->setPos(QPoint(preIt.value()->pos().x() + mode->size().width(), 0));
-                    } else {
-                        nowIt.value()->setPos(QPoint(preIt.value()->pos().x() + mode->size().height(), 0));
+            if (nowIt.value() != mainScreen) {
+                nowIt.value()->setPos(QPoint(preIt->pos().x() + preIt->size().width(), 0));
+                KScreen::ModeList modes = preIt->modes();
+                Q_FOREACH (const KScreen::ModePtr &mode, modes) {
+                    if (preIt->currentModeId() == mode->id()) {
+                        if (preIt->rotation() != KScreen::Output::Rotation::Left && preIt->rotation() != KScreen::Output::Rotation::Right) {
+                            nowIt.value()->setPos(QPoint(preIt->pos().x() + mode->size().width(), 0));
+                        } else {
+                            nowIt.value()->setPos(QPoint(preIt->pos().x() + mode->size().height(), 0));
+                        }
                     }
                 }
+                preIt = nowIt.value();
             }
-            preIt = nowIt;
             nowIt++;
         }
         setConfig(mPrevConfig);
