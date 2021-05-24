@@ -159,8 +159,6 @@ void Notice::initOriNoticeStatus()
     filters<<QString("*.desktop");
     dir.setFilter(QDir::Files | QDir::NoSymLinks); // 设置类型过滤器，只为文件格式
     dir.setNameFilters(filters);  // 设置文件名称过滤器，只为filters格式
-    // 统计desktop格式的文件个数
-    int dir_count = dir.count();
     // 存储文件名称
     QStringList string_list;
 
@@ -179,6 +177,8 @@ void Notice::initOriNoticeStatus()
                                                      nullptr);
         char *fname_3 = g_key_file_get_locale_string(keyfile, "Desktop Entry", "OnlyShowIn",
                                                      nullptr, nullptr);
+        char *fileName = g_key_file_get_locale_string(keyfile, "Desktop Entry", "Name",
+                                                      nullptr, nullptr);
         if (fname_1 != nullptr) {
             QString str = QString::fromLocal8Bit(fname_1);
             if (str.contains("true")) {
@@ -231,8 +231,9 @@ void Notice::initOriNoticeStatus()
         iconBtn->setSizePolicy(iconSizePolicy);
         char *icon
             = g_key_file_get_locale_string(keyfile, "Desktop Entry", "Icon", nullptr, nullptr);
-        QString iconame = QString::fromLocal8Bit(icon);
-        iconBtn->setIcon(QIcon::fromTheme(iconame));
+        iconBtn->setIcon(QIcon::fromTheme(QString(icon),
+                                          QIcon(QString("/usr/share/pixmaps/"+QString(QLatin1String(icon))
+                                                        +".png"))));
 
         QLabel *nameLabel = new QLabel(pluginWidget);
         QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
@@ -259,20 +260,27 @@ void Notice::initOriNoticeStatus()
 
         applistverticalLayout->addWidget(baseWidget);
 
-        // QList<char *> listChar =  listExistsCustomNoticePath();
 
+        //获取已经存在的动态路径
+        QList<char *> listChar =  listExistsCustomNoticePath();
+
+        file_name = QString(QLatin1String(fileName));
+
+        //创建gsettings对象，用来设置指定文件的message值
         const QByteArray id(NOTICE_ORIGIN_SCHEMA);
         QGSettings *settings = nullptr;
         vecGsettins.append(settings);
-        QString path;
-        path = QString("%1%2%3").arg(NOTICE_ORIGIN_PATH).arg(file_name).arg("/");
+        QString path = QString("%1%2%3").arg(NOTICE_ORIGIN_PATH).arg(file_name).arg("/");
         settings = new QGSettings(id, path.toLatin1().data(), this);
-        settings->set(NAME_KEY, file_name);
-        QStringList keys = settings->keys();
-        if (keys.contains(static_cast<QString>(NAME_KEY))) {
-            bool isCheck = settings->get(MESSAGES_KEY).toBool();
-            appSwitch->setChecked(isCheck);
+        //判断该文件是否已创建了动态路径，未创建则为key("name")赋值
+        if (!listChar.contains(fileName)){
+           settings->set(NAME_KEY, file_name);
         }
+
+
+        bool isCheck = settings->get(MESSAGES_KEY).toBool();
+        appSwitch->setChecked(isCheck);
+
 
         connect(devWidget, &HoverWidget::enterWidget, this, [=](QString name) {
             Q_UNUSED(name)
@@ -294,6 +302,7 @@ void Notice::initOriNoticeStatus()
 
         connect(settings, &QGSettings::changed, [=](QString key) {
             if (static_cast<QString>(MESSAGES_KEY) == key) {
+                qDebug()<<key;
                 bool judge = settings->get(MESSAGES_KEY).toBool();
                 appSwitch->setChecked(judge);
             }
