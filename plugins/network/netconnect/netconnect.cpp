@@ -712,6 +712,7 @@ void NetConnect::setWifiBtnDisable() {
     ui->RefreshBtn->setEnabled(false);
     wifiBtn->setEnabled(false);
     ui->openWifiFrame->setVisible(false);
+    this->clearContent();
 }
 
 void NetConnect::setNetDetailVisible() {
