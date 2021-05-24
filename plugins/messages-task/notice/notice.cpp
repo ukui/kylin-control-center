@@ -177,8 +177,6 @@ void Notice::initOriNoticeStatus()
                                                      nullptr);
         char *fname_3 = g_key_file_get_locale_string(keyfile, "Desktop Entry", "OnlyShowIn",
                                                      nullptr, nullptr);
-        char *fileName = g_key_file_get_locale_string(keyfile, "Desktop Entry", "Name",
-                                                      nullptr, nullptr);
         if (fname_1 != nullptr) {
             QString str = QString::fromLocal8Bit(fname_1);
             if (str.contains("true")) {
@@ -264,7 +262,7 @@ void Notice::initOriNoticeStatus()
         //获取已经存在的动态路径
         QList<char *> listChar =  listExistsCustomNoticePath();
 
-        file_name = QString(QLatin1String(fileName));
+        file_name = file_name.remove(".desktop");
 
         //创建gsettings对象，用来设置指定文件的message值
         const QByteArray id(NOTICE_ORIGIN_SCHEMA);
@@ -273,7 +271,7 @@ void Notice::initOriNoticeStatus()
         QString path = QString("%1%2%3").arg(NOTICE_ORIGIN_PATH).arg(file_name).arg("/");
         settings = new QGSettings(id, path.toLatin1().data(), this);
         //判断该文件是否已创建了动态路径，未创建则为key("name")赋值
-        if (!listChar.contains(fileName)){
+        if (!listChar.contains(file_name.toLatin1().data())){
            settings->set(NAME_KEY, file_name);
         }
 
