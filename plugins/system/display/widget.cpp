@@ -349,7 +349,6 @@ void Widget::slotUnifyOutputs()
 
         KScreen::OutputPtr preIt = mainScreen;
         QMap<int, KScreen::OutputPtr>::iterator nowIt = screens.begin();
-        nowIt++;
         while (nowIt != screens.end()) {
             if (nowIt.value() != mainScreen) {
                 nowIt.value()->setPos(QPoint(preIt->pos().x() + preIt->size().width(), 0));
