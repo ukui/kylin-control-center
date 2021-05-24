@@ -300,7 +300,6 @@ void Notice::initOriNoticeStatus()
 
         connect(settings, &QGSettings::changed, [=](QString key) {
             if (static_cast<QString>(MESSAGES_KEY) == key) {
-                qDebug()<<key;
                 bool judge = settings->get(MESSAGES_KEY).toBool();
                 appSwitch->setChecked(judge);
             }

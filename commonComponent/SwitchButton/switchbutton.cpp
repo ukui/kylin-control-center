@@ -204,7 +204,6 @@ void SwitchButton::mousePressEvent(QMouseEvent *event){
     else {
         endX = 0;
     }
-    return QWidget::mousePressEvent(event);
 }
 
 void SwitchButton::resizeEvent(QResizeEvent *){
