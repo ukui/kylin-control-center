@@ -116,13 +116,13 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>120</width>
+          <width>130</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>120</width>
+          <width>130</width>
           <height>16777215</height>
          </size>
         </property>
@@ -138,7 +138,7 @@
        <widget class="QComboBox" name="browserComBoBox">
         <property name="minimumSize">
          <size>
-          <width>400</width>
+          <width>350</width>
           <height>0</height>
          </size>
         </property>
@@ -202,13 +202,13 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>120</width>
+          <width>130</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>120</width>
+          <width>130</width>
           <height>16777215</height>
          </size>
         </property>
@@ -224,7 +224,7 @@
        <widget class="QComboBox" name="mailComBoBox">
         <property name="minimumSize">
          <size>
-          <width>400</width>
+          <width>350</width>
           <height>0</height>
          </size>
         </property>
@@ -285,13 +285,13 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>120</width>
+          <width>130</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>120</width>
+          <width>130</width>
           <height>16777215</height>
          </size>
         </property>
@@ -307,7 +307,7 @@
        <widget class="QComboBox" name="imageComBoBox">
         <property name="minimumSize">
          <size>
-          <width>400</width>
+          <width>350</width>
           <height>0</height>
          </size>
         </property>
@@ -368,13 +368,13 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>120</width>
+          <width>130</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>120</width>
+          <width>130</width>
           <height>16777215</height>
          </size>
         </property>
@@ -390,7 +390,7 @@
        <widget class="QComboBox" name="audioComBoBox">
         <property name="minimumSize">
          <size>
-          <width>400</width>
+          <width>350</width>
           <height>0</height>
          </size>
         </property>
@@ -451,13 +451,13 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>120</width>
+          <width>130</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>120</width>
+          <width>130</width>
           <height>16777215</height>
          </size>
         </property>
@@ -473,7 +473,7 @@
        <widget class="QComboBox" name="videoComBoBox">
         <property name="minimumSize">
          <size>
-          <width>400</width>
+          <width>350</width>
           <height>0</height>
          </size>
         </property>
@@ -534,13 +534,13 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>120</width>
+          <width>130</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>120</width>
+          <width>130</width>
           <height>16777215</height>
          </size>
         </property>
@@ -556,7 +556,7 @@
        <widget class="QComboBox" name="textComBoBox">
         <property name="minimumSize">
          <size>
-          <width>400</width>
+          <width>350</width>
           <height>0</height>
          </size>
         </property>
