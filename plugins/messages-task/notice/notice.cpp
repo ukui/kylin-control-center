@@ -241,12 +241,16 @@ void Notice::initOriNoticeStatus() {
 
         connect(devWidget, &HoverWidget::enterWidget, this, [=](QString name) {
             Q_UNUSED(name)
-            devWidget->setStyleSheet("QWidget#hovorWidget{background-color: rgba(61,107,229,40%);border-radius:4px;}");
+            devWidget->setStyleSheet("QWidget#hovorWidget{background-color: rgb(64,169,251);border-radius:4px;}");
+            nameLabel->setStyleSheet("color: palette(base);");
+
         });
 
         connect(devWidget, &HoverWidget::leaveWidget, this, [=](QString name) {
             Q_UNUSED(name)
             devWidget->setStyleSheet("QWidget#hovorWidget{background: palette(button);border-radius:4px;}");
+            nameLabel->setStyleSheet("color: palette(windowText);");
+
         });
 
         connect(devWidget, &HoverWidget::widgetClicked, this, [=](QString name) {

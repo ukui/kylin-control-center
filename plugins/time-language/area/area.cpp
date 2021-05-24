@@ -179,7 +179,7 @@ void Area::initUI() {
     addWgt->setObjectName(tr("addwgt"));
     addWgt->setMinimumSize(QSize(580, 50));
     addWgt->setMaximumSize(QSize(960, 50));
-    addWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
+    addWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: rgb(64,169,251); border-radius: 4px;}");
 
     QHBoxLayout *addLyt = new QHBoxLayout;
 
@@ -187,8 +187,8 @@ void Area::initUI() {
     QLabel * textLabel = new QLabel(tr("Add main language"));
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);
-    iconLabel->setProperty("useIconHighlightEffect", true);
-    iconLabel->setProperty("iconHighlightEffectMode", 1);
+    //iconLabel->setProperty("useIconHighlightEffect", true);
+    //iconLabel->setProperty("iconHighlightEffectMode", 1);
 
     addLyt->addWidget(iconLabel);
     addLyt->addWidget(textLabel);
@@ -198,6 +198,21 @@ void Area::initUI() {
     connect(addWgt, &HoverWidget::widgetClicked, this, [=](QString mname) {
         Q_UNUSED(mname);
         add_lan_btn_slot();
+    });
+
+    // 悬浮改变Widget状态
+    connect(addWgt, &HoverWidget::enterWidget, this, [=](){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(base);");
+
+    });
+
+    // 还原状态
+    connect(addWgt, &HoverWidget::leaveWidget, this, [=](){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(windowText);");
     });
 
     ui->addLyt->addWidget(addWgt);

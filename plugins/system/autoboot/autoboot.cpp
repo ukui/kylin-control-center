@@ -130,7 +130,7 @@ void AutoBoot::initAddBtn()
     addWgt->setMinimumSize(QSize(580, 50));
     addWgt->setMaximumSize(QSize(960, 50));
     addWgt->setStyleSheet(
-        "HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
+        "HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: rgb(64,169,251); border-radius: 4px;}");
 
     QHBoxLayout *addLyt = new QHBoxLayout;
 
@@ -138,8 +138,8 @@ void AutoBoot::initAddBtn()
     QLabel *textLabel = new QLabel(tr("Add autoboot app "), pluginWidget);
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);
-    iconLabel->setProperty("useIconHighlightEffect", true);
-    iconLabel->setProperty("iconHighlightEffectMode", 1);
+    //iconLabel->setProperty("useIconHighlightEffect", true);
+    //iconLabel->setProperty("iconHighlightEffectMode", 1);
     addLyt->addWidget(iconLabel);
     addLyt->addWidget(textLabel);
     addLyt->addStretch();

@@ -102,7 +102,7 @@ void Printer::initComponent()
     mAddWgt->setMinimumSize(QSize(580, 50));
     mAddWgt->setMaximumSize(QSize(960, 50));
     mAddWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button);border-radius: 4px;}"
-                           "HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
+                           "HoverWidget:hover:!pressed#addwgt{background: rgb(64,169,251); border-radius: 4px;}");
 
     ui->listWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
 
@@ -112,8 +112,8 @@ void Printer::initComponent()
     QLabel *textLabel = new QLabel(tr("Add printers and scanners"));
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);
-    iconLabel->setProperty("useIconHighlightEffect", true);
-    iconLabel->setProperty("iconHighlightEffectMode", 1);
+    //iconLabel->setProperty("useIconHighlightEffect", true);
+    //iconLabel->setProperty("iconHighlightEffectMode", 1);
 
     addLyt->addWidget(iconLabel);
     addLyt->addWidget(textLabel);
@@ -123,6 +123,21 @@ void Printer::initComponent()
     connect(mAddWgt, &HoverWidget::widgetClicked, this, [=](QString mname) {
         Q_UNUSED(mname)
         runExternalApp();
+    });
+
+    // 悬浮改变Widget状态
+    connect(mAddWgt, &HoverWidget::enterWidget, this, [=](){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(base);");
+
+    });
+
+    // 还原状态
+    connect(mAddWgt, &HoverWidget::leaveWidget, this, [=](){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(windowText);");
     });
     ui->addLyt->addWidget(mAddWgt);
     mTimer = new QTimer(this);

@@ -5,6 +5,7 @@ include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 include($$PROJECT_COMPONENTSOURCE/comboxframe.pri)
 include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
+include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
 
 TEMPLATE = lib
 CONFIG += plugin
@@ -43,3 +44,6 @@ FORMS += \
     search.ui
 
 INSTALLS += target
+
+DISTFILES += \
+    ../../../commonComponent/imageutil.pri

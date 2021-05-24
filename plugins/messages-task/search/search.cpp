@@ -1,5 +1,6 @@
 #include "search.h"
 #include "ui_search.h"
+#include "ImageUtil/imageutil.h"
 
 Search::Search()
 {
@@ -144,7 +145,7 @@ void Search::initUi()
     m_blockDirsLyt->setSpacing(2);
     m_addBlockDirWidget = new HoverWidget("", m_plugin_widget);
     m_addBlockDirWidget->setObjectName("addBlockDirWidget");
-    m_addBlockDirWidget->setStyleSheet("HoverWidget#addBlockDirWidget{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addBlockDirWidget{background: #3D6BE5; border-radius: 4px;}");
+    m_addBlockDirWidget->setStyleSheet("HoverWidget#addBlockDirWidget{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addBlockDirWidget{background: rgb(64,169,251); border-radius: 4px;}");
     m_addBlockDirWidget->setFixedHeight(50);
     m_addBlockDirWidget->setMaximumWidth(960);
     m_addBlockDirIcon = new QLabel(m_addBlockDirWidget);
@@ -177,6 +178,22 @@ void Search::initUi()
     m_mainLyt->addWidget(m_webEngineFrame);
     m_mainLyt->addStretch();
     m_mainLyt->setContentsMargins(0, 0, 40, 0);
+
+    // 悬浮改变Widget状态
+    connect(m_addBlockDirWidget, &HoverWidget::enterWidget, this, [=](){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
+        m_addBlockDirIcon->setPixmap(pixgray);
+        m_addBlockDirLabel->setStyleSheet("color: palette(base);");
+
+    });
+
+    // 还原状态
+    connect(m_addBlockDirWidget, &HoverWidget::leaveWidget, this, [=](){
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+        m_addBlockDirIcon->setPixmap(pixgray);
+        m_addBlockDirLabel->setStyleSheet("color: palette(windowText);");
+    });
+
 }
 
 /**

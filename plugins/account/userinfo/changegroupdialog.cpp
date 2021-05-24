@@ -273,7 +273,7 @@ void ChangeGroupDialog::initNewGroupBtn()
     addWgt->setObjectName("addwgt");
     addWgt->setMinimumSize(QSize(454, 50));
     addWgt->setMaximumSize(QSize(454, 50));
-    addWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: #3D6BE5; border-radius: 4px;}");
+    addWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addwgt{background: rgb(64,169,251); border-radius: 4px;}");
 
     QHBoxLayout *addLyt = new QHBoxLayout;
 
