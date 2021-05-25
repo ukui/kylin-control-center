@@ -228,6 +228,7 @@ void ShareMain::pwdEnableSlot(bool status)
     if (status) {
         mVinoGsetting->set(kAuthenticationKey, "vnc");
         mPwdinputBtn->setVisible(true);
+        mPwdinputBtn->setText(QByteArray::fromBase64(mVinoGsetting->get(kVncPwdKey).toString().toLatin1()));
 
     } else {
         mPwdinputBtn->setVisible(false);
