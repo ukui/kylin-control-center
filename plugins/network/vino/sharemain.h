@@ -31,7 +31,9 @@
 #include <QByteArray>
 #include <QDebug>
 #include <QGSettings/QGSettings>
+#include <QPushButton>
 #include "SwitchButton/switchbutton.h"
+#include "inputpwddialog.h"
 
 const QByteArray kVinoSchemas = "org.gnome.Vino";
 const QString kVinoViewOnlyKey = "view-only";
@@ -82,9 +84,11 @@ private:
     QLabel *mNoticeWLabel;
     QLabel *mNoticeOLabel;
     QLabel *mNoticeNLabel;
-    QLabel *mHintLabel;
+    //QLabel *mHintLabel;
 
-    QLineEdit *mPwdLineEdit;
+    //QLineEdit *mPwdLineEdit;
+
+    QPushButton *mPwdinputBtn;
 
     QVBoxLayout *mVlayout;
 
@@ -104,7 +108,7 @@ private slots:
     void viewBoxSlot(bool status);
     void accessSlot(bool status);
     void pwdEnableSlot(bool status);
-    void pwdInputSlot(const QString &pwd);
+    void pwdInputSlot();
 };
 
 #endif // SHAREMAIN_H

@@ -22,6 +22,9 @@
 #include <QProcess>
 #include <QHBoxLayout>
 #include <QAbstractButton>
+#include <QPushButton>
+#include <QMessageBox>
+#include <QInputDialog>
 
 #include <QDBusInterface>
 #include <QDBusConnection>
@@ -109,15 +112,18 @@ void ShareMain::initUI()
     mPwdsLabel = new QLabel(tr("Require user to enter this password: "), this);
 
     // mHintLabel = new QLabel(tr("Password can not be blank"), this);
-    mHintLabel = new QLabel(this);
-    mHintLabel->setStyleSheet("color:red;");
+    //mHintLabel = new QLabel(this);
+    //mHintLabel->setStyleSheet("color:red;");
 
-    mPwdLineEdit = new QLineEdit(this);
+    mPwdinputBtn = new QPushButton(this);
+    mPwdinputBtn->setContentsMargins(26,8,26,8);
+    mPwdinputBtn->setFixedSize(QSize(120, 36));
+
     pwdHLayout->addWidget(mPwdsLabel);
+    //pwdHLayout->addStretch();
+    pwdHLayout->addWidget(mPwdinputBtn);
     pwdHLayout->addStretch();
-    pwdHLayout->addWidget(mPwdLineEdit);
-    pwdHLayout->addStretch();
-    pwdHLayout->addWidget(mHintLabel);
+    //pwdHLayout->addWidget(mHintLabel);
     pwdHLayout->addWidget(mPwdBtn);
 
     mSecurityPwdFrame->setLayout(pwdHLayout);
@@ -145,7 +151,7 @@ void ShareMain::initConnection()
         connect(mViewBtn, &SwitchButton::checkedChanged, this, &ShareMain::viewBoxSlot);
         connect(mAccessBtn, &SwitchButton::checkedChanged, this, &ShareMain::accessSlot);
         connect(mPwdBtn, &SwitchButton::checkedChanged, this, &ShareMain::pwdEnableSlot);
-        connect(mPwdLineEdit, &QLineEdit::textChanged, this, &ShareMain::pwdInputSlot);
+        connect(mPwdinputBtn, &QPushButton::clicked, this, &ShareMain::pwdInputSlot);
     }
 }
 
@@ -160,18 +166,19 @@ void ShareMain::initEnableStatus()
     mViewBtn->setChecked(!isShared);
     if (pwd == "vnc") {
         mPwdBtn->setChecked(true);
-        mHintLabel->setVisible(true);
-        mPwdLineEdit->setText(QByteArray::fromBase64(secpwd.toLatin1()));
+        //mHintLabel->setVisible(true);
+        mPwdinputBtn->setText(QByteArray::fromBase64(secpwd.toLatin1()));
 
         if (secpwd == NULL) {
-            mHintLabel->setText(tr("Password can not be blank"));
+            //mHintLabel->setText(tr("Password can not be blank"));
         } else if (QByteArray::fromBase64(secpwd.toLatin1()).length() == 8) {
-            mHintLabel->setText(tr("Password length must be less than or equal to 8"));
+            //mHintLabel->setText(tr("Password length must be less than or equal to 8"));
         }
     } else {
         mPwdBtn->setChecked(false);
-        mPwdLineEdit->setVisible(false);
-        mHintLabel->setVisible(false);
+        //mPwdLineEdit->setVisible(false);
+        mPwdinputBtn->setVisible(false);
+        //mHintLabel->setVisible(false);
     }
 
     QProcess *process = new QProcess;
@@ -232,35 +239,19 @@ void ShareMain::pwdEnableSlot(bool status)
 {
     if (status) {
         mVinoGsetting->set(kAuthenticationKey, "vnc");
-        mPwdLineEdit->setVisible(true);
-        mHintLabel->setVisible(true);
+        mPwdinputBtn->setVisible(true);
+        //mHintLabel->setVisible(true);
     } else {
-        mPwdLineEdit->setVisible(false);
-        mHintLabel->setVisible(false);
+        mPwdinputBtn->setVisible(false);
+        //mHintLabel->setVisible(false);
         mVinoGsetting->set(kAuthenticationKey, "none");
     }
 }
 
-void ShareMain::pwdInputSlot(const QString &pwd)
+void ShareMain::pwdInputSlot()
 {
-    if (pwd.length() <= 7 && !pwd.isEmpty()) {
-        mHintLabel->setText(tr(""));
-        mHintLabel->setVisible(false);
-        QByteArray text = pwd.toLocal8Bit();
-        QByteArray secPwd = text.toBase64();
-        mVinoGsetting->set(kVncPwdKey, secPwd);
-    } else if (pwd.isEmpty() && mPwdLineEdit->text().isEmpty()) {
-        mHintLabel->setText(tr("Password can not be blank"));
-        mHintLabel->setVisible(true);
-        QByteArray text = pwd.toLocal8Bit();
-        QByteArray secPwd = text.toBase64();
-        mVinoGsetting->set(kVncPwdKey, secPwd);
-    } else {
-        mHintLabel->setText(tr("Password length must be less than or equal to 8"));
-        mHintLabel->setVisible(true);
-        mPwdLineEdit->setText(pwd.mid(0, 8));
-        QByteArray text = pwd.mid(0, 8).toLocal8Bit();
-        QByteArray secPwd = text.toBase64();
-        mVinoGsetting->set(kVncPwdKey, secPwd);
-    }
+    InputPwdDialog *mwindow = new InputPwdDialog(mVinoGsetting,this);
+
+    mwindow->exec();
+    mPwdinputBtn->setText(QByteArray::fromBase64(mVinoGsetting->get(kVncPwdKey).toString().toLatin1()));
 }
