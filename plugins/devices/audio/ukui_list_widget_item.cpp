@@ -25,7 +25,7 @@
 #include <QVBoxLayout>
 //#include <QSvgRenderer>
 #include <QApplication>
-
+bool isCheckBluetoothInput;
 UkuiListWidget::UkuiListWidget(QWidget *parent) :
     QListWidget(parent)
 {
@@ -73,6 +73,22 @@ void UkuiListWidgetItem::setLabelText(QString portLabel, QString deviceLabel){
 
     this->portLabel->setText(portLabel);
     this->deviceLabel->setText(deviceLabel);
+}
+
+void UkuiListWidgetItem::mousePressEvent(QMouseEvent *event)
+{
+    QWidget::mousePressEvent(event);
+    qDebug() << "Mouse Press Event" << this->portLabel->text() << this->deviceLabel->text() << isCheckBluetoothInput;
+    //蓝牙输入去除勾选
+    if (this->deviceLabel->text().contains("bluez_card")) {
+        if (isCheckBluetoothInput == false)
+            isCheckBluetoothInput = true;
+        else  {
+            isCheckBluetoothInput = false;
+            QString cmd = "pactl set-card-profile "+this->deviceLabel->text()+" a2dp_sink";
+            system(cmd.toLocal8Bit().data());
+        }
+    }
 }
 
 //void UkuiListWidgetItem::paintEvent(QPaintEvent *event)
