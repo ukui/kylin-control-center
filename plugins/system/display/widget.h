@@ -132,6 +132,10 @@ private Q_SLOTS:
     void setDDCBrighthessSlot(int brightnessValue);// 设置外接显示器亮度
     void kdsScreenchangeSlot();
 
+    void applyNightModeSlot();
+
+    void delayApply();
+
 public Q_SLOTS:
     void save();
     void scaleChangedSlot(double scale);

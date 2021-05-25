@@ -28,11 +28,11 @@ QMLOutput {
     signal primaryTriggered(string self);
     signal enabledToggled(string self);
     signal mousePressed();
-    signal mouseReleased();
-    signal positionChanged();
-    signal rotationChanged();
-    signal widthChanged();
-    signal heightChanged();
+    signal mouseReleased(bool isReleased);
+    signal positionChanged(bool isReleased);
+    signal rotationChanged(bool isReleased);
+    signal widthChanged(bool isReleased);
+    signal heightChanged(bool isReleased);
 
     property bool isDragged: monitorMouseArea.drag.active;
     property bool isDragEnabled: true;
@@ -116,10 +116,10 @@ QMLOutput {
         }
 
         onPressed: root.clicked();
-        onReleased: root.mouseReleased()
-        onRotationChanged: root.rotationChanged();
-        onWidthChanged: root.widthChanged();
-        onHeightChanged: root.heightChanged();
+        onReleased: root.mouseReleased(true)
+        onRotationChanged: root.rotationChanged(false);
+        onWidthChanged: root.widthChanged(false);
+        onHeightChanged: root.heightChanged(false);
 
         /* FIXME: This could be in 'Behavior', but MouseArea had
          * some complaints...to tired to investigate */

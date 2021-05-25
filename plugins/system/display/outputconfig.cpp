@@ -72,7 +72,9 @@ void OutputConfig::initUi()
     connect(mOutput.data(), &KScreen::Output::rotationChanged,
             this, [=]() {
         const int index = mRotation->findData(mOutput->rotation());
+        mRotation->blockSignals(true);
         mRotation->setCurrentIndex(index);
+        mRotation->blockSignals(false);
     });
 
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);

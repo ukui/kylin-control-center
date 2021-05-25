@@ -209,11 +209,13 @@ void Widget::setConfig(const KScreen::ConfigPtr &config)
     }
     slotOutputEnabledChanged();
 
-    if (mFirstLoad && isCloneMode()) {
-        mUnifyButton->blockSignals(true);
-        mUnifyButton->setChecked(true);
-        mUnifyButton->blockSignals(false);
-        slotUnifyOutputs();
+    if (mFirstLoad) {
+        if (isCloneMode()) {
+            mUnifyButton->blockSignals(true);
+            mUnifyButton->setChecked(true);
+            mUnifyButton->blockSignals(false);
+            slotUnifyOutputs();
+        }
     }
     mFirstLoad = false;
     QtConcurrent::run(std::mem_fn(&Widget::setBrightnesSldierValue), this);
@@ -241,6 +243,11 @@ void Widget::loadQml()
 
     QQuickItem *rootObject = ui->quickWidget->rootObject();
     mScreen = rootObject->findChild<QMLScreen *>(QStringLiteral("outputView"));
+
+    connect(mScreen, &QMLScreen::released, this, [=]() {
+        delayApply();
+    });
+
     if (!mScreen) {
         return;
     }
@@ -417,7 +424,6 @@ void Widget::slotUnifyOutputs()
         ui->mainScreenButton->setEnabled(false);
         mControlPanel->setUnifiedOutput(base->outputPtr());
     }
-    Q_EMIT changed();
 }
 
 // FIXME: Copy-pasted from KDED's Serializer::findOutput()
@@ -809,8 +815,6 @@ void Widget::outputAdded(const KScreen::OutputPtr &output)
             this, &Widget::slotOutputConnectedChanged);
     connect(output.data(), &KScreen::Output::isEnabledChanged,
             this, &Widget::slotOutputEnabledChanged);
-    connect(output.data(), &KScreen::Output::posChanged,
-            this, &Widget::changed);
 
     addOutputToPrimaryCombo(output);
 
@@ -890,7 +894,6 @@ void Widget::primaryOutputSelected(int index)
     }
 
     mConfig->setPrimaryOutput(newPrimary);
-    Q_EMIT changed();
 }
 
 // 主输出
@@ -1058,7 +1061,29 @@ void Widget::kdsScreenchangeSlot()
         } else {
             cloneMode = false;
         }
+        mUnifyButton->blockSignals(true);
         mUnifyButton->setChecked(cloneMode);
+        mUnifyButton->blockSignals(false);
+    });
+}
+
+void Widget::applyNightModeSlot()
+{
+    if (((ui->opHourCom->currentIndex() < ui->clHourCom->currentIndex())
+         || (ui->opHourCom->currentIndex() == ui->clHourCom->currentIndex()
+             && ui->opMinCom->currentIndex() <= ui->clMinCom->currentIndex()))
+            && CUSTOM == singleButton->checkedId() && mNightButton->isChecked()) {
+        QMessageBox::warning(this, tr("Warning"),
+                             tr("Open time should be earlier than close time!"));
+        return;
+    }
+    setNightMode(mNightButton->isChecked());
+}
+
+void Widget::delayApply()
+{
+    QTimer::singleShot(500, this, [=](){
+        save();
     });
 }
 
@@ -1098,18 +1123,7 @@ void Widget::save()
         QMessageBox::warning(this, tr("Warning"), tr("please insure at least one output!"));
         mCloseScreenButton->setChecked(true);
         return;
-    } else if (((ui->opHourCom->currentIndex() < ui->clHourCom->currentIndex())
-                || (ui->opHourCom->currentIndex() == ui->clHourCom->currentIndex()
-                    && ui->opMinCom->currentIndex() <= ui->clMinCom->currentIndex()))
-               && CUSTOM == singleButton->checkedId() && mNightButton->isChecked()) {
-        QMessageBox::warning(this, tr("Warning"),
-                             tr("Open time should be earlier than close time!"));
-        mCloseScreenButton->setChecked(true);
-        return;
     }
-
-    writeScale(this->mScreenScale);
-    setNightMode(mNightButton->isChecked());
 
     if (!KScreen::Config::canBeApplied(config)) {
         QMessageBox::information(this,
@@ -1135,6 +1149,7 @@ void Widget::save()
             writeFile(mDir % hash);
         }
         mBlockChanges = false;
+        mConfigChanged = false;
     });
 
     int enableScreenCount = 0;
@@ -1333,6 +1348,8 @@ void Widget::scaleChangedSlot(double scale)
     } else {
         mIsScaleChanged = false;
     }
+
+    writeScale(this->mScreenScale);
 }
 
 void Widget::changedSlot()
@@ -1404,8 +1421,6 @@ void Widget::primaryButtonEnable(bool status)
     mConfig->setPrimaryOutput(newPrimary);
 
     mScreenId = newPrimary->id();
-
-    Q_EMIT changed();
 }
 
 void Widget::checkOutputScreen(bool judge)
@@ -1439,7 +1454,6 @@ void Widget::checkOutputScreen(bool judge)
     }
 
     ui->primaryCombo->setCurrentIndex(index);
-    Q_EMIT changed();
 }
 
 // 亮度调节UI
@@ -1462,23 +1476,24 @@ void Widget::initBrightnessUI()
 
 void Widget::initConnection()
 {
-    connect(mNightButton, SIGNAL(checkedChanged(bool)), this, SLOT(showNightWidget(bool)));
     connect(mThemeButton, SIGNAL(checkedChanged(bool)), this, SLOT(slotThemeChanged(bool)));
-    connect(singleButton, SIGNAL(buttonClicked(int)), this, SLOT(showCustomWiget(int)));
     connect(ui->primaryCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this, &Widget::mainScreenButtonSelect);
 
-    connect(ui->mainScreenButton, SIGNAL(clicked(bool)), this, SLOT(primaryButtonEnable(bool)));
+    connect(ui->mainScreenButton, &QPushButton::clicked, this, [=](bool status){
+        primaryButtonEnable(status);
+        delayApply();
+    });
+
     mControlPanel = new ControlPanel(this);
     connect(mControlPanel, &ControlPanel::changed, this, &Widget::changed);
-    connect(this, &Widget::changed, this, &Widget::changedSlot);
+    connect(this, &Widget::changed, this, [=]() {
+            changedSlot();
+            delayApply();
+    });
     connect(mControlPanel, &ControlPanel::scaleChanged, this, &Widget::scaleChangedSlot);
 
     ui->controlPanelLayout->addWidget(mControlPanel);
-
-    connect(ui->applyButton, &QPushButton::clicked, this, [=]() {
-        save();
-    });
 
     connect(ui->advancedBtn, &QPushButton::clicked, this, [=] {
         DisplayPerformanceDialog *dialog = new DisplayPerformanceDialog;
@@ -1488,11 +1503,13 @@ void Widget::initConnection()
     connect(mUnifyButton, &SwitchButton::checkedChanged,
             [this] {
         slotUnifyOutputs();
+        delayApply();
     });
 
     connect(mCloseScreenButton, &SwitchButton::checkedChanged,
             this, [=](bool checked) {
         checkOutputScreen(checked);
+        delayApply();
     });
 
     connect(QApplication::desktop(), &QDesktopWidget::resized, this, [=] {
@@ -1505,6 +1522,36 @@ void Widget::initConnection()
         QTimer::singleShot(1500, this, [=] {
             kdsScreenchangeSlot();
         });
+    });
+
+    connect(mNightButton, &SwitchButton::checkedChanged, this, [=](bool status){
+        showNightWidget(status);
+        applyNightModeSlot();
+    });
+
+    connect(ui->opHourCom, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=]{
+        applyNightModeSlot();;
+    });
+
+    connect(ui->opMinCom, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=]{
+        applyNightModeSlot();
+    });
+
+    connect(ui->clHourCom, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=]{
+        applyNightModeSlot();;
+    });
+
+    connect(ui->clMinCom, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=]{
+        applyNightModeSlot();
+    });
+
+    connect(ui->temptSlider, &QSlider::valueChanged, this, [=]{
+        applyNightModeSlot();
+    });
+
+    connect(singleButton, QOverload<int>::of(&QButtonGroup::buttonClicked), this, [=](int index){
+        showCustomWiget(index);
+        applyNightModeSlot();
     });
 
     QDBusConnection::sessionBus().connect(QString(),
@@ -1716,9 +1763,7 @@ void Widget::initUiComponent()
                                                  "org.freedesktop.DBus.Properties",
                                                  "PropertiesChanged",
                                                  this,
-                                                 SLOT(propertiesChangedSlot(QString,QMap<QString,
-                                                                                         QVariant>,
-                                                                            QStringList)));
+                                                 SLOT(propertiesChangedSlot(QString, QMap<QString,QVariant>, QStringList)));
 }
 
 void Widget::initNightStatus()

@@ -315,7 +315,6 @@ void UnifiedOutputConfig::slotRefreshRateChanged(int index)
             }
         }
     }
-    Q_EMIT changed();
 }
 
 QString UnifiedOutputConfig::findBestMode(const KScreen::OutputPtr &output, const QSize &size)
@@ -337,8 +336,10 @@ void UnifiedOutputConfig::slotRotationChangedDerived(int index)
     KScreen::Output::Rotation rotation = static_cast<KScreen::Output::Rotation>(mRotation->itemData(index).toInt());
     Q_FOREACH (const KScreen::OutputPtr &clone, mClones) {
         if (clone->isConnected() && clone->isEnabled()) {
+            clone->blockSignals(true);
             clone->setRotation(rotation);
             clone->setPos(QPoint(0, 0));
+            clone->blockSignals(false);
         }
     }
     Q_EMIT changed();
@@ -353,5 +354,7 @@ void UnifiedOutputConfig::slotRestoreResoltion()
 
 void UnifiedOutputConfig::slotRestoreRatation()
 {
+    mRotation->blockSignals(true);
     mRotation->setCurrentIndex(mRotation->findData(mOutput->rotation()));
+    mRotation->blockSignals(false);
 }

@@ -112,21 +112,22 @@ void QMLScreen::addOutput(const KScreen::OutputPtr &output)
             [this, qmloutput]() {
         qmlOutputMoved(qmloutput);
     });
+
     // 在这里点击上面小屏幕
     connect(qmloutput, SIGNAL(clicked()),
             this, SLOT(setActiveOutput()));
 
-    connect(qmloutput, SIGNAL(mouseReleased()),
-            this, SLOT(setScreenPos()));
+    connect(qmloutput, SIGNAL(mouseReleased(bool)),
+            this, SLOT(setScreenPos(bool)));
 
-    connect(qmloutput, SIGNAL(rotationChanged()),
-            this, SLOT(setScreenPos()));
+    connect(qmloutput, SIGNAL(rotationChanged(bool)),
+            this, SLOT(setScreenPos(bool)));
 
-    connect(qmloutput, SIGNAL(widthChanged()),
-            this, SLOT(setScreenPos()));
+    connect(qmloutput, SIGNAL(widthChanged(bool)),
+            this, SLOT(setScreenPos(bool)));
 
-    connect(qmloutput, SIGNAL(heightChanged()),
-            this, SLOT(setScreenPos()));
+    connect(qmloutput, SIGNAL(heightChanged(bool)),
+            this, SLOT(setScreenPos(bool)));
 
     qmloutput->updateRootProperties();
 }
@@ -220,14 +221,12 @@ void QMLScreen::setScreenCenterPos()
     moveY = mY2 - mY1;
 
     Q_FOREACH (QMLOutput *qmlOutput, m_outputMap) {
-        qmlOutput->blockSignals(true);
         qmlOutput->setX(qmlOutput->x() + moveX);
         qmlOutput->setY(qmlOutput->y() + moveY);
-        qmlOutput->blockSignals(false);
     }
 }
 
-void QMLScreen::setScreenPos(QMLOutput *output)
+void QMLScreen::setScreenPos(QMLOutput *output, bool isReleased)
 {
     // 镜像模式下跳过屏幕旋转处理
     if (this->primaryOutput() && this->primaryOutput()->isCloneMode()) {
@@ -264,7 +263,7 @@ void QMLScreen::setScreenPos(QMLOutput *output)
         setScreenCenterPos();
         return;
     }
-    output->blockSignals(true);
+
     if (!((x1 + width1 == x2)
           || (y1 == y2 + height2)
           || (x1 == x2 + width2)
@@ -299,9 +298,11 @@ void QMLScreen::setScreenPos(QMLOutput *output)
             }
         }
     }
-    output->blockSignals(false);
 
     setScreenCenterPos();
+    if (isReleased) {
+        Q_EMIT released();
+    }
 }
 
 void QMLScreen::setActiveOutputByCombox(int screenId)
