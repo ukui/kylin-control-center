@@ -207,7 +207,6 @@ void Fonts::setupComponent(){
     uslider->setPageStep(1);
 
     ui->fontLayout->addWidget(uslider);
-    ui->fontLayout->addSpacing(1);
 
     //导入系统字体列表
     QStringList fontfamiles = fontdb.families();
