@@ -111,19 +111,13 @@ void ShareMain::initUI()
     mPwdBtn = new SwitchButton(this);
     mPwdsLabel = new QLabel(tr("Require user to enter this password: "), this);
 
-    // mHintLabel = new QLabel(tr("Password can not be blank"), this);
-    //mHintLabel = new QLabel(this);
-    //mHintLabel->setStyleSheet("color:red;");
-
     mPwdinputBtn = new QPushButton(this);
     mPwdinputBtn->setContentsMargins(26,8,26,8);
     mPwdinputBtn->setFixedSize(QSize(120, 36));
 
     pwdHLayout->addWidget(mPwdsLabel);
-    //pwdHLayout->addStretch();
     pwdHLayout->addWidget(mPwdinputBtn);
     pwdHLayout->addStretch();
-    //pwdHLayout->addWidget(mHintLabel);
     pwdHLayout->addWidget(mPwdBtn);
 
     mSecurityPwdFrame->setLayout(pwdHLayout);
@@ -166,19 +160,13 @@ void ShareMain::initEnableStatus()
     mViewBtn->setChecked(!isShared);
     if (pwd == "vnc") {
         mPwdBtn->setChecked(true);
-        //mHintLabel->setVisible(true);
         mPwdinputBtn->setText(QByteArray::fromBase64(secpwd.toLatin1()));
 
-        if (secpwd == NULL) {
-            //mHintLabel->setText(tr("Password can not be blank"));
-        } else if (QByteArray::fromBase64(secpwd.toLatin1()).length() == 8) {
-            //mHintLabel->setText(tr("Password length must be less than or equal to 8"));
-        }
     } else {
         mPwdBtn->setChecked(false);
-        //mPwdLineEdit->setVisible(false);
+
         mPwdinputBtn->setVisible(false);
-        //mHintLabel->setVisible(false);
+
     }
 
     QProcess *process = new QProcess;
@@ -240,10 +228,10 @@ void ShareMain::pwdEnableSlot(bool status)
     if (status) {
         mVinoGsetting->set(kAuthenticationKey, "vnc");
         mPwdinputBtn->setVisible(true);
-        //mHintLabel->setVisible(true);
+
     } else {
         mPwdinputBtn->setVisible(false);
-        //mHintLabel->setVisible(false);
+
         mVinoGsetting->set(kAuthenticationKey, "none");
     }
 }
@@ -251,7 +239,6 @@ void ShareMain::pwdEnableSlot(bool status)
 void ShareMain::pwdInputSlot()
 {
     InputPwdDialog *mwindow = new InputPwdDialog(mVinoGsetting,this);
-
     mwindow->exec();
     mPwdinputBtn->setText(QByteArray::fromBase64(mVinoGsetting->get(kVncPwdKey).toString().toLatin1()));
 }

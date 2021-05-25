@@ -84,9 +84,6 @@ private:
     QLabel *mNoticeWLabel;
     QLabel *mNoticeOLabel;
     QLabel *mNoticeNLabel;
-    //QLabel *mHintLabel;
-
-    //QLineEdit *mPwdLineEdit;
 
     QPushButton *mPwdinputBtn;
 
