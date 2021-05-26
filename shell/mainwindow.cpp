@@ -734,6 +734,7 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName) {
             pix = ImageUtil::loadSvg(path, "white");
             textLabel->setStyleSheet("color:white");
         } else {
+            pix = ImageUtil::loadSvg(path, "default");
             textLabel->setStyleSheet("color:palette(windowText)");
         }
         iconBtn->setIcon(pix);
