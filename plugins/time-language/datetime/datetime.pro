@@ -25,7 +25,7 @@ INCLUDEPATH   +=  \
                  $$PROJECT_COMPONENTSOURCE \
                  $$PROJECT_ROOTDIR \
 
-LIBS += -L$$[QT_INSTALL_LIBS] -lgsettings-qt
+LIBS += -L$$[QT_INSTALL_LIBS] -lgsettings-qt -lpolkit-qt5-core-1
 
 ##加载gio库和gio-unix库，用于处理时间
 PKGCONFIG     += gio-2.0 \
@@ -60,3 +60,5 @@ FORMS += \
 
 RESOURCES += \
     tz.qrc
+
+DISTFILES +=

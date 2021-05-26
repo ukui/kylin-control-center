@@ -24,12 +24,17 @@
 #include <QMovie>
 #include <QDir>
 #include <QDesktopWidget>
+#include <QLineEdit>
 
+#include <QComboBox>
+#include <QFrame>
+#include <QLabel>
 #include <locale.h>
 #include <libintl.h>
 #include <QProcess>
 #include <sys/timex.h>
 #include <qmath.h>
+#include <polkit-qt5-1/polkitqt1-authority.h>
 
 const char kTimezoneDomain[] = "installer-timezones";
 const char kDefaultLocale[]  = "en_US.UTF-8";
@@ -41,8 +46,26 @@ const QString kenBj =           "Asia/Beijing";
 #define TIME_FORMAT_KEY         "hoursystem"
 #define DATE_KEY                "date"
 #define SYNC_TIME_KEY           "synctime"
+#define NTP_KEY                 "ntp"
 
 volatile bool syncThreadFlag =  false;
+
+const QStringList ntpAddressList = {
+                            "pool.ntp.org",
+                            "cn.ntp.org.cn",
+                            "cn.pool.ntp.org",
+                            "ntp.aliyun.com",
+
+                            "0.debian.pool.ntp.org",
+                            "1.debian.pool.ntp.org",
+
+                            "0.arch.pool.ntp.org",
+                            "1.arch.pool.ntp.org",
+
+                            "0.fedora.pool.ntp.org",
+                            "1.fedora.pool.ntp.org",
+
+                          };
 
 DateTime::DateTime() : mFirstLoad(true)
 {
@@ -153,6 +176,8 @@ void DateTime::initUI()
                                              "org.freedesktop.DBus.Properties",
                                              QDBusConnection::systemBus(), this);
 
+    initNtp();
+
 }
 
 void DateTime::initComponent()
@@ -204,6 +229,111 @@ void DateTime::initStatus()
     QDBusReply<QVariant> tz = m_datetimeiproperties->call("Get", "org.freedesktop.timedate1", "Timezone");
     localizedTimezone = getLocalTimezoneName(tz.value().toString(), locale);
     loadHour();
+}
+
+void DateTime::initNtp()
+{
+    QLabel      *ntpLabel  = new QLabel(ui->ntpFrame);
+    QHBoxLayout *ntpLayout = new QHBoxLayout(ui->ntpFrame);
+                 ntpCombox = new QComboBox(ui->ntpFrame);
+    ntpLabel->setFixedWidth(260);
+    ui->ntpFrame->setLayout(ntpLayout);
+    ntpLayout->addWidget(ntpLabel);
+    ntpLayout->addWidget(ntpCombox);
+    ntpLabel->setText("Time Server");
+    ntpCombox->setFixedHeight(36);
+    ntpCombox->addItem(tr("default"));
+    ntpCombox->addItems(ntpAddressList);
+    ntpCombox->addItem(tr("Customize"));
+
+    /*自定义*/
+    QLabel *ntpLabel_2 = new QLabel(ui->ntpFrame_2);
+    QHBoxLayout *ntpLayout_2 = new QHBoxLayout(ui->ntpFrame_2);
+    QLineEdit *ntpLineEdit = new QLineEdit();
+    QPushButton *saveBtn = new QPushButton(ui->ntpFrame_2);
+    ntpLineEdit->setParent(ui->ntpFrame_2);
+    ntpLabel_2->setText(tr("Server Address"));
+    ntpLayout_2->addWidget(ntpLabel_2);
+    ntpLabel_2->setFixedWidth(260);
+    ntpLayout_2->addWidget(ntpLineEdit);
+    ntpLayout_2->addWidget(saveBtn);
+    ntpLineEdit->setPlaceholderText(tr("Required"));
+    saveBtn->setText(tr("Save"));
+
+    if (m_formatsettings->keys().contains(NTP_KEY))
+        ntpLineEdit->setText(m_formatsettings->get(NTP_KEY).toString());
+
+    connect(ntpLineEdit, &QLineEdit::textChanged, this, [=](){
+        saveBtn->setEnabled(!ntpLineEdit->text().isEmpty());   //为空时不允许保存
+    });
+
+    connect(saveBtn, &QPushButton::clicked, this, [=](){
+        QString setAddr = ntpLineEdit->text();
+        if (!setNtpAddr(setAddr)) {   //失败or不修改
+            if (m_formatsettings->keys().contains(NTP_KEY))
+                ntpLineEdit->setText(m_formatsettings->get(NTP_KEY).toString());
+        } else {
+            if (m_formatsettings->keys().contains(NTP_KEY))
+                m_formatsettings->set(NTP_KEY, setAddr);
+        }
+    });
+
+
+    const QString ntpFileName = "/etc/systemd/timesyncd.conf.d/kylin.conf";
+    QFile ntpFile(ntpFileName);
+    if (!ntpFile.exists()) {    //默认
+        ntpCombox->setCurrentIndex(0);
+        ui->ntpFrame_2->setVisible(false);
+    } else {
+        QSettings readFile(ntpFileName, QSettings::IniFormat);
+        QString initAddress = readFile.value("Time/NTP").toString();
+        for (int i = 0; i < ntpCombox->count(); ++i) {
+            if (initAddress == ntpCombox->itemText(i)) {   //选中
+                ntpCombox->setCurrentIndex(i);
+                ui->ntpFrame_2->setVisible(false);
+                break;
+            } else if (i == ntpCombox->count() - 1) {     //自定义
+                ntpCombox->setCurrentIndex(i);
+                ntpLineEdit->setText(initAddress);
+                ui->ntpFrame_2->setVisible(true);
+            }
+        }
+    }
+
+    ntpComboxPreId = ntpCombox->currentIndex();
+
+    connect(ntpCombox, &QComboBox::currentTextChanged, this, [=](){
+        QString setAddr;
+        if (m_formatsettings->keys().contains(NTP_KEY))
+            setAddr = m_formatsettings->get(NTP_KEY).toString();
+        if (ntpCombox->currentIndex() == (ntpCombox->count() - 1) && setAddr == "") { //自定义且为空
+            ui->ntpFrame_2->setVisible(true);  //需要添加地址并点击保存再授权
+        } else {
+            if (ntpCombox->currentIndex() == 0) {  //默认
+                setAddr = "default";
+                ui->ntpFrame_2->setVisible(false);
+            } else if(ntpCombox->currentIndex() != ntpCombox->count() - 1) { //选择系统
+                setAddr = ntpCombox->currentText();
+                ui->ntpFrame_2->setVisible(false);
+            } else { //自定义且不为空
+                ui->ntpFrame_2->setVisible(true);
+            }
+            if (!setNtpAddr(setAddr)) {   //失败or不修改
+                ntpCombox->blockSignals(true);
+                ntpCombox->setCurrentIndex(ntpComboxPreId);
+                ntpCombox->blockSignals(false);
+                if (ntpComboxPreId == ntpCombox->count() - 1) {
+                    ui->ntpFrame_2->setVisible(true);
+                } else {
+                    ui->ntpFrame_2->setVisible(false);
+                }
+            } else {
+                ntpComboxPreId = ntpCombox->currentIndex();
+                if (m_formatsettings->keys().contains(NTP_KEY)) //防止未保存的内容一直存在
+                    ntpLineEdit->setText(m_formatsettings->get(NTP_KEY).toString());
+            }
+        }
+    });
 }
 
 void DateTime::connectToServer()
@@ -342,6 +472,9 @@ void DateTime::loadHour()
         syncTimeBtn->setChecked(formatB);
         if (formatB != false) {
             ui->chgtimebtn->setEnabled(false);
+
+        } else {
+            setNtpFrame(false);
         }
     }
 }
@@ -429,7 +562,7 @@ void DateTime::synctimeFormatSlot(bool status,bool outChange)
     QDBusMessage retDBus =  rsyncWithNetworkSlot(status);
     if (status != false) {
         ui->chgtimebtn->setEnabled(false);
-
+        setNtpFrame(true);
         if (retDBus.type() == QDBusMessage::ReplyMessage) {
             QString successMSG = tr("  ");
             QString failMSG = tr("Sync from network failed");
@@ -441,6 +574,7 @@ void DateTime::synctimeFormatSlot(bool status,bool outChange)
         }
     } else {
         ui->chgtimebtn->setEnabled(true);
+        setNtpFrame(false);
     }
 }
 /*同步硬件时钟*/
@@ -458,6 +592,38 @@ void DateTime::syncRTC()
     changeRTCinterface->call("changeRTC");
     delete changeRTCinterface;
     changeRTCinterface = nullptr;
+}
+
+bool DateTime::setNtpAddr(QString address)
+{
+    PolkitQt1::Authority::Result result;
+    result = PolkitQt1::Authority::instance()->checkAuthorizationSync(
+                "org.control.center.qt.systemdbus.action.ntp",
+                PolkitQt1::UnixProcessSubject(QCoreApplication::applicationPid()),
+                PolkitQt1::Authority::AllowUserInteraction);
+
+    if (result == PolkitQt1::Authority::Yes) {
+        QDBusInterface *setNtpAddrDbus = new QDBusInterface("com.control.center.qt.systemdbus",
+                                                                 "/",
+                                                                 "com.control.center.interface",
+                                                                 QDBusConnection::systemBus());
+
+        QDBusReply<bool> reply = setNtpAddrDbus->call("setNtpSerAddress", address);
+        delete setNtpAddrDbus;
+        setNtpAddrDbus = nullptr;
+        return reply;
+    }
+    return false;
+}
+
+void DateTime::setNtpFrame(bool visiable)
+{
+    ui->ntpFrame->setVisible(visiable);
+    if (visiable && ntpCombox != nullptr) {
+        ui->ntpFrame_2->setVisible(ntpCombox->currentIndex() == ntpCombox->count() - 1);
+    } else {
+        ui->ntpFrame_2->setVisible(visiable);
+    }
 }
 
 CGetSyncRes::CGetSyncRes(DateTime *dataTimeUI,QString successMSG,QString failMSG)

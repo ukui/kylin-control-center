@@ -80,6 +80,9 @@ public slots:
     // 修改硬件时间
     Q_SCRIPTABLE int changeRTC();
 
+    // 设置NTP授时服务器
+    Q_SCRIPTABLE bool setNtpSerAddress(QString serverAddress);
+
 };
 
 #endif // SYSDBUSREGISTER_H

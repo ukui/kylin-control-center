@@ -39,6 +39,7 @@
 #include <QTimer>
 #include <QSettings>
 #include <QGSettings>
+#include <QComboBox>
 
 #include "worldMap/timezonechooser.h"
 #include "worldMap/zoneinfo.h"
@@ -81,11 +82,13 @@ public:
 
     void initTitleLabel();
     void initUI();
+    void initNtp();
     void initComponent();
     void initStatus();
     void connectToServer();
     bool fileIsExits(const QString& filepath);
     static void syncRTC();
+    void setNtpFrame(bool visiable);
     
 public:
     QLabel       *syncNetworkRetLabel = nullptr;
@@ -119,6 +122,8 @@ private:
     QDateTime current;
     bool mFirstLoad;
 
+    int ntpComboxPreId;
+    QComboBox *ntpCombox = nullptr;
 Q_SIGNALS:
     void changed();
 
@@ -131,6 +136,7 @@ private slots:
     void synctimeFormatSlot(bool status,bool outChange);
     QDBusMessage rsyncWithNetworkSlot(bool status);
     void keyChangedSlot(const QString &key);
+    bool setNtpAddr(QString address);
 
 private:
     void loadHour();

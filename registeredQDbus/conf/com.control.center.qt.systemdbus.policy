@@ -20,4 +20,15 @@
     </defaults>
   </action>
 
+  <action id="org.control.center.qt.systemdbus.action.ntp">
+    <description>Ntp server address</description>
+    <description xml:lang="zh">时间服务器</description>
+    <message>To change the ntp server address, you need to authenticate.</message>
+    <message xml:lang="zh">需要通过管理员认证后才可以修改时间服务器</message>
+    <defaults>
+      <allow_any>auth_admin</allow_any>
+      <allow_inactive>auth_admin</allow_inactive>
+      <allow_active>auth_admin</allow_active>
+    </defaults>
+  </action>
 </policyconfig>

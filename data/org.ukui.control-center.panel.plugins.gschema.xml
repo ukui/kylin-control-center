@@ -10,6 +10,11 @@
             <summary>sync time from network</summary>
             <description></description>
         </key>
+        <key name="ntp" type="s">
+            <default>''</default>
+            <summary>customize ntp server address</summary>
+            <description>user-defined ntp server address</description>
+        </key>
         <key name="calendar" type="s">
             <default>'lunar'</default>
             <summary>Lunar calendar</summary>

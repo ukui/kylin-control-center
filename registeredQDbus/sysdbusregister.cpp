@@ -24,6 +24,7 @@
 #include <QRegExp>
 #include <QProcess>
 #include <stdlib.h>
+#include <QDir>
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -207,4 +208,37 @@ static void chpasswd_cb(PasswdHandler *passwd_handler, GError *error, gpointer u
 int SysdbusRegister::changeRTC() {
     QString cmd = "hwclock -w";
     return system(cmd.toLatin1().data());
+}
+
+bool SysdbusRegister::setNtpSerAddress(QString serverAddress)
+{
+    if (serverAddress == "default") {
+        system("rm -rf /etc/systemd/timesyncd.conf.d/");
+        system("timedatectl set-ntp false");
+        system("timedatectl set-ntp true");
+        return true;
+    }
+
+    QString dirName  = "/etc/systemd/timesyncd.conf.d/";
+    QString fileName = "/etc/systemd/timesyncd.conf.d/kylin.conf";
+
+    QDir  dir(dirName);
+    QFile file(fileName);
+    if (!dir.exists()) {
+        if (dir.mkdir(dirName) == false) {
+            return false;
+        }
+    }
+    if (file.open(QIODevice::WriteOnly) == false) {
+        return false;
+    }
+    file.write("[Time]\n");
+    file.write("NTP = ");
+    file.write(serverAddress.toLatin1().data());
+    file.write("\n");
+    file.close();
+    system("timedatectl set-ntp false");
+    system("timedatectl set-ntp true");
+    return true;
+
 }
