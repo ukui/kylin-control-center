@@ -37,6 +37,9 @@ void Uslider::paintEvent(QPaintEvent *e)
         int tickY = rect.height() / 2 + fontHeight + 5;
         for (int i=0; i <= numTicks; i++) {
             QRect fontRect = fontMetrics.boundingRect(scaleList.at(i));
+            if (i == numTicks) {
+                tickX -= 3;
+            }
 
             painter->drawText(QPoint(tickX, tickY),
                               this->scaleList.at(i));
