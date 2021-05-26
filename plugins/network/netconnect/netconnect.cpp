@@ -152,7 +152,11 @@ void NetConnect::initComponent() {
     QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager/Settings"), "org.freedesktop.NetworkManager.Settings", "ConnectionRemoved", this, SLOT(getNetList(void)));
     // 接收到系统更改网络连接属性时把判断是否已刷新的bool值置为false
     QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager"), "org.freedesktop.NetworkManager", "PropertiesChanged", this, SLOT(netPropertiesChangeSlot(QMap<QString,QVariant>)));
+    // 无线网络断开或连接时刷新可用网络列表
     connect(m_interface, SIGNAL(getWifiListFinished()), this, SLOT(getNetList()));
+    // 有线网络断开或连接时刷新可用网络列表
+    connect(m_interface,SIGNAL(actWiredConnectionChanged()), this, SLOT(getNetList()));
+    // 网络配置信息发生变化时刷新可用网络列表
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(refreshNetInfoTimerSlot()));
     connect(m_interface,SIGNAL(configurationChanged()), this, SLOT(refreshNetInfoSlot()));
 
