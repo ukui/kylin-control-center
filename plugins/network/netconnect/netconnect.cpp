@@ -454,16 +454,20 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
     mActiveInfo.clear();
     QString speed = getWifiSpeed();
     if (!speed.contains("/") && secondCount < 1) {
-        QEventLoop eventloop;
-        QTimer::singleShot(500, &eventloop, SLOT(quit()));
-        eventloop.exec();
+        QElapsedTimer time;
+        time.start();
+        while (time.elapsed() < 300) {
+            QCoreApplication::processEvents();
+        }
         secondCount ++;
         return -1;
     } else {
-        if (getActiveConInfo(mActiveInfo) == -1 || speed == "/" && (firstCount <= 4 && !getWifiStatus())) {
-            QEventLoop eventloop;
-            QTimer::singleShot(200, &eventloop, SLOT(quit()));
-            eventloop.exec();
+        if (getWifiStatus() && firstCount <= 4 && getActiveConInfo(mActiveInfo) == -1) {
+            QElapsedTimer time;
+            time.start();
+            while (time.elapsed() < 300) {
+                QCoreApplication::processEvents();
+            }
             firstCount++;
             return -1;
         } else {
@@ -879,7 +883,7 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
         QString replyIPV4Path = interfacePro.property("Ip4Config")
                 .value<QDBusObjectPath>()
                 .path();
-         //如果此时获取的path 为 "/"  ,说明出现异常，则需要进行异常处理
+         //如果此时获取的path为"/",说明出现异常，则需要进行异常处理
         // IPV4信息
         if (replyIPV4Path == "/") {
             return -1;
@@ -908,7 +912,6 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
                 activeNet.strIPV4Dns = datasIpv4Dns.at(0).value("address").toString();
             } else {
                 qWarning()<<"Ipv4 Dns data reply empty!";
-                return -1;
             }
 
             QDBusMessage replyIPV4Gt = IPV4ifc.call("Get", "org.freedesktop.NetworkManager.IP4Config", "Gateway");
