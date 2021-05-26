@@ -200,8 +200,11 @@ void NetConnect::refreshNetInfoSlot() {
     emit ui->RefreshBtn->clicked(true);
     if (mLanDetail->isVisible()) {
         mLanDetail->setVisible(false);
-    } else if (mWlanDetail->isVisible()) {
+        mIsLanVisible = !mIsLanVisible;
+    }
+    if (mWlanDetail->isVisible()) {
         mWlanDetail->setVisible(false);
+        mIsWlanVisible = !mIsWlanVisible;
     }
 }
 void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
@@ -328,7 +331,6 @@ void NetConnect::netDetailSlot(QString netName) {
                 mLanDetail->setIPV6(netInfo.strIPV6GateWay);
                 mLanDetail->setMac(netInfo.strMac);
                 mLanDetail->setBandWidth(netInfo.strBandWidth);
-
                 mLanDetail->setVisible(mIsLanVisible);
             } else {
                 mIsWlanVisible = !mIsWlanVisible;
@@ -510,6 +512,14 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
                         } else {
                             wname = wname;
                         }
+                        //若切换为新wifi则关闭网络详情
+                        if (mPreWifiConnectedName != wname) {
+                            mPreWifiConnectedName = wname;
+                            if (mWlanDetail->isVisible()) {
+                                mWlanDetail->setVisible(false);
+                                mIsWlanVisible = !mIsWlanVisible;
+                            }
+                        }
                         mActiveInfo[index].strSecType = (lockType == "--" ? tr("None") : lockType);
                         mActiveInfo[index].strChan = chan;
                         mActiveInfo[index].strHz = freq;
@@ -538,7 +548,13 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
                     }
                     indexLan ++;
                 }
-
+                if (mPreLanConnectedName != actLanName) {
+                    mPreLanConnectedName = actLanName;
+                    if (mLanDetail->isVisible()) {
+                        mLanDetail->setVisible(false);
+                        mIsLanVisible = !mIsLanVisible;
+                    }
+                }
                 // 填充可用网络列表
                 QString headLine = getlanList.at(0);
                 int indexDevice, indexName;

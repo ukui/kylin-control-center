@@ -156,6 +156,9 @@ private:
     QString             prefreChan;
     int                 firstCount = 0;
     int                 secondCount = 0;
+
+    QString             mPreWifiConnectedName;
+    QString             mPreLanConnectedName;
 private:
     int         setSignal(QString lv);
     QStringList execGetLanList();
