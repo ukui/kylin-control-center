@@ -657,6 +657,7 @@ void AppUpdateWid::updateOneApp()
     }
     else
     {
+	updateAPPBtn->hide();
 //        appVersion->setText(tr("获取依赖失败！"));
 
         this->execFun = false;
