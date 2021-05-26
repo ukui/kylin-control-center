@@ -269,6 +269,10 @@ void AppUpdateWid::showInstallStatues(QString status,QString appAptName, float p
 
     if(QString::compare(appAllMsg.name,appAptName) == 0)
     {
+        if (this->execFun == false) {
+           // this->execFun = true;
+            return;
+        }
 
         /* 临时解决方案 , 获取系统语言环境 , 英文加悬浮框 , 中文不加 */
         QLocale locale;
@@ -653,8 +657,11 @@ void AppUpdateWid::updateOneApp()
     }
     else
     {
-        updateAPPBtn->hide();
 //        appVersion->setText(tr("获取依赖失败！"));
+
+        this->execFun = false;
+        startInstall(appAllMsg.name);
+
         appVersion->setText(tr("Get depends failed!"));
         appVersion->setToolTip("");
         QIcon icon = QIcon::fromTheme("dialog-error");
