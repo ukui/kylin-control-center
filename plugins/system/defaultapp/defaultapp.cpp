@@ -64,6 +64,7 @@ QWidget *DefaultApp::get_plugin_ui() {
 
         ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
         initUI();
+        initSlots();
         connectToServer();
 #ifdef __sw_64__
         ui->ResetBtn->show();
@@ -84,79 +85,74 @@ const QString DefaultApp::name() const {
     return QStringLiteral("defaultapp");
 }
 
+void DefaultApp::initSlots() {
+    connect(ui->browserComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::browserComBoBox_changed_cb);
+    connect(ui->mailComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::mailComBoBox_changed_cb);
+    connect(ui->imageComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::imageComBoBox_changed_cb);
+    connect(ui->audioComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::audioComBoBox_changed_cb);
+    connect(ui->videoComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::videoComBoBox_changed_cb);
+    connect(ui->textComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::textComBoBox_changed_cb);
+}
+
 void DefaultApp::initUI() {
 
-    connect(this,&DefaultApp::appInitDone,this,[=](int index, const QString &type) {
-        if (type == BROWSERTYPE) {
-            ui->browserComBoBox->setCurrentIndex(index);
-            browserComBoBox_changed_cb(index);
-            connect(ui->browserComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::browserComBoBox_changed_cb);
+    QTime timedebuge;//声明一个时钟对象
+    timedebuge.start();//开始计时
+    // BROWSER
+    {
+        QString currentbrowser(getDefaultAppId(BROWSERTYPE)); //获取当前
+        QByteArray ba = QString(DESKTOPPATH + currentbrowser).toUtf8();
+        GDesktopAppInfo * browserinfo = g_desktop_app_info_new_from_filename(ba.constData());
+        QString appname = g_app_info_get_name(G_APP_INFO(browserinfo));
+        const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(browserinfo)));
+        QIcon appicon;
+        appicon = QIcon::fromTheme(QString(iconname));
+        ui->browserComBoBox->addItem(appicon, appname, currentbrowser);
+        ui->browserComBoBox->setCurrentText(appname);
+    }
 
-        } else if(type == MAILTYPE) {
-            ui->mailComBoBox->setCurrentIndex(index);
-            mailComBoBox_changed_cb(index);
-            connect(ui->mailComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::mailComBoBox_changed_cb);
+    QString currentbrowser(getDefaultAppId(BROWSERTYPE)); //获取当前
+    QVector<AppList> list = getAppIdList(BROWSERTYPE); //获取可选列表
+    if (!list.isEmpty()) {
+        for (int i = 0; i < list.size(); i++) {
+            QString single(list[i].strAppid);
+            QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
+            GDesktopAppInfo * browserinfo = g_desktop_app_info_new_from_filename(ba.constData());
+            QString appname = g_app_info_get_name(G_APP_INFO(browserinfo));
+            const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(browserinfo)));
+            QIcon appicon;
+            appicon = QIcon::fromTheme(QString(iconname));
+            browserList << appname;
+            if (currentbrowser == single) {
+                continue;
+            }
 
-        } else if(type == IMAGETYPE) {
-            ui->imageComBoBox->setCurrentIndex(index);
-            imageComBoBox_changed_cb(index);
-            connect(ui->imageComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::imageComBoBox_changed_cb);
-
-        } else if(type == AUDIOTYPE) {
-            ui->audioComBoBox->setCurrentIndex(index);
-            audioComBoBox_changed_cb(index);
-            connect(ui->audioComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::audioComBoBox_changed_cb);
-
-        } else if(type == VIDEOTYPE) {
-            ui->videoComBoBox->setCurrentIndex(index);
-            videoComBoBox_changed_cb(index);
-            connect(ui->videoComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::videoComBoBox_changed_cb);
-
-        } else if(type == TEXTTYPE) { 
-            ui->textComBoBox->setCurrentIndex(index);
-            textComBoBox_changed_cb(index);
-            connect(ui->textComBoBox, static_cast<void (QComboBox::*)(int )> (&QComboBox::currentIndexChanged), this, &DefaultApp::textComBoBox_changed_cb);
-
+            ui->browserComBoBox->addItem(appicon, appname, single);
         }
-    });
+    }
 
-    QtConcurrent::run([this] {
+    qDebug() <<"browser耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+    qDebug() << "BROWSER 主线程" << QThread::currentThreadId() << QThread::currentThread();
+
+
+    // IMAGE
+    {
+        QString currentimage(getDefaultAppId(IMAGETYPE));
+        QByteArray ba = QString(DESKTOPPATH + currentimage).toUtf8();
+        GDesktopAppInfo * imageinfo = g_desktop_app_info_new_from_filename(ba.constData());
+        QString appname = g_app_info_get_name(G_APP_INFO(imageinfo));
+        const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(imageinfo)));
+        QIcon appicon;
+        appicon = QIcon::fromTheme(QString(iconname));
+        ui->imageComBoBox->addItem(appicon, appname, currentimage);
+        ui->imageComBoBox->setCurrentText(appname);
+    }
+
+    QtConcurrent::run([=]() {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
-        // BROWSER
-        int browserindex = -1;
-        QString currentbrowser(getDefaultAppId(BROWSERTYPE)); //获取当前
-        QVector<AppList> list = getAppIdList(BROWSERTYPE); //获取可选列表
-        if (!list.isEmpty()) {
-            for (int i = 0; i < list.size(); i++) {
-                QString single(list[i].strAppid);
-                QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
-                GDesktopAppInfo * browserinfo = g_desktop_app_info_new_from_filename(ba.constData());
-                QString appname = g_app_info_get_name(G_APP_INFO(browserinfo));
-                const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(browserinfo)));
-                QIcon appicon;
-                appicon = QIcon::fromTheme(QString(iconname));
-
-                ui->browserComBoBox->addItem(appicon, appname, single);
-                if (currentbrowser == single) {
-                    browserindex = i;
-                    emit appInitDone(browserindex, BROWSERTYPE);
-                }
-                if("qaxbrowser-safe.desktop" == single) {
-                    mDefaultBrowser = appname;
-                }
-            }
-        }
-
-        // IMAGE
-        int imageindex = -1;
-        QStringList browserList;
         QString currentimage(getDefaultAppId(IMAGETYPE));
         QVector<AppList> imagelist = getAppIdList(IMAGETYPE);
-
-        for(int i = 0; i < ui->browserComBoBox->count(); i++){
-            browserList << ui->browserComBoBox->itemText(i);
-        }
         if (!imagelist.isEmpty()) {
             for (int i = 0; i < imagelist.size(); i++) {
                 QString single(imagelist[i].strAppid);
@@ -166,31 +162,34 @@ void DefaultApp::initUI() {
                 const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(imageinfo)));
                 QIcon appicon;
                 appicon = QIcon::fromTheme(QString(iconname));
-
-                if(!browserList.contains(appname)){
+                if (currentimage == single) {
+                    continue;
+                }
+                if(!browserList.contains(appname)) {
                     ui->imageComBoBox->addItem(appicon, appname, single);
                 }
-
-                if ("eom.desktop" == single) {
-                    mDefaultPic = appname;
-                }
-
             }
         }
-        for(int i = 0; i < ui->imageComBoBox->count(); i++){
-            if(currentimage == ui->imageComBoBox->itemData(i)){
-                imageindex = i;
-                emit appInitDone(imageindex, IMAGETYPE);
-            }
-        }
-        qDebug()<<"browser线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+        qDebug() <<"IMAGE耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+        qDebug() << "IMAGE线程" << QThread::currentThreadId() << QThread::currentThread();
     });
 
-    QtConcurrent::run([this] {
+    // MAIL
+    {
+        QString currentmail(getDefaultAppId(MAILTYPE));
+        QByteArray ba = QString(DESKTOPPATH + currentmail).toUtf8();
+        GDesktopAppInfo * mailinfo = g_desktop_app_info_new_from_filename(ba.constData());
+        QString appname = g_app_info_get_name(G_APP_INFO(mailinfo));
+        const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(mailinfo)));
+        QIcon appicon;
+        appicon = QIcon::fromTheme(QString(iconname));
+        ui->mailComBoBox->addItem(appicon, appname, currentmail);
+        ui->mailComBoBox->setCurrentText(appname);
+    }
+
+    QtConcurrent::run([=]() {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
-        // MAIL
-        int mailindex = -1;
         QString currentmail(getDefaultAppId(MAILTYPE));
         QVector<AppList> maillist = getAppIdList(MAILTYPE);
         if (!maillist.isEmpty()) {
@@ -202,25 +201,32 @@ void DefaultApp::initUI() {
                 const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(mailinfo)));
                 QIcon appicon;
                 appicon = QIcon::fromTheme(QString(iconname));
-
-                ui->mailComBoBox->addItem(appicon, appname, single);
                 if (currentmail == single) {
-                    mailindex = i;
-                    emit appInitDone(mailindex, MAILTYPE);
+                    continue;
                 }
-                if ("claws-mail.desktop" == single) {
-                    mDefaultMail = appname;
-                }
+                ui->mailComBoBox->addItem(appicon, appname, single);
             }
         }
-        qDebug()<<"mail线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+        qDebug() <<"MAIL耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+        qDebug() << "MAIL线程" << QThread::currentThreadId() << QThread::currentThread();
     });
 
-    QtConcurrent::run([this] {
+    // AUDIO
+    {
+        QString currentaudio(getDefaultAppId(AUDIOTYPE));
+        QByteArray ba = QString(DESKTOPPATH + currentaudio).toUtf8();
+        GDesktopAppInfo * audioinfo = g_desktop_app_info_new_from_filename(ba.constData());
+        QString appname = g_app_info_get_name(G_APP_INFO(audioinfo));
+        const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(audioinfo)));
+        QIcon appicon;
+        appicon = QIcon::fromTheme(QString(iconname));
+        ui->audioComBoBox->addItem(appicon, appname, currentaudio);
+        ui->audioComBoBox->setCurrentText(appname);
+    }
+
+    QtConcurrent::run([=]() {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
-        // AUDIO
-        int audioindex = -1;
         QString currentaudio(getDefaultAppId(AUDIOTYPE));
         QVector<AppList> audiolist = getAppIdList(AUDIOTYPE);
         if (!audiolist.isEmpty()) {
@@ -232,29 +238,36 @@ void DefaultApp::initUI() {
                 const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(audioinfo)));
                 QIcon appicon;
                 appicon = QIcon::fromTheme(QString(iconname));
-
-                ui->audioComBoBox->addItem(appicon, appname, single);
                 if (currentaudio == single) {
-                    audioindex = i;
-                    emit appInitDone(audioindex, AUDIOTYPE);
+                    continue;
                 }
-                if ("kylin-music.desktop" == single) {
-                    mDefaultAdudio = appname;
-                }
+                ui->audioComBoBox->addItem(appicon, appname, single);
             }
         }
-        qDebug()<<"audio线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+        qDebug() <<"AUDIO耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+        qDebug() << "AUDIO线程" << QThread::currentThreadId() << QThread::currentThread();
     });
 
-    QtConcurrent::run([this] {
+    // VIDEO
+    {
+        QString currentvideo(getDefaultAppId(VIDEOTYPE));
+        QByteArray ba = QString(DESKTOPPATH + currentvideo).toUtf8();
+        GDesktopAppInfo * videoinfo = g_desktop_app_info_new_from_filename(ba.constData());
+        QString appname = g_app_info_get_name(G_APP_INFO(videoinfo));
+        const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(videoinfo)));
+        QIcon appicon;
+        appicon = QIcon::fromTheme(QString(iconname));
+        ui->videoComBoBox->addItem(appicon, appname, currentvideo);
+        ui->videoComBoBox->setCurrentText(appname);
+    }
+
+    QtConcurrent::run([=]() {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
-        // VIDEO
-        int videoindex =-1;
         QString currentvideo(getDefaultAppId(VIDEOTYPE));
         QVector<AppList> videolist = getAppIdList(VIDEOTYPE);
         if (!videolist.isEmpty()) {
-            for (int i = 0; i< videolist.size(); i++) {
+            for (int i = 0; i < videolist.size(); i++) {
                 QString single(videolist[i].strAppid);
                 QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
                 GDesktopAppInfo * videoinfo = g_desktop_app_info_new_from_filename(ba.constData());
@@ -262,28 +275,35 @@ void DefaultApp::initUI() {
                 const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(videoinfo)));
                 QIcon appicon;
                 appicon = QIcon::fromTheme(QString(iconname));
-
-                ui->videoComBoBox->addItem(appicon, appname, single);
                 if (currentvideo == single) {
-                    videoindex = i;
-                    emit appInitDone(videoindex, VIDEOTYPE);
+                    continue;
                 }
-                if ("kylin-video.desktop" == single) {
-                    mDefaultVideo = appname;
-                }
+                ui->videoComBoBox->addItem(appicon, appname, single);
             }
         }
-        qDebug()<<"video线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+        qDebug() <<"VIDEO耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+        qDebug() << "VIDEO线程" << QThread::currentThreadId() << QThread::currentThread();
     });
 
-    QtConcurrent::run([this] {
+    // TEXT
+    {
+        QString currenttext(getDefaultAppId(TEXTTYPE));
+        QByteArray ba = QString(DESKTOPPATH + currenttext).toUtf8();
+        GDesktopAppInfo * textinfo = g_desktop_app_info_new_from_filename(ba.constData());
+        QString appname = g_app_info_get_name(G_APP_INFO(textinfo));
+        const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(textinfo)));
+        QIcon appicon;
+        appicon = QIcon::fromTheme(QString(iconname));
+        ui->textComBoBox->addItem(appicon, appname, currenttext);
+        ui->textComBoBox->setCurrentText(appname);
+    }
+
+    QtConcurrent::run([=]() {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
-        // TEXT
-        int textindex = -1;
         QString currenttext(getDefaultAppId(TEXTTYPE));
         QVector<AppList> textlist = getAppIdList(TEXTTYPE);
-        if (!textlist.isEmpty()){
+        if (!textlist.isEmpty()) {
             for (int i = 0; i < textlist.size(); i++) {
                 QString single(textlist[i].strAppid);
                 QByteArray ba = QString(DESKTOPPATH + single).toUtf8();
@@ -292,19 +312,17 @@ void DefaultApp::initUI() {
                 const char * iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(textinfo)));
                 QIcon appicon;
                 appicon = QIcon::fromTheme(QString(iconname));
-
-                ui->textComBoBox->addItem(appicon, appname, single);
                 if (currenttext == single) {
-                    textindex = i;
-                    emit appInitDone(textindex, TEXTTYPE);
+                    continue;
                 }
-                if ("pluma.desktop" == single) {
-                    mDefaultText = appname;
-                }
+                ui->textComBoBox->addItem(appicon, appname, single);
             }
         }
-        qDebug()<<"text线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+        qDebug() <<"TEXT耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+        qDebug() << "TEXT线程" << QThread::currentThreadId() << QThread::currentThread();
     });
+
+    qDebug()<<"initUI耗时："<<timedebuge.elapsed()<<"ms";//输出计时
 }
 
 void DefaultApp::initSearchText() {
@@ -378,6 +396,7 @@ void DefaultApp::videoComBoBox_changed_cb(int index) {
         QString appid = ui->videoComBoBox->itemData(index).toString();
         QByteArray ba = appid.toUtf8(); // QString to char *
         setVideoPlayersDefaultProgram(ba.data());
+        qDebug() << __FUNCTION__  << QThread::currentThreadId() << QThread::currentThread();
         qDebug()<<"videoComBoBox_changed_cb线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
     });
 }
@@ -392,21 +411,6 @@ void DefaultApp::textComBoBox_changed_cb(int index) {
         setTextEditorsDefautlProgram(ba.data());
         qDebug()<<"textComBoBox_changed_cb线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
     });
-}
-
-void DefaultApp::resetDefaultApp() {
-
-    ui->browserComBoBox->setCurrentText(mDefaultBrowser);
-    ui->imageComBoBox->setCurrentText(mDefaultPic);
-    ui->audioComBoBox->setCurrentText(mDefaultAdudio);
-    ui->videoComBoBox->setCurrentText(mDefaultVideo);
-    ui->textComBoBox->setCurrentText(mDefaultText);
-
-    if (mDefaultMail.isEmpty()) {
-        ui->mailComBoBox->setCurrentIndex(0);
-    } else {
-        ui->mailComBoBox->setCurrentText(mDefaultMail);
-    }
 }
 
 QString DefaultApp::getDefaultAppId(const char * contentType) {
@@ -454,7 +458,7 @@ QVector<Appinfo> DefaultApp::_getAppList(const char *contentType) {
             ai.item = item;
             appinfo.append(ai);
         }
-    } 
+    }
     return appinfo;
 }
 
@@ -630,7 +634,7 @@ bool DefaultApp::setAudioPlayersDefaultProgram(char *appid) {
                 gboolean ret19 = g_app_info_set_as_default_for_type(appitem, "audio/flac", NULL);
                 gboolean ret20 = g_app_info_set_as_default_for_type(appitem, "audio/wma", NULL);
                 if(ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8 && ret9 && ret10 &&
-                   ret11 && ret12 && ret13 && ret14 && ret15 && ret16 && ret17 && ret18 && ret19 && ret20) {
+                        ret11 && ret12 && ret13 && ret14 && ret15 && ret16 && ret17 && ret18 && ret19 && ret20) {
                     judge=true;
                 }
                 break;

@@ -75,6 +75,7 @@ public:
     const QString name() const  Q_DECL_OVERRIDE;
 
     void initUI();
+    void initSlots();
     void initSearchText();
 
     bool setWebBrowsersDefaultProgram(char * appid);
@@ -106,6 +107,8 @@ private:
     QString mDefaultAdudio;
     QString mDefaultVideo;
     QString mDefaultText;
+
+    QStringList browserList;
 
     bool mFirstLoad;
 
