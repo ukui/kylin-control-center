@@ -153,11 +153,11 @@ void NetConnect::initComponent() {
     // 接收到系统更改网络连接属性时把判断是否已刷新的bool值置为false
     QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager"), "org.freedesktop.NetworkManager", "PropertiesChanged", this, SLOT(netPropertiesChangeSlot(QMap<QString,QVariant>)));
     // 无线网络断开或连接时刷新可用网络列表
-    connect(m_interface, SIGNAL(getWifiListFinished()), this, SLOT(getNetList()));
+    connect(refreshTimer, SIGNAL(timeout()), this, SLOT(getNetList()));
+    connect(m_interface, SIGNAL(getWifiListFinished()), this, SLOT(refreshNetInfoTimerSlot()));
     // 有线网络断开或连接时刷新可用网络列表
     connect(m_interface,SIGNAL(actWiredConnectionChanged()), this, SLOT(getNetList()));
     // 网络配置信息发生变化时刷新可用网络列表
-    connect(refreshTimer, SIGNAL(timeout()), this, SLOT(refreshNetInfoTimerSlot()));
     connect(m_interface,SIGNAL(configurationChanged()), this, SLOT(refreshNetInfoSlot()));
 
     connect(ui->RefreshBtn, &QPushButton::clicked, this, [=](bool checked) {
@@ -196,11 +196,10 @@ void NetConnect::initComponent() {
 }
 
 void NetConnect::refreshNetInfoTimerSlot() {
-    refreshTimer->start();
+    refreshTimer->start(200);
 }
 
 void NetConnect::refreshNetInfoSlot() {
-    refreshTimer->stop();
     emit ui->RefreshBtn->clicked(true);
     if (mLanDetail->isVisible()) {
         mLanDetail->setVisible(false);
@@ -244,6 +243,7 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
 }
 
 void NetConnect::getNetList() {
+    refreshTimer->stop();
     wifiBtn->blockSignals(true);
     wifiBtn->setChecked(getInitStatus());
     wifiBtn->blockSignals(false);
