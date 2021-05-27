@@ -75,6 +75,7 @@ public:
     const QString name() const  Q_DECL_OVERRIDE;
 
     void initUI();
+    void initSlots();
     void initSearchText();
 
     bool setWebBrowsersDefaultProgram(char * appid);
@@ -107,6 +108,8 @@ private:
     QString mDefaultVideo;
     QString mDefaultText;
 
+    QStringList browserList;
+
     bool mFirstLoad;
 
 public slots:
@@ -118,6 +121,7 @@ public slots:
     void textComBoBox_changed_cb(int index);
     void keyChangedSlot(const QString &key);
     void resetDefaultApp();
+
 Q_SIGNALS:
     void appInitDone(int index,const QString &type);
 };
