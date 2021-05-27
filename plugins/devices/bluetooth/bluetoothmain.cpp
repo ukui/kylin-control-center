@@ -579,6 +579,9 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
 
                 if(show_flag)
                     frame_middle->setVisible(true);
+                if(!frame_middle->isVisible()){
+                    frame_middle->setVisible(true);
+                }
 //                label_2->setText(tr("Turn off Bluetooth"));
 
                 qDebug() << Q_FUNC_INFO << m_localDevice->isPowered() <<__LINE__;
