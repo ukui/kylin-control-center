@@ -126,7 +126,6 @@ public slots:
 
 private:
     UKSCConn *ukscConnect;
-    bool firstCheckedStatus = false;
     bool isConnectSourceSignal = false;
     void unableToConnectSource();
 //备份还原相关
@@ -148,6 +147,8 @@ public slots:
     void isAutoBackupChanged();
 
     void getReplyFalseSlot();
+    
+    void dbusFinished();
 
 private slots:
     void receiveBackupStartResult(int result);
