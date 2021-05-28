@@ -69,7 +69,7 @@ void InputPwdDialog::mpwdInputSlot(const QString &pwd)
         mHintLabel->setStyleSheet("color:red;");
         mHintLabel->setVisible(true);
         mpwd->setText(pwd.mid(0, 8));
-        QByteArray text = pwd.toLocal8Bit();
+        QByteArray text = pwd.mid(0, 8).toLocal8Bit();
         secPwd = text.toBase64();
     }
 }
