@@ -177,6 +177,7 @@ void Theme::setupSettings() {
     ui->effectFrame->setVisible(false);
     ui->transFrame->setVisible(false);
     ui->effectLabel->setVisible(false);
+    ui->verticalSpacer_5->changeSize(0,0);
     personliseGsettings->set(PERSONALSIE_EFFECT_KEY, false);
 }
 
