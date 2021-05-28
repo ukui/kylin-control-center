@@ -21,11 +21,13 @@
 #include "delgroupdialog.h"
 #include "ui_delgroupdialog.h"
 #include "CloseButton/closebutton.h"
+#include <QPushButton>
 
 extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
 
 DelGroupDialog::DelGroupDialog(QString groupName, QWidget *parent) :
     QDialog(parent),
+    mgroupname(groupName),
     ui(new Ui::DelGroupDialog)
 {
     ui->setupUi(this);
@@ -41,7 +43,7 @@ DelGroupDialog::~DelGroupDialog()
 
 void DelGroupDialog::signalsBind()
 {
-    connect(ui->cancelBtn,&QPushButton::clicked,[=](){
+    connect(mCancelBtn,&QPushButton::clicked,[=](){
         close();
     });
 }
@@ -53,14 +55,44 @@ void DelGroupDialog::setupInit()
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    ui->labelPic->setPixmap(QPixmap("://img/plugins/userinfo/notice.png"));
-    ui->titleLabel->setText(tr("Are you sure to delete the group, which will make some file components in the file system invalid!"));
-    ui->titleLabel->setWordWrap(true);
+    mLabelpic = new QLabel(this);
+    mLabelpic->setGeometry(32, 32, 22,22);
+    QPixmap mPixmap("://img/plugins/userinfo/notice.png");
+    mPixmap = mPixmap.scaled(mLabelpic->size());
+    mLabelpic->setPixmap(mPixmap);
+
+    titleLabel = new QLabel(this);
+    titleLabel->setGeometry(62, 32, 336,48);
+    QFont font ( "Microsoft YaHei", 14, 75);
+    titleLabel->setFont(font);
+    titleLabel->setText(tr("Are you sure to delete the group:   ")+mgroupname);
+    titleLabel->setWordWrap(true);
+
+    mHintLabel = new QLabel(this);
+    mHintLabel->setGeometry(62, 98, 280,20);
+    if (QLabelSetText(mHintLabel,tr("which will make some file components in the file system invalid!"))) {
+        mHintLabel->setToolTip(tr("which will make some file components in the file system invalid!"));
+    }
+
+
+    mCancelBtn = new QPushButton(this);
+    mCancelBtn->setContentsMargins(36,6,36,6);
+    mCancelBtn->setGeometry(143, 150, 120,36);
+    mCancelBtn->setText(tr("Cancel"));
+
+
+    mDelBtn = new QPushButton(this);
+    mDelBtn->setContentsMargins(36,6,36,6);
+    mDelBtn->setGeometry(279, 150, 120,36);
+    mDelBtn->setText(tr("Delete"));
+
+
+    //ui->titleLabel->setWordWrap(true);
 }
 
 QPushButton * DelGroupDialog::delBtnComponent()
 {
-    return ui->delBtn;
+    return mDelBtn;
 }
 
 void DelGroupDialog::setNoticeText(QString txt)
@@ -106,4 +138,17 @@ void DelGroupDialog::paintEvent(QPaintEvent * event){
     p.save();
     p.fillPath(rectPath,palette().color(QPalette::Base));
     p.restore();
+}
+bool DelGroupDialog::QLabelSetText(QLabel *label, QString string)
+{
+    bool is_over_length = false;
+    QFontMetrics fontMetrics(label->font());
+    int fontSize = fontMetrics.width(string);
+    QString str = string;
+    if (fontSize > (label->width()-5)) {
+        str = fontMetrics.elidedText(string, Qt::ElideRight, label->width()-10);
+        is_over_length = true;
+    }
+    label->setText(str);
+    return is_over_length;
 }

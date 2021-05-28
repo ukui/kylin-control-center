@@ -30,13 +30,13 @@
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>40</number>
+    <number>32</number>
    </property>
    <property name="topMargin">
-    <number>42</number>
+    <number>32</number>
    </property>
    <property name="rightMargin">
-    <number>50</number>
+    <number>32</number>
    </property>
    <property name="bottomMargin">
     <number>32</number>
@@ -266,7 +266,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="page_3">
           <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -374,7 +374,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_7">
      <property name="spacing">
-      <number>16</number>
+      <number>8</number>
      </property>
      <item>
       <spacer name="horizontalSpacer_2">

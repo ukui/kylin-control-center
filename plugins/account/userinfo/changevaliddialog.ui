@@ -66,16 +66,16 @@
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>40</number>
+       <number>32</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>32</number>
       </property>
       <property name="rightMargin">
-       <number>42</number>
+       <number>32</number>
       </property>
       <property name="bottomMargin">
-       <number>6</number>
+       <number>24</number>
       </property>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">

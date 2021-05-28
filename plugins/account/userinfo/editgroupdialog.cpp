@@ -283,6 +283,7 @@ void EditGroupDialog::setupInit()
     ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->listWidget->setStyleSheet("QListWidget{border-radius: 4px;}"
+                                  "QListWidget{background-color: palette(button);}"
                                   "QListWidget::Item{padding-left:20px;}");
 
     // 设置确认按钮

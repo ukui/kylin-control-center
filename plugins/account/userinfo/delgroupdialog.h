@@ -26,6 +26,7 @@
 #include <QDebug>
 #include <QPainter>
 #include <QPainterPath>
+#include <QLabel>
 
 namespace Ui {
 class DelGroupDialog;
@@ -44,9 +45,18 @@ public:
     void signalsBind();
     void setNoticeText(QString txt);
     QPushButton * delBtnComponent();
+    bool QLabelSetText(QLabel *label, QString string);
 
 public:
     QPushButton *pDelBtn;
+    QPushButton *mDelBtn;
+    QPushButton *mCancelBtn;
+
+    QLabel *mHintLabel;
+    QLabel *titleLabel;
+    QLabel *mLabelpic;
+
+    QString mgroupname;
 
 protected:
     void paintEvent(QPaintEvent *event);

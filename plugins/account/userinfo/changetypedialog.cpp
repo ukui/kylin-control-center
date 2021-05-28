@@ -38,6 +38,9 @@ ChangeTypeDialog::ChangeTypeDialog(QWidget *parent) :
     setWindowTitle(tr("Change type"));
 
     ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    if (QLabelSetText(ui->tipLabel,tr("Make sure that there is at least one administrator on the computer"))) {
+        ui->tipLabel->setToolTip(tr("Make sure that there is at least one administrator on the computer"));
+    }
 //    ui->closeBtn->setProperty("useIconHighlightEffect", true);
 //    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
 //    ui->closeBtn->setFlat(true);
@@ -117,6 +120,20 @@ void ChangeTypeDialog::setCurrentAccountTypeBtn(int id){
     });
 }
 
+bool ChangeTypeDialog::QLabelSetText(QLabel *label, QString string)
+{
+    bool is_over_length = false;
+    QFontMetrics fontMetrics(label->font());
+    int fontSize = fontMetrics.width(string);
+    QString str = string;
+    if (fontSize > (label->width()-5)) {
+        str = fontMetrics.elidedText(string, Qt::ElideRight, label->width()-10);
+        is_over_length = true;
+    }
+    label->setText(str);
+    return is_over_length;
+}
+
 void ChangeTypeDialog::forbidenChange(int can){
     if (can == -1)
         return;
@@ -166,4 +183,6 @@ void ChangeTypeDialog::paintEvent(QPaintEvent *event) {
     p.fillPath(rectPath,palette().color(QPalette::Base));
     p.restore();
 }
+
+
 

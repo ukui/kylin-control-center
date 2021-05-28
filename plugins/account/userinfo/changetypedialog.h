@@ -23,6 +23,7 @@
 #include <QDialog>
 #include <QPainter>
 #include <QPainterPath>
+#include <QLabel>
 
 namespace Ui {
 class ChangeTypeDialog;
@@ -43,6 +44,7 @@ public:
     void setUsername(QString name);
     void setCurrentAccountTypeLabel(QString aType);
     void setCurrentAccountTypeBtn(int id);
+    bool QLabelSetText(QLabel *label, QString string);
 
     void forbidenChange(int can);
 

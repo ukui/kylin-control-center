@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>460</width>
-    <height>350</height>
+    <height>284</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>460</width>
-    <height>350</height>
+    <height>284</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>460</width>
-    <height>350</height>
+    <height>284</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -36,7 +36,7 @@
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>25</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
     <number>0</number>
@@ -45,10 +45,22 @@
     <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>24</number>
+    <number>0</number>
    </property>
    <item>
     <widget class="QFrame" name="frame">
+     <property name="minimumSize">
+      <size>
+       <width>460</width>
+       <height>284</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>284</height>
+      </size>
+     </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
@@ -56,11 +68,20 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>8</number>
+      </property>
       <property name="leftMargin">
-       <number>9</number>
+       <number>32</number>
       </property>
       <property name="topMargin">
+       <number>24</number>
+      </property>
+      <property name="rightMargin">
        <number>32</number>
+      </property>
+      <property name="bottomMargin">
+       <number>24</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -219,10 +240,13 @@
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
         <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
-          <height>40</height>
+          <height>24</height>
          </size>
         </property>
        </spacer>
@@ -233,7 +257,7 @@
          <number>6</number>
         </property>
         <property name="rightMargin">
-         <number>30</number>
+         <number>0</number>
         </property>
         <item>
          <spacer name="horizontalSpacer">
