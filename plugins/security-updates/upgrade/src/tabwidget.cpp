@@ -9,7 +9,15 @@ TabWid::TabWid(QWidget *parent):QWidget(parent)
 void TabWid::initDbus()
 {
     updateMutual = UpdateDbus::getInstance();
+
     updateSource = new UpdateSource();
+    QThread *tmp_thread = new QThread;
+    connect(tmp_thread,&QThread::started,updateSource,&UpdateSource::startDbus);
+    connect(updateSource,&UpdateSource::startDbusFinished,this,&TabWid::dbusFinished);
+//    connect(updateSource,&UpdateSource::startDbusFinished,tmp_thread,&QThread::deleteLater);
+    updateSource->moveToThread(tmp_thread);
+    tmp_thread->start();
+
     ukscConnect = new UKSCConn();
 //    this->resize(620,580);
 
@@ -25,11 +33,16 @@ void TabWid::initDbus()
     checkUpdateBtn->stop();
 //    checkUpdateBtn->setText(tr("检查更新"));
     checkUpdateBtn->setText(tr("Check Update"));
-    if(firstCheckedStatus == false)
-    {
-        checkUpdateBtnClicked();
-        firstCheckedStatus = true;
-    }
+//    checkUpdateBtn->setText(tr("正在初始化"));
+    checkUpdateBtn->setText(tr("initializing"));
+    checkUpdateBtn->setEnabled(false);
+}
+
+void TabWid::dbusFinished()
+{
+    checkUpdateBtn->setEnabled(true);
+    checkUpdateBtn->setText(tr("Check Update"));
+    checkUpdateBtnClicked();
 }
 
 void TabWid::unableToConnectSource()
@@ -732,6 +745,7 @@ void TabWid::getReplyFalseSlot()
     isConnectSourceSignal = true;
     disconnectSource();
 }
+
 
 void TabWid::receiveBackupStartResult(int result)
 {

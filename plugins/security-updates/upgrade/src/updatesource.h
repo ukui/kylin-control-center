@@ -18,13 +18,14 @@ public:
     void callDBusUpdateTemplate();
     void callDBusUpdateSource(QString symbol);
 //    QDBusReply<QString> replyStr;   //string类型的返回值
-    QDBusInterface *serviceInterface;
+    QDBusInterface *serviceInterface = nullptr;
     void getReply(QDBusPendingCallWatcher *call);
     QString getFailInfo(int statusCode);
 signals:
     void getReplyFalseSignal();
+    void startDbusFinished();
 public slots:
-
+    void startDbus();
 };
 
 #endif // UPDATESOURCE_H
