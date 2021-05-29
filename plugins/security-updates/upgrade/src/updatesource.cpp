@@ -52,6 +52,8 @@ QString UpdateSource::getFailInfo(int statusCode)
 }
 void UpdateSource::getReply(QDBusPendingCallWatcher *call)
 {
+    /* 重连次数 */
+    static int reconnTimes = 0;
     QDBusPendingReply<bool> reply = *call;
     if (!reply.isValid()) {
          qDebug() <<"源管理器：" << "getReply:" << "iserror";
@@ -59,12 +61,19 @@ void UpdateSource::getReply(QDBusPendingCallWatcher *call)
             bool status = reply.value();
             qDebug() <<"源管理器：" << "getReply:" << status;
             if (status) {
+                reconnTimes = 0;
                 callDBusUpdateSource(Symbol);
             }
             else
             {
-                emit getReplyFalseSignal();
+                if (reconnTimes < 5) {
+                    callDBusUpdateTemplate();
+                    reconnTimes++;
+                    emit sigReconnTimes(reconnTimes);
+                } else {
+                    reconnTimes = 0;
+                    emit getReplyFalseSignal();
+                }
             }
-
     }
 }

@@ -8,10 +8,13 @@ TabWid::TabWid(QWidget *parent):QWidget(parent)
 
 void TabWid::initDbus()
 {
+    /* 更新管理器dbus接口 */
     updateMutual = UpdateDbus::getInstance();
+
+    /* 源管理器dbus接口 */
     updateSource = new UpdateSource();
+
     ukscConnect = new UKSCConn();
-//    this->resize(620,580);
 
     connect(updateMutual,&UpdateDbus::sendAppMessageSignal,this,&TabWid::loadingOneUpdateMsgSlot);
     connect(updateMutual,&UpdateDbus::sendFinishGetMsgSignal,this,&TabWid::loadingFinishedSlot);
@@ -22,8 +25,8 @@ void TabWid::initDbus()
     connect(updateSource,&UpdateSource::getReplyFalseSignal,this,&TabWid::getReplyFalseSlot);
     bacupInit();//初始化备份
 
+
     checkUpdateBtn->stop();
-//    checkUpdateBtn->setText(tr("检查更新"));
     checkUpdateBtn->setText(tr("Check Update"));
     if(firstCheckedStatus == false)
     {
@@ -45,12 +48,13 @@ void TabWid::disconnectSource()
     disconnect(updateSource->serviceInterface,SIGNAL(updateTemplateStatus(QString)),this,SLOT(slotUpdateTemplate(QString)));
     disconnect(updateSource->serviceInterface,SIGNAL(updateCacheStatus(QVariantList)),this,SLOT(slotUpdateCache(QVariantList)));
     disconnect(updateSource->serviceInterface,SIGNAL(updateSourceProgress(QVariantList)),this,SLOT(slotUpdateCacheProgress(QVariantList)));
+    disconnect(updateSource , &UpdateSource::sigReconnTimes , this , &TabWid::slotReconnTimes);
     checkUpdateBtn->setEnabled(true);
     checkUpdateBtn->stop();
 //        checkUpdateBtn->setText(tr("检查更新"));
     checkUpdateBtn->setText(tr("Check Update"));
 //        versionInformationLab->setText(tr("服务连接异常，请重新检测!") );
-    versionInformationLab->setText(tr("Service connection abnormal,please retest!") );
+    versionInformationLab->setText(tr("Failed to connect to software warehouse!"));
 }
 TabWid::~TabWid()
 {
@@ -266,7 +270,7 @@ void TabWid::slotUpdateCache(QVariantList sta)
             int statuscode = status.toInt();
             if(statuscode == 400 && retryTimes < netErrorRetry)
             {
-                updateSource->callDBusUpdateTemplate();
+                //updateSource->callDBusUpdateTemplate();
                 qDebug() << "源管理器：" <<"statuscode = :" << statuscode;
                 QString failedInfo = updateSource->getFailInfo(statuscode);
                 qDebug() << "源管理器：" <<"failedInfo:" << failedInfo;
@@ -291,6 +295,7 @@ void TabWid::slotUpdateCache(QVariantList sta)
 }
 void TabWid::slotUpdateCacheProgress(QVariantList pro)
 {
+    isConnectSourceSignal = true;
     int progress = pro.at(1).toInt();
     QString nowsymbol = pro.at(0).toString();
     //    qDebug() << "update cache progress :" << progress;
@@ -566,6 +571,11 @@ void TabWid::showHistoryWidget()
     historyLog->show();
 }
 
+void TabWid::slotReconnTimes(int times) {
+    qDebug() << "更新模板失败 ， 重新连接 " << times << "次";
+    versionInformationLab->setText(tr("trying to reconnect ") + QString::number(times) + tr(" times"));
+}
+
 void TabWid::checkUpdateBtnClicked()
 {
     if(checkUpdateBtn->text() == tr("Check Update"))
@@ -573,6 +583,7 @@ void TabWid::checkUpdateBtnClicked()
         connect(updateSource->serviceInterface,SIGNAL(updateTemplateStatus(QString)),this,SLOT(slotUpdateTemplate(QString)));
         connect(updateSource->serviceInterface,SIGNAL(updateCacheStatus(QVariantList)),this,SLOT(slotUpdateCache(QVariantList)));
         connect(updateSource->serviceInterface,SIGNAL(updateSourceProgress(QVariantList)),this,SLOT(slotUpdateCacheProgress(QVariantList)));
+        connect(updateSource , &UpdateSource::sigReconnTimes , this , &TabWid::slotReconnTimes);
         updateMutual->failedList.clear();
         QList<AppUpdateWid*> list = this->findChildren<AppUpdateWid*>();
         for(AppUpdateWid* tmp:list)

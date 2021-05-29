@@ -23,6 +23,7 @@ public:
     QString getFailInfo(int statusCode);
 signals:
     void getReplyFalseSignal();
+    void sigReconnTimes(int);
 public slots:
 
 };
