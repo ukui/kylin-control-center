@@ -44,6 +44,7 @@
 #include "worldMap/timezonechooser.h"
 #include "worldMap/zoneinfo.h"
 #include "SwitchButton/switchbutton.h"
+#include "HoverWidget/hoverwidget.h"
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -83,13 +84,15 @@ public:
     void initTitleLabel();
     void initUI();
     void initNtp();
+    void initTimeShow();
     void initComponent();
     void initStatus();
     void connectToServer();
     bool fileIsExits(const QString& filepath);
     static void syncRTC();
     void setNtpFrame(bool visiable);
-    
+    void addTimezone(const QString& timezone);
+    void newTimeshow(const QString& timezone);
 public:
     QLabel       *syncNetworkRetLabel = nullptr;
     SwitchButton *syncTimeBtn         = nullptr; //网络时间同步按钮
@@ -124,13 +127,16 @@ private:
 
     int ntpComboxPreId;
     QComboBox *ntpCombox = nullptr;
+    bool  changeZoneFlag = false;
+    QStringList timezonesList;
+    QPushButton *addTimeBtn = nullptr;
+
 Q_SIGNALS:
     void changed();
 
 private slots:
     void datetimeUpdateSlot();
     void changetimeSlot();
-    void changezoneSlot();
     void changezoneSlot(QString zone);
     void timeFormatClickedSlot(bool, bool);
     void synctimeFormatSlot(bool status,bool outChange);
@@ -139,10 +145,13 @@ private slots:
     bool setNtpAddr(QString address);
 
 private:
+    void changezoneSlot(int flag = 0);
     void loadHour();
     void setCurrentTime();
     void initConnect();
     QString getLocalTimezoneName(QString timezone, QString locale);
+    void setCurrentTimeOthers();
+    QString getTimeAndWeek(const QDateTime timeZone);
 };
 
 

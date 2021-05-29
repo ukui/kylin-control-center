@@ -26,6 +26,7 @@
 #include <QDesktopWidget>
 #include <QLineEdit>
 
+#include <QTimeZone>
 #include <QComboBox>
 #include <QFrame>
 #include <QLabel>
@@ -47,6 +48,8 @@ const QString kenBj =           "Asia/Beijing";
 #define DATE_KEY                "date"
 #define SYNC_TIME_KEY           "synctime"
 #define NTP_KEY                 "ntp"
+#define TIMEZONES_KEY           "timezones"
+#define MAX_TIMES               5
 
 volatile bool syncThreadFlag =  false;
 
@@ -132,7 +135,12 @@ void DateTime::initTitleLabel()
     QFont font;
     font.setFamily(m_fontSetting->get("systemFont").toString());
     font.setPointSize(m_fontSetting->get("systemFontSize").toInt());
-    ui->titleLabel->setFont(font);
+    QFont font2;
+    font2.setPointSize(font.pointSize() + 3);
+    ui->titleLabel->setFont(font2);
+    ui->titleLabel_2->setFont(font2);
+    ui->titleLabel_2->adjustSize();
+    ui->titleLabel_2->setText(tr("Other Timezone"));
     ui->timeClockLable->setObjectName("timeClockLable");
     font.setPointSize(font.pointSize() + 8);
     font.setBold(true);
@@ -159,6 +167,7 @@ void DateTime::initUI()
         const QByteArray id(FORMAT_SCHEMA);
         m_formatsettings = new QGSettings(id, QByteArray(), this);
         connect(m_formatsettings, &QGSettings::changed, this, [=](QString key) {
+            Q_UNUSED(key);
             QString hourFormat = m_formatsettings->get(TIME_FORMAT_KEY).toString();
             bool status = ("24" == hourFormat ? false : true);
             timeFormatClickedSlot(status, true);
@@ -177,6 +186,7 @@ void DateTime::initUI()
                                              QDBusConnection::systemBus(), this);
 
     initNtp();
+    initTimeShow();
 
 }
 
@@ -231,6 +241,151 @@ void DateTime::initStatus()
     loadHour();
 }
 
+
+void DateTime::initTimeShow()
+{
+    QFont font;
+    font.setPixelSize(14);
+    ui->summaryLabel->setFont(font);
+    ui->summaryLabel->setObjectName("summaryText");
+    ui->summaryLabel->setText(tr("Add time zones to display the time, up to 5 can be added"));
+
+    addTimeBtn = new QPushButton(ui->addFrame);
+    ui->addLayout->addWidget(addTimeBtn);
+    addTimeBtn->setText(tr("Add Timezone"));
+    addTimeBtn->setFixedHeight(50);
+
+    if (m_formatsettings->keys().contains(TIMEZONES_KEY)) {
+        timezonesList = m_formatsettings->get(TIMEZONES_KEY).toStringList();
+
+        int timesNum = timezonesList.size();
+        if (timezonesList.size() >= MAX_TIMES) {
+            timesNum = MAX_TIMES;
+            addTimeBtn->setEnabled(false);
+            for (int i = MAX_TIMES; i < timezonesList.size(); ++i) {
+                timezonesList.removeLast();
+            }
+            m_formatsettings->set(TIMEZONES_KEY, timezonesList);
+        }
+        ui->showFrame->setFixedHeight(timesNum * (50 + 2) + 16 - 2);
+
+        for (int i = 0; i < timesNum; ++i) {
+            newTimeshow(timezonesList[i]);
+        }
+     }
+
+     connect(addTimeBtn, &QPushButton::clicked, this, [=](){
+        changeZoneFlag = false;
+        changezoneSlot(1);
+     });
+}
+
+void DateTime::addTimezone(const QString &timezone)
+{
+    for (int i = 0; i < timezonesList.size(); ++i) {
+        if (timezonesList[i] == timezone) {
+            return;
+        } else if (i == timezonesList.size() - 1) {
+            timezonesList.append(timezone);
+            break;
+        }
+    }
+
+    if (timezonesList.size() >= MAX_TIMES) {
+        addTimeBtn->setEnabled(false);
+    }
+     if (m_formatsettings->keys().contains(TIMEZONES_KEY)) {
+        m_formatsettings->set(TIMEZONES_KEY, timezonesList);
+     }
+    ui->showFrame->setFixedHeight(timezonesList.size() * (50 + 2) + 16 - 2);
+    newTimeshow(timezone);
+}
+
+void DateTime::newTimeshow(const QString &timezone)
+{
+    HoverWidget *addWgt       = new HoverWidget(timezone);
+    QHBoxLayout *addWgtLayout = new QHBoxLayout(addWgt);
+    QWidget     *timeWid      = new QWidget(addWgt);
+    QHBoxLayout *timeLayout   = new QHBoxLayout(timeWid);
+    QPushButton *btn          = new QPushButton(addWgt);
+    QLabel      *label_1      = new QLabel(addWgt);    //时间
+    QLabel      *label_2      = new QLabel(addWgt);    //日期
+    QFont fontTime;
+    QGSettings *m_fontSetting = new QGSettings("org.ukui.style");
+    fontTime.setFamily(m_fontSetting->get("systemFont").toString());
+    fontTime.setPointSize(m_fontSetting->get("systemFontSize").toInt());
+
+    ui->showLayout->addWidget(addWgt);
+    addWgt->setParent(ui->showFrame);
+    addWgt->setObjectName("addWgt");
+    addWgt->setStyleSheet("HoverWidget#addWgt{background: palette(base);}");
+    addWgtLayout->setMargin(0);
+    addWgtLayout->setSpacing(16);
+    addWgt->setMinimumSize(QSize(552, 50));  //552 - 96
+    addWgt->setMaximumSize(QSize(960, 50));//960-96
+    addWgt->setAttribute(Qt::WA_DeleteOnClose);
+
+    addWgtLayout->addWidget(timeWid);
+    timeWid     ->setObjectName("timeWid");
+    timeWid     ->setStyleSheet("QWidget#timeWid{background-color: palette(window); border-radius: 4px;}");
+
+    addWgtLayout->addWidget(btn);
+
+    timeLayout->addWidget(label_1);
+    timeLayout->addWidget(label_2);
+    timeLayout->setSpacing(24);
+    label_1->setObjectName("label_1_time");
+    label_2->setObjectName("label_2_week");
+    timeLayout->addStretch();
+
+    fontTime.setPointSize(fontTime.pointSize() + 2);
+    fontTime.setBold(true);
+    label_1->setFont(fontTime);
+
+    fontTime.setPointSize(fontTime.pointSize() - 2);
+    fontTime.setBold(false);
+    label_2->setFont(fontTime);
+
+    QTimeZone thisZone = QTimeZone(timezone.toLatin1().data());
+    QDateTime thisZoneTime = QDateTime::currentDateTime().toTimeZone(thisZone);
+    QString thisZoneTimeStr ;
+    if (m_formTimeBtn->isChecked()) {
+        thisZoneTimeStr = thisZoneTime.toString("hh : mm : ss");
+    } else {
+        thisZoneTimeStr = thisZoneTime.toString("AP hh: mm : ss");
+    }
+
+    label_1->setText(thisZoneTimeStr);
+
+    const QString locale = QLocale::system().name();
+    QString timeAndWeek = getTimeAndWeek(thisZoneTime);
+    label_2->setText(timeAndWeek + "     " + m_zoneinfo->getLocalTimezoneName(timezone, locale));
+
+    btn->setText(tr("Delete"));
+    btn->setFixedSize(80,  36);
+    btn->hide();
+
+    connect(addWgt, &HoverWidget::enterWidget, this, [=](){
+        btn->show();
+    });
+    connect(addWgt, &HoverWidget::leaveWidget, this, [=](){
+        btn->hide();
+    });
+
+    connect(btn, &QPushButton::clicked, this, [=, addWgt](){
+        timezonesList.removeOne(addWgt->_name);
+        if (m_formatsettings->keys().contains(TIMEZONES_KEY)) {
+            m_formatsettings->set(TIMEZONES_KEY, timezonesList);
+        }
+        ui->showFrame->setFixedHeight(timezonesList.size() * (50 + 2) + 16 - 2);
+        addWgt->close();
+        if (!addTimeBtn->isEnabled() && timezonesList.size() < MAX_TIMES) {
+            addTimeBtn->setEnabled(true);
+        }
+    });
+
+}
+
 void DateTime::initNtp()
 {
     QLabel      *ntpLabel  = new QLabel(ui->ntpFrame);
@@ -242,7 +397,7 @@ void DateTime::initNtp()
     ntpLayout->addWidget(ntpCombox);
     ntpLabel->setText("Time Server");
     ntpCombox->setFixedHeight(36);
-    ntpCombox->addItem(tr("default"));
+    ntpCombox->addItem(tr("Default"));
     ntpCombox->addItems(ntpAddressList);
     ntpCombox->addItem(tr("Customize"));
 
@@ -288,14 +443,15 @@ void DateTime::initNtp()
         QSettings readFile(ntpFileName, QSettings::IniFormat);
         QString initAddress = readFile.value("Time/NTP").toString();
         for (int i = 0; i < ntpCombox->count(); ++i) {
-            if (initAddress == ntpCombox->itemText(i)) {   //选中
+            if (initAddress == ntpCombox->itemText(i)) {   //是选中的
                 ntpCombox->setCurrentIndex(i);
                 ui->ntpFrame_2->setVisible(false);
                 break;
-            } else if (i == ntpCombox->count() - 1) {     //自定义
+            } else if (i == ntpCombox->count() - 1) {     //是自定义的
                 ntpCombox->setCurrentIndex(i);
                 ntpLineEdit->setText(initAddress);
                 ui->ntpFrame_2->setVisible(true);
+                break;
             }
         }
     }
@@ -312,7 +468,7 @@ void DateTime::initNtp()
             if (ntpCombox->currentIndex() == 0) {  //默认
                 setAddr = "default";
                 ui->ntpFrame_2->setVisible(false);
-            } else if(ntpCombox->currentIndex() != ntpCombox->count() - 1) { //选择系统
+            } else if (ntpCombox->currentIndex() != ntpCombox->count() - 1) { //选择系统
                 setAddr = ntpCombox->currentText();
                 ui->ntpFrame_2->setVisible(false);
             } else { //自定义且不为空
@@ -371,23 +527,8 @@ bool DateTime::fileIsExits(const QString &filepath)
 
 void DateTime::datetimeUpdateSlot()
 {
-    QString dateformat;
-    if (m_formatsettings) {
-        QStringList keys = m_formatsettings->keys();
-        if(keys.contains("date")) {
-            dateformat = m_formatsettings->get(DATE_KEY).toString();
-        }
-    }
-
     setCurrentTime();
-
-    QString timeAndWeek;
-    if ("cn" == dateformat) {
-       timeAndWeek = current.toString("yyyy/MM/dd  ddd").replace("周","星期");
-    } else {
-       timeAndWeek = current.toString("yyyy-MM-dd  ddd");
-    }
-
+    QString timeAndWeek = getTimeAndWeek(current);
     ui->dateLabel->setText(timeAndWeek + "     " + localizedTimezone);
 }
 
@@ -401,7 +542,7 @@ void DateTime::changetimeSlot()
     dialog->exec();
 }
 
-void DateTime::changezoneSlot()
+void DateTime::changezoneSlot(int flag)
 {
     QDesktopWidget* m = QApplication::desktop();
     QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
@@ -410,7 +551,11 @@ void DateTime::changezoneSlot()
     int x = m_timezone->width();
     int y = m_timezone->height();
     m_timezone->move(desk_x / 2 - x / 2 + desk_rect.left(), desk_y / 2 - y / 2 + desk_rect.top());
-
+    if (flag == 1) {
+        m_timezone->setTitle(tr("Add Timezone"));
+    } else {
+        m_timezone->setTitle(tr("Change Timezone"));
+    }
     m_timezone->setWindowModality(Qt::ApplicationModal);
     m_timezone->show();
 
@@ -479,9 +624,60 @@ void DateTime::loadHour()
     }
 }
 
+QString  DateTime::getTimeAndWeek(const QDateTime timeZone)
+{
+    QString dateformat;
+    if (m_formatsettings) {
+        QStringList keys = m_formatsettings->keys();
+        if(keys.contains("date")) {
+            dateformat = m_formatsettings->get(DATE_KEY).toString();
+        }
+    }
+    QString timeAndWeek;
+    if ("cn" == dateformat) {
+       timeAndWeek = timeZone.toString("yyyy/MM/dd  ddd").replace("周","星期");
+    } else {
+       timeAndWeek = timeZone.toString("yyyy-MM-dd  ddd");
+    }
+    return timeAndWeek;
+}
+
+void DateTime::setCurrentTimeOthers()
+{
+    for (QObject *obj : ui->showFrame->children()) {
+        if (obj->objectName() == "addWgt") {
+            HoverWidget *addWgt = static_cast<HoverWidget*>(obj);
+            QTimeZone thisZone     = QTimeZone(addWgt->_name.toLatin1().data());
+            QDateTime thisZoneTime = QDateTime::currentDateTime().toTimeZone(thisZone);
+            for (QObject *objTime : addWgt->children()) {
+                if (objTime->objectName() == "timeWid") {
+                    QWidget *timeWid = static_cast<QWidget*>(objTime);
+                    for (QObject *objLabel : timeWid->children()){
+                        if (objLabel->objectName() == "label_1_time") {
+                            QString currentsecStr ;
+                            if (m_formTimeBtn->isChecked()) {
+                                currentsecStr = thisZoneTime.toString("hh : mm : ss");
+                            } else {
+                                currentsecStr = thisZoneTime.toString("AP hh: mm : ss");
+                            }
+                            QLabel *label_1 = static_cast<QLabel*>(objLabel);
+                            label_1->setText(currentsecStr);
+                        } else if(objLabel->objectName() == "label_2_week") {
+                            QLabel *label_2 = static_cast<QLabel*>(objLabel);
+                            QString timeAndWeek  = getTimeAndWeek(thisZoneTime);
+                            label_2->setText(timeAndWeek + "     " + m_zoneinfo->getLocalTimezoneName(addWgt->_name, QLocale::system().name()));
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 void DateTime::setCurrentTime()
 {
-
+    setCurrentTimeOthers();
     current = QDateTime::currentDateTime();
     QString currentsecStr ;
     if (m_formTimeBtn->isChecked()) {
@@ -495,7 +691,10 @@ void DateTime::setCurrentTime()
 void DateTime::initConnect()
 {
     connect(ui->chgtimebtn,SIGNAL(clicked()),this,SLOT(changetimeSlot()));
-    connect(ui->chgzonebtn,SIGNAL(clicked()),this,SLOT(changezoneSlot()));
+    connect(ui->chgzonebtn, &QPushButton::clicked, this, [=](){
+        changeZoneFlag = true;
+        changezoneSlot();
+    });
 
     connect(m_formTimeBtn, &SwitchButton::checkedChanged, this, [=](bool status) {
         timeFormatClickedSlot(status, false);
@@ -505,11 +704,16 @@ void DateTime::initConnect()
         synctimeFormatSlot(status,true); //按钮被改变，需要修改
     });
 
+
     connect(m_timezone, &TimeZoneChooser::confirmed, this, [this] (const QString &timezone) {
-        changezoneSlot(timezone);
+        if (changeZoneFlag) {
+            changezoneSlot(timezone);
+            const QString locale = QLocale::system().name();
+            localizedTimezone = m_zoneinfo->getLocalTimezoneName(timezone, locale);
+        } else {
+            addTimezone(timezone);
+        }
         m_timezone->hide();
-        const QString locale = QLocale::system().name();
-        localizedTimezone = m_zoneinfo->getLocalTimezoneName(timezone, locale);
     });
 
     connect(m_itimer,SIGNAL(timeout()), this, SLOT(datetimeUpdateSlot()));
@@ -639,7 +843,7 @@ CGetSyncRes::~CGetSyncRes()
 }
 void CGetSyncRes::run()
 {
-    for(qint8 i = 0;i < 80; ++i) {
+    for(qint8 i = 0; i < 80; ++i) {
         struct timex txc = {};
         if (adjtimex(&txc) < 0 || txc.maxerror >= 16000000) {  //未能同步时间
             int picNum = i - qFloor(i/8)*8; //限制在0~7

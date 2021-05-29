@@ -255,7 +255,11 @@ void MainWindow::initUI() {
                     fontTime.setPointSize(font.pointSize() + 8);
                     fontTime.setBold(true);
                     widget->setFont(fontTime);
-                } else {
+                } else if(widget->objectName() == "summaryText") {
+                    QFont fontTime;
+                    fontTime.setPointSize(font.pointSize() - 2);
+                    widget->setFont(fontTime);
+                }else {
                     widget->setFont(font);
                 }
             }

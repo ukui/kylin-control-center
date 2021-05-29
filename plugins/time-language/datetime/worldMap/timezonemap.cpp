@@ -177,7 +177,7 @@ void TimezoneMap::setTimezone(QString timezone) {
         m_nearestZones.append(m_currentZone);
         this->mark();
     } else {
-        qWarning() <<" failed to found "<<timezone<<endl;
+        //qWarning() <<" failed to found "<<timezone<<endl;
     }
 }
 

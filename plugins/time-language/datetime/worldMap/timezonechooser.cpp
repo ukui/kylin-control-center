@@ -45,7 +45,7 @@ TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
 
     m_title->setObjectName("titleLabel");
     m_title->setStyleSheet("color: rgb(229, 240, 250 )");
-    m_title->setText(tr("change timezone"));
+    m_title->setText(tr("Change Timezone"));
 
     initSize();
 
@@ -159,8 +159,8 @@ TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
     });
 }
 
-void TimeZoneChooser::setTitle() {
-    m_title->setText(tr("change timezone"));;
+void TimeZoneChooser::setTitle(QString title) {
+    m_title->setText(title);
 }
 
 void TimeZoneChooser::setMarkedTimeZoneSlot(QString timezone) {

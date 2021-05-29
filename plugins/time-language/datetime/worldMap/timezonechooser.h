@@ -14,7 +14,7 @@ class TimeZoneChooser : public QFrame
     Q_OBJECT
 public:
     explicit TimeZoneChooser(QWidget *parent);
-    void setTitle();
+    void setTitle(QString title);
 
 public slots:
     void setMarkedTimeZoneSlot(QString timezone);

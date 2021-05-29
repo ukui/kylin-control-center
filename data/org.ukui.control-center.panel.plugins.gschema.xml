@@ -15,6 +15,11 @@
             <summary>customize ntp server address</summary>
             <description>user-defined ntp server address</description>
         </key>
+        <key name="timezones" type="as">
+            <default>[]</default>
+            <summary>all time zones of time display</summary>
+            <description>other time zones</description>
+        </key>
         <key name="calendar" type="s">
             <default>'lunar'</default>
             <summary>Lunar calendar</summary>
