@@ -48,6 +48,7 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *);
+    void keyPressEvent(QKeyEvent *);
 
 private:
     Ui::ChangeTypeDialog *ui;

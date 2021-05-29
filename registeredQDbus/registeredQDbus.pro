@@ -31,10 +31,8 @@ INSTALLS += \
     inst3 \
 
 HEADERS += \
-    run-passwd2.h \
     sysdbusregister.h
 
 SOURCES += \
     main.cpp \
-    run-passwd2.cpp \
     sysdbusregister.cpp
