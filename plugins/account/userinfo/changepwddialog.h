@@ -60,6 +60,7 @@ public:
     void setupConnect();
 
     void refreshConfirmBtnStatus();
+    void refreshCancelBtnStatus();
 
     void setFace(QString iconfile);
     void setUsername(QString realname);
@@ -71,6 +72,7 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *);
+    void keyPressEvent(QKeyEvent *);
 
 private:
     Ui::ChangePwdDialog *ui;
@@ -84,6 +86,7 @@ private:
     QString curPwdTip;
 
     bool enablePwdQuality;
+    bool pwdChecking;
 
 #ifdef ENABLEPQ
     pwquality_settings_t *settings;
@@ -99,7 +102,7 @@ private Q_SLOTS:
     void pwdLegalityCheck();
 
 Q_SIGNALS:
-    void passwd_send(QString pwd);
+    void passwd_send(QString oldpwd, QString pwd);
     void passwd_send2(QString pwd);
     void pwdCheckOver();
 };

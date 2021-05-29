@@ -44,8 +44,8 @@ SOURCES += \
     delgroupdialog.cpp \
     editgroupdialog.cpp \
     elipsemaskwidget.cpp \
+    pwdchangethread.cpp \
     pwdcheckthread.cpp \
-    run-passwd.cpp \
     userinfo.cpp \
     qtdbus/systemdbusdispatcher.cpp \
     changepwddialog.cpp \
@@ -71,8 +71,8 @@ HEADERS += \
     editgroupdialog.h \
     elipsemaskwidget.h \
     loginedusers.h \
+    pwdchangethread.h \
     pwdcheckthread.h \
-    run-passwd.h \
     userinfo.h \
     qtdbus/systemdbusdispatcher.h \
     changepwddialog.h \
