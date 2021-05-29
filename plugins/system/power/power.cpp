@@ -86,6 +86,7 @@ QWidget * Power::get_plugin_ui() {
         InitUI(pluginWidget);
 
         const QByteArray id(POWERMANAGER_SCHEMA);
+        const QByteArray styleID(STYLE_FONT_SCHEMA);
 
         initDbus();
         isPowerSupply();
@@ -95,8 +96,17 @@ QWidget * Power::get_plugin_ui() {
         initTitleLabel();
         setupComponent();
 
-        if (QGSettings::isSchemaInstalled(id)) {
+        if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(styleID)) {
             settings = new QGSettings(id, QByteArray(), this);
+            stylesettings = new QGSettings(styleID, QByteArray(), this);
+            connect(stylesettings,&QGSettings::changed,[=](QString key)
+            {
+                if("systemFont" == key || "systemFontSize" == key)
+                {
+                    retranslateUi();
+
+                }
+            });
 
             mPowerKeys = settings->keys();
 
@@ -233,8 +243,8 @@ void Power::InitUI(QWidget *power)
 
     mSleepFrame = new QFrame(powerwidget);
     mSleepFrame->setObjectName(QString::fromUtf8("mSleepFrame"));
-    mSleepFrame->setMinimumSize(QSize(550, 60));
-    mSleepFrame->setMaximumSize(QSize(960, 60));
+    mSleepFrame->setMinimumSize(QSize(550, 88));
+    mSleepFrame->setMaximumSize(QSize(960, 88));
     mSleepFrame->setFrameShape(QFrame::Box);
 
     QFormLayout *msleepLayout = new QFormLayout(mSleepFrame);
@@ -244,13 +254,13 @@ void Power::InitUI(QWidget *power)
     msleepLabel->setObjectName(QString::fromUtf8("msleepLabel"));
     sizePolicy.setHeightForWidth(msleepLabel->sizePolicy().hasHeightForWidth());
     msleepLabel->setSizePolicy(sizePolicy);
-    msleepLabel->setMinimumSize(QSize(182, 60));
-    msleepLabel->setMaximumSize(QSize(182, 60));
+    msleepLabel->setMinimumSize(QSize(182, 88));
+    msleepLabel->setMaximumSize(QSize(182, 88));
     msleepLabel->setScaledContents(false);
 
 
     QStringList mSleepTime;
-    mSleepTime<< tr("10min") << tr("20min") << tr("30min") << tr("1h") << tr("2h")
+    mSleepTime<< tr("10m") << tr("20m") << tr("30m") << tr("1h") << tr("2h")
               <<tr("never");
 
     sleepuslider  = new Uslider(mSleepTime);
@@ -271,8 +281,8 @@ void Power::InitUI(QWidget *power)
 
     mCloseFrame = new QFrame(powerwidget);
     mCloseFrame->setObjectName(QString::fromUtf8("mCloseFrame"));
-    mCloseFrame->setMinimumSize(QSize(550, 60));
-    mCloseFrame->setMaximumSize(QSize(960, 60));
+    mCloseFrame->setMinimumSize(QSize(550, 88));
+    mCloseFrame->setMaximumSize(QSize(960, 88));
     mCloseFrame->setFrameShape(QFrame::Box);
 
     QFormLayout *mCloseLayout = new QFormLayout(mCloseFrame);
@@ -283,12 +293,12 @@ void Power::InitUI(QWidget *power)
     mCloseLabel->setObjectName(QString::fromUtf8("mCloseLabel"));
     sizePolicy.setHeightForWidth(mCloseLabel->sizePolicy().hasHeightForWidth());
     mCloseLabel->setSizePolicy(sizePolicy);
-    mCloseLabel->setMinimumSize(QSize(182, 60));
-    mCloseLabel->setMaximumSize(QSize(182, 60));
+    mCloseLabel->setMinimumSize(QSize(182, 88));
+    mCloseLabel->setMaximumSize(QSize(182, 88));
     mCloseLabel->setScaledContents(false);
 
     QStringList mCloseTime;
-    mCloseTime<< tr("5min") << tr("10min") << tr("30min") << tr("1h") << tr("2h")
+    mCloseTime<< tr("5m") << tr("10m") << tr("30m") << tr("1h") << tr("2h")
               <<tr("never");
 
     CloseUslider  = new Uslider(mCloseTime);
@@ -305,8 +315,8 @@ void Power::InitUI(QWidget *power)
 
     mslptohbtFrame = new QFrame(powerwidget);
     mslptohbtFrame->setObjectName(QString::fromUtf8("mslptohbtFrame"));
-    mslptohbtFrame->setMinimumSize(QSize(550, 60));
-    mslptohbtFrame->setMaximumSize(QSize(960, 60));
+    mslptohbtFrame->setMinimumSize(QSize(550, 88));
+    mslptohbtFrame->setMaximumSize(QSize(960, 88));
     mslptohbtFrame->setFrameShape(QFrame::Box);
 
     QFormLayout *mslptohbtLayout = new QFormLayout(mslptohbtFrame);
@@ -316,8 +326,8 @@ void Power::InitUI(QWidget *power)
     mslptohbtlabel->setObjectName(QString::fromUtf8("mslptohbtlabel"));
     sizePolicy.setHeightForWidth(mslptohbtlabel->sizePolicy().hasHeightForWidth());
     mslptohbtlabel->setSizePolicy(sizePolicy);
-    mslptohbtlabel->setMinimumSize(QSize(182, 60));
-    mslptohbtlabel->setMaximumSize(QSize(182, 60));
+    mslptohbtlabel->setMinimumSize(QSize(182, 88));
+    mslptohbtlabel->setMaximumSize(QSize(182, 88));
 
     slptohbtslider = new Uslider(mCloseTime);
     slptohbtslider->setRange(1,6);
@@ -330,7 +340,7 @@ void Power::InitUI(QWidget *power)
 
     PowerLayout->addWidget(mslptohbtFrame);
 
-    QSpacerItem *verticalSpacer_7 = new QSpacerItem(20, 8, QSizePolicy::Minimum, QSizePolicy::Fixed);
+    verticalSpacer_7 = new QSpacerItem(20, 8, QSizePolicy::Minimum, QSizePolicy::Fixed);
     PowerLayout->addItem(verticalSpacer_7);
 
     mEnterPowerFrame = new QFrame(powerwidget);
@@ -357,7 +367,7 @@ void Power::InitUI(QWidget *power)
     mEnterPowerComboBox->setSizePolicy(sizePolicy2);
     mEnterPowerComboBox->setMinimumSize(QSize(0, 36));
     mEnterPowerComboBox->setMaximumSize(QSize(16777215, 36));
-    mEnterPowerComboBox->setStyleSheet(QString::fromUtf8(""));
+    mEnterPowerComboBox->setStyleSheet("QComboBox{background-color: palette(button);}");
 
     mEnterPowerLayout->addRow(mEnterPowerlabel,mEnterPowerComboBox);
     mEnterPowerLayout->setHorizontalSpacing(50);
@@ -390,7 +400,7 @@ void Power::InitUI(QWidget *power)
     mCloselidComboBox->setSizePolicy(sizePolicy2);
     mCloselidComboBox->setMinimumSize(QSize(0, 36));
     mCloselidComboBox->setMaximumSize(QSize(16777215, 36));
-    mCloselidComboBox->setStyleSheet(QString::fromUtf8(""));
+    mCloselidComboBox->setStyleSheet("QComboBox{background-color: palette(button);}");
 
     mCloselidLayout->addRow(mCloselidlabel,mCloselidComboBox);
     mCloselidLayout->setHorizontalSpacing(50);
@@ -417,8 +427,9 @@ void Power::InitUI(QWidget *power)
 
 void Power::retranslateUi()
 {
-    QLabelSetText(PowertitleLabel, tr("select power plan"));
-    QLabelSetText(mCustomtitleLabel, tr("General Settings"));
+    PowertitleLabel->setText(tr("select power plan"));
+    mCustomtitleLabel->setText(tr("General Settings"));
+
     if (QLabelSetText(msleepLabel, tr("Sleep time:"))) {
         msleepLabel->setToolTip(tr("Sleep time"));
     }
@@ -450,7 +461,6 @@ void Power::initSearText()
     mBalanceBtn->setText(tr("Balance"));
     //~ contents_path /power/Saving
     mSaveBtn->setText(tr("Saving"));
-    //~ contents_path /power/Custom
 }
 
 void Power::setupComponent()
@@ -765,6 +775,9 @@ void Power::refreshUI()
     mCloselidFrame->setVisible(isExitsLid);
 
     mslptohbtFrame->setVisible(isExitslptoHbt);
+    if (!isExitslptoHbt) {
+        verticalSpacer_7->changeSize(0,0);
+    }
 
 }
 
@@ -776,7 +789,7 @@ bool Power::QLabelSetText(QLabel *label, QString string)
     int fontSize = fontMetrics.width(string);
     QString str = string;
     if (fontSize > (label->width()-5)) {
-        str = fontMetrics.elidedText(string, Qt::ElideRight, label->width()-10);
+        str = fontMetrics.elidedText(string, Qt::ElideRight, label->width());
         is_over_length = true;
     }
     label->setText(str);

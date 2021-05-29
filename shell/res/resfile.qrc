@@ -206,6 +206,8 @@
         <file>plugins/netconnect/wifi6+-low.svg</file>
         <file>plugins/netconnect/wifi6+-medium.svg</file>
         <file>plugins/netconnect/wifi6+-none.svg</file>
+        <file>secondaryleftmenu/Battery.svg</file>
+        <file>secondaryleftmenu/BatteryWhite.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

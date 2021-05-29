@@ -27,7 +27,7 @@
 #define SLEEP_DISPLAY_AC_KEY    "sleep-display-ac"
 #define SLEEP_DISPLAY_BATT_KEY  "sleep-display-battery"
 #define BUTTON_LID_AC_KEY       "button-lid-ac"
-#define BUTTON_LID_BATT_KET     "button-lid-battery"
+#define BUTTON_LID_BATT_KEY     "button-lid-battery"
 #define BUTTON_SUSPEND_KEY      "button-suspend"
 #define BUTTON_POWER_KEY        "button-power"
 #define IDLE_DIM_TIME_KEY       "idle-dim-time"
@@ -49,4 +49,5 @@
 #define PERSONALSIE_SCHEMA     "org.ukui.control-center.personalise"
 #define PERSONALSIE_POWER_KEY  "custompower"
 
+#define STYLE_FONT_SCHEMA  "org.ukui.style"
 #endif // POWERMACRODATA_H

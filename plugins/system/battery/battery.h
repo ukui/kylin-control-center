@@ -17,9 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef POWER_H
-#define POWER_H
-
+#ifndef BATTERY_H
+#define BATTERY_H
 #include <QObject>
 #include <QtPlugin>
 #include <QStyledItemDelegate>
@@ -36,18 +35,18 @@
 #include "commonComponent/ComboxFrame/comboxframe.h"
 
 namespace Ui {
-class Power;
+class Battery;
 }
 
-class Power : public QObject, CommonInterface
+class Battery : public QObject, CommonInterface
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.kycc.CommonInterface")
     Q_INTERFACES(CommonInterface)
 
 public:
-    explicit Power();
-    ~Power();
+    explicit Battery();
+    ~Battery();
 
 public:
     QString get_plugin_name()   Q_DECL_OVERRIDE;
@@ -57,26 +56,19 @@ public:
     const QString name() const Q_DECL_OVERRIDE;
 
 public:
-    void InitUI(QWidget *power);
+    void InitUI(QWidget *battery);
     void retranslateUi();
     void initTitleLabel();
 
     void initSearText();
     void setupComponent();
     void setupConnect();
-    void initDbus();
-    void initModeStatus();
-    void initCustomPlanStatus();
-    void buildPowerModeBtn(QPushButton *button,QString Btn_name,QString BtnFun_name);
-    void isPowerSupply();
-    void isLidPresent();
+    void initStatus();
     void isHibernateSupply();
-    void isSlptoHbtSupply();
-    void refreshUI();
+    void buildPowerModeBtn(QPushButton *button,QString Btn_name,QString BtnFun_name);
     bool QLabelSetText(QLabel *label, QString string);
 
 private:
-    Ui::Power *ui;
 
     QWidget *pluginWidget;
 
@@ -86,53 +78,29 @@ private:
     QString pluginName;
     int pluginType;
 
-    QStringList closeLidStringList;
-
-    QStringList mPowerKeys;
-
-
-    bool isExitsPower;
     bool mFirstLoad;
-    bool isExitsLid;
     bool isExitHibernate;
-    bool isExitslptoHbt;
 
-
-    QComboBox *mEnterPowerComboBox;
-    QComboBox *mCloselidComboBox;
-
-    QButtonGroup *powerModeBtnGroup;
+    QComboBox *mLowpowerComboBox1;
+    QComboBox *mLowpowerComboBox2;
 
     QFrame *mSleepFrame;
     QFrame *mCloseFrame;
-    QFrame *mslptohbtFrame;
-    QFrame *mEnterPowerFrame;
-    QFrame *mCloselidFrame;
+    QFrame *mDarkenFrame;
+    QFrame *mLowpowerFrame;
 
-    QLabel *PowertitleLabel;
-    QLabel *mCustomtitleLabel;
+    QLabel *BatterytitleLabel;
+
     QLabel *msleepLabel;
     QLabel *mCloseLabel;
-    QLabel *mslptohbtlabel;
-    QLabel *mEnterPowerlabel;
-    QLabel *mCloselidlabel;
-
-    QPushButton *mBalanceBtn;
-    QPushButton *mSaveBtn;
+    QLabel *mDarkenLabel;
+    QLabel *mLowpowerLabel1;
+    QLabel *mLowpowerLabel2;
 
     Uslider *sleepuslider;
     Uslider *CloseUslider;
-    Uslider *slptohbtslider;
-
-    QSpacerItem *verticalSpacer_7;
-
-    QDBusInterface *mUkccInterface;
-
-private:
-    void initGeneralSet();
-    QString getHibernateTime();
-
+    Uslider *DarkenUslider;
 
 };
 
-#endif // POWER_H
+#endif // BATTERY_H

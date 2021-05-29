@@ -56,6 +56,8 @@ void FunctionSelect::initValue(){
     systemList[DEFAULTAPP].mainShow = false;
     systemList[POWER].nameString = QString("Power");
     systemList[POWER].namei18nString = QObject::tr("Power");
+    systemList[BATTERY].nameString = QString("Battery");
+    systemList[BATTERY].namei18nString = QObject::tr("Battery");
     systemList[AUTOBOOT].nameString = QString("Autoboot");
     systemList[AUTOBOOT].namei18nString = QObject::tr("Auto Boot");
 

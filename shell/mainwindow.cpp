@@ -43,6 +43,13 @@
 #include <QShortcut>
 #include <QMouseEvent>
 
+#ifdef signals
+#undef signals
+#endif
+
+#include "libupower-glib/upower.h"
+
+
 #ifdef WITHKYSEC
 #include <kysec/libkysec.h>
 #include <kysec/status.h>
@@ -530,6 +537,7 @@ void MainWindow::loadPlugins(){
                 || ("libnetworkaccount.so" == fileName && !isExitsCloudAccount())
                 || (!QGSettings::isSchemaInstalled(kVinoSchemas) && "libvino.so" == fileName)
                 || ("libbluetooth.so" == fileName && !isExitBluetooth())
+                || ("libbattery.so" == fileName && !isExitBattery())
                 || ("libtouchscreen.so" == fileName && !isExitTouchScreen())
                 || ("libupdate.so" == fileName && !Utils::isCommunity())) {
             continue;
@@ -808,6 +816,28 @@ bool MainWindow::isExitBluetooth() {
     }
 
     return isDevice && isAddress;
+}
+
+bool MainWindow::isExitBattery()
+{
+    /* 默认机器没有电池 */
+    bool hasBat = false;
+    UpClient * client = up_client_new ();
+    GPtrArray *devices = NULL;
+    UpDevice * device;
+    UpDeviceKind kind;
+
+    devices = up_client_get_devices2(client);
+
+    for (guint i=0; i< devices->len; i++) {
+            device = (UpDevice *)g_ptr_array_index (devices, i);
+            g_object_get (device, "kind", &kind, NULL);
+            if (kind == UP_DEVICE_KIND_BATTERY)
+                    hasBat = true;
+    }
+    g_ptr_array_unref (devices);
+    qDebug()<<"hasBat = "<<hasBat;
+    return hasBat;
 }
 
 void MainWindow::changeSearchSlot() {

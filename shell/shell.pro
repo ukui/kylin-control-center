@@ -23,6 +23,7 @@ DEFINES += PLUGIN_INSTALL_DIRS='\\"$${PLUGIN_INSTALL_DIRS}\\"'
 
 
 LIBS += -L$$[QT_INSTALL_LIBS] -lX11 -lgsettings-qt -lXi
+LIBS += -L$$[QT_INSTALL_LIBS] -lgsettings-qt -lupower-glib
 
 #LIBS += -L$$[QT_INSTALL_LIBS] -lkylinssoclient
 
