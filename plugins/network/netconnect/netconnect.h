@@ -75,7 +75,6 @@ typedef struct ActiveConInfo_s {
     QString strConType;
     QString strSecType;
     QString strChan;
-    QString strSpeed;
     QString strMac;
     QString strHz;
 
@@ -155,13 +154,11 @@ private:
     QTimer             *refreshTimer;
     QString             prefreChan;
     int                 firstCount = 0;
-    int                 secondCount = 0;
 private:
     int         setSignal(QString lv);
     QStringList execGetLanList();
     int         getWifiListDone(QVector<QStringList> wifislist, QStringList lanList, bool getWifiListDone);
     QString     geiWifiChan();
-    QString     getWifiSpeed();
     bool        getInitStatus();
     bool        getWifiStatus();
 
