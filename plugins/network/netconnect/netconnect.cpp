@@ -181,22 +181,22 @@ void NetConnect::refreshNetInfoTimerSlot() {
 }
 
 void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
-
-    bool hasNet = netName.compare("No Net", Qt::CaseInsensitive);
-
+    bool hasNet = false;
+    if (netName == "无连接" || netName == "No net") {
+        hasNet = true;
+    }
     HoverBtn * deviceItem;
-    if (!hasNet || Utils::isWayland()) {
+    if (hasNet || Utils::isWayland()) {
         deviceItem = new HoverBtn(netName, false, pluginWidget);
     } else {
         deviceItem = new HoverBtn(netName, true, pluginWidget);
     }
-
     deviceItem->mPitLabel->setText(netName);
 
-    if (hasNet) {
+    if (!hasNet) {
         deviceItem->mDetailLabel->setText(tr("Connected"));
     } else {
-        deviceItem->mDetailLabel->setText(tr("No net"));
+        deviceItem->mDetailLabel->setText("");
     }
     QIcon searchIcon = QIcon::fromTheme(iconPath);
     deviceItem->mPitIcon->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(24, 24))));
