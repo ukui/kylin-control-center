@@ -13,7 +13,6 @@ public:
     NetDetail(bool isWlan, QWidget *parent = nullptr);
 
     void setSSID(const QString &ssid);
-    void setSpeed(const QString &speed);
     void setProtocol(const QString &protocol);
     void setSecType(const QString &secType);
     void setHz(const QString &hz);
@@ -33,7 +32,6 @@ private:
 
 public:
     QLabel *mSSID;
-    QLabel *mSpeed;
     QLabel *mProtocol;
     QLabel *mSecType;
     QLabel *mHz;

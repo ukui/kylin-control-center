@@ -156,11 +156,10 @@ private:
     QTimer             *refreshTimer;
     QString             prefreChan;
     int                 firstCount = 0;
-    int                 secondCount = 0;
 private:
     int         setSignal(QString lv);
     QStringList execGetLanList();
-    void        getWifiListDone(QVector<QStringList> wifislist, QStringList lanList);
+    int        getWifiListDone(QVector<QStringList> wifislist, QStringList lanList);
     QString     geiWifiChan();
     QString     getWifiSpeed();
     bool        getInitStatus();
