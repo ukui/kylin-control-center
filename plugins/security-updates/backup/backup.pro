@@ -24,8 +24,7 @@ CONFIG        += link_pkgconfig \
 PKGCONFIG     += gio-2.0 \
                  gio-unix-2.0
 
-
-
+QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2 -O2
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \

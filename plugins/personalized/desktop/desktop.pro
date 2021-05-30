@@ -34,6 +34,8 @@ INCLUDEPATH   +=  \
 
 LIBS          += -L$$[QT_INSTALL_LIBS] -lgsettings-qt -ldconf
 
+QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2 -O2
+
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \

@@ -8,6 +8,7 @@ TEMPLATE = app
 CONFIG += c++11 console link_pkgconfig
 CONFIG -= app_bundle
 
+QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2 -O2
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings

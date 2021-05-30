@@ -27,6 +27,8 @@ PKGCONFIG += gsettings-qt     \
 #             glib-2.0         \
              mate-desktop-2.0 \
 
+QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2 -O2
+
 SOURCES += \
     display.cpp \
     declarative/qmloutput.cpp \

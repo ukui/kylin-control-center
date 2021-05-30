@@ -26,6 +26,8 @@ LIBS          += -L$$[QT_INSTALL_LIBS] -lgsettings-qt -lX11 -lXfixes -lXcursor
 
 PKGCONFIG     += gsettings-qt
 
+QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2 -O2
+
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
