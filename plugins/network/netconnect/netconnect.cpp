@@ -137,6 +137,8 @@ void NetConnect::initComponent() {
     // 无线网络断开或连接时刷新可用网络列表
     connect(m_interface, SIGNAL(getWifiListFinished()), this, SLOT(refreshNetInfoTimerSlot()));
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(getNetList()));
+    // 有线网络断开或连接时刷新可用网络列表
+    connect(m_interface,SIGNAL(actWiredConnectionChanged()), this, SLOT(getNetList()));
 
     connect(ui->RefreshBtn, &QPushButton::clicked, this, [=](bool checked) {
         Q_UNUSED(checked)
