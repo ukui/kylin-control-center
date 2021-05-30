@@ -1067,7 +1067,8 @@ void Widget::kdsScreenchangeSlot()
         KScreen::OutputPtr output = config->primaryOutput();
         if (config->connectedOutputs().count() >= 2) {
             foreach (KScreen::OutputPtr secOutput, config->connectedOutputs()) {
-                if (secOutput->geometry() != output->geometry() || !secOutput->isEnabled()) {
+                if ((output != nullptr) &&
+                        (secOutput->geometry() != output->geometry() || !secOutput->isEnabled())) {
                     cloneMode = false;
                 }
             }
