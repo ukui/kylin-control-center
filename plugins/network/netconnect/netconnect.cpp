@@ -256,55 +256,66 @@ void NetConnect::getNetList() {
         qWarning() << "value method called failed!";
     }
     this->TlanList  = execGetLanList();
-    if (getWifiListDone(reply, this->TlanList, isWayland) == -1) {
-        getNetList();
+    if (getWifiStatus() && reply.value().length() == 1) {
+        QElapsedTimer time;
+        time.start();
+        while (time.elapsed() < 300) {
+            QCoreApplication::processEvents();
+        }
+        if (m_interface) {
+            m_interface->call("requestRefreshWifiList");
+        }
     } else {
-        for (int i = 0; i < reply.value().length(); i++) {
-            QString wifiName;
-            if (reply.value().at(i).at(0) == "--") {
-                continue;
-            }
-            if (isWayland) {
-                wifiName = reply.value().at(i).at(0) + reply.value().at(i).at(5);
-            } else {
-                wifiName = reply.value().at(i).at(0);
+        if (getWifiListDone(reply, this->TlanList, isWayland) == -1) {
+            getNetList();
+        } else {
+            for (int i = 0; i < reply.value().length(); i++) {
+                QString wifiName;
+                if (reply.value().at(i).at(0) == "--") {
+                    continue;
+                }
+                if (isWayland) {
+                    wifiName = reply.value().at(i).at(0) + reply.value().at(i).at(5);
+                } else {
+                    wifiName = reply.value().at(i).at(0);
+                }
+
+                if (reply.value().at(i).at(2) != NULL && reply.value().at(i).at(2) != "--") {
+                    wifiName += "lock";
+                }
+                QString signal  = reply.value().at(i).at(1);
+                wifiLists.insert(wifiName,this->setSignal(signal));
             }
 
-            if (reply.value().at(i).at(2) != NULL && reply.value().at(i).at(2) != "--") {
-                wifiName += "lock";
+            QMap<QString, int>::iterator iterator = this->wifiLists.begin();
+            QVector<QPair<QString, int>> vector;
+            QString iconamePath;
+            while (iterator != this->wifiLists.end()) {
+                vector.push_back(qMakePair(iterator.key(), iterator.value()));
+                iterator++;
             }
-            QString signal  = reply.value().at(i).at(1);
-            wifiLists.insert(wifiName,this->setSignal(signal));
-        }
+            qSort(vector.begin(), vector.end(), sortByVal);
+            for (int i = 0; i < vector.size(); i++) {
+                if (!wifiBtn->isChecked()) {
+                    break;
+                }
+                bool isLock = vector[i].first.contains("lock");
+                QString wifiName = isLock ? vector[i].first.remove("lock") : vector[i].first;
+                if (isWayland) {
+                    int category = wifiName.right(1).toInt();
+                    wifiName = wifiName.left(wifiName.size() - 1);
+                    iconamePath = wifiIcon(isLock, vector[i].second, category);
+                } else {
+                    iconamePath = wifiIcon(isLock, vector[i].second);
+                }
+                rebuildAvailComponent(iconamePath, wifiName);
+            }
 
-        QMap<QString, int>::iterator iterator = this->wifiLists.begin();
-        QVector<QPair<QString, int>> vector;
-        QString iconamePath;
-        while (iterator != this->wifiLists.end()) {
-            vector.push_back(qMakePair(iterator.key(), iterator.value()));
-            iterator++;
-        }
-        qSort(vector.begin(), vector.end(), sortByVal);
-        for (int i = 0; i < vector.size(); i++) {
-            if (!wifiBtn->isChecked()) {
-                break;
+            for (int i = 0; i < this->lanList.length(); i++) {
+                rebuildAvailComponent(KLanSymbolic , lanList.at(i));
             }
-            bool isLock = vector[i].first.contains("lock");
-            QString wifiName = isLock ? vector[i].first.remove("lock") : vector[i].first;
-            if (isWayland) {
-                int category = wifiName.right(1).toInt();
-                wifiName = wifiName.left(wifiName.size() - 1);
-                iconamePath = wifiIcon(isLock, vector[i].second, category);
-            } else {
-                iconamePath = wifiIcon(isLock, vector[i].second);
-            }
-            rebuildAvailComponent(iconamePath, wifiName);
+            setNetDetailVisible();
         }
-
-        for (int i = 0; i < this->lanList.length(); i++) {
-            rebuildAvailComponent(KLanSymbolic , lanList.at(i));
-        }
-        setNetDetailVisible();
     }
 }
 
@@ -462,22 +473,20 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
     if (!speed.contains("/") && secondCount < 1) {
         QElapsedTimer time;
         time.start();
-        while (time.elapsed() < 300) {
+        while (time.elapsed() < 1000) {
             QCoreApplication::processEvents();
         }
         secondCount ++;
         return -1;
     } else {
-        if (getWifiStatus() && firstCount <= 4 && getActiveConInfo(mActiveInfo) == -1) {
+        if (getActiveConInfo(mActiveInfo) == -1) {
             QElapsedTimer time;
             time.start();
-            while (time.elapsed() < 300) {
+            while (time.elapsed() < 500) {
                 QCoreApplication::processEvents();
             }
-            firstCount++;
             return -1;
         } else {
-            firstCount = 0;
             secondCount = 0;
             bool isNullSpeed = false;
             if (!speed.contains("/")) {
