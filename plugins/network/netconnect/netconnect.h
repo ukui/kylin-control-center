@@ -181,7 +181,6 @@ private slots:
     void netPropertiesChangeSlot(QMap<QString, QVariant> property);
     void netDetailSlot(QString netName);
     void refreshNetInfoTimerSlot();
-    void refreshNetInfoSlot();
 signals:
     void refresh();
 };
