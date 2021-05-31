@@ -1169,7 +1169,7 @@ void Widget::save()
     }
 
     if (mIsWayland && -1 != mScreenId) {
-        if (enableScreenCount >= 2 && !config.isNull()) {
+        if (enableScreenCount >= 2 && !config.isNull() && !config->output(mScreenId).isNull()) {
             config->output(mScreenId)->setPrimary(true);
             callMethod(config->primaryOutput()->geometry(), config->primaryOutput()->name());
             if (mScreen->primaryOutput()) {
