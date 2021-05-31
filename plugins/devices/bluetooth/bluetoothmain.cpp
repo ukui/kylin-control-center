@@ -101,7 +101,7 @@ BlueToothMain::BlueToothMain(QWidget *parent)
     InitMainMiddleUI();
     InitMainbottomUI();
     this->setLayout(main_layout);
-
+    MonitorSleepSignal();
     updateUIWhenAdapterChanged();
 }
 
@@ -141,7 +141,7 @@ void BlueToothMain::InitMainTopUI()
     frame_1_layout->setContentsMargins(16,0,16,0);
 
     //~ contents_path /bluetooth/Turn on Bluetooth
-    label_2 = new QLabel(frame_1);
+    label_2 = new QLabel(tr("Turn on Bluetooth"),frame_1);
     label_2->setStyleSheet("QLabel{\
                            width: 56px;\
                            height: 20px;\
@@ -349,7 +349,7 @@ void BlueToothMain::adapterChanged()
     connect(m_manager,&BluezQt::Manager::adapterRemoved,this,[=](BluezQt::AdapterPtr adapter){
 //        qDebug() << Q_FUNC_INFO << adapter_address_list.indexOf(adapter.data()->address());
 //        qDebug() << Q_FUNC_INFO << adapter_list->currentIndex() << adapter_address_list.at(adapter_list->currentIndex()) << adapter.data()->address() <<__LINE__;
-
+        qDebug() << Q_FUNC_INFO << __LINE__;
         int i = adapter_address_list.indexOf(adapter.data()->address());
 
         adapter_name_list.removeAt(i);
@@ -421,15 +421,12 @@ void BlueToothMain::updateUIWhenAdapterChanged()
      if(m_localDevice->isPowered()){
          open_bluetooth->setChecked(true);
          bluetooth_name->setVisible(true);
- //        label_2->setText(tr("Turn off Bluetooth"));
-         label_2->setText(tr("Turn on Bluetooth"));
          if(!frame_bottom->isVisible())
              frame_bottom->setVisible(true);
      }else{
          qDebug() << Q_FUNC_INFO << m_manager->isBluetoothBlocked() << __LINE__;
          open_bluetooth->setChecked(false);
          bluetooth_name->setVisible(false);
-         label_2->setText(tr("Turn on Bluetooth"));
          frame_bottom->setVisible(false);
          frame_middle->setVisible(false);
      }
@@ -551,6 +548,30 @@ void BlueToothMain::addMyDeviceItemUI(BluezQt::DevicePtr dev)
     return;
 }
 
+void BlueToothMain::MonitorSleepSignal()
+{
+    if (QDBusConnection::systemBus().connect("org.freedesktop.login1",
+                                             "/org/freedesktop/login1",
+                                             "org.freedesktop.login1.Manager",
+                                             "PrepareForSleep",
+                                             this,
+                                             SLOT(MonitorSleepSlot(bool)))){
+        qDebug() << Q_FUNC_INFO << "PrepareForSleep signal connected successfully to slot";
+    } else {
+        qDebug() << Q_FUNC_INFO << "PrepareForSleep signal connected was not successful";
+    }
+}
+
+void BlueToothMain::MonitorSleepSlot(bool value)
+{
+    if (!value) {
+        if (sleep_status)
+            adapterPoweredChanged(true);
+    } else {
+        sleep_status = m_localDevice->isPowered();
+    }
+}
+
 void BlueToothMain::leaveEvent(QEvent *event)
 {
     qDebug() << Q_FUNC_INFO;
@@ -566,47 +587,13 @@ BlueToothMain::~BlueToothMain()
 
 void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
 {
-    qDebug() << Q_FUNC_INFO << ischeck << m_localDevice->isPowered() << show_flag <<__LINE__;
+    qDebug() << Q_FUNC_INFO << ischeck << m_localDevice->isPowered() <<__LINE__;
     if(ischeck){
         if(m_manager->isBluetoothBlocked())
             m_manager->setBluetoothBlocked(false);
-        BluezQt::PendingCall *call = m_localDevice->setPowered(true);
-        connect(call,&BluezQt::PendingCall::finished,this,[=](BluezQt::PendingCall *v){
-            if(v->error() == 0){
-                bluetooth_name->set_dev_name(m_localDevice->name());
-                bluetooth_name->setVisible(true);
-                frame_bottom->setVisible(true);
-
-                if(show_flag)
-                    frame_middle->setVisible(true);
-                if(!frame_middle->isVisible()){
-                    frame_middle->setVisible(true);
-                }
-//                label_2->setText(tr("Turn off Bluetooth"));
-
-                qDebug() << Q_FUNC_INFO << m_localDevice->isPowered() <<__LINE__;
-                this->startDiscovery();
-            }
-        });
     }else{
-        qDebug() << Q_FUNC_INFO << __LINE__;
-        if(m_localDevice->isDiscovering()){
-            m_localDevice->stopDiscovery();
-        }
-        BluezQt::PendingCall *call = m_localDevice->setPowered(false);
-        m_manager->setBluetoothBlocked(true);
-        connect(call,&BluezQt::PendingCall::finished,this,[=](BluezQt::PendingCall *v){
-            if(v->error() == 0){
-                bluetooth_name->setVisible(false);
-                qDebug() << Q_FUNC_INFO << !m_localDevice->isPowered() << __LINE__;
-                frame_bottom->setVisible(false);
-
-                if(frame_middle->isVisible())
-                    frame_middle->setVisible(false);
-
-                label_2->setText(tr("Turn on Bluetooth"));
-            }
-        });
+        if (!m_manager->isBluetoothBlocked())
+            m_manager->setBluetoothBlocked(true);
     }
 }
 
@@ -767,7 +754,7 @@ void BlueToothMain::change_device_parent(const QString &address)
 
 void BlueToothMain::adapterPoweredChanged(bool value)
 {
-    qDebug() << Q_FUNC_INFO <<show_flag;
+    qDebug() << Q_FUNC_INFO <<value;
     if(settings)
         settings->set("switch",QVariant::fromValue(value));
 
@@ -779,22 +766,26 @@ void BlueToothMain::adapterPoweredChanged(bool value)
         if(show_flag)
             frame_middle->setVisible(true);
 
-        open_bluetooth->setChecked(true);
+        if (!open_bluetooth->isChecked())
+            open_bluetooth->setChecked(true);
+
         this->startDiscovery();
-        //qDebug() << discovering_timer->isActive();
     }else{
-        bluetooth_name->setVisible(false);
-        open_bluetooth->setChecked(false);
-        frame_bottom->setVisible(false);
+        if (bluetooth_name->isVisible())
+            bluetooth_name->setVisible(false);
+
+        if (open_bluetooth->isChecked())
+            open_bluetooth->setChecked(false);
+
+        if (frame_bottom->isVisible())
+            frame_bottom->setVisible(false);
 
         if(frame_middle->isVisible())
             frame_middle->setVisible(false);
 
-        label_2->setText(tr("Turn on Bluetooth"));
         if(m_localDevice->isDiscovering()){
             m_localDevice->stopDiscovery();
         }
-        //qDebug() << discovering_timer->isActive();
     }
 }
 
@@ -827,7 +818,6 @@ void BlueToothMain::adapterNameChanged(const QString &name)
     index = adapter_address_list.indexOf(m_localDevice->address());
     adapter_name_list.removeAt(index);
     adapter_name_list.insert(index,name);
-//    qDebug() << Q_FUNC_INFO << adapter_name_list << adapter_address_list;
     adapter_list->setItemText(index,name);
 }
 
