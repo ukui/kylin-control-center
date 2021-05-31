@@ -265,6 +265,7 @@ void About::setupSerialComponent()
         ui->activeButton->hide();
         ui->trialButton->hide();
     } else {
+        ui->activeContent->setStyleSheet("color:red;");
         QDBusMessage dateReply = activeInterface.get()->call("date");
         QString dateRes;
         if (dateReply.type() == QDBusMessage::ReplyMessage) {
