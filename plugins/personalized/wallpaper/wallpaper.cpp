@@ -184,7 +184,7 @@ void Wallpaper::setupComponent(){
     // 打开自定义颜色面板
     connect(colWgt, &HoverWidget::widgetClicked,[=](QString mname){
         Q_UNUSED(mname);
-        colordialog = new ColorDialog();
+        colordialog = new ColorDialog(pluginWidget);
         connect(colordialog,&ColorDialog::colorSelected,this,&Wallpaper::colorSelectedSlot);
         colordialog->exec();
 

@@ -220,7 +220,7 @@ void Shortcut::setupComponent()
 void Shortcut::setupConnect()
 {
     connect(addWgt, &HoverWidget::widgetClicked, this, [=](){
-        addShortcutDialog *addDialog = new addShortcutDialog(generalEntries, customEntries);
+        addShortcutDialog *addDialog = new addShortcutDialog(generalEntries, customEntries,pluginWidget);
         addDialog->setTitleText(QObject::tr("Customize Shortcut"));
 
         connect(addDialog, &addShortcutDialog::shortcutInfoSignal,

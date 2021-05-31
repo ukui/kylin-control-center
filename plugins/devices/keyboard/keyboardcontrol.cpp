@@ -94,7 +94,7 @@ QWidget *KeyboardControl::get_plugin_ui() {
             settings = new QGSettings(id);
 
             //构建布局管理器对象
-            layoutmanagerObj = new KbdLayoutManager();
+            layoutmanagerObj = new KbdLayoutManager(pluginWidget);
 
             setupConnect();
             initGeneralStatus();

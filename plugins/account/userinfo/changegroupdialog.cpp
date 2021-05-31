@@ -198,7 +198,7 @@ void ChangeGroupDialog::loadAllGroup()
             bool reply = polkitDel();
             qDebug() << "call polkitdel " << reply;
             if(reply){
-                DelGroupDialog *delDialog = new DelGroupDialog(groupList->at(i)->groupname);
+                DelGroupDialog *delDialog = new DelGroupDialog(groupList->at(i)->groupname,this);
                 QPushButton *delBtn = delDialog->delBtnComponent();
                 connect(delBtn, &QPushButton::clicked, [=](){
                     QDBusReply<bool> reply = serviceInterface->call("del",groupList->at(i)->groupname);
@@ -225,7 +225,7 @@ void ChangeGroupDialog::loadAllGroup()
             qDebug() << "call polkitedit " << reply;
             if(reply){
                 EditGroupDialog *editDialog = new EditGroupDialog(groupList->at(i)->usergroup,groupList->at(i)->groupid,
-                                                  groupList->at(i)->groupname, idSetEnable);
+                                                  groupList->at(i)->groupname, idSetEnable,this);
                 connect(editDialog, &EditGroupDialog::needRefresh, this, &ChangeGroupDialog::needRefreshSlot);
                 QLineEdit *lineName = editDialog->lineNameComponent();
                 QLineEdit *lineId = editDialog->lineIdComponent();
@@ -304,7 +304,7 @@ void ChangeGroupDialog::initNewGroupBtn()
         bool reply = polkitAdd();
         qDebug() << "call polkitadd " << reply;
         if(reply){
-            CreateGroupDialog *dialog = new CreateGroupDialog();
+            CreateGroupDialog *dialog = new CreateGroupDialog(this);
             QPushButton *certainBtn = dialog->certainBtnComponent();
             QLineEdit *lineId = dialog->lineIdComponent();
             QLineEdit *lineName = dialog->lineNameComponent();

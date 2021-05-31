@@ -263,7 +263,7 @@ void DateTime::datetimeUpdateSlot()
 
 void DateTime::changetimeSlot()
 {
-    ChangtimeDialog *dialog = new ChangtimeDialog(m_formTimeBtn->isChecked());
+    ChangtimeDialog *dialog = new ChangtimeDialog(m_formTimeBtn->isChecked(),pluginWidget);
     dialog->setWindowTitle(tr("change time"));
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     m_itimer->stop();

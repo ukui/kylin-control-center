@@ -97,7 +97,7 @@ QWidget *AutoBoot::get_plugin_ui()
         localconfigdir = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
 
         // 初始化添加界面
-        dialog = new AddAutoBoot();
+        dialog = new AddAutoBoot(pluginWidget);
 
         initConfig();
         initAddBtn();

@@ -255,7 +255,7 @@ void Notice::initOriNoticeStatus() {
 
         connect(devWidget, &HoverWidget::widgetClicked, this, [=](QString name) {
             AppDetail *app;
-            app= new AppDetail(name,appsName.at(i), settings);
+            app= new AppDetail(name,appsName.at(i), settings,pluginWidget);
             app->exec();
         });
 

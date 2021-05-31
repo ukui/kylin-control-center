@@ -325,7 +325,7 @@ void Area::add_lan_btn_slot() {
 }
 
 void Area::changeform_slot() {
-    DataFormat *dialog = new DataFormat();
+    DataFormat *dialog = new DataFormat(pluginWidget);
     connect(dialog, SIGNAL(dataChangedSignal()),this,SLOT(initFormatData()));
     dialog->setWindowTitle(tr("change data format"));
     dialog->setAttribute(Qt::WA_DeleteOnClose);

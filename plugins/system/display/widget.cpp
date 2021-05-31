@@ -1508,7 +1508,7 @@ void Widget::initConnection()
     ui->controlPanelLayout->addWidget(mControlPanel);
 
     connect(ui->advancedBtn, &QPushButton::clicked, this, [=] {
-        DisplayPerformanceDialog *dialog = new DisplayPerformanceDialog;
+        DisplayPerformanceDialog *dialog = new DisplayPerformanceDialog(this);
         dialog->exec();
     });
 

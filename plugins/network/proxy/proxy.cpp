@@ -340,7 +340,7 @@ void Proxy::_setSensitivity(){
 }
 
 void Proxy::showCertificationDialog(){
-    QDialog * certificationDialog = new CertificationDialog();
+    QDialog * certificationDialog = new CertificationDialog(pluginWidget);
     certificationDialog->setAttribute(Qt::WA_DeleteOnClose);
     certificationDialog->show();
 }
