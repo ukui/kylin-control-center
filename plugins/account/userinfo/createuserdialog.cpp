@@ -46,7 +46,7 @@ CreateUserDialog::CreateUserDialog(QStringList userlist, QWidget *parent) :
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(tr("Add new user"));
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->titleLabel->setStyleSheet("QLabel{color: palette(windowText);}");
     ui->tipLabel->setAlignment(Qt::AlignCenter);
 
     ui->label_8->adjustSize();

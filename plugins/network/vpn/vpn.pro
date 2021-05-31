@@ -7,11 +7,16 @@
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
 include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 QT       += widgets
 
 TEMPLATE = lib
-CONFIG += plugin
+CONFIG += plugin \
+          += c++11 \
+          link_pkgconfig
+
+PKGCONFIG     += gsettings-qt
 
 TARGET = $$qtLibraryTarget(vpn)
 DESTDIR = ../..
@@ -21,7 +26,7 @@ INCLUDEPATH   +=  \
                  $$PROJECT_COMPONENTSOURCE \
                  $$PROJECT_ROOTDIR \
 
-
+LIBS += -lpolkit-qt5-core-1
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \

@@ -4,6 +4,7 @@ TEMPLATE = lib
 CONFIG   += plugin
 
 include($$PROJECT_COMPONENTSOURCE/comboxframe.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 TARGET = $$qtLibraryTarget(power)
 DESTDIR = ../..
@@ -12,6 +13,7 @@ INSTALLS += target
 
 INCLUDEPATH += \
                $$PROJECT_ROOTDIR \
+               $$PROJECT_COMPONENTSOURCE
 
 LIBS     += -L$$[QT_INSTALL_LIBS] -lgsettings-qt -lupower-glib
 

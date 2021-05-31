@@ -57,7 +57,7 @@ void addShortcutDialog::initSetup()
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(tr("Add custom shortcut"));
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->titleLabel->setStyleSheet("QLabel{color: palette(windowText);}");
     ui->noteLabel->setPixmap(QPixmap("://img/plugins/shortcut/note.png"));
     ui->execLineEdit->setReadOnly(true);
 

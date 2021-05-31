@@ -7,6 +7,7 @@
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 include($$PROJECT_COMPONENTSOURCE/listdelegate.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 QT       += widgets x11extras dbus
 

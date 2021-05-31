@@ -72,7 +72,6 @@ QWidget * Notice::get_plugin_ui() {
         ui->title2Label->setContentsMargins(0, 0, 0, 16);
         ui->applistWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-        initTitleLabel();
         initSearchText();
         setupGSettings();
         setupComponent();
@@ -89,13 +88,6 @@ void Notice::plugin_delay_control() {
 const QString Notice::name() const {
 
     return QStringLiteral("notice");
-}
-
-void Notice::initTitleLabel() {
-    QFont font;
-    font.setPixelSize(18);
-    ui->titleLabel->setFont(font);
-    ui->title2Label->setFont(font);
 }
 
 void Notice::initSearchText() {

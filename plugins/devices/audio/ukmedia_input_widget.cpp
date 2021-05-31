@@ -67,8 +67,9 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pInputPortWidget->setMinimumSize(550,50);
     m_pInputPortWidget->setMaximumSize(960,50);
 
-    m_pInputLabel = new QLabel(tr("Input"),this);
-    m_pInputLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    m_pInputLabel = new TitleLabel(this);
+    m_pInputLabel->setText(tr("Input"));
+    m_pInputLabel->setStyleSheet("color: palette(windowText);}");
     //~ contents_path /audio/Input Device
     m_pInputDeviceLabel = new QLabel(tr("Input Device:"),m_pInputWidget);
     m_pInputDeviceCombobox = new QComboBox(m_pInputDeviceWidget);

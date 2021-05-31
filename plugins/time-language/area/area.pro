@@ -14,6 +14,7 @@ include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
 include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
 include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 TARGET = $$qtLibraryTarget(area)
 DESTDIR = ../..

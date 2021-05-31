@@ -5,11 +5,15 @@
 #-------------------------------------------------
 
 include(../../../env.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 QT       += widgets
 
 TEMPLATE = lib
-CONFIG += plugin
+CONFIG += plugin \
+          link_pkgconfig
+
+PKGCONFIG     += gsettings-qt
 
 TARGET = $$qtLibraryTarget(update)
 DESTDIR = ../..
@@ -18,6 +22,7 @@ INSTALLS += target
 
 INCLUDEPATH   +=  \
                  $$PROJECT_ROOTDIR \
+                 $$PROJECT_COMPONENTSOURCE
 
 #DEFINES += QT_DEPRECATED_WARNINGS
 

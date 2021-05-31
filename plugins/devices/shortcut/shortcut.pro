@@ -2,6 +2,7 @@ include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
 include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
 include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 QT       += widgets dbus KXmlGui KGlobalAccel
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets

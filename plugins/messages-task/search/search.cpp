@@ -103,15 +103,12 @@ const QString Search::name() const
  */
 void Search::initUi()
 {
-    QFont font;
-    font.setPixelSize(18);
     m_plugin_widget = new QWidget;
     m_mainLyt = new QVBoxLayout(m_plugin_widget);
     m_plugin_widget->setLayout(m_mainLyt);
     //设置搜索模式部分的ui
-    m_methodTitleLabel = new QLabel(m_plugin_widget);
+    m_methodTitleLabel = new TitleLabel(m_plugin_widget);
     m_methodTitleLabel->setText(tr("Create Index"));
-    m_methodTitleLabel->setFont(font);
     m_descLabel = new QLabel(m_plugin_widget);
     m_descLabel->setText(tr("Creating index can help you getting results quickly."));
     m_searchMethodFrame = new QFrame(m_plugin_widget);
@@ -131,9 +128,8 @@ void Search::initUi()
     m_mainLyt->addWidget(m_descLabel);
     m_mainLyt->addWidget(m_searchMethodFrame);
     //设置黑名单文件夹部分的ui
-    m_blockDirTitleLabel = new QLabel(m_plugin_widget);
+    m_blockDirTitleLabel = new TitleLabel(m_plugin_widget);
     m_blockDirTitleLabel->setText(tr("Block Folders"));
-    m_blockDirTitleLabel->setFont(font);
     m_blockDirDescLabel = new QLabel(m_plugin_widget);
     m_blockDirDescLabel->setWordWrap(true);
     m_blockDirDescLabel->setText(tr("Following folders will not be searched. You can set it by adding and removing folders."));
@@ -163,8 +159,7 @@ void Search::initUi()
     m_mainLyt->addWidget(m_blockDirsFrame);
     m_mainLyt->addWidget(m_addBlockDirWidget);
     //设置网页搜索引擎部分的ui
-    m_webEngineLabel = new QLabel(m_plugin_widget);
-    m_webEngineLabel->setFont(font);
+    m_webEngineLabel = new TitleLabel(m_plugin_widget);
     m_webEngineLabel->setText(tr("Web Engine"));
     m_webEngineFrame = new ComboxFrame(tr("Default web searching engine"), m_plugin_widget);
     m_webEngineFrame->setFixedHeight(56);

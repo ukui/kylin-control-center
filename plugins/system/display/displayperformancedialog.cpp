@@ -47,7 +47,7 @@ DisplayPerformanceDialog::DisplayPerformanceDialog(QWidget *parent) :
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->titleLabel->setStyleSheet("QLabel{color: palette(windowText);}");
 
     ui->label->setAlignment(Qt::AlignTop);
     ui->label_2->setAlignment(Qt::AlignTop);

@@ -39,7 +39,7 @@
     <number>36</number>
    </property>
    <item>
-    <widget class="QLabel" name="titleLabel">
+    <widget class="TitleLabel" name="titleLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -57,13 +57,6 @@
        <width>16777215</width>
        <height>16777215</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>18</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="text">
       <string>current date</string>
@@ -377,7 +370,7 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QLabel" name="titleLabel_2">
+           <widget class="TitleLabel" name="titleLabel_2">
             <property name="text">
              <string>titleLabel</string>
             </property>
@@ -483,9 +476,9 @@
        <property name="frameShadow">
         <enum>QFrame::Plain</enum>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <property name="spacing">
-         <number>2</number>
+         <number>0</number>
         </property>
         <property name="leftMargin">
          <number>0</number>
@@ -500,9 +493,9 @@
          <number>0</number>
         </property>
         <item>
-         <layout class="QVBoxLayout" name="addLayout">
+         <layout class="QHBoxLayout" name="addLayout">
           <property name="spacing">
-           <number>2</number>
+           <number>0</number>
           </property>
          </layout>
         </item>
@@ -530,6 +523,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TitleLabel</class>
+   <extends>QLabel</extends>
+   <header>Label/titlelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

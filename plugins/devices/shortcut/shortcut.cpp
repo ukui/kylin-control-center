@@ -109,7 +109,6 @@ QWidget *Shortcut::get_plugin_ui()
 
         isCloudService = false;
 
-        initTitleLabel();
         setupComponent();
         setupConnect();
         initFunctionStatus();
@@ -125,14 +124,6 @@ void Shortcut::plugin_delay_control()
 const QString Shortcut::name() const
 {
     return QStringLiteral("shortcut");
-}
-
-void Shortcut::initTitleLabel()
-{
-    QFont font;
-    font.setPixelSize(18);
-    ui->systemLabel->setFont(font);
-    ui->customLabel->setFont(font);
 }
 
 void Shortcut::connectToServer()

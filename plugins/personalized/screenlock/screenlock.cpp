@@ -75,9 +75,9 @@ QWidget *Screenlock::get_plugin_ui()
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
 
-        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-        ui->title1Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
-        ui->title2Label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->titleLabel->setStyleSheet(" QLabel{color: palette(windowText);}");
+        ui->title1Label->setStyleSheet("QLabel{color: palette(windowText);}");
+        ui->title2Label->setStyleSheet("QLabel{color: palette(windowText);}");
 
         const QByteArray id(SCREENLOCK_BG_SCHEMA);
         lSetting = new QGSettings(id, QByteArray(), this);

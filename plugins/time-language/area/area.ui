@@ -36,7 +36,7 @@
     <number>32</number>
    </property>
    <item>
-    <widget class="QLabel" name="titleLabel">
+    <widget class="TitleLabel" name="titleLabel">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -181,7 +181,7 @@
       <number>12</number>
      </property>
      <item>
-      <widget class="QLabel" name="title2Label">
+      <widget class="TitleLabel" name="title2Label">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -448,7 +448,7 @@
       <number>12</number>
      </property>
      <item>
-      <widget class="QLabel" name="title3Label">
+      <widget class="TitleLabel" name="title3Label">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -603,6 +603,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TitleLabel</class>
+   <extends>QLabel</extends>
+   <header location="global">Label/titlelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

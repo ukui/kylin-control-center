@@ -81,7 +81,6 @@ QWidget *Wallpaper::get_plugin_ui() {
         ui->setupUi(pluginWidget);
 
         settingsCreate = false;
-        initTitleLabel();
         initSearchText();
         // 初始化控件
         setupComponent();
@@ -106,12 +105,6 @@ void Wallpaper::plugin_delay_control(){
 const QString Wallpaper::name() const {
 
     return QStringLiteral("wallpaper");
-}
-
-void Wallpaper::initTitleLabel() {
-    QFont font;
-    font.setPixelSize(18);
-    ui->titleLabel->setFont(font);
 }
 
 void Wallpaper::initSearchText() {

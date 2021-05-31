@@ -111,7 +111,6 @@ Theme::Theme()
     ui->setupUi(pluginWidget);
 
     setupGSettings();
-    initTitleLabel();
     initSearchText();
 
     // 设置组件
@@ -148,15 +147,6 @@ void Theme::plugin_delay_control(){
 const QString Theme::name() const {
 
     return QStringLiteral("theme");
-}
-
-void Theme::initTitleLabel() {
-    QFont font;
-    font.setPixelSize(18);
-    ui->titleLabel->setFont(font);
-    ui->iconLabel->setFont(font);
-    ui->controlLabel->setFont(font);
-    ui->cursorLabel->setFont(font);
 }
 
 void Theme::initSearchText() {

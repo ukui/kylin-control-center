@@ -100,7 +100,6 @@ QWidget *UserInfo::get_plugin_ui() {
         // 获取系统全部用户信息，用户Uid大于等于1000的
         _acquireAllUsersInfo();
 
-        initTitleLabel();
         initSearchText();
         readCurrentPwdConf();
         initComponent();
@@ -118,14 +117,6 @@ void UserInfo::plugin_delay_control() {
 const QString UserInfo::name() const {
 
     return QStringLiteral("userinfo");
-}
-
-void UserInfo::initTitleLabel() {
-    QFont font;
-    font.setPixelSize(18);
-    ui->titleLabel->setFont(font);
-    ui->title2Label->setFont(font);
-    ui->bioPasswordLabel->setFont(font);
 }
 
 void UserInfo::initSearchText() {

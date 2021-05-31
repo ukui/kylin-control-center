@@ -68,7 +68,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="titleLabel">
+         <widget class="TitleLabel" name="titleLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -215,6 +215,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TitleLabel</class>
+   <extends>QLabel</extends>
+   <header>Label/titlelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

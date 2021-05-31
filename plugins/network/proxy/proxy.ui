@@ -42,7 +42,7 @@
     <number>30</number>
    </property>
    <item>
-    <widget class="QLabel" name="titleLabel">
+    <widget class="TitleLabel" name="titleLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -259,7 +259,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QLabel" name="title2Label">
+    <widget class="TitleLabel" name="title2Label">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -1069,6 +1069,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TitleLabel</class>
+   <extends>QLabel</extends>
+   <header>Label/titlelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

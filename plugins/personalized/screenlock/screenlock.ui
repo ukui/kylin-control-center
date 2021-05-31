@@ -63,7 +63,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="titleLabel">
+       <widget class="TitleLabel" name="titleLabel">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -140,7 +140,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="title2Label">
+       <widget class="TitleLabel" name="title2Label">
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -372,7 +372,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="title1Label">
+       <widget class="TitleLabel" name="title1Label">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -490,6 +490,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TitleLabel</class>
+   <extends>QLabel</extends>
+   <header location="global">Label/titlelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

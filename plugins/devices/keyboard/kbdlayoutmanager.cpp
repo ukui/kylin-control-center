@@ -63,7 +63,7 @@ KbdLayoutManager::KbdLayoutManager(QWidget *parent) :
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->titleLabel->setStyleSheet("QLabel{color: palette(windowText);}");
 
     ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 

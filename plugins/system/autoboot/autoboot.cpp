@@ -92,7 +92,6 @@ QWidget *AutoBoot::get_plugin_ui()
         ui->setupUi(pluginWidget);
 
         connectToServer();
-        initTitleLabel();
         initStyle();
         localconfigdir = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
 
@@ -166,13 +165,6 @@ void AutoBoot::initAddBtn()
     });
 
     ui->addLyt->addWidget(addWgt);
-}
-
-void AutoBoot::initTitleLabel()
-{
-    QFont font;
-    font.setPixelSize(18);
-    ui->titleLabel->setFont(font);
 }
 
 void AutoBoot::initStyle()

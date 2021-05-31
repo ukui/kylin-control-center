@@ -18,7 +18,7 @@ AppDetail::AppDetail(QString Name,QString key, QGSettings *gsettings, QWidget *p
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowTitle(appName);
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->titleLabel->setStyleSheet("QLabel{color: palette(windowText);}");
 
     initUiStatus();
     initComponent();

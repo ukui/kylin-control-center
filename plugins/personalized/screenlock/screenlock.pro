@@ -9,6 +9,7 @@ include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 include($$PROJECT_COMPONENTSOURCE/flowlayout.pri)
 include($$PROJECT_COMPONENTSOURCE/maskwidget.pri)
 include($$PROJECT_COMPONENTSOURCE/uslider.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 QT       += widgets xml dbus
 

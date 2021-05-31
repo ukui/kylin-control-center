@@ -46,7 +46,7 @@ DelUserDialog::~DelUserDialog()
 
 void DelUserDialog::setupComonpent(){
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->titleLabel->setStyleSheet("QLabel{color: palette(windowText);}");
 //    ui->closeBtn->setFlat(true);
 //    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 //    ui->closeBtn->setStyleSheet("QPushButton:hover:!pressed#closeBtn{background: #FA6056; border-radius: 4px;}"

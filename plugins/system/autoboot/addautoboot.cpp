@@ -99,7 +99,7 @@ void AddAutoBoot::paintEvent(QPaintEvent *event)
 
 void AddAutoBoot::initStyle()
 {
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->titleLabel->setStyleSheet("QLabel{color: palette(windowText);}");
 
     selectFile = "";
 

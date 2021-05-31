@@ -1,10 +1,13 @@
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/flowlayout.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 QT       += widgets
 
 TEMPLATE = lib
-CONFIG += plugin
+CONFIG += plugin \
+          link_pkgconfig
+PKGCONFIG     += gsettings-qt
 
 TARGET = $$qtLibraryTarget(securitycenter)
 DESTDIR = ../..

@@ -151,9 +151,6 @@ const QString Screensaver::name() const
 
 void Screensaver::initTitleLabel()
 {
-    QFont font;
-    font.setPixelSize(18);
-    ui->titleLabel->setFont(font);
     QLabel *previewLabel = new QLabel(ui->previewWidget->topLevelWidget());
     previewLabel->setStyleSheet("background-color: palette(button);border-radius: 0px;");
     QFont fontLabel;

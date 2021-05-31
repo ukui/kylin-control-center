@@ -6245,7 +6245,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="171"/>
         <source>Show rest time</source>
-        <translation>在屏保上显示休息时间</translation>
+        <translation>显示休息时间</translation>
         <extra-contents_path>/screensaver/Show rest time</extra-contents_path>
     </message>
     <message>

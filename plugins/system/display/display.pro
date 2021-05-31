@@ -6,6 +6,7 @@
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 QT            += widgets core gui quickwidgets quick xml KScreen KI18n KConfigCore KConfigWidgets KWidgetsAddons dbus concurrent
 TEMPLATE = lib

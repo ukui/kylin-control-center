@@ -25,6 +25,7 @@
 #include <QImage>
 #include <QSlider>
 #include <QLabel>
+#include "Label/titlelabel.h"
 
 static QColor symbolic_color = Qt::gray;
 

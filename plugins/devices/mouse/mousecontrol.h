@@ -67,7 +67,6 @@ public:
     const QString name() const  Q_DECL_OVERRIDE;
 
     void initSearchText();
-    void initTitleLabel();
     void setupComponent();
     void initHandHabitStatus();
     void initPointerStatus();

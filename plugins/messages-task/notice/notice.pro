@@ -5,6 +5,7 @@ include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 TEMPLATE = lib
 CONFIG += plugin

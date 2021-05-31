@@ -13,6 +13,7 @@ target.path = $${PLUGIN_INSTALL_DIRS}
 
 include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 INCLUDEPATH += \
     $$PROJECT_COMPONENTSOURCE \

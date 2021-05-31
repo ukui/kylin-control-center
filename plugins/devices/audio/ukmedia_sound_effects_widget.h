@@ -59,7 +59,7 @@ private:
 
     QString qss;
     QStyledItemDelegate *itemDelegate;
-    QLabel *m_pSoundEffectLabel;
+    TitleLabel *m_pSoundEffectLabel;
     QLabel *m_pSoundThemeLabel;
     QLabel *m_pShutdownlabel;
     QLabel *m_pLagoutLabel;

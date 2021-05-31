@@ -9,6 +9,7 @@
 #include <QDBusMessage>
 //#include <polkit-qt5-1/PolkitQt1/Authority>
 #include <QMessageLogger>
+#include "Label/titlelabel.h"
 
 BlueToothMain::BlueToothMain(QWidget *parent)
     : QMainWindow(parent)
@@ -112,12 +113,9 @@ BlueToothMain::BlueToothMain(QWidget *parent)
 void BlueToothMain::InitMainTopUI()
 {
     //~ contents_path /bluetooth/Bluetooth
-    QLabel *label_1 = new QLabel(tr("Bluetooth"),frame_top);
+    TitleLabel *label_1 = new TitleLabel(frame_top);
+    label_1->setText(tr("Bluetooth"));
     label_1->setFixedSize(100,25);
-    label_1->setStyleSheet("QLabel{\
-                           font-size: 18px;\
-                           font-weight: 500;\
-                           line-height: 25px;}");
 
     QVBoxLayout *top_layout = new QVBoxLayout();
     top_layout->setSpacing(8);
@@ -260,12 +258,9 @@ void BlueToothMain::InitMainMiddleUI()
     paired_dev_layout->setSpacing(2);
     paired_dev_layout->setContentsMargins(0,0,0,0);
 
-    QLabel *middle_label = new QLabel(tr("My Devices"),frame_middle);
-    middle_label->setStyleSheet("QLabel{width: 72px;\
-                                height: 25px;\
-                                font-size: 18px;\
-                                font-weight: 500;\
-                                line-height: 25px;}");
+    TitleLabel *middle_label = new TitleLabel(frame_middle);
+    middle_label->setText(tr("My Devices"));
+    middle_label->setFixedSize(72,25);
 
     middle_layout->addWidget(middle_label,Qt::AlignTop);
     middle_layout->addLayout(paired_dev_layout,Qt::AlignTop);
@@ -280,13 +275,9 @@ void BlueToothMain::InitMainbottomUI()
     title_layout->setContentsMargins(0,0,10,0);
 
     //~ contents_path /bluetooth/Other Devices
-    QLabel *label_1 = new QLabel(tr("Other Devices"),frame_bottom);
-    label_1->setStyleSheet("QLabel{\
-                          width: 72px;\
-                          height: 25px;\
-                          font-size: 18px;\
-                          font-weight: 500;\
-                          line-height: 25px;}");
+    TitleLabel *label_1 = new TitleLabel(frame_bottom);
+    label_1->setText(tr("Other Devices"));
+    label_1->setFixedSize(72,25);
 
     loadLabel = new QLabel(frame_bottom);
     loadLabel->setFixedSize(24,24);

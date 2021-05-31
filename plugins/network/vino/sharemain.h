@@ -34,6 +34,7 @@
 #include <QPushButton>
 #include "SwitchButton/switchbutton.h"
 #include "inputpwddialog.h"
+#include "Label/titlelabel.h"
 
 const QByteArray kVinoSchemas = "org.gnome.Vino";
 const QString kVinoViewOnlyKey = "view-only";
@@ -74,7 +75,7 @@ private:
     QRadioButton *mNoticeOBtn;
     QRadioButton *mNoticeNBtn;
 
-    QLabel *mShareTitleLabel;
+    TitleLabel *mShareTitleLabel;
     QLabel *mEnableLabel;
     QLabel *mViewLabel;
     QLabel *mSecurityTitleLabel;
@@ -92,7 +93,6 @@ private:
     QGSettings *mVinoGsetting;
 
 private:
-    void initTitleLabel();
     void initUI();
     void initConnection();
     void initShareStatus(bool isConnnect, bool isPwd);

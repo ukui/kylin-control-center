@@ -36,7 +36,7 @@
     <number>32</number>
    </property>
    <item>
-    <widget class="QLabel" name="systemLabel">
+    <widget class="TitleLabel" name="systemLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -52,7 +52,7 @@
     <layout class="QVBoxLayout" name="verticalLayout"/>
    </item>
    <item>
-    <widget class="QLabel" name="customLabel">
+    <widget class="TitleLabel" name="customLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -142,6 +142,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TitleLabel</class>
+   <extends>QLabel</extends>
+   <header>Label/titlelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

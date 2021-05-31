@@ -4,8 +4,11 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets dbus BluezQt
 
 TEMPLATE = lib
-CONFIG += c++11
-CONFIG += plugin
+CONFIG += plugin \
+          += c++11 \
+          link_pkgconfig
+
+PKGCONFIG     += gsettings-qt
 
 LIBS += -L /usr/lib/x86_64-linux-gnu -l KF5BluezQt
 
@@ -14,6 +17,7 @@ DESTDIR = ../..
 target.path = $${PLUGIN_INSTALL_DIRS}
 
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 INCLUDEPATH   +=  \
                  $$PROJECT_COMPONENTSOURCE \

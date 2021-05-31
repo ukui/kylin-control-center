@@ -22,6 +22,7 @@
 #define WEB_ENGINE_KEY "webEngine"
 //TODO
 #define CONFIG_FILE "/.config/org.ukui/ukui-search/ukui-search-block-dirs.conf"
+#include "Label/titlelabel.h"
 
 namespace Ui {
 class Search;
@@ -63,14 +64,14 @@ private:
     void initUi();
     QVBoxLayout * m_mainLyt = nullptr;
     //设置搜索模式
-    QLabel * m_methodTitleLabel = nullptr;
+    TitleLabel * m_methodTitleLabel = nullptr;
     QLabel * m_descLabel = nullptr;
     QFrame * m_searchMethodFrame = nullptr;
     QHBoxLayout * m_searchMethodLyt = nullptr;
     QLabel * m_searchMethodLabel = nullptr;
     SwitchButton * m_searchMethodBtn = nullptr;
     //设置黑名单
-    QLabel * m_blockDirTitleLabel = nullptr;
+    TitleLabel * m_blockDirTitleLabel = nullptr;
     QLabel * m_blockDirDescLabel = nullptr;
     QFrame * m_blockDirsFrame = nullptr;
     QVBoxLayout * m_blockDirsLyt = nullptr;
@@ -88,7 +89,7 @@ private:
     void initBlockDirsList();
 //    void refreshBlockDirsList();
     //设置搜索引擎
-    QLabel * m_webEngineLabel = nullptr;
+    TitleLabel * m_webEngineLabel = nullptr;
     ComboxFrame * m_webEngineFrame = nullptr;
 
     void setupConnection();

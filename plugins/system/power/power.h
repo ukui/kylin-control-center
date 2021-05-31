@@ -53,7 +53,6 @@ public:
     const QString name() const Q_DECL_OVERRIDE;
 
 public:
-    void initTitleLabel();
     void initSearText();
     void setupComponent();
     void setupConnect();

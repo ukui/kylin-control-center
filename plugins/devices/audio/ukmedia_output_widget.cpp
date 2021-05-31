@@ -94,8 +94,9 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pProfileWidget->setMinimumSize(550,50);
     m_pProfileWidget->setMaximumSize(960,50);
 
-    m_pOutputLabel = new QLabel(tr("Output"),this);
-    m_pOutputLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    m_pOutputLabel = new TitleLabel(this);
+    m_pOutputLabel->setText(tr("Output"));
+    m_pOutputLabel->setStyleSheet("QLabel{color: palette(windowText);}");
     //~ contents_path /audio/Output Device
     m_pOutputDeviceLabel = new QLabel(tr("Output Device:"),m_pOutputWidget);
     m_pOutputDeviceCombobox = new QComboBox(m_pOutputDeviceWidget);

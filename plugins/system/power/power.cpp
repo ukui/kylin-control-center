@@ -101,7 +101,6 @@ QWidget * Power::get_plugin_ui() {
         const QByteArray sessionId(SESSION_SCHEMA);
         const QByteArray personalizeId(PERSONALSIE_SCHEMA);
 
-        initTitleLabel();
         initDbus();
         initDeviceStatus();
         isPowerSupply();
@@ -133,14 +132,6 @@ void Power::plugin_delay_control() {
 const QString Power::name() const {
 
     return QStringLiteral("power");
-}
-
-void Power::initTitleLabel()
-{
-    QFont font;
-    font.setPixelSize(18);
-    ui->titleLabel->setFont(font);
-    ui->title2Label->setFont(font);
 }
 
 void Power::initSearText() {

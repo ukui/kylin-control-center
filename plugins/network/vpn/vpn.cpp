@@ -53,7 +53,6 @@ QWidget *Vpn::get_plugin_ui(){
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
 
-        initTitleLabel();
         initComponent();
     }
     return pluginWidget;
@@ -66,12 +65,6 @@ void Vpn::plugin_delay_control(){
 const QString Vpn::name() const {
 
     return QStringLiteral("vpn");
-}
-
-void Vpn::initTitleLabel() {
-    QFont font;
-    font.setPixelSize(18);
-    ui->titleLabel->setFont(font);
 }
 
 void Vpn::initComponent(){

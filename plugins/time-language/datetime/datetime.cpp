@@ -36,6 +36,7 @@
 #include <sys/timex.h>
 #include <qmath.h>
 #include <polkit-qt5-1/polkitqt1-authority.h>
+#include "ImageUtil/imageutil.h"
 
 const char kTimezoneDomain[] = "installer-timezones";
 const char kDefaultLocale[]  = "en_US.UTF-8";
@@ -133,18 +134,14 @@ void DateTime::initTitleLabel()
 {
     QGSettings *m_fontSetting = new QGSettings("org.ukui.style");
     QFont font;
-    font.setFamily(m_fontSetting->get("systemFont").toString());
-    font.setPointSize(m_fontSetting->get("systemFontSize").toInt());
-    QFont font2;
-    font2.setPointSize(font.pointSize() + 3);
-    ui->titleLabel->setFont(font2);
-    ui->titleLabel_2->setFont(font2);
     ui->titleLabel_2->adjustSize();
     ui->titleLabel_2->setText(tr("Other Timezone"));
     ui->timeClockLable->setObjectName("timeClockLable");
-    font.setPointSize(font.pointSize() + 8);
-    font.setBold(true);
+    font.setPixelSize(m_fontSetting->get("systemFontSize").toInt() * 23 / 11);
+    font.setWeight(QFont::Medium);
     ui->timeClockLable->setFont(font);
+    delete m_fontSetting;
+    m_fontSetting = nullptr;
 }
 
 void DateTime::initUI()
@@ -244,16 +241,70 @@ void DateTime::initStatus()
 
 void DateTime::initTimeShow()
 {
-    QFont font;
-    font.setPixelSize(14);
-    ui->summaryLabel->setFont(font);
     ui->summaryLabel->setObjectName("summaryText");
-    ui->summaryLabel->setText(tr("Add time zones to display the time, up to 5 can be added"));
+    ui->summaryLabel->setText(tr("Add time zones to display the time,only 5 can be added"));
 
-    addTimeBtn = new QPushButton(ui->addFrame);
-    ui->addLayout->addWidget(addTimeBtn);
-    addTimeBtn->setText(tr("Add Timezone"));
-    addTimeBtn->setFixedHeight(50);
+    HoverWidget *addTimeWgt = new HoverWidget("");
+    addTimeWgt->setObjectName(tr("addTimeWgt"));
+    addTimeWgt->setMinimumSize(QSize(580, 50));
+    addTimeWgt->setMaximumSize(QSize(960, 50));
+
+    QPalette pal;
+    QBrush brush = pal.highlight();  //获取window的色值
+    QColor highLightColor = brush.color();
+
+    QString stringColor = QString("rgba(%1,%2,%3)") //叠加20%白色
+           .arg(highLightColor.red()*0.8 + 255*0.2)
+           .arg(highLightColor.green()*0.8 + 255*0.2)
+           .arg(highLightColor.blue()*0.8 + 255*0.2);
+
+    addTimeWgt->setStyleSheet(QString("HoverWidget#addTimeWgt{background: palette(button); \
+                                                      border-radius: 4px;}\
+                              HoverWidget:hover:!pressed#addTimeWgt{background: %1; \
+                                                                    border-radius: 4px;}").arg(stringColor));
+
+    QHBoxLayout *addLyt = new QHBoxLayout;
+
+    QLabel * iconLabel = new QLabel();
+    QLabel * textLabel = new QLabel(tr("Add Timezone"));
+    QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+    iconLabel->setPixmap(pixgray);
+    iconLabel->setProperty("useIconHighlightEffect", true);
+    iconLabel->setProperty("iconHighlightEffectMode", 1);
+
+    addLyt->addWidget(iconLabel);
+    addLyt->addWidget(textLabel);
+    addLyt->addStretch();
+    addTimeWgt->setLayout(addLyt);
+    ui->addLayout->addWidget(addTimeWgt);
+
+    connect(addTimeWgt, &HoverWidget::widgetClicked, this, [=](QString mname) {
+        Q_UNUSED(mname);
+        changeZoneFlag = false;
+        changezoneSlot(1);
+    });
+
+    // 悬浮改变Widget状态
+    connect(addTimeWgt, &HoverWidget::enterWidget, this, [=](){
+        if (!ui->addFrame->isEnabled())
+            return;
+        iconLabel->setProperty("useIconHighlightEffect", false);
+        iconLabel->setProperty("iconHighlightEffectMode", 0);
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: white;");
+    });
+
+    // 还原状态
+    connect(addTimeWgt, &HoverWidget::leaveWidget, this, [=](){
+        if (!ui->addFrame->isEnabled())
+            return;
+        iconLabel->setProperty("useIconHighlightEffect", true);
+        iconLabel->setProperty("iconHighlightEffectMode", 1);
+        QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
+        iconLabel->setPixmap(pixgray);
+        textLabel->setStyleSheet("color: palette(windowText);");
+    });
 
     if (m_formatsettings->keys().contains(TIMEZONES_KEY)) {
         timezonesList = m_formatsettings->get(TIMEZONES_KEY).toStringList();
@@ -261,7 +312,7 @@ void DateTime::initTimeShow()
         int timesNum = timezonesList.size();
         if (timezonesList.size() >= MAX_TIMES) {
             timesNum = MAX_TIMES;
-            addTimeBtn->setEnabled(false);
+            ui->addFrame->setEnabled(false);
             for (int i = MAX_TIMES; i < timezonesList.size(); ++i) {
                 timezonesList.removeLast();
             }
@@ -273,11 +324,6 @@ void DateTime::initTimeShow()
             newTimeshow(timezonesList[i]);
         }
      }
-
-     connect(addTimeBtn, &QPushButton::clicked, this, [=](){
-        changeZoneFlag = false;
-        changezoneSlot(1);
-     });
 }
 
 void DateTime::addTimezone(const QString &timezone)
@@ -291,7 +337,7 @@ void DateTime::addTimezone(const QString &timezone)
     }
     timezonesList.append(timezone);
     if (timezonesList.size() >= MAX_TIMES) {
-        addTimeBtn->setEnabled(false);
+        ui->addFrame->setEnabled(false);
     }
      if (m_formatsettings->keys().contains(TIMEZONES_KEY)) {
         m_formatsettings->set(TIMEZONES_KEY, timezonesList);
@@ -307,12 +353,8 @@ void DateTime::newTimeshow(const QString &timezone)
     QWidget     *timeWid      = new QWidget(addWgt);
     QHBoxLayout *timeLayout   = new QHBoxLayout(timeWid);
     QPushButton *btn          = new QPushButton(addWgt);
-    QLabel      *label_1      = new QLabel(addWgt);    //时间
+    TitleLabel  *label_1      = new TitleLabel(addWgt);    //时间,和标题字号一致
     QLabel      *label_2      = new QLabel(addWgt);    //日期
-    QFont fontTime;
-    QGSettings *m_fontSetting = new QGSettings("org.ukui.style");
-    fontTime.setFamily(m_fontSetting->get("systemFont").toString());
-    fontTime.setPointSize(m_fontSetting->get("systemFontSize").toInt());
 
     ui->showLayout->addWidget(addWgt);
     addWgt->setParent(ui->showFrame);
@@ -336,14 +378,6 @@ void DateTime::newTimeshow(const QString &timezone)
     label_1->setObjectName("label_1_time");
     label_2->setObjectName("label_2_week");
     timeLayout->addStretch();
-
-    fontTime.setPointSize(fontTime.pointSize() + 2);
-    fontTime.setBold(true);
-    label_1->setFont(fontTime);
-
-    fontTime.setPointSize(fontTime.pointSize() - 2);
-    fontTime.setBold(false);
-    label_2->setFont(fontTime);
 
     QTimeZone thisZone = QTimeZone(timezone.toLatin1().data());
     QDateTime thisZoneTime = QDateTime::currentDateTime().toTimeZone(thisZone);
@@ -371,15 +405,15 @@ void DateTime::newTimeshow(const QString &timezone)
         btn->hide();
     });
 
-    connect(btn, &QPushButton::clicked, this, [=, addWgt](){
+    connect(btn, &QPushButton::clicked, this, [=](){
         timezonesList.removeOne(addWgt->_name);
         if (m_formatsettings->keys().contains(TIMEZONES_KEY)) {
             m_formatsettings->set(TIMEZONES_KEY, timezonesList);
         }
         ui->showFrame->setFixedHeight(timezonesList.size() * (50 + 2) + 16 - 2);
         addWgt->close();
-        if (!addTimeBtn->isEnabled() && timezonesList.size() < MAX_TIMES) {
-            addTimeBtn->setEnabled(true);
+        if (!ui->addFrame->isEnabled() && timezonesList.size() < MAX_TIMES) {
+           ui->addFrame->setEnabled(true);
         }
     });
 

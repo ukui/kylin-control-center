@@ -185,8 +185,6 @@ QWidget * SecurityCenter::get_plugin_ui(){
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
 
-
-        initTitleLabel();
         initSearchText();
         initComponent();
 
@@ -205,12 +203,6 @@ void SecurityCenter::plugin_delay_control(){
 const QString SecurityCenter::name() const {
 
     return QStringLiteral("securitycenter");
-}
-
-void SecurityCenter::initTitleLabel() {
-    QFont font;
-    font.setPixelSize(18);
-    ui->titleLabel->setFont(font);
 }
 
 void SecurityCenter::initSearchText() {

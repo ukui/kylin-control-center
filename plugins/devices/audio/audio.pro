@@ -12,6 +12,7 @@ TEMPLATE = lib
 CONFIG += plugin
 
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 INCLUDEPATH += ../../.. \
                $$PROJECT_COMPONENTSOURCE \

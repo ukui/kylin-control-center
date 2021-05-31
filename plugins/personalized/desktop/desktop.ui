@@ -39,7 +39,7 @@
     <number>48</number>
    </property>
    <item>
-    <widget class="QLabel" name="titleLabel">
+    <widget class="TitleLabel" name="titleLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -522,7 +522,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QLabel" name="title2Label">
+      <widget class="TitleLabel" name="title2Label">
        <property name="text">
         <string>Set Start Menu</string>
        </property>
@@ -606,7 +606,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="menuLabel">
+    <widget class="TitleLabel" name="menuLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -1014,7 +1014,7 @@
       <number>9</number>
      </property>
      <item>
-      <widget class="QLabel" name="title3Label">
+      <widget class="TitleLabel" name="title3Label">
        <property name="text">
         <string>Tray icon</string>
        </property>
@@ -1054,6 +1054,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TitleLabel</class>
+   <extends>QLabel</extends>
+   <header>Label/titlelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

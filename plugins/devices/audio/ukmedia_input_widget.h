@@ -52,7 +52,7 @@ private:
     QFrame *m_pInputPortWidget;
     QListWidget *m_pInputListWidget;
 
-    QLabel *m_pInputLabel;
+    TitleLabel *m_pInputLabel;
     QLabel *m_pInputDeviceLabel;
     QLabel *m_pIpVolumeLabel;
     QLabel *m_pInputLevelLabel;

@@ -89,11 +89,6 @@ void Backup::initTitleLabel()
     ui->titleLabel->setText(tr("Backup"));
     //~ contents_path /backup/Restore
     ui->title2Label->setText(tr("Restore"));
-
-    QFont font;
-    font.setPixelSize(18);
-    ui->titleLabel->setFont(font);
-    ui->title2Label->setFont(font);
 }
 
 void Backup::initConnection()

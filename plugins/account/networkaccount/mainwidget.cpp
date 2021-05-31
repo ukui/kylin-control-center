@@ -469,7 +469,7 @@ void MainWidget::initMemoryAlloc() {
     m_infoWidget = new QWidget(this);//名字框
     m_itemList = new ItemList();//滑动按钮列表
     m_autoSyn = new FrameItem(this);//自动同步按钮
-    m_title = new QLabel(this);//标题
+    m_title = new TitleLabel(this);//标题
     m_infoTab = new QLabel(m_infoWidget);//名字
     m_exitCloud_btn = new QPushButton(tr("Exit"),this);//退出按钮
     m_workLayout = new QVBoxLayout;//业务逻辑布局
@@ -481,7 +481,7 @@ void MainWidget::initMemoryAlloc() {
     m_nullWidget = new QWidget(this);
     m_welcomeLayout = new QVBoxLayout;
     m_welcomeImage = new QSvgWidget(":/new/image/96_color.svg");
-    m_welcomeMsg = new QLabel(this);
+    m_welcomeMsg = new TitleLabel(this);
     m_login_btn  = new QPushButton(tr("Sign in"),this);
     m_svgHandler = new SVGHandler(this);
     m_stackedWidget = new QStackedWidget(this);
@@ -822,8 +822,6 @@ void MainWidget::init_gui() {
     m_login_btn->setFixedSize(180,36);
     m_welcomeMsg->setText(tr("Synchronize your personalized settings and data"));
 
-    m_welcomeMsg->setStyleSheet("font-size:18px;");
-
     m_exitCloud_btn->setStyleSheet("QPushButton[on=true]{background-color:#3790FA;border-radius:4px;}");
     m_exitCloud_btn->setProperty("on",false);
 
@@ -836,8 +834,6 @@ void MainWidget::init_gui() {
     //控件初始化设置
     m_infoTabWidget->setFocusPolicy(Qt::NoFocus);
     m_title->setText(tr("Sync your settings"));
-    m_title->setStyleSheet("font-size:18px;font-weight:500;");
-
 
     m_infoTab->setText(tr("Your account:%1").arg(m_szCode));
     m_autoSyn->set_itemname(tr("Auto sync"));
@@ -1089,7 +1085,7 @@ QLabel* MainWidget::get_info() {
     return m_infoTab;
 }
 
-QLabel* MainWidget::get_title() {
+TitleLabel* MainWidget::get_title() {
     return m_title;
 }
 

@@ -21,7 +21,7 @@ DataFormat::DataFormat(QWidget *parent) :
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->titleLabel->setStyleSheet("QLabel{color: palette(windowText);}");
 
     QByteArray id(PANEL_GSCHEMAL);
     if(QGSettings::isSchemaInstalled(id)) {

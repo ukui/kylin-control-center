@@ -42,7 +42,7 @@ ChangeValidDialog::ChangeValidDialog(QString userName, QWidget *parent) :
 
 //    ui->closeBtn->setIcon(QIcon("://img/titlebar/close.svg"));
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->titleLabel->setStyleSheet("QLabel{color: palette(windowText);}");
 //    ui->closeBtn->setProperty("useIconHighlightEffect", true);
 //    ui->closeBtn->setProperty("iconHighlightEffectMode", 1);
 //    ui->closeBtn->setFlat(true);

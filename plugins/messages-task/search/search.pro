@@ -6,6 +6,7 @@ include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 include($$PROJECT_COMPONENTSOURCE/comboxframe.pri)
 include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
 include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 TEMPLATE = lib
 CONFIG += plugin

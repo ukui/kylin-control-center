@@ -62,7 +62,7 @@ QWidget *DefaultApp::get_plugin_ui() {
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
         ui->setupUi(pluginWidget);
 
-        ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+        ui->titleLabel->setStyleSheet("QLabel{color: palette(windowText);}");
         initUI();
         initSlots();
         connectToServer();

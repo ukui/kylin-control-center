@@ -129,7 +129,6 @@ private:
     QComboBox *ntpCombox = nullptr;
     bool  changeZoneFlag = false;
     QStringList timezonesList;
-    QPushButton *addTimeBtn = nullptr;
 
 Q_SIGNALS:
     void changed();

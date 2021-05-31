@@ -92,7 +92,7 @@
          <number>8</number>
         </property>
         <item>
-         <widget class="QLabel" name="titleLabel">
+         <widget class="TitleLabel" name="titleLabel">
           <property name="text">
            <string>App</string>
           </property>
@@ -317,6 +317,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TitleLabel</class>
+   <extends>QLabel</extends>
+   <header>Label/titlelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -20,7 +20,6 @@
 #include "syncdialog.h"
 #include <QDesktopWidget>
 #include <QPaintEngine>
-#include "configfile.h"
 #include <QApplication>
 #include <QDebug>
 
@@ -28,7 +27,7 @@ extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int tran
 
 SyncDialog::SyncDialog(QString name,QString path, QWidget *parent) : QDialog(parent)
 {
-    mTitle = new QLabel(this);
+    mTitle = new TitleLabel(this);
     mTips = new QLabel(this);
     mListWidget = new QListWidget(this);
     mSyncButton = new QPushButton(tr("Sync"),this);
@@ -90,7 +89,6 @@ void SyncDialog::checkOpt() {
 void SyncDialog::initUI() {
     setFixedSize(400,380);
     setContentsMargins(32,32,32,23);
-    mTitle->setStyleSheet("font-size:18px;font-weight:500");
 
     mListWidget->setFixedHeight(160);
     mSyncButton->setFixedSize(100,36);

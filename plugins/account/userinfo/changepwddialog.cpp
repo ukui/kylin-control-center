@@ -69,7 +69,7 @@ ChangePwdDialog::ChangePwdDialog(bool _isCurrentUser, QString _username, QWidget
     timerForCheckPwd->setInterval(1000);
     timerForCheckPwd->setSingleShot(true);
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->titleLabel->setStyleSheet("QLabel{color: palette(windowText);}");
     ui->pwdFrame->setFrameShape(QFrame::Shape::Box);
     ui->tipLabel->setAlignment(Qt::AlignCenter);
     ui->tipLabel->setStyleSheet("color:red;");

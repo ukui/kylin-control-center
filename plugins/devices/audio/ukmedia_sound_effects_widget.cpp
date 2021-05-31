@@ -50,8 +50,9 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     m_pPoweroffMusicWidget->setFrameShape(QFrame::Shape::Box);
 
     //~ contents_path /audio/System Sound
-    m_pSoundEffectLabel = new QLabel(tr("System Sound"),this);
-    m_pSoundEffectLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    m_pSoundEffectLabel = new TitleLabel(this);
+    m_pSoundEffectLabel->setText(tr("System Sound"));
+    m_pSoundEffectLabel->setStyleSheet("QLabel{color: palette(windowText);}");
     //~ contents_path /audio/Sound Theme
     m_pSoundThemeLabel = new QLabel(tr("Sound Theme"),m_pThemeWidget);
     m_pSoundThemeCombobox = new QComboBox(m_pThemeWidget);

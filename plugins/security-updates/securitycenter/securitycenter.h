@@ -80,7 +80,6 @@ public:
     FlowLayout * flowLayout;
 
 public:
-    void initTitleLabel();
     void initSearchText();
     void initComponent();
 

@@ -359,11 +359,11 @@ void TabWid::allComponents()
     allUpdateLayout->setSpacing(2);
     allUpdateLayout->setMargin(0);
 
-    labUpdate = new QLabel(this);
+    labUpdate = new TitleLabel(this);
     //    labUpdate->setText(tr("更新"));
     labUpdate->setText(tr("Update"));
     labUpdate->adjustSize();
-    labUpdate->setStyleSheet("font-size:18px;font-weight: 500;line-height: 25px;");
+    labUpdate->setFixedHeight(25);
 
     scrollArea->setWidget(updateTab);
     scrollArea->setFrameStyle(0);
@@ -417,10 +417,10 @@ void TabWid::allComponents()
     tab1HLayout->setContentsMargins(8,25,20,20);
     tab1HLayout->setSpacing(0);
 
-    updateSettingLab = new QLabel();
+    updateSettingLab = new TitleLabel();
     //    updateSettingLab->setText(tr("更新设置"));
     updateSettingLab->setText(tr("Update Settings"));
-    updateSettingLab->setStyleSheet("font-size:18px;font-weight: 500;line-height: 25px;");
+    updateSettingLab->setFixedHeight(25);
     updateSettingWidget = new QWidget(this);
     updatesettingLayout = new QVBoxLayout();
     updateSettingWidget->setLayout(updatesettingLayout);

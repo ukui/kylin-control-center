@@ -21,6 +21,8 @@
 #include "backup.h"
 #include "checkbutton.h"
 #include "SwitchButton/switchbutton.h"
+#include "Label/titlelabel.h"
+
 #define CRUCIAL_FILE_PATH "/var/lib/kylin-software-properties/template/crucial.list"
 #define IMPORTANT_FIEL_PATH "/var/lib/kylin-software-properties/template/important.list"
 
@@ -45,7 +47,7 @@ public:
 
     //选项卡页面，具有更新和更新设置两个选项卡及对应界面
     QTabWidget *updateWidget;
-    QLabel *labUpdate;
+    TitleLabel *labUpdate;
     QWidget *updateTab;
     QWidget *updateSettingTab;
     QVBoxLayout *mainTabLayout;
@@ -72,7 +74,7 @@ public:
 
      //更新设置页面组件
     QWidget *updateSettingWidget;
-    QLabel *updateSettingLab;
+    TitleLabel *updateSettingLab;
     QVBoxLayout *updatesettingLayout;
     QFrame *isAutoCheckWidget;
     QHBoxLayout *isAutoCheckLayout;

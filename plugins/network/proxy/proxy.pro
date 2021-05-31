@@ -6,6 +6,7 @@
 
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 QT       += widgets
 

@@ -246,7 +246,7 @@ void ChangeGroupDialog::setupInit()
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->titleLabel->setStyleSheet("QLabel{color: palette(windowText);}");
 
     ui->listWidget->setFocusPolicy(Qt::NoFocus);
     ui->listWidget->setSelectionMode(QAbstractItemView::NoSelection);

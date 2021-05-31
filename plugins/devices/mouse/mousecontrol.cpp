@@ -128,7 +128,6 @@ QWidget *MouseControl::get_plugin_ui() {
         ui->setupUi(pluginWidget);
 
         initSearchText();
-        initTitleLabel();
 
         //初始化鼠标设置GSettings
         const QByteArray id(MOUSE_SCHEMA);
@@ -190,14 +189,6 @@ void MouseControl::initSearchText() {
     ui->label_7->setMinimumWidth(50);
     ui->label_21->setMinimumWidth(50);
     ui->label_22->setMinimumWidth(50);
-}
-
-void MouseControl::initTitleLabel() {
-    QFont font;
-    font.setPixelSize(18);
-    ui->titleLabel->setFont(font);
-    ui->title2Label->setFont(font);
-    ui->title3Label->setFont(font);
 }
 
 void MouseControl::setupComponent() {

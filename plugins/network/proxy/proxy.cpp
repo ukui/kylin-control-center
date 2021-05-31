@@ -92,7 +92,6 @@ QWidget *Proxy::get_plugin_ui() {
         const QByteArray iid(FTP_PROXY_SCHEMA);
         const QByteArray iiid(SOCKS_PROXY_SCHEMA);
 
-        initTitleLabel();
         initSearchText();
         setupStylesheet();
         setupComponent();
@@ -127,13 +126,6 @@ void Proxy::plugin_delay_control(){
 const QString Proxy::name() const {
 
     return QStringLiteral("proxy");
-}
-
-void Proxy::initTitleLabel() {
-    QFont font;
-    font.setPixelSize(18);
-    ui->titleLabel->setFont(font);
-    ui->title2Label->setFont(font);
 }
 
 void Proxy::initSearchText() {
