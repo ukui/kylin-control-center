@@ -286,11 +286,10 @@ void DateTime::addTimezone(const QString &timezone)
         if (timezonesList[i] == timezone) {
             return;
         } else if (i == timezonesList.size() - 1) {
-            timezonesList.append(timezone);
             break;
         }
     }
-
+    timezonesList.append(timezone);
     if (timezonesList.size() >= MAX_TIMES) {
         addTimeBtn->setEnabled(false);
     }
