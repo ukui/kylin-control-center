@@ -1216,18 +1216,17 @@ QString UserInfo::getAutomaticLogin() {
 
 bool UserInfo::getNoPwdStatus() {
     // 获取当前用户免密登录属性
-//    QDBusInterface tmpSysinterface("com.control.center.qt.systemdbus",
-//                                     "/",
-//                                     "com.control.center.interface",
-//                                     QDBusConnection::systemBus());
-//    // 获取免密登录状态
-//    QDBusReply<QString> noPwdres;
-//    noPwdres  = tmpSysinterface.call("getNoPwdLoginStatus");
-//    if (!noPwdres.isValid()) {
-//        qDebug() << noPwdres.error();
-//    }
-//    return (noPwdres.value().contains(mUserName) ? true : false);
-    return false;
+    QDBusInterface tmpSysinterface("com.control.center.qt.systemdbus",
+                                     "/",
+                                     "com.control.center.interface",
+                                     QDBusConnection::systemBus());
+    // 获取免密登录状态
+    QDBusReply<QString> noPwdres;
+    noPwdres  = tmpSysinterface.call("getNoPwdLoginStatus");
+    if (!noPwdres.isValid()) {
+        qDebug() << noPwdres.error();
+    }
+    return (noPwdres.value().contains(mUserName) ? true : false);
 
 }
 
