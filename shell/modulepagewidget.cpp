@@ -62,7 +62,6 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
     ui->topsideWidget->hide();
 
     getModuleStatus();
-    initTitleLabel();
     initUI();
 }
 
@@ -70,12 +69,6 @@ ModulePageWidget::~ModulePageWidget()
 {
     delete ui;
     ui = nullptr;
-}
-
-void ModulePageWidget::initTitleLabel() {
-    QFont font;
-    font.setPixelSize(18);
-    ui->mtitleLabel->setFont(font);
 }
 
 void ModulePageWidget::initUI() {
@@ -135,7 +128,7 @@ void ModulePageWidget::initUI() {
             leftListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
             strItemsMap.insert(single.namei18nString, item);
-            leftListWidget->setGridSize(QSize(ui->leftStackedWidget->width() + 20,48));
+            leftListWidget->setGridSize(QSize(ui->leftStackedWidget->width() + 20, 44));
 
             //填充上侧二级菜单
             QListWidgetItem * topitem = new QListWidgetItem(topListWidget);

@@ -37,6 +37,7 @@
 #include <qmath.h>
 #include <polkit-qt5-1/polkitqt1-authority.h>
 #include "ImageUtil/imageutil.h"
+#include "Label/fixlabel.h"
 
 const char kTimezoneDomain[] = "installer-timezones";
 const char kDefaultLocale[]  = "en_US.UTF-8";
@@ -354,7 +355,7 @@ void DateTime::newTimeshow(const QString &timezone)
     QHBoxLayout *timeLayout   = new QHBoxLayout(timeWid);
     QPushButton *btn          = new QPushButton(addWgt);
     TitleLabel  *label_1      = new TitleLabel(addWgt);    //时间,和标题字号一致
-    QLabel      *label_2      = new QLabel(addWgt);    //日期
+    FixLabel    *label_2      = new FixLabel(addWgt);    //日期
 
     ui->showLayout->addWidget(addWgt);
     addWgt->setParent(ui->showFrame);

@@ -262,10 +262,11 @@ void MainWindow::initUI() {
                     fontTitle.setWeight(QFont::Medium);
                     widget->setFont(fontTitle); 
                 } else {
+                    font.setWeight(QFont::Normal);
                     widget->setFont(font);
                 }
             }
-            ui->leftsidebarWidget->setMaximumWidth(width * 10 +20);
+            ui->leftsidebarWidget->setMaximumWidth(width * 10 + 20);
         }
     });
 
@@ -618,6 +619,7 @@ void MainWindow::initLeftsideBar(){
     textSetLable->setText(tr("Settings"));
     textSetLable->setAlignment(Qt::AlignLeft);
 
+    ui->leftsidebarVerLayout->addSpacing(8);
     //构建左侧边栏返回首页按钮
     QPushButton * hBtn = buildLeftsideBtn("homepage",tr("Home"));
     hBtn->setObjectName("homepage");
