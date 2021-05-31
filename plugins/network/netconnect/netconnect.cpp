@@ -196,7 +196,7 @@ void NetConnect::initComponent() {
 }
 
 void NetConnect::refreshNetInfoTimerSlot() {
-    refreshTimer->start(200);
+    refreshTimer->start(400);
 }
 
 void NetConnect::refreshNetInfoSlot() {
@@ -269,6 +269,7 @@ void NetConnect::getNetList() {
         if (getWifiListDone(reply, this->TlanList, isWayland) == -1) {
             getNetList();
         } else {
+            wifiLists.clear();
             for (int i = 0; i < reply.value().length(); i++) {
                 QString wifiName;
                 if (reply.value().at(i).at(0) == "--") {
@@ -752,6 +753,7 @@ void NetConnect::setWifiBtnDisable() {
     ui->RefreshBtn->setEnabled(false);
     wifiBtn->setEnabled(false);
     ui->openWifiFrame->setVisible(false);
+    this->clearContent();
 }
 
 void NetConnect::setNetDetailVisible() {
