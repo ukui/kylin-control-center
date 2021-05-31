@@ -300,16 +300,26 @@ The update history can be seen here.
 
 ![Fig 45 History-big](image/45.png)
 
-#### Background Update
-Silent upgrade in the background, and remind users of available updates.
+ 
 
-- Users will receive notification information before and after the upgrade.
+### Background update
 
-- When there exists an available update, the update icon will appear in the lower right corner.
-
-- If users agree to update, it will pop up the control center and check the update.
-
+Background update is mainly used for important update operations in the background, and to remind users of available update content.
 <br>
+
+- When there is an important update, the update will be silently in the background, and the user will receive the notification information before and after the upgrade.
+
+![图 44 后台更新-big](/Users/dadadali/source/ukui-control-center/data/en_US/image/notiffirst.png)
+
+![图 45 后台更新-big](/Users/dadadali/source/ukui-control-center/data/en_US/image/notiend.png)
+
+- When there are available updates, the selection interface will pop up for users to select.
+
+![图 47 后台更新-big](/Users/dadadali/source/ukui-control-center/data/en_US/image/choicewidget.png)
+
+- After the user selects immediate update, the Settings > update interface will pop up to check the update
+
+- When the user chooses to delay, the record sets the delay time and exits the background update program
 
 ## Messages
 ### Notice
