@@ -74,15 +74,9 @@ public:
     void setupConnect();
     void initFontStatus();
     void initGeneralFontStatus();
-    void initAdvancedFontStatus();
-    void initSampleFontStatus();
 
-    void setFontEffect(QAbstractButton * button);
     void resetDefault();
 
-    void setSampleButton(QPushButton * button);
-
-    void _getDefaultFontinfo();
     void _getCurrentFontInfo();
     QStringList _splitFontNameSize(QString value);
 
@@ -117,9 +111,9 @@ public Q_SLOTS:
 
 private:
     void fontKwinSlot();
+    void initModel();
 
 private:
-    bool settingsCreate;
     bool mFirstLoad;
     QGSettings * stylesettings;
     Uslider * uslider;
