@@ -786,37 +786,8 @@ void AutoBoot::add_autoboot_realize_slot(QString path, QString name, QString exe
     qDebug() << "desktop: "<< path.section("/", -1, -1).toUtf8().data();
 
     filepath = g_build_filename(localconfigdir, filename, NULL);
-
-    GKeyFile *keyfile;
-    keyfile = g_key_file_new();
-
-    const char *locale = const_cast<const char *>(QLocale::system().name().toUtf8().data());
-    char *type = QString("Application").toUtf8().data();
-
-    g_key_file_set_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_TYPE, type);
-// g_key_file_set_boolean(keyfile, G_KEY_FILE_DESKTOP_GROUP, APP_KEY_FILE_DESKTOP_KEY_AUTOSTART_ENABLE, true);
-    g_key_file_set_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_EXEC,
-                          exec.toUtf8().data());
-    g_key_file_set_boolean(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_HIDDEN, false);
-    g_key_file_set_boolean(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY,
-                           false);
-    g_key_file_set_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NAME,
-                          name.toUtf8().data());
-    g_key_file_set_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NAME,
-                                 locale, name.toUtf8().data());
-    g_key_file_set_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT,
-                          comment.toUtf8().data());
-    g_key_file_set_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON,
-                          icon.toUtf8().data());
-// g_key_file_set_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, locale, comment.toUtf8().data());
-
-    if (!_key_file_to_file(keyfile, filepath))
-        qDebug() << "Could not save desktop file";
-
-    g_key_file_free(keyfile);
-    g_free(filepath);
-
-    // refresh
+    if(!QFile::copy(path,filepath))
+        return;
     clearAutoItem();
     initUI();
 }
