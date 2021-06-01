@@ -448,7 +448,7 @@ void AppUpdateWid::updateAppUi(QString name)
     if(name.contains("kylin-update-desktop-")||name == "linux-generic")
     {
         pkgIconPath = QString(":/img/plugins/upgrade/%1.png").arg(name);
-        appIcon->setPixmap(QPixmap(pkgIconPath));
+        appIcon->setPixmap(QPixmap(pkgIconPath).scaled(32,32));
     }
     else{
         if(QIcon::fromTheme(name).hasThemeIcon(name))    //判断是否有主题图标并输出
@@ -513,7 +513,7 @@ void AppUpdateWid::updateAppUi(QString name)
     if(name.contains("kylin-update-desktop")||name == "linux-generic")
     {
         pkgIconPath = QString(":/img/plugins/upgrade/%1.png").arg(name);
-        updatelog1->logAppIcon->setPixmap(QPixmap(pkgIconPath));
+        updatelog1->logAppIcon->setPixmap(QPixmap(pkgIconPath).scaled(32,32));
     }
     else{
         if(QIcon::fromTheme(name).hasThemeIcon(name))
@@ -653,7 +653,7 @@ void AppUpdateWid::updateOneApp()
     }
     else
     {
-        updateAPPBtn->hide();
+	 updateAPPBtn->hide();
 //        appVersion->setText(tr("获取依赖失败！"));
         appVersion->setText(tr("Get depends failed!"));
         appVersion->setToolTip("");
