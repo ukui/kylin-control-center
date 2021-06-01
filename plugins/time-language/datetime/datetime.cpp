@@ -429,7 +429,7 @@ void DateTime::initNtp()
     ui->ntpFrame->setLayout(ntpLayout);
     ntpLayout->addWidget(ntpLabel);
     ntpLayout->addWidget(ntpCombox);
-    ntpLabel->setText("Time Server");
+    ntpLabel->setText(tr("Time Server"));
     ntpCombox->setFixedHeight(36);
     ntpCombox->addItem(tr("Default"));
     ntpCombox->addItems(ntpAddressList);
