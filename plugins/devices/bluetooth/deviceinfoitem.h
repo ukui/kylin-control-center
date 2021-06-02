@@ -42,6 +42,8 @@ public:
     void changeDevStatus(bool);
     void setDevConnectedIcon(bool);
     void AnimationInit();
+
+    void refresh_device_icon(BluezQt::Device::Type changeType);
 protected:
     void resizeEvent(QResizeEvent *event);
     void enterEvent(QEvent *event);

@@ -116,6 +116,7 @@ private:
 
     QLabel *label_2 = nullptr;
     QLabel *loadLabel = nullptr;
+
     QPushButton *discover_refresh;
     QTimer *m_timer = nullptr;
     QTimer *discovering_timer =nullptr;

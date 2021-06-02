@@ -148,12 +148,12 @@ void BlueToothMain::InitMainTopUI()
                            font-weight: 400;\
                            line-height: 20px;}");
     frame_1_layout->addWidget(label_2);
-    frame_1_layout->addStretch();
 
     bluetooth_name = new BluetoothNameLabel(frame_1,300,38);
     connect(bluetooth_name,&BluetoothNameLabel::send_adapter_name,this,&BlueToothMain::change_adapter_name);
     connect(this,&BlueToothMain::adapter_name_changed,bluetooth_name,&BluetoothNameLabel::set_label_text);
     frame_1_layout->addWidget(bluetooth_name);
+    frame_1_layout->addStretch();
 
     open_bluetooth = new SwitchButton(frame_1);
 
@@ -291,8 +291,8 @@ void BlueToothMain::InitMainbottomUI()
     loadLabel = new QLabel(frame_bottom);
     loadLabel->setFixedSize(24,24);
 
-    discover_refresh = new QPushButton(tr("Refresh"),frame_bottom);
-    discover_refresh->setFixedSize(80,32);
+    //discover_refresh = new QPushButton(tr("Refresh"),frame_bottom);
+    //discover_refresh->setFixedSize(80,32);
 
     m_timer = new QTimer(this);
     m_timer->setInterval(100);
@@ -308,15 +308,15 @@ void BlueToothMain::InitMainbottomUI()
     connect(m_timer,&QTimer::timeout,this,&BlueToothMain::Refresh_load_Label_icon);
 
     //点击刷新按钮，开启适配器查找周围的蓝牙设备
-    connect(discover_refresh,&QPushButton::clicked,this,[=]{
-        discovering_timer->start();
-        startDiscovery();
-    });
+//    connect(discover_refresh,&QPushButton::clicked,this,[=]{
+//        discovering_timer->start();
+//        startDiscovery();
+//    });
 
     title_layout->addWidget(label_1);
-    title_layout->addWidget(loadLabel);
     title_layout->addStretch();
-    title_layout->addWidget(discover_refresh,Qt::AlignVCenter);
+    title_layout->addWidget(loadLabel);
+    //title_layout->addWidget(discover_refresh,Qt::AlignVCenter);
 
     QVBoxLayout *bottom_layout = new QVBoxLayout(frame_bottom);
     bottom_layout->setSpacing(8);
@@ -391,16 +391,16 @@ void BlueToothMain::updateUIWhenAdapterChanged()
     connect(m_localDevice.data(),&BluezQt::Adapter::deviceRemoved,this,&BlueToothMain::adapterDeviceRemove);
     connect(m_localDevice.data(),&BluezQt::Adapter::discoveringChanged,this,[=](bool discover){
        if(discover){
-           loadLabel->setVisible(true);
+           //loadLabel->setVisible(true);
            m_timer->start();
-           discover_refresh->setEnabled(false);
+           //discover_refresh->setEnabled(false);
            discovering_timer->start();
            //每次开启后清除适配器扫描列表
            Discovery_device_address.clear();
        }else{
-           loadLabel->setVisible(false);
-           m_timer->stop();
-           discover_refresh->setEnabled(true);
+           //loadLabel->setVisible(false);
+           //m_timer->stop();
+           //discover_refresh->setEnabled(true);
            //discovering_timer->stop();
            clearUiShowDeviceList();
            m_localDevice->startDiscovery();
@@ -411,7 +411,7 @@ void BlueToothMain::updateUIWhenAdapterChanged()
     if (m_localDevice->isDiscovering()) {
         loadLabel->setVisible(true);
         m_timer->start();
-        discover_refresh->setEnabled(false);
+        //discover_refresh->setEnabled(false);
         discovering_timer->start();
     }
 
@@ -529,18 +529,25 @@ void BlueToothMain::removeDeviceItemUI(QString address)
     }
 }
 
-void BlueToothMain::addMyDeviceItemUI(BluezQt::DevicePtr dev)
+void BlueToothMain::addMyDeviceItemUI(BluezQt::DevicePtr device)
 {
-    if (dev && dev->isPaired()) {
+    connect(device.data(),&BluezQt::Device::typeChanged,this,[=](BluezQt::Device::Type  changeType){
+        DeviceInfoItem *item = device_list->findChild<DeviceInfoItem *>(device->address());
+        if (item)
+        {
+            item->refresh_device_icon(changeType);
+        }
+    });
+    if (device && device->isPaired()) {
         DeviceInfoItem *item = new DeviceInfoItem();
         connect(item,SIGNAL(sendConnectDevice(QString)),this,SLOT(receiveConnectsignal(QString)));
         connect(item,SIGNAL(sendDisconnectDeviceAddress(QString)),this,SLOT(receiveDisConnectSignal(QString)));
         connect(item,SIGNAL(sendDeleteDeviceAddress(QString)),this,SLOT(receiveRemoveSignal(QString)));
         connect(item,SIGNAL(sendPairedAddress(QString)),this,SLOT(change_device_parent(QString)));
-        if(dev->isConnected())
-            item->initInfoPage(dev->name(), DEVICE_STATUS::LINK, dev);
+        if(device->isConnected())
+            item->initInfoPage(device->name(), DEVICE_STATUS::LINK, device);
         else
-            item->initInfoPage(dev->name(), DEVICE_STATUS::UNLINK, dev);
+            item->initInfoPage(device->name(), DEVICE_STATUS::UNLINK, device);
 
         show_flag = true;
         paired_dev_layout->addWidget(item,Qt::AlignTop);
@@ -599,6 +606,14 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
 
 void BlueToothMain::addOneBluetoothDeviceItemUi(BluezQt::DevicePtr device)
 {
+    connect(device.data(),&BluezQt::Device::typeChanged,this,[=](BluezQt::Device::Type  changeType){
+        DeviceInfoItem *item = device_list->findChild<DeviceInfoItem *>(device->address());
+        if (item)
+        {
+            item->refresh_device_icon(changeType);
+        }
+    });
+
     if(!last_discovery_device_address.contains(device->address()))
     {
         DeviceInfoItem *item = new DeviceInfoItem(device_list);
