@@ -22,29 +22,26 @@ HistoryUpdateListWig::~HistoryUpdateListWig()
 }
 void HistoryUpdateListWig::initUI()
 {
-//    font.setPointSize(14);//字体大小
     font.setBold(true);
 
-    //窗口初始化
+    /* 窗口初始化 */
     this->setFrameStyle(QFrame::Box);
 
-    //实例化控件
+    /* 实例化控件 */
     debName = new QLabel;
-    debStatue = new QLabel;
-
-    //初始化控件
     debName->setWordWrap(true);
     debName->setFixedWidth(WIDTH - LEFT_MARGIN - LEFT_MARGIN);
     debName->setFont(font);
+
+    debStatue = new QLabel;
     debStatue->setWordWrap(true);
     debStatue->setFixedWidth(WIDTH - LEFT_MARGIN - LEFT_MARGIN);
 
-    //实例化布局
+    /* 布局 */
     hl1 = new QHBoxLayout;
     hl2 = new QHBoxLayout;
     vl1 = new QVBoxLayout;
 
-    //初始化布局
     hl1->setSpacing(0);
     hl1->setMargin(0);
     hl2->setSpacing(0);
@@ -52,17 +49,19 @@ void HistoryUpdateListWig::initUI()
     vl1->setSpacing(0);
     vl1->setMargin(0);
 
-    //布局
     hl1->addSpacing(LEFT_MARGIN);
     hl1->addWidget(debName);
     hl1->addSpacing(RIGHT_MARGIN);
+
     hl2->addSpacing(LEFT_MARGIN);
     hl2->addWidget(debStatue);
     hl2->addSpacing(RIGHT_MARGIN);
+
     vl1->addSpacing(TOP_MARGIN);
     vl1->addLayout(hl1);
     vl1->addLayout(hl2);
     vl1->addSpacing(TOP_MARGIN);
+
     this->setLayout(vl1);
     this->layout()->setSizeConstraint(QLayout::SetFixedSize);
 }

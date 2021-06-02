@@ -70,32 +70,35 @@ void m_updatelog::closeUpdateLog()
 void m_updatelog::initUI()
 {
     QFont font;
-//    font.setPointSize(34);//字体大小
     font.setBold(true);
 
-    //初始化窗口属性
-    this->setWindowTitle(tr("History Log"));  //历史更新
+    /* 初始化窗口属性 */
+    this->setWindowTitle(tr("History Log"));  /* 历史更新 */
     this->setFixedSize(WIDTH,HEIGHT);
     this->setObjectName(FIND_DES_LABLE_TYPE);
-    //this->setAttribute(Qt::WA_DeleteOnClose);
 
-    //实例化控件
+    /* 实例化控件 */
     QFrame *listBackground = new QFrame;
-    QFrame *desBackground = new QFrame;
+    listBackground->setFrameStyle(QFrame::Box);
+    listBackground->setFixedWidth(LIST_BACKGROUND_WIDTH);
+
     mainListwidget  = new QListWidget;
-    QLabel *updateDesTab = new QLabel;
-    des = new QTextEdit;
-
-    //初始化控件
-    updateDesTab->setFont(font);
-
     QPalette palette = mainListwidget->palette();
     palette.setBrush(QPalette::Base, QColor (0, 0 , 0, 0));
     mainListwidget->setPalette(palette);
-    mainListwidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);  //滑块平滑滚动
+    mainListwidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);  /* 滑块平滑滚动 */
     mainListwidget->verticalScrollBar()->setProperty("drawScrollBarGroove" , false);
     mainListwidget->setSpacing(2);
 
+    QFrame *desBackground = new QFrame;
+    desBackground->setFrameStyle(QFrame::Box);
+
+    QLabel *updateDesTab = new QLabel;
+    updateDesTab->setFont(font);
+    updateDesTab->setText(tr("Update Details"));  /* 更新详情 */
+
+    /* 描述文本框 */
+    des = new QTextEdit;
     QPalette palette2 = des->palette();
     palette2.setBrush(QPalette::Base, QColor (0, 0 , 0, 0));
     des->verticalScrollBar()->setProperty("drawScrollBarGroove" , false);
@@ -103,14 +106,8 @@ void m_updatelog::initUI()
     des->setReadOnly(true);
     des->setObjectName(FIND_DES_LABLE_TYPE);
 
-    listBackground->setFrameStyle(QFrame::Box);
-    listBackground->setFixedWidth(LIST_BACKGROUND_WIDTH);
-
-    desBackground->setFrameStyle(QFrame::Box);
-
-    updateDesTab->setText(tr("Update Details"));  //更新详情
-
-    //布局
+    /* 布局 */
+    /* 布局外边框 */
     QHBoxLayout *hl1 = new QHBoxLayout;
     hl1->setSpacing(0);
     hl1->setMargin(0);
@@ -119,6 +116,7 @@ void m_updatelog::initUI()
     hl1->addSpacing(LINE_SPACING);
     hl1->addWidget(desBackground);
     hl1->addSpacing(LEFT_MARGIN);
+
     QVBoxLayout *vl1 = new QVBoxLayout;
     vl1->setSpacing(0);
     vl1->setMargin(0);
@@ -127,12 +125,12 @@ void m_updatelog::initUI()
     vl1->addSpacing(BOTTOM_MARGIN);
     this->setLayout(vl1);
 
+    /* 布局列表 */
     hll = new QHBoxLayout;
     hll->setSpacing(0);
     hll->setMargin(0);
     hll->addSpacing(LIST_LEFT);
     hll->addWidget(mainListwidget);
-    //hll->addWidget(mainListwidget->verticalScrollBar());
     QVBoxLayout *vll = new QVBoxLayout;
     vll->setSpacing(0);
     vll->setMargin(0);
@@ -141,11 +139,14 @@ void m_updatelog::initUI()
     vll->addSpacing(LIST_TOP);
     listBackground->setLayout(vll);
 
+    /* 布局更新详情标签 */
     QHBoxLayout *hlrt = new QHBoxLayout;
     hlrt->setSpacing(0);
     hlrt->setMargin(0);
     hlrt->addSpacing(TEXT_DSC_LEFT_SPACING);
     hlrt->addWidget(updateDesTab);
+
+    /* 布局标签及文本框 */
     QVBoxLayout *vlr = new QVBoxLayout;
     vlr->setSpacing(0);
     vlr->setMargin(0);
@@ -154,6 +155,7 @@ void m_updatelog::initUI()
     vlr->addSpacing(TEXT_TAB_SPACING);
     vlr->addWidget(des);
     vlr->addSpacing(TEXT_TAB_TOP);
+
     QHBoxLayout *hlr = new QHBoxLayout;
     hlr->setSpacing(0);
     hlr->setMargin(0);
