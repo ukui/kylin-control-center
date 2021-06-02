@@ -42,6 +42,8 @@ const QString KWifiOK           = "network-wireless-signal-ok";
 const QString KWifiLockOK       = "network-wireless-secure-signal-ok";
 const QString KWifiLow          = "network-wireless-signal-low";
 const QString KWifiLockLow      = "network-wireless-secure-signal-low";
+const QString KWifiNone         = "network-wireless-signal-none";
+const QString KWifiLockNone     = "network-wireless-secure-signal-none";
 const QString KLanSymbolic      = ":/img/plugins/netconnect/eth.svg";
 const QString NoNetSymbolic     = ":/img/plugins/netconnect/nonet.svg";
 
@@ -53,6 +55,8 @@ const QString KWifi6OK           = ":/img/plugins/netconnect/wifi6-medium.svg";
 const QString KWifi6LockOK       = ":/img/plugins/netconnect/wifi6-medium-pwd.svg";
 const QString KWifi6Low          = ":/img/plugins/netconnect/wifi6-low.svg";
 const QString KWifi6LockLow      = ":/img/plugins/netconnect/wifi6-low-pwd.svg";
+const QString KWifi6None         = ":/img/plugins/netconnect/wifi6-none.svg";
+const QString KWifi6LockNone     = ":/img/plugins/netconnect/wifi6-none-pwd.svg";
 
 const QString KWifi6ProSymbolic     = ":/img/plugins/netconnect/wifi6+-full.svg";
 const QString KWifi6ProLockSymbolic = ":/img/plugins/netconnect/wifi6+-full-pwd.svg";
@@ -62,6 +66,8 @@ const QString KWifi6ProOK           = ":/img/plugins/netconnect/wifi6+-medium.sv
 const QString KWifi6ProLockOK       = ":/img/plugins/netconnect/wifi6+-medium-pwd.svg";
 const QString KWifi6ProLow          = ":/img/plugins/netconnect/wifi6+-low.svg";
 const QString KWifi6ProLockLow      = ":/img/plugins/netconnect/wifi6+-low-pwd.svg";
+const QString KWifi6ProNone         = ":/img/plugins/netconnect/wifi6+-none.svg";
+const QString KWifi6ProLockNone     = ":/img/plugins/netconnect/wifi6+-none-pwd.svg";
 
 bool sortByVal(const QPair<QString, int> &l, const QPair<QString, int> &r) {
     return (l.second < r.second);
@@ -269,49 +275,41 @@ void NetConnect::getNetList() {
         if (getWifiListDone(reply, this->TlanList, isWayland) == -1) {
             getNetList();
         } else {
-            wifiLists.clear();
-            for (int i = 0; i < reply.value().length(); i++) {
+            wifilist.clear();
+            // 拿到的wifi列表当无线网络已连接时0位信息为已连接wifi信息，未连接时为"--"，过滤掉即可
+            for (int i = 1; i < reply.value().length(); i++) {
                 QString wifiName;
-                if (reply.value().at(i).at(0) == "--") {
-                    continue;
-                }
-                if (isWayland) {
+                if (!isWayland) {
                     wifiName = reply.value().at(i).at(0) + reply.value().at(i).at(5);
                 } else {
                     wifiName = reply.value().at(i).at(0);
                 }
-
                 if (reply.value().at(i).at(2) != NULL && reply.value().at(i).at(2) != "--") {
                     wifiName += "lock";
                 }
-                QString signal  = reply.value().at(i).at(1);
-                wifiLists.insert(wifiName,this->setSignal(signal));
+                QString signal = reply.value().at(i).at(1);
+                int sign = this->setSignal(signal);
+                wifilist.append(wifiName + QString::number(sign));
             }
-
-            QMap<QString, int>::iterator iterator = this->wifiLists.begin();
-            QVector<QPair<QString, int>> vector;
             QString iconamePath;
-            while (iterator != this->wifiLists.end()) {
-                vector.push_back(qMakePair(iterator.key(), iterator.value()));
-                iterator++;
-            }
-            qSort(vector.begin(), vector.end(), sortByVal);
-            for (int i = 0; i < vector.size(); i++) {
+            for (int i = 0; i < wifilist.size(); i++) {
                 if (!wifiBtn->isChecked()) {
                     break;
                 }
-                bool isLock = vector[i].first.contains("lock");
-                QString wifiName = isLock ? vector[i].first.remove("lock") : vector[i].first;
-                if (isWayland) {
+                QString wifiInfo = wifilist.at(i);
+                bool isLock = wifiInfo.contains("lock");
+                QString wifiName = wifiInfo.left(wifiInfo.size() - 1);
+                int wifiStrength = wifiInfo.right(1).toInt();
+                wifiName = isLock ? wifiName.remove("lock") : wifiName;
+                if (!isWayland) {
                     int category = wifiName.right(1).toInt();
                     wifiName = wifiName.left(wifiName.size() - 1);
-                    iconamePath = wifiIcon(isLock, vector[i].second, category);
+                    iconamePath = wifiIcon(isLock, wifiStrength, category);
                 } else {
-                    iconamePath = wifiIcon(isLock, vector[i].second);
+                    iconamePath = wifiIcon(isLock, wifiStrength);
                 }
                 rebuildAvailComponent(iconamePath, wifiName);
             }
-
             for (int i = 0; i < this->lanList.length(); i++) {
                 rebuildAvailComponent(KLanSymbolic , lanList.at(i));
             }
@@ -804,6 +802,8 @@ QString NetConnect::wifiIcon(bool isLock, int strength, int category) {
             return isLock ? KWifiLockOK : KWifiOK;
         case 4:
             return isLock ? KWifiLockLow : KWifiLow;
+        case 5:
+            return isLock ? KWifiLockNone : KWifiNone;
         default:
             return "";
         }
@@ -817,6 +817,8 @@ QString NetConnect::wifiIcon(bool isLock, int strength, int category) {
             return isLock ? KWifi6LockOK : KWifiOK;
         case 4:
             return isLock ? KWifi6LockLow : KWifi6Low;
+        case 5:
+            return isLock ? KWifiLockNone : KWifiNone;
         default:
             return "";
         }
@@ -830,6 +832,8 @@ QString NetConnect::wifiIcon(bool isLock, int strength, int category) {
             return isLock ? KWifi6ProLockOK : KWifi6ProOK;
         case 4:
             return isLock ? KWifi6ProLockLow : KWifi6ProLow;
+        case 5:
+            return isLock ? KWifiLockNone : KWifiNone;
         default:
             return "";
         }
@@ -856,17 +860,17 @@ QString NetConnect::wifiIcon(bool isLock, int strength) {
 int NetConnect::setSignal(QString lv) {
     int signal = lv.toInt();
     int signalLv = 0;
-
     if (signal > 75) {
         signalLv = 1;
     } else if (signal > 55 && signal <= 75) {
         signalLv = 2;
     } else if (signal > 35 && signal <= 55) {
         signalLv = 3;
-    } else if (signal  <= 35) {
+    } else if (signal > 15 && signal  <= 35) {
         signalLv = 4;
+    } else if (signal <= 15) {
+        signalLv = 5;
     }
-
     return signalLv;
 }
 

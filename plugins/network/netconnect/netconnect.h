@@ -133,7 +133,7 @@ private:
 
     QMap<QString, int> connectedWifi;
     QMap<QString,int>  wifiList;
-    QMap<QString,int>  wifiLists;
+
     QThread            *pThread;
     NetconnectWork     *pNetWorker;
 
@@ -143,6 +143,7 @@ private:
     QStringList        TwifiList;
     QStringList        TlanList;
     QStringList        lanList;
+    QStringList        wifilist;
 
     bool               mFirstLoad;
     bool               mIsLanVisible = false;
