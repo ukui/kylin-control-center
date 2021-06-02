@@ -437,6 +437,21 @@ void DefaultApp::textComBoBox_changed_cb(int index) {
     });
 }
 
+void DefaultApp::resetDefaultApp() {
+
+    ui->browserComBoBox->setCurrentText(mDefaultBrowser);
+    ui->imageComBoBox->setCurrentText(mDefaultPic);
+    ui->audioComBoBox->setCurrentText(mDefaultAdudio);
+    ui->videoComBoBox->setCurrentText(mDefaultVideo);
+    ui->textComBoBox->setCurrentText(mDefaultText);
+
+    if (mDefaultMail.isEmpty()) {
+        ui->mailComBoBox->setCurrentIndex(0);
+    } else {
+        ui->mailComBoBox->setCurrentText(mDefaultMail);
+    }
+}
+
 QString DefaultApp::getDefaultAppId(const char * contentType) {
     GAppInfo * app = g_app_info_get_default_for_type(contentType, false);
     if(app != NULL){
