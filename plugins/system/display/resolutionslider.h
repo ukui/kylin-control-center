@@ -5,6 +5,7 @@
 #include <QSet>
 
 #include <KF5/KScreen/kscreen/output.h>
+#include "Uslider/uslider.h"
 
 class QSlider;
 class QLabel;
@@ -43,7 +44,7 @@ private:
     QLabel *mSmallestLabel = nullptr;
     QLabel *mBiggestLabel = nullptr;
     QLabel *mCurrentLabel = nullptr;
-    QSlider *mSlider = nullptr;
+    Uslider *mSlider = nullptr;
     QComboBox *mComboBox = nullptr;
 
     bool mIsWayland = false;

@@ -410,7 +410,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QSlider" name="brightnessSlider">
+         <widget class="Uslider" name="brightnessSlider">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -434,6 +434,12 @@
         </item>
         <item>
          <widget class="QLabel" name="brightValueLabel">
+          <property name="minimumSize">
+           <size>
+            <width>34</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -840,7 +846,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QSlider" name="temptSlider">
+           <widget class="Uslider" name="temptSlider">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -934,6 +940,11 @@
    <class>QQuickWidget</class>
    <extends>QWidget</extends>
    <header location="global">QtQuickWidgets/QQuickWidget</header>
+  </customwidget>
+  <customwidget>
+   <class>Uslider</class>
+   <extends>QSlider</extends>
+   <header>Uslider/uslider.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

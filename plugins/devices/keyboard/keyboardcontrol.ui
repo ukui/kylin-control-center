@@ -264,7 +264,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QSlider" name="delayHorSlider">
+                <widget class="Uslider" name="delayHorSlider">
                  <property name="styleSheet">
                   <string notr="true"/>
                  </property>
@@ -383,7 +383,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QSlider" name="speedHorSlider">
+                <widget class="Uslider" name="speedHorSlider">
                  <property name="styleSheet">
                   <string notr="true"/>
                  </property>
@@ -896,6 +896,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>Uslider</class>
+   <extends>QSlider</extends>
+   <header>Uslider/uslider.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

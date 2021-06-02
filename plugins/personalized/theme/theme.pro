@@ -33,7 +33,6 @@ QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2 -O2
 SOURCES += \
     cursor/cursortheme.cpp \
     cursor/xcursortheme.cpp \
-    myslider.cpp \
     theme.cpp \
     themewidget.cpp \
     widgetgroup.cpp \
@@ -43,7 +42,6 @@ HEADERS += \
     cursor/config-X11.h \
     cursor/cursortheme.h \
     cursor/xcursortheme.h \
-    myslider.h \
     theme.h \
     themewidget.h \
     widgetgroup.h \

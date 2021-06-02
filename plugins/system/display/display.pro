@@ -6,6 +6,7 @@
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
+include($$PROJECT_COMPONENTSOURCE/uslider.pri)
 
 QT            += widgets core gui quickwidgets quick xml KScreen KI18n KConfigCore KConfigWidgets KWidgetsAddons dbus concurrent
 TEMPLATE = lib
@@ -37,7 +38,6 @@ SOURCES += \
     controlpanel.cpp \
     outputconfig.cpp \
     resolutionslider.cpp \
-    slider.cpp \
     unifiedoutputconfig.cpp \
     utils.cpp \
     widget.cpp \
@@ -52,7 +52,6 @@ HEADERS += \
     controlpanel.h \
     outputconfig.h \
     resolutionslider.h \
-    slider.h \
     unifiedoutputconfig.h \
     utils.h \
     widget.h \

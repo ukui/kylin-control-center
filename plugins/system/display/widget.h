@@ -23,7 +23,6 @@
 #include <KF5/KScreen/kscreen/config.h>
 
 #include "outputconfig.h"
-#include "slider.h"
 #include "SwitchButton/switchbutton.h"
 
 class QLabel;
