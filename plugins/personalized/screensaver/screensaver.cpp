@@ -26,6 +26,7 @@
 #include <QFileDialog>
 #include <QLineEdit>
 #include "ComboBox/combobox.h"
+#include <QListView>
 
 #define SSTHEMEPATH "/usr/share/applications/screensavers/"
 #define ID_PREFIX "screensavers-ukui-"
@@ -72,6 +73,13 @@ typedef enum
     MODE_DEFAULT_UKUI,   //UKUI
     MODE_CUSTOMIZE,     //自定义
 }SaverMode;
+
+
+const QStringList screensaverList = {
+                            "BinaryRing",
+                            "FuzzyFlakes",
+                            "Galaxy"
+                          };
 
 /*
  选择框中的序号     
@@ -152,12 +160,9 @@ const QString Screensaver::name() const
 void Screensaver::initTitleLabel()
 {
     QLabel *previewLabel = new QLabel(ui->previewWidget->topLevelWidget());
-    previewLabel->setStyleSheet("background-color: palette(button);border-radius: 0px;");
-    QFont fontLabel;
-    fontLabel.setPixelSize(12);
+    previewLabel->setStyleSheet("background-color: palette(button); border-radius: 0px;");
     QRect rect = ui->previewWidget->geometry();
-    previewLabel->setFont(fontLabel);
-    previewLabel->setGeometry(rect.x()+rect.width()/2-47/2,rect.y()+rect.height()+15,47,20);
+    previewLabel->setGeometry(rect.x()+rect.width()/2 - 47/2,rect.y()+rect.height()+15, 47, 24);
     previewLabel->setAlignment(Qt::AlignCenter);
     previewLabel->setText(tr("View"));//预览
 }
@@ -217,6 +222,14 @@ void Screensaver::initComponent()
     }
     ui->programCombox->addItem(tr("Customize"));
     INDEX_MODE_CUSTOMIZE = ui->programCombox->count() - 1;  //得到【自定义】在滑动栏中的位置
+
+    QListView* view = qobject_cast<QListView *>(ui->programCombox->view());
+    Q_ASSERT(view != nullptr);
+    for (int i = 1; i < ui->programCombox->count() - 1; ++i) {   //不隐藏UKUI和自定义
+        if (!screensaverList.contains(ui->programCombox->itemText(i))) {  //不隐藏列表中的屏保
+            view->setRowHidden(i, true);
+        }
+    }
     //初始化滑动条
     QStringList scaleList;
     scaleList<< tr("5min") << tr("10min") << tr("15min") << tr("30min") << tr("1hour")
