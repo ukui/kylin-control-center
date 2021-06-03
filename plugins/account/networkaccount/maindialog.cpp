@@ -631,8 +631,6 @@ void MainDialog::on_timer_timeout() {
 
 /* 登录回调槽函数，登录回执消息后执行此处 */
 void MainDialog::on_login_finished(int ret) {
-    //qDebug() << "ssssssssssssssss2";
-    //qDebug()<<ret;
     //无手机号码绑定，进入手机号码绑定页面
     //登录返回成功，执行此处
     if (ret == 0) {
@@ -659,7 +657,6 @@ void MainDialog::on_login_finished(int ret) {
             return ;
         }
     }
-    //qDebug()<<"scascasca";
 }
 
 /* 手机号直接发送验证码回调函数，发送手机验证码回执消息后执行此处 */

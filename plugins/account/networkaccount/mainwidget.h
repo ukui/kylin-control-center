@@ -41,13 +41,14 @@
 #include "svghandler.h"
 #include "blueeffect.h"
 
+
 class MainWidget : public QWidget
 {
     Q_OBJECT
 public:
     explicit        MainWidget(QWidget *parent = nullptr);
     ~MainWidget();
-    TitleLabel*     get_title();
+    QLabel*         get_title();
     QLabel*         get_info();
     QWidget*        get_login_dialog();
     void            setshow(QWidget *w);
@@ -64,7 +65,7 @@ protected:
 private:
     ItemList       *m_itemList;
     FrameItem    *m_autoSyn;
-    TitleLabel          *m_title;
+    QLabel              *m_title;
     QLabel              *m_infoTab;
     QLabel              *m_exitCode;
     Blueeffect          *m_blueEffect_sync;
@@ -82,8 +83,8 @@ private:
     QTimer              *m_singleTimer;
     QTimer              *m_manTimer;
     QTimer              *m_checkTimer;
-    TitleLabel          *m_welcomeMsg;
-    QSvgWidget          *m_welcomeImage;
+    QLabel              *m_welcomeMsg;
+    QSvgWidget              *m_welcomeImage;
     QVBoxLayout         *m_welcomeLayout;
     QVBoxLayout         *m_workLayout;
     QStackedWidget      *m_stackedWidget;
