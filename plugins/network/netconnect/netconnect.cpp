@@ -253,6 +253,10 @@ void NetConnect::getNetList() {
     wifiBtn->blockSignals(true);
     wifiBtn->setChecked(getInitStatus());
     wifiBtn->blockSignals(false);
+
+    this->TlanList.clear();
+    this->wifilist.clear();
+
     bool isWayland = false;
     if (Utils::isWayland()) {
         isWayland = true;
@@ -275,11 +279,10 @@ void NetConnect::getNetList() {
         if (getWifiListDone(reply, this->TlanList, isWayland) == -1) {
             getNetList();
         } else {
-            wifilist.clear();
             // 拿到的wifi列表当无线网络已连接时0位信息为已连接wifi信息，未连接时为"--"，过滤掉即可
             for (int i = 1; i < reply.value().length(); i++) {
                 QString wifiName;
-                if (!isWayland) {
+                if (isWayland) {
                     wifiName = reply.value().at(i).at(0) + reply.value().at(i).at(5);
                 } else {
                     wifiName = reply.value().at(i).at(0);
@@ -301,7 +304,7 @@ void NetConnect::getNetList() {
                 QString wifiName = wifiInfo.left(wifiInfo.size() - 1);
                 int wifiStrength = wifiInfo.right(1).toInt();
                 wifiName = isLock ? wifiName.remove("lock") : wifiName;
-                if (!isWayland) {
+                if (isWayland) {
                     int category = wifiName.right(1).toInt();
                     wifiName = wifiName.left(wifiName.size() - 1);
                     iconamePath = wifiIcon(isLock, wifiStrength, category);
@@ -340,9 +343,7 @@ void NetConnect::netDetailSlot(QString netName) {
                 mLanDetail->setIPV4Mask(netInfo.strIPV4Prefix);
                 mLanDetail->setIPV6(netInfo.strIPV6Address);
                 mLanDetail->setIPV6Prefix(netInfo.strIPV6Prefix);
-
                 mLanDetail->setIPV6Gt(netInfo.strIPV6GateWay);
-                mLanDetail->setIPV6(netInfo.strIPV6GateWay);
                 mLanDetail->setMac(netInfo.strMac);
                 mLanDetail->setBandWidth(netInfo.strBandWidth);
                 mLanDetail->setVisible(mIsLanVisible);
@@ -469,13 +470,12 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
     clearContent();
     mActiveInfo.clear();
     QString speed = getWifiSpeed();
-    if (!speed.contains("/") && secondCount < 1) {
+    if (!speed.contains("/")) {
         QElapsedTimer time;
         time.start();
         while (time.elapsed() < 1000) {
             QCoreApplication::processEvents();
         }
-        secondCount ++;
         return -1;
     } else {
         if (getActiveConInfo(mActiveInfo) == -1) {
@@ -486,7 +486,6 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
             }
             return -1;
         } else {
-            secondCount = 0;
             bool isNullSpeed = false;
             if (!speed.contains("/")) {
                 speed = "null/" + speed;
@@ -987,7 +986,7 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
                 QVariant IPV6Gt  = replyIPV6Gt.arguments().at(0)
                         .value<QDBusVariant>()
                         .variant();
-                activeNet.strIPV6GateWay = IPV6Gt.toString().isEmpty() ? activeNet.strIPV6Address : IPV6Gt.toString();
+                activeNet.strIPV6GateWay = IPV6Gt.toString().isEmpty() ? "" : IPV6Gt.toString();
             } else {
                 qWarning()<<"Ipv6 info reply empty!";
                 return -1;
