@@ -174,7 +174,6 @@ void HistoryUpdateListWig::selectStyle()
     //设置选中样式及标签
     debName->setToolTip(QString(""));
     debStatue->setToolTip(QString(""));
-    this->
     debName->setStyleSheet("color:#fff;");
     debStatue->setStyleSheet("color:#fff;");
     this->setStyleSheet("QFrame{background-color:rgba(55, 144, 250, 1);border-radius:4px}");
