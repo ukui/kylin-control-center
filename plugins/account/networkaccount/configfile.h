@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QSettings>
+#include "Label/titlelabel.h"
 
 class ConfigFile
 {

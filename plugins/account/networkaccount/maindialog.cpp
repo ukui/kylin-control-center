@@ -332,6 +332,7 @@ void MainDialog::set_client(DBusUtils *c) {
                 m_loginDialog->get_mcode_lineedit()->setText("");
                 m_loginDialog->set_code(messagebox(ret));
                 m_loginCodeStatusTips->show();
+                m_loginDialog->get_user_mcode()->setEnabled(true);
                 setshow(m_stackedWidget);
 
                 return ;
@@ -663,7 +664,6 @@ void MainDialog::on_login_finished(int ret) {
 
 /* 手机号直接发送验证码回调函数，发送手机验证码回执消息后执行此处 */
 void MainDialog::on_get_mcode_by_phone(int ret) {
-    //qDebug() << ret;
     if (ret != 0) {
         if (m_stackedWidget->currentWidget() == m_loginDialog) {
             m_loginDialog->get_user_mcode()->setEnabled(true);
