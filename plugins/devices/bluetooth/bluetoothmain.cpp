@@ -781,6 +781,10 @@ void BlueToothMain::adapterPoweredChanged(bool value)
         if(show_flag)
             frame_middle->setVisible(true);
 
+         if(!frame_middle->isVisible()){
+            frame_middle->setVisible(true);
+                }
+
         if (!open_bluetooth->isChecked())
             open_bluetooth->setChecked(true);
 
