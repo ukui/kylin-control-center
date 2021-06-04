@@ -423,6 +423,7 @@ void Widget::slotUnifyOutputs()
         ui->primaryCombo->setEnabled(false);
         ui->mainScreenButton->setEnabled(false);
         mControlPanel->setUnifiedOutput(base->outputPtr());
+        repaint();
     }
     Q_EMIT changed();
 }
