@@ -155,7 +155,6 @@ private:
     QList<ActiveConInfo> mActiveInfo;
     QTimer             *refreshTimer;
     QString             prefreChan;
-    int                 secondCount = 0;
 
     QString             mPreWifiConnectedName;
     QString             mPreLanConnectedName;
