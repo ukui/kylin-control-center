@@ -716,7 +716,7 @@ void BlueToothMain::receiveRemoveSignal(QString address)
 //    // 发送Message
 //    QDBusMessage response = QDBusConnection::sessionBus().call(m);
     qDebug() << Q_FUNC_INFO << address;
-
+    removeDeviceItemUI(address);
     m_localDevice->removeDevice(m_localDevice->deviceForAddress(address));
 }
 
