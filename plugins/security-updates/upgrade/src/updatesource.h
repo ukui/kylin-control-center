@@ -24,6 +24,7 @@ public:
 signals:
     void getReplyFalseSignal();
     void startDbusFinished();
+    void sigReconnTimes(int);
 public slots:
     void startDbus();
 };
