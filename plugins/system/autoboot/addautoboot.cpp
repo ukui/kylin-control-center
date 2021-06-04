@@ -73,9 +73,10 @@ bool AddAutoBoot::getFilename(GDir *dir,const char *Name)
                 g_dir_close(mdir);
                 return false;
             }
-            name = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP,
-                                                G_KEY_FILE_DESKTOP_KEY_NAME, NULL, NULL);
+            name = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP,
+                                                G_KEY_FILE_DESKTOP_KEY_NAME, NULL);
             g_key_file_free(keyfile);
+            qDebug()<<Name<<  "  "<<name;
             if (QString::fromUtf8(name) == QString::fromUtf8(Name)) {
                 g_dir_close(mdir);
                return true;
@@ -214,7 +215,7 @@ void AddAutoBoot::open_desktop_dir_slots()
 
     // 解析desktop文件
     GKeyFile *keyfile;
-    char *name, *comment;
+    char *name, *comment,*mname;
     bool no_display;
 
     keyfile = g_key_file_new();
@@ -224,7 +225,9 @@ void AddAutoBoot::open_desktop_dir_slots()
     }
     no_display = g_key_file_get_boolean(keyfile, G_KEY_FILE_DESKTOP_GROUP,
                                         G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, FALSE);
-    name = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP,
+    name = g_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_GROUP,
+                                        G_KEY_FILE_DESKTOP_KEY_NAME, NULL);
+    mname = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP,
                                         G_KEY_FILE_DESKTOP_KEY_NAME, NULL, NULL);
     comment = g_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_GROUP,
                                            G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
@@ -234,7 +237,7 @@ void AddAutoBoot::open_desktop_dir_slots()
                                          G_KEY_FILE_DESKTOP_KEY_ICON, NULL);
 
     if (userEditNameFlag == false) {   // 用户输入了程序名，以用户输入为准，否则以自带的为准
-        ui->nameLineEdit->setText(QString(name));
+        ui->nameLineEdit->setText(QString(mname));
     }
 
     ui->execLineEdit->setText(QString(selectedfile));
