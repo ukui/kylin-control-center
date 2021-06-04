@@ -96,6 +96,8 @@ QWidget * Power::get_plugin_ui() {
         initTitleLabel();
         setupComponent();
 
+        
+        
         if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(styleID)) {
             settings = new QGSettings(id, QByteArray(), this);
             stylesettings = new QGSettings(styleID, QByteArray(), this);
@@ -857,9 +859,9 @@ void Power::initGeneralSet()
 
             mUkccInterface->call("setSuspendThenHibernate", hibernate);
             if (value == 6) {
-                settings->set(HIBERNATE_KEY, "suspend-then-hibernate");
-            } else {
                 settings->set(HIBERNATE_KEY, "suspend");
+            } else {
+                settings->set(HIBERNATE_KEY, "suspend-then-hibernate");
             }
         });
     }

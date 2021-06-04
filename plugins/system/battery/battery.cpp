@@ -309,8 +309,8 @@ void Battery::setupComponent()
 {
     //电池电量低时执行
     int batteryRemain = settings->get(PER_ACTION_CRI).toInt();
-    for(int i = 1; i < batteryRemain; i++) {
-        mLowpowerComboBox1->insertItem(i - 1, QString("%1%").arg(i));
+    for(int i = 5; i < batteryRemain; i++) {
+        mLowpowerComboBox1->insertItem(i - 5, QString("%1%").arg(i));
     }
 
     for(int i = 0; i < kBattery.length(); i++) {
