@@ -141,11 +141,24 @@ void Search::initUi()
     m_blockDirsLyt->setSpacing(2);
     m_addBlockDirWidget = new HoverWidget("", m_plugin_widget);
     m_addBlockDirWidget->setObjectName("addBlockDirWidget");
-    m_addBlockDirWidget->setStyleSheet("HoverWidget#addBlockDirWidget{background: palette(button); border-radius: 4px;}HoverWidget:hover:!pressed#addBlockDirWidget{background: rgb(64,169,251); border-radius: 4px;}");
+    QPalette pal;
+    QBrush brush = pal.highlight();  //获取window的色值
+    QColor highLightColor = brush.color();
+    QString stringColor = QString("rgba(%1,%2,%3)") //叠加20%白色
+           .arg(highLightColor.red()*0.8 + 255*0.2)
+           .arg(highLightColor.green()*0.8 + 255*0.2)
+           .arg(highLightColor.blue()*0.8 + 255*0.2);
+
+    m_addBlockDirWidget->setStyleSheet(QString("HoverWidget#addBlockDirWidget{background: palette(button);\
+                                   border-radius: 4px;}\
+                                   HoverWidget:hover:!pressed#addBlockDirWidget{background: %1;  \
+                                   border-radius: 4px;}").arg(stringColor));
     m_addBlockDirWidget->setFixedHeight(50);
     m_addBlockDirWidget->setMaximumWidth(960);
     m_addBlockDirIcon = new QLabel(m_addBlockDirWidget);
     m_addBlockDirIcon->setPixmap(QIcon(":/img/titlebar/add.svg").pixmap(12, 12));
+    m_addBlockDirIcon->setProperty("useIconHighlightEffect", true);
+    m_addBlockDirIcon->setProperty("iconHighlightEffectMode", 1);
     m_addBlockDirLabel = new QLabel(m_addBlockDirWidget);
     m_addBlockDirLabel->setText(tr("Choose folder"));
     m_addBlockDirLyt = new QHBoxLayout(m_addBlockDirWidget);
@@ -176,19 +189,23 @@ void Search::initUi()
 
     // 悬浮改变Widget状态
     connect(m_addBlockDirWidget, &HoverWidget::enterWidget, this, [=](){
+
+        m_addBlockDirIcon->setProperty("useIconHighlightEffect", false);
+        m_addBlockDirIcon->setProperty("iconHighlightEffectMode", 0);
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
         m_addBlockDirIcon->setPixmap(pixgray);
-        m_addBlockDirLabel->setStyleSheet("color: palette(base);");
-
+        m_addBlockDirLabel->setStyleSheet("color: white;");
     });
 
     // 还原状态
     connect(m_addBlockDirWidget, &HoverWidget::leaveWidget, this, [=](){
+
+        m_addBlockDirIcon->setProperty("useIconHighlightEffect", true);
+        m_addBlockDirIcon->setProperty("iconHighlightEffectMode", 1);
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
         m_addBlockDirIcon->setPixmap(pixgray);
         m_addBlockDirLabel->setStyleSheet("color: palette(windowText);");
     });
-
 }
 
 /**

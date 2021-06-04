@@ -94,11 +94,21 @@ void Printer::initTitleLabel()
 void Printer::initComponent()
 {
     mAddWgt = new HoverWidget("", pluginWidget);
-    mAddWgt->setObjectName("addwgt");
+    mAddWgt->setObjectName("mAddwgt");
     mAddWgt->setMinimumSize(QSize(580, 50));
     mAddWgt->setMaximumSize(QSize(960, 50));
-    mAddWgt->setStyleSheet("HoverWidget#addwgt{background: palette(button);border-radius: 4px;}"
-                           "HoverWidget:hover:!pressed#addwgt{background: rgb(64,169,251); border-radius: 4px;}");
+    QPalette pal;
+    QBrush brush = pal.highlight();  //获取window的色值
+    QColor highLightColor = brush.color();
+    QString stringColor = QString("rgba(%1,%2,%3)") //叠加20%白色
+           .arg(highLightColor.red()*0.8 + 255*0.2)
+           .arg(highLightColor.green()*0.8 + 255*0.2)
+           .arg(highLightColor.blue()*0.8 + 255*0.2);
+
+    mAddWgt->setStyleSheet(QString("HoverWidget#mAddwgt{background: palette(button);\
+                                   border-radius: 4px;}\
+                                   HoverWidget:hover:!pressed#mAddwgt{background: %1;\
+                                   border-radius: 4px;}").arg(stringColor));
 
     ui->listWidget->setStyleSheet("QListWidget::Item:hover{background:palette(base);}");
 
@@ -108,8 +118,8 @@ void Printer::initComponent()
     QLabel *textLabel = new QLabel(tr("Add printers and scanners"));
     QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
     iconLabel->setPixmap(pixgray);
-    //iconLabel->setProperty("useIconHighlightEffect", true);
-    //iconLabel->setProperty("iconHighlightEffectMode", 1);
+    iconLabel->setProperty("useIconHighlightEffect", true);
+    iconLabel->setProperty("iconHighlightEffectMode", 1);
 
     addLyt->addWidget(iconLabel);
     addLyt->addWidget(textLabel);
@@ -123,14 +133,19 @@ void Printer::initComponent()
 
     // 悬浮改变Widget状态
     connect(mAddWgt, &HoverWidget::enterWidget, this, [=](){
+
+        iconLabel->setProperty("useIconHighlightEffect", false);
+        iconLabel->setProperty("iconHighlightEffectMode", 0);
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "white", 12);
         iconLabel->setPixmap(pixgray);
-        textLabel->setStyleSheet("color: palette(base);");
-
+        textLabel->setStyleSheet("color: white;");
     });
 
     // 还原状态
     connect(mAddWgt, &HoverWidget::leaveWidget, this, [=](){
+
+        iconLabel->setProperty("useIconHighlightEffect", true);
+        iconLabel->setProperty("iconHighlightEffectMode", 1);
         QPixmap pixgray = ImageUtil::loadSvg(":/img/titlebar/add.svg", "black", 12);
         iconLabel->setPixmap(pixgray);
         textLabel->setStyleSheet("color: palette(windowText);");
