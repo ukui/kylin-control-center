@@ -569,6 +569,7 @@ void Power::setupConnect()
         Q_UNUSED(index)
         QString value = mCloselidComboBox->currentData(Qt::UserRole).toString();
         settings->set(BUTTON_LID_AC_KEY, value);
+        settings->set(BUTTON_LID_BATT_KEY,value);
 
     });
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
