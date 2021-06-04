@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>945</width>
-    <height>1133</height>
+    <height>1260</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -436,15 +436,64 @@
          <widget class="QLabel" name="brightValueLabel">
           <property name="minimumSize">
            <size>
-            <width>34</width>
+            <width>30</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>30</width>
+            <height>16777215</height>
            </size>
           </property>
           <property name="text">
            <string/>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
          </widget>
         </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="unifyBrightFrame">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>106</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QVBoxLayout" name="unifyBrightLayout">
+        <property name="spacing">
+         <number>2</number>
+        </property>
        </layout>
       </item>
      </layout>

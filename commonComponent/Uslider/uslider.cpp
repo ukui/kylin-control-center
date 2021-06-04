@@ -66,13 +66,21 @@ void Uslider::paintEvent(QPaintEvent *e)
 
 void Uslider::mousePressEvent(QMouseEvent *e)
 {
+    int vaule = 0;
     int currentX = e->pos().x();
     double per = currentX * 1.0/this->width();
-    int vaule = qRound(per*(this->maximum() - this->minimum())) + this->minimum();
+    if (this->maximum() >= 50) { //减小鼠标点击像素的影响
+        vaule = qRound(per*(this->maximum() - this->minimum()) + 1) + this->minimum();
+        if (vaule < this->maximum() / 2) {
+            vaule = vaule - 2;
+        }
+    } else {
+        vaule = qRound(per*(this->maximum() - this->minimum())) + this->minimum();
+    }
     this->setValue(vaule);
 
     int pageStepV = this->pageStep();
     this->setPageStep(0);          //防止qslider的mousePressEvent对坐标造成影响
-    QSlider::mousePressEvent(e);  //必须放在后面，否则点击拖动无法使用
+    QSlider::mousePressEvent(e);  //必须放在后面，否则点击拖动无法使用(待优化)
     this->setPageStep(pageStepV);
 }

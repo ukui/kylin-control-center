@@ -31,6 +31,7 @@ PKGCONFIG += gsettings-qt     \
 QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2 -O2
 
 SOURCES += \
+    brightnessFrame.cpp \
     display.cpp \
     declarative/qmloutput.cpp \
     declarative/qmloutputcomponent.cpp \
@@ -44,6 +45,7 @@ SOURCES += \
     displayperformancedialog.cpp
 
 HEADERS += \
+    brightnessFrame.h \
     colorinfo.h \
     display.h \
     declarative/qmloutput.h \

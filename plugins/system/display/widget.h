@@ -24,6 +24,7 @@
 
 #include "outputconfig.h"
 #include "SwitchButton/switchbutton.h"
+#include "brightnessFrame.h"
 
 class QLabel;
 class QMLOutput;
@@ -130,6 +131,7 @@ private Q_SLOTS:
     void isWayland();
 
     void setDDCBrighthessSlot(int brightnessValue);// 设置外接显示器亮度
+    void setDDCBrightnessN(int brightnessValue, QString name);// 设置外接显示器亮度
     void kdsScreenchangeSlot();
 
 public Q_SLOTS:
@@ -161,6 +163,7 @@ private:
     QString getMonitorType();
 
     int getDDCBrighthess();
+    int getDDCBrighthess(QString name);
     int getLaptopBrightness() const;
     int getPrimaryScreenID();
 
@@ -228,6 +231,9 @@ private:
     QFuture<void> threadRun;
     
     QShortcut *mApplyShortcut;
+    QVector<BrightnessFrame*> BrightnessFrameV;
+    bool existInBrightnessFrameV(QString name);
+
 };
 
 #endif // WIDGET_H
