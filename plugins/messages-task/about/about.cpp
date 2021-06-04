@@ -270,9 +270,13 @@ void About::setupSerialComponent()
         if (dateReply.type() == QDBusMessage::ReplyMessage) {
             dateRes = dateReply.arguments().at(0).toString();
             if (!dateRes.isEmpty()) {
-                ui->activeContent->setText(tr("The system has expired. The expiration time is:")
-                                           + dateRes);
+                if (QLabelSetText(ui->activeContent,tr("The system has expired. The expiration time is:")+ dateRes)) {
+                      ui->activeContent->setToolTip(tr("The system has expired. The expiration time is:")
+                                                 + dateRes);
+                }
+
             } else {
+
                 ui->activeContent->setText(tr("Inactivated"));
             }
         }
@@ -476,4 +480,17 @@ QStringList About::getUserDefaultLanguage() {
     result.append(formats);
     result.append(language);
     return result;
+}
+bool About::QLabelSetText(QLabel *label, QString string)
+{
+    bool is_over_length = false;
+    QFontMetrics fontMetrics(label->font());
+    int fontSize = fontMetrics.width(string);
+    QString str = string;
+    if (fontSize > (label->width()-5)) {
+        str = fontMetrics.elidedText(string, Qt::ElideRight, label->width());
+        is_over_length = true;
+    }
+    label->setText(str);
+    return is_over_length;
 }
