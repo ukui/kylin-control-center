@@ -94,7 +94,7 @@ Widget::Widget(QWidget *parent) :
     mUnifyButton = new SwitchButton(this);
     ui->unionLayout->addWidget(mUnifyButton);
 
-    ui->unifyBrightFrame->setVisible(false);
+    ui->unifyBrightFrame->setVisible(true);
     setHideModuleInfo();
     initNightUI();
     isWayland();
@@ -123,7 +123,6 @@ Widget::Widget(QWidget *parent) :
     initTemptSlider();
     initUiComponent();
     initNightStatus();
-    initBrightnessUI();
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     ui->nightframe->setVisible(false);
@@ -197,8 +196,6 @@ void Widget::setConfig(const KScreen::ConfigPtr &config)
         outputAdded(output);
     }
 
-    ui->brightnessframe->setVisible(isVisibleBrightness());
-
     // 择主屏幕输出
     QMLOutput *qmlOutput = mScreen->primaryOutput();
 
@@ -220,7 +217,6 @@ void Widget::setConfig(const KScreen::ConfigPtr &config)
         slotUnifyOutputs();
     }
     mFirstLoad = false;
-    QtConcurrent::run(std::mem_fn(&Widget::setBrightnesSldierValue), this);
 
     if (mIsWayland) {
         mScreenId = getPrimaryScreenID();
@@ -374,8 +370,7 @@ void Widget::slotUnifyOutputs()
         ui->primaryCombo->setEnabled(true);
         mCloseScreenButton->setEnabled(true);
         ui->showMonitorframe->setVisible(true);
-        ui->brightnessframe->setVisible(isVisibleBrightness());
-        ui->unifyBrightFrame->setVisible(false);
+        showBrightnessFrame(false);
         ui->primaryCombo->setEnabled(true);
     } else if (!base->isCloneMode() && mUnifyButton->isChecked()) {
         // Clone the current config, so that we can restore it in case user
@@ -421,8 +416,7 @@ void Widget::slotUnifyOutputs()
         // 关闭开关
         mCloseScreenButton->setEnabled(false);
         ui->showMonitorframe->setVisible(false);
-        ui->brightnessframe->setVisible(false);
-        ui->unifyBrightFrame->setVisible(true);
+        showBrightnessFrame(true);
         ui->primaryCombo->setEnabled(false);
         ui->mainScreenButton->setEnabled(false);
         mControlPanel->setUnifiedOutput(base->outputPtr());
@@ -559,10 +553,6 @@ void Widget::initGSettings()
                 if (mIsWayland && !mIsBattery) {
                     value = (value == 0 ? 0 : value / 10);
                 }
-                ui->brightnessSlider->blockSignals(true);
-                ui->brightValueLabel->setText(QString::number(value));
-                ui->brightnessSlider->setValue(value);
-                ui->brightnessSlider->blockSignals(false);
 
                 for (int i = 0; i < BrightnessFrameV.size(); ++i) {
                     if (BrightnessFrameV[i]->outputName == "eDP-1") {
@@ -875,7 +865,7 @@ void Widget::outputAdded(const KScreen::OutputPtr &output)
     {
         BrightnessFrame *frame = new BrightnessFrame;
         frame->outputName = name;
-        frame->setTextLable_1(QString("调整屏幕亮度") + QString("D"));
+        //frame->setTextLable_1(tr("Brightness") + QString("e"));
         int initValue = mPowerGSettings->get(POWER_KEY).toInt();
         frame->setTextLable_2(QString::number(initValue));
         frame->slider->setValue(initValue);
@@ -894,7 +884,7 @@ void Widget::outputAdded(const KScreen::OutputPtr &output)
         QtConcurrent::run([=]{
             int initValue = getDDCBrighthess(frame->outputName);
             frame->slider->setValue(initValue);
-            frame->setTextLable_1(QString("调整屏幕亮度(") + name[0] + QString(")"));
+            //frame->setTextLable_1(tr("Brightness") + QString("(") + name[0] + QString(")"));
             frame->setTextLable_2(QString::number(initValue));
             connect(frame->slider, &QSlider::valueChanged, this, [=](){
                                  frame->setTextLable_2(QString::number(frame->slider->value()));
@@ -904,8 +894,6 @@ void Widget::outputAdded(const KScreen::OutputPtr &output)
         BrightnessFrameV.push_back(frame);
     }
     ui->unifyBrightFrame->setFixedHeight(BrightnessFrameV.size() * (50 + 2 + 2) - 2);
-  //  ui->unifyBrightFrame->setVisible(true);
-
 
     connect(output.data(), &KScreen::Output::isConnectedChanged,
             this, &Widget::slotOutputConnectedChanged);
@@ -983,7 +971,6 @@ void Widget::outputRemoved(int outputId)
             qmlOutput->setVisible(true);
             qmlOutput->blockSignals(false);
         }
-        ui->unifyBrightFrame->setVisible(false);
     }
     ui->unionframe->setVisible(mConfig->connectedOutputs().count() > 1);
     mUnifyButton->blockSignals(true);
@@ -1145,22 +1132,6 @@ void Widget::isWayland()
     }
 }
 
-void Widget::setDDCBrighthessSlot(int brightnessValue)
-{
-    QString type = getMonitorType();
-    QDBusInterface ukccIfc("com.control.center.qt.systemdbus",
-                           "/",
-                           "com.control.center.interface",
-                           QDBusConnection::systemBus());
-
-
-    if (mLock.tryLock()) {
-        ukccIfc.call("setDDCBrightness", QString::number(brightnessValue), type);
-        mLock.unlock();
-    }
-}
-
-
 
 void Widget::setDDCBrightnessN(int value, QString screenName)
 {
@@ -1175,7 +1146,11 @@ void Widget::setDDCBrightnessN(int value, QString screenName)
                            "com.control.center.interface",
                            QDBusConnection::systemBus());
 
-    ukccIfc.call("setDDCBrightness", QString::number(value), type);
+    
+       if (mLock.tryLock()) {
+            ukccIfc.call("setDDCBrightness", QString::number(value), type);
+            mLock.unlock();
+        }
 }
 
 void Widget::kdsScreenchangeSlot()
@@ -1267,7 +1242,6 @@ void Widget::save()
     QTimer::singleShot(1000, this,
                        [=]() {
         if (mIsWayland) {
-            threadRun = QtConcurrent::run(std::mem_fn(&Widget::setBrightSliderVisible), this);
             QString hash = config->connectedOutputsHash();
             writeFile(mDir % hash);
         }
@@ -1488,8 +1462,6 @@ void Widget::propertiesChangedSlot(QString property, QMap<QString, QVariant> pro
 // 是否禁用主屏按钮
 void Widget::mainScreenButtonSelect(int index)
 {
-    threadRun = QtConcurrent::run(std::mem_fn(&Widget::setBrightSliderVisible), this);
-
     if (!mConfig || ui->primaryCombo->count() <= 0) {
         return;
     }
@@ -1519,8 +1491,7 @@ void Widget::mainScreenButtonSelect(int index)
     mCloseScreenButton->blockSignals(true);
     mCloseScreenButton->setChecked(newPrimary->isEnabled());
     mCloseScreenButton->blockSignals(false);
-
-    ui->brightnessframe->setVisible(!mUnifyButton->isChecked() && newPrimary->isEnabled() && isVisibleBrightness());
+    showBrightnessFrame(mUnifyButton->isChecked() || false);
     mControlPanel->activateOutput(newPrimary);
 
     mScreen->setActiveOutputByCombox(newPrimary->id());
@@ -1577,23 +1548,6 @@ void Widget::checkOutputScreen(bool judge)
     Q_EMIT changed();
 }
 
-// 亮度调节UI
-void Widget::initBrightnessUI()
-{
-    ui->brightnessSlider->setRange(0, 100);
-    if (mIsWayland && !mIsBattery) {
-        connect(ui->brightnessSlider, &QSlider::valueChanged, this, &Widget::setDDCBrightness);
-    } else {
-        connect(ui->brightnessSlider, &QSlider::valueChanged, this, &Widget::setBrightnessScreen);
-    }
-
-    if (mIsWayland) {
-        ui->darkLabel->setVisible(false);
-        ui->brihghtLabel->setVisible(false);
-    } else {
-        ui->brightValueLabel->setVisible(false);
-    }
-}
 
 void Widget::initConnection()
 {
@@ -1657,69 +1611,6 @@ void Widget::initConnection()
     connect(mApplyShortcut, SIGNAL(activated()), this, SLOT(save()));
 }
 
-void Widget::setBrightnessScreen(int value)
-{
-    qDebug() << Q_FUNC_INFO << value;
-    ui->brightValueLabel->setText(QString::number(value));
-    mPowerGSettings->set(POWER_KEY, value);
-}
-
-void Widget::setDDCBrightness(int value)
-{
-    qDebug() << Q_FUNC_INFO << value;
-    ui->brightValueLabel->setText(QString::number(value));
-    if (!isLaptopScreen()) {
-        setDDCBrighthessSlot(value);
-    } else {
-        setBrightnessScreen(value);
-    }
-}
-
-void Widget::setBrightSliderVisible()  //放在独立线程中运行
-{
-    int value;
-    if (mIsBattery && !mUnifyButton->isChecked()) {
-        ui->brightnessframe->setVisible(isVisibleBrightness());
-        if (isLaptopScreen()) {
-            value = getLaptopBrightness();
-            ui->brightValueLabel->setText(QString::number(value));
-            ui->brightnessSlider->blockSignals(true);
-            ui->brightnessSlider->setValue(value);
-            ui->brightnessSlider->blockSignals(false);
-        }
-    } else {
-        int times = 100;
-        while(times-- && !threadRunExit) {
-            value = getDDCBrighthess();
-            if ((times == 99 && value == 0) || value > 0){
-                ui->brightValueLabel->setText(QString::number(value));
-                ui->brightnessSlider->blockSignals(true);
-                ui->brightnessSlider->setValue(value);
-                ui->brightnessSlider->blockSignals(false);
-                if (value > 0)
-                    return;
-            }
-            usleep(100000);
-        }
-    }
-    return;
-}
-
-// 滑块改变
-void Widget::setBrightnesSldierValue()
-{
-    int value = 99;
-    value = getLaptopBrightness();
-
-    if (mIsWayland && !mIsBattery) {
-        int realValue = getDDCBrighthess();
-        ui->brightValueLabel->setText(QString::number(realValue));
-        ui->brightnessSlider->setValue(realValue);
-    } else {
-        ui->brightValueLabel->setText(QString::number(value));
-        ui->brightnessSlider->setValue(value);
-    }
-}
 
 void Widget::initTemptSlider()
 {
@@ -1919,3 +1810,26 @@ void Widget::nightChangedSlot(QHash<QString, QVariant> nightArg)
         mNightButton->setChecked(nightArg["Active"].toBool());
     }
 }
+
+void Widget::showBrightnessFrame(bool allShowFlag)
+{
+    if (allShowFlag == true) {
+        ui->unifyBrightFrame->setFixedHeight(BrightnessFrameV.size() * (50 + 2 + 2) - 2);
+        for (int i = 0; i < BrightnessFrameV.size(); ++i) {
+            BrightnessFrameV[i]->setTextLable_1(tr("Brightness") + QString("(") + BrightnessFrameV[i]->outputName[0] + QString(")"));
+            BrightnessFrameV[i]->setVisible(true);
+        }
+    } else {
+        ui->unifyBrightFrame->setFixedHeight(52);
+        for (int i = 0; i < BrightnessFrameV.size(); ++i) {
+            if (ui->primaryCombo->currentText() == BrightnessFrameV[i]->outputName) {
+                BrightnessFrameV[i]->setTextLable_1(tr("Brightness"));
+                BrightnessFrameV[i]->setVisible(true);
+            } else {
+                BrightnessFrameV[i]->setVisible(false);
+            }
+        }
+    }
+}
+
+

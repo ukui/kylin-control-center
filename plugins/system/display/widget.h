@@ -64,7 +64,6 @@ public:
     KScreen::ConfigPtr currentConfig() const;
 
     void slotFocusedOutputChangedNoParam();
-    void initBrightnessUI();
     void initConnection();
     QString getScreenName(QString name = "");
     void initTemptSlider();
@@ -81,7 +80,7 @@ public:
     int scaleToSlider(const float value);
 
     void initUiComponent();
-
+    void showBrightnessFrame(bool AllShowFlag);
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
 
@@ -116,11 +115,7 @@ private Q_SLOTS:
     void primaryButtonEnable(bool);             // 按钮选择主屏确认按钮
     void mainScreenButtonSelect(int index);     // 是否禁用设置主屏按钮
     void checkOutputScreen(bool judge);         // 是否禁用屏幕
-    void setBrightnessScreen(int value);        // 设置屏幕亮度
-    void setDDCBrightness(int value);
-    void setBrightSliderVisible();              // 笔记本外接屏幕不可调整亮度
 
-    void setBrightnesSldierValue();             // 设置亮度滑块数值
     void setNightMode(const bool nightMode);    // 设置夜间模式
 
     void initNightStatus();                     // 初始化夜间模式
@@ -130,7 +125,6 @@ private Q_SLOTS:
     QString getPrimaryWaylandScreen();
     void isWayland();
 
-    void setDDCBrighthessSlot(int brightnessValue);// 设置外接显示器亮度
     void setDDCBrightnessN(int brightnessValue, QString name);// 设置外接显示器亮度
     void kdsScreenchangeSlot();
 
@@ -166,6 +160,7 @@ private:
     int getDDCBrighthess(QString name);
     int getLaptopBrightness() const;
     int getPrimaryScreenID();
+    bool existInBrightnessFrameV(QString name);
 
 private:
     Ui::DisplayWindow *ui;
@@ -232,7 +227,7 @@ private:
     
     QShortcut *mApplyShortcut;
     QVector<BrightnessFrame*> BrightnessFrameV;
-    bool existInBrightnessFrameV(QString name);
+    BrightnessFrame *currentBrightnessFrame;
 
 };
 
