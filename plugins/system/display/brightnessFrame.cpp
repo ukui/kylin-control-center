@@ -16,7 +16,7 @@ BrightnessFrame::BrightnessFrame(QWidget *parent) :
     label_1->setFixedWidth(118);
 
     slider = new Uslider(Qt::Horizontal, this);
-    slider->setRange(0, 100);
+    slider->setRange(10, 100);
 
     label_2 = new QLabel(this);
     label_2->setFixedWidth(30);
