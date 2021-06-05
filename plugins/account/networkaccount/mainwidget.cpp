@@ -902,7 +902,7 @@ void MainWidget::on_login() {
             }
         }
     } else {
-        m_mainDialog = new MainDialog;
+        m_mainDialog = new MainDialog(this);
         m_mainDialog->setAttribute(Qt::WA_DeleteOnClose);
         //m_editDialog->m_bIsUsed = false;
         m_mainDialog->set_client(m_dbusClient);

@@ -716,7 +716,7 @@ void BlueToothMain::receiveRemoveSignal(QString address)
 //    // 发送Message
 //    QDBusMessage response = QDBusConnection::sessionBus().call(m);
     qDebug() << Q_FUNC_INFO << address;
-
+    removeDeviceItemUI(address);
     m_localDevice->removeDevice(m_localDevice->deviceForAddress(address));
 }
 
@@ -780,6 +780,10 @@ void BlueToothMain::adapterPoweredChanged(bool value)
 
         if(show_flag)
             frame_middle->setVisible(true);
+
+         if(!frame_middle->isVisible()){
+            frame_middle->setVisible(true);
+                }
 
         if (!open_bluetooth->isChecked())
             open_bluetooth->setChecked(true);

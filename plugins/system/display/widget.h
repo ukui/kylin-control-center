@@ -125,8 +125,9 @@ private Q_SLOTS:
     QString getPrimaryWaylandScreen();
     void isWayland();
 
-    void setDDCBrightnessN(int brightnessValue, QString name);// 设置外接显示器亮度
-    void kdsScreenchangeSlot();
+
+    void setDDCBrighthessSlot(int brightnessValue);// 设置外接显示器亮度
+    void kdsScreenchangeSlot(QString status);
 
 public Q_SLOTS:
     void save();
@@ -221,6 +222,7 @@ private:
     bool mFirstLoad = true;
     bool mIsWayland = false;
     bool mIsBattery = false;
+    bool mIsKDSChanged = false;
 
     bool threadRunExit = false;
     QFuture<void> threadRun;

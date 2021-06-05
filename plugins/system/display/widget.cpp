@@ -340,8 +340,14 @@ void Widget::slotUnifyOutputs()
     }
 
     // 取消统一输出
-    if (base->isCloneMode() && !mUnifyButton->isChecked()) {
+    if (!mUnifyButton->isChecked()) {
         KScreen::OutputList screens = mPrevConfig->connectedOutputs();
+        if (mIsKDSChanged) {
+            Q_FOREACH(KScreen::OutputPtr output, screens){
+                output->setCurrentModeId("0");
+            }
+            mIsKDSChanged = false;
+        }
 
         KScreen::OutputPtr mainScreen = mPrevConfig->output(getPrimaryScreenID());
         mainScreen->setPos(QPoint(0, 0));
@@ -372,7 +378,7 @@ void Widget::slotUnifyOutputs()
         ui->showMonitorframe->setVisible(true);
         showBrightnessFrame(false);
         ui->primaryCombo->setEnabled(true);
-    } else if (!base->isCloneMode() && mUnifyButton->isChecked()) {
+    } else if (mUnifyButton->isChecked()) {
         // Clone the current config, so that we can restore it in case user
         // breaks the cloning
         mPrevConfig = mConfig->clone();
@@ -991,7 +997,6 @@ void Widget::primaryOutputSelected(int index)
     }
 
     mConfig->setPrimaryOutput(newPrimary);
-    Q_EMIT changed();
 }
 
 // 主输出
@@ -1153,25 +1158,11 @@ void Widget::setDDCBrightnessN(int value, QString screenName)
         }
 }
 
-void Widget::kdsScreenchangeSlot()
+void Widget::kdsScreenchangeSlot(QString status)
 {
-    connect(new KScreen::GetConfigOperation(), &KScreen::GetConfigOperation::finished,
-            [&](KScreen::ConfigOperation *op) {
-        bool cloneMode = true;
-        KScreen::ConfigPtr config = qobject_cast<KScreen::GetConfigOperation *>(op)->config();
-        KScreen::OutputPtr output = config->primaryOutput();
-        if (config->connectedOutputs().count() >= 2) {
-            foreach (KScreen::OutputPtr secOutput, config->connectedOutputs()) {
-                if ((output != nullptr) &&
-                        (secOutput->geometry() != output->geometry() || !secOutput->isEnabled())) {
-                    cloneMode = false;
-                }
-            }
-        } else {
-            cloneMode = false;
-        }
-        mUnifyButton->setChecked(cloneMode);
-    });
+    bool isCheck = (status == "copy") ? true : false;
+    mIsKDSChanged = true;
+    mUnifyButton->setChecked(isCheck);
 }
 
 void Widget::save()
@@ -1246,6 +1237,7 @@ void Widget::save()
             writeFile(mDir % hash);
         }
         mBlockChanges = false;
+        mConfigChanged = false;
     });
 
     int enableScreenCount = 0;
@@ -1584,17 +1576,12 @@ void Widget::initConnection()
         checkOutputScreen(checked);
     });
 
-    connect(QApplication::desktop(), &QDesktopWidget::resized, this, [=] {
-        QTimer::singleShot(1500, this, [=]{
-            kdsScreenchangeSlot();
-        });
-    });
-
-    connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, [=] {
-        QTimer::singleShot(1500, this, [=] {
-            kdsScreenchangeSlot();
-        });
-    });
+    QDBusConnection::sessionBus().connect(QString(),
+                                          QString("/"),
+                                          "org.ukui.ukcc.session.interface",
+                                          "screenChanged",
+                                          this,
+                                          SLOT(kdsScreenchangeSlot(QString)));
 
     QDBusConnection::sessionBus().connect(QString(),
                                           QString("/ColorCorrect"),
