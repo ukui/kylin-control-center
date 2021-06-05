@@ -32,6 +32,17 @@ QMap<QString, QVariant> ukccSessionServer::getJsonInfo(const QString &configFile
     return moduleMap;
 }
 
+QString ukccSessionServer::getScreenMode()
+{
+    return mScreenMode;
+}
+
+QString ukccSessionServer::setScreenMode(QString screenMode)
+{
+    mScreenMode = screenMode;
+    Q_EMIT screenChanged(mScreenMode);
+}
+
 void ukccSessionServer::exitService() {
     qApp->exit();
 }
