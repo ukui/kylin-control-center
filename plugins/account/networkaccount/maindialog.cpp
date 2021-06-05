@@ -331,6 +331,7 @@ void MainDialog::set_client(DBusUtils *c) {
             } else {
                 m_loginDialog->get_mcode_lineedit()->setText("");
                 m_loginDialog->set_code(messagebox(ret));
+                m_loginDialog->get_user_mcode()->setEnabled(true);
                 m_loginCodeStatusTips->show();
                 setshow(m_stackedWidget);
 
