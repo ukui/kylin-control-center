@@ -13,7 +13,8 @@ public:
     QStringList scaleList;
 public:
     Uslider(QStringList list);
-    void paintEvent(QPaintEvent *ev);    
+    void paintEvent(QPaintEvent *ev);
+    void mousePressEvent(QMouseEvent *ev);
 };
 
 #endif // USLIDER_H

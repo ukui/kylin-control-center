@@ -51,4 +51,16 @@ void Uslider::paintEvent(QPaintEvent *e)
     painter->end();
 }
 
+//重写鼠标点击事件
+void Uslider::mousePressEvent(QMouseEvent *ev)
+{
+    QSlider::mousePressEvent(ev);
+    int currentx = ev->pos().x();
+    int interval = this->width()/(this->maximum()-this->minimum());
+    int value;
+    double multiple = (double)currentx / interval;
+    value = (int)(multiple+0.5) + 1;
+    this->setValue(value);
+}
+
 
