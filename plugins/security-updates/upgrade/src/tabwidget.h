@@ -125,6 +125,7 @@ public slots:
     //DBus单独初始化
     void initDbus();
 
+    void slotReconnTimes(int times);
 
 private:
     UKSCConn *ukscConnect;

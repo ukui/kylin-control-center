@@ -167,6 +167,13 @@ bool BackUp::haveBackTool()
 
 bool BackUp::readSourceManagerInfo()
 {
+    int i_ret = access(TIMESTAMP_PATH , F_OK);
+    if (i_ret) {
+        qDebug() << "源管理器配置文件不存在 ， 采用默认时间戳";
+        timeStamp = "自动备份:0000-00-00 00:00:00(00000000000000)";
+        return true;
+    }
+
     QFile file(TIMESTAMP_PATH);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {

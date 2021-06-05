@@ -848,7 +848,7 @@ type AppUpdateWid::checkSourcesType()
     QFile soucesFile(SOURCESLIST);
     soucesFile.open(QIODevice::ReadOnly | QIODevice::Text);
     QString result = soucesFile.readAll();
-    if(result.contains("http://")){
+    if(result.contains("http://") || result.contains("https://")){
         qDebug() << "当前源为http源";
         return http;
     }else if(result.contains("ftp://")){
@@ -858,4 +858,5 @@ type AppUpdateWid::checkSourcesType()
         qDebug() << "当前源为本地源";
         return file;
     }
+    return http;
 }
