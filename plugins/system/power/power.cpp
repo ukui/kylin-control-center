@@ -105,6 +105,7 @@ QWidget * Power::get_plugin_ui() {
         initDeviceStatus();
         isPowerSupply();
         isLidPresent();
+        isHibernateSupply();
         setupComponent();
 
         if (QGSettings::isSchemaInstalled(id)) {
@@ -190,6 +191,28 @@ void Power::isLidPresent() {
     delete LidInterface;
 }
 
+void Power::isHibernateSupply()
+{
+    QDBusInterface *HibernateInterface = new QDBusInterface("org.freedesktop.login1",
+                           "/org/freedesktop/login1",
+                           "org.freedesktop.login1.Manager",
+                            QDBusConnection::systemBus(),
+                            this);
+        if (!HibernateInterface->isValid()) {
+            qDebug() << "Create UPower Hibernate Interface Failed : " <<
+                QDBusConnection::systemBus().lastError();
+            return;
+        }
+        QDBusReply<QString> HibernateInfo;
+        HibernateInfo = HibernateInterface->call("CanHibernate");
+        if (HibernateInfo == "yes")
+        {
+            isExitHibernate = true;
+        } else {
+            isExitHibernate = false;
+        }
+}
+
 void Power::setIdleTime(int idleTime) {
 
     int sleeptime = ui->sleepComboBox->currentData(Qt::UserRole).toInt();
@@ -249,7 +272,7 @@ void Power::setupComponent() {
     ui->closeLidCombo->insertItem(1, closeLidStringList.at(1), "blank");
     ui->closeLidCombo->insertItem(2, closeLidStringList.at(2), "suspend");
     ui->closeLidCombo->insertItem(3, closeLidStringList.at(3), "shutdown");
-    if (!Utils::isWayland()){
+    if (!Utils::isWayland() && isExitHibernate){
         closeLidStringList << tr("hibernate");
         ui->closeLidCombo->insertItem(4, closeLidStringList.at(4), "hibernate");
      }
@@ -527,6 +550,9 @@ void Power::initGeneralSet() {
         ui->powerLayout->addWidget(mPowerBtn);
 
         for(int i = 0; i < kLid.length(); i++) {
+            if(kEnkLid.at(i) == "hibernate" && !isExitHibernate) {
+                continue;
+            }
             mPowerBtn->mCombox->insertItem(i, kLid.at(i), kEnkLid.at(i));
         }
 
@@ -556,6 +582,9 @@ void Power::initGeneralSet() {
         }
 
         for(int i = 0; i < kBattery.length(); i++) {
+            if (kEnBattery.at(i) == "hibernate" && !isExitHibernate) {
+                continue;
+            }
             mBatteryAct->mCombox->insertItem(i, kBattery.at(i), kEnBattery.at(i));
         }
 
