@@ -40,6 +40,16 @@
 #include "configfile.h"
 #include "svghandler.h"
 #include "blueeffect.h"
+#include "Label/titlelabel.h"
+
+#define NETWORK_FAILURE 1002
+#define SYNC_FAILURE 1003
+#define SYNC_NORMAL 1004
+#define SYNC_FIRST 1005
+#define LOGOUT 1005
+
+#define TOKEN_MIN_SIZE 100
+
 
 class MainWidget : public QWidget
 {
@@ -47,10 +57,9 @@ class MainWidget : public QWidget
 public:
     explicit        MainWidget(QWidget *parent = nullptr);
     ~MainWidget();
-    TitleLabel*     get_title();
+    TitleLabel*         get_title();
     QLabel*         get_info();
     QWidget*        get_login_dialog();
-    void            setshow(QWidget *w);
     void            init_gui();
     void            initMemoryAlloc();
     void            initSignalSlots();
@@ -60,11 +69,18 @@ public:
     bool            judge_item(const QString &enable,const int &cur) const;
     void            showDesktopNotify(const QString &message);
     void            isNetWorkOnline();
+    void            ctrlAutoSync(int status);
+    void            checkBackEnd();
+    void            refreshSyncDate();
+    void            singleExecutor(QTimer *timer, int mesc);
+    void            setTokenWatcher();
+    bool            isAvaliable();
+
 protected:
 private:
     ItemList       *m_itemList;
     FrameItem    *m_autoSyn;
-    TitleLabel          *m_title;
+    TitleLabel              *m_title;
     QLabel              *m_infoTab;
     QLabel              *m_exitCode;
     Blueeffect          *m_blueEffect_sync;
@@ -82,8 +98,8 @@ private:
     QTimer              *m_singleTimer;
     QTimer              *m_manTimer;
     QTimer              *m_checkTimer;
-    TitleLabel          *m_welcomeMsg;
-    QSvgWidget          *m_welcomeImage;
+    TitleLabel              *m_welcomeMsg;
+    QSvgWidget              *m_welcomeImage;
     QVBoxLayout         *m_welcomeLayout;
     QVBoxLayout         *m_workLayout;
     QStackedWidget      *m_stackedWidget;
@@ -99,9 +115,10 @@ private:
     QHBoxLayout         *m_infoLayout;
     QThread             *thread;
     bool                m_bAutoSyn = true;
-    bool                m_bTokenValid = false;
-    bool                m_isOpenDialog = false;
-    QTimer              *m_cLoginTimer;
+    bool                m_bTokenValid = false; //是否是有效用户
+    bool                m_isOpenDialog = false; //对话框是否打开
+    bool                m_firstLoad = false;
+    QTimer              *m_cLoginTimer; //登录超时计时器
     QString             m_szUuid;
     QFileSystemWatcher m_fsWatcher;
     SVGHandler *m_svgHandler;
@@ -116,12 +133,12 @@ private:
     int             m_indexChanged;
     bool             m_statusChanged;
     SyncDialog      *m_syncDialog;
-    bool            bIsLogging = false;
+    bool            bIsLogging = false; //是否已经登录
     QSettings         *m_pSettings;
-    bool            m_bIsKylinId = false;
-    bool            m_bIsOnline = true;
-    bool            m_bIsOldBackEnds = false;
-    bool            m_bIsFailed = false;
+    bool            m_bIsKylinId = false; //是否安装了麒麟ID
+    bool            m_bIsOnline = true; //网络是否通
+    bool            m_bIsOldBackEnds = false; //是否是旧的后台程序
+    bool            m_bIsFailed = false; //是否同步失败
 
 public slots:
     void            on_login_out();

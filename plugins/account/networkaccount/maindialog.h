@@ -45,6 +45,7 @@
 #include "logindialog.h"
 #include <QDialog>
 #include "CloseButton/closebutton.h"
+#include "Label/titlelabel.h"
 
 class MainDialog : public QDialog
 {
@@ -93,7 +94,7 @@ private:
     QString         m_szAccount;
     QString         m_szPass;
     LoginDialog     *m_loginDialog;
-    QLabel          *m_titleLable;
+    TitleLabel          *m_titleLable;
     QPushButton     *m_submitBtn;
     QPushButton     *m_regBtn;
     QStackedWidget  *m_stackedWidget;

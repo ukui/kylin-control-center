@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
+#ifndef TITLE_LABEL_H
+#define TITLE_LABEL_H
+
 #include <QLabel>
 
 class TitleLabel : public QLabel
@@ -26,4 +29,6 @@ public:
     TitleLabel(QWidget *parent = nullptr);
     ~TitleLabel();
 };
+
+#endif // TITLE_LABEL_H
 

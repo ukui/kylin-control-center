@@ -20,6 +20,7 @@
 #include "syncdialog.h"
 #include <QDesktopWidget>
 #include <QPaintEngine>
+#include "configfile.h"
 #include <QApplication>
 #include <QDebug>
 

@@ -31,7 +31,8 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPainterPath>
-#include "configfile.h"
+
+#include "Label/titlelabel.h"
 
 class SyncDialog : public QDialog
 {
