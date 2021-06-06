@@ -47,6 +47,7 @@ enum SystemIndex{
 
 enum DevicesIndex{
     PRINTER,
+    PROJECTION,
     MOUSE,
     TOUCHPAD,
     KEYBOARD,

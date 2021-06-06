@@ -72,6 +72,8 @@ void FunctionSelect::initValue(){
     }
     devicesList[PRINTER].nameString = QString("Printer");
     devicesList[PRINTER].namei18nString = QObject::tr("Printer");
+    devicesList[PROJECTION].nameString = QString("Projection");
+    devicesList[PROJECTION].namei18nString = QObject::tr("Projection");
     devicesList[MOUSE].nameString = QString("Mouse");
     devicesList[MOUSE].namei18nString = QObject::tr("Mouse");
     devicesList[TOUCHPAD].nameString = QString("Touchpad");

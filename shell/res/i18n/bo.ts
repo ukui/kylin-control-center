@@ -615,19 +615,6 @@ you can restore them to ensure the integrity of your system.</source>
     </message>
 </context>
 <context>
-    <name>BindPhoneDialog</name>
-    <message>
-        <location filename="../../../plugins/account/networkaccount/bindphonedialog.cpp" line="40"/>
-        <source>Your code here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/account/networkaccount/bindphonedialog.cpp" line="41"/>
-        <source>Get</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>BiometricEnrollDialog</name>
     <message>
         <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="112"/>
@@ -3490,45 +3477,6 @@ Please retry or relogin!</source>
     </message>
 </context>
 <context>
-    <name>PassDialog</name>
-    <message>
-        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="28"/>
-        <source>Get the phone binding code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="51"/>
-        <source>Your account here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="52"/>
-        <source>Your new password here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="54"/>
-        <source>Confirm your new password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="56"/>
-        <source>Your code here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="78"/>
-        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="116"/>
-        <source>At least 6 bit, include letters and digt</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/account/networkaccount/passdialog.cpp" line="113"/>
-        <source>Your password is valid!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>Power</name>
     <message>
         <location filename="../../../plugins/system/power/power.ui" line="91"/>
@@ -3765,6 +3713,37 @@ Please retry or relogin!</source>
         <location filename="../../../plugins/devices/printer/printer.cpp" line="33"/>
         <source>Printer</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Projection</name>
+    <message>
+        <location filename="../../../plugins/devices/projection/projection.ui" line="46"/>
+        <location filename="../../../plugins/devices/projection/projection.cpp" line="34"/>
+        <source>Projection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/projection/projection.ui" line="297"/>
+        <source>pin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/projection/projection.cpp" line="54"/>
+        <source>Open Projection</source>
+        <translation type="unfinished"></translation>
+        <extra-contents_path>/bluetooth/Open Bluetooth</extra-contents_path>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/projection/projection.cpp" line="56"/>
+        <source>Projection Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/projection/projection.cpp" line="243"/>
+        <source>Add Bluetooths</source>
+        <translation type="unfinished"></translation>
+        <extra-contents_path>/bluetooth/Add Bluetooths</extra-contents_path>
     </message>
 </context>
 <context>

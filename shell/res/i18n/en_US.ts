@@ -9,7 +9,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="387"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="391"/>
         <source>version</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/about/version</extra-contents_path>
@@ -31,21 +31,21 @@
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="266"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="389"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="393"/>
         <source>Kernel</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/about/Kernel</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="305"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="391"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="395"/>
         <source>CPU</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/about/CPU</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="353"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="393"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="397"/>
         <source>Memory</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/about/Memory</extra-contents_path>
@@ -71,17 +71,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="561"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="567"/>
         <source>Serial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="627"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="633"/>
         <source>Protocol</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.ui" line="597"/>
+        <location filename="../../../plugins/messages-task/about/about.ui" line="603"/>
         <source>Active</source>
         <translation type="unfinished"></translation>
     </message>
@@ -98,11 +98,12 @@
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.cpp" line="273"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="274"/>
         <source>The system has expired. The expiration time is:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="276"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="280"/>
         <source>Inactivated</source>
         <translation type="unfinished"></translation>
     </message>
@@ -134,13 +135,13 @@
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="218"/>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="136"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="137"/>
         <source>Program name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="246"/>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="137"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="138"/>
         <source>Program exec</source>
         <translation type="unfinished"></translation>
     </message>
@@ -151,13 +152,13 @@
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="274"/>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="138"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="139"/>
         <source>Program comment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/system/autoboot/addautoboot.ui" line="429"/>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="204"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="205"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -167,32 +168,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="195"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="196"/>
         <source>Desktop files(*.desktop)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="202"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="203"/>
         <source>select autoboot desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="203"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="204"/>
         <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="250"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="253"/>
         <source>desktop file not allowed add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="255"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="258"/>
         <source>desktop file  already exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="305"/>
+        <location filename="../../../plugins/system/autoboot/addautoboot.cpp" line="308"/>
         <source>desktop file not exist</source>
         <translation type="unfinished"></translation>
     </message>
@@ -438,7 +439,7 @@
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.ui" line="283"/>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="248"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="264"/>
         <source>lunar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -449,7 +450,7 @@
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.ui" line="319"/>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="255"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="271"/>
         <source>monday</source>
         <translation type="unfinished"></translation>
     </message>
@@ -483,7 +484,7 @@
     </message>
     <message>
         <location filename="../../../plugins/time-language/area/area.cpp" line="134"/>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="283"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="299"/>
         <source>Need to log off to take effect</source>
         <translation type="unfinished"></translation>
     </message>
@@ -542,22 +543,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="185"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="196"/>
         <source>Add main language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="250"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="266"/>
         <source>solar calendar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="257"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="273"/>
         <source>sunday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/area/area.cpp" line="328"/>
+        <location filename="../../../plugins/time-language/area/area.cpp" line="344"/>
         <source>change data format</source>
         <translation type="unfinished"></translation>
     </message>
@@ -575,7 +576,7 @@
     <name>AutoBoot</name>
     <message>
         <location filename="../../../plugins/system/autoboot/autoboot.ui" line="88"/>
-        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="173"/>
+        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="187"/>
         <source>Autoboot Settings</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/autoboot/Autoboot Settings</extra-contents_path>
@@ -586,22 +587,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="137"/>
+        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="146"/>
         <source>Add autoboot app </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="211"/>
+        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="225"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="215"/>
+        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="229"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="276"/>
+        <location filename="../../../plugins/system/autoboot/autoboot.cpp" line="290"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1091,29 +1092,29 @@ Please authenticate yourself to continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="281"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="291"/>
         <source>Add user group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="316"/>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="324"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="334"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="342"/>
         <source>Tips</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="316"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="334"/>
         <source>Invalid Id!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="319"/>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="327"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="337"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="345"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="324"/>
+        <location filename="../../../plugins/account/userinfo/changegroupdialog.cpp" line="342"/>
         <source>Invalid Group Name!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3238,64 +3239,64 @@ Please retry or relogin!</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../mainwindow.cpp" line="407"/>
-        <location filename="../../mainwindow.cpp" line="619"/>
-        <location filename="../../mainwindow.cpp" line="797"/>
+        <location filename="../../mainwindow.cpp" line="409"/>
+        <location filename="../../mainwindow.cpp" line="621"/>
+        <location filename="../../mainwindow.cpp" line="799"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="387"/>
+        <location filename="../../mainwindow.cpp" line="389"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="416"/>
+        <location filename="../../mainwindow.cpp" line="418"/>
         <source>Main menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="417"/>
+        <location filename="../../mainwindow.cpp" line="419"/>
         <source>Minimize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="418"/>
+        <location filename="../../mainwindow.cpp" line="420"/>
         <source>Maximize/Normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="419"/>
+        <location filename="../../mainwindow.cpp" line="421"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="477"/>
+        <location filename="../../mainwindow.cpp" line="479"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="479"/>
+        <location filename="../../mainwindow.cpp" line="481"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="481"/>
+        <location filename="../../mainwindow.cpp" line="483"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="624"/>
+        <location filename="../../mainwindow.cpp" line="626"/>
         <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="932"/>
+        <location filename="../../mainwindow.cpp" line="934"/>
         <source>Warnning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="932"/>
+        <location filename="../../mainwindow.cpp" line="934"/>
         <source>This function has been controlled</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3922,14 +3923,45 @@ Please retry or relogin!</source>
         <extra-contents_path>/printer/Printer</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/printer/printer.cpp" line="108"/>
+        <location filename="../../../plugins/devices/printer/printer.cpp" line="118"/>
         <source>Add printers and scanners</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/printer/printer.cpp" line="167"/>
+        <location filename="../../../plugins/devices/printer/printer.cpp" line="182"/>
         <source>Attrs</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Projection</name>
+    <message>
+        <location filename="../../../plugins/devices/projection/projection.ui" line="46"/>
+        <location filename="../../../plugins/devices/projection/projection.cpp" line="34"/>
+        <source>Projection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/projection/projection.ui" line="297"/>
+        <source>pin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/projection/projection.cpp" line="54"/>
+        <source>Open Projection</source>
+        <translation type="unfinished"></translation>
+        <extra-contents_path>/bluetooth/Open Bluetooth</extra-contents_path>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/projection/projection.cpp" line="56"/>
+        <source>Projection Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/projection/projection.cpp" line="247"/>
+        <source>Add Bluetooths</source>
+        <translation type="unfinished"></translation>
+        <extra-contents_path>/bluetooth/Add Bluetooths</extra-contents_path>
     </message>
 </context>
 <context>
@@ -4051,141 +4083,146 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="76"/>
-        <source>Mouse</source>
+        <source>Projection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../utils/functionselect.cpp" line="78"/>
+        <source>Mouse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../utils/functionselect.cpp" line="80"/>
         <source>Touchpad</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="81"/>
+        <location filename="../../utils/functionselect.cpp" line="83"/>
         <source>Keyboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="83"/>
+        <location filename="../../utils/functionselect.cpp" line="85"/>
         <source>Shortcut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="86"/>
+        <location filename="../../utils/functionselect.cpp" line="88"/>
         <source>Audio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="89"/>
+        <location filename="../../utils/functionselect.cpp" line="91"/>
         <source>Bluetooth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="104"/>
+        <location filename="../../utils/functionselect.cpp" line="106"/>
         <source>Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="107"/>
+        <location filename="../../utils/functionselect.cpp" line="109"/>
         <source>Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="109"/>
+        <location filename="../../utils/functionselect.cpp" line="111"/>
         <source>Screenlock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="111"/>
+        <location filename="../../utils/functionselect.cpp" line="113"/>
         <source>Fonts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="113"/>
+        <location filename="../../utils/functionselect.cpp" line="115"/>
         <source>Screensaver</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="116"/>
+        <location filename="../../utils/functionselect.cpp" line="118"/>
         <source>Desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="130"/>
+        <location filename="../../utils/functionselect.cpp" line="132"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="136"/>
+        <location filename="../../utils/functionselect.cpp" line="138"/>
         <source>Vino</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="152"/>
+        <location filename="../../utils/functionselect.cpp" line="154"/>
         <source>User Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="186"/>
+        <location filename="../../utils/functionselect.cpp" line="188"/>
         <source>Security Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="132"/>
+        <location filename="../../utils/functionselect.cpp" line="134"/>
         <source>Vpn</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="134"/>
+        <location filename="../../utils/functionselect.cpp" line="136"/>
         <source>Proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="154"/>
+        <location filename="../../utils/functionselect.cpp" line="156"/>
         <source>Cloud Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="169"/>
+        <location filename="../../utils/functionselect.cpp" line="171"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="171"/>
+        <location filename="../../utils/functionselect.cpp" line="173"/>
         <source>Area</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="188"/>
+        <location filename="../../utils/functionselect.cpp" line="190"/>
         <source>Backup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="190"/>
+        <location filename="../../utils/functionselect.cpp" line="192"/>
         <source>Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="192"/>
+        <location filename="../../utils/functionselect.cpp" line="194"/>
         <source>Upgrade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="207"/>
+        <location filename="../../utils/functionselect.cpp" line="209"/>
         <source>Notice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="209"/>
+        <location filename="../../utils/functionselect.cpp" line="211"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="211"/>
+        <location filename="../../utils/functionselect.cpp" line="213"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="213"/>
+        <location filename="../../utils/functionselect.cpp" line="215"/>
         <source>Experienceplan</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4216,126 +4253,131 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../utils/utils.cpp" line="51"/>
-        <source>Go to mouse settings page</source>
+        <source>Go to projection settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../utils/utils.cpp" line="52"/>
+        <source>Go to mouse settings page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../utils/utils.cpp" line="53"/>
         <source>Go to touchpad settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="54"/>
+        <location filename="../../utils/utils.cpp" line="55"/>
         <source>Go to keyboard settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="55"/>
+        <location filename="../../utils/utils.cpp" line="56"/>
         <source>Go to shortcut settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="56"/>
+        <location filename="../../utils/utils.cpp" line="57"/>
         <source>Go to audio settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="57"/>
+        <location filename="../../utils/utils.cpp" line="58"/>
         <source>Go to bluetooth settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="59"/>
+        <location filename="../../utils/utils.cpp" line="60"/>
         <source>Go to background settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="60"/>
+        <location filename="../../utils/utils.cpp" line="61"/>
         <source>Go to theme settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="61"/>
+        <location filename="../../utils/utils.cpp" line="62"/>
         <source>Go to screenlock settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="62"/>
+        <location filename="../../utils/utils.cpp" line="63"/>
         <source>Go to screensaver settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="63"/>
+        <location filename="../../utils/utils.cpp" line="64"/>
         <source>Go to fonts settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="64"/>
+        <location filename="../../utils/utils.cpp" line="65"/>
         <source>Go to desktop settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="66"/>
+        <location filename="../../utils/utils.cpp" line="67"/>
         <source>Go to netconnect settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="67"/>
+        <location filename="../../utils/utils.cpp" line="68"/>
         <source>Go to vpn settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="68"/>
+        <location filename="../../utils/utils.cpp" line="69"/>
         <source>Go to proxy settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="70"/>
+        <location filename="../../utils/utils.cpp" line="71"/>
         <source>Go to userinfo settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="71"/>
+        <location filename="../../utils/utils.cpp" line="72"/>
         <source>Go to cloudaccount settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="73"/>
+        <location filename="../../utils/utils.cpp" line="74"/>
         <source>Go to datetime settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="74"/>
+        <location filename="../../utils/utils.cpp" line="75"/>
         <source>Go to area settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="76"/>
+        <location filename="../../utils/utils.cpp" line="77"/>
         <source>Go to update settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="77"/>
+        <location filename="../../utils/utils.cpp" line="78"/>
         <source>Go to backup settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="78"/>
+        <location filename="../../utils/utils.cpp" line="79"/>
         <source>Go to upgrade settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="80"/>
+        <location filename="../../utils/utils.cpp" line="81"/>
         <source>Go to notice settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="81"/>
+        <location filename="../../utils/utils.cpp" line="82"/>
         <source>Go to about settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../utils/utils.cpp" line="82"/>
+        <location filename="../../utils/utils.cpp" line="83"/>
         <source>Go to search settings page</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4970,100 +5012,100 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="150"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="163"/>
         <source>Choose folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="163"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="176"/>
         <source>Web Engine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="164"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="177"/>
         <source>Default web searching engine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="168"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="181"/>
         <source>baidu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="169"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="182"/>
         <source>sougou</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="170"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="183"/>
         <source>360</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="294"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="311"/>
         <source>delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="332"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="349"/>
         <source>Directories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="333"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="350"/>
         <source>select blocked folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="334"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="351"/>
         <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="335"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="352"/>
         <source>Position: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="336"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="353"/>
         <source>FileName: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="337"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="354"/>
         <source>FileType: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="338"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="355"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="354"/>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="358"/>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="362"/>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="366"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="371"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="375"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="379"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="383"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="354"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="371"/>
         <source>Add blocked folder failed, choosen path is empty!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="358"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="375"/>
         <source>Add blocked folder failed, it is not in home path!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="362"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="379"/>
         <source>Add blocked folder failed, its parent dir is exist!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/search/search.cpp" line="366"/>
+        <location filename="../../../plugins/messages-task/search/search.cpp" line="383"/>
         <source>Add blocked folder failed, it has been already blocked!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6183,12 +6225,12 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="753"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="768"/>
         <source>Change pwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="740"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="755"/>
         <source>Change type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6290,62 +6332,62 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="419"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="429"/>
         <source>Add new user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="771"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="786"/>
         <source>Del</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="905"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="920"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="905"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="920"/>
         <source>The user is logged in, please delete the user after logging out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1230"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1245"/>
         <source>Hint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1231"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1246"/>
         <source>The system only allows one user to log in automatically.After it is turned on, the automatic login of other users will be turned off.Is it turned on?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1234"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1249"/>
         <source>Trun on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1235"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1250"/>
         <source>Close on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1295"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1320"/>
         <source>Add biometric feature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1764"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1795"/>
         <source>Rename</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1778"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1809"/>
         <source>Verify</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1798"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1829"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6371,7 +6413,7 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/vpn/vpn.cpp" line="81"/>
+        <location filename="../../../plugins/network/vpn/vpn.cpp" line="91"/>
         <source>Add vpn connect</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/vpn/Add vpn connect</extra-contents_path>
@@ -6428,53 +6470,53 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="153"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="164"/>
         <source>Custom color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="463"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="480"/>
         <source>Wallpaper files(*.jpg *.jpeg *.bmp *.dib *.png *.jfif *.jpe *.gif *.tif *.tiff *.wdp)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="463"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="480"/>
         <source>allFiles(*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="503"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="545"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="520"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="562"/>
         <source>select custom wallpaper file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="504"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="546"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="521"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="563"/>
         <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="505"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="547"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="522"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="564"/>
         <source>Position: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="506"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="548"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="523"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="565"/>
         <source>FileName: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="507"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="549"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="524"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="566"/>
         <source>FileType: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="508"/>
-        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="550"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="525"/>
+        <location filename="../../../plugins/personalized/wallpaper/wallpaper.cpp" line="567"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>

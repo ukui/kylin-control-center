@@ -103,6 +103,8 @@ void MainWindow::bootOptionsFilter(QString opt) {
         bootOptionsSwitch(SYSTEM, AUTOBOOT);
     } else if (opt == "--printer") {
         bootOptionsSwitch(DEVICES, PRINTER);
+    } else if (opt == "--projection") {
+        bootOptionsSwitch(DEVICES, PROJECTION);
     } else if (opt == "--mouse") {
         bootOptionsSwitch(DEVICES, MOUSE);
     } else if (opt == "--touchpad") {
