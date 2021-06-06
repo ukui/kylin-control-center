@@ -1470,14 +1470,19 @@ Please authenticate yourself to continue</source>
         <translation>修改用户名</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changeusername.ui" line="174"/>
+        <location filename="../../../plugins/account/userinfo/changeusername.ui" line="181"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/changeusername.ui" line="193"/>
+        <location filename="../../../plugins/account/userinfo/changeusername.ui" line="200"/>
         <source>Save</source>
         <translation>确定</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/account/userinfo/changeusername.cpp" line="25"/>
+        <source>Name already in use, change another one.</source>
+        <translation>该用户名已存在，请更改。</translation>
     </message>
 </context>
 <context>
@@ -5093,7 +5098,7 @@ Please retry or relogin!</source>
         <translation>投屏端名称</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/projection/projection.cpp" line="247"/>
+        <location filename="../../../plugins/devices/projection/projection.cpp" line="250"/>
         <source>Add Bluetooths</source>
         <translation type="unfinished"></translation>
         <extra-contents_path>/bluetooth/Add Bluetooths</extra-contents_path>
@@ -7442,7 +7447,7 @@ run start-pulseaudio-x11 manually.</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/worldMap/timezonechooser.cpp" line="36"/>
+        <location filename="../../../plugins/time-language/datetime/worldMap/timezonechooser.cpp" line="37"/>
         <source>Change time zone</source>
         <translation>更改时区</translation>
     </message>
@@ -7455,7 +7460,7 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="vanished">更改时区</translation>
     </message>
     <message>
-        <location filename="../../../plugins/time-language/datetime/worldMap/timezonechooser.cpp" line="48"/>
+        <location filename="../../../plugins/time-language/datetime/worldMap/timezonechooser.cpp" line="49"/>
         <source>Change Timezone</source>
         <translation>更改时区</translation>
     </message>
@@ -8077,42 +8082,42 @@ run start-pulseaudio-x11 manually.</source>
         <translation>Root</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1245"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1255"/>
         <source>Hint</source>
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1246"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1256"/>
         <source>The system only allows one user to log in automatically.After it is turned on, the automatic login of other users will be turned off.Is it turned on?</source>
         <translation>系统只允许一个用户自动登录，开启后将关闭其他用户的自动登录，是否开启？</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1249"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1259"/>
         <source>Trun on</source>
         <translation>开启</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1250"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1260"/>
         <source>Close on</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1320"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1330"/>
         <source>Add biometric feature</source>
         <translation>添加生物密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1795"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1805"/>
         <source>Rename</source>
         <translation>重命名</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1809"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1819"/>
         <source>Verify</source>
         <translation>验证</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1829"/>
+        <location filename="../../../plugins/account/userinfo/userinfo.cpp" line="1839"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>

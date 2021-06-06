@@ -621,6 +621,7 @@ you can restore them to ensure the integrity of your system.</source>
         <source>Bluetooth</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
         <location filename="../../../plugins/account/userinfo/biometricenroll.ui" line="26"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
