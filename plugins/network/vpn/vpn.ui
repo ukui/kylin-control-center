@@ -27,7 +27,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
-    <number>12</number>
+    <number>8</number>
    </property>
    <property name="leftMargin">
     <number>0</number>

@@ -76,7 +76,7 @@ void ShareMain::initUI()
 
     mViewFrame->setLayout(viewHLayout);
 
-    mSecurityTitleLabel = new QLabel(tr("Security"), this);
+    mSecurityTitleLabel = new QLabel(tr("Security"));
 
     mSecurityFrame = new QFrame(this);
     mSecurityFrame->setFrameShape(QFrame::Shape::Box);
@@ -117,6 +117,8 @@ void ShareMain::initUI()
     mVlayout->addWidget(mShareTitleLabel);
     mVlayout->addWidget(mEnableFrame);
     mVlayout->addWidget(mViewFrame);
+    mVlayout->addSpacing(32);
+    mVlayout->setSpacing(8);
 
     mVlayout->addWidget(mSecurityTitleLabel);
     mVlayout->addWidget(mSecurityFrame);

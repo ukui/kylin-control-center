@@ -74,7 +74,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <property name="spacing">
-         <number>16</number>
+         <number>8</number>
         </property>
         <property name="bottomMargin">
          <number>0</number>
@@ -128,10 +128,13 @@
            <item>
             <layout class="QHBoxLayout" name="addLyt">
              <property name="spacing">
-              <number>8</number>
+              <number>0</number>
              </property>
              <property name="leftMargin">
               <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>16</number>
              </property>
             </layout>
            </item>
@@ -149,7 +152,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>32</height>
+            <height>16</height>
            </size>
           </property>
          </spacer>

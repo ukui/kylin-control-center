@@ -69,7 +69,7 @@ QWidget * Notice::get_plugin_ui() {
         ui->newfeatureWidget->setVisible(false);
         ui->lockscreenWidget->setVisible(false);
 
-        ui->title2Label->setContentsMargins(0, 0, 0, 16);
+        ui->title2Label->setContentsMargins(0, 0, 0, 0);
         ui->applistWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
         initSearchText();

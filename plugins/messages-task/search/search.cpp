@@ -166,7 +166,7 @@ void Search::initUi()
     m_addBlockDirLyt->addWidget(m_addBlockDirIcon);
     m_addBlockDirLyt->addWidget(m_addBlockDirLabel);
     m_addBlockDirLyt->addStretch();
-    m_mainLyt->addSpacing(30);
+    m_mainLyt->addSpacing(32);
     m_mainLyt->addWidget(m_blockDirTitleLabel);
     m_mainLyt->addWidget(m_blockDirDescLabel);
     m_mainLyt->addWidget(m_blockDirsFrame);
@@ -181,7 +181,8 @@ void Search::initUi()
     m_webEngineFrame->mCombox->insertItem(0, QIcon(":/img/plugins/search/baidu.svg"), tr("baidu"), "baidu");
     m_webEngineFrame->mCombox->insertItem(1, QIcon(":/img/plugins/search/sougou.svg"), tr("sougou"), "sougou");
     m_webEngineFrame->mCombox->insertItem(2, QIcon(":/img/plugins/search/360.svg"), tr("360"), "360");
-    m_mainLyt->addSpacing(30);
+    m_mainLyt->addSpacing(32);
+    m_mainLyt->setSpacing(8);
     m_mainLyt->addWidget(m_webEngineLabel);
     m_mainLyt->addWidget(m_webEngineFrame);
     m_mainLyt->addStretch();
