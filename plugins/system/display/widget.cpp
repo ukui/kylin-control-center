@@ -1227,13 +1227,19 @@ void Widget::save()
         mIsUnifyChanged = false;
         mConfigChanged = false;
     });
-
     int enableScreenCount = 0;
     KScreen::OutputPtr enableOutput;
     for (const KScreen::OutputPtr &output : mConfig->outputs()) {
         if (output->isEnabled()) {
             enableOutput = output;
             enableScreenCount++;
+        }
+    }
+
+    for (int index = 0; index <= 1; index++) {
+        KScreen::OutputPtr output = mConfig->output(ui->primaryCombo->itemData(index).toInt());
+        if (enableScreenCount == 1 && output->isEnabled()) {
+            ui->primaryCombo->setCurrentIndex(index);
         }
     }
 
@@ -1521,7 +1527,6 @@ void Widget::checkOutputScreen(bool judge)
                                       mainScreen->pos().y()));
         }
     }
-
     ui->primaryCombo->setCurrentIndex(index);
 }
 
