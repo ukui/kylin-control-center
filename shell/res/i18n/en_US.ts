@@ -3109,13 +3109,13 @@ Please authenticate yourself to continue</source>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="476"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1150"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1167"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1154"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1171"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="835"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="839"/>
         <source>Sync</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3136,33 +3136,33 @@ Please authenticate yourself to continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1124"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1139"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1128"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1143"/>
         <source>Stop sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="839"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="843"/>
         <source>Sync your settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="842"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="846"/>
         <source>Your account:%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="843"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="847"/>
         <source>Auto sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="315"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="411"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1128"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1143"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1160"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1176"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1132"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1147"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1164"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1180"/>
         <source>The latest time sync is: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -3171,10 +3171,10 @@ Please authenticate yourself to continue</source>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="320"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="603"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="623"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="671"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="936"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="955"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1235"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="675"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="940"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="959"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1239"/>
         <source>Network can not reach!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3184,28 +3184,28 @@ Please authenticate yourself to continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="826"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="830"/>
         <source>Synchronize your personalized settings and data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="704"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="708"/>
         <source>The Cloud Account Service version is out of date!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="901"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="905"/>
         <source>KylinID open error!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="975"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="979"/>
         <source>Unauthorized device or OSS falied.
 Please retry or relogin!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="979"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="983"/>
         <source>Authorization failed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3215,12 +3215,12 @@ Please retry or relogin!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1222"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1226"/>
         <source>Kylin Cloud Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1225"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1229"/>
         <source>Cloud ID desktop message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3228,7 +3228,7 @@ Please retry or relogin!</source>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="103"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="430"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="440"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1095"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1099"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.h" line="107"/>
         <source>Disconnected</source>
         <translation type="unfinished"></translation>

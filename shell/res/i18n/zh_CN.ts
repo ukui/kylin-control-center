@@ -4040,7 +4040,7 @@ folder will be deleted!</source>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="103"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="430"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="440"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1095"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1099"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.h" line="107"/>
         <source>Disconnected</source>
         <translation>未连接</translation>
@@ -4057,13 +4057,13 @@ Please retry for login!</source>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="476"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1150"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1167"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1154"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1171"/>
         <source>Exit</source>
         <translation>退出登录</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="835"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="839"/>
         <source>Sync</source>
         <translation>同步中</translation>
     </message>
@@ -4082,23 +4082,23 @@ Please retry for login!</source>
         <translation>登录失败，请检查你的网络连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1124"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1139"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1128"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1143"/>
         <source>Stop sync</source>
         <translation>结束同步</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="839"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="843"/>
         <source>Sync your settings</source>
         <translation>同步您的设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="842"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="846"/>
         <source>Your account:%1</source>
         <translation>您的云账户：%1</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="843"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="847"/>
         <source>Auto sync</source>
         <translation>自动同步</translation>
     </message>
@@ -4108,7 +4108,7 @@ Please retry for login!</source>
         <translation>等待同步！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="826"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="830"/>
         <source>Synchronize your personalized settings and data</source>
         <translation>同步您账户的数据以及个性化设置</translation>
     </message>
@@ -4120,10 +4120,10 @@ Please retry for login!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="315"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="411"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1128"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1143"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1160"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1176"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1132"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1147"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1164"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1180"/>
         <source>The latest time sync is: </source>
         <translation>上次同步时间为: </translation>
     </message>
@@ -4138,36 +4138,36 @@ Please retry for login!</source>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="320"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="603"/>
         <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="623"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="671"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="936"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="955"/>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1235"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="675"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="940"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="959"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1239"/>
         <source>Network can not reach!</source>
         <translation>网络不可达！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="704"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="708"/>
         <source>The Cloud Account Service version is out of date!</source>
         <translation>云账户服务版本已经过期，请升级！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="901"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="905"/>
         <source>KylinID open error!</source>
         <translation>麒麟ID客户端打开失败!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="975"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="979"/>
         <source>Unauthorized device or OSS falied.
 Please retry or relogin!</source>
         <translation>设备凭证已过期，请重新登录！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="979"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="983"/>
         <source>Authorization failed!</source>
         <translation>认证失败，请重新登录！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1222"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1226"/>
         <source>Kylin Cloud Account</source>
         <translation>云账户</translation>
     </message>
@@ -4177,7 +4177,7 @@ Please retry or relogin!</source>
         <translation>该操作可能覆盖您目前的快捷键！</translation>
     </message>
     <message>
-        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1225"/>
+        <location filename="../../../plugins/account/networkaccount/mainwidget.cpp" line="1229"/>
         <source>Cloud ID desktop message</source>
         <translation>云账户消息</translation>
     </message>
@@ -8517,7 +8517,7 @@ If something goes wrong, the settings will be restored after 9 seconds</source>
     <message>
         <location filename="../../../plugins/system/display/widget.cpp" line="622"/>
         <source>Save Config</source>
-        <translation>允许其他人远程连接您的桌面并控制您的屏幕当前配置</translation>
+        <translation>保存配置</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/display/widget.cpp" line="623"/>
