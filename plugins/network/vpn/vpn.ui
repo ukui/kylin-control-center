@@ -92,6 +92,9 @@
         <property name="leftMargin">
          <number>0</number>
         </property>
+        <property name="bottomMargin">
+         <number>8</number>
+        </property>
        </layout>
       </item>
      </layout>
