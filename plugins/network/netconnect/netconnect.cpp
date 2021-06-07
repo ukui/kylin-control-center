@@ -135,8 +135,8 @@ void NetConnect::initSearchText() {
     ui->detailBtn->setText(tr("Network settings"));
     //~ contents_path /netconnect/Netconnect Status
     ui->titleLabel->setText(tr("Netconnect Status"));
-    //~ contents_path /netconnect/open wifi
-    ui->openLabel->setText(tr("open wifi"));
+    //~ contents_path /netconnect/open WLAN
+    ui->openLabel->setText(tr("open WLAN"));
 }
 
 void NetConnect::initComponent() {
@@ -470,22 +470,24 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
     clearContent();
     mActiveInfo.clear();
     QString speed = getWifiSpeed();
-    if (!speed.contains("/")) {
+    if (!speed.contains("/") && runCount < 1) {
         QElapsedTimer time;
         time.start();
-        while (time.elapsed() < 1000) {
+        while (time.elapsed() < 500) {
             QCoreApplication::processEvents();
         }
+        runCount ++;
         return -1;
     } else {
         if (getActiveConInfo(mActiveInfo) == -1) {
             QElapsedTimer time;
             time.start();
-            while (time.elapsed() < 500) {
+            while (time.elapsed() < 300) {
                 QCoreApplication::processEvents();
             }
             return -1;
         } else {
+            runCount = 0;
             bool isNullSpeed = false;
             if (!speed.contains("/")) {
                 speed = "null/" + speed;
