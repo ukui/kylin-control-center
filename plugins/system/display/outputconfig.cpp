@@ -167,7 +167,6 @@ void OutputConfig::initUi()
     freshFrame->setMinimumSize(550, 50);
     freshFrame->setMaximumSize(960, 50);
 
-    mRefreshRate->addItem(tr("auto"), -1);
     vbox->addWidget(freshFrame);
 
     slotResolutionChanged(mResolution->currentResolution());
@@ -283,7 +282,7 @@ void OutputConfig::slotResolutionChanged(const QSize &size)
 
     // Don't remove the first "Auto" item - prevents ugly flicker of the combobox
     // when changing resolution
-    for (int i = mRefreshRate->count(); i >= 2; --i) {
+    for (int i = mRefreshRate->count(); i >= 1; --i) {
         mRefreshRate->removeItem(i - 1);
     }
 
@@ -306,12 +305,12 @@ void OutputConfig::slotResolutionChanged(const QSize &size)
         // we stick with "Auto"
         if (mode == currentMode && mRefreshRate->count() > 1) {
             // i + 1 since 0 is auto
-            mRefreshRate->setCurrentIndex(i + 1);
+            mRefreshRate->setCurrentIndex(i);
         }
     }
 
     if (-1 == mRefreshRate->currentIndex() || 0 == mRefreshRate->currentIndex()) {
-        modeID = mRefreshRate->itemData(1).toString();
+        modeID = mRefreshRate->itemData(0).toString();
     }
 
     mOutput->setCurrentModeId(modeID);
@@ -331,11 +330,11 @@ void OutputConfig::slotRotationChanged(int index)
 void OutputConfig::slotRefreshRateChanged(int index)
 {
     QString modeId;
-    if (index == 0) {
+    if (index < 0) {
         // Item 0 is "Auto" - "Auto" is equal to highest refresh rate (at least
         // that's how I understand it, and since the combobox is sorted in descending
         // order, we just pick the second item from top
-        modeId = mRefreshRate->itemData(1).toString();
+        modeId = mRefreshRate->itemData(0).toString();
     } else {
         modeId = mRefreshRate->itemData(index).toString();
     }

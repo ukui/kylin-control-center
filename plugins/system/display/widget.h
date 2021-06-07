@@ -80,6 +80,7 @@ public:
     int scaleToSlider(const float value);
 
     void initUiComponent();
+    void addBrightnessFrame(QString name);
     void showBrightnessFrame(bool AllShowFlag);
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;

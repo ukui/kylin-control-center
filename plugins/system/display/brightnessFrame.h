@@ -13,13 +13,13 @@ class BrightnessFrame : public QFrame
 public:
     BrightnessFrame(QWidget *parent = nullptr);
     ~BrightnessFrame();
-    void setTextLable_1(QString text);
-    void setTextLable_2(QString text);
+    void setTextLableName(QString text);
+    void setTextLableValue(QString text);
     Uslider *slider = nullptr;
     QString outputName;
 private:
-    QLabel *label_1 = nullptr;
-    QLabel *label_2 = nullptr;
+    QLabel *labelName = nullptr;
+    QLabel *labelValue = nullptr;
 };
 
 #endif // BRIGHTNESSFRAME_H

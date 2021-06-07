@@ -563,7 +563,7 @@ void Widget::initGSettings()
                 for (int i = 0; i < BrightnessFrameV.size(); ++i) {
                     if (BrightnessFrameV[i]->outputName == "eDP-1") {
                        BrightnessFrameV[i]->slider->blockSignals(true);
-                       BrightnessFrameV[i]->setTextLable_2(QString::number(value));
+                       BrightnessFrameV[i]->setTextLableValue(QString::number(value));
                        BrightnessFrameV[i]->slider->setValue(value);
                        BrightnessFrameV[i]->slider->blockSignals(false);
                     }
@@ -864,42 +864,46 @@ bool Widget::existInBrightnessFrameV(QString name)
 
 }
 
-void Widget::outputAdded(const KScreen::OutputPtr &output)
+void Widget::addBrightnessFrame(QString name)
 {
-    QString name = Utils::outputName(output);
+    BrightnessFrame *frame = new BrightnessFrame;
+    frame->setTextLableValue("0"); //最低亮度10,获取前为0
     if (mIsBattery && name == "eDP-1" && !existInBrightnessFrameV(name))
     {
-        BrightnessFrame *frame = new BrightnessFrame;
         frame->outputName = name;
-        //frame->setTextLable_1(tr("Brightness") + QString("e"));
         int initValue = mPowerGSettings->get(POWER_KEY).toInt();
-        frame->setTextLable_2(QString::number(initValue));
+        frame->setTextLableValue(QString::number(initValue));
         frame->slider->setValue(initValue);
         ui->unifyBrightLayout->addWidget(frame);
         connect(frame->slider, &QSlider::valueChanged, this, [=](){
+            qDebug()<<name<<"'s brightness"<<" is changed, value = "<<frame->slider->value();
             mPowerGSettings->set(POWER_KEY, frame->slider->value());
-            frame->setTextLable_2(QString::number(mPowerGSettings->get(POWER_KEY).toInt()));
+            frame->setTextLableValue(QString::number(mPowerGSettings->get(POWER_KEY).toInt()));
         });
         BrightnessFrameV.push_back(frame);
     } else if(!mIsBattery && !existInBrightnessFrameV(name)) {
-        BrightnessFrame *frame = new BrightnessFrame;
         frame->outputName = name;
         ui->unifyBrightLayout->addWidget(frame);
-        frame->setTextLable_2(0);
-        frame->slider->setValue(0);
+        frame->slider->setValue(10);
         QtConcurrent::run([=]{
             int initValue = getDDCBrighthess(frame->outputName);
             frame->slider->setValue(initValue);
-            //frame->setTextLable_1(tr("Brightness") + QString("(") + name[0] + QString(")"));
-            frame->setTextLable_2(QString::number(initValue));
+            frame->setTextLableValue(QString::number(initValue));
             connect(frame->slider, &QSlider::valueChanged, this, [=](){
-                                 frame->setTextLable_2(QString::number(frame->slider->value()));
-                                  setDDCBrightnessN(frame->slider->value(), name);
+                                 qDebug()<<name<<"brightness"<<" is changed, value = "<<frame->slider->value();
+                                 frame->setTextLableValue(QString::number(frame->slider->value()));
+                                 setDDCBrightnessN(frame->slider->value(), name);
             });
         });
         BrightnessFrameV.push_back(frame);
     }
     ui->unifyBrightFrame->setFixedHeight(BrightnessFrameV.size() * (50 + 2 + 2) - 2);
+}
+
+void Widget::outputAdded(const KScreen::OutputPtr &output)
+{
+    QString name = Utils::outputName(output);
+    addBrightnessFrame(name);
 
     connect(output.data(), &KScreen::Output::isConnectedChanged,
             this, &Widget::slotOutputConnectedChanged);
@@ -1800,18 +1804,20 @@ void Widget::nightChangedSlot(QHash<QString, QVariant> nightArg)
 
 void Widget::showBrightnessFrame(bool allShowFlag)
 {
+    ui->unifyBrightFrame->setFixedHeight(0);
     if (allShowFlag == true) {
         ui->unifyBrightFrame->setFixedHeight(BrightnessFrameV.size() * (50 + 2 + 2) - 2);
         for (int i = 0; i < BrightnessFrameV.size(); ++i) {
-            BrightnessFrameV[i]->setTextLable_1(tr("Brightness") + QString("(") + BrightnessFrameV[i]->outputName[0] + QString(")"));
+            BrightnessFrameV[i]->setTextLableName(tr("Brightness") + QString("(") + BrightnessFrameV[i]->outputName[0] + QString(")"));
             BrightnessFrameV[i]->setVisible(true);
         }
     } else {
-        ui->unifyBrightFrame->setFixedHeight(52);
         for (int i = 0; i < BrightnessFrameV.size(); ++i) {
             if (ui->primaryCombo->currentText() == BrightnessFrameV[i]->outputName) {
-                BrightnessFrameV[i]->setTextLable_1(tr("Brightness"));
+                ui->unifyBrightFrame->setFixedHeight(52);
+                BrightnessFrameV[i]->setTextLableName(tr("Brightness"));
                 BrightnessFrameV[i]->setVisible(true);
+                break;
             } else {
                 BrightnessFrameV[i]->setVisible(false);
             }

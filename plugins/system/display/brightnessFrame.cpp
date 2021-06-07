@@ -12,19 +12,19 @@ BrightnessFrame::BrightnessFrame(QWidget *parent) :
     layout->setSpacing(6);
     layout->setMargin(9);
 
-    label_1 = new QLabel(this);
-    label_1->setFixedWidth(118);
+    labelName = new QLabel(this);
+    labelName->setFixedWidth(118);
 
     slider = new Uslider(Qt::Horizontal, this);
     slider->setRange(10, 100);
 
-    label_2 = new QLabel(this);
-    label_2->setFixedWidth(30);
-    label_2->setAlignment(Qt::AlignRight);
+    labelValue = new QLabel(this);
+    labelValue->setFixedWidth(30);
+    labelValue->setAlignment(Qt::AlignRight);
 
-    layout->addWidget(label_1);
+    layout->addWidget(labelName);
     layout->addWidget(slider);
-    layout->addWidget(label_2);
+    layout->addWidget(labelValue);
 
 }
 
@@ -33,12 +33,12 @@ BrightnessFrame::~BrightnessFrame()
 
 }
 
-void BrightnessFrame::setTextLable_1(QString text)
+void BrightnessFrame::setTextLableName(QString text)
 {
-    this->label_1->setText(text);
+    this->labelName->setText(text);
 }
 
-void BrightnessFrame::setTextLable_2(QString text)
+void BrightnessFrame::setTextLableValue(QString text)
 {
-    this->label_2->setText(text);
+    this->labelValue->setText(text);
 }

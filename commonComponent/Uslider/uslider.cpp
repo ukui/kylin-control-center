@@ -12,17 +12,20 @@ Uslider::Uslider(QStringList list, int paintValue) : QSlider(Qt::Horizontal), sc
     this->setMinimumHeight(50);
     this->setMaximumHeight(100);
     this->paintValue = paintValue;
+    this->setPageStep(0); //防止qslider的mousePressEvent对坐标造成影响
 }
 
 Uslider::Uslider(Qt::Orientation orientation, QWidget *parent, int paintValue) :
     QSlider(orientation, parent)
 {
     this->paintValue = paintValue;
+    this->setPageStep(0); //防止qslider的mousePressEvent对坐标造成影响
 }
 
 Uslider::Uslider(QWidget *parent, int paintValue) : QSlider(parent)
 {
     this->paintValue = paintValue;
+    this->setPageStep(0); //防止qslider的mousePressEvent对坐标造成影响
 }
 
 void Uslider::paintEvent(QPaintEvent *e)
@@ -66,21 +69,22 @@ void Uslider::paintEvent(QPaintEvent *e)
 
 void Uslider::mousePressEvent(QMouseEvent *e)
 {
-    int vaule = 0;
+    int value = 0;
     int currentX = e->pos().x();
-    double per = currentX * 1.0/this->width();
-    if (this->maximum() >= 50) { //减小鼠标点击像素的影响
-        vaule = qRound(per*(this->maximum() - this->minimum()) + 1) + this->minimum();
-        if (vaule < this->maximum() / 2) {
-            vaule = vaule - 2;
+    double per = currentX * 1.0 / this->width();
+    if ((this->maximum() - this->minimum()) >= 50) { //减小鼠标点击像素的影响
+        value = qRound(per*(this->maximum() - this->minimum())) + this->minimum();
+        if (value <= (this->maximum() / 2 - this->maximum() / 10 + this->minimum() / 10)) {
+            value = qRound(per*(this->maximum() - this->minimum() - 1)) + this->minimum();
+        } else if (value > (this->maximum() / 2 + this->maximum() / 10 + this->minimum() / 10)) {
+            value = qRound(per*(this->maximum() - this->minimum() + 1)) + this->minimum();
+        } else {
+            value = qRound(per*(this->maximum() - this->minimum())) + this->minimum();
         }
     } else {
-        vaule = qRound(per*(this->maximum() - this->minimum())) + this->minimum();
+        value = qRound(per*(this->maximum() - this->minimum())) + this->minimum();
     }
-    this->setValue(vaule);
+    this->setValue(value);
 
-    int pageStepV = this->pageStep();
-    this->setPageStep(0);          //防止qslider的mousePressEvent对坐标造成影响
     QSlider::mousePressEvent(e);  //必须放在后面，否则点击拖动无法使用(待优化)
-    this->setPageStep(pageStepV);
 }
