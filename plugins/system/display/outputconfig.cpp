@@ -354,8 +354,10 @@ void OutputConfig::slotDPIChanged(QString key)
 
 void OutputConfig::slotScaleIndex(const QSize &size)
 {
+    mScaleCombox->blockSignals(true);
     mScaleCombox->clear();
     mScaleCombox->addItem("100%", 1.0);
+
 
     if (k150Scale.contains(size)) {
         mScaleCombox->addItem("125%", 1.25);
@@ -367,6 +369,7 @@ void OutputConfig::slotScaleIndex(const QSize &size)
     if (k200Scale.contains(size)) {
         mScaleCombox->addItem("200%", 2.0);
     }
+    mScaleCombox->blockSignals(false);
 }
 
 void OutputConfig::setShowScaleOption(bool showScaleOption)
