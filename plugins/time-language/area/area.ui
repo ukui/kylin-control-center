@@ -400,7 +400,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_10">
      <property name="bottomMargin">
-      <number>24</number>
+      <number>0</number>
      </property>
      <item>
       <widget class="QPushButton" name="chgformButton">
