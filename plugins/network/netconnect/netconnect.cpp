@@ -311,10 +311,10 @@ void NetConnect::getNetList() {
                 } else {
                     iconamePath = wifiIcon(isLock, wifiStrength);
                 }
-                rebuildAvailComponent(iconamePath, wifiName);
+                rebuildAvailComponent(iconamePath, wifiName, "wifi");
             }
             for (int i = 0; i < this->lanList.length(); i++) {
-                rebuildAvailComponent(KLanSymbolic , lanList.at(i));
+                rebuildAvailComponent(KLanSymbolic , lanList.at(i), "ethernet");
             }
             setNetDetailVisible();
         }
@@ -372,7 +372,7 @@ void NetConnect::netDetailSlot(QString netName) {
     }
 }
 
-void NetConnect::rebuildAvailComponent(QString iconPath, QString netName) {
+void NetConnect::rebuildAvailComponent(QString iconPath, QString netName, QString type) {
     HoverBtn * wifiItem = new HoverBtn(netName, false, pluginWidget);
     wifiItem->mPitLabel->setText(netName);
 
@@ -385,7 +385,7 @@ void NetConnect::rebuildAvailComponent(QString iconPath, QString netName) {
     wifiItem->mAbtBtn->setText(tr("Connect"));
 
     connect(wifiItem->mAbtBtn, &QPushButton::clicked, this, [=] {
-        runKylinmApp();
+        runKylinmApp(netName,type);
     });
 
     ui->availableLayout->addWidget(wifiItem);
@@ -397,10 +397,8 @@ void NetConnect::runExternalApp() {
     process.startDetached(cmd);
 }
 
-void NetConnect::runKylinmApp() {
-    QString cmd = "kylin-nm";
-    QProcess process(this);
-    process.startDetached(cmd);
+void NetConnect::runKylinmApp(QString netName, QString type) {
+    m_interface->call("showPb",type,netName);
 }
 
 bool NetConnect::getwifiisEnable() {

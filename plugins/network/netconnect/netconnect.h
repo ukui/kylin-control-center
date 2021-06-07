@@ -111,10 +111,10 @@ public:
     void initSearchText();
     void initComponent();
     void rebuildNetStatusComponent(QString iconPath, QString netName);
-    void rebuildAvailComponent(QString iconpath, QString netName);
+    void rebuildAvailComponent(QString iconpath, QString netName, QString type);
 
     void runExternalApp();
-    void runKylinmApp();
+    void runKylinmApp(QString netName, QString type);
 
     bool getwifiisEnable();
 
