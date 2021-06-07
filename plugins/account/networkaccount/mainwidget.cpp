@@ -646,6 +646,10 @@ void MainWidget::initSignalSlots() {
     connect(this, &MainWidget::isOnline, [=] (bool checked) {
         //如果本身发生了错误，进入同步错误状态，则不处理，接受同步错误状态的处理
         bool tmpOnline = m_bIsOnline;
+        if(m_mainWidget->currentWidget() == m_nullWidget) {
+            return ;
+        }
+
         m_bIsOnline = checked;
         if (m_bIsFailed) {
             if(checked == true) {
@@ -1026,7 +1030,6 @@ void MainWidget::ctrlAutoSync(int status) {
     } else if (status == SYNC_FAILURE) {
         m_bIsFailed = true;
         m_autoSyn->make_itemoff();
-        m_pSettings->sync();
         m_autoSyn->set_active(true);
         m_autoSyn->set_change(-1,"Failed!");
         for (int i  = 0;i < m_szItemlist.size();i ++) {
@@ -1038,6 +1041,7 @@ void MainWidget::ctrlAutoSync(int status) {
         m_autoSyn->set_change(0,"0");
         for (int i  = 0;i < m_szItemlist.size();i ++) {
             m_itemList->get_item(i)->set_active(true);
+            m_itemList->get_item(i)->set_change(0,"0");
         }
     }
 }
