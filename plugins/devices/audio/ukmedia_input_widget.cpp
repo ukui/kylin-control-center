@@ -166,7 +166,7 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     m_pInputPortWidget->hide();
     QVBoxLayout *m_pVlayout1 = new QVBoxLayout(this);
     m_pVlayout1->addWidget(m_pInputLabel);
-    m_pVlayout1->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    m_pVlayout1->addItem(new QSpacerItem(16,7,QSizePolicy::Fixed));
     m_pVlayout1->addWidget(m_pInputWidget);
     this->setLayout(m_pVlayout1);
     this->layout()->setContentsMargins(0,0,0,0);

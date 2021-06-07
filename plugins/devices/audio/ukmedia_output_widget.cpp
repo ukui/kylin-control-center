@@ -245,7 +245,7 @@ UkmediaOutputWidget::UkmediaOutputWidget(QWidget *parent) : QWidget(parent)
     m_pOutputPortWidget->hide();
     QVBoxLayout *vLayout1 = new QVBoxLayout(this);
     vLayout1->addWidget(m_pOutputLabel);
-    vLayout1->addItem(new QSpacerItem(16,20,QSizePolicy::Fixed));
+    vLayout1->addItem(new QSpacerItem(16,0,QSizePolicy::Fixed));
     vLayout1->addWidget(m_pOutputWidget);
     this->setLayout(vLayout1);
     this->layout()->setContentsMargins(0,0,0,0);
