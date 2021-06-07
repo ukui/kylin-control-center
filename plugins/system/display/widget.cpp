@@ -876,7 +876,7 @@ void Widget::addBrightnessFrame(QString name)
         frame->slider->setValue(initValue);
         ui->unifyBrightLayout->addWidget(frame);
         connect(frame->slider, &QSlider::valueChanged, this, [=](){
-            qDebug()<<name<<"'s brightness"<<" is changed, value = "<<frame->slider->value();
+            qDebug()<<name<<"brightness"<<" is changed, value = "<<frame->slider->value();
             mPowerGSettings->set(POWER_KEY, frame->slider->value());
             frame->setTextLableValue(QString::number(mPowerGSettings->get(POWER_KEY).toInt()));
         });

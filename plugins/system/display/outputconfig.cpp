@@ -351,6 +351,8 @@ void OutputConfig::slotScaleChanged(int index)
 
 void OutputConfig::slotDPIChanged(QString key)
 {
+    if (mScaleCombox == nullptr)
+        return;
     if (!key.compare("scalingFactor", Qt::CaseSensitive)) {
         double scale = mDpiSettings->get(key).toDouble();
         if (mScaleCombox->findData(scale) == -1) {

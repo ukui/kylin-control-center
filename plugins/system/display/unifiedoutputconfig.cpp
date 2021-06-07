@@ -9,7 +9,6 @@
 #include <QSpacerItem>
 #include <QCheckBox>
 #include <QGroupBox>
-#include <QVBoxLayout>
 #include <QFormLayout>
 #include <QStyledItemDelegate>
 #include <QFile>
@@ -18,6 +17,18 @@
 #include <KF5/KScreen/kscreen/output.h>
 #include <KF5/KScreen/kscreen/config.h>
 #include <KF5/KScreen/kscreen/getconfigoperation.h>
+
+const QVector<QSize> k150Scale{QSize(1280, 1024), QSize(1440, 900), QSize(1600, 900),
+                               QSize(1680, 1050), QSize(1920, 1080), QSize(1920, 1200),
+                               QSize(2048, 1080), QSize(2048, 1280), QSize(2160, 1440),
+                               QSize(2560, 1440),QSize(3840, 2160)};
+
+const QVector<QSize> k175Scale{QSize(1680, 1050), QSize(1920, 1080), QSize(1920, 1200),
+                               QSize(2048, 1080), QSize(2048, 1280), QSize(2160, 1440),
+                               QSize(2560, 1440), QSize(3840, 2160)};
+
+const QVector<QSize> k200Scale{QSize(1920, 1200), QSize(2048, 1280), QSize(2160, 1440),
+                               QSize(2560, 1440), QSize(3840, 2160)};
 
 bool operator<(const QSize &s1, const QSize &s2)
 {
@@ -93,6 +104,11 @@ void UnifiedOutputConfig::initUi()
     vbox->addWidget(resFrame);
     connect(mResolution, &ResolutionSlider::resolutionChanged,
             this, &UnifiedOutputConfig::slotResolutionChanged);
+
+    #if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+        connect(mResolution, &ResolutionSlider::resolutionChanged,
+                this, &UnifiedOutputConfig::slotScaleIndex);
+    #endif
 
     // 方向下拉框
     mRotation = new QComboBox(this);
@@ -175,6 +191,80 @@ void UnifiedOutputConfig::initUi()
             }
         }
     });
+    initscale(vbox);
+}
+
+void UnifiedOutputConfig::slotScaleIndex(const QSize &size)
+{
+    mScaleCombox->clear();
+    mScaleCombox->addItem("100%", 1.0);
+
+    if (k150Scale.contains(size)) {
+        mScaleCombox->addItem("125%", 1.25);
+        mScaleCombox->addItem("150%", 1.5);
+    }
+    if (k175Scale.contains(size)) {
+        mScaleCombox->addItem("175%", 1.75);
+    }
+    if (k200Scale.contains(size)) {
+        mScaleCombox->addItem("200%", 2.0);
+    }
+}
+
+void UnifiedOutputConfig::initscale(QVBoxLayout *vbox)
+{
+    mScaleCombox = new QComboBox(this);
+    mScaleCombox->setObjectName("scaleCombox");
+
+    double scale = getScreenScale();
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+    slotScaleIndex(mResolution->currentResolution());
+#else
+    int maxReslu = mResolution->getMaxResolution().width();
+    mScaleCombox->addItem("100%", 1.0);
+    if (maxReslu >= 2000) {
+        mScaleCombox->addItem("200%", 2.0);
+    }
+
+    mScaleCombox->setCurrentIndex(0);
+    if (mScaleCombox->findData(scale) == -1) {
+        mScaleCombox->addItem("200%", 2.0);
+    }
+#endif
+    mScaleCombox->setCurrentText(QString::number(scale * 100) + "%");
+
+    if (mScaleCombox->findData(scale) == -1) {
+        mScaleCombox->addItem(QString::number(scale * 100) + "%", scale);
+        mScaleCombox->setCurrentText(QString::number(scale * 100) + "%");
+    }
+
+    connect(mScaleCombox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this, &UnifiedOutputConfig::slotScaleChanged);
+
+    QLabel *scaleLabel = new QLabel(this);
+    //~ contents_path /display/screen zoom
+    scaleLabel->setText(tr("screen zoom"));
+    scaleLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    scaleLabel->setFixedSize(118, 30);
+
+    QHBoxLayout *scaleLayout = new QHBoxLayout();
+    scaleLayout->addWidget(scaleLabel);
+    scaleLayout->addWidget(mScaleCombox);
+
+    QFrame *scaleFrame = new QFrame(this);
+    scaleFrame->setFrameShape(QFrame::Shape::Box);
+    scaleFrame->setLayout(scaleLayout);
+
+    scaleFrame->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    scaleFrame->setMinimumSize(550, 50);
+    scaleFrame->setMaximumSize(960, 50);
+    vbox->addWidget(scaleFrame);
+}
+
+void UnifiedOutputConfig::slotScaleChanged(int index)
+{
+    Q_EMIT scaleChanged(mScaleCombox->itemData(index).toDouble());
 }
 
 KScreen::OutputPtr UnifiedOutputConfig::createFakeOutput()
