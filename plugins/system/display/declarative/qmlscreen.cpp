@@ -62,7 +62,8 @@ void QMLScreen::setConfig(const KScreen::ConfigPtr &config)
     m_config = config;
     connect(m_config.data(), &KScreen::Config::outputAdded,
             this, [this](const KScreen::OutputPtr &output) {
-        QTimer::singleShot(1000, this, [=]{
+        QTimer::singleShot(1000, this, [=] {
+            m_manuallyMovedOutputs.clear();
             addOutput(output);
             updateOutputsPlacement();
         });
@@ -220,10 +221,8 @@ void QMLScreen::setScreenCenterPos()
     moveY = mY2 - mY1;
 
     Q_FOREACH (QMLOutput *qmlOutput, m_outputMap) {
-        qmlOutput->blockSignals(true);
         qmlOutput->setX(qmlOutput->x() + moveX);
         qmlOutput->setY(qmlOutput->y() + moveY);
-        qmlOutput->blockSignals(false);
     }
 }
 
@@ -264,7 +263,7 @@ void QMLScreen::setScreenPos(QMLOutput *output)
         setScreenCenterPos();
         return;
     }
-    output->blockSignals(true);
+
     if (!((x1 + width1 == x2)
           || (y1 == y2 + height2)
           || (x1 == x2 + width2)
@@ -299,7 +298,6 @@ void QMLScreen::setScreenPos(QMLOutput *output)
             }
         }
     }
-    output->blockSignals(false);
 
     setScreenCenterPos();
 }

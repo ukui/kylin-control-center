@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>945</width>
-    <height>1133</height>
+    <height>1260</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -364,81 +364,40 @@
     </layout>
    </item>
    <item>
-    <widget class="QFrame" name="brightnessframe">
+    <widget class="QFrame" name="unifyBrightFrame">
      <property name="minimumSize">
       <size>
-       <width>550</width>
-       <height>50</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>960</width>
-       <height>50</height>
+       <width>0</width>
+       <height>106</height>
       </size>
      </property>
      <property name="frameShape">
-      <enum>QFrame::Box</enum>
+      <enum>QFrame::StyledPanel</enum>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
-       <layout class="QHBoxLayout" name="brightnessLayout">
-        <item>
-         <widget class="QLabel" name="label_3">
-          <property name="minimumSize">
-           <size>
-            <width>118</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>screen brightness adjustment</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="darkLabel">
-          <property name="text">
-           <string>dark</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSlider" name="brightnessSlider">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="brihghtLabel">
-          <property name="text">
-           <string>bright</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="brightValueLabel">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
+       <layout class="QVBoxLayout" name="unifyBrightLayout">
+        <property name="spacing">
+         <number>2</number>
+        </property>
        </layout>
       </item>
      </layout>
@@ -840,7 +799,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QSlider" name="temptSlider">
+           <widget class="Uslider" name="temptSlider">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -934,6 +893,11 @@
    <class>QQuickWidget</class>
    <extends>QWidget</extends>
    <header location="global">QtQuickWidgets/QQuickWidget</header>
+  </customwidget>
+  <customwidget>
+   <class>Uslider</class>
+   <extends>QSlider</extends>
+   <header>Uslider/uslider.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

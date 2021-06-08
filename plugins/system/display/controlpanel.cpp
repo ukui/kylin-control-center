@@ -143,5 +143,8 @@ void ControlPanel::setUnifiedOutput(const KScreen::OutputPtr &output)
         mLayout->insertWidget(mLayout->count() - 2, mUnifiedOutputCfg);
         connect(mUnifiedOutputCfg, &UnifiedOutputConfig::changed,
                 this, &ControlPanel::changed);
+
+        connect(mUnifiedOutputCfg, &UnifiedOutputConfig::scaleChanged,
+                this, &ControlPanel::scaleChanged);
     }
 }

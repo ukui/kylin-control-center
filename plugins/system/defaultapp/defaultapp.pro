@@ -23,6 +23,7 @@ PKGCONFIG     += gio-2.0 \
 INCLUDEPATH   +=  \
                  $$PROJECT_ROOTDIR \
 
+QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2 -O2
 #LIBS          += -L$$[QT_INSTALL_LIBS] -ldefaultprograms \
 
 SOURCES += \

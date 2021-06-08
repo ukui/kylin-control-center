@@ -34,6 +34,8 @@
 #include <QTextCodec>
 #include <QtDBus/QDBusConnection>
 
+#define THEME_QT_SCHEMA  "org.ukui.style"
+
 #define DESKTOP_SCHEMA       "org.ukui.control-center.desktop"
 
 #define COMPUTER_VISIBLE_KEY "computer-icon-visible"
@@ -103,8 +105,10 @@ QWidget *Desktop::get_plugin_ui() {
         ui->fullScreenMenuFrame->setVisible(false);
 
         const QByteArray id(DESKTOP_SCHEMA);
-        if (QGSettings::isSchemaInstalled(id)) {
+        const QByteArray iid(THEME_QT_SCHEMA);
+        if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(iid)) {
             dSettings = new QGSettings(id, QByteArray(), this);
+            mQtSettings = new QGSettings(iid,QByteArray(),this);
         }
         cmd = QSharedPointer<QProcess>(new QProcess());
         initTitleLabel();
@@ -236,6 +240,14 @@ void Desktop::setupConnect(){
 
     connect(menuTrashSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
         dSettings->set(TRASH_LOCK_KEY, checked);
+    });
+
+    connect(mQtSettings, &QGSettings::changed, this, [=] {
+        ui->menuComputerLabel->setPixmap(QPixmap::fromImage(QIcon::fromTheme("computer").pixmap(32,32).toImage()));
+        ui->menuFilesystemLabel->setPixmap(QPixmap::fromImage(QIcon::fromTheme("user-home").pixmap(32,32).toImage()));
+        ui->menuSettingsLabel->setPixmap(QPixmap::fromImage(QIcon::fromTheme("ukui-control-center").pixmap(32,32).toImage()));
+        ui->menuTrashLabel->setPixmap(QPixmap::fromImage(QIcon::fromTheme("user-trash").pixmap(32,32).toImage()));
+
     });
 
     QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"),

@@ -269,6 +269,10 @@ void AppUpdateWid::showInstallStatues(QString status,QString appAptName, float p
 
     if(QString::compare(appAllMsg.name,appAptName) == 0)
     {
+        if (this->execFun == false) {
+           // this->execFun = true;
+            return;
+        }
 
         /* 临时解决方案 , 获取系统语言环境 , 英文加悬浮框 , 中文不加 */
         QLocale locale;
@@ -448,7 +452,7 @@ void AppUpdateWid::updateAppUi(QString name)
     if(name.contains("kylin-update-desktop-")||name == "linux-generic")
     {
         pkgIconPath = QString(":/img/plugins/upgrade/%1.png").arg(name);
-        appIcon->setPixmap(QPixmap(pkgIconPath));
+        appIcon->setPixmap(QPixmap(pkgIconPath).scaled(32,32));
     }
     else{
         if(QIcon::fromTheme(name).hasThemeIcon(name))    //判断是否有主题图标并输出
@@ -513,7 +517,7 @@ void AppUpdateWid::updateAppUi(QString name)
     if(name.contains("kylin-update-desktop")||name == "linux-generic")
     {
         pkgIconPath = QString(":/img/plugins/upgrade/%1.png").arg(name);
-        updatelog1->logAppIcon->setPixmap(QPixmap(pkgIconPath));
+        updatelog1->logAppIcon->setPixmap(QPixmap(pkgIconPath).scaled(32,32));
     }
     else{
         if(QIcon::fromTheme(name).hasThemeIcon(name))
@@ -653,7 +657,11 @@ void AppUpdateWid::updateOneApp()
     }
     else
     {
-        updateAPPBtn->hide();
+         updateAPPBtn->hide();
+
+         this->execFun = false;
+         startInstall(appAllMsg.name);
+
 //        appVersion->setText(tr("获取依赖失败！"));
         appVersion->setText(tr("Get depends failed!"));
         appVersion->setToolTip("");
@@ -840,7 +848,7 @@ type AppUpdateWid::checkSourcesType()
     QFile soucesFile(SOURCESLIST);
     soucesFile.open(QIODevice::ReadOnly | QIODevice::Text);
     QString result = soucesFile.readAll();
-    if(result.contains("http://")){
+    if(result.contains("http://") || result.contains("https://")){
         qDebug() << "当前源为http源";
         return http;
     }else if(result.contains("ftp://")){
@@ -850,4 +858,5 @@ type AppUpdateWid::checkSourcesType()
         qDebug() << "当前源为本地源";
         return file;
     }
+    return http;
 }

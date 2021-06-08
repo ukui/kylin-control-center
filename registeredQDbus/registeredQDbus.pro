@@ -11,6 +11,7 @@ CONFIG -= app_bundle
 PKGCONFIG     += gio-2.0 \
                  gio-unix-2.0 \
 
+QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2 -O2
 
 DESTDIR = .
 INCLUDEPATH += .
@@ -31,10 +32,8 @@ INSTALLS += \
     inst3 \
 
 HEADERS += \
-    run-passwd2.h \
     sysdbusregister.h
 
 SOURCES += \
     main.cpp \
-    run-passwd2.cpp \
     sysdbusregister.cpp

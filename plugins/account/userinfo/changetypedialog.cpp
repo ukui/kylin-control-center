@@ -167,3 +167,19 @@ void ChangeTypeDialog::paintEvent(QPaintEvent *event) {
     p.restore();
 }
 
+void ChangeTypeDialog::keyPressEvent(QKeyEvent * event){
+    switch (event->key())
+    {
+    case Qt::Key_Escape:
+        break;
+    case Qt::Key_Enter:
+        break;
+    case Qt::Key_Return:
+        if (ui->confirmPushBtn->isEnabled())
+            ui->confirmPushBtn->clicked();
+        break;
+    default:
+        QDialog::keyPressEvent(event);
+    }
+}
+

@@ -111,10 +111,10 @@ public:
     void initSearchText();
     void initComponent();
     void rebuildNetStatusComponent(QString iconPath, QString netName);
-    void rebuildAvailComponent(QString iconpath, QString netName);
+    void rebuildAvailComponent(QString iconpath, QString netName, QString type);
 
     void runExternalApp();
-    void runKylinmApp();
+    void runKylinmApp(QString netName, QString type);
 
     bool getwifiisEnable();
 
@@ -133,7 +133,7 @@ private:
 
     QMap<QString, int> connectedWifi;
     QMap<QString,int>  wifiList;
-    QMap<QString,int>  wifiLists;
+
     QThread            *pThread;
     NetconnectWork     *pNetWorker;
 
@@ -143,6 +143,7 @@ private:
     QStringList        TwifiList;
     QStringList        TlanList;
     QStringList        lanList;
+    QStringList        wifilist;
 
     bool               mFirstLoad;
     bool               mIsLanVisible = false;
@@ -154,8 +155,10 @@ private:
     QList<ActiveConInfo> mActiveInfo;
     QTimer             *refreshTimer;
     QString             prefreChan;
-    int                 firstCount = 0;
-    int                 secondCount = 0;
+
+    QString             mPreWifiConnectedName;
+    QString             mPreLanConnectedName;
+    int                 runCount = 0;
 private:
     int         setSignal(QString lv);
     QStringList execGetLanList();

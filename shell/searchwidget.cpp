@@ -236,6 +236,11 @@ void SearchWidget::loadxml() {
                                 || (!Utils::isCommunity() && m_searchBoxStruct.fullPagePath.contains("update")) ) {
                             break;
                         }
+#ifndef __sw_64__
+                        if(m_searchBoxStruct.fullPagePath.contains("Change valid",Qt::CaseInsensitive)) {
+                            break;
+                        }
+#endif
                         m_EnterNewPagelist.append(m_searchBoxStruct);
 
                         // Add search result content

@@ -173,54 +173,12 @@ void Theme::initSearchText() {
 }
 
 void Theme::setupSettings() {
-    QString filename = QDir::homePath() + "/.config/ukui-kwinrc";
-    kwinSettings = new QSettings(filename, QSettings::IniFormat, this);
 
-    QStringList keys = kwinSettings->childGroups();
-    kwinSettings->beginGroup("Plugins");
-    bool kwin = kwinSettings->value("blurEnabled", kwin).toBool();
-
-    if (!kwinSettings->childKeys().contains("blurEnabled")) {
-        kwin = true;
-    }
-
-    kwinSettings->endGroup();
-
-    effectSwitchBtn->setChecked(kwin);
-
-    QFileInfo dir(filename);
-    if (!dir.isFile()) {
-        effectSwitchBtn->setChecked(true);
-    }
-
-    if (effectSwitchBtn->isChecked()) {
-        ui->transFrame->setVisible(true);
-    } else {
-        ui->transFrame->setVisible(false);
-    }
-
-    if (keys.contains("Compositing")) {
-        kwinSettings->beginGroup("Compositing");
-        QString xder;
-        bool kwinOG = false;
-        bool kwinEN = true;
-        xder = kwinSettings->value("Backend", xder).toString();
-        kwinOG = kwinSettings->value("OpenGLIsUnsafe", kwinOG).toBool();
-        kwinEN = kwinSettings->value("Enabled", kwinEN).toBool();
-        if (xder == kXder || kwinOG || !kwinEN) {
-            ui->effectFrame->setVisible(false);
-            ui->transFrame->setVisible(false);
-            ui->effectLabel->setVisible(false);
-            personliseGsettings->set(PERSONALSIE_EFFECT_KEY, false);
-        } else {
-            ui->lowLabel->setPixmap(QPixmap("://img/plugins/theme/opacitylow.svg"));
-            ui->highlabel->setPixmap(QPixmap("://img/plugins/theme/opacityhigh.svg"));
-        }
-        kwinSettings->endGroup();
-    }else {
-        ui->lowLabel->setPixmap(QPixmap("://img/plugins/theme/opacitylow.svg"));
-        ui->highlabel->setPixmap(QPixmap("://img/plugins/theme/opacityhigh.svg"));
-    }
+    ui->effectFrame->setVisible(false);
+    ui->transFrame->setVisible(false);
+    ui->effectLabel->setVisible(false);
+    ui->verticalSpacer_5->changeSize(0,0);
+    personliseGsettings->set(PERSONALSIE_EFFECT_KEY, false);
 }
 
 void Theme::setupComponent() {

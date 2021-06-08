@@ -113,7 +113,7 @@ void ResolutionSlider::init()
         } else {
             // No double margins left and right, but they are needed on top and bottom
             layout->setContentsMargins(0, margin, 0, margin);
-            mSlider = new QSlider(Qt::Horizontal, this);
+            mSlider = new Uslider(Qt::Horizontal, this);
             mSlider->setTickInterval(1);
             mSlider->setTickPosition(QSlider::TicksBelow);
             mSlider->setSingleStep(1);

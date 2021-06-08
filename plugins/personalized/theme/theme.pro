@@ -26,12 +26,13 @@ LIBS          += -L$$[QT_INSTALL_LIBS] -lgsettings-qt -lX11 -lXfixes -lXcursor
 
 PKGCONFIG     += gsettings-qt
 
+QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2 -O2
+
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     cursor/cursortheme.cpp \
     cursor/xcursortheme.cpp \
-    myslider.cpp \
     theme.cpp \
     themewidget.cpp \
     widgetgroup.cpp \
@@ -41,7 +42,6 @@ HEADERS += \
     cursor/config-X11.h \
     cursor/cursortheme.h \
     cursor/xcursortheme.h \
-    myslider.h \
     theme.h \
     themewidget.h \
     widgetgroup.h \

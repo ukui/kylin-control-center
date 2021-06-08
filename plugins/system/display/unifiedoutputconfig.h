@@ -2,6 +2,7 @@
 #define UNIFIEDOUTPUTCONFIG_H
 
 #include "outputconfig.h"
+#include <QVBoxLayout>
 
 namespace KScreen {
 class Output;
@@ -26,15 +27,22 @@ private Q_SLOTS:
     void slotRestoreResoltion();
     void slotRestoreRatation();
     void slotRefreshRateChanged(int index);
+    void slotScaleChanged(int index);
+
+Q_SIGNALS:
+    void scaleChanged(double scale);
 
 private:
     void initUi() override;
+    void initscale(QVBoxLayout *vbox);
+    void slotScaleIndex(const QSize &size);
     KScreen::OutputPtr createFakeOutput();
     QString findBestMode(const KScreen::OutputPtr &output, const QSize &size);
 
 private:
     KScreen::ConfigPtr mConfig;
     QList<KScreen::OutputPtr> mClones;
+    QComboBox *mScaleCombox = nullptr;
 };
 
 #endif // UNIFIEDOUTPUTCONFIG_H

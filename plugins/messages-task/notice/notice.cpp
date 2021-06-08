@@ -149,8 +149,11 @@ void Notice::initOriNoticeStatus() {
 
     for (int i = 0; i < appsName.length(); i++) {
         QByteArray ba = QString(DESKTOPPATH + appsName.at(i) + ".desktop").toUtf8();
-        GDesktopAppInfo * audioinfo = g_desktop_app_info_new_from_filename(ba.constData());
-        QString appname = g_app_info_get_name(G_APP_INFO(audioinfo));
+        GKeyFileFlags flags = G_KEY_FILE_NONE;
+        GKeyFile *keyfile = g_key_file_new();
+        g_key_file_load_from_file(keyfile, ba, flags, NULL);
+        char *appname = g_key_file_get_locale_string(keyfile, "Desktop Entry", "Name", nullptr,
+                                                     nullptr);
 
         // 构建Widget
         QFrame * baseWidget = new QFrame();

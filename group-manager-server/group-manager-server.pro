@@ -3,6 +3,7 @@ TARGET = group-manager-server
 INCLUDEPATH += .
 
 QT += dbus core
+
 # The following define makes your compiler warn you if you use any
 # feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -17,6 +18,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # Input
 DBUS_ADAPTORS += org.ukui.groupmanager.xml
 DBUS_INTERFACES += org.ukui.groupmanager.xml
+
+QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2 -O2
 
 HEADERS +=  \
             custom_struct.h \

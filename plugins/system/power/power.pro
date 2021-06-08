@@ -26,6 +26,8 @@ PKGCONFIG += gsettings-qt \
              gio-unix-2.0 \
              upower-glib
 
+QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2 -O2
+
 FORMS +=
 
 HEADERS += \

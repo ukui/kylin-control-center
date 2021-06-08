@@ -94,6 +94,7 @@ private:
     SwitchButton * menuSettingSwitchBtn;
 
     QGSettings * dSettings;
+    QGSettings * mQtSettings;
 
     QSharedPointer<QProcess> cmd;
 

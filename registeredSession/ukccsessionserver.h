@@ -26,15 +26,20 @@ public:
 private:
     QMap<QString, QVariant> getJsonInfo(const  QString &confFile);
 
+private:
+    QString mScreenMode;
 
 Q_SIGNALS:
     void configChanged();
+    void screenChanged(QString status);
 
 public slots:
     void exitService();
     void        ReloadSecurityConfig();
     QVariantMap getModuleHideStatus();
     QString     GetSecurityConfigPath();
+    QString getScreenMode();
+    void setScreenMode(QString screenMode);
 
 };
 

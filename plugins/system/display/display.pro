@@ -6,6 +6,7 @@
 include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 include($$PROJECT_COMPONENTSOURCE/closebutton.pri)
+include($$PROJECT_COMPONENTSOURCE/uslider.pri)
 
 QT            += widgets core gui quickwidgets quick xml KScreen KI18n KConfigCore KConfigWidgets KWidgetsAddons dbus concurrent
 TEMPLATE = lib
@@ -27,7 +28,10 @@ PKGCONFIG += gsettings-qt     \
 #             glib-2.0         \
              mate-desktop-2.0 \
 
+QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2 -O2
+
 SOURCES += \
+    brightnessFrame.cpp \
     display.cpp \
     declarative/qmloutput.cpp \
     declarative/qmloutputcomponent.cpp \
@@ -35,13 +39,13 @@ SOURCES += \
     controlpanel.cpp \
     outputconfig.cpp \
     resolutionslider.cpp \
-    slider.cpp \
     unifiedoutputconfig.cpp \
     utils.cpp \
     widget.cpp \
     displayperformancedialog.cpp
 
 HEADERS += \
+    brightnessFrame.h \
     colorinfo.h \
     display.h \
     declarative/qmloutput.h \
@@ -50,7 +54,6 @@ HEADERS += \
     controlpanel.h \
     outputconfig.h \
     resolutionslider.h \
-    slider.h \
     unifiedoutputconfig.h \
     utils.h \
     widget.h \

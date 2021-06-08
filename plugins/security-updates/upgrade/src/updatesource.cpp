@@ -3,6 +3,11 @@
 
 UpdateSource::UpdateSource(QObject *parent) : QObject(parent)
 {
+
+}
+
+void UpdateSource::startDbus()
+{
     serviceInterface = new QDBusInterface("com.kylin.software.properties",
                                                           "/com/kylin/software/properties",
                                                           "com.kylin.software.properties.interface",
@@ -12,6 +17,7 @@ UpdateSource::UpdateSource(QObject *parent) : QObject(parent)
         qDebug() << "源管理器：" <<"Service Interface: " << qPrintable(QDBusConnection::systemBus().lastError().message());
         return;
     }
+    emit startDbusFinished();
 }
 /*
  * 调用源管理器更新源模版接口

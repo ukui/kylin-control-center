@@ -3,6 +3,9 @@
   <interface name="org.ukui.ukcc.session.interface">
     <signal name="configChanged">
     </signal>
+    <signal name="screenChanged">
+      <arg name="status" type="s" direction="out"/>
+    </signal>
     <method name="exitService">
     </method>
     <method name="ReloadSecurityConfig">
@@ -13,6 +16,12 @@
     </method>
     <method name="GetSecurityConfigPath">
       <arg type="s" direction="out"/>
+    </method>
+    <method name="getScreenMode">
+      <arg type="s" direction="out"/>
+    </method>
+    <method name="setScreenMode">
+      <arg name="screenMode" type="s" direction="in"/>
     </method>
   </interface>
 </node>

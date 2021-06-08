@@ -654,7 +654,7 @@
               </widget>
              </item>
              <item>
-              <widget class="MySlider" name="tranSlider">
+              <widget class="Uslider" name="tranSlider">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
@@ -799,9 +799,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>MySlider</class>
+   <class>Uslider</class>
    <extends>QSlider</extends>
-   <header location="global">myslider.h</header>
+   <header>Uslider/uslider.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

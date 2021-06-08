@@ -744,7 +744,6 @@ void Power::isLidPresent()
     isExitsLid = LidInfo.value().toBool();
 
 }
-
 void Power::isHibernateSupply()
 {
     QDBusInterface *HibernateInterface = new QDBusInterface("org.freedesktop.login1",

@@ -259,7 +259,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QSlider" name="midHorSlider">
+         <widget class="Uslider" name="midHorSlider">
           <property name="styleSheet">
            <string notr="true"/>
           </property>
@@ -418,7 +418,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QSlider" name="doubleclickHorSlider">
+         <widget class="Uslider" name="doubleclickHorSlider">
           <property name="styleSheet">
            <string notr="true"/>
           </property>
@@ -638,7 +638,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QSlider" name="pointerSpeedSlider">
+         <widget class="Uslider" name="pointerSpeedSlider">
           <property name="styleSheet">
            <string notr="true"/>
           </property>
@@ -1125,7 +1125,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QSlider" name="cursorWeightSlider">
+         <widget class="Uslider" name="cursorWeightSlider">
           <property name="styleSheet">
            <string notr="true"/>
           </property>
@@ -1288,7 +1288,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QSlider" name="cursorSpeedSlider">
+         <widget class="Uslider" name="cursorSpeedSlider">
           <property name="styleSheet">
            <string notr="true"/>
           </property>
@@ -1361,6 +1361,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>Uslider</class>
+   <extends>QSlider</extends>
+   <header>Uslider/uslider.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

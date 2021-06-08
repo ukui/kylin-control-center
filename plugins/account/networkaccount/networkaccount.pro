@@ -17,7 +17,7 @@ include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 INCLUDEPATH += \
     $$PROJECT_COMPONENTSOURCE \
     $$PROJECT_ROOTDIR \
-
+QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2 -O2
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
