@@ -537,7 +537,6 @@ void Battery::isHibernateSupply()
     isExitHibernate = HibernateInfo == "yes"?true:false;
 }
 
-
 bool Battery::QLabelSetText(QLabel *label, QString string)
 {
     bool is_over_length = false;
@@ -551,27 +550,3 @@ bool Battery::QLabelSetText(QLabel *label, QString string)
     label->setText(str);
     return is_over_length;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
