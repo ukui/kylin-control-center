@@ -76,9 +76,9 @@ private:
     QRadioButton *mNoticeNBtn;
 
     TitleLabel *mShareTitleLabel;
+    TitleLabel *mSecurityTitleLabel;
     QLabel *mEnableLabel;
     QLabel *mViewLabel;
-    QLabel *mSecurityTitleLabel;
     QLabel *mAccessLabel;
     QLabel *mPwdsLabel;
     QLabel *mNoticeTitleLabel;
@@ -91,6 +91,8 @@ private:
     QVBoxLayout *mVlayout;
 
     QGSettings *mVinoGsetting;
+
+    QString secpwd;
 
 private:
     void initUI();

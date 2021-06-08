@@ -218,6 +218,7 @@ void Theme::setupComponent() {
     //隐藏现阶段不支持功能
     ui->controlLabel->hide();
     ui->controlWidget->hide();
+    ui->verticalSpacer_2->changeSize(0,0);
 
     ui->defaultButton->setProperty("value", "ukui-default");
     ui->lightButton->setProperty("value", "ukui-light");

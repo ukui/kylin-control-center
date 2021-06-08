@@ -33,12 +33,13 @@ TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
     this->setAttribute(Qt::WA_TranslucentBackground);
 
     this->setObjectName("MapFrame");
-    this->setStyleSheet("QFrame#MapFrame{background-color: rgb(22, 24, 26);border-radius:15px}");
+    this->setStyleSheet("QFrame#MapFrame{background-color: rgb(22, 24, 26);border-radius:6px}");
     this->setWindowTitle(tr("Change time zone"));
 
     QIcon icon = QIcon::fromTheme("window-close-symbolic");
     m_closeBtn->setIcon(ImageUtil::drawSymbolicColoredPixmap(icon.pixmap(32, 32),"white"));
     m_closeBtn->setFlat(true);
+    m_closeBtn->setProperty("isWindowButton", 0x2);
 
     m_searchInput->setMinimumSize(560,40);
     m_searchInput->setMaximumSize(560,40);
@@ -236,10 +237,10 @@ void TimeZoneChooser::paintEvent(QPaintEvent *event)
     QRect rect = this->rect();
     rect.setWidth(rect.width() - 1);
     rect.setHeight(rect.height() - 1);
-    painter.drawRoundedRect(rect, 15, 15);
+    painter.drawRoundedRect(rect, 6, 6);
     {
         QPainterPath painterPath;
-        painterPath.addRoundedRect(rect, 15, 15);
+        painterPath.addRoundedRect(rect, 6, 6);
         painter.drawPath(painterPath);
     }
     QWidget::paintEvent(event);

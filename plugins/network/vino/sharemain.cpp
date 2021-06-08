@@ -25,6 +25,7 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QTimer>
 
 #include <QDBusInterface>
 #include <QDBusConnection>
@@ -76,8 +77,8 @@ void ShareMain::initUI()
 
     mViewFrame->setLayout(viewHLayout);
 
-    mSecurityTitleLabel = new QLabel(tr("Security"));
-
+    mSecurityTitleLabel = new TitleLabel(this);
+    mSecurityTitleLabel->setText(tr("Security"));
     mSecurityFrame = new QFrame(this);
     mSecurityFrame->setFrameShape(QFrame::Shape::Box);
     mSecurityFrame->setMinimumSize(550, 50);
@@ -148,19 +149,16 @@ void ShareMain::initEnableStatus()
     bool isShared = mVinoGsetting->get(kVinoViewOnlyKey).toBool();
     bool secPwd = mVinoGsetting->get(kVinoPromptKey).toBool();
     QString pwd = mVinoGsetting->get(kAuthenticationKey).toString();
-    QString secpwd = mVinoGsetting->get(kVncPwdKey).toString();
+    secpwd = mVinoGsetting->get(kVncPwdKey).toString();
 
     mAccessBtn->setChecked(secPwd);
     mViewBtn->setChecked(!isShared);
     if (pwd == "vnc") {
         mPwdBtn->setChecked(true);
         mPwdinputBtn->setText(QByteArray::fromBase64(secpwd.toLatin1()));
-
     } else {
         mPwdBtn->setChecked(false);
-
         mPwdinputBtn->setVisible(false);
-
     }
 
     QProcess *process = new QProcess;
@@ -175,7 +173,6 @@ void ShareMain::initEnableStatus()
 void ShareMain::setFrameVisible(bool visible)
 {
     mEnableBtn->setChecked(visible);
-
     mViewFrame->setVisible(visible);
     mSecurityFrame->setVisible(visible);
     mSecurityPwdFrame->setVisible(visible);
@@ -220,13 +217,12 @@ void ShareMain::accessSlot(bool status)
 void ShareMain::pwdEnableSlot(bool status)
 {
     if (status) {
-        mVinoGsetting->set(kAuthenticationKey, "vnc");
         mPwdinputBtn->setVisible(true);
+        mVinoGsetting->set(kAuthenticationKey, "vnc");
         mPwdinputBtn->setText(QByteArray::fromBase64(mVinoGsetting->get(kVncPwdKey).toString().toLatin1()));
-
+        pwdInputSlot();
     } else {
         mPwdinputBtn->setVisible(false);
-
         mVinoGsetting->set(kAuthenticationKey, "none");
     }
 }

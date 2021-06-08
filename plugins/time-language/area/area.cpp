@@ -27,7 +27,7 @@
 #include <QDateTime>
 #include <QTimer>
 #include <QGSettings>
-#include <KMessageBox>
+#include <QMessageBox>
 
 #define PANEL_GSCHEMAL   "org.ukui.control-center.panel.plugins"
 #define CALENDAR_KEY     "calendar"
@@ -131,7 +131,7 @@ QWidget *Area::get_plugin_ui() {
         connect(ui->chgformButton,SIGNAL(clicked()),this,SLOT(changeform_slot()));
         connect(ui->countrycomboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
                 [=]{
-            KMessageBox::information(ui->languageframe_2, tr("Need to log off to take effect"));
+            QMessageBox::information(pluginWidget, tr("Message"),tr("Need to log off to take effect"));
         });
     }
     return pluginWidget;
@@ -296,7 +296,7 @@ void Area::change_language_slot(int index) {
         break;
     }
 
-    KMessageBox::information(ui->languageframe, tr("Need to log off to take effect"));
+    QMessageBox::information(pluginWidget, tr("Message"),tr("Need to log off to take effect"));
 }
 
 void Area::change_area_slot(int index) {
