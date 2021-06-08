@@ -423,7 +423,7 @@ void Battery::setupConnect()
     });
 
     connect(mLowpowerComboBox1, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
-        settings->set(PER_ACTION_KEY, index + 1);
+        settings->set(PER_ACTION_KEY, index + 5);
         });
 
     connect(mLowpowerComboBox2, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
@@ -507,7 +507,7 @@ void Battery::initStatus()
 
 
     int actionBattery = settings->get(PER_ACTION_KEY).toInt();
-    mLowpowerComboBox1->setCurrentIndex(actionBattery - 1);
+    mLowpowerComboBox1->setCurrentIndex(actionBattery - 5);
 
     QString actionCriBty = settings->get(ACTION_CRI_BTY).toString();
     mLowpowerComboBox2->setCurrentIndex(mLowpowerComboBox2->findData(actionCriBty));
