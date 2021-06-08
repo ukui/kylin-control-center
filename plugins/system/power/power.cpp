@@ -440,7 +440,7 @@ void Power::retranslateUi()
 
 
     if (QLabelSetText(msleepLabel, QString(tr("Time to sleep after %1 minute of idle time")).arg(idletime))) {
-       msleepLabel->setToolTip(QString(tr(("Time to sleep after %1 minute of idle time %2")).arg(idletime).arg(QString(tr("(No operation for %1 minute is considered idle)")).arg(idletime))));
+       msleepLabel->setToolTip(QString(tr("Time to sleep after %1 minute of idle time %2").arg(idletime).arg(QString(tr("(No operation for %1 minute is considered idle)")).arg(idletime))));
     }
     if (QLabelSetText(mCloseLabel, tr("Time to close display :"))) {
         mCloseLabel->setToolTip(tr("Time to close display"));
