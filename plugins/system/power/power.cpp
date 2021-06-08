@@ -439,8 +439,8 @@ void Power::retranslateUi()
     mCustomtitleLabel->setText(tr("General Settings"));
 
 
-    if (QLabelSetText(msleepLabel, tr(QString("Time to sleep after %1 minute of idle time").arg(idletime).toLatin1()))) {
-        msleepLabel->setToolTip(tr(QString("Time to sleep after %1 minute of idle time %2").arg(idletime).arg(QString("(No operation for %1 minute is considered idle)").arg(idletime)).toLatin1()));
+    if (QLabelSetText(msleepLabel, QString(tr("Time to sleep after %1 minute of idle time")).arg(idletime))) {
+       msleepLabel->setToolTip(QString(tr(("Time to sleep after %1 minute of idle time %2")).arg(idletime).arg(QString(tr("(No operation for %1 minute is considered idle)")).arg(idletime))));
     }
     if (QLabelSetText(mCloseLabel, tr("Time to close display :"))) {
         mCloseLabel->setToolTip(tr("Time to close display"));
