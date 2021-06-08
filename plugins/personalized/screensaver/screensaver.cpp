@@ -27,6 +27,7 @@
 #include <QLineEdit>
 #include "ComboBox/combobox.h"
 #include <QListView>
+#include "presslabel.h"
 
 #define SSTHEMEPATH "/usr/share/applications/screensavers/"
 #define ID_PREFIX "screensavers-ukui-"
@@ -159,10 +160,10 @@ const QString Screensaver::name() const
 
 void Screensaver::initTitleLabel()
 {
-    QLabel *previewLabel = new QLabel(ui->previewWidget->topLevelWidget());
+    PressLabel *previewLabel = new PressLabel(ui->previewWidget->topLevelWidget());
     previewLabel->setStyleSheet("background-color: palette(button); border-radius: 0px;");
     QRect rect = ui->previewWidget->geometry();
-    previewLabel->setGeometry(rect.x()+rect.width()/2 - 47/2,rect.y()+rect.height()+15, 47, 24);
+    previewLabel->setGeometry(rect.x()+rect.width()/2 - 47/2,rect.y()+rect.height()+5, 47, 24);
     previewLabel->setAlignment(Qt::AlignCenter);
     previewLabel->setText(tr("View"));//预览
 }
@@ -215,21 +216,27 @@ void Screensaver::initComponent()
     ui->programCombox->addItem(tr("Blank_Only"));
     // ui->programCombox->addItem(tr("Random"));
     QMap<QString, SSThemeInfo>::iterator it = infoMap.begin();
-    for (int index = 2; it != infoMap.end(); it++, index++) {
+    for (int index = 2; it != infoMap.end(); it++) {
         SSThemeInfo info = (SSThemeInfo)it.value();
+        if (!screensaverList.contains(info.name))
+            continue;
         ui->programCombox->addItem(info.name);
         ui->programCombox->setItemData(index, QVariant::fromValue(info));
+        index++;
     }
     ui->programCombox->addItem(tr("Customize"));
     INDEX_MODE_CUSTOMIZE = ui->programCombox->count() - 1;  //得到【自定义】在滑动栏中的位置
 
     QListView* view = qobject_cast<QListView *>(ui->programCombox->view());
     Q_ASSERT(view != nullptr);
-    for (int i = 1; i < ui->programCombox->count() - 1; ++i) {   //不隐藏UKUI和自定义
-        if (!screensaverList.contains(ui->programCombox->itemText(i))) {  //不隐藏列表中的屏保
-            view->setRowHidden(i, true);
-        }
-    }
+    view->setRowHidden(1, true);  //隐藏纯黑，使用隐藏，防止以后会需要纯黑
+    //不能使用隐藏，隐藏也会占用显示条目，隐藏太多项会导致显示异常！！！
+//    for (int i = 1; i < ui->programCombox->count() - 1; ++i) {   //不隐藏UKUI和自定义
+//        if (!screensaverList.contains(ui->programCombox->itemText(i))) {  //不隐藏列表中的屏保
+//          //  view->setRowHidden(i, true);
+//          ui->programCombox->removeItem(i);        
+//        }
+//    }
     //初始化滑动条
     QStringList scaleList;
     scaleList<< tr("5min") << tr("10min") << tr("15min") << tr("30min") << tr("1hour")

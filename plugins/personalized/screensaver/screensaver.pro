@@ -38,9 +38,11 @@ PKGCONFIG     += gio-2.0 \
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
+        presslabel.cpp \
         screensaver.cpp
 
 HEADERS += \
+        presslabel.h \
         screensaver.h
 
 FORMS += \
