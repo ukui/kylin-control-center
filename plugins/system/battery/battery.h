@@ -74,12 +74,15 @@ private:
 
     QGSettings *settings;
     QGSettings *stylesettings;
+    QGSettings *sessionsettings;
 
     QString pluginName;
     int pluginType;
 
     bool mFirstLoad;
     bool isExitHibernate;
+
+    int idletime;
 
     QComboBox *mLowpowerComboBox1;
     QComboBox *mLowpowerComboBox2;

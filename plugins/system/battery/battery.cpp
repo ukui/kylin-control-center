@@ -77,17 +77,38 @@ QWidget * Battery::get_plugin_ui() {
         mFirstLoad = false;
         pluginWidget = new QWidget();
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-        InitUI(pluginWidget);
-        initSearText();
-        isHibernateSupply();
-        initTitleLabel();
 
         const QByteArray styleID(STYLE_FONT_SCHEMA);
         const QByteArray id(POWERMANAGER_SCHEMA);
+        const QByteArray iid(SESSION_SCHEMA);
 
-        if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(styleID)) {
+
+        if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(styleID) && QGSettings::isSchemaInstalled(iid)) {
             settings = new QGSettings(id, QByteArray(), this);
             stylesettings = new QGSettings(styleID, QByteArray(), this);
+            sessionsettings = new QGSettings(iid, QByteArray(), this);
+            idletime = sessionsettings->get(IDLE_DELAY_KEY).toInt();
+            connect(sessionsettings,&QGSettings::changed,[=](QString key)
+            {
+                if("idle-delay" == key)
+                {
+                    idletime = sessionsettings->get(IDLE_DELAY_KEY).toInt();
+                    retranslateUi();
+
+                }
+            });
+            connect(stylesettings,&QGSettings::changed,[=](QString key)
+            {
+                if("systemFont" == key || "systemFontSize" == key)
+                {
+                    retranslateUi();
+
+                }
+            });
+            InitUI(pluginWidget);
+            initSearText();
+            isHibernateSupply();
+            initTitleLabel();
 
             setupComponent();
             initStatus();
@@ -228,27 +249,27 @@ void Battery::InitUI(QWidget *battery)
     mLowpowerLayout->setSpacing(8);
 
     mLowpowerLabel1 =new QLabel(mLowpowerFrame);
-    mLowpowerLabel1->setMinimumSize(QSize(87, 60));
-    mLowpowerLabel1->setMaximumSize(QSize(87, 60));
+    mLowpowerLabel1->setMinimumSize(QSize(130, 60));
+    mLowpowerLabel1->setMaximumSize(QSize(130, 60));
 
     mLowpowerLayout->addWidget(mLowpowerLabel1);
 
     mLowpowerComboBox1 = new QComboBox(mLowpowerFrame);
-    mLowpowerComboBox1->setMinimumSize(QSize(100, 36));
-    mLowpowerComboBox1->setMaximumSize(QSize(100, 36));
+    mLowpowerComboBox1->setMinimumSize(QSize(70, 36));
+    mLowpowerComboBox1->setMaximumSize(QSize(70, 36));
     mLowpowerComboBox1->setStyleSheet("QComboBox{background-color: palette(button);}");
 
     mLowpowerLayout->addWidget(mLowpowerComboBox1);
 
     mLowpowerLabel2 =new QLabel(mLowpowerFrame);
-    mLowpowerLabel2->setMinimumSize(QSize(42, 60));
-    mLowpowerLabel2->setMaximumSize(QSize(42, 60));
+    mLowpowerLabel2->setMinimumSize(QSize(72, 60));
+    mLowpowerLabel2->setMaximumSize(QSize(72, 60));
 
     mLowpowerLayout->addWidget(mLowpowerLabel2);
 
     mLowpowerComboBox2 = new QComboBox(mLowpowerFrame);
-    mLowpowerComboBox2->setMinimumSize(QSize(120, 36));
-    mLowpowerComboBox2->setMaximumSize(QSize(120, 36));
+    mLowpowerComboBox2->setMinimumSize(QSize(150, 36));
+    mLowpowerComboBox2->setMaximumSize(QSize(150, 36));
     mLowpowerComboBox2->setStyleSheet("QComboBox{background-color: palette(button);}");
 
     mLowpowerLayout->addWidget(mLowpowerComboBox2);
@@ -274,8 +295,8 @@ void Battery::retranslateUi()
 {
     BatterytitleLabel->setText(tr("General"));
 
-    if (QLabelSetText(msleepLabel, tr("Time to sleep:"))) {
-        msleepLabel->setToolTip(tr("Time to sleep"));
+    if (QLabelSetText(msleepLabel, tr(QString("Time to sleep after %1 minute of idle time").arg(idletime).toLatin1()))) {
+        msleepLabel->setToolTip(tr(QString("Time to sleep after %1 minute of idle time %2").arg(idletime).arg(QString("(No operation for %1 minute is considered idle)").arg(idletime)).toLatin1()));
     }
     if (QLabelSetText(mCloseLabel, tr("Time to close display :"))) {
         mCloseLabel->setToolTip(tr("Time to close display"));
@@ -375,7 +396,7 @@ void Battery::setupConnect()
         settings->set(SLEEP_DISPLAY_BATT_KEY,QVariant(batteryclose));
     });
 
-    connect(CloseUslider, &QSlider::valueChanged, [=](int value){
+    connect(DarkenUslider, &QSlider::valueChanged, [=](int value){
 
         int batterydarken;
         switch(value){

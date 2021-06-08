@@ -76,12 +76,12 @@ public:
     bool QLabelSetText(QLabel *label, QString string);
 
 private:
-    Ui::Power *ui;
 
     QWidget *pluginWidget;
 
     QGSettings *settings;
     QGSettings *stylesettings;
+    QGSettings *sessionsettings;
 
     QString pluginName;
     int pluginType;
@@ -96,6 +96,8 @@ private:
     bool isExitsLid;
     bool isExitHibernate;
     bool isExitslptoHbt;
+
+    int idletime;
 
 
     QComboBox *mEnterPowerComboBox;

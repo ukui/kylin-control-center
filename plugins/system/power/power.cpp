@@ -18,7 +18,6 @@
  *
  */
 #include "power.h"
-#include "ui_power.h"
 #include "powermacrodata.h"
 
 #include <QDebug>
@@ -63,10 +62,7 @@ Power::Power() : mFirstLoad(true)
 
 Power::~Power() {
 
-    if (!mFirstLoad) {
-        delete ui;
-        ui = nullptr;
-    }
+
 }
 
 QString Power::get_plugin_name() {
@@ -80,27 +76,29 @@ int Power::get_plugin_type() {
 QWidget * Power::get_plugin_ui() {
     if (mFirstLoad) {
         mFirstLoad = false;
-        ui = new Ui::Power;
         pluginWidget = new QWidget();
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-        InitUI(pluginWidget);
 
         const QByteArray id(POWERMANAGER_SCHEMA);
+        const QByteArray iid(SESSION_SCHEMA);
         const QByteArray styleID(STYLE_FONT_SCHEMA);
-
-        initDbus();
-        isPowerSupply();
-        isLidPresent();
-        isHibernateSupply();
-        isSlptoHbtSupply();
-        initTitleLabel();
-        setupComponent();
-
         
         
-        if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(styleID)) {
+        if (QGSettings::isSchemaInstalled(id) && QGSettings::isSchemaInstalled(styleID) && QGSettings::isSchemaInstalled(iid)) {
             settings = new QGSettings(id, QByteArray(), this);
             stylesettings = new QGSettings(styleID, QByteArray(), this);
+            sessionsettings = new QGSettings(iid, QByteArray(), this);
+            idletime = sessionsettings->get(IDLE_DELAY_KEY).toInt();
+            connect(sessionsettings,&QGSettings::changed,[=](QString key)
+            {
+                if("idle-delay" == key)
+                {
+                    idletime = sessionsettings->get(IDLE_DELAY_KEY).toInt();
+                    retranslateUi();
+
+                }
+            });
+
             connect(stylesettings,&QGSettings::changed,[=](QString key)
             {
                 if("systemFont" == key || "systemFontSize" == key)
@@ -111,6 +109,14 @@ QWidget * Power::get_plugin_ui() {
             });
 
             mPowerKeys = settings->keys();
+            InitUI(pluginWidget);
+            initDbus();
+            isPowerSupply();
+            isLidPresent();
+            isHibernateSupply();
+            isSlptoHbtSupply();
+            initTitleLabel();
+            setupComponent();
 
             initGeneralSet();
 
@@ -432,8 +438,9 @@ void Power::retranslateUi()
     PowertitleLabel->setText(tr("select power plan"));
     mCustomtitleLabel->setText(tr("General Settings"));
 
-    if (QLabelSetText(msleepLabel, tr("Sleep time:"))) {
-        msleepLabel->setToolTip(tr("Sleep time"));
+
+    if (QLabelSetText(msleepLabel, tr(QString("Time to sleep after %1 minute of idle time").arg(idletime).toLatin1()))) {
+        msleepLabel->setToolTip(tr(QString("Time to sleep after %1 minute of idle time %2").arg(idletime).arg(QString("(No operation for %1 minute is considered idle)").arg(idletime)).toLatin1()));
     }
     if (QLabelSetText(mCloseLabel, tr("Time to close display :"))) {
         mCloseLabel->setToolTip(tr("Time to close display"));
@@ -484,7 +491,7 @@ void Power::setupComponent()
 
     //按下电源键时
     for(int i = 0; i < kLid.length(); i++) {
-        if (kEnkLid.at(i) == "hibernate" && !isExitHibernate){
+        if (kEnkLid.at(i) == "hibernate" && !isExitHibernate ){
             continue;
         }
 
@@ -776,9 +783,9 @@ void Power::isSlptoHbtSupply()
 void Power::refreshUI()
 {
     mCloselidFrame->setVisible(isExitsLid);
-
-    mslptohbtFrame->setVisible(isExitslptoHbt);
-    if (!isExitslptoHbt) {
+    //先屏蔽睡眠转休眠
+    mslptohbtFrame->setVisible(isExitslptoHbt && !Utils::isWayland());
+    if (!isExitslptoHbt || Utils::isWayland()) {
         verticalSpacer_7->changeSize(0,0);
     }
 
@@ -814,7 +821,7 @@ void Power::initGeneralSet()
        mEnterPowerFrame->hide();
     }
 
-    if (isExitslptoHbt && mPowerKeys.contains("afterIdleAction")) {
+    if (isExitslptoHbt) {
         slptohbtslider->blockSignals(true);
         if (getHibernateTime().isEmpty()) {
             slptohbtslider->setValue(6);
@@ -859,14 +866,8 @@ void Power::initGeneralSet()
             }
 
             mUkccInterface->call("setSuspendThenHibernate", hibernate);
-            if (value == 6) {
-                settings->set(HIBERNATE_KEY, "suspend");
-            } else {
-                settings->set(HIBERNATE_KEY, "suspend-then-hibernate");
-            }
         });
     }
-
 }
 QString Power::getHibernateTime() {
     QDBusReply<QString> hibernateTime = mUkccInterface->call("getSuspendThenHibernate");
@@ -880,7 +881,8 @@ void Power::initDbus() {
     mUkccInterface = new QDBusInterface("com.control.center.qt.systemdbus",
                                         "/",
                                         "com.control.center.interface",
-                                        QDBusConnection::systemBus());
+                                        QDBusConnection::systemBus(),
+                                        this);
 }
 
 

@@ -31,7 +31,6 @@
 #define BUTTON_SUSPEND_KEY      "button-suspend"
 #define BUTTON_POWER_KEY        "button-power"
 #define IDLE_DIM_TIME_KEY       "idle-dim-time"
-#define HIBERNATE_KEY           "after-idle-action"
 #define PER_ACTION_KEY          "percentage-action"
 #define ACTION_CRI_BTY          "action-critical-battery"
 #define PER_ACTION_CRI          "percentage-critical"

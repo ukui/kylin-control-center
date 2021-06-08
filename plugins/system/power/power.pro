@@ -26,8 +26,7 @@ PKGCONFIG += gsettings-qt \
              gio-unix-2.0 \
              upower-glib
 
-FORMS += \
-    power.ui
+FORMS +=
 
 HEADERS += \
     power.h \
