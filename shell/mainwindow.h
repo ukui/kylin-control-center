@@ -101,7 +101,6 @@ private:
     QGSettings       *m_fontSetting;
 
     QHBoxLayout     *titleLayout;
-    QGSettings      *personalQgsettings = nullptr;
 
 private:
     void initUI();
@@ -115,7 +114,6 @@ private:
     bool dblOnEdge(QMouseEvent *event);
     void initStyleSheet();
     void changeSearchSlot();
-    void setLeftsidebarWidgetStyle();
 
 public slots:
     void functionBtnClicked(QObject * plugin);
