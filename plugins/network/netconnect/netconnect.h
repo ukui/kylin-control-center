@@ -167,6 +167,7 @@ private:
     QString     getWifiSpeed();
     bool        getInitStatus();
     bool        getWifiStatus();
+    bool        getHasWirelessCard();
 
     void        clearContent();
 
