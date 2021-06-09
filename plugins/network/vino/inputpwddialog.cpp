@@ -56,12 +56,12 @@ void InputPwdDialog::setupInit()
     mCancelBtn = new QPushButton(this);
     mCancelBtn->setContentsMargins(36,6,36,6);
     mCancelBtn->setGeometry(132,99,100,33);
-    mCancelBtn->setText("Cancel");
+    mCancelBtn->setText(tr("Cancel"));
 
     mConfirmBtn = new QPushButton(this);
     mConfirmBtn->setContentsMargins(36,6,36,6);
     mConfirmBtn->setGeometry(248,99,100,33);
-    mConfirmBtn->setText("Confirm");
+    mConfirmBtn->setText(tr("Confirm"));
 
 }
 
@@ -87,7 +87,6 @@ void InputPwdDialog::mpwdInputSlot(const QString &pwd)
         mpwd->setText(pwd.mid(0, 8));
         QByteArray text = pwd.mid(0, 8).toLocal8Bit();
         secPwd = text.toBase64();
-        qDebug()<<secPwd;
     }
 }
 
@@ -119,7 +118,6 @@ bool InputPwdDialog::eventFilter(QObject *wcg, QEvent *event)
     //过滤
        if(wcg==mpwd){
            if(event->type() == QEvent::MouseButtonPress){
-               qDebug()<<"---------";
                if(mpwd->hasFocus()){
                    if (mfirstload) {
                        mpwd->setText("");
