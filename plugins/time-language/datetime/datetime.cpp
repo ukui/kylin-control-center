@@ -418,6 +418,15 @@ void DateTime::synctimeFormatSlot(bool status,bool outChange)
         qDebug()<<"org.ukui.control-center.panel.plugins not installed"<<endl;
         return;
     }
+
+    QDBusMessage retDBus =  rsyncWithNetworkSlot(status);
+
+    if (retDBus.type() == QDBusMessage::ErrorMessage) {
+        syncTimeBtn->blockSignals(true);
+        syncTimeBtn->setChecked(!status);
+        syncTimeBtn->blockSignals(false);
+        return;
+    }
     QStringList keys = m_formatsettings->keys();
     if (keys.contains(SYNC_TIME_KEY) && outChange) {
         if (status != false) {
@@ -426,10 +435,9 @@ void DateTime::synctimeFormatSlot(bool status,bool outChange)
             m_formatsettings->set(SYNC_TIME_KEY, false);
         }
     }
-    QDBusMessage retDBus =  rsyncWithNetworkSlot(status);
+
     if (status != false) {
         ui->chgtimebtn->setEnabled(false);
-
         if (retDBus.type() == QDBusMessage::ReplyMessage) {
             QString successMSG = tr("  ");
             QString failMSG = tr("Sync from network failed");
