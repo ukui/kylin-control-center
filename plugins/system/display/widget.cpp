@@ -854,9 +854,10 @@ bool Widget::existInBrightnessFrameV(QString name)
 
 }
 
-void Widget::addBrightnessFrame(QString name)
+void Widget::addBrightnessFrame(QString name, bool openFlag)
 {
     BrightnessFrame *frame = new BrightnessFrame;
+    frame->openFlag = openFlag;
     frame->setTextLableValue("0"); //最低亮度10,获取前为0
     if (mIsBattery && name == "eDP-1" && !existInBrightnessFrameV(name))
     {
@@ -893,7 +894,7 @@ void Widget::addBrightnessFrame(QString name)
 void Widget::outputAdded(const KScreen::OutputPtr &output)
 {
     QString name = Utils::outputName(output);
-    addBrightnessFrame(name);
+    addBrightnessFrame(name, output->isEnabled());
 
     connect(output.data(), &KScreen::Output::isConnectedChanged,
             this, &Widget::slotOutputConnectedChanged);
@@ -1518,6 +1519,12 @@ void Widget::checkOutputScreen(bool judge)
 
     newPrimary->setEnabled(judge);
 
+    for (int i = 0; i < BrightnessFrameV.size(); ++i) {
+        if (BrightnessFrameV[i]->outputName == Utils::outputName(newPrimary)) {
+            BrightnessFrameV[i]->openFlag = judge;
+        }
+    }
+
     int enabledOutput = 0;
     Q_FOREACH (KScreen::OutputPtr outptr, mConfig->outputs()) {
         if (outptr->isEnabled()) {
@@ -1534,6 +1541,7 @@ void Widget::checkOutputScreen(bool judge)
         }
     }
     ui->primaryCombo->setCurrentIndex(index);
+    showBrightnessFrame(false);
 }
 
 
@@ -1806,11 +1814,10 @@ void Widget::showBrightnessFrame(bool allShowFlag)
         }
     } else {
         for (int i = 0; i < BrightnessFrameV.size(); ++i) {
-            if (ui->primaryCombo->currentText() == BrightnessFrameV[i]->outputName) {
+            if (ui->primaryCombo->currentText() == BrightnessFrameV[i]->outputName && BrightnessFrameV[i]->openFlag) {
                 ui->unifyBrightFrame->setFixedHeight(52);
                 BrightnessFrameV[i]->setTextLableName(tr("Brightness"));
                 BrightnessFrameV[i]->setVisible(true);
-                break;
             } else {
                 BrightnessFrameV[i]->setVisible(false);
             }
