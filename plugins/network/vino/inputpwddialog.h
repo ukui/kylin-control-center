@@ -31,13 +31,20 @@ private:
 
     QByteArray secPwd;
 
+    bool mfirstload;
+
+    bool mstatus;
+
 private:
     void setupInit();
 
     void initConnect();
 
+    bool eventFilter(QObject *wcg, QEvent *event);
+
 private slots:
     void mpwdInputSlot(const QString &pwd);
+
 
 };
 
