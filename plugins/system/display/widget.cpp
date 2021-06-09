@@ -141,8 +141,7 @@ Widget::Widget(QWidget *parent) :
 
 Widget::~Widget()
 {
-    threadRunExit = true;
-    threadRun.waitForFinished();
+    exitFlag = true;
     clearOutputIdentifiers();
     delete ui;
     ui = nullptr;
@@ -770,6 +769,8 @@ int Widget::getDDCBrighthess(QString name)
                            QDBusConnection::systemBus());
 
     while (--times) {
+        if (exitFlag == true)
+            return -1;
         QDBusReply<int> reply = ukccIfc.call("getDDCBrightness", type);
         if (reply.isValid() && reply.value() > 0) {
             return reply.value();
@@ -878,6 +879,8 @@ void Widget::addBrightnessFrame(QString name, bool openFlag)
         frame->slider->setValue(10);
         QtConcurrent::run([=]{
             int initValue = getDDCBrighthess(frame->outputName);
+            if (initValue == -1 || frame == nullptr)
+                return;
             frame->slider->setValue(initValue);
             frame->setTextLableValue(QString::number(initValue));
             connect(frame->slider, &QSlider::valueChanged, this, [=](){

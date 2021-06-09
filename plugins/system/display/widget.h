@@ -223,13 +223,11 @@ private:
     bool mIsWayland       = false;
     bool mIsBattery       = false;
     bool mIsKDSChanged    = false;
-
-    bool threadRunExit = false;
-    QFuture<void> threadRun;
     
     QShortcut *mApplyShortcut;
     QVector<BrightnessFrame*> BrightnessFrameV;
     BrightnessFrame *currentBrightnessFrame;
+    bool exitFlag = false;
 
 };
 
