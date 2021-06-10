@@ -378,7 +378,7 @@ QString MainDialog::messagebox(const int &code) const {
     case 500:ret = tr("Failed due to server error!");break;
     case 501:ret = tr("User and passsword can't be empty!");break;
     case 502:ret = tr("User existing!");break;
-    case 503:ret = tr("User doesn't exist!");break;
+    case 503:ret = tr("Account or password error!");break;
     case 504:ret = tr("Network can not reach!");break;
     case 505:ret = tr("Phone can't be empty!");break;
     case 511:ret = tr("Account or password error!");break;
@@ -387,10 +387,11 @@ QString MainDialog::messagebox(const int &code) const {
     case 612:ret = tr("Your are reach the limit!");break;
     case 613:ret = tr("Please check your phone number!");break;
     case 614:ret = tr("Please check your code!");break;
-    case 615:ret = tr("Account doesn't exist!");break;
+    case 615:ret = tr("Account or password error!");break;
     case 616:ret = tr("User has bound the phone!");break;
     case 619:ret = tr("Sending code error occurred!");break;
     case 632:ret = tr("Phone code is expired!");break;
+    case 656:ret = tr("Too many failed attemps,please wait!");
     case 702:ret = tr("Phone code error!");break;
     case 703:ret = tr("Code can not be empty!");break;
     case 704:ret = tr("MCode can not be empty!");break;
