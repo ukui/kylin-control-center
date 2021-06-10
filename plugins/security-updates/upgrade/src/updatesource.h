@@ -21,6 +21,7 @@ public:
     QDBusInterface *serviceInterface = nullptr;
     void getReply(QDBusPendingCallWatcher *call);
     QString getFailInfo(int statusCode);
+    QString getOrSetConf(QString type, QStringList name);
 signals:
     void getReplyFalseSignal();
     void startDbusFinished();

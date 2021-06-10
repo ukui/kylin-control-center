@@ -305,7 +305,6 @@ void UpdateDbus::getAptSignal(QString arg, QMap<QString, QVariant> map)
 
     qDebug() << "安装状态" << arg;
 
-
     QVariantMap::Iterator it;
     for (it = map.begin(); it != map.end(); ++it) {
         if (it.key() == "apt_appname")

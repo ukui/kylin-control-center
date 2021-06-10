@@ -99,6 +99,7 @@ signals:
     void sendAppMessageSignal(AppAllMsg msg);
 //    void emitInameList(QStringList list);
     void sendFinishGetMsgSignal(int size);
+    void sendUpdateSize(long size);
 
 public slots:
     void getAptSignal(QString arg, QMap<QString, QVariant> map);

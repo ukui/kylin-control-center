@@ -273,7 +273,8 @@ void AppUpdateWid::showInstallStatues(QString status,QString appAptName, float p
            // this->execFun = true;
             return;
         }
-
+        emit sendProgress(appAllMsg.name, 100, "download");
+        emit sendProgress(appAllMsg.name, progress, "install");
         /* 临时解决方案 , 获取系统语言环境 , 英文加悬浮框 , 中文不加 */
         QLocale locale;
 
@@ -397,7 +398,6 @@ void AppUpdateWid::updateAppUi(QString name)
     otherBtnLab->setMinimumWidth(350);
     otherBtnLab->setMaximumWidth(500);
     otherBtnLab->setFixedHeight(60);
-
 
     otherBtnLayout->setAlignment(Qt::AlignLeft);
     otherBtnLayout->addWidget(appVersionIcon);
@@ -575,6 +575,16 @@ void AppUpdateWid::cancelOrUpdate()
     }
     if(updateAPPBtn->text() == tr("Update"))
     {
+        /*判断电量是否支持更新*/
+        if (!get_battery()) {
+            QMessageBox msgBox;
+            msgBox.setText(tr("The battery is below 50% and the update cannot be downloaded"));
+            msgBox.setIcon(QMessageBox::Information);
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.setButtonText(QMessageBox::Ok,tr("OK"));
+            msgBox.exec();
+            return ;
+        }
         if(m_updateMutual->isPointOutNotBackup == true)
         {
             QMessageBox msgBox;
@@ -638,6 +648,7 @@ void AppUpdateWid::updateOneApp()
 {
     if(appAllMsg.msg.getDepends == true)
     {
+        this->execFun = true;
         if(checkSourcesType() != file){
             isCancel = false;
             firstDownload = true;
@@ -657,7 +668,7 @@ void AppUpdateWid::updateOneApp()
     }
     else
     {
-	updateAPPBtn->hide();
+        updateAPPBtn->hide();
 //        appVersion->setText(tr("获取依赖失败！"));
 
         this->execFun = false;
@@ -748,6 +759,7 @@ void AppUpdateWid::calculateSpeedProgress()
                  << "name" << currentPackage;
         preDownSize = downSize;
         showDownloadStatues(speed,progress);
+        emit sendProgress(appAllMsg.name, progress, "download");
         if(downSize == appAllMsg.msg.allSize) //确保完全下载完成后再停止定时器
         {
             qDebug() << "dowload over:" << priorSize;
@@ -858,4 +870,53 @@ type AppUpdateWid::checkSourcesType()
         qDebug() << "当前源为本地源";
         return file;
     }
+}
+
+bool AppUpdateWid::get_battery()
+{
+    QStringList users;
+    int battery_value = 0;
+    QDBusInterface m_interface1( "org.freedesktop.UPower",
+                                "/org/freedesktop/UPower",
+                                "org.freedesktop.UPower",
+                                QDBusConnection::systemBus() );
+    if (!m_interface1.isValid()) {
+        qDebug() << "电源管理器dbus接口初始化失败";
+        return true;
+    }
+
+    QDBusReply<QList<QDBusObjectPath>> obj_reply = m_interface1.call("EnumerateDevices");
+
+    if (obj_reply.isValid()) {
+        for (QDBusObjectPath op : obj_reply.value())
+             users << op.path();
+        if (users.size()==1 || users.isEmpty()) {
+            qDebug()<<"无法获取电量值,判断此电脑为台式电脑";
+            return true;
+        }
+        foreach (QString str, users) {
+            if (str == users.at(0) || str == users.at(users.size() - 1)) {
+                continue ;
+            }
+            QDBusInterface m_interface( "org.freedesktop.UPower",
+                                        str,
+                                        "org.freedesktop.DBus.Properties",
+                                        QDBusConnection::systemBus());
+
+            if (!m_interface.isValid()) {
+                qDebug() << "电源管理器dbus接口初始化失败";
+                return true;
+            }
+
+            QDBusReply<QVariant> obj_reply = m_interface.call("Get","org.freedesktop.UPower.Device","Percentage");
+            int Ele_surplus = obj_reply.value().toInt();
+            battery_value += Ele_surplus;
+            qDebug() << "battery value : " << Ele_surplus;
+        }
+        return true;
+     }
+    /*如果电池总电量小于50不可升级*/
+    if (battery_value < 50)
+        return false;
+    return true;
 }

@@ -11,6 +11,7 @@ void TabWid::initDbus()
     updateMutual = UpdateDbus::getInstance();
 
     updateSource = new UpdateSource();
+
     QThread *tmp_thread = new QThread;
     connect(tmp_thread,&QThread::started,updateSource,&UpdateSource::startDbus);
     connect(updateSource,&UpdateSource::startDbusFinished,this,&TabWid::dbusFinished);
@@ -33,6 +34,7 @@ void TabWid::initDbus()
     connect(historyUpdateLog,&QPushButton::clicked,this,&TabWid::showHistoryWidget);
     connect(isAutoCheckSBtn,&SwitchButton::checkedChanged,this,&TabWid::isAutoCheckedChanged);
     connect(isAutoBackupSBtn,&SwitchButton::checkedChanged,this,&TabWid::isAutoBackupChanged);
+    connect(isAutoUpgradeSBtn, &SwitchButton::checkedChanged, this, &TabWid::isAutoUpgradeChanged);
     connect(updateSource,&UpdateSource::getReplyFalseSignal,this,&TabWid::getReplyFalseSlot);
     //    bacupInit();//初始化备份
 
@@ -46,13 +48,57 @@ void TabWid::initDbus()
 
 }
 
+void TabWid::isAutoUpgradeChanged()
+{
+    QStringList list;
+    if (isAutoUpgradeSBtn->isChecked())
+        list << "CONTROL_CENTER/autoupdate_allow" << "true";
+    else
+        list << "CONTROL_CENTER/autoupdate_allow" << "false";
+    updateSource->getOrSetConf("set", list);
+}
+
 void TabWid::dbusFinished()
 {
+    /*获取自动更新开关的状态*/
+    QStringList list;
+    list << "CONTROL_CENTER/autoupdate_allow";
+    QString ret =  updateSource->getOrSetConf("get", list);
+    qDebug() << "------------>" << ret;
+    if (!ret.compare("false"))
+        isAutoUpgradeSBtn->setChecked(false);
+    else
+        isAutoUpgradeSBtn->setChecked(true);
+
+    /*获取当前自动更新的状态*/
+    getAutoUpgradeStatus();
+
     checkUpdateBtn->setEnabled(true);
     checkUpdateBtn->setText(tr("Check Update"));
     checkUpdateBtnClicked();
 }
 
+void TabWid::getAutoUpgradeStatus()
+{
+    QStringList list;
+    list << "CONTROL_CENTER/autoupdate_run_status";
+    QString ret =  updateSource->getOrSetConf("get", list);
+    qDebug() << "------------>" << ret;
+    if (!ret.compare("backUping")) {
+        /*如果自动更新在备份中，那就直接绑定备份还原信号即可*/
+        bacupInit(true);
+    } else if (!ret.compare("downloading")) {
+        /*如果自动更新在下载中，调用dbus去kill掉下载程序，继续原流程，不进行多余操作*/
+
+    } else if (!ret.compare("installing")){
+        /*如果自动更新在安装中，绑定更新管理器dbus接收信号即可*/
+
+    } else if (!ret.compare("noRunning")) {
+        /*如果没有进行自动更新，那就不需要操作 */
+    } else {
+        /*如果读不到，默认也不进行操作*/
+    }
+}
 
 void TabWid::unableToConnectSource()
 {
@@ -87,7 +133,8 @@ void TabWid::backupMessageBox(QString str)
 {
     QMessageBox msgBox;
     msgBox.setText(str);
-    msgBox.setWindowTitle(tr("Prompt information"));
+//    msgBox.setIcon(QMessageBox::Information);
+//    msgBox.setWindowTitle(tr("Prompt information"));
     //    msgBox.setWindowTitle("提示信息");
     msgBox.setStandardButtons(QMessageBox::Save
                               | QMessageBox::Discard|QMessageBox::Abort);
@@ -126,7 +173,6 @@ void TabWid::backupMessageBox(QString str)
         checkUpdateBtn->setEnabled(true);
         //       checkUpdateBtn->setText(tr("全部更新"));
         checkUpdateBtn->setText(tr("UpdateAll"));
-
     }
 }
 
@@ -173,6 +219,44 @@ void TabWid::backupCore()
     qDebug()<<"符合备份工具运行条件";
 }
 
+void TabWid::getAllProgress (QString pkgName, int Progress, QString type)
+{
+    qDebug() << pkgName << Progress << type;
+
+    for(int i = 0; i < pkgList.size(); i++) {
+        if (!pkgList.at(i).name.compare(pkgName)) {
+            if (!type.compare("download")) {
+                pkgList.at(i).downloadProgress = Progress;
+            }
+            else {
+                pkgList.at(i).installProgress = Progress;
+            }
+        }
+    }
+    int all = 0;
+    foreach (pkgProgress msg, pkgList) {
+        all += msg.downloadProgress;
+        all += msg.installProgress;
+    }
+
+    int allNum = pkgList.size() * 200 ;
+    float progress = (float)all / allNum;
+
+    if (progress < 1)
+        versionInformationLab->setText(tr("Downloading and installing updates..."));
+
+    allProgressBar->setValue(progress * 100);
+    allProgressBar->show();
+    lastRefreshTime->hide();
+    if (progress == 1) {
+        foreach (AppUpdateWid *wid, widgetList) {
+            disconnect(wid, &AppUpdateWid::sendProgress, this, &TabWid::getAllProgress);
+        }
+        checkUpdateBtn->hide();
+        allProgressBar->hide();
+        versionInformationLab->setText(tr("Your system is the latest!"));
+    }
+}
 void TabWid::backupProgress(int progress)
 {
     if(progress==100)
@@ -185,7 +269,7 @@ void TabWid::backupProgress(int progress)
         return;
     }
     //    versionInformationLab->setText("备份中："+QString::number(progress)+"%");
-    versionInformationLab->setText(tr("In backup:")+QString::number(progress)+"%");
+    versionInformationLab->setText(tr("In backup:") + QString::number(progress)+"%");
 
 }
 
@@ -394,12 +478,22 @@ void TabWid::allComponents()
 
     inforLayout = new QVBoxLayout();
     lastRefreshTime = new QLabel(systemWidget);
+    allProgressBar = new QProgressBar(systemWidget);
+    allProgressBar->setFixedHeight(4);
+    allProgressBar->hide();
+    allProgressBar->setValue(0);
+
+    progressLabel = new QLabel(systemWidget);
+//    progressLabel->setText(tr("45M/300M"));
+
     versionInformationLab = new QLabel(systemWidget);
     versionInformationLab->setStyleSheet("font-size:16px;font-weight:500;line-height: 22px;");
 
     inforLayout->setAlignment(Qt::AlignTop);
     inforLayout->addWidget(versionInformationLab);
     inforLayout->addWidget(lastRefreshTime);
+    inforLayout->addWidget(allProgressBar);
+    inforLayout->addWidget(progressLabel);
     inforLayout->setSpacing(8);
     inforLayout->setContentsMargins(8,20,0,0);
     QWidget *inforWidget = new QWidget(systemWidget);
@@ -410,9 +504,9 @@ void TabWid::allComponents()
     checkUpdateBtn->start();
     checkUpdateBtn->setFixedSize(120,36);
 
-
     tab1HLayout->addWidget(systemPortraitLab,0,Qt::AlignLeft);
     tab1HLayout->addWidget(inforWidget,Qt::AlignLeft|Qt::AlignTop);
+    tab1HLayout->addSpacerItem(new QSpacerItem(50, 2, QSizePolicy::Fixed));
     tab1HLayout->addWidget(checkUpdateBtn);
     tab1HLayout->setContentsMargins(8,25,20,20);
     tab1HLayout->setSpacing(0);
@@ -446,12 +540,37 @@ void TabWid::allComponents()
     isAutoBackupLayout->addWidget(isAutoBackupLab);
     isAutoBackupLayout->addWidget(isAutoBackupSBtn);
     isAutoBackupWidget->setLayout(isAutoBackupLayout);
+    /*是否自动更新选项*/
+    isAutoUpgradeWidget = new QFrame();
+    isAutoUpgradeWidget->setFrameShape(QFrame::Box);
+    isAutoUpgradeLayout = new QVBoxLayout();
+    isAutoUpgradeLab = new QLabel();
+    isAutoUpgradeLab->setText(tr("Automatically download and install updates"));
+    autoUpgradeLab = new QLabel();
+    autoUpgradeLab->setText(tr("After it is turned on, the system will automatically download and install updates when there is an available network and available backup and restore partitions."));
+    /*自动换行*/
+    autoUpgradeLab->adjustSize();
+    autoUpgradeLab->setWordWrap(true);
+    autoUpgradeLab->setAlignment(Qt::AlignTop);
+    QPalette labelPalette = autoUpgradeLab->palette();
+    labelPalette.setBrush(QPalette::WindowText, labelPalette.color(QPalette::PlaceholderText));
+    autoUpgradeLab->setPalette(labelPalette);
+
+    isAutoUpgradeSBtn = new SwitchButton();
+    autoUpgradeBtnLayout = new QHBoxLayout();
+    autoUpgradeBtnLayout->addWidget(isAutoUpgradeLab);
+    autoUpgradeBtnLayout->addWidget(isAutoUpgradeSBtn);
+
+    isAutoUpgradeLayout->addLayout(autoUpgradeBtnLayout);
+    isAutoUpgradeLayout->addWidget(autoUpgradeLab);
+    isAutoUpgradeWidget->setLayout(isAutoUpgradeLayout);
 
     updatesettingLayout->setAlignment(Qt::AlignTop);
     updatesettingLayout->addWidget(updateSettingLab);
     updatesettingLayout->addSpacing(10);
     updatesettingLayout->addWidget(isAutoCheckWidget);
-    updatesettingLayout->addWidget(isAutoBackupWidget);
+//    updatesettingLayout->addWidget(isAutoBackupWidget);
+    updatesettingLayout->addWidget(isAutoUpgradeWidget);
     updatesettingLayout->setSpacing(2);
     updatesettingLayout->setMargin(0);
 
@@ -481,8 +600,12 @@ void TabWid::loadingOneUpdateMsgSlot(AppAllMsg msg)
     //    checkUpdateBtn->setText();
     if(updateMutual->importantList.indexOf(msg.name) == -1)
     {
+        struct pkgProgress pkg;
+        pkg.name = msg.name;
+        pkgList << pkg;
         updateMutual->importantList.append(msg.name);   //重要更新列表中添加appname
         AppUpdateWid *appWidget = new AppUpdateWid(msg, this);
+        widgetList << appWidget;
         appWidget->updateAPPBtn->hide();
         connect(appWidget, &AppUpdateWid::cancel, this, &TabWid::slotCancelDownload);
         connect(this, &TabWid::updateAllSignal, appWidget, &AppUpdateWid::updateAllApp);
@@ -626,6 +749,18 @@ void TabWid::checkUpdateBtnClicked()
     }
     else if(checkUpdateBtn->text() == tr("UpdateAll"))
     {
+        if (!get_battery()) {
+            QMessageBox msgBox;
+            msgBox.setText(tr("The battery is below 50% and the update cannot be downloaded"));
+            msgBox.setIcon(QMessageBox::Information);
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.setButtonText(QMessageBox::Ok,tr("OK"));
+            msgBox.exec();
+            return ;
+        }
+        foreach (AppUpdateWid *wid, widgetList) {
+            connect(wid, &AppUpdateWid::sendProgress, this, &TabWid::getAllProgress);
+        }
         if(isAutoBackupSBtn->isChecked() == true)
         {
             bacupInit(true);
@@ -663,6 +798,9 @@ void TabWid::checkUpdateBtnClicked()
                 qDebug() << "否，立即备份";
                 break;
             case QMessageBox::Cancel:
+                foreach (AppUpdateWid *wid, widgetList) {
+                    disconnect(wid, &AppUpdateWid::sendProgress, this, &TabWid::getAllProgress);
+                }
                 qDebug() << "Close 暂不更新!";
                 break;
             }
@@ -799,4 +937,53 @@ void TabWid::whenStateIsDuing()
     versionInformationLab->setText(tr("Calculating Capacity..."));
     checkUpdateBtn->start();
     checkUpdateBtn->setEnabled(false);
+}
+
+bool TabWid::get_battery()
+{
+    QStringList users;
+    int battery_value = 0;
+    QDBusInterface m_interface1( "org.freedesktop.UPower",
+                                "/org/freedesktop/UPower",
+                                "org.freedesktop.UPower",
+                                QDBusConnection::systemBus() );
+    if (!m_interface1.isValid()) {
+        qDebug() << "电源管理器dbus接口初始化失败";
+        return true;
+    }
+
+    QDBusReply<QList<QDBusObjectPath>> obj_reply = m_interface1.call("EnumerateDevices");
+
+    if (obj_reply.isValid()) {
+        for (QDBusObjectPath op : obj_reply.value())
+             users << op.path();
+        if (users.size()==1 || users.isEmpty()) {
+            qDebug()<<"无法获取电量值,判断此电脑为台式电脑";
+            return true;
+        }
+        foreach (QString str, users) {
+            if (str == users.at(0) || str == users.at(users.size() - 1)) {
+                continue ;
+            }
+            QDBusInterface m_interface( "org.freedesktop.UPower",
+                                        str,
+                                        "org.freedesktop.DBus.Properties",
+                                        QDBusConnection::systemBus());
+
+            if (!m_interface.isValid()) {
+                qDebug() << "电源管理器dbus接口初始化失败";
+                return true;
+            }
+
+            QDBusReply<QVariant> obj_reply = m_interface.call("Get","org.freedesktop.UPower.Device","Percentage");
+            int Ele_surplus = obj_reply.value().toInt();
+            battery_value += Ele_surplus;
+            qDebug() << "battery value : " << Ele_surplus;
+        }
+        return true;
+     }
+    /*如果电池总电量小于50不可升级*/
+    if (battery_value < 50)
+        return false;
+    return true;
 }
