@@ -171,6 +171,7 @@ private:
     bool        getInitStatus();
     bool        getWifiStatus();
     bool        getHasWirelessCard();
+    bool        getWirelessStatus();
 
     void        clearContent();
 

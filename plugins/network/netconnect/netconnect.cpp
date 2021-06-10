@@ -154,7 +154,6 @@ void NetConnect::initComponent() {
 
     //获取当前系统环境
     systemEnvironment = getSystemEnvironment();
-
     // 接收到系统创建网络连接的信号时刷新可用网络列表
     QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager/Settings"), "org.freedesktop.NetworkManager.Settings", "NewConnection", this, SLOT(getNetList(void)));
     // 接收到系统删除网络连接的信号时刷新可用网络列表
@@ -239,8 +238,70 @@ QString NetConnect::getSystemEnvironment() {
     }
 }
 
+bool NetConnect::getWirelessStatus() {
+    QDBusInterface interface( "org.freedesktop.NetworkManager",
+                              "/org/freedesktop/NetworkManager",
+                              "org.freedesktop.DBus.Properties",
+                              QDBusConnection::systemBus() );
+
+    QDBusMessage resultAllDevices = interface.call("Get", "org.freedesktop.NetworkManager", "AllDevices");
+    QList<QVariant> outArgsAllDevices = resultAllDevices.arguments();
+    QVariant firstAllDevices = outArgsAllDevices.at(0);
+    QDBusVariant dbvFirstAllDevices = firstAllDevices.value<QDBusVariant>();
+    QVariant vFirstAllDevices = dbvFirstAllDevices.variant();
+    QDBusArgument dbusArgsAllDevices = vFirstAllDevices.value<QDBusArgument>();
+
+    QDBusObjectPath objPathDevice;
+    dbusArgsAllDevices.beginArray();
+    QString path;
+    while (!dbusArgsAllDevices.atEnd()) {
+        dbusArgsAllDevices >> objPathDevice;
+        QDBusInterface netWireless("org.freedesktop.NetworkManager",
+                                   objPathDevice.path(),
+                                   "org.freedesktop.NetworkManager.Device.Wireless",
+                                   QDBusConnection::systemBus());
+        QString str = netWireless.property("HwAddress").toString();
+        if (str != "") {
+            path = objPathDevice.path();
+        }
+    }
+    QDBusInterface netWireless("org.freedesktop.NetworkManager",
+                               path,
+                               "org.freedesktop.NetworkManager.Device",
+                               QDBusConnection::systemBus());
+    QString interfaceInfo = netWireless.property("Interface").toString();
+
+    QString program = "ip";
+    QStringList arg;
+    arg <<"l";
+
+    QProcess *ipCmd = new QProcess(this);
+    ipCmd->start(program, arg);
+    ipCmd->waitForFinished();
+    QString output = ipCmd->readAll();
+
+    QStringList slist;
+    QString wirelessInfo;
+    foreach (QString line, output.split("\n")) {
+        line.replace(QRegExp("[\\s]+"), " ");
+        slist.append(line);
+    }
+
+    for (int i = 0; i < slist.size(); i++) {
+        QString str = slist.at(i);
+        if (!str.isEmpty() && str.contains(interfaceInfo)) {
+            wirelessInfo = str;
+        }
+    }
+    if (!wirelessInfo.isEmpty() && wirelessInfo.contains("DOWN")) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 //获取当前机器是否有无线网卡设备
-bool NetConnect::getHasWirelessCard(){
+bool NetConnect::getHasWirelessCard() {
     QProcess *wirlessPro = new QProcess(this);
     wirlessPro->start("nmcli device");
     wirlessPro->waitForFinished();
@@ -281,6 +342,7 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
     } else {
         deviceItem->mDetailLabel->setText("");
     }
+
     QIcon searchIcon = QIcon::fromTheme(iconPath);
     deviceItem->mPitIcon->setProperty("useIconHighlightEffect", 0x10);
     deviceItem->mPitIcon->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(24, 24))));
@@ -313,7 +375,7 @@ void NetConnect:: getNetList() {
         qWarning() << "value method called failed!";
     }
     this->TlanList  = execGetLanList();
-    if (getWifiStatus() && reply.value().length() == 1) {
+    if (getWifiStatus() && reply.value().length() == 1 && getWirelessStatus()) {
         QElapsedTimer time;
         time.start();
         while (time.elapsed() < 300) {
