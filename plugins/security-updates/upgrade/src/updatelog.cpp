@@ -1,7 +1,7 @@
 #include "updatelog.h"
 
 
-UpdateLog::UpdateLog(QDialog *parent) : QDialog(parent)
+UpdateLog::UpdateLog(QWidget *parent) : QDialog(parent)
 {
     logUi();
 

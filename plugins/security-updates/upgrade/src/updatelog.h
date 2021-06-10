@@ -17,7 +17,7 @@ class UpdateLog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit UpdateLog(QDialog *parent = nullptr);
+    explicit UpdateLog(QWidget *parent = nullptr);
 
     void logUi();
 

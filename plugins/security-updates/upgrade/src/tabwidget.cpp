@@ -574,8 +574,8 @@ void TabWid::showHistoryWidget()
 
     historyLog = m_updatelog::GetInstance(this);
     //在屏幕中央显示
-    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
-    historyLog->move((availableGeometry.width()-historyLog->width())/2,(availableGeometry.height()- historyLog->height())/2);
+    //QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
+    //historyLog->move((availableGeometry.width()-historyLog->width())/2,(availableGeometry.height()- historyLog->height())/2);
     historyLog->show();
 }
 
@@ -614,7 +614,7 @@ void TabWid::checkUpdateBtnClicked()
         }
         else
         {
-            QMessageBox msgBox;
+            QMessageBox msgBox(this);
             msgBox.setText(tr("This update will not backup the current system, do you want to continue the update?"));
 //            msgBox.setText(tr("本次更新不会备份当前系统，是否继续更新？"));
             msgBox.setWindowTitle(tr("Prompt information"));

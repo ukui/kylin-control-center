@@ -433,7 +433,7 @@ void AppUpdateWid::updateAppUi(QString name)
 //    updatelogBtn->setText(tr("更新日志"));
     updatelogBtn->setText(tr("Update log"));
     updatelogBtn->setFlat(true);
-    updatelog1 = new UpdateLog();
+    updatelog1 = new UpdateLog(this);
 
     largeVLayout->addWidget(someInfoEdit);
     largeVLayout->addWidget(updatelogBtn,0,Qt::AlignLeft);
@@ -562,8 +562,8 @@ void AppUpdateWid::showDetails()
 
 void AppUpdateWid::showUpdateLog()
 {
-    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
-    updatelog1->move((availableGeometry.width()-updatelog1->width())/2,(availableGeometry.height()- updatelog1->height())/2);
+    //QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
+    //updatelog1->move((availableGeometry.width()-updatelog1->width())/2,(availableGeometry.height()- updatelog1->height())/2);
     updatelog1->exec();
 }
 
@@ -577,7 +577,7 @@ void AppUpdateWid::cancelOrUpdate()
     {
         if(m_updateMutual->isPointOutNotBackup == true)
         {
-            QMessageBox msgBox;
+            QMessageBox msgBox(this);
 //            msgBox.setText(tr("单个更新不会自动备份系统，如需备份，请点击全部更新。"));
             msgBox.setText(tr("A single update will not automatically backup the system, if you want to backup, please click Update All."));
             msgBox.setWindowTitle(tr("Prompt information"));
