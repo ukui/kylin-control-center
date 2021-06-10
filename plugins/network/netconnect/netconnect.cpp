@@ -152,6 +152,9 @@ void NetConnect::initComponent() {
     mLanDetail->setVisible(false);
     mWlanDetail->setVisible(false);
 
+    //获取当前系统环境
+    systemEnvironment = getSystemEnvironment();
+
     // 接收到系统创建网络连接的信号时刷新可用网络列表
     QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager/Settings"), "org.freedesktop.NetworkManager.Settings", "NewConnection", this, SLOT(getNetList(void)));
     // 接收到系统删除网络连接的信号时刷新可用网络列表
@@ -204,6 +207,36 @@ void NetConnect::initComponent() {
 
 void NetConnect::refreshNetInfoTimerSlot() {
     refreshTimer->start(400);
+}
+
+QString NetConnect::getSystemEnvironment() {
+    QString cpuType;
+    QDBusInterface youkerInterface("com.kylin.assistant.systemdaemon",
+                                   "/com/kylin/assistant/systemdaemon",
+                                   "com.kylin.assistant.systemdaemon",
+                                   QDBusConnection::systemBus());
+    if (!youkerInterface.isValid()) {
+        qCritical() << "Create youker Interface Failed When Get Computer info: " <<
+            QDBusConnection::systemBus().lastError();
+        return "";
+    }
+
+    QDBusReply<QMap<QString, QVariant> > cpuinfo;
+    cpuinfo = youkerInterface.call("get_cpu_info");
+
+    if (!cpuinfo.isValid()) {
+        qDebug() << "cpuinfo is invalid" << endl;
+    } else {
+        QMap<QString, QVariant> res = cpuinfo.value();
+        cpuType = res["CpuVersion"].toString();
+    }
+    if (cpuType.contains("990")) {
+        return "990";
+    } else if (cpuType.contains("9006C")) {
+        return "9A0";
+    } else {
+        return "sp1";
+    }
 }
 
 //获取当前机器是否有无线网卡设备
@@ -296,7 +329,7 @@ void NetConnect:: getNetList() {
             // 拿到的wifi列表当无线网络已连接时0位信息为已连接wifi信息，未连接时为"--"，过滤掉即可
             for (int i = 1; i < reply.value().length(); i++) {
                 QString wifiName;
-                if (isWayland) {
+                if (isWayland && systemEnvironment == "9A0") {
                     wifiName = reply.value().at(i).at(0) + reply.value().at(i).at(5);
                 } else {
                     wifiName = reply.value().at(i).at(0);
@@ -318,7 +351,7 @@ void NetConnect:: getNetList() {
                 QString wifiName = wifiInfo.left(wifiInfo.size() - 1);
                 int wifiStrength = wifiInfo.right(1).toInt();
                 wifiName = isLock ? wifiName.remove("lock") : wifiName;
-                if (isWayland) {
+                if (isWayland && systemEnvironment == "9A0") {
                     int category = wifiName.right(1).toInt();
                     wifiName = wifiName.left(wifiName.size() - 1);
                     iconamePath = wifiIcon(isLock, wifiStrength, category);
@@ -531,7 +564,7 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
                         wname = getwifislist.at(i).at(0);
                         lockType = getwifislist.at(i).at(2);
                         freq = getwifislist.at(i).at(3) + " MHz";
-                        if (isWayland) {
+                        if (isWayland && systemEnvironment == "9A0") {
                             QString category = getwifislist.at(i).at(5);
                             wname = wname + category;
                         } else {
@@ -612,7 +645,7 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
                 bool isLock = connectedWifiName.contains("lock");
                 connectedWifiName = isLock ? connectedWifiName.remove("lock") : connectedWifiName;
                 QString iconamePah;
-                if (isWayland) {
+                if (isWayland && systemEnvironment == "9A0") {
                     int category = connectedWifiName.right(1).toInt();
                     connectedWifiName = connectedWifiName.left(connectedWifiName.size() - 1);
                     iconamePah = wifiIcon(isLock, strength, category);

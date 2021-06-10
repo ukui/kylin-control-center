@@ -158,6 +158,7 @@ private:
 
     QString             mPreWifiConnectedName;
     QString             mPreLanConnectedName;
+    QString             systemEnvironment;
     int                 runCount = 0;
 private:
     int         setSignal(QString lv);
@@ -165,6 +166,8 @@ private:
     int         getWifiListDone(QVector<QStringList> wifislist, QStringList lanList, bool getWifiListDone);
     QString     geiWifiChan();
     QString     getWifiSpeed();
+    QString     getSystemEnvironment();
+
     bool        getInitStatus();
     bool        getWifiStatus();
     bool        getHasWirelessCard();
