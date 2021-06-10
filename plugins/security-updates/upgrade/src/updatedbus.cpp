@@ -104,7 +104,7 @@ bool UpdateDbus::fileLock()
         write(fd, operationType, strlen(operationType));
         write(fd, nowtime, strlen(nowtime));
     }
-    return lockf(fd, F_TLOCK, 0);
+    return flock(fd, LOCK_EX | LOCK_NB);
 }
 
 void UpdateDbus::fileUnLock()
@@ -120,7 +120,7 @@ void UpdateDbus::fileUnLock()
         qDebug()<<"解锁时文件锁打开异常";
         return;
     }
-    lockf(fd, F_ULOCK, 0);
+    flock(fd, LOCK_UN);
 }
 
 void UpdateDbus::slotFinishGetMessage(QString num)
