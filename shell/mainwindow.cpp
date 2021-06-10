@@ -72,7 +72,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_searchWidget(nullptr)
 {
     mate_mixer_init();
-    this->setMinimumSize(958, 630);
+    this->setMinimumSize(978, 630);
     //logoLabel  = new QLabel(tr("Settings"), this);
     qApp->installEventFilter(this);
     initUI();
@@ -684,7 +684,7 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName) {
     leftsidebarBtn->setAttribute(Qt::WA_DeleteOnClose);
     leftsidebarBtn->setCheckable(true);
     //    leftsidebarBtn->setFixedSize(QSize(60, 56)); //Widget Width 60
-    leftsidebarBtn->setFixedSize(135,40);
+    leftsidebarBtn->setFixedSize(155,40);  //一级菜单按钮显示的宽度
 
     QPushButton * iconBtn = new QPushButton(leftsidebarBtn);
     iconBtn->setCheckable(true);
@@ -818,7 +818,7 @@ void MainWindow::initStyleSheet() {
     ui->leftsidebarWidget->setMinimumWidth(153);
 
     ui->centralWidget->setAttribute(Qt::WA_TranslucentBackground);
-    ui->leftsidebarWidget->setMinimumWidth(156);
+    ui->leftsidebarWidget->setMinimumWidth(176); //一级菜单宽度
 
  
 
