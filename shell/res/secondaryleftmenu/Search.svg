@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 59 (86127) - https://sketch.com -->
-    <title>search-symbolic-01</title>
-    <desc>Created with Sketch.</desc>
-    <g id="search-symbolic-01" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g stroke="#7E7E7E">
-            <rect id="矩形" transform="translate(13.000000, 13.000000) rotate(45.000000) translate(-13.000000, -13.000000) " x="11.5" y="12.5" width="3" height="1" rx="0.5"></rect>
-            <circle id="椭圆形" stroke-width="2" cx="7.5" cy="7.5" r="5.5"></circle>
-        </g>
-    </g>
-</svg>
+<svg id="图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><defs><style>.cls-1,.cls-2{fill:none;}.cls-1{clip-rule:evenodd;}.cls-3{clip-path:url(#clip-path);}.cls-4{clip-path:url(#clip-path-2);}.cls-5{clip-path:url(#clip-path-3);}.cls-6{clip-path:url(#clip-path-4);}.cls-7{clip-path:url(#clip-path-5);}.cls-8{clip-path:url(#clip-path-6);}.cls-9{fill:#7e7e7e;}</style><clipPath id="clip-path"><path class="cls-1" d="M-279.88-195a5.51,5.51,0,0,1,5.5,5.5,5.51,5.51,0,0,1-5.5,5.5,5.5,5.5,0,0,1-5.5-5.5,5.5,5.5,0,0,1,5.5-5.5m0-1a6.5,6.5,0,0,0-6.5,6.5,6.5,6.5,0,0,0,6.5,6.5,6.5,6.5,0,0,0,6.5-6.5,6.5,6.5,0,0,0-6.5-6.5"/></clipPath><clipPath id="clip-path-2"><rect class="cls-2" x="-274.59" y="-185.65" width="1" height="3.82" transform="translate(49.65 -247.62) rotate(-45)"/></clipPath><clipPath id="clip-path-3"><path class="cls-1" d="M-271-192.44a5.51,5.51,0,0,1,5.5,5.5,5.51,5.51,0,0,1-5.5,5.5,5.5,5.5,0,0,1-5.5-5.5,5.5,5.5,0,0,1,5.5-5.5m0-1a6.5,6.5,0,0,0-6.5,6.5,6.5,6.5,0,0,0,6.5,6.5,6.5,6.5,0,0,0,6.5-6.5,6.5,6.5,0,0,0-6.5-6.5"/></clipPath><clipPath id="clip-path-4"><rect class="cls-2" x="-265.75" y="-183.05" width="1" height="3.82" transform="translate(50.4 -240.61) rotate(-45)"/></clipPath><clipPath id="clip-path-5"><path class="cls-1" d="M-271.69-199.9a5.5,5.5,0,0,1,5.5,5.5,5.51,5.51,0,0,1-5.5,5.5,5.51,5.51,0,0,1-5.5-5.5,5.5,5.5,0,0,1,5.5-5.5m0-1a6.5,6.5,0,0,0-6.5,6.5,6.5,6.5,0,0,0,6.5,6.5,6.5,6.5,0,0,0,6.5-6.5,6.5,6.5,0,0,0-6.5-6.5"/></clipPath><clipPath id="clip-path-6"><rect class="cls-2" x="-266.39" y="-190.51" width="1" height="3.82" transform="translate(55.49 -243.25) rotate(-45)"/></clipPath></defs><title>search</title><path class="cls-9" d="M11,3a8,8,0,1,1-8,8,8,8,0,0,1,8-8m0-2A10,10,0,1,0,21,11,10,10,0,0,0,11,1Z"/><rect class="cls-9" x="16.17" y="19.01" width="7.67" height="1.98" rx="0.99" transform="translate(20 -8.28) rotate(45)"/></svg>
