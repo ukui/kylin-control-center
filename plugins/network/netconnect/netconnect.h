@@ -118,7 +118,7 @@ public:
 
     bool getwifiisEnable();
 
-    int getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo);
+    int getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo, bool wirelessStatus);
 
 private:
     Ui::NetConnect     *ui;
