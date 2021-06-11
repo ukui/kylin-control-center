@@ -98,6 +98,7 @@ QWidget *Touchpad::get_plugin_ui(){
                 qDebug() << "Touch Devices Available";
                 ui->tipLabel->hide();
                 initTouchpadStatus();
+                ui->enableFrame->hide();
             } else {
                 ui->clickFrame->hide();
                 ui->enableFrame->hide();
@@ -188,7 +189,6 @@ void Touchpad::initTouchpadStatus(){
     //初始化启用按钮
     enableBtn->blockSignals(true);
     enableBtn->setChecked(tpsettings->get(ACTIVE_TOUCHPAD_KEY).toBool());
-    setModuleVisible(tpsettings->get(ACTIVE_TOUCHPAD_KEY).toBool());
     enableBtn->blockSignals(false);
 
     // 初始化打字禁用
