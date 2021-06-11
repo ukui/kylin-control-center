@@ -293,8 +293,14 @@ bool NetConnect::getWirelessStatus() {
             wirelessInfo = str;
         }
     }
-    if (!wirelessInfo.isEmpty() && wirelessInfo.contains("DOWN")) {
-        return false;
+    wirelessInfo = wirelessInfo.split("<").at(1);
+    wirelessInfo = wirelessInfo.split(">").at(0);
+    if (!wirelessInfo.isEmpty()) {
+        if (wirelessInfo.contains("UP")) {
+            return true;
+        } else {
+            return false;
+        }
     } else {
         return true;
     }
@@ -375,7 +381,8 @@ void NetConnect:: getNetList() {
         qWarning() << "value method called failed!";
     }
     this->TlanList  = execGetLanList();
-    if (getWifiStatus() && reply.value().length() == 1 && getWirelessStatus()) {
+    bool wirelessStatus = getWirelessStatus();
+    if (getWifiStatus() && reply.value().length() == 1 && wirelessStatus) {
         QElapsedTimer time;
         time.start();
         while (time.elapsed() < 300) {
@@ -422,6 +429,7 @@ void NetConnect:: getNetList() {
                 }
                 rebuildAvailComponent(iconamePath, wifiName, "wifi");
             }
+
             for (int i = 0; i < this->lanList.length(); i++) {
                 rebuildAvailComponent(KLanSymbolic , lanList.at(i), "ethernet");
             }
@@ -577,6 +585,7 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
     clearContent();
     mActiveInfo.clear();
     QString speed = getWifiSpeed();
+    bool wirelessStatus = getWirelessStatus();
     if (!speed.contains("/") && runCount < 1) {
         QElapsedTimer time;
         time.start();
@@ -586,7 +595,7 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
         runCount ++;
         return -1;
     } else {
-        if (getActiveConInfo(mActiveInfo) == -1) {
+        if (getActiveConInfo(mActiveInfo, wirelessStatus) == -1) {
             QElapsedTimer time;
             time.start();
             while (time.elapsed() < 500) {
@@ -993,7 +1002,7 @@ void NetConnect::wifiSwitchSlot(bool status) {
     nmcliCmd->waitForStarted();
 }
 
-int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
+int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo, bool wirelessStatus) {
     ActiveConInfo activeNet;
     QDBusInterface interface( "org.freedesktop.NetworkManager",
                               "/org/freedesktop/NetworkManager",
@@ -1045,8 +1054,10 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
                 activeNet.strIPV4Address = datasIpv4.at(0).value("address").toString();
                 activeNet.strIPV4Prefix = datasIpv4.at(0).value("prefix").toString();
             } else {
-                qWarning()<<"Ipv4 data reply empty!";
-                return -1;
+                qWarning()<<"Ipv4 data reply empty!";\
+                if (wirelessStatus) {
+                    return -1;
+                }
             }
 
             QDBusMessage replyIPV4Dns = IPV4ifc.call("Get", "org.freedesktop.NetworkManager.IP4Config", "NameserverData");
@@ -1065,7 +1076,9 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
                 activeNet.strIPV4GateWay = ipv4Gt.toString();
             } else {
                 qWarning()<<"Ipv4 reply empty!";
-                return -1;
+                if (wirelessStatus) {
+                    return -1;
+                }
             }
 
             // IPV6信息
@@ -1087,7 +1100,9 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
                 activeNet.strIPV6Prefix = dataIPV6.at(0).value("prefix").toString();
             } else {
                 qWarning()<<"Ipv6 data reply empty!";
-                return -1;
+                if (wirelessStatus) {
+                    return -1;
+                }
             }
 
             QDBusMessage replyIPV6Gt = IPV6ifc.call("Get", "org.freedesktop.NetworkManager.IP6Config", "GateWay");
@@ -1098,7 +1113,9 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
                 activeNet.strIPV6GateWay = IPV6Gt.toString().isEmpty() ? "" : IPV6Gt.toString();
             } else {
                 qWarning()<<"Ipv6 info reply empty!";
-                return -1;
+                if (wirelessStatus) {
+                    return -1;
+                }
             }
             // 设备信息
             auto replyDevicesPaths = interfacePro.property("Devices")
@@ -1121,7 +1138,9 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
                 }
             } else {
                 qWarning()<<"Reply for Devices Paths empty!";
-                return -1;
+                if (wirelessStatus) {
+                    return -1;
+                }
             }
             qlActiveConInfo.append(activeNet);
         }
