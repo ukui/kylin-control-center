@@ -242,7 +242,7 @@ void NetConnect::getNetList() {
     if (!reply.isValid()) {
         qWarning() << "value method called failed!";
     }
-    if (getWifiStatus() && reply.value().length() == 1) {
+    if (getWifiStatus() && reply.value().length() == 1 && getHasWirelessCard()) {
         QElapsedTimer time;
         time.start();
         while (time.elapsed() < 300) {
@@ -253,56 +253,46 @@ void NetConnect::getNetList() {
         }
     } else {
         this->TlanList  = execGetLanList();
-        if (getWifiListDone(reply, this->TlanList, isWayland) == -1) {
-            getNetList();
-        } else {
-            wifiLists.clear();
-            for (int i = 0; i < reply.value().length(); i++) {
-                QString wifiName;
-                if (reply.value().at(i).at(0) == "--") {
-                    continue;
-                }
-                if (isWayland) {
-                    wifiName = reply.value().at(i).at(0) + reply.value().at(i).at(5);
-                } else {
-                    wifiName = reply.value().at(i).at(0);
-                }
-                if (reply.value().at(i).at(2) != NULL && reply.value().at(i).at(2) != "--") {
-                    wifiName += "lock";
-                }
-                QString signal  = reply.value().at(i).at(1);
-                wifiLists.insert(wifiName,this->setSignal(signal));
+        getWifiListDone(reply, this->TlanList, isWayland);
+        wifilist.clear();
+        for (int i = 1; i < reply.value().length(); i++) {
+            QString wifiName;
+            if (isWayland) {
+                wifiName = reply.value().at(i).at(0) + reply.value().at(i).at(5);
+            } else {
+                wifiName = reply.value().at(i).at(0);
             }
-
-            QMap<QString, int>::iterator iterator = this->wifiLists.begin();
-            QVector<QPair<QString, int>> vector;
-            QString iconamePath;
-            while (iterator != this->wifiLists.end()) {
-                vector.push_back(qMakePair(iterator.key(), iterator.value()));
-                iterator++;
+            if (reply.value().at(i).at(2) != NULL && reply.value().at(i).at(2) != "--") {
+                wifiName += "lock";
             }
-            qSort(vector.begin(), vector.end(), sortByVal);
-            for (int i = 0; i < vector.size(); i++) {
-                if (!wifiBtn->isChecked()) {
-                    break;
-                }
-                bool isLock = vector[i].first.contains("lock");
-                QString wifiName = isLock ? vector[i].first.remove("lock") : vector[i].first;
-                if (isWayland) {
-                    int category = wifiName.right(1).toInt();
-                    wifiName = wifiName.left(wifiName.size() - 1);
-                    iconamePath = wifiIcon(isLock, vector[i].second, category);
-                } else {
-                    iconamePath = wifiIcon(isLock, vector[i].second);
-                }
-                rebuildAvailComponent(iconamePath, wifiName);
-            }
-
-            for (int i = 0; i < this->lanList.length(); i++) {
-                rebuildAvailComponent(KLanSymbolic , lanList.at(i));
-            }
-            setNetDetailVisible();
+            QString signal = reply.value().at(i).at(1);
+            int sign = this->setSignal(signal);
+            wifilist.append(wifiName + QString::number(sign));
         }
+        QString iconamePath;
+        for (int i = 0; i < wifilist.size(); i++) {
+            if (!wifiBtn->isChecked()) {
+                break;
+            }
+            QString wifiInfo = wifilist.at(i);
+            bool isLock = wifiInfo.contains("lock");
+            QString wifiName = wifiInfo.left(wifiInfo.size() - 1);
+            int wifiStrength = wifiInfo.right(1).toInt();
+            wifiName = isLock ? wifiName.remove("lock") : wifiName;
+            if (isWayland) {
+                int category = wifiName.right(1).toInt();
+                wifiName = wifiName.left(wifiName.size() - 1);
+                iconamePath = wifiIcon(isLock, wifiStrength, category);
+            } else {
+                iconamePath = wifiIcon(isLock, wifiStrength);
+            }
+            rebuildAvailComponent(iconamePath, wifiName);
+        }
+
+        for (int i = 0; i < this->lanList.length(); i++) {
+            rebuildAvailComponent(KLanSymbolic , lanList.at(i));
+        }
+        setNetDetailVisible();
     }
 }
 
@@ -453,156 +443,106 @@ bool NetConnect::getWifiStatus() {
     }
 }
 
-int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList getlanList, bool isWayland) {
+void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList getlanList, bool isWayland) {
     clearContent();
     mActiveInfo.clear();
-    if (firstCount <= 4 && getActiveConInfo(mActiveInfo) == -1) {
-        QElapsedTimer time;
-        time.start();
-        while (time.elapsed() < 300) {
-            QCoreApplication::processEvents();
-        }
-        firstCount++;
-        return -1;
-    } else {
-        firstCount = 0;
-        if (!getwifislist.isEmpty() && getwifislist.length() != 1) {
-            connectedWifi.clear();
-            wifiList.clear();
-            QString actWifiName;
+    getActiveConInfo(mActiveInfo);
+    if (!getwifislist.isEmpty() && getwifislist.length() != 1) {
+        connectedWifi.clear();
+        wifiList.clear();
+        QString actWifiName;
 
-            int index = 0;
-            while (index < mActiveInfo.size()) {
-                if (mActiveInfo[index].strConType == "wifi"
-                        || mActiveInfo[index].strConType == "802-11-wireless") {
-                    actWifiName = QString(mActiveInfo[index].strConName);
-                    break;
+        int index = 0;
+        while (index < mActiveInfo.size()) {
+            if (mActiveInfo[index].strConType == "wifi"
+                    || mActiveInfo[index].strConType == "802-11-wireless") {
+                actWifiName = QString(mActiveInfo[index].strConName);
+                break;
+            }
+            index++;
+        }
+        QString wname;
+        for (int i = 0; i < getwifislist.size(); ++i) {
+            if (getwifislist.at(i).at(0) == actWifiName) {
+                wname = getwifislist.at(i).at(0);
+                if (isWayland) {
+                    QString category = getwifislist.at(i).at(5);
+                    wname = wname + category;
+                } else {
+                    wname = wname;
                 }
-                index++;
-            }
-            QString wname;
-
-            QString lockType;
-            QString chan = geiWifiChan();
-            QString freq;
-            for (int i = 0; i < getwifislist.size(); ++i) {
-                if (getwifislist.at(i).at(0) == actWifiName) {
-                    wname = getwifislist.at(i).at(0);
-                    lockType = getwifislist.at(i).at(2);
-                    freq = getwifislist.at(i).at(3) + " MHz";
-                    if (isWayland) {
-                        QString category = getwifislist.at(i).at(5);
-                        wname = wname + category;
-                    } else {
-                        wname = wname;
-                    }
-                    mActiveInfo[index].strSecType = (lockType == "--" ? tr("None") : lockType);
-                    mActiveInfo[index].strChan = chan;
-                    mActiveInfo[index].strHz = freq;
-                    if (getwifislist.at(i).at(2) != NULL && getwifislist.at(i).at(2) != "--") {
-                        wname += "lock";
-                    }
-                    connectedWifi.insert(wname, this->setSignal(getwifislist.at(i).at(1)));
+                if (getwifislist.at(i).at(2) != NULL && getwifislist.at(i).at(2) != "--") {
+                    wname += "lock";
                 }
+                connectedWifi.insert(wname, this->setSignal(getwifislist.at(i).at(1)));
             }
         }
-        if (!getlanList.isEmpty()) {
-            lanList.clear();
-            connectedLan.clear();
+    }
+    if (!getlanList.isEmpty()) {
+        lanList.clear();
+        connectedLan.clear();
 
-            int indexLan = 0;
-            while (indexLan < mActiveInfo.size()) {
-                if (mActiveInfo[indexLan].strConType == "ethernet"
-                        || mActiveInfo[indexLan].strConType == "802-3-ethernet"){
-                    actLanName = mActiveInfo[indexLan].strConName;
-                    break;
-                }
-                indexLan ++;
+        int indexLan = 0;
+        while (indexLan < mActiveInfo.size()) {
+            if (mActiveInfo[indexLan].strConType == "ethernet"
+                    || mActiveInfo[indexLan].strConType == "802-3-ethernet"){
+                actLanName = mActiveInfo[indexLan].strConName;
+                break;
             }
-
-            // 填充可用网络列表
-            QString headLine = getlanList.at(0);
-            int indexDevice, indexName;
-            headLine = headLine.trimmed();
-
-            bool isChineseExist = headLine.contains(QRegExp("[\\x4e00-\\x9fa5]+"));
-            if (isChineseExist) {
-                indexDevice = headLine.indexOf("设备") + 2;
-                indexName = headLine.indexOf("名称") + 4;
-            } else {
-                indexDevice = headLine.indexOf("DEVICE");
-                indexName = headLine.indexOf("NAME");
-            }
-
-            for (int i =1 ;i < getlanList.length(); i++) {
-                QString line = getlanList.at(i);
-                QString ltype = line.mid(0, indexDevice).trimmed();
-                QString nname = line.mid(indexName).trimmed();
-                if (ltype != "wifi" && ltype != "" && ltype != "--") {
-                    this->lanList << nname;
-                }
-            }
-        }
-        if (!this->connectedWifi.isEmpty()) {
-            QMap<QString, int>::iterator iter = this->connectedWifi.begin();
-
-            QString connectedWifiName = iter.key();
-            int strength = iter.value();
-
-            bool isLock = connectedWifiName.contains("lock");
-            connectedWifiName = isLock ? connectedWifiName.remove("lock") : connectedWifiName;
-            QString iconamePah;
-            if (isWayland) {
-                int category = connectedWifiName.right(1).toInt();
-                connectedWifiName = connectedWifiName.left(connectedWifiName.size() - 1);
-                iconamePah = wifiIcon(isLock, strength, category);
-            } else {
-                iconamePah = wifiIcon(isLock, strength);
-            }
-            rebuildNetStatusComponent(iconamePah, connectedWifiName);
-        }
-        if (!this->actLanName.isEmpty()) {
-            QString lanIconamePah = KLanSymbolic;
-            rebuildNetStatusComponent(lanIconamePah, this->actLanName);
+            indexLan ++;
         }
 
-        if (this->connectedWifi.isEmpty() && this->actLanName.isEmpty()) {
-            rebuildNetStatusComponent(NoNetSymbolic , tr("No net"));
+        // 填充可用网络列表
+        QString headLine = getlanList.at(0);
+        int indexDevice, indexName;
+        headLine = headLine.trimmed();
+
+        bool isChineseExist = headLine.contains(QRegExp("[\\x4e00-\\x9fa5]+"));
+        if (isChineseExist) {
+            indexDevice = headLine.indexOf("设备") + 2;
+            indexName = headLine.indexOf("名称") + 4;
+        } else {
+            indexDevice = headLine.indexOf("DEVICE");
+            indexName = headLine.indexOf("NAME");
         }
-        return 1;
+
+        for (int i =1 ;i < getlanList.length(); i++) {
+            QString line = getlanList.at(i);
+            QString ltype = line.mid(0, indexDevice).trimmed();
+            QString nname = line.mid(indexName).trimmed();
+            if (ltype != "wifi" && ltype != "" && ltype != "--") {
+                this->lanList << nname;
+            }
+        }
+    }
+    if (!this->connectedWifi.isEmpty()) {
+        QMap<QString, int>::iterator iter = this->connectedWifi.begin();
+
+        QString connectedWifiName = iter.key();
+        int strength = iter.value();
+
+        bool isLock = connectedWifiName.contains("lock");
+        connectedWifiName = isLock ? connectedWifiName.remove("lock") : connectedWifiName;
+        QString iconamePah;
+        if (isWayland) {
+            int category = connectedWifiName.right(1).toInt();
+            connectedWifiName = connectedWifiName.left(connectedWifiName.size() - 1);
+            iconamePah = wifiIcon(isLock, strength, category);
+        } else {
+            iconamePah = wifiIcon(isLock, strength);
+        }
+        rebuildNetStatusComponent(iconamePah, connectedWifiName);
+    }
+    if (!this->actLanName.isEmpty()) {
+        QString lanIconamePah = KLanSymbolic;
+        rebuildNetStatusComponent(lanIconamePah, this->actLanName);
+    }
+
+    if (this->connectedWifi.isEmpty() && this->actLanName.isEmpty()) {
+        rebuildNetStatusComponent(NoNetSymbolic , tr("No net"));
     }
 }
 
-QString NetConnect::geiWifiChan() {
-    QProcess *lanPro = new QProcess(this);
-    bool isHas = false;
-    QStringList slist;
-    lanPro->start("nmcli -f in-use,chan device wifi");
-    lanPro->waitForFinished();
-    QString output = lanPro->readAll();
-    foreach (QString line, output.split("\n")) {
-        line.replace(QRegExp("[\\s]+"), "");
-        slist.append(line);
-    }
-    for (int i = 0; i < slist.length(); i++) {
-        QString str = slist.at(i);
-        if (str.contains("*")) {
-            isHas = true;
-        }
-    }
-    if (isHas) {
-        for (int i = 0; i < slist.length(); i++) {
-            QString str = slist.at(i);
-            if (str.contains("*")) {
-                str.remove("*");
-                prefreChan = str;
-                return str;
-            }
-        }
-    } else {
-        return prefreChan;
-    }
-}
 bool NetConnect::getInitStatus() {
 
     QDBusInterface interface( "org.freedesktop.NetworkManager",
@@ -782,7 +722,7 @@ void NetConnect::wifiSwitchSlot(bool status) {
     nmcliCmd->waitForStarted();
 }
 
-int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
+void NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
     ActiveConInfo activeNet;
     QDBusInterface interface( "org.freedesktop.NetworkManager",
                               "/org/freedesktop/NetworkManager",
@@ -811,112 +751,8 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
         activeNet.strConName = replyId.toString();
         activeNet.strConType = replyType.toString();
         activeNet.strConUUID = replyUuid.toString();
-
-        QString replyIPV4Path = interfacePro.property("Ip4Config")
-                .value<QDBusObjectPath>()
-                .path();
-         //如果此时获取的path 为 "/"  ,说明出现异常，则需要进行异常处理
-        // IPV4信息
-        if (replyIPV4Path == "/") {
-            return -1;
-        } else {
-            QDBusInterface IPV4ifc("org.freedesktop.NetworkManager",
-                                   replyIPV4Path,
-                                   "org.freedesktop.DBus.Properties",
-                                   QDBusConnection::systemBus());
-
-            QDBusMessage replyIpv4 = IPV4ifc.call("Get", "org.freedesktop.NetworkManager.IP4Config", "AddressData");
-            if (!IPV4ifc.isValid()) {
-                qWarning() << qPrintable(QDBusConnection::sessionBus().lastError().message());
-            }
-            QList<QVariantMap> datasIpv4 = getDbusMap(replyIpv4);
-            if (!datasIpv4.isEmpty()) {
-                activeNet.strIPV4Address = datasIpv4.at(0).value("address").toString();
-                activeNet.strIPV4Prefix = datasIpv4.at(0).value("prefix").toString();
-            } else {
-                qWarning()<<"Ipv4 data reply empty!";
-                return -1;
-            }
-
-            QDBusMessage replyIPV4Dns = IPV4ifc.call("Get", "org.freedesktop.NetworkManager.IP4Config", "NameserverData");
-            QList<QVariantMap> datasIpv4Dns = getDbusMap(replyIPV4Dns);
-            if (!datasIpv4Dns.isEmpty()) {
-                activeNet.strIPV4Dns = datasIpv4Dns.at(0).value("address").toString();
-            } else {
-                qWarning()<<"Ipv4 Dns data reply empty!";
-            }
-
-            QDBusMessage replyIPV4Gt = IPV4ifc.call("Get", "org.freedesktop.NetworkManager.IP4Config", "Gateway");
-            if (!replyIPV4Gt.arguments().isEmpty()) {
-                QVariant ipv4Gt  = replyIPV4Gt.arguments().at(0)
-                        .value<QDBusVariant>()
-                        .variant();
-                activeNet.strIPV4GateWay = ipv4Gt.toString();
-            } else {
-                qWarning()<<"Ipv4 reply empty!";
-                return -1;
-            }
-
-            // IPV6信息
-            QString replyIpv6Path = interfacePro.property("Ip6Config")
-                    .value<QDBusObjectPath>()
-                    .path();
-
-            QDBusInterface IPV6ifc("org.freedesktop.NetworkManager",
-                                   replyIpv6Path,
-                                   "org.freedesktop.DBus.Properties",
-                                   QDBusConnection::systemBus());
-            if (!IPV6ifc.isValid()) {
-                qWarning() << qPrintable(QDBusConnection::sessionBus().lastError().message());
-            }
-            QDBusMessage replyIPV6 = IPV6ifc.call("Get", "org.freedesktop.NetworkManager.IP6Config", "AddressData");
-            QList<QVariantMap> dataIPV6 = getDbusMap(replyIPV6);
-            if (!dataIPV6.isEmpty()) {
-                activeNet.strIPV6Address = dataIPV6.at(0).value("address").toString();
-                activeNet.strIPV6Prefix = dataIPV6.at(0).value("prefix").toString();
-            } else {
-                qWarning()<<"Ipv6 data reply empty!";
-                return -1;
-            }
-
-            QDBusMessage replyIPV6Gt = IPV6ifc.call("Get", "org.freedesktop.NetworkManager.IP6Config", "GateWay");
-            if (!replyIPV6Gt.arguments().isEmpty()) {
-                QVariant IPV6Gt  = replyIPV6Gt.arguments().at(0)
-                        .value<QDBusVariant>()
-                        .variant();
-                activeNet.strIPV6GateWay = IPV6Gt.toString().isEmpty() ? activeNet.strIPV6Address : IPV6Gt.toString();
-            } else {
-                qWarning()<<"Ipv6 info reply empty!";
-                return -1;
-            }
-            // 设备信息
-            auto replyDevicesPaths = interfacePro.property("Devices")
-                    .value<QList<QDBusObjectPath>>();
-            if (!replyDevicesPaths.isEmpty()) {
-                if (!activeNet.strConType.compare("802-3-ethernet", Qt::CaseInsensitive)) {
-                    QDBusInterface netDeviceifc("org.freedesktop.NetworkManager",
-                                                replyDevicesPaths.at(0).path(),
-                                                "org.freedesktop.NetworkManager.Device.Wired",
-                                                QDBusConnection::systemBus());
-                    activeNet.strBandWidth = netDeviceifc.property("Speed").toString();
-                    activeNet.strMac = netDeviceifc.property("HwAddress").toString().toLower();
-                } else {
-                    QDBusInterface netDeviceifc("org.freedesktop.NetworkManager",
-                                                replyDevicesPaths.at(0).path(),
-                                                "org.freedesktop.NetworkManager.Device.Wireless",
-                                                QDBusConnection::systemBus());
-                    activeNet.strBandWidth = netDeviceifc.property("Bitrate").toString();
-                    activeNet.strMac = netDeviceifc.property("HwAddress").toString().toLower();
-                }
-            } else {
-                qWarning()<<"Reply for Devices Paths empty!";
-                return -1;
-            }
-            qlActiveConInfo.append(activeNet);
-        }
-
+        qlActiveConInfo.append(activeNet);
     }
     dbusArgs.endArray();
-    return 1;
 }
 

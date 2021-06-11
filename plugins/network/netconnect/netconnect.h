@@ -116,7 +116,7 @@ public:
 
     bool getwifiisEnable();
 
-    int getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo);
+    void getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo);
 
 private:
     Ui::NetConnect     *ui;
@@ -131,7 +131,7 @@ private:
 
     QMap<QString, int> connectedWifi;
     QMap<QString,int>  wifiList;
-    QMap<QString,int>  wifiLists;
+    QStringList        wifilist;
     QThread            *pThread;
     NetconnectWork     *pNetWorker;
 
@@ -151,13 +151,10 @@ private:
 
     QList<ActiveConInfo> mActiveInfo;
     QTimer             *refreshTimer;
-    QString             prefreChan;
-    int                 firstCount = 0;
 private:
     int         setSignal(QString lv);
     QStringList execGetLanList();
-    int         getWifiListDone(QVector<QStringList> wifislist, QStringList lanList, bool getWifiListDone);
-    QString     geiWifiChan();
+    void         getWifiListDone(QVector<QStringList> wifislist, QStringList lanList, bool getWifiListDone);
     bool        getInitStatus();
     bool        getWifiStatus();
     bool        getHasWirelessCard();
