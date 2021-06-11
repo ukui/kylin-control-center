@@ -84,12 +84,13 @@ void ModulePageWidget::initUI() {
 
     for (int moduleIndex = 0; moduleIndex < TOTALMODULES; moduleIndex++){
         LeftMenuList * leftListWidget = new LeftMenuList;
+
         leftListWidget->setObjectName("leftWidget");
         leftListWidget->setAttribute(Qt::WA_DeleteOnClose);
         leftListWidget->setResizeMode(QListView::Adjust);
         leftListWidget->setFocusPolicy(Qt::NoFocus);
         leftListWidget->setSelectionMode(QAbstractItemView::NoSelection);
-        leftListWidget->setSpacing(12);
+        leftListWidget->setStyleSheet("QListWidget#leftWidget{margin-left: 12px;margin-right: 12px}");
         leftListWidget->setMinimumWidth(100);
 
         connect(leftListWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), this, SLOT(currentLeftitemChanged(QListWidgetItem*,QListWidgetItem*)));
@@ -121,7 +122,6 @@ void ModulePageWidget::initUI() {
             leftWidgetItem->setAttribute(Qt::WA_DeleteOnClose);
             leftWidgetItem->setLabelText(single.namei18nString);
             leftWidgetItem->setLabelPixmap(QString("://img/secondaryleftmenu/%1.svg").arg(single.nameString), single.nameString, "default");
-
             QListWidgetItem * item = new QListWidgetItem(leftListWidget);
             item->setSizeHint(QSize(ui->leftStackedWidget->width() + 20, 40)); //QSize(120, 40) spacing: 12px;
             leftListWidget->setItemWidget(item, leftWidgetItem);
@@ -151,7 +151,6 @@ void ModulePageWidget::initUI() {
     //左侧二级菜单标题及上侧二级菜单标题随功能页变化联动
     connect(ui->leftStackedWidget, &QStackedWidget::currentChanged, this, [=](int index){
         QString titleString = mkvConverter->keycodeTokeyi18nstring(index);
-
         ui->mtitleLabel->setText(titleString);
         ui->mmtitleLabel->setText(titleString);
 
@@ -168,7 +167,6 @@ void ModulePageWidget::switchPage(QObject *plugin, bool recorded){
     //首次点击设置模块标题后续交给回调函数
     if (ui->mtitleLabel->text().isEmpty() || ui->mmtitleLabel->text().isEmpty()){
         QString titleString = mkvConverter->keycodeTokeyi18nstring(type);
-
         ui->mtitleLabel->setText(titleString);
         ui->mmtitleLabel->setText(titleString);
     }
