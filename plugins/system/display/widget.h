@@ -60,7 +60,7 @@ public:
     explicit Widget(QWidget *parent = nullptr);
     ~Widget() override;
 
-    void setConfig(const KScreen::ConfigPtr &config);
+    void setConfig(const KScreen::ConfigPtr &config, bool showBrightnessFrameFlag = false);
     KScreen::ConfigPtr currentConfig() const;
 
     void slotFocusedOutputChangedNoParam();
@@ -81,7 +81,7 @@ public:
 
     void initUiComponent();
     void addBrightnessFrame(QString name, bool openFlag);
-    void showBrightnessFrame(bool AllShowFlag);
+    void showBrightnessFrame(const int flag = 0);
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
 
@@ -233,6 +233,7 @@ private:
     
     QShortcut *mApplyShortcut;
     QVector<BrightnessFrame*> BrightnessFrameV;
+    QVector<QString> deleteFrameNameV;  //用二级指针判断null出现问题，只想到这种方式排除段错误
     BrightnessFrame *currentBrightnessFrame;
     bool exitFlag = false;
 
