@@ -166,8 +166,8 @@ void Battery::InitUI(QWidget *battery)
     msleepLayout->setContentsMargins(16, 0, 16, 0);
 
     msleepLabel = new QLabel(mSleepFrame);
-    msleepLabel->setMinimumSize(QSize(182, 88));
-    msleepLabel->setMaximumSize(QSize(182, 88));
+    msleepLabel->setMinimumSize(QSize(242, 88));
+    msleepLabel->setMaximumSize(QSize(242, 88));
 
     QStringList mSleepTime;
     mSleepTime<< tr("10m") << tr("20m") << tr("30m") << tr("1h") << tr("2h")
@@ -181,7 +181,7 @@ void Battery::InitUI(QWidget *battery)
 
 
     msleepLayout->addRow(msleepLabel,sleepuslider);
-    msleepLayout->setHorizontalSpacing(50);
+   // msleepLayout->setHorizontalSpacing(50);
 
     BatteryLayout->addWidget(mSleepFrame);
 
@@ -195,8 +195,8 @@ void Battery::InitUI(QWidget *battery)
 
 
     mCloseLabel = new QLabel(mCloseFrame);
-    mCloseLabel->setMinimumSize(QSize(182, 88));
-    mCloseLabel->setMaximumSize(QSize(182, 88));
+    mCloseLabel->setMinimumSize(QSize(242, 88));
+    mCloseLabel->setMaximumSize(QSize(242, 88));
 
     QStringList mCloseTime;
     mCloseTime<< tr("5m") << tr("10m") << tr("30m") << tr("1h") << tr("2h")
@@ -208,7 +208,7 @@ void Battery::InitUI(QWidget *battery)
     CloseUslider->setPageStep(1);
 
     mCloseLayout->addRow(mCloseLabel,CloseUslider);
-    mCloseLayout->setHorizontalSpacing(50);
+    //mCloseLayout->setHorizontalSpacing(50);
 
     BatteryLayout->addWidget(mCloseFrame);
 
@@ -222,8 +222,8 @@ void Battery::InitUI(QWidget *battery)
 
 
     mDarkenLabel = new QLabel(mDarkenFrame);
-    mDarkenLabel->setMinimumSize(QSize(182, 88));
-    mDarkenLabel->setMaximumSize(QSize(182, 88));
+    mDarkenLabel->setMinimumSize(QSize(242, 88));
+    mDarkenLabel->setMaximumSize(QSize(242, 88));
 
     QStringList mDarkenTime;
     mDarkenTime<< tr("1m") << tr("3m") << tr("5m") << tr("15m") << tr("30m")
@@ -235,7 +235,7 @@ void Battery::InitUI(QWidget *battery)
     DarkenUslider->setPageStep(1);
 
     mDarkenLayout->addRow(mDarkenLabel,DarkenUslider);
-    mDarkenLayout->setHorizontalSpacing(50);
+   // mDarkenLayout->setHorizontalSpacing(50);
 
     BatteryLayout->addWidget(mDarkenFrame);
 

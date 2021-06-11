@@ -262,8 +262,8 @@ void Power::InitUI(QWidget *power)
     msleepLabel->setObjectName(QString::fromUtf8("msleepLabel"));
     sizePolicy.setHeightForWidth(msleepLabel->sizePolicy().hasHeightForWidth());
     msleepLabel->setSizePolicy(sizePolicy);
-    msleepLabel->setMinimumSize(QSize(182, 88));
-    msleepLabel->setMaximumSize(QSize(182, 88));
+    msleepLabel->setMinimumSize(QSize(242, 88));
+    msleepLabel->setMaximumSize(QSize(242, 88));
     msleepLabel->setScaledContents(false);
 
 
@@ -277,7 +277,7 @@ void Power::InitUI(QWidget *power)
     sleepuslider->setPageStep(1);
 
     msleepLayout->addRow(msleepLabel,sleepuslider);
-    msleepLayout->setHorizontalSpacing(50);
+    //msleepLayout->setHorizontalSpacing(50);
 
     PowerLayout->addWidget(mSleepFrame);
 
@@ -301,8 +301,8 @@ void Power::InitUI(QWidget *power)
     mCloseLabel->setObjectName(QString::fromUtf8("mCloseLabel"));
     sizePolicy.setHeightForWidth(mCloseLabel->sizePolicy().hasHeightForWidth());
     mCloseLabel->setSizePolicy(sizePolicy);
-    mCloseLabel->setMinimumSize(QSize(182, 88));
-    mCloseLabel->setMaximumSize(QSize(182, 88));
+    mCloseLabel->setMinimumSize(QSize(242, 88));
+    mCloseLabel->setMaximumSize(QSize(242, 88));
     mCloseLabel->setScaledContents(false);
 
     QStringList mCloseTime;
@@ -315,7 +315,7 @@ void Power::InitUI(QWidget *power)
     CloseUslider->setPageStep(1);
 
     mCloseLayout->addRow(mCloseLabel,CloseUslider);
-    mCloseLayout->setHorizontalSpacing(50);
+    //mCloseLayout->setHorizontalSpacing(50);
     PowerLayout->addWidget(mCloseFrame);
 
     QSpacerItem *verticalSpacer_6 = new QSpacerItem(20, 8, QSizePolicy::Minimum, QSizePolicy::Fixed);
@@ -334,8 +334,8 @@ void Power::InitUI(QWidget *power)
     mslptohbtlabel->setObjectName(QString::fromUtf8("mslptohbtlabel"));
     sizePolicy.setHeightForWidth(mslptohbtlabel->sizePolicy().hasHeightForWidth());
     mslptohbtlabel->setSizePolicy(sizePolicy);
-    mslptohbtlabel->setMinimumSize(QSize(182, 88));
-    mslptohbtlabel->setMaximumSize(QSize(182, 88));
+    mslptohbtlabel->setMinimumSize(QSize(242, 88));
+    mslptohbtlabel->setMaximumSize(QSize(242, 88));
 
     slptohbtslider = new Uslider(mCloseTime);
     slptohbtslider->setRange(1,6);
@@ -344,7 +344,7 @@ void Power::InitUI(QWidget *power)
 
 
     mslptohbtLayout->addRow(mslptohbtlabel,slptohbtslider);
-    mslptohbtLayout->setHorizontalSpacing(50);
+    //mslptohbtLayout->setHorizontalSpacing(50);
 
     PowerLayout->addWidget(mslptohbtFrame);
 
