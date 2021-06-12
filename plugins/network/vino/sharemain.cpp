@@ -154,8 +154,12 @@ void ShareMain::initEnableStatus()
     mAccessBtn->setChecked(secPwd);
     mViewBtn->setChecked(!isShared);
     if (pwd == "vnc") {
-        mPwdBtn->setChecked(true);
-        mPwdinputBtn->setText(QByteArray::fromBase64(secpwd.toLatin1()));
+        if (secpwd == "keyring") {
+            mPwdBtn->setChecked(false);
+        } else {
+            mPwdBtn->setChecked(true);
+            mPwdinputBtn->setText(QByteArray::fromBase64(secpwd.toLatin1()));
+        }
     } else {
         mPwdBtn->setChecked(false);
         mPwdinputBtn->setVisible(false);
@@ -216,10 +220,11 @@ void ShareMain::accessSlot(bool status)
 
 void ShareMain::pwdEnableSlot(bool status)
 {
-    if (status) {
-        mPwdinputBtn->setVisible(true);
+    if (status) {        
+        mPwdinputBtn->setVisible(secpwd == "keyring" ? false:true);
         mPwdinputBtn->setText(QByteArray::fromBase64(mVinoGsetting->get(kVncPwdKey).toString().toLatin1()));
         pwdInputSlot();
+        mPwdinputBtn->setVisible(status);
         if (mVinoGsetting->get(kAuthenticationKey).toString() == "none") {
             mPwdBtn->setChecked(false);
         }
@@ -234,5 +239,6 @@ void ShareMain::pwdInputSlot()
 {
     InputPwdDialog *mwindow = new InputPwdDialog(mVinoGsetting,this);
     mwindow->exec();
-    mPwdinputBtn->setText(QByteArray::fromBase64(mVinoGsetting->get(kVncPwdKey).toString().toLatin1()));
+    secpwd = mVinoGsetting->get(kVncPwdKey).toString();
+    mPwdinputBtn->setText(QByteArray::fromBase64(secpwd.toLatin1()));
 }

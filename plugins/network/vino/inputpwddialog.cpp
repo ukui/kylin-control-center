@@ -32,7 +32,6 @@ void InputPwdDialog::setupInit()
 
     mpwd = new QLineEdit(this);
     mpwd->setGeometry(32, 25, 316,42);
-    mpwd->setText(QByteArray::fromBase64(mgsettings->get(kVncPwdKey).toString().toLatin1()));
 //    mpwd->setFocus();
 //    mpwd->clearFocus();
     mpwd->installEventFilter(this);
@@ -45,13 +44,6 @@ void InputPwdDialog::setupInit()
     mHintLabel->setGeometry(32,67,316,28);
     mHintLabel->setContentsMargins(8,2,8,2);
     mHintLabel->setStyleSheet("color:red;");
-    if(QByteArray::fromBase64(mgsettings->get(kVncPwdKey).toString().toLatin1()).length() == 8) {
-        mHintLabel->setText(tr("less than or equal to 8"));
-        mHintLabel->setVisible(true);
-    } else if (mgsettings->get(kVncPwdKey).toString().isEmpty()) {
-        mHintLabel->setText(tr("Password can not be blank"));
-        mHintLabel->setVisible(true);
-    }
 
     mCancelBtn = new QPushButton(this);
     mCancelBtn->setContentsMargins(36,6,36,6);
@@ -62,6 +54,19 @@ void InputPwdDialog::setupInit()
     mConfirmBtn->setContentsMargins(36,6,36,6);
     mConfirmBtn->setGeometry(248,99,100,33);
     mConfirmBtn->setText(tr("Confirm"));
+
+    if(QByteArray::fromBase64(mgsettings->get(kVncPwdKey).toString().toLatin1()).length() == 8) {
+        mpwd->setText(QByteArray::fromBase64(mgsettings->get(kVncPwdKey).toString().toLatin1()));
+        mHintLabel->setText(tr("less than or equal to 8"));
+        mHintLabel->setVisible(true);
+    } else if (mgsettings->get(kVncPwdKey).toString() == "keyring") {
+        mpwd->setText("");
+        mConfirmBtn->setEnabled(false);
+        mHintLabel->setText(tr("Password can not be blank"));
+        mHintLabel->setVisible(true);
+    } else {
+        mpwd->setText(QByteArray::fromBase64(mgsettings->get(kVncPwdKey).toString().toLatin1()));
+    }
 
 }
 
