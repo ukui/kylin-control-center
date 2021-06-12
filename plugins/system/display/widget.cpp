@@ -843,22 +843,13 @@ void Widget::clearOutputIdentifiers()
     mOutputIdentifiers.clear();
 }
 
-
-bool Widget::existInBrightnessFrameV(QString name)
-{
-    for (int i = 0; i < BrightnessFrameV.size(); ++i) {
-        if (BrightnessFrameV[i]->outputName == name) {
-            return true;
-        }
-    }
-    return false;
-
-}
-
 void Widget::addBrightnessFrame(QString name, bool openFlag)
 {
+    if (mIsBattery && name != "eDP-1")  //笔记本非内置
+        return;
+
     for (int i = 0; i < BrightnessFrameV.size(); ++i) {  //已经有了
-        if (name == BrightnessFrameV[i]->outputName)
+        if (name == BrightnessFrameV[i]->outputName )
             return;
     }
     BrightnessFrame *frame = new BrightnessFrame;
@@ -871,9 +862,7 @@ void Widget::addBrightnessFrame(QString name, bool openFlag)
             deleteFrameNameV.remove(i);
         }
     }
-
-    if (mIsBattery && name == "eDP-1" && !existInBrightnessFrameV(name))
-    {
+    if (mIsBattery && name == "eDP-1") {
         frame->outputName = name;
         int initValue = mPowerGSettings->get(POWER_KEY).toInt();
         frame->setTextLableValue(QString::number(initValue));
@@ -884,7 +873,7 @@ void Widget::addBrightnessFrame(QString name, bool openFlag)
             mPowerGSettings->set(POWER_KEY, frame->slider->value());
             frame->setTextLableValue(QString::number(mPowerGSettings->get(POWER_KEY).toInt()));
         });
-    } else if(!mIsBattery && !existInBrightnessFrameV(name)) {
+    } else if(!mIsBattery) {
         frame->outputName = name;
         ui->unifyBrightLayout->addWidget(frame);
         frame->slider->setValue(10);

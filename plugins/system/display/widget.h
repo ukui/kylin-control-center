@@ -159,10 +159,8 @@ private:
     int getDDCBrighthess(QString name);
     int getLaptopBrightness() const;
     int getPrimaryScreenID();
-    bool existInBrightnessFrameV(QString name);
 
     void setDDCBrightnessN(int value, QString screenName);
-
     void setScreenKDS(QString kdsConfig);
     void setActiveScreen();
 
