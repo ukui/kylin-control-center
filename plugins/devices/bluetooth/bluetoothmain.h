@@ -103,7 +103,7 @@ private:
 
     QVBoxLayout *bottom_layout = nullptr;
     QScrollArea *device_area = nullptr;
-    QWidget *device_list = nullptr;
+    QWidget * device_list = nullptr;
     QVBoxLayout *device_list_layout = nullptr;
 
     BluezQt::Manager *m_manager = nullptr;
@@ -116,16 +116,22 @@ private:
 
     QLabel *label_2 = nullptr;
     QLabel *loadLabel = nullptr;
+
     QPushButton *discover_refresh;
     QTimer *m_timer = nullptr;
     QTimer *discovering_timer =nullptr;
+    QTimer *delayStartDiscover_timer =nullptr;
+    QTimer *IntermittentScann_timer =nullptr;
+    int IntermittentScann_timer_count = 0 ;
+
     int i = 7;
     bool show_flag = false;
     bool sleep_status = false;
 
     void clearUiShowDeviceList();
     void addOneBluetoothDeviceItemUi(BluezQt::DevicePtr);
-
+   
+    void clearAllDeviceItemUi();
 };
 
 #endif // BLUETOOTHMAIN_H
