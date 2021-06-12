@@ -277,7 +277,7 @@ void BlueToothMain::InitMainbottomUI()
     //~ contents_path /bluetooth/Other Devices
     TitleLabel *label_1 = new TitleLabel(frame_bottom);
     label_1->setText(tr("Other Devices"));
-    label_1->setFixedSize(72,25);
+    label_1->setFixedSize(84,25);
 
     loadLabel = new QLabel(frame_bottom);
     loadLabel->setFixedSize(24,24);
