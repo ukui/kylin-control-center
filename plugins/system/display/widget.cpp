@@ -968,14 +968,15 @@ void Widget::outputRemoved(int outputId)
             delete BrightnessFrameV[i];
             BrightnessFrameV[i] = nullptr;
             BrightnessFrameV.remove(i);
+            bool existFlag = false;
             for (int i = 0; i < deleteFrameNameV.size(); ++i) {
                 if (deleteFrameNameV[i] == name) {
+                    existFlag = true;
                     break;
-                } else if(i == deleteFrameNameV.size() - 1) {
-                    deleteFrameNameV.push_back(name);
                 }
             }
-            deleteFrameNameV.push_back(name);
+            if (existFlag == false)
+                deleteFrameNameV.push_back(name);
         }
     }
     ui->primaryCombo->removeItem(index);
