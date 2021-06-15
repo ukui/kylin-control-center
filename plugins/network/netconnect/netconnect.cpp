@@ -192,9 +192,15 @@ void NetConnect::initComponent() {
         wifiBtn->blockSignals(true);
         wifiSwitchSlot(checked);
         wifiBtn->blockSignals(false);
+        QElapsedTimer time;
+        time.start();
+        while (time.elapsed() < 2000) {
+            QCoreApplication::processEvents();
+        }
         if (m_interface) {
             m_interface->call("requestRefreshWifiList");
         }
+        getNetList();
     });
 
     ui->RefreshBtn->setEnabled(false);
@@ -330,6 +336,7 @@ void NetConnect::refreshNetInfoSlot() {
         mIsWlanVisible = !mIsWlanVisible;
     }
 }
+
 void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
     bool hasNet = false;
     if (netName == "无连接" || netName == "No net") {
@@ -391,6 +398,7 @@ void NetConnect:: getNetList() {
         if (m_interface) {
             m_interface->call("requestRefreshWifiList");
         }
+        getNetList();
     } else {
         if (getWifiListDone(reply, this->TlanList, isWayland) == -1) {
             getNetList();
@@ -817,6 +825,7 @@ QString NetConnect::geiWifiChan() {
         return prefreChan;
     }
 }
+
 bool NetConnect::getInitStatus() {
 
     QDBusInterface interface( "org.freedesktop.NetworkManager",
@@ -999,7 +1008,7 @@ void NetConnect::wifiSwitchSlot(bool status) {
     arg << "radio" << "wifi" << wifiStatus;
     QProcess *nmcliCmd = new QProcess(this);
     nmcliCmd->start(program, arg);
-    nmcliCmd->waitForStarted();
+    nmcliCmd->waitForFinished();
 }
 
 int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo, bool wirelessStatus) {
