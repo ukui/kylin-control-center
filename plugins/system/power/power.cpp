@@ -183,17 +183,19 @@ void Power::InitUI(QWidget *power)
 
     PowerLayout->addItem(verticalSpacer_1);
 
-    QWidget *PowerModeWidget = new QWidget(powerwidget);
-    PowerModeWidget->setObjectName(QString::fromUtf8("PowerModeWidget"));
-    PowerModeWidget->setMinimumSize(QSize(550, 0));
-    PowerModeWidget->setMaximumSize(QSize(960, 16777215));
+    QFrame *BalanceModeWidget = new QFrame(powerwidget);
+    BalanceModeWidget->setObjectName(QString::fromUtf8("BalanceModeWidget"));
+    BalanceModeWidget->setMinimumSize(QSize(550, 50));
+    BalanceModeWidget->setMaximumSize(QSize(960, 50));
+    BalanceModeWidget->setFrameShape(QFrame::Box);
 
-    QVBoxLayout *mPowerModeLayout = new QVBoxLayout(PowerModeWidget);
-    mPowerModeLayout->setSpacing(0);
-    mPowerModeLayout->setObjectName(QString::fromUtf8("mPowerModeLayout"));
-    mPowerModeLayout->setContentsMargins(0, 0, 0, 0);
 
-    mBalanceBtn = new QPushButton(PowerModeWidget);
+    QVBoxLayout *mBalanceModeWidget = new QVBoxLayout(BalanceModeWidget);
+    mBalanceModeWidget->setSpacing(0);
+    mBalanceModeWidget->setObjectName(QString::fromUtf8("mBalanceModeWidget"));
+    mBalanceModeWidget->setContentsMargins(0, 0, 0, 0);
+
+    mBalanceBtn = new QPushButton(BalanceModeWidget);
 
     powerModeBtnGroup->addButton(mBalanceBtn);
 
@@ -205,13 +207,22 @@ void Power::InitUI(QWidget *power)
     mBalanceBtn->setSizePolicy(sizePolicy1);
     mBalanceBtn->setMinimumSize(QSize(550, 50));
     mBalanceBtn->setMaximumSize(QSize(960, 50));
-    mBalanceBtn->setStyleSheet("QPushButton{background-color:#F4F4F4;border:none;}");
+    mBalanceBtn->setStyleSheet("QPushButton{color: palette(button);border-radius: 4px;}");
+    mBalanceModeWidget->addWidget(mBalanceBtn);
+
+    QFrame *SaveModeWidget = new QFrame(powerwidget);
+    SaveModeWidget->setObjectName(QString::fromUtf8("SaveModeWidget"));
+    SaveModeWidget->setMinimumSize(QSize(550, 50));
+    SaveModeWidget->setMaximumSize(QSize(960, 50));
+    SaveModeWidget->setFrameShape(QFrame::Box);
 
 
+    QVBoxLayout *mSaveModeWidget = new QVBoxLayout(SaveModeWidget);
+    mSaveModeWidget->setSpacing(0);
+    mSaveModeWidget->setObjectName(QString::fromUtf8("mSaveModeWidget"));
+    mSaveModeWidget->setContentsMargins(0, 0, 0, 0);
 
-    mPowerModeLayout->addWidget(mBalanceBtn);
-
-    mSaveBtn = new QPushButton(PowerModeWidget);
+    mSaveBtn = new QPushButton(SaveModeWidget);
 
     powerModeBtnGroup->addButton(mSaveBtn);
 
@@ -223,15 +234,15 @@ void Power::InitUI(QWidget *power)
     mSaveBtn->setSizePolicy(sizePolicy2);
     mSaveBtn->setMinimumSize(QSize(550, 50));
     mSaveBtn->setMaximumSize(QSize(960, 50));
-    mSaveBtn->setStyleSheet("QPushButton{background-color:#F4F4F4;border:none;}");
-
+    mSaveBtn->setStyleSheet("QPushButton{color: palette(button);border-radius: 4px;}");
+    mSaveModeWidget->addWidget(mSaveBtn);
 
     QSpacerItem *verticalSpacer_2 = new QSpacerItem(20, 8, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-    mPowerModeLayout->addItem(verticalSpacer_2);
-    mPowerModeLayout->addWidget(mSaveBtn);
 
-    PowerLayout->addWidget(PowerModeWidget);
+    PowerLayout->addWidget(BalanceModeWidget);
+    PowerLayout->addItem(verticalSpacer_2);
+    PowerLayout->addWidget(SaveModeWidget);
 
     QSpacerItem *verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
