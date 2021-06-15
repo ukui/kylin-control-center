@@ -72,8 +72,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_searchWidget(nullptr)
 {
     mate_mixer_init();
-    this->setMinimumSize(978, 630);
-    //logoLabel  = new QLabel(tr("Settings"), this);
     qApp->installEventFilter(this);
     initUI();
 }
@@ -231,12 +229,17 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 }
 
 void MainWindow::initUI() {
+    QRect screenSize = Utils::sizeOnCursor();
+    if (screenSize.width() <= 1440) {
+        this->setMinimumSize(978, 630);
+    } else {
+        this->setMinimumSize(1160, 720);
+    }
+
     ui->setupUi(this);
     ui->centralWidget->setStyleSheet("QWidget#centralWidget{background: palette(base); border-radius: 6px;}");
 
     m_ModuleMap = Utils::getModuleHideStatus();
-
-    //this->installEventFilter(this);
 
     const QByteArray id("org.ukui.style");
     m_fontSetting = new QGSettings(id, QByteArray(), this);

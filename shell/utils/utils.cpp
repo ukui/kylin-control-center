@@ -267,3 +267,10 @@ bool Utils::isCommunity()
     }
     return true;
 }
+
+QRect Utils::sizeOnCursor()
+{
+    QDesktopWidget* m = QApplication::desktop();
+    QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
+    return desk_rect;
+}
