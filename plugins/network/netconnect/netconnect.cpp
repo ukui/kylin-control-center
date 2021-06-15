@@ -839,7 +839,7 @@ void NetConnect::wifiSwitchSlot(bool status) {
     arg << "radio" << "wifi" << wifiStatus;
     QProcess *nmcliCmd = new QProcess(this);
     nmcliCmd->start(program, arg);
-    nmcliCmd->waitForStarted();
+    nmcliCmd->waitForFinished();
 }
 
 int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
