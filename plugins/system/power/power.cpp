@@ -851,7 +851,7 @@ void Power::initGeneralSet()
 
         }
         slptohbtslider->blockSignals(false);
-        connect(CloseUslider, &QSlider::valueChanged, [=](int value) {
+        connect(slptohbtslider, &QSlider::valueChanged, [=](int value) {
             QString hibernate;
             switch (value) {
             case 1:
@@ -874,7 +874,6 @@ void Power::initGeneralSet()
                 break;
 
             }
-
             mUkccInterface->call("setSuspendThenHibernate", hibernate);
         });
     }
