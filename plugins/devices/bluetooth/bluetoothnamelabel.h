@@ -11,6 +11,8 @@
 #include <QDebug>
 #include <QObject>
 #include <QGSettings/QGSettings>
+#include <QIcon>
+#include <QHBoxLayout>
 
 class BluetoothNameLabel : public QWidget
 {
@@ -37,9 +39,13 @@ private:
     bool style_flag = false;
 
     QLabel *m_label = nullptr;
+    QLabel *icon_pencil=nullptr;
+
     QLineEdit *m_lineedit = nullptr;
     QString device_name;
     int font_width;
+
+    QHBoxLayout *hLayout = nullptr;
 };
 
 #endif // BLUETOOTHNAMELABEL_H
