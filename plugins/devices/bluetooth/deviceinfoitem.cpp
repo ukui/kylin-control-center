@@ -65,21 +65,9 @@ void DeviceInfoItem::initInfoPage(QString d_name, DEVICE_STATUS status, BluezQt:
         device_name->setText(name);
     });
 
-    QIcon icon_device,icon_status;
-    if(device->type() == BluezQt::Device::Computer){
-        icon_device = QIcon::fromTheme("computer-symbolic");
-    }else if(device->type() == BluezQt::Device::Phone){
-        icon_device = QIcon::fromTheme("phone-apple-iphone-symbolic");
-    }else if((device->type() == BluezQt::Device::Headset)||(device->type() == BluezQt::Device::Headphones)){
-        icon_device = QIcon::fromTheme("audio-headphones-symbolic");
-    }else if(device->type() == BluezQt::Device::Mouse){
-        icon_device = QIcon::fromTheme("input-mouse-symbolic");
-    }else if(device->type() == BluezQt::Device::Keyboard){
-        icon_device = QIcon::fromTheme("input-keyboard-symbolic");
-    }else{
-        icon_device = QIcon::fromTheme("bluetooth-symbolic");
-    }
-    device_icon->setPixmap(icon_device.pixmap(QSize(24,24)));
+
+    QIcon icon_status;
+    refresh_device_icon(device->type());
 
     if(d_name.isEmpty()){
         return;
@@ -108,6 +96,32 @@ void DeviceInfoItem::initInfoPage(QString d_name, DEVICE_STATUS status, BluezQt:
 
     AnimationInit();
 }
+void DeviceInfoItem::refresh_device_icon(BluezQt::Device::Type changeType)
+{
+    qDebug() << __FUNCTION__ << "device changeType" << changeType << __LINE__;
+
+    QIcon icon_device;
+    if(changeType == BluezQt::Device::Computer){
+        icon_device = QIcon::fromTheme("computer-symbolic");
+    }else if(changeType == BluezQt::Device::Phone){
+        icon_device = QIcon::fromTheme("phone-apple-iphone-symbolic");
+    }else if((changeType == BluezQt::Device::Headset)||(changeType == BluezQt::Device::Headphones)){
+        icon_device = QIcon::fromTheme("audio-headphones-symbolic");
+    }else if(changeType == BluezQt::Device::Mouse){
+        icon_device = QIcon::fromTheme("input-mouse-symbolic");
+    }else if(changeType == BluezQt::Device::Keyboard){
+        icon_device = QIcon::fromTheme("input-keyboard-symbolic");
+    }else if(changeType == BluezQt::Device::AudioVideo){
+        icon_device = QIcon::fromTheme("audio-card");
+    }else{
+        icon_device = QIcon::fromTheme("bluetooth-symbolic");
+    }
+
+    device_icon->setPixmap(icon_device.pixmap(QSize(24,24)));
+    device_icon->update();
+
+}
+
 
 QString DeviceInfoItem::get_dev_name()
 {
