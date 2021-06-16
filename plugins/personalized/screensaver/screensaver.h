@@ -39,6 +39,7 @@
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
 #include "Uslider/uslider.h"
+#include "presslabel.h"
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -106,7 +107,7 @@ public:
     const QString name() const  Q_DECL_OVERRIDE;
 
 public:
-    void initTitleLabel();
+    void initPreviewLabel();
     void initSearchText();
     void initComponent();
     void initPreviewWidget();
@@ -135,6 +136,7 @@ public:
     void initPictureSwitchFrame();
     void initShowTextFrame();
     void initShowTextSetFrame();
+    void initShowtimeFrame();
     void setSourcePathText();
 private:
     int convertToLocktime(const int value);
@@ -179,6 +181,7 @@ private:
     QTextEdit *inputText;
     PreviewWindow *previewWind;
     QString sourcePathText;
+    PressLabel *previewLabel = nullptr;
 
 private slots:
     void themesComboxChanged(int index);

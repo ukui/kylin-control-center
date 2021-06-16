@@ -27,7 +27,6 @@
 #include <QLineEdit>
 #include "ComboBox/combobox.h"
 #include <QListView>
-#include "presslabel.h"
 
 #define SSTHEMEPATH "/usr/share/applications/screensavers/"
 #define ID_PREFIX "screensavers-ukui-"
@@ -136,7 +135,6 @@ QWidget *Screensaver::get_plugin_ui()
         previewWind->setWidth(ui->previewWidget->width());
         previewWind->setHeight(ui->previewWidget->height());
 
-        initTitleLabel();
         initSearchText();
         _acquireThemeinfoList();
         initComponent();
@@ -158,20 +156,23 @@ const QString Screensaver::name() const
     return QStringLiteral("screensaver");
 }
 
-void Screensaver::initTitleLabel()
+void Screensaver::initPreviewLabel()
 {
-    PressLabel *previewLabel = new PressLabel(ui->previewWidget->topLevelWidget());
-    previewLabel->setStyleSheet("background-color: palette(button); border-radius: 0px;");
-    QRect rect = ui->previewWidget->geometry();
-    previewLabel->setGeometry(rect.x()+rect.width()/2 - 47/2,rect.y()+rect.height()+5, 47, 24);
-    previewLabel->setAlignment(Qt::AlignCenter);
-    previewLabel->setText(tr("View"));//预览
+    if (previewLabel == nullptr) {
+        previewLabel = new PressLabel(ui->previewWidget->parentWidget()->parentWidget());
+        previewLabel->setStyleSheet("background-color: rgb(38,38,38); border-radius: 0px; color:white;");
+        previewLabel->setContentsMargins(0,0,0,4);
+        previewLabel->setText(tr("View"));//预览
+        previewLabel->setAlignment(Qt::AlignCenter);
+    }
+    QPoint pos = ui->previewWidget->mapToParent(ui->previewWidget->parentWidget()->pos());
+    previewLabel->setGeometry(pos.x() + 120, pos.y() + 142, 60, 30);
+    previewLabel->setVisible(true);
+    previewLabel->raise();
 }
 
 void Screensaver::initSearchText()
 {
-    //~ contents_path /screensaver/Show rest time
-    ui->showTimeLabel->setText(tr("Show rest time"));
     //~ contents_path /screensaver/Screensaver program
     ui->programLabel->setText(tr("Screensaver program"));
     //~ contents_path /screensaver/Idle time
@@ -203,12 +204,6 @@ void Screensaver::initComponent()
     enableSwitchBtn = new SwitchButton(ui->enableFrame);
     ui->enableHorLayout->addStretch();
     ui->enableHorLayout->addWidget(enableSwitchBtn);
-
-  
-    //添加休息时间显示按钮
-    showTimeBtn = new SwitchButton(ui->showTimeFrame);
-    ui->showTimeLayout->addStretch();
-    ui->showTimeLayout->addWidget(showTimeBtn);
 
     initCustomizeFrame();
     //初始化屏保程序下拉列表
@@ -613,24 +608,25 @@ void Screensaver::keyChangedSlot(const QString &key) {
 }
 
 void Screensaver::showCustomizeFrame() {
-    ui->frame->setFixedHeight(492);     //184 + 306 + 4
+    ui->frame->setFixedHeight(492 + 16 + 28 + 52);    
     ui->customizeFrame->setVisible(true);
 }
 
 void Screensaver::hideCustomizeFrame() {
-    ui->frame->setFixedHeight(184);   //50 + 50 + 80 + 4
+    ui->frame->setFixedHeight(132);   //50 + 80 + 2
     ui->customizeFrame->setVisible(false);
 }
 
 void Screensaver::initCustomizeFrame() {
     ui->customizeFrame->setFrameShape(QFrame::NoFrame);
-    ui->customizeFrame->setFixedHeight(306);
+    ui->customizeFrame->setFixedHeight(350 + 52);
     ui->customizeLayout->setMargin(0);
     initScreensaverSourceFrame();
     initTimeSetFrame();
     initPictureSwitchFrame();
     initShowTextFrame();
     initShowTextSetFrame();
+    initShowtimeFrame();
 }
 
 void Screensaver::initScreensaverSourceFrame()
@@ -773,16 +769,21 @@ void Screensaver::initShowTextFrame() {
     QWidget *textWid = new QWidget();
     QVBoxLayout *widVLayout = new QVBoxLayout();
     inputText = new QTextEdit(); //用户输入文字
-    QLabel *noticeLabel = new QLabel();
+    QFrame *noticeFrame = new QFrame();
+    QLabel  *noticeLabel = new QLabel();
+    QVBoxLayout *textLayout = new QVBoxLayout();
     QVBoxLayout *noticeLayout = new QVBoxLayout();
     showTextFrame->setObjectName("showTextFrame");
-    showTextFrame->setFixedHeight(98);
+    showTextFrame->setFixedHeight(114 + 28);
     showTextFrame->setStyleSheet("QFrame#showTextFrame{background-color: palette(window); border-radius: 6px;}");
     showTextFrame->setLayout(showTextLayout);
     showTextLayout->setContentsMargins(16,6,15,8);
     showTextLayout->addWidget(textWid);
-    showTextLayout->addWidget(inputText);
-    inputText->setLayout(noticeLayout);
+    showTextLayout->addLayout(textLayout);
+    //showTextLayout->addWidget(inputText);
+    textLayout->addWidget(inputText);
+    textLayout->addWidget(noticeFrame);
+    noticeFrame->setLayout(noticeLayout);
     textWid->setLayout(widVLayout);
     textWid->setFixedWidth(196);
     widVLayout->setMargin(0);
@@ -791,24 +792,29 @@ void Screensaver::initShowTextFrame() {
     showLabel->setText(tr("Display text"));
     showLabel->setFixedWidth(196);
     inputText->setContextMenuPolicy(Qt::NoContextMenu); //不要右击菜单，右击菜单导致选择状态的清除不好实现
-    inputText->setFixedHeight(84);
-    inputText->setFontPointSize(14);
+    inputText->setFixedHeight(100);
+    //inputText->setFontPointSize(14);
     inputText->setAcceptRichText(false); //去掉复制文字的颜色字体等属性
     inputText->moveCursor(QTextCursor::Start); //不加这个在输入文字之前复制字体大小可能不对，会受复制内容影响。
     inputText->setObjectName("inputText");
-    inputText->setStyleSheet("QTextEdit{background-color: palette(base); border-radius: 6px}");
+    inputText->setStyleSheet("QTextEdit{background-color: palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
     inputText->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     inputText->setPlaceholderText(tr("Enter text, up to 30 characters"));
 
-    QHBoxLayout *noticeLayout3 = new QHBoxLayout();
+    noticeLayout->setMargin(4);
+    QHBoxLayout *noticeLabelLayout = new QHBoxLayout();
     noticeLayout->addStretch();
-    noticeLayout->addLayout(noticeLayout3);
-    noticeLayout3->addStretch();
-    noticeLayout3->addWidget(noticeLabel);
-    noticeLabel->setStyleSheet("background-color:rgba(0,0,0,0)");
+    noticeLayout->addLayout(noticeLabelLayout);
+    noticeLabelLayout->addStretch();
+    noticeLabelLayout->addWidget(noticeLabel);
+
+    noticeFrame->setStyleSheet("QFrame{background-color: palette(base); border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;}");
+    noticeFrame->setFixedHeight(28);
+
+    noticeLabel->setStyleSheet("background-color: palette(base);");
     noticeLabel->setText("0/30");
     noticeLabel->setFixedSize(70,25);
-    noticeLabel->setAlignment(Qt::AlignCenter);
+    noticeLabel->setAlignment(Qt::AlignCenter | Qt::AlignRight);
     if (qScreensaverDefaultSetting != nullptr && \
         qScreensaverDefaultSetting->keys().contains(CONTAIN_MYTEXT_KEY, Qt::CaseSensitive)) { //存在【文本设置】
         inputText->setText(qScreensaverDefaultSetting->get(MYTEXT_KEY).toString());     //初始化文本
@@ -835,6 +841,28 @@ void Screensaver::initShowTextFrame() {
         inputText->setEnabled(false);
     }
     ui->customizeLayout->addWidget(showTextFrame);
+}
+
+void Screensaver::initShowtimeFrame()
+{
+    QFrame *showTimeFrame = new QFrame();
+    QHBoxLayout *showTimeLayout = new QHBoxLayout(showTimeFrame);
+    QLabel *showTimeLabel = new QLabel();
+
+    showTimeFrame->setFixedHeight(50);
+    showTimeFrame->setObjectName("showTimeFrame");
+    showTimeFrame->setStyleSheet("QFrame#showTimeFrame{background-color: palette(window);border-radius: 6px;}");
+
+    showTimeLayout->setContentsMargins(16,0,16,0);
+    showTimeLayout->addWidget(showTimeLabel);
+    //添加休息时间显示按钮
+    showTimeBtn = new SwitchButton(showTimeFrame);
+    showTimeLayout->addStretch();
+    showTimeLayout->addWidget(showTimeBtn);
+    showTimeLabel->setFixedWidth(196);
+    //~ contents_path /screensaver/Show rest time
+    showTimeLabel->setText(tr("Show rest time"));
+    ui->customizeLayout->addWidget(showTimeFrame);
 }
 
 void Screensaver::initShowTextSetFrame() {
@@ -924,6 +952,16 @@ void PreviewWidget::mousePressEvent(QMouseEvent *e)
 
 bool Screensaver::eventFilter(QObject *watched, QEvent *event)
 {
+    if (event->type() == QMouseEvent::Enter && watched == previewWind) {
+        initPreviewLabel();
+    } else if(event->type() == QMouseEvent::Leave) {
+        QWidget *widParent = static_cast<QWidget*>(ui->previewWidget->parent());
+        QPoint  globalPoint   = widParent->mapFromGlobal(this->cursor().pos());//鼠标位置
+        if (!ui->previewWidget->geometry().contains(globalPoint) && previewLabel != nullptr) {
+            previewLabel->setVisible(false);
+        }
+    }
+
     if (event->type() == QEvent::Resize && watched == sourcePathLine) {
         setSourcePathText();
     }
