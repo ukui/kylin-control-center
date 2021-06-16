@@ -3244,24 +3244,24 @@ folder will be deleted!</source>
         <translation>设置密码</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/vino/inputpwddialog.cpp" line="52"/>
-        <location filename="../../../plugins/network/vino/inputpwddialog.cpp" line="79"/>
+        <location filename="../../../plugins/network/vino/inputpwddialog.cpp" line="65"/>
+        <location filename="../../../plugins/network/vino/inputpwddialog.cpp" line="84"/>
         <source>Password can not be blank</source>
         <translation>密码不能为空</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/vino/inputpwddialog.cpp" line="59"/>
+        <location filename="../../../plugins/network/vino/inputpwddialog.cpp" line="51"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/vino/inputpwddialog.cpp" line="64"/>
+        <location filename="../../../plugins/network/vino/inputpwddialog.cpp" line="56"/>
         <source>Confirm</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/vino/inputpwddialog.cpp" line="49"/>
-        <location filename="../../../plugins/network/vino/inputpwddialog.cpp" line="84"/>
+        <location filename="../../../plugins/network/vino/inputpwddialog.cpp" line="60"/>
+        <location filename="../../../plugins/network/vino/inputpwddialog.cpp" line="89"/>
         <source>less than or equal to 8</source>
         <translation>密码长度需要小于等于８</translation>
     </message>
@@ -4509,16 +4509,14 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.ui" line="132"/>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="665"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="605"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.ui" line="182"/>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="118"/>
         <source>open wifi</source>
         <translation>打开wifi</translation>
-        <extra-contents_path>/netconnect/open wifi</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.ui" line="230"/>
@@ -4543,12 +4541,18 @@ Please retry or relogin!</source>
         <translation type="vanished">连接</translation>
     </message>
     <message>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="118"/>
+        <source>open Wi-Fi</source>
+        <translation>打开Wi-Fi</translation>
+        <extra-contents_path>/netconnect/open wifi</extra-contents_path>
+    </message>
+    <message>
         <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="214"/>
         <source>Connected</source>
         <translation>已连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="570"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="542"/>
         <source>No net</source>
         <translation>无连接</translation>
     </message>
@@ -4558,12 +4562,11 @@ Please retry or relogin!</source>
         <translation>网络详情</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="499"/>
         <source>None</source>
-        <translation>无</translation>
+        <translation type="vanished">无</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="653"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="593"/>
         <source>Refreshing...</source>
         <translation>刷新中...</translation>
     </message>
@@ -4577,7 +4580,7 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="62"/>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="372"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="362"/>
         <source>Connect</source>
         <translation>网络连接</translation>
     </message>
@@ -5382,7 +5385,7 @@ Please retry or relogin!</source>
         <translation type="vanished">自定义快捷键</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="215"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="228"/>
         <source>Customize Shortcut</source>
         <translation>自定义快捷键</translation>
     </message>
@@ -6835,18 +6838,18 @@ run start-pulseaudio-x11 manually.</source>
         <extra-contents_path>/shortcut/Customize Shortcut</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="182"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="192"/>
         <source>Add custom shortcut</source>
         <translation>添加自定义快捷键</translation>
         <extra-contents_path>/shortcut/Add custom shortcut</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="477"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="490"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="478"/>
+        <location filename="../../../plugins/devices/shortcut/shortcut.cpp" line="491"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
@@ -7537,22 +7540,22 @@ run start-pulseaudio-x11 manually.</source>
         <extra-contents_path>/touchpad/Touchpad Settings</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="108"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="177"/>
         <source>Enabled touchpad</source>
         <translation>启用触摸板</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="177"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="246"/>
         <source>Disable touchpad while typing</source>
         <translation>打字时禁用触摸板</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="246"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="315"/>
         <source>Enable mouse clicks with touchpad</source>
         <translation>启用触摸板的鼠标点击</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="315"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="108"/>
         <source> Mouse to disable  touchpad</source>
         <translation>插入鼠标时候禁用触摸板</translation>
     </message>
@@ -7576,38 +7579,38 @@ run start-pulseaudio-x11 manually.</source>
         <translation>触摸板</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="135"/>
-        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="139"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="136"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="140"/>
         <source>Disable rolling</source>
         <translation>禁用滚动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="136"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="137"/>
         <source>Edge scrolling</source>
         <translation>边界滚动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="137"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="138"/>
         <source>Two-finger scrolling</source>
         <translation>双指滚动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="140"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="141"/>
         <source>Vertical edge scrolling</source>
         <translation>垂直边界滚动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="141"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="142"/>
         <source>Horizontal edge scrolling</source>
         <translation>水平边界滚动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="142"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="143"/>
         <source>Vertical two-finger scrolling</source>
         <translation>垂直双指滚动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="143"/>
+        <location filename="../../../plugins/devices/touchpad/touchpad.cpp" line="144"/>
         <source>Horizontal two-finger scrolling</source>
         <translation>水平双指滚动</translation>
     </message>
