@@ -33,6 +33,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include<sys/file.h>
 #include <pwd.h>
 #include "traybusthread.h"
 

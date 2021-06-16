@@ -77,6 +77,8 @@ private:
 
     bool execFun;
 
+    bool isUpdateAll = false;
+
 public slots:
     void showDetails();
     void showUpdateLog();

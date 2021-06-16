@@ -633,7 +633,6 @@ void TabWid::loadingOneUpdateMsgSlot(AppAllMsg msg)
         }
         allUpdateLayout->addWidget(appWidget);
         qDebug() << "更新管理器：" << "loadingOneUpdateMsgSlot:" << appWidget->dispalyName;
-
     }
 
 }
