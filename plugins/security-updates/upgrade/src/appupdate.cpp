@@ -72,7 +72,7 @@ void AppUpdateWid::changeDownloadState(int state)
         appVersionIcon->setPixmap(pixmap);
         //        updateAPPBtn->setText(tr("更新"));
         updateAPPBtn->setText(tr("Update"));
-        emit changeUpdateAllSignal();
+        emit changeUpdateAllSignal(false);
 
     }
     else if(state == 4) //下载网络异常
@@ -95,7 +95,7 @@ void AppUpdateWid::changeDownloadState(int state)
             appVersionIcon->setPixmap(pixmap);
             //            updateAPPBtn->setText(tr("更新"));
             updateAPPBtn->setText(tr("Update"));
-            emit changeUpdateAllSignal();
+            emit changeUpdateAllSignal(false);
         }
     }
 
@@ -580,6 +580,7 @@ void AppUpdateWid::cancelOrUpdate()
     }
     if(updateAPPBtn->text() == tr("Update"))
     {
+        emit changeUpdateAllSignal(true);
         /*判断电量是否支持更新*/
         if (!get_battery()) {
             QMessageBox msgBox;
@@ -642,10 +643,18 @@ void AppUpdateWid::cancelOrUpdate()
         timer->stop();
         //        updateAPPBtn->setText("更新");
         updateAPPBtn->setText(tr("Update"));
-        //        appVersion->setText(tr("暂停中"));
-        appVersion->setText(tr("In the pause"));
-        appVersion->setToolTip("");
-        emit changeUpdateAllSignal();
+        QString newStrMsg = appAllMsg.availableVersion;
+        if(newStrMsg.size()>16)
+        {
+            appVersion->setText(tr("Newest:")+newStrMsg);
+            appVersion->setToolTip(tr("Newest:")+newStrMsg);
+        }
+        else
+        {
+            appVersion->setText(tr("Newest:")+newStrMsg);
+            appVersion->setToolTip("");
+        }
+        emit changeUpdateAllSignal(false);
     }
 }
 
@@ -777,7 +786,6 @@ void AppUpdateWid::calculateSpeedProgress()
             {
                 emit filelockedSignal();
             }
-            //            appVersion->setText(tr("准备安装"));
             appVersion->setText(tr("Ready to install"));
             appVersion->setToolTip("");
         }
@@ -786,6 +794,7 @@ void AppUpdateWid::calculateSpeedProgress()
 
 void AppUpdateWid::updateAllApp()
 {
+    updateAPPBtn->show();
     isUpdateAll = true;
     if(isCancel && m_updateMutual->failedList.indexOf(appAllMsg.name) == -1)
     {
@@ -797,7 +806,6 @@ void AppUpdateWid::updateAllApp()
 void AppUpdateWid::showUpdateBtn()
 {
     updateAPPBtn->show();
-    //    updateAPPBtn->setText(tr("更新"));
     updateAPPBtn->setText(tr("Update"));
 }
 void AppUpdateWid::hideOrShowUpdateBtnSlot(int result)

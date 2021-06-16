@@ -133,7 +133,7 @@ public slots:
     void waitCrucialInstalled();  //等待静默更新安装完的消息提示
 
     void hideUpdateBtnSlot(bool isSucceed);
-    void changeUpdateAllSlot();
+    void changeUpdateAllSlot(bool isUpdate);
 
     void getAllProgress(QString pkgName, int Progress, QString type);
     //调用源管理器相关
@@ -164,6 +164,7 @@ private:
 
     void getAutoUpgradeStatus();
     bool get_battery();
+    void autoUpdateLoadUpgradeList();
 
 signals:
     int needBackUp();
