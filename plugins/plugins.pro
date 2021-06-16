@@ -35,4 +35,3 @@ SUBDIRS = \
           system/touchscreen \
           time-language/datetime \
           time-language/area
->>>>>>> fbfc4686933e3008e5c4aca3ec930cb6a4bcfb76
