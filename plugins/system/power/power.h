@@ -62,6 +62,7 @@ public:
     void initPowerOtherStatus();
     void isPowerSupply();
     void isLidPresent();
+    void isHibernateSupply();
     void refreshUI();
     int  getIdleTime();
 
@@ -91,6 +92,7 @@ private:
     bool isExitsPower;
     bool mFirstLoad;
     bool isExitsLid;
+    bool isExitHibernate;
 
     bool hasBat;
 

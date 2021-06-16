@@ -242,7 +242,7 @@ UkmediaSoundEffectsWidget::UkmediaSoundEffectsWidget(QWidget *parent) : QWidget(
     //进行整体布局
     m_pSoundLayout = new QVBoxLayout(this);
     m_pSoundLayout->addWidget(m_pSoundEffectLabel);
-    m_pSoundLayout->addItem(new QSpacerItem(16,14,QSizePolicy::Fixed));
+    m_pSoundLayout->addItem(new QSpacerItem(16,8,QSizePolicy::Fixed));
     m_pSoundLayout->addWidget(m_pStartupMusicWidget);
     m_pSoundLayout->addItem(new QSpacerItem(16,1,QSizePolicy::Fixed));
     m_pSoundLayout->addWidget(m_pPoweroffMusicWidget);

@@ -82,6 +82,7 @@ private:
     SwitchButton * enableBtn;
     SwitchButton * typingBtn;
     SwitchButton * clickBtn;
+    SwitchButton * mMouseDisTouchBtn;
 
     QGSettings * tpsettings;
 

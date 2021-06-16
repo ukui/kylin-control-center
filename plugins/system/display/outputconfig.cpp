@@ -110,10 +110,8 @@ void OutputConfig::initUi()
     connect(mResolution, &ResolutionSlider::resolutionChanged,
             this, &OutputConfig::slotResolutionChanged);
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
     connect(mResolution, &ResolutionSlider::resolutionChanged,
             this, &OutputConfig::slotScaleIndex);
-#endif
 
     // 方向下拉框
     mRotation = new QComboBox(this);
@@ -181,21 +179,8 @@ void OutputConfig::initUi()
 
     double scale = getScreenScale();
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
     slotScaleIndex(mResolution->currentResolution());
-#else
-    int maxReslu = mResolution->getMaxResolution().width();
 
-    mScaleCombox->addItem("100%", 1.0);
-    if (maxReslu >= 2000) {
-        mScaleCombox->addItem("200%", 2.0);
-    }
-
-    mScaleCombox->setCurrentIndex(0);
-    if (mScaleCombox->findData(scale) == -1) {
-        mScaleCombox->addItem("200%", 2.0);
-    }
-#endif
     mScaleCombox->setCurrentText(scaleToString(scale));
 
     if (mScaleCombox->findData(scale) == -1) {
@@ -369,8 +354,10 @@ void OutputConfig::slotDPIChanged(QString key)
 
 void OutputConfig::slotScaleIndex(const QSize &size)
 {
+    mScaleCombox->blockSignals(true);
     mScaleCombox->clear();
     mScaleCombox->addItem("100%", 1.0);
+
 
     if (k150Scale.contains(size)) {
         mScaleCombox->addItem("125%", 1.25);
@@ -382,6 +369,7 @@ void OutputConfig::slotScaleIndex(const QSize &size)
     if (k200Scale.contains(size)) {
         mScaleCombox->addItem("200%", 2.0);
     }
+    mScaleCombox->blockSignals(false);
 }
 
 void OutputConfig::setShowScaleOption(bool showScaleOption)

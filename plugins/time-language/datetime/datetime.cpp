@@ -190,8 +190,8 @@ void DateTime::initUI()
 
 void DateTime::initComponent()
 {
-    ui->titleLabel->setContentsMargins(0,0,0,16);
-    ui->timeClockLable->setContentsMargins(0,0,0,16);
+    ui->titleLabel->setContentsMargins(0,0,0,0);
+    ui->timeClockLable->setContentsMargins(0,0,0,0);
 
     //~ contents_path /date/Change time
     ui->chgtimebtn->setText(tr("Change time"));

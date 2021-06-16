@@ -321,7 +321,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>24</height>
+       <height>32</height>
       </size>
      </property>
     </spacer>
@@ -399,7 +399,7 @@
        <property name="sizeHint" stdset="0">
         <size>
          <width>20</width>
-         <height>16</height>
+         <height>8</height>
         </size>
        </property>
       </spacer>
@@ -449,7 +449,7 @@
            <number>2</number>
           </property>
           <property name="bottomMargin">
-           <number>16</number>
+           <number>0</number>
           </property>
          </layout>
         </item>

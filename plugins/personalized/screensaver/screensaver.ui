@@ -33,7 +33,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
-    <number>2</number>
+    <number>8</number>
    </property>
    <property name="leftMargin">
     <number>0</number>
@@ -59,22 +59,6 @@
       <string>Screensaver</string>
      </property>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>14</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -129,7 +113,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>22</height>
+       <height>32</height>
       </size>
      </property>
     </spacer>

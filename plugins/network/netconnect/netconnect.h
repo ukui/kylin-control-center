@@ -160,6 +160,7 @@ private:
     QString     geiWifiChan();
     bool        getInitStatus();
     bool        getWifiStatus();
+    bool        getHasWirelessCard();
 
     void        clearContent();
 

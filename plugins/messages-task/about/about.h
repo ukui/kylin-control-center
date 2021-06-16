@@ -64,6 +64,7 @@ private:
     void setupKernelCompenent();
     void setupVersionCompenent();
     void setupSerialComponent();
+    bool QLabelSetText(QLabel *label, QString string);
 
     qlonglong calculateTotalRam();
 

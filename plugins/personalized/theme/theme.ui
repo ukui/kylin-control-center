@@ -26,6 +26,9 @@
    <string notr="true">Theme</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -56,7 +59,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <property name="spacing">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
          <number>10</number>
@@ -96,7 +99,7 @@
             <number>0</number>
            </property>
            <property name="topMargin">
-            <number>16</number>
+            <number>8</number>
            </property>
            <property name="rightMargin">
             <number>0</number>
@@ -256,7 +259,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>32</height>
+            <height>40</height>
            </size>
           </property>
          </spacer>
@@ -285,7 +288,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>12</height>
+            <height>8</height>
            </size>
           </property>
          </spacer>
@@ -404,7 +407,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>32</height>
+            <height>40</height>
            </size>
           </property>
          </spacer>
@@ -433,7 +436,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>12</height>
+            <height>8</height>
            </size>
           </property>
          </spacer>
@@ -477,7 +480,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>32</height>
+            <height>40</height>
            </size>
           </property>
          </spacer>
@@ -506,7 +509,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>12</height>
+            <height>8</height>
            </size>
           </property>
          </spacer>
@@ -735,7 +738,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>32</height>
+            <height>16</height>
            </size>
           </property>
          </spacer>
@@ -801,7 +804,7 @@
   <customwidget>
    <class>TitleLabel</class>
    <extends>QLabel</extends>
-   <header location="global">Label/titlelabel.h</header>
+   <header>Label/titlelabel.h</header>
   </customwidget>
   <customwidget>
    <class>MySlider</class>

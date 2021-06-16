@@ -69,7 +69,7 @@ QWidget * Notice::get_plugin_ui() {
         ui->newfeatureWidget->setVisible(false);
         ui->lockscreenWidget->setVisible(false);
 
-        ui->title2Label->setContentsMargins(0, 0, 0, 16);
+        ui->title2Label->setContentsMargins(0, 0, 0, 0);
         ui->applistWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
         initSearchText();
@@ -159,6 +159,21 @@ void Notice::initOriNoticeStatus() {
         devWidget->setMaximumWidth(960);
         devWidget->setMinimumHeight(50);
         devWidget->setMaximumHeight(50);
+        QPalette pal;
+        QBrush brush = pal.highlight();  //获取window的色值
+        QColor highLightColor = brush.color();
+
+        QString stringColor = QString("rgba(%1,%2,%3)") //叠加20%白色
+               .arg(highLightColor.red()*0.8 + 255*0.2)
+               .arg(highLightColor.green()*0.8 + 255*0.2)
+               .arg(highLightColor.blue()*0.8 + 255*0.2);
+
+        devWidget->setStyleSheet(QString("HoverWidget#hovorWidget{background: palette(button); \
+                                                          border-radius: 4px;}\
+                                  HoverWidget:hover:!pressed#hovorWidget{background: %1; \
+                                                                        border-radius: 4px;}").arg(stringColor));
+
+
 
         QHBoxLayout * devHorLayout = new QHBoxLayout();
         devHorLayout->setSpacing(8);
@@ -233,14 +248,12 @@ void Notice::initOriNoticeStatus() {
 
         connect(devWidget, &HoverWidget::enterWidget, this, [=](QString name) {
             Q_UNUSED(name)
-            devWidget->setStyleSheet("QWidget#hovorWidget{background-color: rgb(64,169,251);border-radius:4px;}");
-            nameLabel->setStyleSheet("color: palette(base);");
+            nameLabel->setStyleSheet("color: white;");
 
         });
 
         connect(devWidget, &HoverWidget::leaveWidget, this, [=](QString name) {
             Q_UNUSED(name)
-            devWidget->setStyleSheet("QWidget#hovorWidget{background: palette(button);border-radius:4px;}");
             nameLabel->setStyleSheet("color: palette(windowText);");
 
         });

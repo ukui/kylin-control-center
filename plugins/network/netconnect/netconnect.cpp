@@ -149,7 +149,8 @@ void NetConnect::initComponent() {
         if (m_interface) {
             m_interface->call("requestRefreshWifiList");
         }
-        if (!getWifiStatus()) {
+        //若没有无线网卡驱动或无线网络开关为关闭状态则不用再去发信号给kylin-nm，直接刷新有线网络列表即可
+        if (!getWifiStatus() || !getHasWirelessCard()) {
             getNetList();
         }
     });
@@ -181,6 +182,19 @@ void NetConnect::initComponent() {
 
 void NetConnect::refreshNetInfoTimerSlot() {
     refreshTimer->start(200);
+}
+
+//获取当前机器是否有无线网卡设备
+bool NetConnect::getHasWirelessCard(){
+    QProcess *wirlessPro = new QProcess(this);
+    wirlessPro->start("nmcli device");
+    wirlessPro->waitForFinished();
+    QString output = wirlessPro->readAll();
+    if (output.contains("wifi")) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {

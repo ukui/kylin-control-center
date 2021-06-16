@@ -30,6 +30,7 @@ protected:
 private:
     QSize getFitSize();
     void initSize();
+    void paintEvent(QPaintEvent *event);
 
 private:
     ZoneInfo* m_zoneinfo;

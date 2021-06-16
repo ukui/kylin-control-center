@@ -69,6 +69,9 @@
       <property name="leftMargin">
        <number>0</number>
       </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QFrame" name="frame">
         <property name="sizePolicy">
@@ -534,6 +537,12 @@
                </item>
                <item>
                 <widget class="QLabel" name="activeContent">
+                 <property name="minimumSize">
+                  <size>
+                   <width>400</width>
+                   <height>0</height>
+                  </size>
+                 </property>
                  <property name="text">
                   <string/>
                  </property>

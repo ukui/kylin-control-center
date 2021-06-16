@@ -196,6 +196,8 @@
         <file>plugins/netconnect/wifi6+-low-pwd.svg</file>
         <file>plugins/netconnect/wifi6+-medium-pwd.svg</file>
         <file>plugins/netconnect/wifi6+-none-pwd.svg</file>
+        <file>secondaryleftmenu/Projection.svg</file>
+        <file>secondaryleftmenu/ProjectionWhite.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

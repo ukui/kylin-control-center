@@ -438,7 +438,7 @@ void AppUpdateWid::updateAppUi(QString name)
     //    updatelogBtn->setText(tr("更新日志"));
     updatelogBtn->setText(tr("Update log"));
     updatelogBtn->setFlat(true);
-    updatelog1 = new UpdateLog();
+    updatelog1 = new UpdateLog(this);
 
     largeVLayout->addWidget(someInfoEdit);
     largeVLayout->addWidget(updatelogBtn,0,Qt::AlignLeft);
@@ -567,8 +567,8 @@ void AppUpdateWid::showDetails()
 
 void AppUpdateWid::showUpdateLog()
 {
-    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
-    updatelog1->move((availableGeometry.width()-updatelog1->width())/2,(availableGeometry.height()- updatelog1->height())/2);
+    //QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
+    //updatelog1->move((availableGeometry.width()-updatelog1->width())/2,(availableGeometry.height()- updatelog1->height())/2);
     updatelog1->exec();
 }
 
@@ -866,7 +866,7 @@ type AppUpdateWid::checkSourcesType()
     QFile soucesFile(SOURCESLIST);
     soucesFile.open(QIODevice::ReadOnly | QIODevice::Text);
     QString result = soucesFile.readAll();
-    if(result.contains("http://")){
+    if(result.contains("http://") || result.contains("https://")){
         qDebug() << "当前源为http源";
         return http;
     }else if(result.contains("ftp://")){
@@ -876,6 +876,7 @@ type AppUpdateWid::checkSourcesType()
         qDebug() << "当前源为本地源";
         return file;
     }
+    return http;
 }
 
 bool AppUpdateWid::get_battery()

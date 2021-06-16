@@ -87,9 +87,9 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     m_pvLayout->addWidget(m_pOutputWidget);
     m_pvLayout->addWidget(m_pInputWidget);
     m_pvLayout->addWidget(m_pSoundWidget);
-    m_pvLayout->addSpacing(48);
+    m_pvLayout->addSpacing(32);
     m_pvLayout->addSpacerItem(new QSpacerItem(20,0,QSizePolicy::Fixed,QSizePolicy::Expanding));
-    m_pvLayout->setSpacing(48);
+    m_pvLayout->setSpacing(40);
     this->setLayout(m_pvLayout);
     this->setMinimumWidth(582);
     this->setMaximumWidth(910);
@@ -261,7 +261,16 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     connect(m_pSoundWidget->m_pAlertSoundSwitchButton,SIGNAL(checkedChanged(bool)),this,SLOT(alertSoundButtonSwitchChangedSlot(bool)));
     //输出音量控制
     //输出滑动条音量控制
+    timeSlider = new QTimer(this);
+    connect(timeSlider,SIGNAL(timeout()),this,SLOT(timeSliderSlot()));
     connect(m_pOutputWidget->m_pOpVolumeSlider,SIGNAL(valueChanged(int)),this,SLOT(outputWidgetSliderChangedSlot(int)));
+    connect(m_pOutputWidget->m_pOpVolumeSlider,&AudioSlider::silderPressSignal,this,[=](){
+        mousePress = true;
+        mouseReleaseState = false;
+    });
+    connect(m_pOutputWidget->m_pOpVolumeSlider,&AudioSlider::silderReleaseSignal,this,[=](){
+        mouseReleaseState = true;
+    });
     //输入滑动条音量控制
     connect(m_pInputWidget->m_pIpVolumeSlider,SIGNAL(valueChanged(int)),this,SLOT(inputWidgetSliderChangedSlot(int)));
 
@@ -1921,6 +1930,9 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
         m_pWidget->m_pInputWidget->m_pIpVolumeSlider->blockSignals(true);
         m_pWidget->m_pInputWidget->m_pIpVolumeSlider->setValue(value);
         m_pWidget->m_pInputWidget->m_pIpVolumeSlider->blockSignals(false);
+        QString percentStr = QString::number(value) ;
+        percentStr.append("%");
+        m_pWidget->m_pInputWidget->m_pIpVolumePercentLabel->setText(percentStr);
     }
 }
 
@@ -2010,11 +2022,58 @@ void UkmediaMainWidget::updateOutputSettings (UkmediaMainWidget *m_pWidget,MateM
     }
     //新需求不需要此接口
     /*connect(m_pWidget->m_pOutputWidget->m_pOutputPortCombobox,SIGNAL(currentIndexChanged(int)),m_pWidget,SLOT(outputPortComboxChangedSlot(int)));*/
+    m_pWidget->timeSliderBlance = new QTimer(m_pWidget);
+    connect(m_pWidget->timeSliderBlance,&QTimer::timeout,m_pWidget,[=](){
+        if(m_pWidget->mouseReleaseStateBlance){
+            int volume = m_pWidget->m_pOutputWidget->m_pOpBalanceSlider->value();
+            gdouble value = volume/100.0;
+            MateMixerStream *stream = mate_mixer_context_get_default_output_stream(m_pWidget->m_pContext);
+            MateMixerStreamControl *control = mate_mixer_stream_get_default_control(stream);
+            mate_mixer_stream_control_set_balance(control,value);
+            m_pWidget->mousePressBlance = false;
+            m_pWidget->mouseReleaseStateBlance = false;
+            m_pWidget->timeSliderBlance->stop();
+        }
+        else{
+            m_pWidget->timeSliderBlance->start(100);
+        }
+    });
+    connect(m_pWidget->m_pOutputWidget->m_pOpBalanceSlider,&UkmediaVolumeSlider::silderPressedSignal,m_pWidget,[=](){
+
+        m_pWidget->mousePressBlance = true;
+        m_pWidget->mouseReleaseStateBlance = false;
+
+    });
+    connect(m_pWidget->m_pOutputWidget->m_pOpBalanceSlider,&UkmediaVolumeSlider::silderReleaseSignal,m_pWidget,[=](){
+        m_pWidget->mouseReleaseStateBlance = true;
+    });
     connect(m_pWidget->m_pOutputWidget->m_pOpBalanceSlider,&QSlider::valueChanged,[=](int volume){
-        gdouble value = volume/100.0;
-        MateMixerStream *stream = mate_mixer_context_get_default_output_stream(m_pWidget->m_pContext);
-        MateMixerStreamControl *control = mate_mixer_stream_get_default_control(stream);
-        mate_mixer_stream_control_set_balance(control,value);
+//        gdouble value = volume/100.0;
+//        MateMixerStream *stream = mate_mixer_context_get_default_output_stream(m_pWidget->m_pContext);
+//        MateMixerStreamControl *control = mate_mixer_stream_get_default_control(stream);
+//        mate_mixer_stream_control_set_balance(control,value);
+
+        if(m_pWidget->mousePressBlance){
+            if(m_pWidget->mouseReleaseStateBlance){
+                m_pWidget->timeSliderBlance->stop();
+                gdouble value = volume/100.0;
+                MateMixerStream *stream = mate_mixer_context_get_default_output_stream(m_pWidget->m_pContext);
+                MateMixerStreamControl *control = mate_mixer_stream_get_default_control(stream);
+                mate_mixer_stream_control_set_balance(control,value);
+                m_pWidget->mousePressBlance = false;
+                m_pWidget->mouseReleaseStateBlance = false;
+            }
+            else{
+                m_pWidget->timeSliderBlance->start(100);
+            }
+        }
+        else
+        {
+            gdouble value = volume/100.0;
+            MateMixerStream *stream = mate_mixer_context_get_default_output_stream(m_pWidget->m_pContext);
+            MateMixerStreamControl *control = mate_mixer_stream_get_default_control(stream);
+            mate_mixer_stream_control_set_balance(control,value);
+        }
     });
 }
 
@@ -3186,41 +3245,132 @@ void UkmediaMainWidget::ukuiUpdatePeakValue (UkmediaMainWidget *m_pWidget)
 */
 void UkmediaMainWidget::outputWidgetSliderChangedSlot(int value)
 {
-    qDebug() << "outputWidgetSliderChangedSlot" << value;
-    MateMixerStream *pStream = mate_mixer_context_get_default_output_stream(m_pContext);
-    MateMixerStreamControl *pControl;
-    if (pStream != nullptr)
-         pControl = mate_mixer_stream_get_default_control(pStream);
-    else {
-        return;
-    }
-    QString percent;
-    bool status = false;
-    percent = QString::number(value);
-    int volume = value*65536/100;
+    if(mousePress){
+        if(mouseReleaseState){
+            MateMixerStream *pStream = mate_mixer_context_get_default_output_stream(m_pContext);
+            MateMixerStreamControl *pControl;
+            if (pStream != nullptr)
+                 pControl = mate_mixer_stream_get_default_control(pStream);
+            else {
+                return;
+            }
+            QString percent;
+            bool status = false;
+            percent = QString::number(value);
+            int volume = value*65536/100;
 
-    mate_mixer_stream_control_set_volume(pControl,guint(volume));
-    if (value <= 0) {
-        status = true;
-        mate_mixer_stream_control_set_mute(pControl,status);
-//        mate_mixer_stream_control_set_volume(m_pControl,0);
-        percent = QString::number(0);
+            mate_mixer_stream_control_set_volume(pControl,guint(volume));
+            if (value <= 0) {
+                status = true;
+                mate_mixer_stream_control_set_mute(pControl,status);
+        //        mate_mixer_stream_control_set_volume(m_pControl,0);
+                percent = QString::number(0);
+            }
+            else {
+                if (firstEnterSystem) {
+                    bool status = mate_mixer_stream_control_get_mute(pControl);
+                    mate_mixer_stream_control_set_mute(pControl,status);
+                }
+                else {
+                    mate_mixer_stream_control_set_mute(pControl,status);
+                }
+            }
+            firstEnterSystem = false;
+            outputVolumeDarkThemeImage(value,status);
+            percent.append("%");
+            m_pOutputWidget->m_pOpVolumePercentLabel->setText(percent);
+            m_pOutputWidget->m_pOutputIconBtn->repaint();
+
+            mousePress = false;
+            mouseReleaseState = false;
+        }
+        else{
+            timeSlider->start(50);
+        }
     }
-    else {
-        if (firstEnterSystem) {
-            bool status = mate_mixer_stream_control_get_mute(pControl);
+    else{
+        MateMixerStream *pStream = mate_mixer_context_get_default_output_stream(m_pContext);
+        MateMixerStreamControl *pControl;
+        if (pStream != nullptr)
+             pControl = mate_mixer_stream_get_default_control(pStream);
+        else {
+            return;
+        }
+        QString percent;
+        bool status = false;
+        percent = QString::number(value);
+        int volume = value*65536/100;
+
+        mate_mixer_stream_control_set_volume(pControl,guint(volume));
+        if (value <= 0) {
+            status = true;
             mate_mixer_stream_control_set_mute(pControl,status);
+    //        mate_mixer_stream_control_set_volume(m_pControl,0);
+            percent = QString::number(0);
         }
         else {
-            mate_mixer_stream_control_set_mute(pControl,status);
+            if (firstEnterSystem) {
+                bool status = mate_mixer_stream_control_get_mute(pControl);
+                mate_mixer_stream_control_set_mute(pControl,status);
+            }
+            else {
+                mate_mixer_stream_control_set_mute(pControl,status);
+            }
         }
+        firstEnterSystem = false;
+        outputVolumeDarkThemeImage(value,status);
+        percent.append("%");
+        m_pOutputWidget->m_pOpVolumePercentLabel->setText(percent);
+        m_pOutputWidget->m_pOutputIconBtn->repaint();
     }
-    firstEnterSystem = false;
-    outputVolumeDarkThemeImage(value,status);
-    percent.append("%");
-    m_pOutputWidget->m_pOpVolumePercentLabel->setText(percent);
-    m_pOutputWidget->m_pOutputIconBtn->repaint();
 
+}
+
+void UkmediaMainWidget::timeSliderSlot()
+{
+    if(mouseReleaseState){
+        int value = m_pOutputWidget->m_pOpVolumeSlider->value();
+        MateMixerStream *pStream = mate_mixer_context_get_default_output_stream(m_pContext);
+        MateMixerStreamControl *pControl;
+        if (pStream != nullptr)
+             pControl = mate_mixer_stream_get_default_control(pStream);
+        else {
+            return;
+        }
+        QString percent;
+        bool status = false;
+        percent = QString::number(value);
+        int volume = value*65536/100;
+
+        mate_mixer_stream_control_set_volume(pControl,guint(volume));
+        if (value <= 0) {
+            status = true;
+            mate_mixer_stream_control_set_mute(pControl,status);
+    //        mate_mixer_stream_control_set_volume(m_pControl,0);
+            percent = QString::number(0);
+        }
+        else {
+            if (firstEnterSystem) {
+                bool status = mate_mixer_stream_control_get_mute(pControl);
+                mate_mixer_stream_control_set_mute(pControl,status);
+            }
+            else {
+                mate_mixer_stream_control_set_mute(pControl,status);
+            }
+        }
+        firstEnterSystem = false;
+        outputVolumeDarkThemeImage(value,status);
+        percent.append("%");
+        m_pOutputWidget->m_pOpVolumePercentLabel->setText(percent);
+        m_pOutputWidget->m_pOutputIconBtn->repaint();
+
+        mouseReleaseState = false;
+        mousePress = false;
+        timeSlider->stop();
+    }
+    else{
+        timeSlider->start(50);
+    }
 }
 
 /*

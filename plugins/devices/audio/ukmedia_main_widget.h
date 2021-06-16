@@ -289,6 +289,7 @@ private Q_SLOTS:
     void inputDeviceComboxIndexChangedSlot(QString str);
     void inputLevelValueChangedSlot();
     void outputWidgetSliderChangedSlot(int value);
+    void timeSliderSlot();
     void inputWidgetSliderChangedSlot(int value);
     void ukuiThemeChangedSlot(const QString &);
     void startupButtonSwitchChangedSlot(bool status);
@@ -413,6 +414,14 @@ private:
     bool setDefaultstream = true;
     int reconnectTime;
     QTimer *time;
+
+    QTimer *timeSlider;
+    bool mousePress = false;
+    bool mouseReleaseState = false;
+
+    QTimer *timeSliderBlance;
+    bool mousePressBlance = false;
+    bool mouseReleaseStateBlance = false;
 };
 
 #endif // WIDGET_H

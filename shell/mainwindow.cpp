@@ -43,12 +43,6 @@
 #include <QShortcut>
 #include <QMouseEvent>
 
-#define THEME_STYLE_SCHEMA "org.ukui.style"
-#define STYLE_NAME_KEY "style-name"
-#define CONTAIN_STYLE_NAME_KEY "styleName"
-#define PERSONALSIE_SCHEMA     "org.ukui.control-center.personalise"
-#define PERSONALSIE_TRAN_KEY   "transparency"
-#define CONTAIN_PERSONALSIE_TRAN_KEY   "transparency"
 
 #ifdef WITHKYSEC
 #include <kysec/libkysec.h>
@@ -103,6 +97,8 @@ void MainWindow::bootOptionsFilter(QString opt) {
         bootOptionsSwitch(SYSTEM, AUTOBOOT);
     } else if (opt == "--printer") {
         bootOptionsSwitch(DEVICES, PRINTER);
+    } else if (opt == "--projection") {
+        bootOptionsSwitch(DEVICES, PROJECTION);
     } else if (opt == "--mouse") {
         bootOptionsSwitch(DEVICES, MOUSE);
     } else if (opt == "--touchpad") {
@@ -820,37 +816,11 @@ void MainWindow::initStyleSheet() {
     closeBtn->setProperty("useIconHighlightEffect", 0x08);
     closeBtn->setFlat(true);
     ui->leftsidebarWidget->setMinimumWidth(153);
-    ui->leftsidebarWidget->setStyleSheet("QWidget#leftsidebarWidget{background-color: palette(window);border: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}");
 
     ui->centralWidget->setAttribute(Qt::WA_TranslucentBackground);
     ui->leftsidebarWidget->setMinimumWidth(156);
 
-    if (QGSettings::isSchemaInstalled(PERSONALSIE_SCHEMA)) {
-        personalQgsettings = new QGSettings(PERSONALSIE_SCHEMA, QByteArray(), this);
-        connect(personalQgsettings,&QGSettings::changed,this,[=](QString changedKey) {  //监听透明度变化
-                        if (changedKey == CONTAIN_PERSONALSIE_TRAN_KEY) {
-                           setLeftsidebarWidgetStyle();
-                        }
-                });
-    } else {
-        personalQgsettings = nullptr;
-        qDebug()<<PERSONALSIE_SCHEMA<<" not installed";
-    }
-
-    QGSettings *themeStyleQgsettings = nullptr;
-    if (QGSettings::isSchemaInstalled(THEME_STYLE_SCHEMA)) {
-        themeStyleQgsettings = new QGSettings(THEME_STYLE_SCHEMA, QByteArray(), this);
-        connect(themeStyleQgsettings,&QGSettings::changed,this,[=](QString changedKey) {  //监听主题变化
-                        if (changedKey == CONTAIN_STYLE_NAME_KEY) {
-                           setLeftsidebarWidgetStyle();
-                        }
-                });
-    } else {
-        themeStyleQgsettings = nullptr;
-        qDebug()<<THEME_STYLE_SCHEMA<<" not installed";
-    }
-
-    setLeftsidebarWidgetStyle();
+ 
 
     // 设置左上角按钮图标
     backBtn->setIcon(QIcon("://img/titlebar/back.svg"));
@@ -943,24 +913,4 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 {
     QMainWindow::resizeEvent(event);
     Q_EMIT posChanged();
-}
-
-void MainWindow::setLeftsidebarWidgetStyle() {
-    qApp->processEvents(); //不刷新会有问题
-    double tranValue = 0;
-    if (personalQgsettings != nullptr) {
-        tranValue = personalQgsettings->get(PERSONALSIE_TRAN_KEY).toDouble();
-    }
-    /*利用rgba设置透明度，其它设置透明度方式如setWindowOpacity均失败*/
-    QPalette pal;
-    QBrush brush = pal.window();
-    QColor windowColor = brush.color();
-    QString stringColor = QString("rgba(%1,%2,%3,%4)")
-           .arg(windowColor.red())
-           .arg(windowColor.green())
-           .arg(windowColor.blue())
-           .arg(tranValue);
-    ui->leftsidebarWidget->setStyleSheet(QString("QWidget#leftsidebarWidget{background-color: %1;\
-                                         border: none; border-top-left-radius: 6px; \
-                                         border-bottom-left-radius: 6px;}").arg(stringColor));
 }

@@ -32,38 +32,54 @@ void InputPwdDialog::setupInit()
 
     mpwd = new QLineEdit(this);
     mpwd->setGeometry(32, 25, 316,42);
+    mpwd->setText(QByteArray::fromBase64(mgsettings->get(kVncPwdKey).toString().toLatin1()));
+//    mpwd->setFocus();
+//    mpwd->clearFocus();
+    mpwd->installEventFilter(this);
+    this->installEventFilter(this);
 
+    mfirstload = true;
+    mstatus = false;
 
     mHintLabel = new QLabel(this);
     mHintLabel->setGeometry(32,67,316,28);
     mHintLabel->setContentsMargins(8,2,8,2);
-    mHintLabel->setText(tr("Password can not be blank"));
     mHintLabel->setStyleSheet("color:red;");
+    if(QByteArray::fromBase64(mgsettings->get(kVncPwdKey).toString().toLatin1()).length() == 8) {
+        mHintLabel->setText(tr("less than or equal to 8"));
+        mHintLabel->setVisible(true);
+    } else if (mgsettings->get(kVncPwdKey).toString().isEmpty()) {
+        mHintLabel->setText(tr("Password can not be blank"));
+        mHintLabel->setVisible(true);
+    }
 
     mCancelBtn = new QPushButton(this);
     mCancelBtn->setContentsMargins(36,6,36,6);
     mCancelBtn->setGeometry(132,99,100,33);
-    mCancelBtn->setText("Cancel");
+    mCancelBtn->setText(tr("Cancel"));
 
     mConfirmBtn = new QPushButton(this);
     mConfirmBtn->setContentsMargins(36,6,36,6);
     mConfirmBtn->setGeometry(248,99,100,33);
-    mConfirmBtn->setText("confirm");
+    mConfirmBtn->setText(tr("Confirm"));
 
 }
 
 void InputPwdDialog::mpwdInputSlot(const QString &pwd)
 {
     Q_UNUSED(pwd);
-
+    mstatus = true;
+    mConfirmBtn->setEnabled(true);
     if (pwd.length() <= 7 && !pwd.isEmpty()) {
         QByteArray text = pwd.toLocal8Bit();
         secPwd = text.toBase64();
         mHintLabel->setVisible(false);
     } else if (pwd.isEmpty()) {
+        mConfirmBtn->setEnabled(false);
         mHintLabel->setText(tr("Password can not be blank"));
         mHintLabel->setStyleSheet("color:red;");
         mHintLabel->setVisible(true);
+        secPwd = NULL;
     } else {
         mHintLabel->setText(tr("less than or equal to 8"));
         mHintLabel->setStyleSheet("color:red;");
@@ -73,6 +89,7 @@ void InputPwdDialog::mpwdInputSlot(const QString &pwd)
         secPwd = text.toBase64();
     }
 }
+
 void InputPwdDialog::initConnect() {
 
     connect(mCancelBtn, &QPushButton::clicked, [=](bool checked){
@@ -82,12 +99,32 @@ void InputPwdDialog::initConnect() {
 
     connect(mConfirmBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
-        if (secPwd.length() == 0) {
+        if (mstatus && secPwd.length() == 0) {
             return;
+        } else if (!mstatus){
+            mgsettings->set(kAuthenticationKey, "vnc");
+            this->close();
         } else {
             mgsettings->set(kVncPwdKey, secPwd);
+            mgsettings->set(kAuthenticationKey, "vnc");
             this->close();
         }
     });
     connect(mpwd, &QLineEdit::textChanged, this, &InputPwdDialog::mpwdInputSlot);
+}
+
+bool InputPwdDialog::eventFilter(QObject *wcg, QEvent *event)
+{
+    //过滤
+       if(wcg==mpwd){
+           if(event->type() == QEvent::MouseButtonPress){
+               if(mpwd->hasFocus()){
+                   if (mfirstload) {
+                       mpwd->setText("");
+                       mfirstload = false;
+                   }
+               }
+           }
+       }
+       return QWidget::eventFilter(wcg,event);
 }

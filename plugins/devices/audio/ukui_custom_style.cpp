@@ -67,6 +67,8 @@ UkmediaVolumeSlider::UkmediaVolumeSlider(QWidget *parent,bool needTip)
 
 void UkmediaVolumeSlider::mousePressEvent(QMouseEvent *ev)
 {
+    mousePress = true;
+    Q_EMIT silderPressedSignal();
     if (state) {
         m_pTiplabel->show();
     }
@@ -78,6 +80,15 @@ void UkmediaVolumeSlider::mousePressEvent(QMouseEvent *ev)
     //向父窗口发送自定义事件event type，这样就可以在父窗口中捕获这个事件进行处理
     QEvent evEvent(static_cast<QEvent::Type>(QEvent::User + 1));
     QCoreApplication::sendEvent(parentWidget(), &evEvent);
+    QSlider::mousePressEvent(ev);
+}
+void UkmediaVolumeSlider::mouseReleaseEvent(QMouseEvent *e)
+{
+    if(mousePress){
+        Q_EMIT silderReleaseSignal();
+    }
+    mousePress = false;
+    QSlider::mouseReleaseEvent(e);
 }
 
 void UkmediaVolumeSlider::initStyleOption(QStyleOptionSlider *option)

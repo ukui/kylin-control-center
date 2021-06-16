@@ -38,7 +38,7 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     m_containerWidget = new QWidget(this);            //业务逻辑主界面
     m_baseWidget = new QStackedWidget(this);  //用于切换成功页面和业务逻辑操作页面（包括登录等模块)
 
-    m_titleLable = new QLabel(status,this);        //页面标题（业务逻辑重用）
+    m_titleLable = new TitleLabel(this);        //页面标题（业务逻辑重用）
     m_stackedWidget = new QStackedWidget(this);   //用于切换业务逻辑操作页面（包括登录，注册，绑定，忘记密码）
     m_workLayout = new QVBoxLayout;           //业务界面主体布局
     m_subLayout = new QHBoxLayout;           //切换登录模式按钮布局
@@ -56,6 +56,7 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     m_svgHandler = new SVGHandler(this);
 
 
+    m_titleLable->setText(status);
     //计时器初始化
     m_timer->stop();
     //隐藏同步开关动画
@@ -76,7 +77,6 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
     setFocusPolicy(Qt::NoFocus);
     m_loginDialog->setContentsMargins(0,0,0,0);
     //title->setGeometry(31 + sizeoff,48 + sizeoff,160,24);
-    m_titleLable->setStyleSheet("font-size: 24px;font-weight:500;");
 
     m_submitBtn->setFixedSize(338,36);
     m_submitBtn->setFocusPolicy(Qt::NoFocus);
@@ -331,6 +331,7 @@ void MainDialog::set_client(DBusUtils *c) {
             } else {
                 m_loginDialog->get_mcode_lineedit()->setText("");
                 m_loginDialog->set_code(messagebox(ret));
+                m_loginDialog->get_user_mcode()->setEnabled(true);
                 m_loginCodeStatusTips->show();
                 setshow(m_stackedWidget);
 

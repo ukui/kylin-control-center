@@ -44,6 +44,7 @@ extern "C" {
 #define V_FINGER_KEY             "vertical-two-finger-scrolling"
 #define H_FINGER_KEY             "horizontal-two-finger-scrolling"
 #define N_SCROLLING              "none"
+#define MOUSE_DISBALE_TOUCHPAD   "disable-on-external-mouse"
 
 bool findSynaptics();
 bool _supportsXinputDevices();
@@ -127,6 +128,9 @@ void Touchpad::setupComponent(){
     clickBtn = new SwitchButton(pluginWidget);
     ui->clickHorLayout->addWidget(clickBtn);
 
+    mMouseDisTouchBtn = new SwitchButton(pluginWidget);
+    ui->touchapdDisableLyt->addWidget(mMouseDisTouchBtn);
+
     if (mIsWayland) {
         ui->scrollingTypeComBox->addItem(tr("Disable rolling"), N_SCROLLING);
         ui->scrollingTypeComBox->addItem(tr("Edge scrolling"), V_EDGE_KEY);
@@ -152,6 +156,10 @@ void Touchpad::initConnection() {
 
     connect(clickBtn, &SwitchButton::checkedChanged, [=](bool checked){
         tpsettings->set(TOUCHPAD_CLICK_KEY, checked);
+    });
+
+    connect(mMouseDisTouchBtn, &SwitchButton::checkedChanged, [=](bool checked){
+        tpsettings->set(MOUSE_DISBALE_TOUCHPAD, checked);
     });
 
     connect(ui->scrollingTypeComBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int index){
@@ -192,6 +200,11 @@ void Touchpad::initTouchpadStatus(){
     clickBtn->blockSignals(true);
     clickBtn->setChecked(tpsettings->get(TOUCHPAD_CLICK_KEY).toBool());
     clickBtn->blockSignals(false);
+
+    // 插入鼠标时候禁用触摸板
+    mMouseDisTouchBtn->blockSignals(true);
+    clickBtn->setChecked(tpsettings->get(MOUSE_DISBALE_TOUCHPAD).toBool());
+    mMouseDisTouchBtn->blockSignals(false);
 
     //初始化滚动
     ui->scrollingTypeComBox->blockSignals(true);

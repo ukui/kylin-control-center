@@ -34,7 +34,7 @@ ConfigFile::ConfigFile( QString qstrfilename)
         proc.waitForFinished();
         QByteArray ar = proc.readAll().toStdString().c_str();
         QString m_confName = "All-" + ar.replace("\n","") + ".conf";
-        m_qstrFileName =QDir::homePath() + "/.cache/kylinId/" + m_confName;
+        m_qstrFileName = QDir::homePath() + "/.cache/kylinId/" + m_confName;
     }
     else
     {

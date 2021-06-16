@@ -46,22 +46,6 @@
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>12</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
     <widget class="QFrame" name="currentUserFrame">
      <property name="minimumSize">
       <size>
@@ -616,7 +600,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>46</height>
+       <height>32</height>
       </size>
      </property>
     </spacer>
@@ -731,7 +715,7 @@
          <number>8</number>
         </property>
         <property name="bottomMargin">
-         <number>30</number>
+         <number>32</number>
         </property>
         <item>
          <widget class="QFrame" name="enableBiometricFrame">
@@ -1074,22 +1058,6 @@
       <bool>true</bool>
      </property>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer_6">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>8</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">

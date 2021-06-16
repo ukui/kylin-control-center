@@ -3,8 +3,8 @@
 //#include <QCoreApplication>
 
 const QString FIND_DES_LABLE_TYPE = "FIND_DES_LABLE_TYPE";//历史更新模块标签
-const int WIDTH = 680;//窗口宽度
-const int HEIGHT = 604 -40;//窗口高度   注：QFram实际高度比setFixedSize指定的高度高40像素，故减去40
+const int WIDTH = 880;//窗口宽度
+const int HEIGHT = 610 -40;//窗口高度   注：QFram实际高度比setFixedSize指定的高度高40像素，故减去40
 const int LINE_SPACING = 2;//行间距
 const int TOP_MARGIN = 18;//上边距
 const int BOTTOM_MARGIN = 24;//下边距
@@ -12,7 +12,7 @@ const int LEFT_MARGIN = 32;//左（右）边距
 
 const int LIST_LEFT = 8;//列表对于其背景，左侧边距
 const int LIST_TOP = 8;//列表对于其背景，顶（底）部边距
-const int LIST_BACKGROUND_WIDTH = 260 + 6;//列表背景宽度
+const int LIST_BACKGROUND_WIDTH = 320 + 6;//列表背景宽度
 const int SLIDER_WIDTH = 6;//滑块宽度
 //const int LIST_WIDTH = LIST_BACKGROUND_WIDTH - LIST_LEFT*2 + SLIDER_WIDTH;//列表宽度
 //const int LIST_HEIGHT = 524 - LIST_TOP*2;//列表高度
@@ -93,8 +93,9 @@ void m_updatelog::initUI()
     QFrame *desBackground = new QFrame;
     desBackground->setFrameStyle(QFrame::Box);
 
-    QLabel *updateDesTab = new QLabel;
+    updateDesTab = new QLabel;
     updateDesTab->setFont(font);
+    updateDesTab->setWordWrap(true);
     updateDesTab->setText(tr("Update Details"));  /* 更新详情 */
 
     /* 描述文本框 */
@@ -211,7 +212,7 @@ void m_updatelog::updatesql( const int &start,const int &num,const QString &into
         QString statusType = query.value("keyword").toString();
         if(statusType!=""&&statusType!="1")
             continue;
-        HistoryUpdateListWig *hulw = new HistoryUpdateListWig();
+        HistoryUpdateListWig *hulw = new HistoryUpdateListWig(updateDesTab);
         hulw->setAttribute(translationVirtualPackage(query.value("appname").toString())+" "+query.value("version").toString(),
                            query.value("statue").toString(),
                            query.value("time").toString(),

@@ -49,11 +49,15 @@ public:
 private:
     UkuiMediaSliderTipLabel *m_pTiplabel;
     bool state = false;
+
+    bool mousePress =false;
 Q_SIGNALS:
-    void silderPressedSignal(int);
+    void silderPressedSignal();
+    void silderReleaseSignal();
 
 protected:
     void mousePressEvent(QMouseEvent *ev);
+    void mouseReleaseEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e)
     {
 //        setCursor(QCursor(Qt::OpenHandCursor));
@@ -84,6 +88,8 @@ protected:
 private:
     QImage mImage;
     QColor mColor;
+
+    bool mousePress = false;
 };
 
 #endif // UKUICUSTOMSTYLE_H

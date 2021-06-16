@@ -440,9 +440,19 @@ Tips：系统至少需要存在一个管理员用户。
 
 ![图 48 通知-big](image/notice.png)
 
+
+
+### 搜 索
+
+通过设置提高搜索效率。
+![图 49 搜索-big](image/search.png)
+
+
+
 ### 关 于
+
 显示本机系统的版本、设备规格、授权激活信息。
-![图 49 通知-big](image/about.png)
+![图 50 通知-big](image/about.png)
 <br>
 
 ## 常见问题

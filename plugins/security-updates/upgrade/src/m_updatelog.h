@@ -41,6 +41,7 @@ private:
     m_updatelog(QWidget *parent);
     static m_updatelog * m_instance;
     QListWidget  *mainListwidget; //列表容器
+    QLabel *updateDesTab;  //右侧顶部描述标签
     int firstCode = 0;
     int loadingCode = 0;
     QHBoxLayout *hll = nullptr;

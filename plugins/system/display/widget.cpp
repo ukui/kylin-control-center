@@ -1468,7 +1468,7 @@ void Widget::checkOutputScreen(bool judge)
 // 亮度调节UI
 void Widget::initBrightnessUI()
 {
-    ui->brightnessSlider->setRange(0, 100);
+    ui->brightnessSlider->setRange(5, 100);
     if (mIsWayland && !mIsBattery) {
         connect(ui->brightnessSlider, &QSlider::valueChanged, this, &Widget::setDDCBrightness);
     } else {
@@ -1745,9 +1745,7 @@ void Widget::initUiComponent()
         return;
     }
 
-    QDBusReply<QVariant> briginfo;
-    briginfo = brightnessInterface.call("Get", "org.freedesktop.UPower.Device", "PowerSupply");
-    mIsBattery = briginfo.value().toBool();
+    mIsBattery = isBacklight();
 
     mUPowerInterface = QSharedPointer<QDBusInterface>(
         new QDBusInterface("org.freedesktop.UPower",

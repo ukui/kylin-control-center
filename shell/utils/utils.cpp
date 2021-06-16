@@ -48,6 +48,7 @@ void Utils::setCLIName(QCommandLineParser &parser) {
     QCommandLineOption autobootRoleOption("autoboot", QObject::tr("Go to autoboot settings page"));
 
     QCommandLineOption printerRoleOption("printer", QObject::tr("Go to printer settings page"));
+    QCommandLineOption projectionRoleOption("projection", QObject::tr("Go to projection settings page"));
     QCommandLineOption mouseRoleOption("mouse", QObject::tr("Go to mouse settings page"));
     QCommandLineOption touchpadRoleOption("touchpad", QObject::tr("Go to touchpad settings page"));
 //    QCommandLineOption keyboardRoleOption("keyboard", QObject::tr("Go to keyboard settings page"));

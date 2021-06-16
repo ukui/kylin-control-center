@@ -47,6 +47,8 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     QByteArray ar = proc.readAll().toStdString().c_str();
     m_confName = "All-" + ar.replace("\n","") + ".conf";
     m_szConfPath = QDir::homePath() + "/.cache/kylinId/" + m_confName;
+    m_pSettings = new QSettings(m_szConfPath,QSettings::IniFormat);
+    m_pSettings->setIniCodec(QTextCodec::codecForName("UTF-8"));
 
     //麒麟ID客户端检测
     QProcess kylinIDProc;
@@ -121,7 +123,10 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
         m_mainWidget->setCurrentWidget(m_widgetContainer);
     } else {
         m_mainWidget->setCurrentWidget(m_nullWidget);
+        m_szCode = "-1";
     }
+
+    checkBackEnd();
 }
 
 void MainWidget::checkNetStatus(bool status) {
@@ -135,7 +140,7 @@ void MainWidget::checkNetWork(QVariantMap map) {
         return ;
     }
 
-    if (ret.toInt() != 1 && ret.toInt() != 3 && m_bIsFailed == false) {
+    if (ret.toInt() != 1 && ret.toInt() != 3) {
         m_bIsOnline = true;
         m_autoSyn->get_swbtn()->setDisabledFlag(false);
         for (int i = 0;i < m_szItemlist.size(); i ++ ) {
@@ -144,13 +149,6 @@ void MainWidget::checkNetWork(QVariantMap map) {
         m_lazyTimer->setInterval(500);
         m_lazyTimer->setSingleShot(true);
         m_lazyTimer->start();
-
-        return ;
-    }
-    m_bIsOnline = false;
-    m_autoSyn->get_swbtn()->setDisabledFlag(true);
-    for (int i = 0;i < m_szItemlist.size(); i ++ ) {
-        m_itemList->get_item(i)->get_swbtn()->setDisabledFlag(true);
     }
 }
 
@@ -170,12 +168,12 @@ void MainWidget::isNetWorkOnline()
             if (ret.isValid() == false) {
                 ret = response.arguments().takeFirst();
                 if (ret.toInt() != 3 && ret.toInt() != 1) {
-                    emit isOnline(true);
+                    //emit isOnline(true);
                     return ;
                 }
             }
         }
-        emit isOnline(false);
+        //emit isOnline(false);
         return ;
     });
 
@@ -391,71 +389,75 @@ void MainWidget::finishedLogout(int ret) {
     }
 }
 
-void MainWidget::checkUserName(QString name) {
-    m_szCode = name;
-    if (name == "" || name =="201" || name == "203" || name == "401" || name == "500" || name == "502") {
-        if (m_mainWidget->currentWidget() != m_nullWidget) {
-            m_mainWidget->setCurrentWidget(m_nullWidget);
-        }
-        if (m_bIsKylinId) {
-            emit kylinIdLogOut();
-        } else {
-            emit dologout();
-        }
-        return ;
-    }
+void MainWidget::checkBackEnd() {
+    QtConcurrent::run([=] () {
+        QProcess proc;
+        QStringList options;
+        options << "-c" << "ps -ef|grep kylin-sso-client";
+        proc.start("/bin/bash",options);
+        proc.waitForFinished();
+        QString ifn = proc.readAll();
 
-    m_autoSyn->get_swbtn()->setDisabled(false);
-    m_autoSyn->get_swbtn()->setDisabledFlag(false);
-    for(int itemCnt = 0;itemCnt < m_szItemlist.size(); itemCnt ++) {
-        if (m_itemList->get_item(itemCnt) != nullptr) {
-            m_itemList->get_item(itemCnt)->get_swbtn()->setDisabledFlag(false);
+        if (ifn.contains("/usr/bin/kylin-sso-client")) {
+            emit isRunning();
         }
-    }
+    });
+}
 
-    m_pSettings = new QSettings(m_szConfPath,QSettings::IniFormat);
-    m_pSettings->setIniCodec(QTextCodec::codecForName("UTF-8"));
-    m_infoTab->setText(tr("Your account：%1").arg(m_szCode));
+
+void MainWidget::refreshSyncDate() {
     QFile fileConf(m_szConfPath);
     if (m_pSettings != nullptr && fileConf.exists())
         m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
     else
         m_syncTimeLabel->setText(tr("Waiting for initialization..."));
-    //setshow(m_mainWidget);
-    if (m_bTokenValid == false) {
-        if (m_mainWidget->currentWidget() != m_widgetContainer) {
-            m_mainWidget->setCurrentWidget(m_widgetContainer);
-        }
-        QtConcurrent::run([=] () {
+}
 
-            QProcess proc;
-            QStringList options;
-            options << "-c" << "ps -ef|grep kylin-sso-client";
-            proc.start("/bin/bash",options);
-            proc.waitForFinished();
-            QString ifn = proc.readAll();
-
-            if (ifn.contains("/usr/bin/kylin-sso-client")) {
-                emit isRunning();
+//更新用户信息，获取用户名
+void MainWidget::checkUserName(QString name) {
+    //检测登录状态
+    if (name == "401") {
+        m_firstLoad = true;
+        //token无效执行登出
+        if (m_mainWidget->currentWidget() != m_nullWidget) {
+            if (m_bIsKylinId) {
+                emit kylinIdLogOut();
+            } else {
+                emit dologout();
             }
-        });
-    }
-    if (bIsLogging == false) {
-        QFile file (m_szConfPath);
-        QFile token (QDir::homePath() + "/.cache/kylinId/token");
-        if (file.exists() == false && token.exists() == true && m_isOpenDialog == false && token.size() > 1) {
-            emit dooss(m_szUuid);
+        } else {
+            //本身就在登出界面
+            m_szCode = tr("Disconnected");
         }
+        return ;
     }
+    //其它由于网络问题登录状态错误，触发网络错误状态
+    if (name == "" || name =="201" || name == "203" || name == "500" || name == "502") {
+        ctrlAutoSync(NETWORK_FAILURE);
+        return ;
+    }
+    //刚登录进来，进行OSS初始化处理
+    if(m_szCode == tr("Disconnected") && m_firstLoad == true) {
+        emit dooss(m_szUuid);
+    }
+    //当前用户名为用户名
 
-    //dooss(m_szUuid);
-    if(m_autoSyn->get_swbtn()->isChecked() == true) {
-        m_autoSyn->set_change(0,"0");
-        for (int i = 0;i < m_szItemlist.size();i ++) {
-           m_itemList->get_item(i)->set_change(0,"0");
-        }
+    //这里要根据上次同步的情况来设置显示情况 to do
+    if (m_pSettings->value("Auto-sync/run").toString() == "failed") {
+        ctrlAutoSync(SYNC_FAILURE);
+        m_bIsFailed = true;
+    } else {
+        m_bIsFailed = false;
+        ctrlAutoSync(SYNC_NORMAL);
     }
+    m_szCode = name;
+    //设置用户名
+    m_infoTab->setText(tr("Your account：%1").arg(m_szCode));
+    //刷新同步时间
+    refreshSyncDate();
+
     handle_conf();
+
 }
 
 void MainWidget::initMemoryAlloc() {
@@ -545,7 +547,7 @@ void MainWidget::layoutUI() {
     m_workLayout->setContentsMargins(1,0,1,0);
     m_workLayout->addSpacing(16);
     m_workLayout->addWidget(m_autoSyn->get_widget());
-    m_workLayout->addSpacing(16);
+    m_workLayout->addSpacing(4);
     m_workLayout->addWidget(m_syncTimeLabel);
     m_workLayout->addSpacing(16);
     m_workLayout->addWidget(m_stackedWidget);
@@ -573,74 +575,121 @@ void MainWidget::layoutUI() {
 
 }
 
+void MainWidget::singleExecutor(QTimer *timer, int mesc) {
+    timer->setSingleShot(true);
+    timer->setInterval(mesc);
+    timer->start();
+}
+
+void MainWidget::setTokenWatcher() {
+    QString tokenFile = QDir::homePath() + "/.cache/kylinId/token";
+    m_fsWatcher.addPath(tokenFile);
+
+    connect(&m_fsWatcher,&QFileSystemWatcher::fileChanged,this,[=] () {
+        QFile token(tokenFile);
+        //可能存在token为空的情况，故应该保证token.size()大于TOKEN_MIN_SIZE才能为有效token
+        if (!token.exists() || token.size() < TOKEN_MIN_SIZE) {
+            if (m_mainWidget->currentWidget() != m_nullWidget) {
+                m_mainWidget->setCurrentWidget(m_nullWidget);
+            }
+        } else {
+            singleExecutor(m_checkTimer,500);
+        }
+    });
+}
+
+bool MainWidget::isAvaliable() {
+    if (m_bIsOnline == false) {
+        showDesktopNotify(tr("Network can not reach!"));
+        return false;
+     }
+    return true;
+}
+
 void MainWidget::initSignalSlots() {
     for (int btncnt = 0;btncnt < m_itemList->get_list().size();btncnt ++) {
+
+        //同步项开关响应槽函数
         connect(m_itemList->get_item(btncnt), &FrameItem::itemChanged, this, [=] (const QString &name,bool checked) {
             if (m_bIsOldBackEnds) {
                 isNetWorkOnline();
             }
+            //这段代码是否需要值得商讨？
             if (m_mainWidget->currentWidget() == m_nullWidget) {
                 return ;
             }
-
+            //没有网络不做任何操作
             if (m_bIsOnline == false) {
                 showDesktopNotify(tr("Network can not reach!"));
                 return ;
             }
-            emit dochange(m_itemMap.key(name),checked);
-            if ( m_exitCloud_btn->property("on") == true || !m_bAutoSyn) {
-                if (m_itemList->get_item_by_name(name)->get_swbtn()->getDisabledFlag() == true)
-                    m_itemList->get_item_by_name(name)->set_active(false);
-                else {
-                    m_itemList->get_item_by_name(name)->set_active(true);
-                }
+            //如果有同步正在运行，什么都不做。如果无同步运行，且打开按钮，则开启单项同步
+            if ( m_exitCloud_btn->property("on") == true) {
                 return ;
-            } else if (checked == true && m_exitCloud_btn->property("on") == false && m_bAutoSyn){
+            } else if (checked == true && m_exitCloud_btn->property("on") == false){
                 m_key = m_itemMap.key(name);
                 if (m_key != "") {
-                    //QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
-                    m_singleTimer->setSingleShot(true);
-                    m_singleTimer->setInterval(1000);
-                    m_singleTimer->start();
+                    //这样的执行顺序是正确的
+                    singleExecutor(m_singleTimer,1000);
                 }
 
             }
+            //特殊同步项提示消息：快捷键
             if (m_itemMap.key(name) == "shortcut" && checked == true) {
                 showDesktopNotify(tr("This operation may cover your settings!"));
             }
+            emit dochange(m_itemMap.key(name),checked);
         });
     }
 
+    //网络状态判断结果处理槽函数，参数为true说明有网，反之网络不通
     connect(this, &MainWidget::isOnline, [=] (bool checked) {
-        if (checked == true && m_bIsFailed == false) {
-            if(m_bIsOnline  == true) {
-                m_checkTimer->setSingleShot(true);
-                m_checkTimer->setInterval(500);
-                m_checkTimer->start();
-                return ;
+        //如果本身发生了错误，进入同步错误状态，则不处理，接受同步错误状态的处理
+        bool tmpOnline = m_bIsOnline;
+        if(m_mainWidget->currentWidget() == m_nullWidget) {
+            return ;
+        }
+
+        m_bIsOnline = checked;
+        if (m_bIsFailed) {
+            if(checked == true) {
+
+                ctrlAutoSync(SYNC_FAILURE);
             }
-            m_bIsOnline = true;
-            m_autoSyn->get_swbtn()->setDisabledFlag(false);
-            for (int i = 0;i < m_szItemlist.size(); i ++ ) {
-                m_itemList->get_item(i)->get_swbtn()->setDisabledFlag(false);
+           return ;
+        }
+        //如果有网，进入正常状态
+        if (checked == true ) {
+            //本身就有网，之前没网，执行一次信息更新操作
+            if(tmpOnline == false) {
+                singleExecutor(m_checkTimer,500);
             }
-        } else if(m_bIsFailed == false){
-            m_bIsOnline = false;
-            m_autoSyn->get_swbtn()->setDisabledFlag(true);
-            for (int i = 0;i < m_szItemlist.size(); i ++ ) {
-                m_itemList->get_item(i)->get_swbtn()->setDisabledFlag(true);
+            ctrlAutoSync(SYNC_NORMAL);
+
+            //网络状态记录为有网状态，并进入正常状态
+
+
+        } else {
+            //检测到没网络，网络状态记录为无网状态，并进入无网状态
+            if(tmpOnline == true) {
+                showDesktopNotify(tr("Network can not reach!"));
+                ctrlAutoSync(NETWORK_FAILURE);
             }
         }
+        handle_conf();
     });
 
+    //如果正在同步中，直接将开关按钮设置为失效
     connect(this, &MainWidget::isSync, [=] (bool checked) {
         if (checked == false) {
+            m_autoSyn->get_swbtn()->setDisabled(false);
             for(int itemCnt = 0;itemCnt < m_szItemlist.size(); itemCnt ++) {
                 if (m_itemList->get_item(itemCnt) != nullptr) {
                     m_itemList->get_item(itemCnt)->get_swbtn()->setDisabled(false);
                 }
             }
         } else {
+            m_autoSyn->get_swbtn()->setDisabled(true);
             for(int itemCnt = 0;itemCnt < m_szItemlist.size(); itemCnt ++) {
                 if (m_itemList->get_item(itemCnt) != nullptr) {
                     m_itemList->get_item(itemCnt)->get_swbtn()->setDisabled(true);
@@ -650,6 +699,7 @@ void MainWidget::initSignalSlots() {
 
     });
 
+    //检测是否为旧版本云账户处理槽函数
     connect(this,&MainWidget::oldVersion,[=] () {
         if (m_mainWidget->currentWidget() != m_nullWidget) {
             on_login_out();
@@ -672,36 +722,24 @@ void MainWidget::initSignalSlots() {
        }
     });
 
+    //自动同步按钮槽函数
     connect(m_autoSyn->get_swbtn(),SIGNAL(checkedChanged(bool)),this,SLOT(on_auto_syn(bool)));
+    //登录按钮槽函数
     connect(m_login_btn,SIGNAL(clicked()),this,SLOT(on_login()));
+    //退出按钮槽函数
     connect(m_exitCloud_btn,SIGNAL(clicked()),this,SLOT(on_login_out()));
 
+    //检测是否同步正在运行的槽函数
     connect(this,&MainWidget::isRunning,this,[=] {
         download_files();
     });
-    //All.conf的
-    QString tokenFile = QDir::homePath() + "/.cache/kylinId/token";
-    m_fsWatcher.addPath(tokenFile);
-
-
-    connect(&m_fsWatcher,&QFileSystemWatcher::fileChanged,this,[=] () {
-        QFile token(tokenFile);
-        if (!token.exists() || token.size() < 1) {
-            if (m_mainWidget->currentWidget() != m_nullWidget) {
-                m_mainWidget->setCurrentWidget(m_nullWidget);
-            }
-        } else {
-            m_checkTimer->setSingleShot(true);
-            m_checkTimer->setInterval(500);
-            m_checkTimer->start();
-        }
-    });
+    //Token监控
+    setTokenWatcher();
 
 
     connect(m_singleTimer, &QTimer::timeout,this, [this] () {
-        if (m_bIsOnline == false) {
-            m_listTimer->stop();
-            showDesktopNotify(tr("Network can not reach!"));
+        if (isAvaliable() == false) {
+            m_singleTimer->stop();
             return ;
         }
         if (m_key == "") {
@@ -723,9 +761,8 @@ void MainWidget::initSignalSlots() {
     });
 
     connect(m_listTimer,&QTimer::timeout,this,[this] () {
-        if (m_bIsOnline == false) {
+        if (isAvaliable() == false) {
             m_listTimer->stop();
-            showDesktopNotify(tr("Network can not reach!"));
             return ;
         }
         emit doselect(m_syncDialog->m_List);
@@ -742,11 +779,12 @@ void MainWidget::initSignalSlots() {
     });
 
     connect(m_manTimer, &QTimer::timeout, this, [this] () {
-        if (m_bIsOnline == false) {
+        if (isAvaliable() == false) {
             m_manTimer->stop();
-            showDesktopNotify(tr("Network can not reach!"));
             return ;
         }
+        m_pSettings->setValue("Auto-sync/run","done");
+        m_pSettings->sync();
         emit doman();
         m_manTimer->stop();
     });
@@ -760,37 +798,6 @@ void MainWidget::initSignalSlots() {
         }
     });
 
-    connect(m_autoSyn->get_swbtn(),&SwitchButton::checkedChanged, this, [=] (bool checked) {
-       if (checked == true && m_pSettings != nullptr) {
-           m_stackedWidget->setCurrentWidget(m_itemList);
-           m_keyInfoList.clear();
-           __once__ = false;
-
-           m_autoSyn->set_change(0,"0");
-           for (int i  = 0;i < m_szItemlist.size();i ++) {
-               if (m_itemList->get_item(i)->get_swbtn()->getDisabledFlag() == true) {
-                   m_itemList->get_item(i)->set_change(0,"0");
-               }
-           }
-           QFile file( m_szConfPath);
-           if (file.exists() == false) {
-               if (m_bIsOnline == false) {
-                   showDesktopNotify(tr("Network can not reach!"));
-                   return ;
-               }
-               emit dooss(m_szUuid);
-               return ;
-           } else {
-               if (m_bIsOnline == false) {
-                   showDesktopNotify(tr("Network can not reach!"));
-                   return ;
-               }
-               emit doquerry(m_szCode);
-           }
-       } else {
-           m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
-       }
-    });
     connect(m_cLoginTimer,&QTimer::timeout,this,[this]() {
         if (m_mainDialog == nullptr) {
             return ;
@@ -834,6 +841,7 @@ void MainWidget::init_gui() {
     //控件初始化设置
     m_infoTabWidget->setFocusPolicy(Qt::NoFocus);
     m_title->setText(tr("Sync your settings"));
+
 
     m_infoTab->setText(tr("Your account:%1").arg(m_szCode));
     m_autoSyn->set_itemname(tr("Auto sync"));
@@ -898,7 +906,7 @@ void MainWidget::on_login() {
             }
         }
     } else {
-        m_mainDialog = new MainDialog;
+        m_mainDialog = new MainDialog(this);
         m_mainDialog->setAttribute(Qt::WA_DeleteOnClose);
         //m_editDialog->m_bIsUsed = false;
         m_mainDialog->set_client(m_dbusClient);
@@ -906,15 +914,18 @@ void MainWidget::on_login() {
         m_mainDialog->set_clear();
         m_exitCode->setText(" ");
 
+        //登录成功调用槽函数
         connect(m_mainDialog,SIGNAL(on_login_success()),this,SLOT(open_cloud()));
+        //点击登录调用槽函数
         connect(m_mainDialog, &MainDialog::on_submit_clicked, this, [=] (){
+            //点击登录，超时计时开始，登录过程开始，登录状态为正在登录
             m_bIsStopped = false;
             bIsLogging = true;
-            m_cLoginTimer->setSingleShot(true);
-            m_cLoginTimer->setInterval(10000);
-            m_cLoginTimer->start();
+            //超时10秒
+            singleExecutor(m_cLoginTimer,10000);
         });
         connect(m_mainDialog,&MainDialog::on_login_failed,this, [this] () {
+            //登录失败，超时计时结束，登录过程结束，登录状态为未登录
             m_cLoginTimer->stop();
             m_bIsStopped = true;
             bIsLogging = false;
@@ -929,16 +940,17 @@ void MainWidget::open_cloud() {
         showDesktopNotify(tr("Network can not reach!"));
         return ;
     }
-    m_checkTimer->setSingleShot(true);
-    m_checkTimer->setInterval(500);
-    m_checkTimer->start();
+    //更新用户信息
+    singleExecutor(m_checkTimer,500);
+    //关闭登录窗口，回收内存
     m_mainDialog->on_close();
     m_mainDialog = nullptr;
+
     bIsLogging = false;
+    //此时用户不能随意点击
     emit isSync(true);
+    //切换界面
     m_mainWidget->setCurrentWidget(m_widgetContainer);
-    emit dooss(m_szUuid);
-    //m_mainDialog->on_close();
 }
 
 
@@ -956,66 +968,81 @@ void MainWidget::finished_conf(int ret) {
 /* 登录成功处理事件 */
 void MainWidget::finished_load(int ret, QString uuid) {
 
-    if (m_bIsOnline == false) {
-        showDesktopNotify(tr("Network can not reach!"));
+    if (isAvaliable() == false) {
+        return ;
+    }
+
+    if (m_mainWidget->currentWidget() == m_nullWidget) {
         return ;
     }
     if (ret == 301) {
-        if (m_mainWidget->currentWidget() != m_nullWidget) {
-            showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry or relogin!"));
-            // m_exitCode->setText(tr("Please check your connection!"));
-            return ;
-        }
+        showDesktopNotify(tr("Unauthorized device or OSS falied.\nPlease retry or relogin!"));
+        return ;
     }
     if (ret == 401 || ret == 201) {
-        if (m_mainWidget->currentWidget() != m_nullWidget) {
-            m_exitCode->setText(tr("Authorization failed!"));
-            on_login_out();
-            return ;
-        }
+        m_exitCode->setText(tr("Authorization failed!"));
+        on_login_out();
+        return ;
     }
     if (uuid != this->m_szUuid) {
         return ;
     }
     m_bIsStopped = false;
-    if (ret == 0) {
-        m_autoSyn->set_change(0,"0");
-        for (int i = 0;i < m_szItemlist.size();i ++) {
-            m_itemList->get_item(i)->set_change(0,"0");
-        }
+    if (ret == 0 ) {
         emit doconf();
     }
 }
 
-/* 读取滑动按钮列表 */
+/*  读取滑动按钮列表
+    @功能：    调用之后显示实时开关状态
+    @参数：    无
+    @返回类型： void
+*/
 void MainWidget::handle_conf() {
     if (__once__  || m_pSettings == nullptr) {
         return ;
     }
-
-    if (m_pSettings != nullptr &&  m_pSettings->value("Auto-sync/enable").toString() == "true") {
-        m_stackedWidget->setCurrentWidget(m_itemList);
-        m_autoSyn->make_itemon();
-        m_autoSyn->set_active(true);
-        for (int i  = 0;i < m_szItemlist.size();i ++) {
-            m_itemList->get_item(i)->make_itemon();
-            m_itemList->get_item(i)->set_active(true);
-        }
-        m_bAutoSyn = true;
-    } else {
-        m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
+    bool ret = m_pSettings->value("Auto-sync/enable").toString() == "false";
+    if (ret) {
         m_autoSyn->make_itemoff();
-        m_bAutoSyn = false;
-        for (int i  = 0;i < m_szItemlist.size();i ++) {
-            judge_item( ConfigFile(m_szConfPath).Get(m_szItemlist.at(i),"enable").toString(),i);
-        }
-        for (int i  = 0;i < m_szItemlist.size();i ++) {
-            m_itemList->get_item(i)->set_active(m_bAutoSyn);
-        }
-        return ;
+        //此时云端和本地开关本来就是关闭的，不可能进行同步
+        emit isSync(false);
+    } else {
+        m_autoSyn->make_itemon();
     }
     for (int i  = 0;i < m_szItemlist.size();i ++) {
         judge_item(  ConfigFile(m_szConfPath).Get(m_szItemlist.at(i),"enable").toString(),i);
+        if(ret) {
+            m_itemList->get_item(i)->get_swbtn()->setDisabledFlag(true);
+        }
+    }
+
+}
+
+void MainWidget::ctrlAutoSync(int status) {
+    if (status == NETWORK_FAILURE) {
+        m_bIsFailed = false;
+        m_autoSyn->set_active(false);
+
+        for (int i  = 0;i < m_szItemlist.size();i ++) {
+            m_itemList->get_item(i)->set_active(false);
+        }
+    } else if (status == SYNC_FAILURE) {
+        m_bIsFailed = true;
+        m_autoSyn->make_itemoff();
+        m_autoSyn->set_active(true);
+        m_autoSyn->set_change(-1,"Failed!");
+        for (int i  = 0;i < m_szItemlist.size();i ++) {
+            m_itemList->get_item(i)->set_active(false);
+        }
+    } else if (status == SYNC_NORMAL) {
+        m_bIsFailed = false;
+        m_autoSyn->set_active(true);
+        m_autoSyn->set_change(0,"0");
+        for (int i  = 0;i < m_szItemlist.size();i ++) {
+            m_itemList->get_item(i)->set_active(true);
+            m_itemList->get_item(i)->set_change(0,"0");
+        }
     }
 }
 
@@ -1035,69 +1062,63 @@ void MainWidget::on_auto_syn(bool checked) {
     if (m_bIsOldBackEnds) {
         isNetWorkOnline();
     }
-    if (m_mainWidget->currentWidget() == m_nullWidget) {
+    if (isAvaliable() == false) {
         return ;
-    }
-    //emit docheck();
-    //m_bAutoSyn = on;
-    for (int i  = 0;i < m_szItemlist.size();i ++) {
-        m_itemList->get_item(i)->set_active(m_bAutoSyn);
+     }
+    if (checked == true) {
+        m_keyInfoList.clear();
+
+        //用户试图打开自动同步，将同步尝试设置为正常状态
+        ctrlAutoSync(SYNC_NORMAL);
+
+        //用户打开自动按钮开关，进行下载同步，要考虑到用户token有效，但是没有All.conf的情况出现
+        QFile file( m_szConfPath);
+        if (file.exists() == false) {
+            emit dooss(m_szUuid);
+            return ;
+        } else {
+            emit doquerry(m_szCode);
+        }
+        m_stackedWidget->setCurrentWidget(m_itemList);
+    } else {
+        m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
     }
 
-    if (m_bIsOnline == false) {
-        showDesktopNotify(tr("Network can not reach!"));
-        return ;
-    }
     emit dochange("Auto-sync",checked);
 }
 
 /* 登出处理事件 */
 void MainWidget::on_login_out() {
-
+    //没有进行的同步，直接退出
     if (m_exitCloud_btn->property("on") == false)  {
         if (m_bIsKylinId) {
             emit kylinIdLogOut();
         } else {
             emit dologout();
         }
-        m_bTokenValid = false;
+        m_szCode = tr("Disconnected");
+        m_bTokenValid = false; //Token失效
+        m_firstLoad = true;
 
     } else {
-        emit dosend("exit");
+        //同步正在开始，结束同步
         QProcess proc;
         proc.startDetached("killall kylin-sso-client");
         push_over();
     }
-
 }
 
-
-/* 动态布局显示处理函数 */
-void MainWidget::setshow(QWidget *widget) {
-    widget->hide();
-    widget->setAttribute(Qt::WA_DontShowOnScreen);
-    widget->setAttribute(Qt::WA_DontShowOnScreen, false);
-    widget->show();
-    widget->adjustSize();
-}
 
 QLabel* MainWidget::get_info() {
     return m_infoTab;
 }
 
-TitleLabel* MainWidget::get_title() {
+TitleLabel *MainWidget::get_title() {
     return m_title;
 }
 
 /* 同步回调函数集 */
 void MainWidget::download_files() {
-    if (__once__ == true || m_pSettings == nullptr) {
-        return ;
-    }
-    if (m_mainWidget->currentWidget() == m_nullWidget) {
-        return ;
-    }
-    //emit docheck();
     if (m_exitCloud_btn->property("on") == false) {
         m_exitCloud_btn->setProperty("on",true);
         m_exitCloud_btn->style()->unpolish(m_exitCloud_btn);
@@ -1107,28 +1128,12 @@ void MainWidget::download_files() {
         m_exitCloud_btn->setToolTip(tr("Stop sync"));
         m_blueEffect_sync->startmoive();
         emit isSync(true);
-        //showDesktopNotify("同步开始");
     }
     m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
-
-
-    if (m_autoSyn->get_swbtn()->getDisabledFlag() == true) {
-        return ;
-    }
-    m_autoSyn->set_change(1,"0");
 
 }
 
 void MainWidget::push_files() {
-
-    if (__once__ == true) {
-        return ;
-    }
-
-    if (m_mainWidget->currentWidget() == m_nullWidget) {
-        return ;
-    }
-   // emit docheck();
     if (m_exitCloud_btn->property("on") == false) {
         m_exitCloud_btn->setText("");
         m_exitCloud_btn->setProperty("on",true);
@@ -1138,22 +1143,12 @@ void MainWidget::push_files() {
         m_exitCloud_btn->setToolTip(tr("Stop sync"));
         m_blueEffect_sync->startmoive();
         emit isSync(true);
-       // showDesktopNotify("同步开始");
     }
     m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
-
-    if (m_autoSyn->get_swbtn()->getDisabledFlag() == true) {
-        return ;
-    }
-    m_autoSyn->set_change(1,"0");
 
 }
 
 void MainWidget::download_over() {
-    //emit docheck();
-    if (m_pSettings == nullptr) return;
-
-
     if (m_exitCloud_btn->property("on") == true) {
         m_blueEffect_sync->stop();
         m_exitCloud_btn->setText(tr("Exit"));
@@ -1164,22 +1159,13 @@ void MainWidget::download_over() {
         m_exitCloud_btn->update();
         m_bAutoSyn = true;
         emit isSync(false);
-        //showDesktopNotify("同步结束");
     }
-
     if(m_bIsFailed == true) return ;
      m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
-    if (__once__ == false) {
-
-        m_autoSyn->set_change(0,"0");
-    }
 
 }
 
 void MainWidget::push_over() {
-    //emit docheck();
-     if (m_pSettings == nullptr) return;
-
     if (m_exitCloud_btn->property("on") == true) {
         m_blueEffect_sync->stop();
         m_exitCloud_btn->setText(tr("Exit"));
@@ -1190,14 +1176,8 @@ void MainWidget::push_over() {
         m_exitCloud_btn->update();
         m_bAutoSyn = true;
         emit isSync(false);
-        //showDesktopNotify("同步结束");
     }
-
-    if(m_bIsFailed == true) return ;
     m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
-    if (__once__ == false) {
-        m_autoSyn->set_change(0,"0");
-    }
 }
 
 void MainWidget::get_key_info(QString info) {
@@ -1212,49 +1192,27 @@ void MainWidget::get_key_info(QString info) {
     if (info == "Download") {
         return ;
     }
-
-    bool bIsFailed = false;
+    //如果存在多个同步项，则用逗号隔开，如果只有一个直接插入失败列表
     if (info.contains(",")) {
         m_keyInfoList = info.split(',');
     } else {
         m_keyInfoList << info;
     }
-
-    if (m_keyInfoList.size() == 1  && m_szItemlist.contains(m_keyInfoList[0]) ) {
-        //m_autoSyn->set_change(-1,m_keyInfoList[0]);
-        m_autoSyn->make_itemoff();
-        emit dochange("Auto-sync",false);
-        m_stackedWidget->setCurrentWidget(m_nullwidgetContainer);
-        m_bIsFailed = true;
-        __once__ = true;
-        return ;
-    } else if (m_keyInfoList.size() > 1){
-        bIsFailed = true;
-    }
-
-    //m_keyInfoList.size() > 1的情况
-    //说明size大于2
-    if (bIsFailed) {
-        m_bIsFailed = true;
-        QString keys = "";
-        for (QString key : m_keyInfoList) {
-            if (key != m_keyInfoList.last()) {
-
-                if (m_itemMap.value(key).isEmpty() == false) {
-                    m_itemList->get_item_by_name(m_itemMap.value(key))->set_change(-1,"Failed!");
-                    keys.append(tr("%1,").arg(m_itemMap.value(key)));
-                }
-            }
+    //对失败同步项进行错误提示处理
+    for (QString key : m_keyInfoList) {
+        //如果key没被目前已知同步项列表包含，则跳过
+        if (!m_szItemlist.contains(key)) {
+            continue;
         }
-        m_autoSyn->make_itemoff();
-        for (int i = 0;i < m_szItemlist.size();i ++) {
-            m_itemList->get_item(i)->set_active(false);
+        if (m_itemMap.value(key).isEmpty() == false) {
+            m_itemList->get_item_by_name(m_itemMap.value(key))->set_change(-1,"Failed!");
         }
-        //m_autoSyn->set_change(-1,"Failed!");
-        emit dochange("Auto-sync",false);
-        __once__ = true;
     }
     m_bIsFailed = true;
+    if(m_bIsOnline == true)
+        ctrlAutoSync(SYNC_FAILURE);
+    else
+        ctrlAutoSync(NETWORK_FAILURE);
     m_keyInfoList.clear();
 }
 
@@ -1284,7 +1242,6 @@ void MainWidget::loginSuccess(int ret) {
     if (ret == 0) {
        m_mainWidget->setCurrentWidget(m_widgetContainer);
        emit kylinIdCheck();
-       emit dooss(m_szUuid);
     }
 }
 
