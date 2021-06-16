@@ -553,7 +553,7 @@ void Widget::initGSettings()
                 }
 
                 for (int i = 0; i < BrightnessFrameV.size(); ++i) {
-                    if (BrightnessFrameV[i]->outputName == "eDP-1") {
+                    if (BrightnessFrameV[i]->outputName == "eDP") {
                        BrightnessFrameV[i]->slider->blockSignals(true);
                        BrightnessFrameV[i]->setTextLableValue(QString::number(value));
                        BrightnessFrameV[i]->slider->setValue(value);
@@ -716,7 +716,7 @@ QString Widget::getMonitorType()
 bool Widget::isLaptopScreen()
 {
     const QString &monitor = ui->primaryCombo->currentText();
-    if (monitor == "eDP-1") {
+    if (monitor == "eDP") {
         return true;
     }
     return false;
@@ -845,7 +845,7 @@ void Widget::clearOutputIdentifiers()
 
 void Widget::addBrightnessFrame(QString name, bool openFlag)
 {
-    if (mIsBattery && name != "eDP-1")  //笔记本非内置
+    if (mIsBattery && name != "eDP")  //笔记本非内置
         return;
 
     for (int i = 0; i < BrightnessFrameV.size(); ++i) {  //已经有了
@@ -862,7 +862,7 @@ void Widget::addBrightnessFrame(QString name, bool openFlag)
             deleteFrameNameV.remove(i);
         }
     }
-    if (mIsBattery && name == "eDP-1") {
+    if (mIsBattery && name == "eDP") {
         frame->outputName = name;
         int initValue = mPowerGSettings->get(POWER_KEY).toInt();
         frame->setTextLableValue(QString::number(initValue));
