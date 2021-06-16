@@ -514,6 +514,9 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
                 this->lanList << nname;
             }
         }
+        if (!this->actLanName.isEmpty()) {
+            this->lanList.removeOne(this->actLanName);
+        }
     }
     if (!this->connectedWifi.isEmpty()) {
         QMap<QString, int>::iterator iter = this->connectedWifi.begin();
