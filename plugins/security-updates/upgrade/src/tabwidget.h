@@ -12,6 +12,7 @@
 #include <QListWidgetItem>
 #include <QCheckBox>
 #include <QFont>
+#include <QProgressBar>
 
 #include "appupdate.h"
 //#include "switchbutton.h"
@@ -25,6 +26,7 @@
 
 #define CRUCIAL_FILE_PATH "/var/lib/kylin-software-properties/template/crucial.list"
 #define IMPORTANT_FIEL_PATH "/var/lib/kylin-software-properties/template/important.list"
+
 
 const int needBack = 99;
 
@@ -69,6 +71,8 @@ public:
     //三种状态下的版本信息   显示当前版本、可更新版本、或最新版本
     QLabel *versionInformationLab;
     QLabel *lastRefreshTime;
+    QProgressBar *allProgressBar;
+    QLabel *progressLabel;
     QPushButton *historyUpdateLog;  //历史更新日志界面
     QVBoxLayout *inforLayout;
 
@@ -85,10 +89,19 @@ public:
     QLabel *isAutoBackupLab;
     SwitchButton *isAutoBackupSBtn;
 
+    QFrame *isAutoUpgradeWidget;
+    QVBoxLayout *isAutoUpgradeLayout;
+    QHBoxLayout *autoUpgradeBtnLayout;
+    QLabel *isAutoUpgradeLab;
+    QLabel *autoUpgradeLab;
+    SwitchButton *isAutoUpgradeSBtn;
 
     QWidget *allUpdateWid;
     QVBoxLayout *allUpdateLayout;
 
+    QList<AppUpdateWid *> widgetList;
+
+    bool isAllUpgrade;
     int inumber = 0;
     int retryTimes = 0;
     m_updatelog *historyLog;
@@ -99,6 +112,11 @@ public:
     //源管理器Dbus对象
     UpdateSource *updateSource;
 
+    int allProgress = 0;
+    int allUpgradeNum = 0;
+
+
+    QList<pkgProgress> pkgList;
 
     void disconnectSource();
 signals:
@@ -108,14 +126,16 @@ signals:
 public slots:
     void showHistoryWidget();
     void isAutoCheckedChanged();
+    void isAutoUpgradeChanged();
     void slotCancelDownload();
     void loadingOneUpdateMsgSlot(AppAllMsg msg); //逐个加载更新
     void loadingFinishedSlot(int size); //加载完毕信号
     void waitCrucialInstalled();  //等待静默更新安装完的消息提示
 
     void hideUpdateBtnSlot(bool isSucceed);
-    void changeUpdateAllSlot();
+    void changeUpdateAllSlot(bool isUpdate);
 
+    void getAllProgress(QString pkgName, int Progress, QString type);
     //调用源管理器相关
     void slotUpdateTemplate(QString status);
     void slotUpdateCache(QVariantList sta);
@@ -130,6 +150,7 @@ public slots:
 private:
     UKSCConn *ukscConnect;
     bool isConnectSourceSignal = false;
+
     void unableToConnectSource();
 //备份还原相关
     void bacupInit(bool isConnect);
@@ -140,6 +161,11 @@ private:
 
     void backupMessageBox(QString str);
     void backupHideUpdateBtn(int result);
+
+    void getAutoUpgradeStatus();
+    bool get_battery();
+    void autoUpdateLoadUpgradeList();
+
 signals:
     int needBackUp();
     void startBackUp(int);

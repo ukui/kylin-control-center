@@ -21,6 +21,21 @@ void UpdateSource::startDbus()
     emit startDbusFinished();
 }
 
+QString UpdateSource::getOrSetConf(QString type, QStringList name)
+{
+    QVariantList args;
+    args << QVariant::fromValue(type);
+    args << QVariant::fromValue(name);
+    QDBusPendingReply<QString > reply = serviceInterface->call("getOrSetAutoUpgradeconf", args);
+    qDebug() << args;
+
+    if (!reply.isValid()) {
+        qDebug() << "获取自动更新配置文件失败";
+        return reply;
+    }
+    return reply;
+}
+
 /*
  * 调用源管理器更新源模版接口
 */

@@ -34,6 +34,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include<sys/file.h>
 #include <pwd.h>
 #include "traybusthread.h"
 
@@ -100,6 +101,7 @@ signals:
     void sendAppMessageSignal(AppAllMsg msg);
 //    void emitInameList(QStringList list);
     void sendFinishGetMsgSignal(int size);
+    void sendUpdateSize(long size);
 
 public slots:
     void getAptSignal(QString arg, QMap<QString, QVariant> map);

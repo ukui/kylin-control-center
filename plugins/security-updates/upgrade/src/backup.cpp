@@ -138,6 +138,7 @@ void BackUp::startBackUp(int num)
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(timeStamp) << QVariant::fromValue(create_note) << QVariant::fromValue(inc_note)
                      << QVariant::fromValue(userName) << QVariant::fromValue(uid);
+        qDebug() << argumentList;
         interface->asyncCallWithArgumentList(QStringLiteral("autoBackUpForSystemUpdate_noreturn"), argumentList);
     }
 }
@@ -219,7 +220,7 @@ bool BackUp::readBackToolInfo()
     {
         qDebug()<<"备份还原接口异常";
     }
-    if(list.at(0).toString()!=timeStamp)
+    if(list.at(0).toString()!= timeStamp)
     {
         qDebug()<<"未找到相同版本备份镜像，需要备份";
         return true;

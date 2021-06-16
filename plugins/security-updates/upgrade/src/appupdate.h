@@ -77,6 +77,9 @@ private:
 
     bool execFun;
 
+public:
+    bool isUpdateAll = false;
+
 public slots:
     void showDetails();
     void showUpdateLog();
@@ -112,10 +115,11 @@ signals:
     void startWork(QString appName);
     void startMove(QStringList list, QString appName);
     void hideUpdateBtnSignal(bool isSucceed);
-    void changeUpdateAllSignal();
+    void changeUpdateAllSignal(bool isUpdate);
     void downloadFailedSignal(int exitCode);  //网络异常或者其他情况下下载失败时
     void filelockedSignal();
     void cancel();
+    void sendProgress(QString pkgName, int Progress, QString type);
 
 
 //    void aptFinish();
@@ -123,6 +127,7 @@ private:
     void updateAppUi(QString name);
     QString translationVirtualPackage(QString str);
     QString pkgIconPath = "";
+    bool get_battery();
 };
 
 #endif // APPUPDATE_H
