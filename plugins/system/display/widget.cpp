@@ -1934,7 +1934,7 @@ void Widget::showBrightnessFrame(const int flag)
             ui->unifyBrightFrame->setFixedHeight(BrightnessFrameV.size() * (50 + 2 + 2));
             for (int i = 0; i < BrightnessFrameV.size(); ++i) {
                 BrightnessFrameV[i]->openFlag = true;
-                BrightnessFrameV[i]->setTextLableName(tr("Brightness") + QString("(") + BrightnessFrameV[i]->outputName[0] + QString(")"));
+                BrightnessFrameV[i]->setTextLableName(tr("Brightness") + QString("(") + BrightnessFrameV[i]->outputName + QString(")"));
                 BrightnessFrameV[i]->setVisible(true);
             }
         } else {
