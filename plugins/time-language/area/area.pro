@@ -37,12 +37,11 @@ PKGCONFIG     += gio-2.0 \
 
 SOURCES += \
         area.cpp \
-        dataformat.cpp
+        languageFrame.cpp
 
 HEADERS += \
         area.h \
-        dataformat.h
+        languageFrame.h
 
 FORMS += \
-        area.ui \
-        dataformat.ui
+        area.ui

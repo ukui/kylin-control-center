@@ -25,7 +25,6 @@
 #include <QtPlugin>
 
 #include "shell/interface.h"
-#include "dataformat.h"
 #include "HoverWidget/hoverwidget.h"
 #include "ImageUtil/imageutil.h"
 
@@ -76,6 +75,12 @@ private:
     void initComponent();
     QStringList getUserDefaultLanguage();
     void connectToServer();
+    void initFormFrame();
+    void initFormComponent(int8_t value);
+    void initConnect();
+    void writeGsettings(const QString &key, const QString &value);
+    void timeFormatClicked(bool flag);
+    void initLanguage();
 
 private:
     Ui::Area *ui;
@@ -91,20 +96,14 @@ private:
 
     QDBusInterface *m_areaInterface;
     QGSettings     *m_gsettings = nullptr;
-    QTimer         *m_itimer    = nullptr;
     HoverWidget    *addWgt;
     QDBusInterface *cloudInterface;
 
     bool mFirstLoad;
-
 private slots:
-    void initFormatData();
     void run_external_app_slot();
-    void change_language_slot(int);
     void change_area_slot(int);
-    void datetime_update_slot();
     void add_lan_btn_slot();
-    void changeform_slot();
     void cloudChangedSlot(const QString &key);
 };
 

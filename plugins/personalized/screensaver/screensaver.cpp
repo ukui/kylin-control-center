@@ -241,7 +241,7 @@ void Screensaver::initComponent()
     uslider->setRange(1,6);
     uslider->setTickInterval(1);
     uslider->setPageStep(1);
-
+    ui->lockhorizontalLayout->setSpacing(10);
     ui->lockhorizontalLayout->addWidget(uslider);
 
     ui->idleFrame->setFixedHeight(80);
@@ -608,7 +608,7 @@ void Screensaver::keyChangedSlot(const QString &key) {
 }
 
 void Screensaver::showCustomizeFrame() {
-    ui->frame->setFixedHeight(492 + 16 + 28 + 52);    
+    ui->frame->setFixedHeight(132 + 350 + 52 + 2);
     ui->customizeFrame->setVisible(true);
 }
 

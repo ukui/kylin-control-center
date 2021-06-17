@@ -6265,7 +6265,7 @@ run start-pulseaudio-x11 manually.</source>
         <location filename="../../../plugins/personalized/screensaver/screensaver.ui" line="476"/>
         <location filename="../../../plugins/personalized/screensaver/screensaver.cpp" line="178"/>
         <source>Idle time</source>
-        <translation>开启前屏幕闲置</translation>
+        <translation>此时间段后开启屏保</translation>
         <extra-contents_path>/screensaver/Idle time</extra-contents_path>
     </message>
     <message>

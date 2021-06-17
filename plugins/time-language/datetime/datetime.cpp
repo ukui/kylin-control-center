@@ -198,6 +198,7 @@ void DateTime::initComponent()
     //~ contents_path /date/Change time zone
     ui->chgzonebtn->setText(tr("Change time zone"));
 
+    ui->hourFrame->setVisible(false);  //移到area里面了
     QHBoxLayout *hourLayout = new QHBoxLayout(ui->hourFrame);
 
     hourLayout->addWidget(m_formTimeLabel);
