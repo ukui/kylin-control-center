@@ -45,7 +45,7 @@
     <number>32</number>
    </property>
    <property name="bottomMargin">
-    <number>40</number>
+    <number>214</number>
    </property>
    <item>
     <widget class="TitleLabel" name="titleLabel">

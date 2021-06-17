@@ -47,7 +47,7 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
 
     // 右侧Widget大小限定(限制了最小宽度)
     ui->widget->setMinimumWidth(650);
-    ui->widget->setMaximumWidth(1200);
+    //ui->widget->setMaximumWidth(1200);
 
     // 左侧二级菜单样式
     ui->leftStackedWidget->setStyleSheet("border: none;");
