@@ -62,21 +62,6 @@ void OutputConfig::setTitle(const QString &title)
 
 void OutputConfig::initUi()
 {
-    connect(mOutput.data(), &KScreen::Output::isConnectedChanged,
-            this, [=]() {
-        if (!mOutput->isConnected()) {
-            setVisible(false);
-        }
-    });
-
-    connect(mOutput.data(), &KScreen::Output::rotationChanged,
-            this, [=]() {
-        const int index = mRotation->findData(mOutput->rotation());
-        mRotation->blockSignals(true);
-        mRotation->setCurrentIndex(index);
-        mRotation->blockSignals(false);
-    });
-
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
     QVBoxLayout *vbox = new QVBoxLayout(this);
@@ -209,6 +194,8 @@ void OutputConfig::initUi()
     scaleFrame->setMinimumSize(550, 50);
     scaleFrame->setMaximumSize(960, 50);
     vbox->addWidget(scaleFrame);
+
+    initConnection();
 }
 
 double OutputConfig::getScreenScale()
@@ -220,6 +207,32 @@ double OutputConfig::getScreenScale()
         }
     }
     return scale;
+}
+
+void OutputConfig::initConnection()
+{
+    connect(mOutput.data(), &KScreen::Output::isConnectedChanged,
+            this, [=]() {
+        if (!mOutput->isConnected()) {
+            setVisible(false);
+        }
+    });
+
+    connect(mOutput.data(), &KScreen::Output::rotationChanged,
+            this, [=]() {
+        const int index = mRotation->findData(mOutput->rotation());
+        mRotation->blockSignals(true);
+        mRotation->setCurrentIndex(index);
+        mRotation->blockSignals(false);
+    });
+
+    connect(mOutput.data(), &KScreen::Output::currentModeIdChanged,
+            this, [=]() {
+        mRefreshRate->blockSignals(true);
+        const int index = mRefreshRate->findData(mOutput->currentModeId());
+        mRefreshRate->setCurrentIndex(index);
+        mRefreshRate->blockSignals(false);
+    });
 }
 
 void OutputConfig::initDpiConnection()
