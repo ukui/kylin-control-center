@@ -1112,10 +1112,10 @@ void Widget::callMethod(QRect geometry, QString name)
                                                           "/org/ukui/SettingsDaemon/wayland",
                                                           "org.ukui.SettingsDaemon.wayland",
                                                           "priScreenChanged");
-    x = geometry.x() / scale;
-    y = geometry.y() / scale;
-    w = geometry.width() / scale;
-    h = geometry.height() / scale;
+    x = ceil(geometry.x() / scale);
+    y = ceil(geometry.y() / scale);
+    w = ceil(geometry.width() / scale);
+    h = ceil(geometry.height() / scale);
     message << x << y << w << h << name;
     QDBusConnection::sessionBus().send(message);
 }
