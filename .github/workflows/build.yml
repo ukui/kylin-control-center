@@ -3,11 +3,11 @@ name: Check build
 on:
   push:
     branches:
-      - dev-stable
+      - dev-stable-0610
 
   pull_request:
     branches:
-      - dev-stable
+      - dev-stable-0610
 
 jobs:
   # archlinux-latest:
