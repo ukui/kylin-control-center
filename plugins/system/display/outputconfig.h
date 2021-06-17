@@ -55,6 +55,7 @@ protected:
     double getScreenScale();
 
 private:
+    void initConnection();
     void initDpiConnection();
     QString scaleToString(double scale);
 
