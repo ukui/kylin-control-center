@@ -231,13 +231,6 @@ void SecurityCenter::initComponent(){
                                          tr("Detect abnormal configuration"), \
                                          "/usr/sbin/ksc-defender --baseline-ctrl");
 
-    BlockWidget * virus_protect_Widget = new BlockWidget();
-    virus_protect_Widget->setupComponent(":/img/plugins/securitycenter/protect_48.png", \
-                                         ":/img/plugins/securitycenter/protect_48_white.png",\
-                                         //~ contents_path /securitycenter/Virus defense
-                                         tr("Virus defense"), \
-                                         tr("Real time protection from virus threat"), \
-                                         "/usr/sbin/ksc-defender  --virus-protect");
 
     BlockWidget * exec_ctrl_Widget = new BlockWidget();
     exec_ctrl_Widget->setupComponent(":/img/plugins/securitycenter/kysec_48.png", \
@@ -256,20 +249,11 @@ void SecurityCenter::initComponent(){
                                        tr("Manage and control network"), \
                                        "/usr/sbin/ksc-defender --net-protect");
 
-    BlockWidget * security_setting_Widget = new BlockWidget();
-    security_setting_Widget->setupComponent(":/img/plugins/securitycenter/set2px.png", \
-                                            ":/img/plugins/securitycenter/set2@2x_1.png",\
-                                            //~ contents_path /securitycenter/Secure Config
-                                            tr("Secure Config"), \
-                                            tr("Simple Config"), \
-                                            "/usr/sbin/ksc-defender --security-setting");
 
     flowLayout->addWidget(account_sec_Widget);
     flowLayout->addWidget(baseline_ctrl_Widget);
-    flowLayout->addWidget(virus_protect_Widget);
     flowLayout->addWidget(net_protect_Widget);
     flowLayout->addWidget(exec_ctrl_Widget);
-    flowLayout->addWidget(security_setting_Widget);
 
     connect(account_sec_Widget, &BlockWidget::bwClicked, [=](QString cmd){
         runExternalApp(cmd);
@@ -277,18 +261,14 @@ void SecurityCenter::initComponent(){
     connect(baseline_ctrl_Widget, &BlockWidget::bwClicked, [=](QString cmd){
         runExternalApp(cmd);
     });
-    connect(virus_protect_Widget, &BlockWidget::bwClicked, [=](QString cmd){
-        runExternalApp(cmd);
-    });
+
     connect(net_protect_Widget, &BlockWidget::bwClicked, [=](QString cmd){
         runExternalApp(cmd);
     });
     connect(exec_ctrl_Widget, &BlockWidget::bwClicked, [=](QString cmd){
         runExternalApp(cmd);
     });
-    connect(security_setting_Widget, &BlockWidget::bwClicked, [=](QString cmd){
-        runExternalApp(cmd);
-    });
+
 }
 
 void SecurityCenter::runExternalApp(QString cmd) {
