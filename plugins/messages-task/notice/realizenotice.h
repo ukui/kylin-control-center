@@ -50,7 +50,9 @@ extern "C" {
 #define MESSAGES_KEY            "messages"
 #define VOICE_KEY               "voice"
 #define MAXIMINE_KEY            "maximize"
-#define NAME_KEY                "name"
+#define NAME_KEY_US             "name-us"
+#define NAME_KEY_CN             "name-cn"
+
 
 #define MAX_CUSTOM_SHORTCUTS 1000
 

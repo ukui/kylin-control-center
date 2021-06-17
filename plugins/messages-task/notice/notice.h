@@ -26,6 +26,7 @@
 #include <QDebug>
 #include <QVector>
 #include <QGSettings>
+#include <QVBoxLayout>
 
 #include <shell/interface.h>
 #include "SwitchButton/switchbutton.h"
@@ -92,6 +93,13 @@ private:
     QStringList appsKey;
     QVector<QGSettings*> vecGsettins;
 
+    QVBoxLayout *applistverticalLayout;
+
+    QList<char *> listChar;
+
     bool mFirstLoad;
+
+    int count = 0;
+
 };
 #endif // NOTICE_H
