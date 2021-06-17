@@ -438,7 +438,7 @@
            <item>
             <layout class="QHBoxLayout" name="lockhorizontalLayout">
              <property name="spacing">
-              <number>0</number>
+              <number>10</number>
              </property>
              <property name="leftMargin">
               <number>16</number>
@@ -462,13 +462,13 @@
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>188</width>
+                 <width>196</width>
                  <height>0</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>188</width>
+                 <width>196</width>
                  <height>16777215</height>
                 </size>
                </property>
