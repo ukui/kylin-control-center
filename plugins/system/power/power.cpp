@@ -91,9 +91,11 @@ QWidget * Power::get_plugin_ui() {
             idletime = sessionsettings->get(IDLE_DELAY_KEY).toInt();
             connect(sessionsettings,&QGSettings::changed,[=](QString key)
             {
-                if("idle-delay" == key)
+
+                if("idleDelay" == key)
                 {
                     idletime = sessionsettings->get(IDLE_DELAY_KEY).toInt();
+
                     retranslateUi();
 
                 }
@@ -450,9 +452,9 @@ void Power::retranslateUi()
     mCustomtitleLabel->setText(tr("General Settings"));
 
 
-    if (QLabelSetText(msleepLabel, QString(tr("Time to sleep after %1 minute of idle time")).arg(idletime))) {
-       msleepLabel->setToolTip(QString(tr("Time to sleep after %1 minute of idle time %2").arg(idletime).arg(QString(tr("(No operation for %1 minute is considered idle)")).arg(idletime))));
-    }
+    QLabelSetText(msleepLabel, tr("Time to sleep after idle time"));
+    msleepLabel->setToolTip(QString(tr("(No operation for %1 minute is considered idle)")).arg(idletime));
+
     if (QLabelSetText(mCloseLabel, tr("Time to close display :"))) {
         mCloseLabel->setToolTip(tr("Time to close display"));
     }
