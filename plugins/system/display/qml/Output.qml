@@ -39,24 +39,6 @@ QMLOutput {
     property bool isToggleButtonVisible: false;
     property bool hasMoved: false;
 
-    property var screenName:[
-        "Unknown",
-        "VGA",
-        "DVI",
-        "DVII",
-        "DVIA",
-        "DVID",
-        "HDMI",
-        "eDP-1",
-        "TV",
-        "TVComposite",
-        "TVSVideo",
-        "TVComponent",
-        "TVSCART",
-        "TVC4",
-        "DP-1"
-    ];
-
     width: monitorMouseArea.width;
     height: monitorMouseArea.height;
 
@@ -224,7 +206,7 @@ QMLOutput {
                     text: if (root.isCloneMode) {
                             return ("Unified Outputs");
                           } else {
-                            return screenName[root.output.type];
+                            return root.output.name;
                           }
 
                     anchors {

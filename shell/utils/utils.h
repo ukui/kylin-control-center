@@ -37,6 +37,7 @@
 namespace Utils
 {    
     void centerToScreen(QWidget *widget);
+    QRect sizeOnCursor();
     void setCLIName(QCommandLineParser &parser);
     QVariantMap getModuleHideStatus();
     QString getCpuInfo();

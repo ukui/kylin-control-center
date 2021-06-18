@@ -6,22 +6,42 @@ BluetoothNameLabel::BluetoothNameLabel(QWidget *parent, int x, int y):
 //    qDebug() << Q_FUNC_INFO << x << y;
 
     this->setAutoFillBackground(true);
+    this->setObjectName("BluetoothNameLabel");
     this->setStyleSheet("QWidget{border: none;border-radius:2px;}");
     this->setFixedSize(x,y);
+    hLayout = new QHBoxLayout(this);
+    hLayout->setContentsMargins(5,0,5,0);
+    hLayout->setSpacing(0);
 
     m_label = new QLabel(this);
-    m_label->setAlignment(Qt::AlignCenter);
-    m_label->setGeometry(2,2,this->width()-3,this->height()-3);
-    m_label->setStyleSheet("QLabel{\
-                             width: 214px;\
-                             height: 20px;\
-                             font-family: PingFangSC-Regular, PingFang SC;\
-                             font-weight: 400;\
-                             line-height: 20px;}");
+    m_label->resize(10,10);
+    m_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+    //m_label->setGeometry(2,2,this->width()-3,this->height()-3);
+//    m_label->setStyleSheet("QLabel{\
+//                             width: 250px;\
+//                             height: 20px;\
+//                             font-family: PingFangSC-Regular, PingFang SC;\
+//                             font-weight: 420;\
+//                             line-height: 20px;}");
+//    m_label->setIndent(2);
+//    m_label->setStyleSheet("QLabel{\
+//                             width: 280px;\
+//                             height: 20px;\
+//                             font-family: PingFangSC-Regular, PingFang SC;\
+//                             font-weight: 420;\
+//                             line-height: 20px;}");
+    hLayout->addWidget(m_label);
+    icon_pencil = new QLabel(this);
+    icon_pencil->setGeometry(this->width()-200,2,43,this->height()-3);
+    icon_pencil->setPixmap(QIcon::fromTheme("document-edit-symbolic").pixmap(20,20));
+    icon_pencil->setToolTip(tr("Double-click to change the device name"));
+    hLayout->addWidget(icon_pencil);
+    hLayout->addStretch(1);
 
     m_lineedit = new QLineEdit(this);
     m_lineedit->setEchoMode(QLineEdit::Normal);
-    m_lineedit->setAlignment(Qt::AlignCenter);
+    //m_lineedit->setAlignment(Qt::AlignCenter);
+    m_lineedit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
     connect(m_lineedit,&QLineEdit::editingFinished,this,&BluetoothNameLabel::LineEdit_Input_Complete);
     m_lineedit->setGeometry(2,2,this->width()-3,this->height()-3);
     m_lineedit->setVisible(false);
@@ -62,9 +82,12 @@ void BluetoothNameLabel::set_dev_name(const QString &dev_name)
 {
     QFont ft;
     QFontMetrics fm(ft);
-    QString text = fm.elidedText(dev_name, Qt::ElideMiddle, font_width);
-    m_label->setText(tr("Can now be found as \"%1\"").arg(text));
+    //QString text = fm.elidedText(dev_name, Qt::ElideMiddle, font_width);
+    QString text = fm.elidedText(dev_name, Qt::ElideMiddle, this->width());
+    //m_label->setText(tr("Can now be found as \"%1\"").arg(text));
+    m_label->setText(text);
     m_label->setToolTip(tr("Can now be found as \"%1\"").arg(dev_name));
+    //m_label->adjustSize();
     m_label->update();
 
     device_name = dev_name;
@@ -75,6 +98,7 @@ void BluetoothNameLabel::mouseDoubleClickEvent(QMouseEvent *event)
     Q_UNUSED(event);
 
     m_label->setVisible(false);
+    icon_pencil->setVisible(false);
 
     m_lineedit->setText(device_name);
     m_lineedit->setVisible(true);
@@ -98,9 +122,9 @@ void BluetoothNameLabel::enterEvent(QEvent *event)
 //    this->update();
 
     if(style_flag)
-        this->setStyleSheet("QWidget{background-color:black;border:none;border-radius:2px;}");
+        this->setStyleSheet("QWidget#BluetoothNameLabel{background-color:black;border:none;border-radius:2px;}");
     else
-        this->setStyleSheet("QWidget{background-color:white;border:none;border-radius:2px;}");
+        this->setStyleSheet("QWidget#BluetoothNameLabel{background-color:white;border:none;border-radius:2px;}");
 }
 
 void BluetoothNameLabel::LineEdit_Input_Complete()
@@ -121,10 +145,14 @@ void BluetoothNameLabel::set_label_text(const QString &value)
 
     QFont ft;
     QFontMetrics fm(ft);
-    QString text = fm.elidedText(m_lineedit->text(), Qt::ElideMiddle, font_width);
-    m_label->setText(tr("Can now be found as \"%1\"").arg(text));
+    //QString text = fm.elidedText(m_lineedit->text(), Qt::ElideMiddle, font_width);
+    QString text = fm.elidedText(m_lineedit->text(), Qt::ElideMiddle, this->width());
+    //m_label->setText(tr("Can now be found as \"%1\"").arg(text));
+    m_label->setText(text);
     m_label->setToolTip(tr("Can now be found as \"%1\"").arg(device_name));
+
     m_label->setVisible(true);
+    icon_pencil->setVisible(true);
 }
 
 void BluetoothNameLabel::settings_changed(const QString &key)
@@ -155,8 +183,11 @@ void BluetoothNameLabel::settings_changed(const QString &key)
             break;
         }
         QFontMetrics fm(ft);
-        QString text = fm.elidedText(device_name, Qt::ElideMiddle, font_width);
-        m_label->setText(tr("Can now be found as \"%1\"").arg(text));
+        //QString text = fm.elidedText(device_name, Qt::ElideMiddle, font_width);
+        QString text = fm.elidedText(device_name, Qt::ElideMiddle,this->width());
+        m_label->setText(text);
+        //m_label->setText(tr("Can now be found as \"%1\"").arg(text));
         m_label->setVisible(true);
+        icon_pencil->setVisible(true);
     }
 }
