@@ -285,30 +285,33 @@ bool NetConnect::getWirelessStatus() {
     ipCmd->start(program, arg);
     ipCmd->waitForFinished();
     QString output = ipCmd->readAll();
-
-    QStringList slist;
-    QString wirelessInfo;
-    foreach (QString line, output.split("\n")) {
-        line.replace(QRegExp("[\\s]+"), " ");
-        slist.append(line);
-    }
-
-    for (int i = 0; i < slist.size(); i++) {
-        QString str = slist.at(i);
-        if (!str.isEmpty() && str.contains(interfaceInfo)) {
-            wirelessInfo = str;
-        }
-    }
-    wirelessInfo = wirelessInfo.split("<").at(1);
-    wirelessInfo = wirelessInfo.split(">").at(0);
-    if (!wirelessInfo.isEmpty()) {
-        if (wirelessInfo.contains("UP")) {
-            return true;
-        } else {
-            return false;
-        }
+    if (interfaceInfo == "") {
+        return false;
     } else {
-        return true;
+        QStringList slist;
+        QString wirelessInfo;
+        foreach (QString line, output.split("\n")) {
+            line.replace(QRegExp("[\\s]+"), " ");
+            slist.append(line);
+        }
+
+        for (int i = 0; i < slist.size(); i++) {
+            QString str = slist.at(i);
+            if (!str.isEmpty() && str.contains(interfaceInfo)) {
+                wirelessInfo = str;
+            }
+        }
+        wirelessInfo = wirelessInfo.split("<").at(1);
+        wirelessInfo = wirelessInfo.split(">").at(0);
+        if (!wirelessInfo.isEmpty()) {
+            if (wirelessInfo.contains("UP")) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
 }
 
@@ -389,7 +392,7 @@ void NetConnect:: getNetList() {
     }
     this->TlanList  = execGetLanList();
     bool wirelessStatus = getWirelessStatus();
-    if (getWifiStatus() && reply.value().length() == 1 && wirelessStatus) {
+    if (getWifiStatus() && reply.value().length() == 1 && wirelessStatus && getHasWirelessCard()) {
         QElapsedTimer time;
         time.start();
         while (time.elapsed() < 300) {
@@ -1063,7 +1066,7 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo, bool wir
                 activeNet.strIPV4Address = datasIpv4.at(0).value("address").toString();
                 activeNet.strIPV4Prefix = datasIpv4.at(0).value("prefix").toString();
             } else {
-                qWarning()<<"Ipv4 data reply empty!";\
+                qWarning()<<"Ipv4 data reply empty!";
                 if (wirelessStatus) {
                     return -1;
                 }
@@ -1109,9 +1112,6 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo, bool wir
                 activeNet.strIPV6Prefix = dataIPV6.at(0).value("prefix").toString();
             } else {
                 qWarning()<<"Ipv6 data reply empty!";
-                if (wirelessStatus) {
-                    return -1;
-                }
             }
 
             QDBusMessage replyIPV6Gt = IPV6ifc.call("Get", "org.freedesktop.NetworkManager.IP6Config", "GateWay");
