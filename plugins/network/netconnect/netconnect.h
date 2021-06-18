@@ -75,6 +75,7 @@ typedef struct ActiveConInfo_s {
     QString strConType;
     QString strSecType;
     QString strChan;
+    QString strSpeed;
     QString strMac;
     QString strHz;
 
@@ -116,7 +117,7 @@ public:
 
     bool getwifiisEnable();
 
-    void getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo);
+    int getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo);
 
 private:
     Ui::NetConnect     *ui;
@@ -151,10 +152,18 @@ private:
 
     QList<ActiveConInfo> mActiveInfo;
     QTimer             *refreshTimer;
+
+    int                runCount;
+    QString            prefreChan;
+    QString            mPreWifiConnectedName;
+    QString            mPreLanConnectedName;
 private:
     int         setSignal(QString lv);
     QStringList execGetLanList();
-    void         getWifiListDone(QVector<QStringList> wifislist, QStringList lanList, bool getWifiListDone);
+    int         getWifiListDone(QVector<QStringList> wifislist, QStringList lanList);
+    QString     geiWifiChan();
+    QString     getWifiSpeed();
+
     bool        getInitStatus();
     bool        getWifiStatus();
     bool        getHasWirelessCard();
@@ -167,7 +176,6 @@ private:
     void        initNetworkMap();
     void        setWifiBtnDisable();
     void        setNetDetailVisible();                              // 设置网络刷新状态
-    QString     wifiIcon(bool isLock, int strength,int category);
     QString     wifiIcon(bool isLock, int strength);
     QList<QVariantMap> getDbusMap(const QDBusMessage &dbusMessage);
 private slots:
@@ -176,6 +184,7 @@ private slots:
     void netPropertiesChangeSlot(QMap<QString, QVariant> property);
     void netDetailSlot(QString netName);
     void refreshNetInfoTimerSlot();
+    void refreshNetInfoSlot();
 signals:
     void refresh();
 };
