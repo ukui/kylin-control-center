@@ -96,7 +96,7 @@ void NetDetail::initUI() {
         mDetailLayout->addRow(tr("Security Type:"), mSecType);
         mDetailLayout->addRow(tr("Hz:"), mHz);
         mDetailLayout->addRow(tr("Chan:"), mChan);
-        mDetailLayout->addRow(tr("Link Speed(rx/tx)"), mSpeed);
+        mDetailLayout->addRow(tr("Link Speed(rx/tx):"), mSpeed);
     }
 
     mDetailLayout->addRow(tr("BandWidth:"), mBandWidth);
