@@ -26,6 +26,7 @@
 #include <QtConcurrent>
 
 #include "SwitchButton/switchbutton.h"
+#include "Label/iconlabel.h"
 #include "cursor/xcursortheme.h"
 #include "../../../shell/customstyle.h"
 #include "../../../shell/utils/utils.h"
@@ -215,15 +216,18 @@ void Theme::setupSettings() {
 
 void Theme::setupComponent() {
 
-    ui->lightButton->setVisible(getSystemVersion());
+    ui->frame_2->setVisible(getSystemVersion());
     //隐藏现阶段不支持功能
     ui->controlLabel->hide();
     ui->controlWidget->hide();
     ui->verticalSpacer_2->changeSize(0,0);
 
     ui->defaultButton->setProperty("value", "ukui-default");
+    ui->defaultButton->setStyleSheet("QPushButton{color: palette(base);border-radius: 4px;}");
     ui->lightButton->setProperty("value", "ukui-light");
+    ui->lightButton->setStyleSheet("QPushButton{color: palette(base);border-radius: 4px;}");
     ui->darkButton->setProperty("value", "ukui-dark");
+    ui->darkButton->setStyleSheet("QPushButton{color: palette(base);border-radius: 4px;}");
 
     buildThemeModeBtn(ui->defaultButton, tr("Default"), "default");
     buildThemeModeBtn(ui->lightButton, tr("Light"), "light");
@@ -251,11 +255,18 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
     QVBoxLayout * baseVerLayout = new QVBoxLayout(button);
     baseVerLayout->setSpacing(8);
     baseVerLayout->setMargin(0);
-    QLabel * iconLabel = new QLabel(button);
+    IconLabel * iconLabel = new IconLabel(button);
+    iconLabel->setObjectName("iconlabel");
     iconLabel->setFixedSize(QSize(176, 105));
     iconLabel->setScaledContents(true);
+    iconLabel->setAttribute(Qt::WA_DeleteOnClose);
     QString fullicon = QString("://img/plugins/theme/%1.png").arg(icon);
-    iconLabel->setPixmap(QPixmap(fullicon));
+    QPixmap *mpixmap = new QPixmap(fullicon);
+    mpixmap->scaled(iconLabel->size());
+    iconLabel->setPixmap(*mpixmap);
+
+    iconLabel->setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
+   // iconLabel->setContentsMargins(3,3,3,3);
 
     QHBoxLayout * bottomHorLayout = new QHBoxLayout;
     bottomHorLayout->setSpacing(8);
@@ -277,14 +288,29 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
     connect(ui->themeModeBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), [=](QAbstractButton * eBtn){
 #endif
         if (eBtn == button) {
-            nameLabel->setStyleSheet("color: #ffffff;");
             statusLabel->setPixmap(QPixmap("://img/plugins/theme/selected.svg"));
         }
         else {
-            nameLabel->setStyleSheet("color: palette(windowText);");
             statusLabel->clear();
         }
     });
+
+    QPalette pal;
+    QBrush brush = pal.highlight();  //获取window的色值
+    QColor highLightColor = brush.color();
+    QString stringColor = QString("rgba(%1,%2,%3)") //叠加20%白色
+           .arg(highLightColor.red()*0.8 + 255*0.2)
+           .arg(highLightColor.green()*0.8 + 255*0.2)
+           .arg(highLightColor.blue()*0.8 + 255*0.2);
+
+    iconLabel->setStyleSheet(QString("QLabel:hover:!pressed#iconlabel{border-width: 3px;border-style: solid;border-color: %1;}").arg(stringColor));
+
+    connect(iconLabel,&IconLabel::enterWidget,[=](){
+       iconLabel->setContentsMargins(3,3,3,3);
+    });
+    connect(iconLabel,&IconLabel::leaveWidget,[=](){
+        iconLabel->setContentsMargins(0,0,0,0);
+     });
 
     bottomHorLayout->addStretch();
     bottomHorLayout->addWidget(statusLabel);
