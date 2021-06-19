@@ -11,13 +11,19 @@
 #include <QHBoxLayout>
 #include <QPainter>
 #include <QPainterPath>
+#include <QGraphicsDropShadowEffect>
+#include <QtCore/qmath.h>
+#include <QDialog>
 
 #include "ImageUtil/imageutil.h"
 
 const QString kcnBj = "北京";
 const QString kenBj = "Asia/Beijing";
 
-TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
+extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
+
+
+TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QDialog(parent)
 {
     m_map = new TimezoneMap(this);
     m_map->show();
@@ -28,32 +34,75 @@ TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
     m_cancelBtn = new QPushButton(tr("Cancel"));
     m_confirmBtn = new QPushButton(tr("Confirm"));
 
-    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint| Qt::Tool);//无边框
-    setAttribute(Qt::WA_StyledBackground,true);
+
+
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);//无边框
+    setAttribute(Qt::WA_DeleteOnClose);
     this->setAttribute(Qt::WA_TranslucentBackground);
 
+
     this->setObjectName("MapFrame");
-    this->setStyleSheet("QFrame#MapFrame{background-color: rgb(22, 24, 26);border-radius:6px}");
     this->setWindowTitle(tr("Change time zone"));
 
-    QIcon icon = QIcon::fromTheme("window-close-symbolic");
-    m_closeBtn->setIcon(ImageUtil::drawSymbolicColoredPixmap(icon.pixmap(32, 32),"white"));
-    m_closeBtn->setFlat(true);
-    m_closeBtn->setProperty("isWindowButton", 0x2);
 
-    m_searchInput->setMinimumSize(560,40);
-    m_searchInput->setMaximumSize(560,40);
-    m_searchInput->setMinimumHeight(40);
+    //m_searchInput->setStyleSheet("background-color:palette(windowtext)");
+    m_searchInput->setFocusPolicy(Qt::ClickFocus);
+    m_searchInput->setFixedSize(400,36);
+    m_searchInput->installEventFilter(this);
+    m_searchInput->setFocusPolicy(Qt::ClickFocus);
+    m_searchInput->setContextMenuPolicy(Qt::NoContextMenu);
+
+    m_queryWid=new QWidget;
+    m_queryWid->setParent(m_searchInput);
+
+    QHBoxLayout* queryWidLayout = new QHBoxLayout;
+    queryWidLayout->setContentsMargins(0, 0, 0, 0);
+    queryWidLayout->setAlignment(Qt::AlignJustify);
+    queryWidLayout->setSpacing(0);
+    m_queryWid->setLayout(queryWidLayout);
+
+
+    QIcon searchIcon = QIcon::fromTheme("edit-find-symbolic");
+    m_queryIcon = new QLabel(this);
+    m_queryIcon->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(16, 16))));
+    m_queryIcon->setProperty("useIconHighlightEffect",0x02);
+
+    m_queryText = new QLabel(this);
+    m_queryText->setText(tr("Input what you are looking for"));
+    m_queryText->setStyleSheet("background:transparent;color:#626c6e;");
+    m_queryText->adjustSize();
+
+    queryWidLayout->addWidget(m_queryIcon);
+    queryWidLayout->addWidget(m_queryText);
+
+    m_animation= new QPropertyAnimation(m_queryWid, "geometry", this);
+    m_animation->setDuration(100);
+
+
+    m_queryWid->setGeometry(QRect((m_searchInput->width() - (m_queryIcon->width()+m_queryText->width()+10))/2,0,
+                                        m_queryIcon->width()+m_queryText->width()+10,m_searchInput->height()));
+    m_queryWid->show();
+
+    connect(m_animation,&QPropertyAnimation::finished,this,&TimeZoneChooser::animationFinishedSlot);
+
+    m_closeBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
+    m_closeBtn->setFlat(true);
+    m_closeBtn->setFixedSize(30, 30);
+    m_closeBtn->setProperty("isWindowButton", 0x2);
+    m_closeBtn->setProperty("useIconHighlightEffect", 0x08);
 
     m_title->setObjectName("titleLabel");
-    m_title->setStyleSheet("color: rgb(229, 240, 250 )");
     m_title->setText(tr("Change Timezone"));
+    m_title->setAlignment(Qt::AlignTop);
 
     initSize();
 
-    QHBoxLayout *wbLayout = new QHBoxLayout;
-    wbLayout->setMargin(6);
-    wbLayout->setSpacing(0);
+    QFrame *wbFrame = new QFrame;
+    wbFrame->setContentsMargins(0,0,0,0);
+
+    QHBoxLayout *wbLayout = new QHBoxLayout(wbFrame);
+    wbLayout->setContentsMargins(16,15,16,0);
+    wbLayout->addWidget(m_title);
     wbLayout->addStretch();
     wbLayout->addWidget(m_closeBtn);
 
@@ -64,22 +113,18 @@ TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
     btnlayout->addWidget(m_confirmBtn);
     btnlayout->addStretch();
 
-
     QVBoxLayout *layout = new QVBoxLayout;
-    layout->setMargin(0);
-    layout->setSpacing(0);
+    layout->setContentsMargins(0,0,0,0);
+    layout->setAlignment(Qt::AlignTop);
 
-    layout->addLayout(wbLayout);
-    layout->addStretch();
-    layout->addWidget(m_title, 0, Qt::AlignHCenter);
-    layout->addSpacing(40);
+    layout->addWidget(wbFrame,0,Qt::AlignVCenter);
+    layout->addSpacing(0);
     layout->addWidget(m_searchInput, 0, Qt::AlignHCenter);
-    layout->addSpacing(40);
+    layout->addSpacing(32);
     layout->addWidget(m_map, 0, Qt::AlignHCenter);
-    layout->addSpacing(40);
-
+    layout->addSpacing(32);
     layout->addLayout(btnlayout);
-    layout->addStretch();
+    layout->addSpacing(16);
 
     setLayout(layout);
 
@@ -185,7 +230,47 @@ bool TimeZoneChooser::eventFilter(QObject* obj, QEvent *event) {
             m_popup->move(desPos);
         }
     }
-    return false;
+    if (event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent *mEvent = static_cast<QMouseEvent*>(event);
+        QWidget *searchParentWid = static_cast<QWidget*>(m_searchInput->parent());
+        QPoint  searchPoint      = searchParentWid->mapFromGlobal(mEvent->globalPos());
+        if (!m_searchInput->geometry().contains(searchPoint)) {
+                if (m_isSearching == true) {
+                    m_searchInput->setFocus();
+                    m_searchInput->clearFocus();
+                }
+        }
+    }
+
+    if (obj == m_searchInput) {
+        if (event->type() == QEvent::FocusIn) {
+            if (m_searchInput->text().isEmpty()) {
+                m_queryWid->layout()->removeWidget(m_queryText);
+                m_queryText->setParent(nullptr);
+                m_animation->stop();
+                m_animation->setEndValue(QRect(0, 0, m_queryIcon->width() + 5,(m_searchInput->height()+36)/2));
+                m_animation->setEasingCurve(QEasingCurve::OutQuad);
+                m_animation->start();
+                m_searchInput->setTextMargins(20, 1, 0, 1);
+            }
+            m_isSearching = true;
+        } else if (event->type() == QEvent::FocusOut) {
+            m_searchKeyWords.clear();
+            if (m_searchInput->text().isEmpty()) {
+                if (m_isSearching) {
+                    m_queryText->adjustSize();
+                    m_animation->setStartValue(QRect(0, 0,
+                                                     m_queryIcon->width()+5,(m_searchInput->height()+36)/2));
+                    m_animation->setEndValue(QRect((m_searchInput->width() - (m_queryIcon->width()+m_queryText->width()+10))/2,0,
+                                                   m_queryIcon->width()+m_queryText->width()+30,(m_searchInput->height()+36)/2));
+                    m_animation->setEasingCurve(QEasingCurve::InQuad);
+                    m_animation->start();
+                }
+            }
+            m_isSearching=false;
+        }
+    }
+    return QObject::eventFilter(obj, event);
 }
 
 //获取适合屏幕的地图大小
@@ -202,14 +287,10 @@ QSize TimeZoneChooser::getFitSize(){
 
 void TimeZoneChooser::initSize(){
 
-    double MapPixWidth = 978.0;
+    double MapPixWidth = 900.0;
     double MapPixHeight = 500.0;
     double MapPictureWidth = 978.0;
     double MapPictureHeight = 500.0;
-
-    QFont font = m_title->font();
-    font.setPointSizeF(16.0);
-    m_title->setFont(font);
 
     const QSize fitSize = getFitSize();
     setFixedSize(fitSize.width(), fitSize.height());
@@ -230,20 +311,57 @@ void TimeZoneChooser::initSize(){
 
 void TimeZoneChooser::paintEvent(QPaintEvent *event)
 {
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-    painter.setBrush(QBrush(QColor(22, 24, 26),Qt::SolidPattern));
-    painter.setPen(Qt::transparent);
-    QRect rect = this->rect();
-    rect.setWidth(rect.width() - 1);
-    rect.setHeight(rect.height() - 1);
-    painter.drawRoundedRect(rect, 6, 6);
-    {
-        QPainterPath painterPath;
-        painterPath.addRoundedRect(rect, 6, 6);
-        painter.drawPath(painterPath);
+    Q_UNUSED(event);
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+    QPainterPath rectPath;
+    rectPath.addRoundedRect(this->rect().adjusted(10, 10, -10, -10), 6, 6);
+
+    // 画一个黑底
+    QPixmap pixmap(this->rect().size());
+    pixmap.fill(Qt::transparent);
+    QPainter pixmapPainter(&pixmap);
+    pixmapPainter.setRenderHint(QPainter::Antialiasing);
+    pixmapPainter.setPen(Qt::transparent);
+    pixmapPainter.setBrush(Qt::black);
+    pixmapPainter.setOpacity(0.65);
+    pixmapPainter.drawPath(rectPath);
+    pixmapPainter.end();
+
+    // 模糊这个黑底
+    QImage img = pixmap.toImage();
+    qt_blurImage(img, 10, false, false);
+
+    // 挖掉中心
+    pixmap = QPixmap::fromImage(img);
+    QPainter pixmapPainter2(&pixmap);
+    pixmapPainter2.setRenderHint(QPainter::Antialiasing);
+    pixmapPainter2.setCompositionMode(QPainter::CompositionMode_Clear);
+    pixmapPainter2.setPen(Qt::transparent);
+    pixmapPainter2.setBrush(Qt::transparent);
+    pixmapPainter2.drawPath(rectPath);
+
+    // 绘制阴影
+    p.drawPixmap(this->rect(), pixmap, pixmap.rect());
+
+    // 绘制一个背景
+    p.save();
+    p.fillPath(rectPath,palette().color(QPalette::Base));
+    p.restore();
+
+}
+
+void TimeZoneChooser::animationFinishedSlot()
+{
+    if (m_isSearching) {
+        m_queryWid->layout()->removeWidget(m_queryText);
+        m_queryText->setParent(nullptr);
+        m_searchInput->setTextMargins(20, 1, 0, 1);
+        if(!m_searchKeyWords.isEmpty()) {
+            m_searchInput->setText(m_searchKeyWords);
+            m_searchKeyWords.clear();
+        }
+    } else {
+        m_queryWid->layout()->addWidget(m_queryText);
     }
-    QWidget::paintEvent(event);
-
-
 }

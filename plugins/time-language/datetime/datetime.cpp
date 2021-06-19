@@ -579,13 +579,7 @@ void DateTime::changetimeSlot()
 
 void DateTime::changezoneSlot(int flag)
 {
-    QDesktopWidget* m = QApplication::desktop();
-    QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
-    int desk_x = desk_rect.width();
-    int desk_y = desk_rect.height();
-    int x = m_timezone->width();
-    int y = m_timezone->height();
-    m_timezone->move(desk_x / 2 - x / 2 + desk_rect.left(), desk_y / 2 - y / 2 + desk_rect.top());
+    m_timezone->setFixedSize(1000,720);
     if (flag == 1) {
         m_timezone->setTitle(tr("Add Timezone"));
     } else {

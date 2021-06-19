@@ -52,6 +52,8 @@ private:
     PopList* m_popLists;
     QPixmap loadPixmap(const QString &path);
 
+    QLabel* backgroundLabel;
+
 private slots:
     void popListActiveSlot(int index);
 };
