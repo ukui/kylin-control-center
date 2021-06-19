@@ -51,6 +51,7 @@ UpdateDbus::UpdateDbus(QObject *parent)
 
 void UpdateDbus::onRequestSendDesktopNotify(QString message)
 {
+    qDebug() << "---------------------------->onRequestSendDesktopNotify";
     QDBusInterface iface("org.freedesktop.Notifications",
                          "/org/freedesktop/Notifications",
                          "org.freedesktop.Notifications",
