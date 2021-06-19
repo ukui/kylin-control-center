@@ -1,4 +1,8 @@
 #include "m_updatelog.h"
+
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include "xatom-helper.h"
 //#include <QDir>
 //#include <QCoreApplication>
 
@@ -29,6 +33,13 @@ m_updatelog * m_updatelog::m_instance(nullptr);
 
 m_updatelog::m_updatelog(QWidget* parent) : QDialog(parent)
 {
+    /*添加窗管协议*/
+    MotifWmHints hints;
+    hints.flags = MWM_HINTS_FUNCTIONS|MWM_HINTS_DECORATIONS;
+    hints.functions = MWM_FUNC_ALL;
+    hints.decorations = MWM_DECOR_BORDER;
+    XAtomHelper::getInstance()->setWindowMotifHint(this->winId(), hints);
+
     initUI();//初始化UI
     initGsettings();//初始化Gsettings
     dynamicLoadingInit();//动态加载
@@ -37,6 +48,7 @@ m_updatelog::m_updatelog(QWidget* parent) : QDialog(parent)
     //监听更新完成信号
     UpdateDbus *uddbus = UpdateDbus::getInstance();
     connect(uddbus->interface,SIGNAL(update_sqlite_signal(QString,QString)),this,SLOT(historyUpdateNow(QString,QString)));
+
 }
 
 QString m_updatelog::setDefaultDescription(QString str)
@@ -73,11 +85,13 @@ void m_updatelog::initUI()
     font.setBold(true);
 
     /* 初始化窗口属性 */
-    this->setWindowTitle(tr("History Log"));  /* 历史更新 */
-    this->setFixedSize(WIDTH,HEIGHT);
+    this->setFixedSize(WIDTH,HEIGHT + 40);
     this->setObjectName(FIND_DES_LABLE_TYPE);
 
     /* 实例化控件 */
+    /* 实例化标题栏 */
+    updateTitleWidget();
+
     QFrame *listBackground = new QFrame;
     listBackground->setFrameStyle(QFrame::Box);
     listBackground->setFixedWidth(LIST_BACKGROUND_WIDTH);
@@ -121,6 +135,10 @@ void m_updatelog::initUI()
     QVBoxLayout *vl1 = new QVBoxLayout;
     vl1->setSpacing(0);
     vl1->setMargin(0);
+
+    vl1->addSpacing(6);
+    vl1->addWidget(this->title);
+
     vl1->addSpacing(TOP_MARGIN);
     vl1->addLayout(hl1);
     vl1->addSpacing(BOTTOM_MARGIN);
@@ -164,6 +182,8 @@ void m_updatelog::initUI()
     hlr->addLayout(vlr);
     hlr->addSpacing(TEXT_TAB_RIGHT);
     desBackground->setLayout(hlr);
+
+    this->installEventFilter(this);
 }
 
 void m_updatelog::initGsettings()
@@ -321,3 +341,250 @@ void m_updatelog::historyUpdateNow(QString str1,QString str2)
     updatesql(0,1,str2);
 }
 
+/* 历史更新界面搜索功能 */
+void m_updatelog::slotSearch(QString packageName)
+{
+    /* 取消原历史界面动态加载功能 */
+    cacheDynamicLoad();
+
+    /* 转换包名 */
+    QString dstPackageName = conversionPackageName(packageName);
+
+    /* 清空列表 */
+    clearList();
+
+    /* 拼接sql */
+    QString sql = "SELECT `appname` , `version` , `statue` , `time` , `description` , `id` , `keyword` FROM installed WHERE `appname` = '" + dstPackageName + "'";
+
+    qDebug() << "Info : sql is [ " << sql << " ]";
+
+    /* 查询数据库 , 获取数据 */
+    QSqlQuery query(QSqlDatabase::database("A"));
+    if (!query.exec(sql)) {
+        qDebug() << "Error : search sql exec fail";
+        return;
+    }
+    while (query.next()) {
+        QString appName = query.value(0).toString();
+        QString version = query.value(1).toString();
+        QString statue = query.value(2).toString();
+        QString time = query.value(3).toString();
+        QString description = setDefaultDescription(query.value(4).toString());
+        int id = query.value(5).toInt();
+        QString keyword = query.value(6).toString();
+
+        if (keyword != "" && keyword != "1") {
+            continue;
+        }
+
+        /* 展示搜索内容 */
+        HistoryUpdateListWig *updateItem = new HistoryUpdateListWig(updateDesTab);
+        updateItem->setAttribute(packageName + " " + version , statue , time , description , id);
+        QListWidgetItem *item = new QListWidgetItem();
+        item->setFlags(Qt::NoItemFlags);
+        item->setSizeHint(updateItem->getTrueSize());
+
+        mainListwidget->addItem(item);
+        mainListwidget->setItemWidget(item , updateItem);
+
+        appName.clear();
+        version.clear();
+        statue.clear();
+        time.clear();
+        description.clear();
+        id = 0;
+        keyword.clear();
+    }
+
+    return;
+}
+
+void m_updatelog::cacheDynamicLoad(void)
+{
+     disconnect(mainListwidget->verticalScrollBar() , &QScrollBar::valueChanged , this , &m_updatelog::dynamicLoading);
+}
+
+void m_updatelog::clearList(void)
+{
+   int sum = mainListwidget->count();
+
+   for (int i = sum ; i >= 0 ; i--) {
+       QListWidgetItem *item = mainListwidget->takeItem(i);
+       delete item;
+   }
+
+   return;
+}
+
+QString m_updatelog::conversionPackageName(QString package)
+{
+    if (QLocale::system().name() != "zh_CN")
+        return package;
+    if (package == "基本应用")
+        return "kylin-update-desktop-app";
+    if (package == "安全更新")
+        return "kylin-update-desktop-security";
+    if (package == "系统基础组件")
+        return "kylin-update-desktop-support";
+    if (package == "桌面环境组件")
+        return "kylin-update-desktop-ukui";
+    if (package == "系统内核组件")
+        return "linux-generic";
+    if (package == "系统内核组件")
+        return "kylin-update-desktop-kernel";
+    if (package == "系统内核组件")
+        return "kylin-update-desktop-kernel-3a4000";
+    if (package == "kydroid补丁包")
+        return "kylin-update-desktop-kydroid";
+
+    /* 从软件商店数据库根据包名获取应用英文名 */
+    QString dst;
+    dst.clear();
+
+    QSqlQuery query(QSqlDatabase::database("B"));
+    bool ret = query.exec(QString("SELECT `app_name` FROM application WHERE `display_name_cn` = '%1'").arg(package));    //执行
+    if (ret == false) {
+        qDebug() << "Error : exec select sql fail , switch pkg name fail";
+        return package;
+    }
+
+    while (query.next()) {
+        dst = query.value(0).toString();
+        qDebug() << "Info : switch chinese pkg name is [" << dst << "]";
+    }
+
+    if (dst.isEmpty()) {
+        return package;
+    } else {
+        return dst;
+    }
+
+    return package;
+}
+
+void m_updatelog::searchBoxWidget(void)
+{
+    this->searchBox = new QLineEdit(this);
+    this->searchBox->setFixedSize(320 , 36);
+    //this->searchBox->setPlaceholderText(tr("输入你想找的内容"));
+    this->searchBox->setPlaceholderText(tr("Search content"));
+    this->searchBox->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+    this->searchBox->setMaxLength(30);
+    this->searchBox->installEventFilter(this);
+
+    this->searchIcon = new QLabel(this);
+    this->searchIcon->setFixedSize(this->searchBox->width() / 2 - 60 , this->searchBox->height());
+    QIcon icon = QIcon::fromTheme("preferences-system-search-symbolic");
+    this->searchIcon->setPixmap(icon.pixmap(icon.actualSize(QSize(16 , 16))));
+    this->searchIcon->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    this->searchIcon->setProperty("isWindowButton" , 0x1);
+    this->searchIcon->setProperty("useIconHighlightEffect" , 0x2);
+    this->searchIcon->setAttribute(Qt::WA_TranslucentBackground , true);
+
+    this->searchBox->setTextMargins(this->searchIcon->width() , 1 , 1 , 1);
+
+    QHBoxLayout *hlayout = new QHBoxLayout();
+    hlayout->setMargin(0);
+    hlayout->addWidget(searchIcon);
+    hlayout->addStretch(0);
+
+    this->searchBox->setLayout(hlayout);
+
+    return;
+}
+
+bool m_updatelog::eventFilter(QObject *watch , QEvent *e)
+{
+    if ((e->type() == QEvent::MouseButtonPress && watch != this->searchBox)) {
+        if (this->searchBox->text() == "") {
+            this->searchIcon->setFixedSize(this->searchBox->width() / 2 - 60 , this->searchBox->height());
+            this->searchIcon->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+            this->searchBox->setAlignment(Qt::AlignLeft);
+            this->searchBox->setPlaceholderText(tr("Search content"));
+            this->searchBox->setTextMargins(this->searchIcon->width() , 1 , 1 , 1);
+        }
+    }
+
+    if (e->type() == QEvent::MouseButtonPress && watch == this->searchBox) {
+        this->searchIcon->setFixedSize(30 , 30);
+        this->searchBox->setAlignment(Qt::AlignLeft);
+        this->searchBox->setPlaceholderText(tr(""));
+        this->searchBox->setTextMargins(this->searchIcon->width() , 1 , 1 , 1);
+    }
+
+    if (e->type() == 6 && watch == this->searchBox) {
+        QKeyEvent *key = static_cast<QKeyEvent *>(e);
+        if (key->key() == Qt::Key_Enter || key->key() == Qt::Key_Return) {
+            if (this->searchBox->text() != "") {
+                QString appName = this->searchBox->text();
+                slotSearch(appName);
+            }
+            if (this->searchBox->text() == "") {
+                clearList();
+                connect(mainListwidget->verticalScrollBar() , &QScrollBar::valueChanged , this , &m_updatelog::dynamicLoading);
+                updatesql();
+            }
+        }
+    }
+
+    return QObject::eventFilter(watch , e);
+}
+
+void m_updatelog::updateTitleWidget(void)
+{
+    this->title = new QWidget(this);
+    this->title->setFixedHeight(36);
+
+    /* 标题栏图标 */
+    this->titleIcon = new QLabel(this);
+    this->titleIcon->setFixedSize(25 , 25);
+    this->titleIcon->setPixmap(QIcon::fromTheme("ukui-control-center").pixmap(QSize(25 , 25)));
+
+    /* 标题栏名字 */
+    this->titleName = new QLabel(this);
+    this->titleName->resize(56 , 20);
+    QFont font;
+    font.setPixelSize(14);
+    this->titleName->setFont(font);
+    //this->titleName->setText(tr("历史更新"));
+    this->titleName->setText(tr("History Log"));
+
+    /* 搜索框 */
+    searchBoxWidget();
+
+    /* 关闭按钮 */
+    this->titleClose = new QPushButton(this);
+    this->titleClose->setFixedSize(30 , 30);
+    this->titleClose->setFlat(true);
+    this->titleClose->setProperty("isWindowButton" , 0x2);
+    this->titleClose->setProperty("useIconHighlightEffect" , 0x8);
+    this->titleClose->setIconSize(QSize(16 , 16));
+    this->titleClose->setIcon(QIcon::fromTheme("window-close-symbolic"));
+    this->titleClose->setFocusPolicy(Qt::NoFocus);
+
+    connect(this->titleClose , &QPushButton::clicked , this , &m_updatelog::slotClose);
+
+    /* 布局 */
+    QHBoxLayout *hlayout = new QHBoxLayout;
+    hlayout->setMargin(0);
+    hlayout->addSpacing(8);
+    hlayout->addWidget(this->titleIcon);
+    hlayout->addSpacing(2);
+    hlayout->addWidget(this->titleName);
+
+    QHBoxLayout *hlayout2 = new QHBoxLayout;
+    hlayout2->setMargin(0);
+    hlayout2->addLayout(hlayout);
+    hlayout2->addStretch(0);
+    hlayout2->addWidget(this->searchBox);
+    hlayout2->addStretch(0);
+    hlayout2->addWidget(this->titleClose);
+    hlayout2->addSpacing(6);
+
+    this->title->setLayout(hlayout2);
+}
+
+void m_updatelog::slotClose(void)
+{
+    this->close();
+}
