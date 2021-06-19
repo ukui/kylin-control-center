@@ -14,6 +14,14 @@ DESTDIR = ../..
 target.path = $${PLUGIN_INSTALL_DIRS}
 
 
+# 适配窗口管理器圆角阴影
+QT += KWindowSystem dbus x11extras
+
+# 适配窗口管理器圆角阴影
+LIBS +=-lpthread
+LIBS +=-lX11
+
+
 # 应用图标装载
 #icon.path = /usr/share/pixmaps
 #icon.files = img/kylin-update-manager.png
@@ -45,6 +53,7 @@ DEFINES += QT_DEPRECATED_WARNINGS \
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/xatom-helper.cpp \
     src/appupdate.cpp \
     src/backup.cpp \
     src/checkbutton.cpp \
@@ -64,6 +73,7 @@ SOURCES += \
     upgrade.cpp
 
 HEADERS += \
+    src/xatom-helper.h \
     src/appupdate.h \
     src/backup.h \
     src/checkbutton.h \
