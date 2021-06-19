@@ -5170,7 +5170,9 @@ void UkmediaMainWidget::updatePorts(UkmediaMainWidget *w, const pa_card_info &in
             }
 
             itemW->setLabelText(at.value(),cardName);
+            w->m_pOutputWidget->m_pOutputListWidget->blockSignals(true);
             w->m_pOutputWidget->m_pOutputListWidget->insertItem(i++,item);
+            w->m_pOutputWidget->m_pOutputListWidget->blockSignals(false);
 
             ++at;
         }
@@ -5191,7 +5193,9 @@ void UkmediaMainWidget::updatePorts(UkmediaMainWidget *w, const pa_card_info &in
                 ++cardNameMap;
             }
             itemW->setLabelText(at.value(),cardName);
+            w->m_pInputWidget->m_pInputListWidget->blockSignals(true);
             w->m_pInputWidget->m_pInputListWidget->insertItem(i++,item);
+            w->m_pInputWidget->m_pInputListWidget->blockSignals(false);
 
             ++at;
         }
@@ -5365,8 +5369,9 @@ void UkmediaMainWidget::addAvailableOutputPort()
             itemW->setLabelText(at.value(),cardName);
             m_pCurrentOutputPortLabelList->append(at.value());
             currentOutputPortLabelMap.insertMulti(at.key(),at.value());
+            m_pOutputWidget->m_pOutputListWidget->blockSignals(true);
             m_pOutputWidget->m_pOutputListWidget->insertItem(i++,item);
-
+            m_pOutputWidget->m_pOutputListWidget->blockSignals(false);
         }
 
         ++at;
@@ -5411,7 +5416,9 @@ void UkmediaMainWidget::addAvailableInputPort()
             m_pCurrentInputPortLabelList->append(it.value());
             currentInputPortLabelMap.insertMulti(it.key(),it.value());
             qDebug() <<"current input port label insert " << it.value()<< it.key();
+            m_pInputWidget->m_pInputListWidget->blockSignals(true);
             m_pInputWidget->m_pInputListWidget->insertItem(i++,item);
+            m_pInputWidget->m_pInputListWidget->blockSignals(false);
         }
 
         ++it;
