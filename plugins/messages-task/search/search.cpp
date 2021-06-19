@@ -236,7 +236,7 @@ int Search::setBlockDir(const QString &dirPath, const bool &is_add)
         removeBlockDirFromList(dirPath);
         return ReturnCode::Succeed;
     }
-    if (!dirPath.startsWith("/home")) {
+    if (!dirPath.startsWith(QDir::homePath())) {
         return ReturnCode::NotInHomeDir;
     }
 
@@ -254,7 +254,7 @@ int Search::setBlockDir(const QString &dirPath, const bool &is_add)
         //有它的子文件夹已被添加，删除这些子文件夹
         if (dir.startsWith(pathKey)) {
             m_dirSettings->remove(dir);
-            removeBlockDirFromList(dir);
+            removeBlockDirFromList("/" + dir);
         }
     }
     m_dirSettings->setValue(pathKey, "0");

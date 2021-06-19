@@ -6608,7 +6608,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/messages-task/search/search.cpp" line="163"/>
         <source>Choose folder</source>
-        <translation>添加要屏蔽的文件夹</translation>
+        <translation>选择要屏蔽的文件夹</translation>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/search/search.cpp" line="312"/>
