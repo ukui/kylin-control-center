@@ -109,6 +109,7 @@ public:
     void initSearchText();
     void initComponent();
     void rebuildNetStatusComponent(QString iconPath, QString netName);
+    void rebuildNetStatusComponent(QString iconPath, QStringList netName);
     void rebuildAvailComponent(QString iconpath, QString netName);
 
     void runExternalApp();
@@ -136,7 +137,7 @@ private:
     NetconnectWork     *pNetWorker;
 
     QString            connectedLan;
-    QString            actLanName;
+    QStringList        actLanNames;
 
     QStringList        TwifiList;
     QStringList        TlanList;

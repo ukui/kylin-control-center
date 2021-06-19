@@ -229,6 +229,40 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
     ui->statusLayout->addWidget(deviceItem);
 }
 
+void NetConnect::rebuildNetStatusComponent(QString iconPath, QStringList netName) {
+    bool hasNet = false;
+    for (int i = 0; i < netName.size(); ++i) {
+        if (netName.at(i) == "无连接" || netName.at(i) == "No net" ) {
+            hasNet = true;
+        }
+        HoverBtn * deviceItem;
+        if (hasNet || Utils::isWayland()) {
+            deviceItem = new HoverBtn(netName.at(i), false, pluginWidget);
+        } else {
+            deviceItem = new HoverBtn(netName.at(i), true, pluginWidget);
+        }
+        deviceItem->mPitLabel->setText(netName.at(i));
+
+        if (!hasNet) {
+            deviceItem->mDetailLabel->setText(tr("Connected"));
+        } else {
+            deviceItem->mDetailLabel->setText("");
+        }
+        QIcon searchIcon = QIcon::fromTheme(iconPath);
+        deviceItem->mPitIcon->setProperty("useIconHighlightEffect", 0x10);
+        deviceItem->mPitIcon->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(24, 24))));
+
+        deviceItem->mAbtBtn->setMinimumWidth(100);
+        deviceItem->mAbtBtn->setText(tr("Detail"));
+
+        connect(deviceItem->mAbtBtn, &QPushButton::clicked, this, [=] {
+            netDetailSlot(deviceItem->mName);
+        });
+
+        ui->statusLayout->addWidget(deviceItem);
+    }
+}
+
 void NetConnect::getNetList() {
     refreshTimer->stop();
     wifiBtn->blockSignals(true);
@@ -486,12 +520,10 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
         while (indexLan < mActiveInfo.size()) {
             if (mActiveInfo[indexLan].strConType == "ethernet"
                     || mActiveInfo[indexLan].strConType == "802-3-ethernet"){
-                actLanName = mActiveInfo[indexLan].strConName;
-                break;
+                actLanNames.append(mActiveInfo[indexLan].strConName);
             }
             indexLan ++;
         }
-
         // 填充可用网络列表
         QString headLine = getlanList.at(0);
         int indexDevice, indexName;
@@ -514,8 +546,10 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
                 this->lanList << nname;
             }
         }
-        if (!this->actLanName.isEmpty()) {
-            this->lanList.removeOne(this->actLanName);
+    }
+    if (!this->actLanNames.isEmpty()) {
+        for (int i = 0; i < this->actLanNames.size(); ++i) {
+            this->lanList.removeOne(this->actLanNames.at(i));
         }
     }
     if (!this->connectedWifi.isEmpty()) {
@@ -536,12 +570,12 @@ void NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList 
         }
         rebuildNetStatusComponent(iconamePah, connectedWifiName);
     }
-    if (!this->actLanName.isEmpty()) {
+    if (!this->actLanNames.isEmpty()) {
         QString lanIconamePah = KLanSymbolic;
-        rebuildNetStatusComponent(lanIconamePah, this->actLanName);
+        rebuildNetStatusComponent(lanIconamePah, this->actLanNames);
     }
 
-    if (this->connectedWifi.isEmpty() && this->actLanName.isEmpty()) {
+    if (this->connectedWifi.isEmpty() && this->actLanNames.isEmpty()) {
         rebuildNetStatusComponent(NoNetSymbolic , tr("No net"));
     }
 }
@@ -585,7 +619,7 @@ void NetConnect::clearContent() {
 
     this->connectedLan.clear();
     this->connectedWifi.clear();
-    this->actLanName.clear();
+    this->actLanNames.clear();
     this->wifiList.clear();
     this->lanList.clear();
     this->TlanList.clear();
