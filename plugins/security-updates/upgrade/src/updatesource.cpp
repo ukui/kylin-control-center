@@ -17,7 +17,6 @@ void UpdateSource::startDbus()
         qDebug() << "源管理器：" <<"Service Interface: " << qPrintable(QDBusConnection::systemBus().lastError().message());
         return;
     }
-
     emit startDbusFinished();
 }
 
@@ -36,12 +35,22 @@ QString UpdateSource::getOrSetConf(QString type, QStringList name)
     return reply;
 }
 
+void UpdateSource::killProcessSignal(int pid, int signal)
+{
+    QVariantList args;
+    args << QVariant::fromValue(pid) << QVariant::fromValue(signal);
+    serviceInterface->call("killProcessSignal", args);
+}
+
 /*
  * 调用源管理器更新源模版接口
 */
 void UpdateSource::callDBusUpdateTemplate()
 {
     QDBusPendingCall call = serviceInterface->asyncCall("updateSourceTemplate");
+    if (!call.isValid()) {
+        qDebug() << "-----------------------0000000000000";
+    }
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call,this);
     connect(watcher,&QDBusPendingCallWatcher::finished,this,&UpdateSource::getReply);
     qDebug() <<"源管理器：" << "callDBusUpdateTemplate: " << "updateSourceTemplate";

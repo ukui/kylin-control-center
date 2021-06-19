@@ -83,20 +83,23 @@ void TabWid::getAutoUpgradeStatus()
     QStringList list;
     list << "CONTROL_CENTER/autoupdate_run_status";
     QString ret =  updateSource->getOrSetConf("get", list);
-    qDebug() << "------------>" << ret;
+    qDebug() << "-----------11->" << ret;
     if (!ret.compare("backup")) {
         /*如果自动更新在备份中，那就直接绑定备份还原信号即可*/
         bacupInit(true);
     } else if (!ret.compare("download")) {
         /*如果自动更新在下载中，调用dbus去kill掉下载程序，继续原流程，不进行多余操作*/
-        QDBusMessage msg = QDBusMessage::createSignal("/cn/kylinos/KylinUpdateManager", \
-                                                      "cn.kylinos.KylinUpdateManager", \
-                                                      "killAutoDownload");
-        QDBusConnection::systemBus().send(msg);
+        QFile file("/var/run/apt-download.pid");
+        QString pid;
+        if (file.open(QIODevice::ReadOnly)) {
+            pid = file.readAll();
+        }
+        qDebug() << "----------->pid" << pid;
+        file.close();
+        updateSource->killProcessSignal(pid.toInt(), 10);
         checkUpdateBtn->setEnabled(true);
         checkUpdateBtn->setText(tr("Check Update"));
         checkUpdateBtnClicked();
-
     } else if (!ret.compare("install")){
         /*如果自动更新在安装中，绑定更新管理器dbus接收信号即可*/
         checkUpdateBtn->hide();
@@ -195,19 +198,15 @@ void TabWid::backupCore()
     switch (initresult) {
     case -1:
         backupMessageBox(tr("The backup restore partition could not be found. The system will not be backed up in this update!"));
-        //        backupMessageBox(tr("未能找到备份还原分区，本次更新不会备份系统!"));
         //如果是则立即更新,否的话取消全部更新
         return;
     case -2:
         versionInformationLab->setText(tr("Kylin backup restore tool is doing other operations, please update later."));
-        //        versionInformationLab->setText("麒麟备份还原工具正在进行其他操作，请稍后更新");
         return;
     case -3:
         versionInformationLab->setText(tr("The source manager configuration file is abnormal, the system temporarily unable to update!"));
-        //        versionInformationLab->setText("源管理器配置文件异常，暂时无法更新！");
         return;
     case -4:
-        //        versionInformationLab->setText("已备份，无需再次备份");
         versionInformationLab->setText(tr("Backup already, no need to backup again."));
         checkUpdateBtn->start();
         checkUpdateBtn->setEnabled(false);
@@ -222,7 +221,6 @@ void TabWid::backupCore()
         emit startBackUp(1);
         break;
     case -9://备份还原工具不存在
-        //        backupMessageBox("麒麟备份还原工具不存在，本次更新不会备份系统!");
         backupMessageBox(tr("Kylin backup restore tool does not exist, this update will not backup the system!"));
         return;
     default:
@@ -279,11 +277,9 @@ void TabWid::backupProgress(int progress)
         bacupInit(false);
         //备份完成，开始安装
         qDebug()<<"备份完成，开始安装";
-        //        versionInformationLab->setText("备份完成");
         versionInformationLab->setText(tr("Backup complete."));
         return;
     }
-    //    versionInformationLab->setText("备份中："+QString::number(progress)+"%");
     versionInformationLab->setText(tr("System is backing up..."));
     allProgressBar->setValue(progress);
     allProgressBar->show();

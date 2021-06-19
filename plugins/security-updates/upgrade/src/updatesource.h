@@ -22,6 +22,7 @@ public:
     void getReply(QDBusPendingCallWatcher *call);
     QString getFailInfo(int statusCode);
     QString getOrSetConf(QString type, QStringList name);
+    void killProcessSignal(int pid, int signal);
 signals:
     void getReplyFalseSignal();
     void startDbusFinished();
