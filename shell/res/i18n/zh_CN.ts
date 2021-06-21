@@ -789,32 +789,32 @@ you can restore them to ensure the integrity of your system.</source>
         <location filename="../../../plugins/system/battery/battery.cpp" line="173"/>
         <location filename="../../../plugins/system/battery/battery.cpp" line="202"/>
         <source>10m</source>
-        <translation>10分钟</translation>
+        <translation>10m</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/battery/battery.cpp" line="173"/>
         <source>20m</source>
-        <translation>20分钟</translation>
+        <translation>20m</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/battery/battery.cpp" line="173"/>
         <location filename="../../../plugins/system/battery/battery.cpp" line="202"/>
         <location filename="../../../plugins/system/battery/battery.cpp" line="229"/>
         <source>30m</source>
-        <translation>30分钟</translation>
+        <translation>30m</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/battery/battery.cpp" line="173"/>
         <location filename="../../../plugins/system/battery/battery.cpp" line="202"/>
         <location filename="../../../plugins/system/battery/battery.cpp" line="230"/>
         <source>1h</source>
-        <translation>1小时</translation>
+        <translation>1h</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/battery/battery.cpp" line="173"/>
         <location filename="../../../plugins/system/battery/battery.cpp" line="202"/>
         <source>2h</source>
-        <translation>2小时</translation>
+        <translation>2h</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/battery/battery.cpp" line="174"/>
@@ -826,22 +826,22 @@ you can restore them to ensure the integrity of your system.</source>
         <location filename="../../../plugins/system/battery/battery.cpp" line="202"/>
         <location filename="../../../plugins/system/battery/battery.cpp" line="229"/>
         <source>5m</source>
-        <translation>5分钟</translation>
+        <translation>5m</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/battery/battery.cpp" line="229"/>
         <source>1m</source>
-        <translation>1分钟</translation>
+        <translation>1m</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/battery/battery.cpp" line="229"/>
         <source>3m</source>
-        <translation>3分钟</translation>
+        <translation>3m</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/battery/battery.cpp" line="229"/>
         <source>15m</source>
-        <translation>15分钟</translation>
+        <translation>15m</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/battery/battery.cpp" line="296"/>
@@ -856,13 +856,17 @@ you can restore them to ensure the integrity of your system.</source>
         <translation>系统进入空闲状态并于此时间后睡眠</translation>
     </message>
     <message>
+        <location filename="../../../plugins/system/battery/battery.cpp" line="298"/>
+        <source>Time to sleep after idle time(No operation for %1 minute is considered idle)</source>
+        <translation>系统进入空闲状态并于此时间后睡眠(%1 分钟无操作被视为空闲)</translation>
+    </message>
+    <message>
         <source>Time to sleep after %1 minute of idle time</source>
         <translation type="vanished">空闲时间 %1 分钟后进入睡眠状态:</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="298"/>
         <source>(No operation for %1 minute is considered idle)</source>
-        <translation>(%1 分钟无操作被视为空闲)</translation>
+        <translation type="vanished">(%1 分钟无操作被视为空闲)</translation>
     </message>
     <message>
         <source>Time to sleep after %1 minute of idle time %2</source>
@@ -4529,7 +4533,7 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.ui" line="142"/>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="888"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="891"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
@@ -4561,17 +4565,17 @@ Please retry or relogin!</source>
         <translation type="vanished">连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="354"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="357"/>
         <source>Connected</source>
         <translation>已连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="742"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="745"/>
         <source>No net</source>
         <translation>无连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="364"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="367"/>
         <source>Detail</source>
         <translation>网络详情</translation>
     </message>
@@ -4582,12 +4586,12 @@ Please retry or relogin!</source>
         <extra-contents_path>/netconnect/open WLAN</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="660"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="663"/>
         <source>None</source>
         <translation>无</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="876"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="879"/>
         <source>Refreshing...</source>
         <translation>刷新中...</translation>
     </message>
@@ -4601,7 +4605,7 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="76"/>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="510"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="513"/>
         <source>Connect</source>
         <translation>网络连接</translation>
     </message>
@@ -4748,32 +4752,32 @@ Please retry or relogin!</source>
         <extra-contents_path>/display/resolution</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="122"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="120"/>
         <source>orientation</source>
         <translation>方向</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="139"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="137"/>
         <source>arrow-up</source>
         <translation>不旋转</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="140"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="138"/>
         <source>90° arrow-right</source>
         <translation>90° 顺时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="142"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="140"/>
         <source>arrow-down</source>
         <translation>上下颠倒</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="141"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="139"/>
         <source>90° arrow-left</source>
         <translation>90° 逆时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="154"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="152"/>
         <source>frequency</source>
         <translation>刷新率</translation>
     </message>
@@ -4786,14 +4790,14 @@ Please retry or relogin!</source>
         <translation type="vanished">自动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="208"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="193"/>
         <source>screen zoom</source>
         <translation>缩放屏幕</translation>
         <extra-contents_path>/display/screen zoom</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="294"/>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="300"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="279"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="285"/>
         <source>%1 Hz</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4981,35 +4985,35 @@ Please retry or relogin!</source>
         <location filename="../../../plugins/system/power/power.cpp" line="284"/>
         <location filename="../../../plugins/system/power/power.cpp" line="322"/>
         <source>10m</source>
-        <translation>10分钟</translation>
+        <translation>10m</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="284"/>
         <source>20m</source>
-        <translation>20分钟</translation>
+        <translation>20m</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="284"/>
         <location filename="../../../plugins/system/power/power.cpp" line="322"/>
         <source>30m</source>
-        <translation>30分钟</translation>
+        <translation>30m</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="284"/>
         <location filename="../../../plugins/system/power/power.cpp" line="322"/>
         <source>1h</source>
-        <translation>1小时</translation>
+        <translation>1h</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="284"/>
         <location filename="../../../plugins/system/power/power.cpp" line="322"/>
         <source>2h</source>
-        <translation>2小时</translation>
+        <translation>2h</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="322"/>
         <source>5m</source>
-        <translation>5分钟</translation>
+        <translation>5m</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="441"/>
@@ -5028,13 +5032,17 @@ Please retry or relogin!</source>
         <translation type="vanished">空闲时间 %1 分钟后进入睡眠状态:</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="456"/>
         <source>(No operation for %1 minute is considered idle)</source>
-        <translation>(%1 分钟无操作被视为空闲)</translation>
+        <translation type="vanished">(%1 分钟无操作被视为空闲)</translation>
     </message>
     <message>
         <source>Time to sleep after %1 minute of idle time %2</source>
         <translation type="vanished">空闲时间%1分钟后进入睡眠%2:</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="456"/>
+        <source>Time to sleep after idle time(No operation for %1 minute is considered idle)</source>
+        <translation>系统进入空闲状态并于此时间后睡眠(%1 分钟无操作被视为空闲)</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="458"/>
