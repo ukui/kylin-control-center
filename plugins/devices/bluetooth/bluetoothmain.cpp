@@ -98,6 +98,15 @@ BlueToothMain::BlueToothMain(QWidget *parent)
     Discovery_device_address.clear();
     last_discovery_device_address.clear();
 
+
+    poweronAgain_timer = new QTimer();
+    poweronAgain_timer->setInterval(3000);
+    connect(poweronAgain_timer,&QTimer::timeout,this,[=]{
+        qDebug() << __FUNCTION__ << "adapterPoweredChanged again" << __LINE__;
+        poweronAgain_timer->stop();
+        adapterPoweredChanged(true);
+    });
+
     InitMainTopUI();
     InitMainMiddleUI();
     InitMainbottomUI();
@@ -617,7 +626,13 @@ void BlueToothMain::MonitorSleepSlot(bool value)
 {
     if (!value) {
         if (sleep_status)
+        {
             adapterPoweredChanged(true);
+            poweronAgain_timer->start();
+        }
+        else
+            adapterPoweredChanged(false);
+
     } else {
         sleep_status = m_localDevice->isPowered();
     }
@@ -658,7 +673,10 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
             if(p->error() == 0){
                 qDebug() << Q_FUNC_INFO << m_localDevice->isPowered();
             }else
+            {
+                poweronAgain_timer->start();
                 qDebug() << "Failed to turn off Bluetooth:" << p->errorText();
+            }
         });
     }
     else
