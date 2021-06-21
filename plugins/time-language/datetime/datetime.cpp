@@ -48,7 +48,7 @@ const QString kenBj =           "Asia/Beijing";
 #define FORMAT_SCHEMA           "org.ukui.control-center.panel.plugins"
 #define TIME_FORMAT_KEY         "hoursystem"
 #define DATE_KEY                "date"
-#define SYNC_TIME_KEY           "synctime"
+//#define SYNC_TIME_KEY           "synctime"
 #define NTP_KEY                 "ntp"
 #define TIMEZONES_KEY           "timezones"
 #define MAX_TIMES               5
@@ -646,16 +646,27 @@ void DateTime::loadHour()
 
     setCurrentTime();
 
-    if (keys.contains(SYNC_TIME_KEY)) {
-        formatB = m_formatsettings->get(SYNC_TIME_KEY).toBool();
-        syncTimeBtn->setChecked(formatB);
-        if (formatB != false) {
-            ui->chgtimebtn->setEnabled(false);
+    QDBusReply<QVariant> ret = m_datetimeiproperties->call("Get", "org.freedesktop.timedate1", "NTP");
+    bool syncFlag = ret.value().toBool();
 
-        } else {
-            setNtpFrame(false);
-        }
+    syncTimeBtn->setChecked(syncFlag);
+    if (syncFlag != false) {
+        ui->chgtimebtn->setEnabled(false);
+
+    } else {
+        setNtpFrame(false);
     }
+
+//    if (keys.contains(SYNC_TIME_KEY)) {
+//        formatB = m_formatsettings->get(SYNC_TIME_KEY).toBool();
+//        syncTimeBtn->setChecked(formatB);
+//        if (formatB != false) {
+//            ui->chgtimebtn->setEnabled(false);
+
+//        } else {
+//            setNtpFrame(false);
+//        }
+//    }
 }
 
 QString  DateTime::getTimeAndWeek(const QDateTime timeZone)
@@ -758,11 +769,6 @@ void DateTime::initConnect()
             bool checked = (value == "24" ? true : false);
             m_formTimeBtn->setChecked(checked);
         }
-
-        if (key == SYNC_TIME_KEY){
-            bool valueB = m_formatsettings->get(SYNC_TIME_KEY).toBool();
-            syncTimeBtn->setChecked(valueB);
-        }
     });
 }
 
@@ -789,14 +795,7 @@ void DateTime::synctimeFormatSlot(bool status,bool outChange)
         qDebug()<<"org.ukui.control-center.panel.plugins not installed"<<endl;
         return;
     }
-    QStringList keys = m_formatsettings->keys();
-    if (keys.contains(SYNC_TIME_KEY) && outChange) {
-        if (status != false) {
-            m_formatsettings->set(SYNC_TIME_KEY, true);
-        } else {
-            m_formatsettings->set(SYNC_TIME_KEY, false);
-        }
-    }
+
     QDBusMessage retDBus =  rsyncWithNetworkSlot(status);
     if (status != false) {
         ui->chgtimebtn->setEnabled(false);
