@@ -258,29 +258,29 @@ void About::setupSerialComponent()
     } else {
         serial = serialReply.value();
     }
-
+    QDBusMessage dateReply = activeInterface.get()->call("date");
+    QString dateRes;
+    if (dateReply.type() == QDBusMessage::ReplyMessage) {
+        dateRes = dateReply.arguments().at(0).toString();
+    }
     if (1 == status) {
         ui->activeContent->setText(tr("Activated"));
+        ui->timeContent->setText(dateRes);
         ui->activeButton->hide();
         ui->trialButton->hide();
     } else {
         ui->activeContent->setStyleSheet("color:red;");
-        QDBusMessage dateReply = activeInterface.get()->call("date");
-        QString dateRes;
-        if (dateReply.type() == QDBusMessage::ReplyMessage) {
-            dateRes = dateReply.arguments().at(0).toString();
-            if (!dateRes.isEmpty()) {
-                if (QLabelSetText(ui->activeContent,tr("The system has expired. The expiration time is:")+ dateRes)) {
-                      ui->activeContent->setToolTip(tr("The system has expired. The expiration time is:")
-                                                 + dateRes);
-                }
-
-            } else {
-
-                ui->activeContent->setText(tr("Inactivated"));
-            }
+        ui->timeContent->setStyleSheet("color:red;");
+        if (!dateRes.isEmpty()) {
+            ui->activeContent->setText(tr("Technical service has expired"));
+            ui->timeContent->setText(dateRes);
+        } else {
+            ui->label_8->hide();
+            ui->timeContent->hide();
+            ui->activeContent->setText(tr("Inactivated"));
         }
     }
+
     ui->serviceContent->setText(serial);
 
     connect(ui->activeButton, &QPushButton::clicked, this, &About::runActiveWindow);
@@ -480,17 +480,4 @@ QStringList About::getUserDefaultLanguage() {
     result.append(formats);
     result.append(language);
     return result;
-}
-bool About::QLabelSetText(QLabel *label, QString string)
-{
-    bool is_over_length = false;
-    QFontMetrics fontMetrics(label->font());
-    int fontSize = fontMetrics.width(string);
-    QString str = string;
-    if (fontSize > (label->width()-5)) {
-        str = fontMetrics.elidedText(string, Qt::ElideRight, label->width());
-        is_over_length = true;
-    }
-    label->setText(str);
-    return is_over_length;
 }
