@@ -638,6 +638,8 @@ void MainWidget::initSignalSlots() {
             if (m_itemMap.key(name) == "shortcut" && checked == true) {
                 showDesktopNotify(tr("This operation may cover your settings!"));
             }
+            m_pSettings->setValue(m_itemMap.key(name) + "/enable",checked ? "true" : "false");
+            m_pSettings->sync();
             emit dochange(m_itemMap.key(name),checked);
         });
     }
