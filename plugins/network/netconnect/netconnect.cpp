@@ -806,6 +806,14 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
                     ++iter;
                 }
             }
+            if (ui->detailLayOut->layout() != NULL) {
+                QLayoutItem* item;
+                while ((item = ui->detailLayOut->layout()->takeAt(0)) != NULL) {
+                    item->widget()->close();
+                    delete item;
+                    item = nullptr;
+                }
+            }
             if (!this->connectedWifi.isEmpty()) {
                 QMap<QString, int>::iterator iter = this->connectedWifi.begin();
 
