@@ -194,6 +194,8 @@ void XmlHandle::_xmlGenerate(){
     }
 
     QMap<QString, QString> currentheadMap;
+    if (wallpapersMap.isEmpty()) 
+        return;
     currentheadMap = (QMap<QString, QString>)wallpapersMap.find("head").value();
 
     QXmlStreamWriter writer;
