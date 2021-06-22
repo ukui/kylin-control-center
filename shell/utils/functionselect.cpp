@@ -72,8 +72,10 @@ void FunctionSelect::initValue(){
     }
     devicesList[PRINTER].nameString = QString("Printer");
     devicesList[PRINTER].namei18nString = QObject::tr("Printer");
+    devicesList[PRINTER].mainShow = false;
     devicesList[PROJECTION].nameString = QString("Projection");
     devicesList[PROJECTION].namei18nString = QObject::tr("Projection");
+    devicesList[PROJECTION].mainShow = false;
     devicesList[MOUSE].nameString = QString("Mouse");
     devicesList[MOUSE].namei18nString = QObject::tr("Mouse");
     devicesList[TOUCHPAD].nameString = QString("Touchpad");
@@ -86,10 +88,8 @@ void FunctionSelect::initValue(){
     devicesList[SHORTCUT].mainShow = false;
     devicesList[AUDIO].nameString = QString("Audio");
     devicesList[AUDIO].namei18nString = QObject::tr("Audio");
-    devicesList[AUDIO].mainShow = false;
     devicesList[BLUETOOTH].nameString = QString("Bluetooth");
     devicesList[BLUETOOTH].namei18nString = QObject::tr("Bluetooth");
-    devicesList[BLUETOOTH].mainShow = false;
 
     funcinfoList.append(devicesList);
 
@@ -102,18 +102,18 @@ void FunctionSelect::initValue(){
         funcStruct.mainShow = true;
         personalizedList.append(funcStruct);
     }
-    personalizedList[BACKGROUND].nameString = QString("Background");
-    personalizedList[BACKGROUND].namei18nString = QObject::tr("Background");
-    personalizedList[BACKGROUND].mainShow = false;
+
     personalizedList[THEME].nameString = QString("Theme");
     personalizedList[THEME].namei18nString = QObject::tr("Theme");
+    personalizedList[BACKGROUND].nameString = QString("Background");
+    personalizedList[BACKGROUND].namei18nString = QObject::tr("Background");
     personalizedList[SCREENLOCK].nameString = QString("Screenlock");
     personalizedList[SCREENLOCK].namei18nString = QObject::tr("Screenlock");
+    personalizedList[SCREENLOCK].mainShow = false;
     personalizedList[FONTS].nameString = QString("Fonts");
     personalizedList[FONTS].namei18nString = QObject::tr("Fonts");
     personalizedList[SCREENSAVER].nameString = QString("Screensaver");
     personalizedList[SCREENSAVER].namei18nString = QObject::tr("Screensaver");
-    personalizedList[SCREENSAVER].mainShow = false;
     personalizedList[DESKTOP].nameString = QString("Desktop");
     personalizedList[DESKTOP].namei18nString = QObject::tr("Desktop");
     personalizedList[DESKTOP].mainShow = false;
