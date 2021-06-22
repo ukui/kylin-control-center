@@ -20,7 +20,7 @@
 #include "netconnect.h"
 #include "ui_netconnect.h"
 
-#include "commonComponent/HoverBtn/hoverbtn.h"
+
 #include "../shell/utils/utils.h"
 
 #include <QGSettings>
@@ -411,9 +411,8 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QMap<QString, bool>
             netDetailOpen(lanDetail,deviceItem->mName);
             lanDetail->setVisible(actLanNames.value(iter.key()));
         }
-
         connect(deviceItem->mAbtBtn, &QPushButton::clicked, this, [=] {
-            netDetailSlot(lanDetail, deviceItem->mName,iter.value());
+            netDetailSlot(lanDetail, deviceItem->mName,iter.value(), deviceItem);
         });
         vLayout->addWidget(deviceItem);
         vLayout->addWidget(lanDetail);
@@ -527,9 +526,9 @@ void NetConnect::netDetailOpen(NetDetail *netDetail,QString netName){
 }
 
 //有线网络详情页构建
-void NetConnect::netDetailSlot(NetDetail *netDetail,QString netName, bool status) {
+void NetConnect::netDetailSlot(NetDetail *netDetail,QString netName, bool status, HoverBtn * deviceItem) {
     foreach (ActiveConInfo netInfo, mActiveInfo) {
-        if (!netInfo.strConName.compare(netName, Qt::CaseInsensitive)) {
+        if (netInfo.strConName.compare(netName, Qt::CaseInsensitive)) {
             status = !status;
             QMap<QString,bool>::Iterator iter;
             if (!actLanNames.isEmpty()) {
@@ -550,6 +549,7 @@ void NetConnect::netDetailSlot(NetDetail *netDetail,QString netName, bool status
             netDetail->setMac(netInfo.strMac);
             netDetail->setBandWidth(netInfo.strBandWidth);
             netDetail->setVisible(actLanNames.value(netName));
+            deviceItem->mAbtBtn->setVisible(true);
             preActLan.insert(netName, status);
         }
     }
