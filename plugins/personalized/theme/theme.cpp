@@ -24,6 +24,7 @@
 #include <QDebug>
 #include <QtDBus/QDBusConnection>
 #include <QtConcurrent>
+#include <QRadioButton>
 
 #include "SwitchButton/switchbutton.h"
 #include "Label/iconlabel.h"
@@ -217,6 +218,10 @@ void Theme::setupSettings() {
 void Theme::setupComponent() {
 
     ui->frame_2->setVisible(getSystemVersion());
+    if (!getSystemVersion()) {
+        ui->horizontalSpacer_10->changeSize(0,0);
+    }
+
     //隐藏现阶段不支持功能
     ui->controlLabel->hide();
     ui->controlWidget->hide();
@@ -271,15 +276,9 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
     QHBoxLayout * bottomHorLayout = new QHBoxLayout;
     bottomHorLayout->setSpacing(8);
     bottomHorLayout->setMargin(0);
-    QLabel * statusLabel = new QLabel(button);
-    statusLabel->setFixedSize(QSize(16, 16));
-    statusLabel->setScaledContents(true);
-
+    QRadioButton * statusbtn = new QRadioButton(button);
+    statusbtn->setFixedSize(QSize(16, 16));
     QLabel * nameLabel = new QLabel(button);
-    QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
-    nameSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
-    nameSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
-    nameLabel->setSizePolicy(nameSizePolicy);
     nameLabel->setText(name);
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
@@ -288,10 +287,11 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
     connect(ui->themeModeBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), [=](QAbstractButton * eBtn){
 #endif
         if (eBtn == button) {
-            statusLabel->setPixmap(QPixmap("://img/plugins/theme/selected.svg"));
+           // statusLabel->setPixmap(QPixmap("://img/plugins/theme/selected.svg"));
+            statusbtn->setChecked(true);
         }
         else {
-            statusLabel->clear();
+            statusbtn->setChecked(false);
         }
     });
 
@@ -303,7 +303,8 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
            .arg(highLightColor.green()*0.8 + 255*0.2)
            .arg(highLightColor.blue()*0.8 + 255*0.2);
 
-    iconLabel->setStyleSheet(QString("QLabel:hover:!pressed#iconlabel{border-width: 3px;border-style: solid;border-color: %1;}").arg(stringColor));
+    iconLabel->setStyleSheet(QString("QLabel#iconlabel{border-radius: 6px;}\
+                                     QLabel:hover:!pressed#iconlabel{border-width: 2px;border-style: solid;border-color: %1;}").arg(stringColor));
 
     connect(iconLabel,&IconLabel::enterWidget,[=](){
        iconLabel->setContentsMargins(3,3,3,3);
@@ -313,7 +314,8 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
      });
 
     bottomHorLayout->addStretch();
-    bottomHorLayout->addWidget(statusLabel);
+    bottomHorLayout->setContentsMargins(0,4,0,0);
+    bottomHorLayout->addWidget(statusbtn);
     bottomHorLayout->addWidget(nameLabel);
     bottomHorLayout->addStretch();
 
