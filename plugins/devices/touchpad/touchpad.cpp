@@ -44,6 +44,8 @@ extern "C" {
 #define V_FINGER_KEY             "vertical-two-finger-scrolling"
 #define H_FINGER_KEY             "horizontal-two-finger-scrolling"
 #define N_SCROLLING              "none"
+#define CONTAIN_SPEED_KEY        "motionAcceleration"
+#define SPEED_KEY                "motion-acceleration"
 
 bool findSynaptics();
 bool _supportsXinputDevices();
@@ -134,6 +136,12 @@ void Touchpad::setupComponent(){
     clickBtn = new SwitchButton(pluginWidget);
     ui->clickHorLayout->addWidget(clickBtn);
 
+    //~ contents_path /touchpad/Speed
+    ui->speedLabel->setText(tr("Speed"));
+    ui->speedSlider->setRange(0, 18);  //1.0 - 10.0
+    ui->slowLabel->setText(tr("Slow"));
+    ui->FastLabel->setText(tr("Fast"));
+
     if (mIsWayland) {
         ui->scrollingTypeComBox->addItem(tr("Disable rolling"), N_SCROLLING);
         ui->scrollingTypeComBox->addItem(tr("Edge scrolling"), V_EDGE_KEY);
@@ -181,6 +189,14 @@ void Touchpad::initConnection() {
             tpsettings->set(H_FINGER_KEY,false);
         }
     });
+
+    if (tpsettings->keys().contains(CONTAIN_SPEED_KEY)){
+        ui->speedSlider->setValue(int((tpsettings->get(SPEED_KEY).toFloat() * 10.0 -10.0) / 5));
+        connect(ui->speedSlider, &Uslider::valueChanged, this, [=](){
+            float setValue = (ui->speedSlider->value() * 5 + 10.0) /10.0;
+            tpsettings->set(SPEED_KEY, setValue);
+        });
+    }
 }
 
 void Touchpad::initTouchpadStatus(){
