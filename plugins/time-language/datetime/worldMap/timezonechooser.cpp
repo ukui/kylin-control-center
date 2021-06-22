@@ -235,14 +235,12 @@ void TimeZoneChooser::paintEvent(QPaintEvent *event)
     painter.setBrush(QBrush(QColor(22, 24, 26),Qt::SolidPattern));
     painter.setPen(Qt::transparent);
     QRect rect = this->rect();
-    rect.setWidth(rect.width() - 1);
-    rect.setHeight(rect.height() - 1);
-    painter.drawRoundedRect(rect, 6, 6);
-    {
-        QPainterPath painterPath;
-        painterPath.addRoundedRect(rect, 6, 6);
-        painter.drawPath(painterPath);
-    }
+
+
+    QPainterPath painterPath;
+    painterPath.addRoundedRect(rect, 6, 6);
+    painter.drawPath(painterPath);
+
     QWidget::paintEvent(event);
 
 
