@@ -47,6 +47,8 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     QByteArray ar = proc.readAll().toStdString().c_str();
     m_confName = "All-" + ar.replace("\n","") + ".conf";
     m_szConfPath = QDir::homePath() + "/.cache/kylinId/" + m_confName;
+    m_pSettings = new QSettings(m_szConfPath,QSettings::IniFormat);
+    m_pSettings->setIniCodec(QTextCodec::codecForName("UTF-8"));
 
     //麒麟ID客户端检测
     QProcess kylinIDProc;
@@ -412,9 +414,6 @@ void MainWidget::checkUserName(QString name) {
             m_itemList->get_item(itemCnt)->get_swbtn()->setDisabledFlag(false);
         }
     }
-
-    m_pSettings = new QSettings(m_szConfPath,QSettings::IniFormat);
-    m_pSettings->setIniCodec(QTextCodec::codecForName("UTF-8"));
     m_infoTab->setText(tr("Your account：%1").arg(m_szCode));
     QFile fileConf(m_szConfPath);
     if (m_pSettings != nullptr && fileConf.exists())
@@ -587,6 +586,8 @@ void MainWidget::initSignalSlots() {
                 showDesktopNotify(tr("Network can not reach!"));
                 return ;
             }
+            m_pSettings->setValue(m_itemMap.key(name) + "/enable",checked ? "true":"false");
+            m_pSettings->sync();
             emit dochange(m_itemMap.key(name),checked);
             if ( m_exitCloud_btn->property("on") == true || !m_bAutoSyn) {
                 if (m_itemList->get_item_by_name(name)->get_swbtn()->getDisabledFlag() == true)
