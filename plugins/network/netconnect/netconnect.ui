@@ -59,14 +59,11 @@
     </spacer>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="statusLayout">
+    <layout class="QVBoxLayout" name="detailLayOut">
      <property name="spacing">
       <number>1</number>
      </property>
     </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="detailLayOut"/>
    </item>
    <item>
     <spacer name="verticalSpacer">

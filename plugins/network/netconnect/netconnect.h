@@ -111,7 +111,7 @@ public:
     void initSearchText();
     void initComponent();
     void rebuildNetStatusComponent(QString iconPath, QString netName);
-    void rebuildNetStatusComponent(QString iconPath, QStringList netName);
+    void rebuildNetStatusComponent(QString iconPath, QMap<QString, bool> netNameMap);
     void rebuildAvailComponent(QString iconpath, QString netName, QString type);
 
     void runExternalApp();
@@ -127,7 +127,7 @@ private:
     QString            pluginName;
     int                pluginType;
     QWidget            *pluginWidget;
-
+    QLabel             *verWifiLabel;
 
     QDBusInterface     *m_interface = nullptr;
     SwitchButton       *wifiBtn;
@@ -138,8 +138,8 @@ private:
     QThread            *pThread;
     NetconnectWork     *pNetWorker;
 
-    QString            connectedLan;
-    QStringList        actLanNames;
+    QMap<QString, bool> actLanNames;
+    QMap<QString, bool> preActLan;
 
     QStringList        TwifiList;
     QStringList        TlanList;
@@ -147,11 +147,9 @@ private:
     QStringList        wifilist;
 
     bool               mFirstLoad;
-    bool               mIsLanVisible = false;
     bool               mIsWlanVisible = false;
 
     NetDetail          *mWlanDetail;
-    NetDetail          *mLanDetail;
 
     QList<ActiveConInfo> mActiveInfo;
     QTimer             *refreshTimer;
@@ -182,6 +180,7 @@ private:
     void        initNetworkMap();
     void        setWifiBtnDisable();
     void        setNetDetailVisible();                              // 设置网络刷新状态
+    void        netDetailOpen(NetDetail *netDetail,QString netName);
     QString     wifiIcon(bool isLock, int strength,int category);
     QString     wifiIcon(bool isLock, int strength);
     QList<QVariantMap> getDbusMap(const QDBusMessage &dbusMessage);
@@ -190,6 +189,7 @@ private slots:
     void getNetList();
     void netPropertiesChangeSlot(QMap<QString, QVariant> property);
     void netDetailSlot(QString netName);
+    void netDetailSlot(NetDetail *netDetail,QString netName, bool status);
     void refreshNetInfoTimerSlot();
     void refreshNetInfoSlot();
 signals:
