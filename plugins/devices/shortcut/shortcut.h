@@ -68,7 +68,7 @@ public:
     void buildCustomItem(KeyEntry *nkeyEntry);
     QWidget *buildGeneralWidget(QString schema, QMap<QString, QString> subShortcutsMap);
 
-    void createNewShortcut(QString path, QString name, QString exec, QString key);
+    void createNewShortcut(QString path, QString name, QString exec, QString key, bool buildFlag = true);
     void deleteCustomShortcut(QString path);
 
     bool keyIsForbidden(QString key);

@@ -601,7 +601,7 @@ void Widget::initNightUI()
 bool Widget::isRestoreConfig()
 {
     int cnt = 15;
-    int ret;
+    int ret = -100;
     MainWindow *mainWindow = static_cast<MainWindow*>(this->topLevelWidget());
     QMessageBox msg;
     connect(mainWindow, &MainWindow::posChanged, this, [=,&msg]() {

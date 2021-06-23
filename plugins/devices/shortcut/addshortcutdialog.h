@@ -20,7 +20,6 @@
 #ifndef ADDSHORTCUTDIALOG_H
 #define ADDSHORTCUTDIALOG_H
 
-#include <QDialog>
 #include <QFileDialog>
 #include <QPainter>
 #include <QPainterPath>
@@ -28,22 +27,8 @@
 #include <KActionCollection>
 #include <KGlobalAccel>
 #include <QDebug>
-
-typedef struct _KeyEntry KeyEntry;
-
-struct _KeyEntry {
-    QString gsSchema;
-    QString keyStr;
-    QString valueStr;
-    QString descStr;
-
-    QString gsPath;
-    QString nameStr;
-    QString bindingStr;
-    QString actionStr;
-};
-
-Q_DECLARE_METATYPE(KeyEntry *)
+#include "keyentry.h"
+#include "shortcutline.h"
 
 namespace Ui {
 class addShortcutDialog;
@@ -66,7 +51,7 @@ public:
 
     void setUpdateEnv(QString path, QString name, QString exec);
 
-    void refreshCertainChecked();
+    void refreshCertainChecked(int triggerFlag);   //1:输入了程序，2:输入了名字， 3:输入了快捷键
     void limitInput();
     bool conflictWithStandardShortcuts(const QKeySequence &seq);
     bool conflictWithGlobalShortcuts(const QKeySequence &seq);
@@ -74,6 +59,10 @@ public:
     bool conflictWithCustomShortcuts(const QKeySequence &seq);
     bool isKeyAvailable(const QKeySequence &seq);
     QString keyToLib(QString key);
+
+    void setExecText(const QString &text);
+    void setNameText(const QString &text);
+    void setKeyText(const QString  &text);
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -86,8 +75,12 @@ private:
     QString selectedfile;
     QList<KeyEntry *> systemEntry;
     QList<KeyEntry *> customEntry;
-    bool keyIsAvailable;
-
+    ShortcutLine *shortcutLine = nullptr;
+    QString      editName;
+    QKeySequence editSeq;
+    int keyIsAvailable;         //快捷键有冲突/不可用/正常三种情况，1：冲突，2：不可用，3：正常
+    bool nameIsAvailable;
+    bool execIsAvailable;
 Q_SIGNALS:
     void shortcutInfoSignal(QString path, QString name, QString exec, QString key);
 };

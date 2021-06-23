@@ -38,10 +38,15 @@ addShortcutDialog::addShortcutDialog(QList<KeyEntry *> generalEntries,
 {
     ui->setupUi(this);
 
+    editSeq  = QKeySequence("");
+    editName = "";
+    keyIsAvailable  = 0;
+    execIsAvailable = false;
+    nameIsAvailable = false;
     initSetup();
     slotsSetup();
     limitInput();
-    refreshCertainChecked();
+
 }
 
 addShortcutDialog::~addShortcutDialog()
@@ -61,41 +66,30 @@ void addShortcutDialog::initSetup()
     ui->noteLabel->setPixmap(QPixmap("://img/plugins/shortcut/note.png"));
     ui->execLineEdit->setReadOnly(true);
 
-    ui->stackedWidget->setCurrentIndex(1);
-    ui->kkeysequencewidget->setClearButtonShown(false);
-    ui->kkeysequencewidget->setMultiKeyShortcutsAllowed(false);
-    ui->kkeysequencewidget->setModifierlessAllowed(false);
-    ui->kkeysequencewidget->setCheckForConflictsAgainst(KKeySequenceWidget::None);
+    ui->noteLabel->setVisible(false);
+    ui->label_4->setStyleSheet("color: red");
+    ui->label_4->setText("");
+
+    ui->certainBtn->setDisabled(true);
+    shortcutLine = new ShortcutLine(systemEntry, customEntry);
+    ui->horizontalLayout_2->addWidget(shortcutLine);
+    shortcutLine->setFixedWidth(302);
+    shortcutLine->setPlaceholderText(tr("Please enter a shortcut"));
+
+    connect(shortcutLine, &ShortcutLine::shortCutAvailable, this, [=](const int &flag){
+        if (flag == 0 || (flag == -2 && editSeq == shortcutLine->keySequence())) {  //快捷键正常
+            keyIsAvailable = 3;
+        } else if(flag == -2) { //快捷键冲突
+            keyIsAvailable = 1;
+        } else {               //快捷键不可用
+            keyIsAvailable = 2;
+        }
+        refreshCertainChecked(3);
+    });
 }
 
 void addShortcutDialog::slotsSetup()
 {
-    connect(ui->kkeysequencewidget, &KKeySequenceWidget::keySequenceChanged, this,
-            [=](QKeySequence seq){
-        qDebug() << seq.toString() << keyToLib(seq.toString());
-        if (ui->kkeysequencewidget->isKeySequenceAvailable(seq)) {
-            if (conflictWithGlobalShortcuts(seq) || conflictWithStandardShortcuts(seq)
-                || conflictWithSystemShortcuts(seq) || conflictWithCustomShortcuts(seq)) {
-                ui->kkeysequencewidget->clearKeySequence();
-                ui->kkeysequencewidget->clearFocus();
-                ui->label_4->setText(tr("shortcut conflict"));
-                ui->stackedWidget->setCurrentIndex(0);
-                keyIsAvailable = false;
-                refreshCertainChecked();
-            } else if (!isKeyAvailable(seq)) {
-                ui->kkeysequencewidget->clearKeySequence();
-                ui->kkeysequencewidget->clearFocus();
-                ui->label_4->setText(tr("invaild shortcut"));
-                ui->stackedWidget->setCurrentIndex(0);
-                keyIsAvailable = false;
-                refreshCertainChecked();
-            } else {
-                ui->stackedWidget->setCurrentIndex(1);
-                keyIsAvailable = true;
-                refreshCertainChecked();
-            }
-        }
-    });
     connect(ui->openBtn, &QPushButton::clicked, [=](bool checked){
         Q_UNUSED(checked)
         openProgramFileDialog();
@@ -106,28 +100,25 @@ void addShortcutDialog::slotsSetup()
             || (!g_file_test(text.toLatin1().data(),
                              G_FILE_TEST_IS_DIR)
                 && g_file_test(text.toLatin1().data(), G_FILE_TEST_IS_EXECUTABLE))) {
-            ui->certainBtn->setChecked(true);
-            ui->stackedWidget->setCurrentIndex(1);
+            execIsAvailable = true;
         } else {
-            ui->certainBtn->setChecked(false);
-            ui->stackedWidget->setCurrentIndex(0);
+            execIsAvailable = false;
         }
-
-        refreshCertainChecked();
+        refreshCertainChecked(1);
     });
 
-    connect(ui->nameLineEdit, &QLineEdit::textChanged, [=](QString text){
+    connect(ui->nameLineEdit, &QLineEdit::textChanged, [=](){
         QStringList customName;
+        QString text = ui->nameLineEdit->text();
         for (KeyEntry *ckeyEntry : customEntry) {
             customName << ckeyEntry->nameStr;
-            if (customName.contains(text)) {
-                ui->stackedWidget->setCurrentIndex(0);
-                ui->label_4->setText(tr("repeated naming"));
+            if (customName.contains(text) && text != editName) {
+                nameIsAvailable = false;
             } else {
-                ui->stackedWidget->setCurrentIndex(1);
+                nameIsAvailable = true;
             }
         }
-        refreshCertainChecked();
+        refreshCertainChecked(2);
     });
 
     connect(ui->cancelBtn, &QPushButton::clicked, [=] {
@@ -135,7 +126,7 @@ void addShortcutDialog::slotsSetup()
     });
     connect(ui->certainBtn, &QPushButton::clicked, [=] {
         emit shortcutInfoSignal(gsPath, ui->nameLineEdit->text(), selectedfile,
-                                ui->kkeysequencewidget->keySequence().toString());
+                                shortcutLine->keySequence().toString());
 
         close();
     });
@@ -144,10 +135,7 @@ void addShortcutDialog::slotsSetup()
         gsPath = "";
         ui->nameLineEdit->clear();
         ui->execLineEdit->clear();
-        ui->stackedWidget->setCurrentIndex(1);
         ui->nameLineEdit->setFocus(Qt::ActiveWindowFocusReason);
-
-        refreshCertainChecked();
     });
 }
 
@@ -257,20 +245,67 @@ void addShortcutDialog::openProgramFileDialog()
     ui->execLineEdit->setText(exec);
 }
 
-void addShortcutDialog::refreshCertainChecked()
+void addShortcutDialog::refreshCertainChecked(int triggerFlag)
 {
-    if (ui->nameLineEdit->text().isEmpty() || ui->execLineEdit->text().isEmpty()
-        || ui->stackedWidget->currentIndex() == 0
-        || !keyIsAvailable) {
+    ui->label_4->setText("");
+    if (!execIsAvailable || keyIsAvailable != 3 || !nameIsAvailable) {
+        ui->noteLabel->setVisible(true);
         ui->certainBtn->setDisabled(true);
+
+        switch (triggerFlag) {
+        case 1:
+            if (!execIsAvailable) {
+                ui->label_4->setText(tr("Invalid application"));  //程序无效
+            } else if (keyIsAvailable == 1 && !shortcutLine->text().isEmpty()) {
+                ui->label_4->setText(tr("Shortcut conflict"));  //快捷键冲突
+            } else if (keyIsAvailable == 2 && !shortcutLine->text().isEmpty()) {
+                ui->label_4->setText(tr("Invalid shortcut"));  //快捷键无效
+            } else if (!nameIsAvailable && !ui->nameLineEdit->text().isEmpty()) {
+                ui->label_4->setText(tr("Name repetition"));  //名称重复
+            } else {
+                ui->noteLabel->setVisible(false);
+            }
+            break;
+        case 2:
+            if (!nameIsAvailable) {
+                ui->label_4->setText(tr("Name repetition"));  //名称重复
+            } else if (keyIsAvailable == 1 && !shortcutLine->text().isEmpty()) {
+                ui->label_4->setText(tr("Shortcut conflict"));  //快捷键冲突
+            } else if (keyIsAvailable == 2 && !shortcutLine->text().isEmpty()) {
+                ui->label_4->setText(tr("Invalid shortcut"));  //快捷键无效
+            } else if (!execIsAvailable && !ui->execLineEdit->text().isEmpty()) {
+                ui->label_4->setText(tr("Invalid application"));  //程序无效
+            } else {
+                ui->noteLabel->setVisible(false);
+            }
+            break;
+        case 3:
+            if (keyIsAvailable == 1) {
+                ui->label_4->setText(tr("Shortcut conflict"));  //快捷键冲突
+            } else if (keyIsAvailable == 2) {
+                ui->label_4->setText(tr("Invalid shortcut"));  //快捷键无效
+            } else if (!execIsAvailable && !ui->execLineEdit->text().isEmpty()) {
+                ui->label_4->setText(tr("Invalid application"));  //程序无效
+            } else if (!nameIsAvailable && !ui->nameLineEdit->text().isEmpty()) {
+                ui->label_4->setText(tr("Name repetition"));  //名称重复
+            } else {
+                ui->noteLabel->setVisible(false);
+            }
+            break;
+        default:
+            ui->label_4->setText(tr("Unknown error"));  //未知问题，不会触发
+            break;
+        }
+
     } else {
+        ui->noteLabel->setVisible(false);
         ui->certainBtn->setDisabled(false);
     }
 }
 
 bool addShortcutDialog::conflictWithGlobalShortcuts(const QKeySequence &keySequence)
 {
-    QHash<QKeySequence, QList<KGlobalShortcutInfo> > clashing;
+    QHash<QKeySequence, QList<KGlobalShortcutInfo>> clashing;
     for (int i = 0; i < keySequence.count(); ++i) {
         QKeySequence keys(keySequence[i]);
 
@@ -363,4 +398,33 @@ bool addShortcutDialog::isKeyAvailable(const QKeySequence &seq)
     }
 
     return true;
+}
+
+void addShortcutDialog::setExecText(const QString &text)
+{
+    selectedfile = text;
+    QString exec = selectedfile.section("/", -1, -1);
+    ui->execLineEdit->setText(exec);
+}
+
+void addShortcutDialog::setNameText(const QString &text)
+{
+    editName = text;
+    ui->nameLineEdit->setText(text);
+}
+
+void addShortcutDialog::setKeyText(const QString &text)
+{
+
+    QString showText = text;
+    showText = showText.replace("<","");
+    showText = showText.replace(">"," + ");
+    QString endStr = showText.mid(showText.length() - 1, 1);
+    showText = showText.mid(0, showText.length() - 1) + endStr.toUpper();
+
+    shortcutLine->setText(showText);
+
+    QKeySequence seq(showText.replace(" ", "")); //去掉空格
+    editSeq = seq;
+    shortcutLine->setKeySequence(seq);
 }

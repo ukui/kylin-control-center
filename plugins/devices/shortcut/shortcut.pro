@@ -38,16 +38,19 @@ SOURCES += \
     getshortcutworker.cpp \
     keymap.cpp \
     realizeshortcutwheel.cpp \
-    shortcut.cpp
+    shortcut.cpp \
+    shortcutline.cpp
 
 HEADERS += \
     addshortcutdialog.h \
     customlineedit.h \
     defineshortcutitem.h \
     getshortcutworker.h \
+    keyentry.h \
     keymap.h \
     realizeshortcutwheel.h \
-    shortcut.h
+    shortcut.h \
+    shortcutline.h
 
 FORMS += \
     addshortcutdialog.ui \

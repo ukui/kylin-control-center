@@ -37,7 +37,7 @@ void XmlHandle::init(){
 
     QFile file(localconf);
     //如果用户本地壁纸XML文件不存在，创建
-    if (!file.exists()){
+    if (true){
         QStringList files = _getXmlFiles(WALLPAPERDIR);
 
         for (int num = 0; num < files.length(); num++){
@@ -180,6 +180,8 @@ void XmlHandle::_xmlGenerate(){
         return;
     }
 
+    if (wallpapersMap.isEmpty()) 
+        return;
     QMap<QString, QString> currentheadMap;
     currentheadMap = (QMap<QString, QString>)wallpapersMap.find("head").value();
 

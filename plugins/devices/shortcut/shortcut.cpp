@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+﻿/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  *
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
@@ -27,6 +27,7 @@
 
 #include "realizeshortcutwheel.h"
 #include "defineshortcutitem.h"
+#include "Label/fixlabel.h"
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -224,7 +225,7 @@ void Shortcut::setupComponent()
 void Shortcut::setupConnect()
 {
     connect(addWgt, &HoverWidget::widgetClicked, this, [=](){
-        addShortcutDialog *addDialog = new addShortcutDialog(generalEntries, customEntries,pluginWidget);
+        addShortcutDialog *addDialog = new addShortcutDialog(generalEntries, customEntries, pluginWidget);
         addDialog->setTitleText(QObject::tr("Customize Shortcut"));
 
         connect(addDialog, &addShortcutDialog::shortcutInfoSignal,
@@ -443,59 +444,87 @@ void Shortcut::appendCustomItems()
 
 void Shortcut::buildCustomItem(KeyEntry *nkeyEntry)
 {
-    QPushButton *customBtn = new QPushButton();
-    QHBoxLayout *customHorLayout = new QHBoxLayout(customBtn);
+    HoverWidget *customWid         = new HoverWidget("");
+    QHBoxLayout *customWidLayout   = new QHBoxLayout(customWid);
+    QFrame      *infoFrame         = new QFrame(customWid);
+    QHBoxLayout *infoLayout        = new QHBoxLayout(infoFrame);
 
-    customBtn->setContextMenuPolicy(Qt::ActionsContextMenu);
-    customBtn->setFixedHeight(40);
-    customBtn->setMaximumWidth(960);
-    customHorLayout->setSpacing(24);
-    customHorLayout->setContentsMargins(16, 0, 19, 0);
+    QPushButton *delBtn       = new QPushButton(customWid);
+    QPushButton *editBtn      = new QPushButton(customWid);
+    FixLabel    *nameLabel    = new FixLabel(customWid);
+    FixLabel    *bindingLabel = new FixLabel(customWid);
 
-    QLabel *nameLabel = new QLabel(customBtn);
-    QLabel *bindingLabel = new QLabel(customBtn);
+    ui->verticalLayout_3->addWidget(customWid);
+    customWid->setObjectName("customWid");
+    customWid->setStyleSheet("HoverWidget#customWid{background: palette(base);}");
+    customWidLayout->setMargin(0);
+    customWidLayout->setSpacing(16);
+    customWid->setMinimumSize(QSize(550, 50));
+    customWid->setMaximumSize(QSize(960, 50));
+    customWid->setAttribute(Qt::WA_DeleteOnClose);
 
-    QFontMetrics fm(nameLabel->font());
-    QString nameStr = fm.elidedText(nkeyEntry->nameStr, Qt::ElideRight, 180);
-    nameLabel->setText(nameStr);
-    nameLabel->setToolTip(nkeyEntry->nameStr);
+    infoFrame->setFrameShape(QFrame::Shape::Box);
+    customWidLayout->addWidget(infoFrame);
+    infoLayout->setContentsMargins(16, 0, 16, 0);
+    infoLayout->addWidget(nameLabel);
+    infoLayout->addStretch();
+    infoLayout->addWidget(bindingLabel);
 
+    customWidLayout->addWidget(editBtn);
+    customWidLayout->addWidget(delBtn);
+
+    nameLabel->setText(nkeyEntry->nameStr);
     bindingLabel->setText(nkeyEntry->bindingStr);
-    bindingLabel->setFixedWidth(240);
-    bindingLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-    const QByteArray styleID(UKUI_STYLE_SCHEMA);
+    delBtn->setText(tr("Delete"));
+    delBtn->setFixedSize(80,  36);
+    delBtn->hide();
 
-    if (QGSettings::isSchemaInstalled(styleID)) {
-        QGSettings *styleUKUI = new QGSettings(styleID, QByteArray(), this);
+    editBtn->setText(tr("Edit"));
+    editBtn->setFixedSize(80, 36);
+    editBtn->hide();
 
-        connect(styleUKUI, &QGSettings::changed, this, [=](const QString &key){
-            if (key == "systemFontSize") {
-                QFontMetrics  fontMetrics(nameLabel->font());
-                nameLabel->setText(fontMetrics.elidedText(nkeyEntry->nameStr, Qt::ElideRight, 180));
-            }
-        });
-    }
 
-    customHorLayout->addWidget(nameLabel);
-    customHorLayout->addStretch();
-    customHorLayout->addWidget(bindingLabel);
+    connect(customWid, &HoverWidget::enterWidget, this, [=](){
+        delBtn->show();
+        editBtn->show();
+    });
+    connect(customWid, &HoverWidget::leaveWidget, this, [=](){
+        delBtn->hide();
+        editBtn->hide();
+    });
 
-    customBtn->setLayout(customHorLayout);
-    ui->verticalLayout_3->addWidget(customBtn);
-
-    QAction *edit = new QAction(customBtn);
-    QAction *del = new QAction(customBtn);
-
-    edit->setText(tr("Edit"));
-    del->setText(tr("Delete"));
-    // customBtn->addAction(edit);
-    customBtn->addAction(del);
-    connect(del, &QAction::triggered, this, [=](){
-        customBtn->deleteLater();
+    connect(delBtn, &QPushButton::clicked, this, [=](){
+        customWid->deleteLater();
         deleteCustomShortcut(nkeyEntry->gsPath);
         customEntries.removeOne(nkeyEntry);
     });
+
+    connect(editBtn, &QPushButton::clicked, this, [=](){
+        addShortcutDialog *addDialog = new addShortcutDialog(generalEntries, customEntries, pluginWidget);
+        addDialog->setTitleText(QObject::tr("Edit Shortcut"));
+
+        addDialog->setExecText(nkeyEntry->actionStr);
+        addDialog->setNameText(nkeyEntry->nameStr);
+        addDialog->setKeyText(nkeyEntry->bindingStr);
+
+        connect(addDialog, &addShortcutDialog::shortcutInfoSignal,
+                [=](QString path, QString name, QString exec, QString key){
+            deleteCustomShortcut(nkeyEntry->gsPath);
+            customEntries.removeOne(nkeyEntry);    //移除旧的
+            createNewShortcut(path, name, exec, key, false); //创建新的
+            nkeyEntry->actionStr = exec;
+            nkeyEntry->nameStr   = name;
+            nkeyEntry->bindingStr= key;
+
+            nameLabel->setText(name);
+            nameLabel->setToolTip(name);
+            bindingLabel->setText(addDialog->keyToLib(key));
+        });
+
+        addDialog->exec();
+    });
+
 }
 
 QString Shortcut::keyToUI(QString key)
@@ -528,7 +557,7 @@ QString Shortcut::keyToLib(QString key)
     return key;
 }
 
-void Shortcut::createNewShortcut(QString path, QString name, QString exec, QString key)
+void Shortcut::createNewShortcut(QString path, QString name, QString exec, QString key, bool buildFlag)
 {
     qDebug() << "createNewShortcut" << path << name << exec << key;
     QString availablepath;
@@ -543,8 +572,8 @@ void Shortcut::createNewShortcut(QString path, QString name, QString exec, QStri
         nKeyentry->actionStr = exec;
 
         customEntries.append(nKeyentry);
-
-        buildCustomItem(nKeyentry);
+        if (true == buildFlag)
+            buildCustomItem(nKeyentry);
     } else {
         availablepath = path; // 更新快捷键
 
