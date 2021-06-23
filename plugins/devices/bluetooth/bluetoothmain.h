@@ -122,6 +122,7 @@ private:
     QTimer *discovering_timer =nullptr;
     QTimer *delayStartDiscover_timer =nullptr;
     QTimer *IntermittentScann_timer =nullptr;
+    QTimer *poweronAgain_timer =nullptr;
     int IntermittentScann_timer_count = 0 ;
 
     int i = 7;
@@ -130,7 +131,7 @@ private:
 
     void clearUiShowDeviceList();
     void addOneBluetoothDeviceItemUi(BluezQt::DevicePtr);
-    void Connect_the_last_connected_device();
+
     void clearAllDeviceItemUi();
 };
 

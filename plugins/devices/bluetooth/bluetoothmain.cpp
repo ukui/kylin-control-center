@@ -97,6 +97,15 @@ BlueToothMain::BlueToothMain(QWidget *parent)
     Discovery_device_address.clear();
     last_discovery_device_address.clear();
 
+
+    poweronAgain_timer = new QTimer();
+    poweronAgain_timer->setInterval(3000);
+    connect(poweronAgain_timer,&QTimer::timeout,this,[=]{
+        qDebug() << __FUNCTION__ << "adapterPoweredChanged again" << __LINE__;
+        poweronAgain_timer->stop();
+        adapterPoweredChanged(true);
+    });
+
     InitMainTopUI();
     InitMainMiddleUI();
     InitMainbottomUI();
@@ -467,6 +476,14 @@ void BlueToothMain::updateUIWhenAdapterChanged()
         discovering_timer->start();
     }
 
+    connect(m_localDevice.data(),&BluezQt::Adapter::uuidsChanged,this,[=](const QStringList &uuids){
+        for (int i = 0 ; i < uuids.size() ; i++)
+        {
+            qDebug()<< uuids.at(i);
+        }
+    });
+
+
     //==============初始化蓝牙信息和基础信息====================================
      bluetooth_name->set_dev_name(m_localDevice->name());
 
@@ -618,7 +635,13 @@ void BlueToothMain::MonitorSleepSlot(bool value)
 {
     if (!value) {
         if (sleep_status)
+        {
             adapterPoweredChanged(true);
+            poweronAgain_timer->start();
+        }
+        else
+            adapterPoweredChanged(false);
+
     } else {
         sleep_status = m_localDevice->isPowered();
     }
@@ -658,8 +681,12 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
         connect(call,&BluezQt::PendingCall::finished,this,[=](BluezQt::PendingCall *p){
             if(p->error() == 0){
                 qDebug() << Q_FUNC_INFO << m_localDevice->isPowered();
-            }else
+            }
+            else
+            {
+                poweronAgain_timer->start();
                 qDebug() << "Failed to turn off Bluetooth:" << p->errorText();
+            }
         });
     }
     else
@@ -876,10 +903,10 @@ void BlueToothMain::adapterPoweredChanged(bool value)
         if(show_flag)
             frame_middle->setVisible(true);
 
-         if(!frame_middle->isVisible())
-         {
-            frame_middle->setVisible(true);
-         }
+//         if(!frame_middle->isVisible())
+//         {
+//            frame_middle->setVisible(true);
+//         }
 
         if (!open_bluetooth->isChecked())
             open_bluetooth->setChecked(true);
@@ -902,6 +929,12 @@ void BlueToothMain::adapterPoweredChanged(bool value)
 
         if(frame_middle->isVisible())
             frame_middle->setVisible(false);
+
+        if (!paired_dev_layout->isEmpty())
+            show_flag = true ;
+        else
+            show_flag = false ;
+
 
         if(m_localDevice->isDiscovering()){
             m_localDevice->stopDiscovery();
