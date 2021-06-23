@@ -234,8 +234,8 @@ void Screensaver::initComponent()
 //    }
     //初始化滑动条
     QStringList scaleList;
-    scaleList<< tr("5min") << tr("10min") << tr("15min") << tr("30min") << tr("1hour")
-              <<tr("Never");
+    scaleList<< "5m" << "10m" << "15m" << "30m" << "1h"
+              << tr("Never");
 
     uslider = new Uslider(scaleList);
     uslider->setRange(1,6);
@@ -798,7 +798,7 @@ void Screensaver::initShowTextFrame() {
     inputText->moveCursor(QTextCursor::Start); //不加这个在输入文字之前复制字体大小可能不对，会受复制内容影响。
     inputText->setObjectName("inputText");
     inputText->setStyleSheet("QTextEdit{background-color: palette(base); border-top-left-radius: 6px; border-top-right-radius: 6px;}");
-    inputText->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+   // inputText->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     inputText->setPlaceholderText(tr("Enter text, up to 30 characters"));
 
     noticeLayout->setMargin(4);
