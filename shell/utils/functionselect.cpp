@@ -51,6 +51,7 @@ void FunctionSelect::initValue(){
     systemList[DISPLAY].namei18nString =  QObject::tr("Display");
     systemList[TOUCHSCREEN].nameString = QString("TouchScreen");
     systemList[TOUCHSCREEN].namei18nString =  QObject::tr("TouchScreen");
+    systemList[TOUCHSCREEN].mainShow = false;
     systemList[DEFAULTAPP].nameString = QString("Defaultapp");
     systemList[DEFAULTAPP].namei18nString =  QObject::tr("Default App");
     systemList[DEFAULTAPP].mainShow = false;
