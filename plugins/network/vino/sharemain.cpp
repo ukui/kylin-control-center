@@ -156,6 +156,8 @@ void ShareMain::initEnableStatus()
     if (pwd == "vnc") {
         if (secpwd == "keyring") {
             mPwdBtn->setChecked(false);
+            mPwdinputBtn->hide();
+            mVinoGsetting->set(kAuthenticationKey, "none");
         } else {
             mPwdBtn->setChecked(true);
             mPwdinputBtn->setText(QByteArray::fromBase64(secpwd.toLatin1()));
