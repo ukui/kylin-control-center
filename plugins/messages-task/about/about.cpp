@@ -274,6 +274,7 @@ void About::setupSerialComponent()
         if (!dateRes.isEmpty()) {
             ui->activeContent->setText(tr("Technical service has expired"));
             ui->timeContent->setText(dateRes);
+            ui->activeButton->setText(tr("Extended"));
         } else {
             ui->label->hide();
             ui->timeContent->hide();
