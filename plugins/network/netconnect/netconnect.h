@@ -46,6 +46,7 @@
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
 #include "netdetail.h"
+#include "commonComponent/HoverBtn/hoverbtn.h"
 
 enum {
     DISCONNECTED,
@@ -189,7 +190,7 @@ private slots:
     void getNetList();
     void netPropertiesChangeSlot(QMap<QString, QVariant> property);
     void netDetailSlot(QString netName);
-    void netDetailSlot(NetDetail *netDetail,QString netName, bool status);
+    void netDetailSlot(NetDetail *netDetail,QString netName, bool status, HoverBtn * deviceItem);
     void refreshNetInfoTimerSlot();
     void refreshNetInfoSlot();
 signals:
