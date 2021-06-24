@@ -136,8 +136,8 @@ void Touchpad::setupComponent(){
     clickBtn = new SwitchButton(pluginWidget);
     ui->clickHorLayout->addWidget(clickBtn);
 
-    //~ contents_path /touchpad/Speed
-    ui->speedLabel->setText(tr("Speed"));
+    //~ contents_path /touchpad/Pointer Speed
+    ui->speedLabel->setText(tr("Pointer Speed")); //指针速度
     ui->speedSlider->setRange(0, 18);  //1.0 - 10.0
     ui->slowLabel->setText(tr("Slow"));
     ui->FastLabel->setText(tr("Fast"));
