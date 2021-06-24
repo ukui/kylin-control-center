@@ -111,7 +111,7 @@ public:
     void initTitleLabel();
     void initSearchText();
     void initComponent();
-    void rebuildNetStatusComponent(QString iconPath, QString netName);
+    void rebuildWifiActComponent(QString iconPath, QMap<QString, bool> netNameMap);
     void rebuildNetStatusComponent(QString iconPath, QMap<QString, bool> netNameMap);
     void rebuildAvailComponent(QString iconpath, QString netName, QString type);
 
@@ -141,6 +141,10 @@ private:
 
     QMap<QString, bool> actLanNames;
     QMap<QString, bool> preActLan;
+
+    QMap<QString, bool> actWifiNames;
+    QMap<QString, bool> preActWifi;
+    QMap<QString, bool> noneAct;
 
     QStringList        TwifiList;
     QStringList        TlanList;
@@ -189,7 +193,7 @@ private slots:
     void wifiSwitchSlot(bool status);
     void getNetList();
     void netPropertiesChangeSlot(QMap<QString, QVariant> property);
-    void netDetailSlot(QString netName);
+    void netDetailSlot(NetDetail *wlanDetail, QString netName, bool status);
     void netDetailSlot(NetDetail *netDetail,QString netName, bool status, HoverBtn * deviceItem);
     void refreshNetInfoTimerSlot();
     void refreshNetInfoSlot();
