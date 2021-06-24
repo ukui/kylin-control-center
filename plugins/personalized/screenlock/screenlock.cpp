@@ -424,9 +424,46 @@ void Screenlock::keyChangedSlot(const QString &key)
 
 void Screenlock::setScreenLockBgSlot()
 {
+
+
     QStringList filters;
     filters<<tr("Wallpaper files(*.jpg *.jpeg *.bmp *.dib *.png *.jfif *.jpe *.gif *.tif *.tiff *.wdp)")<<tr("allFiles(*.*)");
     QFileDialog fd(pluginWidget);
+
+    QList<QUrl> usb_list = fd.sidebarUrls();
+    int sidebarNum = 8;// 最大添加U盘数，可以自己定义
+    QString home_path = QDir::homePath().section("/", -1, -1);
+    QString mnt = "/media/" + home_path + "/";
+    QDir mntDir(mnt);
+    mntDir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+    QFileInfoList file_list = mntDir.entryInfoList();
+    QList<QUrl> mntUrlList;
+    for (int i = 0; i < sidebarNum && i < file_list.size(); ++i) {
+        QFileInfo fi = file_list.at(i);
+        mntUrlList << QUrl("file://" + fi.filePath());
+    }
+
+    QFileSystemWatcher m_fileSystemWatcher(&fd);
+    m_fileSystemWatcher.addPath("/media/" + home_path + "/");
+    connect(&m_fileSystemWatcher, &QFileSystemWatcher::directoryChanged, &fd,
+            [=, &sidebarNum, &mntUrlList, &usb_list, &fd](const QString path) {
+        QDir m_wmntDir(path);
+        m_wmntDir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+        QFileInfoList m_wfilist = m_wmntDir.entryInfoList();
+        mntUrlList.clear();
+        for (int i = 0; i < sidebarNum && i < m_wfilist.size(); ++i) {
+            QFileInfo m_fi = m_wfilist.at(i);
+            mntUrlList << QUrl("file://" + m_fi.filePath());
+        }
+        fd.setSidebarUrls(usb_list + mntUrlList);
+        fd.update();
+    });
+
+    connect(&fd, &QFileDialog::finished, &fd, [=, &usb_list, &fd]() {
+        fd.setSidebarUrls(usb_list);
+    });
+
+
     fd.setDirectory(QString(const_cast<char *>(g_get_user_special_dir(G_USER_DIRECTORY_PICTURES))));
     fd.setAcceptMode(QFileDialog::AcceptOpen);
     fd.setViewMode(QFileDialog::List);
@@ -438,6 +475,8 @@ void Screenlock::setScreenLockBgSlot()
     fd.setLabelText(QFileDialog::FileName, tr("FileName: "));
     fd.setLabelText(QFileDialog::FileType, tr("FileType: "));
     fd.setLabelText(QFileDialog::Reject, tr("Cancel"));
+
+    fd.setSidebarUrls(usb_list + mntUrlList);
 
     if (fd.exec() != QDialog::Accepted)
         return;
