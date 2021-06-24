@@ -50,13 +50,17 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, QStringList iStringList, QWi
     placeHolderLabel->setSizePolicy(phSizePolicy);
     placeHolderLabel->setFixedSize(QSize(16, 16)); //选中图标的大小为16*16
 
-    selectedLabel = new QLabel(this);
-    QSizePolicy sSizePolicy = selectedLabel->sizePolicy();
+    selectedbtn = new QRadioButton(this);
+    QSizePolicy sSizePolicy = selectedbtn->sizePolicy();
     sSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
     sSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
-    selectedLabel->setSizePolicy(sSizePolicy);
-    selectedLabel->setScaledContents(true);
-    selectedLabel->setPixmap(QPixmap("://img/plugins/theme/selected.svg"));
+    selectedbtn->setSizePolicy(sSizePolicy);
+//    selectedLabel->setScaledContents(true);
+//    selectedLabel->setPixmap(QPixmap("://img/plugins/theme/selected.svg"));
+
+    connect(selectedbtn,&QRadioButton::clicked,[=](){
+       emit clicked();
+    });
 
     QLabel * nameLabel = new QLabel(this);
     QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
@@ -79,8 +83,8 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, QStringList iStringList, QWi
         iconHorLayout->addWidget(label);
     }
 
-    mainHorLayout->addWidget(placeHolderLabel);
-    mainHorLayout->addWidget(selectedLabel);
+  //  mainHorLayout->addWidget(placeHolderLabel);
+    mainHorLayout->addWidget(selectedbtn);
     mainHorLayout->addWidget(nameLabel);
     mainHorLayout->addStretch(1);
     mainHorLayout->addLayout(iconHorLayout);
@@ -112,13 +116,17 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, const QList<QPixmap> &listMa
     placeHolderLabel->setSizePolicy(phSizePolicy);
     placeHolderLabel->setFixedSize(QSize(16, 16)); //选中图标的大小为16*16
 
-    selectedLabel = new QLabel(this);
-    QSizePolicy sSizePolicy = selectedLabel->sizePolicy();
+    selectedbtn = new QRadioButton(this);
+    QSizePolicy sSizePolicy = selectedbtn->sizePolicy();
     sSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
     sSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
-    selectedLabel->setSizePolicy(sSizePolicy);
-    selectedLabel->setScaledContents(true);
-    selectedLabel->setPixmap(QPixmap("://img/plugins/theme/selected.svg"));
+    selectedbtn->setSizePolicy(sSizePolicy);
+
+    connect(selectedbtn,&QRadioButton::clicked,[=](){
+       emit clicked();
+    });
+//    selectedLabel->setScaledContents(true);
+//    selectedLabel->setPixmap(QPixmap("://img/plugins/theme/selected.svg"));
 
     QLabel * nameLabel = new QLabel(this);
     QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
@@ -139,8 +147,8 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, const QList<QPixmap> &listMa
     }
 
 
-    mainHorLayout->addWidget(placeHolderLabel);
-    mainHorLayout->addWidget(selectedLabel);
+  //  mainHorLayout->addWidget(placeHolderLabel);
+    mainHorLayout->addWidget(selectedbtn);
     mainHorLayout->addWidget(nameLabel);
     mainHorLayout->addStretch(1);
     mainHorLayout->addLayout(iconHorLayout);
@@ -157,7 +165,7 @@ ThemeWidget::~ThemeWidget()
 
 void ThemeWidget::setSelectedStatus(bool status){
     placeHolderLabel->setHidden(status);
-    selectedLabel->setVisible(status);
+    selectedbtn->setChecked(status);
 }
 
 void ThemeWidget::setValue(QString value){
