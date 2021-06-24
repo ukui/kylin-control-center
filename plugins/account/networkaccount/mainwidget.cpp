@@ -657,6 +657,8 @@ void MainWidget::initSignalSlots() {
             if(checked == true) {
 
                 ctrlAutoSync(SYNC_FAILURE);
+            } else {
+                ctrlAutoSync(NETWORK_FAILURE);
             }
            return ;
         }
