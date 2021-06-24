@@ -32,6 +32,7 @@
 #include <QVariantMap>
 #include <QGSettings/QGSettings>
 #include <QHBoxLayout>
+#include <QToolButton>
 
 #include "interface.h"
 #include "homepagewidget.h"
@@ -84,7 +85,7 @@ private:
     SearchWidget      * m_searchWidget;
 
     QPushButton *backBtn;
-    QPushButton *mOptionBtn;
+    QToolButton *mOptionBtn;
     QPushButton *minBtn;
     QPushButton *maxBtn;
     QPushButton *closeBtn;
@@ -120,7 +121,7 @@ public slots:
     void sltMessageReceived(const QString &msg);
     void switchPage(QString moduleName, QString jumpMoudle);
     void animationFinishedSlot();
-    void showUkccAboutSlot();
+    void initUkccAbout();
     void onF1ButtonClicked();
 
 Q_SIGNALS:

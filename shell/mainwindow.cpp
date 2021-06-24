@@ -284,7 +284,6 @@ void MainWindow::initUI() {
     //加载插件
     loadPlugins();
 
-    connect(mOptionBtn, SIGNAL(clicked()), this, SLOT(showUkccAboutSlot()));
     connect(minBtn, SIGNAL(clicked()), this, SLOT(showMinimized()));
     connect(maxBtn, &QPushButton::clicked, this, [=] {
         if (isMaximized()) {
@@ -398,7 +397,7 @@ void MainWindow::initTileBar() {
     connect(m_searchWidget, &SearchWidget::notifyModuleSearch, this, &MainWindow::switchPage);
 
     backBtn     = new QPushButton(this);
-    mOptionBtn  = new QPushButton(this);
+    mOptionBtn  = new QToolButton(this);
     minBtn      = new QPushButton(this);
     maxBtn      = new QPushButton(this);
     closeBtn    = new QPushButton(this);
@@ -439,6 +438,8 @@ void MainWindow::initTileBar() {
     titleLayout->addWidget(maxBtn);
     titleLayout->addSpacing(4);
     titleLayout->addWidget(closeBtn);
+
+    initUkccAbout();
 }
 void MainWindow::animationFinishedSlot()
 {
@@ -469,9 +470,13 @@ void MainWindow::onF1ButtonClicked() {
     p.waitForFinished(-1);
 }
 
-void MainWindow::showUkccAboutSlot() {
+void MainWindow::initUkccAbout() {
+
+    mOptionBtn->setStyleSheet("background-color: palette(base);");
+    mOptionBtn->setPopupMode(QToolButton::InstantPopup);
     QMenu* ukccMain = new QMenu(this);
     ukccMain->setObjectName("mainMenu");
+    mOptionBtn->setMenu(ukccMain);
 
     QAction* ukccHelp = new QAction(tr("Help"),this);
     ukccMain->addAction(ukccHelp);
@@ -479,7 +484,6 @@ void MainWindow::showUkccAboutSlot() {
     ukccMain->addAction(ukccAbout);
     QAction* ukccExit = new QAction(tr("Exit"),this);
     ukccMain->addAction(ukccExit);
-    QPoint pt= QPoint(mOptionBtn->x() + 10, mOptionBtn->y()+mOptionBtn->height());
 
     connect(ukccExit, SIGNAL(triggered()), this, SLOT(close()));
 
@@ -492,8 +496,6 @@ void MainWindow::showUkccAboutSlot() {
         QProcess process(this);
         process.startDetached("kylin-user-guide -A ukui-control-center");
     });
-
-    ukccMain->exec(this->mapToGlobal(pt));
 }
 void MainWindow::setBtnLayout(QPushButton * &pBtn) {
     QLabel * imgLabel = new QLabel(pBtn);
@@ -805,7 +807,7 @@ void MainWindow::initStyleSheet() {
 
     mOptionBtn->setProperty("useIconHighlightEffect", 0x2);
     mOptionBtn->setProperty("isWindowButton", 0x01);
-    mOptionBtn->setFlat(true);
+
 
     minBtn->setProperty("useIconHighlightEffect", 0x2);
     minBtn->setProperty("isWindowButton", 0x01);
