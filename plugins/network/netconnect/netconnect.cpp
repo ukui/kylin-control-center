@@ -1006,6 +1006,7 @@ void NetConnect::clearContent() {
 
     this->connectedWifi.clear();
     this->actLanNames.clear();
+    this->actWifiNames.clear();
     this->wifiList.clear();
     this->lanList.clear();
     this->TlanList.clear();
