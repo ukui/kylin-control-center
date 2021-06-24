@@ -55,8 +55,6 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, QStringList iStringList, QWi
     sSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
     sSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
     selectedbtn->setSizePolicy(sSizePolicy);
-//    selectedLabel->setScaledContents(true);
-//    selectedLabel->setPixmap(QPixmap("://img/plugins/theme/selected.svg"));
 
     connect(selectedbtn,&QRadioButton::clicked,[=](){
        emit clicked();
@@ -76,14 +74,10 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, QStringList iStringList, QWi
     for (QString icon : iStringList){
         QLabel * label = new QLabel(this);
         label->setFixedSize(iSize);
-        if(QPixmap(icon).isNull()){
-            continue;
-        };
         label->setPixmap(QPixmap(icon));
         iconHorLayout->addWidget(label);
     }
 
-  //  mainHorLayout->addWidget(placeHolderLabel);
     mainHorLayout->addWidget(selectedbtn);
     mainHorLayout->addWidget(nameLabel);
     mainHorLayout->addStretch(1);
@@ -125,8 +119,6 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, const QList<QPixmap> &listMa
     connect(selectedbtn,&QRadioButton::clicked,[=](){
        emit clicked();
     });
-//    selectedLabel->setScaledContents(true);
-//    selectedLabel->setPixmap(QPixmap("://img/plugins/theme/selected.svg"));
 
     QLabel * nameLabel = new QLabel(this);
     QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
@@ -146,8 +138,6 @@ ThemeWidget::ThemeWidget(QSize iSize, QString name, const QList<QPixmap> &listMa
         iconHorLayout->addWidget(label);
     }
 
-
-  //  mainHorLayout->addWidget(placeHolderLabel);
     mainHorLayout->addWidget(selectedbtn);
     mainHorLayout->addWidget(nameLabel);
     mainHorLayout->addStretch(1);
@@ -164,7 +154,6 @@ ThemeWidget::~ThemeWidget()
 }
 
 void ThemeWidget::setSelectedStatus(bool status){
-    placeHolderLabel->setHidden(status);
     selectedbtn->setChecked(status);
 }
 

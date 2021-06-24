@@ -78,7 +78,7 @@ const int transparency = 75;
 int save_trans = 0;
 
 const QStringList effectList {"blur", "kwin4_effect_translucency", "kwin4_effect_maximize", "zoom"};
-const QStringList kIconsList {"computer", "user-trash", "system-file-manager", "ukui-control-center", "kylin-software-center", "kylin-video", "kylin-assistant"};
+const QStringList kIconsList {"computer.png", "user-trash.png", "system-file-manager.png", "ukui-control-center.png", "kylin-software-center.png", "kylin-video.png", "kylin-assistant.png"};
 
 namespace {
 
@@ -455,10 +455,16 @@ void Theme::initIconTheme() {
             placesDir.setFilter(QDir::Files | QDir::NoSymLinks);
             QStringList showIconsList;
             for (int i = 0; i < kIconsList.size(); i++) {
-                showIconsList.append(devicesDir.path() + "/" + kIconsList.at(i));
-                showIconsList.append(placesDir.path() + "/" + kIconsList.at(i));
-                showIconsList.append(appsDir.path() + "/" + kIconsList.at(i));
-
+                if (QFile(appsDir.path() + "/" + kIconsList.at(i)).exists()) {
+                    showIconsList.append(appsDir.path() + "/" + kIconsList.at(i));
+                    continue;
+                } else if (QFile(devicesDir.path() + "/" + kIconsList.at(i)).exists()) {
+                    showIconsList.append(devicesDir.path() + "/" + kIconsList.at(i));
+                    continue;
+                } else if (QFile(placesDir.path() + "/" + kIconsList.at(i)).exists()) {
+                    showIconsList.append(placesDir.path() + "/" + kIconsList.at(i));
+                    continue;
+                }
             }
 
             ThemeWidget * widget = new ThemeWidget(QSize(48, 48), dullTranslation(themedir.section("-", -1, -1, QString::SectionSkipEmpty)), showIconsList, pluginWidget);
