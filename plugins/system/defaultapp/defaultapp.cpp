@@ -648,8 +648,9 @@ bool DefaultApp::setAudioPlayersDefaultProgram(char *appid) {
                 gboolean ret18 = g_app_info_set_as_default_for_type(appitem, "audio/mp3", NULL);
                 gboolean ret19 = g_app_info_set_as_default_for_type(appitem, "audio/flac", NULL);
                 gboolean ret20 = g_app_info_set_as_default_for_type(appitem, "audio/wma", NULL);
+                gboolean ret21 = g_app_info_set_as_default_for_type(appitem, "application/x-smaf", NULL);
                 if(ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8 && ret9 && ret10 &&
-                        ret11 && ret12 && ret13 && ret14 && ret15 && ret16 && ret17 && ret18 && ret19 && ret20) {
+                        ret11 && ret12 && ret13 && ret14 && ret15 && ret16 && ret17 && ret18 && ret19 && ret20 && ret21) {
                     judge=true;
                 }
                 break;
