@@ -9,7 +9,7 @@
         <translation>系统概述</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="394"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="395"/>
         <source>version</source>
         <translation>版本</translation>
         <extra-contents_path>/about/version</extra-contents_path>
@@ -43,21 +43,21 @@
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="271"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="396"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="397"/>
         <source>Kernel</source>
         <translation>内核</translation>
         <extra-contents_path>/about/Kernel</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="310"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="398"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="399"/>
         <source>CPU</source>
         <translation>CPU</translation>
         <extra-contents_path>/about/CPU</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="358"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="400"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="401"/>
         <source>Memory</source>
         <translation>内存</translation>
         <extra-contents_path>/about/Memory</extra-contents_path>
@@ -125,6 +125,11 @@
         <translation>您的系统已激活，技术服务已到期：</translation>
     </message>
     <message>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="275"/>
+        <source>Extended</source>
+        <translation>延长服务</translation>
+    </message>
+    <message>
         <source>Disk:</source>
         <translation type="vanished">硬盘:</translation>
     </message>
@@ -133,7 +138,7 @@
         <translation type="vanished">可用</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="276"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="277"/>
         <source>Inactivated</source>
         <translation>未激活</translation>
     </message>
@@ -5231,7 +5236,7 @@ Please retry or relogin!</source>
     <message>
         <location filename="../../../plugins/network/proxy/proxy.ui" line="1041"/>
         <source>List of ignored hosts. more than one entry, please separate with english semicolon(;)</source>
-        <translation>忽略的主机列表，请使用英文分号（；）</translation>
+        <translation>忽略的主机列表，请使用英文分号(;)</translation>
     </message>
     <message>
         <source>proxy</source>
