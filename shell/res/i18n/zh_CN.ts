@@ -5226,7 +5226,7 @@ Please retry or relogin!</source>
     <message>
         <location filename="../../../plugins/network/proxy/proxy.ui" line="1041"/>
         <source>List of ignored hosts. more than one entry, please separate with english semicolon(;)</source>
-        <translation>忽略的主机列表，请使用英文分号（；）</translation>
+        <translation>忽略的主机列表，请使用英文分号(;)</translation>
     </message>
     <message>
         <source>proxy</source>
