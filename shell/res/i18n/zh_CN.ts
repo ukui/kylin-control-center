@@ -9,7 +9,7 @@
         <translation>系统概述</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="394"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="395"/>
         <source>version</source>
         <translation>版本</translation>
         <extra-contents_path>/about/version</extra-contents_path>
@@ -43,21 +43,21 @@
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="271"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="396"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="397"/>
         <source>Kernel</source>
         <translation>内核</translation>
         <extra-contents_path>/about/Kernel</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="310"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="398"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="399"/>
         <source>CPU</source>
         <translation>CPU</translation>
         <extra-contents_path>/about/CPU</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="358"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="400"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="401"/>
         <source>Memory</source>
         <translation>内存</translation>
         <extra-contents_path>/about/Memory</extra-contents_path>
@@ -125,6 +125,11 @@
         <translation>您的系统已激活，技术服务已到期：</translation>
     </message>
     <message>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="275"/>
+        <source>Extended</source>
+        <translation>延长服务</translation>
+    </message>
+    <message>
         <source>Disk:</source>
         <translation type="vanished">硬盘:</translation>
     </message>
@@ -133,7 +138,7 @@
         <translation type="vanished">可用</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="276"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="277"/>
         <source>Inactivated</source>
         <translation>未激活</translation>
     </message>
@@ -4529,7 +4534,7 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.ui" line="142"/>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="888"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="891"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
@@ -4561,17 +4566,17 @@ Please retry or relogin!</source>
         <translation type="vanished">连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="354"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="357"/>
         <source>Connected</source>
         <translation>已连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="742"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="745"/>
         <source>No net</source>
         <translation>无连接</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="364"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="367"/>
         <source>Detail</source>
         <translation>网络详情</translation>
     </message>
@@ -4582,12 +4587,12 @@ Please retry or relogin!</source>
         <extra-contents_path>/netconnect/open WLAN</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="660"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="663"/>
         <source>None</source>
         <translation>无</translation>
     </message>
     <message>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="876"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="879"/>
         <source>Refreshing...</source>
         <translation>刷新中...</translation>
     </message>
@@ -4601,7 +4606,7 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="76"/>
-        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="510"/>
+        <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="513"/>
         <source>Connect</source>
         <translation>网络连接</translation>
     </message>
@@ -4748,32 +4753,32 @@ Please retry or relogin!</source>
         <extra-contents_path>/display/resolution</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="122"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="120"/>
         <source>orientation</source>
         <translation>方向</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="139"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="137"/>
         <source>arrow-up</source>
         <translation>不旋转</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="140"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="138"/>
         <source>90° arrow-right</source>
         <translation>90° 顺时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="142"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="140"/>
         <source>arrow-down</source>
         <translation>上下颠倒</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="141"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="139"/>
         <source>90° arrow-left</source>
         <translation>90° 逆时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="154"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="152"/>
         <source>frequency</source>
         <translation>刷新率</translation>
     </message>
@@ -4786,14 +4791,14 @@ Please retry or relogin!</source>
         <translation type="vanished">自动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="208"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="193"/>
         <source>screen zoom</source>
         <translation>缩放屏幕</translation>
         <extra-contents_path>/display/screen zoom</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="294"/>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="300"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="279"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="285"/>
         <source>%1 Hz</source>
         <translation type="unfinished"></translation>
     </message>

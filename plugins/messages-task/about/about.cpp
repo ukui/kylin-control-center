@@ -272,6 +272,7 @@ void About::setupSerialComponent()
             if (!dateRes.isEmpty()) {
                 ui->activeContent->setText(tr("The system has expired. The expiration time is:")
                                            + dateRes);
+                ui->activeButton->setText(tr("Extended"));
             } else {
                 ui->activeContent->setText(tr("Inactivated"));
             }
