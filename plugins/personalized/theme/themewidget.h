@@ -24,6 +24,7 @@
 #include <QMouseEvent>
 #include <QList>
 #include <QPixmap>
+#include <QRadioButton>
 
 class QLabel;
 
@@ -42,7 +43,7 @@ public:
     QString getValue();
 
 public:
-    QLabel * selectedLabel;
+    QRadioButton * selectedbtn;
     QLabel * placeHolderLabel;
 
 protected:

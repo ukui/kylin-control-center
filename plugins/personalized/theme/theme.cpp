@@ -28,6 +28,7 @@
 
 #include "SwitchButton/switchbutton.h"
 #include "Label/iconlabel.h"
+#include "myqradiobutton.h"
 #include "cursor/xcursortheme.h"
 #include "../../../shell/customstyle.h"
 #include "../../../shell/utils/utils.h"
@@ -77,7 +78,7 @@ const int transparency = 75;
 int save_trans = 0;
 
 const QStringList effectList {"blur", "kwin4_effect_translucency", "kwin4_effect_maximize", "zoom"};
-const QStringList kIconsList {"computer", "user-trash", "folder", "ukui-control-center", "kylin-software-center", "kylin-video", "kylin-assistant"};
+const QStringList kIconsList {"computer.png", "user-trash.png", "system-file-manager.png", "ukui-control-center.png", "kylin-software-center.png", "kylin-video.png", "kylin-assistant.png"};
 
 namespace {
 
@@ -262,12 +263,11 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
     baseVerLayout->setMargin(0);
     IconLabel * iconLabel = new IconLabel(button);
     iconLabel->setObjectName("iconlabel");
-    iconLabel->setFixedSize(QSize(176, 105));
+    iconLabel->setFixedSize(QSize(176, 104));
     iconLabel->setScaledContents(true);
     iconLabel->setAttribute(Qt::WA_DeleteOnClose);
     QString fullicon = QString("://img/plugins/theme/%1.png").arg(icon);
     QPixmap *mpixmap = new QPixmap(fullicon);
-    mpixmap->scaled(iconLabel->size());
     iconLabel->setPixmap(*mpixmap);
 
     iconLabel->setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
@@ -276,25 +276,10 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
     QHBoxLayout * bottomHorLayout = new QHBoxLayout;
     bottomHorLayout->setSpacing(8);
     bottomHorLayout->setMargin(0);
-    QRadioButton * statusbtn = new QRadioButton(button);
+    MyQRadioButton * statusbtn = new MyQRadioButton(button);
     statusbtn->setFixedSize(QSize(16, 16));
     QLabel * nameLabel = new QLabel(button);
     nameLabel->setText(name);
-
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
-    connect(ui->themeModeBtnGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked), [=](QAbstractButton * eBtn){
-#else
-    connect(ui->themeModeBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), [=](QAbstractButton * eBtn){
-#endif
-        if (eBtn == button) {
-           // statusLabel->setPixmap(QPixmap("://img/plugins/theme/selected.svg"));
-            statusbtn->setChecked(true);
-        }
-        else {
-            statusbtn->setChecked(false);
-        }
-    });
-
     QPalette pal;
     QBrush brush = pal.highlight();  //获取window的色值
     QColor highLightColor = brush.color();
@@ -303,14 +288,61 @@ void Theme::buildThemeModeBtn(QPushButton *button, QString name, QString icon){
            .arg(highLightColor.green()*0.8 + 255*0.2)
            .arg(highLightColor.blue()*0.8 + 255*0.2);
 
-    iconLabel->setStyleSheet(QString("QLabel#iconlabel{border-radius: 6px;}\
-                                     QLabel:hover:!pressed#iconlabel{border-width: 2px;border-style: solid;border-color: %1;}").arg(stringColor));
+    //触发父对象的鼠标点击信号
+    connect(statusbtn,&MyQRadioButton::clicked,[=](){
+        ui->themeModeBtnGroup->buttonClicked(button);
+        emit button->clicked();
+    });
+
+    //触发父对象的悬浮信号
+    connect(statusbtn,&MyQRadioButton::enterWidget,[=](){
+        emit iconLabel->enterWidget();
+    });
+
+    //触发父对象的未悬浮信号
+    connect(statusbtn,&MyQRadioButton::leaveWidget,[=](){
+        emit iconLabel->leaveWidget();
+    });
+
+
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+    connect(ui->themeModeBtnGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked), [=](QAbstractButton * eBtn){
+#else
+    connect(ui->themeModeBtnGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), [=](QAbstractButton * eBtn){
+#endif
+        if (eBtn == button) {
+            statusbtn->setChecked(true);
+            button->setChecked(true);
+        }
+        else {
+            statusbtn->setChecked(false);
+            button->setChecked(false);
+            emit iconLabel->leaveWidget();
+        }
+    });
+
+    connect(button,&QPushButton::clicked,[=](){
+        iconLabel->setStyleSheet("border: 2px");
+        iconLabel->setStyleSheet(QString("QLabel#iconlabel{border-radius: 6px;\
+                                            border-width: 2px;border-style: solid;border-color: %1;}").arg(stringColor));
+    });
+
+
 
     connect(iconLabel,&IconLabel::enterWidget,[=](){
-       iconLabel->setContentsMargins(3,3,3,3);
+        if (!button->isChecked()) {
+            iconLabel->setStyleSheet("border: 1px");
+            iconLabel->setStyleSheet(QString("QLabel#iconlabel{border-radius: 6px;\
+                                             border-width: 1px;border-style: solid;border-color: %1;}").arg(stringColor));
+        }
+
     });
     connect(iconLabel,&IconLabel::leaveWidget,[=](){
-        iconLabel->setContentsMargins(0,0,0,0);
+        if (!button->isChecked()) {
+           // qDebug()<<"-------";
+            iconLabel->setStyleSheet("border: 0px");
+        }
+
      });
 
     bottomHorLayout->addStretch();
@@ -330,10 +362,13 @@ void Theme::initThemeMode() {
     QString currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
     if ("ukui-white" == currentThemeMode || "ukui-default" == currentThemeMode) {
         ui->themeModeBtnGroup->buttonClicked(ui->defaultButton);
+        emit ui->defaultButton->clicked();
     } else if ("ukui-dark" == currentThemeMode || "ukui-black" == currentThemeMode){
         ui->themeModeBtnGroup->buttonClicked(ui->darkButton);
+        emit ui->darkButton->clicked();
     } else {
         ui->themeModeBtnGroup->buttonClicked(ui->lightButton);
+        emit ui->lightButton->clicked();
     }
 
     qApp->setStyle(new InternalStyle("ukui"));
@@ -420,10 +455,16 @@ void Theme::initIconTheme() {
             placesDir.setFilter(QDir::Files | QDir::NoSymLinks);
             QStringList showIconsList;
             for (int i = 0; i < kIconsList.size(); i++) {
-                showIconsList.append(devicesDir.path() + "/" + kIconsList.at(i));
-                showIconsList.append(placesDir.path() + "/" + kIconsList.at(i));
-                showIconsList.append(appsDir.path() + "/" + kIconsList.at(i));
-
+                if (QFile(appsDir.path() + "/" + kIconsList.at(i)).exists()) {
+                    showIconsList.append(appsDir.path() + "/" + kIconsList.at(i));
+                    continue;
+                } else if (QFile(devicesDir.path() + "/" + kIconsList.at(i)).exists()) {
+                    showIconsList.append(devicesDir.path() + "/" + kIconsList.at(i));
+                    continue;
+                } else if (QFile(placesDir.path() + "/" + kIconsList.at(i)).exists()) {
+                    showIconsList.append(placesDir.path() + "/" + kIconsList.at(i));
+                    continue;
+                }
             }
 
             ThemeWidget * widget = new ThemeWidget(QSize(48, 48), dullTranslation(themedir.section("-", -1, -1, QString::SectionSkipEmpty)), showIconsList, pluginWidget);
@@ -504,8 +545,9 @@ void Theme::initCursorTheme(){
 
     cursorThemeWidgetGroup = new WidgetGroup(this);
     connect(cursorThemeWidgetGroup, &WidgetGroup::widgetChanged, [=](ThemeWidget * preWidget, ThemeWidget * curWidget){
-        if (preWidget)
-            preWidget->setSelectedStatus(false);
+        if (preWidget) {
+             preWidget->setSelectedStatus(false);
+        }
         curWidget->setSelectedStatus(true);
 
         QString value = curWidget->getValue();
