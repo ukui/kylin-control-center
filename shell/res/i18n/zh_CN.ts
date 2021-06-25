@@ -1208,7 +1208,7 @@ Please authenticate yourself to continue</source>
     <message>
         <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="154"/>
         <source>Turn on :</source>
-        <translation>打开：</translation>
+        <translation>开启：</translation>
         <extra-contents_path>/bluetooth/Turn on Bluetooth</extra-contents_path>
     </message>
     <message>
@@ -1219,7 +1219,7 @@ Please authenticate yourself to continue</source>
     <message>
         <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="212"/>
         <source>Show icon on taskbar</source>
-        <translation>在任务栏上显示蓝牙图标</translation>
+        <translation>在任务栏显示蓝牙图标</translation>
         <extra-contents_path>/bluetooth/Show icon on taskbar</extra-contents_path>
     </message>
     <message>
