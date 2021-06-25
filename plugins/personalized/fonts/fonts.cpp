@@ -53,9 +53,9 @@ QList<int> defaultsizeList =    {6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24,
 const QStringList fontList{"CESI仿宋-GB13000", "CESI仿宋-GB18030", "CESI仿宋-GB2312", "CESI宋体-GB13000",
                            "CESI宋体-GB18030", "CESI宋体-GB2312", "CESI小标宋-GB13000", "CESI小标宋-GB18030",
                            "CESI小标宋-GB2312", "CESI楷体-GB13000", "CESI楷体-GB18030", "CESI楷体-GB2312",
-                           "CESI黑体-GB13000", "CESI黑体-GB18030", "CESI黑体-GB2312""仿宋", "黑体", "楷体", "宋体",
-                           "华文彩云", "华文仿宋", "华文琥珀", "华文楷体", "华文隶书", " 华文宋体", "华文细黑", "华文行楷", "华文新魏",
-                           "Noto Sans CJK SC", "Noto Sans CJK SC Black", "Noto Sans Mono CJK SC", "Noto Sans CJK SC DemiLight"
+                           "CESI黑体-GB13000", "CESI黑体-GB18030", "CESI黑体-GB2312","仿宋", "黑体", "楷体", "宋体",
+                           "华文彩云", "华文仿宋", "华文琥珀", "华文楷体", "华文隶书", "华文宋体", "华文细黑", "华文行楷", "华文新魏",
+                           "Noto Sans CJK SC", "Noto Sans CJK SC Black", "Noto Sans Mono CJK SC", "Noto Sans CJK SC DemiLight",
                            "Noto Sans CJK SC Light", "Noto Sans CJK SC Medium", "Noto Sans CJK SC", "Noto Sans CJK SC Thin"};
 
 Fonts::Fonts() : mFirstLoad(true)
@@ -372,6 +372,7 @@ void Fonts::initModel()
     QStringList fontfamiles = fontdb.families();
     for (QString fontValue : fontfamiles) {
         if (fontList.contains(fontValue)) {
+
             QStandardItem *standardItem = new QStandardItem(fontValue);
             standardItem->setFont(QFont(fontValue));
             fontModel->appendRow(standardItem);
