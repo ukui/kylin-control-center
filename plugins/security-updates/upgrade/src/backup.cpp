@@ -84,13 +84,15 @@ int BackUp::needBacdUp()
 
 void BackUp::sendRate(int sta,int pro)
 {
+    qDebug() << "-------------------正在备份！！！！";
+    qDebug()<<"状态码:"<<sta<<"  进度："<<pro<<"%";
+
     if (sta == int(backuptools::backup_state::DU_ING)) {
         emit calCapacity();
         return;
     }
     if(!setProgress)
         return;
-    qDebug()<<"状态码:"<<sta<<"  进度："<<pro<<"%";
     if(sta!=int(backuptools::backup_state::FULL_BACKUP_SYS)
             &&sta!=int(backuptools::backup_state::FULL_BACKUP_SYSUPDATE)
             &&sta!=int(backuptools::backup_state::INC_BACKUP_SYS)
@@ -101,7 +103,6 @@ void BackUp::sendRate(int sta,int pro)
         emit bakeupFinish(sta);
         return;
     }
-
 #if 1
     //rsync进程未正常完成(比如被强制中断)
     if (pro == -1) {
@@ -120,6 +121,7 @@ void BackUp::sendRate(int sta,int pro)
 
 void BackUp::receiveStartBackupResult(int result)
 {
+
     if (result == int(backuptools::backup_result::BACKUP_START_SUCCESS))
         setProgress = true;
     emit backupStartRestult(result);

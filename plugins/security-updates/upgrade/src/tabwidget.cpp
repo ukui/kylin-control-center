@@ -37,7 +37,7 @@ void TabWid::initDbus()
     connect(isAutoUpgradeSBtn, &SwitchButton::checkedChanged, this, &TabWid::isAutoUpgradeChanged);
     connect(updateSource,&UpdateSource::getReplyFalseSignal,this,&TabWid::getReplyFalseSlot);
     //    bacupInit();//初始化备份
-
+    isAutoBackupSBtn->setChecked(true);
     checkUpdateBtn->stop();
     //    checkUpdateBtn->setText(tr("检查更新"));
     checkUpdateBtn->setText(tr("Check Update"));
@@ -85,8 +85,14 @@ void TabWid::getAutoUpgradeStatus()
     QString ret =  updateSource->getOrSetConf("get", list);
     qDebug() << "-----------11->" << ret;
     if (!ret.compare("backup")) {
+        isAutoUpgrade = true;
         /*如果自动更新在备份中，那就直接绑定备份还原信号即可*/
+        isAllUpgrade = true;
+        autoUpdateLoadUpgradeList();
         bacupInit(true);
+        backup->creatInterface();
+        backup->setProgress = true;
+        backupProgress(0);
     } else if (!ret.compare("download")) {
         /*如果自动更新在下载中，调用dbus去kill掉下载程序，继续原流程，不进行多余操作*/
         QFile file("/var/run/apt-download.pid");
@@ -101,7 +107,9 @@ void TabWid::getAutoUpgradeStatus()
         checkUpdateBtn->setText(tr("Check Update"));
         checkUpdateBtnClicked();
     } else if (!ret.compare("install")){
+        isAutoUpgrade = true;
         /*如果自动更新在安装中，绑定更新管理器dbus接收信号即可*/
+        isAllUpgrade = true;
         checkUpdateBtn->hide();
         checkUpdateBtn->setText(tr("UpdateAll"));
         autoUpdateLoadUpgradeList();
@@ -126,6 +134,10 @@ void TabWid::autoUpdateLoadUpgradeList()
     if(str.contains(" ")) {
         list = str.split(" ");
     }
+    versionInformationLab->setText(tr("Downloading and installing updates..."));
+    lastRefreshTime->hide();
+    allProgressBar->show();
+    allProgressBar->setValue(10);
     updateMutual->getAppMessage(list);
 }
 
@@ -232,6 +244,8 @@ void TabWid::backupCore()
 
 void TabWid::getAllProgress (QString pkgName, int Progress, QString type)
 {
+    if (!isAllUpgrade)
+        return ;
     qDebug() << pkgName << Progress << type;
     versionInformationLab->setText(tr("Downloading and installing updates..."));
     checkUpdateBtn->setText(tr("Cancel"));
@@ -272,6 +286,7 @@ void TabWid::getAllProgress (QString pkgName, int Progress, QString type)
 }
 void TabWid::backupProgress(int progress)
 {
+    qDebug() <<"备份进度：---->" << progress;
     if(progress==100)
     {
         bacupInit(false);
@@ -282,6 +297,7 @@ void TabWid::backupProgress(int progress)
     }
     versionInformationLab->setText(tr("System is backing up..."));
     allProgressBar->setValue(progress);
+    checkUpdateBtn->hide();
     allProgressBar->show();
     lastRefreshTime->hide();
 }
@@ -329,6 +345,7 @@ void TabWid::bacupInit(bool isConnect)
     qDebug() << "======>tabwid info: " <<backupThread ;
     connect(this,&TabWid::needBackUp,backup,&BackUp::needBacdUp,Qt::BlockingQueuedConnection);//同步信号，阻塞，取返回值
     if (isConnect) {
+        qDebug() << "is connect ;;";
         connect(this,&TabWid::startBackUp,backup,&BackUp::startBackUp);
         connect(backup, &BackUp::calCapacity, this, &TabWid::whenStateIsDuing);
         connect(backup, &BackUp::backupStartRestult, this, &TabWid::receiveBackupStartResult);
@@ -336,6 +353,7 @@ void TabWid::bacupInit(bool isConnect)
         connect(backup,&BackUp::backupProgress,this,&TabWid::backupProgress);
         connect(backup,&BackUp::bakeupFinish,this,&TabWid::backupHideUpdateBtn);
     } else {
+        qDebug() << "is disconnect;;";
         disconnect(this,&TabWid::startBackUp,backup,&BackUp::startBackUp);
         disconnect(backup, &BackUp::calCapacity, this, &TabWid::whenStateIsDuing);
         disconnect(backup, &BackUp::backupStartRestult, this, &TabWid::receiveBackupStartResult);
@@ -386,18 +404,16 @@ void TabWid::slotUpdateCache(QVariantList sta)
             }
             qDebug() << "slotUpdateCache函数：获取到的包列表：" << list;
             updateMutual->getAppMessage(list);
-            retryTimes = 0;
         }
         else
         {
             int statuscode = status.toInt();
-            if(statuscode == 400 && retryTimes < netErrorRetry)
+            if(statuscode == 100)
             {
                 //updateSource->callDBusUpdateTemplate();
                 qDebug() << "源管理器：" <<"statuscode = :" << statuscode;
                 QString failedInfo = updateSource->getFailInfo(statuscode);
                 qDebug() << "源管理器：" <<"failedInfo:" << failedInfo;
-                retryTimes++;
             }
             else
             {
@@ -411,7 +427,6 @@ void TabWid::slotUpdateCache(QVariantList sta)
                 disconnect(updateSource->serviceInterface,SIGNAL(updateTemplateStatus(QString)),this,SLOT(slotUpdateTemplate(QString)));
                 disconnect(updateSource->serviceInterface,SIGNAL(updateCacheStatus(QVariantList)),this,SLOT(slotUpdateCache(QVariantList)));
                 disconnect(updateSource->serviceInterface,SIGNAL(updateSourceProgress(QVariantList)),this,SLOT(slotUpdateCacheProgress(QVariantList)));
-                retryTimes = 0;
             }
         }
     }
@@ -420,20 +435,15 @@ void TabWid::slotUpdateCacheProgress(QVariantList pro)
 {
     isConnectSourceSignal = true;
     int progress = pro.at(1).toInt();
+    if (progress > 100) {
+        progress = progress - 100;
+    }
     QString nowsymbol = pro.at(0).toString();
     //    qDebug() << "update cache progress :" << progress;
     if(nowsymbol == Symbol)
     {
-        if(retryTimes == 0)
-        {
             versionInformationLab->setText(tr("Update software source :") + QString::number(progress)+"%");
             //            versionInformationLab->setText(tr("更新软件源进度：") + QString::number(progress)+"%");
-        }
-        else
-        {
-            versionInformationLab->setText(tr("Update software source :") + QString::number(progress)+"%(" + tr("Reconnect times:")+ QString::number(retryTimes)+")");
-            //            versionInformationLab->setText(tr("更新软件源进度：") + QString::number(progress)+"%" + "（第" + QString::number(retryTimes) +"次重试）");
-        }
     }
 }
 
@@ -551,6 +561,7 @@ void TabWid::allComponents()
     isAutoBackupLab->setText(tr("Backup current system before updates all"));
     //    isAutoBackupLab->setText(tr("全部更新前备份系统"));
     isAutoBackupSBtn = new SwitchButton();
+
     isAutoBackupLayout->addWidget(isAutoBackupLab);
     isAutoBackupLayout->addWidget(isAutoBackupSBtn);
     isAutoBackupWidget->setLayout(isAutoBackupLayout);
@@ -618,7 +629,6 @@ void TabWid::loadingOneUpdateMsgSlot(AppAllMsg msg)
         updateMutual->importantList.append(msg.name);   //重要更新列表中添加appname
         AppUpdateWid *appWidget = new AppUpdateWid(msg, this);
         widgetList << appWidget;
-        appWidget->updateAPPBtn->hide();
         connect(appWidget, &AppUpdateWid::cancel, this, &TabWid::slotCancelDownload);
         connect(this, &TabWid::updateAllSignal, appWidget, &AppUpdateWid::updateAllApp);
         connect(appWidget,&AppUpdateWid::hideUpdateBtnSignal,this,&TabWid::hideUpdateBtnSlot);
@@ -627,12 +637,12 @@ void TabWid::loadingOneUpdateMsgSlot(AppAllMsg msg)
         connect(appWidget,&AppUpdateWid::filelockedSignal,this,&TabWid::waitCrucialInstalled);
         connect(backup,&BackUp::bakeupFinish,appWidget,&AppUpdateWid::hideOrShowUpdateBtnSlot);
         /*判断是否是后台自动更新*/
-        QStringList list;
-        list << "CONTROL_CENTER/autoupdate_run_status";
-        QString ret =  updateSource->getOrSetConf("get", list);
-        if (!ret.compare("idle")) {
+        if (isAutoUpgrade) {
             connect(appWidget, &AppUpdateWid::sendProgress, this, &TabWid::getAllProgress);
             appWidget->isUpdateAll = true;
+            appWidget->isAutoUpgrade = true;
+            appWidget->updateAPPBtn->hide();
+            appWidget->appVersion->setText(tr("Ready to install"));
         }
         if(ukscConnect->isConnectUskc == true)
         {
@@ -659,7 +669,10 @@ void TabWid::loadingOneUpdateMsgSlot(AppAllMsg msg)
 
 void TabWid::loadingFinishedSlot(int size)
 {
-    bacupInit(false);
+    if (isAutoUpgrade)
+        bacupInit(true);
+    else
+        bacupInit(false);
     disconnect(updateSource->serviceInterface,SIGNAL(updateTemplateStatus(QString)),this,SLOT(slotUpdateTemplate(QString)));
     disconnect(updateSource->serviceInterface,SIGNAL(updateCacheStatus(QVariantList)),this,SLOT(slotUpdateCache(QVariantList)));
     disconnect(updateSource->serviceInterface,SIGNAL(updateSourceProgress(QVariantList)),this,SLOT(slotUpdateCacheProgress(QVariantList)));
@@ -681,10 +694,14 @@ void TabWid::loadingFinishedSlot(int size)
         //        checkUpdateBtn->setText(tr("全部更新"));
         checkUpdateBtn->setText(tr("UpdateAll"));
         //        versionInformationLab->setText(tr("检测到你的系统有可更新的应用！"));
-        versionInformationLab->setText(tr("Updatable app detected on your system!"));
+        if (!isAutoUpgrade) {
+            versionInformationLab->setText(tr("Updatable app detected on your system!"));
+        }
+
         systemPortraitLab->setPixmap(QPixmap(":/img/plugins/upgrade/update.png").scaled(96,96));
 
     }
+
 }
 
 void TabWid::getAllDisplayInformation()
@@ -783,11 +800,12 @@ void TabWid::checkUpdateBtnClicked()
             msgBox.exec();
             return ;
         }
+
         foreach (AppUpdateWid *wid, widgetList) {
             connect(wid, &AppUpdateWid::sendProgress, this, &TabWid::getAllProgress);
             wid->updateAPPBtn->hide();
         }
-
+        isAllUpgrade = true;
         QMessageBox msgBox(this);
         msgBox.setText(tr("Please back up the system before all updates to avoid unnecessary losses"));
         msgBox.setWindowTitle(tr("Prompt information"));
@@ -800,6 +818,7 @@ void TabWid::checkUpdateBtnClicked()
         int ret = msgBox.exec();
         switch (ret) {
         case 0:
+            isAutoBackupSBtn->setChecked(false);
             //                checkUpdateBtn->setText("正在更新...");
             checkUpdateBtn->setEnabled(false);
             checkUpdateBtn->start();

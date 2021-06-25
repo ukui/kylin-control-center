@@ -101,7 +101,8 @@ public:
 
     QList<AppUpdateWid *> widgetList;
 
-    bool isAllUpgrade;
+    bool isAllUpgrade = false;
+    bool isAutoUpgrade = false;
     int inumber = 0;
     int retryTimes = 0;
     m_updatelog *historyLog;

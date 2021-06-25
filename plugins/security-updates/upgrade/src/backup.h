@@ -18,6 +18,8 @@ class BackUp : public QObject
 public:
     explicit BackUp(QObject *parent = nullptr);
 
+    bool setProgress = false;
+
 signals:
     void backupStartRestult(int);
     bool calCapacity();
@@ -26,6 +28,7 @@ signals:
 public slots:
     int needBacdUp();
     void startBackUp(int);
+    void creatInterface();
 
 private slots:
     void sendRate(int,int);
@@ -41,8 +44,7 @@ private:
     QDBusInterface *interface = nullptr;
     QDBusServiceWatcher *watcher = nullptr;
     void onDBusNameOwnerChanged(const QString &name,const QString &oldOwner,const QString &newOwner);
-    bool setProgress = false;
-    void creatInterface();
+
 };
 
 #endif // BACKUP_H

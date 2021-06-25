@@ -79,6 +79,7 @@ private:
 
 public:
     bool isUpdateAll = false;
+    bool isAutoUpgrade = false;
 
 public slots:
     void showDetails();

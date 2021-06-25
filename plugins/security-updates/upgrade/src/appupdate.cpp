@@ -574,9 +574,11 @@ void AppUpdateWid::showUpdateLog()
 
 void AppUpdateWid::cancelOrUpdate()
 {
-    if(updateAPPBtn->isHidden())
-    {
-        return;
+    if (!isAutoUpgrade) {
+        if(updateAPPBtn->isHidden())
+        {
+            return;
+        }
     }
     if(updateAPPBtn->text() == tr("Update"))
     {
@@ -589,6 +591,10 @@ void AppUpdateWid::cancelOrUpdate()
             msgBox.setStandardButtons(QMessageBox::Ok);
             msgBox.setButtonText(QMessageBox::Ok,tr("OK"));
             msgBox.exec();
+            return ;
+        }
+        if (isAutoUpgrade) {
+            updateOneApp();
             return ;
         }
         if(m_updateMutual->isPointOutNotBackup == true)
@@ -794,7 +800,8 @@ void AppUpdateWid::calculateSpeedProgress()
 
 void AppUpdateWid::updateAllApp()
 {
-    updateAPPBtn->show();
+
+//    updateAPPBtn->show();
     isUpdateAll = true;
     if(isCancel && m_updateMutual->failedList.indexOf(appAllMsg.name) == -1)
     {
@@ -805,7 +812,8 @@ void AppUpdateWid::updateAllApp()
 
 void AppUpdateWid::showUpdateBtn()
 {
-    updateAPPBtn->show();
+    if (!isUpdateAll)
+        updateAPPBtn->show();
     updateAPPBtn->setText(tr("Update"));
 }
 void AppUpdateWid::hideOrShowUpdateBtnSlot(int result)
@@ -816,7 +824,8 @@ void AppUpdateWid::hideOrShowUpdateBtnSlot(int result)
     }
     else if(result == 99 ||result == -20)  //99时备份成功 -20时备份还原进程被中断
     {
-        updateAPPBtn->show();
+        if (!isUpdateAll)
+            updateAPPBtn->show();
     }
 
 }
