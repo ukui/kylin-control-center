@@ -104,6 +104,7 @@ QWidget *Touchpad::get_plugin_ui(){
                 ui->enableFrame->hide();
                 ui->scrollingFrame->hide();
                 ui->typingFrame->hide();
+                ui->touchapdDisableFrame->hide();
             }
         }
     }
