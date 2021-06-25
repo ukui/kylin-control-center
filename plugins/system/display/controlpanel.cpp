@@ -71,6 +71,7 @@ void ControlPanel::removeOutput(int outputId)
 {
     if (mUnifiedOutputCfg) {
         mUnifiedOutputCfg->setVisible(false);
+        mIsCloneMode = false;
     }
 
     for (OutputConfig *outputCfg : mOutputConfigs) {
@@ -87,7 +88,7 @@ void ControlPanel::removeOutput(int outputId)
 void ControlPanel::activateOutput(const KScreen::OutputPtr &output)
 {
     // Ignore activateOutput when in unified mode
-    if (mUnifiedOutputCfg) {
+    if (mUnifiedOutputCfg && mIsCloneMode) {
         return;
     }
 
@@ -140,6 +141,7 @@ void ControlPanel::setUnifiedOutput(const KScreen::OutputPtr &output)
         mUnifiedOutputCfg = new UnifiedOutputConfig(mConfig, this);
         mUnifiedOutputCfg->setOutput(output);
         mUnifiedOutputCfg->setVisible(true);
+        mIsCloneMode = true;
         mLayout->insertWidget(mLayout->count() - 2, mUnifiedOutputCfg);
         connect(mUnifiedOutputCfg, &UnifiedOutputConfig::changed,
                 this, &ControlPanel::changed);

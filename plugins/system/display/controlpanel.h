@@ -54,6 +54,7 @@ private:
     KScreen::OutputPtr mCurrentOutput;
 
     bool mIsWayland;
+    bool mIsCloneMode = false;
 };
 
 #endif // CONTROLPANEL_H
