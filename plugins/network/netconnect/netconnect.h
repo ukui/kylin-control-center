@@ -46,6 +46,7 @@
 #include "shell/interface.h"
 #include "SwitchButton/switchbutton.h"
 #include "netdetail.h"
+#include "commonComponent/HoverBtn/hoverbtn.h"
 
 enum {
     DISCONNECTED,
@@ -109,7 +110,8 @@ public:
 public:
     void initSearchText();
     void initComponent();
-    void rebuildNetStatusComponent(QString iconPath, QString netName);
+    void rebuildNetStatusComponent(QString iconPath, QMap<QString, bool> netNameMap);
+    void rebuildWifiActComponent(QString iconPath, QMap<QString, bool> netNameMap);
     void rebuildAvailComponent(QString iconpath, QString netName);
 
     void runExternalApp();
@@ -132,12 +134,18 @@ private:
 
     QMap<QString, int> connectedWifi;
     QMap<QString,int>  wifiList;
+
+    QMap<QString, bool> actLanNames;
+    QMap<QString, bool> preActLan;
+
+    QMap<QString, bool> actWifiNames;
+    QMap<QString, bool> preActWifi;
+
+    QMap<QString, bool> noneAct;
+
     QStringList        wifilist;
     QThread            *pThread;
     NetconnectWork     *pNetWorker;
-
-    QString            connectedLan;
-    QString            actLanName;
 
     QStringList        TwifiList;
     QStringList        TlanList;
@@ -147,9 +155,6 @@ private:
     bool               mIsLanVisible = false;
     bool               mIsWlanVisible = false;
 
-    NetDetail          *mWlanDetail;
-    NetDetail          *mLanDetail;
-
     QList<ActiveConInfo> mActiveInfo;
     QTimer             *refreshTimer;
 
@@ -157,6 +162,7 @@ private:
     QString            prefreChan;
     QString            mPreWifiConnectedName;
     QString            mPreLanConnectedName;
+    QString            connectWifi;
 private:
     int         setSignal(QString lv);
     QStringList execGetLanList();
@@ -182,7 +188,9 @@ private slots:
     void wifiSwitchSlot(bool status);
     void getNetList();
     void netPropertiesChangeSlot(QMap<QString, QVariant> property);
-    void netDetailSlot(QString netName);
+    void netDetailSlot(NetDetail *netDetail,QString netName, bool status, HoverBtn * deviceItem);
+    void netDetailSlot(NetDetail *wlanDetail, QString netName, bool status);
+    void netDetailOpen(NetDetail *netDetail,QString netName);
     void refreshNetInfoTimerSlot();
     void refreshNetInfoSlot();
 signals:

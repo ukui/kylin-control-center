@@ -20,7 +20,6 @@
 #include "netconnect.h"
 #include "ui_netconnect.h"
 
-#include "commonComponent/HoverBtn/hoverbtn.h"
 #include "../shell/utils/utils.h"
 
 #include <QGSettings>
@@ -114,15 +113,6 @@ void NetConnect::initComponent() {
     wifiBtn = new SwitchButton(pluginWidget);
     ui->openWIifLayout->addWidget(wifiBtn);
 
-    mWlanDetail = new NetDetail(true, pluginWidget);
-    mLanDetail  = new NetDetail(false, pluginWidget);
-
-    ui->detailLayOut->addWidget(mWlanDetail);
-    ui->detailLayOut->addWidget(mLanDetail);
-
-    mLanDetail->setVisible(false);
-    mWlanDetail->setVisible(false);
-
     // 接收到系统创建网络连接的信号时刷新可用网络列表
     QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager/Settings"), "org.freedesktop.NetworkManager.Settings", "NewConnection", this, SLOT(getNetList(void)));
     // 接收到系统删除网络连接的信号时刷新可用网络列表
@@ -199,46 +189,121 @@ bool NetConnect::getHasWirelessCard(){
 
 void NetConnect::refreshNetInfoSlot() {
     emit ui->RefreshBtn->clicked(true);
-    if (mLanDetail->isVisible()) {
-        mLanDetail->setVisible(false);
-        mIsLanVisible = !mIsLanVisible;
-    }
-    if (mWlanDetail->isVisible()) {
-        mWlanDetail->setVisible(false);
-        mIsWlanVisible = !mIsWlanVisible;
+}
+
+void NetConnect::rebuildWifiActComponent(QString iconPath, QMap<QString, bool> netNameMap) {
+    bool hasNet = false;
+    QMap<QString,bool>::ConstIterator iter = netNameMap.constBegin();
+    while(iter != netNameMap.constEnd()) {
+        if (iter.key() == "无连接" || iter.key() == "No net") {
+            hasNet = true;
+        }
+        NetDetail *wlanDetail = new NetDetail(true, pluginWidget);
+        wlanDetail->setVisible(false);
+
+        QWidget *frame = new QWidget;
+        frame->setContentsMargins(0,0,0,0);
+
+        QVBoxLayout * vLayout = new QVBoxLayout;
+        vLayout->setContentsMargins(0,0,0,0);
+
+        QString wifiName;
+        if (connectWifi != "--" && connectWifi != iter.key()) {
+            wifiName = connectWifi;
+        } else {
+            wifiName = iter.key();
+        }
+
+        HoverBtn * deviceItem;
+        if (!hasNet) {
+            deviceItem = new HoverBtn(iter.key(), false, pluginWidget);
+        } else {
+            deviceItem = new HoverBtn(iter.key(), true, pluginWidget);
+        }
+        deviceItem->mPitLabel->setText(wifiName);
+
+        if (!hasNet) {
+            deviceItem->mDetailLabel->setText(tr("Connected"));
+        } else {
+            deviceItem->mDetailLabel->setText("");
+        }
+
+        QIcon searchIcon = QIcon::fromTheme(iconPath);
+        deviceItem->mPitIcon->setProperty("useIconHighlightEffect", 0x10);
+        deviceItem->mPitIcon->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(24, 24))));
+
+        deviceItem->mAbtBtn->setMinimumWidth(100);
+        deviceItem->mAbtBtn->setText(tr("Detail"));
+
+        //若网络详情已展开，刷新网络时，未变更的网络详情页依然保持展开状态
+        if (iter.value()) {
+            netDetailOpen(wlanDetail,deviceItem->mName);
+            wlanDetail->setVisible(actWifiNames.value(iter.key()));
+        }
+
+        connect(deviceItem->mAbtBtn, &QPushButton::clicked, this, [=] {
+            netDetailSlot(wlanDetail,deviceItem->mName, iter.value());
+        });
+        vLayout->addWidget(deviceItem);
+        vLayout->addWidget(wlanDetail);
+        frame->setLayout(vLayout);
+        ui->detailLayOut->addWidget(frame);
+        ++iter;
     }
 }
 
-void NetConnect::rebuildNetStatusComponent(QString iconPath, QString netName) {
+void NetConnect::rebuildNetStatusComponent(QString iconPath, QMap<QString, bool> netNameMap) {
     bool hasNet = false;
-    if (netName == "无连接" || netName == "No net") {
-        hasNet = true;
+    QMap<QString,bool>::ConstIterator iter = netNameMap.constBegin();
+    while(iter != netNameMap.constEnd())
+    {
+        NetDetail *lanDetail  = new NetDetail(false, pluginWidget);
+        lanDetail->setVisible(false);
+
+        QVBoxLayout * vLayout = new QVBoxLayout;
+        vLayout->setContentsMargins(0,0,0,0);
+
+        QWidget *frame = new QWidget;
+        frame->setContentsMargins(0,0,0,0);
+        if (iter.key() == "无连接" || iter.key() == "No net") {
+            hasNet = true;
+        }
+        HoverBtn * deviceItem;
+        if (!hasNet) {
+            deviceItem = new HoverBtn(iter.key(), false, pluginWidget);
+        } else {
+            deviceItem = new HoverBtn(iter.key(), true, pluginWidget);
+        }
+        deviceItem->mPitLabel->setText(iter.key());
+
+        if (!hasNet) {
+            deviceItem->mDetailLabel->setText(tr("Connected"));
+        } else {
+            deviceItem->mDetailLabel->setText("");
+        }
+        QIcon searchIcon = QIcon::fromTheme(iconPath);
+        deviceItem->mPitIcon->setProperty("useIconHighlightEffect", 0x10);
+        deviceItem->mPitIcon->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(24, 24))));
+
+        deviceItem->mAbtBtn->setMinimumWidth(100);
+        deviceItem->mAbtBtn->setText(tr("Detail"));
+
+        //若网络详情已展开，刷新网络时，未变更的网络详情页依然保持展开状态
+        if (iter.value()) {
+            netDetailOpen(lanDetail,deviceItem->mName);
+            lanDetail->setVisible(actLanNames.value(iter.key()));
+        }
+
+        connect(deviceItem->mAbtBtn, &QPushButton::clicked, this, [=] {
+            netDetailSlot(lanDetail, deviceItem->mName, iter.value(), deviceItem);
+        });
+
+        vLayout->addWidget(deviceItem);
+        vLayout->addWidget(lanDetail);
+        frame->setLayout(vLayout);
+        ui->detailLayOut->addWidget(frame);
+        ++iter;
     }
-    HoverBtn * deviceItem;
-    if (!hasNet) {
-        deviceItem = new HoverBtn(netName, false, pluginWidget);
-    } else {
-        deviceItem = new HoverBtn(netName, true, pluginWidget);
-    }
-    deviceItem->mPitLabel->setText(netName);
-
-    if (!hasNet) {
-        deviceItem->mDetailLabel->setText(tr("Connected"));
-    } else {
-        deviceItem->mDetailLabel->setText("");
-    }
-    QIcon searchIcon = QIcon::fromTheme(iconPath);
-    deviceItem->mPitIcon->setProperty("useIconHighlightEffect", 0x10);
-    deviceItem->mPitIcon->setPixmap(searchIcon.pixmap(searchIcon.actualSize(QSize(24, 24))));
-
-    deviceItem->mAbtBtn->setMinimumWidth(100);
-    deviceItem->mAbtBtn->setText(tr("Detail"));
-
-    connect(deviceItem->mAbtBtn, &QPushButton::clicked, this, [=] {
-        netDetailSlot(deviceItem->mName);
-    });
-
-    ui->statusLayout->addWidget(deviceItem);
 }
 
 void NetConnect::getNetList() {
@@ -265,6 +330,12 @@ void NetConnect::getNetList() {
         }
         getNetList();
     } else {
+        connectWifi.clear();
+        if (reply.value().at(0).at(0) != "--") {
+            connectWifi = reply.value().at(0).at(0);
+        } else {
+            connectWifi = "--";
+        }
         if (getWifiListDone(reply, this->TlanList) == -1) {
             getNetList();
         } else {
@@ -309,47 +380,114 @@ void NetConnect::netPropertiesChangeSlot(QMap<QString, QVariant> property) {
     }
 }
 
-void NetConnect::netDetailSlot(QString netName) {
+//网络详情页填充
+void NetConnect::netDetailOpen(NetDetail *netDetail,QString netName){
     foreach (ActiveConInfo netInfo, mActiveInfo) {
         if (!netInfo.strConName.compare(netName, Qt::CaseInsensitive)) {
             if (!netInfo.strConType.compare("802-3-ethernet", Qt::CaseInsensitive)) {
-                mIsLanVisible = !mIsLanVisible;
-                mLanDetail->setSSID(netInfo.strConName);
-                mLanDetail->setProtocol(netInfo.strConType);
-                mLanDetail->setIPV4(netInfo.strIPV4Address);
-                mLanDetail->setIPV4Dns(netInfo.strIPV4Dns);
-                mLanDetail->setIPV4Gateway(netInfo.strIPV4GateWay);
-                mLanDetail->setIPV4Mask(netInfo.strIPV4Prefix);
-                mLanDetail->setIPV6(netInfo.strIPV6Address);
-                mLanDetail->setIPV6Prefix(netInfo.strIPV6Prefix);
-
-                mLanDetail->setIPV6Gt(netInfo.strIPV6GateWay);
-                mLanDetail->setIPV6(netInfo.strIPV6GateWay);
-                mLanDetail->setMac(netInfo.strMac);
-                mLanDetail->setBandWidth(netInfo.strBandWidth);
-
-                mLanDetail->setVisible(mIsLanVisible);
+                netDetail->setSSID(netInfo.strConName);
+                netDetail->setProtocol(netInfo.strConType);
+                netDetail->setIPV4(netInfo.strIPV4Address);
+                netDetail->setIPV4Dns(netInfo.strIPV4Dns);
+                netDetail->setIPV4Gateway(netInfo.strIPV4GateWay);
+                netDetail->setIPV4Mask(netInfo.strIPV4Prefix);
+                netDetail->setIPV6(netInfo.strIPV6Address);
+                netDetail->setIPV6Prefix(netInfo.strIPV6Prefix);
+                netDetail->setIPV6Gt(netInfo.strIPV6GateWay);
+                netDetail->setMac(netInfo.strMac);
+                netDetail->setBandWidth(netInfo.strBandWidth);
             } else {
-                mIsWlanVisible = !mIsWlanVisible;
-
-                mWlanDetail->setSSID(netInfo.strConName);
-                mWlanDetail->setProtocol(netInfo.strConType);
-                mWlanDetail->setSecType(netInfo.strSecType);
-                mWlanDetail->setHz(netInfo.strHz);
-                mWlanDetail->setChan(netInfo.strChan);
-                mWlanDetail->setSpeed(netInfo.strSpeed);
-                mWlanDetail->setIPV4(netInfo.strIPV4Address);
-                mWlanDetail->setIPV4Mask(netInfo.strIPV4Prefix);
-                mWlanDetail->setIPV4Dns(netInfo.strIPV4Dns);
-                mWlanDetail->setIPV4Gateway(netInfo.strIPV4GateWay);
-                mWlanDetail->setIPV6(netInfo.strIPV6Address);
-                mWlanDetail->setIPV6Prefix(netInfo.strIPV6Prefix);
-                mWlanDetail->setIPV6Gt(netInfo.strIPV6GateWay);
-                mWlanDetail->setMac(netInfo.strMac);
-                mWlanDetail->setBandWidth(netInfo.strBandWidth);
-
-                mWlanDetail->setVisible(mIsWlanVisible);
+                QString wifiName;
+                if (connectWifi != "--" && connectWifi != netInfo.strConName) {
+                    wifiName = connectWifi;
+                } else {
+                    wifiName = netInfo.strConName;
+                }
+                netDetail->setSSID(wifiName);
+                netDetail->setProtocol(netInfo.strConType);
+                netDetail->setSecType(netInfo.strSecType);
+                netDetail->setHz(netInfo.strHz);
+                netDetail->setChan(netInfo.strChan);
+                netDetail->setSpeed(netInfo.strSpeed);
+                netDetail->setIPV4(netInfo.strIPV4Address);
+                netDetail->setIPV4Mask(netInfo.strIPV4Prefix);
+                netDetail->setIPV4Dns(netInfo.strIPV4Dns);
+                netDetail->setIPV4Gateway(netInfo.strIPV4GateWay);
+                netDetail->setIPV6(netInfo.strIPV6Address);
+                netDetail->setIPV6Prefix(netInfo.strIPV6Prefix);
+                netDetail->setIPV6Gt(netInfo.strIPV6GateWay);
+                netDetail->setMac(netInfo.strMac);
+                netDetail->setBandWidth(netInfo.strBandWidth);
             }
+        }
+    }
+}
+
+//无线网络详情页构建
+void NetConnect::netDetailSlot(NetDetail *wlanDetail, QString netName, bool status) {
+    foreach (ActiveConInfo netInfo, mActiveInfo) {
+        if (!netInfo.strConName.compare(netName, Qt::CaseInsensitive)) {
+            status = !status;
+            QMap<QString,bool>::Iterator iter;
+            if (!actWifiNames.isEmpty()) {
+                iter = actWifiNames.find(netName);
+                if (iter != actWifiNames.end()) {
+                    iter.value() = status;
+                }
+            }
+            QString wifiName;
+            if (connectWifi != "--" && connectWifi != netInfo.strConName) {
+                wifiName = connectWifi;
+            } else {
+                wifiName = netInfo.strConName;
+            }
+            wlanDetail->setSSID(wifiName);
+            wlanDetail->setProtocol(netInfo.strConType);
+            wlanDetail->setSecType(netInfo.strSecType);
+            wlanDetail->setHz(netInfo.strHz);
+            wlanDetail->setChan(netInfo.strChan);
+            wlanDetail->setSpeed(netInfo.strSpeed);
+            wlanDetail->setIPV4(netInfo.strIPV4Address);
+            wlanDetail->setIPV4Mask(netInfo.strIPV4Prefix);
+            wlanDetail->setIPV4Dns(netInfo.strIPV4Dns);
+            wlanDetail->setIPV4Gateway(netInfo.strIPV4GateWay);
+            wlanDetail->setIPV6(netInfo.strIPV6Address);
+            wlanDetail->setIPV6Prefix(netInfo.strIPV6Prefix);
+            wlanDetail->setIPV6Gt(netInfo.strIPV6GateWay);
+            wlanDetail->setMac(netInfo.strMac);
+            wlanDetail->setBandWidth(netInfo.strBandWidth);
+            wlanDetail->setVisible(actWifiNames.value(netName));
+            preActWifi.insert(netName, status);
+        }
+    }
+}
+
+//有线网络详情页构建
+void NetConnect::netDetailSlot(NetDetail *netDetail,QString netName, bool status, HoverBtn * deviceItem) {
+    foreach (ActiveConInfo netInfo, mActiveInfo) {
+        if (!netInfo.strConName.compare(netName, Qt::CaseInsensitive)) {
+            status = !status;
+            QMap<QString,bool>::Iterator iter;
+            if (!actLanNames.isEmpty()) {
+                iter = actLanNames.find(netName);
+                if (iter != actLanNames.end()) {
+                    iter.value() = status;
+                }
+            }
+            netDetail->setSSID(netInfo.strConName);
+            netDetail->setProtocol(netInfo.strConType);
+            netDetail->setIPV4(netInfo.strIPV4Address);
+            netDetail->setIPV4Dns(netInfo.strIPV4Dns);
+            netDetail->setIPV4Gateway(netInfo.strIPV4GateWay);
+            netDetail->setIPV4Mask(netInfo.strIPV4Prefix);
+            netDetail->setIPV6(netInfo.strIPV6Address);
+            netDetail->setIPV6Prefix(netInfo.strIPV6Prefix);
+            netDetail->setIPV6Gt(netInfo.strIPV6GateWay);
+            netDetail->setMac(netInfo.strMac);
+            netDetail->setBandWidth(netInfo.strBandWidth);
+            netDetail->setVisible(actLanNames.value(netName));
+            deviceItem->mAbtBtn->setVisible(true);
+            preActLan.insert(netName, status);
         }
     }
 }
@@ -500,14 +638,22 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
                         lockType = getwifislist.at(i).at(2);
                         freq = getwifislist.at(i).at(3) + " MHz";
 
-                        //若切换为新wifi则关闭网络详情
-                        if (mPreWifiConnectedName != wname) {
-                            mPreWifiConnectedName = wname;
-                            if (mWlanDetail->isVisible()) {
-                                mWlanDetail->setVisible(false);
-                                mIsWlanVisible = !mIsWlanVisible;
-                            }
+                        mActiveInfo[index].strSecType = (lockType == "--" ? tr("None") : lockType);
+                        mActiveInfo[index].strChan = chan;
+                        mActiveInfo[index].strHz = freq;
+                        if (isNullSpeed) {
+                            mActiveInfo[index].strSpeed = "null";
+                        } else {
+                            mActiveInfo[index].strSpeed = speed + " (Mbps)";
                         }
+                        if (getwifislist.at(i).at(2) != NULL && getwifislist.at(i).at(2) != "--") {
+                            wname += "lock";
+                        }
+                        connectedWifi.insert(wname, this->setSignal(getwifislist.at(i).at(1)));
+                    } else if (connectWifi != "--" && getwifislist.at(i).at(0) == connectWifi && getwifislist.at(i).at(0) != actWifiName) {
+                        wname = actWifiName;
+                        lockType = getwifislist.at(i).at(2);
+                        freq = getwifislist.at(i).at(3) + " MHz";
 
                         mActiveInfo[index].strSecType = (lockType == "--" ? tr("None") : lockType);
                         mActiveInfo[index].strChan = chan;
@@ -526,22 +672,28 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
             }
             if (!getlanList.isEmpty()) {
                 lanList.clear();
-                connectedLan.clear();
 
                 int indexLan = 0;
                 while (indexLan < mActiveInfo.size()) {
                     if (mActiveInfo[indexLan].strConType == "ethernet"
                             || mActiveInfo[indexLan].strConType == "802-3-ethernet"){
-                        actLanName = mActiveInfo[indexLan].strConName;
-                        break;
+                        actLanNames.insert(mActiveInfo[indexLan].strConName, false);
                     }
                     indexLan ++;
                 }
-                if (mPreLanConnectedName != actLanName) {
-                    mPreLanConnectedName = actLanName;
-                    if (mLanDetail->isVisible()) {
-                        mLanDetail->setVisible(false);
-                        mIsLanVisible = !mIsLanVisible;
+
+                //若有线网络详情已展开，刷新网络时，未变更的网络详情页依然保持展开状态
+                if (!preActLan.isEmpty()) {
+                    QMap<QString,bool>::ConstIterator iterator = preActLan.constBegin();
+                    while(iterator != preActLan.constEnd()) {
+                        QMap<QString,bool>::Iterator Iter;
+                        if (!actLanNames.isEmpty()) {
+                            Iter = actLanNames.find(iterator.key());
+                            if (Iter != actLanNames.end()) {
+                                Iter.value() = iterator.value();
+                            }
+                        }
+                        ++iterator;
                     }
                 }
 
@@ -568,6 +720,16 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
                     }
                 }
             }
+            if (!this->actLanNames.isEmpty()) {
+                QMap<QString,bool>::ConstIterator iter = actLanNames.constBegin();
+                while(iter != actLanNames.constEnd())
+                {
+                    QString actLanName = iter.key();
+                    this->lanList.removeOne(actLanName);
+                    ++iter;
+                }
+            }
+
             if (!this->connectedWifi.isEmpty()) {
                 QMap<QString, int>::iterator iter = this->connectedWifi.begin();
 
@@ -578,15 +740,31 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
                 connectedWifiName = isLock ? connectedWifiName.remove("lock") : connectedWifiName;
                 QString iconamePah;
                 iconamePah = wifiIcon(isLock, strength);
-                rebuildNetStatusComponent(iconamePah, connectedWifiName);
-            }
-            if (!this->actLanName.isEmpty()) {
-                QString lanIconamePah = KLanSymbolic;
-                rebuildNetStatusComponent(lanIconamePah, this->actLanName);
-            }
+                actWifiNames.insert(connectedWifiName,false);
 
-            if (this->connectedWifi.isEmpty() && this->actLanName.isEmpty()) {
-                rebuildNetStatusComponent(NoNetSymbolic , tr("No net"));
+                //若有线网络详情已展开，刷新网络时，未变更的网络详情页依然保持展开状态
+                if (!preActWifi.isEmpty()) {
+                    QMap<QString,bool>::ConstIterator iterator = preActWifi.constBegin();
+                    while(iterator != preActWifi.constEnd()) {
+                        QMap<QString,bool>::Iterator Iter;
+                        if (!actWifiNames.isEmpty()) {
+                            Iter = actWifiNames.find(iterator.key());
+                            if (Iter != actWifiNames.end()) {
+                                Iter.value() = iterator.value();
+                            }
+                        }
+                        ++iterator;
+                    }
+                }
+                rebuildWifiActComponent(iconamePah, actWifiNames);
+            }
+            if (!this->actLanNames.isEmpty()) {
+                QString lanIconamePah = KLanSymbolic;
+                rebuildNetStatusComponent(lanIconamePah, this->actLanNames);
+            }
+            if (this->connectedWifi.isEmpty() && this->actLanNames.isEmpty()) {
+                noneAct.insert(tr("No net"),false);
+                rebuildNetStatusComponent(NoNetSymbolic , this->noneAct);
             }
             return 1;
         }
@@ -734,22 +912,24 @@ void NetConnect::clearContent() {
         }
     }
 
-    if (ui->statusLayout->layout() != NULL) {
+    if (ui->detailLayOut->layout() != NULL) {
         QLayoutItem* item;
-        while ((item = ui->statusLayout->layout()->takeAt(0)) != NULL) {
+        while ((item = ui->detailLayOut->layout()->takeAt(0)) != NULL) {
             delete item->widget();
             delete item;
             item = nullptr;
         }
     }
 
-    this->connectedLan.clear();
     this->connectedWifi.clear();
-    this->actLanName.clear();
+    this->actLanNames.clear();
+    this->actWifiNames.clear();
     this->wifiList.clear();
     this->lanList.clear();
     this->TlanList.clear();
     this->TwifiList.clear();
+    this->noneAct.clear();
+
 }
 
 void NetConnect::setWifiBtnDisable() {
@@ -766,17 +946,6 @@ void NetConnect::setNetDetailVisible() {
     ui->openWifiFrame->setVisible(wifiSt);
     ui->RefreshBtn->setEnabled(true);
     ui->RefreshBtn->setText(tr("Refresh"));
-
-    if (!mActiveInfo.count()) {
-        this->mWlanDetail->setVisible(false);
-        this->mLanDetail->setVisible(false);
-    } else if (1 == mActiveInfo.count()){
-        if (mActiveInfo.at(0).strConType.contains("802-11-wireless", Qt::CaseSensitive)) {
-            this->mLanDetail->setVisible(false);
-        } else {
-            this->mWlanDetail->setVisible(false);
-        }
-    }
 }
 
 QList<QVariantMap> NetConnect::getDbusMap(const QDBusMessage &dbusMessage) {
@@ -935,7 +1104,6 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo) {
                 activeNet.strIPV6Prefix = dataIPV6.at(0).value("prefix").toString();
             } else {
                 qWarning()<<"Ipv6 data reply empty!";
-                return -1;
             }
 
             QDBusMessage replyIPV6Gt = IPV6ifc.call("Get", "org.freedesktop.NetworkManager.IP6Config", "GateWay");
