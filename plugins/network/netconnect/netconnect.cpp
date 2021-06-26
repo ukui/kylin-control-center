@@ -803,7 +803,7 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
                             wname += "lock";
                         }
                         connectedWifi.insert(wname, this->setSignal(getwifislist.at(i).at(1)));
-                    } else if (connectWifi != "--" && getwifislist.at(i).at(0) == connectWifi && getwifislist.at(i).at(0) != actWifiName) {
+                    } else if (connectWifi != "--" && getwifislist.at(i).at(0) == connectWifi && getwifislist.at(i).at(0) != actWifiName && !actWifiName.isEmpty()) {
                         wname = actWifiName;
                         lockType = getwifislist.at(i).at(2);
                         freq = getwifislist.at(i).at(3) + " MHz";
