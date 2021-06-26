@@ -7679,7 +7679,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="108"/>
         <source> Mouse to disable  touchpad</source>
-        <translation>插入鼠标时候禁用触摸板</translation>
+        <translation>连接鼠标或无线触控板时禁用内置触摸版</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/touchpad/touchpad.ui" line="393"/>
