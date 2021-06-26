@@ -8434,7 +8434,7 @@ the settings will be saved after 14 seconds</source>
         <location filename="../../../plugins/system/display/widget.cpp" line="634"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display 
 the settings will be saved after %1 seconds</source>
-        <translation>修改分辨率或刷新率后，由于显示设备与 显卡兼容性问题，有可能显示不正常。系统将在%1后保存配置</translation>
+        <translation>修改分辨率或刷新率后，由于显示设备与 显卡兼容性问题，有可能显示不正常。系统将在%1秒后保存配置</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/display/widget.cpp" line="1953"/>
@@ -8747,11 +8747,11 @@ Common reasons are that the overall screen size is too big, or you enabled more 
     </message>
     <message>
         <source>Weather</source>
-        <translation type="vanished">麒麟天气</translation>
+        <translation type="vanished">天气</translation>
     </message>
     <message>
         <source>Media</source>
-        <translation type="vanished">麒麟影音</translation>
+        <translation type="vanished">影音</translation>
     </message>
     <message>
         <source>Walpaper</source>
