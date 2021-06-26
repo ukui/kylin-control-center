@@ -870,7 +870,9 @@ void UkmediaMainWidget::addStream (UkmediaMainWidget *m_pWidget, MateMixerStream
             if (!deviceName.contains("monitor",Qt::CaseInsensitive) /*&& !m_pWidget->m_pInputStreamList->contains(m_pName)*/) {
                 m_pWidget->m_pInputStreamList->append(m_pName);
                 m_pWidget->m_pInputDeviceLabelList->append(m_pLabel);
+                m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->blockSignals(true);
                 m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->addItem(m_pName);
+                m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->blockSignals(false);
                 if (MATE_MIXER_IS_DEVICE(device)) {
                     devName = mate_mixer_device_get_name(device);
                     m_pWidget->inputStreamMapCardName(m_pName,devName);
@@ -1082,14 +1084,14 @@ void UkmediaMainWidget::setContext(UkmediaMainWidget *m_pWidget,MateMixerContext
                       m_pWidget);
 
     g_signal_connect (G_OBJECT (m_pContext),
+                    "device-added",
+                    G_CALLBACK (onContextDeviceAdded),
+                    m_pWidget);
+    g_signal_connect (G_OBJECT (m_pContext),
                     "stream-removed",
                     G_CALLBACK (onContextStreamRemoved),
                     m_pWidget);
 
-    g_signal_connect (G_OBJECT (m_pContext),
-                    "device-added",
-                    G_CALLBACK (onContextDeviceAdded),
-                    m_pWidget);
     g_signal_connect (G_OBJECT (m_pContext),
                     "device-removed",
                     G_CALLBACK (onContextDeviceRemoved),
@@ -1124,8 +1126,11 @@ void UkmediaMainWidget::onContextStreamRemoved (MateMixerContext *m_pContext,con
     Q_UNUSED(m_pContext);
     Q_UNUSED(m_pName);
     g_debug("on context stream removed");
-
+    m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->blockSignals(true);
+    m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->blockSignals(true);
     removeStream (m_pWidget, m_pName);
+    m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->blockSignals(false);
+    m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->blockSignals(false);
 }
 
 /*
@@ -1137,21 +1142,19 @@ void UkmediaMainWidget::removeStream (UkmediaMainWidget *m_pWidget, const gchar 
     int index;
     index = m_pWidget->m_pInputStreamList->indexOf(m_pName);
     if (index >= 0) {
-        m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->blockSignals(true);
+
         m_pWidget->m_pInputStreamList->removeAt(index);
         m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->removeItem(index);
         m_pWidget->m_pInputCardNameList->removeAt(index);
-        m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->blockSignals(false);
+
     }
     else {
         index = m_pWidget->m_pOutputStreamList->indexOf(m_pName);
         if (index >= 0) {
-            m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->blockSignals(true);
             m_pWidget->m_pOutputStreamList->removeAt(index);
             m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->removeItem(index);
             m_pWidget->m_pCardNameList->removeAt(index);
             m_pWidget->m_pDeviceLabelList->removeAt(index);
-            m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->blockSignals(false);
         }
     }
     if (m_pWidget->m_pAppVolumeList != nullptr) {
@@ -1449,12 +1452,12 @@ void UkmediaMainWidget::onContextDefaultOutputStreamNotify (MateMixerContext *m_
     int index = m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->findText(deviceName);
     qDebug() << "on context default output steam notify:" << mate_mixer_stream_get_name(m_pStream) << cardName <<index;
     if (index < 0) {
+
         m_pWidget->m_pOutputWidget->m_pOutputListWidget->setCurrentRow(-1);
         return;
     }
 
     if (index >= 0) {
-
         if (index < m_pWidget->m_pOutputPortLabelList->count()) {
             m_pWidget->m_pOutputPortLabelList->at(index);
             int i =0;
@@ -3030,8 +3033,13 @@ void UkmediaMainWidget::setOutputListWidgetRow()
         int devIndex = m_pCardNameList->indexOf(deviceName);
         qDebug() << "card name :" << m_pCardNameList->count() << "card index:" << devIndex << deviceName << "stream name " << mate_mixer_stream_get_name(stream)<< "card count" << m_pCardNameList->count();
         if (devIndex != -1 && devIndex < m_pCardNameList->count()) {
-
-            findOutputListWidgetItem(m_pCardNameList->at(devIndex),stream);
+            if (m_pCardNameList->at(devIndex) == "") {
+                if (strstr(mate_mixer_stream_get_name(stream),"histen_sink"))
+                    findOutputListWidgetItem("histen.algo",stream);
+            }
+            else {
+                findOutputListWidgetItem(m_pCardNameList->at(devIndex),stream);
+            }
         }
         delete time;
     });
@@ -3440,7 +3448,6 @@ void UkmediaMainWidget::outputListWidgetCurrentRowChangedSlot(int row)
     //当所有可用的输出设备全部移除，台式机才会出现该情况
     if (row == -1)
         return;
-    qDebug() << "outputListWidgetCurrentRowChangedSlot" << row;
     QListWidgetItem *item = m_pOutputWidget->m_pOutputListWidget->item(row);
     if (item == nullptr) {
         qDebug() <<"output current item is null";
@@ -3448,6 +3455,7 @@ void UkmediaMainWidget::outputListWidgetCurrentRowChangedSlot(int row)
     UkuiListWidgetItem *wid = (UkuiListWidgetItem *)m_pOutputWidget->m_pOutputListWidget->itemWidget(item);
     QListWidgetItem *inputCurrrentItem = m_pInputWidget->m_pInputListWidget->currentItem();
     UkuiListWidgetItem *inputWid = (UkuiListWidgetItem *)m_pInputWidget->m_pInputListWidget->itemWidget(inputCurrrentItem);
+    qDebug() << "outputListWidgetCurrentRowChangedSlot" << row << wid->deviceLabel->text();
 
     bool isContainBlue = inputCardListContainBluetooth();
     MateMixerStream *stream = mate_mixer_context_get_default_output_stream(m_pContext);
@@ -3486,7 +3494,8 @@ void UkmediaMainWidget::outputListWidgetCurrentRowChangedSlot(int row)
         }
     }
     //如果选择的输入输出设备为同一个声卡，则追加指定输入输出端口属于的配置文件
-    if (inputCurrrentItem != nullptr && wid->deviceLabel->text() == inputWid->deviceLabel->text()) {
+    if ((inputCurrrentItem != nullptr && wid->deviceLabel->text() == inputWid->deviceLabel->text()) || \
+        wid->deviceLabel->text() == "alsa_card.platform-sound_DA_combine_v5" && inputWid->deviceLabel->text() == "3a.algo") {
 
         QString  setProfile = "pactl set-card-profile ";
         setProfile += wid->deviceLabel->text();
@@ -3509,6 +3518,7 @@ void UkmediaMainWidget::outputListWidgetCurrentRowChangedSlot(int row)
                 m_pOutputWidget->m_pOutputDeviceCombobox->setCurrentIndex(index);
 //                m_pOutputWidget->m_pOutputDeviceCombobox->blockSignals(false);
             }
+//            disconnect(time);
             delete time;
         });
     }
@@ -3541,7 +3551,7 @@ void UkmediaMainWidget::outputListWidgetCurrentRowChangedSlot(int row)
         time->start(100);
         QString deviceLabel = wid->deviceLabel->text();
         connect(time,&QTimer::timeout,[=](){
-            m_pOutputWidget->m_pOutputDeviceCombobox->update();
+//            m_pOutputWidget->m_pOutputDeviceCombobox->update();
             int index = m_pCardNameList->indexOf(deviceLabel);
             if (index >= 0) {
                 const QString str1 =  m_pOutputStreamList->at(index);
@@ -3552,7 +3562,9 @@ void UkmediaMainWidget::outputListWidgetCurrentRowChangedSlot(int row)
                 m_pOutputWidget->m_pOutputDeviceCombobox->setCurrentIndex(index);
 //                m_pOutputWidget->m_pOutputDeviceCombobox->blockSignals(false);
             }
+//            disconnect(time);
             delete time;
+
         });
     }
     qDebug() << "active output port:" << wid->portLabel->text();
@@ -5158,7 +5170,9 @@ void UkmediaMainWidget::updatePorts(UkmediaMainWidget *w, const pa_card_info &in
 
             QListWidgetItem * item = new QListWidgetItem(w->m_pOutputWidget->m_pOutputListWidget);
             item->setSizeHint(QSize(200,64)); //QSize(120, 40) spacing: 12px;
+            w->m_pOutputWidget->m_pOutputListWidget->blockSignals(true);
             w->m_pOutputWidget->m_pOutputListWidget->setItemWidget(item, itemW);
+            w->m_pOutputWidget->m_pOutputListWidget->blockSignals(false);
             QString cardName;
             for(cardNameMap = w->cardMap.begin();cardNameMap!=w->cardMap.end();)
             {
@@ -5283,8 +5297,10 @@ void UkmediaMainWidget::deleteNotAvailableOutputPort()
             int index = indexOfOutputPortInOutputListWidget(it.value());
             if (index == -1)
                 return;
+            m_pOutputWidget->m_pOutputListWidget->blockSignals(true);
             QListWidgetItem *item = m_pOutputWidget->m_pOutputListWidget->takeItem(index);
             m_pOutputWidget->m_pOutputListWidget->removeItemWidget(item);
+            m_pOutputWidget->m_pOutputListWidget->blockSignals(false);
             m_pCurrentOutputPortLabelList->removeAt(index);
             it = currentOutputPortLabelMap.erase(it);
             continue;
@@ -5356,7 +5372,9 @@ void UkmediaMainWidget::addAvailableOutputPort()
 
             QListWidgetItem * item = new QListWidgetItem(m_pOutputWidget->m_pOutputListWidget);
             item->setSizeHint(QSize(200,64)); //QSize(120, 40) spacing: 12px;
+            m_pOutputWidget->m_pOutputListWidget->blockSignals(true);
             m_pOutputWidget->m_pOutputListWidget->setItemWidget(item, itemW);
+            m_pOutputWidget->m_pOutputListWidget->blockSignals(false);
             QString cardName;
             for(cardNameMap = cardMap.begin();cardNameMap!=cardMap.end();)
             {
@@ -5475,10 +5493,9 @@ void UkmediaMainWidget::findOutputListWidgetItem(QString cardName,MateMixerStrea
 
         QListWidgetItem *item = m_pOutputWidget->m_pOutputListWidget->item(row);
         UkuiListWidgetItem *wid = (UkuiListWidgetItem *)m_pOutputWidget->m_pOutputListWidget->itemWidget(item);
-//        qDebug() << "findOutputListWidgetItem" << "card name:" << cardName << "portLabel:" << wid->portLabel->text() << "deviceLabel:" << wid->deviceLabel->text();
+        qDebug() << "findOutputListWidgetItem" << "card name:" << cardName << "portLabel:" << wid->portLabel->text() << "deviceLabel:" << wid->deviceLabel->text();
         if (wid->deviceLabel->text() == cardName && wid->portLabel->text() == portLabel) {
             m_pOutputWidget->m_pOutputListWidget->blockSignals(true);
-//            qDebug() << "set output list widget" << row;
             m_pOutputWidget->m_pOutputListWidget->setCurrentRow(row);
             m_pOutputWidget->m_pOutputListWidget->blockSignals(false);
             break;
