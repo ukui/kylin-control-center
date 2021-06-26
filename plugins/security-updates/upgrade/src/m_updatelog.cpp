@@ -44,7 +44,7 @@ m_updatelog::m_updatelog(QWidget* parent) : QDialog(parent)
     initGsettings();//初始化Gsettings
     dynamicLoadingInit();//动态加载
     updatesql();//更新列表
-    defaultItem();//设置默认选中
+//    defaultItem();//设置默认选中
     //监听更新完成信号
     UpdateDbus *uddbus = UpdateDbus::getInstance();
     connect(uddbus->interface,SIGNAL(update_sqlite_signal(QString,QString)),this,SLOT(historyUpdateNow(QString,QString)));
@@ -217,6 +217,9 @@ void m_updatelog::changeListWidgetItemHeight()
 
 void m_updatelog::updatesql( const int &start,const int &num,const QString &intop)
 {
+    HistoryUpdateListWig *firstWidget = NULL;
+    bool flag = true;
+
     //sql 拼接
     QString sqlCmd = "SELECT * FROM installed";
     if(intop!="")
@@ -233,6 +236,10 @@ void m_updatelog::updatesql( const int &start,const int &num,const QString &into
         if(statusType!=""&&statusType!="1")
             continue;
         HistoryUpdateListWig *hulw = new HistoryUpdateListWig(updateDesTab);
+        if (flag == true) {
+            firstWidget = hulw;
+            flag = false;
+        }
         hulw->setAttribute(translationVirtualPackage(query.value("appname").toString())+" "+query.value("version").toString(),
                            query.value("statue").toString(),
                            query.value("time").toString(),
@@ -261,6 +268,11 @@ void m_updatelog::updatesql( const int &start,const int &num,const QString &into
         mainListwidget->setItemWidget(item,hulw);
         if(intop!="")
             hulw->selectStyle();//设置选中样式
+    }
+
+    /* 选中第一条记录 */
+    if (firstWidget != NULL && start == 0) {
+        firstWidget->selectStyle();
     }
 }
 
@@ -344,6 +356,8 @@ void m_updatelog::historyUpdateNow(QString str1,QString str2)
 /* 历史更新界面搜索功能 */
 void m_updatelog::slotSearch(QString packageName)
 {
+    HistoryUpdateListWig *firstWidget = NULL;
+    bool flag = true;
     /* 取消原历史界面动态加载功能 */
     cacheDynamicLoad();
 
@@ -379,6 +393,10 @@ void m_updatelog::slotSearch(QString packageName)
 
         /* 展示搜索内容 */
         HistoryUpdateListWig *updateItem = new HistoryUpdateListWig(updateDesTab);
+        if (flag == true) {
+            firstWidget = updateItem;
+            flag = false;
+        }
         updateItem->setAttribute(packageName + " " + version , statue , time , description , id);
         QListWidgetItem *item = new QListWidgetItem();
         item->setFlags(Qt::NoItemFlags);
@@ -394,6 +412,18 @@ void m_updatelog::slotSearch(QString packageName)
         description.clear();
         id = 0;
         keyword.clear();
+    }
+
+    /* 选中第一条记录 */
+    if (firstWidget != NULL) {
+        firstWidget->selectStyle();
+    } else {
+        if (this->des != NULL) {
+            des->setText(QString(""));
+        }
+        if (this->updateDesTab != NULL) {
+            updateDesTab->setText(QString(""));
+        }
     }
 
     return;
@@ -469,7 +499,7 @@ void m_updatelog::searchBoxWidget(void)
     //this->searchBox->setPlaceholderText(tr("输入你想找的内容"));
     this->searchBox->setPlaceholderText(tr("Search content"));
     this->searchBox->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-    this->searchBox->setMaxLength(30);
+    //this->searchBox->setMaxLength(30);
     this->searchBox->installEventFilter(this);
 
     this->searchIcon = new QLabel(this);
