@@ -49,4 +49,5 @@
 #define PERSONALSIE_SCHEMA     "org.ukui.control-center.personalise"
 #define PERSONALSIE_POWER_KEY  "custompower"
 
+#define STYLE_FONT_SCHEMA  "org.ukui.style"
 #endif // POWERMACRODATA_H
