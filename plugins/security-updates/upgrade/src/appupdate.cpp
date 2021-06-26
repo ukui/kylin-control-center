@@ -599,7 +599,7 @@ void AppUpdateWid::cancelOrUpdate()
         }
         if(m_updateMutual->isPointOutNotBackup == true)
         {
-            QMessageBox msgBox;
+            QMessageBox msgBox(this);
             //            msgBox.setText(tr("单个更新不会自动备份系统，如需备份，请点击全部更新。"));
             msgBox.setText(tr("A single update will not automatically backup the system, if you want to backup, please click Update All."));
             msgBox.setWindowTitle(tr("Prompt information"));
