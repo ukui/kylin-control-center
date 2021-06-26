@@ -163,6 +163,8 @@ private:
     QString             mPreWifiConnectedName;
     QStringList         mPreLanConnectedName;
     QString             systemEnvironment;
+    QString             connectWifi;
+
     int                 runCount = 0;
 private:
     int         setSignal(QString lv);

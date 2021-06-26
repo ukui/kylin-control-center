@@ -338,13 +338,19 @@ void NetConnect::rebuildWifiActComponent(QString iconPath, QMap<QString, bool> n
         QVBoxLayout * vLayout = new QVBoxLayout;
         vLayout->setContentsMargins(0,0,0,0);
 
+        QString wifiName;
+        if (connectWifi != iter.key()) {
+            wifiName = connectWifi;
+        } else {
+            wifiName = iter.key();
+        }
         HoverBtn * deviceItem;
         if (!hasNet) {
             deviceItem = new HoverBtn(iter.key(), false, pluginWidget);
         } else {
             deviceItem = new HoverBtn(iter.key(), true, pluginWidget);
         }
-        deviceItem->mPitLabel->setText(iter.key());
+        deviceItem->mPitLabel->setText(wifiName);
 
         if (!hasNet) {
             deviceItem->mDetailLabel->setText(tr("Connected"));
@@ -399,7 +405,7 @@ void NetConnect::rebuildNetStatusComponent(QString iconPath, QMap<QString, bool>
         } else {
             deviceItem = new HoverBtn(iter.key() , true, pluginWidget);
         }
-        deviceItem->mPitLabel->setText(iter.key() );
+        deviceItem->mPitLabel->setText(iter.key());
 
         if (!hasNet) {
             deviceItem->mDetailLabel->setText(tr("Connected"));
@@ -448,6 +454,7 @@ void NetConnect:: getNetList() {
     if (!reply.isValid()) {
         qWarning() << "value method called failed!";
     }
+
     this->TlanList  = execGetLanList();
     bool wirelessStatus = getWirelessStatus();
     if (getWifiStatus() && reply.value().length() == 1 && wirelessStatus && getHasWirelessCard()) {
@@ -461,6 +468,12 @@ void NetConnect:: getNetList() {
         }
         getNetList();
     } else {
+        connectWifi.clear();
+        if (reply.value().at(0).at(0) != "--") {
+            connectWifi = reply.value().at(0).at(0);
+        } else {
+            connectWifi = "--";
+        }
         if (getWifiListDone(reply, this->TlanList, isWayland) == -1) {
             getNetList();
         } else {
@@ -532,7 +545,13 @@ void NetConnect::netDetailOpen(NetDetail *netDetail,QString netName){
                 netDetail->setMac(netInfo.strMac);
                 netDetail->setBandWidth(netInfo.strBandWidth);
             } else {
-                netDetail->setSSID(netInfo.strConName);
+                QString wifiName;
+                if (connectWifi != netInfo.strConName) {
+                    wifiName = connectWifi;
+                } else {
+                    wifiName = netInfo.strConName;
+                }
+                netDetail->setSSID(wifiName);
                 netDetail->setProtocol(netInfo.strConType);
                 netDetail->setSecType(netInfo.strSecType);
                 netDetail->setHz(netInfo.strHz);
@@ -593,7 +612,13 @@ void NetConnect::netDetailSlot(NetDetail *wlanDetail, QString netName, bool stat
                     iter.value() = status;
                 }
             }
-            wlanDetail->setSSID(netInfo.strConName);
+            QString wifiName;
+            if (connectWifi != netInfo.strConName) {
+                wifiName = connectWifi;
+            } else {
+                wifiName = netInfo.strConName;
+            }
+            wlanDetail->setSSID(wifiName);
             wlanDetail->setProtocol(netInfo.strConType);
             wlanDetail->setSecType(netInfo.strSecType);
             wlanDetail->setHz(netInfo.strHz);
@@ -758,6 +783,28 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
                 for (int i = 0; i < getwifislist.size(); ++i) {
                     if (getwifislist.at(i).at(0) == actWifiName) {
                         wname = getwifislist.at(i).at(0);
+                        lockType = getwifislist.at(i).at(2);
+                        freq = getwifislist.at(i).at(3) + " MHz";
+                        if (isWayland && systemEnvironment == "9A0") {
+                            QString category = getwifislist.at(i).at(5);
+                            wname = wname + category;
+                        } else {
+                            wname = wname;
+                        }
+                        mActiveInfo[index].strSecType = (lockType == "--" ? tr("None") : lockType);
+                        mActiveInfo[index].strChan = chan;
+                        mActiveInfo[index].strHz = freq;
+                        if (isNullSpeed) {
+                            mActiveInfo[index].strSpeed = "null";
+                        } else {
+                            mActiveInfo[index].strSpeed = speed + " (Mbps)";
+                        }
+                        if (getwifislist.at(i).at(2) != NULL && getwifislist.at(i).at(2) != "--") {
+                            wname += "lock";
+                        }
+                        connectedWifi.insert(wname, this->setSignal(getwifislist.at(i).at(1)));
+                    } else if (connectWifi != "--" && getwifislist.at(i).at(0) == connectWifi && getwifislist.at(i).at(0) != actWifiName) {
+                        wname = actWifiName;
                         lockType = getwifislist.at(i).at(2);
                         freq = getwifislist.at(i).at(3) + " MHz";
                         if (isWayland && systemEnvironment == "9A0") {
