@@ -7775,7 +7775,7 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <source>Prompt voice</source>
-        <translation type="vanished">提示音</translation>
+        <translation type="vanished">通知音</translation>
     </message>
     <message>
         <source>Boot music</source>
@@ -7787,7 +7787,7 @@ run start-pulseaudio-x11 manually.</source>
     </message>
     <message>
         <source>prompt voice</source>
-        <translation type="vanished">提示音</translation>
+        <translation type="vanished">通知音</translation>
     </message>
     <message>
         <source>Shutdown</source>
@@ -7812,7 +7812,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="59"/>
         <source>Alert Sound</source>
-        <translation>提示音</translation>
+        <translation>通知音</translation>
         <extra-contents_path>/audio/Alert Sound</extra-contents_path>
     </message>
     <message>
@@ -7862,7 +7862,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="84"/>
         <source>Volume Change</source>
-        <translation>音量改变</translation>
+        <translation>音量调节声</translation>
     </message>
     <message>
         <source>Setting Menu</source>
