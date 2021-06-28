@@ -631,7 +631,7 @@ void MainWidget::initSignalSlots() {
                 m_key = m_itemMap.key(name);
                 if (m_key != "") {
                     //这样的执行顺序是正确的
-                    emit isSync(ture);
+                    emit isSync(true);
                     singleExecutor(m_singleTimer,1000);
                 }
 
