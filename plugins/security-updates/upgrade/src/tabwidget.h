@@ -167,6 +167,9 @@ private:
     bool get_battery();
     void autoUpdateLoadUpgradeList();
 
+    void fileLock();
+    void fileUnLock();
+
 signals:
     int needBackUp();
     void startBackUp(int);

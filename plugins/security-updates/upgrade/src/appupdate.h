@@ -107,6 +107,8 @@ private:
     QStringList analysis_config_file(char *p_file_path);
     void remove_last_enter(char *p_src_in_out);
 
+    QMap<QString, QString> getNameAndIconFromJson(QString pkgname);
+
     enum Environment{
         en,
         zh_cn
