@@ -904,7 +904,7 @@ void MainWindow::switchPage(QString moduleName, QString jumpMoudle) {
             }
         }
     }
-    QMessageBox::information(this, tr("Warnning"), tr("This function has been controlled"));
+    QMessageBox::information(this, tr("Warning"), tr("This function has been controlled"));
     return;
 }
 

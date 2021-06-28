@@ -3230,7 +3230,7 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../mainwindow.cpp" line="905"/>
-        <source>Warnning</source>
+        <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6571,7 +6571,7 @@ the settings will be saved after %1 seconds</source>
     </message>
     <message>
         <location filename="../../../plugins/system/display/widget.cpp" line="1141"/>
-        <source>Warnning</source>
+        <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

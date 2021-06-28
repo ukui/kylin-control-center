@@ -1138,7 +1138,7 @@ void Widget::save()
 
     if (!KScreen::Config::canBeApplied(config)) {
         QMessageBox::information(this,
-                                 tr("Warnning"),
+                                 tr("Warning"),
                                  tr("Sorry, your configuration could not be applied.\nCommon reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU."));
         return;
     }

@@ -3157,7 +3157,7 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../mainwindow.cpp" line="833"/>
-        <source>Warnning</source>
+        <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6039,7 +6039,7 @@ If something goes wrong, the settings will be restored after %1 seconds</source>
     </message>
     <message>
         <location filename="../../../plugins/system/display/widget.cpp" line="1005"/>
-        <source>Warnning</source>
+        <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
