@@ -3369,12 +3369,12 @@ folder will be deleted!</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
         <source>Weather</source>
-        <translation>麒麟天气</translation>
+        <translation>天气</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
         <source>Media</source>
-        <translation>麒麟影音</translation>
+        <translation>影音</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/itemlist.h" line="43"/>
