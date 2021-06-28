@@ -64,7 +64,6 @@ void TabWid::dbusFinished()
     QStringList list;
     list << "CONTROL_CENTER/autoupdate_allow";
     QString ret =  updateSource->getOrSetConf("get", list);
-    qDebug() << "------------>" << ret;
     if (!ret.compare("false"))
         isAutoUpgradeSBtn->setChecked(false);
     else
@@ -76,14 +75,11 @@ void TabWid::dbusFinished()
 
 void TabWid::getAutoUpgradeStatus()
 {
-    QStringList list2;
-    list2 << "CONTROL_CENTER/swicth_status" << "true";
-    updateSource->getOrSetConf("set", list2);
-
+    fileLock();
     QStringList list;
     list << "CONTROL_CENTER/autoupdate_run_status";
     QString ret =  updateSource->getOrSetConf("get", list);
-    qDebug() << "-----------11->" << ret;
+
     if (!ret.compare("backup")) {
         isAutoUpgrade = true;
         /*如果自动更新在备份中，那就直接绑定备份还原信号即可*/
@@ -100,7 +96,6 @@ void TabWid::getAutoUpgradeStatus()
         if (file.open(QIODevice::ReadOnly)) {
             pid = file.readAll();
         }
-        qDebug() << "----------->pid" << pid;
         file.close();
         updateSource->killProcessSignal(pid.toInt(), 10);
         checkUpdateBtn->setEnabled(true);
@@ -169,10 +164,7 @@ TabWid::~TabWid()
     updateMutual = nullptr;
     backupDelete();//回收资源
 
-    QStringList list2;
-    list2 << "CONTROL_CENTER/swicth_status" << "false";
-    updateSource->getOrSetConf("set", list2);
-    //    updateMutual->cleanUpdateList();
+    fileUnLock();
 }
 
 void TabWid::backupMessageBox(QString str)
@@ -818,6 +810,7 @@ void TabWid::checkUpdateBtnClicked()
         int ret = msgBox.exec();
         switch (ret) {
         case 0:
+            qDebug() << "全部更新。。。。。。";
             isAutoBackupSBtn->setChecked(false);
             //                checkUpdateBtn->setText("正在更新...");
             checkUpdateBtn->setEnabled(false);
@@ -1021,4 +1014,36 @@ bool TabWid::get_battery()
     if (battery_value < 50)
         return false;
     return true;
+}
+
+void TabWid::fileLock()
+{
+    QDir dir("/tmp/auto-upgrade/");
+    if(! dir.exists()) {
+        dir.mkdir("/tmp/auto-upgrade/");//只创建一级子目录，即必须保证上级目录存在
+        chmod("/tmp/auto-upgrade/",0777);
+    }
+    umask(0000);
+    int fd = open("/tmp/auto-upgrade/ukui-control-center.lock", O_RDWR | O_CREAT,0666);
+    if (fd < 0) {
+        qDebug()<<"解锁时文件锁打开异常";
+        return;
+    }
+    flock(fd, LOCK_EX | LOCK_NB);
+}
+
+void TabWid::fileUnLock()
+{
+    QDir dir("/tmp/auto-upgrade/");
+    if(! dir.exists()) {
+        dir.mkdir("/tmp/auto-upgrade/");//只创建一级子目录，即必须保证上级目录存在
+        chmod("/tmp/auto-upgrade/",0777);
+    }
+    umask(0000);
+    int fd = open("/tmp/auto-upgrade/ukui-control-center.lock", O_RDWR | O_CREAT,0666);
+    if (fd < 0) {
+        qDebug()<<"解锁时文件锁打开异常";
+        return;
+    }
+    flock(fd, LOCK_UN);
 }

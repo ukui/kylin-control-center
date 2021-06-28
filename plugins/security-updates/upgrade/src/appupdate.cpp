@@ -3,7 +3,12 @@
 #include <stdio.h>
 #include <QLocale>
 #include <QScrollBar>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
+
+#define JSON_FILE_PATH "/usr/share/kylin-update-desktop-config/data/"
 #define CONFIG_FILE_PATH "/usr/share/ukui-control-center/upgrade/"
 
 AppUpdateWid::AppUpdateWid(AppAllMsg msg,QWidget *parent):QWidget(parent)
@@ -256,7 +261,6 @@ QStringList AppUpdateWid::analysis_config_file(char *p_file_path)
 void AppUpdateWid::showInstallStatues(QString status,QString appAptName, float progress ,QString errormsg)
 {
     char p_path[1024];
-
     memset(p_path , 0x00 , sizeof(p_path));
     sprintf(p_path , "%s%s" , CONFIG_FILE_PATH , "need-reboot.conf");
     QStringList reboot = analysis_config_file(p_path);
@@ -452,28 +456,28 @@ void AppUpdateWid::updateAppUi(QString name)
     //    appTitleWid->setFixedHeight(60)
     //    this->setLayout(mainVLayout);
     AppFrame->setLayout(mainVLayout);
-    dispalyName = translationVirtualPackage(name);
+    QMap<QString, QString> map = getNameAndIconFromJson(name);
+    if (!map.value("name").isNull())
+        dispalyName = map.value("name");
+    else
+        dispalyName = translationVirtualPackage(name);
+
     appNameLab->setText(dispalyName);
-    if(name.contains("kylin-update-desktop-")||name == "linux-generic")
-    {
+    /*判断图标，优先级: JSON文件指定 > qrc资源文件中 > 主题 > 默认*/
+    if (!map.value("icon").isNull()) {
+        appIcon->setPixmap(QPixmap(map.value("icon")));
+    } else if (name.contains("kylin-update-desktop-")||name == "linux-generic") {
         pkgIconPath = QString(":/img/plugins/upgrade/%1.png").arg(name);
         appIcon->setPixmap(QPixmap(pkgIconPath));
+    } else if (QIcon::fromTheme(name).hasThemeIcon(name)) {    //判断是否有主题图标并输出
+        QIcon icon = QIcon::fromTheme(name);
+        QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(32, 32)));
+        appIcon->setPixmap(pixmap);
+    } else {
+        QIcon icon = QIcon::fromTheme("application-x-desktop");
+        QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(32, 32)));
+        appIcon->setPixmap(pixmap);
     }
-    else{
-        if(QIcon::fromTheme(name).hasThemeIcon(name))    //判断是否有主题图标并输出
-        {
-            QIcon icon = QIcon::fromTheme(name);
-            QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(32, 32)));
-            appIcon->setPixmap(pixmap);
-        }
-        else
-        {
-            QIcon icon = QIcon::fromTheme("application-x-desktop");
-            QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(32, 32)));
-            appIcon->setPixmap(pixmap);
-        }
-    }
-
     QString newStrMsg = appAllMsg.availableVersion;
 
     if(newStrMsg.size()>16)
@@ -489,7 +493,6 @@ void AppUpdateWid::updateAppUi(QString name)
         appVersion->setText(tr("Newest:")+newStrMsg);
         appVersion->setToolTip("");
     }
-
 
     //获取并输出changelog
     chlog = setDefaultDescription(appAllMsg.longDescription);
@@ -549,6 +552,47 @@ void AppUpdateWid::updateAppUi(QString name)
 }
 
 
+QMap<QString, QString> AppUpdateWid::getNameAndIconFromJson(QString pkgname)
+{
+    QMap <QString, QString> nameIconList;
+    /*判断json文件是否存在*/
+    QString filename = QString(JSON_FILE_PATH) +pkgname +".json";
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly)){
+        qDebug() << "JSON file open failed! ";
+        return nameIconList;
+    }
+    QByteArray jsonData = file.readAll();
+
+    QJsonParseError err_rpt;
+    QJsonDocument  root_Doc = QJsonDocument::fromJson(jsonData, &err_rpt); // 字符串格式化为JSON
+
+    if (!root_Doc.isNull() && (err_rpt.error == QJsonParseError::NoError)) {  // 解析未发生错误
+        if (root_Doc.isObject()) { // JSON 文档为对象
+            QJsonObject object = root_Doc.object();  // 转化为对象
+            if (QLocale::system().name() == "zh_CN"){
+                QString name  = object.value("name").toObject().value("zh_CN").toString();
+                if (!name.isNull()) {
+                    nameIconList.insert("name", name);
+                }
+            }else {
+                QString name  = object.value("name").toObject().value("en_US").toString();
+                if (!name.isNull()) {
+                    nameIconList.insert("name", name);
+                }
+            }
+            QString iconPath = object.value("icon").toString();
+            if (!iconPath.isNull())
+                nameIconList.insert("icon", iconPath);
+        }
+    }else{
+        qDebug() << "JSON文件格式错误！";
+        return nameIconList;
+    }
+
+    return nameIconList;
+}
+
 void AppUpdateWid::showDetails()
 {
     if(largeWidget->isHidden())
@@ -574,12 +618,6 @@ void AppUpdateWid::showUpdateLog()
 
 void AppUpdateWid::cancelOrUpdate()
 {
-    if (!isAutoUpgrade) {
-        if(updateAPPBtn->isHidden())
-        {
-            return;
-        }
-    }
     if(updateAPPBtn->text() == tr("Update"))
     {
         emit changeUpdateAllSignal(true);
@@ -599,7 +637,7 @@ void AppUpdateWid::cancelOrUpdate()
         }
         if(m_updateMutual->isPointOutNotBackup == true)
         {
-            QMessageBox msgBox(this);
+            QMessageBox msgBox;
             //            msgBox.setText(tr("单个更新不会自动备份系统，如需备份，请点击全部更新。"));
             msgBox.setText(tr("A single update will not automatically backup the system, if you want to backup, please click Update All."));
             msgBox.setWindowTitle(tr("Prompt information"));
@@ -621,16 +659,19 @@ void AppUpdateWid::cancelOrUpdate()
             }
             if(ret == QMessageBox::YesAll)
             {
+                emit changeUpdateAllSignal(true);
                 qDebug() << "立即更新!";
                 updateOneApp();
             }
             else if(ret == QMessageBox::NoToAll)
             {
+                emit changeUpdateAllSignal(false);
                 m_updateMutual->isPointOutNotBackup = true;
                 qDebug() << "不进行更新。";
             }
             else if(ret == QMessageBox::Cancel)
             {
+                emit changeUpdateAllSignal(false);
                 qDebug() << "不进行更新。";
                 m_updateMutual->isPointOutNotBackup = true;
 
@@ -801,7 +842,7 @@ void AppUpdateWid::calculateSpeedProgress()
 void AppUpdateWid::updateAllApp()
 {
 
-//    updateAPPBtn->show();
+    //    updateAPPBtn->show();
     isUpdateAll = true;
     if(isCancel && m_updateMutual->failedList.indexOf(appAllMsg.name) == -1)
     {
