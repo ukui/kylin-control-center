@@ -118,7 +118,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_checkTimer->setInterval(500);
     m_checkTimer->start();
 
-    QFile tokenFile(QDir::homePath() + "/.cache/kylinId/token");
+    QFile tokenFile(QDir::homePath() + "/.cache/kylinId/kylin_id");
     if (tokenFile.exists() && tokenFile.size() > 1) {
         m_mainWidget->setCurrentWidget(m_widgetContainer);
     } else {
@@ -356,6 +356,7 @@ void MainWidget::dbusInterface() {
                     m_syncDialog->close();
                     m_listTimer->setSingleShot(true);
                     m_listTimer->setInterval(1000);
+                    emit isSync(true);
                     m_listTimer->start();
                 });
 
@@ -582,7 +583,7 @@ void MainWidget::singleExecutor(QTimer *timer, int mesc) {
 }
 
 void MainWidget::setTokenWatcher() {
-    QString tokenFile = QDir::homePath() + "/.cache/kylinId/token";
+    QString tokenFile = QDir::homePath() + "/.cache/kylinId/kylin_id";
     m_fsWatcher.addPath(tokenFile);
 
     connect(&m_fsWatcher,&QFileSystemWatcher::fileChanged,this,[=] () {
@@ -630,6 +631,7 @@ void MainWidget::initSignalSlots() {
                 m_key = m_itemMap.key(name);
                 if (m_key != "") {
                     //这样的执行顺序是正确的
+                    emit isSync(true);
                     singleExecutor(m_singleTimer,1000);
                 }
 
@@ -814,7 +816,7 @@ void MainWidget::initSignalSlots() {
         } else if (m_mainWidget->currentWidget() == m_nullWidget) {
             m_mainDialog->setnormal();
             //on_login_out();
-            QFile token(QDir::homePath() + "/.cache/kylinId/token");
+            QFile token(QDir::homePath() + "/.cache/kylinId/kylin_id");
             if (token.exists()) {
                 token.remove();
             }
