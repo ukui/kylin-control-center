@@ -118,7 +118,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_checkTimer->setInterval(500);
     m_checkTimer->start();
 
-    QFile tokenFile(QDir::homePath() + "/.cache/kylinId/token");
+    QFile tokenFile(QDir::homePath() + "/.cache/kylinId/kylin_id");
     if (tokenFile.exists() && tokenFile.size() > 1) {
         m_mainWidget->setCurrentWidget(m_widgetContainer);
     } else {
@@ -360,7 +360,9 @@ void MainWidget::dbusInterface() {
                     m_syncDialog->close();
                     m_listTimer->setSingleShot(true);
                     m_listTimer->setInterval(1000);
+                    emit isSync(true);
                     m_listTimer->start();
+
                 });
 
                 connect(m_syncDialog, &SyncDialog::coverMode, this, [=] () {
@@ -441,7 +443,7 @@ void MainWidget::checkUserName(QString name) {
     }
     if (bIsLogging == false) {
         QFile file (m_szConfPath);
-        QFile token (QDir::homePath() + "/.cache/kylinId/token");
+        QFile token (QDir::homePath() + "/.cache/kylinId/kylin_id");
         if (file.exists() == false && token.exists() == true && m_isOpenDialog == false && token.size() > 1) {
             emit dooss(m_szUuid);
         }
@@ -600,6 +602,7 @@ void MainWidget::initSignalSlots() {
                 m_key = m_itemMap.key(name);
                 if (m_key != "") {
                     //QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
+                    emit isSync(true);
                     m_singleTimer->setSingleShot(true);
                     m_singleTimer->setInterval(1000);
                     m_singleTimer->start();
@@ -681,7 +684,7 @@ void MainWidget::initSignalSlots() {
         download_files();
     });
     //All.conf的
-    QString tokenFile = QDir::homePath() + "/.cache/kylinId/token";
+    QString tokenFile = QDir::homePath() + "/.cache/kylinId/kylin_id";
     m_fsWatcher.addPath(tokenFile);
 
 
@@ -803,7 +806,7 @@ void MainWidget::initSignalSlots() {
         } else if (m_mainWidget->currentWidget() == m_nullWidget) {
             m_mainDialog->setnormal();
             //on_login_out();
-            QFile token(QDir::homePath() + "/.cache/kylinId/token");
+            QFile token(QDir::homePath() + "/.cache/kylinId/kylin_id");
             if (token.exists()) {
                 token.remove();
             }
