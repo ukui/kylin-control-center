@@ -6971,12 +6971,12 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/account/networkaccount/syncdialog.h" line="45"/>
         <source>Weather</source>
-        <translation>麒麟天气</translation>
+        <translation>天气</translation>
     </message>
     <message>
         <location filename="../../../plugins/account/networkaccount/syncdialog.h" line="45"/>
         <source>Media</source>
-        <translation>麒麟影音</translation>
+        <translation>影音</translation>
     </message>
 </context>
 <context>
