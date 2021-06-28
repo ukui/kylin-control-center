@@ -43,6 +43,7 @@
 #include <QShortcut>
 #include <QMouseEvent>
 
+#define STYLE_FONT_SCHEMA  "org.ukui.style"
 
 #ifdef WITHKYSEC
 #include <kysec/libkysec.h>
@@ -711,7 +712,33 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName) {
     iconBtn->setIcon(pix);
 
     QLabel * textLabel = new QLabel(leftsidebarBtn);
-    textLabel->setText(tipName);
+    textLabel->setFixedWidth(leftsidebarBtn->width()-40);
+    QFontMetrics  fontMetrics(textLabel->font());
+    int fontSize = fontMetrics.width(tipName);
+    if (fontSize > textLabel->width()) {
+        textLabel->setText(fontMetrics.elidedText(tipName, Qt::ElideRight, textLabel->width()));
+    } else {
+        textLabel->setText(tipName);
+    }
+    const QByteArray styleID(STYLE_FONT_SCHEMA);
+    QGSettings *stylesettings = new QGSettings(styleID, QByteArray(), this);
+    connect(stylesettings,&QGSettings::changed,[=](QString key)
+    {
+        if("systemFont" == key || "systemFontSize" == key)
+        {
+            QFontMetrics  fontMetrics_1(textLabel->font());
+            int fontSize_1 = fontMetrics_1.width(tipName);
+
+            if (fontSize_1 > textLabel->width()) {
+                qDebug()<<textLabel->width();
+                textLabel->setText(fontMetrics_1.elidedText(tipName, Qt::ElideRight, textLabel->width()));
+            } else {
+                textLabel->setText(tipName);
+            }
+        }
+    });
+
+
     QSizePolicy textLabelPolicy = textLabel->sizePolicy();
     textLabelPolicy.setHorizontalPolicy(QSizePolicy::Fixed);
     textLabelPolicy.setVerticalPolicy(QSizePolicy::Fixed);
