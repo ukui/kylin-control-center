@@ -339,7 +339,7 @@ void NetConnect::rebuildWifiActComponent(QString iconPath, QMap<QString, bool> n
         vLayout->setContentsMargins(0,0,0,0);
 
         QString wifiName;
-        if (connectWifi != iter.key()) {
+        if (connectWifi != "--" && connectWifi != iter.key()) {
             wifiName = connectWifi;
         } else {
             wifiName = iter.key();
@@ -546,7 +546,7 @@ void NetConnect::netDetailOpen(NetDetail *netDetail,QString netName){
                 netDetail->setBandWidth(netInfo.strBandWidth);
             } else {
                 QString wifiName;
-                if (connectWifi != netInfo.strConName) {
+                if (connectWifi != "--" && connectWifi != netInfo.strConName) {
                     wifiName = connectWifi;
                 } else {
                     wifiName = netInfo.strConName;
@@ -613,7 +613,7 @@ void NetConnect::netDetailSlot(NetDetail *wlanDetail, QString netName, bool stat
                 }
             }
             QString wifiName;
-            if (connectWifi != netInfo.strConName) {
+            if (connectWifi != "--" && connectWifi != netInfo.strConName) {
                 wifiName = connectWifi;
             } else {
                 wifiName = netInfo.strConName;
