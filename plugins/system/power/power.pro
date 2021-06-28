@@ -5,6 +5,7 @@ CONFIG   += plugin
 
 include($$PROJECT_COMPONENTSOURCE/comboxframe.pri)
 include($$PROJECT_COMPONENTSOURCE/label.pri)
+include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 
 TARGET = $$qtLibraryTarget(power)
 DESTDIR = ../..
@@ -26,8 +27,7 @@ PKGCONFIG += gsettings-qt \
              gio-unix-2.0 \
              upower-glib
 
-FORMS += \
-    power.ui
+FORMS +=
 
 HEADERS += \
     power.h \
