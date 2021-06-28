@@ -93,7 +93,9 @@ void OutputConfig::initUi()
     vbox->addWidget(resFrame);
 
     connect(mResolution, &ResolutionSlider::resolutionChanged,
-            this, &OutputConfig::slotResolutionChanged);
+            this, [=](QSize size){
+                slotResolutionChanged(size, true);
+            });
 
     connect(mResolution, &ResolutionSlider::resolutionChanged,
             this, &OutputConfig::slotScaleIndex);
@@ -155,7 +157,7 @@ void OutputConfig::initUi()
     mRefreshRate->addItem(tr("auto"), -1);
     vbox->addWidget(freshFrame);
 
-    slotResolutionChanged(mResolution->currentResolution());
+    slotResolutionChanged(mResolution->currentResolution(), true);
     connect(mRefreshRate, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated),
             this, &OutputConfig::slotRefreshRateChanged);
 
@@ -229,8 +231,7 @@ void OutputConfig::initConnection()
     connect(mOutput.data(), &KScreen::Output::currentModeIdChanged,
             this, [=]() {
         mRefreshRate->blockSignals(true);
-        const int index = mRefreshRate->findData(mOutput->currentModeId());
-        mRefreshRate->setCurrentIndex(index);
+        slotResolutionChanged(mOutput->currentMode()->size(), false);
         mRefreshRate->blockSignals(false);
     });
 }
@@ -262,7 +263,7 @@ KScreen::OutputPtr OutputConfig::output() const
     return mOutput;
 }
 
-void OutputConfig::slotResolutionChanged(const QSize &size)
+void OutputConfig::slotResolutionChanged(const QSize &size, bool emitFlag)
 {
     // Ignore disconnected outputs
     if (!size.isValid()) {
@@ -270,18 +271,16 @@ void OutputConfig::slotResolutionChanged(const QSize &size)
     }
 
     QString modeID;
-    KScreen::ModePtr selectedMode;
     KScreen::ModePtr currentMode = mOutput->currentMode();
     QList<KScreen::ModePtr> modes;
     Q_FOREACH (const KScreen::ModePtr &mode, mOutput->modes()) {
         if (mode->size() == size) {
-            selectedMode = mode;
             modes << mode;
         }
     }
 
-    Q_ASSERT(selectedMode);
-    modeID = selectedMode->id();
+    Q_ASSERT(currentMode);
+    modeID = currentMode->id();
 
     // Don't remove the first "Auto" item - prevents ugly flicker of the combobox
     // when changing resolution
@@ -318,7 +317,8 @@ void OutputConfig::slotResolutionChanged(const QSize &size)
 
     mOutput->setCurrentModeId(modeID);
 
-    Q_EMIT changed();
+    if (emitFlag)
+        Q_EMIT changed();
 }
 
 void OutputConfig::slotRotationChanged(int index)
