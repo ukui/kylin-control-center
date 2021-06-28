@@ -86,15 +86,6 @@ QWidget * Power::get_plugin_ui() {
             stylesettings = new QGSettings(styleID, QByteArray(), this);
             sessionsettings = new QGSettings(iid, QByteArray(), this);
             screensettings = new QGSettings(iiid, QByteArray(), this);
-//            connect(sessionsettings,&QGSettings::changed,[=](QString key)
-//            {
-//                if("idleDelay" == key)
-//                {
-//                    idletime = sessionsettings->get(IDLE_DELAY_KEY).toInt();
-//                    retranslateUi();
-
-//                }
-//            });
             connect(stylesettings,&QGSettings::changed,[=](QString key)
             {
                 if("systemFont" == key || "systemFontSize" == key)
@@ -106,6 +97,7 @@ QWidget * Power::get_plugin_ui() {
         }
 
         InitUI(pluginWidget);
+        initSearText();
         isLidPresent();
         isHibernateSupply();
         isExitBattery();
@@ -481,9 +473,6 @@ void Power::InitUI(QWidget *widget)
 
 void Power::retranslateUi()
 {
-    CustomTitleLabel->setText(tr("General"));
-
-
     if (QLabelSetText(mSleepPwdLabel, tr("Require password when waking from sleep/hibernation"))) {
         mSleepPwdLabel->setToolTip(tr("Require password when waking from sleep/hibernation"));
     }
@@ -508,8 +497,6 @@ void Power::retranslateUi()
         mCloseLidLabel->setToolTip(tr("Notebook cover"));
     }
 
-    PowerPlanTitleLabel->setText(tr("Select Powerplan"));
-
     if (QLabelSetText(mPowerLabel, tr("Using power"))) {
         mPowerLabel->setToolTip(tr("Using power"));
     }
@@ -517,8 +504,6 @@ void Power::retranslateUi()
     if (QLabelSetText(mBatteryLabel, tr("Using battery"))) {
         mBatteryLabel->setToolTip(tr("Using power"));
     }
-
-    BatteryPlanTitleLabel->setText((tr("Battery saving plan")));
 
     if (QLabelSetText(mLowpowerLabel1, tr("Battery level is lower than"))) {
         mLowpowerLabel1->setToolTip(tr("Battery level is lower than"));
@@ -575,7 +560,17 @@ void Power::resetui()
         mLowSaveFrame->hide();
         mBatterySaveFrame->hide();
         mDisplayTimeFrame->hide();
-    }
+}
+}
+
+void Power::initSearText()
+{
+    //~ contents_path /power/General
+    CustomTitleLabel->setText(tr("General"));
+    //~ contents_path /power/Select Powerplan
+    PowerPlanTitleLabel->setText(tr("Select Powerplan"));
+    //~ contents_path /power/Battery saving plan
+    BatteryPlanTitleLabel->setText((tr("Battery saving plan")));
 }
 
 void Power::setupComponent()

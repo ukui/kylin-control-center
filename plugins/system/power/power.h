@@ -62,15 +62,10 @@ public:
     void initSearText();
     void setupComponent();
     void setupConnect();
-    void initModeStatus();
     void initCustomPlanStatus();
-    void resetCustomPlanStatus();
-    void initPowerOtherStatus();
     void isLidPresent();
     void isHibernateSupply();
     bool isExitBattery();
-    void refreshUI();
-    int  getIdleTime();
     bool QLabelSetText(QLabel *label, QString string);
 
 private:
@@ -82,7 +77,6 @@ private:
     QGSettings *stylesettings;
     QGSettings *sessionsettings;
     QGSettings *screensettings;
-    QGSettings *mUkccpersonpersonalize;
 
     QString pluginName;
     int pluginType;
@@ -143,28 +137,11 @@ private:
     QStringList BatteryplanStringList;
     QStringList LowpowerStringList;
 
-    QStringList mPowerKeys;
-
-    bool settingsCreate;
-    bool isExitsPower;
     bool mFirstLoad;
     bool isExitsLid;
     bool isExitHibernate;
 
     bool hasBat;
-
-    QDBusInterface *mUkccInterface;
-
-private:
-    void initGeneralSet();
-    bool getHibernateStatus();
-    QString  getHibernateTime();
-    void initDbus();
-    void initDeviceStatus();
-
-private slots:
-    void setIdleTime(int idleTime);
-    void setHibernateTime(QString hibernate);
 };
 
 #endif // POWER_H
