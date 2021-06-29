@@ -233,13 +233,13 @@ void Notice::initListUI(QDir dir,QString mpath,QStringList *stringlist)
             continue;
         }
         QSettings* desktopFile = new QSettings(mpath+file_name, QSettings::IniFormat);
-        QString fname_1,fname_2,fname_3,appname,appname_CN,appname_US,icon;
+        QString no_display,not_showin,only_showin,appname,appname_CN,appname_US,icon;
         if (desktopFile) {
            desktopFile->setIniCodec("utf-8");
 
-           fname_1 = desktopFile->value(QString("Desktop Entry/NoDisplay")).toString();
-           fname_2 = desktopFile->value(QString("Desktop Entry/NotShowIn")).toString();
-           fname_3 = desktopFile->value(QString("Desktop Entry/OnlyShowIn")).toString();
+           no_display = desktopFile->value(QString("Desktop Entry/NoDisplay")).toString();
+           not_showin = desktopFile->value(QString("Desktop Entry/NotShowIn")).toString();
+           only_showin = desktopFile->value(QString("Desktop Entry/OnlyShowIn")).toString();
            icon = desktopFile->value(QString("Desktop Entry/Icon")).toString();
            appname = desktopFile->value(QString("Desktop Entry/Name")).toString();
            appname_CN = desktopFile->value(QString("Desktop Entry/Name[zh_CN]")).toString();
@@ -247,18 +247,18 @@ void Notice::initListUI(QDir dir,QString mpath,QStringList *stringlist)
            delete desktopFile;
            desktopFile = nullptr;
         }
-//        if (fname_1 != nullptr) {
-//            if (fname_1.contains("true")) {
+//        if (no_display != nullptr) {
+//            if (no_display.contains("true")) {
 //                continue;
 //            }
 //        }
-        if (fname_2 != nullptr) {
-            if (fname_2.contains("UKUI")) {
+        if (not_showin != nullptr) {
+            if (not_showin.contains("UKUI")) {
                 continue;
             }
         }
-        if (fname_3 != nullptr) {
-            if (fname_3.contains("LXQt") || fname_3.contains("KDE")) {
+        if (only_showin != nullptr) {
+            if (only_showin.contains("LXQt") || only_showin.contains("KDE")) {
                 continue;
             }
         }
