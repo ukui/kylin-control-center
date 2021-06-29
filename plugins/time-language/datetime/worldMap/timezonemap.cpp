@@ -57,6 +57,7 @@ QString TimezoneMap::getTimezone() {
 void TimezoneMap::initUI() {
     QLabel* backgroundLabel = new QLabel(this);
     backgroundLabel->setObjectName("background_label");
+    backgroundLabel->setProperty("useIconHighlightEffect", 0x02);
 
     QPixmap timezonePixmap(timezoneMapFile);
     //QPixmap timezonePixmap = loadPixmap(timezoneMapFile);
