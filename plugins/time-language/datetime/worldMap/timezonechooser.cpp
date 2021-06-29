@@ -17,6 +17,8 @@
 const QString kcnBj = "北京";
 const QString kenBj = "Asia/Beijing";
 
+extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
+
 TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
 {
     m_map = new TimezoneMap(this);
@@ -53,8 +55,6 @@ TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
     initSize();
 
     QHBoxLayout *wbLayout = new QHBoxLayout;
-    wbLayout->setMargin(6);
-    wbLayout->setSpacing(0);
     wbLayout->addStretch();
     wbLayout->addWidget(m_closeBtn);
 
@@ -67,8 +67,7 @@ TimeZoneChooser::TimeZoneChooser(QWidget *parent) : QFrame(parent)
 
 
     QVBoxLayout *layout = new QVBoxLayout;
-    layout->setMargin(0);
-    layout->setSpacing(0);
+    layout->setContentsMargins(0,16,16,0);
 
     layout->addLayout(wbLayout);
     layout->addStretch();
@@ -231,26 +230,44 @@ void TimeZoneChooser::initSize(){
 
 void TimeZoneChooser::paintEvent(QPaintEvent *event)
 {
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-    painter.setBrush(QBrush(QColor(22, 24, 26),Qt::SolidPattern));
-    painter.setPen(Qt::transparent);
-    QRect rect = this->rect();
+    Q_UNUSED(event);
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+    QPainterPath rectPath;
+    rectPath.addRoundedRect(this->rect().adjusted(10, 10, -10, -10), 6, 6);
 
+    // 画一个黑底
+    QPixmap pixmap(this->rect().size());
+    pixmap.fill(Qt::transparent);
+    QPainter pixmapPainter(&pixmap);
+    pixmapPainter.setRenderHint(QPainter::Antialiasing);
+    pixmapPainter.setPen(Qt::transparent);
+    pixmapPainter.setBrush(Qt::black);
+    pixmapPainter.setOpacity(0.65);
+    pixmapPainter.drawPath(rectPath);
+    pixmapPainter.end();
 
-    QPainterPath painterPath;
-    painterPath.addRoundedRect(rect, 6, 6);
-    painter.drawPath(painterPath);
+    // 模糊这个黑底
+    QImage img = pixmap.toImage();
+    qt_blurImage(img, 10, false, false);
 
-//    // 绘制阴影
-//    painter.drawPixmap(this->rect(), pixmap, pixmap.rect());
+    // 挖掉中心
+    pixmap = QPixmap::fromImage(img);
+    QPainter pixmapPainter2(&pixmap);
+    pixmapPainter2.setRenderHint(QPainter::Antialiasing);
+    pixmapPainter2.setCompositionMode(QPainter::CompositionMode_Clear);
+    pixmapPainter2.setPen(Qt::transparent);
+    pixmapPainter2.setBrush(Qt::transparent);
+    pixmapPainter2.drawPath(rectPath);
+
+    // 绘制阴影
+    p.drawPixmap(this->rect(), pixmap, pixmap.rect());
 
     // 绘制一个背景
-    painter.save();
-    painter.fillPath(painterPath,palette().color(QPalette::Base));
-    painter.restore();
+    p.save();
+    p.fillPath(rectPath,palette().color(QPalette::Base));
+    p.restore();
 
-    QWidget::paintEvent(event);
 
 
 }
