@@ -36,11 +36,15 @@ extern "C" {
 #include <gio/gio.h>
 #include <dconf/dconf.h>
 }
+#define THEME_QT_SCHEMA  "org.ukui.style"
+#define ICON_QT_KEY      "icon-theme-name"
 
 #define NOTICE_SCHEMA           "org.ukui.control-center.notice"
 #define NEW_FEATURE_KEY         "show-new-feature"
 #define ENABLE_NOTICE_KEY       "enable-notice"
 #define SHOWON_LOCKSCREEN_KEY   "show-on-lockscreen"
+#define IS_CN                   "iscn-env"
+#define BLACKLIST               "blacklist"
 
 #define NOTICE_ORIGIN_SCHEMA    "org.ukui.control-center.noticeorigin"
 #define NOTICE_ORIGIN_PATH      "/org/ukui/control-center/noticeorigin/"

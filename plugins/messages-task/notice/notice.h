@@ -27,6 +27,7 @@
 #include <QVector>
 #include <QGSettings>
 #include <QVBoxLayout>
+#include <QDir>
 
 #include <shell/interface.h>
 #include "SwitchButton/switchbutton.h"
@@ -70,6 +71,8 @@ public:
     void initNoticeStatus();
     void initOriNoticeStatus();
     void initGSettings();
+    void initListUI(QDir dir,QString mpath,QStringList *stringlist);
+
 
 private:
     void changeAppstatus(bool checked, QString name,SwitchButton *appBtn);
@@ -88,18 +91,30 @@ private:
     QMap<QString, bool> appMap;
 
     QGSettings * nSetting;
+    QGSettings * mThemeSetting;
     QGSettings * oriSettings;
-    QStringList appsName;
-    QStringList appsKey;
+    QStringList whitelist;
     QVector<QGSettings*> vecGsettins;
 
     QVBoxLayout *applistverticalLayout;
 
+    QStringList *mstringlist;
+
     QList<char *> listChar;
 
+    QStringList mblacklist;
+
     bool mFirstLoad;
+    bool isCN_env;
+    bool mEnv;
+
+    QString mlocale;
 
     int count = 0;
+    int mcount = 0;
+
+public slots:
+    void loadlist();
 
 };
 #endif // NOTICE_H
