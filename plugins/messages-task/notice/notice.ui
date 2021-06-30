@@ -351,7 +351,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QListWidget" name="applistWidget"/>
+       <widget class="QFrame" name="frame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

@@ -36,11 +36,15 @@ extern "C" {
 #include <gio/gio.h>
 #include <dconf/dconf.h>
 }
+#define THEME_QT_SCHEMA  "org.ukui.style"
+#define ICON_QT_KEY      "icon-theme-name"
 
 #define NOTICE_SCHEMA           "org.ukui.control-center.notice"
 #define NEW_FEATURE_KEY         "show-new-feature"
 #define ENABLE_NOTICE_KEY       "enable-notice"
 #define SHOWON_LOCKSCREEN_KEY   "show-on-lockscreen"
+#define IS_CN                   "iscn-env"
+#define BLACKLIST               "blacklist"
 
 #define NOTICE_ORIGIN_SCHEMA    "org.ukui.control-center.noticeorigin"
 #define NOTICE_ORIGIN_PATH      "/org/ukui/control-center/noticeorigin/"
@@ -50,7 +54,9 @@ extern "C" {
 #define MESSAGES_KEY            "messages"
 #define VOICE_KEY               "voice"
 #define MAXIMINE_KEY            "maximize"
-#define NAME_KEY                "name"
+#define NAME_KEY_US             "name-us"
+#define NAME_KEY_CN             "name-cn"
+
 
 #define MAX_CUSTOM_SHORTCUTS 1000
 

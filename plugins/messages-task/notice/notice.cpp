@@ -22,6 +22,10 @@
 #include "appdetail.h"
 #include "realizenotice.h"
 #include "commonComponent/HoverWidget/hoverwidget.h"
+#include <QFileDialog>
+#include <QTimer>
+#include <QFileSystemWatcher>
+#include <QSettings>
 
 #define NOTICE_SCHEMA         "org.ukui.control-center.notice"
 #define NEW_FEATURE_KEY       "show-new-feature"
@@ -29,6 +33,7 @@
 #define SHOWON_LOCKSCREEN_KEY "show-on-lockscreen"
 
 #define DESKTOPPATH           "/usr/share/applications/"
+#define DESKTOPOTHERPAYH      "/etc/xdg/autostart/"
 
 Notice::Notice() : mFirstLoad(true)
 {
@@ -41,98 +46,142 @@ Notice::~Notice()
     if (!mFirstLoad) {
         delete ui;
         ui = nullptr;
+        delete mstringlist;
+        mstringlist = nullptr;
         qDeleteAll(vecGsettins);
         vecGsettins.clear();
     }
 }
 
-QString Notice::get_plugin_name() {
+QString Notice::get_plugin_name()
+{
     return pluginName;
 }
 
-int Notice::get_plugin_type() {
+int Notice::get_plugin_type()
+{
     return pluginType;
 }
 
-QWidget * Notice::get_plugin_ui() {
+QWidget *Notice::get_plugin_ui()
+{
     if (mFirstLoad) {
         ui = new Ui::Notice;
         pluginWidget = new QWidget;
         pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
-        appsName<<"ukui-power-statistics";
-        appsKey<<"电源管理器";
-
         ui->setupUi(pluginWidget);
-
         mFirstLoad = false;
+        //获取已经存在的动态路径
+        listChar = listExistsCustomNoticePath();
 
         ui->newfeatureWidget->setVisible(false);
         ui->lockscreenWidget->setVisible(false);
+        ui->title2Label->hide();
+        ui->verticalSpacer->changeSize(0,0);
+        ui->noticeLabel->hide();
 
-        ui->title2Label->setContentsMargins(0, 0, 0, 16);
-        ui->applistWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-        initTitleLabel();
+        mstringlist = new QStringList();
+
         initSearchText();
         setupGSettings();
         setupComponent();
         initNoticeStatus();
+
+        //设置白名单
+        whitelist.append("kylin-screenshot.desktop");
+        whitelist.append("peony.desktop");
+        whitelist.append("kylin-nm.desktop");
+        whitelist.append("ukui-flash-disk.desktop");
+        whitelist.append("kylin-background-upgrade.desktop");
+        whitelist.append("ukui-power-manager.desktop");
         initOriNoticeStatus();
+        nSetting->set(IS_CN,mEnv);
+        //加载列表
+//        QTimer *mtimer = new QTimer(this);
+//        connect(mtimer, &QTimer::timeout, this,[=](){
+//            int i = count;
+//            initOriNoticeStatus();
+//            if (i == count) {
+//                mstringlist->clear();
+//                nSetting->set(IS_CN,mEnv);
+//                mtimer->stop();
+//            }
+//        } );
+//        mtimer->start(500);
+        //监视desktop文件列表
+        QFileSystemWatcher *m_fileWatcher=new QFileSystemWatcher;
+        m_fileWatcher->addPaths(QStringList()<<QString(DESKTOPPATH));
+        //有应用卸载或安装时
+        connect(m_fileWatcher,&QFileSystemWatcher::directoryChanged,[=](){
+            loadlist();
+        });
+
     }
     return pluginWidget;
 }
 
-void Notice::plugin_delay_control() {
-
+void Notice::plugin_delay_control()
+{
 }
 
-const QString Notice::name() const {
-
+const QString Notice::name() const
+{
     return QStringLiteral("notice");
 }
 
-void Notice::initTitleLabel() {
-    QFont font;
-    font.setPixelSize(18);
-    ui->titleLabel->setFont(font);
-    ui->title2Label->setFont(font);
-}
 
-void Notice::initSearchText() {
-    //~ contents_path /notice/Set notice type of operation center
+void Notice::initSearchText()
+{
+    // ~ contents_path /notice/Set notice type of operation center
     ui->noticeLabel->setText(tr("Set notice type of operation center"));
-    //~ contents_path /notice/Notice Origin
+    // ~ contents_path /notice/Notice Origin
     ui->title2Label->setText(tr("Notice Origin"));
 }
 
-void Notice::setupComponent() {
+void Notice::setupComponent()
+{
     newfeatureSwitchBtn = new SwitchButton(pluginWidget);
     enableSwitchBtn = new SwitchButton(pluginWidget);
-    lockscreenSwitchBtn =  new SwitchButton(pluginWidget);
-
+    lockscreenSwitchBtn = new SwitchButton(pluginWidget);
+    applistverticalLayout = new QVBoxLayout();
+    applistverticalLayout->setSpacing(1);
+    applistverticalLayout->setContentsMargins(0, 0, 0, 1);
     ui->newfeatureHorLayout->addWidget(newfeatureSwitchBtn);
     ui->enableHorLayout->addWidget(enableSwitchBtn);
     ui->lockscreenHorLayout->addWidget(lockscreenSwitchBtn);
+    ui->frame->setLayout(applistverticalLayout);
 
     connect(newfeatureSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
         nSetting->set(NEW_FEATURE_KEY, checked);
     });
     connect(enableSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
-        nSetting->set(ENABLE_NOTICE_KEY, checked);        
+        nSetting->set(ENABLE_NOTICE_KEY, checked);
+        setHiddenNoticeApp(checked);
     });
     connect(lockscreenSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked){
         nSetting->set(SHOWON_LOCKSCREEN_KEY, checked);
     });
 }
 
-void Notice::setupGSettings() {
-    if(QGSettings::isSchemaInstalled(NOTICE_SCHEMA)) {
+void Notice::setupGSettings()
+{
+    if (QGSettings::isSchemaInstalled(NOTICE_SCHEMA)) {
         QByteArray id(NOTICE_SCHEMA);
         nSetting = new QGSettings(id, QByteArray(), this);
     }
+    if (QGSettings::isSchemaInstalled(THEME_QT_SCHEMA)) {
+        QByteArray id(THEME_QT_SCHEMA);
+        mThemeSetting = new QGSettings(id, QByteArray(), this);
+        connect(mThemeSetting, &QGSettings::changed, [=](){
+            loadlist();
+        });
+
+    }
 }
 
-void Notice::initNoticeStatus() {
+void Notice::initNoticeStatus()
+{
     newfeatureSwitchBtn->blockSignals(true);
     enableSwitchBtn->blockSignals(true);
     lockscreenSwitchBtn->blockSignals(true);
@@ -142,121 +191,189 @@ void Notice::initNoticeStatus() {
     newfeatureSwitchBtn->blockSignals(false);
     enableSwitchBtn->blockSignals(false);
     lockscreenSwitchBtn->blockSignals(false);
+    isCN_env = nSetting->get(IS_CN).toBool();
+    mlocale = QLocale::system().name();
+    if (mlocale == "zh_CN") {
+        mEnv = true;
+    } else {
+        mEnv = false;
+    }
+    setHiddenNoticeApp(enableSwitchBtn->isChecked());
+
 }
 
-void Notice::initOriNoticeStatus() {
-    initGSettings();
+void Notice::initOriNoticeStatus()
+{
+    QDir dir(QString(DESKTOPPATH).toUtf8());
+    QDir otherdir(QDir::homePath() + "/.local/share/applications");
+    QDir autodir(QString(DESKTOPOTHERPAYH).toUtf8());
 
-    for (int i = 0; i < appsName.length(); i++) {
-        QByteArray ba = QString(DESKTOPPATH + appsName.at(i) + ".desktop").toUtf8();
-        GKeyFileFlags flags = G_KEY_FILE_NONE;
-        GKeyFile *keyfile = g_key_file_new();
-        g_key_file_load_from_file(keyfile, ba, flags, NULL);
-        char *appname = g_key_file_get_locale_string(keyfile, "Desktop Entry", "Name", nullptr,
-                                                     nullptr);
+    QStringList filters;
+    filters<<QString("*.desktop");
+    dir.setFilter(QDir::Files | QDir::NoSymLinks); // 设置类型过滤器，只为文件格式
+    otherdir.setFilter(QDir::Files | QDir::NoSymLinks);
+    autodir.setFilter(QDir::Files | QDir::NoSymLinks);
 
+    dir.setNameFilters(filters);  // 设置文件名称过滤器，只为filters格式
+    otherdir.setNameFilters(filters);
+    autodir.setNameFilters(filters);
+
+    //初始化列表界面
+    initListUI(dir,DESKTOPPATH,mstringlist);
+    initListUI(autodir,DESKTOPOTHERPAYH,mstringlist);
+    mstringlist->clear();
+
+}
+
+void Notice::initListUI(QDir dir,QString mpath,QStringList *stringlist)
+{
+    for (int i = 0; i < dir.count(); i++) {
+        QString file_name = dir[i];  // 文件名称
+        if (!whitelist.contains(file_name)) {
+            continue;
+        }
+        QSettings* desktopFile = new QSettings(mpath+file_name, QSettings::IniFormat);
+        QString no_display,not_showin,only_showin,appname,appname_CN,appname_US,icon;
+        if (desktopFile) {
+           desktopFile->setIniCodec("utf-8");
+
+           no_display = desktopFile->value(QString("Desktop Entry/NoDisplay")).toString();
+           not_showin = desktopFile->value(QString("Desktop Entry/NotShowIn")).toString();
+           only_showin = desktopFile->value(QString("Desktop Entry/OnlyShowIn")).toString();
+           icon = desktopFile->value(QString("Desktop Entry/Icon")).toString();
+           appname = desktopFile->value(QString("Desktop Entry/Name")).toString();
+           appname_CN = desktopFile->value(QString("Desktop Entry/Name[zh_CN]")).toString();
+           appname_US = desktopFile->value(QString("Desktop Entry/Name")).toString();
+           delete desktopFile;
+           desktopFile = nullptr;
+        }
+//        if (no_display != nullptr) {
+//            if (no_display.contains("true")) {
+//                continue;
+//            }
+//        }
+        if (not_showin != nullptr) {
+            if (not_showin.contains("UKUI")) {
+                continue;
+            }
+        }
+        if (only_showin != nullptr) {
+            if (only_showin.contains("LXQt") || only_showin.contains("KDE")) {
+                continue;
+            }
+        }
+        if (stringlist->contains(appname)) {
+            qDebug()<<appname;
+            continue;
+        }
+        stringlist->append(appname);
         // 构建Widget
-        QFrame * baseWidget = new QFrame();
+
+
+
+        QFrame *baseWidget = new QFrame();
+        baseWidget->setMinimumWidth(550);
+        baseWidget->setMaximumWidth(960);
+        baseWidget->setFixedHeight(50);
         baseWidget->setFrameShape(QFrame::Shape::Box);
         baseWidget->setAttribute(Qt::WA_DeleteOnClose);
 
-        QVBoxLayout * baseVerLayout = new QVBoxLayout(baseWidget);
-        baseVerLayout->setSpacing(0);
-        baseVerLayout->setContentsMargins(0, 0, 0, 2);
+        QPushButton *iconBtn = new QPushButton(baseWidget);
 
-        HoverWidget * devWidget = new HoverWidget(appname,baseWidget);
-        devWidget->setObjectName("hovorWidget");
-        devWidget->setMinimumWidth(550);
-        devWidget->setMaximumWidth(960);
-        devWidget->setMinimumHeight(50);
-        devWidget->setMaximumHeight(50);
+        iconBtn->setStyleSheet("QPushButton{background-color:transparent;border-radius:4px}"
+                               "QPushButton:hover{background-color: transparent ;color:transparent;}");
+        iconBtn->setIconSize(QSize(32, 32));
+        iconBtn->setIcon(QIcon::fromTheme(icon,
+                                          QIcon(QString("/usr/share/pixmaps/"+icon)
+                                                        +".png")));
 
-        QHBoxLayout * devHorLayout = new QHBoxLayout();
+        QHBoxLayout *devHorLayout = new QHBoxLayout(baseWidget);
         devHorLayout->setSpacing(8);
         devHorLayout->setContentsMargins(16, 0, 16, 0);
 
-        QPushButton * iconBtn = new QPushButton();
-        iconBtn->setStyleSheet("QPushButton{background-color:transparent;border-radius:4px}"
-                        "QPushButton:hover{background-color: transparent ;color:transparent;}");
 
-        QSizePolicy iconSizePolicy = iconBtn->sizePolicy();
-        iconSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
-        iconSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
-        iconBtn->setIconSize(QSize(32,32));
-        iconBtn->setSizePolicy(iconSizePolicy);
-        QString iconame = appsName.at(i);
-        if ("ukui-power-statistics" == appsName.at(i)) {
-            iconame = "cs-power";
-        }
-        iconBtn->setIcon(QIcon::fromTheme(iconame));
+        QLabel *nameLabel = new QLabel(baseWidget);
 
-        QLabel * nameLabel = new QLabel(pluginWidget);
-        QSizePolicy nameSizePolicy = nameLabel->sizePolicy();
-        nameSizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
-        nameSizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
-        nameLabel->setSizePolicy(nameSizePolicy);
-        nameLabel->setScaledContents(true);
-        nameLabel->setText(appname);
-
-        SwitchButton *appSwitch = new SwitchButton(pluginWidget);
+        SwitchButton *appSwitch = new SwitchButton(baseWidget);
 
         devHorLayout->addWidget(iconBtn);
         devHorLayout->addWidget(nameLabel);
         devHorLayout->addStretch();
-
         devHorLayout->addWidget(appSwitch);
 
-        devWidget->setLayout(devHorLayout);
+        baseWidget->setLayout(devHorLayout);
 
-        baseVerLayout->addWidget(devWidget);
-        baseVerLayout->addStretch();
+        applistverticalLayout->addWidget(baseWidget);
 
-        baseWidget->setLayout(baseVerLayout);
-
-        QListWidgetItem * item = new QListWidgetItem(ui->applistWidget);
-        item->setFlags(Qt::NoItemFlags);
-        item->setSizeHint(QSize(QSizePolicy::Expanding, 52));
-
-        ui->applistWidget->setItemWidget(item, baseWidget);
-
-        QList<char *> listChar =  listExistsCustomNoticePath();
+        //创建gsettings对象
+        if(appname_CN == nullptr) {
+            appname_CN = appname_US;
+        }
 
         const QByteArray id(NOTICE_ORIGIN_SCHEMA);
-        QGSettings * settings = nullptr;
-        QString path;
+        QGSettings *settings = nullptr;
+        vecGsettins.append(settings);
+        QString name = (!mEnv ? appname : appname_CN);
+        QString path = QString("%1%2%3").arg(NOTICE_ORIGIN_PATH).arg(name).arg("/");
+        settings = new QGSettings(id, path.toUtf8().data(), this);
+       // qDebug()<<name;
+        //判断该文件是否已创建了动态路径，未创建则创建后赋初值
+        char *mfile_path,*mfile_path1;
+        QByteArray ba1,ba2;
 
-        for (int j = 0; j < listChar.length(); j++) {
-            path = QString("%1%2").arg(NOTICE_ORIGIN_PATH).arg(QString(listChar.at(j)));
-            settings = new QGSettings(id, path.toLatin1().data(), this);
-            vecGsettins.append(settings);
-            QStringList keys = settings->keys();
+        //判断不同语言下是否创建动态路径
+        if (!mEnv) {
+            ba2 = (QString("%1%2").arg(appname_CN).arg("/")).toUtf8();
+            mfile_path1 = ba2.data();
+            ba1 = (QString("%1%2").arg(appname).arg("/")).toUtf8();
+            mfile_path = ba1.data();
+            nameLabel->setText(appname);
+        } else {
+            ba2 = (QString("%1%2").arg(appname).arg("/")).toUtf8();
+            mfile_path1 = ba2.data();
+            ba1 = (QString("%1%2").arg(appname_CN).arg("/")).toUtf8();
+            mfile_path = ba1.data();
+            nameLabel->setText(appname_CN);
 
-            if (keys.contains(static_cast<QString>(NAME_KEY))) {
-                QString appName = settings->get(NAME_KEY).toString();
-                if ( appsKey.at(i) == appName) {
-                    bool isCheck = settings->get(MESSAGES_KEY).toBool();
-                    appSwitch->setChecked(isCheck);
+        }
+        //在已存在的动态路径列表中一一比较
+        bool found = false;
+        for (int j = 0; j < listChar.count(); j++) {
+            if (!g_strcmp0(mfile_path, listChar.at(j))){
+                found = true;
+                break;
+            }
+        }
+        if (!found || mEnv != isCN_env) {
+            for (int j = 0; j < listChar.count(); j++) {
+                if (!g_strcmp0(mfile_path1, listChar.at(j))){
+                    QString path1 = QString("%1%2").arg(NOTICE_ORIGIN_PATH).arg(QString::fromUtf8(mfile_path1));
+                    QGSettings *msettings = new QGSettings(id, path1.toUtf8().data(), this);
+
+                    settings->set(NAME_KEY_CN, appname_CN);
+                    settings->set(NAME_KEY_US, appname_US);
+                    settings->set(MAXIMINE_KEY,msettings->get(MAXIMINE_KEY).toInt());
+                    settings->set(MESSAGES_KEY,msettings->get(MESSAGES_KEY).toBool());
+                    found = true;
+                    delete msettings;
+                    msettings = nullptr;
                     break;
                 }
             }
-            settings = nullptr;
         }
 
-        connect(devWidget, &HoverWidget::enterWidget, this, [=](QString name) {
-            Q_UNUSED(name)
-            devWidget->setStyleSheet("QWidget#hovorWidget{background-color: rgba(61,107,229,40%);border-radius:4px;}");
-        });
 
-        connect(devWidget, &HoverWidget::leaveWidget, this, [=](QString name) {
-            Q_UNUSED(name)
-            devWidget->setStyleSheet("QWidget#hovorWidget{background: palette(button);border-radius:4px;}");
-        });
 
-        connect(devWidget, &HoverWidget::widgetClicked, this, [=](QString name) {
-            AppDetail *app;
-            app= new AppDetail(name,appsName.at(i), settings);
-            app->exec();
-        });
+        if (!found){
+           settings->set(NAME_KEY_CN, appname_CN);
+           settings->set(NAME_KEY_US, appname_US);
+           settings->set(MAXIMINE_KEY,3);
+           settings->set(MESSAGES_KEY,true);
+        }
+
+
+        bool isCheck = settings->get(MESSAGES_KEY).toBool();
+        appSwitch->setChecked(isCheck);
 
         connect(settings, &QGSettings::changed, [=](QString key) {
             if (static_cast<QString>(MESSAGES_KEY) == key) {
@@ -265,77 +382,38 @@ void Notice::initOriNoticeStatus() {
             }
         });
 
-        connect(enableSwitchBtn, &SwitchButton::checkedChanged, [=](bool checked) {
-            setHiddenNoticeApp(checked);
-            changeAppstatus(checked, appname, appSwitch);
-        });
-
         connect(appSwitch, &SwitchButton::checkedChanged, [=](bool checked) {
             settings->set(MESSAGES_KEY, checked);
         });
     }
-    setHiddenNoticeApp(enableSwitchBtn->isChecked());
 }
 
-
-void Notice::initGSettings() {
-    for (int i = 0; i < appsName.length(); i++) {
-        QList<char *> listChar =  listExistsCustomNoticePath();
-
-        const QByteArray id(NOTICE_ORIGIN_SCHEMA);
-        QGSettings * settings = nullptr;
-        QGSettings * newSettings = nullptr;
-        QString path;
-        bool isExist = false;
-
-        for (int j = 0; j < listChar.length(); j++) {
-            path = QString("%1%2").arg(NOTICE_ORIGIN_PATH).arg(QString(listChar.at(j)));
-            settings = new QGSettings(id, path.toLatin1().data());
-            QStringList keys = settings->keys();
-
-            if (keys.contains(static_cast<QString>(NAME_KEY))) {
-                QString appName = settings->get(NAME_KEY).toString();
-                if (appsKey.at(i) == appName) {
-                    isExist = true;
-                }
-            }
-            delete settings;
-            settings = nullptr;
-        }
-        if (!isExist) {
-            path = findFreePath();
-            newSettings = new QGSettings(id, path.toLatin1().data());
-            QStringList keys = newSettings->keys();
-            if (keys.contains(static_cast<QString>(NAME_KEY)) &&
-                    keys.contains(static_cast<QString>(MESSAGES_KEY))) {
-                newSettings->set(NAME_KEY, appsKey.at(i));
-                newSettings->set(MESSAGES_KEY, true);
-            }
-            delete newSettings;
-            newSettings = nullptr;
-        }
-    }
+void Notice::setHiddenNoticeApp(bool status)
+{
+    ui->frame->setVisible(status);
 }
 
-void Notice::changeAppstatus(bool checked, QString name, SwitchButton *appBtn) {
-
-    // 记录应用之前状态
-    bool judge;
-    if (!checked) {
-        judge = appBtn->isChecked();
-        appMap.insert(name,judge);
-        appBtn->setChecked(checked);
-    } else {
-        judge =appMap.value(name);
-        appBtn->setChecked(judge);
+void Notice::loadlist()
+{
+    QLayoutItem *child;
+    while ((child = applistverticalLayout->takeAt(0)) != nullptr)
+    {
+        child->widget()->setParent(nullptr);
+        delete child;
     }
-}
-
-void Notice::setHiddenNoticeApp(bool status) {
-
-    // To prevent jitter, need to be optimized
-    for (int i = 0; i < ui->applistWidget->count(); i++) {
-        QListWidgetItem * item = ui->applistWidget->item(i);
-        item->setHidden(!status);
-    }
+    initOriNoticeStatus();
+    nSetting->set(IS_CN,mEnv);
+    //重新加载列表
+//    QTimer *timer = new QTimer(this);
+//    count = 0;
+//    connect(timer, &QTimer::timeout, this,[=](){
+//        int i = count;
+//        initOriNoticeStatus();
+//        if (i == count) {
+//            mstringlist->clear();
+//            nSetting->set(IS_CN,mEnv);
+//            timer->stop();
+//        }
+//    } );
+//    timer->start(300);
 }
