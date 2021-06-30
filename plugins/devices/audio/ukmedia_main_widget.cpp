@@ -1849,13 +1849,32 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
     decscription = mate_mixer_stream_control_get_label(m_pControl);
     MateMixerDirection direction;
     MateMixerStream *m_pStream = mate_mixer_stream_control_get_stream(m_pControl);
+    if (!MATE_MIXER_IS_STREAM(m_pStream)){
+        qDebug() << "on_control_volume_notify  Exception handling --------------";
+        m_pStream = mate_mixer_context_get_stream(m_pWidget->m_pContext,mate_mixer_stream_control_get_name(m_pControl));
+        //使用命令重新设置音量
+        int volume = mate_mixer_stream_control_get_volume(m_pControl);
+        QString cmd = "pactl set-sink-volume "+ QString(mate_mixer_stream_control_get_name(m_pControl)) +" "+ QString::number(volume,10);
+        system(cmd.toLocal8Bit().data());
 
+        int value = volume*100/65536.0 + 0.5;
+        m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->blockSignals(true);
+        m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->setValue(value);
+        m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->blockSignals(false);
+        m_pWidget->outputVolumeDarkThemeImage(value,status);
+        m_pWidget->m_pOutputWidget->m_pOutputIconBtn->repaint();
+        QString percentStr = QString::number(value) ;
+        percentStr.append("%");
+        qDebug() << "set m_pOpVolumeSlider value -----------" << value;
+        m_pWidget->m_pOutputWidget->m_pOpVolumePercentLabel->setText(percentStr);
+        return;
+    }
 
     MateMixerSwitch *portSwitch;
     MateMixerStream *stream = mate_mixer_stream_control_get_stream(m_pControl);
     /* Enable the port selector if the stream has one */
-     portSwitch = findStreamPortSwitch (m_pWidget,stream);
-     direction = mate_mixer_stream_get_direction(MATE_MIXER_STREAM(m_pStream));
+    portSwitch = findStreamPortSwitch (m_pWidget,stream);
+    direction = mate_mixer_stream_get_direction(MATE_MIXER_STREAM(m_pStream));
 
     if (MATE_MIXER_IS_STREAM(m_pStream)) {
         if (direction == MATE_MIXER_DIRECTION_OUTPUT) {
