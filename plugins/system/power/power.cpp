@@ -678,12 +678,12 @@ void Power::setupConnect()
     });
 
     connect(mPowerComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
-        settings->set(POWER_POLICY_KEY, index + 1);
+        settings->set(POWER_POLICY_AC, index + 1);
     });
 
-//    connect(mBatteryComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
-//        settings->set(POWER_POLICY_KEY, index + 1);
-//    });
+    connect(mBatteryComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+        settings->set(POWER_POLICY_BATTARY, index + 1);
+    });
 
     connect(mLowpowerComboBox1, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
         settings->set(PER_ACTION_KEY, index + 5);
@@ -743,10 +743,15 @@ void Power::initCustomPlanStatus()
     mCloseComboBox->setCurrentIndex(mCloseComboBox->findData(settings->get(SLEEP_DISPLAY_AC_KEY).toInt() / FIXES));
     mCloseLidComboBox->setCurrentIndex(mCloseLidComboBox->findData(settings->get(BUTTON_LID_AC_KEY).toString()));
 
-    if (1 == settings->get(POWER_POLICY_KEY).toInt()) {
+    if (1 == settings->get(POWER_POLICY_AC).toInt()) {
         mPowerComboBox->setCurrentIndex(mPowerComboBox->findData("Balance Model"));
     } else {
         mPowerComboBox->setCurrentIndex(mPowerComboBox->findData("Save Model"));
+    }
+    if (1 == settings->get(POWER_POLICY_BATTARY).toInt()) {
+        mBatteryComboBox->setCurrentIndex(mBatteryComboBox->findData("Balance Model"));
+    } else {
+        mBatteryComboBox->setCurrentIndex(mBatteryComboBox->findData("Save Model"));
     }
 
     mLowpowerComboBox1->setCurrentIndex(settings->get(PER_ACTION_KEY).toInt() - 5);
