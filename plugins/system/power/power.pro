@@ -3,8 +3,8 @@ QT       += widgets dbus
 TEMPLATE = lib
 CONFIG   += plugin
 
-include($$PROJECT_COMPONENTSOURCE/comboxframe.pri)
-include($$PROJECT_COMPONENTSOURCE/uslider.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
+include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 
 TARGET = $$qtLibraryTarget(power)
 DESTDIR = ../..

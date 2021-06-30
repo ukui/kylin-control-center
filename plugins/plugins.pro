@@ -6,7 +6,6 @@ SUBDIRS = \
             messages-task/notice \
             messages-task/search \
             network/vino \
-            system/battery \
             system/defaultapp \
             system/power \
             system/autoboot \
@@ -30,7 +29,7 @@ SUBDIRS = \
             security-updates/securitycenter \
             security-updates/backup \
             security-updates/update \
-#           security-updates/upgrade \
+#            security-updates/upgrade \
             messages-task/about \
             system/touchscreen \
             time-language/datetime \
