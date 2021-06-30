@@ -41,7 +41,6 @@ enum SystemIndex{
     TOUCHSCREEN,
     DEFAULTAPP,
     POWER,
-    BATTERY,
     AUTOBOOT,
     TOTALSYSFUNC,
 };
