@@ -134,7 +134,6 @@ void DefaultApp::initUI() {
     qDebug() <<"browser耗时："<<timedebuge.elapsed()<<"ms";//输出计时
     qDebug() << "BROWSER 主线程" << QThread::currentThreadId() << QThread::currentThread();
 
-
     // IMAGE
     {
         QString currentimage(getDefaultAppId(IMAGETYPE));
@@ -148,7 +147,7 @@ void DefaultApp::initUI() {
         ui->imageComBoBox->setCurrentText(appname);
     }
 
-    QtConcurrent::run([=]() {
+    QFuture<void> imagefuture = QtConcurrent::run([=]() {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
         QString currentimage(getDefaultAppId(IMAGETYPE));
@@ -187,7 +186,7 @@ void DefaultApp::initUI() {
         ui->mailComBoBox->setCurrentText(appname);
     }
 
-    QtConcurrent::run([=]() {
+    QFuture<void> mailfuture = QtConcurrent::run([=]() {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
         QString currentmail(getDefaultAppId(MAILTYPE));
@@ -224,7 +223,7 @@ void DefaultApp::initUI() {
         ui->audioComBoBox->setCurrentText(appname);
     }
 
-    QtConcurrent::run([=]() {
+    QFuture<void> audiofuture = QtConcurrent::run([=]() {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
         QString currentaudio(getDefaultAppId(AUDIOTYPE));
@@ -261,7 +260,7 @@ void DefaultApp::initUI() {
         ui->videoComBoBox->setCurrentText(appname);
     }
 
-    QtConcurrent::run([=]() {
+    QFuture<void> videofuture = QtConcurrent::run([=]() {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
         QString currentvideo(getDefaultAppId(VIDEOTYPE));
@@ -298,7 +297,7 @@ void DefaultApp::initUI() {
         ui->textComBoBox->setCurrentText(appname);
     }
 
-    QtConcurrent::run([=]() {
+    QFuture<void> textfuture = QtConcurrent::run([=]() {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
         QString currenttext(getDefaultAppId(TEXTTYPE));
@@ -322,6 +321,11 @@ void DefaultApp::initUI() {
         qDebug() << "TEXT线程" << QThread::currentThreadId() << QThread::currentThread();
     });
 
+    imagefuture.waitForFinished();
+    mailfuture.waitForFinished();
+    audiofuture.waitForFinished();
+    videofuture.waitForFinished();
+    textfuture.waitForFinished();
     qDebug()<<"initUI耗时："<<timedebuge.elapsed()<<"ms";//输出计时
 }
 
@@ -342,19 +346,21 @@ void DefaultApp::initSearchText() {
 
 void DefaultApp::browserComBoBox_changed_cb(int index) {
 
-    QtConcurrent::run([=] {
+    QFuture<void> future = QtConcurrent::run([=] {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
         QString appid = ui->browserComBoBox->itemData(index).toString();
         QByteArray ba = appid.toUtf8(); // QString to char *
+        qDebug()<<"browserComBoBox_changed_cb："<<timedebuge.elapsed()<<"ms" << appid;
         setWebBrowsersDefaultProgram(ba.data());
-        qDebug()<<"browserComBoBox_changed_cb线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
+        qDebug()<<"browserComBoBox_changed_cb线程耗时："<<timedebuge.elapsed()<<"ms" << appid;//输出计时
     });
+    future.waitForFinished();
 }
 
 void DefaultApp::mailComBoBox_changed_cb(int index) {
 
-    QtConcurrent::run([=] {
+    QFuture<void> future = QtConcurrent::run([=] {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
         QString appid = ui->mailComBoBox->itemData(index).toString();
@@ -362,11 +368,12 @@ void DefaultApp::mailComBoBox_changed_cb(int index) {
         setMailReadersDefaultProgram(ba.data());
         qDebug()<<"mailComBoBox_changed_cb线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
     });
+    future.waitForFinished();
 }
 
 void DefaultApp::imageComBoBox_changed_cb(int index) {
 
-    QtConcurrent::run([=] {
+    QFuture<void> future = QtConcurrent::run([=] {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
         QString appid = ui->imageComBoBox->itemData(index).toString();
@@ -374,11 +381,12 @@ void DefaultApp::imageComBoBox_changed_cb(int index) {
         setImageViewersDefaultProgram(ba.data());
         qDebug()<<"imageComBoBox_changed_cb线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
     });
+    future.waitForFinished();
 }
 
 void DefaultApp::audioComBoBox_changed_cb(int  index) {
 
-    QtConcurrent::run([=] {
+    QFuture<void> future = QtConcurrent::run([=] {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
         QString appid = ui->audioComBoBox->itemData(index).toString();
@@ -386,11 +394,12 @@ void DefaultApp::audioComBoBox_changed_cb(int  index) {
         setAudioPlayersDefaultProgram(ba.data());
         qDebug()<<"audioComBoBox_changed_cb线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
     });
+    future.waitForFinished();
 }
 
 void DefaultApp::videoComBoBox_changed_cb(int index) {
 
-    QtConcurrent::run([=] {
+    QFuture<void> future = QtConcurrent::run([=] {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
         QString appid = ui->videoComBoBox->itemData(index).toString();
@@ -399,11 +408,12 @@ void DefaultApp::videoComBoBox_changed_cb(int index) {
         qDebug() << __FUNCTION__  << QThread::currentThreadId() << QThread::currentThread();
         qDebug()<<"videoComBoBox_changed_cb线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
     });
+    future.waitForFinished();
 }
 
 void DefaultApp::textComBoBox_changed_cb(int index) {
 
-    QtConcurrent::run([=] {
+    QFuture<void> future = QtConcurrent::run([=] {
         QTime timedebuge;//声明一个时钟对象
         timedebuge.start();//开始计时
         QString appid = ui->textComBoBox->itemData(index).toString();
@@ -411,6 +421,7 @@ void DefaultApp::textComBoBox_changed_cb(int index) {
         setTextEditorsDefautlProgram(ba.data());
         qDebug()<<"textComBoBox_changed_cb线程耗时："<<timedebuge.elapsed()<<"ms";//输出计时
     });
+    future.waitForFinished();
 }
 
 void DefaultApp::resetDefaultApp() {
@@ -478,6 +489,7 @@ QVector<Appinfo> DefaultApp::_getAppList(const char *contentType) {
 }
 
 bool DefaultApp::setWebBrowsersDefaultProgram(char * appid) {
+    qDebug() << __func__ << __LINE__;
     const char * content_type = "x-scheme-handler/http";
     QVector<Appinfo> appinfo = _getAppList(content_type);
     bool judge = false;
@@ -497,6 +509,7 @@ bool DefaultApp::setWebBrowsersDefaultProgram(char * appid) {
             }
         }
     }
+    qDebug() << __func__ << __LINE__;
     return judge;
 }
 
