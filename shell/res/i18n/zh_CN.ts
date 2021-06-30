@@ -8670,12 +8670,12 @@ If something goes wrong, the settings will be restored after 9 seconds</source>
     <message>
         <location filename="../../../plugins/system/display/widget.cpp" line="622"/>
         <source>Save Config</source>
-        <translation>保存配置</translation>
+        <translation>保存</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/display/widget.cpp" line="623"/>
         <source>Restore Config</source>
-        <translation>恢复之前配置</translation>
+        <translation>恢复</translation>
     </message>
     <message>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display 
