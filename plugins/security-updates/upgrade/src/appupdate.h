@@ -75,7 +75,7 @@ private:
     QString downloadPath;
     UpdateDbus *m_updateMutual;
 
-    bool execFun;
+    bool execFun = true;
 
 public slots:
     void showDetails();
