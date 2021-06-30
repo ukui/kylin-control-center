@@ -530,7 +530,7 @@ void Power::retranslateUi()
 void Power::resetui()
 {
     //990隐藏这些设置项
-    if (!Utils::isWayland()) {
+    if (Utils::isWayland()) {
         mSleepPwdFrame->hide();
         mWakenPwdFrame->hide();
         mPowerKeyFrame->setStyleSheet("QFrame#mpowerkeyframe{background: palette(window);\
