@@ -4588,7 +4588,7 @@ Please retry or relogin!</source>
         <location filename="../../../plugins/network/netconnect/netconnect.ui" line="179"/>
         <location filename="../../../plugins/network/netconnect/netconnect.cpp" line="109"/>
         <source>open wifi</source>
-        <translation>打开wifi</translation>
+        <translation>打开WLAN</translation>
         <extra-contents_path>/netconnect/open wifi</extra-contents_path>
     </message>
     <message>
@@ -4756,10 +4756,9 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/notice/notice.ui" line="75"/>
-        <location filename="../../../plugins/messages-task/notice/notice.cpp" line="95"/>
+        <location filename="../../../plugins/messages-task/notice/notice.cpp" line="137"/>
         <source>Set notice type of operation center</source>
         <translation>设置在通知中心显示的通知信息</translation>
-        <extra-contents_path>/notice/Set notice type of operation center</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/notice/notice.ui" line="137"/>
@@ -4778,17 +4777,16 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/notice/notice.ui" line="333"/>
-        <location filename="../../../plugins/messages-task/notice/notice.cpp" line="97"/>
+        <location filename="../../../plugins/messages-task/notice/notice.cpp" line="139"/>
         <source>Notice Origin</source>
         <translation>设置通知来源</translation>
-        <extra-contents_path>/notice/Notice Origin</extra-contents_path>
     </message>
     <message>
         <source>notice</source>
         <translation type="vanished">通知</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/notice/notice.cpp" line="35"/>
+        <location filename="../../../plugins/messages-task/notice/notice.cpp" line="40"/>
         <source>Notice</source>
         <translation>通知</translation>
     </message>
