@@ -231,7 +231,9 @@ void OutputConfig::initConnection()
     connect(mOutput.data(), &KScreen::Output::currentModeIdChanged,
             this, [=]() {
         mRefreshRate->blockSignals(true);
-        slotResolutionChanged(mOutput->currentMode()->size(), false);
+        if (mOutput->currentMode()) {
+            slotResolutionChanged(mOutput->currentMode()->size(), false);
+        }
         mRefreshRate->blockSignals(false);
     });
 }
