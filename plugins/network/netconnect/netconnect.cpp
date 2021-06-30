@@ -776,9 +776,11 @@ int NetConnect::getWifiListDone(QVector<QStringList> getwifislist, QStringList g
                     index++;
                 }
                 QString wname;
-
                 QString lockType;
-                QString chan = geiWifiChan();
+                QString chan;
+                if (getWifiStatus()) {
+                    chan = geiWifiChan();
+                }
                 QString freq;
                 for (int i = 0; i < getwifislist.size(); ++i) {
                     if (getwifislist.at(i).at(0) == actWifiName) {
