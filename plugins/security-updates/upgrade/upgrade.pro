@@ -27,8 +27,8 @@ LIBS +=-lX11
 #icon.files = img/kylin-update-manager.png
 
 # desktop文件装载
-#desktop.path = /usr/share/applications/
-#desktop.files = kylin-update-manager.desktop
+desktop.path = /usr/share/applications/
+desktop.files = ./src/kylin-system-update.desktop
 
 # gsetting文件装载
 #schemes.files = data/org.kylin-update-manager-data.gschema.xml
