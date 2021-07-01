@@ -5,12 +5,15 @@
 
 #include "ukccsessionserver.h"
 #include "session_adaptor.h"
+#include "screenStruct.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
     app.setOrganizationName("Kylin Team");
     app.setApplicationName("ukcc-session-service");
+    qRegisterMetaType<ScreenConfig>("ScreenConfig");
+    qDBusRegisterMetaType<ScreenConfig>();
 
     ukccSessionServer service;
     new InterfaceAdaptor(&service);
