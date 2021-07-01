@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=System-Upgrade
+Name[zh_CN]=系统升级
+Name[zh_HK]=系统升级
+Name[zh_TW]=系统升级
+Comment=Kylin系统升级
+Comment[tr]=Kylin System Upgrade
+Icon=ukui-control-center
+Exec=ukui-control-center --upgrade
+Terminal=false
+Type=Application
+NoDisplay=true
+StartupNotify=true
+Categories=Qt;Upgrade;
