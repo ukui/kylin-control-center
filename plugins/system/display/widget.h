@@ -23,8 +23,8 @@
 #include <KF5/KScreen/kscreen/config.h>
 
 #include "outputconfig.h"
-#include "slider.h"
 #include "SwitchButton/switchbutton.h"
+#include "brightnessFrame.h"
 
 class QLabel;
 class QMLOutput;
@@ -60,11 +60,10 @@ public:
     explicit Widget(QWidget *parent = nullptr);
     ~Widget() override;
 
-    void setConfig(const KScreen::ConfigPtr &config);
+    void setConfig(const KScreen::ConfigPtr &config, bool showBrightnessFrameFlag = false);
     KScreen::ConfigPtr currentConfig() const;
 
     void slotFocusedOutputChangedNoParam();
-    void initBrightnessUI();
     void initConnection();
     QString getScreenName(QString name = "");
     void initTemptSlider();
@@ -81,7 +80,10 @@ public:
     int scaleToSlider(const float value);
 
     void initUiComponent();
-
+    void setScreenKDS(QString kdsConfig);
+    void setActiveScreen(QString status = "");
+    void addBrightnessFrame(QString name, bool openFlag, QString serialNum);
+    void showBrightnessFrame(const int flag = 0);
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
 
@@ -116,11 +118,7 @@ private Q_SLOTS:
     void primaryButtonEnable(bool);             // 按钮选择主屏确认按钮
     void mainScreenButtonSelect(int index);     // 是否禁用设置主屏按钮
     void checkOutputScreen(bool judge);         // 是否禁用屏幕
-    void setBrightnessScreen(int value);        // 设置屏幕亮度
-    void setDDCBrightness(int value);
-    void setBrightSliderVisible();              // 笔记本外接屏幕不可调整亮度
 
-    void setBrightnesSldierValue();             // 设置亮度滑块数值
     void setNightMode(const bool nightMode);    // 设置夜间模式
 
     void initNightStatus();                     // 初始化夜间模式
@@ -130,13 +128,13 @@ private Q_SLOTS:
     QString getPrimaryWaylandScreen();
     void isWayland();
 
-    void setDDCBrighthessSlot(int brightnessValue);// 设置外接显示器亮度
     void kdsScreenchangeSlot();
 
     void applyNightModeSlot();
 
     void delayApply();
 
+     void displayKdsScreenchangeSlot(QString status);
 public Q_SLOTS:
     void save();
     void scaleChangedSlot(double scale);
@@ -165,8 +163,6 @@ private:
     QString getCpuInfo();
     QString getMonitorType();
 
-    int getDDCBrighthess();
-    int getLaptopBrightness() const;
     int getPrimaryScreenID();
 
 private:
@@ -189,8 +185,6 @@ private:
 
     QList<QQuickView *> mOutputIdentifiers;
     QTimer *mOutputTimer = nullptr;
-
-    QMutex      mLock;
 
     QString     mCPU;
     QString     mDir;
@@ -229,10 +223,14 @@ private:
     bool mIsWayland = false;
     bool mIsBattery = false;
 
-    bool threadRunExit = false;
-    QFuture<void> threadRun;
+
 
     QShortcut *mApplyShortcut;
+    QVector<BrightnessFrame*> BrightnessFrameV;
+    //BrightnessFrame *currentBrightnessFrame;
+    bool exitFlag = false;
+    QString     mKDSCfg;
+
 };
 
 #endif // WIDGET_H
