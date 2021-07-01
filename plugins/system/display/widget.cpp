@@ -1701,16 +1701,16 @@ void Widget::setNightMode(const bool nightMode)
         mNightConfig["Active"] = false;
     } else {
         mNightConfig["Active"] = true;
-        mNightConfig["Mode"] = 2;
-
         if (ui->sunradioBtn->isChecked()) {
             mNightConfig["EveningBeginFixed"] = "17:55:00";
             mNightConfig["MorningBeginFixed"] = "05:55:04";
+            mNightConfig["Mode"] = 0;
         } else if (ui->customradioBtn->isChecked()) {
             mNightConfig["EveningBeginFixed"] = ui->opHourCom->currentText() + ":"
                                                 + ui->opMinCom->currentText() + ":00";
             mNightConfig["MorningBeginFixed"] = ui->clHourCom->currentText() + ":"
                                                 + ui->clMinCom->currentText() + ":00";
+            mNightConfig["Mode"] = 2;
         }
         mNightConfig["NightTemperature"] = ui->temptSlider->value();
     }
@@ -1811,9 +1811,9 @@ void Widget::initNightStatus()
 
     this->mIsNightMode = mNightConfig["Active"].toBool();
     ui->temptSlider->setValue(mNightConfig["CurrentColorTemperature"].toInt());
-    if (0 == mNightConfig["Mode"].toInt()) {
+    if (mNightConfig["Mode"].toInt() != 2) {
         ui->sunradioBtn->setChecked(true);
-    } else if (2 == mNightConfig["Mode"].toInt()) {
+    } else {
         ui->customradioBtn->setChecked(true);
         QString openTime = mNightConfig["EveningBeginFixed"].toString();
         QString ophour = openTime.split(":").at(0);
