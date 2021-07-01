@@ -872,12 +872,16 @@ void TabWid::hideUpdateBtnSlot(bool isSucceed)
     if(isSucceed == true)
     {
         qDebug() << "当前更新列表" << updateMutual->importantList;
-        QDateTime nowtime = QDateTime::currentDateTime();
-        QString current_date = nowtime.toString("yyyy.MM.dd hh:mm:ss");
-        //        lastRefreshTime->setText(tr("上次更新：")+current_date);
-        lastRefreshTime->setText(tr("Last refresh:")+current_date);
-        //        updateMutual->insertInstallStates("update_time",current_date);
 
+        QSqlQuery query(QSqlDatabase::database("A"));
+        QString updatetime;
+        query.exec("select * from display");
+        while(query.next())
+        {
+            updatetime = query.value("update_time").toString();
+        }
+        lastRefreshTime->setText(tr("Last refresh:")+updatetime);
+        lastRefreshTime->show();
     }
     if(updateMutual->importantList.size() == 0)
     {
