@@ -25,7 +25,7 @@ public:
     void setResolution(const QSize &size);
 
 Q_SIGNALS:
-    void resolutionChanged(const QSize &size);
+    void resolutionChanged(const QSize &size, bool emitFlag = true);
 
 public Q_SLOTS:
     void slotValueChanged(int);
@@ -40,10 +40,6 @@ private:
     QList<QSize> mModes;
     QList<QSize> mExcludeModes;
 
-    QLabel *mSmallestLabel = nullptr;
-    QLabel *mBiggestLabel = nullptr;
-    QLabel *mCurrentLabel = nullptr;
-    QSlider *mSlider = nullptr;
     QComboBox *mComboBox = nullptr;
 
     bool mIsWayland = false;

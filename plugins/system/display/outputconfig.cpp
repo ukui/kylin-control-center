@@ -93,8 +93,8 @@ void OutputConfig::initUi()
     vbox->addWidget(resFrame);
 
     connect(mResolution, &ResolutionSlider::resolutionChanged,
-            this, [=](QSize size){
-                slotResolutionChanged(size, true);
+            this, [=](QSize size, bool emitFlag){
+                slotResolutionChanged(size, emitFlag);
             });
 
     connect(mResolution, &ResolutionSlider::resolutionChanged,
