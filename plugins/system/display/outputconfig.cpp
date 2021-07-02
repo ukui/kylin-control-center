@@ -281,6 +281,8 @@ void OutputConfig::slotResolutionChanged(const QSize &size, bool emitFlag)
     }
 
     Q_ASSERT(currentMode);
+    if (!currentMode)
+        return;
     modeID = currentMode->id();
 
     // Don't remove the first "Auto" item - prevents ugly flicker of the combobox

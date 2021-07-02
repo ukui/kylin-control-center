@@ -334,24 +334,34 @@ void Widget::slotOutputConnectedChanged()
     resetPrimaryCombo();
     for (auto &output: mConfig->outputs()) {
         bool frameExist = false;
-        for (int i = 0; i < BrightnessFrameV.size(); ++i) {
-            if (BrightnessFrameV[i]->getOutputName() == Utils::outputName(output)) {
-                frameExist = true;
-                if (!output->isConnected()) {
-                    delete BrightnessFrameV[i];
-                    BrightnessFrameV[i] = nullptr;
-                    BrightnessFrameV.remove(i);
+        if (!output->isConnected()) {
+            if (mUnifyButton->isChecked()) {
+                for (QMLOutput *qmlOutput: mScreen->outputs()) {
+                    if (!qmlOutput->output()->isConnected()) {
+                        continue;
+                    }
+                    qmlOutput->setIsCloneMode(false);
+                    qmlOutput->blockSignals(true);
+                    qmlOutput->setVisible(true);
+                    qmlOutput->blockSignals(false);
                 }
             }
+            ui->unionframe->setVisible(mConfig->connectedOutputs().count() > 1);
+            mUnifyButton->blockSignals(true);
+            mUnifyButton->setChecked(mConfig->connectedOutputs().count() > 1);
+            mUnifyButton->blockSignals(false);
+            mainScreenButtonSelect(ui->primaryCombo->currentIndex());
         }
-
+        for (int i = 0; i < BrightnessFrameV.size(); ++i) {
+            if (BrightnessFrameV[i]->getOutputName() == Utils::outputName(output))
+                frameExist = true;
+        }
         if (false == frameExist && output->isConnected()) {
-            if (output->isConnected()) {
-                QString name = Utils::outputName(output);
-                addBrightnessFrame(name, output->isEnabled(), output->edid()->serial());
-            }
+            QString name = Utils::outputName(output);
+            addBrightnessFrame(name, output->isEnabled(), output->edid()->serial());
         }
     }
+    showBrightnessFrame(2);
 
 }
 
@@ -905,14 +915,6 @@ void Widget::outputRemoved(int outputId)
         ui->primaryCombo->blockSignals(blocked);
     }
 
-    QString name = ui->primaryCombo->itemText(index);
-    for (int i = 0; i < BrightnessFrameV.size(); ++i) {
-        if (BrightnessFrameV[i]->getOutputName() == name) {
-            delete BrightnessFrameV[i];
-            BrightnessFrameV[i] = nullptr;
-            BrightnessFrameV.remove(i);
-        }
-    }
     ui->primaryCombo->removeItem(index);
 
     // 检查统一输出-防止移除后没有屏幕可显示
@@ -1868,65 +1870,58 @@ void Widget::nightChangedSlot(QHash<QString, QVariant> nightArg)
 
 void Widget::showBrightnessFrame(const int flag)
 {
-    int *pFlag = new int(flag);
-    QObject::connect(new KScreen::GetConfigOperation(), &KScreen::GetConfigOperation::finished,
-                     [&, pFlag](KScreen::ConfigOperation *op) {
-        bool allShowFlag = true;
-
-        KScreen::ConfigPtr config = qobject_cast<KScreen::GetConfigOperation *>(op)->config();
+    bool allShowFlag = true;
+    KScreen::OutputPtr output = mConfig->primaryOutput();
 
 
-        KScreen::OutputPtr output = config->primaryOutput();
-
-        if (mConfig->connectedOutputs().count() >= 2) {
-            foreach (KScreen::OutputPtr secOutput, config->connectedOutputs()) {
-                if (!output || secOutput->geometry() != output->geometry() || !secOutput->isEnabled()) {
-                    allShowFlag = false;
-                }
-                for (int i = 0; i < BrightnessFrameV.size(); ++i) { //检查其它显示屏是否实际打开，否则关闭，适用于显示器插拔
-                    if (BrightnessFrameV[i]->getOutputName() == Utils::outputName(secOutput) && !secOutput->isEnabled()){
-                        BrightnessFrameV[i]->setOutputEnable(false);
-                    }
-                }
+    if (mConfig->connectedOutputs().count() == 0) {
+        return;
+    } else if (mConfig->connectedOutputs().count() >= 2) {
+        foreach (KScreen::OutputPtr secOutput, mConfig->connectedOutputs()) {
+            if (!output || secOutput->geometry() != output->geometry() || !secOutput->isEnabled()) {
+                allShowFlag = false;
             }
-        } else {  //只有一个屏幕，把它亮度条打开，防止remove出问题
-            allShowFlag = false;
-            for (int i = 0; i < BrightnessFrameV.size(); ++i) {
-                if (BrightnessFrameV[i]->getOutputName() == Utils::outputName(output)) {
-                    BrightnessFrameV[i]->setOutputEnable(true);
+            for (int i = 0; i < BrightnessFrameV.size(); ++i) { //检查其它显示屏是否实际打开，否则关闭，适用于显示器插拔
+                if (BrightnessFrameV[i]->getOutputName() == Utils::outputName(secOutput) && !secOutput->isEnabled()){
+                    BrightnessFrameV[i]->setOutputEnable(false);
                 }
             }
         }
-
-        ui->unifyBrightFrame->setFixedHeight(0);
-        if (*pFlag == 0 && allShowFlag == false && mUnifyButton->isChecked()) {  //选中了镜像模式，实际是扩展模式
-
-        } else if ((allShowFlag == true && *pFlag == 0) || *pFlag == 1) { //镜像模式/即将成为镜像模式
-            ui->unifyBrightFrame->setFixedHeight(BrightnessFrameV.size() * (50 + 2 + 2));
-            for (int i = 0; i < BrightnessFrameV.size(); ++i) {
+    } else {  //只有一个屏幕，把它亮度条打开，防止remove出问题
+        allShowFlag = false;
+        for (int i = 0; i < BrightnessFrameV.size(); ++i) {
+            if (BrightnessFrameV[i]->getOutputName() == Utils::outputName(output)) {
                 BrightnessFrameV[i]->setOutputEnable(true);
-                BrightnessFrameV[i]->setTextLabelName(tr("Brightness") + QString("(") + BrightnessFrameV[i]->getOutputName() + QString(")"));
+            }
+        }
+    }
+
+    ui->unifyBrightFrame->setFixedHeight(0);
+    if (flag == 0 && allShowFlag == false && mUnifyButton->isChecked()) {  //选中了镜像模式，实际是扩展模式
+    } else if ((allShowFlag == true && flag == 0) || flag == 1) { //镜像模式/即将成为镜像模式
+        ui->unifyBrightFrame->setFixedHeight(BrightnessFrameV.size() * (50 + 2 + 2));
+        for (int i = 0; i < BrightnessFrameV.size(); ++i) {
+            BrightnessFrameV[i]->setOutputEnable(true);
+            BrightnessFrameV[i]->setTextLabelName(tr("Brightness") + QString("(") + BrightnessFrameV[i]->getOutputName() + QString(")"));
+            BrightnessFrameV[i]->setVisible(true);
+        }
+    } else {
+        for (int i = 0; i < BrightnessFrameV.size(); ++i) {
+            if (ui->primaryCombo->currentText() == BrightnessFrameV[i]->getOutputName() && BrightnessFrameV[i]->getOutputEnable()) {
+                ui->unifyBrightFrame->setFixedHeight(52);
+                BrightnessFrameV[i]->setTextLabelName(tr("Brightness"));
                 BrightnessFrameV[i]->setVisible(true);
-            }
-        } else {
-            for (int i = 0; i < BrightnessFrameV.size(); ++i) {
-                if (ui->primaryCombo->currentText() == BrightnessFrameV[i]->getOutputName() && BrightnessFrameV[i]->getOutputEnable()) {
-                    ui->unifyBrightFrame->setFixedHeight(52);
-                    BrightnessFrameV[i]->setTextLabelName(tr("Brightness"));
-                    BrightnessFrameV[i]->setVisible(true);
-                    //不能break，要把其他的frame隐藏
-                } else {
-                    BrightnessFrameV[i]->setVisible(false);
-                }
+                //不能break，要把其他的frame隐藏
+            } else {
+                BrightnessFrameV[i]->setVisible(false);
             }
         }
-        if (ui->unifyBrightFrame->height() > 0) {
-            ui->unifyBrightFrame->setVisible(true);
-        } else {
-            ui->unifyBrightFrame->setVisible(false);
-        }
-        delete pFlag;
-    });
+    }
+    if (ui->unifyBrightFrame->height() > 0) {
+        ui->unifyBrightFrame->setVisible(true);
+    } else {
+        ui->unifyBrightFrame->setVisible(false);
+    }
 }
 
 QList<ScreenConfig> Widget::getPreScreenCfg()
