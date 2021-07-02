@@ -25,6 +25,7 @@
 #include "outputconfig.h"
 #include "SwitchButton/switchbutton.h"
 #include "brightnessFrame.h"
+#include "screenConfig.h"
 
 class QLabel;
 class QMLOutput;
@@ -84,6 +85,10 @@ public:
     void setActiveScreen(QString status = "");
     void addBrightnessFrame(QString name, bool openFlag, QString serialNum);
     void showBrightnessFrame(const int flag = 0);
+
+    QList<ScreenConfig> getPreScreenCfg();
+    void setPreScreenCfg(KScreen::OutputList screens);
+
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
 
@@ -127,14 +132,12 @@ private Q_SLOTS:
     void callMethod(QRect geometry, QString name);// 设置wayland主屏幕
     QString getPrimaryWaylandScreen();
     void isWayland();
-
-    void kdsScreenchangeSlot();
+    void kdsScreenchangeSlot(QString status);
 
     void applyNightModeSlot();
 
     void delayApply();
 
-     void displayKdsScreenchangeSlot(QString status);
 public Q_SLOTS:
     void save();
     void scaleChangedSlot(double scale);
@@ -154,7 +157,7 @@ private:
     void setcomBoxScale();
     void initNightUI();
 
-    bool isRestoreConfig();                       // 是否恢复应用之前的配置
+    bool isRestoreConfig();   // 是否恢复应用之前的配置
     bool isCloneMode();
     bool isBacklight();
     bool isLaptopScreen();
@@ -206,6 +209,7 @@ private:
     QButtonGroup *singleButton;
 
     QSharedPointer<QDBusInterface> mUPowerInterface;
+    QSharedPointer<QDBusInterface> mUkccInterface;
 
     QHash<QString, QVariant> mNightConfig;
 

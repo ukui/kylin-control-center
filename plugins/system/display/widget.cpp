@@ -32,6 +32,7 @@
 #include <QJsonDocument>
 #include <QtConcurrent>
 #include <QVariantMap>
+#include <QDBusMetaType>
 
 #include <KF5/KScreen/kscreen/output.h>
 #include <KF5/KScreen/kscreen/edid.h>
@@ -94,6 +95,8 @@ Widget::Widget(QWidget *parent) :
 
     mUnifyButton = new SwitchButton(this);
     ui->unionLayout->addWidget(mUnifyButton);
+
+    qDBusRegisterMetaType<ScreenConfig>();
 
     setHideModuleInfo();
     initNightUI();
@@ -307,7 +310,7 @@ void Widget::slotOutputEnabledChanged()
 {
     // 点击禁用屏幕输出后的改变
     resetPrimaryCombo();
-   // setActiveScreen(mKDSCfg);
+    setActiveScreen(mKDSCfg);
     int enabledOutputsCount = 0;
     Q_FOREACH (const KScreen::OutputPtr &output, mConfig->outputs()) {
         if (output->isEnabled()) {
@@ -373,25 +376,18 @@ void Widget::slotUnifyOutputs()
 
     // 取消统一输出
     if (base->isCloneMode() && !mUnifyButton->isChecked()) {
-        KScreen::OutputList screens = mPrevConfig->connectedOutputs();
 
-        QMap<int, KScreen::OutputPtr>::iterator preIt = screens.begin();
-        QMap<int, KScreen::OutputPtr>::iterator nowIt = screens.begin();
-        nowIt++;
-        while (nowIt != screens.end()) {
-            nowIt.value()->setPos(QPoint(preIt.value()->pos().x() + preIt.value()->size().width(), 0));
-            KScreen::ModeList modes = preIt.value()->modes();
-            Q_FOREACH (const KScreen::ModePtr &mode, modes) {
-                if (preIt.value()->currentModeId() == mode->id()) {
-                    if (preIt.value()->rotation() != KScreen::Output::Rotation::Left && preIt.value()->rotation() != KScreen::Output::Rotation::Right) {
-                        nowIt.value()->setPos(QPoint(preIt.value()->pos().x() + mode->size().width(), 0));
-                    } else {
-                        nowIt.value()->setPos(QPoint(preIt.value()->pos().x() + mode->size().height(), 0));
+        if (mKDSCfg.isEmpty()) {
+            KScreen::OutputList screens = mPrevConfig->connectedOutputs();
+            QList<ScreenConfig> preScreenCfg = getPreScreenCfg();
+            Q_FOREACH(ScreenConfig cfg, preScreenCfg) {
+                Q_FOREACH(KScreen::OutputPtr output, screens) {
+                    if (!cfg.screenId.compare(output->name())) {
+                        output->setCurrentModeId(cfg.screenModeId);
+                        output->setPos(QPoint(cfg.screenPosX, cfg.screenPosY));
                     }
                 }
             }
-            preIt = nowIt;
-            nowIt++;
         }
         setConfig(mPrevConfig);
 
@@ -403,6 +399,10 @@ void Widget::slotUnifyOutputs()
         // Clone the current config, so that we can restore it in case user
         // breaks the cloning
         mPrevConfig = mConfig->clone();
+
+        if (!mFirstLoad) {
+            setPreScreenCfg(mPrevConfig->connectedOutputs());
+        }
 
         for (QMLOutput *output: mScreen->outputs()) {
             if (output != mScreen->primaryOutput()) {
@@ -1083,31 +1083,6 @@ void Widget::isWayland()
     }
 }
 
-
-
-void Widget::kdsScreenchangeSlot()
-{
-    connect(new KScreen::GetConfigOperation(), &KScreen::GetConfigOperation::finished,
-            [&](KScreen::ConfigOperation *op) {
-        bool cloneMode = true;
-        KScreen::ConfigPtr config = qobject_cast<KScreen::GetConfigOperation *>(op)->config();
-        KScreen::OutputPtr output = config->primaryOutput();
-        if (config->connectedOutputs().count() >= 2) {
-            foreach (KScreen::OutputPtr secOutput, config->connectedOutputs()) {
-                if ((output != nullptr) &&
-                        (secOutput->geometry() != output->geometry() || !secOutput->isEnabled())) {
-                    cloneMode = false;
-                }
-            }
-        } else {
-            cloneMode = false;
-        }
-        mUnifyButton->blockSignals(true);
-        mUnifyButton->setChecked(cloneMode);
-        mUnifyButton->blockSignals(false);
-    });
-}
-
 void Widget::applyNightModeSlot()
 {
     if (((ui->opHourCom->currentIndex() < ui->clHourCom->currentIndex())
@@ -1135,7 +1110,7 @@ void Widget::setScreenKDS(QString kdsConfig)
 
         KScreen::OutputList screensPre = mPrevConfig->connectedOutputs();
 
-        KScreen::OutputPtr mainScreen = mPrevConfig->output(getPrimaryScreenID());
+        KScreen::OutputPtr mainScreen = mPrevConfig->primaryOutput();
         mainScreen->setPos(QPoint(0, 0));
 
         KScreen::OutputPtr preIt = mainScreen;
@@ -1208,22 +1183,23 @@ void Widget::setActiveScreen(QString status)
 
 // 等相关包上传
 //通过win+p修改，不存在按钮影响亮度显示的情况，直接就应用了，此时每个屏幕的openFlag是没有修改的，需要单独处理(setScreenKDS)
-void Widget::displayKdsScreenchangeSlot(QString status)
+void Widget::kdsScreenchangeSlot(QString status)
 {
-//    if (status == "copy"){
-//        mUnifyButton->setChecked(true);
-//    } else {
-//        mUnifyButton->setChecked(false);
-//    }
-//    setScreenKDS(status);
-
-    return;
+    bool isCheck = (status == "copy") ? true : false;
+    mKDSCfg = status;
+    setScreenKDS(mKDSCfg);
+    if (mConfig->connectedOutputs().count() >= 2) {
+        mUnifyButton->setChecked(isCheck);
+    }
 }
 
 void Widget::delayApply()
 {
-    QTimer::singleShot(500, this, [=](){
-        save();
+    QTimer::singleShot(200, this, [=]() {
+        if (mKDSCfg.isEmpty()) {
+            save();
+        }
+        mKDSCfg.clear();
     });
 }
 
@@ -1309,7 +1285,7 @@ void Widget::save()
         writeScreenXml();
     }
 
-   // setActiveScreen();
+    setActiveScreen();
 
 	for (int i = 0; i < BrightnessFrameV.size(); ++i) {   //应用成功再更新屏幕是否开启的状态，判断亮度条是否打开
         for (KScreen::OutputPtr output : mConfig->outputs()) {
@@ -1620,18 +1596,6 @@ void Widget::initConnection()
         delayApply();
     });
 
-    connect(QApplication::desktop(), &QDesktopWidget::resized, this, [=] {
-        QTimer::singleShot(1500, this, [=]{
-            kdsScreenchangeSlot();
-        });
-    });
-
-    connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, [=] {
-        QTimer::singleShot(1500, this, [=] {
-            kdsScreenchangeSlot();
-        });
-    });
-
     connect(mNightButton, &SwitchButton::checkedChanged, this, [=](bool status){
         showNightWidget(status);
         applyNightModeSlot();
@@ -1661,13 +1625,13 @@ void Widget::initConnection()
         showCustomWiget(index);
         applyNightModeSlot();
     });
-//   等相关包上传
+
     QDBusConnection::sessionBus().connect(QString(),
                                               QString("/"),
                                               "org.ukui.ukcc.session.interface",
                                               "screenChanged",
                                               this,
-                                              SLOT(displayKdsScreenchangeSlot(QString)));
+                                              SLOT(kdsScreenchangeSlot(QString)));
 
 
     QDBusConnection::sessionBus().connect(QString(),
@@ -1821,6 +1785,12 @@ void Widget::initUiComponent()
                                                  "PropertiesChanged",
                                                  this,
                                                  SLOT(propertiesChangedSlot(QString, QMap<QString,QVariant>, QStringList)));
+
+    mUkccInterface = QSharedPointer<QDBusInterface>(
+                new QDBusInterface("org.ukui.ukcc.session",
+                                   "/",
+                                   "org.ukui.ukcc.session.interface",
+                                   QDBusConnection::sessionBus()));
 }
 
 void Widget::initNightStatus()
@@ -1957,4 +1927,63 @@ void Widget::showBrightnessFrame(const int flag)
         }
         delete pFlag;
     });
+}
+
+QList<ScreenConfig> Widget::getPreScreenCfg()
+{
+    QDBusMessage msg = mUkccInterface.get()->call("getPreScreenCfg");
+    if(msg.type() == QDBusMessage::ErrorMessage) {
+        qWarning() << "get pre screen cfg failed";
+    }
+    QDBusArgument argument = msg.arguments().at(0).value<QDBusArgument>();
+    QList<QVariant> infos;
+    argument >> infos;
+
+    QList<ScreenConfig> preScreenCfg;
+    for (int i = 0; i < infos.size(); i++){
+        ScreenConfig cfg;
+        infos.at(i).value<QDBusArgument>() >> cfg;
+        preScreenCfg.append(cfg);
+    }
+
+    return preScreenCfg;
+}
+
+void Widget::setPreScreenCfg(KScreen::OutputList screens)
+{
+    QMap<int, KScreen::OutputPtr>::iterator nowIt = screens.begin();
+
+    QVariantList retlist;
+    while (nowIt != screens.end()) {
+        ScreenConfig cfg;
+        cfg.screenId = nowIt.value()->name();
+        cfg.screenModeId = nowIt.value()->currentModeId();
+        cfg.screenPosX = nowIt.value()->pos().x();
+        cfg.screenPosY = nowIt.value()->pos().y();
+
+        QVariant variant = QVariant::fromValue(cfg);
+        retlist << variant;
+        nowIt++;
+    }
+
+    mUkccInterface.get()->call("setPreScreenCfg", retlist);
+
+    QVariantList outputList;
+    Q_FOREACH(QVariant variant, retlist) {
+        ScreenConfig screenCfg = variant.value<ScreenConfig>();
+        QVariantMap map;
+        map["id"] = screenCfg.screenId;
+        map["modeid"] = screenCfg.screenModeId;
+        map["x"] = screenCfg.screenPosX;
+        map["y"] = screenCfg.screenPosY;
+        outputList << map;
+    }
+
+    QString filePath = QDir::homePath() + "/.config/ukui/ukcc-screenPreCfg.json";
+    QFile file(filePath);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qWarning() << "Failed to open config file for writing! " << file.errorString();
+
+    }
+    file.write(QJsonDocument::fromVariant(outputList).toJson());
 }
