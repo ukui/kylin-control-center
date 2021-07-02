@@ -29,6 +29,14 @@
 #define ITEMFIXEDHEIGH 58
 #define THEME_QT_SCHEMA                  "org.ukui.style"
 #define MODE_QT_KEY                      "style-name"
+
+enum {
+    NOT_SUPPORT_P2P = 0,
+    SUPPORT_P2P_WITHOUT_DEV,
+    SUPPORT_P2P_PERFECT,
+    OP_NO_RESPONSE
+};
+
 Projection::Projection()
 {
     pluginName = tr("Projection");
@@ -91,6 +99,33 @@ Projection::Projection()
 
 
     initComponent();
+}
+
+bool Projection::getWifiStatus() {
+    QDBusInterface interface( "org.freedesktop.NetworkManager",
+                              "/org/freedesktop/NetworkManager",
+                              "org.freedesktop.DBus.Properties",
+                              QDBusConnection::systemBus() );
+    // 获取当前wifi是否打开
+    QDBusReply<QVariant> m_result = interface.call("Get", "org.freedesktop.NetworkManager", "WirelessEnabled");
+    if (m_result.isValid()) {
+        bool status = m_result.value().toBool();
+        return status;
+    } else {
+        qDebug()<<"org.freedesktop.NetworkManager get invalid"<<endl;
+        return false;
+    }
+}
+
+void Projection::setWifiStatus(bool status) {
+
+    QString wifiStatus = status ? "on" : "off";
+    QString program = "nmcli";
+    QStringList arg;
+    arg << "radio" << "wifi" << wifiStatus;
+    QProcess *nmcliCmd = new QProcess(this);
+    nmcliCmd->start(program, arg);
+    nmcliCmd->waitForStarted();
 }
 
 bool Projection::eventFilter(QObject *watched, QEvent *event){
@@ -198,10 +233,39 @@ QWidget *Projection::get_plugin_ui(){
     QList<QVariant> outArgs = result.arguments();
     int projectionstatus = outArgs.at(0).value<int>();
     qDebug() << "---->" << projectionstatus;
-    if (projectionstatus != 1) {
-        QMessageBox::information(NULL, QStringLiteral("提示"), QStringLiteral("投屏无法使用"));
+    if(getWifiStatus())
+    {
+        qDebug()<<"wifi is on now";
+        ui->tipLabel->setText("WLAN已开启，请在使用过程中保持WLAN处于开启状态");
+        ui->widget->setVisible(true);
+        ui->tipLabel_msg->setVisible(true);
+        //ui->setupUi(pluginWidget);
+    }
+    else
+    {
+        qDebug()<<"wifi is off now";
+        ui->tipLabel->setText("WLAN未开启，请打开WLAN开关");
+        ui->widget->setVisible(false);
+        ui->tipLabel_msg->setVisible(false);
+        return pluginWidget;
+    }
+    if (NOT_SUPPORT_P2P == projectionstatus) {
+        //QMessageBox::information(NULL, QStringLiteral("提示"), QStringLiteral("由于无线网卡驱动不支持，投屏无法使用"));
+        ui->tipLabel_msg->setText("由于无线网卡驱动不支持，投屏无法使用");
         ui->pronamelabel->setEnabled(false);
         projectionBtn->setEnabled(false);
+    }
+    else if (SUPPORT_P2P_WITHOUT_DEV == projectionstatus) {
+        //QMessageBox::information(NULL, QStringLiteral("提示"), QStringLiteral("由于无线网卡驱动限制，投屏开启后会关闭网络管理器，导致wifi断开。\n当不使用投屏时请关闭投屏功能，否则会影响网络使用"));
+        ui->tipLabel_msg->setText("由于无线网卡驱动限制，投屏开启后会关闭网络管理器，导致wifi断开");
+        ui->pronamelabel->setEnabled(true);
+        projectionBtn->setEnabled(true);
+    }
+    else if (OP_NO_RESPONSE == projectionstatus) {
+        //QMessageBox::information(NULL, QStringLiteral("提示"), QStringLiteral("查询无线网卡暂时无响应，请稍后再试"));
+        ui->tipLabel_msg->setText("查询无线网卡暂时无响应，请稍后再试");
+        ui->pronamelabel->setEnabled(true);
+        projectionBtn->setEnabled(true);
     }
 
     return pluginWidget;
