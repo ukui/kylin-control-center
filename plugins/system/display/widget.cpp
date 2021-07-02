@@ -179,10 +179,10 @@ void Widget::setConfig(const KScreen::ConfigPtr &config, bool showBrightnessFram
             this, &Widget::outputAdded);
     connect(mConfig.data(), &KScreen::Config::outputRemoved,
             this, &Widget::outputRemoved);
-    if (!mIsWayland) {
-        connect(mConfig.data(), &KScreen::Config::primaryOutputChanged,
-                this, &Widget::primaryOutputChanged);
-    }
+
+    connect(mConfig.data(), &KScreen::Config::primaryOutputChanged,
+            this, &Widget::primaryOutputChanged);
+
 
     // 上面屏幕拿取配置
     mScreen->setConfig(mConfig);
@@ -218,9 +218,6 @@ void Widget::setConfig(const KScreen::ConfigPtr &config, bool showBrightnessFram
     }
     mFirstLoad = false;
 
-    if (mIsWayland) {
-        mScreenId = getPrimaryScreenID();
-    }
     if (showBrightnessFrameFlag == true) {
         showBrightnessFrame();   //初始化的时候，显示
     }
@@ -1303,33 +1300,10 @@ void Widget::save()
         }
     }
 
-    if (mIsWayland && -1 != mScreenId) {
-        if (enableScreenCount >= 2 && !config.isNull()) {
-            config->output(mScreenId)->setPrimary(true);
-            callMethod(config->primaryOutput()->geometry(), config->primaryOutput()->name());
-            if (mScreen->primaryOutput()) {
-                mScreen->primaryOutput()->setIsCloneMode(mUnifyButton->isChecked());
-            }
-        } else if (!enableOutput.isNull()) {
-            enableOutput->setPrimary(true);
-            callMethod(enableOutput->geometry(), enableOutput->name());
-        }
-    }
-
-    mScreen->updateOutputsPlacement();
-
     if (isRestoreConfig()) {
-        if (mIsWayland && -1 != mScreenId) {
-            mPrevConfig->output(mScreenId)->setPrimary(true);
-            callMethod(mPrevConfig->output(mScreenId)->geometry(), mPrevConfig->output(mScreenId)->name());
-        }
         auto *op = new KScreen::SetConfigOperation(mPrevConfig);
         op->exec();
 
-        // 无法知道什么时候执行完操作
-        QTimer::singleShot(1000, this, [=]() {
-            writeFile(mDir % mPrevConfig->connectedOutputsHash());
-        });
     } else {
         mPrevConfig = mConfig->clone();
         writeScreenXml();
@@ -1569,8 +1543,6 @@ void Widget::primaryButtonEnable(bool status)
     ui->mainScreenButton->setEnabled(false);
     const KScreen::OutputPtr newPrimary = mConfig->output(ui->primaryCombo->itemData(index).toInt());
     mConfig->setPrimaryOutput(newPrimary);
-
-    mScreenId = newPrimary->id();
 }
 
 void Widget::checkOutputScreen(bool judge)

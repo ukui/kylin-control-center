@@ -210,7 +210,6 @@ private:
     QHash<QString, QVariant> mNightConfig;
 
     double mScreenScale = 1.0;
-    int mScreenId = -1;
 
     bool mIsNightMode = false;
     bool mRedshiftIsValid = false;
@@ -222,8 +221,6 @@ private:
     bool mFirstLoad = true;
     bool mIsWayland = false;
     bool mIsBattery = false;
-
-
 
     QShortcut *mApplyShortcut;
     QVector<BrightnessFrame*> BrightnessFrameV;
