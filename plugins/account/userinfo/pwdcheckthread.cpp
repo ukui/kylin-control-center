@@ -2,6 +2,7 @@
 
 #include <QDebug>
 
+
 PwdCheckThread::PwdCheckThread()
 {
 }
@@ -21,7 +22,8 @@ void PwdCheckThread::run(){
     char command[128];
     char output[256];
 
-    bool result = false;
+//    bool result = false;
+    QString result;
 
     QByteArray ba1 = uname.toLatin1();
 
@@ -33,12 +35,14 @@ void PwdCheckThread::run(){
         snprintf(command, 128, "/usr/bin/checkUserPwd %s '%s'", ba1.data(), upwd.toLatin1().data());
     }
 
+
     if ((stream = popen(command, "r")) != NULL){
 
         while(fgets(output, 256, stream) != NULL){
-            if (QString::compare(QString(output).simplified(), "Succes!") == 0){
-                result = true;
-            }
+            result = QString(output).simplified();
+//            if (QString::compare(QString(output).simplified(), "") == 0){
+//                result = true;
+//            }
 
         }
         pclose(stream);

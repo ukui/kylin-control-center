@@ -21,7 +21,7 @@ private:
     QString upwd;
 
 Q_SIGNALS:
-    void complete(bool result);
+    void complete(QString result);
 
 
 };

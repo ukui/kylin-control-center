@@ -30,7 +30,8 @@ void Widget::pwdCheck(QString userName, QString userPwd){
 
 void Widget::onShowMessage(const QString &message, Auth::MessageType type)
 {
-//    qDebug() << "showMessage" << message;
+//    qDebug() << message;
+    printf("%s\n", message.toUtf8().data());
 
 }
 
@@ -42,13 +43,13 @@ void Widget::onShowPrompt(const QString &prompt, Auth::PromptType type)
 void Widget::onAuthComplete()
 {
 
-    if(auth->isAuthenticated()){
+//    if(auth->isAuthenticated()){
 //        qDebug() << "Succes!\n";
-        printf("Succes!\n");
-    } else {
-        printf("Failed!\n");
+//        printf("Succes!\n");
+//    } else {
+//        printf("Failed!\n");
 //        qDebug() << "Failed!";
-    }
+//    }
 
     exit(0);
 

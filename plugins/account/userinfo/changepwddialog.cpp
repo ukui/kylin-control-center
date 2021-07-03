@@ -181,8 +181,8 @@ void ChangePwdDialog::setupComponent(){
 
 void ChangePwdDialog::setupConnect(){
 
-    connect(pcThread, &PwdCheckThread::complete, this, [=](bool re){
-        curPwdTip = re ? "" : tr("Pwd input error, re-enter!");
+    connect(pcThread, &PwdCheckThread::complete, this, [=](QString re){
+        curPwdTip = re;
 
         if (pwdTip.isEmpty() && pwdSureTip.isEmpty()){
             ui->tipLabel->setText(curPwdTip);
@@ -192,7 +192,7 @@ void ChangePwdDialog::setupConnect(){
             pwdTip.isEmpty() ? ui->tipLabel->setText(pwdSureTip) : ui->tipLabel->setText(pwdTip);
         }
 
-        if (re){ //密码校验成功
+        if (re.isEmpty()){ //密码校验成功
 
             this->accept();
 

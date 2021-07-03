@@ -8,7 +8,4 @@ glib-compile-schemas /usr/share/glib-2.0/schemas/
 #systemctl enable ukui-group-manager.service
 #systemctl start  ukui-group-manager.service
 
-chown root:root /usr/bin/checkuserpwd
-chmod u+s /usr/bin/checkuserpwd
-
 #DEBHELPER#
