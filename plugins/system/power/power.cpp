@@ -613,13 +613,12 @@ void Power::setupComponent()
     mBatteryComboBox->insertItem(1, BatteryplanStringList.at(1), "Save Model");
 
     //变暗
-    DarkenStringList << tr("1min") << tr("3min") << tr("5min") << tr("15min") << tr("30min") << tr("1h");
+    DarkenStringList << tr("1min") << tr("5min") << tr("10min") << tr("20min") << tr("never");
     mDarkenComboBox->insertItem(0, DarkenStringList.at(0), QVariant::fromValue(1));
-    mDarkenComboBox->insertItem(1, DarkenStringList.at(1), QVariant::fromValue(3));
-    mDarkenComboBox->insertItem(2, DarkenStringList.at(2), QVariant::fromValue(5));
-    mDarkenComboBox->insertItem(3, DarkenStringList.at(3), QVariant::fromValue(15));
-    mDarkenComboBox->insertItem(4, DarkenStringList.at(4), QVariant::fromValue(30));
-    mDarkenComboBox->insertItem(5, DarkenStringList.at(5), QVariant::fromValue(60));
+    mDarkenComboBox->insertItem(1, DarkenStringList.at(1), QVariant::fromValue(5));
+    mDarkenComboBox->insertItem(2, DarkenStringList.at(2), QVariant::fromValue(10));
+    mDarkenComboBox->insertItem(3, DarkenStringList.at(3), QVariant::fromValue(20));
+    mDarkenComboBox->insertItem(4, DarkenStringList.at(4), QVariant::fromValue(0));
 
     //低电量时执行
     LowpowerStringList << tr("nothing") << tr("blank") << tr("suspend") << tr("shutdown");
