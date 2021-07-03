@@ -113,12 +113,48 @@ void NetConnect::initComponent() {
     wifiBtn = new SwitchButton(pluginWidget);
     ui->openWIifLayout->addWidget(wifiBtn);
 
+    kdsDbus = new QDBusInterface("org.ukui.kds", \
+                                 "/", \
+                                 "org.ukui.kds.interface", \
+                                 QDBusConnection::systemBus());
     // 接收到系统创建网络连接的信号时刷新可用网络列表
-    QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager/Settings"), "org.freedesktop.NetworkManager.Settings", "NewConnection", this, SLOT(getNetList(void)));
+    QDBusConnection::systemBus().connect(QString(),
+                                         QString("/org/freedesktop/NetworkManager/Settings"),
+                                         "org.freedesktop.NetworkManager.Settings",
+                                         "NewConnection",
+                                         this,
+                                         SLOT(getNetList(void)));
+
     // 接收到系统删除网络连接的信号时刷新可用网络列表
-    QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager/Settings"), "org.freedesktop.NetworkManager.Settings", "ConnectionRemoved", this, SLOT(getNetList(void)));
+    QDBusConnection::systemBus().connect(QString(),
+                                         QString("/org/freedesktop/NetworkManager/Settings"),
+                                         "org.freedesktop.NetworkManager.Settings",
+                                         "ConnectionRemoved",
+                                         this,
+                                         SLOT(getNetList(void)));
+
     // 接收到系统更改网络连接属性时把判断是否已刷新的bool值置为false
-    QDBusConnection::systemBus().connect(QString(), QString("/org/freedesktop/NetworkManager"), "org.freedesktop.NetworkManager", "PropertiesChanged", this, SLOT(netPropertiesChangeSlot(QMap<QString,QVariant>)));
+    QDBusConnection::systemBus().connect(QString(),
+                                         QString("/org/freedesktop/NetworkManager"),
+                                         "org.freedesktop.NetworkManager", "PropertiesChanged",
+                                         this,
+                                         SLOT(netPropertiesChangeSlot(QMap<QString,QVariant>)));
+
+    //无线网卡拔出时刷新网络列表
+    QDBusConnection::systemBus().connect(QString("org.freedesktop.NetworkManager"),
+                                         QString("/org/freedesktop/NetworkManager"),
+                                         QString("org.freedesktop.NetworkManager"),
+                                         QString("DeviceRemoved"),
+                                         this,
+                                         SLOT(getNetList(void)));
+    //无线网卡插入时刷新网络列表
+    QDBusConnection::systemBus().connect(QString("org.freedesktop.NetworkManager"),
+                                         QString("/org/freedesktop/NetworkManager"),
+                                         QString("org.freedesktop.NetworkManager"),
+                                         QString("DeviceAdded"),
+                                         this,
+                                         SLOT(getNetList(void)));
+
     // 无线网络断开或连接时刷新可用网络列表
     connect(m_interface, SIGNAL(getWifiListFinished()), this, SLOT(refreshNetInfoTimerSlot()));
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(getNetList()));
@@ -138,7 +174,6 @@ void NetConnect::initComponent() {
             getNetList();
         }
     });
-
     connect(ui->detailBtn, &QPushButton::clicked, this, [=](bool checked) {
         Q_UNUSED(checked)
         runExternalApp();
@@ -153,6 +188,7 @@ void NetConnect::initComponent() {
         wifiBtn->blockSignals(false);
         QElapsedTimer time;
         time.start();
+        kdsDbus->call("emitRfkillStatusChanged");
         while (time.elapsed() < 2000) {
             QCoreApplication::processEvents();
         }
