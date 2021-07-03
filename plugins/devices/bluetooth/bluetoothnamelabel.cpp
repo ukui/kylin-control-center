@@ -93,6 +93,22 @@ void BluetoothNameLabel::set_dev_name(const QString &dev_name)
     device_name = dev_name;
 }
 
+void BluetoothNameLabel::dev_name_limit_fun()
+{
+    if (!messagebox) {
+        messagebox = new QMessageBox(QMessageBox::NoIcon,
+                                     tr("Tip"),
+                                     tr("The length of the device name does not exceed %1 characters !").arg(QString::number(DEVNAMELENGTH)),
+                                     QMessageBox::Ok);
+
+        if (messagebox->exec() == QMessageBox::Ok || messagebox->exec() == QMessageBox::Close) {
+            set_label_text(device_name);
+            delete messagebox;
+            messagebox = NULL;
+        }
+    }
+}
+
 void BluetoothNameLabel::mouseDoubleClickEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
@@ -140,8 +156,12 @@ void BluetoothNameLabel::LineEdit_Input_Complete()
     if(device_name == m_lineedit->text()){
         set_label_text(device_name);
     }else{
-        device_name = m_lineedit->text();
-        emit this->send_adapter_name(m_lineedit->text());
+        if (m_lineedit->text().length() > DEVNAMELENGTH) {
+            dev_name_limit_fun();
+        } else {
+            device_name = m_lineedit->text();
+            emit this->send_adapter_name(m_lineedit->text());
+        }
     }
     this->setStyleSheet("QWidget{border:none;border-radius:2px;}");
 }
@@ -153,7 +173,7 @@ void BluetoothNameLabel::set_label_text(const QString &value)
     QFont ft;
     QFontMetrics fm(ft);
     //QString text = fm.elidedText(m_lineedit->text(), Qt::ElideMiddle, font_width);
-    QString text = fm.elidedText(m_lineedit->text(), Qt::ElideMiddle, this->width());
+    QString text = fm.elidedText(value, Qt::ElideMiddle, this->width());
     //m_label->setText(tr("Can now be found as \"%1\"").arg(text));
     m_label->setText(text);
     m_label->setToolTip(tr("Can now be found as \"%1\"").arg(device_name));
