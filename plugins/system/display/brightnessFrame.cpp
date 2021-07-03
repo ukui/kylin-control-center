@@ -81,7 +81,9 @@ void BrightnessFrame::runConnectThread(const bool &openFlag)
             int brightnessValue = getDDCBrighthess();
             if (brightnessValue == -1 || !slider || exitFlag)
                 return;
-
+            if (brightnessValue > 100) {
+                brightnessValue = 100;
+            }
             slider->setValue(brightnessValue);
             setTextLabelValue(QString::number(brightnessValue));
             slider->setEnabled(true);

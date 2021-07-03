@@ -1183,6 +1183,23 @@ void Widget::kdsScreenchangeSlot(QString status)
     if (mConfig->connectedOutputs().count() >= 2) {
         mUnifyButton->setChecked(isCheck);
     }
+    QTimer::singleShot(1500, this, [=]{ //需要延时
+        Q_FOREACH(KScreen::OutputPtr output, mConfig->connectedOutputs()) {
+            if (output.isNull())
+                continue;
+            for (int i = 0; i < BrightnessFrameV.size(); ++i) {
+                if (BrightnessFrameV[i]->getOutputName() == Utils::outputName(output)) {
+                    qDebug()<<" ii i ==="<<i<<"  "<<Utils::outputName(output)<<"  "<<output->isEnabled();
+                    BrightnessFrameV[i]->setOutputEnable(output->isEnabled());
+                }
+            }
+        }
+        if (true == isCheck ) {
+            showBrightnessFrame(1);
+        } else {
+            showBrightnessFrame(2);
+        }
+    });
 }
 
 void Widget::delayApply()
@@ -1863,12 +1880,11 @@ void Widget::nightChangedSlot(QHash<QString, QVariant> nightArg)
 void Widget::showBrightnessFrame(const int flag)
 {
     bool allShowFlag = true;
-    KScreen::OutputPtr output = mConfig->primaryOutput();
-
     allShowFlag = isCloneMode();
 
     ui->unifyBrightFrame->setFixedHeight(0);
     if (flag == 0 && allShowFlag == false && mUnifyButton->isChecked()) {  //选中了镜像模式，实际是扩展模式
+
     } else if ((allShowFlag == true && flag == 0) || flag == 1) { //镜像模式/即将成为镜像模式
         ui->unifyBrightFrame->setFixedHeight(BrightnessFrameV.size() * (50 + 2 + 2));
         for (int i = 0; i < BrightnessFrameV.size(); ++i) {
