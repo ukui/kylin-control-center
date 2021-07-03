@@ -140,21 +140,6 @@ void NetConnect::initComponent() {
                                          this,
                                          SLOT(netPropertiesChangeSlot(QMap<QString,QVariant>)));
 
-    //无线网卡拔出时刷新网络列表
-    QDBusConnection::systemBus().connect(QString("org.freedesktop.NetworkManager"),
-                                         QString("/org/freedesktop/NetworkManager"),
-                                         QString("org.freedesktop.NetworkManager"),
-                                         QString("DeviceRemoved"),
-                                         this,
-                                         SLOT(getNetList(void)));
-    //无线网卡插入时刷新网络列表
-    QDBusConnection::systemBus().connect(QString("org.freedesktop.NetworkManager"),
-                                         QString("/org/freedesktop/NetworkManager"),
-                                         QString("org.freedesktop.NetworkManager"),
-                                         QString("DeviceAdded"),
-                                         this,
-                                         SLOT(getNetList(void)));
-
     // 无线网络断开或连接时刷新可用网络列表
     connect(m_interface, SIGNAL(getWifiListFinished()), this, SLOT(refreshNetInfoTimerSlot()));
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(getNetList()));
