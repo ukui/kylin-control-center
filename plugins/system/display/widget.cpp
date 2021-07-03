@@ -179,13 +179,16 @@ void Widget::setConfig(const KScreen::ConfigPtr &config, bool showBrightnessFram
     KScreen::ConfigMonitor::instance()->addConfig(mConfig);
     resetPrimaryCombo();
     connect(mConfig.data(), &KScreen::Config::outputAdded,
-            this, &Widget::outputAdded);
+            this, [=](const KScreen::OutputPtr &output){
+        outputAdded(output, false);
+    });
     connect(mConfig.data(), &KScreen::Config::outputRemoved,
-            this, &Widget::outputRemoved);
+            this, [=](int outputId){
+        outputRemoved(outputId, false);
+    });
 
     connect(mConfig.data(), &KScreen::Config::primaryOutputChanged,
             this, &Widget::primaryOutputChanged);
-
 
     // 上面屏幕拿取配置
     mScreen->setConfig(mConfig);
@@ -193,10 +196,12 @@ void Widget::setConfig(const KScreen::ConfigPtr &config, bool showBrightnessFram
     mUnifyButton->setEnabled(mConfig->connectedOutputs().count() > 1);
     ui->unionframe->setVisible(mConfig->outputs().count() > 1);
 
-    for (const KScreen::OutputPtr &output : mConfig->outputs()) {
-        outputAdded(output);
+    if (false == unifySetconfig) {
+        for (const KScreen::OutputPtr &output : mConfig->outputs()) {
+            outputAdded(output, false);
+        }
     }
-
+    unifySetconfig = false;
     // 择主屏幕输出
     QMLOutput *qmlOutput = mScreen->primaryOutput();
 
@@ -331,37 +336,15 @@ void Widget::slotOutputEnabledChanged()
 
 void Widget::slotOutputConnectedChanged()
 {
-    resetPrimaryCombo();
-    for (auto &output: mConfig->outputs()) {
-        bool frameExist = false;
-        if (!output->isConnected()) {
-            if (mUnifyButton->isChecked()) {
-                for (QMLOutput *qmlOutput: mScreen->outputs()) {
-                    if (!qmlOutput->output()->isConnected()) {
-                        continue;
-                    }
-                    qmlOutput->setIsCloneMode(false);
-                    qmlOutput->blockSignals(true);
-                    qmlOutput->setVisible(true);
-                    qmlOutput->blockSignals(false);
-                }
-            }
-            ui->unionframe->setVisible(mConfig->connectedOutputs().count() > 1);
-            mUnifyButton->blockSignals(true);
-            mUnifyButton->setChecked(mConfig->connectedOutputs().count() > 1);
-            mUnifyButton->blockSignals(false);
-            mainScreenButtonSelect(ui->primaryCombo->currentIndex());
-        }
-        for (int i = 0; i < BrightnessFrameV.size(); ++i) {
-            if (BrightnessFrameV[i]->getOutputName() == Utils::outputName(output))
-                frameExist = true;
-        }
-        if (false == frameExist && output->isConnected()) {
-            QString name = Utils::outputName(output);
-            addBrightnessFrame(name, output->isEnabled(), output->edid()->serial());
-        }
+    const KScreen::OutputPtr output(qobject_cast<KScreen::Output *>(sender()), [](void *){});
+
+    if (output->isConnected()) {
+        outputAdded(output, true);
+    } else {
+        outputRemoved(output->id(), true);
     }
-    showBrightnessFrame(2);
+
+    resetPrimaryCombo();
 
 }
 
@@ -399,6 +382,7 @@ void Widget::slotUnifyOutputs()
                 }
             }
         }
+        unifySetconfig = true;
         setConfig(mPrevConfig);
 
         ui->primaryCombo->setEnabled(true);
@@ -717,6 +701,9 @@ QString Widget::getCpuInfo()
 bool Widget::isCloneMode()
 {
     KScreen::OutputPtr output = mConfig->primaryOutput();
+    if (!output) {
+        return false;
+    }
     if (mConfig->connectedOutputs().count() >= 2) {
         foreach (KScreen::OutputPtr secOutput, mConfig->connectedOutputs()) {
             if (secOutput->geometry() != output->geometry() || !secOutput->isEnabled()) {
@@ -856,17 +843,19 @@ void Widget::addBrightnessFrame(QString name, bool openFlag, QString serialNum)
 
 }
 
-void Widget::outputAdded(const KScreen::OutputPtr &output)
+
+void Widget::outputAdded(const KScreen::OutputPtr &output, bool connectChanged)
 {
     if (output->isConnected()) {
         QString name = Utils::outputName(output);
         addBrightnessFrame(name, output->isEnabled(), output->edid()->serial());
     }
-
-    connect(output.data(), &KScreen::Output::isConnectedChanged,
-            this, &Widget::slotOutputConnectedChanged);
-    connect(output.data(), &KScreen::Output::isEnabledChanged,
-            this, &Widget::slotOutputEnabledChanged);
+    if (!connectChanged) {
+        connect(output.data(), &KScreen::Output::isConnectedChanged,
+                this, &Widget::slotOutputConnectedChanged);
+        connect(output.data(), &KScreen::Output::isEnabledChanged,
+                this, &Widget::slotOutputEnabledChanged);
+    }
 
     addOutputToPrimaryCombo(output);
 
@@ -888,6 +877,8 @@ void Widget::outputAdded(const KScreen::OutputPtr &output)
     mUnifyButton->setEnabled(mConfig->connectedOutputs().count() > 1);
 
     if (!mFirstLoad) {
+        mIsScreenAdd = true;
+        mUnifyButton->setChecked(isCloneMode());
         QTimer::singleShot(2000, this, [=] {
             mainScreenButtonSelect(ui->primaryCombo->currentIndex());
         });
@@ -895,27 +886,26 @@ void Widget::outputAdded(const KScreen::OutputPtr &output)
     showBrightnessFrame();
 }
 
-void Widget::outputRemoved(int outputId)
+void Widget::outputRemoved(int outputId, bool connectChanged)
 {
-    KScreen::OutputPtr output = mConfig->output(outputId);
-    if (!output.isNull()) {
-        output->disconnect(this);
+    if (!connectChanged) {
+        KScreen::OutputPtr output = mConfig->output(outputId);
+        if (!output.isNull()) {
+            output->disconnect(this);
+        }
     }
-
     const int index = ui->primaryCombo->findData(outputId);
-    if (index == -1) {
-        return;
-    }
+    if (index != -1) {
+        if (index == ui->primaryCombo->currentIndex()) {
+            // We'll get the actual primary update signal eventually
+            // Don't emit currentIndexChanged
+            const bool blocked = ui->primaryCombo->blockSignals(true);
+            ui->primaryCombo->setCurrentIndex(0);
+            ui->primaryCombo->blockSignals(blocked);
+        }
 
-    if (index == ui->primaryCombo->currentIndex()) {
-        // We'll get the actual primary update signal eventually
-        // Don't emit currentIndexChanged
-        const bool blocked = ui->primaryCombo->blockSignals(true);
-        ui->primaryCombo->setCurrentIndex(0);
-        ui->primaryCombo->blockSignals(blocked);
+        ui->primaryCombo->removeItem(index);
     }
-
-    ui->primaryCombo->removeItem(index);
 
     // 检查统一输出-防止移除后没有屏幕可显示
     if (mUnifyButton->isChecked()) {
@@ -934,7 +924,7 @@ void Widget::outputRemoved(int outputId)
     mUnifyButton->setChecked(mConfig->connectedOutputs().count() > 1);
     mUnifyButton->blockSignals(false);
     mainScreenButtonSelect(ui->primaryCombo->currentIndex());
-	showBrightnessFrame();
+    showBrightnessFrame();
 }
 
 void Widget::primaryOutputSelected(int index)
@@ -1198,10 +1188,12 @@ void Widget::kdsScreenchangeSlot(QString status)
 void Widget::delayApply()
 {
     QTimer::singleShot(200, this, [=]() {
-        if (mKDSCfg.isEmpty()) {
-            save();
-        }
+        // kds与插拔不触发应用操作
+         if (mKDSCfg.isEmpty() && !mIsScreenAdd) {
+             save();
+         }
         mKDSCfg.clear();
+        mIsScreenAdd = false;
     });
 }
 
@@ -1873,28 +1865,7 @@ void Widget::showBrightnessFrame(const int flag)
     bool allShowFlag = true;
     KScreen::OutputPtr output = mConfig->primaryOutput();
 
-
-    if (mConfig->connectedOutputs().count() == 0) {
-        return;
-    } else if (mConfig->connectedOutputs().count() >= 2) {
-        foreach (KScreen::OutputPtr secOutput, mConfig->connectedOutputs()) {
-            if (!output || secOutput->geometry() != output->geometry() || !secOutput->isEnabled()) {
-                allShowFlag = false;
-            }
-            for (int i = 0; i < BrightnessFrameV.size(); ++i) { //检查其它显示屏是否实际打开，否则关闭，适用于显示器插拔
-                if (BrightnessFrameV[i]->getOutputName() == Utils::outputName(secOutput) && !secOutput->isEnabled()){
-                    BrightnessFrameV[i]->setOutputEnable(false);
-                }
-            }
-        }
-    } else {  //只有一个屏幕，把它亮度条打开，防止remove出问题
-        allShowFlag = false;
-        for (int i = 0; i < BrightnessFrameV.size(); ++i) {
-            if (BrightnessFrameV[i]->getOutputName() == Utils::outputName(output)) {
-                BrightnessFrameV[i]->setOutputEnable(true);
-            }
-        }
-    }
+    allShowFlag = isCloneMode();
 
     ui->unifyBrightFrame->setFixedHeight(0);
     if (flag == 0 && allShowFlag == false && mUnifyButton->isChecked()) {  //选中了镜像模式，实际是扩展模式

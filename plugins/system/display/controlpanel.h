@@ -33,13 +33,14 @@ private:
 
 public Q_SLOTS:
     void activateOutput(const KScreen::OutputPtr &output);
+    void slotOutputConnectedChanged();
 
 Q_SIGNALS:
     void changed();
     void scaleChanged(double scale);
 
 private Q_SLOTS:
-    void addOutput(const KScreen::OutputPtr &output);
+    void addOutput(const KScreen::OutputPtr &output, bool connectChanged);
     void removeOutput(int outputId);
 
 public:

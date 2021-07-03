@@ -110,8 +110,8 @@ private Q_SLOTS:
     void slotIdentifyOutputs(KScreen::ConfigOperation *op);
     void clearOutputIdentifiers();
 
-    void outputAdded(const KScreen::OutputPtr &output);
-    void outputRemoved(int outputId);
+    void outputAdded(const KScreen::OutputPtr &output, bool connectChanged);
+    void outputRemoved(int outputId, bool connectChanged);
     void primaryOutputSelected(int index);
     void primaryOutputChanged(const KScreen::OutputPtr &output);
 
@@ -225,13 +225,14 @@ private:
     bool mFirstLoad = true;
     bool mIsWayland = false;
     bool mIsBattery = false;
+    bool mIsScreenAdd = false;
 
     QShortcut *mApplyShortcut;
     QVector<BrightnessFrame*> BrightnessFrameV;
     //BrightnessFrame *currentBrightnessFrame;
     bool exitFlag = false;
     QString     mKDSCfg;
-
+    bool unifySetconfig = false;
 };
 
 #endif // WIDGET_H

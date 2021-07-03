@@ -36,17 +36,24 @@ void ControlPanel::setConfig(const KScreen::ConfigPtr &config)
 
     mConfig = config;
     connect(mConfig.data(), &KScreen::Config::outputAdded,
-            this, &ControlPanel::addOutput);
+            this, [=](const KScreen::OutputPtr &output) {
+        addOutput(output, false);
+    });
     connect(mConfig.data(), &KScreen::Config::outputRemoved,
             this, &ControlPanel::removeOutput);
 
     for (const KScreen::OutputPtr &output : mConfig->outputs()) {
-        addOutput(output);
+        addOutput(output, false);
     }
 }
 
-void ControlPanel::addOutput(const KScreen::OutputPtr &output)
+void ControlPanel::addOutput(const KScreen::OutputPtr &output, bool connectChanged)
 {
+    if (!connectChanged) {
+        connect(output.data(), &KScreen::Output::isConnectedChanged,
+                    this, &ControlPanel::slotOutputConnectedChanged);
+    }
+
     OutputConfig *outputCfg = new OutputConfig(this);
     outputCfg->setVisible(false);
     outputCfg->setShowScaleOption(mConfig->supportedFeatures().testFlag(KScreen::Config::Feature::PerOutputScaling));
@@ -143,5 +150,17 @@ void ControlPanel::setUnifiedOutput(const KScreen::OutputPtr &output)
         mLayout->insertWidget(mLayout->count() - 2, mUnifiedOutputCfg);
         connect(mUnifiedOutputCfg, &UnifiedOutputConfig::changed,
                 this, &ControlPanel::changed);
+    }
+}
+
+void ControlPanel::slotOutputConnectedChanged()
+{
+    const KScreen::OutputPtr output(qobject_cast<KScreen::Output *>(sender()), [](void *){
+    });
+
+    if (output->isConnected()) {
+        addOutput(output, true);
+    } else {
+        removeOutput(output->id());
     }
 }

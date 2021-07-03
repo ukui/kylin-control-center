@@ -280,7 +280,7 @@ void OutputConfig::slotResolutionChanged(const QSize &size, bool emitFlag)
         }
     }
 
-    Q_ASSERT(currentMode);
+//    Q_ASSERT(currentMode);
     if (!currentMode)
         return;
     modeID = currentMode->id();
