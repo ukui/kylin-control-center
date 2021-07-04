@@ -196,12 +196,17 @@ void Widget::setConfig(const KScreen::ConfigPtr &config, bool showBrightnessFram
     mUnifyButton->setEnabled(mConfig->connectedOutputs().count() > 1);
     ui->unionframe->setVisible(mConfig->outputs().count() > 1);
 
-    if (false == unifySetconfig) {
-        for (const KScreen::OutputPtr &output : mConfig->outputs()) {
+    for (const KScreen::OutputPtr &output : mConfig->outputs()) {
+        if (false == unifySetconfig) {
             outputAdded(output, false);
+        } else { //解决统一输出之后connect信号不再触发的问题
+            connect(output.data(), &KScreen::Output::isConnectedChanged,
+                this, &Widget::slotOutputConnectedChanged);
+            connect(output.data(), &KScreen::Output::isEnabledChanged,
+                this, &Widget::slotOutputEnabledChanged);
         }
     }
-    unifySetconfig = false;
+   unifySetconfig = false;
     // 择主屏幕输出
     QMLOutput *qmlOutput = mScreen->primaryOutput();
 
@@ -859,6 +864,14 @@ void Widget::outputAdded(const KScreen::OutputPtr &output, bool connectChanged)
 
     addOutputToPrimaryCombo(output);
 
+    if (!mFirstLoad) {
+        mIsScreenAdd = true;
+        mUnifyButton->setChecked(isCloneMode());
+        QTimer::singleShot(2000, this, [=] {
+            mainScreenButtonSelect(ui->primaryCombo->currentIndex());
+        });
+    }
+
     // 检查统一输出-防止多显示屏幕
     if (mUnifyButton->isChecked()) {
         for (QMLOutput *qmlOutput: mScreen->outputs()) {
@@ -876,13 +889,6 @@ void Widget::outputAdded(const KScreen::OutputPtr &output, bool connectChanged)
     ui->unionframe->setVisible(mConfig->connectedOutputs().count() > 1);
     mUnifyButton->setEnabled(mConfig->connectedOutputs().count() > 1);
 
-    if (!mFirstLoad) {
-        mIsScreenAdd = true;
-        mUnifyButton->setChecked(isCloneMode());
-        QTimer::singleShot(2000, this, [=] {
-            mainScreenButtonSelect(ui->primaryCombo->currentIndex());
-        });
-    }
     showBrightnessFrame();
 }
 
@@ -1189,7 +1195,6 @@ void Widget::kdsScreenchangeSlot(QString status)
                 continue;
             for (int i = 0; i < BrightnessFrameV.size(); ++i) {
                 if (BrightnessFrameV[i]->getOutputName() == Utils::outputName(output)) {
-                    qDebug()<<" ii i ==="<<i<<"  "<<Utils::outputName(output)<<"  "<<output->isEnabled();
                     BrightnessFrameV[i]->setOutputEnable(output->isEnabled());
                 }
             }
@@ -1206,9 +1211,9 @@ void Widget::delayApply()
 {
     QTimer::singleShot(200, this, [=]() {
         // kds与插拔不触发应用操作
-         if (mKDSCfg.isEmpty() && !mIsScreenAdd) {
-             save();
-         }
+        if (mKDSCfg.isEmpty() && !mIsScreenAdd) {
+            save();
+        }
         mKDSCfg.clear();
         mIsScreenAdd = false;
     });
