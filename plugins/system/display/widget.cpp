@@ -563,28 +563,6 @@ void Widget::initGSettings()
         return;
     }
 
-//    QByteArray powerId(POWER_SCHMES);
-//    if (QGSettings::isSchemaInstalled(powerId)) {
-//        mPowerGSettings = new QGSettings(powerId, QByteArray(), this);
-//        mPowerKeys = mPowerGSettings->keys();
-//        connect(mPowerGSettings, &QGSettings::changed, this, [=](QString key) {
-//            if ("brightnessAc" == key || "brightnessBat" == key) {
-//                int value = mPowerGSettings->get(key).toInt();
-//                if (mIsWayland && !mIsBattery) {
-//                    value = (value == 0 ? 0 : value / 10);
-//                }
-
-//                for (int i = 0; i < BrightnessFrameV.size(); ++i) {
-//                    if (BrightnessFrameV[i]->getOutputName() == "eDP") {
-//                       BrightnessFrameV[i]->slider->blockSignals(true);
-//                       BrightnessFrameV[i]->setTextLabelValue(QString::number(value));
-//                       BrightnessFrameV[i]->slider->setValue(value);
-//                       BrightnessFrameV[i]->slider->blockSignals(false);
-//                    }
-//                }
-//            }
-//        });
-//    }
 
     QByteArray scaleId(FONT_RENDERING_DPI);
     if (QGSettings::isSchemaInstalled(scaleId)) {
@@ -828,7 +806,7 @@ void Widget::clearOutputIdentifiers()
 
 void Widget::addBrightnessFrame(QString name, bool openFlag, QString serialNum)
 {
-    if (mIsBattery && name != "eDP")  //笔记本非内置
+    if (mIsBattery && !name.contains("eDP"))  //笔记本非内置
         return;
     for (int i = 0; i < BrightnessFrameV.size(); ++i) {  //已经有了
         if (name == BrightnessFrameV[i]->getOutputName())
@@ -836,7 +814,7 @@ void Widget::addBrightnessFrame(QString name, bool openFlag, QString serialNum)
     }
 
     BrightnessFrame *frame = nullptr;
-    if (mIsBattery && name == "eDP") {
+    if (mIsBattery && name.contains("eDP")) {
         frame = new BrightnessFrame(name, true, serialNum);
     } else if(!mIsBattery) {
         frame = new BrightnessFrame(name, false, serialNum);

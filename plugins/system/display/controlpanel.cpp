@@ -86,7 +86,11 @@ void ControlPanel::removeOutput(int outputId)
             delete outputCfg;
             outputCfg = nullptr;
         } else {
-            outputCfg->setVisible(true);
+            if (outputCfg->output()->isConnected()) {
+                outputCfg->setVisible(true);
+            } else {
+                outputCfg->setVisible(false);
+            }
         }
     }
 }
