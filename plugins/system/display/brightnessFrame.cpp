@@ -158,9 +158,7 @@ void BrightnessFrame::getDDCtype()
                            "/",
                            "com.control.center.interface",
                            QDBusConnection::systemBus());
-    qDebug()<<"11111111111111111111111111";
     QDBusReply<QVariantMap> replyMap = ukccIfc.call("getBusMap");
-    qDebug()<<"2222222222222222222222222222222";
     QMap<QString, QVariant>::const_iterator replay_i = replyMap.value().constBegin();
     while (replay_i != replyMap.value().constEnd()) {
         if (serialNum == replay_i.key()) {
