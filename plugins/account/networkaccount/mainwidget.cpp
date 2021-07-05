@@ -118,7 +118,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_checkTimer->setInterval(500);
     m_checkTimer->start();
 
-    QFile tokenFile(QDir::homePath() + "/.cache/kylinId/token");
+    QFile tokenFile(QDir::homePath() + "/.cache/kylinId/" + ACC_INFO);
     if (tokenFile.exists() && tokenFile.size() > 1) {
         m_mainWidget->setCurrentWidget(m_widgetContainer);
     } else {
@@ -583,7 +583,7 @@ void MainWidget::singleExecutor(QTimer *timer, int mesc) {
 }
 
 void MainWidget::setTokenWatcher() {
-    QString tokenFile = QDir::homePath() + "/.cache/kylinId/token";
+    QString tokenFile = QDir::homePath() + "/.cache/kylinId/" + ACC_INFO;
     m_fsWatcher.addPath(tokenFile);
 
     connect(&m_fsWatcher,&QFileSystemWatcher::fileChanged,this,[=] () {
@@ -815,7 +815,7 @@ void MainWidget::initSignalSlots() {
         } else if (m_mainWidget->currentWidget() == m_nullWidget) {
             m_mainDialog->setnormal();
             //on_login_out();
-            QFile token(QDir::homePath() + "/.cache/kylinId/token");
+            QFile token(QDir::homePath() + "/.cache/kylinId/" + ACC_INFO);
             if (token.exists()) {
                 token.remove();
             }
