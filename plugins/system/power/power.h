@@ -141,6 +141,8 @@ private:
     QStringList DarkenStringList;
     QStringList LowpowerStringList;
 
+    QStringList mKeys;
+
     bool mFirstLoad;
     bool isExitsLid;
     bool isExitHibernate;

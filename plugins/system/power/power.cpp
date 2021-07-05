@@ -93,6 +93,10 @@ QWidget * Power::get_plugin_ui() {
 
                 }
             });
+            mKeys = settings->keys();
+            for (QString mstring : mKeys) {
+                qDebug()<<mstring;
+            }
         }
 
         InitUI(pluginWidget);
@@ -674,13 +678,15 @@ void Power::setupConnect()
         settings->set(BUTTON_LID_BATT_KET, mCloseLidComboBox->itemData(index));
     });
 
-    connect(mPowerComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
-        settings->set(POWER_POLICY_AC, index + 1);
-    });
+    if (mKeys.contains("powerPolicyAc") && mKeys.contains("powerPolicyBattery")) {
+        connect(mPowerComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+            settings->set(POWER_POLICY_AC, index + 1);
+        });
 
-    connect(mBatteryComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
-        settings->set(POWER_POLICY_BATTARY, index + 1);
-    });
+        connect(mBatteryComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+            settings->set(POWER_POLICY_BATTARY, index + 1);
+        });
+    }
 
     connect(mDarkenComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
         Q_UNUSED(index)
@@ -726,16 +732,22 @@ void Power::initCustomPlanStatus()
     mCloseComboBox->setCurrentIndex(mCloseComboBox->findData(settings->get(SLEEP_DISPLAY_AC_KEY).toInt() / FIXES));
     mCloseLidComboBox->setCurrentIndex(mCloseLidComboBox->findData(settings->get(BUTTON_LID_AC_KEY).toString()));
 
-    if (1 == settings->get(POWER_POLICY_AC).toInt()) {
-        mPowerComboBox->setCurrentIndex(mPowerComboBox->findData("Balance Model"));
+    if (mKeys.contains("powerPolicyAc") && mKeys.contains("powerPolicyBattery")) {
+        if (1 == settings->get(POWER_POLICY_AC).toInt()) {
+            mPowerComboBox->setCurrentIndex(mPowerComboBox->findData("Balance Model"));
+        } else {
+            mPowerComboBox->setCurrentIndex(mPowerComboBox->findData("Save Model"));
+        }
+        if (1 == settings->get(POWER_POLICY_BATTARY).toInt()) {
+            mBatteryComboBox->setCurrentIndex(mBatteryComboBox->findData("Balance Model"));
+        } else {
+            mBatteryComboBox->setCurrentIndex(mBatteryComboBox->findData("Save Model"));
+        }
     } else {
-        mPowerComboBox->setCurrentIndex(mPowerComboBox->findData("Save Model"));
+        mPowerComboBox->setEnabled(false);
+        mBatteryComboBox->setEnabled(false);
     }
-    if (1 == settings->get(POWER_POLICY_BATTARY).toInt()) {
-        mBatteryComboBox->setCurrentIndex(mBatteryComboBox->findData("Balance Model"));
-    } else {
-        mBatteryComboBox->setCurrentIndex(mBatteryComboBox->findData("Save Model"));
-    }
+
 
     mDarkenComboBox->setCurrentIndex(mDarkenComboBox->findData(settings->get(IDLE_DIM_TIME_KEY).toInt() / FIXES));
     mLowpowerComboBox1->setCurrentIndex(settings->get(PER_ACTION_KEY).toInt() - 5);
