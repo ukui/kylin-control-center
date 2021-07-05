@@ -89,6 +89,8 @@ public:
     int importantSize = 0;
     bool isPointOutNotBackup = true; //是否在单包更新时弹出提示未备份
 
+    QString notifyMsg = "";
+
 
     bool fileLock();
     void fileUnLock();
