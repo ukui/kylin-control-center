@@ -877,6 +877,12 @@ void BlueToothMain::serviceDiscoveredChange(BluezQt::DevicePtr device)
 
 void BlueToothMain::receiveConnectsignal(QString device)
 {
+
+    if (m_localDevice->isDiscovering())
+    {
+        m_localDevice->stopDiscovery();
+    }
+
     QDBusMessage m = QDBusMessage::createMethodCall("org.ukui.bluetooth","/org/ukui/bluetooth","org.ukui.bluetooth","connectToDevice");
     m << device;
     qDebug() << Q_FUNC_INFO << m.arguments().at(0).value<QString>() <<__LINE__;
