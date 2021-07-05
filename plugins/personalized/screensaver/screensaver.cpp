@@ -28,36 +28,30 @@
 #include "ComboBox/combobox.h"
 #include <QListView>
 
-#define SSTHEMEPATH "/usr/share/applications/screensavers/"
-#define ID_PREFIX "screensavers-ukui-"
+#define SSTHEMEPATH                 "/usr/share/applications/screensavers/"
+#define ID_PREFIX                   "screensavers-ukui-"
 
-#define SCREENSAVER_SCHEMA "org.ukui.screensaver"
-#define MODE_KEY "mode"
-#define THEMES_KEY "themes"
-#define LOCK_KEY "lock-enabled"
-#define ACTIVE_KEY "idle-activation-enabled"
-#define AUTO_SWITCH_KEY "automatic-switching-enabled"
-#define MYTEXT_KEY "mytext"
-#define TEXT_CENTER_KEY "text-is-center"
-#define SHOW_REST_TIME_KEY "show-rest-time"
-#define CONTAIN_AUTO_SWITCH_KEY "automaticSwitchingEnabled"
-#define CONTAIN_MYTEXT_KEY "mytext"
-#define CONTAIN_TEXT_CENTER_KEY "textIsCenter"
-#define CONTAIN_SHOW_REST_TIME_KEY "showRestTime"
+#define SCREENSAVER_SCHEMA          "org.ukui.screensaver"
+#define MODE_KEY                    "mode"
+#define THEMES_KEY                  "themes"
+#define LOCK_KEY                    "lock-enabled"
+#define ACTIVE_KEY                  "idle-activation-enabled"
+#define AUTO_SWITCH_KEY             "automatic-switching-enabled"
+#define MYTEXT_KEY                  "mytext"
+#define TEXT_CENTER_KEY             "text-is-center"
+#define SHOW_REST_TIME_KEY          "show-rest-time"
+#define CONTAIN_AUTO_SWITCH_KEY     "automaticSwitchingEnabled"
+#define CONTAIN_MYTEXT_KEY          "mytext"
+#define CONTAIN_TEXT_CENTER_KEY     "textIsCenter"
+#define CONTAIN_SHOW_REST_TIME_KEY  "showRestTime"
+#define IDLE_DELAY_KEY              "idle-delay"
 
-#define SCREENSAVER_DEFAULT_SCHEMA "org.ukui.screensaver-default"
-#define BACKGROUND_PATH_KEY "background-path"
-#define CYCLE_TIME_KEY "cycle-time"
+#define SCREENSAVER_DEFAULT_SCHEMA  "org.ukui.screensaver-default"
+#define BACKGROUND_PATH_KEY         "background-path"
+#define CYCLE_TIME_KEY              "cycle-time"
 #define CONTAIN_BACKGROUND_PATH_KEY "backgroundPath"
-#define CONTAIN_CYCLE_TIME_KEY "cycleTime"
+#define CONTAIN_CYCLE_TIME_KEY      "cycleTime"
 
-
-#define SESSION_SCHEMA "org.ukui.session"
-#define IDLE_DELAY_KEY "idle-delay"
-
-#define BACKGROUND_SCHEMA "org.mate.background"
-
-const QString BACK_FILENAME_KEY = "pictureFilename";
 const int silderNeverValue = -1;
 
 #define IDLEMIN 1
@@ -66,20 +60,19 @@ const int silderNeverValue = -1;
 
 typedef enum
 {
-    MODE_BLANK_ONLY,       //纯黑屏保
-    MODE_RANDOM,          //暂无
-    MODE_SINGLE,         //单独的屏保设置(多用于其它屏保)
-    MODE_IMAGE,          //暂无
-    MODE_DEFAULT_UKUI,   //UKUI
-    MODE_CUSTOMIZE,     //自定义
+    MODE_BLANK_ONLY,   // 纯黑屏保
+    MODE_RANDOM,       // 暂无
+    MODE_SINGLE,       // 单独的屏保设置(多用于其它屏保)
+    MODE_IMAGE,        // 暂无
+    MODE_DEFAULT_UKUI, // UKUI
+    MODE_CUSTOMIZE,    // 自定义
 }SaverMode;
 
 
 const QStringList screensaverList = {
                             "BinaryRing",
                             "FuzzyFlakes",
-                            "Galaxy"
-                          };
+                            "Galaxy"};
 
 /*
  选择框中的序号     
@@ -95,8 +88,6 @@ Screensaver::Screensaver() : mFirstLoad(true)
 {
     pluginName = tr("Screensaver");
     pluginType = PERSONALIZED;
-   // this->setAttribute(Qt::WA_TranslucentBackground,false);
-
 }
 
 Screensaver::~Screensaver()
@@ -181,13 +172,9 @@ void Screensaver::initSearchText()
 
 void Screensaver::initComponent()
 {
-    if (QGSettings::isSchemaInstalled(SESSION_SCHEMA)) {
-        qSessionSetting = new QGSettings(SESSION_SCHEMA, QByteArray(), this);
-    }
     if (QGSettings::isSchemaInstalled(SCREENSAVER_SCHEMA)) {
         qScreenSaverSetting = new QGSettings(SCREENSAVER_SCHEMA, QByteArray(), this);
-    } else {
-        qScreenSaverSetting = nullptr;
+        mScreenSaverKeies = qScreenSaverSetting->keys();
     }
 
     if (QGSettings::isSchemaInstalled(SCREENSAVER_DEFAULT_SCHEMA)) {
@@ -262,21 +249,21 @@ void Screensaver::initComponent()
             g_object_unref(screensaver_settings);
         }
         else {
-            if(qScreenSaverSetting->get(ACTIVE_KEY).toBool() == false) {  //需先打开屏保
+            if (qScreenSaverSetting->get(ACTIVE_KEY).toBool() == false) {  //需先打开屏保
                 screensaver_settings = g_settings_new(SCREENSAVER_SCHEMA);  
                 g_settings_set_boolean(screensaver_settings, ACTIVE_KEY, true);
                 g_object_unref(screensaver_settings);
             }
-            session_settings = g_settings_new(SESSION_SCHEMA);
-            g_settings_set_int(session_settings, IDLE_DELAY_KEY, value);
-            g_object_unref(session_settings);
+            if (mScreenSaverKeies.contains("idleDelay")) {
+                qScreenSaverSetting->set(IDLE_DELAY_KEY, value);
+            }
         }
     });
     connectToServer();
-    connect(qSessionSetting, &QGSettings::changed, this,[=](const QString& key) {
+    connect(qScreenSaverSetting, &QGSettings::changed, this,[=](const QString& key) {
        if ("idleDelay" == key) {
             if (qScreenSaverSetting->get(ACTIVE_KEY).toBool() == true) {
-                auto value = qSessionSetting->get(key).toInt();
+                int value = qScreenSaverSetting->get(key).toInt();
                 uslider->setValue(lockConvertToSlider(value));
             }
        }
@@ -368,14 +355,13 @@ void Screensaver::initIdleSliderStatus()
         uslider->setValue(lockConvertToSlider(silderNeverValue));
         uslider->blockSignals(false);
     } else {
-    session_settings = g_settings_new(SESSION_SCHEMA);
-    minutes = g_settings_get_int(session_settings, IDLE_DELAY_KEY);
-    uslider->blockSignals(true);
-    uslider->setValue(lockConvertToSlider(minutes));
-    uslider->blockSignals(false);
-    g_object_unref(session_settings);
-}
-
+        if (mScreenSaverKeies.contains("idleDelay")) {
+            minutes = qScreenSaverSetting->get(IDLE_DELAY_KEY).toInt();
+        }
+        uslider->blockSignals(true);
+        uslider->setValue(lockConvertToSlider(minutes));
+        uslider->blockSignals(false);
+    }
 }
 
 void Screensaver::startupScreensaver()

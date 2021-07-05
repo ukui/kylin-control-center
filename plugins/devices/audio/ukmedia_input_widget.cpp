@@ -79,7 +79,7 @@ UkmediaInputWidget::UkmediaInputWidget(QWidget *parent) : QWidget(parent)
     //~ contents_path /audio/Volume
     m_pIpVolumeLabel = new QLabel(tr("Volume"),m_pVolumeWidget);
     m_pInputIconBtn = new UkuiButtonDrawSvg(m_pVolumeWidget);
-    m_pIpVolumeSlider = new AudioSlider(m_pVolumeWidget);
+    m_pIpVolumeSlider = new AudioSlider();
     m_pIpVolumePercentLabel = new QLabel(m_pVolumeWidget);
     //~ contents_path /audio/Input Level
     m_pInputLevelLabel = new QLabel(tr("Input Level"),m_pInputLevelWidget);

@@ -158,9 +158,6 @@ private:
 
     GSettings  * screensaver_settings;
     QGSettings * qScreensaverDefaultSetting;
-    GSettings  * session_settings;
-    QGSettings * screenlock_settings = nullptr;
-    QGSettings * qSessionSetting = nullptr;
     QGSettings * qScreenSaverSetting = nullptr;
     QGSettings * qBgSetting = nullptr;
 
@@ -169,8 +166,9 @@ private:
     QString      pluginName;
     QString      screensaver_bin;
 
-    QStringList  killList;
-    QStringList  runStringList;
+    QStringList killList;
+    QStringList runStringList;
+    QStringList mScreenSaverKeies;
 
     Uslider    * uslider;
 

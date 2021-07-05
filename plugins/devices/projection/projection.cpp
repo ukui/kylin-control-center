@@ -244,6 +244,18 @@ QWidget *Projection::get_plugin_ui(){
        ui->pronamelabel->setEnabled(false);
         projectionBtn->setEnabled(false);
     }
+    else if (SUPPORT_P2P_WITHOUT_DEV == projectionstatus) {
+        //QMessageBox::information(NULL, QStringLiteral("提示"), QStringLiteral("由于无线网卡驱动限制，投屏开启后会关闭网络管理器，导致wifi断开。\n当不使用投屏时请关闭投屏功能，否则会影响网络使用"));
+        ui->tipLabel_msg->setText("由于无线网卡驱动限制，投屏开启后会关闭网络管理器，导致wifi断开");
+        ui->pronamelabel->setEnabled(true);
+        projectionBtn->setEnabled(true);
+    }
+    else if (OP_NO_RESPONSE == projectionstatus) {
+        //QMessageBox::information(NULL, QStringLiteral("提示"), QStringLiteral("查询无线网卡暂时无响应，请稍后再试"));
+        ui->tipLabel_msg->setText("查询无线网卡暂时无响应，请稍后再试");
+        ui->pronamelabel->setEnabled(true);
+        projectionBtn->setEnabled(true);
+    }
 
     else if (SUPPORT_P2P_WITHOUT_DEV == projectionstatus) {
         if(getWifiStatus())

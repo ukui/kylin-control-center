@@ -28,8 +28,10 @@
 #include <QDBusReply>
 
 #include "shell/interface.h"
+#include "Label/titlelabel.h"
 
 #include "commonComponent/ComboxFrame/comboxframe.h"
+#include "SwitchButton/switchbutton.h"
 
 namespace Ui {
 class Power;
@@ -53,65 +55,97 @@ public:
     const QString name() const Q_DECL_OVERRIDE;
 
 public:
+    void InitUI(QWidget *widget);
+    void retranslateUi();
+    void resetui();
+
     void initSearText();
     void setupComponent();
     void setupConnect();
-    void initModeStatus();
     void initCustomPlanStatus();
-    void resetCustomPlanStatus();
-    void initPowerOtherStatus();
-    void isPowerSupply();
     void isLidPresent();
     void isHibernateSupply();
-    void refreshUI();
-    int  getIdleTime();
+    bool isExitBattery();
+    bool QLabelSetText(QLabel *label, QString string);
 
 private:
-    Ui::Power *ui;
 
     QWidget *pluginWidget;
 
     QGSettings *settings;
     QGSettings *sessionSetting;
-    QGSettings *mUkccpersonpersonalize;
+    QGSettings *stylesettings;
+    QGSettings *sessionsettings;
+    QGSettings *screensettings;
 
     QString pluginName;
     int pluginType;
 
+    TitleLabel *CustomTitleLabel;
+    TitleLabel *PowerPlanTitleLabel;
+    TitleLabel *BatteryPlanTitleLabel;
+    QLabel *mSleepPwdLabel;
+    QLabel *mWakenPwdLabel;
+    QLabel *mPowerKeyLabel;
+    QLabel *mCloseLabel;
+    QLabel *mSleepLabel;
+    QLabel *mCloseLidLabel;
+    QLabel *mPowerLabel;
+    QLabel *mBatteryLabel;
+    QLabel *mDarkenLabel;
+    QLabel *mLowpowerLabel1;
+    QLabel *mLowpowerLabel2;
+    QLabel *mNoticeLabel;
+    QLabel *mLowSaveLabel;
+    QLabel *mBatterySaveLabel;
+    QLabel *mDisplayTimeLabel;
+
+    QFrame *mSleepPwdFrame;
+    QFrame *mWakenPwdFrame;
+    QFrame *mPowerKeyFrame;
+    QFrame *mCloseFrame;
+    QFrame *mSleepFrame;
+    QFrame *mCloseLidFrame;
+    QFrame *mPowerFrame;
+    QFrame *mBatteryFrame;
+    QFrame *mDarkenFrame;
+    QFrame *mLowpowerFrame;
+    QFrame *mNoticeLFrame;
+    QFrame *mLowSaveFrame;
+    QFrame *mBatterySaveFrame;
+    QFrame *mDisplayTimeFrame;
+
+    QComboBox *mPowerKeyComboBox;
+    QComboBox *mCloseComboBox;
+    QComboBox *mSleepComboBox;
+    QComboBox *mCloseLidComboBox;
+    QComboBox *mPowerComboBox;
+    QComboBox *mBatteryComboBox;
+    QComboBox *mDarkenComboBox;
+    QComboBox *mLowpowerComboBox1;
+    QComboBox *mLowpowerComboBox2;
+    QComboBox *mNoticeComboBox;
+
+    SwitchButton *mSleepPwdBtn;
+    SwitchButton *mWakenPwdBtn;
+    SwitchButton *mLowSaveBtn;
+    SwitchButton *mBatterySaveBtn;
+    SwitchButton *mDisplayTimeBtn;
+
+    QStringList buttonStringList;
     QStringList sleepStringList;
     QStringList closeStringList;
     QStringList closeLidStringList;
-    QStringList darkenStringList;
-    QStringList lidStringList;
-    QStringList buttonStringList;
-    QStringList iconShowList;
+    QStringList PowerplanStringList;
+    QStringList BatteryplanStringList;
+    QStringList DarkenStringList;
+    QStringList LowpowerStringList;
 
-    QStringList mPowerKeys;
-
-    bool settingsCreate;
-    bool isExitsPower;
     bool mFirstLoad;
     bool isExitsLid;
     bool isExitHibernate;
 
     bool hasBat;
-
-    ComboxFrame *mHibernate;
-    ComboxFrame *mPowerBtn;
-    ComboxFrame *mBatteryAct;
-
-    QDBusInterface *mUkccInterface;
-
-private:
-    void initGeneralSet();
-    bool getHibernateStatus();
-    QString  getHibernateTime();
-    void initDbus();
-    void initDeviceStatus();
-
-private slots:
-    void setIdleTime(int idleTime);
-    void setHibernateTime(QString hibernate);
 };
 
 #endif // POWER_H
