@@ -42,7 +42,6 @@ void TabWid::initDbus()
     //    checkUpdateBtn->setText(tr("检查更新"));
     checkUpdateBtn->setText(tr("Check Update"));
 
-    //    checkUpdateBtn->setText(tr("正在初始化"));
     checkUpdateBtn->setText(tr("initializing"));
     checkUpdateBtn->setEnabled(false);
 
