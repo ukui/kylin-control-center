@@ -264,13 +264,13 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     timeSlider = new QTimer(this);
     connect(timeSlider,SIGNAL(timeout()),this,SLOT(timeSliderSlot()));
     connect(m_pOutputWidget->m_pOpVolumeSlider,SIGNAL(valueChanged(int)),this,SLOT(outputWidgetSliderChangedSlot(int)));
-    connect(m_pOutputWidget->m_pOpVolumeSlider,&AudioSlider::silderPressSignal,this,[=](){
-        mousePress = true;
-        mouseReleaseState = false;
-    });
-    connect(m_pOutputWidget->m_pOpVolumeSlider,&AudioSlider::silderReleaseSignal,this,[=](){
-        mouseReleaseState = true;
-    });
+    //    connect(m_pOutputWidget->m_pOpVolumeSlider,&AudioSlider::silderPressSignal,this,[=](){
+    //        mousePress = true;
+    //        mouseReleaseState = false;
+    //    });
+    //    connect(m_pOutputWidget->m_pOpVolumeSlider,&AudioSlider::silderReleaseSignal,this,[=](){
+    //        mouseReleaseState = true;
+    //    });
     //输入滑动条音量控制
     connect(m_pInputWidget->m_pIpVolumeSlider,SIGNAL(valueChanged(int)),this,SLOT(inputWidgetSliderChangedSlot(int)));
 
@@ -280,7 +280,7 @@ UkmediaMainWidget::UkmediaMainWidget(QWidget *parent)
     connect(m_pSoundWidget->m_pLagoutCombobox ,SIGNAL(currentIndexChanged(int)),this,SLOT(comboxIndexChangedSlot(int)));
     connect(m_pSoundWidget->m_pSoundThemeCombobox,SIGNAL(currentIndexChanged(int)),this,SLOT(themeComboxIndexChangedSlot(int)));
     connect(m_pInputWidget->m_pInputLevelProgressBar,SIGNAL(valueChanged(int)),this,SLOT(inputLevelValueChangedSlot()));
-//    connect(m_pInputWidget->m_pInputPortCombobox,SIGNAL(currentIndexChanged(int)),this,SLOT(inputPortComboxChangedSlot(int)));
+    connect(m_pInputWidget->m_pInputPortCombobox,SIGNAL(currentIndexChanged(int)),this,SLOT(inputPortComboxChangedSlot(int)));
     connect(m_pSoundWidget->m_pVolumeChangeCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(volumeChangedComboboxChangeSlot(int)));
 //    connect(m_pOutputWidget->m_pProfileCombobox,SIGNAL(currentIndexChanged (int)),this,SLOT(profileComboboxChangedSlot(int)));
 
@@ -459,6 +459,8 @@ void UkmediaMainWidget::createAlertSound(UkmediaMainWidget *pWidget)
     m_pInputWidget->m_pInputListWidget->clear();
     cardMap.clear();
     outputPortNameMap.clear();
+    outputPortMap.clear();
+    inputPortMap.clear();
     inputPortNameMap.clear();
     outputPortLabelMap.clear();
     currentOutputPortLabelMap.clear();
@@ -759,7 +761,7 @@ void UkmediaMainWidget::listDevice(UkmediaMainWidget *m_pWidget,MateMixerContext
         m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->blockSignals(false);
         qDebug() << "初始化输出设备：" << m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->currentText();
         QTimer *time = new QTimer;
-        time->start(100);
+        time->start(500);
         connect(time,&QTimer::timeout,[=](){
             int devIndex = m_pWidget->m_pCardNameList->indexOf(deviceName);
 
@@ -795,7 +797,7 @@ void UkmediaMainWidget::listDevice(UkmediaMainWidget *m_pWidget,MateMixerContext
     if (index >= 0 && devIndex >= 0) {
         m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->setCurrentIndex(index);
         QTimer *time = new QTimer;
-        time->start(100);
+        time->start(500);
         connect(time,&QTimer::timeout,[=](){
             qDebug() << "input device combobox index changed *******************"  << m_pWidget->m_pInputWidget->m_pInputListWidget->count() << inputDeviceName << "index:" << devIndex;// m_pWidget->m_pInputCardNameList->at(devIndex);
             m_pWidget->findInputListWidgetItem(m_pWidget->m_pInputCardNameList->at(devIndex),inputStream);
@@ -1084,14 +1086,14 @@ void UkmediaMainWidget::setContext(UkmediaMainWidget *m_pWidget,MateMixerContext
                       m_pWidget);
 
     g_signal_connect (G_OBJECT (m_pContext),
-                    "device-added",
-                    G_CALLBACK (onContextDeviceAdded),
-                    m_pWidget);
-    g_signal_connect (G_OBJECT (m_pContext),
                     "stream-removed",
                     G_CALLBACK (onContextStreamRemoved),
                     m_pWidget);
 
+    g_signal_connect (G_OBJECT (m_pContext),
+                    "device-added",
+                    G_CALLBACK (onContextDeviceAdded),
+                    m_pWidget);
     g_signal_connect (G_OBJECT (m_pContext),
                     "device-removed",
                     G_CALLBACK (onContextDeviceRemoved),
@@ -1142,19 +1144,21 @@ void UkmediaMainWidget::removeStream (UkmediaMainWidget *m_pWidget, const gchar 
     int index;
     index = m_pWidget->m_pInputStreamList->indexOf(m_pName);
     if (index >= 0) {
-
+        m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->blockSignals(true);
         m_pWidget->m_pInputStreamList->removeAt(index);
         m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->removeItem(index);
         m_pWidget->m_pInputCardNameList->removeAt(index);
-
+        m_pWidget->m_pInputWidget->m_pInputDeviceCombobox->blockSignals(false);
     }
     else {
         index = m_pWidget->m_pOutputStreamList->indexOf(m_pName);
         if (index >= 0) {
+            m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->blockSignals(true);
             m_pWidget->m_pOutputStreamList->removeAt(index);
             m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->removeItem(index);
             m_pWidget->m_pCardNameList->removeAt(index);
             m_pWidget->m_pDeviceLabelList->removeAt(index);
+            m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->blockSignals(false);
         }
     }
     if (m_pWidget->m_pAppVolumeList != nullptr) {
@@ -1452,7 +1456,6 @@ void UkmediaMainWidget::onContextDefaultOutputStreamNotify (MateMixerContext *m_
     int index = m_pWidget->m_pOutputWidget->m_pOutputDeviceCombobox->findText(deviceName);
     qDebug() << "on context default output steam notify:" << mate_mixer_stream_get_name(m_pStream) << cardName <<index;
     if (index < 0) {
-
         m_pWidget->m_pOutputWidget->m_pOutputListWidget->setCurrentRow(-1);
         return;
     }
@@ -2027,7 +2030,9 @@ void UkmediaMainWidget::updateOutputSettings (UkmediaMainWidget *m_pWidget,MateM
                 if (!m_pWidget->m_pOutputPortList->contains(name)) {
 
                     m_pWidget->m_pOutputPortList->append(name);
+                    m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(true);
                     m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->addItem(label);
+                    m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(false);
                 }
                 options = options->next;
             }
@@ -2040,8 +2045,8 @@ void UkmediaMainWidget::updateOutputSettings (UkmediaMainWidget *m_pWidget,MateM
         m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(outputPortLabel);
         m_pWidget->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(false);
     }
-    //新需求不需要此接口
-    /*connect(m_pWidget->m_pOutputWidget->m_pOutputPortCombobox,SIGNAL(currentIndexChanged(int)),m_pWidget,SLOT(outputPortComboxChangedSlot(int)));*/
+
+    connect(m_pWidget->m_pOutputWidget->m_pOutputPortCombobox,SIGNAL(currentIndexChanged(int)),m_pWidget,SLOT(outputPortComboxChangedSlot(int)));
     m_pWidget->timeSliderBlance = new QTimer(m_pWidget);
     connect(m_pWidget->timeSliderBlance,&QTimer::timeout,m_pWidget,[=](){
         if(m_pWidget->mouseReleaseStateBlance){
@@ -3074,7 +3079,6 @@ void UkmediaMainWidget::setOutputListWidgetRow()
                     m_pOutputWidget->m_pOutputListWidget->setCurrentItem(item);
                     m_pOutputWidget->m_pOutputListWidget->blockSignals(false);
                 }
-
             }
         }
     }
@@ -3518,8 +3522,12 @@ void UkmediaMainWidget::outputListWidgetCurrentRowChangedSlot(int row)
         setProfile += wid->deviceLabel->text();
         setProfile += " ";
         setProfile += endOutputProfile;
-        setProfile += "+";
-        setProfile +=endInputProfile;
+        if (!endOutputProfile.contains("input:analog-stereo")) {
+            setProfile += "+";
+            setProfile +=endInputProfile;
+        }
+
+        qDebug() << "setProfile ------"  << setProfile;
         system(setProfile.toLocal8Bit().data());
         QString deviceLabel = wid->deviceLabel->text();
         QTimer *time = new QTimer;
@@ -3532,10 +3540,17 @@ void UkmediaMainWidget::outputListWidgetCurrentRowChangedSlot(int row)
                 MateMixerStream *stream = mate_mixer_context_get_stream(m_pContext,name);
 //                mate_mixer_context_set_default_output_stream (m_pContext, stream);
 //                m_pOutputWidget->m_pOutputDeviceCombobox->blockSignals(true);
+
+                //当一个sink中有多个可用的port时
+                if (m_pOutputWidget->m_pOutputDeviceCombobox->currentIndex() == index) {
+                    int portIndex = m_pOutputWidget->m_pOutputPortCombobox->findText(wid->portLabel->text());
+                    qDebug() << "set default output " << index<< name  << wid->portLabel->text() ;
+                    if (portIndex >=0 && portIndex < m_pOutputWidget->m_pOutputPortCombobox->count())
+                        m_pOutputWidget->m_pOutputPortCombobox->setCurrentIndex(portIndex);
+                }
                 m_pOutputWidget->m_pOutputDeviceCombobox->setCurrentIndex(index);
 //                m_pOutputWidget->m_pOutputDeviceCombobox->blockSignals(false);
             }
-//            disconnect(time);
             delete time;
         });
     }
@@ -3576,12 +3591,17 @@ void UkmediaMainWidget::outputListWidgetCurrentRowChangedSlot(int row)
                 MateMixerStream *stream = mate_mixer_context_get_stream(m_pContext,name);
 //                mate_mixer_context_set_default_output_stream (m_pContext, stream);
 //                m_pOutputWidget->m_pOutputDeviceCombobox->blockSignals(true);
+                 if (m_pOutputWidget->m_pOutputDeviceCombobox->currentIndex() == index) {
+                     int portIndex = m_pOutputWidget->m_pOutputPortCombobox->findText(wid->portLabel->text());
+                     qDebug() << "set default output " << index<< name  << wid->portLabel->text() ;
+                     if (portIndex >=0 && portIndex < m_pOutputWidget->m_pOutputPortCombobox->count())
+                         m_pOutputWidget->m_pOutputPortCombobox->setCurrentIndex(portIndex);
+                 }
+
                 m_pOutputWidget->m_pOutputDeviceCombobox->setCurrentIndex(index);
 //                m_pOutputWidget->m_pOutputDeviceCombobox->blockSignals(false);
             }
-//            disconnect(time);
             delete time;
-
         });
     }
     qDebug() << "active output port:" << wid->portLabel->text();
@@ -3638,7 +3658,6 @@ void UkmediaMainWidget::inputListWidgetCurrentRowChangedSlot(int row)
     }
     //如果选择的输入输出设备为同一个声卡，则追加指定输入输出端口属于的配置文件
     if (outputCurrrentItem != nullptr && wid->deviceLabel->text() == outputWid->deviceLabel->text()) {
-
         QString  setProfile = "pactl set-card-profile ";
         setProfile += wid->deviceLabel->text();
         setProfile += " ";
@@ -3663,8 +3682,18 @@ void UkmediaMainWidget::inputListWidgetCurrentRowChangedSlot(int row)
                 const QString str1 =  m_pInputStreamList->at(index);
                 const gchar *name = str1.toLocal8Bit();
                 MateMixerStream *stream = mate_mixer_context_get_stream(m_pContext,name);
-                mate_mixer_context_set_default_input_stream (m_pContext, stream);
-//                m_pInputWidget->m_pInputDeviceCombobox->setCurrentIndex(index);
+//                mate_mixer_context_set_default_input_stream (m_pContext, stream);
+                if (m_pInputWidget->m_pInputDeviceCombobox->currentIndex() == index) {
+                    int cardIndex = findCardIndex(wid->deviceLabel->text());
+                    QString portName = findInputPortName(cardIndex,wid->portLabel->text());
+
+                    int portIndex = m_pInputWidget->m_pInputPortCombobox->findText(wid->portLabel->text());
+                    qDebug() << "set default input " << portIndex<< name << portName << wid->portLabel->text() <<cardIndex;
+                    if (portIndex >=0 && portIndex < m_pInputWidget->m_pInputPortCombobox->count())
+                        m_pInputWidget->m_pInputPortCombobox->setCurrentIndex(portIndex);
+                }
+                m_pInputWidget->m_pInputDeviceCombobox->setCurrentIndex(index);
+
             }
             delete time;
         });
@@ -3701,8 +3730,15 @@ void UkmediaMainWidget::inputListWidgetCurrentRowChangedSlot(int row)
                 const QString str1 =  m_pInputStreamList->at(index);
                 const gchar *name = str1.toLocal8Bit();
                 MateMixerStream *stream = mate_mixer_context_get_stream(m_pContext,name);
-                mate_mixer_context_set_default_input_stream (m_pContext, stream);
-//                m_pInputWidget->m_pInputDeviceCombobox->setCurrentIndex(index);
+//                mate_mixer_context_set_default_input_stream (m_pContext, stream);
+                if (m_pInputWidget->m_pInputDeviceCombobox->currentIndex() == index) {
+                    int portIndex = m_pInputWidget->m_pInputPortCombobox->findText(wid->portLabel->text());
+                    qDebug() << "set default input " << portIndex<< name  << wid->portLabel->text() ;
+                    if (portIndex >=0 && portIndex < m_pInputWidget->m_pInputPortCombobox->count())
+                        m_pInputWidget->m_pInputPortCombobox->setCurrentIndex(portIndex);
+                }
+                m_pInputWidget->m_pInputDeviceCombobox->setCurrentIndex(index);
+
             }
             delete time;
         });
@@ -3720,9 +3756,10 @@ void UkmediaMainWidget::inputPortComboxChangedSlot(int index)
     MateMixerStream *stream = mate_mixer_context_get_default_input_stream(m_pContext);
     MateMixerSwitch *portSwitch = findStreamPortSwitch (this,stream);
     if (portSwitch != nullptr) {
-
+        m_pInputWidget->m_pInputPortCombobox->blockSignals(true);
         MateMixerSwitchOption *opt = mate_mixer_switch_get_option(portSwitch,portName);
         mate_mixer_switch_set_active_option(MATE_MIXER_SWITCH(portSwitch),opt);
+        m_pInputWidget->m_pInputPortCombobox->blockSignals(false);
     }
 }
 
@@ -3816,15 +3853,20 @@ void UkmediaMainWidget::updateInputSettings (UkmediaMainWidget *m_pWidget,MateMi
             MateMixerSwitchOption *opt = MATE_MIXER_SWITCH_OPTION(options->data);
             QString label = mate_mixer_switch_option_get_label(opt);
             QString name = mate_mixer_switch_option_get_name(opt);
-//            m_pWidget->m_pInputPortList->append(name);
+            m_pWidget->m_pInputPortList->append(name);
+            m_pWidget->m_pInputWidget->m_pInputPortCombobox->blockSignals(true);
             m_pWidget->m_pInputWidget->m_pInputPortCombobox->addItem(label);
+            m_pWidget->m_pInputWidget->m_pInputPortCombobox->blockSignals(false);
+            qDebug() <<"input port combobox add item" <<label;
             options = options->next;
         }
         MateMixerSwitchOption *option = mate_mixer_switch_get_active_option(MATE_MIXER_SWITCH(portSwitch));
         QString label = mate_mixer_switch_option_get_label(option);
         if (m_pWidget->m_pInputPortList->count() > 0) {
 //            m_pWidget->m_pInputWidget->inputWidgetAddPort();
+            m_pWidget->m_pInputWidget->m_pInputPortCombobox->blockSignals(true);
             m_pWidget->m_pInputWidget->m_pInputPortCombobox->setCurrentText(label);
+            m_pWidget->m_pInputWidget->m_pInputPortCombobox->blockSignals(false);
         }
         connect(m_pWidget->m_pInputWidget->m_pInputPortCombobox,SIGNAL(currentIndexChanged(int)),m_pWidget,SLOT(inputPortComboxChangedSlot(int)));
     }
@@ -4606,6 +4648,17 @@ void UkmediaMainWidget::onInputSwitchActiveOptionNotify (MateMixerSwitch *swtch,
     w->m_pInputWidget->m_pInputPortCombobox->blockSignals(true);
     w->m_pInputWidget->m_pInputPortCombobox->setCurrentText(inputPortLabel);
     w->m_pInputWidget->m_pInputPortCombobox->blockSignals(false);
+    MateMixerStream *inputStream = mate_mixer_context_get_default_input_stream(w->m_pContext);
+    QListWidgetItem *inputCurrrentItem = w->m_pInputWidget->m_pInputListWidget->currentItem();
+    UkuiListWidgetItem *inputWid = (UkuiListWidgetItem *)w->m_pInputWidget->m_pInputListWidget->itemWidget(inputCurrrentItem);
+    //如果不相等需要设置inputListWidget row
+    if (inputWid->portLabel->text() != inputPortLabel) {
+        MateMixerDevice *device = mate_mixer_stream_get_device(inputStream);
+         QString devName = mate_mixer_device_get_name(device);
+        QString streamName = mate_mixer_stream_get_name(inputStream);
+        qDebug() << "onInputSwitchActiveOptionNotify" << inputWid->portLabel->text() <<inputPortLabel << streamName << devName;
+        w->findInputListWidgetItem(devName,inputStream);
+    }
 }
 
 void UkmediaMainWidget::onOutputSwitchActiveOptionNotify (MateMixerSwitch *swtch,GParamSpec *pspec,UkmediaMainWidget *w)
@@ -4616,6 +4669,17 @@ void UkmediaMainWidget::onOutputSwitchActiveOptionNotify (MateMixerSwitch *swtch
     w->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(true);
     w->m_pOutputWidget->m_pOutputPortCombobox->setCurrentText(outputPortLabel);
     w->m_pOutputWidget->m_pOutputPortCombobox->blockSignals(false);
+    MateMixerStream *outputStream = mate_mixer_context_get_default_output_stream(w->m_pContext);
+    QListWidgetItem *outputCurrrentItem = w->m_pOutputWidget->m_pOutputListWidget->currentItem();
+    UkuiListWidgetItem *outputWid = (UkuiListWidgetItem *)w->m_pOutputWidget->m_pOutputListWidget->itemWidget(outputCurrrentItem);
+    //如果不相等需要设置inputListWidget row
+    if (outputWid->portLabel->text() != outputPortLabel) {
+        MateMixerDevice *device = mate_mixer_stream_get_device(outputStream);
+         QString devName = mate_mixer_device_get_name(device);
+        QString streamName = mate_mixer_stream_get_name(outputStream);
+        qDebug() << "onOutputSwitchActiveOptionNotify" << outputWid->portLabel->text() <<outputPortLabel << streamName << devName;
+        w->findOutputListWidgetItem(devName,outputStream);
+    }
 }
 
 void UkmediaMainWidget::setConnectingMessage(const char *string) {
@@ -5005,6 +5069,8 @@ void UkmediaMainWidget::updateCard(const pa_card_info &info) {
     profile_priorities.clear();
 
     QList<QString> profileName;
+    QMap<QString,QString>portMap;
+    QMap<QString,QString>inputPortNameLabelMap;
     QMap<QString,int> profilePriorityMap;
     for (pa_card_profile_info2 ** p_profile = info.profiles2; *p_profile != nullptr; ++p_profile) {
         this->hasSinks = this->hasSinks || ((*p_profile)->n_sinks > 0);
@@ -5036,7 +5102,8 @@ void UkmediaMainWidget::updateCard(const pa_card_info &info) {
 
         }
         if (p.direction == 1 && p.available != PA_PORT_AVAILABLE_NO) {
-
+            portMap.insertMulti(p.name,p.description.data());
+            qDebug() << " add port name "<< info.index << p.name << p.description.data();
             outputPortNameMap.insertMulti(info.index,p.name);
             outputPortLabelMap.insertMulti(info.index,p.description.data());
 
@@ -5048,6 +5115,7 @@ void UkmediaMainWidget::updateCard(const pa_card_info &info) {
             cardProfileMap.insertMulti(info.index,portProfileName);
         }
         else if (p.direction == 2 && p.available != PA_PORT_AVAILABLE_NO){
+            inputPortNameLabelMap.insertMulti(p.name,p.description.data());
             inputPortNameMap.insertMulti(info.index,p.name);
             inputPortLabelMap.insertMulti(info.index,p.description.data());
             for (auto p_profile : p.profiles) {
@@ -5056,6 +5124,8 @@ void UkmediaMainWidget::updateCard(const pa_card_info &info) {
         }
         this->ports[p.name] = p;
     }
+    inputPortMap.insertMulti(info.index,inputPortNameLabelMap);
+    outputPortMap.insertMulti(info.index,portMap);
 
     this->profiles.clear();
 
@@ -5143,15 +5213,15 @@ void UkmediaMainWidget::updatePorts(UkmediaMainWidget *w, const pa_card_info &in
     }
 
 
-    w->m_pInputWidget->m_pInputPortCombobox->clear();
-    w->m_pOutputWidget->m_pOutputPortCombobox->clear();
+//    w->m_pInputWidget->m_pInputPortCombobox->clear();
+//    w->m_pOutputWidget->m_pOutputPortCombobox->clear();
     w->m_pCurrentInputCardList->clear();
 
     int i = 0;
-    w->m_pOutputPortList->clear();
-    w->m_pOutputPortLabelList->clear();
-    w->m_pInputPortLabelList->clear();
-    w->m_pInputPortList->clear();
+//    w->m_pOutputPortList->clear();
+//    w->m_pOutputPortLabelList->clear();
+//    w->m_pInputPortLabelList->clear();
+//    w->m_pInputPortList->clear();
     for (auto & port : w->ports) {
         QByteArray desc;
         it = ports.find(port.first);
@@ -5474,6 +5544,56 @@ int UkmediaMainWidget::findCardIndex(QString cardName)
     return -1;
 }
 
+/*
+    查找名称为PortLbael 的portName
+*/
+QString UkmediaMainWidget::findOutputPortName(int index,QString portLabel)
+{
+    QMap<int, QMap<QString,QString>>::iterator it;
+    QMap<QString,QString>portMap;
+    QMap<QString,QString>::iterator tempMap;
+    QString portName = "";
+    for (it = outputPortMap.begin();it != outputPortMap.end();) {
+        if (it.key() == index) {
+            portMap = it.value();
+            for (tempMap = portMap.begin();tempMap!=portMap.end();) {
+                if (tempMap.value() == portLabel) {
+                    portName = tempMap.key();
+                    break;
+                }
+                ++tempMap;
+            }
+        }
+        ++it;
+    }
+    return portName;
+}
+
+/*
+    查找名称为PortLbael 的portName
+*/
+QString UkmediaMainWidget::findInputPortName(int index,QString portLabel)
+{
+    QMap<int, QMap<QString,QString>>::iterator it;
+    QMap<QString,QString>portMap;
+    QMap<QString,QString>::iterator tempMap;
+    QString portName = "";
+    for (it = inputPortMap.begin();it != inputPortMap.end();) {
+        if (it.key() == index) {
+            portMap = it.value();
+            for (tempMap = portMap.begin();tempMap!=portMap.end();) {
+                if (tempMap.value() == portLabel) {
+                    portName = tempMap.key();
+                    break;
+                }
+                ++tempMap;
+            }
+        }
+        ++it;
+    }
+    return portName;
+}
+
 QString UkmediaMainWidget::findHighPriorityProfile(int index,QString profile)
 {
     QMap<int, QMap<QString,int>>::iterator it;
@@ -5526,7 +5646,7 @@ void UkmediaMainWidget::findInputListWidgetItem(QString cardName,MateMixerStream
     MateMixerSwitchOption *activePort = mate_mixer_switch_get_active_option(portSwitch);
 
     const gchar *portLabel = mate_mixer_switch_option_get_label(activePort);
-
+    qDebug() <<"findInputListWidgetItem" << cardName <<portLabel << m_pInputWidget->m_pInputListWidget->count();
     for (int row=0;row<m_pInputWidget->m_pInputListWidget->count();row++) {
         QListWidgetItem *item = m_pInputWidget->m_pInputListWidget->item(row);
         UkuiListWidgetItem *wid = (UkuiListWidgetItem *)m_pInputWidget->m_pInputListWidget->itemWidget(item);

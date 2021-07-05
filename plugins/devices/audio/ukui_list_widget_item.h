@@ -65,7 +65,7 @@ public:
 
 //    QString text();
 
-
+    QString portName;
     QLabel * portLabel;
     QLabel * deviceLabel;
 protected:
