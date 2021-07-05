@@ -33,7 +33,6 @@ private:
     QVariantList mPreScreenCfg;
     QString mFilePath;
 
-
 Q_SIGNALS:
     void configChanged();
     void screenChanged(QString status);

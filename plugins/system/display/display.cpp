@@ -46,7 +46,7 @@ QWidget *DisplaySet::get_plugin_ui()
         pluginWidget = new Widget;
         QObject::connect(new KScreen::GetConfigOperation(), &KScreen::GetConfigOperation::finished,
                          [&](KScreen::ConfigOperation *op) {
-            pluginWidget->setConfig(qobject_cast<KScreen::GetConfigOperation *>(op)->config());
+            pluginWidget->setConfig(qobject_cast<KScreen::GetConfigOperation *>(op)->config(), true);
         });
     }
     return pluginWidget;

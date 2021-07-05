@@ -83,6 +83,8 @@ public slots:
     // 设置NTP授时服务器
     Q_SCRIPTABLE bool setNtpSerAddress(QString serverAddress);
 
+    Q_SCRIPTABLE QVariantMap getBusMap();
+
 };
 
 #endif // SYSDBUSREGISTER_H

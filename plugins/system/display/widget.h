@@ -23,8 +23,9 @@
 #include <KF5/KScreen/kscreen/config.h>
 
 #include "outputconfig.h"
-#include "slider.h"
 #include "SwitchButton/switchbutton.h"
+#include "brightnessFrame.h"
+#include "screenConfig.h"
 
 class QLabel;
 class QMLOutput;
@@ -60,11 +61,10 @@ public:
     explicit Widget(QWidget *parent = nullptr);
     ~Widget() override;
 
-    void setConfig(const KScreen::ConfigPtr &config);
+    void setConfig(const KScreen::ConfigPtr &config, bool showBrightnessFrameFlag = false);
     KScreen::ConfigPtr currentConfig() const;
 
     void slotFocusedOutputChangedNoParam();
-    void initBrightnessUI();
     void initConnection();
     QString getScreenName(QString name = "");
     void initTemptSlider();
@@ -81,6 +81,13 @@ public:
     int scaleToSlider(const float value);
 
     void initUiComponent();
+    void setScreenKDS(QString kdsConfig);
+    void setActiveScreen(QString status = "");
+    void addBrightnessFrame(QString name, bool openFlag, QString serialNum);
+    void showBrightnessFrame(const int flag = 0);
+
+    QList<ScreenConfig> getPreScreenCfg();
+    void setPreScreenCfg(KScreen::OutputList screens);
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
@@ -103,8 +110,8 @@ private Q_SLOTS:
     void slotIdentifyOutputs(KScreen::ConfigOperation *op);
     void clearOutputIdentifiers();
 
-    void outputAdded(const KScreen::OutputPtr &output);
-    void outputRemoved(int outputId);
+    void outputAdded(const KScreen::OutputPtr &output, bool connectChanged);
+    void outputRemoved(int outputId, bool connectChanged);
     void primaryOutputSelected(int index);
     void primaryOutputChanged(const KScreen::OutputPtr &output);
 
@@ -116,11 +123,7 @@ private Q_SLOTS:
     void primaryButtonEnable(bool);             // 按钮选择主屏确认按钮
     void mainScreenButtonSelect(int index);     // 是否禁用设置主屏按钮
     void checkOutputScreen(bool judge);         // 是否禁用屏幕
-    void setBrightnessScreen(int value);        // 设置屏幕亮度
-    void setDDCBrightness(int value);
-    void setBrightSliderVisible();              // 笔记本外接屏幕不可调整亮度
 
-    void setBrightnesSldierValue();             // 设置亮度滑块数值
     void setNightMode(const bool nightMode);    // 设置夜间模式
 
     void initNightStatus();                     // 初始化夜间模式
@@ -129,9 +132,7 @@ private Q_SLOTS:
     void callMethod(QRect geometry, QString name);// 设置wayland主屏幕
     QString getPrimaryWaylandScreen();
     void isWayland();
-
-    void setDDCBrighthessSlot(int brightnessValue);// 设置外接显示器亮度
-    void kdsScreenchangeSlot();
+    void kdsScreenchangeSlot(QString status);
 
     void applyNightModeSlot();
 
@@ -156,7 +157,7 @@ private:
     void setcomBoxScale();
     void initNightUI();
 
-    bool isRestoreConfig();                       // 是否恢复应用之前的配置
+    bool isRestoreConfig();   // 是否恢复应用之前的配置
     bool isCloneMode();
     bool isBacklight();
     bool isLaptopScreen();
@@ -165,8 +166,6 @@ private:
     QString getCpuInfo();
     QString getMonitorType();
 
-    int getDDCBrighthess();
-    int getLaptopBrightness() const;
     int getPrimaryScreenID();
 
 private:
@@ -190,8 +189,6 @@ private:
     QList<QQuickView *> mOutputIdentifiers;
     QTimer *mOutputTimer = nullptr;
 
-    QMutex      mLock;
-
     QString     mCPU;
     QString     mDir;
     QStringList mPowerKeys;
@@ -212,11 +209,11 @@ private:
     QButtonGroup *singleButton;
 
     QSharedPointer<QDBusInterface> mUPowerInterface;
+    QSharedPointer<QDBusInterface> mUkccInterface;
 
     QHash<QString, QVariant> mNightConfig;
 
     double mScreenScale = 1.0;
-    int mScreenId = -1;
 
     bool mIsNightMode = false;
     bool mRedshiftIsValid = false;
@@ -228,11 +225,14 @@ private:
     bool mFirstLoad = true;
     bool mIsWayland = false;
     bool mIsBattery = false;
-
-    bool threadRunExit = false;
-    QFuture<void> threadRun;
+    bool mIsScreenAdd = false;
 
     QShortcut *mApplyShortcut;
+    QVector<BrightnessFrame*> BrightnessFrameV;
+    //BrightnessFrame *currentBrightnessFrame;
+    bool exitFlag = false;
+    QString     mKDSCfg;
+    bool unifySetconfig = false;
 };
 
 #endif // WIDGET_H

@@ -181,21 +181,27 @@ void SysdbusRegister::setDDCBrightness(QString brightness, QString type) {
 }
 
 int SysdbusRegister::getDDCBrightness(QString type) {
-    QString program = "ddcutil";
+    QString program = "/usr/sbin/i2ctransfer";
     QStringList arg;
-    arg << "getvcp" << "10" << "--bus" << type;
+    arg<<"-f"<<"-y"<<type<<"w5@0x37"<<"0x51"<<"0x82"<<"0x01"<<"0x10"<<"0xac";
     QProcess *vcpPro = new QProcess(this);
     vcpPro->start(program, arg);
+    vcpPro->waitForStarted();
     vcpPro->waitForFinished();
-
+    arg.clear();
+    arg<<"-f"<<"-y"<<type<<"r16@0x37";
+    usleep(40000);
+    vcpPro->start(program, arg);
+    vcpPro->waitForStarted();
+    vcpPro->waitForFinished();
     QString result = vcpPro->readAllStandardOutput().trimmed();
+    QString bri=result.split(" ").at(9);
+    bool ok;
+    int bright=bri.toInt(&ok,16);
+    if(ok)
+        return bright;
 
-    QRegExp rx("current value =(\\s+)(\\d+)");
-    int pos = rx.indexIn(result);
-    if (pos > -1) {
-        return rx.cap(2).toInt();
-    }
-    return 0;
+    return -1;
 }
 
 static void chpasswd_cb(PasswdHandler *passwd_handler, GError *error, gpointer user_data){
@@ -241,4 +247,39 @@ bool SysdbusRegister::setNtpSerAddress(QString serverAddress)
     system("timedatectl set-ntp true");
     return true;
 
+}
+
+QVariantMap SysdbusRegister::getBusMap()
+{
+    QString program = "/usr/bin/ddcutil";
+    QStringList arg;
+    arg << "detect";
+    QProcess *vcpPro = new QProcess(this);
+    vcpPro->start(program, arg);
+    vcpPro->waitForStarted();
+    vcpPro->waitForFinished();
+    QByteArray arr=vcpPro->readAll();
+
+    char *re=arr.data();
+    char *p;
+    QList<QString> l;
+    while(*re){
+        p=strpbrk(re,"\n");
+        *p=0;
+        QString s=re;
+        s=s.trimmed();
+        l.append(s);
+        re=++p;
+        if(*re=='\n')
+            re++;
+    }
+    QMap<QString,QVariant> map;
+    for(int i=0;i<l.count();i=i+9){
+        if(l.at(i).contains("display", Qt::CaseInsensitive)){
+            QString bus=l.at(i+1).split(":").at(1).trimmed();
+            QString serial=l.at(i+5).split(":").at(1).trimmed();
+            map.insert(serial,bus);
+        }
+    }
+    return map;
 }

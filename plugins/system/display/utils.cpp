@@ -7,7 +7,7 @@
 
 QString Utils::outputName(const KScreen::OutputPtr &output)
 {
-    return outputName(output.data());
+    return output->name();
 }
 
 QString Utils::outputName(const KScreen::Output *output)
