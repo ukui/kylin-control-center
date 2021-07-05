@@ -428,7 +428,7 @@ void TabWid::slotUpdateCacheProgress(QVariantList pro)
     isConnectSourceSignal = true;
     int progress = pro.at(1).toInt();
     if (progress > 100) {
-        progress = progress - 100;
+        progress = 100;
     }
     QString nowsymbol = pro.at(0).toString();
     //    qDebug() << "update cache progress :" << progress;
