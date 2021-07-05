@@ -8,6 +8,7 @@ include(../../../env.pri)
 include($$PROJECT_COMPONENTSOURCE/switchbutton.pri)
 include($$PROJECT_COMPONENTSOURCE/hoverwidget.pri)
 include($$PROJECT_COMPONENTSOURCE/imageutil.pri)
+include($$PROJECT_COMPONENTSOURCE/label.pri)
 
 QT       += widgets
 QT       += core gui widgets dbus
@@ -25,16 +26,21 @@ INCLUDEPATH += \
                $$PROJECT_COMPONENTSOURCE \
                $$PROJECT_ROOTDIR \
 
+INCLUDEPATH += /usr/lib/gcc/aarch64-linux-gnu/9/include/
+
 
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         projection.cpp \
+        changeprojectionname.cpp
 
 HEADERS += \
         projection.h \
+        changeprojectionname.h
 
 FORMS += \
-        projection.ui
+        projection.ui \
+        changeprojectionname.ui \
 
 INSTALLS += target

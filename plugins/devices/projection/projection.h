@@ -32,6 +32,7 @@
 #include "HoverWidget/hoverwidget.h"
 #include "ImageUtil/imageutil.h"
 #include "SwitchButton/switchbutton.h"
+#include "changeprojectionname.h"
 
 namespace Ui {
 class Projection;
@@ -55,6 +56,8 @@ public:
 
 public:
     void initComponent();
+    void showChangeProjectionNameDialog();
+    void changeProjectionName(QString name);
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
