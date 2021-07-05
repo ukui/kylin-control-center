@@ -94,9 +94,6 @@ QWidget * Power::get_plugin_ui() {
                 }
             });
             mKeys = settings->keys();
-            for (QString mstring : mKeys) {
-                qDebug()<<mstring;
-            }
         }
 
         InitUI(pluginWidget);
