@@ -51,11 +51,14 @@ UpdateDbus::UpdateDbus(QObject *parent)
 
 void UpdateDbus::onRequestSendDesktopNotify(QString message)
 {
-    qDebug() << "---------------------------->onRequestSendDesktopNotify";
     QDBusInterface iface("org.freedesktop.Notifications",
                          "/org/freedesktop/Notifications",
                          "org.freedesktop.Notifications",
                          QDBusConnection::sessionBus());
+    if (!notifyMsg.compare(message)) {
+        return ;
+    }
+    notifyMsg = message;
     QList<QVariant> args;
     args<<(tr("System-Upgrade"))
        <<((unsigned int) 0)
