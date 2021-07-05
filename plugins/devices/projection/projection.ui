@@ -159,20 +159,13 @@
     </widget>
    </item>
    <item>
-<<<<<<< HEAD
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>msg info</string>
-=======
-    <widget class="QLabel" name="tipLabel">
-     <property name="text">
-      <string/>
->>>>>>> 1f0a2ad7b22691955c5ff358fbe29127c0b3d05d
      </property>
     </widget>
    </item>
    <item>
-<<<<<<< HEAD
     <widget class="QLabel" name="label_setsize">
      <property name="minimumSize">
       <size>
@@ -182,16 +175,10 @@
      </property>
      <property name="text">
       <string>label for set size</string>
-=======
-    <widget class="QLabel" name="tipLabel_msg">
-     <property name="text">
-      <string/>
->>>>>>> 1f0a2ad7b22691955c5ff358fbe29127c0b3d05d
      </property>
     </widget>
    </item>
    <item>
-<<<<<<< HEAD
     <layout class="QVBoxLayout" name="verticalLayout_7">
      <item>
       <widget class="QWidget" name="widget_2" native="true">
@@ -324,8 +311,6 @@
     </layout>
    </item>
    <item>
-=======
->>>>>>> 1f0a2ad7b22691955c5ff358fbe29127c0b3d05d
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <property name="leftMargin">
       <number>16</number>
