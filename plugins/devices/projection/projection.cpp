@@ -52,7 +52,7 @@ Projection::Projection()
     if (result != 0) {
         projectionBtn->setChecked(true);
     }
-    ui->pinframe->hide();
+//    ui->pinframe->hide();
 
 
     connect(projectionBtn, SIGNAL(checkedChanged(bool)), this, SLOT(projectionButtonClickSlots(bool)));
@@ -61,8 +61,8 @@ Projection::Projection()
     //~ contents_path /bluetooth/Open Bluetooth
     ui->titleLabel->setText(tr("Open Projection"));
     ui->titleLabel->setStyleSheet("QLabel{font-size: 14px; color: palette(windowText);}");
-    ui->namelabel->setText(tr("Projection Name"));
-    ui->namelabel->setStyleSheet("QLabel{font-size: 14px; color: palette(windowText);}");
+    //ui->namelabel->setText(tr("Projection Name"));
+    //ui->namelabel->setStyleSheet("QLabel{font-size: 14px; color: palette(windowText);}");
     ui->pronamelabel->setStyleSheet("QLineEdit{background-color:transparent;"
                                               "border-width:0;"
                                               "border-style:outset}");
@@ -95,7 +95,7 @@ Projection::Projection()
 
 
     ui->horizontalLayout->addWidget(projectionBtn);
-    ui->horizontalLayout_21->addWidget(m_pin);
+    //ui->horizontalLayout_21->addWidget(m_pin);
 
 
     initComponent();
@@ -233,38 +233,40 @@ QWidget *Projection::get_plugin_ui(){
     QList<QVariant> outArgs = result.arguments();
     int projectionstatus = outArgs.at(0).value<int>();
     qDebug() << "---->" << projectionstatus;
-    if(getWifiStatus())
-    {
-        qDebug()<<"wifi is on now";
-        ui->tipLabel->setText("WLAN已开启，请在使用过程中保持WLAN处于开启状态");
-        ui->widget->setVisible(true);
-        ui->tipLabel_msg->setVisible(true);
-        //ui->setupUi(pluginWidget);
-    }
-    else
-    {
-        qDebug()<<"wifi is off now";
-        ui->tipLabel->setText("WLAN未开启，请打开WLAN开关");
-        ui->widget->setVisible(false);
-        ui->tipLabel_msg->setVisible(false);
-        return pluginWidget;
-    }
+    ui->widget->hide();
+    ui->label->hide();
+    ui->label_3->hide();
+    ui->widget_2->show();
+    ui->label_setsize->setText("");
+    //    projectionstatus=1;//
     if (NOT_SUPPORT_P2P == projectionstatus) {
-        //QMessageBox::information(NULL, QStringLiteral("提示"), QStringLiteral("由于无线网卡驱动不支持，投屏无法使用"));
-        ui->tipLabel_msg->setText("由于无线网卡驱动不支持，投屏无法使用");
-        ui->pronamelabel->setEnabled(false);
+        ui->label_2->setText("未检测到无线网卡或网卡驱动不支持，投屏功能不可用");
+       ui->pronamelabel->setEnabled(false);
         projectionBtn->setEnabled(false);
     }
+
     else if (SUPPORT_P2P_WITHOUT_DEV == projectionstatus) {
-        //QMessageBox::information(NULL, QStringLiteral("提示"), QStringLiteral("由于无线网卡驱动限制，投屏开启后会关闭网络管理器，导致wifi断开。\n当不使用投屏时请关闭投屏功能，否则会影响网络使用"));
-        ui->tipLabel_msg->setText("由于无线网卡驱动限制，投屏开启后会关闭网络管理器，导致wifi断开");
-        ui->pronamelabel->setEnabled(true);
+        if(getWifiStatus())
+        {
+            qDebug()<<"wifi is on now";
+            ui->label_3->setText("使用时请保持WLAN处于开启状态，投屏过程中可能会中断无线连接");
+            ui->widget->show();
+            ui->label->show();
+            ui->label_3->show();
+            ui->widget_2->hide();
+        }
+        else
+        {
+            qDebug()<<"wifi is off now";
+            ui->label_2->setText("WLAN未开启，请打开WLAN开关");
+        }
+
         projectionBtn->setEnabled(true);
     }
     else if (OP_NO_RESPONSE == projectionstatus) {
-        //QMessageBox::information(NULL, QStringLiteral("提示"), QStringLiteral("查询无线网卡暂时无响应，请稍后再试"));
-        ui->tipLabel_msg->setText("查询无线网卡暂时无响应，请稍后再试");
-        ui->pronamelabel->setEnabled(true);
+
+        ui->label_2->setText("该功能软件服务异常，请稍后再试");
+       ui->pronamelabel->setEnabled(true);
         projectionBtn->setEnabled(true);
     }
 
@@ -282,10 +284,10 @@ const QString Projection::name() const {
 
 void Projection::projectionPinSlots(QString type, QString pin) {
     if (type.contains("clear")) {
-        m_pin->clear();
+        //m_pin->clear();
     } else {
         qDebug()<<pin;
-        m_pin->setText(pin);
+        //m_pin->setText(pin);
     }
 }
 
@@ -293,7 +295,8 @@ void Projection::projectionButtonClickSlots(bool status) {
 
     qDebug() << "aaaaaa";
     if (status){        
-        m_pServiceInterface->call("Start",ui->pronamelabel->text(),"");
+         m_pServiceInterface->call("Start",ui->pronamelabel->text(),"");
+       // m_pServiceInterface->call("Start",);
     } else {
         m_pServiceInterface->call("Stop");
     }

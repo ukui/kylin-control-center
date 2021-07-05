@@ -38,3 +38,6 @@ FORMS += \
         projection.ui
 
 INSTALLS += target
+
+RESOURCES += \
+    pic.qrc
