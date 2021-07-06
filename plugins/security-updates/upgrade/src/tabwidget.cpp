@@ -710,6 +710,16 @@ void TabWid::getAllDisplayInformation()
         checkedstatues = query.value("auto_check").toString();
         backupStatus = query.value("auto_backup").toString();
     }
+    QSqlQuery queryInstall(QSqlDatabase::database("A"));
+    queryInstall.exec("select * from installed order by id desc");
+    while(queryInstall.next())
+    {
+        QString statusType = queryInstall.value("keyword").toString();
+        if(statusType == "" || statusType =="1") {
+            updatetime = queryInstall.value("time").toString();
+            break;
+        }
+    }
     if(QLocale::system().name()!="zh_CN" && updatetime.contains("暂无信息"))
     {
         updatetime = "No Information!";
@@ -872,15 +882,20 @@ void TabWid::hideUpdateBtnSlot(bool isSucceed)
     {
         qDebug() << "当前更新列表" << updateMutual->importantList;
 
-        QSqlQuery query(QSqlDatabase::database("A"));
         QString updatetime;
-        query.exec("select * from display");
-        while(query.next())
+        QSqlQuery queryInstall(QSqlDatabase::database("A"));
+        queryInstall.exec("select * from installed order by id desc");
+        while(queryInstall.next())
         {
-            updatetime = query.value("update_time").toString();
+            QString statusType = queryInstall.value("keyword").toString();
+            if(statusType == "" || statusType =="1") {
+                updatetime = queryInstall.value("time").toString();
+                break;
+            }
         }
         lastRefreshTime->setText(tr("Last refresh:")+updatetime);
         lastRefreshTime->show();
+        checkUpdateBtn->setEnabled(true);
     }
     if(updateMutual->importantList.size() == 0)
     {
@@ -899,6 +914,20 @@ void TabWid::hideUpdateBtnSlot(bool isSucceed)
         {
             //            versionInformationLab->setText(tr("部分更新失败！"));
             versionInformationLab->setText(tr("Part of the update failed!"));
+            allProgressBar->hide();
+            QString updatetime;
+            QSqlQuery queryInstall(QSqlDatabase::database("A"));
+            queryInstall.exec("select * from installed order by id desc");
+            while(queryInstall.next())
+            {
+                QString statusType = queryInstall.value("keyword").toString();
+                if(statusType == "" || statusType =="1") {
+                    updatetime = queryInstall.value("time").toString();
+                    break;
+                }
+            }
+            lastRefreshTime->setText(tr("Last refresh:")+updatetime);
+            lastRefreshTime->show();
         }
     }
 }
