@@ -1,4 +1,3 @@
-<schemalist gettext-domain="ukui-control-center">
   <enum id="org.ukui.control-center.noticeorigin.Type">
     <value value="0" nick="none"/>
     <value value="1" nick="corner"/>
@@ -14,16 +13,21 @@
       <default>true</default>
       <summary>Show OSD notification</summary>
       <description>Whether an OSD notification is shown to notify about changes</description>
-     </key>
-     <key name="iscn-env" type="b">
-      <default>true</default>
-      <summary>"" </summary>
-      <description>Determine whether the environment is Chinese</description>
-   </key>
+    </key>
     <key name="show-on-lockscreen" type="b">
       <default>true</default>
       <summary>Eject</summary>
       <description>Binding to eject an optical disc.</description>
+    </key>
+    <key name="iscn-env" type="b">
+      <default>true</default>
+      <summary>"" </summary>
+      <description>Determine whether the environment is Chinese</description>
+    </key>
+    <key name="blacklist" type="as">
+      <default>[]</default>
+      <summary>"" </summary>
+      <description>Hidden DektopList</description>
     </key>
   </schema>
   <schema id="org.ukui.control-center.noticeorigin">
@@ -42,7 +46,12 @@
       <summary>maximize num of messages</summary>
       <description>The maximize num of messages on notice window.</description>
     </key>
-    <key name="name" type='s'>
+    <key name="name-cn" type='s'>
+      <default>''</default>
+      <summary>app's name</summary>
+      <description>The name passed to the sidebar</description>
+     </key>
+     <key name="name-us" type='s'>
       <default>''</default>
       <summary>app's name</summary>
       <description>The name passed to the sidebar</description>
