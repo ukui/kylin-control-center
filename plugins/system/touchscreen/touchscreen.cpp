@@ -5,6 +5,7 @@
 #include <KF5/KScreen/kscreen/getconfigoperation.h>
 #include <KF5/KScreen/kscreen/output.h>
 #include <QDebug>
+#include <QThread>
 
 TouchScreen::TouchScreen() : mFirstLoad(true)
 {
@@ -21,6 +22,7 @@ QWidget *TouchScreen::get_plugin_ui() {
         pluginWidget = new Widget;
         QObject::connect(new KScreen::GetConfigOperation(), &KScreen::GetConfigOperation::finished,
                          [&](KScreen::ConfigOperation *op) {
+            QThread::usleep(20000);
             pluginWidget->setConfig(qobject_cast<KScreen::GetConfigOperation*>(op)->config());
         });
     }
