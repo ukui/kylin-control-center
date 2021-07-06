@@ -289,6 +289,39 @@ void m_updatelog::defaultItem()
 
 QString m_updatelog::translationVirtualPackage(QString str)
 {
+    QString retStr;
+    /*判断json文件是否存在*/
+    QString filename = QString("/usr/share/kylin-update-desktop-config/data/") +str +".json";
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly)){
+        qDebug() << "JSON file open failed! ";
+    } else {
+        QByteArray jsonData = file.readAll();
+        QJsonParseError err_rpt;
+        QJsonDocument  root_Doc = QJsonDocument::fromJson(jsonData, &err_rpt); // 字符串格式化为JSON
+
+        if (!root_Doc.isNull() && (err_rpt.error == QJsonParseError::NoError)) {  // 解析未发生错误
+            if (root_Doc.isObject()) { // JSON 文档为对象
+                QJsonObject object = root_Doc.object();  // 转化为对象
+                if (QLocale::system().name() == "zh_CN"){
+                    QString name  = object.value("name").toObject().value("zh_CN").toString();
+                    if (!name.isNull()) {
+                        retStr =  name;
+                        return retStr;
+                    }
+                }else {
+                    QString name  = object.value("name").toObject().value("en_US").toString();
+                    if (!name.isNull()) {
+                        retStr = name;
+                        return retStr;
+                    }
+                }
+            }
+        }else{
+            qDebug() << "JSON文件格式错误！";
+        }
+    }
+
     if(QLocale::system().name()!="zh_CN")
         return str;
     if(str == "kylin-update-desktop-app")
@@ -316,7 +349,7 @@ QString m_updatelog::translationVirtualPackage(QString str)
     bool ret = query.exec(QString("SELECT display_name_cn FROM application WHERE app_name IS '%1'").arg(str));    //执行
     if (ret == false) {
         qDebug() << "Error : exec select sql fail , switch chinese pkg name fail";
-        return str;
+        return retStr;
     }
 
     while (query.next()) {
@@ -324,11 +357,10 @@ QString m_updatelog::translationVirtualPackage(QString str)
         qDebug() << "Info : switch chinese pkg name is [" << dst << "]";
     }
 
-    if (dst.isEmpty()) {
-        return str;
-    } else {
-        return dst;
+    if (!dst.isEmpty()) {
+        retStr = dst;
     }
+    return retStr;
 }
 
 
