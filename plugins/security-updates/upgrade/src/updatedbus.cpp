@@ -257,7 +257,7 @@ void UpdateDbus::getAppMessageSignal(QMap<QString, QVariant> map, QStringList ur
             msg.name = nameList.at(i);
             msg.fullname = fullnameList.at(i);
             QString size = sizeList.at(i);
-            msg.size = size.toInt();
+            msg.size = size.toLong();
             appAllMsg.msg.depList.append(msg);
         }
     }

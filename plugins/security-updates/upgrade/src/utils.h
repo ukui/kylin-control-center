@@ -13,7 +13,7 @@ struct UrlMsg //记录单包信息：包名、全名、链接、大小
     QString name = "";
     QString fullname = "";
     QString url = "";
-    int size;
+    long size = 0;
 };
 
 struct AppMsg //记录当前包信息：包名、依赖列表、总大小、获取依赖状态
