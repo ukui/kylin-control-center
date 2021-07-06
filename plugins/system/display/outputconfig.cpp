@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QGroupBox>
+#include <QMessageBox>
 
 #include <QComboBox>
 #include <QGSettings>
@@ -20,22 +21,6 @@
 
 #include "ComboBox/combobox.h"
 
-#define SCALE_SCHEMAS "org.ukui.SettingsDaemon.plugins.xsettings"
-#define SCALE_KEY     "scaling-factor"
-
-const QSize KRsolution(1920, 1080);
-
-const QVector<QSize> k150Scale{QSize(1280, 1024), QSize(1440, 900), QSize(1600, 900),
-                               QSize(1680, 1050), QSize(1920, 1080), QSize(1920, 1200),
-                               QSize(2048, 1080), QSize(2048, 1280), QSize(2160, 1440),
-                               QSize(2560, 1440),QSize(3840, 2160)};
-
-const QVector<QSize> k175Scale{QSize(1680, 1050), QSize(1920, 1080), QSize(1920, 1200),
-                               QSize(2048, 1080), QSize(2048, 1280), QSize(2160, 1440),
-                               QSize(2560, 1440), QSize(3840, 2160)};
-
-const QVector<QSize> k200Scale{QSize(1920, 1200), QSize(2048, 1280), QSize(2160, 1440),
-                               QSize(2560, 1440), QSize(3840, 2160)};
 
 OutputConfig::OutputConfig(QWidget *parent) :
     QWidget(parent),
@@ -161,6 +146,16 @@ void OutputConfig::initUi()
     connect(mRefreshRate, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated),
             this, &OutputConfig::slotRefreshRateChanged);
 
+    // 缩放率下拉框
+    QFrame *scaleFrame = new QFrame(this);
+    scaleFrame->setFrameShape(QFrame::Shape::Box);
+
+    scaleFrame->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    scaleFrame->setMinimumSize(550, 50);
+    scaleFrame->setMaximumSize(960, 50);
+
+    QHBoxLayout *scaleLayout = new QHBoxLayout(scaleFrame);
+
     mScaleCombox = new QComboBox(this);
     mScaleCombox->setObjectName("scaleCombox");
 
@@ -184,17 +179,9 @@ void OutputConfig::initUi()
     scaleLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     scaleLabel->setFixedSize(118, 30);
 
-    QHBoxLayout *scaleLayout = new QHBoxLayout();
     scaleLayout->addWidget(scaleLabel);
     scaleLayout->addWidget(mScaleCombox);
 
-    QFrame *scaleFrame = new QFrame(this);
-    scaleFrame->setFrameShape(QFrame::Shape::Box);
-    scaleFrame->setLayout(scaleLayout);
-
-    scaleFrame->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    scaleFrame->setMinimumSize(550, 50);
-    scaleFrame->setMaximumSize(960, 50);
     vbox->addWidget(scaleFrame);
 
     initConnection();
@@ -370,20 +357,46 @@ void OutputConfig::slotDPIChanged(QString key)
 
 void OutputConfig::slotScaleIndex(const QSize &size)
 {
+    QSize msize;
+    if (mScaleSize != QSize()) {
+        msize = size.width() > mScaleSize.width()?mScaleSize:size;
+    } else {
+        msize = size;
+    }
+
     mScaleCombox->blockSignals(true);
     mScaleCombox->clear();
     mScaleCombox->addItem("100%", 1.0);
 
-
-    if (k150Scale.contains(size)) {
+    if (k150Scale.contains(msize)) {
         mScaleCombox->addItem("125%", 1.25);
         mScaleCombox->addItem("150%", 1.5);
     }
-    if (k175Scale.contains(size)) {
+    if (k175Scale.contains(msize)) {
         mScaleCombox->addItem("175%", 1.75);
     }
-    if (k200Scale.contains(size)) {
+    if (k200Scale.contains(msize)) {
         mScaleCombox->addItem("200%", 2.0);
+    }
+    if (k250Scale.contains(msize)) {
+        mScaleCombox->addItem("225%", 2.25);
+        mScaleCombox->addItem("250%", 2.5);
+    }
+    if (k275Scale.contains(msize)) {
+        mScaleCombox->addItem("275%", 2.75);
+    }
+
+    double scale = getScreenScale();
+    if (mScaleCombox->findData(scale) == -1) {
+        scale = 1.0;
+        if (QGSettings::isSchemaInstalled(SCALE_SCHEMAS)) {
+            if (mDpiSettings->keys().contains("scalingFactor")) {
+                mDpiSettings->set(SCALE_KEY,scale);
+            }
+        }
+        QMessageBox::information(this, tr("Information"),
+                                 tr("Some applications need to be logouted to take effect"));
+        mScaleCombox->setCurrentText(scaleToString(scale));
     }
     mScaleCombox->blockSignals(false);
 }

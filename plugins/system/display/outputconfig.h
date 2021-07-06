@@ -9,6 +9,8 @@
 
 #include <QGSettings>
 
+#include "scalesize.h"
+
 class QCheckBox;
 class ResolutionSlider;
 class QLabel;
