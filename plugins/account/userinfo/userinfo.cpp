@@ -1804,11 +1804,11 @@ void UserInfo::addFeature(FeatureInfo *featureinfo)
     renameBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     renameBtn->setText(tr("Rename"));
 
-//    connect(renameBtn, &QPushButton::clicked, this, [=](bool checked){
-//        Q_UNUSED(checked)
-//        nameLabel->hide();
-//        renameEdit->show();
-//    });
+    connect(renameBtn, &QPushButton::clicked, this, [=](bool checked){
+        Q_UNUSED(checked)
+        nameLabel->hide();
+        renameEdit->show();
+    });
     renameBtn->hide();
 
     QPushButton * verifyBtn = new QPushButton(widget);
