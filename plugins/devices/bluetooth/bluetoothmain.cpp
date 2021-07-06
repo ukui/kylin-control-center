@@ -597,6 +597,11 @@ void BlueToothMain::removeDeviceItemUI(QString address)
 void BlueToothMain::addMyDeviceItemUI(BluezQt::DevicePtr device)
 {
     qDebug() << __FUNCTION__ << device->name() << device->address() << device->type() << __LINE__;
+    DeviceInfoItem *item  = paired_dev_layout->findChild<DeviceInfoItem *>(device->address());
+    if (item)
+    {
+        return;
+    }
     connect(device.data(),&BluezQt::Device::typeChanged,this,[=](BluezQt::Device::Type  changeType){
 
         DeviceInfoItem *item = device_list->findChild<DeviceInfoItem *>(device->address());
@@ -726,6 +731,11 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
 
 void BlueToothMain::addOneBluetoothDeviceItemUi(BluezQt::DevicePtr device)
 {
+    DeviceInfoItem *item = device_list->findChild<DeviceInfoItem *>(device->address());
+    if (item)
+    {
+        return ;
+    }
     connect(device.data(),&BluezQt::Device::typeChanged,this,[=](BluezQt::Device::Type  changeType){
         DeviceInfoItem *item = device_list->findChild<DeviceInfoItem *>(device->address());
         if (item)
