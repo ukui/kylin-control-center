@@ -1013,7 +1013,6 @@ void MainWidget::handle_conf() {
     } else {
         m_autoSyn->make_itemon();
     }
-    qDebug() << "ssss";
     for (int i  = 0;i < m_szItemlist.size();i ++) {
         judge_item(  ConfigFile(m_szConfPath).Get(m_szItemlist.at(i),"enable").toString(),i);
         if(ret) {
