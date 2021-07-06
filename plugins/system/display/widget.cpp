@@ -605,7 +605,7 @@ bool Widget::isRestoreConfig()
     int cnt = 15;
     int ret = -100;
     MainWindow *mainWindow = static_cast<MainWindow*>(this->topLevelWidget());
-    QMessageBox msg;
+    QMessageBox msg(this);
     connect(mainWindow, &MainWindow::posChanged, this, [=,&msg]() {
         QTimer::singleShot(8, this, [=,&msg]() { //窗管会移动窗口，等待8ms,确保在窗管移动之后再move，时间不能太长，否则会看到移动的路径
             QRect rect = this->topLevelWidget()->geometry();
@@ -628,12 +628,14 @@ bool Widget::isRestoreConfig()
         QObject::connect(&cntDown, &QTimer::timeout, [&msg, &cnt, &cntDown, &ret]()->void {
             if (--cnt < 0) {
                 cntDown.stop();
+                msg.hide();
                 msg.close();
             } else {
                 msg.setText(QString(tr("After modifying the resolution or refresh rate, "
                                        "due to compatibility issues between the display device and the graphics card, "
                                        "the display may be abnormal or unable to display \n"
                                        "the settings will be saved after %1 seconds")).arg(cnt));
+                msg.show();
             }
         });
         cntDown.start(1000);
