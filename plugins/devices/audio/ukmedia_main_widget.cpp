@@ -1953,6 +1953,8 @@ void UkmediaMainWidget::onStreamControlVolumeNotify (MateMixerStreamControl *m_p
         m_pWidget->m_pInputWidget->m_pIpVolumeSlider->blockSignals(true);
         m_pWidget->m_pInputWidget->m_pIpVolumeSlider->setValue(value);
         m_pWidget->m_pInputWidget->m_pIpVolumeSlider->blockSignals(false);
+        m_pWidget->inputVolumeDarkThemeImage(value,status);
+        m_pWidget->m_pInputWidget->m_pInputIconBtn->repaint();
         QString percentStr = QString::number(value) ;
         percentStr.append("%");
         m_pWidget->m_pInputWidget->m_pIpVolumePercentLabel->setText(percentStr);
