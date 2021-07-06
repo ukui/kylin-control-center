@@ -208,7 +208,7 @@ QWidget *Projection::get_plugin_ui(){
     ui->label_3->hide();
     ui->widget_2->show();
     ui->label_setsize->setText("");
-    projectionstatus=1;//
+    // projectionstatus=1;//
     if (NOT_SUPPORT_P2P == projectionstatus) {
         ui->label_2->setText("未检测到无线网卡或网卡驱动不支持，投屏功能不可用");
         ui->projectionNameWidget->setEnabled(false);
