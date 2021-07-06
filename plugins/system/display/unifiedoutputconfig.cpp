@@ -346,8 +346,8 @@ void UnifiedOutputConfig::slotRotationChangedDerived(int index)
 }
 
 void UnifiedOutputConfig::slotRestoreResoltion()
-{
-    if (!(mResolution->currentResolution() == mOutput->currentMode()->size())) {
+{    
+    if (!mOutput->currentMode().isNull() && !(mResolution->currentResolution() == mOutput->currentMode()->size())) {
         mResolution->setResolution(mOutput->currentMode()->size());
     }
 }

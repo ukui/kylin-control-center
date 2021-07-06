@@ -53,6 +53,8 @@ public:
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
     const QString name() const  Q_DECL_OVERRIDE;
+    bool getWifiStatus();
+    void setWifiStatus(bool status);
 
 public:
     void initComponent();

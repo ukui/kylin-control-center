@@ -278,6 +278,8 @@ public:
     void setOutputListWidgetRow(); //设置输出设备
     bool exitBluetoochDevice();
     QString blueCardName(); //记录蓝牙声卡名称
+    QString findOutputPortName(int index,QString portLabel); //找到outputPortLabel对应的portName
+    QString findInputPortName(int index,QString portLabel); //找到inputPortLabel对应的portName
 
 Q_SIGNALS:
     void appVolumeChangedSignal(bool is_mute,int volume,const QString app_name);
@@ -398,6 +400,8 @@ private:
     std::map<QByteArray, PortInfo> ports;
     std::vector< std::pair<QByteArray,QByteArray> > profiles;
     QMap<int, QString> cardMap;
+    QMap<int,QMap<QString,QString>> outputPortMap;
+    QMap<int,QMap<QString,QString>> inputPortMap;
     QMap<int, QString> outputPortNameMap;
     QMap<int, QString> inputPortNameMap;
     QMap<int, QString> outputPortLabelMap;

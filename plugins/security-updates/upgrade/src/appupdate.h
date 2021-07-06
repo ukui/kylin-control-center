@@ -75,11 +75,12 @@ private:
     QString downloadPath;
     UpdateDbus *m_updateMutual;
 
-    bool execFun;
+    bool execFun = true;
 
 public:
     bool isUpdateAll = false;
     bool isAutoUpgrade = false;
+    bool haveThemeIcon = false;
 
 public slots:
     void showDetails();

@@ -93,8 +93,8 @@ void OutputConfig::initUi()
     vbox->addWidget(resFrame);
 
     connect(mResolution, &ResolutionSlider::resolutionChanged,
-            this, [=](QSize size){
-                slotResolutionChanged(size, true);
+            this, [=](QSize size, bool emitFlag){
+                slotResolutionChanged(size, emitFlag);
             });
 
     connect(mResolution, &ResolutionSlider::resolutionChanged,
@@ -231,7 +231,8 @@ void OutputConfig::initConnection()
     connect(mOutput.data(), &KScreen::Output::currentModeIdChanged,
             this, [=]() {
         mRefreshRate->blockSignals(true);
-        slotResolutionChanged(mOutput->currentMode()->size(), false);
+        if (mOutput->currentMode())
+            slotResolutionChanged(mOutput->currentMode()->size(), false);
         mRefreshRate->blockSignals(false);
     });
 }
@@ -279,7 +280,9 @@ void OutputConfig::slotResolutionChanged(const QSize &size, bool emitFlag)
         }
     }
 
-    Q_ASSERT(currentMode);
+//    Q_ASSERT(currentMode);
+    if (!currentMode)
+        return;
     modeID = currentMode->id();
 
     // Don't remove the first "Auto" item - prevents ugly flicker of the combobox

@@ -35,7 +35,13 @@
 #define PER_ACTION_KEY          "percentage-action"
 #define ACTION_CRI_BTY          "action-critical-battery"
 #define PER_ACTION_CRI          "percentage-critical"
-#define POWER_POLICY_KEY        "power-policy-current"
+#define POWER_POLICY_AC         "power-policy-ac"
+#define POWER_POLICY_BATTARY    "power-policy-battery"
+#define LOCK_BLANK_SCREEN       "lock-blank-screen"
+#define PERCENTAGE_LOW          "percentage-low"
+
+#define SCREENSAVER_SCHEMA      "org.ukui.screensaver"
+#define SLEEP_ACTIVATION_ENABLED "sleep-activation-enabled"
 
 #define PRESENT_VALUE           "present"
 #define ALWAYS_VALUE            "always"
@@ -49,4 +55,5 @@
 #define PERSONALSIE_SCHEMA     "org.ukui.control-center.personalise"
 #define PERSONALSIE_POWER_KEY  "custompower"
 
+#define STYLE_FONT_SCHEMA  "org.ukui.style"
 #endif // POWERMACRODATA_H

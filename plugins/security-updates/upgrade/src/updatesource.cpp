@@ -49,7 +49,7 @@ void UpdateSource::callDBusUpdateTemplate()
 {
     QDBusPendingCall call = serviceInterface->asyncCall("updateSourceTemplate");
     if (!call.isValid()) {
-        qDebug() << "-----------------------0000000000000";
+        qDebug() << "updateSourceTemplate 成功";
     }
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call,this);
     connect(watcher,&QDBusPendingCallWatcher::finished,this,&UpdateSource::getReply);

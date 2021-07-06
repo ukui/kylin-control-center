@@ -221,8 +221,10 @@ void QMLScreen::setScreenCenterPos()
     moveY = mY2 - mY1;
 
     Q_FOREACH (QMLOutput *qmlOutput, m_outputMap) {
+        qmlOutput->blockSignals(true);
         qmlOutput->setX(qmlOutput->x() + moveX);
         qmlOutput->setY(qmlOutput->y() + moveY);
+        qmlOutput->blockSignals(false);
     }
 }
 
@@ -302,7 +304,6 @@ void QMLScreen::setScreenPos(QMLOutput *output, bool isReleased)
 
     setScreenCenterPos();
     QPointF posAfter = output->position();
-    qDebug() << Q_FUNC_INFO << posBefore << " " << posAfter;
     if (isReleased && !(posBefore == posAfter)) {
         Q_EMIT released();
     }

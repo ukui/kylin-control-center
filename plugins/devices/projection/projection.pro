@@ -44,3 +44,6 @@ FORMS += \
         changeprojectionname.ui \
 
 INSTALLS += target
+
+RESOURCES += \
+    pic.qrc

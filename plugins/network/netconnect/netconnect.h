@@ -130,6 +130,7 @@ private:
 
 
     QDBusInterface     *m_interface = nullptr;
+    QDBusInterface     *kdsDbus = nullptr;
     SwitchButton       *wifiBtn;
 
     QMap<QString, int> connectedWifi;

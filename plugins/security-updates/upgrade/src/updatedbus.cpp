@@ -51,13 +51,16 @@ UpdateDbus::UpdateDbus(QObject *parent)
 
 void UpdateDbus::onRequestSendDesktopNotify(QString message)
 {
-    qDebug() << "---------------------------->onRequestSendDesktopNotify";
     QDBusInterface iface("org.freedesktop.Notifications",
                          "/org/freedesktop/Notifications",
                          "org.freedesktop.Notifications",
                          QDBusConnection::sessionBus());
+    if (!notifyMsg.compare(message)) {
+        return ;
+    }
+    notifyMsg = message;
     QList<QVariant> args;
-    args<<(tr("Settings"))
+    args<<(tr("System-Upgrade"))
        <<((unsigned int) 0)
       <<("ukui-control-center")
      <<tr("ukui-control-center-update") //显示的是什么类型的信息  控制面板-更新提示
@@ -258,7 +261,7 @@ void UpdateDbus::getAppMessageSignal(QMap<QString, QVariant> map, QStringList ur
             msg.name = nameList.at(i);
             msg.fullname = fullnameList.at(i);
             QString size = sizeList.at(i);
-            msg.size = size.toInt();
+            msg.size = size.toLong();
             appAllMsg.msg.depList.append(msg);
         }
     }

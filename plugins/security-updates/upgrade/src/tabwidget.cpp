@@ -29,7 +29,7 @@ void TabWid::initDbus()
     backupThread->start();
 
     connect(updateMutual,&UpdateDbus::sendAppMessageSignal,this,&TabWid::loadingOneUpdateMsgSlot);
-    connect(updateMutual,&UpdateDbus::sendFinishGetMsgSignal,this,&TabWid::loadingFinishedSlot);
+    connect(updateMutual, &UpdateDbus::sendFinishGetMsgSignal, this, &TabWid::loadingFinishedSlot);
     connect(checkUpdateBtn,&QPushButton::clicked,this,&TabWid::checkUpdateBtnClicked);
     connect(historyUpdateLog,&QPushButton::clicked,this,&TabWid::showHistoryWidget);
     connect(isAutoCheckSBtn,&SwitchButton::checkedChanged,this,&TabWid::isAutoCheckedChanged);
@@ -238,7 +238,7 @@ void TabWid::getAllProgress (QString pkgName, int Progress, QString type)
 {
     if (!isAllUpgrade)
         return ;
-    qDebug() << pkgName << Progress << type;
+
     versionInformationLab->setText(tr("Downloading and installing updates..."));
     checkUpdateBtn->setText(tr("Cancel"));
     checkUpdateBtn->setEnabled(false);
@@ -428,7 +428,7 @@ void TabWid::slotUpdateCacheProgress(QVariantList pro)
     isConnectSourceSignal = true;
     int progress = pro.at(1).toInt();
     if (progress > 100) {
-        progress = progress - 100;
+        progress = 100;
     }
     QString nowsymbol = pro.at(0).toString();
     //    qDebug() << "update cache progress :" << progress;
@@ -642,13 +642,15 @@ void TabWid::loadingOneUpdateMsgSlot(AppAllMsg msg)
             if(list[2] != "")
             {
                 appWidget->appNameLab->setText(list[2]);
+                appWidget->dispalyName = list[2];
 
             }
             if(list[1] != "" && QLocale::system().name()=="zh_CN")
             {
                 appWidget->appNameLab->setText(list[1]);
+                appWidget->dispalyName = list[1];
             }
-            if(list[0] != "")
+            if(list[0] != "" && !appWidget->haveThemeIcon)
             {
                 appWidget->appIcon->setPixmap(QPixmap(list[0]).scaled(32, 32));
             }
@@ -668,18 +670,35 @@ void TabWid::loadingFinishedSlot(int size)
     disconnect(updateSource->serviceInterface,SIGNAL(updateTemplateStatus(QString)),this,SLOT(slotUpdateTemplate(QString)));
     disconnect(updateSource->serviceInterface,SIGNAL(updateCacheStatus(QVariantList)),this,SLOT(slotUpdateCache(QVariantList)));
     disconnect(updateSource->serviceInterface,SIGNAL(updateSourceProgress(QVariantList)),this,SLOT(slotUpdateCacheProgress(QVariantList)));
-    qDebug()<< "更新管理器：" <<"加载完毕信号 " << "size = " <<size;
-    if(updateMutual->importantList.size() == 0)
-    {
+    qDebug()<< "更新管理器：" <<"加载完毕信号 " << "size = " << size;
+    if(updateMutual->importantList.size() == 0) {
         checkUpdateBtn->setEnabled(true);
         checkUpdateBtn->stop();
         //        checkUpdateBtn->setText(tr("检查更新"));
         checkUpdateBtn->setText(tr("Check Update"));
         //        versionInformationLab->setText(tr("您的系统已是最新！"));
         versionInformationLab->setText(tr("Your system is the latest!"));
+        foreach (AppUpdateWid *wid, widgetList) {
+            disconnect(wid, &AppUpdateWid::sendProgress, this, &TabWid::getAllProgress);
+        }
+        allProgressBar->hide();
+        QString updatetime;
+        QSqlQuery queryInstall(QSqlDatabase::database("A"));
+        queryInstall.exec("select * from installed order by id desc");
+        while (queryInstall.next()) {
+            QString statusType = queryInstall.value("keyword").toString();
+            if (statusType == "" || statusType =="1") {
+                updatetime = queryInstall.value("time").toString();
+                break;
+            }
+        }
+        if (QLocale::system().name()!="zh_CN" && updatetime.contains("暂无信息")) {
+            updatetime = "No Information!";
+        }
+        lastRefreshTime->setText(tr("Last refresh:")+ updatetime);
+        lastRefreshTime->show();
     }
-    else
-    {
+    else {
         updateMutual->importantSize = updateMutual->importantList.size();   //此次检测结果的更新数量
         checkUpdateBtn->stop();
         checkUpdateBtn->setEnabled(true);
@@ -689,9 +708,7 @@ void TabWid::loadingFinishedSlot(int size)
         if (!isAutoUpgrade) {
             versionInformationLab->setText(tr("Updatable app detected on your system!"));
         }
-
         systemPortraitLab->setPixmap(QPixmap(":/img/plugins/upgrade/update.png").scaled(96,96));
-
     }
 
 }
@@ -711,12 +728,22 @@ void TabWid::getAllDisplayInformation()
         checkedstatues = query.value("auto_check").toString();
         backupStatus = query.value("auto_backup").toString();
     }
+    QSqlQuery queryInstall(QSqlDatabase::database("A"));
+    queryInstall.exec("select * from installed order by id desc");
+    while(queryInstall.next())
+    {
+        QString statusType = queryInstall.value("keyword").toString();
+        if(statusType == "" || statusType =="1") {
+            updatetime = queryInstall.value("time").toString();
+            break;
+        }
+    }
     if(QLocale::system().name()!="zh_CN" && updatetime.contains("暂无信息"))
     {
         updatetime = "No Information!";
     }
     //    lastRefreshTime->setText(tr("上次更新：")+updatetime);
-    lastRefreshTime->setText(tr("Last refresh:")+updatetime);
+    lastRefreshTime->setText(tr("Last refresh:")+ updatetime);
     //    versionInformationLab->setText(tr("上次检测：")+checkedtime);
     versionInformationLab->setText(tr("Last Checked:")+checkedtime);
     if(checkedstatues == "false")
@@ -872,12 +899,21 @@ void TabWid::hideUpdateBtnSlot(bool isSucceed)
     if(isSucceed == true)
     {
         qDebug() << "当前更新列表" << updateMutual->importantList;
-        QDateTime nowtime = QDateTime::currentDateTime();
-        QString current_date = nowtime.toString("yyyy.MM.dd hh:mm:ss");
-        //        lastRefreshTime->setText(tr("上次更新：")+current_date);
-        lastRefreshTime->setText(tr("Last refresh:")+current_date);
-        //        updateMutual->insertInstallStates("update_time",current_date);
 
+        QString updatetime;
+        QSqlQuery queryInstall(QSqlDatabase::database("A"));
+        queryInstall.exec("select * from installed order by id desc");
+        while(queryInstall.next())
+        {
+            QString statusType = queryInstall.value("keyword").toString();
+            if(statusType == "" || statusType =="1") {
+                updatetime = queryInstall.value("time").toString();
+                break;
+            }
+        }
+        lastRefreshTime->setText(tr("Last refresh:")+updatetime);
+        lastRefreshTime->show();
+        checkUpdateBtn->setEnabled(true);
     }
     if(updateMutual->importantList.size() == 0)
     {
@@ -896,6 +932,20 @@ void TabWid::hideUpdateBtnSlot(bool isSucceed)
         {
             //            versionInformationLab->setText(tr("部分更新失败！"));
             versionInformationLab->setText(tr("Part of the update failed!"));
+            allProgressBar->hide();
+            QString updatetime;
+            QSqlQuery queryInstall(QSqlDatabase::database("A"));
+            queryInstall.exec("select * from installed order by id desc");
+            while(queryInstall.next())
+            {
+                QString statusType = queryInstall.value("keyword").toString();
+                if(statusType == "" || statusType =="1") {
+                    updatetime = queryInstall.value("time").toString();
+                    break;
+                }
+            }
+            lastRefreshTime->setText(tr("Last refresh:")+updatetime);
+            lastRefreshTime->show();
         }
     }
 }
