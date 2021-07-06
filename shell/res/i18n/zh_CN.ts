@@ -7812,7 +7812,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="59"/>
         <source>Alert Sound</source>
-        <translation>通知音</translation>
+        <translation>通知提示</translation>
         <extra-contents_path>/audio/Alert Sound</extra-contents_path>
     </message>
     <message>
@@ -7862,7 +7862,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="84"/>
         <source>Volume Change</source>
-        <translation>音量调节声</translation>
+        <translation>音量调节</translation>
     </message>
     <message>
         <source>Setting Menu</source>
