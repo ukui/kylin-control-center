@@ -813,7 +813,8 @@ bool MainWindow::isExitBluetooth() {
     if (QGSettings::isSchemaInstalled(bluetoothId)) {
         QGSettings bluetoothGSetting(bluetoothId);
         isAddress = bluetoothGSetting.get("adapter-address").toString().isEmpty() ? false : true;
-    }
+    } else
+        isAddress = false;
 
     return isDevice && isAddress;
 }
