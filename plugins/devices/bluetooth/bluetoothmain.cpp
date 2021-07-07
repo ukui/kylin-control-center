@@ -1034,6 +1034,10 @@ void BlueToothMain::adapterComboxChanged(int i)
 //    qDebug() << Q_FUNC_INFO << i << adapter_address_list.at(i) << adapter_name_list.at(i) << adapter_address_list << adapter_name_list;
     if(i != -1){
         m_localDevice = m_manager->adapterForAddress(adapter_address_list.at(i));
+
+        if (m_localDevice.isNull())
+            return;
+
         m_localDevice->stopDiscovery();
         updateUIWhenAdapterChanged();
         if(settings)
