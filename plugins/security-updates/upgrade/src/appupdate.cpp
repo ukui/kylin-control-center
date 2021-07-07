@@ -465,11 +465,14 @@ void AppUpdateWid::updateAppUi(QString name)
     appNameLab->setText(dispalyName);
     /*判断图标，优先级: JSON文件指定 > qrc资源文件中 > 主题 > 默认*/
     if (!map.value("icon").isNull()) {
+        haveThemeIcon = true;
         appIcon->setPixmap(QPixmap(map.value("icon")));
     } else if (name.contains("kylin-update-desktop-")||name == "linux-generic") {
+        haveThemeIcon = true;
         pkgIconPath = QString(":/img/plugins/upgrade/%1.png").arg(name);
         appIcon->setPixmap(QPixmap(pkgIconPath));
     } else if (QIcon::fromTheme(name).hasThemeIcon(name)) {    //判断是否有主题图标并输出
+        haveThemeIcon = true;
         QIcon icon = QIcon::fromTheme(name);
         QPixmap pixmap = icon.pixmap(icon.actualSize(QSize(32, 32)));
         appIcon->setPixmap(pixmap);

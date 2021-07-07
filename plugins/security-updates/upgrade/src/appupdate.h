@@ -80,6 +80,8 @@ private:
 public:
     bool isUpdateAll = false;
     bool isAutoUpgrade = false;
+    bool haveThemeIcon = false;
+
 
 public slots:
     void showDetails();

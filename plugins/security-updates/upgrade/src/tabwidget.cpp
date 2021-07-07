@@ -647,7 +647,7 @@ void TabWid::loadingOneUpdateMsgSlot(AppAllMsg msg)
             {
                 appWidget->appNameLab->setText(list[1]);
             }
-            if(list[0] != "")
+            if(list[0] != "" && !appWidget->haveThemeIcon)
             {
                 appWidget->appIcon->setPixmap(QPixmap(list[0]).scaled(32, 32));
             }
