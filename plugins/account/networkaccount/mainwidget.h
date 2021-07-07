@@ -48,7 +48,7 @@
 #define SYNC_FIRST 1005
 #define LOGOUT 1005
 
-#define ACC_INFO "kylin_id"
+#define ACC_INFO "kylinid"
 
 #define TOKEN_MIN_SIZE 100
 
