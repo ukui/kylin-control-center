@@ -118,7 +118,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_checkTimer->setInterval(500);
     m_checkTimer->start();
 
-    QFile tokenFile(QDir::homePath() + "/.cache/kylinId/kylin_id");
+    QFile tokenFile(QDir::homePath() + "/.cache/kylinId/kylinid");
     if (tokenFile.exists() && tokenFile.size() > 1) {
         m_mainWidget->setCurrentWidget(m_widgetContainer);
     } else {
@@ -443,7 +443,7 @@ void MainWidget::checkUserName(QString name) {
     }
     if (bIsLogging == false) {
         QFile file (m_szConfPath);
-        QFile token (QDir::homePath() + "/.cache/kylinId/kylin_id");
+        QFile token (QDir::homePath() + "/.cache/kylinId/kylinid");
         if (file.exists() == false && token.exists() == true && m_isOpenDialog == false && token.size() > 1) {
             emit dooss(m_szUuid);
         }
@@ -684,7 +684,7 @@ void MainWidget::initSignalSlots() {
         download_files();
     });
     //All.conf的
-    QString tokenFile = QDir::homePath() + "/.cache/kylinId/kylin_id";
+    QString tokenFile = QDir::homePath() + "/.cache/kylinId/kylinid";
     m_fsWatcher.addPath(tokenFile);
 
 
@@ -806,7 +806,7 @@ void MainWidget::initSignalSlots() {
         } else if (m_mainWidget->currentWidget() == m_nullWidget) {
             m_mainDialog->setnormal();
             //on_login_out();
-            QFile token(QDir::homePath() + "/.cache/kylinId/kylin_id");
+            QFile token(QDir::homePath() + "/.cache/kylinId/kylinid");
             if (token.exists()) {
                 token.remove();
             }
