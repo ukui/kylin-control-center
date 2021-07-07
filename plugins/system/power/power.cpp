@@ -609,7 +609,7 @@ void Power::setupConnect()
 
 void Power::initModeStatus()
 {
-    if (!settings->keys().contains("powerPolicyCurrent")) {
+    if (settings->keys().contains("powerPolicyCurrent")) {
         int power_policy = settings->get(POWER_POLICY_KEY).toInt();
         if (power_policy == 1 ) {
             powerModeBtnGroup->buttonClicked(mBalanceBtn);
