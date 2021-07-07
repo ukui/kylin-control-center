@@ -12,6 +12,7 @@ enum DEVICE_TYPE{
 enum DEVICE_STATUS{
     LINK = 0,
     UNLINK,
+    MATCHED,
     ERROR,
     NOT,
 };

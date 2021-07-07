@@ -2,6 +2,8 @@
 
 DeviceInfoItem::DeviceInfoItem(QWidget *parent) : QWidget(parent)
 {
+    qDebug() << Q_FUNC_INFO << __LINE__;
+
     if(QGSettings::isSchemaInstalled("org.ukui.style")){
         item_gsettings = new QGSettings("org.ukui.style");
         connect(item_gsettings,&QGSettings::changed,this,&DeviceInfoItem::GSettingsChanges);
@@ -50,6 +52,8 @@ DeviceInfoItem::~DeviceInfoItem()
 
 void DeviceInfoItem::initInfoPage(QString d_name, DEVICE_STATUS status, BluezQt::DevicePtr device)
 {
+    qDebug() << Q_FUNC_INFO << __LINE__;
+
     this->setObjectName(device->address());
 
     connect(device.data(),&BluezQt::Device::pairedChanged,this,[=](bool paird){
@@ -78,8 +82,15 @@ void DeviceInfoItem::initInfoPage(QString d_name, DEVICE_STATUS status, BluezQt:
     device_item = device;
 
     if(d_status == DEVICE_STATUS::LINK){
-        icon_status = QIcon::fromTheme("ukui-dialog-success");
-        device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
+        device_status->setVisible(true);
+        device_status->setText(tr("device Link"));
+        //icon_status = QIcon::fromTheme("ukui-dialog-success");
+        //device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
+    }
+    else if (d_status == DEVICE_STATUS::MATCHED)
+    {
+        device_status->setVisible(true);
+        device_status->setText(tr("device matched"));
     }
 //    else if(status == DEVICE_STATUS::UNLINK){
 //        icon_status = QIcon::fromTheme("software-update-available-symbolic");
@@ -125,17 +136,23 @@ void DeviceInfoItem::refresh_device_icon(BluezQt::Device::Type changeType)
 
 QString DeviceInfoItem::get_dev_name()
 {
+    qDebug() << Q_FUNC_INFO << __LINE__;
+
     return device_item->name();
 }
 
 void DeviceInfoItem::resizeEvent(QResizeEvent *event)
 {
+    qDebug() << Q_FUNC_INFO << __LINE__;
+
 //    this->resize(event->size());
     info_page->resize(event->size());
 }
 
 void DeviceInfoItem::enterEvent(QEvent *event)
 {
+    qDebug() << Q_FUNC_INFO << __LINE__;
+
     AnimationFlag = true;
 
     if (device_status->isVisible())
@@ -144,14 +161,14 @@ void DeviceInfoItem::enterEvent(QEvent *event)
         {
             device_status->setToolTip(tr("Device connected"));
         }
-        else
+        else if (UNLINK == d_status)
         {
             device_status->setToolTip(tr("Device not connected"));
         }
-        //else //正在连接状态为做对一切换，暂时不加入
-        //{
-        //    device_status->setToolTip(tr("Connecting device"));
-        //}
+        else if (MATCHED == d_status)
+        {
+            device_status->setToolTip(tr("device matched"));
+        }
 
     }
 
@@ -160,6 +177,8 @@ void DeviceInfoItem::enterEvent(QEvent *event)
 
 void DeviceInfoItem::leaveEvent(QEvent *event)
 {
+    qDebug() << Q_FUNC_INFO << __LINE__;
+
 //    QDateTime current_date_time = QDateTime::currentDateTime();
 //    QString current_time = current_date_time.toString("hh:mm:ss.zzz ");
 //    qDebug() << Q_FUNC_INFO << current_time;
@@ -176,6 +195,8 @@ void DeviceInfoItem::leaveEvent(QEvent *event)
 
 void DeviceInfoItem::onClick_Connect_Btn(bool isclicked)
 {
+    qDebug() << Q_FUNC_INFO << __LINE__;
+
     if(!icon_timer&&!connect_timer){
         icon_timer = new QTimer(this);
         icon_timer->setInterval(100);
@@ -186,8 +207,12 @@ void DeviceInfoItem::onClick_Connect_Btn(bool isclicked)
         connect(connect_timer,&QTimer::timeout,this,[=]{
             if(icon_timer->isActive()){
                 icon_timer->stop();
-                device_status->setPixmap(QIcon::fromTheme("emblem-danger").pixmap(QSize(24,24)));
-                device_status->update();
+                //device_status->setPixmap(QIcon::fromTheme("emblem-danger").pixmap(QSize(24,24)));
+                //device_status->update();
+                if (DEVICE_STATUS::MATCHED == d_status)
+                    device_status->setText(tr("device matched"));
+                else if (DEVICE_STATUS::MATCHED == d_status)
+                    device_status->setText(tr("device unLink"));
             }
             connect_timer->stop();
         });
@@ -220,34 +245,43 @@ void DeviceInfoItem::onClick_Connect_Btn(bool isclicked)
 
 void DeviceInfoItem::onClick_Disconnect_Btn(bool isclicked)
 {
-//    qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO;
     emit sendDisconnectDeviceAddress(device_item->address());
 }
 
 void DeviceInfoItem::onClick_Delete_Btn(bool isclicked)
 {
-//    qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO;
 //    this->setVisible(false);
     emit sendDeleteDeviceAddress(device_item->address());
 }
 
 void DeviceInfoItem::changeDevStatus(bool pair)
 {
+    qDebug() << Q_FUNC_INFO << __LINE__;
+
     if(icon_timer && icon_timer->isActive())
         icon_timer->stop();
 
     if(pair){
         if (!device_item->isConnected()){
-            device_status->setVisible(false);
-            d_status = DEVICE_STATUS::UNLINK;
+            device_status->setVisible(true);
+            d_status = DEVICE_STATUS::MATCHED;
+            device_status->setText(tr("device matched"));
+
         }else{
             device_status->setVisible(true);
             d_status = DEVICE_STATUS::LINK;
-            QIcon icon_status = QIcon::fromTheme("ukui-dialog-success");
-            device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
+            device_status->setText(tr("device Link"));
+            //QIcon icon_status = QIcon::fromTheme("ukui-dialog-success");
+            //device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
         }
         emit sendPairedAddress(device_item->address());
     }else{
+        device_status->setVisible(true);
+        d_status = DEVICE_STATUS::UNLINK;
+        device_status->setText(tr("device unlink"));
+
 //        QIcon icon_status = QIcon::fromTheme("software-installed-symbolic");
 //        device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
     }
@@ -255,14 +289,17 @@ void DeviceInfoItem::changeDevStatus(bool pair)
 
 void DeviceInfoItem::setDevConnectedIcon(bool connected)
 {
+    qDebug() << Q_FUNC_INFO << __LINE__;
+
     if(icon_timer && icon_timer->isActive())
         icon_timer->stop();
 
     if(connected && device_item->isPaired()){
         d_status = DEVICE_STATUS::LINK;
         device_status->setVisible(true);
-        QIcon icon_status = QIcon::fromTheme("ukui-dialog-success");
-        device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
+        device_status->setText(tr("device Link"));
+        //QIcon icon_status = QIcon::fromTheme("ukui-dialog-success");
+        //device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
 
         if(connect_btn->isVisible()){
             connect_btn->setVisible(false);
@@ -270,7 +307,22 @@ void DeviceInfoItem::setDevConnectedIcon(bool connected)
             disconnect_btn->setVisible(true);
         }
 
-    }else{
+    }
+    else if (device_item->isPaired())
+    {
+        if(disconnect_btn->isVisible()){
+            disconnect_btn->setVisible(false);
+            connect_btn->setGeometry(this->width()-BTN_1_X,2,BTN_1_WIDTH,45);
+            connect_btn->setVisible(true);
+        }
+
+        d_status = DEVICE_STATUS::MATCHED;
+        device_status->setText(tr("device matched"));
+        device_status->setVisible(true);
+
+    }
+    else
+    {
         if(disconnect_btn->isVisible()){
             disconnect_btn->setVisible(false);
             connect_btn->setGeometry(this->width()-BTN_1_X,2,BTN_1_WIDTH,45);
@@ -278,12 +330,15 @@ void DeviceInfoItem::setDevConnectedIcon(bool connected)
         }
 
         d_status = DEVICE_STATUS::UNLINK;
+        device_status->setText(tr("device unlink"));
         device_status->setVisible(false);
     }
 }
 
 void DeviceInfoItem::AnimationInit()
 {
+    qDebug() << Q_FUNC_INFO << __LINE__;
+
     mouse_timer = new QTimer(this);
     mouse_timer->setInterval(300);
 
@@ -305,10 +360,10 @@ void DeviceInfoItem::AnimationInit()
     connect(enter_action,&QPropertyAnimation::finished,this,[=]{
         if (device_item->isPaired()) {
             if (device_item->type() != BluezQt::Device::Mouse && device_item->type() != BluezQt::Device::Keyboard) {
-                if (d_status == DEVICE_STATUS::LINK){
+                if (d_status == DEVICE_STATUS::LINK ){
                     disconnect_btn->setGeometry(this->width()-BTN_1_X,2,BTN_1_WIDTH,45);
                     disconnect_btn->setVisible(true);
-                }else if (d_status == DEVICE_STATUS::UNLINK){
+                }else if (d_status == DEVICE_STATUS::UNLINK || DEVICE_STATUS::MATCHED == d_status){
                     connect_btn->setGeometry(this->width()-BTN_1_X,2,BTN_1_WIDTH,45);
                     connect_btn->setVisible(true);
                 }
@@ -332,13 +387,24 @@ void DeviceInfoItem::AnimationInit()
 
 void DeviceInfoItem::updateDeviceStatus(DEVICE_STATUS status)
 {
-    QIcon icon_status;
+    qDebug() << Q_FUNC_INFO << __LINE__;
+
+    //QIcon icon_status;
     if(status == DEVICE_STATUS::LINK){
-        icon_status = QIcon::fromTheme("emblem-default");
-        device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
-    }else if(status == DEVICE_STATUS::UNLINK){
-        icon_status = QIcon::fromTheme("emblem-important");
-        device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
+        device_status->setText(tr("device Link"));
+        //icon_status = QIcon::fromTheme("emblem-default");
+        //device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
+    }
+    else if(status == DEVICE_STATUS::MATCHED)
+    {
+        device_status->setText(tr("device matched"));
+
+    }
+    else if(status == DEVICE_STATUS::UNLINK){
+        device_status->setText(tr("device unLink"));
+
+        //icon_status = QIcon::fromTheme("emblem-important");
+        //device_status->setPixmap(icon_status.pixmap(QSize(24,24)));
     }
 }
 

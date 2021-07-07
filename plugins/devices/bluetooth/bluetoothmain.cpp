@@ -9,6 +9,8 @@
 #include <QDBusMessage>
 //#include <polkit-qt5-1/PolkitQt1/Authority>
 #include <QMessageLogger>
+#include <QFileInfo>
+
 
 BlueToothMain::BlueToothMain(QWidget *parent)
     : QMainWindow(parent)
@@ -241,10 +243,11 @@ void BlueToothMain::InitMainbottomUI()
         if(m_localDevice->isDiscovering()){
             m_localDevice->stopDiscovery();
         }
+        discovering_timer->stop();
 
         QTimer::singleShot(2000,this,[=]{
-            if(!m_localDevice->isDiscovering())
-               m_localDevice->startDiscovery();
+            discovering_timer->start();
+            this->startDiscovery();
         });
     });
 
@@ -257,14 +260,15 @@ void BlueToothMain::InitMainbottomUI()
         qDebug() << __FUNCTION__ << "IntermittentScann_timer_count:" << IntermittentScann_timer_count << __LINE__ ;
 
         IntermittentScann_timer_count++;
-        if (IntermittentScann_timer_count > 5)
+        if (IntermittentScann_timer_count > 3)
         {
             IntermittentScann_timer_count = 0;
             IntermittentScann_timer->stop();
-            if(!m_localDevice->isDiscovering())
-            {
-                m_localDevice->startDiscovery();
-            }
+//            if(!m_localDevice->isDiscovering())
+//            {
+//                m_localDevice->startDiscovery();
+//            }
+            this->startDiscovery();
             discovering_timer->start();
         }
         else
@@ -278,10 +282,11 @@ void BlueToothMain::InitMainbottomUI()
             }
             else
             {
-                if(!m_localDevice->isDiscovering())
-                {
-                    m_localDevice->startDiscovery();
-                }
+//                if(!m_localDevice->isDiscovering())
+//                {
+//                    m_localDevice->startDiscovery();
+//                }
+                this->startDiscovery();
 
             }
 
@@ -538,6 +543,7 @@ void BlueToothMain::addMyDeviceItemUI(BluezQt::DevicePtr device)
     DeviceInfoItem *item  = paired_dev_layout->findChild<DeviceInfoItem *>(device->address());
     if (item)
     {
+        qDebug() << __FUNCTION__ << device->name()  <<"paired_dev_layout exist" << __LINE__;
         return;
     }
 
@@ -559,7 +565,7 @@ void BlueToothMain::addMyDeviceItemUI(BluezQt::DevicePtr device)
         if(device->isConnected())
             item->initInfoPage(device->name(), DEVICE_STATUS::LINK, device);
         else
-            item->initInfoPage(device->name(), DEVICE_STATUS::UNLINK, device);
+            item->initInfoPage(device->name(), DEVICE_STATUS::MATCHED, device);
 
         show_flag = true;
         paired_dev_layout->addWidget(item,Qt::AlignTop);
@@ -798,6 +804,7 @@ void BlueToothMain::addOneBluetoothDeviceItemUi(BluezQt::DevicePtr device)
     DeviceInfoItem *item = device_list->findChild<DeviceInfoItem *>(device->address());
     if (item)
     {
+        qDebug() << __FUNCTION__ << device->name() <<"device_list exist" << __LINE__;
         return ;
     }
 
@@ -883,6 +890,30 @@ void BlueToothMain::serviceDiscoveredChange(BluezQt::DevicePtr device)
 
 void BlueToothMain::receiveConnectsignal(QString device)
 {
+
+    qDebug() <<__FUNCTION__ << " device name :" << device << __LINE__ ;
+
+    if (m_localDevice->isDiscovering())
+    {
+        m_localDevice->stopDiscovery();
+    }
+
+    int ps_bluetooth = system("ps aux|grep ukui-bluetooth|grep -v \"grep\" ");
+    qDebug() <<__FUNCTION__ <<  ps_bluetooth << __LINE__ ;
+
+    if (256 == ps_bluetooth)
+    {
+        QString cmd_path = "/usr/bin/ukui-bluetooth";
+        QFileInfo fileInfo(cmd_path);
+
+        if(fileInfo.exists())
+        {
+            QProcess *process = new QProcess(this);
+            qDebug() << Q_FUNC_INFO;
+            process->start(cmd_path,NULL);
+        }
+    }
+
     QDBusMessage m = QDBusMessage::createMethodCall("org.ukui.bluetooth","/org/ukui/bluetooth","org.ukui.bluetooth","connectToDevice");
     m << device;
     qDebug() << Q_FUNC_INFO << m.arguments().at(0).value<QString>() <<__LINE__;
@@ -1036,8 +1067,7 @@ void BlueToothMain::adapterComboxChanged(int i)
         m_localDevice = m_manager->adapterForAddress(adapter_address_list.at(i));
 
         if (m_localDevice.isNull())
-            return;
-
+	    return;
         m_localDevice->stopDiscovery();
         updateUIWhenAdapterChanged();
         if(settings)
