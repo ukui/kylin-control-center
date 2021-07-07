@@ -523,11 +523,14 @@ void Power::setupConnect()
     connect(powerModeBtnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [=](int id) {
 #endif
         // 平衡模式
-        if (id == BALANCE) {
-            settings->set(POWER_POLICY_KEY, 1);
-        } else  {
-            settings->set(POWER_POLICY_KEY, 2);
+        if (settings->keys().contains("powerPolicyCurrent")) {
+            if (id == BALANCE) {
+                settings->set(POWER_POLICY_KEY, 1);
+            } else  {
+                settings->set(POWER_POLICY_KEY, 2);
+            }
         }
+
     });
 
 
@@ -606,14 +609,18 @@ void Power::setupConnect()
 
 void Power::initModeStatus()
 {
-    int power_policy = settings->get(POWER_POLICY_KEY).toInt();
-    if (power_policy == 1 ) {
-        powerModeBtnGroup->buttonClicked(mBalanceBtn);
+    if (!settings->keys().contains("powerPolicyCurrent")) {
+        int power_policy = settings->get(POWER_POLICY_KEY).toInt();
+        if (power_policy == 1 ) {
+            powerModeBtnGroup->buttonClicked(mBalanceBtn);
 
+        } else {
+            powerModeBtnGroup->buttonClicked(mSaveBtn);
+        }
     } else {
-        powerModeBtnGroup->buttonClicked(mSaveBtn);
+        mBalanceBtn->setEnabled(false);
+        mSaveBtn->setEnabled(false);
     }
-
 }
 
 void Power::initCustomPlanStatus()

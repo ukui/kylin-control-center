@@ -1,4 +1,5 @@
-  <enum id="org.ukui.control-center.noticeorigin.Type">
+<schemalist gettext-domain="ukui-control-center">
+<enum id="org.ukui.control-center.noticeorigin.Type">
     <value value="0" nick="none"/>
     <value value="1" nick="corner"/>
     <value value="2" nick="all"/>
