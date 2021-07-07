@@ -9,7 +9,7 @@
 
 #include <QGSettings>
 
-#include "scalesize.h"
+
 
 class QCheckBox;
 class ResolutionSlider;
@@ -76,6 +76,7 @@ protected:
     bool mShowScaleOption = false;
     bool mIsWayland = false;
     bool mIsFirstLoad = true;
+
 
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
     KScreen::ConfigPtr mConfig;

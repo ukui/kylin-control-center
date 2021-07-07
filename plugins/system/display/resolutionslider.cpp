@@ -1,5 +1,6 @@
 #include "resolutionslider.h"
 #include "utils.h"
+#include "scalesize.h"
 
 #include <QGridLayout>
 #include <QLabel>
@@ -28,6 +29,7 @@ ResolutionSlider::ResolutionSlider(const KScreen::OutputPtr &output, QWidget *pa
 
     connect(output.data(), &KScreen::Output::currentModeIdChanged,
             this, &ResolutionSlider::slotOutputModeChanged);
+
     connect(output.data(), &KScreen::Output::modesChanged,
             this, &ResolutionSlider::init);
     init();
@@ -135,6 +137,7 @@ void ResolutionSlider::slotOutputModeChanged()
         mComboBox->setCurrentIndex(mModes.indexOf(mOutput->currentMode()->size()));
         mComboBox->blockSignals(false);
     }
+    Q_EMIT resolutionsave(mModes.at(mComboBox->currentIndex()));
 }
 
 void ResolutionSlider::slotValueChanged(int value)

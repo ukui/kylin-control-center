@@ -1,6 +1,7 @@
 #include "outputconfig.h"
 #include "resolutionslider.h"
 #include "utils.h"
+#include "scalesize.h"
 
 #include <QStringBuilder>
 #include <QFormLayout>
@@ -21,6 +22,7 @@
 
 #include "ComboBox/combobox.h"
 
+double mScaleres = 0;
 
 OutputConfig::OutputConfig(QWidget *parent) :
     QWidget(parent),
@@ -83,6 +85,9 @@ void OutputConfig::initUi()
             });
 
     connect(mResolution, &ResolutionSlider::resolutionChanged,
+            this, &OutputConfig::slotScaleIndex);
+
+    connect(mResolution, &ResolutionSlider::resolutionsave,
             this, &OutputConfig::slotScaleIndex);
 
     // 方向下拉框
@@ -363,6 +368,9 @@ void OutputConfig::slotScaleIndex(const QSize &size)
     } else {
         msize = size;
     }
+    if (!msize.isValid()) {
+        return;
+    }
 
     mScaleCombox->blockSignals(true);
     mScaleCombox->clear();
@@ -387,7 +395,11 @@ void OutputConfig::slotScaleIndex(const QSize &size)
     }
 
     double scale = getScreenScale();
+
     if (mScaleCombox->findData(scale) == -1) {
+        //该变量保存改变前的缩放率，当用户点击恢复时，恢复对应的缩放率
+        mScaleres = scale;
+
         scale = 1.0;
         if (QGSettings::isSchemaInstalled(SCALE_SCHEMAS)) {
             if (mDpiSettings->keys().contains("scalingFactor")) {
@@ -396,8 +408,8 @@ void OutputConfig::slotScaleIndex(const QSize &size)
         }
         QMessageBox::information(this, tr("Information"),
                                  tr("Some applications need to be logouted to take effect"));
-        mScaleCombox->setCurrentText(scaleToString(scale));
     }
+    mScaleCombox->setCurrentText(scaleToString(scale));
     mScaleCombox->blockSignals(false);
 }
 
