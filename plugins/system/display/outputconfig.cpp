@@ -382,14 +382,15 @@ void OutputConfig::slotScaleIndex(const QSize &size)
     if (msize.width() >= 1920 ) {
         mScaleCombox->addItem("150%", 1.5);
     }
-    if (msize.width() >= 2048) {
+    if (msize.width() >= 2560) {
         mScaleCombox->addItem("175%", 1.75);
+        mScaleCombox->addItem("200%", 2.0);
     }
     if (msize.width() >= 3072) {
        mScaleCombox->addItem("225%", 2.25);
        mScaleCombox->addItem("250%", 2.5);
    }
-   if (msize.width() >= 3072) {
+   if (msize.width() >= 3840) {
        mScaleCombox->addItem("275%", 2.75);
    }
 
