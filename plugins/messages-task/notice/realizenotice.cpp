@@ -34,7 +34,6 @@ QList<char *> listExistsCustomNoticePath(){
     for (int i = 0; childs[i] != NULL; i++){
         if (dconf_is_rel_dir (childs[i], NULL)){
             char * val = g_strdup (childs[i]);
-
             vals.append(val);
         }
     }

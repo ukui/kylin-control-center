@@ -20,6 +20,16 @@
       <summary>Eject</summary>
       <description>Binding to eject an optical disc.</description>
     </key>
+    <key name="iscn-env" type="b">
+      <default>true</default>
+      <summary>"" </summary>
+      <description>Determine whether the environment is Chinese</description>
+    </key>
+    <key name="blacklist" type="as">
+      <default>[]</default>
+      <summary>"" </summary>
+      <description>Hidden DektopList</description>
+    </key>
   </schema>
   <schema id="org.ukui.control-center.noticeorigin">
     <key name="messages" type="b">
@@ -37,7 +47,12 @@
       <summary>maximize num of messages</summary>
       <description>The maximize num of messages on notice window.</description>
     </key>
-    <key name="name" type='s'>
+    <key name="name-cn" type='s'>
+      <default>''</default>
+      <summary>app's name</summary>
+      <description>The name passed to the sidebar</description>
+     </key>
+     <key name="name-us" type='s'>
       <default>''</default>
       <summary>app's name</summary>
       <description>The name passed to the sidebar</description>

@@ -335,7 +335,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QListWidget" name="applistWidget"/>
+       <widget class="QFrame" name="frame">
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
