@@ -67,8 +67,10 @@ void BrightnessFrame::setTextLabelValue(QString text)
 void BrightnessFrame::runConnectThread(const bool &openFlag)
 {
     outputEnable = openFlag;
-    if (false == isBattery && !threadRunFlag) {
+    if (false == isBattery) {
         threadRun = QtConcurrent::run([=]{
+            if (true == threadRunFlag)
+                return;
             threadRunFlag = true;
             if ("" == this->serialNum) {
                 threadRunFlag = false;
@@ -76,12 +78,9 @@ void BrightnessFrame::runConnectThread(const bool &openFlag)
             }
 
             int brightnessValue = getDDCBrighthess();
-            if (brightnessValue == -1 || !slider || exitFlag) {
+            if (brightnessValue < 0 || !slider || exitFlag) {
                 threadRunFlag = false;
                 return;
-            }
-            if (brightnessValue > 100) {
-                brightnessValue = 100;
             }
             slider->setValue(brightnessValue);
             setTextLabelValue(QString::number(brightnessValue));
@@ -143,7 +142,7 @@ int BrightnessFrame::getDDCBrighthess()
         if (this->serialNum == "" || exitFlag)
             return -1;
         reply = ukccIfc.call("getDDCBrightnessUkui", this->serialNum);
-        if (reply.isValid() && reply.value() >= 0) {
+        if (reply.isValid() && reply.value() >= 0 && reply.isValid() <= 100) {
             return reply.value();
         }
         sleep(2);

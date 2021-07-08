@@ -201,7 +201,7 @@ int SysdbusRegister::getDDCBrightness(QString type) {
     QString bri=result.split(" ").at(9);
     bool ok;
     int bright=bri.toInt(&ok,16);
-    if(ok)
+    if(ok && bright >= 0 && bright <= 100)
         return bright;
 
     return -1;
@@ -290,6 +290,7 @@ void SysdbusRegister::getBrightnessInfo()
                 bool existFlag = false;
                 for (int i = 0; i < brightInfo_V.size(); i++) {
                     if (brightInfo_V[i].serialNum == serial) {
+                        brightInfo_V[i].brightness = getDDCBrightness(busType);
                         existFlag = true;
                         break;
                     }
@@ -322,7 +323,7 @@ void SysdbusRegister::setDDCBrightnessUkui(QString brightness, QString serialNum
 int SysdbusRegister::getDDCBrightnessUkui(QString serialNum)
 {
     for (int i = 0; i < brightInfo_V.size(); i++) {
-        if (brightInfo_V[i].serialNum == serialNum) {
+        if (brightInfo_V[i].serialNum == serialNum && brightInfo_V[i].brightness >= 0 && brightInfo_V[i].brightness <= 100) {
             return brightInfo_V[i].brightness;
         }
     }

@@ -48,7 +48,7 @@ private:
     QSettings *mHibernateSet;
 
     QVector<struct brightInfo> brightInfo_V;
-    bool runThreadFlag;
+    volatile bool runThreadFlag;
 
 signals:
     Q_SCRIPTABLE void nameChanged(QString);

@@ -37,7 +37,7 @@ private:
     bool exitFlag;
     bool isBattery;
     QFuture<void> threadRun;
-    bool threadRunFlag;
+    volatile bool threadRunFlag;
 };
 
 #endif // BRIGHTNESSFRAME_H
