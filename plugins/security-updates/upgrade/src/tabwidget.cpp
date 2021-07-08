@@ -641,11 +641,13 @@ void TabWid::loadingOneUpdateMsgSlot(AppAllMsg msg)
             if(list[2] != "")
             {
                 appWidget->appNameLab->setText(list[2]);
+                appWidget->dispalyName = list[2];
 
             }
             if(list[1] != "" && QLocale::system().name()=="zh_CN")
             {
                 appWidget->appNameLab->setText(list[1]);
+                appWidget->dispalyName = list[1];
             }
             if(list[0] != "" && !appWidget->haveThemeIcon)
             {
@@ -667,18 +669,35 @@ void TabWid::loadingFinishedSlot(int size)
     disconnect(updateSource->serviceInterface,SIGNAL(updateTemplateStatus(QString)),this,SLOT(slotUpdateTemplate(QString)));
     disconnect(updateSource->serviceInterface,SIGNAL(updateCacheStatus(QVariantList)),this,SLOT(slotUpdateCache(QVariantList)));
     disconnect(updateSource->serviceInterface,SIGNAL(updateSourceProgress(QVariantList)),this,SLOT(slotUpdateCacheProgress(QVariantList)));
-    qDebug()<< "更新管理器：" <<"加载完毕信号 " << "size = " <<size;
-    if(updateMutual->importantList.size() == 0)
-    {
+    qDebug()<< "更新管理器：" <<"加载完毕信号 " << "size = " << size;
+    if(updateMutual->importantList.size() == 0) {
         checkUpdateBtn->setEnabled(true);
         checkUpdateBtn->stop();
         //        checkUpdateBtn->setText(tr("检查更新"));
         checkUpdateBtn->setText(tr("Check Update"));
         //        versionInformationLab->setText(tr("您的系统已是最新！"));
         versionInformationLab->setText(tr("Your system is the latest!"));
+        foreach (AppUpdateWid *wid, widgetList) {
+            disconnect(wid, &AppUpdateWid::sendProgress, this, &TabWid::getAllProgress);
+        }
+        allProgressBar->hide();
+        QString updatetime;
+        QSqlQuery queryInstall(QSqlDatabase::database("A"));
+        queryInstall.exec("select * from installed order by id desc");
+        while (queryInstall.next()) {
+            QString statusType = queryInstall.value("keyword").toString();
+            if (statusType == "" || statusType =="1") {
+                updatetime = queryInstall.value("time").toString();
+                break;
+            }
+        }
+        if (QLocale::system().name()!="zh_CN" && updatetime.contains("暂无信息")) {
+            updatetime = "No Information!";
+        }
+        lastRefreshTime->setText(tr("Last refresh:")+ updatetime);
+        lastRefreshTime->show();
     }
-    else
-    {
+    else {
         updateMutual->importantSize = updateMutual->importantList.size();   //此次检测结果的更新数量
         checkUpdateBtn->stop();
         checkUpdateBtn->setEnabled(true);
@@ -690,7 +709,6 @@ void TabWid::loadingFinishedSlot(int size)
         }
 
         systemPortraitLab->setPixmap(QPixmap(":/img/plugins/upgrade/update.png").scaled(96,96));
-
     }
 
 }
@@ -1056,7 +1074,7 @@ void TabWid::fileLock()
         chmod("/tmp/auto-upgrade/",0777);
     }
     umask(0000);
-    int fd = open("/tmp/auto-upgrade/ukui-control-center.lock", O_RDWR | O_CREAT,0666);
+    int fd = open("/tmp/auto-upgrade/ukui-control-center.lock", O_RDONLY | O_CREAT,0666);
     if (fd < 0) {
         qDebug()<<"解锁时文件锁打开异常";
         return;
@@ -1072,7 +1090,7 @@ void TabWid::fileUnLock()
         chmod("/tmp/auto-upgrade/",0777);
     }
     umask(0000);
-    int fd = open("/tmp/auto-upgrade/ukui-control-center.lock", O_RDWR | O_CREAT,0666);
+    int fd = open("/tmp/auto-upgrade/ukui-control-center.lock", O_RDONLY | O_CREAT,0666);
     if (fd < 0) {
         qDebug()<<"解锁时文件锁打开异常";
         return;
