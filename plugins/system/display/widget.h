@@ -27,6 +27,7 @@
 #include "SwitchButton/switchbutton.h"
 #include "brightnessFrame.h"
 #include "screenConfig.h"
+#include "scalesize.h"
 
 class QLabel;
 class QMLOutput;
@@ -218,8 +219,9 @@ private:
 
     QHash<QString, QVariant> mNightConfig;
 
-    double mScreenScale = 1.0;
     int mScreenId = -1;
+
+    double scaleres;
 
     bool mIsNightMode     = false;
     bool mRedshiftIsValid = false;
@@ -234,7 +236,7 @@ private:
 
     bool threadRunExit = false;
     QFuture<void> threadRun;
-    
+
     QShortcut *mApplyShortcut;
     QVector<BrightnessFrame*> BrightnessFrameV;
     QVector<QString> deleteFrameNameV;  //用二级指针判断null出现问题，只想到这种方式排除段错误

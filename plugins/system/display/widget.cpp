@@ -642,6 +642,10 @@ bool Widget::isRestoreConfig()
         res = false;
         break;
     case QMessageBox::RejectRole:
+        QStringList keys = scaleGSettings->keys();
+        if (keys.contains("scalingFactor")) {
+            scaleGSettings->set(SCALE_KEY,scaleres);
+        }
         res = true;
         break;
     }
@@ -1166,7 +1170,7 @@ void Widget::setDDCBrightnessN(int value, QString screenName)
                            "com.control.center.interface",
                            QDBusConnection::systemBus());
 
-    
+
        if (mLock.tryLock()) {
             ukccIfc.call("setDDCBrightness", QString::number(value), type);
             mLock.unlock();
@@ -1393,7 +1397,7 @@ void Widget::save()
         return;
     }
 
-    writeScale(this->mScreenScale);
+    writeScale(mScreenScale);
     setNightMode(mNightButton->isChecked());
 
     if (!KScreen::Config::canBeApplied(config)) {
@@ -1626,8 +1630,8 @@ bool Widget::writeFile(const QString &filePath)
 
 void Widget::scaleChangedSlot(double scale)
 {
-    this->mScreenScale = scale;
-    if (scaleGSettings->get(SCALE_KEY).toDouble() != this->mScreenScale) {
+    mScreenScale = scale;
+    if (scaleGSettings->get(SCALE_KEY).toDouble() != mScreenScale) {
         mIsScaleChanged = true;
     } else {
         mIsScaleChanged = false;
@@ -1751,6 +1755,10 @@ void Widget::initConnection()
     ui->controlPanelLayout->addWidget(mControlPanel);
 
     connect(ui->applyButton, &QPushButton::clicked, this, [=]() {
+        QStringList keys = scaleGSettings->keys();
+        if (keys.contains("scalingFactor")) {
+            scaleres = scaleGSettings->get(SCALE_KEY).toDouble();
+        }
         save();
     });
 

@@ -18,18 +18,6 @@
 #include <KF5/KScreen/kscreen/config.h>
 #include <KF5/KScreen/kscreen/getconfigoperation.h>
 
-const QVector<QSize> k150Scale{QSize(1280, 1024), QSize(1440, 900), QSize(1600, 900),
-                               QSize(1680, 1050), QSize(1920, 1080), QSize(1920, 1200),
-                               QSize(2048, 1080), QSize(2048, 1280), QSize(2160, 1440),
-                               QSize(2560, 1440),QSize(3840, 2160)};
-
-const QVector<QSize> k175Scale{QSize(1680, 1050), QSize(1920, 1080), QSize(1920, 1200),
-                               QSize(2048, 1080), QSize(2048, 1280), QSize(2160, 1440),
-                               QSize(2560, 1440), QSize(3840, 2160)};
-
-const QVector<QSize> k200Scale{QSize(1920, 1200), QSize(2048, 1280), QSize(2160, 1440),
-                               QSize(2560, 1440), QSize(3840, 2160)};
-
 bool operator<(const QSize &s1, const QSize &s2)
 {
     return s1.width() * s1.height() < s2.width() * s2.height();
@@ -387,7 +375,7 @@ void UnifiedOutputConfig::slotResolutionChanged(const QSize &size)
         }
     }
     if (mRefreshRate->count() == 0) {
-        mRefreshRate->addItem(tr("auto"), -1);    
+        mRefreshRate->addItem(tr("auto"), -1);
     }
     Q_EMIT changed();
 }

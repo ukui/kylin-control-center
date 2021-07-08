@@ -1,12 +1,16 @@
 #include "controlpanel.h"
 #include "outputconfig.h"
 #include "unifiedoutputconfig.h"
+#include "utils.h"
+#include "scalesize.h"
 
 #include <QVBoxLayout>
 #include <QDebug>
 #include <QLabel>
 #include <QDBusInterface>
 #include <KF5/KScreen/kscreen/config.h>
+
+QSize mScaleSize = QSize();
 
 ControlPanel::ControlPanel(QWidget *parent) :
     QFrame(parent),
@@ -36,9 +40,21 @@ void ControlPanel::setConfig(const KScreen::ConfigPtr &config)
 
     mConfig = config;
     connect(mConfig.data(), &KScreen::Config::outputAdded,
-            this, &ControlPanel::addOutput);
+            this, [=](const KScreen::OutputPtr &output){
+        changescalemax(output);
+        addOutput(output);
+        for (OutputConfig *outputCfg : mOutputConfigs) {
+            outputCfg->slotScaleIndex(mScaleSize);
+        }
+    });
     connect(mConfig.data(), &KScreen::Config::outputRemoved,
             this, &ControlPanel::removeOutput);
+
+    for (const KScreen::OutputPtr &output : mConfig->outputs()) {
+        if (output->isConnected()) {
+            changescalemax(output);
+        }
+    }
 
     for (const KScreen::OutputPtr &output : mConfig->outputs()) {
         addOutput(output);
@@ -83,6 +99,16 @@ void ControlPanel::removeOutput(int outputId)
             outputCfg->setVisible(true);
         }
     }
+
+    //有显示器移除时，获取最新的限制缩放率
+    mScaleSize = QSize();
+    for (const KScreen::OutputPtr &output : mConfig->outputs()) {
+         changescalemax(output);
+    }
+    //该缩放率直接作用
+    for (OutputConfig *outputCfg : mOutputConfigs) {
+        outputCfg->slotScaleIndex(mScaleSize);
+    }
 }
 
 void ControlPanel::activateOutput(const KScreen::OutputPtr &output)
@@ -109,6 +135,19 @@ void ControlPanel::activateOutputNoParam()
     Q_FOREACH (OutputConfig *cfg, mOutputConfigs) {
         qDebug()<<cfg->output()->id()<<" id";
         cfg->setVisible(cfg->output()->id() == 66);
+    }
+}
+
+void ControlPanel::changescalemax(const KScreen::OutputPtr &output)
+{
+    QSize sizescale  = QSize();
+    Q_FOREACH (const  KScreen::ModePtr &mode, output->modes()) {
+        if (sizescale.width() <= mode->size().width()) {
+            sizescale = mode->size();
+        }
+    }
+    if (mScaleSize == QSize() || mScaleSize.width() > sizescale.width()) {
+        mScaleSize = sizescale;
     }
 }
 

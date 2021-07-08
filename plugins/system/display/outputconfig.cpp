@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QGroupBox>
+#include <QMessageBox>
 
 #include <QComboBox>
 #include <QGSettings>
@@ -20,22 +21,7 @@
 
 #include "ComboBox/combobox.h"
 
-#define SCALE_SCHEMAS "org.ukui.SettingsDaemon.plugins.xsettings"
-#define SCALE_KEY     "scaling-factor"
-
-const QSize KRsolution(1920, 1080);
-
-const QVector<QSize> k150Scale{QSize(1280, 1024), QSize(1440, 900), QSize(1600, 900),
-                               QSize(1680, 1050), QSize(1920, 1080), QSize(1920, 1200),
-                               QSize(2048, 1080), QSize(2048, 1280), QSize(2160, 1440),
-                               QSize(2560, 1440),QSize(3840, 2160)};
-
-const QVector<QSize> k175Scale{QSize(1680, 1050), QSize(1920, 1080), QSize(1920, 1200),
-                               QSize(2048, 1080), QSize(2048, 1280), QSize(2160, 1440),
-                               QSize(2560, 1440), QSize(3840, 2160)};
-
-const QVector<QSize> k200Scale{QSize(1920, 1200), QSize(2048, 1280), QSize(2160, 1440),
-                               QSize(2560, 1440), QSize(3840, 2160)};
+double mScreenScale = 1.0;
 
 OutputConfig::OutputConfig(QWidget *parent) :
     QWidget(parent),
@@ -351,21 +337,46 @@ void OutputConfig::slotDPIChanged(QString key)
 
 void OutputConfig::slotScaleIndex(const QSize &size)
 {
+    QSize scalesize;
+
+    if (mScaleSize != QSize()) {
+        scalesize = size.width() > mScaleSize.width() ? mScaleSize : size;
+    } else {
+        scalesize = size;
+    }
+
+    if (!scalesize.isValid()) {
+        return;
+    }
+
     mScaleCombox->blockSignals(true);
     mScaleCombox->clear();
     mScaleCombox->addItem("100%", 1.0);
 
-
-    if (k150Scale.contains(size)) {
+    if (scalesize.width() >= 1024 ) {
         mScaleCombox->addItem("125%", 1.25);
+    }
+    if (scalesize.width() >= 1920 ) {
         mScaleCombox->addItem("150%", 1.5);
     }
-    if (k175Scale.contains(size)) {
+    if (scalesize.width() >= 2048) {
         mScaleCombox->addItem("175%", 1.75);
-    }
-    if (k200Scale.contains(size)) {
         mScaleCombox->addItem("200%", 2.0);
     }
+    if (scalesize.width() >= 3072) {
+        mScaleCombox->addItem("225%", 2.25);
+        mScaleCombox->addItem("250%", 2.5);
+    }
+    if (scalesize.width() >= 3072) {
+        mScaleCombox->addItem("275%", 2.75);
+    }
+
+    double scale = getScreenScale();
+    if (mScaleCombox->findData(scale) == -1) {
+        scale = 1.0;
+    }
+    mScaleCombox->setCurrentText(scaleToString(scale));
+    mScreenScale = scale;
     mScaleCombox->blockSignals(false);
 }
 

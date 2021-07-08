@@ -51,6 +51,7 @@ HEADERS += \
     controlpanel.h \
     outputconfig.h \
     resolutionslider.h \
+    scalesize.h \
     unifiedoutputconfig.h \
     utils.h \
     widget.h \
