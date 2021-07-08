@@ -36,14 +36,20 @@ FixLabel::~FixLabel()
 void FixLabel::paintEvent(QPaintEvent *event)
 {
     QFontMetrics fontMetrics(this->font());
-    QString mStr = this->text();
     int fontSize = fontMetrics.width(mStr);
     if (fontSize > this->width()) {
-        this->setText(fontMetrics.elidedText(mStr, Qt::ElideRight, this->width()));
+        this->setText(fontMetrics.elidedText(mStr, Qt::ElideRight, this->width()), false);
         this->setToolTip(mStr);
     } else {
-        this->setText(mStr);
+        this->setText(mStr, false);
         this->setToolTip("");
     }
     QLabel::paintEvent(event);
+}
+
+void FixLabel::setText(const QString & text, bool saveTextFlag)
+{
+    if (saveTextFlag)
+        mStr = text;
+    QLabel::setText(text);
 }

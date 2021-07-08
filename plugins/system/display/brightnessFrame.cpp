@@ -22,8 +22,8 @@ BrightnessFrame::BrightnessFrame(const QString &name, const bool &isBattery, con
     layout->setSpacing(6);
     layout->setMargin(9);
 
-    labelName = new QLabel(this);
-    labelName->setFixedWidth(198);
+    labelName = new FixLabel(this);
+    labelName->setFixedWidth(118);
 
     slider = new Uslider(Qt::Horizontal, this);
     slider->setRange(10, 100);
@@ -38,11 +38,11 @@ BrightnessFrame::BrightnessFrame(const QString &name, const bool &isBattery, con
 
     this->outputEnable = true;
     this->connectFlag = true;
-    this->busType = "";
     this->exitFlag = false;
     this->isBattery = isBattery;
     this->outputName = name;
     this->serialNum  = serialNum;
+    this->threadRunFlag = false;
 
     labelValue->setText("0"); //最低亮度10,获取前显示为0
     slider->setEnabled(false); //成功连接了再改为true，否则表示无法修改亮度
@@ -50,7 +50,6 @@ BrightnessFrame::BrightnessFrame(const QString &name, const bool &isBattery, con
 
 BrightnessFrame::~BrightnessFrame()
 {
-    busType = "";
     exitFlag = true;
     threadRun.waitForFinished();
 }
@@ -68,19 +67,19 @@ void BrightnessFrame::setTextLabelValue(QString text)
 void BrightnessFrame::runConnectThread(const bool &openFlag)
 {
     outputEnable = openFlag;
-    if (false == isBattery) {
+    if (false == isBattery && !threadRunFlag) {
         threadRun = QtConcurrent::run([=]{
-            if (serialNum != "" && "" == this->busType) {
-                getDDCtype();
-            }
-
-            if ("" == this->busType) {
+            threadRunFlag = true;
+            if ("" == this->serialNum) {
+                threadRunFlag = false;
                 return;
             }
 
             int brightnessValue = getDDCBrighthess();
-            if (brightnessValue == -1 || !slider || exitFlag)
+            if (brightnessValue == -1 || !slider || exitFlag) {
+                threadRunFlag = false;
                 return;
+            }
             if (brightnessValue > 100) {
                 brightnessValue = 100;
             }
@@ -92,6 +91,7 @@ void BrightnessFrame::runConnectThread(const bool &openFlag)
                  setTextLabelValue(QString::number(slider->value()));
                  setDDCBrightness(slider->value());
             });
+            threadRunFlag = false;
         });
     } else {
         QByteArray powerId(POWER_SCHMES);
@@ -133,51 +133,29 @@ QString BrightnessFrame::getOutputName()
 
 int BrightnessFrame::getDDCBrighthess()
 {
-    int times = 100;
+    int times = 10;
     QDBusInterface ukccIfc("com.control.center.qt.systemdbus",
                            "/",
                            "com.control.center.interface",
                            QDBusConnection::systemBus());
     QDBusReply<int> reply;
     while (--times) {
-        if (busType == "" || exitFlag)
+        if (this->serialNum == "" || exitFlag)
             return -1;
-        reply = ukccIfc.call("getDDCBrightness", busType);
+        reply = ukccIfc.call("getDDCBrightnessUkui", this->serialNum);
         if (reply.isValid() && reply.value() >= 0) {
             return reply.value();
         }
-        usleep(80000);
+        sleep(2);
     }
     return -1;
 }
 
-
-void BrightnessFrame::getDDCtype()
-{
-    QDBusInterface ukccIfc("com.control.center.qt.systemdbus",
-                           "/",
-                           "com.control.center.interface",
-                           QDBusConnection::systemBus());
-
-    QDBusReply<QVariantMap> replyMap = ukccIfc.call("getBusMap");
-
-    QMap<QString, QVariant>::const_iterator replay_i = replyMap.value().constBegin();
-    while (replay_i != replyMap.value().constEnd()) {
-        if (serialNum == replay_i.key()) {
-            QVariant reply = replay_i.value();
-            QString serial = reply.toString();
-            busType = serial.split("-").at(1);
-            return;
-        }
-        replay_i++;
-    }
-
-    busType = "";
-    return;
-}
-
 void BrightnessFrame::setDDCBrightness(const int &value)
 {
+    if (this->serialNum == "")
+        return;
+
     QDBusInterface ukccIfc("com.control.center.qt.systemdbus",
                            "/",
                            "com.control.center.interface",
@@ -185,7 +163,7 @@ void BrightnessFrame::setDDCBrightness(const int &value)
 
 
     if (mLock.tryLock()) {
-        ukccIfc.call("setDDCBrightness", QString::number(value), this->busType);
+        ukccIfc.call("setDDCBrightnessUkui", QString::number(value), this->serialNum);
         mLock.unlock();
     }
 }

@@ -8,6 +8,7 @@
 #include "Uslider/uslider.h"
 #include <QMutex>
 #include <QFuture>
+#include <Label/fixlabel.h>
 
 class BrightnessFrame : public QFrame
 {
@@ -20,24 +21,23 @@ public:
     void setOutputEnable(const bool &enable);
     bool getOutputEnable();
     void runConnectThread(const bool &openFlag);
-    void getDDCtype();
     int  getDDCBrighthess();
     bool getSliderEnable();
     void setDDCBrightness(const int &value);
     QString getOutputName();
 private:
-    QLabel *labelName = nullptr;
+    FixLabel *labelName = nullptr;
     QLabel *labelValue = nullptr;
     Uslider *slider = nullptr;
     QString outputName;          //屏幕名
     bool    outputEnable;     //该屏幕是否打开
     bool    connectFlag;  //该屏幕是否连接
-    QString busType;        //BUS号
     QString serialNum;     //屏幕序列号
     QMutex      mLock;
     bool exitFlag;
     bool isBattery;
     QFuture<void> threadRun;
+    bool threadRunFlag;
 };
 
 #endif // BRIGHTNESSFRAME_H
