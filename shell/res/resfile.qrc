@@ -198,6 +198,18 @@
         <file>secondaryleftmenu/ProjectionWhite.svg</file>
         <file>secondaryleftmenu/Search.svg</file>
         <file>secondaryleftmenu/SearchWhite.svg</file>
+        <file>plugins/securitycenter/ rectangle_bule.png</file>
+        <file>plugins/securitycenter/ rectangle_white.png</file>
+        <file>plugins/securitycenter/bingdufanghu-white.png</file>
+        <file>plugins/securitycenter/bingdufanghu.png</file>
+        <file>plugins/securitycenter/bai.png</file>
+        <file>plugins/securitycenter/lan.png</file>
+        <file>plugins/securitycenter/saomiao-white.png</file>
+        <file>plugins/securitycenter/saomiao.png</file>
+        <file>plugins/securitycenter/user_sercity_white.png</file>
+        <file>plugins/securitycenter/user_sercity.png</file>
+        <file>plugins/securitycenter/yingyongkongzhiyubaohu-white.png</file>
+        <file>plugins/securitycenter/yingyonkongzhiyubaohu.png</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>
