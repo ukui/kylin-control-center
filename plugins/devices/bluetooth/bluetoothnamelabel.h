@@ -11,6 +11,11 @@
 #include <QDebug>
 #include <QObject>
 #include <QGSettings/QGSettings>
+#include <QIcon>
+#include <QHBoxLayout>
+#include <QMessageBox>
+
+#define DEVNAMELENGTH 20
 
 class BluetoothNameLabel : public QWidget
 {
@@ -19,6 +24,7 @@ public:
     BluetoothNameLabel(QWidget *parent = nullptr, int x = 200,int y = 40);
     ~BluetoothNameLabel();
     void set_dev_name(const QString &dev_name);
+    void dev_name_limit_fun();
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event);
     void leaveEvent(QEvent *event);
@@ -37,9 +43,14 @@ private:
     bool style_flag = false;
 
     QLabel *m_label = nullptr;
+    QLabel *icon_pencil=nullptr;
+
     QLineEdit *m_lineedit = nullptr;
     QString device_name;
     int font_width;
+
+    QMessageBox *messagebox = nullptr;
+    QHBoxLayout *hLayout = nullptr;
 };
 
 #endif // BLUETOOTHNAMELABEL_H

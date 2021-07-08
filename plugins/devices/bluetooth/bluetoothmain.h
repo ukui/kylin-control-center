@@ -56,6 +56,12 @@ public:
     void removeDeviceItemUI(QString address);
     void addMyDeviceItemUI(BluezQt::DevicePtr);
     void MonitorSleepSignal();
+    void showNormalMainWindow();
+    void showMainWindowError();
+    void updateAdaterInfoList();
+    BluezQt::AdapterPtr getDefaultAdapter();
+    void adapterConnectFun();
+    void cleanPairDevices();
 protected:
     void leaveEvent(QEvent *event);
 
