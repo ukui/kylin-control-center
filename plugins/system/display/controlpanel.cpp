@@ -187,6 +187,9 @@ void ControlPanel::slotOutputConnectedChanged()
     if (output->isConnected()) {
         changescalemax(output);
         addOutput(output, true);
+        for (OutputConfig *outputCfg : mOutputConfigs) {
+            outputCfg->slotScaleIndex(mScaleSize);
+        }
     } else {
         removeOutput(output->id());
         mScaleSize = QSize();
@@ -194,6 +197,9 @@ void ControlPanel::slotOutputConnectedChanged()
             if (output->isConnected()) {
                 changescalemax(output);
             }
+        }
+        for (OutputConfig *outputCfg : mOutputConfigs) {
+            outputCfg->slotScaleIndex(mScaleSize);
         }
     }
 }

@@ -45,7 +45,7 @@ protected Q_SLOTS:
     void slotScaleChanged(int index);
     void slotDPIChanged(QString key);
 
-private Q_SLOTS:
+public Q_SLOTS:
     void slotScaleIndex(const QSize &size);
 
 Q_SIGNALS:

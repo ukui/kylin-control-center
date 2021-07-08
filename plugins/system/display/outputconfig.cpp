@@ -376,23 +376,22 @@ void OutputConfig::slotScaleIndex(const QSize &size)
     mScaleCombox->clear();
     mScaleCombox->addItem("100%", 1.0);
 
-    if (k150Scale.contains(msize)) {
+    if (msize.width() >= 1024 ) {
         mScaleCombox->addItem("125%", 1.25);
+    }
+    if (msize.width() >= 1920 ) {
         mScaleCombox->addItem("150%", 1.5);
     }
-    if (k175Scale.contains(msize)) {
+    if (msize.width() >= 2048) {
         mScaleCombox->addItem("175%", 1.75);
     }
-    if (k200Scale.contains(msize)) {
-        mScaleCombox->addItem("200%", 2.0);
-    }
-    if (k250Scale.contains(msize)) {
-        mScaleCombox->addItem("225%", 2.25);
-        mScaleCombox->addItem("250%", 2.5);
-    }
-    if (k275Scale.contains(msize)) {
-        mScaleCombox->addItem("275%", 2.75);
-    }
+    if (msize.width() >= 3072) {
+       mScaleCombox->addItem("225%", 2.25);
+       mScaleCombox->addItem("250%", 2.5);
+   }
+   if (msize.width() >= 3072) {
+       mScaleCombox->addItem("275%", 2.75);
+   }
 
     double scale = getScreenScale();
 
