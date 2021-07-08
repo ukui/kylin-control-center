@@ -60,6 +60,8 @@ public:
     void showMainWindowError();
     void updateAdaterInfoList();
     BluezQt::AdapterPtr getDefaultAdapter();
+    void adapterConnectFun();
+    void cleanPairDevices();
 protected:
     void leaveEvent(QEvent *event);
 
