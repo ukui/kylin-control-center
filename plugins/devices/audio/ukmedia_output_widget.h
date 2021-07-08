@@ -49,16 +49,22 @@ Q_SIGNALS:
 protected:
     void mousePressEvent(QMouseEvent *ev)
     {
-        mousePress = true;
-        Q_EMIT silderPressSignal();
-        //注意应先调用父类的鼠标点击处理事件，这样可以不影响拖动的情况
-        QSlider::mousePressEvent(ev);
-        //获取鼠标的位置，这里并不能直接从ev中取值（因为如果是拖动的话，鼠标开始点击的位置没有意义了）
-        double pos = ev->pos().x() / (double)width();
-        setValue(pos *(maximum() - minimum()) + minimum());
-        //向父窗口发送自定义事件event type，这样就可以在父窗口中捕获这个事件进行处理
-        QEvent evEvent(static_cast<QEvent::Type>(QEvent::User + 1));
-        QCoreApplication::sendEvent(parentWidget(), &evEvent);
+        int value = 0;
+        int currentX = ev->pos().x();
+        double per = currentX * 1.0 / this->width();
+        if ((this->maximum() - this->minimum()) >= 50) { //减小鼠标点击像素的影响
+            value = qRound(per*(this->maximum() - this->minimum())) + this->minimum();
+            if (value <= (this->maximum() / 2 - this->maximum() / 10 + this->minimum() / 10)) {
+                value = qRound(per*(this->maximum() - this->minimum() - 1)) + this->minimum();
+            } else if (value > (this->maximum() / 2 + this->maximum() / 10 + this->minimum() / 10)) {
+                value = qRound(per*(this->maximum() - this->minimum() + 1)) + this->minimum();
+            } else {
+                value = qRound(per*(this->maximum() - this->minimum())) + this->minimum();
+            }
+        } else {
+            value = qRound(per*(this->maximum() - this->minimum())) + this->minimum();
+        }
+        this->setValue(value);
         QSlider::mousePressEvent(ev);
     }
     void mouseReleaseEvent(QMouseEvent *ev)
