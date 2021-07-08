@@ -34,10 +34,10 @@ auth_cb (PasswdHandler *passwd_handler,
 
     if (error){
         g_warning("%s", error->message);
-        return;
+        qApp->exit(1);
+    } else {
+        passwd_change_password (passwd_handler, pwd, chpasswd_cb, NULL);
     }
-
-    passwd_change_password (passwd_handler, pwd, chpasswd_cb, NULL);
 
 }
 
