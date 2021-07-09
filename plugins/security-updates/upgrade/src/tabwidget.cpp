@@ -896,15 +896,26 @@ void TabWid::slotCancelDownload()
 
 void TabWid::hideUpdateBtnSlot(bool isSucceed)
 {
-    if(isSucceed == true)
-    {
-        qDebug() << "当前更新列表" << updateMutual->importantList;
-
+    Q_UNUSED(isSucceed);
+    if(updateMutual->importantList.size() == 0) {
+        checkUpdateBtn->setEnabled(true);
+        checkUpdateBtn->stop();
+        //        checkUpdateBtn->setText(tr("检查更新"));
+        checkUpdateBtn->setText(tr("Check Update"));
+        if(updateMutual->failedList.size() == 0) {
+            versionInformationLab->setText(tr("Your system is the latest!"));
+            systemPortraitLab->setPixmap(QPixmap(":/img/plugins/upgrade/normal.png").scaled(96,96));
+            checkUpdateBtn->hide();
+            allProgressBar->hide();
+        }
+        else {
+            versionInformationLab->setText(tr("Part of the update failed!"));
+            allProgressBar->hide();
+        }
         QString updatetime;
         QSqlQuery queryInstall(QSqlDatabase::database("A"));
         queryInstall.exec("select * from installed order by id desc");
-        while(queryInstall.next())
-        {
+        while (queryInstall.next()) {
             QString statusType = queryInstall.value("keyword").toString();
             if(statusType == "" || statusType =="1") {
                 updatetime = queryInstall.value("time").toString();
@@ -913,40 +924,6 @@ void TabWid::hideUpdateBtnSlot(bool isSucceed)
         }
         lastRefreshTime->setText(tr("Last refresh:")+updatetime);
         lastRefreshTime->show();
-        checkUpdateBtn->setEnabled(true);
-    }
-    if(updateMutual->importantList.size() == 0)
-    {
-        checkUpdateBtn->setEnabled(true);
-        checkUpdateBtn->stop();
-        //        checkUpdateBtn->setText(tr("检查更新"));
-        checkUpdateBtn->setText(tr("Check Update"));
-        if(updateMutual->failedList.size() == 0)
-        {
-            //            versionInformationLab->setText(tr("您的系统已是最新！"));
-            versionInformationLab->setText(tr("Your system is the latest!"));
-            systemPortraitLab->setPixmap(QPixmap(":/img/plugins/upgrade/normal.png").scaled(96,96));
-            checkUpdateBtn->hide();
-        }
-        else
-        {
-            //            versionInformationLab->setText(tr("部分更新失败！"));
-            versionInformationLab->setText(tr("Part of the update failed!"));
-            allProgressBar->hide();
-            QString updatetime;
-            QSqlQuery queryInstall(QSqlDatabase::database("A"));
-            queryInstall.exec("select * from installed order by id desc");
-            while(queryInstall.next())
-            {
-                QString statusType = queryInstall.value("keyword").toString();
-                if(statusType == "" || statusType =="1") {
-                    updatetime = queryInstall.value("time").toString();
-                    break;
-                }
-            }
-            lastRefreshTime->setText(tr("Last refresh:")+updatetime);
-            lastRefreshTime->show();
-        }
     }
 }
 
