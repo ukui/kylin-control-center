@@ -32,6 +32,7 @@
 #include "HoverWidget/hoverwidget.h"
 #include "ImageUtil/imageutil.h"
 #include "SwitchButton/switchbutton.h"
+#include "changeprojectionname.h"
 
 namespace Ui {
 class Projection;
@@ -52,9 +53,13 @@ public:
     QWidget * get_plugin_ui() Q_DECL_OVERRIDE;
     void plugin_delay_control() Q_DECL_OVERRIDE;
     const QString name() const  Q_DECL_OVERRIDE;
+    bool getWifiStatus();
+    void setWifiStatus(bool status);
 
 public:
     void initComponent();
+    void showChangeProjectionNameDialog();
+    void changeProjectionName(QString name);
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);

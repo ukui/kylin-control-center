@@ -5155,6 +5155,34 @@ Please retry or relogin!</source>
     </message>
 </context>
 <context>
+    <name>ChangeProjectionName</name>
+    <message>
+        <location filename="../../../plugins/devices/projection/changeprojectionname.cpp" line="24"/>
+        <source>Name is too long, change another one.</source>
+        <translation>名称过长，请更改</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/projection/changeprojectionname.ui" line="96"/>
+        <source>Changename</source>
+        <translation>修改名称</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/projection/changeprojectionname.ui" line="132"/>
+        <source>ChangeProjectionname</source>
+        <translation>设备名称</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/projection/changeprojectionname.ui" line="213"/>
+        <source>Save</source>
+        <translation>保存</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/devices/projection/changeprojectionname.ui" line="194"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+</context>
+<context>
     <name>Proxy</name>
     <message>
         <location filename="../../../plugins/network/proxy/proxy.ui" line="53"/>

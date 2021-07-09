@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/new/prefix1"/>
+    <qresource prefix="/">
+        <file>touping.png</file>
+    </qresource>
+</RCC>
