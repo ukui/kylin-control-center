@@ -7218,7 +7218,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="806"/>
         <source>Back And Update</source>
-        <translation>返回并更新</translation>
+        <translation>备份并更新</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="950"/>
@@ -8120,7 +8120,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/updatedbus.cpp" line="63"/>
         <source>System-Upgrade</source>
-        <translation>系统更系</translation>
+        <translation>系统更新</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/updatedbus.cpp" line="66"/>

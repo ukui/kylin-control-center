@@ -524,13 +524,13 @@ void AppUpdateWid::updateAppUi(QString name)
         //        someInfoEdit->append(tr("下载大小：")+QString(modifySizeUnit(appAllMsg.msg.allSize)));
         someInfoEdit->append(tr("Download size:")+QString(modifySizeUnit(appAllMsg.msg.allSize)));
     }
-
-    if(name.contains("kylin-update-desktop")||name == "linux-generic")
-    {
+    if (!map.value("icon").isNull()) {
+        haveThemeIcon = true;
+        updatelog1->logAppIcon->setPixmap(QPixmap(map.value("icon")));
+    } else if(name.contains("kylin-update-desktop")||name == "linux-generic") {
         pkgIconPath = QString(":/img/plugins/upgrade/%1.png").arg(name);
         updatelog1->logAppIcon->setPixmap(QPixmap(pkgIconPath));
-    }
-    else{
+    } else {
         if(QIcon::fromTheme(name).hasThemeIcon(name))
         {
             QIcon icon = QIcon::fromTheme(name);

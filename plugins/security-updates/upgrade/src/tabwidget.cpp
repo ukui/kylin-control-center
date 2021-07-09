@@ -829,10 +829,9 @@ void TabWid::checkUpdateBtnClicked()
         msgBox.setText(tr("Please back up the system before all updates to avoid unnecessary losses"));
         msgBox.setWindowTitle(tr("Prompt information"));
 
-        //            msgBox.setIcon(QMessageBox::Information);
         msgBox.addButton(tr("Only Update"), QMessageBox::YesRole);
-        msgBox.addButton(tr("Back And Update"), QMessageBox::NoRole);
-        msgBox.addButton(tr("Cancel"), QMessageBox::AcceptRole);
+        msgBox.addButton(tr("Back And Update"), QMessageBox::AcceptRole);
+        msgBox.addButton(tr("Cancel"), QMessageBox::NoRole);
 
         int ret = msgBox.exec();
         switch (ret) {
@@ -851,6 +850,12 @@ void TabWid::checkUpdateBtnClicked()
             qDebug() << "否，立即备份";
             break;
         case 2:
+            foreach (AppUpdateWid *wid, widgetList) {
+                disconnect(wid, &AppUpdateWid::sendProgress, this, &TabWid::getAllProgress);
+            }
+            qDebug() << "Close 暂不更新!";
+            break;
+        default:
             foreach (AppUpdateWid *wid, widgetList) {
                 disconnect(wid, &AppUpdateWid::sendProgress, this, &TabWid::getAllProgress);
             }
