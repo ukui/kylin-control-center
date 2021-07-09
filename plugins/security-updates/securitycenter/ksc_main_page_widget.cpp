@@ -7,11 +7,7 @@
 #include <libintl.h>
 #include"ksc_set_font_size.h"
 
-#include <kysec/status.h>
-#include <kysec/db.h>
-#include <kysec/fdir.h>
 #include <QDebug>
-#include <ukui-log4qt.h>
 
 #include"fontwatcher.h"
 
