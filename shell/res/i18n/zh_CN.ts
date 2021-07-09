@@ -786,84 +786,61 @@ you can restore them to ensure the integrity of your system.</source>
 <context>
     <name>Battery</name>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="56"/>
         <source>Battery</source>
-        <translation>电池</translation>
+        <translation type="vanished">电池</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="173"/>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="202"/>
         <source>10m</source>
-        <translation>10m</translation>
+        <translation type="vanished">10m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="173"/>
         <source>20m</source>
-        <translation>20m</translation>
+        <translation type="vanished">20m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="173"/>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="202"/>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="229"/>
         <source>30m</source>
-        <translation>30m</translation>
+        <translation type="vanished">30m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="173"/>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="202"/>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="230"/>
         <source>1h</source>
-        <translation>1h</translation>
+        <translation type="vanished">1h</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="173"/>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="202"/>
         <source>2h</source>
-        <translation>2h</translation>
+        <translation type="vanished">2h</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="174"/>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="203"/>
         <source>never</source>
-        <translation>从不</translation>
+        <translation type="vanished">从不</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="202"/>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="229"/>
         <source>5m</source>
-        <translation>5m</translation>
+        <translation type="vanished">5m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="229"/>
         <source>1m</source>
-        <translation>1m</translation>
+        <translation type="vanished">1m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="229"/>
         <source>3m</source>
-        <translation>3m</translation>
+        <translation type="vanished">3m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="229"/>
         <source>15m</source>
-        <translation>15m</translation>
+        <translation type="vanished">15m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="296"/>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="325"/>
         <source>General</source>
-        <translation>通用</translation>
+        <translation type="vanished">通用</translation>
         <extra-contents_path>/battery/General</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="297"/>
         <source>Time to sleep after idle time</source>
-        <translation>系统进入空闲状态并于此时间后睡眠</translation>
+        <translation type="vanished">系统进入空闲状态并于此时间后睡眠</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="298"/>
         <source>Time to sleep after idle time(No operation for %1 minute is considered idle)</source>
-        <translation>系统进入空闲状态并于此时间后睡眠(%1 分钟无操作被视为空闲)</translation>
+        <translation type="vanished">系统进入空闲状态并于此时间后睡眠(%1 分钟无操作被视为空闲)</translation>
     </message>
     <message>
         <source>Time to sleep after %1 minute of idle time</source>
@@ -878,32 +855,24 @@ you can restore them to ensure the integrity of your system.</source>
         <translation type="vanished">空闲时间%1分钟后进入睡眠%2</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="300"/>
         <source>Time to close display :</source>
-        <translation>此时间段后关闭显示器:</translation>
+        <translation type="vanished">此时间段后关闭显示器:</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="301"/>
         <source>Time to close display</source>
-        <translation>此时间段后关闭显示器:</translation>
+        <translation type="vanished">此时间段后关闭显示器:</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="303"/>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="304"/>
         <source>Time to decrease screen brightness</source>
-        <translation>此时间段降低屏幕亮度:</translation>
+        <translation type="vanished">此时间段降低屏幕亮度:</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="306"/>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="307"/>
         <source>Battery level is lower than</source>
-        <translation>电池电量低于</translation>
+        <translation type="vanished">电池电量低于</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="309"/>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="310"/>
         <source>Run</source>
-        <translation>时执行</translation>
+        <translation type="vanished">时执行</translation>
     </message>
 </context>
 <context>
@@ -4331,7 +4300,7 @@ Please retry or relogin!</source>
     <message>
         <location filename="../../mainwindow.cpp" line="82"/>
         <location filename="../../mainwindow.cpp" line="396"/>
-        <location filename="../../mainwindow.cpp" line="765"/>
+        <location filename="../../mainwindow.cpp" line="764"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
@@ -4375,17 +4344,17 @@ Please retry or relogin!</source>
         <translation type="vanished">控制面板</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="893"/>
+        <location filename="../../mainwindow.cpp" line="871"/>
         <source>Warnning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="893"/>
+        <location filename="../../mainwindow.cpp" line="871"/>
         <source>This function has been controlled</source>
         <translation>该功能已被管控</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="597"/>
+        <location filename="../../mainwindow.cpp" line="596"/>
         <source>Home</source>
         <translation>首页</translation>
     </message>
@@ -4801,38 +4770,38 @@ Please retry or relogin!</source>
 <context>
     <name>OutputConfig</name>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="90"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="76"/>
         <source>resolution</source>
         <translation>分辨率</translation>
         <extra-contents_path>/display/resolution</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="120"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="106"/>
         <source>orientation</source>
         <translation>方向</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="137"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="123"/>
         <source>arrow-up</source>
         <translation>不旋转</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="138"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="124"/>
         <source>90° arrow-right</source>
         <translation>90° 顺时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="140"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="126"/>
         <source>arrow-down</source>
         <translation>上下颠倒</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="139"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="125"/>
         <source>90° arrow-left</source>
         <translation>90° 逆时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="152"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="138"/>
         <source>frequency</source>
         <translation>刷新率</translation>
     </message>
@@ -4845,14 +4814,14 @@ Please retry or relogin!</source>
         <translation type="vanished">自动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="193"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="179"/>
         <source>screen zoom</source>
         <translation>缩放屏幕</translation>
         <extra-contents_path>/display/screen zoom</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="279"/>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="285"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="265"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="271"/>
         <source>%1 Hz</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4891,25 +4860,20 @@ Please retry or relogin!</source>
 <context>
     <name>Power</name>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="451"/>
         <source>select power plan</source>
-        <translation>电源计划</translation>
+        <translation type="vanished">电源计划</translation>
     </message>
     <message>
         <source>Balance (suggest)</source>
         <translation type="vanished">平衡(推荐)</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="442"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="485"/>
         <source>Saving</source>
-        <translation>节能</translation>
-        <extra-contents_path>/power/Saving</extra-contents_path>
+        <translation type="vanished">节能</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="442"/>
         <source>Minimize performance</source>
-        <translation>尽可能降低计算机性能</translation>
+        <translation type="vanished">尽可能降低计算机性能</translation>
     </message>
     <message>
         <source>Bala&amp;nce (suggest)</source>
@@ -4917,9 +4881,8 @@ Please retry or relogin!</source>
 </translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="441"/>
         <source>Autobalance energy and performance with available hardware</source>
-        <translation>利用可用的硬件自动平衡消耗与性能</translation>
+        <translation type="vanished">利用可用的硬件自动平衡消耗与性能</translation>
     </message>
     <message>
         <source>Custom</source>
@@ -4978,7 +4941,7 @@ Please retry or relogin!</source>
         <translation type="vanished">电源</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="59"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="54"/>
         <source>Power</source>
         <translation>电源</translation>
     </message>
@@ -4999,8 +4962,9 @@ Please retry or relogin!</source>
         <translation type="vanished">系统%1分钟后进入空闲状态并于%2分钟后关闭显示器：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="285"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="323"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="583"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="593"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="612"/>
         <source>never</source>
         <translation>从不</translation>
     </message>
@@ -5037,50 +5001,40 @@ Please retry or relogin!</source>
         <translation type="vanished">5分钟</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="284"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="322"/>
         <source>10m</source>
-        <translation>10m</translation>
+        <translation type="vanished">10m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="284"/>
         <source>20m</source>
-        <translation>20m</translation>
+        <translation type="vanished">20m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="284"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="322"/>
         <source>30m</source>
-        <translation>30m</translation>
+        <translation type="vanished">30m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="284"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="322"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="583"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="593"/>
         <source>1h</source>
-        <translation>1h</translation>
+        <translation>1小时</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="284"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="322"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="583"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="593"/>
         <source>2h</source>
-        <translation>2h</translation>
+        <translation>2小时</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="322"/>
         <source>5m</source>
-        <translation>5m</translation>
+        <translation type="vanished">5m</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="441"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="483"/>
         <source>Balance</source>
-        <translation>平衡</translation>
-        <extra-contents_path>/power/Balance (suggest)</extra-contents_path>
+        <translation type="vanished">平衡</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="455"/>
         <source>Time to sleep after idle time</source>
-        <translation>系统进入空闲状态并于此时间后睡眠</translation>
+        <translation type="vanished">系统进入空闲状态并于此时间后睡眠</translation>
     </message>
     <message>
         <source>Time to sleep after %1 minute of idle time</source>
@@ -5095,60 +5049,217 @@ Please retry or relogin!</source>
         <translation type="vanished">空闲时间%1分钟后进入睡眠%2:</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="456"/>
         <source>Time to sleep after idle time(No operation for %1 minute is considered idle)</source>
-        <translation>系统进入空闲状态并于此时间后睡眠(%1 分钟无操作被视为空闲)</translation>
+        <translation type="vanished">系统进入空闲状态并于此时间后睡眠(%1 分钟无操作被视为空闲)</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="458"/>
         <source>Time to close display :</source>
-        <translation>此时间段后关闭显示器：</translation>
+        <translation type="vanished">此时间段后关闭显示器：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="459"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="477"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="478"/>
         <source>Time to close display</source>
-        <translation>此时间段后关闭显示器:</translation>
+        <translation>此时间段后关闭显示器</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="461"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="462"/>
         <source>Set sleeping to hibernation</source>
-        <translation>睡眠此时间段后进入休眠:</translation>
+        <translation type="vanished">睡眠此时间段后进入休眠:</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="464"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="463"/>
+        <source>Battery saving plan</source>
+        <translation>电池节能计划</translation>
+    </message>
+    <message>
         <location filename="../../../plugins/system/power/power.cpp" line="465"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="466"/>
+        <source>Require password when sleep/hibernation</source>
+        <translation>睡眠/休眠唤醒时需要密码</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="469"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="470"/>
+        <source>Password required when waking up the screen</source>
+        <translation>唤醒屏幕时需要密码</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="473"/>
         <source>Press the power button</source>
-        <translation>按电源键时执行:</translation>
+        <translation>按电源键时执行</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="467"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="468"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="481"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="482"/>
+        <source>Time to sleep</source>
+        <translation>此时间段后关闭显示器</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="485"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="486"/>
         <source>Notebook cover</source>
-        <translation>笔记本合盖时执行:</translation>
+        <translation>笔记本合盖时执行</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="495"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="489"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="490"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="494"/>
+        <source>Using power</source>
+        <translation>使用电源时</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="493"/>
+        <source>Using battery</source>
+        <translation>使用电池时</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="497"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="498"/>
+        <source> Time to darken</source>
+        <translation>此时间段后降低屏幕亮度</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="501"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="502"/>
+        <source>Battery level is lower than</source>
+        <translation>电量低于</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="505"/>
+        <source>Run</source>
+        <translation>时执行</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="507"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="508"/>
+        <source>Low battery notification</source>
+        <translation>低电量时通知</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="511"/>
+        <source>Automatically run saving mode when low battery</source>
+        <translation>低电量时自动开启节能模式</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="512"/>
+        <source>Automatically run saving mode when the low battery</source>
+        <translation>低电量时自动开启节能模式</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="515"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="516"/>
+        <source>Automatically run saving mode when using battery</source>
+        <translation>使用电池时自动开启节能模式</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="519"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="520"/>
+        <source>Display remaining charging time and usage time</source>
+        <translation>显示剩余充电时间和剩余使用时间</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="555"/>
+        <source>General</source>
+        <translation>通用</translation>
+        <extra-contents_path>/power/General</extra-contents_path>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="557"/>
+        <source>Select Powerplan</source>
+        <translation>电源计划</translation>
+        <extra-contents_path>/power/Select Powerplan</extra-contents_path>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="563"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="621"/>
         <source>nothing</source>
         <translation>无操作</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="495"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="563"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="621"/>
         <source>blank</source>
         <translation>关闭显示器</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="495"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="563"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="574"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="621"/>
         <source>suspend</source>
         <translation>睡眠</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="501"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="569"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="574"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="627"/>
         <source>hibernate</source>
         <translation>休眠</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="495"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="574"/>
+        <source>interactive</source>
+        <translation>询问</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="583"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="612"/>
+        <source>5min</source>
+        <translation>5分钟</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="583"/>
+        <source>10minn</source>
+        <translation>10分钟</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="583"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="593"/>
+        <source>15min</source>
+        <translation>15分钟</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="583"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="593"/>
+        <source>30min</source>
+        <translation>30分钟</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="593"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="612"/>
+        <source>10min</source>
+        <translation>10分钟</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="593"/>
+        <source>3h</source>
+        <translation>3小时</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="603"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="607"/>
+        <source>Balance Model</source>
+        <translation>平衡模式</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="603"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="607"/>
+        <source>Save Model</source>
+        <translation>节能模式</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="612"/>
+        <source>1min</source>
+        <translation>1分钟</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="612"/>
+        <source>20min</source>
+        <translation>20分钟</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/system/power/power.cpp" line="563"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="574"/>
+        <location filename="../../../plugins/system/power/power.cpp" line="621"/>
         <source>shutdown</source>
         <translation>关机</translation>
     </message>
@@ -5169,9 +5280,8 @@ Please retry or relogin!</source>
         <translation type="vanished">低电量执行操作:</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="452"/>
         <source>General Settings</source>
-        <translation>通用设置</translation>
+        <translation type="vanished">通用设置</translation>
     </message>
     <message>
         <source>When the power button is pressed:</source>
@@ -5355,7 +5465,7 @@ Please retry or relogin!</source>
         <translation type="vanished">字体</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="115"/>
+        <location filename="../../utils/functionselect.cpp" line="113"/>
         <source>Screensaver</source>
         <translation>屏保</translation>
     </message>
@@ -5519,92 +5629,91 @@ Please retry or relogin!</source>
         <translation>默认应用</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="60"/>
         <source>Battery</source>
-        <translation>电池</translation>
+        <translation type="vanished">电池</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="62"/>
+        <location filename="../../utils/functionselect.cpp" line="60"/>
         <source>Auto Boot</source>
         <translation>开机启动</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="76"/>
+        <location filename="../../utils/functionselect.cpp" line="74"/>
         <source>Printer</source>
         <translation>打印机</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="78"/>
+        <location filename="../../utils/functionselect.cpp" line="76"/>
         <source>Mouse</source>
         <translation>鼠标</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="80"/>
+        <location filename="../../utils/functionselect.cpp" line="78"/>
         <source>Touchpad</source>
         <translation>触摸板</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="83"/>
+        <location filename="../../utils/functionselect.cpp" line="81"/>
         <source>Keyboard</source>
         <translation>键盘</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="85"/>
+        <location filename="../../utils/functionselect.cpp" line="83"/>
         <source>Shortcut</source>
         <translation>快捷键</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="88"/>
+        <location filename="../../utils/functionselect.cpp" line="86"/>
         <source>Audio</source>
         <translation>声音</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="91"/>
+        <location filename="../../utils/functionselect.cpp" line="89"/>
         <source>Bluetooth</source>
         <translation>蓝牙</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="106"/>
+        <location filename="../../utils/functionselect.cpp" line="104"/>
         <source>Background</source>
         <translation>背景</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="109"/>
+        <location filename="../../utils/functionselect.cpp" line="107"/>
         <source>Theme</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="111"/>
+        <location filename="../../utils/functionselect.cpp" line="109"/>
         <source>Screenlock</source>
         <translation>锁屏</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="113"/>
+        <location filename="../../utils/functionselect.cpp" line="111"/>
         <source>Fonts</source>
         <translation>字体</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="118"/>
+        <location filename="../../utils/functionselect.cpp" line="116"/>
         <source>Desktop</source>
         <translation>桌面</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="132"/>
+        <location filename="../../utils/functionselect.cpp" line="130"/>
         <source>Connect</source>
         <translation>网络连接</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="138"/>
+        <location filename="../../utils/functionselect.cpp" line="136"/>
         <source>Vino</source>
         <translation>桌面共享</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="154"/>
+        <location filename="../../utils/functionselect.cpp" line="152"/>
         <source>User Info</source>
         <translation>账户信息</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="171"/>
+        <location filename="../../utils/functionselect.cpp" line="169"/>
         <source>Date</source>
         <translation>时间日期</translation>
     </message>
@@ -5613,7 +5722,7 @@ Please retry or relogin!</source>
         <translation type="vanished">时间日期</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="188"/>
+        <location filename="../../utils/functionselect.cpp" line="186"/>
         <source>Security Center</source>
         <translation>安全中心</translation>
     </message>
@@ -5622,12 +5731,12 @@ Please retry or relogin!</source>
         <translation type="vanished">网络连接</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="134"/>
+        <location filename="../../utils/functionselect.cpp" line="132"/>
         <source>Vpn</source>
         <translation>VPN</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="136"/>
+        <location filename="../../utils/functionselect.cpp" line="134"/>
         <source>Proxy</source>
         <translation>代理</translation>
     </message>
@@ -5636,7 +5745,7 @@ Please retry or relogin!</source>
         <translation type="vanished">账户信息</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="156"/>
+        <location filename="../../utils/functionselect.cpp" line="154"/>
         <source>Cloud Account</source>
         <translation>云账户</translation>
     </message>
@@ -5645,7 +5754,7 @@ Please retry or relogin!</source>
         <translation type="vanished">时间日期</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="173"/>
+        <location filename="../../utils/functionselect.cpp" line="171"/>
         <source>Area</source>
         <translation>区域语言</translation>
     </message>
@@ -5654,37 +5763,37 @@ Please retry or relogin!</source>
         <translation type="vanished">安全中心</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="192"/>
+        <location filename="../../utils/functionselect.cpp" line="190"/>
         <source>Update</source>
         <translation>安全更新</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="190"/>
+        <location filename="../../utils/functionselect.cpp" line="188"/>
         <source>Backup</source>
         <translation>备份</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="194"/>
+        <location filename="../../utils/functionselect.cpp" line="192"/>
         <source>Upgrade</source>
         <translation>更新</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="209"/>
+        <location filename="../../utils/functionselect.cpp" line="207"/>
         <source>Notice</source>
         <translation>通知</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="211"/>
+        <location filename="../../utils/functionselect.cpp" line="209"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="213"/>
+        <location filename="../../utils/functionselect.cpp" line="211"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../../utils/functionselect.cpp" line="215"/>
+        <location filename="../../utils/functionselect.cpp" line="213"/>
         <source>Experienceplan</source>
         <translation>体验计划</translation>
     </message>
@@ -5711,37 +5820,28 @@ Please retry or relogin!</source>
         <translation type="vanished">80min</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/power/power.cpp" line="53"/>
         <source>interactive</source>
-        <translation>询问</translation>
+        <translation type="vanished">询问</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="49"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="53"/>
         <source>suspend</source>
-        <translation>睡眠</translation>
+        <translation type="vanished">睡眠</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="49"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="53"/>
         <source>hibernate</source>
-        <translation>休眠</translation>
+        <translation type="vanished">休眠</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="49"/>
-        <location filename="../../../plugins/system/power/power.cpp" line="53"/>
         <source>shutdown</source>
-        <translation>关机</translation>
+        <translation type="vanished">关机</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="49"/>
         <source>nothing</source>
-        <translation>无操作</translation>
+        <translation type="vanished">无操作</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/battery/battery.cpp" line="49"/>
         <source>blank</source>
-        <translation>关闭显示器</translation>
+        <translation type="vanished">关闭显示器</translation>
     </message>
     <message>
         <source>Year</source>
@@ -7920,50 +8020,50 @@ run start-pulseaudio-x11 manually.</source>
 <context>
     <name>UnifiedOutputConfig</name>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="87"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="75"/>
         <source>resolution</source>
         <translation>分辨率</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="121"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="109"/>
         <source>orientation</source>
         <translation>方向</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="126"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="114"/>
         <source>arrow-up</source>
         <translation>不旋转</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="127"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="115"/>
         <source>90° arrow-right</source>
         <translation>90°顺时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="128"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="116"/>
         <source>arrow-down</source>
         <translation>上下颠倒</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="129"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="117"/>
         <source>90° arrow-left</source>
         <translation>90°逆时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="158"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="146"/>
         <source>frequency</source>
         <translation>刷新率</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="189"/>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="360"/>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="366"/>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="403"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="177"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="348"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="354"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="391"/>
         <source>%1 Hz</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="247"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="235"/>
         <source>screen zoom</source>
         <translation>缩放屏幕</translation>
         <extra-contents_path>/display/screen zoom</extra-contents_path>
@@ -7973,8 +8073,8 @@ run start-pulseaudio-x11 manually.</source>
         <translation type="vanished">刷新率</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="163"/>
-        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="390"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="151"/>
+        <location filename="../../../plugins/system/display/unifiedoutputconfig.cpp" line="378"/>
         <source>auto</source>
         <translation>自动</translation>
     </message>
@@ -8485,8 +8585,8 @@ the settings will be saved after %1 seconds</source>
         <translation>修改分辨率或刷新率后，由于显示设备与 显卡兼容性问题，有可能显示不正常。系统将在%1秒后保存配置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="2025"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="2032"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="2033"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="2040"/>
         <source>Brightness</source>
         <translation>亮度</translation>
     </message>
@@ -8531,18 +8631,18 @@ If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation type="vanished">修改分辨率或刷新率后，由于显示设备与显卡存在兼容性问题，有可能显示不正常或者无法显示．如果出现异常，系统将在%1秒后还原设置</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1383"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1387"/>
         <source>please insure at least one output!</source>
         <translation>请确保至少开启一个屏幕!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1383"/>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1390"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1387"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1394"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1391"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1395"/>
         <source>Open time should be earlier than close time!</source>
         <translation>开启时间必须大于关闭时间！</translation>
     </message>
@@ -8551,12 +8651,12 @@ If something goes wrong, the settings will be restored after %1 seconds</source>
         <translation type="vanished">早晨时刻应早于晚上的时刻!</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1401"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1405"/>
         <source>Warnning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/widget.cpp" line="1402"/>
+        <location filename="../../../plugins/system/display/widget.cpp" line="1406"/>
         <source>Sorry, your configuration could not be applied.
 Common reasons are that the overall screen size is too big, or you enabled more displays than supported by your GPU.</source>
         <translation>抱歉，配置不能应用.</translation>
