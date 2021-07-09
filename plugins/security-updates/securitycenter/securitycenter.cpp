@@ -1,5 +1,4 @@
 #include "securitycenter.h"
-#include "ui_securitycenter.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
