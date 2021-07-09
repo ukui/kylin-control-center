@@ -50,6 +50,7 @@ void InternalStyle::drawControl(QStyle::ControlElement element, const QStyleOpti
             path.addRect(0, 0, 6, 6);
 
             painter->setPen(Qt::transparent);
+            painter->setOpacity(0.45);
             painter->setBrush(option->palette.color(QPalette::Button));
 
             painter->setClipPath(path);
@@ -71,6 +72,7 @@ void InternalStyle::drawControl(QStyle::ControlElement element, const QStyleOpti
             path.addRect(frame.rect.width() - 6, frame.rect.height() - 6, 6, 6);
 
             painter->setPen(Qt::transparent);
+            painter->setOpacity(0.45);
             painter->setBrush(option->palette.color(QPalette::Button));
 
             painter->setClipPath(path);
