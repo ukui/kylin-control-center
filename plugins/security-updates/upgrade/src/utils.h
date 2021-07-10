@@ -35,11 +35,11 @@ struct AppAllMsg
     QString name;
     QString section;
     QString origin;
-    int installedSize;
+    long installedSize;
     QString maintainer;
     QString source;
     QString version;
-    int packageSize;
+    long packageSize;
     QString shortDescription;
     QString longDescription;
 
@@ -53,7 +53,6 @@ struct AppAllMsg
     bool isInstalled;
     bool upgradeable;
     AppMsg msg;
-
 };
 Q_DECLARE_METATYPE(AppMsg) //注册AppMsg结构用于信号槽传输
 Q_DECLARE_METATYPE(AppAllMsg) //注册AppMsg结构用于信号槽传输
