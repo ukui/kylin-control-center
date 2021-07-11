@@ -828,8 +828,17 @@ void BlueToothMain::addOneBluetoothDeviceItemUi(BluezQt::DevicePtr device)
             device_list_layout->addWidget(item,Qt::AlignTop);
         else
         {
-            device_list_layout->insertWidget(0,item,0,Qt::AlignTop);
+            if (device->rssi() > MaxRssiValue)
+            {
+                qDebug() << __FUNCTION__ << "MaxRssiValue:" << MaxRssiValue << __LINE__;
+                MaxRssiValue = device->rssi();
+                device_list_layout->insertWidget(0,item,0,Qt::AlignTop);
+            }
+            else
+                device_list_layout->insertWidget(1,item,0,Qt::AlignTop);
+
         }
+
         last_discovery_device_address << device->address();
     }
 }

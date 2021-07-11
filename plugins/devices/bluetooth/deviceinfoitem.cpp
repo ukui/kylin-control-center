@@ -211,7 +211,7 @@ void DeviceInfoItem::onClick_Connect_Btn(bool isclicked)
                 //device_status->update();
                 if (DEVICE_STATUS::MATCHED == d_status)
                     device_status->setText(tr("device matched"));
-                else if (DEVICE_STATUS::MATCHED == d_status)
+                else if (DEVICE_STATUS::UNLINK == d_status)
                     device_status->setText(tr("device unLink"));
             }
             connect_timer->stop();
