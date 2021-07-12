@@ -59,9 +59,8 @@ Projection::Projection()
     ui->label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     //~ contents_path /bluetooth/Open Bluetooth
     ui->titleLabel->setText(tr("Open Projection"));
-    ui->titleLabel->setStyleSheet("QLabel{font-size: 14px; color: palette(windowText);}");
-    ui->projectionName->setStyleSheet("QLineEdit{background-color:transparent;"
-                                              "border-width:0;");
+    ui->titleLabel->setStyleSheet("QLabel{color: palette(windowText);}");
+
     m_pServiceInterface = new QDBusInterface("org.freedesktop.miracleagent",
                                              "/org/freedesktop/miracleagent",
                                              "org.freedesktop.miracleagent.op",
@@ -84,12 +83,10 @@ Projection::Projection()
     }else {
         hostName = setting->value("host").toString();
     }
+    ui->projectionNameWidget->setFixedHeight(40);
     ui->projectionName->setText(hostName);
-
+    ui->projectionNameChange->setProperty("useIconHighlightEffect", 0x8);
     ui->projectionNameChange->setPixmap(QIcon::fromTheme("document-edit-symbolic").pixmap(ui->projectionNameChange->size()));
-
-    // ui->pronamelabel->setMaxLength(16);
-    // ui->pronamelabel->setAlignment(Qt::AlignRight);
     ui->projectionNameWidget->installEventFilter(this);
     ui->horizontalLayout->addWidget(projectionBtn);
     initComponent();
@@ -208,7 +205,6 @@ QWidget *Projection::get_plugin_ui(){
     ui->label_3->hide();
     ui->widget_2->show();
     ui->label_setsize->setText("");
-     projectionstatus=1;//
     if (NOT_SUPPORT_P2P == projectionstatus) {
         ui->label_2->setText("未检测到无线网卡或网卡驱动不支持，投屏功能不可用");
         ui->projectionNameWidget->setEnabled(false);
