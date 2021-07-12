@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>945</width>
-    <height>1133</height>
+    <height>1136</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -799,7 +799,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QSlider" name="temptSlider">
+           <widget class="Uslider" name="temptSlider">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -853,6 +853,11 @@
    <class>TitleLabel</class>
    <extends>QLabel</extends>
    <header>Label/titlelabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Uslider</class>
+   <extends>QSlider</extends>
+   <header>Uslider/uslider.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
