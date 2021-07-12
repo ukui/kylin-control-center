@@ -7369,6 +7369,13 @@ run start-pulseaudio-x11 manually.</source>
         <translation>准备安装</translation>
     </message>
     <message>
+        <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="687"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="732"/>
+        <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="916"/>
+        <source>No Information!</source>
+        <translation type="unfinished">暂无信息！</translation>
+    </message>
+    <message>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="697"/>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="746"/>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="919"/>
