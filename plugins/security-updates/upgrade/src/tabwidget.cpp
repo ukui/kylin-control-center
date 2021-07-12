@@ -696,6 +696,7 @@ void TabWid::loadingFinishedSlot(int size)
         }
         lastRefreshTime->setText(tr("Last refresh:")+ updatetime);
         lastRefreshTime->show();
+        allProgressBar->hide();
     }
     else {
         updateMutual->importantSize = updateMutual->importantList.size();   //此次检测结果的更新数量
@@ -924,6 +925,7 @@ void TabWid::hideUpdateBtnSlot(bool isSucceed)
         }
         lastRefreshTime->setText(tr("Last refresh:")+updatetime);
         lastRefreshTime->show();
+        allProgressBar->hide();
     }
 }
 
