@@ -137,6 +137,7 @@ private:
     void addOneBluetoothDeviceItemUi(BluezQt::DevicePtr);
 
     void clearAllDeviceItemUi();
+    void clearTimer();
     qint16 MaxRssiValue = -9999;
 
 };

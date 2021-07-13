@@ -9,7 +9,7 @@
         <translation>系统概述</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="395"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="394"/>
         <source>version</source>
         <translation>版本</translation>
         <extra-contents_path>/about/version</extra-contents_path>
@@ -43,21 +43,21 @@
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="271"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="397"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="396"/>
         <source>Kernel</source>
         <translation>内核</translation>
         <extra-contents_path>/about/Kernel</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="310"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="399"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="398"/>
         <source>CPU</source>
         <translation>CPU</translation>
         <extra-contents_path>/about/CPU</extra-contents_path>
     </message>
     <message>
         <location filename="../../../plugins/messages-task/about/about.ui" line="358"/>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="401"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="400"/>
         <source>Memory</source>
         <translation>内存</translation>
         <extra-contents_path>/about/Memory</extra-contents_path>
@@ -114,17 +114,17 @@
         <translation type="vanished">关于</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="55"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="54"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="273"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="272"/>
         <source>The system has expired. The expiration time is:</source>
         <translation>您的系统已激活，技术服务已到期：</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="275"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="274"/>
         <source>Extended</source>
         <translation>延长服务</translation>
     </message>
@@ -137,12 +137,12 @@
         <translation type="vanished">可用</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="277"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="276"/>
         <source>Inactivated</source>
         <translation>未激活</translation>
     </message>
     <message>
-        <location filename="../../../plugins/messages-task/about/about.cpp" line="264"/>
+        <location filename="../../../plugins/messages-task/about/about.cpp" line="263"/>
         <source>Activated</source>
         <translation>已激活</translation>
     </message>
@@ -1203,13 +1203,8 @@ Please authenticate yourself to continue</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="664"/>
-        <source>Bluetooth adapter is abnormal !</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/devices/bluetooth/bluetoothmain.cpp" line="665"/>
-        <source>You can refer to the rfkill command for details.</source>
-        <translation type="unfinished"></translation>
+        <source>No Bluetooth adapter detected !</source>
+        <translation>未检测到蓝牙适配器！</translation>
     </message>
     <message>
         <source>Allow Bluetooth devices to be discoverable</source>
@@ -1269,12 +1264,12 @@ Please authenticate yourself to continue</source>
     <message>
         <location filename="../../../plugins/devices/bluetooth/bluetoothnamelabel.cpp" line="100"/>
         <source>Tip</source>
-        <translation type="unfinished"></translation>
+        <translation>提示</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/bluetooth/bluetoothnamelabel.cpp" line="101"/>
         <source>The length of the device name does not exceed %1 characters !</source>
-        <translation type="unfinished"></translation>
+        <translation>设备名称不能超过%1字符！</translation>
     </message>
 </context>
 <context>
@@ -4769,38 +4764,38 @@ Please retry or relogin!</source>
 <context>
     <name>OutputConfig</name>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="76"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="84"/>
         <source>resolution</source>
         <translation>分辨率</translation>
         <extra-contents_path>/display/resolution</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="106"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="116"/>
         <source>orientation</source>
         <translation>方向</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="123"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="133"/>
         <source>arrow-up</source>
         <translation>不旋转</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="124"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="134"/>
         <source>90° arrow-right</source>
         <translation>90° 顺时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="126"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="136"/>
         <source>arrow-down</source>
         <translation>上下颠倒</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="125"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="135"/>
         <source>90° arrow-left</source>
         <translation>90° 逆时针</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="138"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="148"/>
         <source>frequency</source>
         <translation>刷新率</translation>
     </message>
@@ -4813,14 +4808,14 @@ Please retry or relogin!</source>
         <translation type="vanished">自动</translation>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="179"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="189"/>
         <source>screen zoom</source>
         <translation>缩放屏幕</translation>
         <extra-contents_path>/display/screen zoom</extra-contents_path>
     </message>
     <message>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="265"/>
-        <location filename="../../../plugins/system/display/outputconfig.cpp" line="271"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="275"/>
+        <location filename="../../../plugins/system/display/outputconfig.cpp" line="281"/>
         <source>%1 Hz</source>
         <translation type="unfinished"></translation>
     </message>

@@ -644,7 +644,7 @@ void BlueToothMain::showMainWindowError()
     QVBoxLayout *errorWidgetLayout = new QVBoxLayout(errorWidget);
     QLabel      *errorWidgetIcon   = new QLabel(errorWidget);
     QLabel      *errorWidgetTip0   = new QLabel(errorWidget);
-    QLabel      *errorWidgetTip1   = new QLabel(errorWidget);
+    //QLabel      *errorWidgetTip1   = new QLabel(errorWidget);
 
     errorWidget->setObjectName("errorWidget");
 
@@ -655,19 +655,19 @@ void BlueToothMain::showMainWindowError()
     errorWidgetIcon->setFixedSize(56,56);
     errorWidgetTip0->resize(200,30);
     errorWidgetTip0->setFont(QFont("Noto Sans CJK SC",18,QFont::Bold));
-    errorWidgetTip1->resize(200,30);
+    //errorWidgetTip1->resize(200,30);
 
     if (QIcon::hasThemeIcon("dialog-warning")) {
         errorWidgetIcon->setPixmap(QIcon::fromTheme("dialog-warning").pixmap(56,56));
     }
 
-    errorWidgetTip0->setText(tr("Bluetooth adapter is abnormal !"));
-    errorWidgetTip1->setText(tr("You can refer to the rfkill command for details."));
+    errorWidgetTip0->setText(tr("No Bluetooth adapter detected !"));
+    //errorWidgetTip1->setText(tr("You can refer to the rfkill command for details."));
 
     errorWidgetLayout->addStretch(10);
     errorWidgetLayout->addWidget(errorWidgetIcon,1,Qt::AlignCenter);
     errorWidgetLayout->addWidget(errorWidgetTip0,1,Qt::AlignCenter);
-    errorWidgetLayout->addWidget(errorWidgetTip1,1,Qt::AlignCenter);
+    //errorWidgetLayout->addWidget(errorWidgetTip1,1,Qt::AlignCenter);
     errorWidgetLayout->addStretch(10);
 
     this->setCentralWidget(errorWidget);
@@ -751,6 +751,21 @@ void BlueToothMain::clearAllDeviceItemUi()
     }
 }
 
+void BlueToothMain::clearTimer()
+{
+    if (discovering_timer->isActive())
+        discovering_timer->stop();
+
+    if (delayStartDiscover_timer->isActive())
+        delayStartDiscover_timer->stop();
+
+    if (IntermittentScann_timer->isActive())
+        IntermittentScann_timer->stop();
+
+    if (poweronAgain_timer->isActive())
+        poweronAgain_timer->stop();
+}
+
 void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
 {
     if(ischeck)
@@ -775,6 +790,7 @@ void BlueToothMain::onClick_Open_Bluetooth(bool ischeck)
         BluezQt::PendingCall *call = m_localDevice->setPowered(false);
         //断电后先删除所有扫描到的蓝牙设备
         clearAllDeviceItemUi();
+        clearTimer();
 
         connect(call,&BluezQt::PendingCall::finished,this,[=](BluezQt::PendingCall *p){
             if(p->error() == 0){
