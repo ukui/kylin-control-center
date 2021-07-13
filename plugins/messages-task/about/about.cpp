@@ -51,7 +51,6 @@ const QString vFour = "v4";
 
 About::About() : mFirstLoad(true)
 {
-    //~ contents_path /about/About
     pluginName = tr("About");
     pluginType = NOTICEANDTASKS;
 }
