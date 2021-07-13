@@ -1,0 +1,12 @@
+Index: ukui-control-center-3.0.1-1/plugins/security-updates/upgrade/src/tabwidget.cpp
+===================================================================
+--- ukui-control-center-3.0.1-1.orig/plugins/security-updates/upgrade/src/tabwidget.cpp	2021-07-10 15:01:54.568700775 +0800
++++ ukui-control-center-3.0.1-1/plugins/security-updates/upgrade/src/tabwidget.cpp	2021-07-10 15:02:21.785022224 +0800
+@@ -784,6 +784,7 @@
+ {
+     if(checkUpdateBtn->text() == tr("Check Update"))
+     {
++	widgetList.clear();
+         connect(updateSource->serviceInterface,SIGNAL(updateTemplateStatus(QString)),this,SLOT(slotUpdateTemplate(QString)));
+         connect(updateSource->serviceInterface,SIGNAL(updateCacheStatus(QVariantList)),this,SLOT(slotUpdateCache(QVariantList)));
+         connect(updateSource->serviceInterface,SIGNAL(updateSourceProgress(QVariantList)),this,SLOT(slotUpdateCacheProgress(QVariantList)));
