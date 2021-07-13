@@ -5091,7 +5091,7 @@ Please retry or relogin!</source>
         <location filename="../../../plugins/system/power/power.cpp" line="481"/>
         <location filename="../../../plugins/system/power/power.cpp" line="482"/>
         <source>Time to sleep</source>
-        <translation>此时间段后关闭显示器</translation>
+        <translation>此时间段后电脑进入睡眠</translation>
     </message>
     <message>
         <location filename="../../../plugins/system/power/power.cpp" line="485"/>
