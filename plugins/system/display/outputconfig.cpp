@@ -61,6 +61,14 @@ void OutputConfig::initUi()
         mRotation->setCurrentIndex(index);
     });
 
+    connect(mOutput.data(), &KScreen::Output::currentModeIdChanged,
+            this, [=]() {
+        mRefreshRate->blockSignals(true);
+        if (mOutput->currentMode())
+            slotResolutionChanged(mOutput->currentMode()->size(), false);
+        mRefreshRate->blockSignals(false);
+    });
+
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
     QVBoxLayout *vbox = new QVBoxLayout(this);
@@ -92,7 +100,9 @@ void OutputConfig::initUi()
     vbox->addWidget(resFrame);
 
     connect(mResolution, &ResolutionSlider::resolutionChanged,
-            this, &OutputConfig::slotResolutionChanged);
+            this, [=](QSize size){
+                slotResolutionChanged(size, true);
+            });
 
     connect(mResolution, &ResolutionSlider::resolutionChanged,
             this, &OutputConfig::slotScaleIndex);
@@ -153,7 +163,7 @@ void OutputConfig::initUi()
 
     vbox->addWidget(freshFrame);
 
-    slotResolutionChanged(mResolution->currentResolution());
+    slotResolutionChanged(mResolution->currentResolution(), true);
     connect(mRefreshRate, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated),
             this, &OutputConfig::slotRefreshRateChanged);
 
@@ -232,7 +242,7 @@ KScreen::OutputPtr OutputConfig::output() const
     return mOutput;
 }
 
-void OutputConfig::slotResolutionChanged(const QSize &size)
+void OutputConfig::slotResolutionChanged(const QSize &size, bool emitFlag)
 {
     // Ignore disconnected outputs
     if (!size.isValid()) {
@@ -286,7 +296,9 @@ void OutputConfig::slotResolutionChanged(const QSize &size)
 
     mOutput->setCurrentModeId(modeID);
 
-    Q_EMIT changed();
+
+    if (emitFlag)
+        Q_EMIT changed();
 }
 
 void OutputConfig::slotRotationChanged(int index)

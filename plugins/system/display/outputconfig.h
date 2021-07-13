@@ -39,7 +39,7 @@ public:
     void initConfig(const KScreen::ConfigPtr &config);
 
 protected Q_SLOTS:
-    void slotResolutionChanged(const QSize &size);
+    void slotResolutionChanged(const QSize &size, bool emitFlag);
     void slotRotationChanged(int index);
     void slotRefreshRateChanged(int index);
     void slotScaleChanged(int index);
