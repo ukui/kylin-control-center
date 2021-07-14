@@ -125,11 +125,12 @@ public slots:
 
 
 private:
+    QList<AppUpdateWid *> widgetList;
     UKSCConn *ukscConnect;
     bool isConnectSourceSignal = false;
     void unableToConnectSource();
 //备份还原相关
-    void bacupInit();
+    void bacupInit(bool isBack);
     void backupDelete();
     void backupCore();
     BackUp *backup = nullptr;

@@ -72,7 +72,7 @@ void AppUpdateWid::changeDownloadState(int state)
         appVersionIcon->setPixmap(pixmap);
 //        updateAPPBtn->setText(tr("更新"));
         updateAPPBtn->setText(tr("Update"));
-        emit changeUpdateAllSignal();
+        emit hideUpdateBtnSignal(false);
 
     }
     else if(state == 4) //下载网络异常
@@ -95,7 +95,7 @@ void AppUpdateWid::changeDownloadState(int state)
             appVersionIcon->setPixmap(pixmap);
 //            updateAPPBtn->setText(tr("更新"));
             updateAPPBtn->setText(tr("Update"));
-            emit changeUpdateAllSignal();
+            emit hideUpdateBtnSignal(false);
         }
     }
 
@@ -569,10 +569,6 @@ void AppUpdateWid::showUpdateLog()
 
 void AppUpdateWid::cancelOrUpdate()
 {
-    if(updateAPPBtn->isHidden())
-    {
-        return; 
-    }
     if(updateAPPBtn->text() == tr("Update"))
     {
         if(m_updateMutual->isPointOutNotBackup == true)
