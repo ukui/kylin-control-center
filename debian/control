@@ -63,7 +63,6 @@ Depends: ${shlibs:Depends},
          kylin-software-properties(>=0.0.1-55),
          kylin-update-manager(>=5.5.1kord),
          language-selector-gnome,
-         kylin-xinput-calibrator
 Suggests: gsettings-desktop-schemas,
           mate-desktop-common,
           ukui-power-manager,
