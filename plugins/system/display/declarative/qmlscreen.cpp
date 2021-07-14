@@ -192,8 +192,18 @@ void QMLScreen::setScreenCenterPos()
     qreal mX1 = 0, mY1 = 0, mX2 = 0, mY2 = 0; // 矩形中点坐标
     qreal moveX = 0, moveY = 0;// 移动的值
     bool firstFlag = true;
+    bool unifyFlag = false;
     Q_FOREACH (QMLOutput *qmlOutput, m_outputMap) {
         if (qmlOutput->output()->isConnected()) {
+            if (qmlOutput->isCloneMode()) {
+                localX1 = qmlOutput->x();
+                localX2 = qmlOutput->x() + qmlOutput->width();
+                localY1 = qmlOutput->y();
+                localY2 = qmlOutput->y() + qmlOutput->height();
+                unifyFlag = true;
+                break;
+            }
+
             if (firstFlag == true || localX1 > qmlOutput->x()) {
                 localX1 = qmlOutput->x();
             }
@@ -220,8 +230,18 @@ void QMLScreen::setScreenCenterPos()
     moveY = mY2 - mY1;
 
     Q_FOREACH (QMLOutput *qmlOutput, m_outputMap) {
-        qmlOutput->setX(qmlOutput->x() + moveX);
-        qmlOutput->setY(qmlOutput->y() + moveY);
+        if (false == unifyFlag) {
+            qmlOutput->setX(qmlOutput->x() + moveX);
+            qmlOutput->setY(qmlOutput->y() + moveY);
+        } else {
+            if (qmlOutput->isCloneMode()) {
+                qmlOutput->blockSignals(true);
+                qmlOutput->setX(qmlOutput->x() + moveX);
+                qmlOutput->setY(qmlOutput->y() + moveY);
+                qmlOutput->blockSignals(false);
+                break;
+            }
+        }
     }
 }
 
