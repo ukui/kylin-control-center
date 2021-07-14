@@ -593,7 +593,6 @@ void TabWid::allComponents()
     updatesettingLayout->setSpacing(2);
     updatesettingLayout->setMargin(0);
 
-
     AppMessage->addWidget(labUpdate);
     AppMessage->addWidget(systemWidget);
     AppMessage->addWidget(allUpdateWid);
@@ -816,11 +815,7 @@ void TabWid::checkUpdateBtnClicked()
             return ;
         }
 
-        foreach (AppUpdateWid *wid, widgetList) {
-            connect(wid, &AppUpdateWid::sendProgress, this, &TabWid::getAllProgress);
-            wid->updateAPPBtn->hide();
-        }
-        isAllUpgrade = true;
+
         QMessageBox msgBox(this);
         msgBox.setText(tr("Please back up the system before all updates to avoid unnecessary losses"));
         msgBox.setWindowTitle(tr("Prompt information"));
@@ -829,12 +824,16 @@ void TabWid::checkUpdateBtnClicked()
         msgBox.addButton(tr("Back And Update"), QMessageBox::AcceptRole);
         msgBox.addButton(tr("Cancel"), QMessageBox::NoRole);
 
+        foreach (AppUpdateWid *wid, widgetList) {
+            connect(wid, &AppUpdateWid::sendProgress, this, &TabWid::getAllProgress);
+            wid->updateAPPBtn->hide();
+        }
+        isAllUpgrade = true;
         int ret = msgBox.exec();
         switch (ret) {
         case 0:
             qDebug() << "全部更新。。。。。。";
             isAutoBackupSBtn->setChecked(false);
-            //                checkUpdateBtn->setText("正在更新...");
             checkUpdateBtn->setEnabled(false);
             checkUpdateBtn->start();
             updateMutual->isPointOutNotBackup = false;   //全部更新时不再弹出单个更新未备份提示
@@ -848,13 +847,17 @@ void TabWid::checkUpdateBtnClicked()
         case 2:
             foreach (AppUpdateWid *wid, widgetList) {
                 disconnect(wid, &AppUpdateWid::sendProgress, this, &TabWid::getAllProgress);
+                wid->updateAPPBtn->show();
             }
+            isAllUpgrade = false;
             qDebug() << "Close 暂不更新!";
             break;
         default:
             foreach (AppUpdateWid *wid, widgetList) {
                 disconnect(wid, &AppUpdateWid::sendProgress, this, &TabWid::getAllProgress);
+                wid->updateAPPBtn->show();
             }
+            isAllUpgrade = false;
             qDebug() << "Close 暂不更新!";
             break;
         }
@@ -933,6 +936,7 @@ void TabWid::changeUpdateAllSlot(bool isUpdate)
 {
     if (isUpdate) {
         checkUpdateBtn->setEnabled(false);
+        versionInformationLab->setText(tr("Being updated..."));
     } else  {
         if(checkUpdateBtn->isEnabled() == false)
         {

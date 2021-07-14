@@ -623,7 +623,7 @@ void AppUpdateWid::cancelOrUpdate()
 {
     if(updateAPPBtn->text() == tr("Update"))
     {
-        emit changeUpdateAllSignal(true);
+//        emit changeUpdateAllSignal(true);
         /*判断电量是否支持更新*/
         if (!get_battery()) {
             QMessageBox msgBox;
@@ -641,7 +641,6 @@ void AppUpdateWid::cancelOrUpdate()
         if(m_updateMutual->isPointOutNotBackup == true)
         {
             QMessageBox msgBox;
-            //            msgBox.setText(tr("单个更新不会自动备份系统，如需备份，请点击全部更新。"));
             msgBox.setText(tr("A single update will not automatically backup the system, if you want to backup, please click Update All."));
             msgBox.setWindowTitle(tr("Prompt information"));
             msgBox.setStandardButtons(QMessageBox::YesAll
@@ -651,7 +650,6 @@ void AppUpdateWid::cancelOrUpdate()
             msgBox.setButtonText(QMessageBox::Cancel,tr("Cancel update"));
             QCheckBox *cb = new QCheckBox(&msgBox);
             msgBox.setCheckBox(cb);
-            //            msgBox.checkBox()->setText(tr("本次更新不再提示"));
             msgBox.checkBox()->setText(tr("This time will no longer prompt"));
             msgBox.checkBox()->show();
             msgBox.button(QMessageBox::Cancel)->hide();

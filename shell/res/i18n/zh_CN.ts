@@ -7401,7 +7401,7 @@ run start-pulseaudio-x11 manually.</source>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="732"/>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="916"/>
         <source>No Information!</source>
-        <translation type="unfinished">暂无信息！</translation>
+        <translation>暂无信息！</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="697"/>
