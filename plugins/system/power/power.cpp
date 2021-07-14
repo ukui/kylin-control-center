@@ -723,6 +723,7 @@ void Power::initCustomPlanStatus()
     mCloseComboBox->setCurrentIndex(mCloseComboBox->findData(settings->get(SLEEP_DISPLAY_AC_KEY).toInt() / FIXES));
     mCloseLidComboBox->setCurrentIndex(mCloseLidComboBox->findData(settings->get(BUTTON_LID_AC_KEY).toString()));
 
+    //避免不存在该键值，出现闪退情况
     if (settings->keys().contains("powerPolicyAc") && settings->keys().contains("powerPolicyBattery")) {
         if (1 == settings->get(POWER_POLICY_AC).toInt()) {
             mPowerComboBox->setCurrentIndex(mPowerComboBox->findData("Balance Model"));
