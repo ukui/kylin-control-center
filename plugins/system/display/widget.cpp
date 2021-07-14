@@ -3,6 +3,7 @@
 #include "declarative/qmloutput.h"
 #include "declarative/qmlscreen.h"
 #include "utils.h"
+#include "scalesize.h"
 #include "ui_display.h"
 #include "displayperformancedialog.h"
 #include "colorinfo.h"
@@ -518,8 +519,10 @@ void Widget::writeScale(double scale)
     }
 
     if (mIsScaleChanged) {
-        QMessageBox::information(this, tr("Information"),
-                                 tr("Some applications need to be logouted to take effect"));
+        if (!mIsRestore) {
+            QMessageBox::information(this, tr("Information"),
+                                     tr("Some applications need to be logouted to take effect"));
+        }
     } else {
         return;
     }
@@ -654,6 +657,12 @@ bool Widget::isRestoreConfig()
         break;
     case QMessageBox::RejectRole:
         res = true;
+        if (mScaleres) {
+            //该情况下不弹提示弹窗
+            mIsRestore = true;
+            writeScale(mScaleres);
+            mIsRestore = false;
+        }
         break;
     }
     return res;

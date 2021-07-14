@@ -134,6 +134,7 @@ void ResolutionSlider::slotOutputModeChanged()
         mComboBox->blockSignals(true);
         mComboBox->setCurrentIndex(mModes.indexOf(mOutput->currentMode()->size()));
         mComboBox->blockSignals(false);
+        Q_EMIT resolutionsave(mModes.at(mComboBox->currentIndex()));
     }
 }
 

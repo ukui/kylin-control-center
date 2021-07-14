@@ -226,6 +226,8 @@ private:
     bool mIsWayland = false;
     bool mIsBattery = false;
     bool mIsScreenAdd = false;
+    bool mIsRestore = false;
+
 
     QShortcut *mApplyShortcut;
     QVector<BrightnessFrame*> BrightnessFrameV;

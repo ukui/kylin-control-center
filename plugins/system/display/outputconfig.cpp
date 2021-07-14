@@ -1,6 +1,7 @@
 #include "outputconfig.h"
 #include "resolutionslider.h"
 #include "utils.h"
+#include "scalesize.h"
 
 #include <QStringBuilder>
 #include <QFormLayout>
@@ -10,6 +11,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QGroupBox>
+#include <QMessageBox>
 
 #include <QComboBox>
 #include <QGSettings>
@@ -23,19 +25,7 @@
 #define SCALE_SCHEMAS "org.ukui.SettingsDaemon.plugins.xsettings"
 #define SCALE_KEY     "scaling-factor"
 
-const QSize KRsolution(1920, 1080);
-
-const QVector<QSize> k150Scale{QSize(1280, 1024), QSize(1440, 900), QSize(1600, 900),
-                               QSize(1680, 1050), QSize(1920, 1080), QSize(1920, 1200),
-                               QSize(2048, 1080), QSize(2048, 1280), QSize(2160, 1440),
-                               QSize(2560, 1440),QSize(3840, 2160)};
-
-const QVector<QSize> k175Scale{QSize(1680, 1050), QSize(1920, 1080), QSize(1920, 1200),
-                               QSize(2048, 1080), QSize(2048, 1280), QSize(2160, 1440),
-                               QSize(2560, 1440), QSize(3840, 2160)};
-
-const QVector<QSize> k200Scale{QSize(1920, 1200), QSize(2048, 1280), QSize(2160, 1440),
-                               QSize(2560, 1440), QSize(3840, 2160)};
+double mScaleres = 0;
 
 OutputConfig::OutputConfig(QWidget *parent) :
     QWidget(parent),
@@ -98,6 +88,9 @@ void OutputConfig::initUi()
             });
 
     connect(mResolution, &ResolutionSlider::resolutionChanged,
+            this, &OutputConfig::slotScaleIndex);
+
+    connect(mResolution, &ResolutionSlider::resolutionsave,
             this, &OutputConfig::slotScaleIndex);
 
     // 方向下拉框
@@ -370,21 +363,54 @@ void OutputConfig::slotDPIChanged(QString key)
 
 void OutputConfig::slotScaleIndex(const QSize &size)
 {
+    QSize msize;
+    if (mScaleSize != QSize()) {
+        msize = size.width() > mScaleSize.width()?mScaleSize:size;
+    } else {
+        msize = size;
+    }
+    if (!msize.isValid()) {
+        return;
+    }
+
     mScaleCombox->blockSignals(true);
     mScaleCombox->clear();
     mScaleCombox->addItem("100%", 1.0);
 
-
-    if (k150Scale.contains(size)) {
+    if (msize.width() >= 1024 ) {
         mScaleCombox->addItem("125%", 1.25);
+    }
+    if (msize.width() >= 1920 ) {
         mScaleCombox->addItem("150%", 1.5);
     }
-    if (k175Scale.contains(size)) {
+    if (msize.width() >= 2560) {
         mScaleCombox->addItem("175%", 1.75);
-    }
-    if (k200Scale.contains(size)) {
         mScaleCombox->addItem("200%", 2.0);
     }
+    if (msize.width() >= 3072) {
+       mScaleCombox->addItem("225%", 2.25);
+       mScaleCombox->addItem("250%", 2.5);
+   }
+   if (msize.width() >= 3840) {
+       mScaleCombox->addItem("275%", 2.75);
+   }
+
+    double scale = getScreenScale();
+
+    if (mScaleCombox->findData(scale) == -1) {
+        //该变量保存改变前的缩放率，当用户点击恢复时，恢复对应的缩放率
+        mScaleres = scale;
+
+        scale = 1.0;
+        if (QGSettings::isSchemaInstalled(SCALE_SCHEMAS)) {
+            if (mDpiSettings->keys().contains("scalingFactor")) {
+                mDpiSettings->set(SCALE_KEY,scale);
+            }
+        }
+        QMessageBox::information(this, tr("Information"),
+                                 tr("Some applications need to be logouted to take effect"));
+    }
+    mScaleCombox->setCurrentText(scaleToString(scale));
     mScaleCombox->blockSignals(false);
 }
 
