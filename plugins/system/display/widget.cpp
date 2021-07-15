@@ -573,7 +573,7 @@ void Widget::initGSettings()
 void Widget::initNightUI()
 {
     //~ contents_path /display/unify output
-    ui->unifyLabel->setText(tr("unify output"));
+    ui->unifyLabel->setText(tr("Mirror Display"));
 
     QHBoxLayout *nightLayout = new QHBoxLayout(ui->nightframe);
     //~ contents_path /display/night mode
@@ -592,7 +592,7 @@ void Widget::initNightUI()
 
 bool Widget::isRestoreConfig()
 {
-    int cnt = 15;
+    int cnt = 30;
     int ret;
     MainWindow *mainWindow = static_cast<MainWindow*>(this->topLevelWidget());
     QMessageBox msg;
@@ -611,7 +611,7 @@ bool Widget::isRestoreConfig()
         msg.setText(tr("After modifying the resolution or refresh rate, "
                        "due to compatibility issues between the display device and the graphics card, "
                        "the display may be abnormal or unable to display\n"
-                       "the settings will be saved after 14 seconds"));
+                       "the settings will be saved after 29 seconds"));
         msg.addButton(tr("Save Config"), QMessageBox::RejectRole);
         msg.addButton(tr("Restore Config"), QMessageBox::AcceptRole);
 
