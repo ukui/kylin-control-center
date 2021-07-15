@@ -52,9 +52,9 @@ void ksc_module_func_widget::set_module_data(ksc_defender_module module)
     ui->label_1->clear();
     ui->label_2->clear();
     if (module.status_list.size() >= 1)
-        ui->label_1->set_fix_text(module.status_list.at(0));
+        ui->label_1->setText(module.status_list.at(0));
     if (module.status_list.size() == 2)
-        ui->label_2->set_fix_text(module.status_list.at(1));
+        ui->label_2->setText(module.status_list.at(1));
 
     ui->module_name->setText(m_module.module_name);
     ui->module_icon->setPixmap(QPixmap(m_module.module_normal_icon).scaled(ui->module_icon->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
@@ -73,9 +73,9 @@ void ksc_module_func_widget::update_module_data(ksc_defender_module module)
     ui->label_1->clear();
     ui->label_2->clear();
     if (module.status_list.size() >= 1)
-        ui->label_1->set_fix_text(module.status_list.at(0));
+        ui->label_1->setText(module.status_list.at(0));
     if (module.status_list.size() == 2)
-        ui->label_2->set_fix_text(module.status_list.at(1));
+        ui->label_2->setText(module.status_list.at(1));
 
     ui->module_name->setText(m_module.module_name);
 }

@@ -25,7 +25,7 @@
 FixLabel::FixLabel(QWidget *parent):
     QLabel(parent)
 {
-    m_text.clear();
+
 }
 
 FixLabel::~FixLabel()
@@ -33,25 +33,23 @@ FixLabel::~FixLabel()
 
 }
 
-void FixLabel::set_fix_text(QString text)
-{
-    m_text = text;
-}
-
 void FixLabel::paintEvent(QPaintEvent *event)
 {
     QFontMetrics fontMetrics(this->font());
-//    QString mStr = this->text();
-    QString mStr = m_text;
-    if (mStr.isEmpty())
-        mStr = this->text();
     int fontSize = fontMetrics.width(mStr);
     if (fontSize > this->width()) {
-        this->setText(fontMetrics.elidedText(mStr, Qt::ElideRight, this->width()));
+        this->setText(fontMetrics.elidedText(mStr, Qt::ElideRight, this->width()), false);
         this->setToolTip(mStr);
     } else {
-        this->setText(mStr);
+        this->setText(mStr, false);
         this->setToolTip("");
     }
     QLabel::paintEvent(event);
+}
+
+void FixLabel::setText(const QString & text, bool saveTextFlag)
+{
+    if (saveTextFlag)
+        mStr = text;
+    QLabel::setText(text);
 }

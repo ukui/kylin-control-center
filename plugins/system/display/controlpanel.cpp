@@ -62,6 +62,10 @@ void ControlPanel::addOutput(const KScreen::OutputPtr &output, bool connectChang
         connect(output.data(), &KScreen::Output::isConnectedChanged,
                     this, &ControlPanel::slotOutputConnectedChanged);
     }
+    
+    if (!output->isConnected())
+        return;
+
     OutputConfig *outputCfg = new OutputConfig(this);
     outputCfg->setVisible(false);
     outputCfg->setShowScaleOption(mConfig->supportedFeatures().testFlag(KScreen::Config::Feature::PerOutputScaling));

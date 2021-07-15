@@ -30,13 +30,12 @@ class FixLabel : public QLabel
 public:
     FixLabel(QWidget *parent = nullptr);
     ~FixLabel();
-
-    void set_fix_text(QString text);
+    void setText(const QString &text, bool saveTextFlag = true);
 private:
     void paintEvent(QPaintEvent *event);
 
 private:
-    QString m_text;
+    QString mStr;
 };
 
 
