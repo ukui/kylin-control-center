@@ -8562,7 +8562,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/system/display/widget.cpp" line="576"/>
         <source>Mirror Display</source>
-        <translation type="unfinished">镜像显示</translation>
+        <translation>镜像显示</translation>
         <extra-contents_path>/display/unify output</extra-contents_path>
     </message>
     <message>
@@ -8579,7 +8579,7 @@ run start-pulseaudio-x11 manually.</source>
         <location filename="../../../plugins/system/display/widget.cpp" line="611"/>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display
 the settings will be saved after 29 seconds</source>
-        <translation type="unfinished">修改分辨率或刷新率后，由于显示设备与 显卡兼容性问题，有可能显示不正常。系统将在29秒后保存配置</translation>
+        <translation>修改分辨率或刷新率后，由于显示设备与 显卡兼容性问题，有可能显示不正常。系统将在29秒后保存配置</translation>
     </message>
     <message>
         <source>After modifying the resolution or refresh rate, due to compatibility issues between the display device and the graphics card, the display may be abnormal or unable to display
