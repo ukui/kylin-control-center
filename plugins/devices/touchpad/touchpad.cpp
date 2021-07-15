@@ -88,6 +88,7 @@ QWidget *Touchpad::get_plugin_ui(){
         initWaylandDbus();
         isWaylandPlatform();
         setupComponent();
+
         ui->scrollingTypeComBox->setView(new QListView());
         const QByteArray id(TOUCHPAD_SCHEMA);
 
@@ -203,7 +204,7 @@ void Touchpad::initTouchpadStatus(){
 
     // 插入鼠标时候禁用触摸板
     mMouseDisTouchBtn->blockSignals(true);
-    clickBtn->setChecked(tpsettings->get(MOUSE_DISBALE_TOUCHPAD).toBool());
+    mMouseDisTouchBtn->setChecked(tpsettings->get(MOUSE_DISBALE_TOUCHPAD).toBool());
     mMouseDisTouchBtn->blockSignals(false);
 
     //初始化滚动
