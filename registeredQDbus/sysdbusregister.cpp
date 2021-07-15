@@ -198,6 +198,8 @@ int SysdbusRegister::getDDCBrightness(QString type) {
     vcpPro->waitForStarted();
     vcpPro->waitForFinished();
     QString result = vcpPro->readAllStandardOutput().trimmed();
+    if (result == "")
+        return -1;
     QString bri=result.split(" ").at(9);
     bool ok;
     int bright=bri.toInt(&ok,16);
