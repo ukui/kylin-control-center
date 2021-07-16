@@ -30,11 +30,18 @@
 #define THEME_QT_SCHEMA                  "org.ukui.style"
 #define MODE_QT_KEY                      "style-name"
 
+#define SYSTEM_CMD_ERROR    -1
 enum {
     NOT_SUPPORT_P2P = 0,
     SUPPORT_P2P_WITHOUT_DEV,
     SUPPORT_P2P_PERFECT,
-    OP_NO_RESPONSE
+    OP_NO_RESPONSE,
+    NO_SERVICE
+};
+
+enum {
+    PROJECTION_RUNNING = 256,
+    DAEMON_NOT_RUNNING = 512
 };
 
 Projection::Projection()
@@ -48,10 +55,7 @@ Projection::Projection()
     pluginWidget->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(pluginWidget);
     projectionBtn = new SwitchButton(pluginWidget);
-    int result = system("checkDaemonRunning.sh");
-    if (result != 0) {
-        projectionBtn->setChecked(true);
-    }
+
 //   ui->pinframe->hide();
 
     connect(projectionBtn, SIGNAL(checkedChanged(bool)), this, SLOT(projectionButtonClickSlots(bool)));
@@ -188,6 +192,11 @@ Projection::~Projection()
 }
 
 QString Projection::get_plugin_name(){
+    QFile server("/usr/bin/miracle-wifid");
+    QFile agent("/usr/bin/miracle-agent");
+
+    if(!server.exists() || !agent.exists())
+        return NULL;
 
     return pluginName;
 }
@@ -197,44 +206,76 @@ int Projection::get_plugin_type(){
 }
 
 QWidget *Projection::get_plugin_ui(){
-    QDBusMessage result = m_pServiceInterface->call("PreCheck");
-    QList<QVariant> outArgs = result.arguments();
-    int projectionstatus = outArgs.at(0).value<int>();
-    qDebug() << "---->" << projectionstatus;
+    int res;
+    int projectionstatus;
+
+    do{
+        res = system("checkDaemonRunning.sh");
+    }while(SYSTEM_CMD_ERROR == res);
+
+    if (res == PROJECTION_RUNNING) {
+        projectionBtn->setChecked(true);
+    }
+    else {
+        projectionBtn->setChecked(false);//projection not switch-on, or daemon programs not running at all
+    }
+
+    if (res == DAEMON_NOT_RUNNING){
+        projectionstatus = NO_SERVICE;
+    }
+    else{
+        QDBusMessage result = m_pServiceInterface->call("PreCheck");
+        QList<QVariant> outArgs = result.arguments();
+        projectionstatus = outArgs.at(0).value<int>();
+        qDebug() << "---->" << projectionstatus;
+    }
+
     ui->widget->hide();
     ui->label->hide();
     ui->label_3->hide();
     ui->widget_2->show();
     ui->label_setsize->setText("");
-    if (NOT_SUPPORT_P2P == projectionstatus) {
+
+    //First, we check whether service process is running
+    if (NO_SERVICE == projectionstatus) {
+        ui->label_2->setText("服务异常，可能由于软件包未正确安装");
+        ui->projectionNameWidget->setEnabled(false);
+        projectionBtn->setEnabled(false);
+    }
+    //Then let's check whether hardware is ok
+    else if (NOT_SUPPORT_P2P == projectionstatus) {
         ui->label_2->setText("未检测到无线网卡或网卡驱动不支持，投屏功能不可用");
         ui->projectionNameWidget->setEnabled(false);
         projectionBtn->setEnabled(false);
     }
-
-    else if (SUPPORT_P2P_WITHOUT_DEV == projectionstatus) {
+    else if (SUPPORT_P2P_WITHOUT_DEV == projectionstatus
+             || SUPPORT_P2P_PERFECT == projectionstatus) {
         if(getWifiStatus())
         {
             qDebug()<<"wifi is on now";
-            ui->label_3->setText("使用时请保持WLAN处于开启状态，投屏过程中可能会中断无线连接");
+            if(SUPPORT_P2P_WITHOUT_DEV == projectionstatus)
+                ui->label_3->setText("使用时请保持WLAN处于开启状态；开启投屏会断开无线网络的接入");
+            if(SUPPORT_P2P_PERFECT == projectionstatus)
+                ui->label_3->setText("使用时请保持WLAN处于开启状态；开启投屏会短暂中断无线连接");
             ui->widget->show();
             ui->label->show();
             ui->label_3->show();
             ui->widget_2->hide();
+            ui->projectionNameWidget->setEnabled(true);
+            projectionBtn->setEnabled(true);
         }
         else
         {
             qDebug()<<"wifi is off now";
             ui->label_2->setText("WLAN未开启，请打开WLAN开关");
+            ui->projectionNameWidget->setEnabled(false);
+            projectionBtn->setEnabled(false);
         }
-
-        projectionBtn->setEnabled(true);
     }
     else if (OP_NO_RESPONSE == projectionstatus) {
-
-        ui->label_2->setText("该功能软件服务异常，请稍后再试");
-        ui->projectionNameWidget->setEnabled(true);
-        projectionBtn->setEnabled(true);
+        ui->label_2->setText("无线网卡繁忙，请稍后再试");
+        ui->projectionNameWidget->setEnabled(false);
+        projectionBtn->setEnabled(false);
     }
 
     return pluginWidget;
