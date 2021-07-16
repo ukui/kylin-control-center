@@ -56,7 +56,8 @@ Projection::Projection()
 
     connect(projectionBtn, SIGNAL(checkedChanged(bool)), this, SLOT(projectionButtonClickSlots(bool)));
     // m_pin = new QLabel(pluginWidget);
-    ui->label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    // ui->label->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
+    ui->label->setStyleSheet("QLabel{color: palette(windowText);}");
     //~ contents_path /bluetooth/Open Bluetooth
     ui->titleLabel->setText(tr("Open Projection"));
     ui->titleLabel->setStyleSheet("QLabel{color: palette(windowText);}");
@@ -83,7 +84,7 @@ Projection::Projection()
     }else {
         hostName = setting->value("host").toString();
     }
-    ui->projectionNameWidget->setFixedHeight(40);
+    //ui->projectionNameWidget->setFixedHeight(40);
     ui->projectionName->setText(hostName);
     ui->projectionNameChange->setProperty("useIconHighlightEffect", 0x8);
     ui->projectionNameChange->setPixmap(QIcon::fromTheme("document-edit-symbolic").pixmap(ui->projectionNameChange->size()));
