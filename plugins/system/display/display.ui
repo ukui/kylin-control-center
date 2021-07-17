@@ -339,7 +339,7 @@
           <item>
            <widget class="QLabel" name="unifyLabel">
             <property name="text">
-             <string>unify output</string>
+             <string>Mirror Display</string>
             </property>
            </widget>
           </item>

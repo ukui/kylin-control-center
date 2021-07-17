@@ -32,7 +32,7 @@ struct AppAllMsg
     QString maintainer;
     QString source;
     QString version;
-    int packageSize;
+    long packageSize;
     QString shortDescription;
     QString longDescription;
 

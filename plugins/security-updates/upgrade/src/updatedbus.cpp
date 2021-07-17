@@ -240,7 +240,7 @@ void UpdateDbus::getAppMessageSignal(QMap<QString, QVariant> map, QStringList ur
         if(it.key() == "size")
         {
             dateQVariant = it.value();
-            appAllMsg.packageSize = dateQVariant.toInt();
+            appAllMsg.packageSize = dateQVariant.toString().toLong();
         }
         if(it.key() == "description")
         {
