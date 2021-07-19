@@ -405,6 +405,11 @@
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="519"/>
+        <source>Download completed</source>
+        <translation>下载完成</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="519"/>
         <location filename="../../../plugins/security-updates/upgrade/src/appupdate.cpp" line="525"/>
         <source>Download size:</source>
         <translation>下载大小：</translation>
@@ -7424,7 +7429,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="780"/>
         <source> times</source>
-        <translation>次数</translation>
+        <translation>次</translation>
     </message>
     <message>
         <location filename="../../../plugins/security-updates/upgrade/src/tabwidget.cpp" line="799"/>
