@@ -244,8 +244,10 @@ void BlueToothMain::InitMainbottomUI()
             m_localDevice->stopDiscovery();
         }
         discovering_timer->stop();
+        clearUiShowDeviceList();
 
         QTimer::singleShot(2000,this,[=]{
+            Discovery_device_address.clear();
             discovering_timer->start();
             this->startDiscovery();
         });
@@ -254,21 +256,20 @@ void BlueToothMain::InitMainbottomUI()
 
     IntermittentScann_timer_count = 0;
     IntermittentScann_timer= new QTimer(this);
-    IntermittentScann_timer->setInterval(1000);
+    IntermittentScann_timer->setInterval(2000);
     connect(IntermittentScann_timer,&QTimer::timeout,this,[=]
     {
         qDebug() << __FUNCTION__ << "IntermittentScann_timer_count:" << IntermittentScann_timer_count << __LINE__ ;
 
-        IntermittentScann_timer_count++;
-        if (IntermittentScann_timer_count > 3)
+        if (IntermittentScann_timer_count > 2)
         {
             IntermittentScann_timer_count = 0;
             IntermittentScann_timer->stop();
-//            if(!m_localDevice->isDiscovering())
-//            {
-//                m_localDevice->startDiscovery();
-//            }
-            this->startDiscovery();
+            if(!m_localDevice->isDiscovering())
+            {
+                m_localDevice->startDiscovery();
+            }
+            //this->startDiscovery();
             discovering_timer->start();
         }
         else
@@ -282,15 +283,15 @@ void BlueToothMain::InitMainbottomUI()
             }
             else
             {
-//                if(!m_localDevice->isDiscovering())
-//                {
-//                    m_localDevice->startDiscovery();
-//                }
-                this->startDiscovery();
-
+                if(!m_localDevice->isDiscovering())
+                {
+                    m_localDevice->startDiscovery();
+                }
             }
 
         }
+        IntermittentScann_timer_count++;
+
     });
 
     //开启时延迟1.8s后开启扫描，留点设备回连时间
@@ -406,12 +407,15 @@ void BlueToothMain::updateUIWhenAdapterChanged()
            //discovering_timer->start();
            //每次开启后清除适配器扫描列表
            if (0 == IntermittentScann_timer_count)
+           {
                 Discovery_device_address.clear();
+                qDebug() << __FUNCTION__ << "Discovery_device_address "<< __LINE__;
+           }
        }
        else
        {
-           if (0 == IntermittentScann_timer_count)
-               clearUiShowDeviceList();
+           //if (0 == IntermittentScann_timer_count)
+           //    clearUiShowDeviceList();
            //delayStartDiscover_timer->start();
        }
     });
@@ -421,7 +425,7 @@ void BlueToothMain::updateUIWhenAdapterChanged()
         loadLabel->setVisible(true);
         if (!m_timer->isActive())
             m_timer->start();
-        discovering_timer->start();
+        //discovering_timer->start();
     }
 
     connect(m_localDevice.data(),&BluezQt::Adapter::uuidsChanged,this,[=](const QStringList &uuids){
@@ -883,10 +887,21 @@ void BlueToothMain::serviceDiscovered(BluezQt::DevicePtr device)
 
 void BlueToothMain::clearUiShowDeviceList()
 {
+    qDebug() << Q_FUNC_INFO << __LINE__ ;
+
     for (int i = 0  ; i < last_discovery_device_address.size() ; i++) {
+
+        if (m_manager->adapters().size() > 0)
+        {
+            BluezQt::DevicePtr device = m_localDevice->deviceForAddress(last_discovery_device_address.at(i));
+            if (device->isPaired() || device->isConnected())
+                continue;
+        }
+
         //剔除重新开始扫描时，不在设备列表中的device
         if (! Discovery_device_address.contains(last_discovery_device_address.at(i))){
             removeDeviceItemUI(last_discovery_device_address.at(i));
+            //receiveRemoveSignal(last_discovery_device_address.at(i));//没有改变动作从列表中删除
         }
     }
 }
@@ -901,6 +916,7 @@ void BlueToothMain::serviceDiscoveredChange(BluezQt::DevicePtr device)
 
     if(device->isPaired() || device->isConnected()) {
         qDebug() << Q_FUNC_INFO << "device is Paired or Connected" << __LINE__;
+        addMyDeviceItemUI(device);
         return;
     }
 
