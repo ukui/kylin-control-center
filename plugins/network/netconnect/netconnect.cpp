@@ -352,8 +352,12 @@ void NetConnect::getNetList() {
         getNetList();
     } else {
         connectWifi.clear();
-        if (reply.value().at(0).at(0) != "--") {
-            connectWifi = reply.value().at(0).at(0);
+        if (reply.value().length() != 0) {
+            if (reply.value().at(0).at(0) != "--") {
+                connectWifi = reply.value().at(0).at(0);
+            } else {
+                connectWifi = "--";
+            }
         } else {
             connectWifi = "--";
         }
