@@ -5401,7 +5401,6 @@ Please retry or relogin!</source>
         <translation>取消</translation>
     </message>
 </context>
-
 <context>
     <name>Proxy</name>
     <message>
@@ -8236,7 +8235,7 @@ run start-pulseaudio-x11 manually.</source>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="81"/>
         <source>Beep Switch</source>
-        <translation>提示音量开关</translation>
+        <translation>提示音</translation>
     </message>
     <message>
         <location filename="../../../plugins/devices/audio/ukmedia_sound_effects_widget.cpp" line="82"/>
