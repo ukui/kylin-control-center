@@ -261,6 +261,9 @@ bool NetConnect::getWirelessStatus() {
             path = objPathDevice.path();
         }
     }
+    if(path.isEmpty()) {
+        return false;
+    }
     QDBusInterface netWireless("org.freedesktop.NetworkManager",
                                path,
                                "org.freedesktop.NetworkManager.Device",
@@ -457,7 +460,7 @@ void NetConnect:: getNetList() {
 
     this->TlanList  = execGetLanList();
     bool wirelessStatus = getWirelessStatus();
-    if (getWifiStatus() && reply.value().length() == 1 && wirelessStatus && getHasWirelessCard()) {
+    if (getWifiStatus() && reply.value().length() != 0 && reply.value().length() == 1 && wirelessStatus && getHasWirelessCard()) {
         QElapsedTimer time;
         time.start();
         while (time.elapsed() < 300) {
@@ -469,8 +472,12 @@ void NetConnect:: getNetList() {
         getNetList();
     } else {
         connectWifi.clear();
-        if (reply.value().at(0).at(0) != "--") {
-            connectWifi = reply.value().at(0).at(0);
+        if (wirelessStatus && reply.value().length() !=0) {
+            if (reply.value().at(0).at(0) != "--") {
+                connectWifi = reply.value().at(0).at(0);
+            } else {
+                connectWifi = "--";
+            }
         } else {
             connectWifi = "--";
         }
@@ -1225,7 +1232,7 @@ int NetConnect::getActiveConInfo(QList<ActiveConInfo>& qlActiveConInfo, bool wir
                 .path();
          //如果此时获取的path为"/",说明出现异常，则需要进行异常处理
         // IPV4信息
-        if (replyIPV4Path == "/") {
+        if (replyIPV4Path == "/" && wirelessStatus) {
             return -1;
         } else {
             QDBusInterface IPV4ifc("org.freedesktop.NetworkManager",
