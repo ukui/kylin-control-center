@@ -198,6 +198,7 @@
         <file>secondaryleftmenu/ProjectionWhite.svg</file>
         <file>secondaryleftmenu/Search.svg</file>
         <file>secondaryleftmenu/SearchWhite.svg</file>
+        <file>titlebar/index.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>

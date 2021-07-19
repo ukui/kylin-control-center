@@ -68,9 +68,10 @@ void BrightnessFrame::runConnectThread(const bool &openFlag)
 {
     outputEnable = openFlag;
     if (false == isBattery) {
+        if (true == threadRunFlag)
+            return;
+
         threadRun = QtConcurrent::run([=]{
-            if (true == threadRunFlag)
-                return;
             threadRunFlag = true;
             if ("" == this->serialNum) {
                 threadRunFlag = false;
@@ -142,7 +143,7 @@ int BrightnessFrame::getDDCBrighthess()
         if (this->serialNum == "" || exitFlag)
             return -1;
         reply = ukccIfc.call("getDDCBrightnessUkui", this->serialNum);
-        if (reply.isValid() && reply.value() >= 0 && reply.isValid() <= 100) {
+        if (reply.isValid() && reply.value() >= 0 && reply.value() <= 100) {
             return reply.value();
         }
         sleep(2);

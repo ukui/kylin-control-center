@@ -33,6 +33,7 @@
 #include <QGSettings/QGSettings>
 #include <QHBoxLayout>
 #include <QToolButton>
+#include <QScrollArea>
 
 #include "interface.h"
 #include "homepagewidget.h"
@@ -102,6 +103,7 @@ private:
     QGSettings       *m_fontSetting;
 
     QHBoxLayout     *titleLayout;
+    QScrollArea *scrollArea = nullptr;
 
 private:
     void initUI();

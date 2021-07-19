@@ -37,31 +37,6 @@ ModulePageWidget::ModulePageWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // 设置父窗口对象
-    this->setParent(parent);
-    pmainWindow = (MainWindow *)parentWidget();
-
-    // 左侧Widget大小限定
-    ui->leftbarWidget->setMinimumWidth(160);
-    ui->leftbarWidget->setMaximumWidth(216);
-
-    // 右侧Widget大小限定(限制了最小宽度)
-    ui->widget->setMinimumWidth(650);
-    //ui->widget->setMaximumWidth(1200);
-
-    // 左侧二级菜单样式
-    ui->leftStackedWidget->setStyleSheet("border: none;");
-    ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-    //初始化记录标志位
-    flagBit = true;
-
-    //构建枚举键值转换对象
-    mkvConverter = new KeyValueConverter(); //继承QObject，No Delete
-
-    ui->topsideWidget->hide();
-
-    getModuleStatus();
     initUI();
 }
 
@@ -73,132 +48,26 @@ ModulePageWidget::~ModulePageWidget()
 
 void ModulePageWidget::initUI() {
     //设置伸缩策略
-    QSizePolicy leftSizePolicy = ui->leftbarWidget->sizePolicy();
+
     QSizePolicy rightSizePolicy = ui->widget->sizePolicy();
 
-    leftSizePolicy.setHorizontalStretch(1);
     rightSizePolicy.setHorizontalStretch(5);
 
-    ui->leftbarWidget->setSizePolicy(leftSizePolicy);
+
     ui->widget->setSizePolicy(rightSizePolicy);
-
-    for (int moduleIndex = 0; moduleIndex < TOTALMODULES; moduleIndex++){
-        LeftMenuList * leftListWidget = new LeftMenuList;
-
-        leftListWidget->setObjectName("leftWidget");
-        leftListWidget->setAttribute(Qt::WA_DeleteOnClose);
-        leftListWidget->setResizeMode(QListView::Adjust);
-        leftListWidget->setFocusPolicy(Qt::NoFocus);
-        leftListWidget->setSelectionMode(QAbstractItemView::NoSelection);
-        leftListWidget->setStyleSheet("QListWidget#leftWidget{margin-left: 12px;margin-right: 12px}");
-        leftListWidget->setMinimumWidth(100);
-
-        connect(leftListWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), this, SLOT(currentLeftitemChanged(QListWidgetItem*,QListWidgetItem*)));
-        QListWidget * topListWidget = new QListWidget;
-        topListWidget->setAttribute(Qt::WA_DeleteOnClose);
-        topListWidget->setResizeMode(QListView::Adjust);
-        topListWidget->setViewMode(QListView::IconMode);
-        topListWidget->setMovement(QListView::Static);
-        topListWidget->setSpacing(0);
-
-        QMap<QString, QObject *> moduleMap;
-        moduleMap = pmainWindow->exportModule(moduleIndex);
-
-        QList<FuncInfo> functionStructList = FunctionSelect::funcinfoList[moduleIndex];
-        for (int funcIndex = 0; funcIndex < functionStructList.size(); funcIndex++){
-            FuncInfo single = functionStructList.at(funcIndex);
-            //跳过插件不存在的功能项
-            if (!moduleMap.contains(single.namei18nString))
-                continue;
-
-            if (mModuleMap.keys().contains(single.nameString.toLower())) {
-                if (!mModuleMap[single.nameString.toLower()].toBool()) {
-                    continue;
-                }
-            }
-
-            //填充左侧二级菜单
-            LeftWidgetItem * leftWidgetItem = new LeftWidgetItem(this);
-            leftWidgetItem->setAttribute(Qt::WA_DeleteOnClose);
-            leftWidgetItem->setLabelText(single.namei18nString);
-            leftWidgetItem->setLabelPixmap(QString("://img/secondaryleftmenu/%1.svg").arg(single.nameString), single.nameString, "default");
-            QListWidgetItem * item = new QListWidgetItem(leftListWidget);
-            item->setSizeHint(QSize(ui->leftStackedWidget->width() + 20, 40)); //QSize(120, 40) spacing: 12px;
-            leftListWidget->setItemWidget(item, leftWidgetItem);
-            leftListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-            strItemsMap.insert(single.namei18nString, item);
-            leftListWidget->setGridSize(QSize(ui->leftStackedWidget->width() + 20, 44));
-
-            //填充上侧二级菜单
-            QListWidgetItem * topitem = new QListWidgetItem(topListWidget);
-            topitem->setSizeHint(QSize(60, 60));
-            topitem->setText(single.namei18nString);
-            topListWidget->addItem(topitem);
-
-            strItemsMap.insert(single.namei18nString, topitem);
-
-            CommonInterface * pluginInstance = qobject_cast<CommonInterface *>(moduleMap.value(single.namei18nString));
-
-            pluginInstanceMap.insert(single.namei18nString, pluginInstance);
-
-        }
-
-        ui->leftStackedWidget->addWidget(leftListWidget);
-        ui->topStackedWidget->addWidget(topListWidget);
-    }
-
-    //左侧二级菜单标题及上侧二级菜单标题随功能页变化联动
-    connect(ui->leftStackedWidget, &QStackedWidget::currentChanged, this, [=](int index){
-        QString titleString = mkvConverter->keycodeTokeyi18nstring(index);
-        ui->mtitleLabel->setText(titleString);
-        ui->mmtitleLabel->setText(titleString);
-
-    });
 }
 
 void ModulePageWidget::switchPage(QObject *plugin, bool recorded){
 
     CommonInterface * pluginInstance = qobject_cast<CommonInterface *>(plugin);
-    QString name; int type;
-    name = pluginInstance->get_plugin_name();
-    type = pluginInstance->get_plugin_type();
-
-    //首次点击设置模块标题后续交给回调函数
-    if (ui->mtitleLabel->text().isEmpty() || ui->mmtitleLabel->text().isEmpty()){
-        QString titleString = mkvConverter->keycodeTokeyi18nstring(type);
-        ui->mtitleLabel->setText(titleString);
-        ui->mmtitleLabel->setText(titleString);
-    }
-
-    //通过设置标志位确定是否记录打开历史
-    flagBit = recorded;
-
-    //设置左侧一级菜单
-    pmainWindow->setModuleBtnHightLight(type);
-
-    //设置左侧二级菜单
-    ui->leftStackedWidget->setCurrentIndex(type);
-
-
-    QListWidget * lefttmpListWidget = dynamic_cast<QListWidget *>(ui->leftStackedWidget->currentWidget());
-    if (lefttmpListWidget->currentItem() != nullptr){
-        LeftWidgetItem * widget = dynamic_cast<LeftWidgetItem *>(lefttmpListWidget->itemWidget(lefttmpListWidget->currentItem()));
-        //待打开页与QListWidget的CurrentItem相同
-        if (QString::compare(widget->text(), name) == 0){
-            refreshPluginWidget(pluginInstance);
-        }
-    }
-
-    //设置上侧二级菜单
-    ui->topStackedWidget->setCurrentIndex(type);
-
-    //设置左侧及上侧的当前Item及功能Widget
-    highlightItem(name);
-
+    refreshPluginWidget(pluginInstance);
 }
 
 void ModulePageWidget::refreshPluginWidget(CommonInterface *plu){
+    if (plu->pluginBtn) {
+        plu->pluginBtn->setChecked(true);
+    }
+
     ui->scrollArea->takeWidget();
     delete(ui->scrollArea->widget());
 
@@ -216,47 +85,3 @@ void ModulePageWidget::refreshPluginWidget(CommonInterface *plu){
     flagBit = true;
 }
 
-void ModulePageWidget::highlightItem(QString text){
-    QList<QListWidgetItem *> currentItemList = strItemsMap.values(text);
-
-    if (2 > currentItemList.count())
-        return;
-
-    //高亮左侧二级菜单
-    QListWidget * lefttmpListWidget = dynamic_cast<QListWidget *>(ui->leftStackedWidget->currentWidget());
-    lefttmpListWidget->setCurrentItem(currentItemList.at(1)); //QMultiMap 先添加的vlaue在后面
-
-    //高亮上侧二级菜单
-    QListWidget * toptmpListWidget = dynamic_cast<QListWidget *>(ui->topStackedWidget->currentWidget());
-    toptmpListWidget->setCurrentItem(currentItemList.at(0)); //QMultiMap 后添加的value在前面
-}
-
-void ModulePageWidget::getModuleStatus() {
-    mModuleMap = Utils::getModuleHideStatus();
-}
-
-void ModulePageWidget::currentLeftitemChanged(QListWidgetItem *cur, QListWidgetItem *pre){
-    //获取当前QListWidget
-    QListWidget * currentLeftListWidget = dynamic_cast<QListWidget *>(ui->leftStackedWidget->currentWidget());
-
-
-    if (pre != nullptr){
-        LeftWidgetItem * preWidgetItem = dynamic_cast<LeftWidgetItem *>(currentLeftListWidget->itemWidget(pre));
-        //取消高亮
-        preWidgetItem->setSelected(false);
-        preWidgetItem->setLabelTextIsWhite(false);
-        preWidgetItem->isSetLabelPixmapWhite(false);
-    }
-
-    LeftWidgetItem * curWidgetItem = dynamic_cast<LeftWidgetItem *>(currentLeftListWidget->itemWidget(cur));
-    if (pluginInstanceMap.contains(curWidgetItem->text())){
-        CommonInterface * pluginInstance = pluginInstanceMap[curWidgetItem->text()];
-        refreshPluginWidget(pluginInstance);
-        //高亮
-        curWidgetItem->setSelected(true);
-        curWidgetItem->setLabelTextIsWhite(true);
-        curWidgetItem->isSetLabelPixmapWhite(true);
-    } else {
-        qDebug() << "plugin widget not fount!";
-    }
-}

@@ -1,4 +1,4 @@
-#include "leftsiderbarwidget.h"
+#include "leftsidebarwidget.h"
 #include <QDebug>
 #include <QGSettings>
 #include <QStyleOption>
@@ -8,7 +8,7 @@
 #define PERSONALSIE_TRAN_KEY   "transparency"
 #define CONTAIN_PERSONALSIE_TRAN_KEY   "transparency"
 
-LeftsiderbarWidget::LeftsiderbarWidget(QWidget *parent)
+LeftsidebarWidget::LeftsidebarWidget(QWidget *parent)
     : QWidget(parent)
 {
     QGSettings *personalQgsettings = nullptr;
@@ -27,13 +27,13 @@ LeftsiderbarWidget::LeftsiderbarWidget(QWidget *parent)
     }
 }
 
-LeftsiderbarWidget::~LeftsiderbarWidget()
+LeftsidebarWidget::~LeftsidebarWidget()
 {
 
 }
 
 
-void LeftsiderbarWidget::paintEvent(QPaintEvent *event)
+void LeftsidebarWidget::paintEvent(QPaintEvent *event)
 {
     QStyleOption opt;
     opt.init(this);

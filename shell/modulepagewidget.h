@@ -46,10 +46,7 @@ public:
     void initUI();
     void switchPage(QObject * plugin, bool recorded = true);
     void refreshPluginWidget(CommonInterface * plu);
-    void highlightItem(QString text);
 
-private:
-    void getModuleStatus();
 
 private:
     Ui::ModulePageWidget *ui;
@@ -57,19 +54,9 @@ private:
 private:
     MainWindow * pmainWindow;
 
-    KeyValueConverter * mkvConverter;
-
-    QVariantMap mModuleMap;
-
 private:
-    QMap<QString, CommonInterface*> pluginInstanceMap;
-    // 存储功能名与二级菜单item的Map,为了实现高亮
-    QMultiMap<QString, QListWidgetItem*> strItemsMap;
-
     bool flagBit;
 
-public slots:
-    void currentLeftitemChanged(QListWidgetItem * cur, QListWidgetItem * pre);
 
 };
 

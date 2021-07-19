@@ -42,6 +42,8 @@
 #include <QMenu>
 #include <QShortcut>
 #include <QMouseEvent>
+#include <QScrollBar>
+#include "component/leftwidgetitem.h"
 
 #define STYLE_FONT_SCHEMA  "org.ukui.style"
 
@@ -180,6 +182,15 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
                 }
         }
     }
+
+    if (event->type() == QEvent::MouseMove) {
+        if (scrollArea->geometry().contains(this->mapFromGlobal(QCursor::pos()))) {
+            scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        } else {
+            scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        }
+    }
+
     if (this == watched) {
         if (event->type() == QEvent::WindowStateChange) {
             if (this->windowState() == Qt::WindowMaximized) {
@@ -266,7 +277,7 @@ void MainWindow::initUI() {
                     widget->setFont(font);
                 }
             }
-            ui->leftsidebarWidget->setMaximumWidth(width * 10 + 20);
+            ui->leftsidebarWidget->setMaximumWidth(width * 10 + 120);
         }
     });
 
@@ -335,15 +346,7 @@ void MainWindow::initUI() {
 
     //top left return button
     connect(backBtn, &QPushButton::clicked, this, [=]{
-        FunctionSelect::popRecordValue();
-
-        //if recordFuncStack is empty, it means there is no history record. So return to homepage
-        if (FunctionSelect::recordFuncStack.length() < 1) {
-            ui->stackedWidget->setCurrentIndex(0);
-        } else {
-            QMap<QString, QObject *> pluginsObjMap = modulesList.at(FunctionSelect::recordFuncStack.last().type);
-            modulepageWidget->switchPage(pluginsObjMap.value(FunctionSelect::recordFuncStack.last().namei18nString), false);
-        }
+        ui->stackedWidget->setCurrentIndex(0);
     });
 
     // 快捷参数
@@ -605,14 +608,28 @@ void MainWindow::initLeftsideBar(){
     leftBtnGroup = new QButtonGroup();
     leftMicBtnGroup = new QButtonGroup();
 
-    QHBoxLayout *setLayout = new QHBoxLayout(this);
+    QHBoxLayout *setLayout = new QHBoxLayout();
     QLabel  *logoSetLabel  = new QLabel(this);
     QLabel  *textSetLable  = new QLabel(this);
     QWidget *setWidget     = new QWidget(this);
 
-    ui->leftsidebarVerLayout->setSpacing(5);
-    ui->leftsidebarVerLayout->setContentsMargins(7,0,9,0);
-    ui->leftsidebarVerLayout->addWidget(setWidget);
+    scrollArea = new QScrollArea(ui->leftBotWidget);
+    scrollArea->horizontalScrollBar()->setVisible(false);
+    // scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
+    QWidget *menuWidget = new QWidget(this);
+    QVBoxLayout *menuLayout = new QVBoxLayout(menuWidget);
+    menuLayout->setSpacing(4);
+
+    scrollArea->viewport()->setAttribute(Qt::WA_TranslucentBackground);
+    scrollArea->setStyleSheet("QScrollArea{background-color: transparent;}");
+    scrollArea->viewport()->setStyleSheet("background-color: transparent;");
+    scrollArea->verticalScrollBar()->setProperty("drawScrollBarGroove", false);
+
+    ui->leftTopLayout->setContentsMargins(8,8,8,0);
+    setLayout->setContentsMargins(0,0,0,0);
+    ui->leftTopLayout->addWidget(setWidget);
+    ui->leftTopLayout->addStretch();
     setWidget->setLayout(setLayout);
     setLayout->addWidget(logoSetLabel);
     setLayout->addWidget(textSetLable);
@@ -620,16 +637,6 @@ void MainWindow::initLeftsideBar(){
     logoSetLabel->setPixmap(QPixmap::fromImage(QIcon::fromTheme("ukui-control-center").pixmap(24,24).toImage()));
     textSetLable->setText(tr("Settings"));
     textSetLable->setAlignment(Qt::AlignLeft);
-
-    ui->leftsidebarVerLayout->addSpacing(8);
-    //构建左侧边栏返回首页按钮
-    QPushButton * hBtn = buildLeftsideBtn("homepage",tr("Home"));
-    hBtn->setObjectName("homepage");
-    connect(hBtn, &QPushButton::clicked, this, [=]{
-        ui->stackedWidget->setCurrentIndex(0);
-    });
-    hBtn->setStyleSheet("QPushButton#homepage{border-radius: 4px;}");
-    ui->leftsidebarVerLayout->addWidget(hBtn);
 
     for(int type = 0; type < TOTALMODULES; type++) {
         //循环构建左侧边栏一级菜单按钮
@@ -643,76 +650,92 @@ void MainWindow::initLeftsideBar(){
                 }
             }
 
-            QPushButton * button;
-            QString btnName = "btn" + QString::number(type + 1);
-            button = buildLeftsideBtn(mnameString,mnamei18nString);
-            button->setToolTip(mnamei18nString);
+            QWidget *typeWidget     = new QWidget(menuWidget);
+            QHBoxLayout *typeLayout = new QHBoxLayout(typeWidget);
+            QLabel *typeLabel       = new QLabel(typeWidget);
+            typeLabel->setStyleSheet("color: #818181");
+            if (type != 0) {
+                typeLayout->setContentsMargins(28,20,46,0);
+            } else {
+                typeLayout->setContentsMargins(28,0,46,0);
+            }
+            typeLayout->addWidget(typeLabel);
+            typeLabel->setText(mnamei18nString);
+            menuLayout->addWidget(typeWidget);
 
-            button->setObjectName(btnName);
-            button->setCheckable(true);
-            leftBtnGroup->addButton(button, type);
+            QMap<QString, QObject *> moduleMap;
+            moduleMap = this->exportModule(type);
+            QVariantMap mModuleMap;
+            mModuleMap = Utils::getModuleHideStatus();
 
-            button->setStyleSheet("QPushButton:hover{background-color: rgba(55,144,250,0.30);border-radius: 4px;}"
-                                 "QPushButton:checked{background-color: palette(highlight);border-radius: 4px;}"
-                                 "QPushButton:!checked{border: none;}");
+            QList<FuncInfo> functionStructList = FunctionSelect::funcinfoList[type];
+            for (int funcIndex = 0; funcIndex < functionStructList.size(); funcIndex++) {
+                FuncInfo single = functionStructList.at(funcIndex);
+                //跳过插件不存在的功能项
+                if (!moduleMap.contains(single.namei18nString))
+                    continue;
 
-            connect(button, &QPushButton::clicked, this, [=]{
-                QPushButton * btn = dynamic_cast<QPushButton *>(QObject::sender());
-
-                int selectedInt = leftBtnGroup->id(btn);
-
-                //获取一级菜单列表的第一项
-                QList<FuncInfo> tmpList = FunctionSelect::funcinfoList[selectedInt];
-                QMap<QString, QObject *> currentFuncMap = modulesList[selectedInt];
-
-                for (FuncInfo tmpStruct : tmpList){
-                    if (currentFuncMap.keys().contains(tmpStruct.namei18nString)) {
-                        if (m_ModuleMap.isEmpty() || m_ModuleMap[tmpStruct.nameString.toLower()].toBool()) {
-                            modulepageWidget->switchPage(currentFuncMap.value(tmpStruct.namei18nString));
-                            break;
-                        }
+                if (mModuleMap.keys().contains(single.nameString.toLower())) {
+                    if (!mModuleMap[single.nameString.toLower()].toBool()) {
+                        continue;
                     }
                 }
-            });
 
-            ui->leftsidebarVerLayout->addWidget(button);
+                //填充左侧菜单
+
+                QPushButton *pluginBtn = buildLeftsideBtn(single.nameString, single.namei18nString);
+
+                leftBtnGroup->addButton(pluginBtn, type);
+
+
+                QHBoxLayout *pluginLayout = new QHBoxLayout();
+                menuLayout->addLayout(pluginLayout);
+                pluginLayout->setContentsMargins(14,0,46,0);
+                pluginBtn->setStyleSheet("QPushButton:hover{background-color: rgba(55,144,250,0.30);border-radius: 4px;}"
+                                                 "QPushButton:checked{background-color: palette(highlight);border-radius: 4px;}"
+                                                 "QPushButton:!checked{border: none;}");
+
+
+                pluginLayout->addWidget(pluginBtn);
+                CommonInterface * pluginInstance = qobject_cast<CommonInterface *>(moduleMap.value(single.namei18nString));
+                pluginInstance->pluginBtn = pluginBtn;
+
+
+                connect(pluginBtn, &QPushButton::clicked, this, [=](){
+                    modulepageWidget->refreshPluginWidget(pluginInstance);
+                });
+            }
         }
     }
 
-    ui->leftsidebarVerLayout->addStretch();
+    scrollArea->setWidget(menuWidget);
+    ui->leftBotLayout->addWidget(scrollArea);
 }
 
 QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName) {
-    QString iname = bname.toLower();
     int itype = kvConverter->keystringTokeycode(bname);
 
     QPushButton * leftsidebarBtn = new QPushButton();
     leftsidebarBtn->setAttribute(Qt::WA_DeleteOnClose);
     leftsidebarBtn->setCheckable(true);
-    //    leftsidebarBtn->setFixedSize(QSize(60, 56)); //Widget Width 60
-    leftsidebarBtn->setFixedSize(155,40);  //一级菜单按钮显示的宽度
+    leftsidebarBtn->setFixedSize(200,40);  //一级菜单按钮显示的宽度
 
     QPushButton * iconBtn = new QPushButton(leftsidebarBtn);
     iconBtn->setCheckable(true);
-    iconBtn->setFixedSize(QSize(24, 24));
+    iconBtn->setFixedSize(QSize(16, 16));
     iconBtn->setFocusPolicy(Qt::NoFocus);
 
-    QString iconHomePageBtnQss = QString("QPushButton{border:  none;}");
     QString iconBtnQss = QString("QPushButton:checked{border:  none;}"
                                  "QPushButton:!checked{border: none;}");
-    QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
+    QString path = QString("://img/secondaryleftmenu/%1.svg").arg(bname);
     QPixmap pix = ImageUtil::loadSvg(path, "default");
-    //单独设置HomePage按钮样式
-    if (iname == "homepage") {
-        iconBtn->setFlat(true);
-        iconBtn->setStyleSheet(iconHomePageBtnQss);
-    } else {
-        iconBtn->setStyleSheet(iconBtnQss);
-    }
+
+    iconBtn->setStyleSheet(iconBtnQss);
+
     iconBtn->setIcon(pix);
 
     QLabel * textLabel = new QLabel(leftsidebarBtn);
-    textLabel->setFixedWidth(leftsidebarBtn->width()-40);
+    textLabel->setFixedWidth(leftsidebarBtn->width() - 40);
     QFontMetrics  fontMetrics(textLabel->font());
     int fontSize = fontMetrics.width(tipName);
     if (fontSize > textLabel->width()) {
@@ -748,7 +771,7 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName) {
     leftMicBtnGroup->addButton(iconBtn, itype);
 
     connect(iconBtn, &QPushButton::toggled, this, [=] (bool checked) {
-        QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
+        QString path = QString("://img/secondaryleftmenu/%1.svg").arg(bname);
         QPixmap pix;
         if (checked) {
             pix = ImageUtil::loadSvg(path, "white");
@@ -764,7 +787,7 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName) {
 
     connect(leftsidebarBtn, &QPushButton::toggled, this, [=](bool checked) {
         iconBtn->setChecked(checked);
-        QString path = QString("://img/primaryleftmenu/%1.svg").arg(iname);
+        QString path = QString("://img/secondaryleftmenu/%1.svg").arg(bname);
         QPixmap pix;
         if (checked) {
             pix = ImageUtil::loadSvg(path, "white");
@@ -777,10 +800,11 @@ QPushButton * MainWindow::buildLeftsideBtn(QString bname,QString tipName) {
     });
 
     QHBoxLayout * btnHorLayout = new QHBoxLayout();
+    btnHorLayout->setContentsMargins(14,0,0,0);
     btnHorLayout->addWidget(iconBtn, Qt::AlignCenter);
     btnHorLayout->addWidget(textLabel);
     btnHorLayout->addStretch();
-    btnHorLayout->setSpacing(10);
+    btnHorLayout->setSpacing(8);
 
     leftsidebarBtn->setLayout(btnHorLayout);
 
@@ -847,15 +871,12 @@ void MainWindow::initStyleSheet() {
     closeBtn->setProperty("isWindowButton", 0x02);
     closeBtn->setProperty("useIconHighlightEffect", 0x08);
     closeBtn->setFlat(true);
-    ui->leftsidebarWidget->setMinimumWidth(153);
 
     ui->centralWidget->setAttribute(Qt::WA_TranslucentBackground);
-    ui->leftsidebarWidget->setMinimumWidth(176); //一级菜单宽度
-
- 
+    ui->leftsidebarWidget->setMinimumWidth(260); //一级菜单宽度
 
     // 设置左上角按钮图标
-    backBtn->setIcon(QIcon("://img/titlebar/back.svg"));
+    backBtn->setIcon(QIcon("://img/titlebar/index.svg"));
 
     // 设置右上角按钮图标
     mOptionBtn->setIcon(QIcon::fromTheme("open-menu-symbolic"));
@@ -902,8 +923,22 @@ QMap<QString, QObject *> MainWindow::exportModule(int type) {
 }
 
 void MainWindow::functionBtnClicked(QObject *plugin) {
+    if (!scrollArea)
+        return;
+
     ui->stackedWidget->setCurrentIndex(1);
     modulepageWidget->switchPage(plugin);
+
+    CommonInterface * pluginInstance = qobject_cast<CommonInterface *>(plugin);
+    int value = pluginInstance->pluginBtn->pos().y() + pluginInstance->pluginBtn->height() - scrollArea->verticalScrollBar()->pageStep();
+    value = value + scrollArea->height()/2; //尽量让选中的显示在中间位置
+    if (value <= 0) {
+        scrollArea->verticalScrollBar()->setValue(0);
+    } else if (value > scrollArea->verticalScrollBar()->maximum()){
+        scrollArea->verticalScrollBar()->setValue(scrollArea->verticalScrollBar()->maximum());
+    } else {
+        scrollArea->verticalScrollBar()->setValue(value);
+    }
 }
 
 void MainWindow::sltMessageReceived(const QString &msg) {

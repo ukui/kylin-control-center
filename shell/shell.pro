@@ -80,7 +80,7 @@ DEPENDPATH += qtsingleapplication
 SOURCES += \
     component/leftmenulist.cpp \
     customstyle.cpp \
-    leftsiderbarwidget.cpp \
+    leftsidebarwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     framelessExtended/cursorposcalculator.cpp \
@@ -107,7 +107,7 @@ HEADERS += \
     component/leftmenulist.h \
     customstyle.h \
     devicesmonitor.h \
-    leftsiderbarwidget.h \
+    leftsidebarwidget.h \
     mainwindow.h \
     interface.h \
     framelessExtended/cursorposcalculator.h \

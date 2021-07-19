@@ -20,6 +20,8 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
+#include <QPushButton>
+
 class QString;
 class QWidget;
 class QStringLiteral;
@@ -126,6 +128,8 @@ public:
     virtual QString translationPath()const {
         return QStringLiteral(":/i18n/%1.ts");
     }
+    QPushButton *pluginBtn = nullptr;
+
 };
 
 #define CommonInterface_iid "org.kycc.CommonInterface"
