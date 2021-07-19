@@ -265,6 +265,7 @@ public:
     void removeInputPortLabel(const pa_card_info &info);  //移除不可用输入端口Label
 
     int findCardIndex(QString cardName);
+    QString findCardName(int index);
     QString findHighPriorityProfile(int index,QString profile);
     void findOutputListWidgetItem(QString cardName,MateMixerStream *stream);
     void findInputListWidgetItem(QString cardName,MateMixerStream *stream);
@@ -280,6 +281,14 @@ public:
     QString blueCardName(); //记录蓝牙声卡名称
     QString findOutputPortName(int index,QString portLabel); //找到outputPortLabel对应的portName
     QString findInputPortName(int index,QString portLabel); //找到inputPortLabel对应的portName
+    void setCardProfile(QString profile);
+
+    static void sinkCb(pa_context *c, const pa_sink_info *i, int eol, void *userdata); //sink callback
+    static void sourceCb(pa_context *, const pa_source_info *i, int eol, void *userdata); //source callback
+    bool updateSink(const pa_sink_info &info); // update sink when port or sink change
+    void updateSource(const pa_source_info &info); // update source when port or source change
+    QString findPortSink(QString portName); // find port
+    QString findPortSource(QString portName);
 
 Q_SIGNALS:
     void appVolumeChangedSignal(bool is_mute,int volume,const QString app_name);
@@ -414,6 +423,9 @@ private:
     QMap<int, QMap<QString,int>> cardProfilePriorityMap;
     QMap<QString,QString> inputCardStreamMap;
     QMap<QString,QString> outputCardStreamMap;
+    QMap<int,QMap<QString,QString>> sinkPortMap;
+    QMap<int,QMap<QString,QString>> sourcePortMap;
+
     bool updatePort = true;
     bool setDefaultstream = true;
     int reconnectTime;
