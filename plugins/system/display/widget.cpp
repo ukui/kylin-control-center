@@ -375,8 +375,8 @@ void Widget::slotUnifyOutputs()
 
     // 取消统一输出
     if (base->isCloneMode() && !mUnifyButton->isChecked()) {
-
-        if (mKDSCfg.isEmpty()) {
+        bool isExistCfg = QFile::exists((QDir::homePath() + "/.config/ukui/ukcc-screenPreCfg.json"));
+        if (mKDSCfg.isEmpty() && isExistCfg) {
             KScreen::OutputList screens = mPrevConfig->connectedOutputs();
             QList<ScreenConfig> preScreenCfg = getPreScreenCfg();
             Q_FOREACH(ScreenConfig cfg, preScreenCfg) {
@@ -387,6 +387,8 @@ void Widget::slotUnifyOutputs()
                     }
                 }
             }
+        } else {
+            setScreenKDS("expand");
         }
         unifySetconfig = true;
         setConfig(mPrevConfig);
