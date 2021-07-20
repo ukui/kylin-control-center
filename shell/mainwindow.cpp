@@ -88,30 +88,38 @@ MainWindow::~MainWindow()
 void MainWindow::bootOptionsFilter(QString opt) {
     if (opt == "--display" || opt == "-m") {
         bootOptionsSwitch(SYSTEM, DISPLAY);
-    }if (opt == "--touchscreen") {
-        bootOptionsSwitch(SYSTEM, TOUCHSCREEN);
-    } else if (opt == "--defaultapp") {
-        bootOptionsSwitch(SYSTEM, DEFAULTAPP);
+    } else if (opt == "--audio" || opt == "-s") {
+        bootOptionsSwitch(SYSTEM, AUDIO);
     } else if (opt == "--power" || opt == "-p") {
         bootOptionsSwitch(SYSTEM, POWER);
-    } else if (opt == "--autoboot") {
-        bootOptionsSwitch(SYSTEM, AUTOBOOT);
+    } else if (opt == "--notice" || opt == "-n") {
+        bootOptionsSwitch(SYSTEM, NOTICE);
+    } else if (opt == "--vino") {
+        bootOptionsSwitch(SYSTEM, VINO);
+    } else if (opt == "--projection") {
+        bootOptionsSwitch(SYSTEM, PROJECTION);
+    } else if (opt == "--about" || opt == "-a") {
+        bootOptionsSwitch(SYSTEM, ABOUT);
+    } else if (opt == "--bluetooth") {
+        bootOptionsSwitch(DEVICES, BLUETOOTH);
     } else if (opt == "--printer") {
         bootOptionsSwitch(DEVICES, PRINTER);
-    } else if (opt == "--projection") {
-        bootOptionsSwitch(DEVICES, PROJECTION);
     } else if (opt == "--mouse") {
         bootOptionsSwitch(DEVICES, MOUSE);
     } else if (opt == "--touchpad") {
         bootOptionsSwitch(DEVICES, TOUCHPAD);
+    } else if (opt == "--touchscreen") {
+        bootOptionsSwitch(DEVICES, TOUCHSCREEN);
     } else if (opt == "--keyboard") {
         bootOptionsSwitch(DEVICES, KEYBOARD);
     } else if (opt == "--shortcut") {
         bootOptionsSwitch(DEVICES, SHORTCUT);
-    } else if (opt == "--audio" || opt == "-s") {
-        bootOptionsSwitch(DEVICES, AUDIO);
-    } else if (opt == "--bluetooth") {
-        bootOptionsSwitch(DEVICES, BLUETOOTH);
+    } else if (opt == "--netconnect") {
+        bootOptionsSwitch(NETWORK, NETCONNECT);
+    } else if (opt == "--vpn" || opt == "-g") {
+        bootOptionsSwitch(NETWORK, VPN);
+    } else if (opt == "--proxy") {
+        bootOptionsSwitch(NETWORK, PROXY);
     } else if (opt == "--background" || opt == "-b") {
         bootOptionsSwitch(PERSONALIZED, BACKGROUND);
     } else if (opt == "--theme") {
@@ -124,30 +132,28 @@ void MainWindow::bootOptionsFilter(QString opt) {
         bootOptionsSwitch(PERSONALIZED, FONTS);
     } else if (opt == "--desktop" || opt == "-d") {
         bootOptionsSwitch(PERSONALIZED, DESKTOP);
-    } else if (opt == "--netconnect") {
-        bootOptionsSwitch(NETWORK, NETCONNECT);
-    } else if (opt == "--vpn" || opt == "-g") {
-        bootOptionsSwitch(NETWORK, VPN);
-    } else if (opt == "--proxy") {
-        bootOptionsSwitch(NETWORK, PROXY);
     } else if (opt == "--userinfo" || opt == "-u") {
         bootOptionsSwitch(ACCOUNT, USERINFO);
     } else if (opt == "--cloudaccount") {
         bootOptionsSwitch(ACCOUNT, NETWORKACCOUNT);
-    }  else if (opt == "--datetime" || opt == "-t") {
+    } else if (opt == "--datetime" || opt == "-t") {
         bootOptionsSwitch(DATETIME, DAT);
-    }  else if (opt == "--area") {
+    } else if (opt == "--area") {
         bootOptionsSwitch(DATETIME, AREA);
-    } else if (opt == "--upgrade") {
+    } /*else if (opt == "--updates") {
+        bootOptionsSwitch(UPDATE, UPDATES);
+    } */else if (opt == "--upgrade") {
         bootOptionsSwitch(UPDATE, UPGRADE);
     } else if (opt == "--backup") {
         bootOptionsSwitch(UPDATE, BACKUP);
-    } else if (opt == "--notice" || opt == "-n") {
-        bootOptionsSwitch(NOTICEANDTASKS, NOTICE);
-    } else if (opt == "--about" || opt == "-a") {
-        bootOptionsSwitch(NOTICEANDTASKS, ABOUT);
+    } /*else if (opt == "--securityCenter") {
+        bootOptionsSwitch(SECURITY, SECURITYCENTER);
+    } */else if (opt == "--defaultapp") {
+        bootOptionsSwitch(APPLICATION, DEFAULTAPP);
+    } else if (opt == "--autoboot") {
+        bootOptionsSwitch(APPLICATION, AUTOBOOT);
     } else if (opt == "--search") {
-        bootOptionsSwitch(NOTICEANDTASKS, SEARCH);
+        bootOptionsSwitch(SEARCH_F, SEARCH);
     }
 }
 

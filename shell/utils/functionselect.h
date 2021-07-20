@@ -60,6 +60,16 @@ public:
     static void initValue();
     static void pushRecordValue(int type, QString name);
     static void popRecordValue();
+    static void initValueSystem();
+    static void initValueDevice();
+    static void initValueNetwork();
+    static void initValuePersonal();
+    static void initValueAccount();
+    static void initValueDatetime();
+    static void initValueUpdate();
+    static void initValueSecurity();
+    static void initValueApp();
+    static void initValueSearch();
 };
 
 #endif // FUNCTIONSELECT_H

@@ -29,52 +29,56 @@ class QStringLiteral;
 enum FunType{
     SYSTEM,
     DEVICES,
-    PERSONALIZED,
     NETWORK,
+    PERSONALIZED,
     ACCOUNT,
     DATETIME,
     UPDATE,
-    NOTICEANDTASKS,
+    SECURITY,
+    APPLICATION,
+    SEARCH_F,
+    //NOTICEANDTASKS,
     TOTALMODULES,
 };
 
 enum SystemIndex{
     DISPLAY,
-    TOUCHSCREEN,
-    DEFAULTAPP,
+    AUDIO,
     POWER,
-    AUTOBOOT,
+    NOTICE,
+    VINO,
+    PROJECTION,
+    ABOUT,
+    EXPERIENCEPLAN,
     TOTALSYSFUNC,
 };
 
 enum DevicesIndex{
+    BLUETOOTH,
     PRINTER,
-    PROJECTION,
     MOUSE,
     TOUCHPAD,
+    TOUCHSCREEN,
     KEYBOARD,
     SHORTCUT,
-    AUDIO,
-    BLUETOOTH,
     TOTALDEVICESFUNC,
-};
-
-enum PersonalizedIndex{
-    BACKGROUND,
-    THEME,
-    SCREENLOCK,
-    FONTS,
-    SCREENSAVER,
-    DESKTOP,
-    TOTALPERSFUNC,
 };
 
 enum NetworkIndex{
     NETCONNECT,
     VPN,
     PROXY,
-    VINO,
     TOTALNETFUNC,
+};
+
+enum PersonalizedIndex{
+    BACKGROUND,
+    THEME,
+    SCREENLOCK,
+    SCREENSAVER,
+    FONTS,
+    DESKTOP,
+    TOTALPERSFUNC,
 };
 
 enum AccountIndex{
@@ -89,20 +93,27 @@ enum DatetimeIndex{
     TOTALDTFUNC,
 };
 
-enum SeUpdatesIndex{
-    SECURITYCENTER,
+enum UpdateIndex{
     BACKUP,
     UPDATES,
     UPGRADE,
-    TOTALSUFUNC,
+    TOTALUPDATE,
 };
 
-enum NoticeAndTasksIndex{
-    NOTICE,
+enum SecurityIndex{
+    SECURITYCENTER,
+    TOTALSECURITY,
+};
+
+enum ApplicationIndex {
+    DEFAULTAPP,
+    AUTOBOOT,
+    TOTALAPP,
+};
+
+enum SearchIndex {
     SEARCH,
-    ABOUT,
-    EXPERIENCEPLAN,
-    TOTALNATFUNC,
+    TOTALSEARCH,
 };
 
 class CommonInterface{

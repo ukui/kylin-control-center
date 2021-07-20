@@ -36,9 +36,7 @@ FunctionSelect::~FunctionSelect()
 {
 }
 
-void FunctionSelect::initValue(){
-
-    //system
+void FunctionSelect::initValueSystem() {
     QList<FuncInfo> systemList;
     for (int i = 0; i < TOTALSYSFUNC; i++){
         FuncInfo funcStruct;
@@ -49,20 +47,27 @@ void FunctionSelect::initValue(){
     }
     systemList[DISPLAY].nameString = QString("Display");
     systemList[DISPLAY].namei18nString =  QObject::tr("Display");
-    systemList[TOUCHSCREEN].nameString = QString("TouchScreen");
-    systemList[TOUCHSCREEN].namei18nString =  QObject::tr("TouchScreen");
-    systemList[TOUCHSCREEN].mainShow = false;
-    systemList[DEFAULTAPP].nameString = QString("Defaultapp");
-    systemList[DEFAULTAPP].namei18nString =  QObject::tr("Default App");
-    systemList[DEFAULTAPP].mainShow = false;
+    systemList[AUDIO].nameString = QString("Audio");
+    systemList[AUDIO].namei18nString = QObject::tr("Audio");
     systemList[POWER].nameString = QString("Power");
     systemList[POWER].namei18nString = QObject::tr("Power");
-    systemList[AUTOBOOT].nameString = QString("Autoboot");
-    systemList[AUTOBOOT].namei18nString = QObject::tr("Auto Boot");
+    systemList[NOTICE].nameString = QString("Notice");
+    systemList[NOTICE].namei18nString = QObject::tr("Notice");
+    systemList[VINO].nameString = QString("Vino");
+    systemList[VINO].namei18nString = QObject::tr("Vino");
+    systemList[VINO].mainShow = false;
+    systemList[PROJECTION].nameString = QString("Projection");
+    systemList[PROJECTION].namei18nString = QObject::tr("Projection");
+    systemList[PROJECTION].mainShow = false;
+    systemList[ABOUT].nameString = QString("About");
+    systemList[ABOUT].namei18nString = QObject::tr("About");
+    systemList[EXPERIENCEPLAN].nameString = QString("Experienceplan");
+    systemList[EXPERIENCEPLAN].namei18nString = QObject::tr("Experienceplan");
 
     funcinfoList.append(systemList);
+}
 
-    //devices
+void FunctionSelect::initValueDevice() {
     QList<FuncInfo> devicesList;
     for (int i = 0; i < TOTALDEVICESFUNC; i++){
         FuncInfo funcStruct;
@@ -71,56 +76,29 @@ void FunctionSelect::initValue(){
 //        funcStruct.mainShow = true;
         devicesList.append(funcStruct);
     }
+    devicesList[BLUETOOTH].nameString = QString("Bluetooth");
+    devicesList[BLUETOOTH].namei18nString = QObject::tr("Bluetooth");
     devicesList[PRINTER].nameString = QString("Printer");
     devicesList[PRINTER].namei18nString = QObject::tr("Printer");
-    devicesList[PRINTER].mainShow = false;
-    devicesList[PROJECTION].nameString = QString("Projection");
-    devicesList[PROJECTION].namei18nString = QObject::tr("Projection");
-    devicesList[PROJECTION].mainShow = false;
+    devicesList[PRINTER].mainShow = false;    
     devicesList[MOUSE].nameString = QString("Mouse");
     devicesList[MOUSE].namei18nString = QObject::tr("Mouse");
     devicesList[TOUCHPAD].nameString = QString("Touchpad");
     devicesList[TOUCHPAD].namei18nString = QObject::tr("Touchpad");
     devicesList[TOUCHPAD].mainShow = false;
+    devicesList[TOUCHSCREEN].nameString = QString("TouchScreen");
+    devicesList[TOUCHSCREEN].namei18nString =  QObject::tr("TouchScreen");
+    devicesList[TOUCHSCREEN].mainShow = false;
     devicesList[KEYBOARD].nameString = QString("Keyboard");
     devicesList[KEYBOARD].namei18nString = QObject::tr("Keyboard");
     devicesList[SHORTCUT].nameString = QString("Shortcut");
     devicesList[SHORTCUT].namei18nString = QObject::tr("Shortcut");
     devicesList[SHORTCUT].mainShow = false;
-    devicesList[AUDIO].nameString = QString("Audio");
-    devicesList[AUDIO].namei18nString = QObject::tr("Audio");
-    devicesList[BLUETOOTH].nameString = QString("Bluetooth");
-    devicesList[BLUETOOTH].namei18nString = QObject::tr("Bluetooth");
-
+    
     funcinfoList.append(devicesList);
+}
 
-    //personalized
-    QList<FuncInfo> personalizedList;
-    for (int i = 0; i < TOTALPERSFUNC; i++){
-        FuncInfo funcStruct;
-        funcStruct.type = PERSONALIZED;
-        funcStruct.index = i;
-        funcStruct.mainShow = true;
-        personalizedList.append(funcStruct);
-    }
-
-    personalizedList[THEME].nameString = QString("Theme");
-    personalizedList[THEME].namei18nString = QObject::tr("Theme");
-    personalizedList[BACKGROUND].nameString = QString("Background");
-    personalizedList[BACKGROUND].namei18nString = QObject::tr("Background");
-    personalizedList[SCREENLOCK].nameString = QString("Screenlock");
-    personalizedList[SCREENLOCK].namei18nString = QObject::tr("Screenlock");
-    personalizedList[SCREENLOCK].mainShow = false;
-    personalizedList[FONTS].nameString = QString("Fonts");
-    personalizedList[FONTS].namei18nString = QObject::tr("Fonts");
-    personalizedList[SCREENSAVER].nameString = QString("Screensaver");
-    personalizedList[SCREENSAVER].namei18nString = QObject::tr("Screensaver");
-    personalizedList[DESKTOP].nameString = QString("Desktop");
-    personalizedList[DESKTOP].namei18nString = QObject::tr("Desktop");
-    personalizedList[DESKTOP].mainShow = false;
-    funcinfoList.append(personalizedList);
-
-    //network
+void FunctionSelect::initValueNetwork() {
     QList<FuncInfo> networkList;
     for (int i = 0; i < TOTALNETFUNC; i++){
         FuncInfo funcStruct;
@@ -135,13 +113,38 @@ void FunctionSelect::initValue(){
     networkList[VPN].namei18nString = QObject::tr("Vpn");
     networkList[PROXY].nameString = QString("Proxy");
     networkList[PROXY].namei18nString = QObject::tr("Proxy");
-    networkList[VINO].nameString = QString("Vino");
-    networkList[VINO].namei18nString = QObject::tr("Vino");
-    networkList[VINO].mainShow = false;
-
+    
     funcinfoList.append(networkList);
+}
 
-    //account
+void FunctionSelect::initValuePersonal() {
+    QList<FuncInfo> personalizedList;
+    for (int i = 0; i < TOTALPERSFUNC; i++){
+        FuncInfo funcStruct;
+        funcStruct.type = PERSONALIZED;
+        funcStruct.index = i;
+        funcStruct.mainShow = true;
+        personalizedList.append(funcStruct);
+    }
+    personalizedList[THEME].nameString = QString("Theme");
+    personalizedList[THEME].namei18nString = QObject::tr("Theme");
+    personalizedList[BACKGROUND].nameString = QString("Background");
+    personalizedList[BACKGROUND].namei18nString = QObject::tr("Background");
+    personalizedList[SCREENLOCK].nameString = QString("Screenlock");
+    personalizedList[SCREENLOCK].namei18nString = QObject::tr("Screenlock");
+    personalizedList[SCREENLOCK].mainShow = false;
+    personalizedList[SCREENSAVER].nameString = QString("Screensaver");
+    personalizedList[SCREENSAVER].namei18nString = QObject::tr("Screensaver");
+    personalizedList[FONTS].nameString = QString("Fonts");
+    personalizedList[FONTS].namei18nString = QObject::tr("Fonts");
+    personalizedList[DESKTOP].nameString = QString("Desktop");
+    personalizedList[DESKTOP].namei18nString = QObject::tr("Desktop");
+    personalizedList[DESKTOP].mainShow = false;
+
+    funcinfoList.append(personalizedList); 
+}
+
+void FunctionSelect::initValueAccount() {
     QList<FuncInfo> accountList;
     for (int i = 0; i < TOTALACCOUNTFUNC; i++){
         FuncInfo funcStruct;
@@ -150,15 +153,15 @@ void FunctionSelect::initValue(){
         funcStruct.mainShow = true;
         accountList.append(funcStruct);
     }
-
     accountList[USERINFO].nameString = QString("Userinfo");
     accountList[USERINFO].namei18nString = QObject::tr("User Info");
     accountList[NETWORKACCOUNT].nameString = QString("Cloud Account");
     accountList[NETWORKACCOUNT].namei18nString = QObject::tr("Cloud Account");
 
     funcinfoList.append(accountList);
+}
 
-    //datetime
+void FunctionSelect::initValueDatetime() {
     QList<FuncInfo> datetimeList;
     for (int i = 0; i < TOTALDTFUNC; i++){
         FuncInfo funcStruct;
@@ -167,55 +170,92 @@ void FunctionSelect::initValue(){
         funcStruct.mainShow = true;
         datetimeList.append(funcStruct);
     }
-
     datetimeList[DAT].nameString = QString("Date");
     datetimeList[DAT].namei18nString = QObject::tr("Date");
     datetimeList[AREA].nameString = QString("Area");
     datetimeList[AREA].namei18nString = QObject::tr("Area");
 
     funcinfoList.append(datetimeList);
+}
 
-    //securityupdates
-    QList<FuncInfo> seupdatesList;
-    for (int i = 0; i < TOTALSUFUNC; i++){
+void FunctionSelect::initValueUpdate() {
+    QList<FuncInfo> updatesList;
+    for (int i = 0; i < TOTALUPDATE; i++){
         FuncInfo funcStruct;
         funcStruct.type = UPDATE;
         funcStruct.index = i;
         funcStruct.mainShow = true;
-        seupdatesList.append(funcStruct);
+        updatesList.append(funcStruct);
     }
+    updatesList[BACKUP].nameString = QString("Backup");
+    updatesList[BACKUP].namei18nString = QObject::tr("Backup");
+    updatesList[UPDATES].nameString = QString("Update");
+    updatesList[UPDATES].namei18nString = QObject::tr("Update");
+    updatesList[UPGRADE].nameString = QString("Upgrade");
+    updatesList[UPGRADE].namei18nString = QObject::tr("Upgrade");
 
-    seupdatesList[SECURITYCENTER].nameString = QString("SecurityCenter");
-    seupdatesList[SECURITYCENTER].namei18nString = QObject::tr("Security Center");
-    seupdatesList[BACKUP].nameString = QString("Backup");
-    seupdatesList[BACKUP].namei18nString = QObject::tr("Backup");
-    seupdatesList[UPDATES].nameString = QString("Update");
-    seupdatesList[UPDATES].namei18nString = QObject::tr("Update");
-    seupdatesList[UPGRADE].nameString = QString("Upgrade");
-    seupdatesList[UPGRADE].namei18nString = QObject::tr("Upgrade");
+    funcinfoList.append(updatesList);
+}
 
-    funcinfoList.append(seupdatesList);
-
-    //noticeandtasks
-    QList<FuncInfo> natList;
-    for (int i = 0; i < TOTALNATFUNC; i++){
+void FunctionSelect::initValueSecurity() {
+    QList<FuncInfo> securityList;
+    for (int i = 0; i < TOTALSECURITY; i++){
         FuncInfo funcStruct;
-        funcStruct.type = NOTICEANDTASKS;
+        funcStruct.type = SECURITY;
         funcStruct.index = i;
         funcStruct.mainShow = true;
-        natList.append(funcStruct);
+        securityList.append(funcStruct);
     }
+    securityList[SECURITYCENTER].nameString = QString("SecurityCenter");
+    securityList[SECURITYCENTER].namei18nString = QObject::tr("Security Center");
 
-    natList[NOTICE].nameString = QString("Notice");
-    natList[NOTICE].namei18nString = QObject::tr("Notice");
-    natList[SEARCH].nameString = QString("Search");
-    natList[SEARCH].namei18nString = QObject::tr("Search");
-    natList[ABOUT].nameString = QString("About");
-    natList[ABOUT].namei18nString = QObject::tr("About");
-    natList[EXPERIENCEPLAN].nameString = QString("Experienceplan");
-    natList[EXPERIENCEPLAN].namei18nString = QObject::tr("Experienceplan");
+    funcinfoList.append(securityList);
+}
 
-    funcinfoList.append(natList);
+void FunctionSelect::initValueApp() { 
+    QList<FuncInfo> appList;
+    for (int i = 0; i < TOTALAPP; i++){
+        FuncInfo funcStruct;
+        funcStruct.type = APPLICATION;
+        funcStruct.index = i;
+        funcStruct.mainShow = true;
+        appList.append(funcStruct);
+    }
+    appList[DEFAULTAPP].nameString = QString("Defaultapp");
+    appList[DEFAULTAPP].namei18nString =  QObject::tr("Default App");
+    appList[DEFAULTAPP].mainShow = false;
+    appList[AUTOBOOT].nameString = QString("Autoboot");
+    appList[AUTOBOOT].namei18nString = QObject::tr("Auto Boot");
+
+    funcinfoList.append(appList);
+}
+
+void FunctionSelect::initValueSearch() { 
+    QList<FuncInfo> searchList;
+    for (int i = 0; i < TOTALAPP; i++){
+        FuncInfo funcStruct;
+        funcStruct.type = SEARCH_F;
+        funcStruct.index = i;
+        funcStruct.mainShow = true;
+        searchList.append(funcStruct);
+    }
+    searchList[SEARCH].nameString = QString("Search");
+    searchList[SEARCH].namei18nString = QObject::tr("Search");
+
+    funcinfoList.append(searchList);
+}
+
+void FunctionSelect::initValue(){
+    initValueSystem();
+    initValueDevice();
+    initValueNetwork();
+    initValuePersonal();
+    initValueAccount();
+    initValueDatetime();
+    initValueUpdate();
+    initValueSecurity();
+    initValueApp();
+    initValueSearch();
 }
 
 void FunctionSelect::pushRecordValue(int type, QString name){
