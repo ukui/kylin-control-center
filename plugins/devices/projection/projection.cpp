@@ -41,7 +41,7 @@ Projection::Projection()
 {
     pluginName = tr("Projection");
     //~ contents_path /bluetooth/Bluetooth
-    pluginType = DEVICES;
+    pluginType = SYSTEM;
     ui = new Ui::Projection;
     pluginWidget = new QWidget;
     pluginWidget->setAttribute(Qt::WA_StyledBackground,true);

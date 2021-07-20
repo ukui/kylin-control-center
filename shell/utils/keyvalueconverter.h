@@ -43,12 +43,15 @@ public:
     enum FunType{
         SYSTEM,
         DEVICES,
-        PERSONALIZED,
         NETWORK,
+        PERSONALIZED,
         ACCOUNT,
         DATETIME,
         UPDATE,
-        NOTICEANDTASKS,
+        SECURITY,
+        APPLICATION,
+        SEARCH_F,
+        //NOTICEANDTASKS,
         TOTALMODULES,
     };
     Q_ENUM(FunType)

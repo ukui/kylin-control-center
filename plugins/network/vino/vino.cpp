@@ -22,7 +22,7 @@
 Vino::Vino() : mFirstLoad(true)
 {
     pluginName = tr("Vino");
-    pluginType = NETWORK;
+    pluginType = SYSTEM;
 }
 
 Vino::~Vino()

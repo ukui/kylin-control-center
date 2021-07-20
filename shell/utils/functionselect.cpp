@@ -53,6 +53,7 @@ void FunctionSelect::initValueSystem() {
     systemList[POWER].namei18nString = QObject::tr("Power");
     systemList[NOTICE].nameString = QString("Notice");
     systemList[NOTICE].namei18nString = QObject::tr("Notice");
+    systemList[NOTICE].mainShow = false;
     systemList[VINO].nameString = QString("Vino");
     systemList[VINO].namei18nString = QObject::tr("Vino");
     systemList[VINO].mainShow = false;
@@ -63,6 +64,7 @@ void FunctionSelect::initValueSystem() {
     systemList[ABOUT].namei18nString = QObject::tr("About");
     systemList[EXPERIENCEPLAN].nameString = QString("Experienceplan");
     systemList[EXPERIENCEPLAN].namei18nString = QObject::tr("Experienceplan");
+    systemList[EXPERIENCEPLAN].mainShow = false;
 
     funcinfoList.append(systemList);
 }
@@ -73,7 +75,7 @@ void FunctionSelect::initValueDevice() {
         FuncInfo funcStruct;
         funcStruct.type = DEVICES;
         funcStruct.index = i;
-//        funcStruct.mainShow = true;
+        funcStruct.mainShow = true;
         devicesList.append(funcStruct);
     }
     devicesList[BLUETOOTH].nameString = QString("Bluetooth");
@@ -85,7 +87,6 @@ void FunctionSelect::initValueDevice() {
     devicesList[MOUSE].namei18nString = QObject::tr("Mouse");
     devicesList[TOUCHPAD].nameString = QString("Touchpad");
     devicesList[TOUCHPAD].namei18nString = QObject::tr("Touchpad");
-    devicesList[TOUCHPAD].mainShow = false;
     devicesList[TOUCHSCREEN].nameString = QString("TouchScreen");
     devicesList[TOUCHSCREEN].namei18nString =  QObject::tr("TouchScreen");
     devicesList[TOUCHSCREEN].mainShow = false;
@@ -223,7 +224,6 @@ void FunctionSelect::initValueApp() {
     }
     appList[DEFAULTAPP].nameString = QString("Defaultapp");
     appList[DEFAULTAPP].namei18nString =  QObject::tr("Default App");
-    appList[DEFAULTAPP].mainShow = false;
     appList[AUTOBOOT].nameString = QString("Autoboot");
     appList[AUTOBOOT].namei18nString = QObject::tr("Auto Boot");
 

@@ -11,7 +11,7 @@
 SecurityCenter::SecurityCenter() : mFirstLoad(true)
 {
     pluginName = tr("Security Center");
-    pluginType = UPDATE;
+    pluginType = SECURITY;
 }
 
 SecurityCenter::~SecurityCenter()

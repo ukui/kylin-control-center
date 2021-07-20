@@ -53,7 +53,7 @@ About::About() : mFirstLoad(true)
 {
     //~ contents_path /about/About
     pluginName = tr("About");
-    pluginType = NOTICEANDTASKS;
+    pluginType = SYSTEM;
 }
 
 About::~About()

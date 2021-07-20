@@ -48,11 +48,11 @@ QString KeyValueConverter::keycodeTokeyi18nstring(int code){
     case DEVICES:
         nameString = tr("Devices");
         break;
-    case PERSONALIZED:
-        nameString = tr("Personalized");
-        break;
     case NETWORK:
         nameString = tr("Network");
+        break;
+    case PERSONALIZED:
+        nameString = tr("Personalized");
         break;
     case ACCOUNT:
         nameString = tr("Account");
@@ -63,8 +63,14 @@ QString KeyValueConverter::keycodeTokeyi18nstring(int code){
     case UPDATE:
         nameString = tr("Update");
         break;
-    case NOTICEANDTASKS:
-        nameString = tr("Messages");
+    case SECURITY:
+        nameString = tr("Security");
+        break;
+    case APPLICATION:
+        nameString = tr("Application");
+        break;
+    case SEARCH_F:
+        nameString = tr("Search");
         break;
     default:
         break;

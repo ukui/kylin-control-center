@@ -59,7 +59,7 @@ extern "C" {
 AutoBoot::AutoBoot() : mFirstLoad(true)
 {
     pluginName = tr("Auto Boot");
-    pluginType = SYSTEM;
+    pluginType = APPLICATION;
 }
 
 AutoBoot::~AutoBoot()

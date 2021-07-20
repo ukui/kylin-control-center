@@ -38,7 +38,7 @@
 Notice::Notice() : mFirstLoad(true)
 {
     pluginName = tr("Notice");
-    pluginType = NOTICEANDTASKS;
+    pluginType = SYSTEM;
 }
 
 Notice::~Notice()

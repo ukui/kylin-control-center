@@ -25,7 +25,7 @@
 Audio::Audio() : mFirstLoad(true)
 {
     pluginName = tr("Audio");
-    pluginType = DEVICES;
+    pluginType = SYSTEM;
 }
 
 Audio::~Audio()

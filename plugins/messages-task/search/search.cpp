@@ -6,7 +6,7 @@ Search::Search()
 {
     //~ contents_path /search/Search
     m_plugin_name = tr("Search");
-    m_plugin_type = NOTICEANDTASKS;
+    m_plugin_type = SEARCH_F;
     initUi();
     setupConnection();
     m_dirSettings = new QSettings(QDir::homePath() + CONFIG_FILE, QSettings::NativeFormat, this);

@@ -91,7 +91,7 @@ void HomePageWidget::initUI() {
             }
         }
 
-        //构建首页8个模块
+        //构建首页10个模块
         //基础Widget
         QWidget * baseWidget = new QWidget;
         baseWidget->setAttribute(Qt::WA_DeleteOnClose);
@@ -108,7 +108,7 @@ void HomePageWidget::initUI() {
 
         //内容Widget的构建
         ResHoverWidget * widget = new ResHoverWidget(modulenameString);
-        widget->setMinimumWidth(320);
+        widget->setMinimumWidth(300);
         widget->setMinimumHeight(80);
         widget->setAttribute(Qt::WA_DeleteOnClose);
 
@@ -234,7 +234,7 @@ void HomePageWidget::initUI() {
 
 
         QListWidgetItem * item = new QListWidgetItem(ui->listWidget);
-        item->setSizeHint(QSize(360, 100));
+        item->setSizeHint(QSize(356, 120));
         ui->listWidget->addItem(item);
         ui->listWidget->setItemWidget(item, baseWidget);
     }
@@ -305,7 +305,7 @@ QPixmap HomePageWidget::drawSymbolicColoredPixmap(const QPixmap &source, COLOR c
 void HomePageWidget::setMagins()
 {
     int screenWidth= Utils::sizeOnCursor().width();
-    int marginLR = (screenWidth > 1440) ? 260 : 169;
+    int marginLR = (screenWidth > 1440) ? 58 : 40;
     ui->homepageLayout->setContentsMargins(marginLR, 0, 0, 0);
 }
 

@@ -36,7 +36,7 @@
 DefaultApp::DefaultApp() : mFirstLoad(true)
 {
     pluginName = tr("Default App");
-    pluginType = SYSTEM;
+    pluginType = APPLICATION;
 }
 
 DefaultApp::~DefaultApp() {

@@ -31,7 +31,7 @@ ExperiencePlan::ExperiencePlan()
     ui->setupUi(pluginWidget);
 
     pluginName = tr("Experienceplan");
-    pluginType = NOTICEANDTASKS;
+    pluginType = SYSTEM;
 
     QByteArray id(E_PLAN_SCHEMA);
     eSettings = new QGSettings(id);

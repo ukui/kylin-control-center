@@ -199,6 +199,9 @@
         <file>secondaryleftmenu/Search.svg</file>
         <file>secondaryleftmenu/SearchWhite.svg</file>
         <file>titlebar/index.svg</file>
+        <file>homepage/security.svg</file>
+        <file>homepage/application.svg</file>
+        <file>homepage/search_f.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>global.qss</file>
