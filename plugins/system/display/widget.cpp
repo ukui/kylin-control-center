@@ -379,9 +379,19 @@ void Widget::slotUnifyOutputs()
         if (mKDSCfg.isEmpty() && isExistCfg) {
             KScreen::OutputList screens = mPrevConfig->connectedOutputs();
             QList<ScreenConfig> preScreenCfg = getPreScreenCfg();
+            int posX = preScreenCfg.at(0).screenPosX;
+            bool isOverlap = false;
+            for (int i = 1; i< preScreenCfg.count(); i++) {
+                if (posX == preScreenCfg.at(i).screenPosX) {
+                    isOverlap = true;
+                    setScreenKDS("expand");
+                    break;
+                }
+            }
+
             Q_FOREACH(ScreenConfig cfg, preScreenCfg) {
                 Q_FOREACH(KScreen::OutputPtr output, screens) {
-                    if (!cfg.screenId.compare(output->name())) {
+                    if (!cfg.screenId.compare(output->name()) && !isOverlap) {
                         output->setCurrentModeId(cfg.screenModeId);
                         output->setPos(QPoint(cfg.screenPosX, cfg.screenPosY));
                     }
