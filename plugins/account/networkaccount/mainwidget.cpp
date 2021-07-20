@@ -118,7 +118,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
     m_checkTimer->setInterval(500);
     m_checkTimer->start();
 
-    QFile tokenFile(QDir::homePath() + "/.cache/kylinId/token");
+    QFile tokenFile(QDir::homePath() + "/.cache/kylinId/" + ACC_INFO);
     if (tokenFile.exists() && tokenFile.size() > 1) {
         m_mainWidget->setCurrentWidget(m_widgetContainer);
     } else {
@@ -310,11 +310,7 @@ void MainWidget::dbusInterface() {
     connect(m_dbusClient, &DBusUtils::querryFinished, this , [=] (const QStringList &list) {
         QStringList keyList = list;
         m_isOpenDialog = false;
-        QFile fileConf(m_szConfPath);
-        if (m_pSettings != nullptr && fileConf.exists() && fileConf.size() > 1)
-            m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
-        else
-            m_syncTimeLabel->setText(tr("Waiting for initialization..."));
+        refreshSyncDate();
         if (keyList.size() > 2) {
             if (m_bIsOnline == false) {
                 showDesktopNotify(tr("Network can not reach!"));
@@ -354,6 +350,7 @@ void MainWidget::dbusInterface() {
                     m_pSettings->setValue("Auto-sync/enable","true");
                     m_pSettings->sync();
                     m_syncDialog->close();
+                    emit isSync(true);
                     m_listTimer->setSingleShot(true);
                     m_listTimer->setInterval(1000);
                     m_listTimer->start();
@@ -407,8 +404,9 @@ void MainWidget::checkBackEnd() {
 
 void MainWidget::refreshSyncDate() {
     QFile fileConf(m_szConfPath);
-    if (m_pSettings != nullptr && fileConf.exists())
-        m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
+    QVariant ret = ConfigFile(m_szConfPath).Get("Auto-sync","time");
+    if (m_pSettings != nullptr && fileConf.exists() && fileConf.size() > 1 && !ret.isNull())
+        m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ret.toString().toStdString().c_str());
     else
         m_syncTimeLabel->setText(tr("Waiting for initialization..."));
 }
@@ -582,7 +580,7 @@ void MainWidget::singleExecutor(QTimer *timer, int mesc) {
 }
 
 void MainWidget::setTokenWatcher() {
-    QString tokenFile = QDir::homePath() + "/.cache/kylinId/token";
+    QString tokenFile = QDir::homePath() + "/.cache/kylinId/" + ACC_INFO;
     m_fsWatcher.addPath(tokenFile);
 
     connect(&m_fsWatcher,&QFileSystemWatcher::fileChanged,this,[=] () {
@@ -630,6 +628,7 @@ void MainWidget::initSignalSlots() {
                 m_key = m_itemMap.key(name);
                 if (m_key != "") {
                     //这样的执行顺序是正确的
+                    emit isSync(true);
                     singleExecutor(m_singleTimer,1000);
                 }
 
@@ -638,6 +637,8 @@ void MainWidget::initSignalSlots() {
             if (m_itemMap.key(name) == "shortcut" && checked == true) {
                 showDesktopNotify(tr("This operation may cover your settings!"));
             }
+            m_pSettings->setValue(m_itemMap.key(name) + "/enable",checked ? "true" : "false");
+            m_pSettings->sync();
             emit dochange(m_itemMap.key(name),checked);
         });
     }
@@ -655,6 +656,8 @@ void MainWidget::initSignalSlots() {
             if(checked == true) {
 
                 ctrlAutoSync(SYNC_FAILURE);
+            } else {
+                ctrlAutoSync(NETWORK_FAILURE);
             }
            return ;
         }
@@ -675,8 +678,8 @@ void MainWidget::initSignalSlots() {
                 showDesktopNotify(tr("Network can not reach!"));
                 ctrlAutoSync(NETWORK_FAILURE);
             }
+
         }
-        handle_conf();
     });
 
     //如果正在同步中，直接将开关按钮设置为失效
@@ -809,7 +812,7 @@ void MainWidget::initSignalSlots() {
         } else if (m_mainWidget->currentWidget() == m_nullWidget) {
             m_mainDialog->setnormal();
             //on_login_out();
-            QFile token(QDir::homePath() + "/.cache/kylinId/token");
+            QFile token(QDir::homePath() + "/.cache/kylinId/" + ACC_INFO);
             if (token.exists()) {
                 token.remove();
             }
@@ -1129,7 +1132,7 @@ void MainWidget::download_files() {
         m_blueEffect_sync->startmoive();
         emit isSync(true);
     }
-    m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
+    refreshSyncDate();
 
 }
 
@@ -1144,7 +1147,7 @@ void MainWidget::push_files() {
         m_blueEffect_sync->startmoive();
         emit isSync(true);
     }
-    m_syncTimeLabel->setText(tr("The latest time sync is: ") +   ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
+    refreshSyncDate();
 
 }
 
@@ -1161,7 +1164,7 @@ void MainWidget::download_over() {
         emit isSync(false);
     }
     if(m_bIsFailed == true) return ;
-     m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
+    refreshSyncDate();
 
 }
 
@@ -1177,7 +1180,7 @@ void MainWidget::push_over() {
         m_bAutoSyn = true;
         emit isSync(false);
     }
-    m_syncTimeLabel->setText(tr("The latest time sync is: ") +  ConfigFile(m_szConfPath).Get("Auto-sync","time").toString().toStdString().c_str());
+    refreshSyncDate();
 }
 
 void MainWidget::get_key_info(QString info) {
