@@ -1752,6 +1752,7 @@ void UkmediaMainWidget::updateIconOutput(UkmediaMainWidget *m_pWidget)
 
     gdouble balance_value = mate_mixer_stream_control_get_balance(m_pControl);
     m_pWidget->m_pOutputWidget->m_pOpBalanceSlider->setValue(balance_value*100);
+    m_pWidget->balanceVolume = balance_value*100;
 //    //输出音量控制
 //    //输出滑动条和音量控制
 //    connect(m_pWidget->m_pOutputWidget->m_pOpVolumeSlider,&QSlider::valueChanged,[=](int value){
@@ -1990,7 +1991,18 @@ void UkmediaMainWidget::onBalanceValueChanged (MateMixerStreamControl *m_pContro
     Q_UNUSED(pspec);
     g_debug("on balance value changed");
     gdouble value = mate_mixer_stream_control_get_balance(m_pControl);
-    m_pWidget->m_pOutputWidget->m_pOpBalanceSlider->setValue(value*100);
+    if (/*m_pWidget->m_pOutputWidget->m_pOpBalanceSlider->value() != m_pWidget->balanceVolume &&*/ value == 0) {
+        m_pWidget->m_pOutputWidget->m_pOpBalanceSlider->blockSignals(true);
+        m_pWidget->m_pOutputWidget->m_pOpBalanceSlider->setValue(m_pWidget->balanceVolume);
+        m_pWidget->m_pOutputWidget->m_pOpBalanceSlider->blockSignals(false);
+    }
+    else {
+        m_pWidget->m_pOutputWidget->m_pOpBalanceSlider->blockSignals(true);
+        m_pWidget->m_pOutputWidget->m_pOpBalanceSlider->setValue(value*100);
+        m_pWidget->m_pOutputWidget->m_pOpBalanceSlider->blockSignals(false);
+    }
+    value = mate_mixer_stream_control_get_balance(m_pControl);
+    qDebug() << "balance volume change" << value*100;
 }
 
 /*
@@ -2079,7 +2091,9 @@ void UkmediaMainWidget::updateOutputSettings (UkmediaMainWidget *m_pWidget,MateM
 //        MateMixerStream *stream = mate_mixer_context_get_default_output_stream(m_pWidget->m_pContext);
 //        MateMixerStreamControl *control = mate_mixer_stream_get_default_control(stream);
 //        mate_mixer_stream_control_set_balance(control,value);
-
+//        if (m_pWidget->m_pOutputWidget->m_pOpVolumeSlider->value() !=0)
+            m_pWidget->balanceVolume = volume;
+            qDebug() << "set balance volume changed" << volume<< m_pWidget->mousePressBlance;
         if(m_pWidget->mousePressBlance){
             if(m_pWidget->mouseReleaseStateBlance){
                 m_pWidget->timeSliderBlance->stop();
@@ -3353,6 +3367,12 @@ void UkmediaMainWidget::outputWidgetSliderChangedSlot(int value)
         percent.append("%");
         m_pOutputWidget->m_pOpVolumePercentLabel->setText(percent);
         m_pOutputWidget->m_pOutputIconBtn->repaint();
+        gdouble balanceValue = mate_mixer_stream_control_get_balance(pControl);
+        if (int(balanceValue*100) != balanceVolume && value != 0) {
+            balanceValue = balanceVolume/100.0;
+            mate_mixer_stream_control_set_balance(pControl,balanceValue);
+            m_pOutputWidget->m_pOpBalanceSlider->setValue(balanceVolume);
+        }
     }
 
 }

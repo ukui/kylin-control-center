@@ -76,6 +76,7 @@ extern "C" {
 #define UKUI_LOGOUT_MUSIC_KEY "logout-music"
 #define UKUI_WAKEUP_MUSIC_KEY "weakup-music"
 
+#define KEY_SOUNDS_SCHEMA   "org.ukui.sound"
 #define EVENT_SOUNDS_KEY "event-sounds"
 #define INPUT_SOUNDS_KEY "input-feedback-sounds"
 #define SOUND_THEME_KEY "theme-name"
@@ -419,6 +420,7 @@ private:
     int reconnectTime;
     QTimer *time;
 
+    int balanceVolume;
     QTimer *timeSlider;
     bool mousePress = false;
     bool mouseReleaseState = false;
