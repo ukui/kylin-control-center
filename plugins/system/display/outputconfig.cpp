@@ -235,7 +235,10 @@ void OutputConfig::initDpiConnection()
     if (QGSettings::isSchemaInstalled(SCALE_SCHEMAS)) {
         mDpiSettings = new QGSettings(id, QByteArray(), this);
         connect(mDpiSettings, &QGSettings::changed, this, [=](QString key) {
-            slotDPIChanged(key);
+            if (!key.compare("scalingFactor", Qt::CaseSensitive)) {
+                slotDPIChanged(key);
+            }
+
         });
     }
 }
@@ -349,14 +352,15 @@ void OutputConfig::slotScaleChanged(int index)
 
 void OutputConfig::slotDPIChanged(QString key)
 {
-    if (!key.compare("scalingFactor", Qt::CaseSensitive)) {
-        double scale = mDpiSettings->get(key).toDouble();
+    double scale = mDpiSettings->get(key).toDouble();
+    if (mScaleCombox) {
         if (mScaleCombox->findData(scale) == -1) {
             mScaleCombox->addItem(scaleToString(scale), scale);
         }
         mScaleCombox->blockSignals(true);
         mScaleCombox->setCurrentText(scaleToString(scale));
         mScaleCombox->blockSignals(false);
+
     }
 }
 
@@ -389,10 +393,10 @@ void OutputConfig::slotScaleIndex(const QSize &size)
     if (msize.width() >= 3072) {
        mScaleCombox->addItem("225%", 2.25);
        mScaleCombox->addItem("250%", 2.5);
-   }
-   if (msize.width() >= 3840) {
+    }
+    if (msize.width() >= 3840) {
        mScaleCombox->addItem("275%", 2.75);
-   }
+    }
 
     double scale = getScreenScale();
 
