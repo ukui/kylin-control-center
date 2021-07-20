@@ -66,6 +66,7 @@ public:
     void isLidPresent();
     void isHibernateSupply();
     bool isExitBattery();
+    double getBattery();
     bool QLabelSetText(QLabel *label, QString string);
 
 private:

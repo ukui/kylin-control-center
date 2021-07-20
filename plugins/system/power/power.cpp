@@ -93,6 +93,9 @@ QWidget * Power::get_plugin_ui() {
 
                 }
             });
+            connect(settings,&QGSettings::changed,[=](QString key){
+                initCustomPlanStatus();
+            });
             mKeys = settings->keys();
         }
 
@@ -191,10 +194,10 @@ void Power::InitUI(QWidget *widget)
     mPowerKeyLabel->setMinimumSize(550,69);
 
     mPowerKeyComboBox = new QComboBox(mPowerKeyFrame);
-    mPowerKeyComboBox->setFixedSize(200, 40);
+    mPowerKeyComboBox->setFixedHeight(40);
+    mPowerKeyComboBox->setMinimumWidth(200);
 
     mPowerKeyLayout->addWidget(mPowerKeyLabel);
-    mPowerKeyLayout->addStretch();
     mPowerKeyLayout->addWidget(mPowerKeyComboBox);
 
     PowerLayout->addWidget(mPowerKeyFrame);
@@ -212,10 +215,10 @@ void Power::InitUI(QWidget *widget)
     mCloseLabel->setMinimumSize(550,60);
 
     mCloseComboBox = new QComboBox(mCloseFrame);
-    mCloseComboBox->setFixedSize(200, 40);
+    mCloseComboBox->setFixedHeight(40);
+    mCloseComboBox->setMinimumWidth(200);
 
     mCloseLayout->addWidget(mCloseLabel);
-    mCloseLayout->addStretch();
     mCloseLayout->addWidget(mCloseComboBox);
 
     PowerLayout->addWidget(mCloseFrame);
@@ -235,10 +238,10 @@ void Power::InitUI(QWidget *widget)
     mSleepLabel->setMinimumSize(550,59);
 
     mSleepComboBox = new QComboBox(mSleepFrame);
-    mSleepComboBox->setFixedSize(200, 40);
+    mSleepComboBox->setFixedHeight(40);
+    mSleepComboBox->setMinimumWidth(200);
 
     mSleepLayout->addWidget(mSleepLabel);
-    mSleepLayout->addStretch();
     mSleepLayout->addWidget(mSleepComboBox);
 
     PowerLayout->addWidget(mSleepFrame);
@@ -257,10 +260,10 @@ void Power::InitUI(QWidget *widget)
     mCloseLidLabel->setMinimumSize(550,59);
 
     mCloseLidComboBox = new QComboBox(mCloseLidFrame);
-    mCloseLidComboBox->setFixedSize(200, 40);
+    mCloseLidComboBox->setFixedHeight(40);
+    mCloseLidComboBox->setMinimumWidth(200);
 
     mCloseLidLayout->addWidget(mCloseLidLabel);
-    mCloseLidLayout->addStretch();
     mCloseLidLayout->addWidget(mCloseLidComboBox);
 
     PowerLayout->addWidget(mCloseLidFrame);
@@ -281,13 +284,13 @@ void Power::InitUI(QWidget *widget)
 
 
     mPowerLabel = new QLabel(Powerwidget);
-    mPowerLabel->setMinimumSize(300,60);
+    mPowerLabel->setMinimumSize(550,60);
 
     mPowerComboBox = new QComboBox(mPowerFrame);
-    mPowerComboBox->setFixedSize(200, 40);
+    mPowerComboBox->setFixedHeight(40);
+    mPowerComboBox->setMinimumWidth(200);
 
     mPowerLayout->addWidget(mPowerLabel);
-    mPowerLayout->addStretch();
     mPowerLayout->addWidget(mPowerComboBox);
 
     PowerLayout->addWidget(mPowerFrame);
@@ -302,13 +305,13 @@ void Power::InitUI(QWidget *widget)
     mBatteryLayout->setContentsMargins(16, 0, 16, 0);
 
     mBatteryLabel = new QLabel(mBatteryFrame);
-    mBatteryLabel->setMinimumSize(300,59);
+    mBatteryLabel->setMinimumSize(550,59);
 
     mBatteryComboBox = new QComboBox(mBatteryFrame);
-    mBatteryComboBox->setFixedSize(200, 40);
+    mBatteryComboBox->setFixedHeight(40);
+    mBatteryComboBox->setMinimumWidth(200);
 
     mBatteryLayout->addWidget(mBatteryLabel);
-    mBatteryLayout->addStretch();
     mBatteryLayout->addWidget(mBatteryComboBox);
 
     PowerLayout->addWidget(mBatteryFrame);
@@ -328,14 +331,13 @@ void Power::InitUI(QWidget *widget)
     mDarkenLayout->setContentsMargins(16, 0, 16, 0);
 
     mDarkenLabel = new QLabel(mDarkenFrame);
-    mDarkenLabel->setMinimumSize(300,59);
+    mDarkenLabel->setMinimumSize(550,59);
 
     mDarkenComboBox = new QComboBox(mDarkenFrame);
-    mDarkenComboBox->setFixedSize(200, 40);
-
+    mDarkenComboBox->setFixedHeight(40);
+    mDarkenComboBox->setMinimumWidth(200);
 
     mDarkenLayout->addWidget(mDarkenLabel);
-    mDarkenLayout->addStretch();
     mDarkenLayout->addWidget(mDarkenComboBox);
 
     PowerLayout->addWidget(mDarkenFrame);
@@ -358,13 +360,14 @@ void Power::InitUI(QWidget *widget)
     mLowpowerComboBox1 = new QComboBox(mLowpowerFrame);
     mLowpowerComboBox1->setFixedSize(70, 40);
     mLowpowerComboBox2 = new QComboBox(mLowpowerFrame);
-    mLowpowerComboBox2->setFixedSize(200, 40);
+    mLowpowerComboBox2->setFixedHeight(40);
+    mLowpowerComboBox2->setMinimumWidth(200);
 
     mLowpowerLayout->setSpacing(16);
     mLowpowerLayout->addWidget(mLowpowerLabel1);
     mLowpowerLayout->addWidget(mLowpowerComboBox1);
     mLowpowerLayout->addWidget(mLowpowerLabel2);
-    mLowpowerLayout->addStretch();
+    mLowpowerLayout->addSpacerItem(new QSpacerItem(284, 20, QSizePolicy::Maximum));
     mLowpowerLayout->addWidget(mLowpowerComboBox2);
 
     PowerLayout->addWidget(mLowpowerFrame);
@@ -383,10 +386,10 @@ void Power::InitUI(QWidget *widget)
     mNoticeLabel->setMinimumSize(550,59);
 
     mNoticeComboBox = new QComboBox(mNoticeLFrame);
-    mNoticeComboBox->setFixedSize(200, 40);
+    mNoticeComboBox->setFixedHeight(40);
+    mNoticeComboBox->setMinimumWidth(200);
 
     mNoticeLayout->addWidget(mNoticeLabel);
-    mNoticeLayout->addStretch();
     mNoticeLayout->addWidget(mNoticeComboBox);
 
     PowerLayout->addWidget(mNoticeLFrame);
@@ -546,10 +549,6 @@ void Power::resetui()
         mBatterySaveFrame->hide();
         mDisplayTimeFrame->hide();
     }
-    mNoticeLFrame->hide();
-    mLowSaveFrame->hide();
-    mBatterySaveFrame->hide();
-    mDisplayTimeFrame->hide();
 }
 
 void Power::initSearText()
@@ -681,6 +680,12 @@ void Power::setupConnect()
         });
 
         connect(mBatteryComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+            //当开启了 低电量自动开启节能模式 时，在此低电量范围内调整电池计划，则自动关闭 低电量自动开启节能模式
+            if (!Utils::isWayland() && mKeys.contains("lowBatteryAutoSave")) {
+                if (mLowSaveBtn->isChecked() &&  getBattery() <= settings->get(PERCENTAGE_LOW).toInt()) {
+                    mLowSaveBtn->setChecked(false);
+                }
+            }
             settings->set(POWER_POLICY_BATTARY, index + 1);
         });
     }
@@ -700,6 +705,18 @@ void Power::setupConnect()
 
     connect(mNoticeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
         settings->set(PERCENTAGE_LOW, (index + 1)*10);
+    });
+
+    connect(mLowSaveBtn,&SwitchButton::checkedChanged, [=](bool checked){
+       settings->set(LOW_BATTERY_AUTO_SAVE,checked);
+    });
+
+    connect(mBatterySaveBtn,&SwitchButton::checkedChanged, [=](bool checked){
+       settings->set(ON_BATTERY_AUTO_SAVE,checked);
+    });
+
+    connect(mDisplayTimeBtn,&SwitchButton::checkedChanged, [=](bool checked){
+       settings->set(DISPLAY_LEFT_TIME_OF_CHARGE_AND_DISCHARGE,checked);
     });
 
 
@@ -754,6 +771,17 @@ void Power::initCustomPlanStatus()
 
     mSleepPwdBtn->setChecked(screensettings->get(SLEEP_ACTIVATION_ENABLED).toBool());
     mWakenPwdBtn->setChecked(settings->get(LOCK_BLANK_SCREEN).toBool());
+
+    if (mKeys.contains("lowBatteryAutoSave") && mKeys.contains("onBatteryAutoSave") && mKeys.contains("dispalyLeftTimeOfChargeAndDischarge")) {
+        mLowSaveBtn->setChecked(settings->get(LOW_BATTERY_AUTO_SAVE).toBool());
+        mBatterySaveBtn->setChecked(settings->get(ON_BATTERY_AUTO_SAVE).toBool());
+        mDisplayTimeBtn->setChecked(settings->get(DISPLAY_LEFT_TIME_OF_CHARGE_AND_DISCHARGE).toBool());
+    } else {
+        mLowSaveFrame->hide();
+        mBatterySaveFrame->hide();
+        mDisplayTimeFrame->hide();
+    }
+
 
     // 信号阻塞解除
     mPowerKeyComboBox->blockSignals(false);
@@ -827,6 +855,24 @@ bool Power::isExitBattery()
     }
     g_ptr_array_unref (devices);
     return hasBat;
+}
+
+double Power::getBattery()
+{
+    QDBusInterface *BatteryInterface = new QDBusInterface("org.freedesktop.UPower",
+                       "/org/freedesktop/UPower/devices/battery_BAT0",
+                       "org.freedesktop.DBus.Properties",
+                        QDBusConnection::systemBus(),this);
+
+
+    if (!BatteryInterface->isValid()) {
+        qDebug() << "Create UPower Battery Interface Failed : " <<
+            QDBusConnection::systemBus().lastError();
+        return 0;
+    }
+    QDBusReply<QVariant> BatteryInfo;
+    BatteryInfo = BatteryInterface->call("Get", "org.freedesktop.UPower.Device", "Percentage");
+    return BatteryInfo.value().toDouble();
 }
 
 bool Power::QLabelSetText(QLabel *label, QString string)
