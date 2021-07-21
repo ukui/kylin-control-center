@@ -1,0 +1,91 @@
+From 9631f26d62df821ad6d816debe1b687448021df6 Mon Sep 17 00:00:00 2001
+From: wanghailiang <wanghailiang@kylinos.cn>
+Date: Thu, 22 Jul 2021 10:23:14 +0800
+Subject: [PATCH 2/2] =?UTF-8?q?update=20:=20=E4=BF=AE=E5=A4=8D=E5=BC=B9?=
+ =?UTF-8?q?=E6=A1=86=E5=BC=82=E5=B8=B8?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ plugins/security-updates/upgrade/src/tabwidget.cpp | 11 ++++++-----
+ plugins/security-updates/upgrade/src/tabwidget.h   |  1 +
+ 2 files changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/plugins/security-updates/upgrade/src/tabwidget.cpp b/plugins/security-updates/upgrade/src/tabwidget.cpp
+index 213cbc9f..82dfa29d 100644
+--- a/plugins/security-updates/upgrade/src/tabwidget.cpp
++++ b/plugins/security-updates/upgrade/src/tabwidget.cpp
+@@ -80,6 +80,10 @@ TabWid::~TabWid()
+ 
+ void TabWid::backupMessageBox(QString str)
+ {
++    if (haveMessageBox) {
++        return ;
++    }
++    haveMessageBox = true;
+     QMessageBox msgBox;
+     msgBox.setText(str);
+     msgBox.setWindowTitle(tr("Prompt information"));
+@@ -103,6 +107,7 @@ void TabWid::backupMessageBox(QString str)
+         //         versionInformationLab->setText("正在更新...");
+         updateMutual->isPointOutNotBackup = false;   //全部更新时不再弹出单个更新未备份提示
+         emit updateAllSignal();
++        haveMessageBox = false;
+     }
+     else if(ret == QMessageBox::Discard)
+     {
+@@ -112,6 +117,7 @@ void TabWid::backupMessageBox(QString str)
+         //       checkUpdateBtn->setText(tr("全部更新"));
+         versionInformationLab->setText(tr("Updatable app detected on your system!"));
+         checkUpdateBtn->setText(tr("UpdateAll"));
++        haveMessageBox = false;
+     }
+     else if(ret == QMessageBox::Abort)
+     {
+@@ -120,7 +126,6 @@ void TabWid::backupMessageBox(QString str)
+         checkUpdateBtn->setEnabled(true);
+         //       checkUpdateBtn->setText(tr("全部更新"));
+         checkUpdateBtn->setText(tr("UpdateAll"));
+-
+     }
+ }
+ 
+@@ -788,22 +793,18 @@ void TabWid::receiveBackupStartResult(int result)
+         return;
+     case int(backuptools::backup_result::WRITE_STORAGEINFO_ADD_ITEM_FAIL):
+     case int(backuptools::backup_result::WRITE_STORAGEINFO_UPDATE_ITEM_FAIL):
+-        bacupInit(false);
+         //        backupMessageBox(tr("写入配置文件失败，本次更新不会备份系统！"));
+         backupMessageBox(tr("Failed to write configuration file, this update will not back up the system!"));
+         break;
+     case int(backuptools::backup_result::BACKUP_CAPACITY_IS_NOT_ENOUGH):
+         //        backupMessageBox(tr("备份空间不足，本次更新不会备份系统！"));
+-        bacupInit(false);
+         backupMessageBox(tr("Insufficient backup space, this update will not backup your system!"));
+         break;
+     case int(backuptools::backup_result::INC_NOT_FOUND_UUID):
+         //        backupMessageBox(tr("麒麟备份还原工具无法找到UUID，本次更新不会备份系统!"));
+-        bacupInit(false);
+         backupMessageBox(tr("Kylin backup restore tool could not find the UUID, this update will not backup the system!"));
+         break;
+     default:
+-        bacupInit(false);
+         backupMessageBox(tr("The backup restore partition is abnormal. You may not have a backup restore partition.For more details,see /var/log/backup.log"));
+         break;
+     }
+diff --git a/plugins/security-updates/upgrade/src/tabwidget.h b/plugins/security-updates/upgrade/src/tabwidget.h
+index f4c2a023..f68a9fd9 100644
+--- a/plugins/security-updates/upgrade/src/tabwidget.h
++++ b/plugins/security-updates/upgrade/src/tabwidget.h
+@@ -96,6 +96,7 @@ public:
+     bool downloadFailedStatus = false;  //下载失败时的弹窗是否弹出
+     //源管理器Dbus对象
+     UpdateSource *updateSource;
++    bool haveMessageBox = false;
+ 
+ 
+     void disconnectSource();
+-- 
+2.25.1
+
