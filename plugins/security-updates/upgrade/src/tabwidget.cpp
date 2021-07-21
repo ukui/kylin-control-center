@@ -475,8 +475,6 @@ void TabWid::allComponents()
 
 }
 
-
-
 void TabWid::loadingOneUpdateMsgSlot(AppAllMsg msg)
 {
     //    checkUpdateBtn->setText();
@@ -731,6 +729,7 @@ void TabWid::hideUpdateBtnSlot(bool isSucceed)
         checkUpdateBtn->stop();
         //        checkUpdateBtn->setText(tr("检查更新"));
         checkUpdateBtn->setText(tr("Check Update"));
+        updateMutual->fileUnLock();
         if(updateMutual->failedList.size() == 0)
         {
             //            versionInformationLab->setText(tr("您的系统已是最新！"));
@@ -747,13 +746,15 @@ void TabWid::hideUpdateBtnSlot(bool isSucceed)
 
 void TabWid::changeUpdateAllSlot()
 {
-
     if(checkUpdateBtn->isEnabled() == false)
     {
         //        checkUpdateBtn->setText("全部更新");
         checkUpdateBtn->setText(tr("UpdateAll"));
         checkUpdateBtn->setEnabled(true);
+    } else {
+        checkUpdateBtn->setEnabled(false);
     }
+
 }
 
 
@@ -787,18 +788,22 @@ void TabWid::receiveBackupStartResult(int result)
         return;
     case int(backuptools::backup_result::WRITE_STORAGEINFO_ADD_ITEM_FAIL):
     case int(backuptools::backup_result::WRITE_STORAGEINFO_UPDATE_ITEM_FAIL):
+        bacupInit(false);
         //        backupMessageBox(tr("写入配置文件失败，本次更新不会备份系统！"));
         backupMessageBox(tr("Failed to write configuration file, this update will not back up the system!"));
         break;
     case int(backuptools::backup_result::BACKUP_CAPACITY_IS_NOT_ENOUGH):
         //        backupMessageBox(tr("备份空间不足，本次更新不会备份系统！"));
+        bacupInit(false);
         backupMessageBox(tr("Insufficient backup space, this update will not backup your system!"));
         break;
     case int(backuptools::backup_result::INC_NOT_FOUND_UUID):
         //        backupMessageBox(tr("麒麟备份还原工具无法找到UUID，本次更新不会备份系统!"));
+        bacupInit(false);
         backupMessageBox(tr("Kylin backup restore tool could not find the UUID, this update will not backup the system!"));
         break;
     default:
+        bacupInit(false);
         backupMessageBox(tr("The backup restore partition is abnormal. You may not have a backup restore partition.For more details,see /var/log/backup.log"));
         break;
     }

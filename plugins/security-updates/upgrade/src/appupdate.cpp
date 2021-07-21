@@ -634,6 +634,7 @@ void AppUpdateWid::updateOneApp()
 {
     if(appAllMsg.msg.getDepends == true)
     {
+        emit changeUpdateAllSignal();
         if(checkSourcesType() != file){
             isCancel = false;
             firstDownload = true;
@@ -749,10 +750,10 @@ void AppUpdateWid::calculateSpeedProgress()
             qDebug() << "dowload over:" << priorSize;
             timer->stop();
             m_updateMutual->copyFinsh(downloadPackages, appAllMsg.name);
-            if(m_updateMutual->fileLock() != false)
-            {
-                emit filelockedSignal();
-            }
+//            if(m_updateMutual->fileLock() != false)
+//            {
+//                emit filelockedSignal();
+//            }
 //            appVersion->setText(tr("准备安装"));
             appVersion->setText(tr("Ready to install"));
             appVersion->setToolTip("");

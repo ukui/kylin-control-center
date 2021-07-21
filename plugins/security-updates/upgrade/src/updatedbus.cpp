@@ -78,7 +78,7 @@ bool UpdateDbus::fileLock()
 
     //判断是否有lock目录，没有则创建
     QDir dir("/tmp/lock/");
-    if(! dir.exists()) {
+    if(!dir.exists()) {
         dir.mkdir("/tmp/lock/");//只创建一级子目录，即必须保证上级目录存在
         chmod("/tmp/lock/",0777);
     }
@@ -94,7 +94,7 @@ bool UpdateDbus::fileLock()
 
     umask(0000);
     //O_TRUNC 为先清空，再写入
-    int fd = open(lockPath.toUtf8().data(), O_RDWR | O_CREAT | O_TRUNC,0666);
+    int fd = open(lockPath.toStdString().c_str(), O_RDWR | O_CREAT | O_TRUNC,0666);
     if (fd < 0) {
         qDebug()<<"文件锁打开异常";
         return false;
@@ -109,18 +109,21 @@ bool UpdateDbus::fileLock()
 
 void UpdateDbus::fileUnLock()
 {
+
     QDir dir("/tmp/lock/");
-    if(! dir.exists()) {
+    if (!dir.exists()) {
         dir.mkdir("/tmp/lock/");//只创建一级子目录，即必须保证上级目录存在
         chmod("/tmp/lock/",0777);
     }
     umask(0000);
-    int fd = open(lockPath.toUtf8().data(), O_RDWR | O_CREAT,0666);
+    int fd = open(lockPath.toStdString().c_str(), O_RDONLY | O_CREAT,0666);
     if (fd < 0) {
         qDebug()<<"解锁时文件锁打开异常";
         return;
     }
     flock(fd, LOCK_UN);
+    close(fd);
+    system("rm /tmp/lock/kylin-update.lock");
 }
 
 void UpdateDbus::slotFinishGetMessage(QString num)
@@ -138,7 +141,7 @@ void UpdateDbus::copyFinsh(QStringList srcPath, QString appName)
     {
         makeDirs(QString("/var/cache/apt/archives/"));
     }
-    replyStr = interface->call("copy_file_to_install",srcPath,appName);
+    replyStr = interface->call("copy_file_to_install", srcPath, appName);
     qDebug() << "拷贝软件包到安装目录，调用接口copy_file_to_install";
 }
 
@@ -168,6 +171,7 @@ void UpdateDbus::setImportantStatus(bool status)
 //安装和升级
 bool UpdateDbus::installAndUpgrade(QString pkgName)
 {
+    fileLock();
     // 有参数的情况下  传参调用dbus接口并保存返回值
     interface->asyncCall("install_and_upgrade",pkgName);
 
