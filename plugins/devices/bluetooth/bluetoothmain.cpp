@@ -544,7 +544,7 @@ void BlueToothMain::addMyDeviceItemUI(BluezQt::DevicePtr device)
 {
     qDebug() << __FUNCTION__ << device->name() << device->address() << device->type() << __LINE__;
 
-    DeviceInfoItem *item  = paired_dev_layout->findChild<DeviceInfoItem *>(device->address());
+    DeviceInfoItem *item  = frame_middle->findChild<DeviceInfoItem *>(device->address());
     if (item)
     {
         qDebug() << __FUNCTION__ << device->name()  <<"paired_dev_layout exist" << __LINE__;
