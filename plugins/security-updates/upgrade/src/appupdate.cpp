@@ -514,7 +514,7 @@ void AppUpdateWid::updateAppUi(QString name)
     QFontMetrics fontWidth(someInfoEdit->font());//得到每个字符的宽度
     QString StrMsg = fontWidth.elidedText(chlog, Qt::ElideRight,600);//最大宽度
     someInfoEdit->append(StrMsg);
-    if(appAllMsg.msg.allSize == 0 && appAllMsg.packageSize == 0)
+    if(appAllMsg.msg.allSize == 0 || appAllMsg.packageSize == 0)
     {
         someInfoEdit->append(tr("Download completed"));
 //        someInfoEdit->append(tr("Download size:")+QString(modifySizeUnit(appAllMsg.packageSize)));
