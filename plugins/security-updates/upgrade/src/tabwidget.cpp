@@ -525,6 +525,7 @@ void TabWid::loadingFinishedSlot(int size)
     qDebug()<< "更新管理器：" <<"加载完毕信号 " << "size = " <<size;
     if(updateMutual->importantList.size() == 0)
     {
+        bacupInit(false);
         checkUpdateBtn->setEnabled(true);
         checkUpdateBtn->stop();
         //        checkUpdateBtn->setText(tr("检查更新"));
@@ -733,6 +734,7 @@ void TabWid::hideUpdateBtnSlot(bool isSucceed)
         checkUpdateBtn->setText(tr("Check Update"));
         if(updateMutual->failedList.size() == 0)
         {
+            bacupInit(false);
             //            versionInformationLab->setText(tr("您的系统已是最新！"));
             versionInformationLab->setText(tr("Your system is the latest!"));
             systemPortraitLab->setPixmap(QPixmap(":/img/plugins/upgrade/normal.png").scaled(96,96));
