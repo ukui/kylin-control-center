@@ -371,6 +371,7 @@ void TabWid::slotUpdateTemplate(QString status)
 }
 void TabWid::slotUpdateCache(QVariantList sta)
 {
+
     QString status = sta.at(1).toString();
     QString nowsymbol = sta.at(0).toString();
     qDebug() << "源管理器：" <<"slotUpdateCache" << "nowsymbol" <<nowsymbol << status;
@@ -379,8 +380,10 @@ void TabWid::slotUpdateCache(QVariantList sta)
         isConnectSourceSignal = true;
         qDebug() <<"源管理器：" << "update cache status :" << status;
         if (!status.compare("success")) {
-            //            versionInformationLab->setText(tr("正在获取更新列表..."));
+//            int progress = 100;
+//            versionInformationLab->setText(tr("Update software source :") + QString::number(progress)+"%");
             versionInformationLab->setText(tr("Getting update list")+"...");
+
             QFile file(IMPORTANT_FIEL_PATH);
             if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
                 qDebug() <<"file open failed!" << IMPORTANT_FIEL_PATH;
@@ -397,7 +400,9 @@ void TabWid::slotUpdateCache(QVariantList sta)
                 list = str.split(" ");
             }
             qDebug() << "slotUpdateCache函数：获取到的包列表：" << list;
+//            versionInformationLab->setText(tr("Getting update list")+"...");
             updateMutual->getAppMessage(list);
+
         }
         else
         {
@@ -433,7 +438,7 @@ void TabWid::slotUpdateCacheProgress(QVariantList pro)
         progress = 100;
     }
     QString nowsymbol = pro.at(0).toString();
-    //    qDebug() << "update cache progress :" << progress;
+        qDebug() << "update cache progress :" << progress;
     if(nowsymbol == Symbol)
     {
             versionInformationLab->setText(tr("Update software source :") + QString::number(progress)+"%");

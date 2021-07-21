@@ -98,7 +98,7 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
 
     m_submitBtn->setStyleSheet("QPushButton {background-color: #3790FA;border-radius: 4px;color:rgba(255,255,255,0.85);}"
                                 "QPushButton:hover {background-color: #40A9FB;border-radius: 4px;position:relative;color:rgba(255,255,255,0.85);}"
-                                "QPushButton:click {background-color: #40A9FB;border-radius: 4px;postion:realative;color:rgba(255,255,255,0.85);}");
+                                "QPushButton:click {background-color: #40A9FB;border-radius: 4px;postion:relative;color:rgba(255,255,255,0.85);}");
     m_regBtn->setStyleSheet("QPushButton{background: transparent;border-radius: 4px;} "
                                     "QPushButton:hover{background: transparent;border-radius: 4px;color:rgba(55,144,250,0.85);}"
                                     "QPushButton:click{background: transparent;border-radius: 4px;color:rgba(55,144,250,0.85);}");
