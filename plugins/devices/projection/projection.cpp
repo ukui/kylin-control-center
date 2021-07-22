@@ -239,14 +239,12 @@ QWidget *Projection::get_plugin_ui(){
     //First, we check whether service process is running
     if (NO_SERVICE == projectionstatus) {
         ui->label_2->setText(tr("Service exception,please restart the system"));
-        ui->label_2->setText("服务异常，请重启系统");
         ui->projectionNameWidget->setEnabled(false);
         projectionBtn->setEnabled(false);
     }
     //Then let's check whether hardware is ok
     else if (NOT_SUPPORT_P2P == projectionstatus) {
         ui->label_2->setText(tr("Network card is not detected or the driver is not supported.This function is not available"));
-        ui->label_2->setText("未检测到无线网卡或网卡驱动不支持，投屏功能不可用");
         ui->projectionNameWidget->setEnabled(false);
         projectionBtn->setEnabled(false);
     }
@@ -257,10 +255,8 @@ QWidget *Projection::get_plugin_ui(){
             qDebug()<<"wifi is on now";
             if(SUPPORT_P2P_WITHOUT_DEV == projectionstatus)
                 ui->label_3->setText(tr("Please keep WLAN on;\nWireless-network functions will be invalid when the screen projection on"));
-                ui->label_3->setText("使用时请保持WLAN处于开启状态；开启投屏后，无线网络相关功能会失效");
             if(SUPPORT_P2P_PERFECT == projectionstatus)
                 ui->label_3->setText(tr("Please keep WLAN on;\nWireless will be temporarily disconnected when the screen projection on"));
-                ui->label_3->setText("使用时请保持WLAN处于开启状态；开启投屏会短暂中断无线连接");
             ui->widget->show();
             ui->label->show();
             ui->label_3->show();
@@ -272,14 +268,12 @@ QWidget *Projection::get_plugin_ui(){
         {
             qDebug()<<"wifi is off now";
             ui->label_2->setText(tr("WLAN is off, please turn on WLAN"));
-            ui->label_2->setText("WLAN未开启，请打开WLAN开关");
             ui->projectionNameWidget->setEnabled(false);
             projectionBtn->setEnabled(false);
         }
     }
     else if (OP_NO_RESPONSE == projectionstatus) {
         ui->label_2->setText(tr("Wireless network card is busy. Please try again later"));
-        ui->label_2->setText("无线网卡繁忙，请稍后再试");
         ui->projectionNameWidget->setEnabled(false);
         projectionBtn->setEnabled(false);
     }
@@ -314,7 +308,6 @@ void Projection::projectionButtonClickSlots(bool status) {
         qDebug() << "Execute Start method call result -->" << res;
         if(res)
            ui->label_3->setText(tr("Failed to execute. Please reopen the page later"));
-           ui->label_3->setText("执行失败，请再次打开该页面查看");
     } else {
         m_pServiceInterface->call("Stop");
     }
