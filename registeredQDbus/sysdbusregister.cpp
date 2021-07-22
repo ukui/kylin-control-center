@@ -285,7 +285,9 @@ void SysdbusRegister::getBrightnessInfo()
         }
         
         for (int i=0; i < l.count(); i=i+9) {
-            if (l.at(i).contains("display", Qt::CaseInsensitive)) {
+            if (l.at(i).startsWith("Display") || l.at(i).startsWith("Invalid display")) {
+                if (i+5 >= l.count())
+                    break;
                 QString bus=l.at(i+1).split(":").at(1).trimmed();
                 QString serial=l.at(i+5).split(":").at(1).trimmed();
                 QString busType = bus.split("-").at(1);
