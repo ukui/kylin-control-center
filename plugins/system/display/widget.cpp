@@ -303,6 +303,23 @@ void Widget::slotOutputEnabledChanged()
     Q_FOREACH (const KScreen::OutputPtr &output, mConfig->outputs()) {
         if (output->isEnabled()) {
             ++enabledOutputsCount;
+            for (int i = 0; i < BrightnessFrameV.size(); ++i) {
+                if (BrightnessFrameV[i]->outputName == Utils::outputName(output) && !BrightnessFrameV[i]->slider->isVisible()) {
+                    QtConcurrent::run([=]{
+                        int initValue = getDDCBrighthess(BrightnessFrameV[i]->outputName);
+                        if (initValue == -1 || BrightnessFrameV[i] == nullptr)
+                            return;
+                        BrightnessFrameV[i]->slider->setValue(initValue);
+                        BrightnessFrameV[i]->slider->setVisible(true);
+                        BrightnessFrameV[i]->setTextLableValue(QString::number(initValue));
+                        connect(BrightnessFrameV[i]->slider, &QSlider::valueChanged, this, [=](){
+                                            qDebug()<<BrightnessFrameV[i]->outputName<<"brightness"<<" is changed, value = "<<BrightnessFrameV[i]->slider->value();
+                                            BrightnessFrameV[i]->setTextLableValue(QString::number(BrightnessFrameV[i]->slider->value()));
+                                            setDDCBrightnessN(BrightnessFrameV[i]->slider->value(), BrightnessFrameV[i]->outputName);
+                        });
+                    });
+                }
+            }
         }
         if (enabledOutputsCount > 1) {
             break;
@@ -868,6 +885,7 @@ void Widget::addBrightnessFrame(QString name, bool openFlag)
     BrightnessFrame *frame = new BrightnessFrame;
     frame->openFlag = openFlag;
     frame->setTextLableValue("0"); //最低亮度10,获取前为0
+    frame->slider->setVisible(false);
     BrightnessFrameV.push_back(frame);
 
     for (int i = 0; i < deleteFrameNameV.size(); ++i) {
@@ -880,6 +898,7 @@ void Widget::addBrightnessFrame(QString name, bool openFlag)
         int initValue = mPowerGSettings->get(POWER_KEY).toInt();
         frame->setTextLableValue(QString::number(initValue));
         frame->slider->setValue(initValue);
+        frame->slider->setVisible(true);
         ui->unifyBrightLayout->addWidget(frame);
         connect(frame->slider, &QSlider::valueChanged, this, [=](){
             qDebug()<<name<<"brightness"<<" is changed, value = "<<frame->slider->value();
@@ -889,12 +908,15 @@ void Widget::addBrightnessFrame(QString name, bool openFlag)
     } else if(!mIsBattery) {
         frame->outputName = name;
         ui->unifyBrightLayout->addWidget(frame);
-        frame->slider->setValue(10);
         QtConcurrent::run([=]{
+            if (openFlag == false)
+                return;
+
             int initValue = getDDCBrighthess(frame->outputName);
             if (initValue == -1 || frame == nullptr)
                 return;
             frame->slider->setValue(initValue);
+            frame->slider->setVisible(true);
             frame->setTextLableValue(QString::number(initValue));
             connect(frame->slider, &QSlider::valueChanged, this, [=](){
                                  qDebug()<<name<<"brightness"<<" is changed, value = "<<frame->slider->value();
@@ -902,7 +924,6 @@ void Widget::addBrightnessFrame(QString name, bool openFlag)
                                  setDDCBrightnessN(frame->slider->value(), name);
             });
         });
-
     }
 }
 
