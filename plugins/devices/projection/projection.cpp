@@ -235,7 +235,6 @@ QWidget *Projection::get_plugin_ui(){
     ui->label_3->hide();
     ui->widget_2->show();
     ui->label_setsize->setText("");
-    projectionstatus=1;
 
     //First, we check whether service process is running
     if (NO_SERVICE == projectionstatus) {
