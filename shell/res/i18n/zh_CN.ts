@@ -5160,7 +5160,7 @@ Please retry or relogin!</source>
     </message>
     <message>
         <location filename="../../../plugins/devices/projection/projection.cpp" line="248"/>
-        <source>Network card is not detected or the driver is not supported.This function is not available</source>
+        <source>Network card is not detected or the driver is not supported.</source>
         <translation>未检测到无线网卡或网卡驱动不支持，投屏功能不可用</translation>
     </message>
     <message>

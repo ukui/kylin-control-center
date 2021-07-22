@@ -235,6 +235,7 @@ QWidget *Projection::get_plugin_ui(){
     ui->label_3->hide();
     ui->widget_2->show();
     ui->label_setsize->setText("");
+    projectionstatus=1;
 
     //First, we check whether service process is running
     if (NO_SERVICE == projectionstatus) {
@@ -244,7 +245,7 @@ QWidget *Projection::get_plugin_ui(){
     }
     //Then let's check whether hardware is ok
     else if (NOT_SUPPORT_P2P == projectionstatus) {
-        ui->label_2->setText(tr("Network card is not detected or the driver is not supported.This function is not available"));
+        ui->label_2->setText(tr("Network card is not detected or the driver is not supported."));
         ui->projectionNameWidget->setEnabled(false);
         projectionBtn->setEnabled(false);
     }
