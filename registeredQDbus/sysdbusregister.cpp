@@ -178,9 +178,10 @@ void SysdbusRegister::setDDCBrightness(QString brightness, QString type) {
     arg << "-f" << "-y" << type << "w7@0x37" << "0x51" << "0x84" << "0x03"
         << "0x10" << "0x00" << light << c;
     QProcess *vcpPro = new QProcess(this);
-    vcpPro->start(program, arg);
-    vcpPro->waitForStarted();
-    vcpPro->waitForFinished();
+//    vcpPro->start(program, arg);
+//    vcpPro->waitForStarted();
+//    vcpPro->waitForFinished();
+    vcpPro->startDetached(program, arg);
 }
 
 int SysdbusRegister::getDDCBrightness(QString type) {
