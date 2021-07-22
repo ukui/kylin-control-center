@@ -80,6 +80,10 @@ TabWid::~TabWid()
 
 void TabWid::backupMessageBox(QString str)
 {
+    if (haveMessageBox) {
+        return ;
+    }
+    haveMessageBox = true;
     QMessageBox msgBox;
     msgBox.setText(str);
     msgBox.setWindowTitle(tr("Prompt information"));
@@ -103,6 +107,7 @@ void TabWid::backupMessageBox(QString str)
         //         versionInformationLab->setText("正在更新...");
         updateMutual->isPointOutNotBackup = false;   //全部更新时不再弹出单个更新未备份提示
         emit updateAllSignal();
+        haveMessageBox = false;
     }
     else if(ret == QMessageBox::Discard)
     {
@@ -112,6 +117,7 @@ void TabWid::backupMessageBox(QString str)
         //       checkUpdateBtn->setText(tr("全部更新"));
         versionInformationLab->setText(tr("Updatable app detected on your system!"));
         checkUpdateBtn->setText(tr("UpdateAll"));
+        haveMessageBox = false;
     }
     else if(ret == QMessageBox::Abort)
     {
@@ -120,7 +126,6 @@ void TabWid::backupMessageBox(QString str)
         checkUpdateBtn->setEnabled(true);
         //       checkUpdateBtn->setText(tr("全部更新"));
         checkUpdateBtn->setText(tr("UpdateAll"));
-
     }
 }
 
@@ -788,22 +793,18 @@ void TabWid::receiveBackupStartResult(int result)
         return;
     case int(backuptools::backup_result::WRITE_STORAGEINFO_ADD_ITEM_FAIL):
     case int(backuptools::backup_result::WRITE_STORAGEINFO_UPDATE_ITEM_FAIL):
-        bacupInit(false);
         //        backupMessageBox(tr("写入配置文件失败，本次更新不会备份系统！"));
         backupMessageBox(tr("Failed to write configuration file, this update will not back up the system!"));
         break;
     case int(backuptools::backup_result::BACKUP_CAPACITY_IS_NOT_ENOUGH):
         //        backupMessageBox(tr("备份空间不足，本次更新不会备份系统！"));
-        bacupInit(false);
         backupMessageBox(tr("Insufficient backup space, this update will not backup your system!"));
         break;
     case int(backuptools::backup_result::INC_NOT_FOUND_UUID):
         //        backupMessageBox(tr("麒麟备份还原工具无法找到UUID，本次更新不会备份系统!"));
-        bacupInit(false);
         backupMessageBox(tr("Kylin backup restore tool could not find the UUID, this update will not backup the system!"));
         break;
     default:
-        bacupInit(false);
         backupMessageBox(tr("The backup restore partition is abnormal. You may not have a backup restore partition.For more details,see /var/log/backup.log"));
         break;
     }
