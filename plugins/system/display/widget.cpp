@@ -779,6 +779,11 @@ int Widget::getPrimaryScreenID()
     return screenId;
 }
 
+void Widget::setScreenIsApply(bool isApply)
+{
+    mIsScreenAdd = !isApply;
+}
+
 void Widget::showNightWidget(bool judge)
 {
     if (judge) {
@@ -1601,6 +1606,7 @@ void Widget::initConnection()
     connect(mUnifyButton, &SwitchButton::checkedChanged,
             [this] {
         slotUnifyOutputs();
+        setScreenIsApply(true);
         delayApply();
 		showBrightnessFrame();
     });

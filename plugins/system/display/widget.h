@@ -168,6 +168,8 @@ private:
 
     int getPrimaryScreenID();
 
+    void setScreenIsApply(bool isApply);
+
 private:
     Ui::DisplayWindow *ui;
     QMLScreen *mScreen = nullptr;
