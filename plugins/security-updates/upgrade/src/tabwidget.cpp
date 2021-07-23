@@ -80,6 +80,10 @@ TabWid::~TabWid()
 
 void TabWid::backupMessageBox(QString str)
 {
+    if (haveMessageBox) {
+        return ;
+    }
+    haveMessageBox = true;
     QMessageBox msgBox;
     msgBox.setText(str);
     msgBox.setWindowTitle(tr("Prompt information"));
@@ -103,6 +107,7 @@ void TabWid::backupMessageBox(QString str)
         //         versionInformationLab->setText("正在更新...");
         updateMutual->isPointOutNotBackup = false;   //全部更新时不再弹出单个更新未备份提示
         emit updateAllSignal();
+        haveMessageBox = false;
     }
     else if(ret == QMessageBox::Discard)
     {
@@ -112,6 +117,7 @@ void TabWid::backupMessageBox(QString str)
         //       checkUpdateBtn->setText(tr("全部更新"));
         versionInformationLab->setText(tr("Updatable app detected on your system!"));
         checkUpdateBtn->setText(tr("UpdateAll"));
+        haveMessageBox = false;
     }
     else if(ret == QMessageBox::Abort)
     {
@@ -120,8 +126,9 @@ void TabWid::backupMessageBox(QString str)
         checkUpdateBtn->setEnabled(true);
         //       checkUpdateBtn->setText(tr("全部更新"));
         checkUpdateBtn->setText(tr("UpdateAll"));
-
+        haveMessageBox = false;
     }
+    haveMessageBox = false;
 }
 
 void TabWid::backupCore()

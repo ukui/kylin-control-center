@@ -96,6 +96,7 @@ public:
     bool downloadFailedStatus = false;  //下载失败时的弹窗是否弹出
     //源管理器Dbus对象
     UpdateSource *updateSource;
+    bool haveMessageBox = false;
 
 
     void disconnectSource();
