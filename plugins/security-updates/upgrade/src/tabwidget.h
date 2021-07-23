@@ -165,7 +165,7 @@ private:
 
     void getAutoUpgradeStatus();
     bool get_battery();
-    void autoUpdateLoadUpgradeList();
+    bool autoUpdateLoadUpgradeList(bool isBackUp);
 
     void fileLock();
     void fileUnLock();
