@@ -2047,8 +2047,13 @@ void Widget::showBrightnessFrame(const int flag)
                     allShowFlag = false;
                 }
                 for (int i = 0; i < BrightnessFrameV.size(); ++i) { //检查其它显示屏是否实际打开，否则关闭，适用于显示器插拔
-                    if (BrightnessFrameV[i]->outputName == Utils::outputName(secOutput) && !secOutput->isEnabled()){
-                        BrightnessFrameV[i]->openFlag = false;
+                    if (BrightnessFrameV[i]->outputName == Utils::outputName(secOutput)) {
+                        if (secOutput->isEnabled()) {
+                            BrightnessFrameV[i]->openFlag = true;
+                        } else {
+                            BrightnessFrameV[i]->openFlag = false;
+                        }
+                        break;
                     }
                 }
             }
