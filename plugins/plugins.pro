@@ -11,7 +11,7 @@ SUBDIRS = \
           system/autoboot \
           system/display \
           devices/printer \
-          devices/projection \
+          system/projection \
           devices/mouse \
           devices/keyboard \
           devices/touchpad \
