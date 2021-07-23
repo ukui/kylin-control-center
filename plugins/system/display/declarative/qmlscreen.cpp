@@ -353,7 +353,8 @@ void QMLScreen::outputEnabledChanged()
     const KScreen::OutputPtr output(qobject_cast<KScreen::Output *>(sender()), [](void *){
         });
     if (output->isEnabled()) {
-        updateOutputsPlacement();
+        // bug#68442
+        // updateOutputsPlacement();
     }
     int enabledCount = 0;
 
