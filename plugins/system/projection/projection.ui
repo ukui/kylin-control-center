@@ -26,19 +26,36 @@
    <string notr="true">Printer</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_6">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <property name="leftMargin">
-      <number>16</number>
+    <widget class="TitleLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Projection</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+     <property name="text">
+      <string>Projection</string>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QWidget" name="widget" native="true">
@@ -123,9 +140,42 @@
            </item>
            <item>
             <widget class="QWidget" name="projectionNameWidget" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <property name="spacing">
+               <number>8</number>
+              </property>
+              <property name="leftMargin">
+               <number>8</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="projectionName">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>30</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string/>
                 </property>
@@ -196,6 +246,9 @@
    </item>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_7">
+     <property name="spacing">
+      <number>0</number>
+     </property>
      <item>
       <widget class="QWidget" name="widget_2" native="true">
        <property name="minimumSize">
@@ -327,13 +380,6 @@
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <property name="leftMargin">
-      <number>16</number>
-     </property>
-    </layout>
-   </item>
-   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -349,6 +395,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TitleLabel</class>
+   <extends>QLabel</extends>
+   <header>Label/titlelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="pic.qrc"/>
  </resources>
